@@ -8,6 +8,8 @@
 
 namespace humhub\modules\file\models;
 
+use humhub\modules\file\libs\FileHelper;
+
 /**
  * FileCompat provides an compatiblity layer for older HumHub Version (1.1 and prior).
  *
@@ -144,6 +146,17 @@ class FileCompat extends \humhub\components\ActiveRecord
         }
 
         return "";
+    }
+
+    /**
+     * Returns the extension of the file_name
+     * 
+     * @deprecated since version 1.2
+     * @return string the extension
+     */
+    public function getExtension()
+    {
+        return FileHelper::getExtension($this->file_name);
     }
 
 }

@@ -11,12 +11,13 @@ namespace humhub\modules\file\actions;
 use Yii;
 use yii\base\Action;
 use yii\web\UploadedFile;
-use yii\web\HttpException;
+use humhub\libs\Helpers;
 use humhub\libs\MimeHelper;
+use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
+use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\file\converter\PreviewImage;
 
 /**
  * UploadAction provides an Ajax/JSON way to upload new files
@@ -38,7 +39,7 @@ class UploadAction extends Action
     /**
      * @var string the file model (you may want to overwrite this for own validations)
      */
-    protected $fileClass = 'humhub\modules\file\models\File';
+    protected $fileClass = 'humhub\modules\file\models\FileUpload';
 
     /**
      * @var string scenario for file upload validation
@@ -99,9 +100,9 @@ class UploadAction extends Action
         $model = Yii::$app->request->get('objectModel');
         $pk = Yii::$app->request->get('objectId');
 
-        if ($model != '' && $pk != '' && CheckClassType($model, \yii\db\ActiveRecord::className())) {
+        if ($model != '' && $pk != '' && Helpers::CheckClassType($model, \yii\db\ActiveRecord::className())) {
 
-            $record = $objectModel::findOne(['id' => $objectId]);
+            $record = $model::findOne(['id' => $pk]);
             if ($record !== null && ($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord)) {
                 if ($record->content->canWrite()) {
                     $this->record = $record;
@@ -118,8 +119,11 @@ class UploadAction extends Action
      */
     protected function getSuccessResponse(File $file)
     {
+        $thumbnailUrl = '';
         $previewImage = new PreviewImage();
-        $previewImage->applyFile($file);
+        if ($previewImage->applyFile($file)) {
+            $thumbnailUrl = $previewImage->getUrl();
+        }
 
         return [
             'error' => false,
@@ -127,10 +131,10 @@ class UploadAction extends Action
             'guid' => $file->guid,
             'size' => $file->size,
             'mimeType' => $file->mime_type,
-            'mimeIcon' => MimeHelper::getMimeIconClassByExtension($file->getExtension()),
+            'mimeIcon' => MimeHelper::getMimeIconClassByExtension(FileHelper::getExtension($file->file_name)),
             'size' => $file->size,
             'url' => $file->getUrl(),
-            'thumbnailUrl' => $previewImage->getUrl(),
+            'thumbnailUrl' => $thumbnailUrl,
         ];
     }
 

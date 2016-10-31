@@ -11,7 +11,6 @@ namespace humhub\modules\file\models;
 use Yii;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
-use humhub\modules\file\libs\ImageConverter;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 
@@ -41,22 +40,12 @@ class File extends FileCompat
 {
 
     /**
-     * @var UploadedFile the uploaded file
-     */
-    private $uploadedFile = null;
-
-    /**
-     * @var string file content 
-     */
-    public $newFileContent = null;
-
-    /**
      * @var \humhub\modules\file\components\StorageManagerInterface the storage manager
      */
     private $_store = null;
 
     /**
-     * @return string the associated database table name
+     * @inheritdoc
      */
     public static function tableName()
     {
@@ -64,17 +53,16 @@ class File extends FileCompat
     }
 
     /**
-     * @return array validation rules for model attributes.
+     * @inheritdoc
      */
     public function rules()
     {
-        return array(
-            array(['mime_type'], 'string', 'max' => 150),
-            array('file_name', 'validateExtension'),
-            array('file_name', 'validateSize'),
-            array('mime_type', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-]/', 'message' => Yii::t('FileModule.models_File', 'Invalid Mime-Type')),
-            array(['file_name', 'title'], 'string', 'max' => 255),
-        );
+        return [
+            [['mime_type'], 'string', 'max' => 150],
+            [['mime_type'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-]/', 'message' => Yii::t('FileModule.base', 'Invalid Mime-Type')],
+            [['file_name', 'title'], 'string', 'max' => 255],
+            [['size'], 'integer'],
+        ];
     }
 
     /**
@@ -96,34 +84,10 @@ class File extends FileCompat
     /**
      * @inheritdoc
      */
-    public function beforeSave($insert)
-    {
-        $this->sanitizeFilename();
-        return parent::beforeSave($insert);
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function beforeDelete()
     {
         $this->store->delete();
         return parent::beforeDelete();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function afterSave($insert, $changedAttributes)
-    {
-        // Set file(content) if provided
-        if ($this->uploadedFile !== null && $this->uploadedFile instanceof UploadedFile) {
-            $this->store->set($this->uploadedFile);
-        } elseif ($this->newFileContent != null) {
-            $this->store->setContent($this->newFileContent);
-        }
-
-        return parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -144,27 +108,13 @@ class File extends FileCompat
             $suffix = $params;
             $params = [];
             if ($suffix != '') {
-                $params['variant'] = suffix;
+                $params['variant'] = $suffix;
             }
         }
 
         $params['guid'] = $this->guid;
         array_unshift($params, '/file/file/download');
         return Url::to($params, $absolute);
-    }
-
-    /**
-     * Returns the extension of the file_name
-     * 
-     * @return string the extension
-     */
-    public function getExtension()
-    {
-        $fileParts = pathinfo($this->file_name);
-        if (isset($fileParts['extension'])) {
-            return $fileParts['extension'];
-        }
-        return '';
     }
 
     /**
@@ -210,66 +160,6 @@ class File extends FileCompat
         }
 
         return false;
-    }
-
-    /**
-     * Sets uploaded file to this file model
-     * 
-     * @param UploadedFile $uploadedFile
-     */
-    public function setUploadedFile(UploadedFile $uploadedFile)
-    {
-        $this->file_name = $uploadedFile->name;
-        $this->mime_type = $uploadedFile->type;
-        $this->size = $uploadedFile->size;
-        $this->uploadedFile = $uploadedFile;
-    }
-
-    public function sanitizeFilename()
-    {
-        $this->file_name = trim($this->file_name);
-
-        // Ensure max length
-        $pathInfo = pathinfo($this->file_name);
-        if (strlen($pathInfo['filename']) > 60) {
-            $pathInfo['filename'] = substr($pathInfo['filename'], 0, 60);
-        }
-
-        $this->file_name = $pathInfo['filename'];
-
-        if ($this->file_name == "") {
-            $this->file_name = "Unnamed";
-        }
-
-        if (isset($pathInfo['extension']))
-            $this->file_name .= "." . trim($pathInfo['extension']);
-    }
-
-    public function validateExtension($attribute, $params)
-    {
-        $allowedExtensions = Yii::$app->getModule('file')->settings->get('allowedExtensions');
-
-        if ($allowedExtensions != "") {
-            $extension = $this->getExtension();
-            $extension = trim(strtolower($extension));
-
-            $allowed = array_map('trim', explode(",", Yii::$app->getModule('file')->settings->get('allowedExtensions')));
-
-            if (!in_array($extension, $allowed)) {
-                $this->addError($attribute, Yii::t('FileModule.models_File', 'This file type is not allowed!'));
-            }
-        }
-    }
-
-    public function validateSize($attribute, $params)
-    {
-        if ($this->size > Yii::$app->getModule('file')->settings->get('maxFileSize')) {
-            $this->addError($attribute, Yii::t('FileModule.models_File', 'Maximum file size ({maxFileSize}) has been exceeded!', array("{maxFileSize}" => Yii::$app->formatter->asSize(Yii::$app->getModule('file')->settings->get('maxFileSize')))));
-        }
-        // check if the file can be processed with php image manipulation tools in case it is an image
-        if (isset($this->uploadedFile) && in_array($this->uploadedFile->type, [image_type_to_mime_type(IMAGETYPE_PNG), image_type_to_mime_type(IMAGETYPE_GIF), image_type_to_mime_type(IMAGETYPE_JPEG)]) && !ImageConverter::allocateMemory($this->uploadedFile->tempName, true)) {
-            $this->addError($attribute, Yii::t('FileModule.models_File', 'Image dimensions are too big to be processed with current server memory limit!'));
-        }
     }
 
     /**

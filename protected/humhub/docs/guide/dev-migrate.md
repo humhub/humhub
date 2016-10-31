@@ -4,12 +4,16 @@ Here you will learn how you can adapt existing modules to working fine with actu
 
 ## Migrate from 1.1 to 1.2
 
+### Stream / Content Changes
+
+TBD
+
 ### File module changes
 
 Please refer the new [File Handling](dev-files.md) documentation section for more details regarding the new file management API.
 
 - Removed Content models 'attachFileGuidsAfterSave' attribute and handling
-- Deprecated methods
+- Deprecated File model methods
     - \humhub\modules\file\models\File::attachPrecreated
 	- \humhub\modules\file\models\File::getFilesOfObject
 	- \humhub\modules\file\models\File::getStoredFilePath
@@ -19,8 +23,20 @@ Please refer the new [File Handling](dev-files.md) documentation section for mor
 	- \humhub\modules\file\models\File::getInfoArray
 	- \humhub\modules\file\models\File::getMimeBaseType
 	- \humhub\modules\file\models\File::getMimeSubType
+	- \humhub\modules\file\models\File::getExtension
 - Removed configuration option 'showFilesWidgetBlacklist' use WallEntry showFiles attribute instead.
 - File models title attributes is not longer automatically populated with the filename when empty
+- Moved file upload capabilities (UploadedFile) from File model to FileUpload model
+- Moved file store content by attribute capabilities from File model to FileContent model
+- Created UploadAction/DownloadAction classes
+
+### Javascript API changes
+
+TBD
+
+### Asset Handling changes
+
+TBD
 
 
 ## Migrate from 1.0 to 1.1

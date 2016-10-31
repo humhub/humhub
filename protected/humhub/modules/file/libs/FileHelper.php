@@ -28,4 +28,19 @@ class FileHelper extends \yii\helpers\FileHelper
         return (strpos($fileName, ".") !== false);
     }
 
+    /**
+     * Returns the extension of a file
+     * 
+     * @param string $fileName
+     * @return string the extension
+     */
+    public static function getExtension($fileName)
+    {
+        $fileParts = pathinfo($fileName);
+        if (isset($fileParts['extension'])) {
+            return $fileParts['extension'];
+        }
+        return '';
+    }
+
 }

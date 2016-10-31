@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use humhub\modules\file\libs\FileHelper;
 use humhub\libs\Helpers;
 
 $object = $this->context->object;
@@ -24,16 +25,17 @@ $object = $this->context->object;
     <ul class="files" style="list-style: none; margin: 0;" id="files-<?php echo $object->getPrimaryKey(); ?>">
         <?php foreach ($files as $file) : ?>
             <?php
+            $fileExtension = FileHelper::getExtension($file->file_name);
             if (substr($file->mime_type, 0, 6) === 'image/' && $hideImageFileInfo) {
                 continue;
             }
             ?>
-            <li class="mime <?php echo \humhub\libs\MimeHelper::getMimeIconClassByExtension($file->getExtension()); ?>"><a
+            <li class="mime <?php echo \humhub\libs\MimeHelper::getMimeIconClassByExtension($fileExtension); ?>"><a
                     href="<?php echo $file->getUrl(); ?>" target="_blank"><span
                         class="filename"><?php echo Html::encode(Helpers::trimText($file->file_name, 40)); ?></span></a>
                 <span class="time" style="padding-right: 20px;"> - <?php echo Yii::$app->formatter->asSize($file->size); ?></span>
 
-                <?php if ($file->getExtension() == "mp3") : ?>
+                <?php if ($fileExtension == "mp3") : ?>
                     <!-- Integrate jPlayer -->
                     <?php
                     echo xj\jplayer\AudioWidget::widget(array(
