@@ -19,6 +19,7 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "yiisoft/yii2-authclient": "~2.0.0",
+        "yiisoft/yii2-imagine": "~2.0.0",
         "raoul2000/yii2-jcrop-widget": "*",
         "cebe/markdown": "1.0.2",
         "yiisoft/yii2-jui": "~2.0.0",

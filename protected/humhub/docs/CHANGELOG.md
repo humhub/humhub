@@ -8,3 +8,5 @@ HumHub Change Log
 - Enh: Moved CSRF Tag output to View renderHeader (luke-)
 - Enh: Moved LayoutAddons widget from main layout to View endBody() method (luke-)
 - Enh: Added PJax page loading (luke-)
+- Enh: Refactored File module (luke-)
+- Enh: Added yii2-imagine Extension (luke-)
