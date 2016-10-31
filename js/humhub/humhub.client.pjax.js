@@ -34,7 +34,7 @@ humhub.initModule('client.pjax', function (module, require, $) {
             var orgErrorHandler = options.error;
             options.error = function (xhr, textStatus, errorThrown) {
                 var redirect = (xhr.status >= 301 && xhr.status <= 303)
-                if (redirect && xhr.getResponseHeader('X-PJAX-REDIRECT-URL') != "") {
+                if (redirect && xhr.getResponseHeader('X-PJAX-REDIRECT-URL') != "" && xhr.getResponseHeader('X-PJAX-REDIRECT-URL') !== null) {
                     options.url = xhr.getResponseHeader('X-PJAX-REDIRECT-URL');
                     console.log('Handled redirect to: ' + options.url);
                     $.pjax(options);
