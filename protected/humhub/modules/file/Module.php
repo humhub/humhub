@@ -22,6 +22,12 @@ class Module extends \humhub\components\Module
     public $isCoreModule = true;
 
     /**
+     * @see components\StorageManagerInterface
+     * @var string storage manager class for files
+     */
+    public $storageManagerClass = '\humhub\modules\file\components\StorageManager';
+
+    /**
      * @var array mime types to show inline instead of download
      */
     public $inlineMimeTypes = [

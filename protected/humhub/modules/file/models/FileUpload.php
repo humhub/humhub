@@ -8,7 +8,6 @@
 
 namespace humhub\modules\file\models;
 
-use Yii;
 use yii\web\UploadedFile;
 use humhub\modules\file\validators\FileValidator;
 

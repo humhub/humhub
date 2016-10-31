@@ -49,7 +49,7 @@ abstract class BaseConverter extends \yii\base\Object
      */
     public function getFilename()
     {
-        $fileName = sprintf('%x', crc32($this->className() . http_build_query($this->options)));
+        $fileName = 'v' . sprintf('%x', crc32($this->className() . http_build_query($this->options)));
         $this->convert($fileName);
         return $fileName;
     }

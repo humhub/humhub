@@ -14,39 +14,39 @@ Examples Usage
 ### Lazy Mapping
 
 
+
 Javascript Uploads
 ------------------
 TBD
 
-Converter
----------
+Converter & Variants
+--------------------
 
 Converters are used to create variants (e.g. diffrent file formats or images size) of an existing file.
-All converted files will be automatically stored with the original file.
+All converted files (variants) will be automatically stored with the original file.
 
 Example usage:
 ```php
 $file = \humhub\modules\file\models\File::findOne(['guid' => 'your file guid']);
 
 $previewImage = new \humhub\modules\file\converter\PreviewImage();
-$previewImage->applyFile($file);
+if ($previewImage->applyFile($file)) {
+	// Can create preview of given file
+	echo $previewImage->getUrl();
+}
 
-echo $previewImage->getUrl();
 
 ```
 
 You can also create own Converters by using [[humhub\modules\file\converter\BaseConverter]].
 
+> Note: Always create file variants (e.g. previews) on the fly - variants may deleted during the upgrade progress.
+
 
 Image Manipulation
 ------------------
 
-HumHub provides several ways to deal with images.
-
-### Imagine Extension
-
-### ImageConverter
-
+Imagine Extension
 
 Access Control
 -------------

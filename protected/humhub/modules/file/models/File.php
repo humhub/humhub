@@ -180,7 +180,7 @@ class File extends FileCompat
     public function getStore()
     {
         if ($this->_store === null) {
-            $this->_store = new \humhub\modules\file\components\StorageManager();
+            $this->_store = Yii::createObject(Yii::$app->getModule('file')->storageManagerClass);
             $this->_store->setFile($this);
         }
 

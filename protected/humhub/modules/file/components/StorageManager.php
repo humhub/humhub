@@ -23,14 +23,14 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
 {
 
     /**
-     * @var string path to store files
-     */
-    public $path = "@webroot/uploads/file";
-
-    /**
      * @var string file name of the base file (without variant)
      */
     public $originalFileName = 'file';
+
+    /**
+     * @var string storage base path
+     */
+    protected $storagePath = '@webroot/uploads/file';
 
     /**
      * @var integer file mode 
@@ -138,9 +138,20 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
             throw new \Exception('File GUID empty!');
         }
 
-        $path = Yii::getAlias($this->path) . DIRECTORY_SEPARATOR . $this->file->guid;
+        $basePath = Yii::getAlias($this->storagePath);
+
+        // File storage prior HumHub 1.2
+        if (is_dir($basePath . DIRECTORY_SEPARATOR . $this->file->guid)) {
+            return $basePath . DIRECTORY_SEPARATOR . $this->file->guid;
+        }
+
+        $path = $basePath . DIRECTORY_SEPARATOR .
+                substr($this->file->guid, 0, 1) . DIRECTORY_SEPARATOR .
+                substr($this->file->guid, 1, 1) . DIRECTORY_SEPARATOR .
+                $this->file->guid;
+
         if (!is_dir($path)) {
-            mkdir($path);
+            FileHelper::createDirectory($path, $this->fileMode, true);
         }
 
         return $path;
