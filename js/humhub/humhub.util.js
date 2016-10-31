@@ -44,6 +44,20 @@ humhub.initModule('util', function(module, require, $) {
         inherits: function(Sub, Parent) {
             Sub.prototype = Object.create(Parent.prototype);
             Sub._super = Parent.prototype;
+            Sub.prototype.super = function(method) {
+                if(!Sub._super[arguments[0]]) {
+                    throw new Error('Call of undefined method of super type');
+                }
+                
+                var args;
+                        
+                if(arguments.length > 1){
+                    args = [];
+                    Array.prototype.push.apply( args, arguments );
+                    args.shift();
+                }
+                return Sub._super[arguments[0]].apply(this, args);
+            };
         }
     };
     

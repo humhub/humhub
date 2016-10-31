@@ -31,6 +31,7 @@ $this->registerJsVar('activityInfoUrl', $infoUrl);
         cursorborder: "",
         cursorcolor: "#555",
         cursoropacitymax: "0.2",
+        nativeparentscrolling: false,
         railpadding: {top: 0, right: 3, left: 0, bottom: 0}
     });
 

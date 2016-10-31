@@ -8,6 +8,7 @@ humhub.initModule('ui.status', function (module, require, $) {
     var event = require('event');
     var log = require('log');
     var object = require('util').object;
+    var client = require('client');
 
     var SELECTOR_ROOT = '#status-bar';
     var SELECTOR_BODY = '.status-bar-body';
@@ -113,9 +114,12 @@ humhub.initModule('ui.status', function (module, require, $) {
                 if (error.error instanceof Error) {
                     error.stack = (error.error.stack) ? error.error.stack : undefined;
                     error.error = error.error.message;
+                } else if(error instanceof client.Response) {
+                    error = error.getLog();
                 }
                 try {
-                    return JSON.stringify(error, null, 4);
+                    // encode
+                    return $('<div/>').text(JSON.stringify(error, null, 4)).html();
                 } catch(e) {
                     return error.toString();
                 }

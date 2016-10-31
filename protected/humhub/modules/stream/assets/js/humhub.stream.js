@@ -75,6 +75,8 @@ humhub.initModule('stream', function (module, require, $) {
      */
     var StreamEntry = function (id) {
         Content.call(this, id);
+        // Set the stream so we have it even if the entry is detached.
+        this.stream();
     };
 
     object.inherits(StreamEntry, Content);
@@ -84,21 +86,23 @@ humhub.initModule('stream', function (module, require, $) {
     };
 
     StreamEntry.prototype.delete = function () {
-        // Search for a nestet content component or call default content delete
-        var content = this.getContentComponent();
-        var promise = (content && content.delete) ? content.delete()
-                : StreamEntry._super.delete.call(this);
+        // Either call delete of a nestet content component or call default content delete
+        var content = this.contentComponent();
+        var promise = (content && content.delete) ? content.delete() : this.super('delete');
 
+        var stream = this.stream();
         promise.then(function ($confirm) {
             if ($confirm) {
                 module.log.success('success.delete');
             }
         }).catch(function (err) {
             module.log.error(err, true);
+        }).finally(function () {
+            stream.onChange();
         });
     };
 
-    StreamEntry.prototype.getContentComponent = function () {
+    StreamEntry.prototype.contentComponent = function () {
         var children = this.children();
         return children.length ? children[0] : undefined;
     };
@@ -121,6 +125,12 @@ humhub.initModule('stream', function (module, require, $) {
     StreamEntry.prototype.edit = function (evt) {
         var that = this;
 
+        if (this.$.data('lastEdit')) {
+            that.replaceContent(this.$.data('lastEdit'));
+            that.$.find('input[type="text"], textarea, [contenteditable="true"]').first().focus();
+            return;
+        }
+
         client.get(evt, {
             dataType: 'html',
             beforeSend: function () {
@@ -136,14 +146,15 @@ humhub.initModule('stream', function (module, require, $) {
         });
 
         // Listen to click events outside of the stream entry and cancel edit.
-        $('body').off('click.humhub:modules:stream:edit').on('click.humhub:modules:stream:edit', function (e) {
+        $('body').off('mousedown.humhub:modules:stream:edit').one('mousedown.humhub:modules:stream:edit', function (e) {
             if (!$(e.target).closest('[data-content-key="' + that.getKey() + '"]').length) {
                 var $editContent = that.$.find('.content_edit:first');
+                that.$.data('lastEdit', $editContent.clone(true));
                 if ($editContent && that.$.data('oldContent')) {
                     $editContent.replaceWith(that.$.data('oldContent'));
                     that.$.data('oldContent', undefined);
                 }
-                $('body').off('click.humhub:modules:stream:edit');
+                $('body').off('mousedown.humhub:modules:stream:edit');
             }
         });
     };
@@ -162,12 +173,20 @@ humhub.initModule('stream', function (module, require, $) {
             beforeSend: function () {
                 that.loader();
             }
-        }).then(function (response) {
-            that.$.html(response.html);
-            module.log.success('success.edit');
-            that.highlight();
+        }).status({
+            200: function (response) {
+                that.$.html(response.html);
+                module.log.success('success.edit');
+                that.highlight();
+            },
+            400: function (response) {
+                that.replaceContent(response.html);
+            }
         }).catch(function (e) {
             module.log.error(e, true);
+        }).finally(function () {
+            $('body').off('mousedown.humhub:modules:stream:edit');
+            that.$.data('lastEdit', undefined);
             that.loader(false);
         });
     };
@@ -188,7 +207,7 @@ humhub.initModule('stream', function (module, require, $) {
     };
 
     StreamEntry.prototype.getContent = function () {
-        return this.$.find('.content:first');
+        return this.$.find('.content, .content_edit').first();
     };
 
     StreamEntry.prototype.highlight = function () {
@@ -263,7 +282,7 @@ humhub.initModule('stream', function (module, require, $) {
                 } else {
                     that.remove().then(function () {
                         module.log.success('success.archive', true);
-                    })
+                    });
                 }
             } else {
                 module.log.error(response, true);
@@ -272,6 +291,12 @@ humhub.initModule('stream', function (module, require, $) {
             module.log.error(e, true);
             that.loader(false);
         });
+    };
+
+    StreamEntry.prototype.remove = function () {
+        var stream = this.stream();
+        return this.super('remove')
+                .then($.proxy(stream.onChange, stream));
     };
 
     StreamEntry.prototype.unarchive = function (evt) {
@@ -291,7 +316,11 @@ humhub.initModule('stream', function (module, require, $) {
 
     StreamEntry.prototype.stream = function () {
         // Just return the parent stream component.
-        return this.parent();
+        if(!this.$.data('stream')) {
+            return this.$.data('stream', this.parent());
+        }
+        
+        return this.$.data('stream');
     };
 
     /**
@@ -553,12 +582,14 @@ humhub.initModule('stream', function (module, require, $) {
         var $html = $(html).hide();
         this.$content.prepend($html);
         $html.fadeIn();
+        this.onChange();
     };
 
     Stream.prototype.appendEntry = function (html) {
         var $html = $(html).hide();
         this.$content.append($html);
         $html.fadeIn();
+        this.onChange();
     };
 
 

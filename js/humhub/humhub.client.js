@@ -9,159 +9,140 @@ humhub.initModule('client', function (module, require, $) {
     /**
      * Response Wrapper Object for easily accessing common data
      */
-    var Response = function (data, dataType) {
-        if(!dataType || dataType === 'json') {        
-            $.extend(this, data);
-        } else if(dataType) {
-            this[dataType] = data;
-        } else {
-            this.data = data;
-        }
-    };
-
-    /**
-     * Checks if the response is a confirmation of the request
-     * @returns {Boolean}
-     */
-    Response.prototype.isConfirmation = function () {
-        return this.getStatus() === 0;
-    };
-
-    //TODO: isValidationError status 2 
-
-    /**
-     * Checks if the response is marke
-     * @returns {humhub.client_L5.Response.data.status|Boolean}
-     */
-    Response.prototype.isError = function () {
-        return this.getStatus() > 0 || this.getErrors().length;
-    };
-
-    Response.prototype.getStatus = function () {
-        return (this.status) ? this.status : -1;
-    };
-
-    Response.prototype.getFirstError = function () {
-        var errors = this.getErrors();
-        if (errors.length) {
-            return errors[0];
-        }
-    };
-
-    Response.prototype.setAjaxError = function (xhr, errorThrown, textStatus, data, status) {
-        this.xhr = xhr;
+    var Response = function (xhr, url, textStatus, dataType) {
+        this.url = url;
+        this.status = xhr.status;
+        this.response = xhr.responseJSON || xhr.responseText;
+        //Textstatus = "timeout", "error", "abort", "parsererror", "application"
         this.textStatus = textStatus;
-        this.status = status || xhr.status;
-        this.errors = [errorThrown];
+        this.dataType = dataType;
+        
+        if (!dataType || dataType === 'json') {
+            $.extend(this, this.response);
+        } else if (dataType) {
+            this[dataType] = this.response;
+        }
     };
 
-    /**
-     * Returns an array of errors or an empty array so getErrors().length is always
-     * safe.
-     * @returns {array} error array or empty array
-     */
-    Response.prototype.getErrors = function () {
-        var errors = this.errors || [];
-        return (object.isString(errors)) ? [errors] : errors;
+    Response.prototype.setSuccess = function (data) {
+        this.data = data;
+        return this;
     };
 
-    Response.prototype.toString = function () {
-        return "{ status: " + this.getStatus() + " error: " + this.getErrors() + " textStatus: " + this.textStatus + " }";
+    Response.prototype.setError = function (errorThrown) {
+        this.error = errorThrown;
+        this.validationError = (this.status === 400);
+        return this;
+    };
+
+    Response.prototype.isError = function () {
+        return this.status >= 400;
+    };
+    
+    Response.prototype.getLog = function () {
+        var result = $.extend({}, this);
+
+        if(this.response && object.isString(this.response)) {
+            result.response = this.response.substr(0,200) 
+            result.response += (this.response.length > 200) ? '...' : '';
+        };
+        
+        if(this.html && object.isString(this.html)) {
+            result.html = this.html.substr(0,200) 
+            result.html += (this.html.length > 200) ? '...' : '';
+        };
+        
+        return result;
     };
 
     var submit = function ($form, cfg, originalEvent) {
-        if($form instanceof $.Event && $form.$form) {
+        if ($form instanceof $.Event && $form.$form) {
             originalEvent = $form;
             $form = $form.$form;
-        } else if(cfg instanceof $.Event) {
+        } else if (cfg instanceof $.Event) {
             originalEvent = cfg;
             cfg = {};
         }
-        
+
         cfg = cfg || {};
         $form = object.isString($form) ? $($form) : $form;
         cfg.type = $form.attr('method') || 'post';
         cfg.data = $form.serialize();
-        var url = cfg.url|| $form.attr('action');
+        var url = cfg.url || $form.attr('action');
         return ajax(url, cfg, originalEvent);
     };
 
-    var post = function (path, cfg, originalEvent) {
-        if(path instanceof $.Event) {
-            originalEvent = path;
-            path = originalEvent.url;
-        } else if(cfg instanceof $.Event) {
+    var post = function (url, cfg, originalEvent) {
+        if (url instanceof $.Event) {
+            originalEvent = url;
+            url = originalEvent.url;
+        } else if (cfg instanceof $.Event) {
             originalEvent = cfg;
             cfg = {};
         }
-        
+
         cfg = cfg || {};
         cfg.type = cfg.method = 'POST';
-        return ajax(path, cfg, originalEvent);
-    };
-    
-    var get = function (path, cfg, originalEvent) {
-        if(path instanceof $.Event) {
-            originalEvent = path;
-            path = originalEvent.url;
-        } else if(cfg instanceof $.Event) {
-            originalEvent = cfg;
-            cfg = {};
-        }
-        
-        cfg = cfg || {};
-        cfg.type = cfg.method = 'GET';
-        return ajax(path, cfg, originalEvent);
+        return ajax(url, cfg, originalEvent);
     };
 
-    var ajax = function (path, cfg, originalEvent) {
-        
-        // support for ajax(path, event) and ajax(path, successhandler);
-        if(cfg instanceof $.Event) {
+    var get = function (url, cfg, originalEvent) {
+        if (url instanceof $.Event) {
+            originalEvent = url;
+            url = originalEvent.url;
+        } else if (cfg instanceof $.Event) {
             originalEvent = cfg;
             cfg = {};
-        } else if(object.isFunction(cfg)) {
-            cfg = {'success' : cfg};
         }
+
+        cfg = cfg || {};
+        cfg.type = cfg.method = 'GET';
+        return ajax(url, cfg, originalEvent);
+    };
+
+    var ajax = function (url, cfg, originalEvent) {
+
+        // support for ajax(url, event) and ajax(path, successhandler);
+        if (cfg instanceof $.Event) {
+            originalEvent = cfg;
+            cfg = {};
+        } else if (object.isFunction(cfg)) {
+            cfg = {'success': cfg};
+        }
+
         
         var promise = new Promise(function (resolve, reject) {
             cfg = cfg || {};
-
-            //Wrap the actual error handler with our own and call 
+            
             var errorHandler = cfg.error;
-            var error = function (xhr, textStatus, errorThrown, data) {
-                //Textstatus = "timeout", "error", "abort", "parsererror", "application"
+            var error = function (xhr, textStatus, errorThrown) {
+                var response = new Response(xhr, url, textStatus, cfg.dataType).setError(errorThrown);
+
                 if (errorHandler && object.isFunction(errorHandler)) {
-                    var response = new Response();
-                    response.setAjaxError(xhr, errorThrown, textStatus, data, xhr.status);
                     errorHandler(response);
                 }
-                
+
                 finish(originalEvent);
-                reject({'url' : path, 'textStatus': textStatus, 'response': xhr.responseJSON, 'error': errorThrown, 'data': data, 'status': xhr.status});
+                reject(response);
             };
 
             var successHandler = cfg.success;
             var success = function (data, textStatus, xhr) {
-                var response = new Response(data, cfg.dataType);
-                if (response.isError()) { //Application errors
-                    return error(xhr, "application", response.getErrors(), data, response.getStatus());
-                } else if (successHandler) {
-                    response.textStatus = textStatus;
-                    response.xhr = xhr;
+                var response = new Response(xhr, url, textStatus, cfg.dataType).setSuccess(data);
+                if (successHandler) {
                     successHandler(response);
                 }
-                
+
                 finish(originalEvent);
                 resolve(response);
-                
+
                 // Other modules can register global handler by the response type given by the backend.
                 // For example {type:'modal', 'content': '...')
-                if(response.type) {
-                    event.trigger('humhub:modules:client:response:'+response.type);
+                if (response.type) {
+                    event.trigger('humhub:modules:client:response:' + response.type);
                 }
-                
-                promise.done(function() {
+
+                promise.done(function () {
                     // If content with <link> tags are inserted in resolve, the ajaxComplete handler in yii.js
                     // makes sure redundant stylesheets are removed. Here we get sure it is called after inserting the response.
                     $(document).trigger('ajaxComplete');
@@ -171,28 +152,55 @@ humhub.initModule('client', function (module, require, $) {
             //Overwriting the handler with our wrapper handler
             cfg.success = success;
             cfg.error = error;
-            cfg.url = path;
+            cfg.url = url;
 
             //Setting some default values
             cfg.dataType = cfg.dataType || "json";
 
             $.ajax(cfg);
         });
-        
+
+        promise.status = function (setting) {
+            return new Promise(function (resolve, reject) {
+                promise.then(function (response) {
+                    try {
+                        if (setting[response.status]) {
+                            setting[response.status](response);
+                        } 
+                        resolve(response);
+                    } catch (e) {
+                        reject(e);
+                    }
+                }).catch(function (response) {
+                    try {
+                        if (setting[response.status]) {
+                            setting[response.status](response);
+                            resolve(response);
+                        } else {
+                            reject(response);
+                        }
+                    } catch (e) {
+                        reject(e);
+                    }
+                });
+            });
+        };
+
         return promise;
     };
-    
-    var finish = function(originalEvent) {
-        if(originalEvent && object.isFunction(originalEvent.finish)) {
+
+    var finish = function (originalEvent) {
+        if (originalEvent && object.isFunction(originalEvent.finish)) {
             originalEvent.finish();
         }
     };
- 
+
     module.export({
         ajax: ajax,
         post: post,
         get: get,
-        submit: submit
+        submit: submit,
+        Response: Response
     });
 });
 

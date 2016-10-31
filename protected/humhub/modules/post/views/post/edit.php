@@ -4,7 +4,7 @@ use humhub\compat\CActiveForm;
 
 
 ?>
-<div class="content_edit" id="post_edit_<?php echo $post->id; ?>">
+<div class="content content_edit" id="post_edit_<?php echo $post->id; ?>">
     <?php $form = CActiveForm::begin(['id' => 'post-edit-form_' . $post->id]); ?>
     
     <!-- create contenteditable div for HEditorWidget to place the data -->

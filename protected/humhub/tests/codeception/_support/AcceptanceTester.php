@@ -62,13 +62,21 @@ class AcceptanceTester extends \Codeception\Actor
         $this->amOnPage('index-test.php?r=space/space&sguid=5396d499-20d6-4233-800b-c6c86e5fa34d');
     }
 
+    public function createPost($text)
+    {
+        $this->click('#contentForm_message_contenteditable');
+        $this->fillField('#contentForm_message_contenteditable', $text);
+        $this->click('#post_submit_button');
+        $this->waitForText($text, 30, '.wall-entry');
+    }
+
     public function seeSuccess($text = null)
     {
-        $this->waitForElementVisible('#status-bar .success', 20);
+        $this->waitForElementVisible('#status-bar .success', 30);
         if ($text) {
             $this->see($text, '#status-bar');
         }
-        
+
         $this->waitForElementVisible('#status-bar .status-bar-close');
         $this->click('#status-bar .status-bar-close');
         $this->waitForElementNotVisible('#status-bar');
@@ -80,7 +88,7 @@ class AcceptanceTester extends \Codeception\Actor
         if ($text) {
             $this->see($text, '#status-bar');
         }
-        
+
         $this->waitForElementVisible('#status-bar .status-bar-close');
         $this->click('#status-bar .status-bar-close');
         $this->waitForElementNotVisible('#status-bar');
@@ -103,7 +111,7 @@ class AcceptanceTester extends \Codeception\Actor
         if ($text) {
             $this->see($text, '#status-bar');
         }
-        
+
         $this->waitForElementVisible('#status-bar .status-bar-close');
         $this->click('#status-bar .status-bar-close');
         $this->waitForElementNotVisible('#status-bar');
@@ -173,6 +181,12 @@ class AcceptanceTester extends \Codeception\Actor
         $this->wait(1);
         $this->dontSee($text);
         $this->click('.notifications');
+    }
+    
+    public function scrollTop()
+    {
+        $this->executeJS('window.scrollTo(0,0);');
+        $this->wait(1);
     }
 
     public function jsClick($selector)

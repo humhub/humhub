@@ -85,7 +85,7 @@ humhub.initModule('activity', function (module, require, $) {
         var stream = getStream();
 
         if (!stream) {
-            console.log('No activity stream found!');
+            module.log.info('No activity stream found!');
             return;
         }
 
@@ -96,16 +96,16 @@ humhub.initModule('activity', function (module, require, $) {
         // listen for scrolling event yes or no
         var scrolling = true;
 
-        stream.$content.scroll(function () {
-
+        stream.$content.scroll(function (evt) {
+ 
             // save height of the overflow container
-            var _containerHeight = $("#activityContents").height();
+            var _containerHeight = stream.$content.height();
 
             // save scroll height
-            var _scrollHeight = $("#activityContents").prop("scrollHeight");
+            var _scrollHeight = stream.$content.prop("scrollHeight");
 
             // save current scrollbar position
-            var _currentScrollPosition = $('#activityContents').scrollTop();
+            var _currentScrollPosition = stream.$content.scrollTop();
 
             // load more activites if current scroll position is near scroll height
             if (_currentScrollPosition >= (_scrollHeight - _containerHeight - 30)) {

@@ -42,9 +42,7 @@ class StreamCest
         $I->wantToTest('the archivation of a stream entry');
         $I->amGoingTo('create a new post and archive it afterwards');
 
-        $I->click('#contentForm_message_contenteditable');
-        $I->fillField('#contentForm_message_contenteditable', 'This is my stream test post!');
-        $I->click('#post_submit_button');
+        $I->createPost('This is my stream test post!');
 
         $newEntrySelector = '[data-content-key="12"]';
 
@@ -62,7 +60,7 @@ class StreamCest
         $I->dontSeeElement($newEntrySelector);
 
         $I->amGoingTo('check if my post is visible with filter include archived');
-        $I->click('#filter .dropdown-toggle');
+        $I->click('Filter', '#filter');
         $I->waitForElementVisible('#filter_entry_archived');
         $I->click('#filter_entry_archived');
 
@@ -95,12 +93,10 @@ class StreamCest
     {
         $I->amUser();
         $I->amOnSpace2();
-        $I->wantToTest('the deletion of a stream entry');
+        $I->wantToTest('the stick of posts');
         $I->amGoingTo('create a new post and delete it afterwards');
 
-        $I->click('#contentForm_message_contenteditable');
-        $I->fillField('#contentForm_message_contenteditable', 'This is my first stream test post!');
-        $I->click('#post_submit_button');
+        $I->createPost('This is my first stream test post!');
 
         $newEntrySelector = '[data-content-key="12"]';
 
@@ -108,9 +104,8 @@ class StreamCest
         $I->see('This is my first stream test post', '.wall-entry');
 
         $I->amGoingTo('create another post');
-        $I->click('#contentForm_message_contenteditable');
-        $I->fillField('#contentForm_message_contenteditable', 'This is my second stream test post!');
-        $I->click('#post_submit_button');
+
+        $I->createPost('This is my second stream test post!');
 
         $newEntrySelector2 = '[data-content-key="14"]';
         $I->waitForElementVisible($newEntrySelector2);
@@ -139,33 +134,104 @@ class StreamCest
     {
         $I->amUser();
         $I->amOnSpace2();
-        $I->wantToTest('the deletion of a stream entry');
+        $I->wantToTest('the edit post mechanism');
         $I->amGoingTo('create a new post and delete it afterwards');
 
-        $I->click('#contentForm_message_contenteditable');
-        $I->fillField('#contentForm_message_contenteditable', 'This is my first stream test post!');
-        $I->click('#post_submit_button');
+        $I->createPost('This is my first stream test post!');
 
         $newEntrySelector = '[data-content-key="12"]';
 
         $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my first stream test post', '.wall-entry');
-        
+
         $I->amGoingTo('edit my new post');
         $I->click('.preferences', $newEntrySelector);
         $I->waitForText('Edit', 10);
         $I->click('Edit', $newEntrySelector);
-        
-        $I->waitForElementVisible($newEntrySelector.' .content_edit', 20);
-        $I->fillField($newEntrySelector.' [contenteditable]', 'This is my edited post!');
-        $I->click('Save', $newEntrySelector);;
-        
+
+        $I->waitForElementVisible($newEntrySelector . ' .content_edit', 20);
+        $I->fillField($newEntrySelector . ' [contenteditable]', 'This is my edited post!');
+        $I->click('Save', $newEntrySelector);
+        ;
+
         $I->seeSuccess('Saved');
         $I->seeElement($newEntrySelector);
         $I->see('This is my edited post!', $newEntrySelector);
     }
+    
+    public function testEmptyStream(AcceptanceTester $I)
+    {
+        $I->amUser();
+        $I->amOnSpace3();
+        $I->wantToTest('the empty stream message and filter');
+        
+        $I->waitForText('This space is still empty!');
+        $I->dontSeeElement('#filter');
+        
+        $I->amGoingTo('create a new post and delete it afterwards');
+        
+        $I->createPost('This is my first stream test post!');
 
-    // Sorting
+        $I->wait(1);    
+        
+        $I->amGoingTo('Delete my new post again.');
+        $I->dontSee('This space is still empty!');
+        $I->seeElement('#filter');
+        $I->click('.preferences', '[data-stream-entry]:nth-of-type(1)');
+        $I->wait(1);
+        $I->click('Delete');
+        
+        $I->waitForElementVisible('#globalModalConfirm', 5);
+        $I->see('Do you really want to perform this action?');
+        $I->click('Confirm');
+
+        $I->seeSuccess('The content has been deleted');
+        $I->see('This space is still empty!');
+        $I->dontSeeElement('#filter');
+    }
+
+    public function testSortStream(AcceptanceTester $I)
+    {
+        $I->amUser();
+        $I->amOnSpace3();
+        $I->wantToTest('the stream entry ordering');
+        $I->amGoingTo('create a new post and delete it afterwards');
+
+        $I->createPost('POST1');
+        $I->createPost('POST2');
+        $I->createPost('POST3');
+        $I->createPost('POST4');
+        $I->createPost('POST5');
+
+        $I->see('POST5', '.s2_streamContent > [data-stream-entry]:nth-of-type(1)');
+        $I->see('POST4', '.s2_streamContent > [data-stream-entry]:nth-of-type(2)');
+        $I->see('POST3', '.s2_streamContent > [data-stream-entry]:nth-of-type(3)');
+        $I->see('POST2', '.s2_streamContent > [data-stream-entry]:nth-of-type(4)');
+        $I->see('POST1', '.s2_streamContent > [data-stream-entry]:nth-of-type(5)');
+
+        $post4Selector = '[data-stream-entry][data-content-key="18"]';
+
+        $I->click('Comment', $post4Selector);
+        $I->fillField($post4Selector . ' [contenteditable]', 'My Comment!');
+        $I->click('Send', $post4Selector . ' .comment-buttons');
+        
+        $I->scrollTop();
+        
+        $I->click('.stream-sorting', '#filter');
+        $I->waitForElementVisible('#sorting_u');
+        $I->click('#sorting_u');
+        $I->wait(2);
+        $I->waitForElementVisible($post4Selector);
+        
+        $I->wait(20);
+        
+        $I->see('POST4', '.s2_streamContent > [data-stream-entry]:nth-of-type(1)');
+        $I->see('POST5', '.s2_streamContent > [data-stream-entry]:nth-of-type(2)');
+        $I->see('POST3', '.s2_streamContent > [data-stream-entry]:nth-of-type(3)');
+        $I->see('POST2', '.s2_streamContent > [data-stream-entry]:nth-of-type(4)');
+        $I->see('POST1', '.s2_streamContent > [data-stream-entry]:nth-of-type(5)');
+    }
+
     // Filtering
     // multi click logic
     // empty form
