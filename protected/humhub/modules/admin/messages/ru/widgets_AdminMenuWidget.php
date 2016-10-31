@@ -1,15 +1,15 @@
 <?php
 return array (
-  '<strong>Administration</strong> menu' => '<strong>Панель</strong> администратора',
+  '<strong>Administration</strong> menu' => 'Панель <strong>Администратора</strong>',
   'Advanced' => 'Расширенные',
   'Appearance' => 'Внешний вид',
-  'Caching' => 'Кеширование',
+  'Caching' => 'Кэширование',
   'E-Mails' => 'Почта',
   'Files' => 'Файлы',
   'General' => 'Общие',
   'Information' => 'Информация',
   'Modules' => 'Модули',
-  'OEmbed' => '',
+  'OEmbed' => 'OEmbed',
   'Proxy' => 'Прокси',
   'Settings' => 'Настройки',
   'Spaces' => 'Пространства',
