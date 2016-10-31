@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!' => '<b>Ваша страница пуста!</b><br>Отправьте что-нибудь в профиле или присоединитесь к пространствам!',
+    '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!' => '<b>Ваша страница пуста!</b><br>Вы можете написать что-то на своей стене или присоединитесь к пространствам!',
 ];
