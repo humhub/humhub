@@ -1,4 +1,4 @@
 <?php
 return array (
-  'HTML tracking code' => 'Код счетчика',
+  'HTML tracking code' => 'HTML код счётчика',
 );
