@@ -177,7 +177,7 @@ abstract class Stream extends Action
             $this->activeQuery->andWhere(['!=', 'content.object_model', \humhub\modules\activity\models\Activity::className()]);
         }
         
-        if($this->contentId) {
+        if($this->isSingleContentQuery()) {
             $this->activeQuery->andWhere(['content.id' => $this->contentId]);
             return;
         }
@@ -248,6 +248,10 @@ abstract class Stream extends Action
             $this->activeQuery->andWhere(['content.visibility' => Content::VISIBILITY_PUBLIC]);
         }
     }
+    
+    public function isSingleContentQuery() {
+        return $this->contentId != null;
+    }
 
     /**
      * @inheritdoc
@@ -260,6 +264,7 @@ abstract class Stream extends Action
         $this->init();
 
         $output['content'] = [];
+
         foreach ($this->activeQuery->all() as $content) {
             $output['content'][$content->id] = static::getContentResultEntry($content);
         }

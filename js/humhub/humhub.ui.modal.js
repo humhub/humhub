@@ -296,16 +296,24 @@ humhub.initModule('ui.modal', function (module, require, $) {
     object.inherits(ConfirmModal, Modal);
     
     ConfirmModal.prototype.open = function(cfg) {
-        cfg = cfg || {};
-        this.clear();
-        cfg['header'] = cfg['header'] || config['defaultConfirmHeader'];
-        cfg['body'] = cfg['body'] || config['defaultConfirmBody'];
-        cfg['confirmText'] = cfg['confirmText'] || config['defaultConfirmText'];
-        cfg['cancleText'] = cfg['cancleText'] || config['defaultCancelText'];
-        this.setTitle(cfg['header']);
-        this.setBody(cfg['body']);
-        this.initButtons(cfg);
-        this.show();
+        var that = this;
+        return new Promise(function(resolve, reject) {
+            cfg = cfg || {};
+            
+            cfg.confirm = resolve;
+            cfg.reject = reject;
+            
+            that.clear();
+            cfg['header'] = cfg['header'] || config['defaultConfirmHeader'];
+            cfg['body'] = cfg['body'] || config['defaultConfirmBody'];
+            cfg['confirmText'] = cfg['confirmText'] || config['defaultConfirmText'];
+            cfg['cancleText'] = cfg['cancleText'] || config['defaultCancelText'];
+            that.setTitle(cfg['header']);
+            that.setBody(cfg['body']);
+            that.initButtons(cfg);
+            that.show();
+        });
+        
     };
     
     ConfirmModal.prototype.clear = function(cfg) {
@@ -343,7 +351,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
             module.global = new Modal('globalModal');
             module.globalConfirm = new ConfirmModal('globalModalConfirm');
             module.confirm = function(cfg) {
-                module.globalConfirm.open(cfg);
+                return module.globalConfirm.open(cfg);
             };
         },
         Modal: Modal,

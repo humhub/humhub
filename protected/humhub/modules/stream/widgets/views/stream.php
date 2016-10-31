@@ -8,10 +8,11 @@ use yii\web\View;
 $this->registerJsConfig([
    'stream' => [
        'text' => [
-           'info.archive.success' => Yii::t('ContentModule.widgets_views_stream', 'The content has been successfully archived.'),
-           'info.unarchive.success' => Yii::t('ContentModule.widgets_views_stream', 'The content has been successfully unarchived.'),
-           'info.stick.success' => Yii::t('ContentModule.widgets_views_stream', 'The content has been successfully sticked.'),
-           'info.unstick.success' => Yii::t('ContentModule.widgets_views_stream', 'The content has been successfully unsticked.'),
+           'success.archive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been archived.'),
+           'success.unarchive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unarchived.'),
+           'success.stick' => Yii::t('ContentModule.widgets_views_stream', 'The content has been sticked.'),
+           'success.unstick' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unsticked.'),
+           'success.delete' => Yii::t('ContentModule.widgets_views_stream', 'The content has been deleted.'),
        ]
    ] 
 ]);

@@ -13,11 +13,6 @@ $richOutput = humhub\widgets\RichText::widget(['text' => $post->message, 'record
         class="fa fa-arrow-down"></i> <?php echo Yii::t('PostModule.widgets_views_post', 'Read full post...'); ?>
 </a>
 <script type="text/javascript">
-<?php if ($justEdited): ?>
-        $('#post-content-<?php echo $post->id; ?>').addClass('highlight');
-        $('#post-content-<?php echo $post->id; ?>').delay(200).animate({backgroundColor: 'transparent'}, 1000);
-<?php endif; ?>
-
     $(document).ready(function () {
 
         // save the count of characters

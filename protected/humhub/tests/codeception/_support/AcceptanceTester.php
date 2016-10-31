@@ -56,14 +56,61 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->amOnPage('index-test.php?r=space/space&sguid=5396d499-20d6-4233-800b-c6c86e5fa34c');
     }
-    
+
     public function amOnSpace4()
     {
         $this->amOnPage('index-test.php?r=space/space&sguid=5396d499-20d6-4233-800b-c6c86e5fa34d');
     }
 
+    public function seeSuccess($text = null)
+    {
+        $this->waitForElementVisible('#status-bar .success', 20);
+        if ($text) {
+            $this->see($text, '#status-bar');
+        }
+        
+        $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->click('#status-bar .status-bar-close');
+        $this->waitForElementNotVisible('#status-bar');
+    }
+
+    public function seeWarning($text = null)
+    {
+        $this->waitForElementVisible('#status-bar .warning', 20);
+        if ($text) {
+            $this->see($text, '#status-bar');
+        }
+        
+        $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->click('#status-bar .status-bar-close');
+        $this->waitForElementNotVisible('#status-bar');
+    }
+
+    public function seeError($text = null)
+    {
+        $this->waitForElementVisible('#status-bar .error', 20);
+        if ($text) {
+            $this->see($text, '#status-bar');
+        }
+        $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->click('#status-bar .status-bar-close');
+        $this->waitForElementNotVisible('#status-bar');
+    }
+
+    public function seeInfo($text = null)
+    {
+        $this->waitForElementVisible('#status-bar .info', 20);
+        if ($text) {
+            $this->see($text, '#status-bar');
+        }
+        
+        $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->click('#status-bar .status-bar-close');
+        $this->waitForElementNotVisible('#status-bar');
+    }
+
     public function amUser($user = null, $password = null, $logout = false)
-    { 
+    {
         if ($logout) {
             $this->logout();
         }
@@ -96,17 +143,17 @@ class AcceptanceTester extends \Codeception\Actor
     {
         return tests\codeception\_pages\ProfilePage::openBy($this);
     }
-    
+
     public function amOnUser1Profile()
     {
         $this->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839d');
     }
-    
+
     public function amOnUser2Profile()
     {
         $this->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839e');
     }
-    
+
     public function amOnUser3Profile()
     {
         $this->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839a');
@@ -119,7 +166,7 @@ class AcceptanceTester extends \Codeception\Actor
         $this->see($text);
         $this->click('.notifications');
     }
-    
+
     public function dontSeeInNotifications($text)
     {
         $this->click('.notifications');

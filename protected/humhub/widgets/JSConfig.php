@@ -30,17 +30,20 @@ class JSConfig extends Widget
                 ],
                 'ui.modal' => [
                     'defaultConfirmHeader' => Yii::t('base', '<strong>Confirm</strong> Action'),
-                    'defaultConfirmBody' => Yii::t('base', 'Do you really want to perform this Action?'),
+                    'defaultConfirmBody' => Yii::t('base', 'Do you really want to perform this action?'),
                     'defaultConfirmText' => Yii::t('base', 'Confirm'),
                     'defaultCancelText' => Yii::t('base', 'Cancel')
                 ],
                 'log' => [
                     'traceLevel' => (YII_DEBUG) ? 'DEBUG' : 'INFO',
                     'text' => [
-                        'default.error' => Yii::t('base', 'An unexpected error occured. If this keeps happening, please contact a site administrator.'),
-                        '0' => Yii::t('base', 'An unexpected error occured. If this keeps happening, please contact a site administrator.'),
-                        '403' => Yii::t('base', 'You are not allowed to run this action.'),
-                        '500' => Yii::t('base', 'An unexpected server error occured. If this keeps happening, please contact a site administrator.')
+                        'error.default' => Yii::t('base', 'An unexpected error occured. If this keeps happening, please contact a site administrator.'),
+                        'success.saved' => Yii::t('base', 'Saved'),
+                        'success.edit' => Yii::t('base', 'Saved'),
+                        0 => Yii::t('base', 'An unexpected error occured. If this keeps happening, please contact a site administrator.'),
+                        403 => Yii::t('base', 'You are not allowed to run this action.'),
+                        405 => Yii::t('base', 'Error while running your last action (Invalid request method).'),
+                        500 => Yii::t('base', 'An unexpected server error occured. If this keeps happening, please contact a site administrator.')
                     ]
                 ],
                 'ui.status' => [

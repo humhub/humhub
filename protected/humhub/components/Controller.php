@@ -82,13 +82,13 @@ class Controller extends \yii\web\Controller
     }
 
     /**
-     * Only allow post requests
+     * Throws HttpException in case the request is not an post request.
+     * @throws \yii\web\HttpException
      */
     public function forcePostRequest()
     {
         if (\Yii::$app->request->method != 'POST') {
-            print "Invalid method!";
-            die();
+            throw new \yii\web\HttpException(405, Yii::t('ContentModule.controllers_ContentController', 'Invalid request method!'));
         }
     }
 

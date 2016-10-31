@@ -52,6 +52,10 @@ humhub.initModule('ui.loader', function (module, require, $) {
             $node.prepend(getInstance(cfg));
         }
     };
+    
+    var remove = function(node) {
+        $(node).find('.loader').remove();
+    };
 
     var reset = function (node) {
         var $node = $(node);
@@ -67,6 +71,10 @@ humhub.initModule('ui.loader', function (module, require, $) {
         } else if ($loader) {
             $node.find('.loader').remove();
         }
+    };
+    
+    var is = function(node) {
+        return $(node).find('.loader').length > 0;
     };
 
     var getInstance = function (cfg) {
@@ -105,7 +113,7 @@ humhub.initModule('ui.loader', function (module, require, $) {
 
     var init = function (cfg) {
         $(document).on('click.humhub:modules:ui:loader', 'a[data-ui-loader], button[data-ui-loader]', function (evt) {
-            module.initLoaderButton(this, evt);
+            return module.initLoaderButton(this, evt);
         });
 
         $(document).on('afterValidate.humhub:modules:ui:loader', function (evt, messages, errors) {
@@ -155,6 +163,8 @@ humhub.initModule('ui.loader', function (module, require, $) {
 
     module.export({
         set: set,
+        is: is,
+        remove: remove,
         append: append,
         prepend: prepend,
         reset: reset,

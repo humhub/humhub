@@ -4,6 +4,7 @@
  */
 humhub.initModule('client', function (module, require, $) {
     var object = require('util').object;
+    var event = require('event');
 
     /**
      * Response Wrapper Object for easily accessing common data
@@ -65,34 +66,61 @@ humhub.initModule('client', function (module, require, $) {
     };
 
     Response.prototype.toString = function () {
-        return "{ status: " + this.getStatus() + " error: " + this.getErrors() + " data: " + this.getContent() + " }";
+        return "{ status: " + this.getStatus() + " error: " + this.getErrors() + " textStatus: " + this.textStatus + " }";
     };
 
-    var submit = function ($form, cfg) {
-        var cfg = cfg || {};
+    var submit = function ($form, cfg, originalEvent) {
+        if($form instanceof $.Event && $form.$form) {
+            originalEvent = $form;
+            $form = $form.$form;
+        } else if(cfg instanceof $.Event) {
+            originalEvent = cfg;
+            cfg = {};
+        }
+        
+        cfg = cfg || {};
         $form = object.isString($form) ? $($form) : $form;
         cfg.type = $form.attr('method') || 'post';
         cfg.data = $form.serialize();
-        var url = cfg['url'] || $form.attr('action');
-        return ajax(url, cfg);
+        var url = cfg.url|| $form.attr('action');
+        return ajax(url, cfg, originalEvent);
     };
 
-    var post = function (path, cfg) {
-        var cfg = cfg || {};
-        cfg.type = 'POST';
-        cfg.method = 'POST';
-        return ajax(path, cfg);
+    var post = function (path, cfg, originalEvent) {
+        if(path instanceof $.Event) {
+            originalEvent = path;
+            path = originalEvent.url;
+        } else if(cfg instanceof $.Event) {
+            originalEvent = cfg;
+            cfg = {};
+        }
+        
+        cfg = cfg || {};
+        cfg.type = cfg.method = 'POST';
+        return ajax(path, cfg, originalEvent);
     };
     
-    var get = function (path, cfg) {
-        var cfg = cfg || {};
-        cfg.type = 'GET';
-        cfg.method = 'GET';
-        return ajax(path, cfg);
+    var get = function (path, cfg, originalEvent) {
+        if(path instanceof $.Event) {
+            originalEvent = path;
+            path = originalEvent.url;
+        } else if(cfg instanceof $.Event) {
+            originalEvent = cfg;
+            cfg = {};
+        }
+        
+        cfg = cfg || {};
+        cfg.type = cfg.method = 'GET';
+        return ajax(path, cfg, originalEvent);
     };
 
-    var ajax = function (path, cfg) {
-        if(object.isFunction(cfg)) {
+    var ajax = function (path, cfg, originalEvent) {
+        
+        // support for ajax(path, event) and ajax(path, successhandler);
+        if(cfg instanceof $.Event) {
+            originalEvent = cfg;
+            cfg = {};
+        } else if(object.isFunction(cfg)) {
             cfg = {'success' : cfg};
         }
         
@@ -108,7 +136,9 @@ humhub.initModule('client', function (module, require, $) {
                     response.setAjaxError(xhr, errorThrown, textStatus, data, xhr.status);
                     errorHandler(response);
                 }
-                reject({'textStatus': textStatus, 'response': xhr.responseJSON, 'error': errorThrown, 'data': data, 'status': xhr.status});
+                
+                finish(originalEvent);
+                reject({'url' : path, 'textStatus': textStatus, 'response': xhr.responseJSON, 'error': errorThrown, 'data': data, 'status': xhr.status});
             };
 
             var successHandler = cfg.success;
@@ -122,14 +152,20 @@ humhub.initModule('client', function (module, require, $) {
                     successHandler(response);
                 }
                 
+                finish(originalEvent);
                 resolve(response);
                 
-                promise.then(function() {
+                // Other modules can register global handler by the response type given by the backend.
+                // For example {type:'modal', 'content': '...')
+                if(response.type) {
+                    event.trigger('humhub:modules:client:response:'+response.type);
+                }
+                
+                promise.done(function() {
                     // If content with <link> tags are inserted in resolve, the ajaxComplete handler in yii.js
                     // makes sure redundant stylesheets are removed. Here we get sure it is called after inserting the response.
                     $(document).trigger('ajaxComplete');
                 });
-                
             };
 
             //Overwriting the handler with our wrapper handler
@@ -145,7 +181,13 @@ humhub.initModule('client', function (module, require, $) {
         
         return promise;
     };
-
+    
+    var finish = function(originalEvent) {
+        if(originalEvent && object.isFunction(originalEvent.finish)) {
+            originalEvent.finish();
+        }
+    };
+ 
     module.export({
         ajax: ajax,
         post: post,

@@ -9,6 +9,7 @@
 namespace humhub\modules\content\controllers;
 
 use Yii;
+use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\modules\content\models\Content;
 
@@ -149,10 +150,10 @@ class ContentController extends Controller
                 $json['success'] = true;
                 $json['contentId'] = $content->id;
             } else {
-                $json['errorMessage'] = Yii::t('ContentModule.controllers_ContentController', "Maximum number of sticked items reached!\n\nYou can stick only two items at once.\nTo however stick this item, unstick another before!");
+                $json['info'] = Yii::t('ContentModule.controllers_ContentController', "Maximum number of sticked items reached!\n\nYou can stick only two items at once.\nTo however stick this item, unstick another before!");
             }
         } else {
-            $json['errorMessage'] = Yii::t('ContentModule.controllers_ContentController', "Could not load requested object!");
+            $json['error'] = Yii::t('ContentModule.controllers_ContentController', "Could not load requested object!");
         }
 
         return $json;

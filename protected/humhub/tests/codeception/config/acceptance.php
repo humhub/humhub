@@ -17,8 +17,10 @@ $testConfig = [
                 'name' => 'HumHub Test',
                 'baseUrl' => 'http://localhost:8080',
             ]
-        ]
+        ],
+        'enablePjax' => true
     ],
+    
 ];
 
 defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', dirname(dirname(dirname(dirname(__DIR__)))));

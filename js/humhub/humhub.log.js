@@ -87,12 +87,12 @@ humhub.initModule('log', function (module, require, $) {
 
             if(msg instanceof Error && level >= TRACE_WARN) {
                 details = msg;
-                msg = this.getMessage(details.message, true);
-            } else  if(object.isObject(msg) && msg.status && level >= TRACE_WARN) {
+                msg = this.getMessage(details.message, level, true);
+            } else  if(msg.status && level >= TRACE_WARN) {
                 details = msg;
-                msg = this.getMessage(msg.status, true);
-            } else if(!object.isObject(msg)) {
-                msg = this.getMessage(msg, (!object.isDefined(msg) && level >= TRACE_WARN));
+                msg = this.getMessage(msg.status, level, true);
+            } else if(object.isString(msg) || object.isNumber(msg)) {
+                msg = this.getMessage(msg, level, (!object.isDefined(msg) && level >= TRACE_WARN));
             }
 
             if (this.traceLevel > level) {
@@ -109,11 +109,7 @@ humhub.initModule('log', function (module, require, $) {
         }
     };
 
-    Logger.prototype.getMessage = function (key, returnDefault) {
-        if(!object.isString(key)) {
-            return key;
-        }
-        
+    Logger.prototype.getMessage = function (key, level, returnDefault) {
         var result;
         
         if(this.module) {
@@ -125,7 +121,7 @@ humhub.initModule('log', function (module, require, $) {
         }
         
         if(!result && returnDefault) {
-            result = module.text('default.error');
+            result = module.text(traceLevels[level].toLowerCase()+'.default');
         } else if(!result){
             result = key;
         }
@@ -135,8 +131,9 @@ humhub.initModule('log', function (module, require, $) {
 
     Logger.prototype._consoleLog = function (msg, level, details) {
         if (window.console) {
-            var consoleMsg = this.moduleId || 'root';
-            consoleMsg += '(' + traceLevels[level] + '): ' + msg;
+            var consoleMsg = traceLevels[level] + ' - ';
+            consoleMsg += this.moduleId || 'root';
+            consoleMsg +=  msg;
             switch (level) {
                 case TRACE_ERROR:
                 case TRACE_FATAL:

@@ -100,7 +100,8 @@ var humhub = humhub || (function($) {
         instance.isModule = true;
            
         instance.text = function($key) {
-            return instance.config['text'][$key];
+            var textCfg = instance.config['text'];
+            return (textCfg) ? textCfg[$key] : undefined;
         };
         
         instance.export = function(exports) {
@@ -125,7 +126,9 @@ var humhub = humhub || (function($) {
             initialModules.push(instance);
         } else {
             addModuleLogger(instance);
-            instance.init();
+            if(instance.init) {
+                instance.init();
+            }
         }
     };
     
@@ -238,6 +241,42 @@ var humhub = humhub || (function($) {
         one : function(event, selector, data, handler) {
             this.events.one(event , selector, data, handler);
             return this;
+        },
+        triggerCondition : function(target, event, extraParameters) {
+            var $target;
+            /**
+             * Supports the following cases:
+             * 
+             * event.triggerCondition('testevent');
+             * event.triggerCondition('testevent', ['asdf']);
+             * event.triggerCondition('#test', 'testevent');
+             * event.triggerCondition('#test', 'testevent', ['asdf']);
+             */
+            switch(arguments.length) {
+                case 1:
+                    $target = this.events;
+                    event = target;
+                    break;
+                case 2:
+                    if($.isArray(event)) {
+                        $target = this.events;
+                        extraParameters = event;
+                    } else {
+                        $target = $(target);
+                    }
+                    break;
+                default:
+                    $target = $(target);
+                    break;
+            }
+            
+            if(!event) {
+                return false;
+            }
+            
+            var eventObj = $.Event(event);
+            $target.trigger(eventObj);
+            return eventObj.isDefaultPrevented();
         }
     };
     

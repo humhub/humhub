@@ -94,7 +94,16 @@ humhub.initModule('action', function (module, require, $) {
      * @returns {Boolean} true if the componentAction could be executed else false
      */
     Component.handleAction = function (event) {
-        var component = Component.getInstance(event.$trigger);
+        var $trigger = event.$trigger;
+        
+        var component;
+      
+        if($trigger.data('action-target')) {
+            component = Component.getInstance($($trigger.data('action-target')));
+        } else {
+            component = Component.getInstance(event.$trigger);
+        }
+        
         if (component) {
             //Check if the content instance provides this actionhandler
             if (event.handler && component[event.handler]) {
@@ -115,16 +124,6 @@ humhub.initModule('action', function (module, require, $) {
         this.bindAction(document, 'change', '[data-action-mouseout]');
 
         updateBindings();
-
-        //Add addition for loader buttons
-        require('ui.additions').registerAddition('[data-action-load-button]', function () {
-            var that = this;
-            this.on('click.humhub-action-load-button', function (evt) {
-                if (!that.find('.action-loader').length) {
-                    that.append('<span class="action-loader"><i class="fa fa-spinner fa-pulse"></i></span>');
-                }
-            });
-        });
     };
 
     /**
@@ -192,7 +191,7 @@ humhub.initModule('action', function (module, require, $) {
     var actionBindings = [];
 
     var updateBindings = function () {
-        module.log.debug('Update bindings');
+        module.log.debug('Update action bindings');
         $.each(actionBindings, function (i, binding) {
             var $targets = $(binding.selector);
             $targets.off(binding.event).on(binding.event, function (evt) {
@@ -229,11 +228,27 @@ humhub.initModule('action', function (module, require, $) {
      *  - Global-ActionHandler is called if we find a handler in the _handler array. See registerHandler, registerAjaxHandler
      *  - Namespace-ActionHandler is called if we can resolve an action by namespace e.g: data-action-click="myModule.myAction"
      *  
+     * Once triggered the handler will block the event for this actionbinding until the actionevents .finish is called.
+     * This is used to prevent multiple triggering of actions. This behaviour can be disabled by setting:
+     * 
+     *  data-action-prevent-block or data-action-prevent-block-<eventType>
+     *  
      * @param {type} evt the originalEvent
      * @param {type} $trigger the jQuery node which triggered the event
      * @returns {undefined}
      */
     ActionBinding.prototype.handle = function (evt, $trigger) {
+        if($trigger.data('action-blocked-'+this.eventType)) {
+            return;
+        }
+        
+        /**
+         * TODO: implement data-action-block="none|sync|async"
+         */
+        if(!$trigger.data('action-prevent-bock') && !$trigger.data('action-prevent-bock-'+this.eventType)) {
+            $trigger.data('action-blocked-'+this.eventType, true);
+        }
+        
         module.log.debug('Handle Action', this);
         evt.preventDefault();
         
@@ -253,15 +268,15 @@ humhub.initModule('action', function (module, require, $) {
             }
 
             // Check for global registered handlers
-            if (_handler[this.handler]) {
-                _handler[this.handler].apply($trigger, [event]);
+            if (_handler[event.handler]) {
+                _handler[event.handler].apply($trigger, [event]);
                 return;
             }
 
             // As last resort we try to call the action by namespace for handlers like humhub.modules.myModule.myAction
-            var splittedNS = this.handler.split('.');
+            var splittedNS = event.handler.split('.');
             var handlerAction = splittedNS[splittedNS.length - 1];
-            var target = require(string.cutsuffix(this.handler, '.' + handlerAction));
+            var target = require(string.cutsuffix(event.handler, '.' + handlerAction));
 
             if (object.isFunction(target)) {
                 target[handlerAction](event);
@@ -269,7 +284,10 @@ humhub.initModule('action', function (module, require, $) {
                 module.log.error('actionHandlerNotFound', this, true);
             }
         } catch (e) {
-            module.log.error('default', e, true);
+            module.log.error('error.default', e, true);
+            if(event.finish) {
+                event.finish();
+            }
             _removeLoaderFromEventTarget(evt);
         } finally {
             // Just to get sure the handler is not called twice.
@@ -293,12 +311,14 @@ humhub.initModule('action', function (module, require, $) {
         //Get the handler id, either a stand alone handler or a content handler function e.g: 'edit' 
         event.handler = $trigger.data('action' + '-' + this.eventType);
 
-        if ($trigger.is(':submit')) {
+        if ($trigger.is(':submit') || $trigger.data('action-submit')) {
             event.$form = $trigger.closest('form');
         }
 
+        var eventType = this.eventType;
         event.finish = function () {
             _removeLoaderFromEventTarget(evt);
+            $trigger.data('action-blocked-'+eventType, false);
         };
 
         return event;
@@ -349,7 +369,9 @@ humhub.initModule('action', function (module, require, $) {
 
             // Get sure we don't call the handler twice if the event was already handled by trigger.
             if ($(this).data('action-'+actionBinding.event) 
-                    || evt.originalEvent && evt.originalEvent.actionHandled) {
+                    || (evt.originalEvent && evt.originalEvent.actionHandled)) {
+                module.log.info('Blocked action event '+actionEvent, actionBinding);
+                module.log.info('Blocked event triggered by', $(this));
                 return;
             }
 

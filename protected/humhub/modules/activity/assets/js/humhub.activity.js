@@ -6,10 +6,8 @@ humhub.initModule('activity', function (module, require, $) {
 
     var util = require('util');
     var object = util.object;
-    var string = util.string;
     var stream = require('stream');
     var loader = require('ui.loader');
-    var event = require('event');
 
     /**
      * Number of initial stream enteis loaded when stream is initialized.
