@@ -18,7 +18,7 @@
  */
 return [
     'Show all notifications' => 'Показать все уведомления',
-    'Mark all as seen' => 'Пометить все как прочитанное',
+    'Mark all as seen' => 'Пометить всё как прочитанное',
     'Notifications' => 'Уведомления',
     'There are no notifications yet.' => 'Уведомлений пока нет.',
 ];
