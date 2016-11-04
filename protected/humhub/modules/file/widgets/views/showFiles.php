@@ -38,7 +38,7 @@ $object = $this->context->object;
             <li class="mime <?php echo \humhub\libs\MimeHelper::getMimeIconClassByExtension($file->getExtension()); ?>"><a
                     href="<?php echo $file->getUrl(); ?>" target="_blank"><span
                         class="filename"><?php echo Html::encode(Helpers::trimText($file->file_name, 40)); ?></span></a>
-                <span class="time" style="padding-right: 20px;"> - <?php echo Yii::$app->formatter->asSize($file->size); ?></span>
+                <span class="time" style="padding-right: 20px;"> - <?php echo Yii::$app->formatter->asShortSize($file->size, $decimals = 1); ?></span>
 
                 <?php if ($file->getExtension() == "mp3") : ?>
                     <!-- Integrate jPlayer -->
