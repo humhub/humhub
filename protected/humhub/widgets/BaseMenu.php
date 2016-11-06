@@ -27,7 +27,7 @@ class BaseMenu extends \yii\base\Widget
      * @var string type of the navigation, optional for identifing.
      */
     public $type = "";
-    
+
     /**
      * @var string dom element id
      * @since 1.2
@@ -219,7 +219,7 @@ class BaseMenu extends \yii\base\Widget
         $this->trigger(self::EVENT_RUN);
         return $this->render($this->template, array());
     }
-    
+
     /**
      * Activates the menu item with the given url
      * @param type $url
@@ -233,10 +233,11 @@ class BaseMenu extends \yii\base\Widget
             }
         }
     }
-    
+
     /*
      * Deactivates the menu item with the given url
      */
+
     public function setInactive($url)
     {
         foreach ($this->items as $key => $item) {
@@ -262,6 +263,12 @@ class BaseMenu extends \yii\base\Widget
         \yii\base\Event::on(static::className(), static::EVENT_RUN, function($event) use($url) {
             $event->sender->setActive($url);
         });
+        
+        $instance = new static();
+        
+        if (!empty($instance->id)) {
+            $instance->view->registerJs('humhub.modules.ui.navigation.setActive("'.$instance->id.'", "'.$url.'");', \yii\web\View::POS_END, 'active-'.$instance->id);
+        }
     }
 
     /**
@@ -275,9 +282,9 @@ class BaseMenu extends \yii\base\Widget
         if (is_array($url)) {
             $url = Url::to($url);
         }
-        
+
         \yii\base\Event::on(static::className(), static::EVENT_RUN, function($event) use($url) {
-             $event->sender->setInactive($url);
+            $event->sender->setInactive($url);
         });
     }
 

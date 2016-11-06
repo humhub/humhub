@@ -87,7 +87,8 @@ class ProfileController extends ContentContainerController
         $this->getUser()->follow();
 
         if (Yii::$app->request->isAjax) {
-            return;
+            Yii::$app->response->format = 'json';
+            return ['success' => true];
         }
 
         return $this->redirect($this->getUser()->getUrl());
@@ -99,7 +100,8 @@ class ProfileController extends ContentContainerController
         $this->getUser()->unfollow();
 
         if (Yii::$app->request->isAjax) {
-            return;
+            Yii::$app->response->format = 'json';
+            return ['success' => true];
         }
 
         return $this->redirect($this->getUser()->getUrl());

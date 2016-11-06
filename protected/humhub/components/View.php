@@ -51,16 +51,17 @@ class View extends \yii\web\View
         $jsCode = "var " . $name . " = '" . addslashes($value) . "';\n";
         $this->registerJs($jsCode, View::POS_HEAD, $name);
     }
-    
-    public function registerJsConfig($module, $params = null) {
-        if(is_array($module)) {
-            foreach($module as $moduleId => $value) {
+
+    public function registerJsConfig($module, $params = null)
+    {
+        if (is_array($module)) {
+            foreach ($module as $moduleId => $value) {
                 $this->registerJsConfig($moduleId, $value);
             }
             return;
         }
-        
-        if(isset($this->jsConfig[$module])) {
+
+        if (isset($this->jsConfig[$module])) {
             $this->jsConfig[$module] = yii\helpers\ArrayHelper::merge($this->jsConfig[$module], $params);
         } else {
             $this->jsConfig[$module] = $params;
@@ -140,16 +141,27 @@ class View extends \yii\web\View
      */
     public function endBody()
     {
-        $this->registerJs("humhub.config.set(".json_encode($this->jsConfig).");", View::POS_BEGIN, 'jsConfig');
-        
+        \humhub\widgets\CoreJsConfig::widget();
+
+        $this->flushJsConfig();
+
         if (Yii::$app->request->isAjax) {
             return parent::endBody();
         }
-        
+
         echo \humhub\widgets\LayoutAddons::widget();
-   
+
+        // Will add js configuraiton added by layoutaddons.
+        $this->flushJsConfig();
+
         // Add Layout Addons
         return parent::endBody();
+    }
+
+    protected function flushJsConfig($key = null)
+    {
+        $this->registerJs("humhub.config.set(" . json_encode($this->jsConfig) . ");", View::POS_BEGIN, $key);
+        $this->jsConfig = [];
     }
 
 }

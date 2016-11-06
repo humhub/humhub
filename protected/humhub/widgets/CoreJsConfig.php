@@ -12,11 +12,11 @@ use yii\base\Widget;
 use Yii;
 
 /**
- * AjaxButton is an replacement for Yii1 CHtml::AjaxButton
+ * JSConfig LayoutAddition used to configure core js modules.
  *
- * @author luke
+ * @author buddha
  */
-class JSConfig extends Widget
+class CoreJsConfig extends Widget
 {
 
     public function run()

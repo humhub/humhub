@@ -316,10 +316,10 @@ humhub.initModule('stream', function (module, require, $) {
 
     StreamEntry.prototype.stream = function () {
         // Just return the parent stream component.
-        if(!this.$.data('stream')) {
+        if (!this.$.data('stream')) {
             return this.$.data('stream', this.parent());
         }
-        
+
         return this.$.data('stream');
     };
 
@@ -517,7 +517,6 @@ humhub.initModule('stream', function (module, require, $) {
                 }
 
                 that.loading = false;
-                that.onChange();
                 that.$.trigger('humhub:modules:stream:afterLoadEntries', this);
                 resolve($result);
             }).catch(function (err) {
@@ -631,22 +630,10 @@ humhub.initModule('stream', function (module, require, $) {
     };
 
     /**
-     * Fired when new entries are shown
+     * Fired stream entries changed
      */
     Stream.prototype.onChange = function () {
-        var hasEntries = this.hasEntries();
-        if (!hasEntries && !this.hasFilter()) {
-            this.$.find('.emptyStreamMessage').show();
-            this.$filter.hide();
-        } else if (!hasEntries) {
-            this.$.find('.emptyFilterStreamMessage').hide();
-        } else if (!this.isShowSingleEntry()) {
-            this.$filter.show();
-            this.$.find('.emptyStreamMessage').hide();
-            this.$.find('.emptyFilterStreamMessage').hide();
-        }
-
-        this.$entryCache = this.getEntryNodes();
+        // abstract onChange function
     };
 
     /**
@@ -788,6 +775,22 @@ humhub.initModule('stream', function (module, require, $) {
 
     object.inherits(WallStream, Stream);
 
+    WallStream.prototype.onChange = function () {
+        var hasEntries = this.hasEntries();
+        if (!hasEntries && !this.hasFilter()) {
+            this.$.find('.emptyStreamMessage').show();
+            this.$filter.hide();
+        } else if (!hasEntries) {
+            this.$.find('.emptyFilterStreamMessage').hide();
+        } else if (!this.isShowSingleEntry()) {
+            this.$filter.show();
+            this.$.find('.emptyStreamMessage').hide();
+            this.$.find('.emptyFilterStreamMessage').hide();
+        }
+
+        this.$entryCache = this.getEntryNodes();
+    }
+
     /**
      * Initializes wall stream
      * @returns {undefined}
@@ -798,7 +801,7 @@ humhub.initModule('stream', function (module, require, $) {
         var stream = getStream();
 
         if (!stream) {
-            console.log('Non-Stream Page!');
+            module.log.info('Non-Wall-Stream Page!');
             return;
         } else {
             _initWallStream(stream);

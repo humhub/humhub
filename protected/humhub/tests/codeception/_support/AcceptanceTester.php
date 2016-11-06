@@ -69,15 +69,21 @@ class AcceptanceTester extends \Codeception\Actor
         $this->click('#post_submit_button');
         $this->waitForText($text, 30, '.wall-entry');
     }
+    
+    public function amOnDashboard()
+    {
+        tests\codeception\_pages\DashboardPage::openBy($this);
+    }
 
     public function seeSuccess($text = null)
     {
         $this->waitForElementVisible('#status-bar .success', 30);
+        $this->waitForElementVisible('#status-bar .status-bar-close');
+        
         if ($text) {
             $this->see($text, '#status-bar');
         }
 
-        $this->waitForElementVisible('#status-bar .status-bar-close');
         $this->click('#status-bar .status-bar-close');
         $this->waitForElementNotVisible('#status-bar');
     }
@@ -85,6 +91,8 @@ class AcceptanceTester extends \Codeception\Actor
     public function seeWarning($text = null)
     {
         $this->waitForElementVisible('#status-bar .warning', 20);
+        $this->waitForElementVisible('#status-bar .status-bar-close');
+        
         if ($text) {
             $this->see($text, '#status-bar');
         }
@@ -97,6 +105,8 @@ class AcceptanceTester extends \Codeception\Actor
     public function seeError($text = null)
     {
         $this->waitForElementVisible('#status-bar .error', 20);
+        $this->waitForElementVisible('#status-bar .status-bar-close');
+        
         if ($text) {
             $this->see($text, '#status-bar');
         }
@@ -108,6 +118,8 @@ class AcceptanceTester extends \Codeception\Actor
     public function seeInfo($text = null)
     {
         $this->waitForElementVisible('#status-bar .info', 20);
+        $this->waitForElementVisible('#status-bar .status-bar-close');
+        
         if ($text) {
             $this->see($text, '#status-bar');
         }

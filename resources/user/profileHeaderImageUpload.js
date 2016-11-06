@@ -1,8 +1,7 @@
-
 /**
  * Handle Image Upload
  */
-$(function() {
+$(document).on('ready pjax:success', function() {
     'use strict';
     
     $('.fileupload').each(function() {
@@ -122,12 +121,10 @@ function resetProfileImage(json) {
     $('.image-upload-buttons').hide();
 }
 
-
-
-$(document).ready(function() {
+$(document).on('ready pjax:success', function() {
 
     // override standard drag and drop behavior
-    $(document).bind('drop dragover', function(e) {
+    $(document).off('drop.humhub dragover.humhub').on('drop.humhub dragover.humhub', function(e) {
         e.preventDefault();
     });
 

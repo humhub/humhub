@@ -95,8 +95,7 @@ if ($isProfileOwner) {
         <div class="image-upload-container profile-user-photo-container" style="width: 140px; height: 140px;">
 
             <?php if ($user->profileImage->hasImage()) : ?>
-                <a data-toggle="lightbox" data-gallery="" href="<?= $user->profileImage->getUrl('_org'); ?>"
-                   data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
+                <a data-ui-gallery="profileHeader"  href="<?= $user->profileImage->getUrl('_org'); ?>">
                     <img class="img-rounded profile-user-photo" id="user-profile-image"
                          src="<?php echo $user->getProfileImage()->getUrl(); ?>"
                          data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;"/>

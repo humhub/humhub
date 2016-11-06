@@ -187,8 +187,9 @@ abstract class Stream extends Action
          */
         if ($this->sort == self::SORT_UPDATED_AT) {
             $this->activeQuery->orderBy('content.stream_sort_date DESC');
-            if ($this->from != "")
+            if ($this->from != "") {
                 $this->activeQuery->andWhere("content.stream_sort_date < (SELECT updated_at FROM content wd WHERE wd.id=" . $this->from . ")");
+            }
         } else {
             $this->activeQuery->orderBy('content.id DESC');
             if ($this->from != "")

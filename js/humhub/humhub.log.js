@@ -80,6 +80,10 @@ humhub.initModule('log', function (module, require, $) {
 
     Logger.prototype._log = function (msg, details, setStatus, level) {
         try {
+            if (this.traceLevel > level) {
+                return;
+            }
+            
             if (object.isBoolean(details)) {
                 setStatus = details;
                 details = undefined;
@@ -93,10 +97,6 @@ humhub.initModule('log', function (module, require, $) {
                 msg = this.getMessage(msg.status, level, true);
             } else if(object.isString(msg) || object.isNumber(msg)) {
                 msg = this.getMessage(msg, level, (!object.isDefined(msg) && level >= TRACE_WARN));
-            }
-
-            if (this.traceLevel > level) {
-                return;
             }
 
             this._consoleLog(msg, level, details);
@@ -133,7 +133,7 @@ humhub.initModule('log', function (module, require, $) {
         if (window.console) {
             var consoleMsg = traceLevels[level] + ' - ';
             consoleMsg += this.moduleId || 'root';
-            consoleMsg +=  msg;
+            consoleMsg +=  ': '+msg;
             switch (level) {
                 case TRACE_ERROR:
                 case TRACE_FATAL:

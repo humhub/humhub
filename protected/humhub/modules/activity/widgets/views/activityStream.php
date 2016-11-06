@@ -6,6 +6,15 @@
 //$this->registerJsFile('@web/resources/activity/activies.js');
 //$this->registerJsVar('activityStreamUrl', $streamUrl);
 $this->registerJsVar('activityInfoUrl', $infoUrl);
+
+$this->registerJsConfig([
+    'activity' => [
+        'text' => [
+            'activityEmpty' => Yii::t('ActivityModule.widgets_views_activityStream', 'There are no activities yet.')
+        ]
+    ]
+]);
+
 ?>
 
 <div class="panel panel-default panel-activities">
@@ -13,13 +22,8 @@ $this->registerJsVar('activityInfoUrl', $infoUrl);
     <div
         class="panel-heading"><?php echo Yii::t('ActivityModule.widgets_views_activityStream', '<strong>Latest</strong> activities'); ?></div>
     <div id="activityStream" data-stream="<?= $streamUrl ?>">
-        <div id="activityEmpty" style="display:none">
-            <div
-                class="placeholder"><?php echo Yii::t('ActivityModule.widgets_views_activityStream', 'There are no activities yet.'); ?></div>
-        </div>
         <ul id="activityContents" class="media-list activities" data-stream-content>
         </ul>
-
     </div>
 </div>
 

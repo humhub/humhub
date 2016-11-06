@@ -8,6 +8,7 @@
 
 namespace humhub\widgets;
 
+use Yii;
 use yii\helpers\Json;
 use yii\widgets\PjaxAsset;
 
@@ -44,9 +45,16 @@ class Pjax extends \humhub\components\Widget
     {
         $view = $this->getView();
         PjaxAsset::register($view);
-
-        $js = 'jQuery(document).pjax("a", "#layout-content", ' . Json::htmlEncode($this->clientOptions) . ');';
-        $view->registerJs($js);
+        
+        $view->registerJsConfig('client.pjax', [
+            'active' => self::isActive(),
+            'options' => $this->clientOptions
+        ]);
+    }
+    
+    public static function isActive()
+    {
+        return Yii::$app->params['enablePjax'];
     }
 
 }

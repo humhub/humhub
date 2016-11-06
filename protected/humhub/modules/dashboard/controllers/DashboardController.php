@@ -13,6 +13,8 @@ use Yii;
 
 class DashboardController extends Controller
 {
+    
+    public $topMenuRoute = '/dashboard/dashboard';
 
     public function init()
     {

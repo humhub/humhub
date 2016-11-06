@@ -1,7 +1,10 @@
 /**
  * Handle Image Upload
+ * 
+ * TODO: Create API module merge with profileHeaderImage logic...
+ * 
  */
-$(function () {
+$(document).on('ready pjax:success', function () {
     'use strict';
 
     $('.fileupload').each(function () {
@@ -84,7 +87,7 @@ $(function () {
                 $('#banner-image-upload-loader').show();
             }).bind('fileuploadstart', function (e) {
                 $('#space-banner-image').removeClass('animated bounceIn');
-            })
+            });
 
         }
 
@@ -92,7 +95,7 @@ $(function () {
     });
 
 
-})
+});
 
 
 /**
@@ -124,42 +127,42 @@ function resetProfileImage(json) {
     $('.image-upload-buttons').hide();
 }
 
-$(document).ready(function () {
+$(document).on('ready pjax:success', function () {
 
     // override standard drag and drop behavior
-    $(document).bind('drop dragover', function (e) {
+    $(document).off('drop.humhub dragover.humhub').on('drop.humhub dragover.humhub', function (e) {
         e.preventDefault();
     });
 
     // show buttons at image rollover
     $('#profilefileupload').mouseover(function () {
         $('#profile-image-upload-buttons').show();
-    })
+    });
 
     // show buttons also at buttons rollover (better: prevent the mouseleave event)
     $('#profile-image-upload-buttons').mouseover(function () {
         $('#profile-image-upload-buttons').show();
-    })
+    });
 
     // hide buttons at image mouse leave
     $('#profilefileupload').mouseleave(function () {
         $('#profile-image-upload-buttons').hide();
-    })
+    });
 
 
     // show buttons at image rollover
     $('#bannerfileupload, .img-profile-data').mouseover(function () {
         $('#banner-image-upload-buttons').show();
-    })
+    });
 
     // show buttons also at buttons rollover (better: prevent the mouseleave event)
     $('#banner-image-upload-buttons').mouseover(function () {
         $('#banner-image-upload-buttons').show();
-    })
+    });
 
     // hide buttons at image mouse leave
     $('#bannerfileupload, .img-profile-data').mouseleave(function () {
         $('#banner-image-upload-buttons').hide();
-    })
+    });
 
 });

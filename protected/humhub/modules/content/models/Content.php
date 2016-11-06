@@ -161,6 +161,8 @@ class Content extends \humhub\components\ActiveRecord
                 $this->created_by = Yii::$app->user->id;
             }
         }
+        
+        $this->stream_sort_date = new \yii\db\Expression('NOW()');
 
         if ($this->created_by == "")
             throw new Exception("Could not save content without created_by!");

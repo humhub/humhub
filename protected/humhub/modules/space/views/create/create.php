@@ -88,10 +88,10 @@ use yii\helpers\Url;
         // change link arrow
         $('#access-settings-link i').removeClass('fa-caret-down');
         $('#access-settings-link i').addClass('fa-caret-right');
-    })
+    });
 
     // prevent enter key and simulate ajax button submit click
-    $(document).ready(function () {
+    $(document).on('ready pjax:success', function () {
         $(window).keydown(function (event) {
             if (event.keyCode == 13) {
                 event.preventDefault();

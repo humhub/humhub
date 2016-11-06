@@ -223,8 +223,6 @@ class StreamCest
         $I->wait(2);
         $I->waitForElementVisible($post4Selector);
         
-        $I->wait(20);
-        
         $I->see('POST4', '.s2_streamContent > [data-stream-entry]:nth-of-type(1)');
         $I->see('POST5', '.s2_streamContent > [data-stream-entry]:nth-of-type(2)');
         $I->see('POST3', '.s2_streamContent > [data-stream-entry]:nth-of-type(3)');

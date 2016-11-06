@@ -142,14 +142,15 @@ var humhub = humhub || (function($) {
      * require('humhub.modules.ui.modal');
      * 
      * @param {type} moduleId
+     * @param {boolean} lazy - can be set to require modules which are not yet created.
      * @returns object - the module instance if already initialized else undefined
      * 
      * */
-    var require = function(moduleNS) {
-        var module = resolveNameSpace(moduleNS);
+    var require = function(moduleNS, lazy) {
+        var module = resolveNameSpace(moduleNS, lazy);
         if(!module) {
             //TODO: load remote module dependencies
-            console.warn('No module found for id: '+moduleNS); 
+            console.error('No module found for namespace: '+moduleNS); 
         }
         return module;
     };
@@ -181,7 +182,7 @@ var humhub = humhub || (function($) {
             return result;
         } catch(e) {
             var log = require('log') || console;
-            log.error('Error while resolving namespace: '+typePathe, e);
+            log.error('Error while resolving namespace: '+typePath, e);
         }
     };
     
@@ -324,7 +325,7 @@ var humhub = humhub || (function($) {
     var addModuleLogger = function(module, log) {
         log = log || require('log');
         module.log = log.module(module);
-    }
+    };
     
     //Initialize all initial modules
     $(document).ready(function() {
@@ -356,12 +357,10 @@ var humhub = humhub || (function($) {
     event.on('humhub:modules:client:pjax:afterPageLoad', function (evt) {
         $.each(pjaxInitModules, function(i, module) {
             if(module.initOnPjaxLoad) {
-                module.init();
+                module.init(true);
             }
         });
     });
-    
-   
     
     return {
         initModule: initModule,

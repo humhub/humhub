@@ -14,7 +14,10 @@ class AccountCest
         $I->amOnProfile();
         
         $I->click('Edit account');
+        $I->waitForText('Account settings');
         $I->click('Settings');
+        
+        $I->waitForText('User settings');
         
         $I->amGoingTo('fill the basic settings form');
         
@@ -35,7 +38,8 @@ class AccountCest
         $I->waitForElementVisible('.data-saved', 5);
         */
         
-        $I->wait(3);
+        $I->seeSuccess('Saved');
+
         $I->amOnProfile();
         $I->expectTo('see my user tags');
         $I->see('User tags');
@@ -52,8 +56,13 @@ class AccountCest
         $I->amOnProfile();
         
         $I->click('Edit account');
+        $I->waitForText('Account settings');
         $I->click('Settings');
+        $I->waitForText('User settings');
+        
         $I->click('Notifications'); //Notification tab
+        $I->waitForText('Send notifications');
+        
         $I->expectTo('see the notification settings form');
         $I->see('Send notifications?');
         $I->see('Send activities?');
@@ -63,9 +72,11 @@ class AccountCest
         
         $I->click('Save');
         
+        $I->seeSuccess('Saved');
+        
         // Refresh page
         $I->amOnPage('index-test.php?r=user%2Faccount%2Femailing');
-        $I->click('Notifications'); //Notification tab
+        $I->waitForElementVisible('#accountemailing-receive_email_activities');
         $I->seeOptionIsSelected('AccountEmailing[receive_email_notifications]', 'Never');
         $I->seeOptionIsSelected('AccountEmailing[receive_email_activities]', 'Never');
     }

@@ -34,16 +34,8 @@ class TopMenu extends BaseMenu
      * @var String template to use
      */
     public $template = "topNavigation";
-
-    /**
-     * Inits the Top Navigation by adding some default items
-     */
-    public function init()
-    {
-
-        parent::init();
-    }
-
+    
+    public $id = 'top-menu-nav';
 }
 
 ?>

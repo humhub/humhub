@@ -33,7 +33,7 @@ humhub.initModule('ui.additions', function (module, require, $) {
      * @returns {undefined}
      */
     module.applyTo = function (element) {
-        var $element = $(element);
+        var $element = (element instanceof $) ? element : $(element);
         $.each(_additions, function (selector, additions) {
             $.each(additions, function (i, addition) {
                 $.each($element.find(selector).addBack(selector), function () {

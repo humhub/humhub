@@ -41,6 +41,14 @@ class Controller extends \yii\web\Controller
      * @var boolean append page title 
      */
     public $prependActionTitles = true;
+    
+    /**
+     * Can be used to set the active topmenu item.
+     * 
+     * @see Controller::setActiveTopMenuItem
+     * @var type 
+     */
+    public $topMenuRoute;
 
     /**
      * @inheritdoc
@@ -134,9 +142,15 @@ class Controller extends \yii\web\Controller
                     $this->appendPageTitle($this->actionTitlesMap[$this->action->id]);
                 }
             }
+            
             if (!empty($this->pageTitle)) {
                 $this->getView()->pageTitle = $this->pageTitle;
             }
+            
+            if(!empty($this->topMenuRoute)) {
+                $this->setActiveTopMenuItem(Url::to([$this->topMenuRoute]));
+            }
+            
             return true;
         }
         return false;
@@ -198,6 +212,11 @@ class Controller extends \yii\web\Controller
         }
 
         return Yii::$app->getResponse()->redirect(Url::to($url), $statusCode);
+    }
+    
+    public function setActiveTopMenuItem($url)
+    {
+        \humhub\widgets\TopMenu::markAsActive($url);
     }
 
 }

@@ -4,8 +4,11 @@ humhub.initModule('client.pjax', function (module, require, $) {
     module.initOnPjaxLoad = false;
 
     var init = function () {
-        pjaxRedirectFix();
-        module.installLoader();
+        if (module.config.active) {
+            $(document).pjax("a", "#layout-content", module.config.options);
+            pjaxRedirectFix();
+            module.installLoader();
+        }
     };
 
     var pjaxRedirectFix = function () {
@@ -33,28 +36,39 @@ humhub.initModule('client.pjax', function (module, require, $) {
         $.ajaxPrefilter('html', function (options, originalOptions, jqXHR) {
             var orgErrorHandler = options.error;
             options.error = function (xhr, textStatus, errorThrown) {
-                var redirect = (xhr.status >= 301 && xhr.status <= 303)
-                if (redirect && xhr.getResponseHeader('X-PJAX-REDIRECT-URL') != "" && xhr.getResponseHeader('X-PJAX-REDIRECT-URL') !== null) {
+                if (isPjaxRedirect(xhr)) {
                     options.url = xhr.getResponseHeader('X-PJAX-REDIRECT-URL');
-                    console.log('Handled redirect to: ' + options.url);
+                    options.replace = true;
+                    module.log.info('Handled redirect to: ' + options.url);
                     $.pjax(options);
                 } else {
                     orgErrorHandler(xhr, textStatus, errorThrown);
                 }
-            }
+            };
         });
+    };
+
+    var isPjaxRedirect = function (xhr) {
+        if (!xhr) {
+            return false;
+        }
+
+        var redirect = (xhr.status >= 301 && xhr.status <= 303);
+        return redirect && xhr.getResponseHeader('X-PJAX-REDIRECT-URL') != "" && xhr.getResponseHeader('X-PJAX-REDIRECT-URL') !== null;
     };
 
     var installLoader = function () {
         NProgress.configure({showSpinner: false});
         NProgress.configure({template: '<div class="bar" role="bar"></div>'});
 
-        $(document).on('pjax:start', function () {
+        $(document).on('pjax:start', function (evt, xhr, options) {
             NProgress.start();
         });
-        
-        $(document).on('pjax:end', function () {
-            NProgress.done();
+
+        $(document).on('pjax:end', function (evt, xhr, options) {
+            if (!isPjaxRedirect(xhr)) {
+                NProgress.done();
+            }
         });
     };
 

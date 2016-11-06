@@ -28,7 +28,7 @@
 </div>
 <script type="text/javascript">
     // prevent enter key and simulate ajax button submit click
-    $(document).ready(function () {
+    $(document).on('ready pjax:success', function () {
         $container = $('#<?= $containerId ?>');
         $container.colorpicker({
             format: 'hex',

@@ -34,6 +34,7 @@ class AppAsset extends AssetBundle
         'css/temp.css',
         'css/bootstrap-wysihtml5.css',
         'css/flatelements.css',
+        'css/blueimp-gallery.min.css'
     ];
 
     /**
@@ -45,7 +46,8 @@ class AppAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/ekko-lightbox-modified.js',
+        //'js/ekko-lightbox-modified.js',
+        'js/blueimp-gallery.min.js',
         //'js/modernizr.js', // In use???
         'js/jquery.highlight.min.js',
         //'js/wysihtml5-0.3.0.js',

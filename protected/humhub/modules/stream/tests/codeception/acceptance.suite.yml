@@ -18,5 +18,5 @@ modules:
         WebDriver:
             url: http://localhost:8080/
             browser: phantomjs
-            window_size: 1024x768
+            window_size: maximize
             lang: en

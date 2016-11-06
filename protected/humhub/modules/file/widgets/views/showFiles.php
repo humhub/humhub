@@ -13,7 +13,7 @@ $object = $this->context->object;
     <div class="post-files" id="post-files-<?php echo $object->getUniqueId(); ?>">
         <?php foreach ($files as $file): ?>
             <?php if ($previewImage->applyFile($file)): ?>
-                <a data-toggle="lightbox" data-gallery="<?= "gallery-" . $object->getUniqueId(); ?>" href="<?= $file->getUrl(); ?>#.jpeg" data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?= Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
+                <a data-ui-gallery="<?= "gallery-" . $object->getUniqueId(); ?>"  href="<?= $file->getUrl(); ?>#.jpeg">
                     <img src='<?= $previewImage->getUrl(); ?>'>
                 </a>
             <?php endif; ?>

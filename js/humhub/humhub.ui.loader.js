@@ -28,7 +28,7 @@ humhub.initModule('ui.loader', function (module, require, $) {
     module.initOnPjaxLoad = false;
 
     var set = function (node, cfg) {
-        var $node = $(node);
+        var $node = (node instanceof $) ? node :  $(node);
         if ($node.length) {
             $node.each(function () {
                 var $this = $(this);
@@ -40,14 +40,14 @@ humhub.initModule('ui.loader', function (module, require, $) {
     };
 
     var append = function (node, cfg) {
-        var $node = $(node);
+        var $node = (node instanceof $) ? node :  $(node);
         if ($node.length) {
             $node.append(getInstance(cfg));
         }
     };
 
     var prepend = function (node, cfg) {
-        var $node = $(node);
+        var $node = (node instanceof $) ? node :  $(node);
         if ($node.length) {
             $node.prepend(getInstance(cfg));
         }
@@ -58,7 +58,7 @@ humhub.initModule('ui.loader', function (module, require, $) {
     };
 
     var reset = function (node) {
-        var $node = $(node);
+        var $node = (node instanceof $) ? node :  $(node);
         var $loader = $node.find('.loader').length;
         if (!$loader) {
             return;
@@ -112,7 +112,7 @@ humhub.initModule('ui.loader', function (module, require, $) {
     };
 
     var init = function (cfg) {
-        $(document).on('click.humhub:modules:ui:loader', 'a[data-ui-loader], button[data-ui-loader]', function (evt) {
+        $(document).on('click.humhub:modules:ui:loader', '[data-ui-loader]', function (evt) {
             return module.initLoaderButton(this, evt);
         });
 
@@ -126,7 +126,7 @@ humhub.initModule('ui.loader', function (module, require, $) {
     };
 
     var initLoaderButton = function (node, evt) {
-        var $node = $(node);
+        var $node = (node instanceof $) ? node :  $(node);
         var loader = $node.find('.loader').length > 0;
 
         /**

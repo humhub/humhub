@@ -33,7 +33,7 @@ var checkForMultiSelectDropDowns = function() {
     $('.multiselect_dropdown').trigger('update');
 }
 
-$(document).ready(function () {
+$(document).on('ready pjax:success', function () {
     $.fn.select2.defaults = {};
     checkForMultiSelectDropDowns();
 });

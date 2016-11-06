@@ -5,6 +5,8 @@
 humhub.initModule('client', function (module, require, $) {
     var object = require('util').object;
     var event = require('event');
+    //var clientUpload = require('client.upload');
+    //var action = require('action');
 
     /**
      * Response Wrapper Object for easily accessing common data
@@ -68,7 +70,7 @@ humhub.initModule('client', function (module, require, $) {
         $form = object.isString($form) ? $($form) : $form;
         cfg.type = $form.attr('method') || 'post';
         cfg.data = $form.serialize();
-        var url = cfg.url || $form.attr('action');
+        var url = cfg.url || originalEvent.url || $form.attr('action');
         return ajax(url, cfg, originalEvent);
     };
 
@@ -194,12 +196,42 @@ humhub.initModule('client', function (module, require, $) {
             originalEvent.finish();
         }
     };
-
+    
+    /**
+     * Default file upload action
+     * @param {type} evt
+     * @returns {undefined}
+    
+    var upload = function(evt) {
+        var $target = evt.$target;
+        
+        clientUpload.upload($target).then(function() {
+            if($target.data('action-done')) {
+                action.trigger($target, 'done', evt, false);
+            } else if(evt.finish) {
+                evt.finish();
+            }
+        }).catch(function(e) {
+            
+        });
+        
+        //Check if handler is already active
+        if(!isSet) {
+            clientUpload.set(evt);        
+        }
+                
+                
+                .on('done', function() {
+            
+        }).trigger('click');
+    };
+ */
     module.export({
         ajax: ajax,
         post: post,
         get: get,
         submit: submit,
+        //upload: upload,
         Response: Response
     });
 });

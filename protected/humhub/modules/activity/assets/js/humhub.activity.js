@@ -73,9 +73,20 @@ humhub.initModule('activity', function (module, require, $) {
     ActivityStream.prototype.hideLoader = function() {
         this.$content.find('#activityLoader').remove();
     };
+    
+    ActivityStream.prototype.onChange = function () {
+        if(!this.hasEntries()) {
+            this.$.html('<div id="activityEmpty"><div class="placeholder">'+module.text('activityEmpty')+'</div></div>');
+        }
+    };
 
     var getStream = function () {
         instance = instance || new ActivityStream($(ACTIVITY_STREAM_SELECTOR));
+        
+        if(!instance.$.length) {
+            return;
+        }
+        
         return instance;
     };
 
@@ -85,7 +96,7 @@ humhub.initModule('activity', function (module, require, $) {
         var stream = getStream();
 
         if (!stream) {
-            module.log.info('No activity stream found!');
+            module.log.info('Non-Activity-Stream page!');
             return;
         }
 

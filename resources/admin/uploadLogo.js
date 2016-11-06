@@ -5,7 +5,7 @@ function resetLogoImage(json) {
     $('#text-logo').show();
 }
 
-$(document).ready(function () {
+$(document).on('ready pjax:success', function () {
 
     // override standard drag and drop behavior
     $(document).bind('drop dragover', function (e) {

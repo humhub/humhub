@@ -6,9 +6,36 @@ Here you will learn how you can adapt existing themes to working fine with actua
 
 ### Stream
 
-Set data-stream attributes for stream
+The new stream js rewrite requires some additional data-* attributes, which have to be added in case your theme overwrites either the stream or
+streamentry view/layout. Furthermore the frontend modules configuration was added to the `stream.php` file. 
+Please see the following files for changes:
+
+`protected/humhub/modules/stream/widget/views/stream.php`
+
+`protected/humhub/modules/content/views/layouts/wallEntry.php`
+
+The same applies to the activity stream:
+
+`protected/humhub/modules/activity/widget/views/activityStream.php`
+
+`protected/humhub/modules/activity/views/layouts/web.php`
+
 
 ### Status Bar
+
+We added a new status bar and a loader for pjax loading to the theme.less.
+Please see the following file for 1.2 changes (at the buttom):
+
+`themes/HumHub/css/theme.less`
+
+### Layout
+
+// Pjax changes
+- Add 'top-menu-nav' to main.php layout.
+
+### Gallery
+
+- Use data-ui-gallery instead of old data-toggle and data-gallery
 
 ## Migrate to 1.1
 

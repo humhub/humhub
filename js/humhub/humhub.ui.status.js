@@ -127,7 +127,7 @@ humhub.initModule('ui.status', function (module, require, $) {
         } catch (e) {
             log.error(e);
         }
-    }
+    };
 
     StatusBar.prototype.show = function (callback) {
         // Make the container transparent for beeing able to measure the body height

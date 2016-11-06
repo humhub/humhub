@@ -1,15 +1,16 @@
 /**
  * Thid module can be used by humhub sub modules for registering handlers and serves as core module for executing actions triggered in the gui.
- * A module can either register global handler by using the registerHandler and registerAjaxHandler functions or use the content mechanism.
+ * A module can either register global handler by using the registerHandler functions or use the component mechanism.
  */
 humhub.initModule('action', function (module, require, $) {
     var _handler = {};
     var object = require('util').object;
     var string = require('util').string;
-    var client = require('client');
     var loader = require('ui.loader');
-
-    module.initOnPjaxLoad = false;
+    
+    var BLOCK_NONE = 'none';
+    var BLOCK_SYNC = 'sync';
+    var BLOCK_ASYNC = 'async';
 
     var DATA_COMPONENT = 'action-component';
     var DATA_COMPONENT_SELECTOR = '[data-' + DATA_COMPONENT + ']';
@@ -71,6 +72,10 @@ humhub.initModule('action', function (module, require, $) {
 
         var componentType = $componentRoot.data(DATA_COMPONENT);
 
+        if(!componentType) {
+            return;
+        }
+
         var ComponentType = require(componentType);
         if (ComponentType) {
             return new ComponentType($componentRoot);
@@ -86,24 +91,13 @@ humhub.initModule('action', function (module, require, $) {
     /**
      * Handles the given componentAction event. The event should provide the following properties:
      * 
-     *  $trigger (required) : the trigger node of the event
-     *  handler (required)  : the handler functionn name to be executed on the component
-     *  type (optoinal)     : the event type 'click', 'change',...
-     * 
      * @param {object} event - event object
      * @returns {Boolean} true if the componentAction could be executed else false
      */
     Component.handleAction = function (event) {
-        var $trigger = event.$trigger;
-        
-        var component;
-      
-        if($trigger.data('action-target')) {
-            component = Component.getInstance($($trigger.data('action-target')));
-        } else {
-            component = Component.getInstance(event.$trigger);
-        }
-        
+
+        var component = Component.getInstance(event.$target);
+
         if (component) {
             //Check if the content instance provides this actionhandler
             if (event.handler && component[event.handler]) {
@@ -117,11 +111,13 @@ humhub.initModule('action', function (module, require, $) {
     /**
      * Constructor for initializing the module.
      */
-    module.init = function () {
-        //Binding default action types
-        this.bindAction(document, 'click', '[data-action-click]');
-        this.bindAction(document, 'dblclick', '[data-action-dblclick]');
-        this.bindAction(document, 'change', '[data-action-mouseout]');
+    var init = function ($isPjax) {
+        if(!$isPjax) {
+            //Binding default action types
+            this.bindAction(document, 'click', '[data-action-click]');
+            this.bindAction(document, 'dblclick', '[data-action-dblclick]');
+            this.bindAction(document, 'change', '[data-action-change]');
+        }
 
         updateBindings();
     };
@@ -139,52 +135,13 @@ humhub.initModule('action', function (module, require, $) {
      * @param {function} handler function with one event argument
      * @returns {undefined}
      */
-    module.registerHandler = function (id, handler) {
+    var registerHandler = function (id, handler) {
         if (!id) {
             return;
         }
 
         if (handler) {
             _handler[id] = handler;
-        }
-    };
-
-
-
-    /**
-     * Registers an ajax eventhandler.
-     * The function can either be called with four arguments (id, successhandler, errorhandler, additional config)
-     * or with two (id, cfg) where tha handlers are contained in the config object itself.
-     * 
-     * The successhandler will be called only if the response does not contain any errors or errormessages.
-     * So the errorhandler is called for application and http errors.
-     * 
-     * The config can contain additional ajax settings.
-     * 
-     * @param {type} id
-     * @param {type} success
-     * @param {type} error
-     * @param {type} cfg
-     * @returns {undefined}
-     */
-    module.registerAjaxHandler = function (id, success, error, cfg) {
-        cfg = cfg || {};
-        if (!id) {
-            return;
-        }
-
-        if (object.isFunction(success)) {
-            cfg.success = success;
-            cfg.error = error;
-        } else {
-            cfg = success;
-        }
-
-        if (success) {
-            _handler[id] = function (event) {
-                var path = $(this).data('action-url-' + event.type) || $(this).data('action-url');
-                client.ajax(path, cfg);
-            };
         }
     };
 
@@ -198,7 +155,7 @@ humhub.initModule('action', function (module, require, $) {
                 module.log.debug('Handle direct trigger action', evt);
                 return binding.handle(evt, $(this));
             });
-            $targets.data('action-'+binding.event, true);
+            $targets.data('action-' + binding.event, true);
         });
     };
 
@@ -225,7 +182,7 @@ humhub.initModule('action', function (module, require, $) {
      * 
      *  - Direct-ActionHandler is called if a directHandler was given when binding the action.
      *  - Component-ActionHandler is called if $trigger is part of a component and the component handler can be resolved
-     *  - Global-ActionHandler is called if we find a handler in the _handler array. See registerHandler, registerAjaxHandler
+     *  - Global-ActionHandler is called if we find a handler in the _handler array. See registerHandler
      *  - Namespace-ActionHandler is called if we can resolve an action by namespace e.g: data-action-click="myModule.myAction"
      *  
      * Once triggered the handler will block the event for this actionbinding until the actionevents .finish is called.
@@ -237,24 +194,23 @@ humhub.initModule('action', function (module, require, $) {
      * @param {type} $trigger the jQuery node which triggered the event
      * @returns {undefined}
      */
-    ActionBinding.prototype.handle = function (evt, $trigger) {
-        if($trigger.data('action-blocked-'+this.eventType)) {
+    ActionBinding.prototype.handle = function (originalEvent, $trigger) {
+        if (originalEvent) {
+            originalEvent.preventDefault();
+        }
+        
+        if (this.isBlocked($trigger)) {
             return;
         }
         
-        /**
-         * TODO: implement data-action-block="none|sync|async"
-         */
-        if(!$trigger.data('action-prevent-bock') && !$trigger.data('action-prevent-bock-'+this.eventType)) {
-            $trigger.data('action-blocked-'+this.eventType, true);
+        if(this.isBlockAction($trigger)) {
+            this.block($trigger);
         }
-        
-        module.log.debug('Handle Action', this);
-        evt.preventDefault();
-        
-        var event = this.createActionEvent(evt, $trigger);
 
-        // Search and execute a stand alone handler or try to call the content action handler
+        module.log.debug('Handle Action', this);
+
+        var event = this.createActionEvent(originalEvent, $trigger);
+
         try {
             // Check for a direct action handler
             if (object.isFunction(this.directHandler)) {
@@ -278,23 +234,73 @@ humhub.initModule('action', function (module, require, $) {
             var handlerAction = splittedNS[splittedNS.length - 1];
             var target = require(string.cutsuffix(event.handler, '.' + handlerAction));
 
-            if (object.isFunction(target)) {
+            if (object.isFunction(target[handlerAction])) {
                 target[handlerAction](event);
             } else {
                 module.log.error('actionHandlerNotFound', this, true);
             }
         } catch (e) {
             module.log.error('error.default', e, true);
-            if(event.finish) {
-                event.finish();
-            }
-            _removeLoaderFromEventTarget(evt);
+            event.finish();
         } finally {
             // Just to get sure the handler is not called twice.
-            if(evt.originalEvent) {
-                evt.originalEvent.actionHandled = true;
+            if (originalEvent) {
+                originalEvent.actionHandled = true;
+            }
+
+            if (this.isBlockType($trigger, BLOCK_SYNC)) {
+                event.finish();
             }
         }
+    };
+    
+    /**
+     * Checks if the trigger should be blocked before running the action.
+     * 
+     * @param {type} $trigger
+     * @returns {Boolean}
+     */
+    ActionBinding.prototype.isBlockAction = function($trigger) {
+        return !this.isBlockType($trigger, BLOCK_NONE);
+    };
+    
+    /**
+     * Checks the given block data setting of $trigger agains a blocktype.
+     * 
+     * @param {type} $trigger
+     * @param {type} type
+     * @returns {Boolean}
+     */
+    ActionBinding.prototype.isBlockType = function($trigger, type) {
+        var blockTypeData = $trigger.data('action-block-' + this.eventType);
+        
+        if(blockTypeData) {
+            return blockTypeData === type;
+        } if($trigger.data('action-block')) {
+            return $trigger.data('action-block') !== type;
+        } else {
+            return type === BLOCK_ASYNC;
+        } 
+    };
+    
+    /**
+     * Checks if $trigger is currently blocked.
+     * 
+     * @param {type} $trigger
+     * @returns {unresolved}
+     */
+    ActionBinding.prototype.isBlocked = function($trigger) {
+        return $trigger.data('action-blocked-' + this.eventType);
+    };
+    
+    /**
+     * Blocks $trigger, which will disable further action calls.
+     * 
+     * @param {type} $trigger
+     * @returns {undefined}
+     */
+    ActionBinding.prototype.block = function($trigger) {
+        $trigger.data('action-blocked-' + this.eventType, true);
     };
 
     ActionBinding.prototype.createActionEvent = function (evt, $trigger) {
@@ -304,9 +310,11 @@ humhub.initModule('action', function (module, require, $) {
         // Add some additional action related data to our event.
         event.$trigger = $trigger;
 
+        event.$target = $trigger.data('action-target') ? $trigger.data('action-target') : $trigger;
+
         // If the trigger contains an url setting we add it to the event object, and prefer the typed url over the global data-action-url
         event.url = $trigger.data('action-' + this.eventType + '-url') || $trigger.data('action-url');
-        event.params = $trigger.data('action-' + this.eventType + '-params') || $trigger.data('action-params');
+        event.params = $trigger.data('action-' + this.eventType + '-params') || $trigger.data('action-params') || {};
 
         //Get the handler id, either a stand alone handler or a content handler function e.g: 'edit' 
         event.handler = $trigger.data('action' + '-' + this.eventType);
@@ -318,7 +326,7 @@ humhub.initModule('action', function (module, require, $) {
         var eventType = this.eventType;
         event.finish = function () {
             _removeLoaderFromEventTarget(evt);
-            $trigger.data('action-blocked-'+eventType, false);
+            $trigger.data('action-blocked-' + eventType, false);
         };
 
         return event;
@@ -348,9 +356,9 @@ humhub.initModule('action', function (module, require, $) {
      * @param {string} selector - jQuery selector 
      * @param {string} selector - jQuery selector 
      */
-    module.bindAction = function (parent, type, selector, directHandler) {
+    var bindAction = function (parent, type, selector, directHandler) {
         parent = parent || document;
-        var $parent = parent.jquery ? parent : $(parent);
+        var $parent = (parent instanceof $) ? parent : $(parent);
         var actionEvent = type + '.humhub-action';
 
         var actionBinding = new ActionBinding({
@@ -364,13 +372,12 @@ humhub.initModule('action', function (module, require, $) {
         // Add new ActionBinding with given settings.
         actionBindings.push(actionBinding);
 
-        $parent.on(actionEvent, selector, function (evt) {
+        $parent.off(actionEvent).on(actionEvent, selector, function (evt) {
             evt.preventDefault();
-
             // Get sure we don't call the handler twice if the event was already handled by trigger.
-            if ($(this).data('action-'+actionBinding.event) 
+            if ($(this).data('action-' + actionBinding.event)
                     || (evt.originalEvent && evt.originalEvent.actionHandled)) {
-                module.log.info('Blocked action event '+actionEvent, actionBinding);
+                module.log.info('Blocked action event ' + actionEvent, actionBinding);
                 module.log.info('Blocked event triggered by', $(this));
                 return;
             }
@@ -383,7 +390,43 @@ humhub.initModule('action', function (module, require, $) {
         return;
     };
 
+    /**
+     * This function can be called to manually trigger an action event of the given $trigger.
+     * This can be used for example for additional event types without actually binding the
+     * event to $trigger.
+     * 
+     * e.g manually trigger a custom data-action-done action of an ui component.
+     * 
+     * @param {type} $trigger
+     * @param {type} type
+     * @param {type} originalEvent
+     * @returns {undefined}
+     */
+    var trigger = function ($trigger, type, originalEvent, block) {
+        if(block === false) {
+            $trigger.data('action-block', BLOCK_NONE);
+        } else if(object.isString(block)) {
+            $trigger.data('action-block', block);
+        }
+        
+        if (!$trigger.data('action-' + type)) {
+            return;
+        }
+
+        new ActionBinding({
+            type: type,
+            event: type
+        }).handle(originalEvent, $trigger);
+    };
+
     module.export({
-        Component: Component
+        init: init,
+        bindAction: bindAction,
+        registerHandler: registerHandler,
+        Component: Component,
+        trigger: trigger,
+        BLOCK_NONE: BLOCK_NONE,
+        BLOCK_SYNC: BLOCK_SYNC,
+        BLOCK_ASYNC: BLOCK_ASYNC
     });
 });

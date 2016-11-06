@@ -101,14 +101,26 @@ class UserFollowButton extends \yii\base\Widget
         }
 
         // Add UserId Buttons
-        $this->followOptions['data-userid'] = $this->user->id;
-        $this->unfollowOptions['data-userid'] = $this->user->id;
+        $this->followOptions['data-content-container-id'] = $this->user->id;
+        $this->unfollowOptions['data-content-container-id'] = $this->user->id;
+        
+        // Add JS Action
+        $this->followOptions['data-action-click'] = 'content.container.follow';
+        $this->unfollowOptions['data-action-click'] = 'content.container.unfollow';
+        
+        // Add Action Url
+        $this->followOptions['data-action-url'] = $this->user->createUrl('/user/profile/follow');
+        $this->unfollowOptions['data-action-url'] = $this->user->createUrl('/user/profile/unfollow');
+        
+        // Add Action Url
+        $this->followOptions['data-ui-loader'] = '';
+        $this->unfollowOptions['data-ui-loader'] = '';
 
 
-        $this->view->registerJsFile('@web/resources/user/followButton.js');
+        \humhub\modules\content\assets\ContentContainerAsset::register($this->view);
 
-        return Html::a($this->unfollowLabel, $this->user->createUrl('/user/profile/unfollow'), $this->unfollowOptions) .
-                Html::a($this->followLabel, $this->user->createUrl('/user/profile/follow'), $this->followOptions);
+        return Html::a($this->unfollowLabel, '#', $this->unfollowOptions) .
+                Html::a($this->followLabel, '#', $this->followOptions);
     }
 
 }

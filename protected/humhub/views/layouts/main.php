@@ -17,8 +17,6 @@
     <body>
         <?php $this->beginBody() ?>
 
-        <?php echo \humhub\widgets\JSConfig::widget(); ?>
-
         <!-- start: first top navigation bar -->
         <div id="topbar-first" class="topbar">
             <div class="container">
@@ -44,7 +42,7 @@
         <!-- start: second top navigation bar -->
         <div id="topbar-second" class="topbar">
             <div class="container">
-                <ul class="nav ">
+                <ul class="nav" id="top-menu-nav">
                     <!-- load space chooser widget -->
                     <?php echo \humhub\modules\space\widgets\Chooser::widget(); ?>
 
