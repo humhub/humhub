@@ -128,12 +128,18 @@ function HashTable(obj) {
 $.fn.modal.Constructor.prototype.enforceFocus = function () {
     var that = this;
     $(document).on('focusin.modal', function (e) {
-        if ($(e.target).hasClass('select2-input') || $(e.target).hasClass('select2-search__field') || $(e.target).hasClass('hexInput')  ) {
+        var $target = $(e.target);
+        if ($target.hasClass('select2-input') || $target.hasClass('select2-search__field') || $target.hasClass('hexInput')  ) {
             return true;
         }
 
         var $parent = $(e.target.parentNode);
         if ($parent.hasClass('cke_dialog_ui_input_select') || $parent.hasClass('cke_dialog_ui_input_text')) {
+            return true;
+        }
+        
+        // Allow stacking of modals
+        if($target.closest('.modal.in').length) {
             return true;
         }
 
