@@ -247,25 +247,33 @@ class Stream extends \yii\base\Action
         $generatedWallEntryIds = [];
         $lastEntryId = "";
         foreach ($wallEntries as $wallEntry) {
+            try {
+                $underlyingObject = $wallEntry->content->getPolymorphicRelation();
 
-            $underlyingObject = $wallEntry->content->getPolymorphicRelation();
+                if ($underlyingObject === null) {
+                    throw new Exception('Could not get contents underlying object!');
+                }
 
-            if ($underlyingObject === null) {
-                throw new Exception('Could not get contents underlying object!');
+                $underlyingObject->populateRelation('content', $wallEntry->content);
+                
+                $output .= $this->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
+                    'entry' => $wallEntry,
+                    'user' => $underlyingObject->content->user,
+                    'mode' => $this->mode,
+                    'object' => $underlyingObject,
+                    'content' => $underlyingObject->getWallOut()
+                        ], true);
+
+                $generatedWallEntryIds[] = $wallEntry->id;
+                $lastEntryId = $wallEntry->id;
+            } catch(\yii\base\Exception $e) {
+                // We do not want to kill the stream action in prod environments.
+                if(YII_ENV_PROD) {
+                    Yii::error($e);
+                } else {
+                    throw $e;
+                }
             }
-
-            $underlyingObject->populateRelation('content', $wallEntry->content);
-
-            $output .= $this->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
-                'entry' => $wallEntry,
-                'user' => $underlyingObject->content->user,
-                'mode' => $this->mode,
-                'object' => $underlyingObject,
-                'content' => $underlyingObject->getWallOut()
-                    ], true);
-
-            $generatedWallEntryIds[] = $wallEntry->id;
-            $lastEntryId = $wallEntry->id;
         }
 
         return [
