@@ -267,7 +267,16 @@ abstract class Stream extends Action
         $output['content'] = [];
 
         foreach ($this->activeQuery->all() as $content) {
-            $output['content'][$content->id] = static::getContentResultEntry($content);
+            try {
+                $output['content'][$content->id] = static::getContentResultEntry($content);
+            } catch(Exception $e) {
+                // We do not want to kill the stream action in prod environments in case the rendering of an entry fails.
+                if(YII_ENV_PROD) {
+                    Yii::error($e);
+                } else {
+                    throw $e;
+                }
+            }
         }
         $output['total'] = count($output['content']);
         $output['isLast'] = ($output['total'] < $this->activeQuery->limit);
