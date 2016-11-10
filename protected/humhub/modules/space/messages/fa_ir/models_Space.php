@@ -19,6 +19,7 @@
 return [
     'Administrators' => '',
     'Default content visibility' => '',
+    'Homepage (Guests)' => '',
     'Members' => '',
     'Moderators' => '',
     'Users' => '',

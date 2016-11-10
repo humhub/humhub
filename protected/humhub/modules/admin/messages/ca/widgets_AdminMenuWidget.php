@@ -28,7 +28,6 @@ return [
     'OEmbed' => '',
     'Proxy' => '',
     'Statistics' => '',
-    'User' => '',
     'Users' => '',
     'Modules' => 'Mòduls',
     'Settings' => 'Configuració',

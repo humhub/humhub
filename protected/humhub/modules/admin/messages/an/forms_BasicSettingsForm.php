@@ -23,6 +23,7 @@ return [
     'Default space' => '',
     'Default stream content order' => '',
     'Enable user friendship system' => '',
+    'Horizontal scrolling images on a mobile device' => '',
     'Invalid space' => '',
     'Logo upload' => '',
     'Name of the application' => '',

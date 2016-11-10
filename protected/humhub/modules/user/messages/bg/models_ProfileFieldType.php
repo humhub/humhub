@@ -21,6 +21,7 @@ return [
     'Country' => '',
     'Date' => '',
     'Datetime' => '',
+    'Markdown' => '',
     'Number' => '',
     'Select List' => '',
     'Text' => '',

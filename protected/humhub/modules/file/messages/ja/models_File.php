@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'File dimensions are too big to be processed with current server memory limit!' => '',
+    'Image dimensions are too big to be processed with current server memory limit!' => '',
     'Maximum file size ({maxFileSize}) has been exceeded!' => '',
     'This file type is not allowed!' => '',
     'Invalid Mime-Type' => '無効なMIMEタイプ',

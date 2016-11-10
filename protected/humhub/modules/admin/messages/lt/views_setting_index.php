@@ -19,6 +19,7 @@
 return [
     'Friendship' => '',
     'New users will automatically be added to these space(s).' => '',
+    'Wall entry layout' => '',
     '<strong>Confirm</strong> image deleting' => '<strong>Patvirtinti</strong> paveikslėlio pašalinimą',
     'Cancel' => 'Atšaukti',
     'Dashboard' => 'Prietaisų skydas',

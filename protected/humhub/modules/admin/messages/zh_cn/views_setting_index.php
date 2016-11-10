@@ -20,6 +20,7 @@ return [
     '<strong>Confirm</strong> image deleting' => '',
     'Friendship' => '',
     'New users will automatically be added to these space(s).' => '',
+    'Wall entry layout' => '',
     'You\'re using no logo at the moment. Upload your logo now.' => '',
     'Cancel' => '取消',
     'Dashboard' => '<strong>主面板</strong>',

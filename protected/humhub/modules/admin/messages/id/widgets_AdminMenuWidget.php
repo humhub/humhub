@@ -31,6 +31,5 @@ return [
     'Settings' => '',
     'Spaces' => '',
     'Statistics' => '',
-    'User' => '',
     'Users' => '',
 ];

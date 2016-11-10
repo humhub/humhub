@@ -17,5 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Space Settings' => '',
     'Save' => 'Uložit',
 ];

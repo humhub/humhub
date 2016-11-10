@@ -23,6 +23,7 @@ return [
     'Created By' => '',
     'Default content visibility' => '',
     'Homepage' => '',
+    'Homepage (Guests)' => '',
     'Join Policy' => '',
     'Members' => '',
     'Moderators' => '',

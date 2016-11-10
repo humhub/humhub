@@ -24,6 +24,7 @@ return [
     'Default content visibility' => '',
     'Description' => '',
     'Homepage' => '',
+    'Homepage (Guests)' => '',
     'Join Policy' => '',
     'Members' => '',
     'Moderators' => '',

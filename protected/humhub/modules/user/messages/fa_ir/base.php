@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'You\'re not registered.' => '',
     'Your new password must not equal your current password!' => '',
     '<strong>Security</strong> settings' => '<strong>تنظيمات امنيتي</strong>',
     'Basic Settings' => 'تنظيمات پايه',

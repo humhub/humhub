@@ -20,6 +20,7 @@ return [
     'Administrators' => '',
     'Default content visibility' => '',
     'Homepage' => '',
+    'Homepage (Guests)' => '',
     'Members' => '',
     'Moderators' => '',
     'Users' => '',
