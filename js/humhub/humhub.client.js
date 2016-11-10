@@ -87,6 +87,21 @@ humhub.initModule('client', function (module, require, $) {
         cfg.type = cfg.method = 'POST';
         return ajax(url, cfg, originalEvent);
     };
+    
+    var html = function(url, cfg, originalEvent) {
+         if (url instanceof $.Event) {
+            originalEvent = url;
+            url = originalEvent.url;
+        } else if (cfg instanceof $.Event) {
+            originalEvent = cfg;
+            cfg = {};
+        }
+        
+        cfg = cfg || {};
+        cfg.type = cfg.method = 'GET';
+        cfg.dataType = 'html';
+        return get(url,cfg,originalEvent);
+    };
 
     var get = function (url, cfg, originalEvent) {
         if (url instanceof $.Event) {
@@ -230,6 +245,7 @@ humhub.initModule('client', function (module, require, $) {
         ajax: ajax,
         post: post,
         get: get,
+        html: html,
         submit: submit,
         //upload: upload,
         Response: Response

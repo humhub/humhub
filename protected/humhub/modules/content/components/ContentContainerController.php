@@ -118,6 +118,22 @@ class ContentContainerController extends Controller
                 Yii::$app->user->loginRequired();
                 return false;
             }
+            
+            if($this->contentContainer instanceof Space) {
+               $options = [
+                    'guid' => $this->contentContainer->guid,
+                    'name' => $this->contentContainer->name,
+                    'image' => \humhub\modules\space\widgets\Image::widget([
+                                    'space' => $this->contentContainer,
+                                    'width' => 32,
+                                    'htmlOptions' => [
+                                        'class' => 'current-space-image',
+                                
+                                    ]
+                                ])
+               ];
+                $this->view->registerJs('humhub.modules.space.setSpace('.\yii\helpers\Json::encode($options).')');
+            }
 
             return true;
         }

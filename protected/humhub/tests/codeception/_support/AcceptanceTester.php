@@ -182,9 +182,26 @@ class AcceptanceTester extends \Codeception\Actor
     public function seeInNotifications($text)
     {
         $this->click('.notifications');
-        $this->wait(1);
-        $this->see($text);
+        $this->waitForText('Notifications', 5, '.notifications');
+        $this->waitForText($text, 5, '.notifications');
         $this->click('.notifications');
+    }
+    
+    /**
+     * Selects $userName for a given userPicker. Note this implementation will
+     * just take the first result found for the given username.
+     * 
+     * @param type $id
+     * @param type $userName
+     */
+    public function selectUserFromPicker($id, $userName)
+    {
+        $userPickerInputId = '#'.$id.'_tag_input_field';
+        $userPickerId = '#'.$id.'_userpicker';
+        $resultSelector = $userPickerId.' a:first';
+        $this->fillField($userPickerInputId, $userName);
+        $this->waitForText($userName, 30, $userPickerId);
+        $this->executeJS("$('". $resultSelector ."')[0].click();");
     }
 
     public function dontSeeInNotifications($text)
@@ -203,7 +220,7 @@ class AcceptanceTester extends \Codeception\Actor
 
     public function jsClick($selector)
     {
-        $this->executeJS('$("' . $selector . '").click();');
+        $this->executeJS("$('". $selector ."').click();");
     }
 
     public function jsFillField($selector, $value)

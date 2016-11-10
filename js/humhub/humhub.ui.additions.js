@@ -8,6 +8,8 @@
 humhub.initModule('ui.additions', function (module, require, $) {
 
     var event = require('event');
+    
+    module.initOnPjaxLoad = false;
 
     var _additions = {};
 
@@ -19,12 +21,17 @@ humhub.initModule('ui.additions', function (module, require, $) {
      * @param {function} addition addition function
      * @returns {undefined}
      */
-    module.registerAddition = function (selector, addition) {
+    var registerAddition = function (selector, addition) {
         if (!_additions[selector]) {
             _additions[selector] = [];
         }
 
         _additions[selector].push(addition);
+        
+        // Make sure additions affect elements after humhub:ready
+        if(humhub.initialized) {
+            module.applyTo($('body'));
+        }
     };
 
     /**
@@ -32,35 +39,74 @@ humhub.initModule('ui.additions', function (module, require, $) {
      * @param {type} element
      * @returns {undefined}
      */
-    module.applyTo = function (element) {
+    var applyTo = function (element) {
         var $element = (element instanceof $) ? element : $(element);
         $.each(_additions, function (selector, additions) {
             $.each(additions, function (i, addition) {
-                $.each($element.find(selector).addBack(selector), function () {
-                    try {
-                        var $match = $(this);
-                        addition.apply($match, [$match, $element]);
-                    } catch (e) {
-                        console.error('Error while applying addition on selector ' + selector, e);
-                    }
-                });
+                try {
+                    var $match = $element.find(selector).addBack(selector);
+                    addition.apply($match, [$match, $element]);
+                } catch (e) {
+                    module.log.error('Error while applying addition on selector ' + selector, e);
+                }
             });
         });
     };
 
-    module.init = function () {
-        event.on('humhub:modules:client:pjax:afterPageLoad', function (evt, cfg) {
-            module.applyTo(cfg.options.container);
-        });
-        
-        event.on('humhub:afterInit', function (evt) {
-            module.applyTo($('html'));
+    var init = function () {
+        event.on('humhub:ready', function (evt) {
+            module.applyTo($('body'));
         });
 
+        // Autosize textareas
         this.registerAddition('.autosize', function ($match) {
             $match.autosize();
         });
 
+        // Show tooltips on elements
+        this.registerAddition('.tt', function ($match) {
+            $match.tooltip({
+                html: false,
+                container: 'body'
+            });
+        });
+
+        // Show popovers on elements
+        this.registerAddition('.po', function ($match) {
+            $match.popover({html: true});
+        });
+
+        // Activate placeholder text for older browsers (specially IE)
+        this.registerAddition('input, textarea', function ($match) {
+            $match.placeholder();
+        });
+
+        // Replace the standard checkbox and radio buttons
+        this.registerAddition(':checkbox, :radio', function ($match) {
+            $match.flatelements();
+        });
+
+        // Deprecated!
+        this.registerAddition('a[data-loader="modal"], button[data-loader="modal"]', function ($match) {
+            $match.loader();
+        });
+
         //TODO: apply to html on startup, the problem is this could crash legacy code.
     };
+
+    var switchButtons = function (outButton, inButton, animation) {
+        var animation = animation || 'bounceIn';
+        var $out = (outButton instanceof $) ? outButton : $(outButton);
+        var $in = (inButton instanceof $) ? inButton : $(inButton);
+
+        $out.hide();
+        $in.addClass('animated '+animation).show();
+    };
+
+    module.export({
+        init: init,
+        applyTo: applyTo,
+        registerAddition: registerAddition,
+        switchButtons: switchButtons
+    });
 });

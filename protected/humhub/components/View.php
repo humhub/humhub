@@ -143,21 +143,31 @@ class View extends \yii\web\View
     {
         \humhub\widgets\CoreJsConfig::widget();
 
+        // Flush jsConfig needed for all types of requests (including pjax/ajax)
         $this->flushJsConfig();
+
+        // In case of pjax we have to add the title manually, pjax will remove this node
+        if (Yii::$app->request->isPjax) {
+            echo '<title>' . $this->getPageTitle() . '</title>';
+        }
 
         if (Yii::$app->request->isAjax) {
             return parent::endBody();
         }
 
+        // Add LayoutAddons and jsConfig registered by addons
         echo \humhub\widgets\LayoutAddons::widget();
-
-        // Will add js configuraiton added by layoutaddons.
         $this->flushJsConfig();
 
-        // Add Layout Addons
         return parent::endBody();
     }
 
+    /**
+     * Writes the currently registered jsConfig entries and flushes the the config array.
+     * 
+     * @since v1.2
+     * @param string $key see View::registerJs
+     */
     protected function flushJsConfig($key = null)
     {
         $this->registerJs("humhub.config.set(" . json_encode($this->jsConfig) . ");", View::POS_BEGIN, $key);

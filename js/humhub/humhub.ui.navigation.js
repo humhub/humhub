@@ -1,30 +1,36 @@
-/**
- *  
- * @param {type} param1
- * @param {type} param2
- */
 humhub.initModule('ui.navigation', function (module, require, $) {
 
+    var event = require('event');
+
+    module.initOnPjaxLoad = false;
+
     var init = function () {
+        module.initTopNav();
+    };
+
+    var initTopNav = function () {
         // Default implementation for topbar. Activate li on click.
-       $('#top-menu-nav a').on('click', function () {
+        $('#top-menu-nav a').on('click', function () {
             var $this = $(this);
             if (!$this.is('#space-menu')) {
-                setActiveItem($this);
+                module.setActiveItem($this);
             }
         });
 
-        // Activate by config
-        $.each(module.config['active'], function (id, url) {
-            setActive(id, url);
+        event.on('humhub:ready', function () {
+            // Activate by config
+            $.each(module.config['active'], function (id, url) {
+                module.setActive(id, url);
+            });
+            // Reset active config.
+            module.config['active'] = undefined;
+        }).on('humhub:modules:space:changed', function () {
+            $('#top-menu-nav').find('li').removeClass('active');
         });
-        
-        // Reset active config.
-        module.config['active'] = undefined;
-    };
-    
+    }
+
     var setActive = function (id, url) {
-        setActiveItem($('#' + id).find('[href="' + url + '"]'));
+        module.setActiveItem($('#' + id).find('[href="' + url + '"]'));
     };
 
     var setActiveItem = function ($item) {
@@ -38,6 +44,8 @@ humhub.initModule('ui.navigation', function (module, require, $) {
 
     module.export({
         init: init,
-        setActive: setActive
+        setActive: setActive,
+        initTopNav: initTopNav,
+        setActiveItem: setActiveItem
     });
 });

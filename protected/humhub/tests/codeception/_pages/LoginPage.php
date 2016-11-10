@@ -19,8 +19,8 @@ class LoginPage extends BasePage
      */
     public function login($username, $password)
     {
-        if(method_exists($this->actor, 'wait')) {
-            $this->actor->wait(1);
+        if(method_exists($this->actor, 'waitForText')) {
+            $this->actor->waitForText('Please sign in');
         }
         $this->actor->fillField('Login[username]', $username);
         $this->actor->fillField('Login[password]', $password);

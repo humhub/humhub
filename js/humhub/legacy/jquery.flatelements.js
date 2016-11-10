@@ -38,7 +38,7 @@
         return this.each(function () {
 
             // save object in a variable
-            $this = $(this);
+            var $this = $(this);
 
             // Only modify this element, if it follow the bootstrap html construction
             if (checkBootstrapStructure($this) == true) {

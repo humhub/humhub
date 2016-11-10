@@ -2,6 +2,8 @@
 
 use yii\helpers\Url;
 
+\humhub\modules\space\assets\SpaceAsset::register($this);
+
 ?>
 <div class="modal-dialog modal-dialog-medium animated fadeIn">
     <div class="modal-content">
@@ -39,81 +41,37 @@ use yii\helpers\Url;
                                     } else {
                                         $disable = "";
                                     }
-
                                 }
                                 ?>
-
-
-                                <?php
-                                echo \humhub\widgets\AjaxButton::widget([
-                                    'label' => Yii::t('SpaceModule.views_admin_modules', 'Enable'),
-                                    'ajaxOptions' => [
-                                        'type' => 'POST',
-                                        'success' => new yii\web\JsExpression('function(){
-                                    $("#btn-enable-module-' . $moduleId . '").addClass("hidden");
-                                    $("#btn-disable-module-' . $moduleId . '").removeClass("hidden");
-                                    }'),
-                                        'url' => $space->createUrl('/space/manage/module/enable', ['moduleId' => $moduleId]),
-                                    ],
-                                    'htmlOptions' => [
-                                        'class' => 'btn btn-sm btn-primary '. $enable,
-                                        'id' => 'btn-enable-module-' . $moduleId
-                                    ]
-                                ]);
-                                ?>
-
-
-                                <?php
-
-                                echo \humhub\widgets\AjaxButton::widget([
-                                    'label' => Yii::t('SpaceModule.views_admin_modules', 'Disable'),
-                                    'ajaxOptions' => [
-                                        'type' => 'POST',
-                                        'success' => new yii\web\JsExpression('function(){
-                                    $("#btn-enable-module-' . $moduleId . '").removeClass("hidden");
-                                    $("#btn-disable-module-' . $moduleId . '").addClass("hidden");
-                                     }'),
-                                        'url' => $space->createUrl('/space/manage/module/disable', ['moduleId' => $moduleId]),
-                                    ],
-                                    'htmlOptions' => [
-                                        'class' => 'btn btn-sm btn-info '. $disable,
-                                        'id' => 'btn-disable-module-' . $moduleId
-                                    ]
-                                ]);
-                                ?>
-
-
+                                <a href="#" class="btn btn-sm btn-primary enable" 
+                                    data-action-click="space.enableModule" 
+                                    data-ui-loader
+                                    data-action-url="<?= $space->createUrl('/space/manage/module/enable', ['moduleId' => $moduleId]) ?>">
+                                     <?= Yii::t('SpaceModule.views_admin_modules', 'Enable'); ?>
+                                 </a>
+                                
+                                <a href="#" class="btn btn-sm btn-primary disable" 
+                                   style="display:none"
+                                    data-action-click="space.disableModule" 
+                                    data-ui-loader
+                                    data-action-url="<?= $space->createUrl('/space/manage/module/disable', ['moduleId' => $moduleId]) ?>">
+                                     <?= Yii::t('SpaceModule.views_admin_modules', 'Disable'); ?>
+                                 </a>
                             </div>
-
                         </div>
                         <br>
                     </div>
                 <?php endforeach; ?>
             </div>
-
         </div>
 
         <div class="modal-footer">
-            <hr>
-            <br>
-            <?php
-            echo \humhub\widgets\AjaxButton::widget([
-                'label' => Yii::t('SpaceModule.views_create_modules', 'Next'),
-                'ajaxOptions' => [
-                    'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
-                    'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
-                    'url' => Url::to(['/space/create/invite', 'spaceId' => $space->id]),
-                ],
-                'htmlOptions' => [
-                    'class' => 'btn btn-primary'
-                ]
-            ]);
-            ?>
-
-            <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'invite-loader', 'cssClass' => 'loader-modal hidden']); ?>
+            <a href="#" class="btn btn-primary" 
+               data-action-click="ui.modal.submit" 
+               data-ui-loader
+               data-action-url="<?= Url::to(['/space/create/invite', 'spaceId' => $space->id]) ?>">
+                   <?= Yii::t('SpaceModule.views_create_create', 'Next'); ?>
+            </a>
         </div>
-
     </div>
-
 </div>

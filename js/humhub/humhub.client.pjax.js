@@ -24,7 +24,7 @@ humhub.initModule('client.pjax', function (module, require, $) {
         });
 
         $(document).on("pjax:success", function (evt, data, status, xhr, options) {
-            event.trigger('humhub:modules:client:pjax:afterPageLoad', {
+            event.trigger('humhub:modules:client:pjax:success', {
                 'originalEvent': evt,
                 'data': data,
                 'status': status,

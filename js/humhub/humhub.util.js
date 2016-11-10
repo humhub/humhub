@@ -82,6 +82,12 @@ humhub.initModule('util', function(module, require, $) {
                 return false;
             }
             return val.indexOf(suffix, val.length - suffix.length) !== -1;
+        },
+        htmlEncode : function(value) {
+            return $('<div/>').text(value).html();
+        },
+        htmlDecode : function(value) {
+            return $('<div/>').html(value).text();
         }
     };
     

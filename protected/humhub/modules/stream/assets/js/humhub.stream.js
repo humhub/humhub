@@ -12,6 +12,7 @@ humhub.initModule('stream', function (module, require, $) {
     var Component = require('action').Component;
     var loader = require('ui.loader');
     var event = require('event');
+    var additions = require('ui.additions');
 
     /**
      * Number of initial stream enteis loaded when stream is initialized.
@@ -127,7 +128,7 @@ humhub.initModule('stream', function (module, require, $) {
 
         if (this.$.data('lastEdit')) {
             that.replaceContent(this.$.data('lastEdit'));
-            that.$.find('input[type="text"], textarea, [contenteditable="true"]').first().focus();
+            that.$.find('input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
             return;
         }
 
@@ -138,7 +139,7 @@ humhub.initModule('stream', function (module, require, $) {
             }
         }).then(function (response) {
             that.replaceContent(response.html);
-            that.$.find('input[type="text"], textarea, [contenteditable="true"]').first().focus();
+            that.$.find('input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
         }).catch(function (e) {
             module.log.error(e, true);
         }).finally(function () {
@@ -392,11 +393,10 @@ humhub.initModule('stream', function (module, require, $) {
         if (this.isShowSingleEntry()) {
             this.loadEntry(this.contentId);
         } else {
-            this.loadEntries({'limit': this.cfg['loadInitialCount']}).then(function () {
-                /**
-                 * TODO: REWRITE OLD INITPLUGINS!!!
-                 */
-                initPlugins();
+            var that = this;
+            this.loadEntries({'limit': this.cfg['loadInitialCount']}).catch(function(err) {
+                module.log.error(err, true);
+                that.$content.append('Could not load stream entries!');
             });
         }
 
@@ -509,6 +509,8 @@ humhub.initModule('stream', function (module, require, $) {
                 if (!cfg['contentId'] && object.isEmpty(response.content)) {
                     that.lastEntryLoaded = true;
                     that.$.trigger('humhub:modules:stream:lastEntryLoaded');
+                    //We call onChange here, since we want to display empty messages in case its the first call
+                    that.onChange();
                 } else if (!cfg['contentId']) {
                     that.lastEntryLoaded = response.isLast;
                     $result = that.addEntries(response, cfg);
@@ -580,6 +582,7 @@ humhub.initModule('stream', function (module, require, $) {
     Stream.prototype.prependEntry = function (html) {
         var $html = $(html).hide();
         this.$content.prepend($html);
+        additions.applyTo($html);
         $html.fadeIn();
         this.onChange();
     };
@@ -587,6 +590,7 @@ humhub.initModule('stream', function (module, require, $) {
     Stream.prototype.appendEntry = function (html) {
         var $html = $(html).hide();
         this.$content.append($html);
+        additions.applyTo($html);
         $html.fadeIn();
         this.onChange();
     };

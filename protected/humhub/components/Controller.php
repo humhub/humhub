@@ -45,6 +45,7 @@ class Controller extends \yii\web\Controller
     /**
      * Can be used to set the active topmenu item.
      * 
+     * 
      * @see Controller::setActiveTopMenuItem
      * @var type 
      */

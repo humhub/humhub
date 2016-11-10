@@ -34,6 +34,13 @@ Please refer the new [File Handling](dev-files.md) documentation section for mor
 
 TBD
 
+#### Pjax + TopNavigation:
+Use
+
+public $topMenuRoute = '/dashboard/dashboard';
+
+within your controller for pjax topmenu support.
+
 ### Asset Handling changes
 
 TBD

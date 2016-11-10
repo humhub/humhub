@@ -237,7 +237,7 @@ humhub.initModule('action', function (module, require, $) {
             if (object.isFunction(target[handlerAction])) {
                 target[handlerAction](event);
             } else {
-                module.log.error('actionHandlerNotFound', this, true);
+                module.log.error('actionHandlerNotFound', event.handler, true);
             }
         } catch (e) {
             module.log.error('error.default', e, true);

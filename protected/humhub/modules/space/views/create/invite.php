@@ -14,9 +14,6 @@ use yii\widgets\ActiveForm;
                 id="myModalLabel"><?php echo Yii::t('SpaceModule.views_space_invite', '<strong>Invite</strong> members'); ?></h4>
         </div>
         <div class="modal-body">
-
-            <br><br>
-
             <?php if ($canInviteExternal) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
@@ -66,25 +63,12 @@ use yii\widgets\ActiveForm;
 
         </div>
         <div class="modal-footer">
-            <hr>
-            <br>
-
-            <?php
-            echo \humhub\widgets\AjaxButton::widget([
-                'label' => Yii::t('SpaceModule.views_space_invite', 'Done'),
-                'ajaxOptions' => [
-                    'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
-                    'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
-                    'url' => Url::to(['/space/create/invite', 'spaceId' => $space->id]),
-                ],
-                'htmlOptions' => [
-                    'class' => 'btn btn-primary'
-                ]
-            ]);
-            ?>
-
-            <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'invite-loader', 'cssClass' => 'loader-modal hidden']); ?>
+            <a href="#" class="btn btn-primary" 
+               data-action-click="ui.modal.submit" 
+               data-ui-loader
+               data-action-url="<?= Url::to(['/space/create/invite', 'spaceId' => $space->id]) ?>">
+                   <?= Yii::t('SpaceModule.views_space_invite', 'Done'); ?>
+            </a>
         </div>
 
         <?php ActiveForm::end(); ?>

@@ -3,6 +3,7 @@
  * Copyright 2015 HumHub
  *
  * Show loader
+ * @deprecated since v1.2
  */
 
 

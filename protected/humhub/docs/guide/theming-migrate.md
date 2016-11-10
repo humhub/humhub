@@ -32,6 +32,8 @@ Please see the following file for 1.2 changes (at the buttom):
 
 // Pjax changes
 - Add 'top-menu-nav' to main.php layout.
+- How to migrate custom top-nav
+- space chooser module / how to overwrite use space api
 
 ### Gallery
 

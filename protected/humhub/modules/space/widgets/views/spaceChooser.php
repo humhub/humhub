@@ -6,40 +6,44 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\libs\Helpers;
 
+\humhub\modules\space\assets\SpaceChooserAsset::register($this);
+
+$spaceChooserCaret = '<b class="caret"></b>';
+$noSpaceView = '<i class="fa fa-dot-circle-o"></i><br>' . Yii::t('SpaceModule.widgets_views_spaceChooser', 'My spaces').'<b class="caret"></b>';
+
+$this->registerJsConfig('space.chooser', ['noSpace' => $noSpaceView]);
+
+
 $this->registerJsFile("@web/resources/space/spacechooser.js");
 $this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
+
 ?>
 
 <li class="dropdown">
     <a href="#" id="space-menu" class="dropdown-toggle" data-toggle="dropdown">
         <!-- start: Show space image and name if chosen -->
         <?php if ($currentSpace) { ?>
-            <?php echo \humhub\modules\space\widgets\Image::widget([
+            <?= \humhub\modules\space\widgets\Image::widget([
                 'space' => $currentSpace,
                 'width' => 32,
                 'htmlOptions' => [
                     'class' => 'current-space-image',
-                ]
-            ]); ?>
+                ]]);
+            ?>
+            <?= $spaceChooserCaret ?>
         <?php } ?>
 
-        <?php
-        if (!$currentSpace) {
-            echo '<i class="fa fa-dot-circle-o"></i><br>' . Yii::t('SpaceModule.widgets_views_spaceChooser', 'My spaces');
-        }
-        ?>
+        <?php if (!$currentSpace) : ?>
+            <?= $noSpaceView ?>
+        <?php endif; ?>
         <!-- end: Show space image and name if chosen -->
-        <b class="caret"></b>
+        
     </a>
     <ul class="dropdown-menu" id="space-menu-dropdown">
         <li>
-            <form action="" class="dropdown-controls"><input type="text" id="space-menu-search"
-                                                             class="form-control"
-                                                             autocomplete="off"
-                                                             placeholder="<?php echo Yii::t('SpaceModule.widgets_views_spaceChooser', 'Search'); ?>">
-
-                <div class="search-reset" id="space-search-reset"><i
-                        class="fa fa-times-circle"></i></div>
+            <form action="" class="dropdown-controls">
+                <input type="text" id="space-menu-search" class="form-control" autocomplete="off" placeholder="<?php echo Yii::t('SpaceModule.widgets_views_spaceChooser', 'Search'); ?>">
+                <div class="search-reset" id="space-search-reset"><i class="fa fa-times-circle"></i></div>
             </form>
         </li>
 
@@ -96,6 +100,7 @@ $this->registerJsVar('scSpaceListUrl', Url::to(['/space/list', 'ajax' => 1]));
         cursorborder: "",
         cursorcolor: "#555",
         cursoropacitymax: "0.2",
+        nativeparentscrolling: false,
         railpadding: {top: 0, right: 3, left: 0, bottom: 0}
     });
     jQuery('.badge-space').fadeIn('slow');

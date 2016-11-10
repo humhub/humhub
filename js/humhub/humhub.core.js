@@ -122,7 +122,7 @@ var humhub = humhub || (function($) {
         }
         
         //Initialize the module when document is ready
-        if(!initialized) {
+        if(!humhub.initialized) {
             initialModules.push(instance);
         } else {
             addModuleLogger(instance);
@@ -349,17 +349,19 @@ var humhub = humhub || (function($) {
            log.debug('Module initialized: '+module.id);
         });
         
-        event.trigger('humhub:afterInit');
-        
-        initialized = true;
+        humhub.initialized = true;
+        event.trigger('humhub:ready');
+        $(document).trigger('humhub:ready', [false, humhub]);
     });
     
-    event.on('humhub:modules:client:pjax:afterPageLoad', function (evt) {
+    event.on('humhub:modules:client:pjax:success', function (evt) {
         $.each(pjaxInitModules, function(i, module) {
             if(module.initOnPjaxLoad) {
                 module.init(true);
             }
         });
+        event.trigger('humhub:ready');
+        $(document).trigger('humhub:ready', [true, humhub]);
     });
     
     return {

@@ -6,16 +6,16 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\space\assets;
+namespace humhub\assets;
 
 use yii\web\AssetBundle;
 
 /**
- * jquery-color
+ * Color Picker js utility
  * 
  * @author buddha
  */
-class JqueryColorPickerAsset extends AssetBundle
+class HumHubColorPicker extends AssetBundle
 {
 
     public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
@@ -23,18 +23,19 @@ class JqueryColorPickerAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@webroot/resources/space/colorpicker';
+    public $basePath = '@webroot';
+    
+    /**
+     * @inheritdoc
+     */
+    public $baseUrl = '@web';
 
     /**
      * @inheritdoc
      */
-    public $js = ['js/bootstrap-colorpicker-modified.js'];
+    public $js = ['js/humhub/humhub.ui.colorpicker.js'];
     
-    /**
-     * @inheritdoc
-     */
-    public $css = ['css/bootstrap-colorpicker.min.css'];
     
-    public $depends = ['humhub\assets\AppAsset'];
+    public $depends = ['humhub\assets\JqueryColorPickerAsset'];
     
 }

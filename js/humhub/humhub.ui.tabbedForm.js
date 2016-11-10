@@ -19,6 +19,8 @@ humhub.initModule('ui.tabbedForm', function (module, require, $) {
 
 
     var additions = require('ui.additions');
+    
+    module.initOnPjaxLoad = false;
 
     /**
      * Prepares all included fieldsets for $form indexed
@@ -30,34 +32,36 @@ humhub.initModule('ui.tabbedForm', function (module, require, $) {
     var getPreparedFieldSets = function ($form) {
         var result = {};
         var $lastFieldSet;
-        
+
         // Assamble all fieldsets with label
         $form.find('fieldset').each(function () {
             var $fieldSet = $(this).hide();
-            
+
             var legend = $fieldSet.children('legend').text();
-            
+
             // If we have a label we add the fieldset as is else we append its inputs to the previous fieldset
             if (legend && legend.length) {
                 result[legend] = $lastFieldSet = $fieldSet;
-            } else if($lastFieldSet) {
+            } else if ($lastFieldSet) {
                 $lastFieldSet.append($fieldSet.children(".form-group"));
             }
         });
         return result;
     };
-    
-    /**
-     * Check for errors in a specific category.
-     * @param _object
-     * @returns {boolean}
-     */
-    var hasErrors = function($fieldSet) {
-        return $fieldSet.find('.error, .has-error').length > 0;
-    };
-
 
     var init = function () {
+        _registerAddition();
+
+        // Make sure frontend validation also activates the tab with errors.
+        $(document).on('afterValidate.humhub:ui:tabbedForm', function (evt, messages, errors) {
+            if (errors.length && _hasTabbedForm()) {
+                var index = $(errors[0].container).closest('.tab-pane').data('tab-index');
+                $('a[href="#tab-' + index + '"]').tab('show');
+            }
+        });
+    };
+
+    var _registerAddition = function () {
         additions.registerAddition('[data-ui-tabbed-form]', function ($form) {
             var activeTab = 0;
 
@@ -70,7 +74,7 @@ humhub.initModule('ui.tabbedForm', function (module, require, $) {
             $.each(getPreparedFieldSets($form), function (label, $fieldSet) {
 
                 // activate this tab if there are any errors
-                if (hasErrors($fieldSet)) {
+                if (_hasErrors($fieldSet)) {
                     activeTab = index;
                 }
 
@@ -119,16 +123,21 @@ humhub.initModule('ui.tabbedForm', function (module, require, $) {
             // activate the first tab or the tab with errors
             $tabs.find('a[href="#tab-' + activeTab + '"]').tab('show');
         });
-
-        // Make sure frontend validation also activates the tab with errors.
-        $(document).on('afterValidate.humhub:ui:tabbedForm', function (evt, messages, errors) {
-            if (errors.length) {
-                var index = $(errors[0].container).closest('.tab-pane').data('tab-index');
-                $('a[href="#tab-' + index + '"]').tab('show');
-            }
-        });
     };
-   
+    
+    /**
+     * Check for errors in a specific category.
+     * @param _object
+     * @returns {boolean}
+     */
+    var _hasErrors = function ($fieldSet) {
+        return $fieldSet.find('.error, .has-error').length > 0;
+    };
+    
+    var _hasTabbedForm = function() {
+        return $('[data-ui-tabbed-form]').length > 0;
+    };
+
     module.export({
         init: init
     });

@@ -45,8 +45,10 @@ humhub.initModule('activity', function (module, require, $) {
         return [];
     };
 
-    ActivityStreamEntry.prototype.delete = function () {/* Not implemented */}
-    ActivityStreamEntry.prototype.edit = function () {/* Not implemented */}
+    ActivityStreamEntry.prototype.delete = function () {/* Not implemented */
+    }
+    ActivityStreamEntry.prototype.edit = function () {/* Not implemented */
+    }
 
     /**
      * ActivityStream implementation.
@@ -63,36 +65,82 @@ humhub.initModule('activity', function (module, require, $) {
     };
 
     object.inherits(ActivityStream, stream.Stream);
-    
-    ActivityStream.prototype.showLoader = function() {
+
+    ActivityStream.prototype.showLoader = function () {
         var $loaderListItem = $('<li id="activityLoader" class="streamLoader">');
         loader.append($loaderListItem);
         this.$content.append($loaderListItem);
     };
-    
-    ActivityStream.prototype.hideLoader = function() {
+
+    ActivityStream.prototype.hideLoader = function () {
         this.$content.find('#activityLoader').remove();
     };
-    
+
     ActivityStream.prototype.onChange = function () {
-        if(!this.hasEntries()) {
-            this.$.html('<div id="activityEmpty"><div class="placeholder">'+module.text('activityEmpty')+'</div></div>');
+        if (!this.hasEntries()) {
+            this.$.html('<div id="activityEmpty"><div class="placeholder">' + module.text('activityEmpty') + '</div></div>');
         }
     };
 
+    ActivityStream.prototype.init = function () {
+        this.super('init');
+        this.initScrolling();
+    };
+
+    ActivityStream.prototype.initScrolling = function () {
+
+        // listen for scrolling event yes or no
+        var scrolling = true;
+        var that = this;
+        this.$content.scroll(function (evt) {
+            // save height of the overflow container
+            var _containerHeight = that.$content.height();
+            // save scroll height
+            var _scrollHeight = that.$content.prop("scrollHeight");
+            // save current scrollbar position
+            var _currentScrollPosition = that.$content.scrollTop();
+
+            // load more activites if current scroll position is near scroll height
+            if (_currentScrollPosition >= (_scrollHeight - _containerHeight - 30)) {
+                // checking if ajax loading is necessary or the last entries are already loaded
+                if (scrolling) {
+                    scrolling = false;
+                    // load more activities
+                    that.loadEntries().then(function() {
+                        that.$content.getNiceScroll().resize();
+                    }).finally(function () {
+                        scrolling = true;
+                    });
+                }
+            }
+        });
+
+
+        // set niceScroll to activity list
+        that.$content.niceScroll({
+            cursorwidth: "7",
+            cursorborder: "",
+            cursorcolor: "#555",
+            cursoropacitymax: "0.2",
+            nativeparentscrolling: false,
+            railpadding: {top: 0, right: 3, left: 0, bottom: 0}
+        });
+    };
+
+
     var getStream = function () {
         instance = instance || new ActivityStream($(ACTIVITY_STREAM_SELECTOR));
-        
-        if(!instance.$.length) {
+
+        if (!instance.$.length) {
             return;
         }
-        
+
         return instance;
     };
 
     var init = function () {
         instance = undefined;
-        
+
         var stream = getStream();
 
         if (!stream) {
@@ -101,39 +149,8 @@ humhub.initModule('activity', function (module, require, $) {
         }
 
         stream.init();
-
-        var activityLastEntryReached = false;
-
-        // listen for scrolling event yes or no
-        var scrolling = true;
-
-        stream.$content.scroll(function (evt) {
- 
-            // save height of the overflow container
-            var _containerHeight = stream.$content.height();
-
-            // save scroll height
-            var _scrollHeight = stream.$content.prop("scrollHeight");
-
-            // save current scrollbar position
-            var _currentScrollPosition = stream.$content.scrollTop();
-
-            // load more activites if current scroll position is near scroll height
-            if (_currentScrollPosition >= (_scrollHeight - _containerHeight - 30)) {
-                // checking if ajax loading is necessary or the last entries are already loaded
-                if (activityLastEntryReached == false) {
-                    if (scrolling == true) {
-                        // stop listening for scrolling event to load the new activity range only one time
-                        scrolling = false;
-                        // load more activities
-                        stream.loadEntries().finally(function() {
-                            scrolling = true;
-                        });
-                    }
-                }
-            }
-        });
     };
+
 
     module.export({
         ActivityStream: ActivityStream,
