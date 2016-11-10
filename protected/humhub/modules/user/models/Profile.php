@@ -145,7 +145,7 @@ class Profile extends \yii\db\ActiveRecord
          * Yii::t('UserModule.models_Profile', 'Facebook URL')
          * Yii::t('UserModule.models_Profile', 'LinkedIn URL')
          * Yii::t('UserModule.models_Profile', 'Xing URL')
-         * Yii::t('UserModule.models_Profile', 'Youtube URL')
+         * Yii::t('UserModule.models_Profile', 'YouTube URL')
          * Yii::t('UserModule.models_Profile', 'Vimeo URL')
          * Yii::t('UserModule.models_Profile', 'Flickr URL')
          * Yii::t('UserModule.models_Profile', 'MySpace URL')
