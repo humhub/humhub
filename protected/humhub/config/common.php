@@ -149,6 +149,7 @@ $config = [
             'ko' => '한국어',
             'id' => 'Bahasa Indonesia',
             'lt' => 'lietuvių kalba',
+            'ht' => 'Kreyòl ayisyen',
         ],
         'user' => [
             // Minimum username length
