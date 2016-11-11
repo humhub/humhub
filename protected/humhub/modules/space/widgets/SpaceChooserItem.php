@@ -56,6 +56,8 @@ class SpaceChooserItem extends Widget
         } else if($this->isFollowing) {
             $badge = '<i class="fa fa-star badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_views_spaceChooserItem', 'Following') . '" aria-hidden="true"></i>';
             $data = 'data-space-following';
+        } else {
+            $data = 'data-space-none';
         }
 
         return $this->render('spaceChooserItem', [
