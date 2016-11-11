@@ -14,7 +14,7 @@ $this->registerJsConfig('space.chooser', [
     'noSpace' => $noSpaceView,
     'remoteSearchUrl' =>  Url::to(['/space/browse/search-json']),
     'text' => [
-        'info.remoteAtLeastInput' => Yii::t('SpaceModule.widgets_views_spaceChooser', 'To search for other spaces, please type at least {count} characters.', ['count' => 2]),
+        'info.remoteAtLeastInput' => Yii::t('SpaceModule.widgets_views_spaceChooser', 'To search for other spaces, type at least {count} characters.', ['count' => 2]),
         'info.emptyOwnResult' => Yii::t('SpaceModule.widgets_views_spaceChooser', 'No member or following spaces found.'),
         'info.emptyResult' => Yii::t('SpaceModule.widgets_views_spaceChooser', 'No result found for the given filter.'),
     ],
