@@ -129,7 +129,7 @@ $.fn.modal.Constructor.prototype.enforceFocus = function () {
     var that = this;
     $(document).on('focusin.modal', function (e) {
         var $target = $(e.target);
-        if ($target.hasClass('select2-input') || $target.hasClass('select2-search__field') || $target.hasClass('hexInput')  ) {
+        if ($target.hasClass('select2-input') || $target.hasClass('select2-search__field') || $target.hasClass('hexInput')) {
             return true;
         }
 
@@ -137,9 +137,9 @@ $.fn.modal.Constructor.prototype.enforceFocus = function () {
         if ($parent.hasClass('cke_dialog_ui_input_select') || $parent.hasClass('cke_dialog_ui_input_text')) {
             return true;
         }
-        
+
         // Allow stacking of modals
-        if($target.closest('.modal.in').length) {
+        if ($target.closest('.modal.in').length) {
             return true;
         }
 
@@ -214,6 +214,16 @@ $(document).ready(function () {
                 }
             });
         }
+    });
+
+    $('input').on('invalid', function () {
+        $('[data-ui-loader]').each(function () {
+            var $this = $(this);
+            if ($this.find('.loader').length) {
+                $this.html($this.data('text'));
+                $this.removeClass('disabled');
+            }
+        });
     });
 
 });
