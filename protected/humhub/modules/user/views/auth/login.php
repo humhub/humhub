@@ -69,7 +69,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
                 <p><?php echo Yii::t('UserModule.views_auth_login', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
 
                 <?php $form = ActiveForm::begin(['id' => 'invite-form']); ?>
-                <?php echo $form->field($invite, 'email')->textInput(['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email')])->label(false); ?>
+                <?php echo $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email')])->label(false); ?>
                 <hr>
                 <?php echo CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Register'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
 
