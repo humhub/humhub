@@ -33,7 +33,7 @@
         "bower-asset/jquery-knob": "1.2.*",
         "bower-asset/jquery-placeholder": "^2.3.0",
         "bower-asset/blueimp-file-upload": "9.11.*",
-        "bower-asset/fontawesome": "^4.3.0",
+        "bower-asset/fontawesome": "^4.7.0",
         "bower-asset/bootstrap-markdown": "2.10.*",
         "bower-asset/select2": "^4.0.2",
         "bower-asset/bluebird": "^3.3.5",

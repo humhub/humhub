@@ -61,6 +61,7 @@ class UserFollowButton extends \yii\base\Widget
         if (!isset($this->followOptions['class'])) {
             $this->followOptions['class'] = "";
         }
+        
         if (!isset($this->unfollowOptions['class'])) {
             $this->unfollowOptions['class'] = "";
         }
@@ -68,6 +69,7 @@ class UserFollowButton extends \yii\base\Widget
         if (!isset($this->followOptions['style'])) {
             $this->followOptions['style'] = "";
         }
+        
         if (!isset($this->unfollowOptions['style'])) {
             $this->unfollowOptions['style'] = "";
         }

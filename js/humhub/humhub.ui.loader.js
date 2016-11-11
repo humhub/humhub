@@ -28,7 +28,7 @@ humhub.initModule('ui.loader', function (module, require, $) {
     module.initOnPjaxLoad = false;
 
     var set = function (node, cfg) {
-        var $node = (node instanceof $) ? node :  $(node);
+        var $node = (node instanceof $) ? node : $(node);
         if ($node.length) {
             $node.each(function () {
                 var $this = $(this);
@@ -40,25 +40,25 @@ humhub.initModule('ui.loader', function (module, require, $) {
     };
 
     var append = function (node, cfg) {
-        var $node = (node instanceof $) ? node :  $(node);
+        var $node = (node instanceof $) ? node : $(node);
         if ($node.length) {
             $node.append(getInstance(cfg));
         }
     };
 
     var prepend = function (node, cfg) {
-        var $node = (node instanceof $) ? node :  $(node);
+        var $node = (node instanceof $) ? node : $(node);
         if ($node.length) {
             $node.prepend(getInstance(cfg));
         }
     };
-    
-    var remove = function(node) {
+
+    var remove = function (node) {
         $(node).find('.loader').remove();
     };
 
     var reset = function (node) {
-        var $node = (node instanceof $) ? node :  $(node);
+        var $node = (node instanceof $) ? node : $(node);
         var $loader = $node.find('.loader').length;
         if (!$loader) {
             return;
@@ -72,14 +72,14 @@ humhub.initModule('ui.loader', function (module, require, $) {
             $node.find('.loader').remove();
         }
     };
-    
-    var is = function(node) {
+
+    var is = function (node) {
         return $(node).find('.loader').length > 0;
     };
 
     var getInstance = function (cfg) {
         cfg = cfg || {};
-      
+
         var $result = $(DEFAULT_LOADER_SELECTOR).clone().removeAttr('id').show();
 
         if (cfg['cssClass']) {
@@ -108,6 +108,10 @@ humhub.initModule('ui.loader', function (module, require, $) {
             $result.find('.sk-bounce3').css({'width': size, 'height': size});
         }
 
+        if (cfg['wrapper']) {
+            $result = $(cfg['wrapper']).append($result);
+        }
+
         return $result;
     };
 
@@ -123,10 +127,17 @@ humhub.initModule('ui.loader', function (module, require, $) {
                 });
             }
         });
+
+        // Added support for html5 inputs e.g. email validation
+        $('input').on('invalid', function () {
+            $(this).closest('form').find('[data-ui-loader]').each(function () {
+                reset(this);
+            });
+        });
     };
 
     var initLoaderButton = function (node, evt) {
-        var $node = (node instanceof $) ? node :  $(node);
+        var $node = (node instanceof $) ? node : $(node);
         var loader = $node.find('.loader').length > 0;
 
         /**

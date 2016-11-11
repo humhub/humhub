@@ -14,6 +14,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\friendship\models\Friendship;
+use humhub\modules\space\models\Space;
 
 /**
  * This is the model class for table "user".
@@ -590,8 +591,18 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     {
 
         // TODO: SHOW ONLY REAL MEMBERSHIPS
-        return $this->hasMany(\humhub\modules\space\models\Space::className(), ['id' => 'space_id'])
+        return $this->hasMany(Space::className(), ['id' => 'space_id'])
                         ->viaTable('space_membership', ['user_id' => 'id']);
+    }
+    
+    public function getFollowSpaces()
+    {
+        // TODO: SHOW ONLY REAL MEMBERSHIPS
+        return $this->hasMany(Space::className(), ['id' => 'object_id'])
+                        ->viaTable('user_follow', ['user_id' => 'id'], function($query) {
+                            /* @var $query \yii\db\ActiveQuery */
+                            $query->andWhere(['object_model' => Space::className()]);
+                        });
     }
 
     /**

@@ -20,3 +20,4 @@ HumHub Change Log
 - Enh: Splitted less files to facilitate theming. (buddha)
 - Enh: Added user status bar for user feedback (buddha)
 - Enh: Overwrite default permission settings (buddha)
+- Enh: SpaceChooser rewrite with following spaces and remote search (buddha)

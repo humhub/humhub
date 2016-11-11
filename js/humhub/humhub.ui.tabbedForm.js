@@ -1,23 +1,4 @@
-/**
- * Module for creating an manipulating modal dialoges.
- * Normal layout of a dialog:
- * 
- * <div class="modal">
- *     <div class="modal-dialog">
- *         <div class="modal-content">
- *             <div class="modal-header"></div>
- *             <div class="modal-body"></div>
- *             <div class="modal-footer"></div>
- *         </div>
- *     </div>
- * </div>
- *  
- * @param {type} param1
- * @param {type} param2
- */
 humhub.initModule('ui.tabbedForm', function (module, require, $) {
-
-
     var additions = require('ui.additions');
     
     module.initOnPjaxLoad = false;
@@ -63,6 +44,7 @@ humhub.initModule('ui.tabbedForm', function (module, require, $) {
 
     var _registerAddition = function () {
         additions.registerAddition('[data-ui-tabbed-form]', function ($form) {
+            $form.hide();
             var activeTab = 0;
 
             var $tabContent = $('<div class="tab-content"></div>');
@@ -122,6 +104,7 @@ humhub.initModule('ui.tabbedForm', function (module, require, $) {
 
             // activate the first tab or the tab with errors
             $tabs.find('a[href="#tab-' + activeTab + '"]').tab('show');
+            $form.show();
         });
     };
     

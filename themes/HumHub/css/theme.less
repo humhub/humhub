@@ -512,12 +512,14 @@ input[type=select] {
     form {
       margin: 10px;
     }
+    
     .search-reset {
       position: absolute;
-      color: #999;
-      margin: 10px;
-      top: 8px;
-      right: 10px;
+      color: #BFBFBF;
+      margin: 7px;
+      top:0px;
+      right: 40px;
+      z-index:10;
       display: none;
       cursor: pointer;
     }
@@ -1681,6 +1683,11 @@ a.label-warning:hover {
 // --------------------------------------------------
 .badge-space {
   margin-top: 6px;
+}
+
+.badge-space-chooser {
+    padding:3px 5px;
+    margin-left:1px;
 }
 
 .badge {
@@ -3120,4 +3127,27 @@ img.bounceIn {
 
 .stream-entry-loader {
     float:right;
+}
+
+#space-menu-dropdown i.type {
+    font-size:16px;
+    color: #BFBFBF;
+}
+
+#space-menu-dropdown .input-group-addon {
+    border-radius: 0px 4px 4px 0px;
+}
+
+#space-menu-dropdown .input-group-addon.focus {
+    border-radius: 0px 4px 4px 0px;
+    border: 2px solid @info;
+    border-left: 0px;
+}
+
+#space-menu-search {
+    border-right: 0px;
+}
+
+#space-directory-link i {
+    margin-right:0px;
 }

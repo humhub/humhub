@@ -13,7 +13,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\stream\actions\ContentContainerStream;
-use humhub\modules\space\models\Setting;
 
 
 /**
@@ -107,7 +106,8 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         }
 
         if (Yii::$app->request->isAjax) {
-            return;
+            Yii::$app->response->format = 'json';
+            return ['success' => true];
         }
 
         return $this->redirect($space->getUrl());
@@ -123,7 +123,8 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         $space->unfollow();
 
         if (Yii::$app->request->isAjax) {
-            return;
+            Yii::$app->response->format = 'json';
+            return ['success' => true];
         }
 
         return $this->redirect($space->getUrl());

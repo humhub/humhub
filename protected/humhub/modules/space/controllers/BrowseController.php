@@ -46,6 +46,7 @@ class BrowseController extends Controller
         \Yii::$app->response->format = 'json';
 
         $keyword = Yii::$app->request->get('keyword', "");
+        $target = Yii::$app->request->get('target');
         $page = (int) Yii::$app->request->get('page', 1);
         $limit = (int) Yii::$app->request->get('limit', Yii::$app->settings->get('paginationSize'));
 
@@ -55,14 +56,18 @@ class BrowseController extends Controller
             'pageSize' => $limit
         ]);
 
-        $json = array();
+        $json = [];
         foreach ($searchResultSet->getResultInstances() as $space) {
-            $spaceInfo = array();
+            $spaceInfo = [];
             $spaceInfo['guid'] = $space->guid;
             $spaceInfo['title'] = Html::encode($space->name);
             $spaceInfo['tags'] = Html::encode($space->tags);
             $spaceInfo['image'] = Image::widget(['space' => $space, 'width' => 24]);
             $spaceInfo['link'] = $space->getUrl();
+            
+            if($target === 'chooser') {
+                $spaceInfo['output'] = \humhub\modules\space\widgets\SpaceChooserItem::widget(['space' => $space]);
+            }
 
             $json[] = $spaceInfo;
         }

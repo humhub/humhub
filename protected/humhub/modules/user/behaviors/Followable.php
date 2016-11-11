@@ -208,8 +208,6 @@ class Followable extends Behavior
      */
     public function getFollowingObjects($query)
     {
-
-
         $query->leftJoin('user_follow', 'user.id=user_follow.object_id AND user_follow.object_model=:object_model', ['object_model' => $this->owner->className()]);
         $query->andWhere(['user_follow.user_id' => $this->owner->id]);
 

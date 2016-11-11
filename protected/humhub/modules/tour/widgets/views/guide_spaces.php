@@ -7,7 +7,7 @@ $this->context->loadResources($this);
 <script type="text/javascript">
 
     var gotoProfile = false;
-    $(document).ready(function () {
+    $(document).on('ready pjax:success', function () {
         // Create a new tour
         var spacesTour = new Tour({
             storage: false,

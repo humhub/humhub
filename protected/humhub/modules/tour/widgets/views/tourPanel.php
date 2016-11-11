@@ -55,7 +55,7 @@ use yii\helpers\Url;
 <?php if ($showWelcome) : ?>
     <script type="text/javascript">
 
-        $(document).ready(function () {
+        $(document).on('ready pjax:success', function () {
 
             $('#globalModal').modal({
                 show: true,

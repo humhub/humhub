@@ -9,7 +9,7 @@ $this->context->loadResources($this);
     var gotoSpace = false;
 
 
-    $(document).ready(function () {
+    $(document).on('ready pjax:success', function () {
         // Create a new tour
         var interfaceTour = new Tour({
             storage: false,

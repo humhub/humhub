@@ -15,7 +15,7 @@ use yii\web\AssetBundle;
  * 
  * @author buddha
  */
-class JqueryColorPickerAsset extends AssetBundle
+class BootstrapColorPickerAsset extends AssetBundle
 {
 
     public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
@@ -23,15 +23,20 @@ class JqueryColorPickerAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@webroot/resources/space/colorpicker';
-
-    /**
-     * @inheritdoc
-     */
-    public $js = ['js/bootstrap-colorpicker-modified.js'];
+    public $basePath = '@webroot';
     
     /**
      * @inheritdoc
      */
-    public $css = ['css/bootstrap-colorpicker.min.css'];
+    public $baseUrl = '@web';
+
+    /**
+     * @inheritdoc
+     */
+    public $js = ['js/colorpicker/js/bootstrap-colorpicker-modified.js'];
+    
+     /**
+     * @inheritdoc
+     */
+    public $css = ['js/colorpicker/css/bootstrap-colorpicker.min.css'];
 }

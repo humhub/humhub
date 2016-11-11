@@ -28,7 +28,8 @@ class Chooser extends Widget
         return $this->render('spaceChooser', [
                     'currentSpace' => $this->getCurrentSpace(),
                     'canCreateSpace' => $this->canCreateSpace(),
-                    'memberships' => $this->getMembershipQuery()->all()
+                    'memberships' => $this->getMembershipQuery()->all(),
+                    'followSpaces' => $this->getFollowSpaces()
         ]);
     }
 
@@ -46,6 +47,14 @@ class Chooser extends Widget
         $query->where(['space_membership.user_id' => Yii::$app->user->id, 'space_membership.status' => Membership::STATUS_MEMBER]);
 
         return $query;
+    }
+    
+    protected function getFollowSpaces()
+    {
+        if(!Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+            return $user->followSpaces;
+        }
     }
 
     protected function canCreateSpace()

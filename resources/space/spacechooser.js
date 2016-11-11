@@ -7,22 +7,7 @@ $(document).ready(function () {
     var chosen = []; // Array for visible space menu entries
     var arrPosition = ""; // Save the current position inside the chosen array
 
-    /**
-     * Open space chooser and load user spaces 
-     */
-    $('#space-menu').click(function () {
 
-        // use setIntervall to setting the focus
-        var spaceFocus = setInterval(setFocus, 10);
-
-        function setFocus() {
-            // set focus
-            $('#space-menu-search').focus();
-            // stop interval
-            clearInterval(spaceFocus);
-        }
-
-    })
 
     /**
      * Show and navigate through spaces depends on user input
@@ -134,7 +119,7 @@ $(document).ready(function () {
 
         //return event.returnValue;
 
-    })
+    });
 
     /**
      * Disable enter key
@@ -153,7 +138,7 @@ $(document).ready(function () {
      */
     $('#space-search-reset').click(function () {
         resetSpaceSearch();
-    })
+    });
 
     /**
      * Reset user input

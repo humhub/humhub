@@ -36,6 +36,6 @@ class HumHubColorPicker extends AssetBundle
     public $js = ['js/humhub/humhub.ui.colorpicker.js'];
     
     
-    public $depends = ['humhub\assets\JqueryColorPickerAsset'];
+    public $depends = ['humhub\assets\BootstrapColorPickerAsset'];
     
 }

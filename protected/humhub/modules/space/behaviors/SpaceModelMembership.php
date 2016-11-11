@@ -147,7 +147,7 @@ class SpaceModelMembership extends Behavior
         if ($userId == "")
             $userId = Yii::$app->user->id;
 
-        if ($this->getSpaceOwner()->id == $userId) {
+        if ($this->owner->created_by == $userId) {
             return true;
         }
 

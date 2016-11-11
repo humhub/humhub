@@ -8,7 +8,7 @@
 humhub.initModule('ui.additions', function (module, require, $) {
 
     var event = require('event');
-    
+
     module.initOnPjaxLoad = false;
 
     var _additions = {};
@@ -27,10 +27,10 @@ humhub.initModule('ui.additions', function (module, require, $) {
         }
 
         _additions[selector].push(addition);
-        
-        // Make sure additions affect elements after humhub:ready
-        if(humhub.initialized) {
-            module.applyTo($('body'));
+
+        // Make sure additions registrated after humhub:ready also affect element
+        if (humhub.initialized) {
+            apply($('body'), selector, addition);
         }
     };
 
@@ -44,6 +44,7 @@ humhub.initModule('ui.additions', function (module, require, $) {
         $.each(_additions, function (selector, additions) {
             $.each(additions, function (i, addition) {
                 try {
+                    apply($element, selector, addition);
                     var $match = $element.find(selector).addBack(selector);
                     addition.apply($match, [$match, $element]);
                 } catch (e) {
@@ -51,6 +52,18 @@ humhub.initModule('ui.additions', function (module, require, $) {
                 }
             });
         });
+    };
+
+    /**
+     * Applies a given addition to all matches of the given $element.
+     * @param {type} $element
+     * @param {type} selector
+     * @param {type} addition
+     * @returns {undefined}
+     */
+    var apply = function ($element, selector, addition) {
+        var $match = $element.find(selector).addBack(selector);
+        addition.apply($match, [$match, $element]);
     };
 
     var init = function () {
@@ -100,12 +113,13 @@ humhub.initModule('ui.additions', function (module, require, $) {
         var $in = (inButton instanceof $) ? inButton : $(inButton);
 
         $out.hide();
-        $in.addClass('animated '+animation).show();
+        $in.addClass('animated ' + animation).show();
     };
 
     module.export({
         init: init,
         applyTo: applyTo,
+        apply: apply,
         registerAddition: registerAddition,
         switchButtons: switchButtons
     });
