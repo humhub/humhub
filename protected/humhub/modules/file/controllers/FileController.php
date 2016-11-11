@@ -35,9 +35,8 @@ class FileController extends \humhub\components\Controller
             ],
             'httpCache' => [
                 'class' => 'yii\filters\HttpCache',
-                'lastModified' => function ($action, $params) {
-                    $q = new \yii\db\Query();
-                    return $q->from('post')->max('updated_at');
+                'etagSeed' => function ($action, $params) {
+                    return serialize([\yii\helpers\Url::current()]);
                 },
             ],
         ];
