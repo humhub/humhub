@@ -32,7 +32,14 @@ class FileController extends \humhub\components\Controller
             'acl' => [
                 'class' => AccessControl::className(),
                 'guestAllowedActions' => ['download']
-            ]
+            ],
+            'httpCache' => [
+                'class' => 'yii\filters\HttpCache',
+                'lastModified' => function ($action, $params) {
+                    $q = new \yii\db\Query();
+                    return $q->from('post')->max('updated_at');
+                },
+            ],
         ];
     }
 
