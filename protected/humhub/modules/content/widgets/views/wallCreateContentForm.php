@@ -82,11 +82,10 @@ use humhub\modules\space\models\Space;
                         var progress = parseInt(data.loaded / data.total * 100, 10);
                         if (progress != 100) {
                             // Fix: remove focus from upload button to hide tooltip
-                            $('#post_submit_button').focus();
-                            // hide form buttons
-                            $('.btn_container').hide();
+                            $('.fileinput-button').blur();
                         }
-                    });</script>
+                    });
+                </script>
 
 
                 <!-- public checkbox -->
