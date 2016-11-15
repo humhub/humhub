@@ -30,7 +30,6 @@ return [
     'Proxy' => '',
     'Settings' => '',
     'Statistics' => '',
-    'User' => '',
     'Users' => '',
     'Spaces' => 'Espacios',
 ];

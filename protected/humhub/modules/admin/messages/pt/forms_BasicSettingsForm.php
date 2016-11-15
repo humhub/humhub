@@ -20,6 +20,7 @@ return [
     'Date input format' => '',
     'Default stream content order' => '',
     'Enable user friendship system' => '',
+    'Horizontal scrolling images on a mobile device' => '',
     'Logo upload' => '',
     'Server Timezone' => '',
     'Show user profile post form on dashboard' => '',

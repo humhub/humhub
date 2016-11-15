@@ -32,7 +32,11 @@ class BaseSidebarItem extends \humhub\components\Widget
      */
     public function process()
     {
-        return $this->render($this->layout, ['content' => $this->run(), 'title' => $this->title]);
+        $content = $this->run();
+        if ($content) {
+            return $this->render($this->layout, ['content' => $content, 'title' => $this->title]);
+        }
+        return;
     }
 
 }

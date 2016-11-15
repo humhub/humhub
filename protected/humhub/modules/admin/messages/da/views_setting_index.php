@@ -19,6 +19,7 @@
 return [
     'Friendship' => '',
     'New users will automatically be added to these space(s).' => '',
+    'Wall entry layout' => '',
     '<strong>Confirm</strong> image deleting' => '<strong>Bekræft</strong> billede sletning',
     'Cancel' => 'Afbryd',
     'Dashboard' => 'Dashboard',

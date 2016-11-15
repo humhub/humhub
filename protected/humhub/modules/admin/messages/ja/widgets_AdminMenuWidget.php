@@ -24,7 +24,6 @@ return [
     'Information' => '',
     'OEmbed' => '',
     'Proxy' => '',
-    'User' => '',
     '<strong>Administration</strong> menu' => '<strong>Administration</strong> 管理メニュー',
     'Caching' => 'キャッシュ',
     'Files' => 'ファイル',

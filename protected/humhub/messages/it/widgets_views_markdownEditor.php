@@ -10,7 +10,7 @@ return array (
   'Image' => 'Immagine',
   'Image/File' => 'Immagine/File',
   'Insert Hyperlink' => 'Inserisci un hyperlink',
-  'Insert Image Hyperlink' => '',
+  'Insert Image Hyperlink' => 'Inserisci un\'immagine con dentro un link',
   'Italic' => 'Corsivo',
   'List' => 'Lista',
   'Please wait while uploading...' => 'Attendere il caricamento...',

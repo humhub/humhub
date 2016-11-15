@@ -20,6 +20,7 @@ return [
     'Date input format' => '',
     'Default stream content order' => '',
     'Enable user friendship system' => '',
+    'Horizontal scrolling images on a mobile device' => '',
     'Sort by creation date' => '',
     'Sort by update date' => '',
     'Base URL' => 'URL adresa',

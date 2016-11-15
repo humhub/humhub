@@ -17,9 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'The url contains illegal characters!' => 'URL содержит недопустимые символы!',
-    'e.g. example for {baseUrl}/s/example' => 'например, для {baseUrl}/s/example',
+    'the default start page of this space for members' => '',
+    'the default start page of this space for visitors' => '',
     'As owner of this space you can transfer this role to another administrator in space.' => 'Вы, как владелец этого пространства, можете передать эту роль другому администратору в пространстве.',
     'Space owner' => 'Владелец пространства',
+    'The url contains illegal characters!' => 'URL содержит недопустимые символы!',
     'Transfer ownership' => 'Передать другому владельцу',
+    'e.g. example for {baseUrl}/s/example' => 'например, для {baseUrl}/s/example',
 ];

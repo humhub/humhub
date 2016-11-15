@@ -18,13 +18,14 @@
  */
 return [
     'Administrators' => '',
-    'Default content visibility' => 'Видимость контента по умолчанию',
+    'Homepage (Guests)' => '',
     'Members' => '',
     'Moderators' => '',
     'Users' => '',
     'Color' => 'Цвет',
     'Created At' => 'Создано в',
     'Created By' => 'Создано',
+    'Default content visibility' => 'Видимость контента по умолчанию',
     'Description' => 'Описание',
     'Homepage' => 'Начальная страница',
     'Join Policy' => 'Регистрационная политика',

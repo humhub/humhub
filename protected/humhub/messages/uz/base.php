@@ -48,7 +48,10 @@ return [
     'Save' => '',
     'Search' => '',
     'Search for users and spaces' => '',
+    'Show more' => '',
     'Space not found!' => '',
+    'The date has to be in the past.' => '',
+    'Unsubscribe' => '',
     'User not found!' => '',
     'Your daily summary' => '',
 ];

@@ -26,6 +26,7 @@ return [
     'Currently in use' => '',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => '',
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '',
+    'You\'re not registered.' => '',
     'Your new password must not equal your current password!' => '',
     'or' => '',
     'Confirm new password' => 'Yeni şifreyi onayla',
