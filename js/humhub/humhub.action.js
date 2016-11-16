@@ -255,6 +255,28 @@ humhub.initModule('action', function (module, require, $) {
     };
     
     /**
+     * data-action-click-url vs data-action-url-click
+     * data-action-click-block vs data-action-block-click
+     * @param {type} $trigger
+     * @param {type} name
+     * @param {type} def
+     * @returns {unresolved}
+     */
+    ActionBinding.prototype.data = function($trigger, name, def) {
+        var result = $trigger.data('action-'+this.eventType+'-'+name);
+        
+        if(!result) {
+            result = $trigger.data('action-'+name);
+        }
+        
+        return result || def;
+    };
+    
+    ActionBinding.prototype.getUrl = function($trigger) {
+        return this.data($trigger, 'url');
+    };
+    
+    /**
      * Checks if the trigger should be blocked before running the action.
      * 
      * @param {type} $trigger
@@ -272,16 +294,15 @@ humhub.initModule('action', function (module, require, $) {
      * @returns {Boolean}
      */
     ActionBinding.prototype.isBlockType = function($trigger, type) {
-        var blockTypeData = $trigger.data('action-block-' + this.eventType);
+        var defaultBlockType = (this.isSubmit($trigger) || this.getUrl($trigger))  ? BLOCK_ASYNC : BLOCK_SYNC;
+        var blockType = this.data($trigger, 'block', defaultBlockType);
         
-        if(blockTypeData) {
-            return blockTypeData === type;
-        } if($trigger.data('action-block')) {
-            return $trigger.data('action-block') !== type;
-        } else {
-            return type === BLOCK_ASYNC;
-        } 
+        return type === blockType;
     };
+    
+    ActionBinding.prototype.isSubmit = function($trigger) {
+        return $trigger.is(':submit') || this.data('action-submit');
+    }
     
     /**
      * Checks if $trigger is currently blocked.
@@ -290,7 +311,7 @@ humhub.initModule('action', function (module, require, $) {
      * @returns {unresolved}
      */
     ActionBinding.prototype.isBlocked = function($trigger) {
-        return $trigger.data('action-blocked-' + this.eventType);
+        return this.data($trigger, 'blocked');
     };
     
     /**
@@ -300,7 +321,11 @@ humhub.initModule('action', function (module, require, $) {
      * @returns {undefined}
      */
     ActionBinding.prototype.block = function($trigger) {
-        $trigger.data('action-blocked-' + this.eventType, true);
+        $trigger.data('action-'+this.eventType+'-blocked', true);
+    };
+    
+    ActionBinding.prototype.unblock = function($trigger) {
+        $trigger.data('action-'+this.eventType+'-blocked', false);
     };
 
     ActionBinding.prototype.createActionEvent = function (evt, $trigger) {
@@ -310,23 +335,24 @@ humhub.initModule('action', function (module, require, $) {
         // Add some additional action related data to our event.
         event.$trigger = $trigger;
 
-        event.$target = $trigger.data('action-target') ? $trigger.data('action-target') : $trigger;
+        event.$target = this.data($trigger, 'target', $trigger);
 
         // If the trigger contains an url setting we add it to the event object, and prefer the typed url over the global data-action-url
-        event.url = $trigger.data('action-' + this.eventType + '-url') || $trigger.data('action-url');
-        event.params = $trigger.data('action-' + this.eventType + '-params') || $trigger.data('action-params') || {};
+        event.url = this.data($trigger, 'url');
+        event.params = this.data($trigger, 'params', {});
 
         //Get the handler id, either a stand alone handler or a content handler function e.g: 'edit' 
         event.handler = $trigger.data('action' + '-' + this.eventType);
 
-        if ($trigger.is(':submit') || $trigger.data('action-submit')) {
+        if (this.isSubmit($trigger)) {
             event.$form = $trigger.closest('form');
         }
 
+        var that = this;
         var eventType = this.eventType;
         event.finish = function () {
             _removeLoaderFromEventTarget(evt);
-            $trigger.data('action-blocked-' + eventType, false);
+            that.unblock($trigger);
         };
 
         return event;

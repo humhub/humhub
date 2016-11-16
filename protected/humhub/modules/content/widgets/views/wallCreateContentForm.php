@@ -56,7 +56,7 @@ use humhub\modules\space\models\Space;
             <hr>
 
             <div class="btn_container">
-                <button id="post_submit_button" data-action-click="submit" data-ui-loader class="btn btn-info">
+                <button id="post_submit_button" data-action-click="submit" data-action-submit data-ui-loader class="btn btn-info">
                     <?= $submitButtonText ?>
                 </button>
  

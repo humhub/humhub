@@ -44,7 +44,7 @@ humhub.initModule('content.form', function (module, require, $) {
         this.$.find("#contentFormError li").remove();
         
         var that = this;
-        client.submit(this.getForm(), {url: evt.url}, evt).then(function (response) {
+        client.submit(evt).then(function (response) {
             if (!response.errors) {
                 event.trigger('humhub:modules:content:newEntry', response.output);
                 that.resetForm();

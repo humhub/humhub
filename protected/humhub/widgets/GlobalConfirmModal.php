@@ -30,7 +30,8 @@ class GlobalConfirmModal extends \yii\base\Widget
             'backdrop' => false,
             'keyboard' => false,
             'animation' => 'pulse',
-            'footer' => '<button data-modal-cancel data-modal-close class="btn btn-primary"></button><button data-modal-confirm data-modal-close class="btn btn-primary"></button>'
+            'initialLoader' => false,
+            'footer' => '<button data-modal-cancel data-modal-close class="btn btn-default"></button><button data-modal-confirm data-modal-close class="btn btn-primary"></button>'
         ]);
     }
 

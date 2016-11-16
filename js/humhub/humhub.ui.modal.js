@@ -16,9 +16,10 @@
  * @param {type} param2
  */
 humhub.initModule('ui.modal', function (module, require, $) {
-    var object = require('util').object;
+    var util = require('util');
+    var object = util.object;
+    var string = util.string;
     var additions = require('ui.additions');
-    var config = require('config').module(module);
     var loader = require('ui.loader');
     var client = require('client', true);
 
@@ -35,6 +36,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
         container: '<div class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; background:rgba(0,0,0,0.1)"><div class="modal-dialog"><div class="modal-content"></div></div></div>',
         header: '<div class="modal-header"><button type="button" class="close" data-modal-close="true" aria-hidden="true">×</button><h4 class="modal-title"></h4></div>',
         body: '<div class="modal-body"></div>',
+        footer: '<div class="modal-footer"></div>',
     };
 
     var ERROR_DEFAULT_TITLE = 'Error';
@@ -47,13 +49,20 @@ humhub.initModule('ui.modal', function (module, require, $) {
      * 
      * @param {string} id - id of the modal
      */
-    var Modal = function (id) {
-        this.$ = $('#' + id);
+    var Modal = function (id, options) {
+        options = options || {};
+        var selector = string.startsWith(id, '#') ? id : '#' + id;
+        this.$ = $(selector);
+
         if (!this.$.length) {
             this.createModal(id);
+            this.reset();
         }
-        this.initModal();
+
+        this.initModal(options);
         modals.push(this);
+
+        return this;
     };
 
     /**
@@ -70,20 +79,19 @@ humhub.initModule('ui.modal', function (module, require, $) {
      * Initializes default modal events and sets initial data.
      * @returns {undefined}
      */
-    Modal.prototype.initModal = function () {
-        //Set the loader as default content
-        this.reset();
+    Modal.prototype.initModal = function (options) {
         var that = this;
 
         //Set default modal manipulation event handlers
-        this.getDialog().on('click', '[data-modal-close]', function () {
+        this.$.on('click', '[data-modal-close]', function () {
             that.close();
         }).on('click', '[data-modal-clear-error]', function () {
             that.clearErrorMessage();
         });
 
-        this.$.attr('aria-labelledby', this.getTitleId());
+        this.setOptions(options);
 
+        this.$.attr('aria-labelledby', this.getTitleId());
     };
 
     Modal.prototype.getTitleId = function () {
@@ -132,25 +140,40 @@ humhub.initModule('ui.modal', function (module, require, $) {
      * @param {function} callback - callback function is called after html was inserted
      * @returns {undefined}
      */
-    Modal.prototype.content = function (content, callback) {
-        try {
-            var that = this;
-            this.clearErrorMessage();
-            this.getContent().html(content).promise().always(function () {
+    Modal.prototype.setContent = function (content, callback) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            // TODO: assure content order header/content/footer
+            try {
+                that.clearErrorMessage();
+                that.getContent().html(content).promise().always(function () {
+                    that.applyAdditions();
+                });
+                that.isFilled = true;
+                resolve(that);
+            } catch (err) {
+                that.setErrorMessage(err.message);
+                // We try to apply additions anyway
                 that.applyAdditions();
-                !callback || callback(this.$);
-            });
-            this.isFilled = true;
-        } catch (err) {
-            console.error('Error while setting modal content', err);
-            this.setErrorMessage(err.message);
-            // We try to apply additions anyway
-            that.applyAdditions();
-        }
+                reject(err);
+            }
+        });
+
     };
 
     Modal.prototype.applyAdditions = function () {
         additions.applyTo(this.getContent());
+    };
+
+    Modal.prototype.load = function (url, cfg, originalEvent) {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            that.loader();
+            client.html(url, cfg, originalEvent).then(function (response) {
+                that.setDialog(response.html);
+                resolve(response);
+            }).catch(reject);
+        });
     };
 
     /**
@@ -174,7 +197,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
         //If there is no content yet we create an error only content
         if (!this.isFilled) {
             this.clear();
-            this.setTitle(title);
+            this.setHeader(title);
             this.setBody('');
             this.setErrorMessage(message);
             this.show();
@@ -227,7 +250,11 @@ humhub.initModule('ui.modal', function (module, require, $) {
      */
     Modal.prototype.show = function () {
         if (!this.$.is(':visible')) {
-            this.$.modal('show');
+            if (!this.$.data('bs.modal')) {
+                this.$.modal(this.options);
+            } else {
+                this.$.modal('show');
+            }
         }
     };
 
@@ -277,7 +304,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
      * @param {type} title
      * @returns {undefined}
      */
-    Modal.prototype.setTitle = function (title) {
+    Modal.prototype.setHeader = function (title) {
         var $header = this.getHeader();
         if (!$header.length) {
             $header = $(module.template.header);
@@ -286,6 +313,42 @@ humhub.initModule('ui.modal', function (module, require, $) {
 
         // Set title id for aria-labelledby
         $header.find('.modal-title').attr('id', this.getTitleId()).html(title);
+    };
+
+    Modal.prototype.setFooter = function (footer) {
+        var $footer = this.getFooter();
+        if (!$footer.length) {
+            $footer = $(module.template.footer);
+            this.getContent().append($footer);
+        }
+
+        $footer.html(footer);
+    };
+
+    Modal.prototype.setOptions = function (options) {
+        this.options = options;
+
+        if (this.options.header) {
+            this.setHeader(this.options.header);
+        }
+
+        if (this.options.body) {
+            this.setBody(this.options.body);
+        }
+
+        if (this.options.content) {
+            this.setContent(this.options.content);
+        }
+
+        if (this.options.footer) {
+            this.setFooter(this.options.footer);
+        }
+
+        if (this.$.data('bs.modal')) {
+            this.$.data('bs.modal').options = this.options;
+        }
+
+        return this;
     };
 
     /**
@@ -304,16 +367,17 @@ humhub.initModule('ui.modal', function (module, require, $) {
     Modal.prototype.setBody = function (content) {
         var $body = this.getBody();
         if (!$body.length) {
-            this.getContent().append($(module.template.body));
+            this.setContent($(module.template.body));
             $body = this.getBody();
         }
         $body.html(content);
     };
 
-    Modal.prototype.replaceWith = function (content) {
+    Modal.prototype.setDialog = function (content) {
         this.$.empty().append(content);
         this.$.find('input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
         this.applyAdditions();
+        return this;
     };
 
     /**
@@ -335,20 +399,19 @@ humhub.initModule('ui.modal', function (module, require, $) {
         return new Promise(function (resolve, reject) {
             cfg = cfg || {};
 
-            cfg.confirm = resolve;
+            cfg.handler = resolve;
             cfg.reject = reject;
 
             that.clear();
-            cfg['header'] = cfg['header'] || config['defaultConfirmHeader'];
-            cfg['body'] = cfg['body'] || config['defaultConfirmBody'];
-            cfg['confirmText'] = cfg['confirmText'] || config['defaultConfirmText'];
-            cfg['cancleText'] = cfg['cancleText'] || config['defaultCancelText'];
-            that.setTitle(cfg['header']);
+            cfg['header'] = cfg['header'] || module.config.defaultConfirmHeader;
+            cfg['body'] = cfg['body'] || module.config.defaultConfirmBody;
+            cfg['confirmText'] = cfg['confirmText'] || module.config.defaultConfirmText;
+            cfg['cancelText'] = cfg['cancelText'] || module.config.defaultCancelText;
+            that.setHeader(cfg['header']);
             that.setBody(cfg['body']);
             that.initButtons(cfg);
             that.show();
         });
-
     };
 
     ConfirmModal.prototype.clear = function (cfg) {
@@ -359,35 +422,35 @@ humhub.initModule('ui.modal', function (module, require, $) {
     ConfirmModal.prototype.initButtons = function (cfg) {
         //Set button text
         var $cancelButton = this.$.find('[data-modal-cancel]');
-        $cancelButton.text(cfg['cancleText']);
+        $cancelButton.text(cfg['cancelText']);
 
         var $confirmButton = this.$.find('[data-modal-confirm]');
         $confirmButton.text(cfg['confirmText']);
 
         //Init handler
         var that = this;
-        if (cfg['confirm']) {
+        if (cfg['handler']) {
             $confirmButton.one('click', function (evt) {
                 that.clear();
-                cfg['confirm'](evt);
+                cfg['handler'](true);
             });
         }
 
-        if (cfg['cancel']) {
+        if (cfg['handler']) {
             $cancelButton.one('click', function (evt) {
                 that.clear();
-                cfg['cancel'](evt);
+                cfg['handler'](false);
             });
         }
     };
 
     var init = function () {
-        module.global = new Modal('globalModal');
+        module.global = new Modal('#globalModal');
         module.global.$.on('hidden.bs.modal', function (e) {
             module.global.reset();
         });
 
-        module.globalConfirm = new ConfirmModal('globalModalConfirm');
+        module.globalConfirm = new ConfirmModal('#globalModalConfirm');
         module.confirm = function (cfg) {
             return module.globalConfirm.open(cfg);
         };
@@ -400,11 +463,11 @@ humhub.initModule('ui.modal', function (module, require, $) {
         });
 
         $(document).on('shown.bs.modal', '.modal.in', function (event) {
-             _setModalsAndBackdropsOrder();
+            _setModalsAndBackdropsOrder();
         });
 
         $(document).on('hidden.bs.modal', '.modal', function (event) {
-             _setModalsAndBackdropsOrder();
+            _setModalsAndBackdropsOrder();
         });
     };
 
@@ -470,7 +533,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
             var target = $(this).attr("href");
 
             client.html(target).then(function (response) {
-                module.global.replaceWith(response.html);
+                module.global.setDialog(response.html);
                 if (!module.global.$.is(':visible')) {
                     module.global.show();
                 }
@@ -483,25 +546,32 @@ humhub.initModule('ui.modal', function (module, require, $) {
     var submit = function (evt) {
         evt.$form = evt.$form || evt.$trigger.closest('form');
         client.submit(evt, {'dataType': 'html'}).then(function (response) {
-            module.global.replaceWith(response.html);
+            module.global.setDialog(response.html);
         }).catch(function (error) {
             module.log.error(error, true);
         });
     };
 
-    var get = function (evt) {
-        client.html(evt).then(function (response) {
-            module.global.replaceWith(response.html);
-        }).catch(function (error) {
-            module.log.error(error, true);
+    var load = function (evt) {
+        module.global.load(evt).catch(function(err) {
+            module.log.error(err, true);
         });
-    }
+    };
+
+    var get = function (id, options) {
+        var modal = !(modals[id]) ? new Modal(id) : modals[id];
+        if (options) {
+            modal.setOptions(options);
+        }
+        return modal;
+    };
 
     module.export({
         init: init,
         Modal: Modal,
-        template: template,
         get: get,
+        template: template,
+        load: load,
         submit: submit
     });
 });

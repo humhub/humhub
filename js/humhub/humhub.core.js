@@ -93,6 +93,12 @@ var humhub = humhub || (function($) {
     var initModule = function(id, module) {
         //Create module in the namespace and add helper functions
         var instance = resolveNameSpace(id, true);
+        
+        // Do not register modules twice!
+        if(instance.id) {
+            return;
+        }
+        
         instance.id = 'humhub.modules.'+_cutModulePrefix(id);
         instance.require = require;
         instance.initOnPjaxLoad = true;

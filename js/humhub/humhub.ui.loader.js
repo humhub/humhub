@@ -97,8 +97,16 @@ humhub.initModule('ui.loader', function (module, require, $) {
         if (cfg['position']) {
             if (cfg['position'] === 'left') {
                 $result.find('.sk-spinner').css('margin', '0');
+            } else if(cfg['position'] === 'right') {
+                $result.find('.sk-spinner').css('margin', '0').addClass('pull-right');
+                $result.addClass('clearfix');
             }
-            $result.css(cfg['css']);
+        }
+        
+        if (cfg['itemCss']) {
+            $result.find('.sk-bounce1').css(cfg['itemCss']);
+            $result.find('.sk-bounce2').css(cfg['itemCss']);
+            $result.find('.sk-bounce3').css(cfg['itemCss']);
         }
 
         if (cfg['size']) {

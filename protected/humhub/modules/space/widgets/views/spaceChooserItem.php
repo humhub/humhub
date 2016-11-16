@@ -20,7 +20,7 @@ use humhub\libs\Helpers;
                 <strong class="space-name"><?php echo Html::encode($space->name); ?></strong>
                 <?= $badge ?>
                 <?php if ($updateCount > 0): ?>
-                    <div class="badge badge-space pull-right tt" title="<?= Yii::t('SpaceModule.widgets_views_spaceChooserItem', 'New entries') ?>">
+                    <div class="badge badge-space pull-right tt" title="<?= Yii::t('SpaceModule.widgets_views_spaceChooserItem', '{n,plural,=1{# new entry} other{# new entries}} since your last visit', ['n' => $updateCount]); ?>">
                         <?= $updateCount; ?>
                     </div>
                 <?php endif; ?>

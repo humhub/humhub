@@ -51,10 +51,10 @@ class SpaceChooserItem extends Widget
         }*/
         
         if($this->isMember) {
-            $badge = '<i class="fa fa-users badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_views_spaceChooserItem', 'Member') . '" aria-hidden="true"></i>';
+            $badge = '<i class="fa fa-users badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_spaceChooserItem', 'You are a member of this space') . '" aria-hidden="true"></i>';
             $data = 'data-space-member';
         } else if($this->isFollowing) {
-            $badge = '<i class="fa fa-star badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_views_spaceChooserItem', 'Following') . '" aria-hidden="true"></i>';
+            $badge = '<i class="fa fa-star badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_spaceChooserItem', 'You are following this space') . '" aria-hidden="true"></i>';
             $data = 'data-space-following';
         } else {
             $data = 'data-space-none';
