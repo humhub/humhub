@@ -108,7 +108,7 @@ humhub.initModule('ui.additions', function (module, require, $) {
     };
 
     var switchButtons = function (outButton, inButton, animation) {
-        var animation = animation || 'bounceIn';
+        animation = animation || 'bounceIn';
         var $out = (outButton instanceof $) ? outButton : $(outButton);
         var $in = (inButton instanceof $) ? inButton : $(inButton);
 

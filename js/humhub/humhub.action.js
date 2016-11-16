@@ -301,8 +301,8 @@ humhub.initModule('action', function (module, require, $) {
     };
     
     ActionBinding.prototype.isSubmit = function($trigger) {
-        return $trigger.is(':submit') || this.data('action-submit');
-    }
+        return $trigger.is(':submit') || $trigger.data('action-submit');
+    };
     
     /**
      * Checks if $trigger is currently blocked.
