@@ -124,7 +124,6 @@ class UserPicker extends \yii\base\Widget
      */
     public function run()
     {
-
         // Try to get current field value, when model & attribute attributes are specified.
         $currentValue = "";
         if ($this->model != null && $this->attribute != null) {
@@ -268,11 +267,14 @@ class UserPicker extends \yii\base\Widget
         
         $priority = ($priority == null) ? 0 : $priority;
         
+        $text = Html::encode($user->displayName);
         $userInfo = [];
         $userInfo['id'] = $user->id;
         $userInfo['guid'] = $user->guid;
         $userInfo['disabled'] = $disabled;
-        $userInfo['displayName'] = Html::encode($user->displayName);
+        // Deprecated since v1.2 used by old user picker implementation...
+        $userInfo['displayName'] = $text;
+        $userInfo['text'] = $text;
         $userInfo['image'] = $user->getProfileImage()->getUrl();
         $userInfo['priority'] = $priority;
         $userInfo['link'] = $user->getUrl();

@@ -39,6 +39,12 @@ Please see the following file for 1.2 changes (at the buttom):
 
 - Use data-ui-gallery instead of old data-toggle and data-gallery
 
+### Other files to check for changes: 
+
+- see modules/like/widget/views/likeLink.php (Use of new api)
+- see modules/admin/views/setting/design.php (Use of new api)
+
+
 ## Migrate to 1.1
 
 - Make sure to update your themed less file with the latest version.

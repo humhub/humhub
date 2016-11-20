@@ -89,23 +89,18 @@ humhub.initModule('action', function (module, require, $) {
     };
 
     /**
-     * Handles the given componentAction event. The event should provide the following properties:
+     * Thes method will search for a sorrounding component and try to execute
+     * the event handler action on this component.
+     * 
+     * If no component is found or the component does not provide the action handler
+     * we'll return false else true.
      * 
      * @param {object} event - event object
-     * @returns {Boolean} true if the componentAction could be executed else false
+     * @returns {Boolean} true if the component action could be executed else false
      */
     Component.handleAction = function (event) {
-
         var component = Component.getInstance(event.$target);
-
-        if (component) {
-            //Check if the content instance provides this actionhandler
-            if (event.handler && component[event.handler]) {
-                component[event.handler](event);
-                return true;
-            }
-        }
-        return false;
+        return (component) ? _executeAction(component, event.handler, event) : false;
     };
 
     /**
@@ -178,13 +173,26 @@ humhub.initModule('action', function (module, require, $) {
     /**
      * Handles an action event for the given $trigger node.
      * 
-     * This handler searches for a valid handler, by checking the following handler types in the given order:
+     * This handler searches for a valid action handler, by checking the following handler types in the given order:
      * 
      *  - Direct-ActionHandler is called if a directHandler was given when binding the action.
      *  - Component-ActionHandler is called if $trigger is part of a component and the component handler can be resolved
      *  - Global-ActionHandler is called if we find a handler in the _handler array. See registerHandler
      *  - Namespace-ActionHandler is called if we can resolve an action by namespace e.g: data-action-click="myModule.myAction"
+     * 
+     * Once triggered the handler can be blocked to prevent multiple click events. The block logic can be configured by setting
+     * the data-action-block or more specific data-action-<eventType>-block on the $trigger node. The following block values are available:
+     * 
+     *  - 'none': No blocking at all
+     *  - 'sync': Synchronous blocking, the block will be removed after the actionhandler was executed.
+     *  - 'async': Asynchronous the block has to be manually removed by calling event.finish.
      *  
+     *  If the action is provided with an url or is an submit action (data-action-submit or type="submit") the block value is set to 'async' by default,
+     *  otherwise its set to 'sync'.
+     *  
+     *  Note: When using humhub.modules.client for submitting a form or sending a request and providing the action event, the event.finish will be
+     *  called for you after we receive you response, so you do not have to call it manually.
+     *
      * Once triggered the handler will block the event for this actionbinding until the actionevents .finish is called.
      * This is used to prevent multiple triggering of actions. This behaviour can be disabled by setting:
      * 
@@ -200,6 +208,7 @@ humhub.initModule('action', function (module, require, $) {
         }
         
         if (this.isBlocked($trigger)) {
+            module.log.warn('Blocked action execution ',$trigger);
             return;
         }
         
@@ -230,13 +239,10 @@ humhub.initModule('action', function (module, require, $) {
             }
 
             // As last resort we try to call the action by namespace for handlers like humhub.modules.myModule.myAction
-            var splittedNS = event.handler.split('.');
-            var handlerAction = splittedNS[splittedNS.length - 1];
+            var handlerAction = event.handler.split('.').pop();
             var target = require(string.cutsuffix(event.handler, '.' + handlerAction));
 
-            if (object.isFunction(target[handlerAction])) {
-                target[handlerAction](event);
-            } else {
+            if(!_executeAction(target, handlerAction, event)) {
                 module.log.error('actionHandlerNotFound', event.handler, true);
             }
         } catch (e) {
@@ -252,6 +258,21 @@ humhub.initModule('action', function (module, require, $) {
                 event.finish();
             }
         }
+    };
+    
+    var _executeAction = function(target, handlerAction, event) {
+        // first try actionMyhandler
+        var handlerCapitalized = 'action'+string.capitalize(handlerAction);
+        if(object.isFunction(target[handlerCapitalized])) {
+            handlerAction = handlerCapitalized;
+        }
+        
+        if(object.isFunction(target[handlerAction])) {
+            target[handlerAction](event);
+            return true;
+        }
+        
+        return false;
     };
     
     /**
@@ -301,7 +322,7 @@ humhub.initModule('action', function (module, require, $) {
     };
     
     ActionBinding.prototype.isSubmit = function($trigger) {
-        return $trigger.is(':submit') || $trigger.data('action-submit');
+        return $trigger.is('[type="submit"]') || object.isDefined($trigger.data('action-submit'));
     };
     
     /**
@@ -335,7 +356,7 @@ humhub.initModule('action', function (module, require, $) {
         // Add some additional action related data to our event.
         event.$trigger = $trigger;
 
-        event.$target = this.data($trigger, 'target', $trigger);
+        event.$target = $(this.data($trigger, 'target', $trigger)); 
 
         // If the trigger contains an url setting we add it to the event object, and prefer the typed url over the global data-action-url
         event.url = this.data($trigger, 'url');
@@ -400,11 +421,10 @@ humhub.initModule('action', function (module, require, $) {
 
         $parent.off(actionEvent).on(actionEvent, selector, function (evt) {
             evt.preventDefault();
-            // Get sure we don't call the handler twice if the event was already handled by trigger.
-            if ($(this).data('action-' + actionBinding.event)
-                    || (evt.originalEvent && evt.originalEvent.actionHandled)) {
-                module.log.info('Blocked action event ' + actionEvent, actionBinding);
-                module.log.info('Blocked event triggered by', $(this));
+            // Get sure we don't call the handler twice if the event was already handled by the handler attached to trigger.
+            if ($(this).data('action-' + actionBinding.event) || (evt.originalEvent && evt.originalEvent.actionHandled)) {
+                module.log.debug('Action Handler already executed ' + actionEvent, actionBinding);
+                module.log.debug('Handler event triggered by', $(this));
                 return;
             }
 

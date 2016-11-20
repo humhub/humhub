@@ -85,6 +85,7 @@ class AppAsset extends AssetBundle
         'humhub\assets\AnimateCssAsset',
         'humhub\assets\CoreApiAsset',
         'humhub\modules\content\assets\ContentAsset',
+        'humhub\modules\user\assets\UserPickerAsset',
         'humhub\assets\NProgressAsset',
         'humhub\assets\IE9FixesAsset',
         'humhub\assets\IEFixesAsset',

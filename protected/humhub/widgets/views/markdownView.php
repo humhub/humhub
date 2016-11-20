@@ -1,6 +1,6 @@
 <?php
-$this->registerJsFile('@web/resources/highlight.js/highlight.pack.js', ['position' => yii\web\View::POS_BEGIN]);
-$this->registerCssFile('@web/resources/highlight.js/styles/' . $highlightJsCss . '.css');
+$this->registerJsFile('@web/resources/js/highlight.js/highlight.pack.js', ['position' => yii\web\View::POS_BEGIN]);
+$this->registerCssFile('@web/resources/js/highlight.js/styles/' . $highlightJsCss . '.css');
 ?>
 <div class="markdown-render">
     <?php echo $content; ?>

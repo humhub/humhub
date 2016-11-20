@@ -8,7 +8,7 @@
  */
 var humhub = humhub || (function($) {
     /**
-     * Contains all modules by namespace e.g. modules.ui.modal
+     * Contains the modules namespace e.g. modules.ui.modal
      * @type object
      */
     var modules = {};
@@ -32,13 +32,6 @@ var humhub = humhub || (function($) {
      */
     var pjaxInitModules = [];
     
-    
-    /**
-     * Is set wehen document is ready
-     * @type Boolean
-     */
-    var initialized = false;
-    
     /**
      * Adds a module to the namespace. And initializes after dom is ready.
      * 
@@ -55,7 +48,7 @@ var humhub = humhub || (function($) {
      * This would create an empty ui namespace (if not already created before) and 
      * initializes the given module. 
      * 
-     * The module can export functions ans properties by
+     * The module can export functions and properties by
      * using either 
      * 
      * module.myFunction = function() {...} 
@@ -68,23 +61,27 @@ var humhub = humhub || (function($) {
      *  ...
      * });
      * 
-     * The export function can be called as often as needed (but should be called
-     * once at the end of the module).
-     * A module can provide an init function, which is called automatically 
-     * after the document is ready.
+     * The export function can be called as often as needed (but should be called once at the end of the module).
+     * 
+     * A module can provide an init function, which is called automatically  after the document is ready.
      * 
      * Dependencies:
      * 
      * The core modules are initialized in a specific order to provide the needed
      * dependencies for each module. The order is given by the order of initModule calls
-     * and in case of core modules configured in the build script. 
+     * and in case of core modules configured in the API's AssetBundle. 
      * 
-     * A module can be received by using the required function within a module bock.
-     * You can either depend on a module at initialisation time or within your functions.
+     * A module can be received by using the required function within a module function.
+     * You can either depend on a module at initialisation time or within your functions or
+     * use the lazy flag of the require function.
      * 
      * Usage:
      * 
-     * var modal = require('ui.modal);
+     * var modal = require('ui.modal');
+     * 
+     * or lazy require
+     * 
+     * var modal = require('ui.modal', true);
      * 
      * @param {type} id the namespaced id
      * @param {type} module
@@ -139,7 +136,8 @@ var humhub = humhub || (function($) {
     };
     
     /**
-     * Returns a module by its namespace e.g:
+     * This function is used to resolve namespaces for receiving module instances
+     * or classes.
      * 
      * For the module humhub.modules.ui.modal you can search:
      * 
@@ -162,8 +160,8 @@ var humhub = humhub || (function($) {
     };
     
     /**
-     * Search the given module namespace, and creates the given namespace
-     * if init = true.
+     * Search the given namespace, and creates the namespace if init = true.
+     * 
      * @param {type} typePath the searched module namespace
      * @param {Boolean} init - if set to true, creates namespaces if not already present
      * @returns object - the given module
@@ -376,4 +374,4 @@ var humhub = humhub || (function($) {
         config: config,
         event: event,
     };
-})($);
+})(jQuery);

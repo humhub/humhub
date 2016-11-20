@@ -72,9 +72,7 @@ class AddGroupMemberForm extends \yii\base\Model
             throw new \yii\web\HttpException(404, Yii::t('AdminModule.models_form_AddGroupMemberForm', 'Group not found!'));
         }
         
-        $userGuids = explode(",", $this->userGuids);
-        
-        foreach ($userGuids as $userGuid) {
+        foreach ($this->userGuids as $userGuid) {
             $user = User::findIdentityByAccessToken($userGuid);
             if($user != null) {
                $group->addUser($user); 

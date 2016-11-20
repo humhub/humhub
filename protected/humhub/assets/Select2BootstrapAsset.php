@@ -21,12 +21,17 @@ class Select2BootstrapAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/select2-bootstrap-theme';
+    public $basePath = '@webroot';
     
     /**
      * @inheritdoc
      */
-    public $css = ['dist/select2-bootstrap.css'];
+    public $baseUrl = '@web';
+    
+    /**
+     * @inheritdoc
+     */
+    public $css = ['resources/css/select2Theme/select2-humhub.css'];
     
     /**
      *

@@ -8,7 +8,7 @@ use humhub\modules\space\widgets\SpaceChooserItem;
 
 \humhub\modules\space\assets\SpaceChooserAsset::register($this);
 
-$noSpaceView = '<i class="fa fa-dot-circle-o"></i><br>' . Yii::t('SpaceModule.widgets_views_spaceChooser', 'My spaces') . '<b class="caret"></b>';
+$noSpaceView = '<div class="no-space"><i class="fa fa-dot-circle-o"></i><br>' . Yii::t('SpaceModule.widgets_views_spaceChooser', 'My spaces') . '<b class="caret"></b></div>';
 
 $this->registerJsConfig('space.chooser', [
     'noSpace' => $noSpaceView,

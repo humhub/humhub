@@ -21,8 +21,18 @@ class CoreJsConfig extends Widget
 
     public function run()
     {
+        
+        $userConfig = ['isGuest' => Yii::$app->user->isGuest];
+        if(!Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+            $userConfig['guid'] = $user->displayName;
+            $userConfig['displayName'] = \yii\helpers\Html::encode($user->displayName);
+            $userConfig['image'] = $user->getProfileImage()->getUrl();
+        }
+        
         $this->getView()->registerJsConfig(
             [
+                'user' => $userConfig,
                 'action' => [
                     'text' => [
                         'actionHandlerNotFound' => Yii::t('base', 'An error occured while handling your last action. (Handler not found).'),
@@ -52,7 +62,14 @@ class CoreJsConfig extends Widget
                         'showMore' => Yii::t('base', 'Show more'),
                         'showLess' => Yii::t('base', 'Show less')
                     ]
-                ]
+                ],
+                'ui.picker' => [
+                    'text' => [
+                        'error.loadingResult' => Yii::t('base', 'An unexpected error occured while loading the search result.'),
+                        'showMore' => Yii::t('base', 'Show more'),
+                    ]
+                ],
+                
         ]);
     }
 

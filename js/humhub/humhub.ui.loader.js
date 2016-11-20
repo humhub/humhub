@@ -37,6 +37,7 @@ humhub.initModule('ui.loader', function (module, require, $) {
             });
 
         }
+        return $node;
     };
 
     var append = function (node, cfg) {

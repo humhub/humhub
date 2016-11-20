@@ -547,13 +547,16 @@ humhub.initModule('ui.modal', function (module, require, $) {
         evt.$form = evt.$form || evt.$trigger.closest('form');
         client.submit(evt, {'dataType': 'html'}).then(function (response) {
             module.global.setDialog(response.html);
+            if (!module.global.$.is(':visible')) {
+                module.global.show();
+            }
         }).catch(function (error) {
             module.log.error(error, true);
         });
     };
 
     var load = function (evt) {
-        module.global.load(evt).catch(function(err) {
+        module.global.load(evt).catch(function (err) {
             module.log.error(err, true);
         });
     };

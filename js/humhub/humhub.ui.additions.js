@@ -77,7 +77,7 @@ humhub.initModule('ui.additions', function (module, require, $) {
         });
 
         // Show tooltips on elements
-        this.registerAddition('.tt', function ($match) {
+       this.registerAddition('.tt', function ($match) {
             $match.tooltip({
                 html: false,
                 container: 'body'
@@ -107,12 +107,17 @@ humhub.initModule('ui.additions', function (module, require, $) {
         //TODO: apply to html on startup, the problem is this could crash legacy code.
     };
 
-    var switchButtons = function (outButton, inButton, animation) {
-        animation = animation || 'bounceIn';
+    var switchButtons = function (outButton, inButton, cfg) {
+        cfg = cfg || {};
+        var animation = cfg.animation || 'bounceIn';
         var $out = (outButton instanceof $) ? outButton : $(outButton);
         var $in = (inButton instanceof $) ? inButton : $(inButton);
 
         $out.hide();
+        if(cfg.remove) {
+            $out.remove();
+        }
+        
         $in.addClass('animated ' + animation).show();
     };
 

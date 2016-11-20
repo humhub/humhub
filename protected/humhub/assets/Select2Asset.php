@@ -28,7 +28,7 @@ class Select2Asset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $js = ['dist/js/select2.min.js'];
+    public $js = ['dist/js/select2.full.js'];
     
     /**
      * @inheritdoc
@@ -36,7 +36,9 @@ class Select2Asset extends AssetBundle
     public $css = ['dist/css/select2.min.css'];
     
     public $depends = [
-        'humhub\assets\AppAsset'
+        'yii\web\JqueryAsset',
+        
+        'yii\bootstrap\BootstrapAsset'
     ];
-
+  
 }

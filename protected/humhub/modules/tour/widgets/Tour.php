@@ -61,8 +61,8 @@ class Tour extends \humhub\components\Widget
      */
     public function loadResources(\yii\web\View $view)
     {
-        $view->registerJsFile('@web/resources/tour/bootstrap-tour.min.js');
-        $view->registerCssFile('@web/resources/tour/bootstrap-tour.min.css');
+        $view->registerJsFile('@web/resources/js/tour/bootstrap-tour.min.js');
+        $view->registerCssFile('@web/resources/js/tour/bootstrap-tour.min.css');
     }
 
 }

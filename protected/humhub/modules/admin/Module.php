@@ -36,6 +36,11 @@ class Module extends \humhub\components\Module
      */
     public $marketplaceEnabled = true;
     
+    /**
+     * @inheritdoc
+     */
+    public $resourcesPath = 'resources';
+    
     
     /**
      * @var boolean check daily for new HumHub version

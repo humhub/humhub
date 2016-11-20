@@ -2,7 +2,7 @@
  * Util module with sub module for object and string utility functions
  */
 humhub.initModule('util', function(module, require, $) {
-    var object = {
+    var object = {        
         isFunction: function (obj) {
             return $.isFunction(obj);
         },
@@ -62,6 +62,9 @@ humhub.initModule('util', function(module, require, $) {
     };
     
     var string = {
+        capitalize: function(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        },
         cutprefix : function(val, prefix) {
             if(!this.startsWith(val, prefix)) {
                 return val;

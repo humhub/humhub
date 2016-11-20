@@ -9,6 +9,7 @@ humhub.initModule('space.chooser', function (module, require, $) {
     var space = require('space');
     var loader = require('ui.loader');
     var client = require('client');
+    var additions = require('ui.additions');
 
     var SELECTOR_ITEM = '[data-space-chooser-item]';
     var SELECTOR_ITEM_REMOTE = '[data-space-none]';
@@ -282,7 +283,9 @@ humhub.initModule('space.chooser', function (module, require, $) {
      * @returns {undefined}
      */
     SpaceChooser.prototype.setNoSpace = function () {
-        this.$menu.html(module.config.noSpace);
+        if(!this.$menu.find('.no-space').length) {
+            this._changeMenuButton(module.config.noSpace);
+        }
     };
 
     /**
@@ -292,7 +295,14 @@ humhub.initModule('space.chooser', function (module, require, $) {
      * @returns {undefined}
      */
     SpaceChooser.prototype.setSpace = function (spaceOptions) {
-        this.$menu.html($(spaceOptions.image + ' <b class="caret"></b>'));
+        this._changeMenuButton(spaceOptions.image + ' <b class="caret"></b>')
+    };
+    
+    SpaceChooser.prototype._changeMenuButton = function (newButton) {
+        var $newTitle = (newButton instanceof $) ? newButton : $(newButton);
+        var $oldTitle = this.$menu.children();
+        this.$menu.append($newTitle.hide());
+        additions.switchButtons($oldTitle, $newTitle, {remove: true});
     };
 
     SpaceChooser.prototype.getSelectedItem = function () {

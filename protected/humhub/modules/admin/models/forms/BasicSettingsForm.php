@@ -18,7 +18,8 @@ class BasicSettingsForm extends \yii\base\Model
     public $name;
     public $baseUrl;
     public $defaultLanguage;
-    public $defaultSpaceGuid;
+    public $defaultSpaceGuid = [];
+    public $defaultSpaces;
     public $tour;
     public $timeZone;
     public $defaultStreamSort;
@@ -41,10 +42,7 @@ class BasicSettingsForm extends \yii\base\Model
         $this->tour = Yii::$app->getModule('tour')->settings->get('enable');
         $this->enableFriendshipModule = Yii::$app->getModule('friendship')->settings->get('enable');
 
-        $this->defaultSpaceGuid = "";
-        foreach (\humhub\modules\space\models\Space::findAll(['auto_add_new_members' => 1]) as $defaultSpace) {
-            $this->defaultSpaceGuid .= $defaultSpace->guid . ",";
-        }
+        $this->defaultSpaces = \humhub\modules\space\models\Space::findAll(['auto_add_new_members' => 1]);
 
         $this->defaultStreamSort = Yii::$app->getModule('content')->settings->get('stream.defaultSort');
     }
@@ -91,12 +89,10 @@ class BasicSettingsForm extends \yii\base\Model
      */
     public function checkSpaceGuid($attribute, $params)
     {
-
-        if ($this->defaultSpaceGuid != "") {
-
-            foreach (explode(',', $this->defaultSpaceGuid) as $spaceGuid) {
+        if (!empty($this->defaultSpaceGuid)) {
+            foreach ($this->defaultSpaceGuid as $spaceGuid) {
                 if ($spaceGuid != "") {
-                    $space = \humhub\modules\space\models\Space::findOne(array('guid' => $spaceGuid));
+                    $space = \humhub\modules\space\models\Space::findOne(['guid' => $spaceGuid]);
                     if ($space == null) {
                         $this->addError($attribute, Yii::t('AdminModule.forms_BasicSettingsForm', "Invalid space"));
                     }
@@ -122,18 +118,16 @@ class BasicSettingsForm extends \yii\base\Model
         Yii::$app->getModule('friendship')->settings->set('enable', $this->enableFriendshipModule);
         Yii::$app->getModule('content')->settings->set('stream.defaultSort', $this->defaultStreamSort);
 
-        $spaceGuids = explode(",", $this->defaultSpaceGuid);
-
         // Remove Old Default Spaces
         foreach (Space::findAll(['auto_add_new_members' => 1]) as $space) {
-            if (!in_array($space->guid, $spaceGuids)) {
+            if (!in_array($space->guid, $this->defaultSpaceGuid)) {
                 $space->auto_add_new_members = 0;
                 $space->save();
             }
         }
 
         // Add new Default Spaces
-        foreach ($spaceGuids as $spaceGuid) {
+        foreach ($this->defaultSpaceGuid as $spaceGuid) {
             $space = Space::findOne(['guid' => $spaceGuid]);
             if ($space != null && $space->auto_add_new_members != 1) {
                 $space->auto_add_new_members = 1;
