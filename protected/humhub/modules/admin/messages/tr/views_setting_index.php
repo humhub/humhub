@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Confirm</strong> image deleting' => '<strong>Görüntü</strong> silmeyi onayla',
+  '<strong>Confirm</strong> image deletion' => '<strong>Görüntü</strong> silmeyi onayla',
   'Cancel' => 'İptal',
   'Dashboard' => 'Panel',
   'Delete' => 'Sil',

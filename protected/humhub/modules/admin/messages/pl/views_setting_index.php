@@ -19,7 +19,7 @@
 return [
     'Friendship' => '',
     'New users will automatically be added to these space(s).' => '',
-    '<strong>Confirm</strong> image deleting' => '<strong>Potwierdź</strong> usunięcie obrazka',
+    '<strong>Confirm</strong> image deletion' => '<strong>Potwierdź</strong> usunięcie obrazka',
     'Cancel' => 'Anuluj',
     'Dashboard' => 'Kokpit',
     'Delete' => 'Usuń',

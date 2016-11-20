@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Confirm</strong> image deleting' => '<strong>Confirme</strong> apagar a imagem',
+  '<strong>Confirm</strong> image deletion' => '<strong>Confirme</strong> apagar a imagem',
   'Cancel' => 'Cancelar',
   'Dashboard' => 'Painel',
   'Delete' => 'Apagar',

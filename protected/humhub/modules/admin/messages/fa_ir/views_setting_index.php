@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Confirm</strong> image deleting' => '<strong>تایید</strong> حذف عکس',
+  '<strong>Confirm</strong> image deletion' => '<strong>تایید</strong> حذف عکس',
   'Cancel' => 'انصراف',
   'Dashboard' => 'خانه',
   'Delete' => 'حذف',
