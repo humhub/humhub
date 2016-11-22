@@ -9,6 +9,7 @@
 namespace humhub\modules\admin;
 
 use Yii;
+use humhub\modules\admin\models\Log;
 
 
 /**
@@ -45,6 +46,15 @@ class Events extends \yii\base\Object
     public static function onCronDailyRun($event)
     {
         $controller = $event->sender;
+
+        $controller->stdout("Deleting old logs... ");
+        
+        $settings = Yii::$app->settings;
+        $timeAgo = strtotime($settings->get('logsDateLimit'));
+        $deleted = Log::deleteAll(['<', 'log_time', $timeAgo]);
+
+        $controller->stdout('done - ' . $deleted . ' records deleted.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
+
 
         if (!Yii::$app->getModule('admin')->dailyCheckForNewVersion) {
             return;
