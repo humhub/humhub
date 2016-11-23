@@ -22,7 +22,6 @@ services: mysql
 
 before_install:
   - echo "extension=ldap.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - if [[ $TRAVIS_PHP_VERSION = 7.* ]]; then phpenv config-rm xdebug.ini; fi
 
 install:
   - travis_retry composer self-update && composer --version
