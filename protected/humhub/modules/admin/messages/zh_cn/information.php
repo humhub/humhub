@@ -20,6 +20,6 @@ return [
     'About HumHub' => '关于HumHub',
     'CronJobs' => '定时任务',
     'Database' => '数据库',
-    'Logging' => '登录中',
-    'Prerequisites' => '前提',
+    'Logging' => '日志',
+    'Prerequisites' => '环境需求',
 ];
