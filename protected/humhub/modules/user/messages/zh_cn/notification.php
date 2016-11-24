@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Mentioned' => '',
-    '{displayName} is now following you.' => '',
-    '{displayName} mentioned you in {contentTitle}.' => '',
+    'Mentioned' => '提到你',
+    '{displayName} is now following you.' => '{displayName} 现在关注了你。',
+    '{displayName} mentioned you in {contentTitle}.' => '{displayName} 在 {contentTitle} 中提到了你。',
 ];

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayName} and {displayName2}' => '',
-    '{displayName} and {number} others' => '',
+    '{displayName} and {displayName2}' => '{displayName} 和 {displayName2}',
+    '{displayName} and {number} others' => '{displayName} 和 {number} 其它',
 ];

@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Show all' => '',
+    'Show all' => '展示所有',
     '<strong>New</strong> member request' => '<strong>新</strong> 成员请求',
-    '<strong>Space</strong> members' => '<strong>版块</strong>成员',
+    '<strong>Space</strong> members' => '<strong>空间</strong>成员',
 ];

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>User</strong> settings' => '',
-    '<strong>Your</strong> profile' => '',
+    '<strong>User</strong> settings' => '<strong>用户</strong> 设置',
+    '<strong>Your</strong> profile' => '<strong>你的</strong> 属性',
 ];

@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'E-Mail Address Attribute' => '',
-    'Fetch/Update Users Automatically' => '',
+    'E-Mail Address Attribute' => '邮件属性',
+    'Fetch/Update Users Automatically' => '自动拉取/更新 用户',
     'Base DN' => '基于DN',
     'Enable LDAP Support' => '生效LDAP支持',
     'Encryption' => '加密',

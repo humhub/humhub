@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Friendship Request' => '',
+    'Friendship Request' => '好友请求',
 ];

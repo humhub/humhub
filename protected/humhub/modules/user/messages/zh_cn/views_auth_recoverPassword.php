@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Just enter your e-mail address. We´ll send you recovery instructions!' => '',
-    'Password recovery' => '',
-    'Reset password' => '',
+    'Just enter your e-mail address. We´ll send you recovery instructions!' => '输入你的邮箱。我们会发送找回密码的指令链接给你！',
+    'Password recovery' => '找回密码',
+    'Reset password' => '重置密码',
     '<strong>Password</strong> recovery' => '<strong>找回</strong> 密码',
     'Back' => '返回',
     'enter security code above' => '输入上面的安全码',

@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Here you can create or edit profile categories and fields.' => '',
-    'Manage profile attributes' => '',
+    'Here you can create or edit profile categories and fields.' => '在这里您可以创建或编辑属性的分类和域（字段）',
+    'Manage profile attributes' => '管理属性的属性值',
     'Add new category' => '增加新类',
     'Add new field' => '增加新域',
 ];

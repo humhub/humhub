@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Enable module...' => '',
+    'Enable module...' => '可能模块...',
     '<strong>Modules</strong> directory' => '<strong>模块</strong> 目录',
     'Are you sure? *ALL* module data will be lost!' => '确定吗？所有模块数据将被删除！',
     'Are you sure? *ALL* module related data and files will be lost!' => '确定吗？所有模块相关的数据和文件会丢失！',

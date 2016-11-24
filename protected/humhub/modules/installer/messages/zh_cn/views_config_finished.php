@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Congratulations</strong>. You\'re done.' => '',
-    'The installation completed successfully! Have fun with your new social network.' => '',
+    '<strong>Congratulations</strong>. You\'re done.' => '<strong>祝贺你</strong>， 安装完成。',
+    'The installation completed successfully! Have fun with your new social network.' => '安装成功完成！祝你在新社交平台上玩得开心。',
     'Sign in' => '登录',
 ];

@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Next' => '',
-    'Space name' => '',
-    '<strong>Create</strong> new space' => '<strong>创建</strong> 新版块',
+    'Next' => '下一步',
+    'Space name' => '空间名字',
+    '<strong>Create</strong> new space' => '<strong>创建</strong> 新空间',
     'Advanced access settings' => '访问权限设置',
-    'space description' => '版块描述',
+    'space description' => '空间描述',
 ];

@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Actions' => '',
-  'Manage groups' => '',
+  'Actions' => '动作',
+  'Manage groups' => '管理组',
   'Members' => '成员',
 );

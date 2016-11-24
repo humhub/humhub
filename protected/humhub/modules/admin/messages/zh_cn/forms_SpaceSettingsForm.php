@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Default Content Visiblity' => '',
-    'Default Join Policy' => '',
-    'Default Visibility' => '',
+    'Default Content Visiblity' => '默认内容可见性',
+    'Default Join Policy' => '默认加入规则',
+    'Default Visibility' => '默认可见性',
 ];

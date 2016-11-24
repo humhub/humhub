@@ -17,15 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Drag a photo here or click to browse your files' => '',
-    'Hide my year of birth' => '',
-    'Howdy <strong>%firstname%</strong>, thank you for using HumHub.' => '',
-    'Save and close' => '',
-    'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.' => '',
-    'Your firstname' => '',
-    'Your lastname' => '',
-    'Your mobild phone number' => '',
-    'Your phone number at work' => '',
-    'Your skills, knowledge and experience (comma seperated)' => '',
-    'Your title or position' => '',
+    'Drag a photo here or click to browse your files' => '拖拽照片到这或者点击浏览文件',
+    'Hide my year of birth' => '隐藏的生日中的年份',
+    'Howdy <strong>%firstname%</strong>, thank you for using HumHub.' => '你好 <strong>%firstname%</strong>, 感谢使用 HumHub.',
+    'Save and close' => '保存并关闭',
+    'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.' => '你是这里的第一个用户…哎哟不错哦！你就是一颗闪亮的星星，请完成你的配置，让后来的用户膜拜你吧。',
+    'Your firstname' => '你的姓',
+    'Your lastname' => '你的名',
+    'Your mobild phone number' => '你的手机号',
+    'Your phone number at work' => '你的工作电话',
+    'Your skills, knowledge and experience (comma seperated)' => '你的技能，知识和经验(逗号分隔)',
+    'Your title or position' => '你的标题位置',
 ];

@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Member</strong> in these spaces' => '版块列表',
+  '<strong>Member</strong> in these spaces' => '空间列表',
 );
