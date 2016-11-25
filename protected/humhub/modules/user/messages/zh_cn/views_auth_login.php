@@ -30,4 +30,5 @@ return [
     'email' => '邮件',
     'password' => '密码',
     'username or email' => '用户名或邮箱',
+    '<strong>Join</strong> the network' => '<strong>加入</strong> 社交平台',
 ];
