@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add {n,plural,=1{space} other{spaces}}' => '增加 {n,plural,=1{space} other{spaces}}',
+    'Add {n,plural,=1{space} other{spaces}}' => '添加空间',
 ];
