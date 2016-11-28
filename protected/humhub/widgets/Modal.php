@@ -114,7 +114,10 @@ class Modal extends Widget
             'header' => $this->header,
             'body' => $this->body,
             'footer' => $this->footer,
+            'animation' => $this->animation,
+            'size' => $this->size,
             'modalData' => $modalData,
+            'centerText' => $this->centerText,
             'initialLoader' => $this->initialLoader
         ]);
     }

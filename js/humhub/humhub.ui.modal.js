@@ -28,17 +28,6 @@ humhub.module('ui.modal', function (module, require, $) {
     //Keeps track of all initialized modals
     var modals = [];
 
-
-    /**
-     * Template for the modal splitted into different parts. Those can be overwritten my changing or overwriting module.template.
-     */
-    var template = {
-        container: '<div class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; background:rgba(0,0,0,0.1)"><div class="modal-dialog"><div class="modal-content"></div></div></div>',
-        header: '<div class="modal-header"><button type="button" class="close" data-modal-close="true" aria-hidden="true">×</button><h4 class="modal-title"></h4></div>',
-        body: '<div class="modal-body"></div>',
-        footer: '<div class="modal-footer"></div>',
-    };
-
     var ERROR_DEFAULT_TITLE = 'Error';
     var ERROR_DEFAULT_MESSAGE = 'An unknown error occured!';
 
@@ -64,6 +53,16 @@ humhub.module('ui.modal', function (module, require, $) {
 
         return this;
     };
+    
+    /**
+     * Template for the modal splitted into different parts. Those can be overwritten my changing or overwriting module.template.
+     */
+    Modal.template = {
+        container: '<div class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; background:rgba(0,0,0,0.1)"><div class="modal-dialog"><div class="modal-content"></div></div></div>',
+        header: '<div class="modal-header"><button type="button" class="close" data-modal-close="true" aria-hidden="true">×</button><h4 class="modal-title"></h4></div>',
+        body: '<div class="modal-body"></div>',
+        footer: '<div class="modal-footer"></div>',
+    }; 
 
     /**
      * Creates a new modal dom skeleton.
@@ -71,8 +70,12 @@ humhub.module('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.createModal = function (id) {
-        this.$ = $(module.template.container).attr('id', id);
+        this.$ = $(this.getTemplate('container')).attr('id', id);
         $('body').append(this.$);
+    };
+    
+    Modal.prototype.getTemplate = function (id) {
+        return Modal.template[id];
     };
 
     /**
@@ -306,7 +309,7 @@ humhub.module('ui.modal', function (module, require, $) {
     Modal.prototype.setHeader = function (title) {
         var $header = this.getHeader();
         if (!$header.length) {
-            $header = $(module.template.header);
+            $header = $(this.getTemplate('header'));
             this.getContent().prepend($header);
         }
 
@@ -317,7 +320,7 @@ humhub.module('ui.modal', function (module, require, $) {
     Modal.prototype.setFooter = function (footer) {
         var $footer = this.getFooter();
         if (!$footer.length) {
-            $footer = $(module.template.footer);
+            $footer = $(this.getTemplate('footer'));
             this.getContent().append($footer);
         }
 
@@ -369,7 +372,7 @@ humhub.module('ui.modal', function (module, require, $) {
     Modal.prototype.setBody = function (content) {
         var $body = this.getBody();
         if (!$body.length) {
-            this.setContent($(module.template.body));
+            this.setContent($(this.getTemplate('body')));
             $body = this.getBody();
         }
         $body.html(content);
@@ -444,7 +447,7 @@ humhub.module('ui.modal', function (module, require, $) {
                 cfg['handler'](false);
             });
         }
-    };
+    }; 
 
     var init = function () {
         module.global = new Modal('#globalModal');
@@ -580,7 +583,6 @@ humhub.module('ui.modal', function (module, require, $) {
         init: init,
         Modal: Modal,
         get: get,
-        template: template,
         load: load,
         submit: submit
     });
