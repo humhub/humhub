@@ -10,7 +10,7 @@ namespace humhub\widgets;
 
 use Yii;
 use yii\helpers\Json;
-use yii\widgets\PjaxAsset;
+use humhub\assets\PjaxAsset;
 
 /**
  * Pjax Widget

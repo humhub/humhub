@@ -23,6 +23,7 @@ namespace humhub\widgets;
 /**
  * DataSavedWidget shows an flash message after saving
  *
+ * @deprecated since 1.2 use \humhub\components\View::saved
  * @package humhub.widgets
  * @since 0.5
  * @author Andreas Strobel

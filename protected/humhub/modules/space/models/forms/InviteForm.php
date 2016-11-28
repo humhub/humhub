@@ -84,13 +84,14 @@ class InviteForm extends Model
         // Check if email field is not empty
         if ($this->$attribute != "") {
 
-            $invites = explode(",", $this->$attribute);
+            $invites = $this->$attribute;
 
             foreach ($invites as $userGuid) {
                 $userGuid = preg_replace("/[^A-Za-z0-9\-]/", '', $userGuid);
 
-                if ($userGuid == "")
+                if ($userGuid == "") {
                     continue;
+                }
 
                 // Try load user
                 $user = User::findOne(['guid' => $userGuid]);

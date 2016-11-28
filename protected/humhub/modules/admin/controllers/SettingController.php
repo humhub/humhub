@@ -69,7 +69,7 @@ class SettingController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\BasicSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['/admin/setting/basic']);
         }
 
@@ -101,7 +101,7 @@ class SettingController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             Yii::$app->cache->flush();
             Yii::$app->assetManager->clear();
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
+            $this->view->success(Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
             return $this->redirect(['/admin/setting/caching']);
         }
 
@@ -121,8 +121,7 @@ class SettingController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\StatisticSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['/admin/setting/statistic']);
         }
 
@@ -136,7 +135,7 @@ class SettingController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\MailingDefaultsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            $this->view->saved();
         }
 
         return $this->render('mailing', array('model' => $form));
@@ -149,7 +148,7 @@ class SettingController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\MailingSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['/admin/setting/mailing-server']);
         }
 
@@ -163,7 +162,7 @@ class SettingController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\DesignSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['/admin/setting/design']);
         }
 
@@ -182,7 +181,7 @@ class SettingController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\FileSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['/admin/setting/file']);
         }
 
@@ -210,7 +209,7 @@ class SettingController extends Controller
 
 
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_ProxyController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['/admin/setting/proxy']);
         }
 

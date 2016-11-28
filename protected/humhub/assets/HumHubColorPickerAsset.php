@@ -15,7 +15,7 @@ use yii\web\AssetBundle;
  * 
  * @author buddha
  */
-class HumHubColorPicker extends AssetBundle
+class HumHubColorPickerAsset extends AssetBundle
 {
 
     public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];

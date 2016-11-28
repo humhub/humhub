@@ -46,7 +46,7 @@ class CreateSpaceCest
         $I->click('Next', '#globalModal');
         
         $I->waitForText('Invite members', 10, '#globalModal');
-        $I->selectUserFromPicker('invite', 'User1');
+        $I->selectUserFromPicker('#space-invite-user-picker', 'User1');
         $I->wait(1);
         
         $I->click('Done', '#globalModal');

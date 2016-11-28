@@ -26,12 +26,8 @@ use humhub\modules\space\models\Space;
  */
 class Group extends \yii\db\ActiveRecord
 {
-
     const SCENARIO_EDIT = 'edit';
-
-    public $managerGuids;
-    public $defaultSpaceGuid;
-
+    
     /**
      * @inheritdoc
      */
@@ -46,19 +42,11 @@ class Group extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required', 'on' => self::SCENARIO_EDIT],
             [['space_id', 'created_by', 'updated_by'], 'integer'],
-            [['description', 'managerGuids', 'defaultSpaceGuid'], 'string'],
+            [['description'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 45]
         ];
-    }
-
-    public function scenarios()
-    {
-        $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_EDIT] = ['name', 'description', 'managerGuids', 'defaultSpaceGuid', 'show_at_registration', 'show_at_directory'];
-        return $scenarios;
     }
 
     /**
@@ -81,78 +69,10 @@ class Group extends \yii\db\ActiveRecord
             'show_at_directory' => Yii::t('UserModule.models_User', 'Show At Directory'),
         ];
     }
-
-    public function beforeSave($insert)
+    
+    public function getDefaultSpace()
     {
-
-        // When on edit form scenario, save also defaultSpaceGuid/managerGuids
-        if ($this->scenario == self::SCENARIO_EDIT) {
-            if ($this->defaultSpaceGuid == "") {
-                $this->space_id = "";
-            } else {
-                $space = \humhub\modules\space\models\Space::findOne(['guid' => rtrim($this->defaultSpaceGuid, ',')]);
-                if ($space !== null) {
-                    $this->space_id = $space->id;
-                }
-            }
-        }
-
-        return parent::beforeSave($insert);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function afterSave($insert, $changedAttributes)
-    {
-        if ($this->scenario == self::SCENARIO_EDIT) {
-            $managerGuids = explode(",", $this->managerGuids);
-            foreach ($managerGuids as $managerGuid) {
-                // Ensure guids valid characters
-                $managerGuid = preg_replace("/[^A-Za-z0-9\-]/", '', $managerGuid);
-
-                // Try to load user and get/create the GroupUser relation with isManager
-                $user = \humhub\modules\user\models\User::findOne(['guid' => $managerGuid]);
-                if ($user != null) {
-                    $groupUser = GroupUser::findOne(['group_id' => $this->id, 'user_id' => $user->id]);
-                    if ($groupUser != null && !$groupUser->is_group_manager) {
-                        $groupUser->is_group_manager = true;
-                        $groupUser->save();
-                    } else {
-                        $this->addUser($user, true);
-                    }
-                }
-            }
-
-            //Remove admins not contained in the selection
-            foreach ($this->getManager()->all() as $admin) {
-                if (!in_array($admin->guid, $managerGuids)) {
-                    $groupUser = GroupUser::findOne(['group_id' => $this->id, 'user_id' => $admin->id]);
-                    if ($groupUser != null) {
-                        $groupUser->is_group_manager = false;
-                        $groupUser->save();
-                    }
-                }
-            }
-        }
-
-        parent::afterSave($insert, $changedAttributes);
-    }
-
-    public function populateDefaultSpaceGuid()
-    {
-        $defaultSpace = Space::findOne(['id' => $this->space_id]);
-        if ($defaultSpace !== null) {
-            $this->defaultSpaceGuid = $defaultSpace->guid;
-        }
-    }
-
-    public function populateManagerGuids()
-    {
-        $this->managerGuids = "";
-        foreach ($this->manager as $manager) {
-            $this->managerGuids .= $manager->guid . ",";
-        }
+        return Space::findOne(['id' => $this->space_id]);
     }
 
     /**

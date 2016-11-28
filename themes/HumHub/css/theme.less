@@ -608,6 +608,7 @@ input[type=select] {
     a:hover,
     a:focus {
       background: none;
+      cursor:pointer;
     }
   }
   li:hover,
@@ -2368,6 +2369,8 @@ ul.tag_input.focus {
     margin-bottom: 3px;
     margin-right: 5px;
     max-height: 130px;
+    -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
+    animation-duration: 2s;
   }
 }
 
@@ -3132,6 +3135,10 @@ img.bounceIn {
 #space-menu-dropdown i.type {
     font-size:16px;
     color: #BFBFBF;
+}
+
+#space-menu-spaces [data-space-chooser-item] {
+    cursor: pointer;
 }
 
 #space-menu-dropdown .input-group-addon {

@@ -14,7 +14,7 @@ class SpaceAsset extends AssetBundle
 {
 
     public $jsOptions = ['position' => \yii\web\View::POS_END];
-    public $sourcePath = '@space/assets';
+    public $sourcePath = '@space/resources';
     public $css = [];
     public $js = [
         'js/humhub.space.js'

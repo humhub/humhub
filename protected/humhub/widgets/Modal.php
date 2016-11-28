@@ -95,12 +95,6 @@ class Modal extends Widget
     public $centerText = false;
     
     /**
-     * If true, the modal root is not rendered, this is especially used by remote modals
-     * @var type 
-     */
-    public $dialogOnly = false;
-    
-    /**
      * Can be set to false if the modal body should not be initialized with an
      * loader animation. Default is true, if no body is provided.
      * 
@@ -109,19 +103,7 @@ class Modal extends Widget
     public $initialLoader;
     
     public function run()
-    {
-        $dialogClass = 'modal-dialog';
-        $dialogClass .= ($this->size != null) ? ' modal-dialog-'.$this->size : '';
-        $dialogClass .= ($this->animation != null) ? ' animated '.$this->animation : '';
-        
-        $bodyClass = 'modal-body';
-        $bodyClass .= ($this->centerText) ? ' text-center' : '';
-        
-        //The x close button is rendered by default either if forced by showClose or a headertext is given
-        $showClose = ($this->showClose != null) ? $this->showClose : ($this->header != null);
-        
-        $this->initialLoader = ($this->initialLoader ==! null) ? $this->initialLoader : ($this->body === null);
-       
+    {  
         $modalData = '';
         $modalData .= !$this->backdrop ? 'data-backdrop="static"' : '';
         $modalData .= !$this->keyboard ? 'data-keyboard="false"' : '';
@@ -131,13 +113,9 @@ class Modal extends Widget
             'id' => $this->id,
             'header' => $this->header,
             'body' => $this->body,
-            'bodyClass' => $bodyClass,
             'footer' => $this->footer,
-            'dialogClass' => $dialogClass,
             'modalData' => $modalData,
-            'showClose' => $showClose,
-            'initialLoader' => $this->initialLoader,
-            'dialogOnly' => $this->dialogOnly
+            'initialLoader' => $this->initialLoader
         ]);
     }
 

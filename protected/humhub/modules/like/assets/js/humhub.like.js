@@ -1,4 +1,4 @@
-humhub.initModule('like', function (module, require, $) {
+humhub.module('like', function (module, require, $) {
     var client = require('client');
     var additions = require('ui.additions');
 

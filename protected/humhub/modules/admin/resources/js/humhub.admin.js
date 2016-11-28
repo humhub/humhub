@@ -1,4 +1,4 @@
-humhub.initModule('admin', function (module, require, $) {
+humhub.module('admin', function (module, require, $) {
     var client = require('client');
     var modal = require('ui.modal');
     var additions = require('ui.additions');

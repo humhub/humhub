@@ -2,7 +2,7 @@
  * Core module for managing Streams and StreamItems
  * @type Function
  */
-humhub.initModule('activity', function (module, require, $) {
+humhub.module('activity', function (module, require, $) {
 
     var util = require('util');
     var object = util.object;
@@ -83,11 +83,17 @@ humhub.initModule('activity', function (module, require, $) {
     };
 
     ActivityStream.prototype.init = function () {
-        this.super('init');
-        this.initScrolling();
+        this.super('init').then(function(that) {
+            that.initScrolling();
+        }).catch(function(err) {
+            module.log.error('Could not initialize activity stream!',err);
+        });
     };
 
     ActivityStream.prototype.initScrolling = function () {
+        if(!this.$content.is(':visible')) {
+            return;
+        }
 
         // listen for scrolling event yes or no
         var scrolling = true;
@@ -147,6 +153,12 @@ humhub.initModule('activity', function (module, require, $) {
             module.log.info('Non-Activity-Stream page!');
             return;
         }
+        
+        // Cleanup nicescroll rails
+        $(document).one('pjax:beforeReplace', function() {
+            stream.$.css('overflow', 'hidden');
+            stream.$content.getNiceScroll().remove();
+        });
 
         stream.init();
     };

@@ -3,7 +3,7 @@
  * @param {type} param1
  * @param {type} param2
  */
-humhub.initModule('ui.gallery', function (module, require, $) {
+humhub.module('ui.gallery', function (module, require, $) {
 
     module.initOnPjaxLoad = false;
 

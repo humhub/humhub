@@ -194,14 +194,14 @@ class AcceptanceTester extends \Codeception\Actor
      * @param type $id
      * @param type $userName
      */
-    public function selectUserFromPicker($id, $userName)
+    public function selectUserFromPicker($selector, $userName)
     {
-        $userPickerInputId = '#'.$id.'_tag_input_field';
-        $userPickerId = '#'.$id.'_userpicker';
-        $resultSelector = $userPickerId.' a:first';
-        $this->fillField($userPickerInputId, $userName);
-        $this->waitForText($userName, 30, $userPickerId);
-        $this->executeJS("$('". $resultSelector ."')[0].click();");
+        $select2Input = $selector.' ~ span input';
+        $this->fillField($select2Input, $userName);
+        $this->waitForElementVisible('.select2-container--open');
+        $this->wait(5);
+        $this->see($userName, '.select2-container--open');
+        $this->pressKey($select2Input, WebDriverKeys::ENTER);
     }
 
     public function dontSeeInNotifications($text)

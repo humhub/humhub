@@ -27,11 +27,11 @@ use \humhub\modules\space\models\Space;
  * </pre>
  *
  * @since 0.5
+ * @deprecated since 1.2 use SpacePickerField instead
  * @author Luke
  */
 class Picker extends Widget
 {
-
     /**
      * @var string The id of input element which should replaced
      */

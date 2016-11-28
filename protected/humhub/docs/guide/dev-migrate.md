@@ -12,6 +12,10 @@ TBD
 
 Please refer the new [File Handling](dev-files.md) documentation section for more details regarding the new file management API.
 
+- Deprecated widgets:
+    - humhub\modules\user\widgets\UserPicker (replaced with humhub\modules\user\widgets\UserPickerField)
+    - humhub\modules\space\widgets\Picker (replaced with humhub\modules\space\widgets\SpackePickerField)
+    - humhub\widgets\DataSaved (replaced with humhub\components\View::saved)
 - Removed Content models 'attachFileGuidsAfterSave' attribute and handling
 - Deprecated File model methods
     - \humhub\modules\file\models\File::attachPrecreated

@@ -106,7 +106,7 @@ class CreateController extends Controller
      */
     public function actionInvite($space = null)
     {
-        $space = ($space == null) ? Space::find()->where(['id' => Yii::$app->request->get('spaceId', "")])->one() : $space;
+        $space = ($space == null) ? Space::findOne(['id' => Yii::$app->request->get('spaceId', "")]) : $space;
 
         $model = new \humhub\modules\space\models\forms\InviteForm();
         $model->space = $space;

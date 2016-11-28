@@ -40,7 +40,7 @@ class AppAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
+    public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
 
     /**
      * @inheritdoc

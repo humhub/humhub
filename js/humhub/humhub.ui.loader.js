@@ -21,7 +21,7 @@
  * @param {type} param1
  * @param {type} param2
  */
-humhub.initModule('ui.loader', function (module, require, $) {
+humhub.module('ui.loader', function (module, require, $) {
 
     var DEFAULT_LOADER_SELECTOR = '#humhub-ui-loader-default';
 
@@ -29,9 +29,15 @@ humhub.initModule('ui.loader', function (module, require, $) {
 
     var set = function (node, cfg) {
         var $node = (node instanceof $) ? node : $(node);
+        
         if ($node.length) {
             $node.each(function () {
                 var $this = $(this);
+                
+                if(hasLoader($this)) {
+                    return;
+                }
+                
                 $this.data('htmlOld', $node.html());
                 $this.html(getInstance(cfg));
             });
@@ -98,12 +104,12 @@ humhub.initModule('ui.loader', function (module, require, $) {
         if (cfg['position']) {
             if (cfg['position'] === 'left') {
                 $result.find('.sk-spinner').css('margin', '0');
-            } else if(cfg['position'] === 'right') {
+            } else if (cfg['position'] === 'right') {
                 $result.find('.sk-spinner').css('margin', '0').addClass('pull-right');
                 $result.addClass('clearfix');
             }
         }
-        
+
         if (cfg['itemCss']) {
             $result.find('.sk-bounce1').css(cfg['itemCss']);
             $result.find('.sk-bounce2').css(cfg['itemCss']);
@@ -144,10 +150,14 @@ humhub.initModule('ui.loader', function (module, require, $) {
             });
         });
     };
+    
+    var hasLoader = function($node) {
+        return $node.find('.loader').length > 0;
+    };
 
     var initLoaderButton = function (node, evt) {
         var $node = (node instanceof $) ? node : $(node);
-        var loader = $node.find('.loader').length > 0;
+        var loader = hasLoader($node);
 
         /**
          * Prevent multiple mouse clicks, if originalEvent is present its a real mouse event otherwise its script triggered
@@ -175,8 +185,17 @@ humhub.initModule('ui.loader', function (module, require, $) {
 
         // Prevent the container from resizing
         $node.css('min-width', node.getBoundingClientRect().width);
-        $node.data('htmlOld', $node.html());
-        $node.html($loader);
+
+        // Somehow the form submission is disturbed sometimes if we do not set a timeout.
+        if ($node.is('[type="submit"]')) {
+            setTimeout(function () {
+                $node.data('htmlOld', $node.html());
+                $node.html($loader);
+            }, 10);
+        } else {
+            $node.data('htmlOld', $node.html());
+            $node.html($loader);
+        }
     };
 
     var template = '<span class="loader"><span class="sk-spinner sk-spinner-three-bounce"><span class="sk-bounce1"></span><span class="sk-bounce2"></span><span class="sk-bounce3"></span></span></span>';

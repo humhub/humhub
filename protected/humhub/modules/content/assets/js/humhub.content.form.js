@@ -2,7 +2,7 @@
  * Core module for managing Streams and StreamItems
  * @type Function
  */
-humhub.initModule('content.form', function (module, require, $) {
+humhub.module('content.form', function (module, require, $) {
 
     var CREATE_FORM_ROOT_SELECTOR = '#contentFormBody';
 
@@ -67,7 +67,7 @@ humhub.initModule('content.form', function (module, require, $) {
         $('.contentForm').filter('textarea').val('').trigger('autosize.resize');
         $('.contentForm').attr('checked', false);
         $('.userInput').remove(); // used by UserPickerWidget
-        $('#notifyUserContainer').addClass('hidden');
+        $('#notifyUserContainer').hide();
         $('#notifyUserInput').val('');
 
         this.setDefaultVisibility();
@@ -128,8 +128,8 @@ humhub.initModule('content.form', function (module, require, $) {
     };
 
     CreateForm.prototype.notifyUser = function() {
-        $('#notifyUserContainer').removeClass('hidden');
-        $('#notifyUserInput_tag_input_field').focus();
+        $('#notifyUserContainer').show();
+        $('#notifyUserInput').data('picker').focus()
     };
 
     var init = function () {

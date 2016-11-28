@@ -5,7 +5,7 @@
  * An addition can be registered for a specific selector e.g: <input data-addition-richtext ... />
  * It is possible to register multiple additions for the same selector.
  */
-humhub.initModule('ui.additions', function (module, require, $) {
+humhub.module('ui.additions', function (module, require, $) {
 
     var event = require('event');
 
@@ -45,8 +45,6 @@ humhub.initModule('ui.additions', function (module, require, $) {
             $.each(additions, function (i, addition) {
                 try {
                     apply($element, selector, addition);
-                    var $match = $element.find(selector).addBack(selector);
-                    addition.apply($match, [$match, $element]);
                 } catch (e) {
                     module.log.error('Error while applying addition on selector ' + selector, e);
                 }
@@ -70,6 +68,16 @@ humhub.initModule('ui.additions', function (module, require, $) {
         event.on('humhub:ready', function (evt) {
             module.applyTo($('body'));
         });
+                
+        $(document).on('pjax:beforeSend', function(evt) {
+            // Tooltip issue
+            // http://stackoverflow.com/questions/24841028/jquery-tooltip-add-div-role-log-in-my-page
+            // https://bugs.jqueryui.com/ticket/10689
+            $(".ui-helper-hidden-accessible").remove();
+            
+            // Jquery date picker div is not removed...
+            $('#ui-datepicker-div').remove();
+        });
 
         // Autosize textareas
         this.registerAddition('.autosize', function ($match) {
@@ -82,6 +90,14 @@ humhub.initModule('ui.additions', function (module, require, $) {
                 html: false,
                 container: 'body'
             });
+            
+            $match.on('click.tooltip', function() {
+                $('.tooltip').remove();
+            });
+        });
+        
+        $(document).on('click', function() {
+            $('.tooltip').remove();
         });
 
         // Show popovers on elements

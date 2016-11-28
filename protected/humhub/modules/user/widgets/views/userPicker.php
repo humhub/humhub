@@ -10,6 +10,7 @@
  *
  * @package humhub.modules_core.user
  * @since 0.5
+ * @deprecated since 1.2 use UserPickerField instead.
  */
 use \humhub\modules\user\models\User;
 use \yii\helpers\Html;

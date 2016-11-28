@@ -3,10 +3,6 @@
 
 \humhub\modules\activity\assets\ActivityAsset::register($this);
 
-//$this->registerJsFile('@web/resources/activity/activies.js');
-//$this->registerJsVar('activityStreamUrl', $streamUrl);
-$this->registerJsVar('activityInfoUrl', $infoUrl);
-
 $this->registerJsConfig([
     'activity' => [
         'text' => [

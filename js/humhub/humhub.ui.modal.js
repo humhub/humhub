@@ -15,7 +15,7 @@
  * @param {type} param1
  * @param {type} param2
  */
-humhub.initModule('ui.modal', function (module, require, $) {
+humhub.module('ui.modal', function (module, require, $) {
     var util = require('util');
     var object = util.object;
     var string = util.string;
@@ -89,7 +89,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
             that.clearErrorMessage();
         });
 
-        this.setOptions(options);
+        this.set(options);
 
         this.$.attr('aria-labelledby', this.getTitleId());
     };
@@ -158,7 +158,6 @@ humhub.initModule('ui.modal', function (module, require, $) {
                 reject(err);
             }
         });
-
     };
 
     Modal.prototype.applyAdditions = function () {
@@ -325,7 +324,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
         $footer.html(footer);
     };
 
-    Modal.prototype.setOptions = function (options) {
+    Modal.prototype.set = function (options) {
         this.options = options;
 
         if (this.options.header) {
@@ -343,6 +342,9 @@ humhub.initModule('ui.modal', function (module, require, $) {
         if (this.options.footer) {
             this.setFooter(this.options.footer);
         }
+        
+        this.options.backdrop = options.backdrop || true;
+        this.options.keyboard = options.keyboard || true;
 
         if (this.$.data('bs.modal')) {
             this.$.data('bs.modal').options = this.options;
@@ -545,6 +547,11 @@ humhub.initModule('ui.modal', function (module, require, $) {
 
     var submit = function (evt) {
         evt.$form = evt.$form || evt.$trigger.closest('form');
+        
+        if(!evt.$form.length) {
+            evt.$form = evt.$target;
+        }
+        
         client.submit(evt, {'dataType': 'html'}).then(function (response) {
             module.global.setDialog(response.html);
             if (!module.global.$.is(':visible')) {
@@ -564,7 +571,7 @@ humhub.initModule('ui.modal', function (module, require, $) {
     var get = function (id, options) {
         var modal = !(modals[id]) ? new Modal(id) : modals[id];
         if (options) {
-            modal.setOptions(options);
+            modal.set(options);
         }
         return modal;
     };

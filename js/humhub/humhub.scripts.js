@@ -8,7 +8,7 @@
  * @param {type} param1
  * @param {type} param2
  */
-humhub.initModule('scripts', function (module, require, $) {
+humhub.module('scripts', function (module, require, $) {
     var _scripts = [];
 
     var init = function () {

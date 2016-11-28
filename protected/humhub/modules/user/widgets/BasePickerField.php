@@ -28,7 +28,7 @@ use \yii\helpers\Url;
  *  - image: option image (optional)
  *  - priority: used to sort results (optional)
  *  - disabled: can be used to disable certain items (optional)
- *  - disabbleReason: text describing the reason why this item is disabled (optional)
+ *  - disabbledText: text describing the reason why the item is disabled (optional)
  * 
  * @package humhub.modules_core.user.widgets
  * @since 1.2
@@ -50,6 +50,11 @@ abstract class BasePickerField extends \yii\base\Widget
      * @var string 
      */
     public $picker = 'ui.picker.Picker';
+    
+    /**
+     * Disabled
+     */
+    public $disabledItems;
 
     /**
      * Default route used for search queries.
@@ -136,6 +141,14 @@ abstract class BasePickerField extends \yii\base\Widget
      * @var \yii\db\ActiveRecord
      */
     public $model;
+    
+    /**
+     * Input form name.
+     * This can be provided if no form and model is provided for custom input field setting.
+     * 
+     * @var type 
+     */
+    public $formName;
 
     /**
      * Model attribute which holds the picker value. The referenced model attribute has to be an
@@ -144,6 +157,25 @@ abstract class BasePickerField extends \yii\base\Widget
      * @var string 
      */
     public $attribute;
+    
+    /**
+     * Can be used to overwrite the default placeholder.
+     * @var string
+     */
+    public $placeholder;
+    
+    /**
+     * Can be used to overwrite the default add more placeholder.
+     * @var string 
+     */
+    public $placeholderMore;
+    
+    /**
+     * If set to true the picker will be focused automatically.
+     * 
+     * @var type 
+     */
+    public $focus = false;
 
     /**
      * Used to retrieve the option text of a given $item.
@@ -166,6 +198,10 @@ abstract class BasePickerField extends \yii\base\Widget
      */
     public function run()
     {
+        if($this->selection != null && !is_array($this->selection)) {
+            $this->selection = [$this->selection];
+        }
+        
         // Prepare current selection and selection options
         $selection = [];
         $selectedOptions = $this->getSelectedOptions();
@@ -175,12 +211,16 @@ abstract class BasePickerField extends \yii\base\Widget
 
         $options = $this->getInputAttributes();
         $options['options'] = $selectedOptions;
-
-        if ($this->form === null) {
+        
+        if($this->form != null) {
+            return $this->form->field($this->model, $this->attribute)->dropDownList($selection, $options);
+        } else if($this->model != null) {
             return Html::activeDropDownList($this->model, $this->attribute, $selection, $options);
         } else {
-            return $this->form->field($this->model, $this->attribute)->dropDownList($selection, $options);
+            $name = (!$this->formName) ? 'pickerField' : $this->formName;
+            return Html::dropDownList($name, $selection, [], $options);
         }
+
     }
 
     /**
@@ -200,14 +240,22 @@ abstract class BasePickerField extends \yii\base\Widget
      * @return array 
      */
     protected function getSelectedOptions()
-    {
-        if (!$this->selection) {
+    {   
+        if (!$this->selection && $this->model != null) {
             $attribute = $this->attribute;
             $this->selection = $this->loadItems($this->model->$attribute);
+        }
+        
+        if(!$this->selection) {
+            $this->selection = [];
         }
 
         $result = [];
         foreach ($this->selection as $item) {
+            if(!$item) {
+                continue;
+            }
+            
             $itemKey = $this->itemKey;
             $result[$item->$itemKey] = [
                 'data-text' => $this->getItemText($item),
@@ -266,12 +314,15 @@ abstract class BasePickerField extends \yii\base\Widget
     {
         return [
             'id' => $this->id,
-            'data-ui-picker' => $this->picker,
+            'data-ui-widget' => $this->picker,
+            'data-ui-init' => true,
             'data-picker-url' => $this->getUrl(),
+            'data-picker-focus' => ($this->focus) ? 'true' : null,
             'multiple' => 'multiple',
             'size' => '1',
             'class' => 'form-control',
             'style' => 'width:100%',
+            'data' => ['disabled-items' => (!$this->disabledItems) ? null : $this->disabledItems],
             'data-maximum-selection-length' => $this->maxSelection,
             'data-maximum-input-length' => $this->maxInput,
             'data-minimum-input-length' => $this->minInput,
@@ -296,9 +347,15 @@ abstract class BasePickerField extends \yii\base\Widget
     protected function getTexts()
     {
         $allowMultiple = $this->maxSelection !== 1;
+        
+        $placeholder = ($this->placeholder != null) ? $this->placeholder 
+                : Yii::t('UserModule.widgets_BasePickerField', 'Select {n,plural,=1{item} other{items}}', ['n' => ($allowMultiple) ? 2 : 1]);
+        $placeholderMore = ($this->placeholderMore != null) ? $this->placeholderMore 
+               : Yii::t('UserModule.widgets_BasePickerField', 'Add more...');
+        
         $result = [
-            'data-placeholder' => Yii::t('UserModule.widgets_BasePickerField', 'Select {n,plural,=1{item} other{items}}', ['n' => ($allowMultiple) ? 2 : 1]),
-            'data-placeholder-more' => Yii::t('UserModule.widgets_BasePickerField', 'Add more...'),
+            'data-placeholder' => $placeholder,
+            'data-placeholder-more' => $placeholderMore,
             'data-no-result' => Yii::t('UserModule.widgets_BasePickerField', 'Your search returned no matches.'),
             'data-format-ajax-error' => Yii::t('UserModule.widgets_BasePickerField', 'An unexpected error occured while loading the result.'),
             'data-load-more' => Yii::t('UserModule.widgets_BasePickerField', 'Load more'),

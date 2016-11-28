@@ -4,12 +4,13 @@
  * @type undefined|Function
  */
 
-humhub.initModule('content', function (module, require, $) {
+humhub.module('content', function (module, require, $) {
     var client = require('client');
     var object = require('util').object;
     var actions = require('action');
     var Component = actions.Component;
     var event = require('event');
+    var modal = require('ui.modal');
 
     var DATA_CONTENT_KEY = "content-key";
     var DATA_CONTENT_EDIT_URL = "content-edit-url";
@@ -118,7 +119,7 @@ humhub.initModule('content', function (module, require, $) {
                 return;
             }
 
-            require('ui.modal').confirm().then(function ($confirmed) {
+            modal.confirm().then(function ($confirmed) {
                 if (!$confirmed) {
                     resolve(false);
                 }
@@ -170,7 +171,21 @@ humhub.initModule('content', function (module, require, $) {
                 resolve(that);
             });
         });
-
+    };
+    
+    Content.prototype.permalink = function (evt) {
+        var permaLink = evt.$trigger.data('content-permalink');
+        modal.global.set({
+            header : module.text('modal.permalink.head'),
+            body : '<textarea rows="3" class="form-control permalink-txt">' + permaLink + '</textarea><p class="help-block">'+module.text('modal.permalink.info')+'</p>',
+            footer: '<a href="'+permaLink+'" data-modal-close class="btn btn-default">'+module.text('modal.permalink.close')+'</a><a href="'+permaLink+'" class="btn btn-primary" data-ui-loader>'+module.text('modal.permalink.open')+'</a>' 
+        }).show();
+        
+        modal.global.$.find('textarea').focus().select();
+        
+        event.one('humhub:ready', function() {
+            modal.global.close();
+        });
     };
 
     module.export({

@@ -37,13 +37,13 @@ class UserFilter extends User
     }
 
     /**
-     * @deprecated since version number
      * Default implementation for user picker filter.
      * 
      * @param type $keywords
      * @param type $maxResults
      * @param type $friendsOnly
      * @param type $permission
+     * @deprecated since 1.2 use 
      * @return type
      */
     public function getUserPickerResult($keywords = null, $maxResults = null, $friendsOnly = false, $permission = null)

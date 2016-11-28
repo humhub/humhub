@@ -51,7 +51,7 @@ class AuthenticationController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\AuthenticationSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            $this->view->saved();
         }
 
         // Build Group Dropdown
@@ -70,7 +70,7 @@ class AuthenticationController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\AuthenticationLdapSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['/admin/authentication/authentication-ldap']);
         }
 

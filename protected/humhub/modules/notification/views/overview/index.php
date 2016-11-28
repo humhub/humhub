@@ -37,7 +37,7 @@ use yii\widgets\ActiveForm;
                     <div style="padding-left: 5px;">
                         <?php echo $form->field($filterForm, 'moduleFilter')->checkboxList($filterForm->getModuleFilterSelection())->label(false); ?>
                     </div>
-                    <button class="btn btn-primary btn-xm" type="submit"><?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?></button>
+                    <button class="btn btn-primary btn-xm" type="submit" data-ui-loader><?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?></button>
                     <?php ActiveForm::end(); ?>
                 </div>
             </div>

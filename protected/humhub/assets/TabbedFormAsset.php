@@ -26,10 +26,8 @@ class TabbedFormAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $js = ['js/humhub/humhub.ui.tabbedForm.js'];
+    public $js = ['js/humhub/humhub.ui.form.js'];
     
-    public $depends = [
-        'humhub\assets\CoreApiAsset'
-    ];
+  
     
 }

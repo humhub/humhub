@@ -1,15 +1,15 @@
 /**
  * Util module with sub module for object and string utility functions
  */
-humhub.initModule('util', function(module, require, $) {
-    var object = {        
-        isFunction: function (obj) {
+humhub.module('util', function(module, require, $) {
+    var object = {
+        isFunction: function(obj) {
             return $.isFunction(obj);
         },
-        isObject: function (obj) {
+        isObject: function(obj) {
             return $.isPlainObject(obj);
         },
-        isJQuery: function (obj) {
+        isJQuery: function(obj) {
             return this.isDefined(obj) && obj.jquery;
         },
         isArray: function(obj) {
@@ -18,21 +18,35 @@ humhub.initModule('util', function(module, require, $) {
         isEmpty: function(obj) {
             return $.isEmptyObject(obj);
         },
-        isString: function (obj) {
+        isString: function(obj) {
             return typeof obj === 'string';
         },
-        isNumber: function (n) {
+        isNumber: function(n) {
             return this.isDefined(n) && !isNaN(parseFloat(n)) && isFinite(n);
         },
-        isBoolean: function (obj) {
+        isBoolean: function(obj) {
             return typeof obj === 'boolean';
         },
-        isDefined: function (obj) {
-            if (arguments.length > 1) {
+        resolve: function(obj, ns, init) {
+            var result = obj;
+            $.each(ns.split('.'), function(i, subPath) {
+                if(subPath in result) {
+                    result = result[subPath];
+                } else if(init) {
+                    result = result[subPath] = {};
+                } else {
+                    result = undefined; //path not found
+                    return false; //leave each loop
+                }
+            });
+            return result;
+        },
+        isDefined: function(obj) {
+            if(arguments.length > 1) {
                 var result = true;
                 var that = this;
-                this.each(arguments, function (index, value) {
-                    if (!that.isDefined(value)) {
+                this.each(arguments, function(index, value) {
+                    if(!that.isDefined(value)) {
                         return false;
                     }
                 });
@@ -42,58 +56,68 @@ humhub.initModule('util', function(module, require, $) {
             return typeof obj !== 'undefined';
         },
         inherits: function(Sub, Parent) {
+            for(var i in Parent) {
+                Sub[i] = Parent[i];
+            }
+
             Sub.prototype = Object.create(Parent.prototype);
             Sub._super = Parent.prototype;
-            Sub.prototype.super = function(method) {
+            Sub.prototype.super = function() {
                 if(!Sub._super[arguments[0]]) {
-                    throw new Error('Call of undefined method of super type');
+                    throw new Error('Call of undefined method of super type: ' + arguments[0]);
                 }
-                
+
                 var args;
-                        
-                if(arguments.length > 1){
+
+                if(arguments.length > 1) {
                     args = [];
-                    Array.prototype.push.apply( args, arguments );
+                    Array.prototype.push.apply(args, arguments);
                     args.shift();
                 }
                 return Sub._super[arguments[0]].apply(this, args);
             };
         }
     };
-    
+
     var string = {
         capitalize: function(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
-        cutprefix : function(val, prefix) {
+        cutprefix: function(val, prefix) {
             if(!this.startsWith(val, prefix)) {
                 return val;
             }
             return val.substring(prefix.length, val.length);
         },
-        cutsuffix : function(val, suffix) {
+        cutsuffix: function(val, suffix) {
             return val.slice(0, suffix.length * -1);
         },
-        startsWith : function(val, prefix) {
+        startsWith: function(val, prefix) {
             if(!object.isDefined(val) || !object.isDefined(prefix)) {
                 return false;
             }
             return val.indexOf(prefix) === 0;
         },
-        endsWith : function(val, suffix) {
+        endsWith: function(val, suffix) {
             if(!object.isDefined(val) || !object.isDefined(suffix)) {
                 return false;
             }
             return val.indexOf(suffix, val.length - suffix.length) !== -1;
         },
-        htmlEncode : function(value) {
+        htmlEncode: function(value) {
             return $('<div/>').text(value).html();
         },
-        htmlDecode : function(value) {
+        htmlDecode: function(value) {
             return $('<div/>').html(value).text();
+        },
+        template: function(tmpl, config) {
+            return tmpl.replace(/{(.*?)}/g, function(match, contents, offset, s) {
+                var value = object.resolve(config, contents);
+                return object.isDefined(value) ? value : match;
+            });
         }
     };
-    
+
     module.export({
         object: object,
         string: string

@@ -4,7 +4,7 @@
  * @type undefined|Function
  */
 
-humhub.initModule('space', function (module, require, $) {
+humhub.module('space', function (module, require, $) {
     var client = require('client');
     var additions = require('ui.additions');
     var event = require('event');

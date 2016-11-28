@@ -1,4 +1,4 @@
-humhub.initModule('ui.navigation', function (module, require, $) {
+humhub.module('ui.navigation', function (module, require, $) {
 
     var event = require('event');
 

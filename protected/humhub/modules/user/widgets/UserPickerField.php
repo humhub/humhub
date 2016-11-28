@@ -57,7 +57,7 @@ class UserPickerField extends BasePickerField
         $result = parent::getTexts();
         $allowMultiple = $this->maxSelection !== 1;
         $result['data-placeholder'] = Yii::t('UserModule.widgets_UserPickerField', 'Select {n,plural,=1{user} other{users}}', ['n' => ($allowMultiple) ? 2 : 1]);
-        $result['data-placeholder-more'] = Yii::t('UserModule.widgets_SpacePickerField', 'Add User');
+        $result['data-placeholder-more'] = Yii::t('UserModule.widgets_SpacePickerField', 'Add user');
         $result['data-no-result'] = Yii::t('UserModule.widgets_UserPickerField', 'No users found for the given query.');
 
         if ($this->maxSelection) {
@@ -81,5 +81,4 @@ class UserPickerField extends BasePickerField
     {
         return $item->getProfileImage()->getUrl();
     }
-
 }

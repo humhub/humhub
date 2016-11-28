@@ -28,7 +28,7 @@ class SecurityController extends Controller
         $space->scenario = 'edit';
 
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
+            $this->view->saved();
             return $this->redirect($space->createUrl('index'));
         }
         return $this->render('index', ['model' => $space]);

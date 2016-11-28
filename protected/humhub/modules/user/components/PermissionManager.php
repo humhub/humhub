@@ -42,7 +42,7 @@ class PermissionManager extends \yii\base\Component
      * Verifies a given $permission or $permission array for a permission subject.
      * 
      * If $params['all'] is set to true and a $permission array is given all given permissions
-     * has to be verified successfully otherwise (default) only one permission test has to pass.
+     * have to be verified successfully otherwise (default) only one permission test has to pass.
      * 
      * @param type $permission
      * @param type $params
@@ -76,23 +76,23 @@ class PermissionManager extends \yii\base\Component
     }
     
     /**
-     * Verifies a single permission for a permission subject.
+     * Verifies a single permission for a given permission subject.
      * 
      * @param BasePermission $permission
      * @return boolean
      */
     protected function verify(BasePermission $permission)
     {
-        $groups = $this->getSubject()->groups;
-        if ($this->getGroupState($groups, $permission) == BasePermission::STATE_ALLOW) {
-            return true;
+        $subject = $this->getSubject();
+        if($subject) {
+            return $this->getGroupState($subject->groups, $permission) == BasePermission::STATE_ALLOW;
         }
         
         return false;
     }
     
     /**
-     * Returns the permission subject.
+     * Returns the permission subject identity.
      * If the permission objects $subject property is not set this method returns the currently 
      * logged in user identity.
      * 

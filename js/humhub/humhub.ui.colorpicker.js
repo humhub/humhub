@@ -15,7 +15,7 @@
  * @param {type} param1
  * @param {type} param2
  */
-humhub.initModule('ui.colorpicker', function (module, require, $) {
+humhub.module('ui.colorpicker', function (module, require, $) {
 
     module.initOnPjaxLoad = false;
 
@@ -29,31 +29,26 @@ humhub.initModule('ui.colorpicker', function (module, require, $) {
             component: '.input-group-addon',
             input: input
         });
-
-        //Add hex input field to color picker
+        
+        // Add hex input field to color picker
         $container.on('create', function () {
-
             var picker = $(this).data('colorpicker');
             picker.picker.css('z-index', '3000');
             if (!picker.picker.find('.hexInput').length) {
 
                 var $colorPickerHexInput = $('<input type="text" class="hexInput" style="border:0px;outline: none;width:120px;" value="' + picker.color.toHex() + '"></input>');
                 picker.picker.append($colorPickerHexInput);
+                
                 $colorPickerHexInput.on('change', function () {
                     picker.color.setColor($(this).val());
                     picker.update();
-                });
-
-                $colorPickerHexInput.on('click', function (event) {
+                }).on('click', function (event) {
                     $colorPickerHexInput.focus();
-                    //$colorPickerHexInput.select();
                     event.stopPropagation();
                     event.preventDefault();
-                });
-
-                $colorPickerHexInput.on('keydown', function (e) {
+                }).on('keydown', function (e) {
                     var keyCode = e.keyCode || e.which;
-                    //Close On Tab
+                    // Close On Tab
                     if (keyCode === 9) {
                         e.preventDefault();
                         picker.hide();
@@ -71,9 +66,9 @@ humhub.initModule('ui.colorpicker', function (module, require, $) {
             var picker = $(this).data('colorpicker');
             picker.picker.find('.hexInput').val(picker.color.toHex());
         });
-    }
+    };
 
     module.export({
-        apply: apply,
+        apply: apply
     });
 });

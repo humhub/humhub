@@ -18,7 +18,19 @@ class View extends \yii\web\View
 {
 
     private $_pageTitle;
+
+    /**
+     * Holds all javascript configurations, which will be appended to the view.
+     * @see View::endBody
+     * @var type 
+     */
     private $jsConfig = [];
+
+    /**
+     * Is used to append a status message as success info.
+     * @var type 
+     */
+    private $statusMessage;
 
     /**
      * Sets current page title
@@ -76,16 +88,23 @@ class View extends \yii\web\View
      */
     public function renderAjaxContent($content)
     {
+
+        // Make sure not to load add these asset, especially the bootstrap asset could overwrite the theme.
+        unset($this->assetBundles['yii\bootstrap\BootstrapAsset']);
+        unset($this->assetBundles['yii\web\JqueryAsset']);
+        unset($this->assetBundles['yii\web\YiiAsset']);
+        
         ob_start();
         ob_implicit_flush(false);
 
         $this->beginPage();
         $this->head();
         $this->beginBody();
+        echo $content;
         $this->endBody();
         $this->endPage(true);
 
-        echo $content;
+
 
         return ob_get_clean();
     }
@@ -136,13 +155,41 @@ class View extends \yii\web\View
         return (!Yii::$app->request->isAjax) ? Html::csrfMetaTags() . parent::renderHeadHtml() : parent::renderHeadHtml();
     }
 
+    public function setStatusMessage($type, $message)
+    {
+        Yii::$app->getSession()->setFlash('view-status', [$type => $message]);
+    }
+
+    public function saved()
+    {
+        $this->success(Yii::t('base', 'Saved'));
+    }
+
+    public function info($message)
+    {
+        $this->setStatusMessage('info', $message);
+    }
+
+    public function success($message)
+    {
+        $this->setStatusMessage('success', $message);
+    }
+
+    public function error($message)
+    {
+        $this->setStatusMessage('error', $message);
+    }
+
+    public function warn($message)
+    {
+        $this->setStatusMessage('warn', $message);
+    }
+
     /**
      * @inheritdoc
      */
     public function endBody()
     {
-        \humhub\widgets\CoreJsConfig::widget();
-
         // Flush jsConfig needed for all types of requests (including pjax/ajax)
         $this->flushJsConfig();
 
@@ -151,9 +198,19 @@ class View extends \yii\web\View
             echo '<title>' . $this->getPageTitle() . '</title>';
         }
 
+        if (Yii::$app->getSession()->hasFlash('view-status')) {
+            $viewStatus = Yii::$app->getSession()->getFlash('view-status');
+            $type = strtolower(key($viewStatus));
+            $value = Html::encode(array_values($viewStatus)[0]);
+            $this->registerJs('humhub.modules.ui.status.' . $type . '("' . $value . '")', View::POS_END, 'viewStatusMessage');
+        }
+
         if (Yii::$app->request->isAjax) {
             return parent::endBody();
         }
+
+
+        \humhub\widgets\CoreJsConfig::widget();
 
         // Add LayoutAddons and jsConfig registered by addons
         echo \humhub\widgets\LayoutAddons::widget();

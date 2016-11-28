@@ -11,24 +11,29 @@ namespace humhub\assets;
 use yii\web\AssetBundle;
 
 /**
- * select2 extension asset
+ * select2
  * 
  * @author buddha
  */
-class Select2ExtensionAsset extends AssetBundle
-{
-
-    public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
-    
+class PjaxAsset extends AssetBundle
+{   
+    /**
+     * @inheritdoc
+     */
     public $basePath = '@webroot';
+    
+    /**
+     * @inheritdoc
+     */
     public $baseUrl = '@web';
 
     /**
      * @inheritdoc
      */
-    public $js = ['js/select2-extension.js'];
+    public $js = ['js/jquery.pjax.modified.js'];
     
     public $depends = [
-        'humhub\assets\Select2Asset'
+        'yii\web\YiiAsset',
     ];
+  
 }

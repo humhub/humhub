@@ -22,25 +22,17 @@ use humhub\modules\space\models\Space;
         <?php echo Html::beginForm($submitUrl, 'POST'); ?>
         <?php echo $form; ?>
 
-        <div id="notifyUserContainer" class="form-group hidden" style="margin-top: 15px;">
-            <input type="text" value="" id="notifyUserInput" name="notifyUserInput"/>
+        <div id="notifyUserContainer" class="form-group" style="margin-top: 15px;display:none;">
 
-            <?php
-            $userSearchUrl = Url::toRoute(['/user/search/json', 'keyword' => '-keywordPlaceholder-']);
-            if ($contentContainer instanceof Space) {
-                $userSearchUrl = $contentContainer->createUrl('/space/membership/search', array('keyword' => '-keywordPlaceholder-'));
-            }
-
-            /* add UserPickerWidget to notify members */
-            echo \humhub\modules\user\widgets\UserPicker::widget(array(
-                'inputId' => 'notifyUserInput',
-                'userSearchUrl' => $userSearchUrl,
-                'maxUsers' => 10,
-                'userGuid' => Yii::$app->user->guid,
-                'placeholderText' => Yii::t('ContentModule.widgets_views_contentForm', 'Add a member to notify'),
-                'focus' => true,
-            ));
-            ?>
+            <?php $memberPickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl('/space/membership/search') : null ?>
+            <?= humhub\modules\user\widgets\UserPickerField::widget([
+                'id' => 'notifyUserInput',
+                'url' => $memberPickerUrl,
+                'formName' => 'notifyUserInput',
+                'maxSelection' => 10,
+                'disabledItems' => [Yii::$app->user->guid],
+                'placeholder' => Yii::t('ContentModule.widgets_views_contentForm', 'Add a member to notify'),
+            ]);?>
         </div>
 
         <?php

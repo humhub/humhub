@@ -12,6 +12,7 @@ use Yii;
 use humhub\components\Controller;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use humhub\modules\search\models\forms\SearchForm;
 
 use humhub\modules\space\widgets\Image;
 
@@ -23,12 +24,6 @@ use humhub\modules\space\widgets\Image;
  */
 class SearchController extends Controller
 {
-
-    const SCOPE_ALL = "all";
-    const SCOPE_USER = "user";
-    const SCOPE_SPACE = "space";
-    const SCOPE_CONTENT = "content";
-
     public function init()
     {
         $this->appendPageTitle(\Yii::t('SearchModule.base', 'Search'));
@@ -50,53 +45,48 @@ class SearchController extends Controller
 
     public function actionIndex()
     {
-        $keyword = Yii::$app->request->get('keyword', "");
-        $scope = Yii::$app->request->get('scope', "");
-        $page = (int)Yii::$app->request->get('page', 1);
-        $limitSpaceGuids = Yii::$app->request->get('limitSpaceGuids', "");
+        $model = new SearchForm();
+        $model->load(Yii::$app->request->get());
 
-        $limitSpaces = array();
-        if ($limitSpaceGuids !== "") {
-            foreach (explode(",", $limitSpaceGuids) as $guid) {
-                $guid = trim($guid);
-                if ($guid != "") {
-                    $space = Space::findOne(['guid' => trim($guid)]);
-                    if ($space !== null) {
-                        $limitSpaces[] = $space;
-                    }
+        $limitSpaces = [];
+        if (!empty($model->limitSpaceGuids)) {
+            foreach ($model->limitSpaceGuids as $guid) {
+                $space = Space::findOne(['guid' => trim($guid)]);
+                if ($space !== null) {
+                    $limitSpaces[] = $space;
                 }
             }
         }
 
         $options = [
-            'page' => $page,
-            'sort' => ($keyword == '') ? 'title' : null,
+            'page' => $model->page,
+            'sort' => (empty($model->keyword)) ? 'title' : null,
             'pageSize' => Yii::$app->settings->get('paginationSize'),
             'limitSpaces' => $limitSpaces
         ];
-        if ($scope == self::SCOPE_CONTENT) {
+        
+        if ($model->scope == SearchForm::SCOPE_CONTENT) {
             $options['type'] = \humhub\modules\search\engine\Search::DOCUMENT_TYPE_CONTENT;
-        } elseif ($scope == self::SCOPE_SPACE) {
+        } elseif ($model->scope == SearchForm::SCOPE_SPACE) {
             $options['model'] = Space::className();
-        } elseif ($scope == self::SCOPE_USER) {
+        } elseif ($model->scope == SearchForm::SCOPE_USER) {
             $options['model'] = User::className();
         } else {
-            $scope = self::SCOPE_ALL;
+            $model->scope = SearchForm::SCOPE_ALL;
         }
 
-        $searchResultSet = Yii::$app->search->find($keyword, $options);
+        $searchResultSet = Yii::$app->search->find($model->keyword, $options);
 
         $pagination = new \yii\data\Pagination;
         $pagination->totalCount = $searchResultSet->total;
         $pagination->pageSize = $searchResultSet->pageSize;
 
         return $this->render('index', array(
-            'scope' => $scope,
-            'keyword' => $keyword,
+            'model' => $model,
             'results' => $searchResultSet->getResultInstances(),
             'pagination' => $pagination,
-            'totals' => $this->getTotals($keyword, $options),
-            'limitSpaceGuids' => $limitSpaceGuids
+            'totals' => $model->getTotals($model->keyword, $options),
+            'limitSpaces' => $limitSpaces
         ));
     }
 
@@ -127,24 +117,4 @@ class SearchController extends Controller
 
         return $results;
     }
-
-    protected function getTotals($keyword, $options)
-    {
-        $totals = array();
-
-        // Unset unnecessary search options
-        unset($options['model'], $options['type'], $options['page'], $options['pageSize']);
-
-        $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['model' => User::className()]));
-        $totals[self::SCOPE_USER] = $searchResultSetCount->total;
-        $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['model' => Space::className()]));
-        $totals[self::SCOPE_SPACE] = $searchResultSetCount->total;
-
-        $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['type' => \humhub\modules\search\engine\Search::DOCUMENT_TYPE_CONTENT]));
-        $totals[self::SCOPE_CONTENT] = $searchResultSetCount->total;
-        $totals[self::SCOPE_ALL] = $totals[self::SCOPE_CONTENT] + $totals[self::SCOPE_SPACE] + $totals[self::SCOPE_USER];
-
-        return $totals;
-    }
-
 }

@@ -17,8 +17,6 @@ use yii\web\AssetBundle;
  */
 class BluebirdAsset extends AssetBundle
 {
-
-    public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
     
     /**
      * @inheritdoc

@@ -80,7 +80,7 @@ class SpaceController extends Controller
             Yii::$app->getModule('space')->settings->set('defaultContentVisibility', $form->defaultContentVisibility);
 
             // set flash message
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SpaceController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['settings']);
         }
 

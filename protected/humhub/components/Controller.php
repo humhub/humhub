@@ -41,7 +41,7 @@ class Controller extends \yii\web\Controller
      * @var boolean append page title 
      */
     public $prependActionTitles = true;
-    
+
     /**
      * Can be used to set the active topmenu item.
      * 
@@ -143,15 +143,13 @@ class Controller extends \yii\web\Controller
                     $this->appendPageTitle($this->actionTitlesMap[$this->action->id]);
                 }
             }
-            
+
             if (!empty($this->pageTitle)) {
                 $this->getView()->pageTitle = $this->pageTitle;
             }
-            
-            if(!empty($this->topMenuRoute)) {
-                $this->setActiveTopMenuItem(Url::to([$this->topMenuRoute]));
-            }
-            
+
+            $this->setJsViewStatus();
+
             return true;
         }
         return false;
@@ -214,10 +212,23 @@ class Controller extends \yii\web\Controller
 
         return Yii::$app->getResponse()->redirect(Url::to($url), $statusCode);
     }
-    
-    public function setActiveTopMenuItem($url)
+
+    /**
+     * Sets some ui state as current controller/module and active topmenu.
+     * 
+     * This is required for some modules in pjax mode.
+     * 
+     * @since 1.2
+     * @param type $url
+     */
+    public function setJsViewStatus()
     {
-        \humhub\widgets\TopMenu::markAsActive($url);
+        $modluleId = (Yii::$app->controller->module) ? Yii::$app->controller->module->id : '';
+        $this->view->registerJs('humhub.modules.ui.status.setState("' . $modluleId . '", "' . Yii::$app->controller->id . '", "' . Yii::$app->controller->action->id . '");', \yii\web\View::POS_BEGIN);
+
+        if (!empty($this->topMenuRoute)) {
+            \humhub\widgets\TopMenu::markAsActive(Url::to([$this->topMenuRoute]));
+        }
     }
 
 }

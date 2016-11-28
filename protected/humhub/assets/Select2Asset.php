@@ -16,10 +16,7 @@ use yii\web\AssetBundle;
  * @author buddha
  */
 class Select2Asset extends AssetBundle
-{
-
-    public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
-    
+{   
     /**
      * @inheritdoc
      */

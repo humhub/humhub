@@ -73,7 +73,7 @@ class AccountController extends BaseAccountController
             // Trigger search refresh
             $user->save();
 
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['edit']);
         }
 
@@ -111,7 +111,7 @@ class AccountController extends BaseAccountController
             $user->visibility = $model->visibility;
             $user->save();
            
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['edit-settings']);
         }
 
@@ -270,7 +270,7 @@ class AccountController extends BaseAccountController
         $model = new \humhub\modules\user\models\forms\AccountEmailing();
         
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('UserModule.controllers_AccountController', 'Saved'));
+            $this->view->saved();
         }
         
         return $this->render('emailing', array('model' => $model));

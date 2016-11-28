@@ -20,7 +20,6 @@ The same applies to the activity stream:
 
 `protected/humhub/modules/activity/views/layouts/web.php`
 
-
 ### Status Bar
 
 We added a new status bar and a loader for pjax loading to the theme.less.
@@ -39,11 +38,26 @@ Please see the following file for 1.2 changes (at the buttom):
 
 - Use data-ui-gallery instead of old data-toggle and data-gallery
 
-### Other files to check for changes: 
+### Please check the following view files for changes if you have overwritten them in your theme: 
 
-- see modules/like/widget/views/likeLink.php (Use of new api)
-- see modules/admin/views/setting/design.php (Use of new api)
+- Rewrite (API):
+    - modules/like/widget/views/likeLink.php 
+    - modules/admin/views/setting/design.php 
+    - modules/space/views/create/invite.php
+    - modules/space/views/membership/invite.php
+- UserPicker rewrite:
+    - modules/admin/views/group/edit.php
+    - modules/admin/views/group/members.php
+    - modules/content/widgets/views/wallCreateContentForm.php
+- TabbedForm:
+    - modules/admin/views/user/add.php 
+    - modules/admin/views/user/edit.php 
+    ... Add views
+- Space Picker
+    ... Add views
 
+
+We've integrated a new Space and UserPicker widget. Please check the following files for 
 
 ## Migrate to 1.1
 

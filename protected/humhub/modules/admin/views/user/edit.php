@@ -5,7 +5,6 @@ use yii\helpers\Url;
 
 humhub\assets\TabbedFormAsset::register($this);
 
-humhub\assets\Select2ExtensionAsset::register($this);
 ?>
 
 <div class="clearfix">
@@ -17,7 +16,7 @@ humhub\assets\Select2ExtensionAsset::register($this);
     </div>
 </div>
 <div class="panel-body">
-    <?php $form = \yii\widgets\ActiveForm::begin(['options' => ['data-ui-tabbed-form' => '']]); ?>
+    <?php $form = \yii\widgets\ActiveForm::begin(['options' => ['data-ui-widget' => 'ui.form.TabbedForm', 'data-ui-init' => '']]); ?>
     <?php echo $hForm->render($form); ?>
     <?php \yii\widgets\ActiveForm::end(); ?>
 </div>

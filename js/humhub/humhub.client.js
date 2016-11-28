@@ -2,7 +2,7 @@
  * Manages the client/server communication. Handles humhub json api responses and
  * pjax requests.
  */
-humhub.initModule('client', function (module, require, $) {
+humhub.module('client', function(module, require, $) {
     var object = require('util').object;
     var event = require('event');
     //var clientUpload = require('client.upload');
@@ -11,14 +11,14 @@ humhub.initModule('client', function (module, require, $) {
     /**
      * Response Wrapper Object for easily accessing common data
      */
-    var Response = function (xhr, url, textStatus, dataType) {
+    var Response = function(xhr, url, textStatus, dataType) {
         this.url = url;
         this.status = xhr.status;
         this.response = xhr.responseJSON || xhr.responseText;
         //Textstatus = "timeout", "error", "abort", "parsererror", "application"
         this.textStatus = textStatus;
         this.dataType = dataType;
-        
+
         if (!dataType || dataType === 'json') {
             $.extend(this, this.response);
         } else if (dataType) {
@@ -26,38 +26,40 @@ humhub.initModule('client', function (module, require, $) {
         }
     };
 
-    Response.prototype.setSuccess = function (data) {
+    Response.prototype.setSuccess = function(data) {
         this.data = data;
         return this;
     };
 
-    Response.prototype.setError = function (errorThrown) {
+    Response.prototype.setError = function(errorThrown) {
         this.error = errorThrown;
         this.validationError = (this.status === 400);
         return this;
     };
 
-    Response.prototype.isError = function () {
+    Response.prototype.isError = function() {
         return this.status >= 400;
     };
-    
-    Response.prototype.getLog = function () {
+
+    Response.prototype.getLog = function() {
         var result = $.extend({}, this);
 
-        if(this.response && object.isString(this.response)) {
-            result.response = this.response.substr(0,200) 
-            result.response += (this.response.length > 200) ? '...' : '';
-        };
-        
-        if(this.html && object.isString(this.html)) {
-            result.html = this.html.substr(0,200) 
-            result.html += (this.html.length > 200) ? '...' : '';
-        };
-        
+        if (this.response && object.isString(this.response)) {
+            result.response = this.response.substr(0, 500)
+            result.response += (this.response.length > 500) ? '...' : '';
+        }
+        ;
+
+        if (this.html && object.isString(this.html)) {
+            result.html = this.html.substr(0, 500)
+            result.html += (this.html.length > 500) ? '...' : '';
+        }
+        ;
+
         return result;
     };
 
-    var submit = function ($form, cfg, originalEvent) {
+    var submit = function($form, cfg, originalEvent) {
         if ($form instanceof $.Event && $form.$form) {
             originalEvent = $form;
             $form = $form.$form;
@@ -68,13 +70,18 @@ humhub.initModule('client', function (module, require, $) {
 
         cfg = cfg || {};
         $form = object.isString($form) ? $($form) : $form;
+
+        if (!$form || !$form.length) {
+            return Promise.reject('Could not determine form for submit action.');
+        }
+
         cfg.type = $form.attr('method') || 'post';
         cfg.data = $form.serialize();
         var url = cfg.url || originalEvent.url || $form.attr('action');
         return ajax(url, cfg, originalEvent);
     };
 
-    var post = function (url, cfg, originalEvent) {
+    var post = function(url, cfg, originalEvent) {
         if (url instanceof $.Event) {
             originalEvent = url;
             url = originalEvent.url;
@@ -87,23 +94,23 @@ humhub.initModule('client', function (module, require, $) {
         cfg.type = cfg.method = 'POST';
         return ajax(url, cfg, originalEvent);
     };
-    
+
     var html = function(url, cfg, originalEvent) {
-         if (url instanceof $.Event) {
+        if (url instanceof $.Event) {
             originalEvent = url;
             url = originalEvent.url;
         } else if (cfg instanceof $.Event) {
             originalEvent = cfg;
             cfg = {};
         }
-        
+
         cfg = cfg || {};
         cfg.type = cfg.method = 'GET';
         cfg.dataType = 'html';
-        return get(url,cfg,originalEvent);
+        return get(url, cfg, originalEvent);
     };
 
-    var get = function (url, cfg, originalEvent) {
+    var get = function(url, cfg, originalEvent) {
         if (url instanceof $.Event) {
             originalEvent = url;
             url = originalEvent.url;
@@ -117,7 +124,7 @@ humhub.initModule('client', function (module, require, $) {
         return ajax(url, cfg, originalEvent);
     };
 
-    var ajax = function (url, cfg, originalEvent) {
+    var ajax = function(url, cfg, originalEvent) {
 
         // support for ajax(url, event) and ajax(path, successhandler);
         if (cfg instanceof $.Event) {
@@ -127,12 +134,12 @@ humhub.initModule('client', function (module, require, $) {
             cfg = {'success': cfg};
         }
 
-        
-        var promise = new Promise(function (resolve, reject) {
+
+        var promise = new Promise(function(resolve, reject) {
             cfg = cfg || {};
-            
+
             var errorHandler = cfg.error;
-            var error = function (xhr, textStatus, errorThrown) {
+            var error = function(xhr, textStatus, errorThrown) {
                 var response = new Response(xhr, url, textStatus, cfg.dataType).setError(errorThrown);
 
                 if (errorHandler && object.isFunction(errorHandler)) {
@@ -144,7 +151,7 @@ humhub.initModule('client', function (module, require, $) {
             };
 
             var successHandler = cfg.success;
-            var success = function (data, textStatus, xhr) {
+            var success = function(data, textStatus, xhr) {
                 var response = new Response(xhr, url, textStatus, cfg.dataType).setSuccess(data);
                 if (successHandler) {
                     successHandler(response);
@@ -159,7 +166,7 @@ humhub.initModule('client', function (module, require, $) {
                     event.trigger('humhub:modules:client:response:' + response.type);
                 }
 
-                promise.done(function () {
+                promise.done(function() {
                     // If content with <link> tags are inserted in resolve, the ajaxComplete handler in yii.js
                     // makes sure redundant stylesheets are removed. Here we get sure it is called after inserting the response.
                     $(document).trigger('ajaxComplete');
@@ -177,18 +184,18 @@ humhub.initModule('client', function (module, require, $) {
             $.ajax(cfg);
         });
 
-        promise.status = function (setting) {
-            return new Promise(function (resolve, reject) {
-                promise.then(function (response) {
+        promise.status = function(setting) {
+            return new Promise(function(resolve, reject) {
+                promise.then(function(response) {
                     try {
                         if (setting[response.status]) {
                             setting[response.status](response);
-                        } 
+                        }
                         resolve(response);
                     } catch (e) {
                         reject(e);
                     }
-                }).catch(function (response) {
+                }).catch(function(response) {
                     try {
                         if (setting[response.status]) {
                             setting[response.status](response);
@@ -206,41 +213,41 @@ humhub.initModule('client', function (module, require, $) {
         return promise;
     };
 
-    var finish = function (originalEvent) {
+    var finish = function(originalEvent) {
         if (originalEvent && object.isFunction(originalEvent.finish)) {
             originalEvent.finish();
         }
     };
-    
+
     /**
      * Default file upload action
      * @param {type} evt
      * @returns {undefined}
-    
-    var upload = function(evt) {
-        var $target = evt.$target;
-        
-        clientUpload.upload($target).then(function() {
-            if($target.data('action-done')) {
-                action.trigger($target, 'done', evt, false);
-            } else if(evt.finish) {
-                evt.finish();
-            }
-        }).catch(function(e) {
-            
-        });
-        
-        //Check if handler is already active
-        if(!isSet) {
-            clientUpload.set(evt);        
-        }
-                
-                
-                .on('done', function() {
-            
-        }).trigger('click');
-    };
- */
+     
+     var upload = function(evt) {
+     var $target = evt.$target;
+     
+     clientUpload.upload($target).then(function() {
+     if($target.data('action-done')) {
+     action.trigger($target, 'done', evt, false);
+     } else if(evt.finish) {
+     evt.finish();
+     }
+     }).catch(function(e) {
+     
+     });
+     
+     //Check if handler is already active
+     if(!isSet) {
+     clientUpload.set(evt);        
+     }
+     
+     
+     .on('done', function() {
+     
+     }).trigger('click');
+     };
+     */
     module.export({
         ajax: ajax,
         post: post,

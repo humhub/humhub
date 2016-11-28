@@ -4,31 +4,28 @@
  * @type undefined|Function
  */
 
-humhub.initModule('space.chooser', function (module, require, $) {
+humhub.module('space.chooser', function(module, require, $) {
     var event = require('event');
     var space = require('space');
-    var loader = require('ui.loader');
     var client = require('client');
-    var additions = require('ui.additions');
+    var ui = require('ui');
+    var Widget = ui.widget.Widget;
+    var object = require('util').object;
 
     var SELECTOR_ITEM = '[data-space-chooser-item]';
     var SELECTOR_ITEM_REMOTE = '[data-space-none]';
 
-    var instance;
-
     module.initOnPjaxLoad = false;
 
-    var SpaceChooser = function (options) {
-        options = options || {};
-        this.$ = options.root || $('#space-menu-dropdown');
-        this.$menu = options.menu || $('#space-menu');
-        this.$chooser = options.chooser || $('#space-menu-spaces');
-        this.$search = options.search || $('#space-menu-search');
-        this.$remoteSearch = options.result || $('#space-menu-remote-search');
-        this.init();
-    };
+    var SpaceChooser = function() {};
 
-    SpaceChooser.prototype.init = function () {
+    object.inherits(SpaceChooser, Widget);
+
+    SpaceChooser.prototype.init = function() {
+        this.$menu = $('#space-menu');
+        this.$chooser = $('#space-menu-spaces');
+        this.$search = $('#space-menu-search');
+        this.$remoteSearch = $('#space-menu-remote-search');
         // set niceScroll to SpaceChooser menu
         this.$chooser.niceScroll({
             cursorwidth: "7",
@@ -39,42 +36,48 @@ humhub.initModule('space.chooser', function (module, require, $) {
             railpadding: {top: 0, right: 3, left: 0, bottom: 0}
         });
 
+        this.$.on('click', SELECTOR_ITEM, function(evt) {
+            if (this === evt.target) {
+                $(this).find('a')[0].click();
+            }
+        });
+
         this.initEvents();
         this.initSpaceSearch();
     };
 
-    SpaceChooser.prototype.initEvents = function () {
+    SpaceChooser.prototype.initEvents = function() {
         var that = this;
 
         // Set no space icon for non space views and set space icon for space views.
-        event.on('humhub:ready', function () {
+        event.on('humhub:ready', function() {
             if (!space.isSpacePage()) {
                 that.setNoSpace();
             }
-        }).on('humhub:modules:space:changed', function (evt, options) {
+        }).on('humhub:modules:space:changed', function(evt, options) {
             that.setSpace(options);
         });
 
         // Focus on search on open and clear item selection when closed
-        this.$menu.parent().on('shown.bs.dropdown', function () {
+        this.$menu.parent().on('shown.bs.dropdown', function() {
             that.$search.focus();
-        }).on('hidden.bs.dropdown', function () {
+        }).on('hidden.bs.dropdown', function() {
             that.clearSelection();
         });
     };
 
-    SpaceChooser.prototype.initSpaceSearch = function () {
+    SpaceChooser.prototype.initSpaceSearch = function() {
         var that = this;
 
-        $('#space-search-reset').click(function () {
+        $('#space-search-reset').click(function() {
             that.resetSearch();
         });
 
-        $('#space-directory-link').on('click', function () {
+        $('#space-directory-link').on('click', function() {
             that.$menu.trigger('click');
         });
 
-        this.$search.on('keyup', function (event) {
+        this.$search.on('keyup', function(event) {
             var $selection = that.getSelectedItem();
             switch (event.keyCode) {
                 case 40: // Down -> select next
@@ -100,21 +103,21 @@ humhub.initModule('space.chooser', function (module, require, $) {
                     that.triggerSearch();
                     break;
             }
-        }).on('keydown', function (event) {
+        }).on('keydown', function(event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
             }
-        }).on('focus', function () {
+        }).on('focus', function() {
             $('#space-directory-link').addClass('focus');
-        }).on('blur', function () {
+        }).on('blur', function() {
             $('#space-directory-link').removeClass('focus');
         });
     };
 
-    SpaceChooser.prototype.triggerSearch = function () {
+    SpaceChooser.prototype.triggerSearch = function() {
         var input = this.$search.val().toLowerCase();
 
-        // Don't repeat the last search
+        // Don't repeat the search querys
         if (this.$search.data('last-search') === input) {
             return;
         }
@@ -126,7 +129,7 @@ humhub.initModule('space.chooser', function (module, require, $) {
         } else {
             $('#space-search-reset').fadeIn('fast');
         }
-        
+
         // Filter all existing items and highlight text
         this.filterItems(input);
         this.highlight(input);
@@ -134,14 +137,14 @@ humhub.initModule('space.chooser', function (module, require, $) {
         this.triggerRemoteSearch(input);
     };
 
-    SpaceChooser.prototype.filterItems = function (input) {
+    SpaceChooser.prototype.filterItems = function(input) {
         this.clearSelection();
         this.$search.data('last-search', input);
 
         // remove max-height property to hide the nicescroll scrollbar in case of search input
         this.$chooser.css('max-height', ((input) ? 'none' : '400px'));
 
-        this.getItems().each(function () {
+        this.getItems().each(function() {
             var $item = $(this);
             var itemText = $item.text().toLowerCase();
 
@@ -155,21 +158,21 @@ humhub.initModule('space.chooser', function (module, require, $) {
 
         SpaceChooser.selectItem(this.getFirstItem());
     };
-    
-    SpaceChooser.prototype.highlight = function (input, selector) {
+
+    SpaceChooser.prototype.highlight = function(input, selector) {
         selector = selector || SELECTOR_ITEM;
         this.$chooser.find(SELECTOR_ITEM).removeHighlight().highlight(input);
     };
-    
+
     SpaceChooser.prototype.triggerRemoteSearch = function(input) {
         var that = this;
-        this.remoteSearch(input).then(function (data) {
+        this.remoteSearch(input).then(function(data) {
             if (!data) {
                 that.onChange(input);
                 return;
             }
 
-            $.each(data, function (index, result) {
+            $.each(data, function(index, result) {
                 if (!that.$.find('[data-space-guid="' + result.guid + '"]').length) {
                     that.$chooser.append(result.output);
                 }
@@ -177,14 +180,14 @@ humhub.initModule('space.chooser', function (module, require, $) {
 
             that.highlight(input, SELECTOR_ITEM_REMOTE);
             that.onChange(input);
-        }).catch(function (e) {
+        }).catch(function(e) {
             module.log.error(e, true);
         });
     };
 
-    SpaceChooser.prototype.remoteSearch = function (input) {
+    SpaceChooser.prototype.remoteSearch = function(input) {
         var that = this;
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             // Clear all current remote results not matching the current search
             that.clearRemoteSearch(input);
             var url = module.config.remoteSearchUrl;
@@ -197,11 +200,12 @@ humhub.initModule('space.chooser', function (module, require, $) {
                 resolve();
                 return;
             }
-            
+
             var searchTs = Date.now();
             var options = {data: {keyword: input, target: 'chooser'}};
-            loader.set(that.$remoteSearch, {'wrapper': '<li>', 'css': {padding: '5px'}});
-            client.get(url, options).then(function (response) {
+            
+            ui.loader.set(that.$remoteSearch, {'wrapper': '<li>', 'css': {padding: '5px'}});
+            client.get(url, options).then(function(response) {
                 that.$remoteSearch.empty();
                 var lastSearchTs = that.$remoteSearch.data('last-search-ts');
                 var isOutDated = lastSearchTs && lastSearchTs > searchTs;
@@ -217,7 +221,7 @@ humhub.initModule('space.chooser', function (module, require, $) {
             }).catch(reject);
         });
     };
-    
+
     /**
      * Clears all remote results which do not match with the input search.
      * If no input is given, all remote results will be removed.
@@ -225,17 +229,17 @@ humhub.initModule('space.chooser', function (module, require, $) {
      * @param {string} input search filter 
      * @returns {undefined}
      */
-    SpaceChooser.prototype.clearRemoteSearch = function (input) {
+    SpaceChooser.prototype.clearRemoteSearch = function(input) {
         // Clear all non member and non following spaces
-        this.$chooser.find('[data-space-none]').each(function () {
+        this.$chooser.find('[data-space-none]').each(function() {
             var $this = $(this);
             if (!input || $this.find('.space-name').text().toLowerCase().search(input) < 0) {
                 $this.remove();
             }
         });
     };
-    
-    SpaceChooser.prototype.resetSearch = function () {
+
+    SpaceChooser.prototype.resetSearch = function() {
         $('#space-search-reset').fadeOut('fast');
         this.clearRemoteSearch();
 
@@ -245,34 +249,34 @@ humhub.initModule('space.chooser', function (module, require, $) {
         this.$chooser.css('max-height', '400px');
         this.$remoteSearch.empty();
     };
-    
-    SpaceChooser.prototype.onChange = function (input) {
+
+    SpaceChooser.prototype.onChange = function(input) {
         var emptyResult = !this.getFirstItem().length;
         var atLeastTwo = input && input.length > 1;
-        
-        if(emptyResult && atLeastTwo) {
-            this.$remoteSearch.html('<li><div class="help-block">'+module.text('info.emptyResult')+'</div></li>');
-        } else if(emptyResult) {
-            this.$remoteSearch.html('<li><div class="help-block">'+module.text('info.emptyOwnResult')+'<br/>'+module.text('info.remoteAtLeastInput')+'</div></li>');
-        } else if(!atLeastTwo) {
-            this.$remoteSearch.html('<li><div class="help-block">'+module.text('info.remoteAtLeastInput')+'</div></li>');
+
+        if (emptyResult && atLeastTwo) {
+            this.$remoteSearch.html('<li><div class="help-block">' + module.text('info.emptyResult') + '</div></li>');
+        } else if (emptyResult) {
+            this.$remoteSearch.html('<li><div class="help-block">' + module.text('info.emptyOwnResult') + '<br/>' + module.text('info.remoteAtLeastInput') + '</div></li>');
+        } else if (!atLeastTwo) {
+            this.$remoteSearch.html('<li><div class="help-block">' + module.text('info.remoteAtLeastInput') + '</div></li>');
         }
     };
 
-    SpaceChooser.prototype.clearSelection = function () {
+    SpaceChooser.prototype.clearSelection = function() {
         return this.getSelectedItem().removeClass('selected');
     };
 
-    SpaceChooser.prototype.getFirstItem = function () {
+    SpaceChooser.prototype.getFirstItem = function() {
         return this.$chooser.find('[data-space-chooser-item]:visible').first();
     };
 
-    SpaceChooser.selectItem = function ($item) {
+    SpaceChooser.selectItem = function($item) {
         $item.addClass('selected');
         return SpaceChooser;
     };
 
-    SpaceChooser.deselectItem = function ($item) {
+    SpaceChooser.deselectItem = function($item) {
         $item.removeClass('selected');
         return SpaceChooser;
     };
@@ -282,8 +286,8 @@ humhub.initModule('space.chooser', function (module, require, $) {
      * 
      * @returns {undefined}
      */
-    SpaceChooser.prototype.setNoSpace = function () {
-        if(!this.$menu.find('.no-space').length) {
+    SpaceChooser.prototype.setNoSpace = function() {
+        if (!this.$menu.find('.no-space').length) {
             this._changeMenuButton(module.config.noSpace);
         }
     };
@@ -294,30 +298,29 @@ humhub.initModule('space.chooser', function (module, require, $) {
      * @param {type} spaceOptions
      * @returns {undefined}
      */
-    SpaceChooser.prototype.setSpace = function (spaceOptions) {
+    SpaceChooser.prototype.setSpace = function(spaceOptions) {
         this._changeMenuButton(spaceOptions.image + ' <b class="caret"></b>')
     };
-    
-    SpaceChooser.prototype._changeMenuButton = function (newButton) {
+
+    SpaceChooser.prototype._changeMenuButton = function(newButton) {
         var $newTitle = (newButton instanceof $) ? newButton : $(newButton);
         var $oldTitle = this.$menu.children();
         this.$menu.append($newTitle.hide());
-        additions.switchButtons($oldTitle, $newTitle, {remove: true});
+        ui.additions.switchButtons($oldTitle, $newTitle, {remove: true});
     };
 
-    SpaceChooser.prototype.getSelectedItem = function () {
+    SpaceChooser.prototype.getSelectedItem = function() {
         return this.$chooser.find('[data-space-chooser-item].selected');
     };
 
-    SpaceChooser.prototype.getItems = function () {
+    SpaceChooser.prototype.getItems = function() {
         return this.$chooser.find('[data-space-chooser-item]');
     };
 
-    var init = function () {
-        instance = new SpaceChooser();
-    };
-
     module.export({
-        init: init
+        SpaceChooser: SpaceChooser,
+        init: function() {
+            SpaceChooser.instane($('#space-menu-dropdown'));
+        }
     });
 });

@@ -3,7 +3,7 @@
  * @param {type} param1
  * @param {type} param2
  */
-humhub.initModule('log', function (module, require, $) {
+humhub.module('log', function (module, require, $) {
 
     var event = require('event');
 
@@ -71,6 +71,7 @@ humhub.initModule('log', function (module, require, $) {
     };
 
     Logger.prototype.error = function (msg, error, setStatus) {
+        msg = msg || 'error.default';
         this._log(msg, error, setStatus, TRACE_ERROR);
     };
 
@@ -83,6 +84,8 @@ humhub.initModule('log', function (module, require, $) {
             if (this.traceLevel > level) {
                 return;
             }
+            
+            msg = msg || '';
             
             if (object.isBoolean(details)) {
                 setStatus = details;

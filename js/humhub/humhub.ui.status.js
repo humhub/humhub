@@ -3,39 +3,57 @@
  * @param {type} param1
  * @param {type} param2
  */
-humhub.initModule('ui.status', function (module, require, $) {
+humhub.module('ui.status', function (module, require, $) {
 
     var event = require('event');
     var log = require('log');
-    var object = require('util').object;
+    var util = require('util');
+    var object = util.object;
+    var string = util.string;
     var client = require('client');
+    
+    module.initOnPjaxLoad = false;
+    
+    module.template = {
+        info : '<i class="fa fa-info-circle info"></i><span>{msg}</span>',
+        success : '<i class="fa fa-check-circle success"></i><span>{msg}</span>',
+        warn : '<i class="fa fa-exclamation-triangle warning"></i><span>{msg}</span>',
+        error : '<i class="fa fa-exclamation-circle error"></i><span>{msg}</span>',
+        closeButton: '<a class="status-bar-close pull-right" style="">×</a>',
+        showMoreButton: '<a class="showMore"><i class="fa fa-angle-up"></i></a>',
+        errorBlock: '<div class="status-bar-details" style="display:none;"><pre>{msg}</pre><div>'
+    };
+    
+    var state = {};
 
     var SELECTOR_ROOT = '#status-bar';
     var SELECTOR_BODY = '.status-bar-body';
     var SELECTOR_CONTENT = '.status-bar-content';
 
-    var AUTOCLOSE_DELAY = 6000;
+    var AUTOCLOSE_INFO = 6000;
+    var AUTOCLOSE_WARN = 10000;
 
     var StatusBar = function () {
         this.$ = $(SELECTOR_ROOT);
     };
 
     StatusBar.prototype.info = function (msg, closeAfter) {
-        closeAfter = closeAfter || AUTOCLOSE_DELAY;
-        this._trigger('<i class="fa fa-info-circle info"></i><span>' + msg + '</span>', undefined, closeAfter);
+        closeAfter = closeAfter || AUTOCLOSE_INFO;
+        this._trigger(string.template(module.template.info, {msg : msg}), undefined, closeAfter);
     };
 
     StatusBar.prototype.success = function (msg, closeAfter) {
-        closeAfter = closeAfter || AUTOCLOSE_DELAY;
-        this._trigger('<i class="fa fa-check-circle success"></i><span>' + msg + '</span>', undefined, closeAfter);
+        closeAfter = closeAfter || AUTOCLOSE_INFO;
+        this._trigger(string.template(module.template.success, {msg : msg}), undefined, closeAfter);
     };
 
-    StatusBar.prototype.warning = function (msg, error, closeAfter) {
-        this._trigger('<i class="fa fa-exclamation-triangle warning"></i><span>' + msg + '</span>', error, closeAfter);
+    StatusBar.prototype.warn = function (msg, error, closeAfter) {
+        closeAfter = closeAfter || AUTOCLOSE_WARN;
+        this._trigger(string.template(module.template.warn, {msg : msg}), error, closeAfter);
     };
 
     StatusBar.prototype.error = function (msg, error, closeAfter) {
-        this._trigger('<i class="fa fa-exclamation-circle error"></i><span>' + msg + '</span>', error, closeAfter);
+        this._trigger(string.template(module.template.error, {msg : msg}), error, closeAfter);
     };
 
     StatusBar.prototype._trigger = function (content, error, closeAfter) {
@@ -58,7 +76,7 @@ humhub.initModule('ui.status', function (module, require, $) {
     StatusBar.prototype.setContent = function (content, error) {
         var that = this;
         var $content = this.$.find(SELECTOR_CONTENT).html(content);
-        var $closeButton = $('<a class="status-bar-close pull-right" style="">×</a>');
+        var $closeButton = $(module.template.closeButton);
 
         if (error && module.config['showMore']) {
             this._addShowMore($content, error);
@@ -74,7 +92,7 @@ humhub.initModule('ui.status', function (module, require, $) {
 
     StatusBar.prototype._addShowMore = function ($content, error) {
         var proxy = $.proxy(this.toggle, this, error);
-        $('<a class="showMore"><i class="fa fa-angle-up"></i></a>').on('click', proxy).appendTo($content);
+        $(module.template.showMoreButton).on('click', proxy).appendTo($content);
         this.$.find('.status-bar-content span').on('click', proxy).css('cursor', 'pointer');
     };
 
@@ -89,7 +107,7 @@ humhub.initModule('ui.status', function (module, require, $) {
 
             $showMore.find('i').attr('class', 'fa fa-angle-up');
         } else {
-            $details = $('<div class="status-bar-details" style="display:none;"><pre>' + getErrorMessage(error) + '</pre><div>');
+            $details = $(string.template(module.template.errorBlock, {msg : getErrorMessage(error)}));
             $content.append($details);
             $details.slideToggle('fast');
             $showMore.find('i').attr('class', 'fa fa-angle-down');
@@ -114,13 +132,13 @@ humhub.initModule('ui.status', function (module, require, $) {
                 if (error.error instanceof Error) {
                     error.stack = (error.error.stack) ? error.error.stack : undefined;
                     error.error = error.error.message;
-                } else if(error instanceof client.Response) {
+                } else if (error instanceof client.Response) {
                     error = error.getLog();
                 }
                 try {
                     // encode
                     return $('<div/>').text(JSON.stringify(error, null, 4)).html();
-                } catch(e) {
+                } catch (e) {
                     return error.toString();
                 }
             }
@@ -163,19 +181,21 @@ humhub.initModule('ui.status', function (module, require, $) {
                 callback();
             }
         });
-
     };
 
     var init = function () {
         module.statusBar = new StatusBar();
-        event.on('humhub:modules:log:setStatus', function (evt, msg, details, level) {
+        
+        event.on('humhub:ready', function() {
+            module.log.debug('Current ui state', state);
+        }).on('humhub:modules:log:setStatus', function (evt, msg, details, level) {
             switch (level) {
                 case log.TRACE_ERROR:
                 case log.TRACE_FATAL:
                     module.statusBar.error(msg, details);
                     break;
                 case log.TRACE_WARN:
-                    module.statusBar.warning(msg, details);
+                    module.statusBar.warn(msg, details);
                     break;
                 case log.TRACE_SUCCESS:
                     module.statusBar.success(msg);
@@ -185,22 +205,55 @@ humhub.initModule('ui.status', function (module, require, $) {
                     break;
             }
         });
+
+        // The initState can be used to append status messages before the module is initialized
+        if (module.initState) {
+            module.statusBar[module.initState[0]].apply(module.statusBar, module.initState[1]);
+            module.initState = null;
+        }
     };
 
     module.export({
         init: init,
+        setState: function(moduleId, controlerId, action) {
+            // This function is called by controller itself
+            state = {
+                moduleId: moduleId,
+                controllerId: controlerId,
+                action: action
+            };
+        },
+        getState: function() {
+            return $.extend({}, state);
+        },
         StatusBar: StatusBar,
         success: function (msg, closeAfter) {
-            module.statusBar.success(msg, closeAfter);
+            if (!module.statusBar) {
+                module.initState = ['success', [msg, closeAfter]];
+            } else {
+                module.statusBar.success(msg, closeAfter);
+            }
         },
         info: function (msg, closeAfter) {
-            module.statusBar.info(msg, closeAfter);
+            if (!module.statusBar) {
+                module.initState = ['info', [msg, closeAfter]];
+            } else {
+                module.statusBar.info(msg, closeAfter);
+            }
         },
         warn: function (msg, error, closeAfter) {
-            module.statusBar.warn(msg, error, closeAfter);
+            if (!module.statusBar) {
+                module.initState = ['warn', [msg, error, closeAfter]];
+            } else {
+                module.statusBar.warn(msg, error, closeAfter);
+            }
         },
         error: function (msg, error, closeAfter) {
-            module.statusBar.error(msg, error, closeAfter);
+            if (!module.statusBar) {
+                module.initState = ['error', [msg, error, closeAfter]];
+            } else {
+                module.statusBar.error(msg, error, closeAfter);
+            }
         }
 
     });

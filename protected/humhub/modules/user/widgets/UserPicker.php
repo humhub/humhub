@@ -31,6 +31,7 @@ use humhub\modules\user\models\UserFilter;
  *
  * @package humhub.modules_core.user.widgets
  * @since 0.5
+ * @deprecated since 1.2 use UserPickerField widget for rendering a picker and \humhub\modules\user\models\UserPicker for search queries.
  * @author Luke
  */
 class UserPicker extends \yii\base\Widget

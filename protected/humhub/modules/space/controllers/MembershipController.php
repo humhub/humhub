@@ -9,12 +9,9 @@
 namespace humhub\modules\space\controllers;
 
 use Yii;
-
 use yii\web\HttpException;
-
-use humhub\modules\user\widgets\UserPicker;
+use humhub\modules\user\models\UserPicker;
 use humhub\modules\space\models\Space;
-
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\user\widgets\UserListBox;
@@ -61,7 +58,8 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         return UserPicker::filter([
                     'query' => $space->getMembershipUser(),
                     'keyword' => Yii::$app->request->get('keyword'),
-                    'fillUser' => true
+                    'fillUser' => true,
+                    'disabledText' => Yii::t('SpaceModule.controllers_SpaceController', 'This user is not a member of this space.')
         ]);
     }
 
@@ -82,7 +80,8 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         return UserPicker::filter([
                     'query' => $space->getNonMembershipUser(),
                     'keyword' => Yii::$app->request->get('keyword'),
-                    'fillUser' => true
+                    'fillUser' => true,
+                    'disabledText' => Yii::t('SpaceModule.controllers_SpaceController', 'This user is already a member of this space.')
         ]);
     }
 
@@ -161,9 +160,6 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
             throw new HttpException(403, 'Access denied - You cannot invite members!');
         }
 
-        $canInviteExternal = Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
-
-
         $model = new \humhub\modules\space\models\forms\InviteForm();
         $model->space = $space;
 
@@ -178,19 +174,23 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
             }
 
             // Invite non existing members
-            if ($canInviteExternal) {
+            if (Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite')) {
                 foreach ($model->getInvitesExternal() as $email) {
                     $statusInvite = ($space->inviteMemberByEMail($email, Yii::$app->user->id)) ? Membership::STATUS_INVITED : false;
                 }
             }
 
-            return $this->renderAjax('statusInvite', [
-                        'status' => $statusInvite,
-                        'canInviteExternal' => $canInviteExternal
-            ]);
+            switch ($statusInvite) {
+                case Membership::STATUS_INVITED:
+                    return \humhub\widgets\ModalClose::widget(['success' => Yii::t('SpaceModule.views_space_statusInvite', 'User has been invited.')]);
+                case Membership::STATUS_MEMBER:
+                    return \humhub\widgets\ModalClose::widget(['success' => Yii::t('SpaceModule.views_space_statusInvite', 'User has become a member.')]);
+                default:
+                    return \humhub\widgets\ModalClose::widget(['warn' => Yii::t('SpaceModule.views_space_statusInvite', 'User has not been invited.')]);
+            }
         }
 
-        return $this->renderAjax('invite', array('model' => $model, 'space' => $space, 'canInviteExternal' => $canInviteExternal));
+        return $this->renderAjax('invite', array('model' => $model, 'space' => $space));
     }
 
     /**

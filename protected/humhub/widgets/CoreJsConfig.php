@@ -8,8 +8,9 @@
 
 namespace humhub\widgets;
 
-use yii\base\Widget;
 use Yii;
+use yii\base\Widget;
+use yii\helpers\Url;
 
 /**
  * JSConfig LayoutAddition used to configure core js modules.
@@ -21,7 +22,6 @@ class CoreJsConfig extends Widget
 
     public function run()
     {
-        
         $userConfig = ['isGuest' => Yii::$app->user->isGuest];
         if(!Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
@@ -33,6 +33,14 @@ class CoreJsConfig extends Widget
         $this->getView()->registerJsConfig(
             [
                 'user' => $userConfig,
+                'file' => [
+                    'upload' => [
+                        'url' => Url::to(['/file/file/upload'])
+                    ],
+                    'text' => [
+                        'error.upload' => Yii::t('base', 'Some files could not be uploaded:')
+                    ]
+                ],
                 'action' => [
                     'text' => [
                         'actionHandlerNotFound' => Yii::t('base', 'An error occured while handling your last action. (Handler not found).'),
@@ -69,7 +77,14 @@ class CoreJsConfig extends Widget
                         'showMore' => Yii::t('base', 'Show more'),
                     ]
                 ],
-                
+                'content' => [
+                    'text' => [
+                        'modal.permalink.head' => Yii::t('ContentModule.widgets_views_permaLink', '<strong>Permalink</strong> to this post'),
+                        'modal.permalink.info' => Yii::t('base', 'Copy to clipboard: Ctrl/Cmd+C'),
+                        'modal.button.open' => Yii::t('base', 'Open'),
+                        'modal.button.close' => Yii::t('base', 'Close'),
+                    ]
+                ]
         ]);
     }
 
