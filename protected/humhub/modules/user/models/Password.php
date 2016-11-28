@@ -72,7 +72,6 @@ class Password extends \yii\db\ActiveRecord
             [['newPassword', 'newPasswordConfirm'], 'trim'],
             [['user_id'], 'integer'],
             [['password', 'salt'], 'string'],
-            [['created_at'], 'safe'],
             [['algorithm'], 'string', 'max' => 20],
             [['currentPassword'], CheckPasswordValidator::className(), 'on' => 'changePassword'],
             [['newPassword', 'newPasswordConfirm', 'currentPassword'], 'required', 'on' => 'changePassword'],
