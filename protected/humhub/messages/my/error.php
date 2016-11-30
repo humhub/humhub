@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Login</strong> required' => 'Es necesario <strong>iniciar sesión</strong>',
-  'An internal server error occurred.' => 'Un error interno ha ocurrido',
-  'You are not allowed to perform this action.' => 'Usted no tiene permisos para ejecutar esta acción',
+  '<strong>Login</strong> required' => '<strong>Log masuk</strong> diwajibkan',
+  'An internal server error occurred.' => 'Masalah dalaman server berlaku',
+  'You are not allowed to perform this action.' => 'Anda tidak dibenarkan melaksanakan tindakan ini',
 );
