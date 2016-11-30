@@ -1,259 +1,258 @@
 {
 	"Could not find requested module!": [
-		"¡No se pudo encontrar el módulo solicitado!"
+		"Modul yang diminta tidak ditemui!"
 	],
 	"Invalid request.": [
-		"Solicitud no válida."
+		"Permintaan tidak sah."
 	],
 	"Keyword:": [
-		"Palabra clave:"
+		"Kata kunci:"
 	],
 	"Nothing found with your input.": [
-		"No se encontraron resultados"
+		"Tiada yang ditemui berdasarkan input anda."
 	],
 	"Results": [
-		"Resultados"
+		"Hasil"
 	],
 	"Show more results": [
-		"Mostrar más resultados"
+		"Papar hasil seterusnya"
 	],
 	"Sorry, nothing found!": [
-		"¡Lo sentimos, no se ha encontrado nada!"
+		"Maaf, tiada apa yang ditemui!"
 	],
 	"Welcome to %appName%": [
-		"Bienvenido a %appName%"
+		"Selamat datang kepada %appName%"
 	],
 	"<strong>Latest</strong> updates": [
-		"<strong>Últimas</strong> actualizaciones"
+		"Kemaskini <strong>terkini</strong>"
 	],
 	"Account settings": [
-		"Configuración de la cuenta"
+		"Tetapan akaun"
 	],
 	"Administration": [
-		"Administración"
+		"Pengurusan"
 	],
 	"Back": [
-		"Atrás"
+		"Kembali"
 	],
 	"Back to dashboard": [
-		"Volver al Panel de Control"
+		"Kembali ke papan utama"
 	],
 	"Choose language:": [
-		"Escoge idioma:"
+		"Pilih bahasa:"
 	],
 	"Collapse": [
-		"Cerrar"
+		"Tutup"
 	],
 	"Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!": [
-		"¡La fuente de Contenido del Complemento debe ser una instancia de HActiveRecordContent ó HActiveRecordContentAddon!"
+		"Sumber kandungan addon mestilah daripada HActiveRecordContent atau HActiveRecordContentAddon!"
 	],
 	"Could not determine content container!": [
-		"¡No se pudo determinar el contenedor de contenido!"
+		"Tidak dapat mengesahkan bekas kandungan!"
 	],
 	"Could not find content of addon!": [
-		"¡No se pudo encontrar el contenido del complemento!"
+		"Kandungan addon tidak ditemui!"
 	],
 	"Error": [
-		"Error"
+		"Kesalahan"
 	],
 	"Expand": [
-		"Ampliar"
+		"Buka"
 	],
 	"Insufficent permissions to create content!": [
-		"¡Permisos insuficientes para crear contenido!"
+		"Tiada keizinan bagi mencipta kandungan!"
 	],
 	"It looks like you may have taken the wrong turn.": [
-		"Parece que puede haber tomado el camino equivocado."
+		"Anda telah tersilap langkah."
 	],
 	"Language": [
-		"Idioma"
+		"Bahasa"
 	],
 	"Latest news": [
-		"Últimas noticias"
+		"Berita baru"
 	],
 	"Login": [
-		"Iniciar sesión"
+		"Log Masuk"
 	],
 	"Logout": [
-		"Salir"
+		"Log Keluar"
 	],
 	"Menu": [
-		"Menú"
+		"Menu"
 	],
 	"Module is not on this content container enabled!": [
-		"El módulo no está habilitado en este contenedor de contenido!"
+		"Modul tidak diaktikfkan pada bekas kandungan ini!"
 	],
 	"My profile": [
-		"Mi perfil"
+		"Profil saya"
 	],
 	"New profile image": [
-		"Nueva imagen de perfil"
+		"Imej profil baru"
 	],
 	"Oooops...": [
 		"Oooops..."
 	],
 	"Search": [
-		"Buscar"
+		"Cari"
 	],
 	"Search for users and spaces": [
-		"Buscar usuarios y espacios"
+		"Cari ahli dan ruangan"
 	],
 	"Space not found!": [
-		"¡Espacio no encontrado!"
+		"Ruangan tidak ditemui!"
 	],
 	"User Approvals": [
-		"Aprobaciones de Usuario"
+		"Kelulusan Ahli"
 	],
 	"User not found!": [
-		"¡Usuario no encontrado!"
+		"Ahli tidak ditemui!"
 	],
 	"You cannot create public visible content!": [
-		"¡No puede crear contenido público visible!"
+		"Anda tidak boleh mencipta kandungan yang boleh dilihat awam!"
 	],
 	"Your daily summary": [
-		"Su resumen diario"
+		"Ringkasan harian anda"
 	],
 	"<strong>Login</strong> required": [
-		"Es necesario <strong>iniciar sesión</strong>"
+		"<strong>Log masuk</strong> diwajibkan"
 	],
 	"Global {global} array cleaned using {method} method.": [
-		"Se ha limpiado el array {global} usando el método {method}"
+		"Array global {global} dibersihkan menggunakan cara {method}"
 	],
 	"<strong>Upload</strong> error": [
-		"<strong>Error</strong> al subir"
+		"Kesalahan <strong>muatnaik</strong>"
 	],
 	"Close": [
-		"Cerrar"
+		"Tutup"
 	],
 	"Add image/file": [
-		"Añadir imagen/archivo"
+		"Tambah imej/fail"
 	],
 	"Add link": [
-		"Añadir enlace"
+		"Tambah pautan"
 	],
 	"Bold": [
-		"Negrita"
+		"Tebal"
 	],
 	"Code": [
-		"Código"
+		"Kod"
 	],
 	"Enter a url (e.g. http://example.com)": [
-		"Añade un enlace (ej. http://ejemplo.com)"
+		"Masukkan url (cth. https://hub.sch.my)"
 	],
 	"Heading": [
-		"Título"
+		"Kepala"
 	],
 	"Image": [
-		"Imagen"
+		"Imej"
 	],
 	"Image/File": [
-		"Imagen/Archivo"
+		"Imej/Fail"
 	],
 	"Insert Hyperlink": [
-		"Insertar hipervínculo"
+		"Masukkan Pautan Hiper"
 	],
 	"Insert Image Hyperlink": [
-		"Insertar imagen"
+		"Masukkan Pautan Hiper Imej "
 	],
 	"Italic": [
-		"Cursiva"
+		"Senget"
 	],
 	"List": [
-		"Lista"
+		"Senarai"
 	],
 	"Please wait while uploading...": [
-		"Por favor, espera mientras se sube..."
+		"Sila tunngu sementara memuatnaik..."
 	],
 	"Preview": [
-		"Previsualizar"
+		"Semak"
 	],
 	"Quote": [
-		"Cita"
+		"Ungkap"
 	],
 	"Target": [
-		"Target"
+		"Sasaran"
 	],
 	"Title": [
-		"Título"
+		"Tajuk"
 	],
 	"Title of your link": [
-		"Título de tu enlace"
+		"Tajuk pautan anda"
 	],
 	"URL/Link": [
-		"URL/Enlace"
+		"URL/Pautan"
 	],
 	"code text here": [
-		"Texto con código aquí"
+		"teks kod di sini"
 	],
 	"emphasized text": [
-		"Texto subrayado"
+		"teks dicerahkan"
 	],
 	"enter image description here": [
-		"Escribe la descripción de la imagen aquí"
+		"masukkan deskripsi imej di sini"
 	],
 	"enter image title here": [
-		"Escribe el título de la imagen aquí"
+		"masukkan tajuk imej di sini"
 	],
 	"enter link description here": [
-		"Escribe la descripción del enlace aquí"
+		"masukkan deskripsi pautan di sini"
 	],
 	"heading text": [
-		"Texto de cabecera"
+		"teks kepala"
 	],
 	"list text here": [
-		"Lista de texto aquí"
+		"teks bagi senarai di sini"
 	],
 	"quote here": [
-		"Citar aquí"
+		"ungkap di sini"
 	],
 	"strong text": [
-		"Texto en negrita"
+		"teks tebal"
 	],
 	"Could not create activity for this object type!": [
-		"¡No se puede crear una actividad para este tipo de objeto!"
+		"Tidak dapat mencipta aktiviti bagi jenis objek ini!"
 	],
 	"%displayName% created the new space %spaceName%": [
-		"%displayName% creó un nuevo espacio: %spaceName%"
+		"%displayName% mencipta ruangan baru %spaceName%"
 	],
 	"%displayName% created this space.": [
-		"%displayName% creó este espacio."
+		"%displayName% mencipta ruangan ini."
 	],
 	"%displayName% joined the space %spaceName%": [
-		"%displayName% se unió al espacio %spaceName%"
+		"%displayName% menyertai ruangan %spaceName%"
 	],
 	"%displayName% joined this space.": [
-		"%displayName% se unió a este espacio."
+		"%displayName% menyertai ruangan ini."
 	],
 	"%displayName% left the space %spaceName%": [
-		"%displayName% dejó el espacio %spaceName%"
+		"%displayName% meninggalkan ruangan %spaceName%"
 	],
 	"%displayName% left this space.": [
-		"%displayName% dejó este espacio."
+		"%displayName% meninggalkan ruangan ini."
 	],
 	"{user1} now follows {user2}.": [
-		"{user1} ahora sigue a {user2}."
+		"{user1} kini mengikuti {user2}."
 	],
 	"see online": [
-		"Ver online",
-		"ver en línea"
+		"lihat di atas talian"
 	],
 	"via": [
-		"en"
+		"melalui"
 	],
 	"<strong>Latest</strong> activities": [
-		"<strong>Últimas</strong> actividades"
+		"Aktiviti <strong>terkini</strong>"
 	],
 	"There are no activities yet.": [
-		"No hay actividades todavia."
+		"Tiada aktiviti lagi."
 	],
 	"Hello {displayName},<br><br>\n  \n   your account has been activated.<br><br> \n   \n   Click here to login:<br>\n   <a href='{loginURL}'>{loginURL}</a><br><br>\n   \n   Kind Regards<br>\n   {AdminName}<br><br>": [
-		"Hola {displayName},<br><br>\n  \n   tu cuenta ha sido activada.<br><br> \n   \n   Haz click aquí para iniciar sesión:<br>\n   <a href='{loginURL}'>{loginURL}</a><br><br>\n   \n   Saludos cordiales<br>\n   {AdminName}<br><br>"
+		"Salam {displayName},<br><br>\n  \n   akaun anda telah diaktifkan.<br><br> \n   \n   Klik di sini untuk log masuk:<br>\n   <a href='{loginURL}'>{loginURL}</a><br><br>\n   \n   Yang benar,<br>\n   {AdminName}<br><br>"
 	],
 	"Hello {displayName},<br><br>\n  \n   your account request has been declined.<br><br> \n      \n   Kind Regards<br>\n   {AdminName}<br><br>": [
-		"Hola {displayName},<br><br>\n  \n   tu cuenta ha sido denegada.<br><br> \n      \n   Saludos cordiales<br>\n   {AdminName}<br><br>"
+		"Salam {displayName},<br><br>\n  \n   permintaan akaun anda telah ditolak.<br><br> \n      \n   Yang benar,<br>\n   {AdminName}<br><br>"
 	],
 	"Account Request for '{displayName}' has been approved.": [
-		"La solicitud de cuenta para '{displayName}' ha sido aprobada."
+		"Permintaan akaun bagi '{displayName}' telah diluluskan."
 	],
 	"Account Request for '{displayName}' has been declined.": [
 		"La solicitud de cuenta para '{displayName}' ha sido denegada."
@@ -3559,123 +3558,123 @@
 		"Asignar usuario(s) a esta tarea"
 	],
 	"What to do?": [
-		"¿Que hacer?"
+		"Nak buat apa?"
 	],
 	"Translation Manager": [
-		"Gestor de traducciones"
+		"Pengurus Penterjemahan"
 	],
 	"Translations": [
-		"Traducciones"
+		"Penterjemahan"
 	],
 	"Translation Editor": [
-		"Editor de traducciones"
+		"Editor Penterjemahan"
 	],
 	"<strong>Confirm</strong> page deleting": [
-		"<strong>Confirmar</strong> la eliminación de la página"
+		"<strong>Pastikan</strong> memadam laman"
 	],
 	"<strong>Confirm</strong> page reverting": [
-		"<strong>Confirmar</strong> reversión de la página"
+		"<strong>Pastikan</strong> memulihkan laman"
 	],
 	"<strong>Overview</strong> of all pages": [
-		"<strong>Resumen</strong> de todas las páginas"
+		"<strong>Ringkasan menyeluruh</strong> semua laman"
 	],
 	"<strong>Page</strong> history": [
-		"<strong>Historial</strong> de la página"
+		"Sejarah <strong>laman</strong>"
 	],
 	"<strong>Wiki</strong> Module": [
-		"Módulo <strong>Wiki</strong>"
+		"Module <strong>Wiki</strong>"
 	],
 	"Adds a wiki to this space.": [
-		"Añade una wiki a este espacio."
+		"Tambahkan wiki ke ruangan ini."
 	],
 	"Adds a wiki to your profile.": [
-		"Añade una wiki a tu perfil."
+		"Tambahkan wiki ke profil anda."
 	],
 	"Back to page": [
-		"Volver a la página"
+		"Kembali ke laman"
 	],
 	"Do you really want to delete this page?": [
-		"¿Seguro que quieres eliminar esta página?"
+		"Apakah anda mahu memadamkan laman ini?"
 	],
 	"Do you really want to revert this page?": [
-		"¿Seguro que quieres revertir los cambios de esta página?"
+		"Apakah anda mahu memulihkan laman ini?"
 	],
 	"Edit page": [
-		"Editar página"
+		"Laman edit"
 	],
 	"Edited at": [
-		"Editado a"
+		"Diedit pada"
 	],
 	"Go back": [
-		"Ir atrás"
+		"Kembali"
 	],
 	"Invalid character in page title!": [
-		"¡Caracter inválido en el título de la página!"
+		"Karakter tidak sah dalam tajuk laman!"
 	],
 	"Let's go!": [
-		"¡Vamos allá!"
+		"Mari pergi!"
 	],
 	"Main page": [
-		"Página principal"
+		"Laman utama"
 	],
 	"New page": [
-		"Nueva página"
+		"Laman baru"
 	],
 	"No pages created yet.  So it's on you.<br>Create the first page now.": [
-		"No hay páginas creadas todavía. <br>Crea la primera página ahora"
+		"Tiada laman yang dicipta. Jadi terpulang kepada anda.<br>Cipta laman baru sekarang."
 	],
 	"Page History": [
-		"Historial de la página"
+		"Sejarah Laman"
 	],
 	"Page title already in use!": [
-		"¡Título de la página ya en uso!"
+		"Tajuk laman sudah digunakan!"
 	],
 	"Revert": [
-		"Revertir"
+		"Pulihkan"
 	],
 	"Revert this": [
-		"Revertir esto"
+		"Pulihkan ini"
 	],
 	"View": [
-		"Ver"
+		"Lihat"
 	],
 	"Wiki": [
 		"Wiki"
 	],
 	"by": [
-		"por"
+		"oleh"
 	],
 	"Wiki page": [
-		"Página de la wiki"
+		"Lamman wiki"
 	],
 	"<strong>Create</strong> new page": [
-		"<strong>Crear</strong> nueva página"
+		"<strong>Cipta</strong> laman baru"
 	],
 	"Enter a wiki page name or url (e.g. http://example.com)": [
-		"Escribe el nombre de la wiki o la dirección (ej. http://ejemplo.com)"
+		"Masukkan nama laman wiki atau url (cth. https://hub.sch.my)"
 	],
 	"New page title": [
-		"Nuevo título de la página"
+		"Tajuk laman baru"
 	],
 	"Page content": [
-		"Contenido de la página"
+		"Kandungan laman"
 	],
 	"comment": [
-		"Comentar"
+		"komen"
 	],
 	"post": [
-		"Entrada"
+		"pos"
 	],
 	"Module is not enabled on this content container!": [
-		"El módulo no está habilitado en este contenedor de contenido!"
+		"Modul tidak diaktifkan pada bekas kandungan ini!"
 	],
 	"An internal server error occurred.": [
-		"Un error interno ha ocurrido"
+		"Kesalaha dalaman server berlaku."
 	],
 	"You are not allowed to perform this action.": [
-		"Usted no tiene permisos para ejecutar esta acción"
+		"Anda tidak dibenarkan melaksanakan tindakan ini."
 	],
 	"Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;": [
-		"Define el filtro que aplicar cuando se intenta iniciar sesión. %s reemplaza el nombre de usuario en la acción de iniciar sesión. Ejemplo: quot;(sAMAccountName=%s)&quot; o &quot;(uid=%s)&quot;"
+		"Tetapkan tapisan untuk digunakan semasa log masuk. %s menggantikan nama ahli semasa log masuk. Contoh: quot;(sAMAccountName=%s)&quot; atau &quot;(uid=%s)&quot;"
 	]
 }
