@@ -47,4 +47,5 @@ return [
     'You\'re not registered.' => '',
     'Your new password must not equal your current password!' => '',
     'or' => '',
+    'Current Password' => '',
 ];

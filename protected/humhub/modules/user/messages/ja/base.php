@@ -47,4 +47,5 @@ return [
     'Notifications' => '通知',
     'Password' => 'パスワード',
     'Settings' => '設定',
+    'Current Password' => '',
 ];

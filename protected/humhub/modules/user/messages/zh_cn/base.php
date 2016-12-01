@@ -47,4 +47,5 @@ return [
     'Profile' => '属性',
     'Settings' => '设置',
     'User' => '用户',
+    'Current Password' => '当前密码',
 ];

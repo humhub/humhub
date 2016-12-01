@@ -47,4 +47,5 @@ return [
     'Settings' => 'Impostazioni',
     'User' => 'Utente',
     'or' => 'o',
+    'Current Password' => '',
 ];
