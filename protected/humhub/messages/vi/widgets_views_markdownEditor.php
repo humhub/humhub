@@ -29,4 +29,6 @@ return array (
   'strong text' => '',
   'Close' => 'Đóng',
   'Title' => 'Tiêu đề',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

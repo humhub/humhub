@@ -29,4 +29,6 @@ return array (
   'strong text' => '',
   'Close' => 'Zavřít',
   'Title' => 'Titulek',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

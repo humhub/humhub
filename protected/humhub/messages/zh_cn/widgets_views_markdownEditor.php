@@ -29,4 +29,6 @@ return array (
   'strong text' => '加粗文本',
   'Close' => '关闭',
   'Title' => '标题',
+  'Unordered List' => '无序列表',
+  'Ordered List' => '有序列表',
 );

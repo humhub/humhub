@@ -29,4 +29,6 @@ return array (
   'strong text' => '',
   'Close' => '閉じる',
   'Title' => 'タイトル',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

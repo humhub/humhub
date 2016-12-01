@@ -29,4 +29,6 @@ return array (
   'quote here' => '',
   'strong text' => '',
   'Close' => 'Stäng',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

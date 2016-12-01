@@ -39,7 +39,9 @@ $translations = array(
     'Quote' => Yii::t('widgets_views_markdownEditor', 'Quote'),
     'quote here' => Yii::t('widgets_views_markdownEditor', 'quote here'),
     'Code' => Yii::t('widgets_views_markdownEditor', 'Code'),
-    'code text here' => Yii::t('widgets_views_markdownEditor', 'code text here')
+    'code text here' => Yii::t('widgets_views_markdownEditor', 'code text here'),
+    'Unordered List' => Yii::t('widgets_views_markdownEditor', 'Unordered List'),
+    'Ordered List' => Yii::t('widgets_views_markdownEditor', 'Ordered List'),
 );
 
 $translationsJS = "$.fn.markdown.messages['en'] = {\n";
