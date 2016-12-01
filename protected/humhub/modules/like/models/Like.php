@@ -85,12 +85,10 @@ class Like extends ContentAddonActiveRecord
         $activity->create();
         
         // source itsself does not need to have creadedBy attribute
-        if ($this->getSource()->hasAttribute('content') && $this->getSource()->content->createdBy !== null) {
-            $notification = new \humhub\modules\like\notifications\NewLike();
-            $notification->source = $this;
-            $notification->originator = $this->user;
-            $notification->send($this->getSource()->content->createdBy);
-        }
+        $notification = new \humhub\modules\like\notifications\NewLike();
+        $notification->source = $this;
+        $notification->originator = $this->user;
+        $notification->send($this->getSource()->content->createdBy);
 
         return parent::afterSave($insert, $changedAttributes);
     }
