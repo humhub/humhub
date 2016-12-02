@@ -32,6 +32,9 @@ class ViewAboutPage extends \humhub\libs\BasePermission
         User::USERGROUP_SELF
     ];
 
+    /**
+     * @inheritdoc
+     */
     public function __construct($config = array())
     {
         parent::__construct($config);
