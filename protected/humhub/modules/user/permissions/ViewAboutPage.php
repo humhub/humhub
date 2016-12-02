@@ -32,6 +32,13 @@ class ViewAboutPage extends \humhub\libs\BasePermission
         User::USERGROUP_SELF
     ];
 
+    public function __construct($config = array())
+    {
+        parent::__construct($config);
+        $this->title = \Yii::t('UserModule.permissions', 'About page');
+        $this->description = \Yii::t('UserModule.permissions', 'Allows access to your about page');
+    }
+
     /**
      * @inheritdoc
      */
@@ -48,12 +55,12 @@ class ViewAboutPage extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = "About page";
+    protected $title;
 
     /**
      * @inheritdoc
      */
-    protected $description = "Allows access to your about page";
+    protected $description;
 
     /**
      * @inheritdoc
