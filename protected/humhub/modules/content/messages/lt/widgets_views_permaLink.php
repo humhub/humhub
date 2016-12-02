@@ -20,4 +20,5 @@ return [
     '<strong>Permalink</strong> to this post' => '<strong>Priskirti</strong> nuorodą šiam įrašui',
     'Close' => 'Arti',
     'Permalink' => 'Nuoroda',
+    'Copy to clipboard: Ctrl+C, Enter' => '',
 ];
