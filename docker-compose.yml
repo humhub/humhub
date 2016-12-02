@@ -1,0 +1,27 @@
+php:
+  build: ./
+  ports:
+    - "8010:80"
+#    - "9316:9306"
+  expose:
+    - "80"
+#    - "9306"
+  volumes:
+    - ./:/var/www/html/
+    - ./docker/vhosts/:/etc/apache2/sites-enabled/
+    - ~/.ssh/:/root/.ssh/
+  links:
+    - mysql
+  environment:
+    - SSH_AUTH_SOCK=/tmp/agent.sock
+    - TERM=xterm-256color
+  extra_hosts:
+    - "humhub.local:127.0.0.1"
+mysql:
+  image: mysql:8.0.0
+  ports:
+    - "3336:3306"
+  expose:
+    - "3306"
+  environment:
+    MYSQL_ROOT_PASSWORD: 123
