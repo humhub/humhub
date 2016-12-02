@@ -21,4 +21,6 @@ return [
     'Save profile' => 'Profil speichern',
     'Saved' => 'Gespeichert',
     'The entered e-mail address is already in use by another user.' => 'Die eingetragene E-Mail Adresse wird bereits von einem anderen Benutzer verwendet.',
+    'Members' => '',
+    'Guests' => '',
 ];
