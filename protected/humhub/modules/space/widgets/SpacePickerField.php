@@ -3,7 +3,7 @@
 namespace humhub\modules\space\widgets;
 
 use Yii;
-use humhub\modules\user\widgets\BasePickerField;
+use humhub\widgets\BasePickerField;
 
 /**
  * Mutliselect input field for selecting space guids.

@@ -6,17 +6,21 @@ humhub.module('content.form', function (module, require, $) {
 
     var CREATE_FORM_ROOT_SELECTOR = '#contentFormBody';
 
-    var util = require('util');
+    var object = require('util').object;
     var client = require('client');
 
     var config = require('config').module(module);
     var event = require('event');
     
+    var Widget = require('ui.widget').Widget;
+    
     var instance;
 
-    var CreateForm = function () {
-        this.$ = $(CREATE_FORM_ROOT_SELECTOR);
+    var CreateForm = function (node) {
+        Widget.call(this, node);
     };
+    
+    object.inherits(CreateForm, Widget);
     
     CreateForm.prototype.init = function () {
         this.$.hide();
@@ -129,12 +133,11 @@ humhub.module('content.form', function (module, require, $) {
 
     CreateForm.prototype.notifyUser = function() {
         $('#notifyUserContainer').show();
-        $('#notifyUserInput').data('picker').focus()
+        Widget.instance('#notifyUserInput').focus();
     };
 
     var init = function () {
-        instance = new CreateForm();
-        instance.init();
+        instance = Widget.instance($(CREATE_FORM_ROOT_SELECTOR));
     };
 
     module.export({

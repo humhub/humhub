@@ -134,6 +134,19 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
         ));
     }
 
+    public function actionLoad()
+    {
+        $this->loadContentAddon(Comment::className(), Yii::$app->request->get('id'));
+
+        if (!$this->contentAddon->canRead()) {
+            throw new HttpException(403, Yii::t('CommentModule.controllers_CommentController', 'Access denied!'));
+        }
+
+        return $this->renderAjax('load', [
+            'comment' => $this->contentAddon,
+        ]);
+    }
+
     /**
      * Handles AJAX Request for Comment Deletion.
      * Currently this is only allowed for the Comment Owner.
@@ -142,9 +155,11 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
     {
         $this->forcePostRequest();
         $this->loadContentAddon(Comment::className(), Yii::$app->request->get('id'));
+        Yii::$app->response->format = 'json';
 
         if ($this->contentAddon->canDelete()) {
             $this->contentAddon->delete();
+            return ['success' => true];
         } else {
             throw new HttpException(500, Yii::t('CommentModule.controllers_CommentController', 'Insufficent permissions!'));
         }

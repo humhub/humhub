@@ -13,21 +13,40 @@ humhub.module('action', function(module, require, $) {
     var BLOCK_ASYNC = 'async';
 
     var DATA_COMPONENT = 'action-component';
-    var DATA_COMPONENT_SELECTOR = '[data-' + DATA_COMPONENT + ']';
 
-    var Component = function(container) {
-        if (!container) {
+    var Component = function(node, options) {
+        if(!node) {
             return;
         }
-        this.$ = (object.isString(container)) ? $('#' + container) : container;
-        this.base = this.$.data(DATA_COMPONENT);
+
+        if(node instanceof $) {
+            this.$ = node;
+        } else if(object.isString(node)) {
+            this.$ = $(node);
+            if(!this.$.length) {
+                this.$ = $('#' + node);
+            }
+        }
+
+        this.base = Component.getNameSpace(this.$);
+
+        this.$.data(this.static('component'), this);
+    };
+
+    Component._selectors = [DATA_COMPONENT];
+    Component.component = 'humhub-component';
+
+    Component._buildSelector = function() {
+        Component._selector = Component._selectors.map(function(selector) {
+            return '[data-' + selector + ']';
+        }).join(',');
     };
 
     Component.prototype.data = function(dataSuffix) {
         var result = this.$.data(dataSuffix);
-        if (!result) {
+        if(!result) {
             var parentComponent = this.parent();
-            if (parentComponent) {
+            if(parentComponent) {
                 return parentComponent.data(dataSuffix);
             }
         }
@@ -35,26 +54,30 @@ humhub.module('action', function(module, require, $) {
     };
 
     Component.prototype.parent = function() {
-        var $parent = this.$.parent().closest(DATA_COMPONENT_SELECTOR);
-        if ($parent.length) {
-            try {
-                var ParentType = require($parent.data(DATA_COMPONENT));
-                return new ParentType($parent);
-            } catch (err) {
-                console.error('Could not instantiate parent component: ' + $parent.data(DATA_COMPONENT), err);
-            }
-        }
+        var $parent = this.$.parent().closest(Component._selector);
+        return Component.closest($parent);
     };
 
-    Component.prototype.children = function() {
+    Component.find = function(node, selector, includeSelf) {
         var result = [];
-        this.$.find(DATA_COMPONENT_SELECTOR).each(function() {
-            var component = Component.getInstance($(this));
-            if (component) {
+        var $node = (node instanceof $) ? node : $(node);
+        var $query = $node.find(Component._selector);
+
+        if(includeSelf) {
+            $query.addBack(selector);
+        }
+
+        $query.each(function() {
+            var component = Component.instance($(this));
+            if(component && (!selector || component.$.is(selector))) {
                 result.push(component);
             }
         });
         return result;
+    };
+
+    Component.prototype.children = function(selector) {
+        return Component.find(this.$, selector);
     };
 
     Component.prototype.hasAction = function(action) {
@@ -65,27 +88,107 @@ humhub.module('action', function(module, require, $) {
         return [];
     };
 
-    Component.getInstance = function($node) {
+    /**
+     * Finds the closest component of the given node (including the node itself).
+     * 
+     * @param {type} node
+     * @param {type} options
+     * @returns {undefined}
+     */
+    Component.closest = function(node, options) {
         //Determine closest component node (parent or or given node)
-        $node = (object.isString($node)) ? $('#' + $node) : $node;
-        var $componentRoot = ($node.data(DATA_COMPONENT)) ? $node : Component.getClosestComponentNode($node);
+        var $node = _getNode(node);
 
-        var componentType = $componentRoot.data(DATA_COMPONENT);
-
-        if (!componentType) {
+        if(!$node.length) {
             return;
         }
 
-        var ComponentType = require(componentType);
-        if (ComponentType) {
-            return new ComponentType($componentRoot);
+        // Search the component root, which is either the node itself or a surrounding component
+        var $componentRoot = Component.getComponentRoot($node);
+        var ns = Component.getNameSpace($componentRoot);
+
+        if(!$componentRoot.length || !ns) {
+            return;
+        }
+
+        return Component._getInstance(require(ns), $componentRoot, options);
+    };
+
+    Component.getComponentRoot = function($node) {
+        var ns = Component.getNameSpace($node);
+
+        if(ns) {
+            return $node;
         } else {
-            module.log.error('Tried to instantiate component with invalid type: ' + componentType);
+            return Component.getClosestComponentNode($node);
         }
     };
 
+    Component.getNameSpace = function(node) {
+        var $node = (node instanceof $) ? node : $(node);
+        var base;
+        $.each(Component._selectors, function(i, selector) {
+            base = $node.data(selector);
+            if(base) {
+                return false; // leave foreach
+            }
+        });
+        return base;
+    };
+
+    /**
+     * Creates an component instance out of the given node.
+     * @param {type} node
+     * @param {type} options
+     * @returns {undefined}
+     */
+    Component.instance = function(node, options) {
+        //Determine closest component node (parent or or given node)
+        var $node = _getNode(node);
+
+        if(!$node.length) {
+            return;
+        }
+
+        var ns = Component.getNameSpace($node);
+
+        var ComponentClass = (ns) ? require(ns) : this;
+        return Component._getInstance(ComponentClass, $node, options);
+    };
+
+    var _getNode = function(node) {
+        var $node = (node instanceof $) ? node : $(node);
+
+        if(!$node.length && object.isString(node)) {
+            $node = $('#' + node);
+        }
+        return $node;
+    };
+
+    Component._getInstance = function(ComponentClass, $node, options) {
+        if(!ComponentClass) {
+            module.log.error('No valid component class found for given node ', $node, true);
+            return;
+        } else if($node.data(ComponentClass.component)) {
+            return $node.data(ComponentClass.component);
+        } else {
+            return ComponentClass.createInstance(ComponentClass, $node, options);
+        }
+    };
+
+    Component.createInstance = function(ComponentClass, node, options) {
+        return new ComponentClass(node, options);
+    };
+
+
+
+    Component.addSelector = function(selector) {
+        Component._selectors.push(selector);
+        Component._buildSelector();
+    };
+
     Component.getClosestComponentNode = function($element) {
-        return $element.closest(DATA_COMPONENT_SELECTOR);
+        return $element.closest(Component._selector);
     };
 
     /**
@@ -99,7 +202,7 @@ humhub.module('action', function(module, require, $) {
      * @returns {Boolean} true if the component action could be executed else false
      */
     Component.handleAction = function(event) {
-        var component = Component.getInstance(event.$target);
+        var component = Component.closest(event.$target);
         return (component) ? _executeAction(component, event.handler, event) : false;
     };
 
@@ -107,7 +210,8 @@ humhub.module('action', function(module, require, $) {
      * Constructor for initializing the module.
      */
     var init = function($isPjax) {
-        if (!$isPjax) {
+        if(!$isPjax) {
+            Component._buildSelector();
             //Binding default action types
             this.bindAction(document, 'click', '[data-action-click]');
             this.bindAction(document, 'dblclick', '[data-action-dblclick]');
@@ -131,11 +235,11 @@ humhub.module('action', function(module, require, $) {
      * @returns {undefined}
      */
     var registerHandler = function(id, handler) {
-        if (!id) {
+        if(!id) {
             return;
         }
 
-        if (handler) {
+        if(handler) {
             _handler[id] = handler;
         }
     };
@@ -203,16 +307,16 @@ humhub.module('action', function(module, require, $) {
      * @returns {undefined}
      */
     ActionBinding.prototype.handle = function(originalEvent, $trigger) {
-        if (originalEvent) {
+        if(originalEvent) {
             originalEvent.preventDefault();
         }
 
-        if (this.isBlocked($trigger)) {
+        if(this.isBlocked($trigger)) {
             module.log.warn('Blocked action execution ', $trigger);
             return;
         }
 
-        if (this.isBlockAction($trigger)) {
+        if(this.isBlockAction($trigger)) {
             this.block($trigger);
         }
 
@@ -222,18 +326,18 @@ humhub.module('action', function(module, require, $) {
 
         try {
             // Check for a direct action handler
-            if (object.isFunction(this.directHandler)) {
+            if(object.isFunction(this.directHandler)) {
                 this.directHandler.apply($trigger, [event]);
                 return;
             }
 
             // Check for a component action handler
-            if (Component.handleAction(event)) {
+            if(Component.handleAction(event)) {
                 return;
             }
 
             // Check for global registered handlers
-            if (_handler[event.handler]) {
+            if(_handler[event.handler]) {
                 _handler[event.handler].apply($trigger, [event]);
                 return;
             }
@@ -242,19 +346,19 @@ humhub.module('action', function(module, require, $) {
             var handlerAction = event.handler.split('.').pop();
             var target = require(string.cutsuffix(event.handler, '.' + handlerAction));
 
-            if (!_executeAction(target, handlerAction, event)) {
+            if(!_executeAction(target, handlerAction, event)) {
                 module.log.error('actionHandlerNotFound', event.handler, true);
             }
-        } catch (e) {
+        } catch(e) {
             module.log.error('error.default', e, true);
             event.finish();
         } finally {
             // Just to get sure the handler is not called twice.
-            if (originalEvent) {
+            if(originalEvent) {
                 originalEvent.actionHandled = true;
             }
 
-            if (this.isBlockType($trigger, BLOCK_SYNC)) {
+            if(this.isBlockType($trigger, BLOCK_SYNC)) {
                 event.finish();
             }
         }
@@ -263,11 +367,11 @@ humhub.module('action', function(module, require, $) {
     var _executeAction = function(target, handlerAction, event) {
         // first try actionMyhandler
         var handlerCapitalized = 'action' + string.capitalize(handlerAction);
-        if (object.isFunction(target[handlerCapitalized])) {
+        if(object.isFunction(target[handlerCapitalized])) {
             handlerAction = handlerCapitalized;
         }
 
-        if (object.isFunction(target[handlerAction])) {
+        if(object.isFunction(target[handlerAction])) {
             target[handlerAction](event);
             return true;
         }
@@ -286,7 +390,7 @@ humhub.module('action', function(module, require, $) {
     ActionBinding.prototype.data = function($trigger, name, def) {
         var result = $trigger.data('action-' + this.eventType + '-' + name);
 
-        if (!result) {
+        if(!result) {
             result = $trigger.data('action-' + name);
         }
 
@@ -365,7 +469,7 @@ humhub.module('action', function(module, require, $) {
         //Get the handler id, either a stand alone handler or a content handler function e.g: 'edit' 
         event.handler = $trigger.data('action' + '-' + this.eventType);
 
-        if (this.isSubmit($trigger)) {
+        if(this.isSubmit($trigger)) {
             // Either use closest form or data-action-target if provided
             event.$form = this.data($trigger, 'target', $trigger.closest('form'));
         }
@@ -381,7 +485,7 @@ humhub.module('action', function(module, require, $) {
     };
 
     var _removeLoaderFromEventTarget = function(evt) {
-        if (evt && evt.target) {
+        if(evt && evt.target) {
             loader.reset(evt.target);
         }
     };
@@ -423,7 +527,7 @@ humhub.module('action', function(module, require, $) {
         $parent.off(actionEvent).on(actionEvent, selector, function(evt) {
             evt.preventDefault();
             // Get sure we don't call the handler twice if the event was already handled by the handler attached to trigger.
-            if ($(this).data('action-' + actionBinding.event) || (evt.originalEvent && evt.originalEvent.actionHandled)) {
+            if($(this).data('action-' + actionBinding.event) || (evt.originalEvent && evt.originalEvent.actionHandled)) {
                 module.log.debug('Action Handler already executed ' + actionEvent, actionBinding);
                 module.log.debug('Handler event triggered by', $(this));
                 return;
@@ -450,13 +554,13 @@ humhub.module('action', function(module, require, $) {
      * @returns {undefined}
      */
     var trigger = function($trigger, type, originalEvent, block) {
-        if (block === false) {
+        if(block === false) {
             $trigger.data('action-block', BLOCK_NONE);
-        } else if (object.isString(block)) {
+        } else if(object.isString(block)) {
             $trigger.data('action-block', block);
         }
 
-        if (!$trigger.data('action-' + type)) {
+        if(!$trigger.data('action-' + type)) {
             return;
         }
 

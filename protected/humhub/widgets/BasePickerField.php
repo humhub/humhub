@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\user\widgets;
+namespace humhub\widgets;
 
 use Yii;
 use yii\helpers\Html;
@@ -50,7 +50,7 @@ abstract class BasePickerField extends \yii\base\Widget
      * @var string 
      */
     public $picker = 'ui.picker.Picker';
-    
+
     /**
      * Disabled
      */
@@ -141,7 +141,7 @@ abstract class BasePickerField extends \yii\base\Widget
      * @var \yii\db\ActiveRecord
      */
     public $model;
-    
+
     /**
      * Input form name.
      * This can be provided if no form and model is provided for custom input field setting.
@@ -157,19 +157,19 @@ abstract class BasePickerField extends \yii\base\Widget
      * @var string 
      */
     public $attribute;
-    
+
     /**
      * Can be used to overwrite the default placeholder.
      * @var string
      */
     public $placeholder;
-    
+
     /**
      * Can be used to overwrite the default add more placeholder.
      * @var string 
      */
     public $placeholderMore;
-    
+
     /**
      * If set to true the picker will be focused automatically.
      * 
@@ -198,10 +198,12 @@ abstract class BasePickerField extends \yii\base\Widget
      */
     public function run()
     {
-        if($this->selection != null && !is_array($this->selection)) {
+        \humhub\assets\Select2BootstrapAsset::register($this->view);
+
+        if ($this->selection != null && !is_array($this->selection)) {
             $this->selection = [$this->selection];
         }
-        
+
         // Prepare current selection and selection options
         $selection = [];
         $selectedOptions = $this->getSelectedOptions();
@@ -211,16 +213,15 @@ abstract class BasePickerField extends \yii\base\Widget
 
         $options = $this->getInputAttributes();
         $options['options'] = $selectedOptions;
-        
-        if($this->form != null) {
+
+        if ($this->form != null) {
             return $this->form->field($this->model, $this->attribute)->dropDownList($selection, $options);
-        } else if($this->model != null) {
+        } else if ($this->model != null) {
             return Html::activeDropDownList($this->model, $this->attribute, $selection, $options);
         } else {
             $name = (!$this->formName) ? 'pickerField' : $this->formName;
             return Html::dropDownList($name, $selection, [], $options);
         }
-
     }
 
     /**
@@ -240,30 +241,54 @@ abstract class BasePickerField extends \yii\base\Widget
      * @return array 
      */
     protected function getSelectedOptions()
-    {   
+    {
         if (!$this->selection && $this->model != null) {
             $attribute = $this->attribute;
             $this->selection = $this->loadItems($this->model->$attribute);
         }
-        
-        if(!$this->selection) {
+
+        if (!$this->selection) {
             $this->selection = [];
         }
 
         $result = [];
         foreach ($this->selection as $item) {
-            if(!$item) {
+            if (!$item) {
                 continue;
             }
-            
-            $itemKey = $this->itemKey;
-            $result[$item->$itemKey] = [
-                'data-text' => $this->getItemText($item),
-                'data-image' => $this->getItemImage($item),
-                'selected' => 'selected'
-            ];
+
+            $result[$this->getItemKey($item)] = $this->buildItemOption($item);
         }
         return $result;
+    }
+
+    protected function buildItemOption($item, $selected = true)
+    {
+        $result = [
+            'data-text' => $this->getItemText($item),
+            'data-image' => $this->getItemImage($item),
+        ];
+        
+        if($selected) {
+            $result['selected'] = 'selected';
+        }
+        
+        return $result;
+    }
+
+    /**
+     * Returns the item key which is used as option value. By default we use 
+     * the $itemKey attribibute of $item.
+     * 
+     * e.g. $itemKey = 'id'
+     * 
+     * @param type $item
+     * @return type
+     */
+    protected function getItemKey($item)
+    {
+        $itemKey = $this->itemKey;
+        return $item->$itemKey;
     }
 
     /**
@@ -347,12 +372,10 @@ abstract class BasePickerField extends \yii\base\Widget
     protected function getTexts()
     {
         $allowMultiple = $this->maxSelection !== 1;
-        
-        $placeholder = ($this->placeholder != null) ? $this->placeholder 
-                : Yii::t('UserModule.widgets_BasePickerField', 'Select {n,plural,=1{item} other{items}}', ['n' => ($allowMultiple) ? 2 : 1]);
-        $placeholderMore = ($this->placeholderMore != null) ? $this->placeholderMore 
-               : Yii::t('UserModule.widgets_BasePickerField', 'Add more...');
-        
+
+        $placeholder = ($this->placeholder != null) ? $this->placeholder : Yii::t('UserModule.widgets_BasePickerField', 'Select {n,plural,=1{item} other{items}}', ['n' => ($allowMultiple) ? 2 : 1]);
+        $placeholderMore = ($this->placeholderMore != null) ? $this->placeholderMore : Yii::t('UserModule.widgets_BasePickerField', 'Add more...');
+
         $result = [
             'data-placeholder' => $placeholder,
             'data-placeholder-more' => $placeholderMore,

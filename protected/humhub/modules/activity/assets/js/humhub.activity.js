@@ -112,7 +112,7 @@ humhub.module('activity', function (module, require, $) {
                 if (scrolling) {
                     scrolling = false;
                     // load more activities
-                    that.loadEntries().then(function() {
+                    that.loadEntries({loader: true}).then(function() {
                         that.$content.getNiceScroll().resize();
                     }).finally(function () {
                         scrolling = true;

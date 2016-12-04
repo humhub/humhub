@@ -7,24 +7,20 @@ use yii\web\View;
 
 $this->registerJsConfig([
    'stream' => [
+       'horizontalImageScrollOnMobile' => Yii::$app->settings->get('horImageScrollOnMobile'),
        'text' => [
            'success.archive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been archived.'),
            'success.unarchive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unarchived.'),
            'success.stick' => Yii::t('ContentModule.widgets_views_stream', 'The content has been sticked.'),
            'success.unstick' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unsticked.'),
            'success.delete' => Yii::t('ContentModule.widgets_views_stream', 'The content has been deleted.'),
+           'info.editCancel' => Yii::t('ContentModule.widgets_views_stream', 'Your last edit state has been saved!'),
        ]
    ] 
 ]);
 
 $contentId = (int) Yii::$app->request->getQueryParam('contentId');
 $contentIdData = ($contentId != "") ? 'data-stream-contentid="' . $contentId . '"' : '';
-
-if (Yii::$app->settings->get('horImageScrollOnMobile'))
-    $this->registerJs(new \yii\web\JsExpression("
-if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
-        $('#wallStream').addClass('mobile');
-    }"), View::POS_READY);
 
 $defaultStreamSort = Yii::$app->getModule('content')->settings->get('stream.defaultSort');
 $this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultStreamSort : 'c');
@@ -37,23 +33,29 @@ $this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultS
             <a class="stream-filter dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('ContentModule.widgets_views_stream', 'Filter'); ?> <b
                     class="caret"></b></a>
             <ul class="dropdown-menu">
-    <?php foreach ($filters as $filterId => $filterTitle): ?>
+                <?php foreach ($filters as $filterId => $filterTitle): ?>
                     <li>
                         <a href="#" class="wallFilter" id="<?php echo $filterId; ?>">
                             <i class="fa fa-square-o"></i> <?php echo $filterTitle; ?>
                         </a>
                     </li>
-    <?php endforeach; ?>
+                <?php endforeach; ?>
             </ul>
         </li>
         <li class="dropdown">
             <a class="stream-sorting dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('ContentModule.widgets_views_stream', 'Sorting'); ?>
                 <b class="caret"></b></a>
             <ul class="dropdown-menu">
-                <li><a href="#" class="wallSorting" id="sorting_c"><i
-                            class="fa fa-square-o"></i> <?php echo Yii::t('ContentModule.widgets_views_stream', 'Creation time'); ?></a></li>
-                <li><a href="#" class="wallSorting" id="sorting_u"><i
-                            class="fa fa-square-o"></i> <?php echo Yii::t('ContentModule.widgets_views_stream', 'Last update'); ?></a></li>
+                <li>
+                    <a href="#" class="wallSorting" id="sorting_c">
+                        <i class="fa fa-square-o"></i> <?php echo Yii::t('ContentModule.widgets_views_stream', 'Creation time'); ?>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="wallSorting" id="sorting_u">
+                        <i class="fa fa-square-o"></i> <?php echo Yii::t('ContentModule.widgets_views_stream', 'Last update'); ?>
+                    </a>
+                </li>
             </ul>
         </li>
     </ul>
@@ -75,7 +77,7 @@ $this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultS
             <div class="<?php echo $this->context->messageStreamEmptyCss; ?>">
                 <div class="panel">
                     <div class="panel-body">
-<?php echo $this->context->messageStreamEmpty; ?>
+                        <?= $this->context->messageStreamEmpty; ?>
                     </div>
                 </div>
             </div>
@@ -84,7 +86,7 @@ $this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultS
             <div class="placeholder <?php echo $this->context->messageStreamEmptyWithFiltersCss; ?>">
                 <div class="panel">
                     <div class="panel-body">
-<?php echo $this->context->messageStreamEmptyWithFilters; ?>
+                        <?= $this->context->messageStreamEmptyWithFilters; ?>
                     </div>
                 </div>
             </div>

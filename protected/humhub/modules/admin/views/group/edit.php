@@ -24,7 +24,7 @@ use humhub\modules\space\widgets\SpacePickerField;
         ])
         ?>
     <?php endif; ?>
-asdfsdfsa
+
     <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
         <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]); ?>
         <?=  UserPickerField::widget([

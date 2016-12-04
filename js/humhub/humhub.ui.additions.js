@@ -68,6 +68,11 @@ humhub.module('ui.additions', function (module, require, $) {
         event.on('humhub:ready', function (evt) {
             module.applyTo($('body'));
         });
+        
+        // workaround for jp-player since it sets display to inline which results in a broken view...
+        $(document).on('click', '.jp-play', function() {
+            $(this).closest('.jp-controls').find('.jp-pause').css('display','block');
+        });
                 
         $(document).on('pjax:beforeSend', function(evt) {
             // Tooltip issue
@@ -136,12 +141,22 @@ humhub.module('ui.additions', function (module, require, $) {
         
         $in.addClass('animated ' + animation).show();
     };
+    
+    var highlight = function (node) {
+        var $node = (node instanceof $) ? node : $(node);
+        $node.addClass('highlight');
+        $node.delay(200).animate({backgroundColor: 'transparent'}, 1000, function() {
+            $node.removeClass('highlight');
+            $node.css('backgroundColor', '');
+        });
+    };
 
     module.export({
         init: init,
         applyTo: applyTo,
         apply: apply,
         registerAddition: registerAddition,
-        switchButtons: switchButtons
+        switchButtons: switchButtons,
+        highlight: highlight
     });
 });

@@ -85,7 +85,7 @@ class UploadAction extends Action
             if ($this->record !== null) {
                 $this->record->fileManager->attach($file);
             }
-            return $this->getSuccessResponse($file);
+            return $this->getFileResponse($file);
         } else {
             return $this->getErrorResponse($file);
         }
@@ -97,8 +97,14 @@ class UploadAction extends Action
      */
     protected function loadRecord()
     {
-        $model = Yii::$app->request->get('objectModel');
-        $pk = Yii::$app->request->get('objectId');
+        if (Yii::$app->request->get('objectModel')) {
+            $model = Yii::$app->request->get('objectModel');
+            $pk = Yii::$app->request->get('objectId');
+        } else {
+            $model = Yii::$app->request->post('objectModel');
+            $pk = Yii::$app->request->post('objectId');
+        }
+
 
         if ($model != '' && $pk != '' && Helpers::CheckClassType($model, \yii\db\ActiveRecord::className())) {
 
@@ -117,7 +123,7 @@ class UploadAction extends Action
      * @param File $file
      * @return array the basic file informations
      */
-    protected function getSuccessResponse(File $file)
+    public static function getFileResponse(File $file)
     {
         $thumbnailUrl = '';
         $previewImage = new PreviewImage();
@@ -132,7 +138,7 @@ class UploadAction extends Action
             'size' => $file->size,
             'mimeType' => $file->mime_type,
             'mimeIcon' => MimeHelper::getMimeIconClassByExtension(FileHelper::getExtension($file->file_name)),
-            'size' => $file->size,
+            'size_format' => Yii::$app->formatter->asSize($file->size),
             'url' => $file->getUrl(),
             'thumbnailUrl' => $thumbnailUrl,
         ];
@@ -146,9 +152,15 @@ class UploadAction extends Action
      */
     protected function getErrorResponse(File $file)
     {
+        $errorMessage = Yii::t('FileModule.actions_UploadAction', 'File {fileName} could not be uploaded!', ['fileName' => $file->file_name]);
+
+        if ($file->getErrors()) {
+            $errorMessage = $file->getErrors()['uploadedFile'];
+        }
+
         return [
             'error' => true,
-            'errors' => $file->getErrors(),
+            'errors' => $errorMessage,
             'name' => $file->file_name,
             'size' => $file->size
         ];

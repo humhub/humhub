@@ -222,9 +222,13 @@ class HForm extends \yii\base\Component
                     case 'text':
                         return $this->form->field($model, $name)->textInput($options);
                     case 'multiselectdropdown':
-                        $options['class'] = 'form-control multiselect_dropdown';
-                        $options['multiple'] = 'multiple';
-                        return $this->form->field($model, $name)->listBox($definition['items'], $options);
+                        return \humhub\widgets\MultiSelectField::widget([
+                            'form' => $this->form,
+                            'model' => $model,
+                            'attribute' => $name,
+                            'items' => $definition['items'], 
+                            'options' => $definition['options']
+                        ]);
                     case 'dropdownlist':
                         return $this->form->field($model, $name)->dropDownList($definition['items'], $options);
                     case 'checkbox':

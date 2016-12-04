@@ -8,9 +8,14 @@
 humhub.module('ui.widget', function(module, require, $) {
 
     var additions = require('ui.additions');
-
-    var Widget = function(node, options, name) {
-        this.$ = (node instanceof $) ? node : $(node);
+    var Component = require('action').Component;
+    var object = require('util').object;
+    
+    // Add selector for component detection so we can use data-ui-widget instead of data-action-component
+    Component.addSelector('ui-widget');
+    
+    var Widget = function(node, options) {
+        Component.call(this, (node instanceof $) ? node : $(node), options);
         this.errors = [];
         this.options = this.initOptions(options || {});
 
@@ -18,9 +23,10 @@ humhub.module('ui.widget', function(module, require, $) {
             module.log.warn('Could not initialize widget.', this.errors);
         } else {
             this.init(this.$.data('ui-init'));
-            this.$.data(name, this);
         }
     };
+    
+    object.inherits(Widget, Component);
 
     /**
      * Defines the data attribute used for identification of the widget and widget class.
@@ -32,7 +38,7 @@ humhub.module('ui.widget', function(module, require, $) {
      * This value should be overwritten by widget to allow different widgets on the same node.
      * This is used to receive the widget instance by calling $node.data(Widget.widgetData);
      */
-    Widget.widgetData = 'humhub-widget';
+    Widget.componentData = 'humhub-widget';
 
     /**
      * Can be overwritten by widget to provide some default values for a widget.
@@ -85,33 +91,6 @@ humhub.module('ui.widget', function(module, require, $) {
         msg += '</ul>';
         module.log.error(msg, true);
         this.errors = [];
-    };
-
-    Widget.instance = function(node, options) {
-        var $node = (node instanceof $) ? node : $(node);
-
-        if (!$node.length) {
-            return;
-        }
-
-        var ns = $node.data(Widget.widget);
-
-        var WidgetClass = (ns) ? require(ns) : this;
-
-        if (!WidgetClass) {
-            module.log.error('No valid widget class found for given node: ' + ns, this, true);
-            return;
-        } else if ($node.data(WidgetClass.widgetData)) {
-            return $node.data(WidgetClass.widgetData);
-        } else {
-            return _createInstance(WidgetClass, node, options);
-        }
-    };
-
-    var _createInstance = function(WidgetClass, node, options) {
-        var instance = new WidgetClass();
-        Widget.call(instance, node, options, WidgetClass.widgetData);
-        return instance;
     };
 
     Widget.prototype.show = function() {

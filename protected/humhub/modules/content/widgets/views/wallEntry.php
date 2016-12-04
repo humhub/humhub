@@ -13,7 +13,9 @@ $container = $object->content->container;
     <div class="panel-body">
 
         <div class="media">
-
+            <!-- since v1.2 -->
+            <div class="stream-entry-loader"></div>
+            
             <!-- start: show wall entry options -->
             <ul class="nav nav-pills preferences">
                 <li class="dropdown ">
@@ -89,13 +91,11 @@ $container = $object->content->container;
                 <?php endif; ?>
                 <?php echo $content; ?>
             </div>
-            <div class="clearfix">
-                <span class="stream-entry-loader"></span>
+            
+            <!-- wall-entry-addons class required since 1.2 -->
+            <div class="stream-entry-addons clearfix">
                 <?php echo \humhub\modules\content\widgets\WallEntryAddons::widget(['object' => $object]); ?>
             </div>
         </div>
-
-
     </div>
-
 </div>

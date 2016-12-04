@@ -21,6 +21,8 @@ use humhub\modules\file\libs\ImageConverter;
 class PreviewImage extends BaseConverter
 {
 
+    public $imageInfo;
+    
     /**
      * @inheritdoc
      */
@@ -35,6 +37,16 @@ class PreviewImage extends BaseConverter
 
         parent::init();
     }
+    
+    public function render($file = null)
+    {
+        if($file) {
+            $this->applyFile($file);
+        }
+        
+        // Provide the natural height so the browser will include a placeholder height. Todo: smooth image loading
+        return \yii\helpers\Html::img($this->getUrl(), ['class'=>'animated fadeIn', 'height' => $this->height]);
+    }
 
     /**
      * @inheritdoc
@@ -42,8 +54,10 @@ class PreviewImage extends BaseConverter
     protected function convert($fileName)
     {
         if (!is_file($this->file->store->get($fileName))) {
-            ImageConverter::Resize($this->file->store->get(), $this->file->store->get($fileName), $this->options);
+            ImageConverter::Resize($this->file->store->get(), $this->file->store->get($fileName), $this->options); 
         }
+        
+        $this->imageInfo = @getimagesize($this->file->store->get($fileName));
     }
 
     /**
@@ -69,8 +83,34 @@ class PreviewImage extends BaseConverter
             return false;
         }
 
-
         return true;
+    }
+    
+    public function getDimensions()
+    {
+        if(!$this->imageInfo || !isset($this->imageInfo[3])) {
+            return;
+        }
+        
+        return $this->imageInfo[3];
+    }
+    
+    public function getWidth()
+    {
+        if(!$this->imageInfo || !isset($this->imageInfo[0])) {
+            return 'auto';
+        }
+        
+        return $this->imageInfo[0];
+    }
+    
+    public function getHeight()
+    {
+        if(!$this->imageInfo || !isset($this->imageInfo[1])) {
+            return 'auto';
+        }
+        
+        return $this->imageInfo[1];
     }
 
 }

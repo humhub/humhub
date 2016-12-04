@@ -11,13 +11,16 @@ humhub.module('space.chooser', function(module, require, $) {
     var ui = require('ui');
     var Widget = ui.widget.Widget;
     var object = require('util').object;
+    var pjax = require('client.pjax');
 
     var SELECTOR_ITEM = '[data-space-chooser-item]';
     var SELECTOR_ITEM_REMOTE = '[data-space-none]';
 
     module.initOnPjaxLoad = false;
 
-    var SpaceChooser = function() {};
+    var SpaceChooser = function(node, options) {
+        Widget.call(this, node, options);
+    };
 
     object.inherits(SpaceChooser, Widget);
 
@@ -49,6 +52,17 @@ humhub.module('space.chooser', function(module, require, $) {
     SpaceChooser.prototype.initEvents = function() {
         var that = this;
 
+         // Focus on search on open and clear item selection when closed
+        this.$menu.parent().on('shown.bs.dropdown', function() {
+            that.$search.focus();
+        }).on('hidden.bs.dropdown', function() {
+            that.clearSelection();
+        });
+        
+        if(!pjax.isActive()) {
+            return;
+        }
+
         // Set no space icon for non space views and set space icon for space views.
         event.on('humhub:ready', function() {
             if (!space.isSpacePage()) {
@@ -58,12 +72,7 @@ humhub.module('space.chooser', function(module, require, $) {
             that.setSpace(options);
         });
 
-        // Focus on search on open and clear item selection when closed
-        this.$menu.parent().on('shown.bs.dropdown', function() {
-            that.$search.focus();
-        }).on('hidden.bs.dropdown', function() {
-            that.clearSelection();
-        });
+       
     };
 
     SpaceChooser.prototype.initSpaceSearch = function() {
@@ -320,7 +329,7 @@ humhub.module('space.chooser', function(module, require, $) {
     module.export({
         SpaceChooser: SpaceChooser,
         init: function() {
-            SpaceChooser.instane($('#space-menu-dropdown'));
+            SpaceChooser.instance($('#space-menu-dropdown'));
         }
     });
 });

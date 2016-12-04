@@ -35,10 +35,12 @@ class CoreJsConfig extends Widget
                 'user' => $userConfig,
                 'file' => [
                     'upload' => [
-                        'url' => Url::to(['/file/file/upload'])
+                        'url' => Url::to(['/file/file/upload']),
+                        'deleteUrl' => Url::to(['/file/file/delete'])
                     ],
                     'text' => [
-                        'error.upload' => Yii::t('base', 'Some files could not be uploaded:')
+                        'error.upload' => Yii::t('base', 'Some files could not be uploaded:'),
+                        'success.delete' => Yii::t('base', 'The file has been deleted.'),
                     ]
                 ],
                 'action' => [
@@ -83,6 +85,19 @@ class CoreJsConfig extends Widget
                         'modal.permalink.info' => Yii::t('base', 'Copy to clipboard: Ctrl/Cmd+C'),
                         'modal.button.open' => Yii::t('base', 'Open'),
                         'modal.button.close' => Yii::t('base', 'Close'),
+                    ]
+                ],
+                'comment' => [
+                    'modal' => [
+                        'delteConfirm' => [
+                            'header' => Yii::t('CommentModule.widgets_views_showComment', '<strong>Confirm</strong> comment deleting'),
+                            'body' => Yii::t('CommentModule.widgets_views_showComment', 'Do you really want to delete this comment?'),
+                            'confirmText' => Yii::t('CommentModule.widgets_views_showComment', 'Delete'),
+                            'cancelText'=> Yii::t('CommentModule.widgets_views_showComment', 'Cancel')
+                        ]
+                    ],
+                    'text' => [
+                        'success.delete' => Yii::t('CommentModule.widgets_views_showComment', 'Comment has been deleted')
                     ]
                 ]
         ]);

@@ -1,0 +1,122 @@
+humhub.module('comment', function(module, require, $) {
+    var Content = require('content').Content;
+    var object = require('util').object;
+    var client = require('client');
+    var loader = require('ui.loader');
+    var additions = require('ui.additions');
+
+    var Comment = function(node) {
+        Content.call(this, node);
+    };
+
+    object.inherits(Comment, Content);
+
+    Comment.prototype.edit = function(evt) {
+        this.loader();
+        var that = this;
+        client.post(evt, {dataType: 'html'}).then(function(response) {
+            that.$.find('.comment_edit_content').replaceWith(response.html);
+            that.$.find('[contenteditable]').focus();
+            that.$.find('.comment-cancel-edit-link').show();
+            that.$.find('.comment-edit-link').hide();
+            additions.applyTo(that.$);
+        }).finally(function() {
+            that.loader(false);
+        });
+    };
+
+    Comment.prototype.delete = function() {
+        this.super('delete', {modal: module.config.modal.delteConfirm}).then(function($confirm) {
+            if($confirm) {
+                module.log.success('success.delete');
+            }
+        }).catch(function(err) {
+            module.log.error(err, true);
+        });
+    };
+
+    Comment.prototype.editSubmit = function(evt) {
+        var that = this;
+        client.submit(evt, {dataType: 'html'}).then(function(response) {
+            that.replace(response.html);
+            that.highlight();
+            that.$.find('.comment-cancel-edit-link').hide();
+            that.$.find('.comment-edit-link').show();
+            module.log.success('success.saved');
+        }).catch(function(err) {
+            module.log.error(err, true);
+        });
+    };
+
+    Comment.prototype.replace = function(content) {
+        var id = this.$.attr('id');
+        this.$.replaceWith(content);
+        this.$ = $('#' + id);
+        additions.applyTo(this.$);
+    };
+
+    Comment.prototype.cancelEdit = function(evt) {
+        var that = this;
+        this.loader();
+        client.html(evt).then(function(response) {
+            that.replace(response.html);
+            that.$.find('.comment-cancel-edit-link').hide();
+            that.$.find('.comment-edit-link').show();
+        }).catch(function(err) {
+            module.log.error(err, true);
+        }).finally(function() {
+            that.loader(false);
+        });
+    };
+
+    Comment.prototype.highlight = function() {
+        additions.highlight(this.$.find('.comment-message'));
+    };
+
+    Comment.prototype.loader = function($show) {
+        var $loader = this.$.find('.comment-entry-loader');
+        if($show === false) {
+            this.$.find('.preferences').show();
+            loader.reset($loader);
+            return;
+        }
+
+        loader.set($loader, {
+            'size': '8px',
+            'css': {
+                padding: '2px',
+                width: '60px' 
+                        
+            }
+        });
+        
+        this.$.find('.preferences').hide();
+    };
+
+    module.initOnPjaxLoad = false;
+
+    var init = function() {
+        $(document).on('mouseover', '.comment .media', function() {
+            var $this = $(this);
+            var element = $this.find('.preferences');
+            if(!loader.is($this.find('.comment-entry-loader'))) {
+                element.show();
+            }
+        });
+
+        $(document).on('mouseout', '.comment .media', function() {
+            // find dropdown menu
+            var element = $(this).find('.preferences');
+
+            // hide dropdown if it's not open
+            if(!element.find('li').hasClass('open')) {
+                element.hide();
+            }
+        });
+    };
+
+    module.export({
+        init: init,
+        Comment: Comment
+    });
+});

@@ -5,8 +5,6 @@
 humhub.module('client', function(module, require, $) {
     var object = require('util').object;
     var event = require('event');
-    //var clientUpload = require('client.upload');
-    //var action = require('action');
 
     /**
      * Response Wrapper Object for easily accessing common data
@@ -19,9 +17,9 @@ humhub.module('client', function(module, require, $) {
         this.textStatus = textStatus;
         this.dataType = dataType;
 
-        if (!dataType || dataType === 'json') {
+        if(!dataType || dataType === 'json') {
             $.extend(this, this.response);
-        } else if (dataType) {
+        } else if(dataType) {
             this[dataType] = this.response;
         }
     };
@@ -44,13 +42,13 @@ humhub.module('client', function(module, require, $) {
     Response.prototype.getLog = function() {
         var result = $.extend({}, this);
 
-        if (this.response && object.isString(this.response)) {
+        if(this.response && object.isString(this.response)) {
             result.response = this.response.substr(0, 500)
             result.response += (this.response.length > 500) ? '...' : '';
         }
         ;
 
-        if (this.html && object.isString(this.html)) {
+        if(this.html && object.isString(this.html)) {
             result.html = this.html.substr(0, 500)
             result.html += (this.html.length > 500) ? '...' : '';
         }
@@ -60,18 +58,21 @@ humhub.module('client', function(module, require, $) {
     };
 
     var submit = function($form, cfg, originalEvent) {
-        if ($form instanceof $.Event && $form.$form) {
+        if($form instanceof $.Event && $form.$form) {
             originalEvent = $form;
             $form = $form.$form;
-        } else if (cfg instanceof $.Event) {
+        } else if(cfg instanceof $.Event) {
             originalEvent = cfg;
             cfg = {};
+        } else if(!object.isString(url)) {
+            cfg = url;
+            url = cfg.url;
         }
 
         cfg = cfg || {};
         $form = object.isString($form) ? $($form) : $form;
 
-        if (!$form || !$form.length) {
+        if(!$form || !$form.length) {
             return Promise.reject('Could not determine form for submit action.');
         }
 
@@ -82,12 +83,15 @@ humhub.module('client', function(module, require, $) {
     };
 
     var post = function(url, cfg, originalEvent) {
-        if (url instanceof $.Event) {
+        if(url instanceof $.Event) {
             originalEvent = url;
             url = originalEvent.url;
-        } else if (cfg instanceof $.Event) {
+        } else if(cfg instanceof $.Event) {
             originalEvent = cfg;
             cfg = {};
+        } else if(!object.isString(url)) {
+            cfg = url;
+            url = cfg.url;
         }
 
         cfg = cfg || {};
@@ -96,12 +100,15 @@ humhub.module('client', function(module, require, $) {
     };
 
     var html = function(url, cfg, originalEvent) {
-        if (url instanceof $.Event) {
+        if(url instanceof $.Event) {
             originalEvent = url;
             url = originalEvent.url;
-        } else if (cfg instanceof $.Event) {
+        } else if(cfg instanceof $.Event) {
             originalEvent = cfg;
             cfg = {};
+        } else if(!object.isString(url)) {
+            cfg = url;
+            url = cfg.url;
         }
 
         cfg = cfg || {};
@@ -111,12 +118,15 @@ humhub.module('client', function(module, require, $) {
     };
 
     var get = function(url, cfg, originalEvent) {
-        if (url instanceof $.Event) {
+        if(url instanceof $.Event) {
             originalEvent = url;
             url = originalEvent.url;
-        } else if (cfg instanceof $.Event) {
+        } else if(cfg instanceof $.Event) {
             originalEvent = cfg;
             cfg = {};
+        } else if(!object.isString(url)) {
+            cfg = url;
+            url = cfg.url;
         }
 
         cfg = cfg || {};
@@ -127,10 +137,10 @@ humhub.module('client', function(module, require, $) {
     var ajax = function(url, cfg, originalEvent) {
 
         // support for ajax(url, event) and ajax(path, successhandler);
-        if (cfg instanceof $.Event) {
+        if(cfg instanceof $.Event) {
             originalEvent = cfg;
             cfg = {};
-        } else if (object.isFunction(cfg)) {
+        } else if(object.isFunction(cfg)) {
             cfg = {'success': cfg};
         }
 
@@ -142,7 +152,7 @@ humhub.module('client', function(module, require, $) {
             var error = function(xhr, textStatus, errorThrown) {
                 var response = new Response(xhr, url, textStatus, cfg.dataType).setError(errorThrown);
 
-                if (errorHandler && object.isFunction(errorHandler)) {
+                if(errorHandler && object.isFunction(errorHandler)) {
                     errorHandler(response);
                 }
 
@@ -153,7 +163,7 @@ humhub.module('client', function(module, require, $) {
             var successHandler = cfg.success;
             var success = function(data, textStatus, xhr) {
                 var response = new Response(xhr, url, textStatus, cfg.dataType).setSuccess(data);
-                if (successHandler) {
+                if(successHandler) {
                     successHandler(response);
                 }
 
@@ -162,13 +172,13 @@ humhub.module('client', function(module, require, $) {
 
                 // Other modules can register global handler by the response type given by the backend.
                 // For example {type:'modal', 'content': '...')
-                if (response.type) {
+                if(response.type) {
                     event.trigger('humhub:modules:client:response:' + response.type);
                 }
 
                 promise.done(function() {
                     // If content with <link> tags are inserted in resolve, the ajaxComplete handler in yii.js
-                    // makes sure redundant stylesheets are removed. Here we get sure it is called after inserting the response.
+                    // makes sure redundant stylesheets are removed. Here we make sure it is called after inserting the response.
                     $(document).trigger('ajaxComplete');
                 });
             };
@@ -188,22 +198,22 @@ humhub.module('client', function(module, require, $) {
             return new Promise(function(resolve, reject) {
                 promise.then(function(response) {
                     try {
-                        if (setting[response.status]) {
+                        if(setting[response.status]) {
                             setting[response.status](response);
                         }
                         resolve(response);
-                    } catch (e) {
+                    } catch(e) {
                         reject(e);
                     }
                 }).catch(function(response) {
                     try {
-                        if (setting[response.status]) {
+                        if(setting[response.status]) {
                             setting[response.status](response);
                             resolve(response);
                         } else {
                             reject(response);
                         }
-                    } catch (e) {
+                    } catch(e) {
                         reject(e);
                     }
                 });
@@ -214,40 +224,11 @@ humhub.module('client', function(module, require, $) {
     };
 
     var finish = function(originalEvent) {
-        if (originalEvent && object.isFunction(originalEvent.finish)) {
+        if(originalEvent && object.isFunction(originalEvent.finish)) {
             originalEvent.finish();
         }
     };
 
-    /**
-     * Default file upload action
-     * @param {type} evt
-     * @returns {undefined}
-     
-     var upload = function(evt) {
-     var $target = evt.$target;
-     
-     clientUpload.upload($target).then(function() {
-     if($target.data('action-done')) {
-     action.trigger($target, 'done', evt, false);
-     } else if(evt.finish) {
-     evt.finish();
-     }
-     }).catch(function(e) {
-     
-     });
-     
-     //Check if handler is already active
-     if(!isSet) {
-     clientUpload.set(evt);        
-     }
-     
-     
-     .on('done', function() {
-     
-     }).trigger('click');
-     };
-     */
     module.export({
         ajax: ajax,
         post: post,

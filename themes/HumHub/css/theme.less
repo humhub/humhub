@@ -1957,15 +1957,22 @@ table {
   margin-top: 10px;
 }
 
+
 .comment {
   .media {
     position: relative !important;
     margin-top: 0;
+    
     .nav-pills.preferences {
       display: none;
       right: -3px;
       top: -3px;
     }
+  }
+  
+  /*-- Since v1.2 overflow: visible */
+  .media-body {
+      overflow:visible;
   }
 }
 
@@ -2204,12 +2211,18 @@ ul.tag_input {
   }
 }
 
+.wall-entry-controls {
+  /* Important since 1.2 */
+  display:inline-block;
+}
+
 .wall-entry-controls,
 .wall-entry-controls a {
   font-size: 11px;
   color: @font5;
   margin-top: 10px;
   margin-bottom: 0;
+
 }
 
 // Space > Admin
@@ -3130,6 +3143,7 @@ img.bounceIn {
 
 .stream-entry-loader {
     float:right;
+    margin-top:5px;
 }
 
 #space-menu-dropdown i.type {
@@ -3157,4 +3171,8 @@ img.bounceIn {
 
 #space-directory-link i {
     margin-right:0px;
+}
+
+.file-preview-content {
+    cursor: pointer;
 }

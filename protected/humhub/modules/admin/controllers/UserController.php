@@ -111,6 +111,10 @@ class UserController extends Controller
                     'id' => 'user_edit_groups',
                     'type' => 'multiselectdropdown',
                     'items' => UserEditForm::getGroupItems(),
+                    'options' => [
+                        'data-placeholder' => Yii::t('AdminModule.controllers_UserController', 'Select Groups'),
+                        'data-placeholder-more' => Yii::t('AdminModule.controllers_UserController', 'Add Groups...')
+                        ],
                     'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageGroups())
                 ],
                 'status' => [

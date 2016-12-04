@@ -4,11 +4,14 @@ humhub.module('ui.form', function(module, require, $) {
 
     module.initOnPjaxLoad = false;
 
-    var TabbedForm = function() {};
+    var TabbedForm = function(node, options) {
+        Widget.call(this, node, options);
+    };
 
     object.inherits(TabbedForm, Widget);
 
-    TabbedForm.widgetData = 'humhub-tabbed-form';
+    TabbedForm.component = 'humhub-tabbed-form';
+
 
     TabbedForm.prototype.validate = function() {
         return this.$.is('form');

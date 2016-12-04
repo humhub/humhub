@@ -9,11 +9,13 @@ humhub.module('ui.picker', function(module, require, $) {
 
     module.initOnPjaxLoad = false;
 
-    var Picker = function() {};
+    var Picker = function(node, options) {
+        Widget.call(this, node, options);
+    };
 
+    Picker.component = 'humhub-ui-picker';
+    
     object.inherits(Picker, Widget);
-
-    Picker.widgetData = 'humhub-picker';
 
     Picker.prototype.init = function() {
         if(this.options.pickerUrl) {
@@ -122,7 +124,7 @@ humhub.module('ui.picker', function(module, require, $) {
      * @returns {undefined}
      */
     var _initSelect2 = function($node, options) {
-        // This is patch for removing select items by backspace see: https://github.com/select2/select2/issues/3354
+        // This is a patch for removing select items by backspace see: https://github.com/select2/select2/issues/3354
         $.fn.select2.amd.require(['select2/selection/search'], function(Search) {
             var oldRemoveChoice = Search.prototype.searchRemoveChoice;
 
@@ -136,7 +138,7 @@ humhub.module('ui.picker', function(module, require, $) {
 
             // Get sure our placeholder is rendered when focus out
             select2.$container.on('focusout', function() {
-                $node.data('humhub-picker').renderPlaceholder();
+                Widget.instance($node).renderPlaceholder();
             });
 
             // Patch for https://github.com/select2/select2/issues/4614#issuecomment-251277428 strange rendering behaviour
@@ -148,17 +150,17 @@ humhub.module('ui.picker', function(module, require, $) {
             // Thefollowing two listeners enables placeholder for non empty selection fields
             $node.on('select2:select', function() {
                 $('.tooltip').remove();
-                $node.data('humhub-picker').renderPlaceholder(true);
+                Widget.instance($node).renderPlaceholder(true);
             }).on('select2:close', function() {
                 $('.tooltip').remove();
             });
 
             // Get sure the placeholder is active for initial selections
-            $node.data('humhub-picker').renderPlaceholder(true);
+            Widget.instance($node).renderPlaceholder(true);
 
             // Focus if auto focus is active
             if($node.data('picker-focus')) {
-                $node.data('humhub-picker').focus();
+                Widget.instance($node).focus();
             }
         });
     };

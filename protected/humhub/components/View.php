@@ -104,8 +104,6 @@ class View extends \yii\web\View
         $this->endBody();
         $this->endPage(true);
 
-
-
         return ob_get_clean();
     }
 

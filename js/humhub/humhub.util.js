@@ -62,6 +62,22 @@ humhub.module('util', function(module, require, $) {
 
             Sub.prototype = Object.create(Parent.prototype);
             Sub._super = Parent.prototype;
+            Sub._superConst = Parent;
+            Sub.prototype.static = function(name) {
+                var staticField = Sub[name];
+                if(object.isFunction(staticField)) {
+                    var args;
+
+                    if(arguments.length > 1) {
+                        args = [];
+                        Array.prototype.push.apply(args, arguments);
+                        args.shift();
+                    }
+                    return staticField.apply(this, args);
+                } else {
+                    return staticField;
+                }
+            };
             Sub.prototype.super = function() {
                 if(!Sub._super[arguments[0]]) {
                     throw new Error('Call of undefined method of super type: ' + arguments[0]);

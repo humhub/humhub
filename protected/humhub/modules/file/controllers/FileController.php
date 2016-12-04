@@ -67,6 +67,9 @@ class FileController extends \humhub\components\Controller
         }
 
         $file->delete();
+        
+        Yii::$app->response->format = 'json';
+        return ['success' => true];
     }
 
 }

@@ -4,7 +4,9 @@ humhub.module('user.picker', function(module, require, $) {
 
     module.initOnPjaxLoad = false;
 
-    var UserPicker = function() {};
+    var UserPicker = function(node, options) {
+        Picker.call(this, node, options);
+    };
 
     object.inherits(UserPicker, Picker);
 

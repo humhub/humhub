@@ -19,6 +19,7 @@ use humhub\components\ActiveRecord;
  * the same as the corresponding FileUploadListWidget.
  *
  * @since 0.5
+ * @deprecated since version 1.2
  */
 class FileUploadList extends \yii\base\Widget
 {

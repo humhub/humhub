@@ -45,6 +45,8 @@ Please see the following file for 1.2 changes (at the buttom):
     - modules/admin/views/setting/design.php 
     - modules/space/views/create/invite.php
     - modules/space/views/membership/invite.php
+    - modules/comment/widget/views/showComment.php
+    - modules/files/widget/views/showFiles.php
 - UserPicker rewrite:
     - modules/admin/views/group/edit.php
     - modules/admin/views/group/members.php
@@ -56,6 +58,8 @@ Please see the following file for 1.2 changes (at the buttom):
 - Space Picker
     ... Add views
 
+- Refactored:
+    - modules/search/views/search/index.php 
 
 We've integrated a new Space and UserPicker widget. Please check the following files for 
 

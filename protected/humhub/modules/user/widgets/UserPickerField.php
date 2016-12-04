@@ -4,6 +4,7 @@ namespace humhub\modules\user\widgets;
 
 use Yii;
 use \yii\helpers\Url;
+use humhub\widgets\BasePickerField;
 
 /**
  *
