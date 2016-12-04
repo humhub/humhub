@@ -36,6 +36,10 @@ class FileManager extends Component
      */
     public function attach($files, $steal = false)
     {
+        if(!$files) {
+            return;
+        }
+        
         if (is_string($files)) {
             $files = array_map('trim', explode(',', $files));
         } elseif ($files instanceof File) {

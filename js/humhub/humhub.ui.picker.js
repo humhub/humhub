@@ -339,6 +339,11 @@ humhub.module('ui.picker', function(module, require, $) {
             /*pagination: {more: (params.page * 30) < data.total_count}*/
         };
     };
+    
+    Picker.prototype.reset = function() {
+        this.$.val('');
+        this.$.trigger('change');
+    };
 
     Picker.prototype.isDisabledItem = function(item) {
         return (this.options.disabledItems && this.options.disabledItems.indexOf(item.id) >= 0);

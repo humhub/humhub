@@ -24,6 +24,14 @@ class SearchForm extends \yii\base\Model
     public $page = 1;
     public $limitSpaceGuids = [];
     
+    public function init()
+    {
+        if(Yii::$app->request->get('page')) {
+            $this->page = Yii::$app->request->get('page');
+        }
+    }
+    
+    
     /**
      * @inheritdoc
      */
@@ -36,7 +44,7 @@ class SearchForm extends \yii\base\Model
     
     public function getTotals($keyword, $options)
     {
-        $totals = array();
+        $totals = [];
 
         // Unset unnecessary search options
         unset($options['model'], $options['type'], $options['page'], $options['pageSize']);

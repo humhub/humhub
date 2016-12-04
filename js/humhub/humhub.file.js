@@ -84,10 +84,19 @@ humhub.module('file', function(module, require, $) {
 
     Upload.prototype.init = function() {
         this.fileCount = 0;
+        this.options.name = this.options.name || 'fileList[]';
         this.$form = (this.$.data('upload-form')) ? $(this.$.data('upload-form')) : this.$.closest('form');
         this.initProgress();
         this.initPreview();
         this.initFileUpload();
+    };
+    
+    Upload.prototype.reset = function() {
+        this.fileCount = 0;
+        this.$form.find('input[name="'+this.options.name+'"]').remove();
+        if(this.preview) {
+            this.preview.reset();
+        }
     };
 
     Upload.prototype.getIdSelector = function() {
@@ -304,8 +313,13 @@ humhub.module('file', function(module, require, $) {
         });
     };
     
-    Preview.prototype.hasFiles = function(file) {
+    Preview.prototype.hasFiles = function() {
         return this.$list.find('li').length > 0;
+    };
+
+    Preview.prototype.reset = function() {
+        this.$list.find('li').remove();
+        this.$.hide();
     };
 
     Preview.prototype.remove = function(file) {

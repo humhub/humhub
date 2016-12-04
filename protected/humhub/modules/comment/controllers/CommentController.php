@@ -100,12 +100,7 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
         // Reload comment to get populated created_at field
         $comment->refresh();
 
-        return $this->renderAjaxContent(
-                        \humhub\modules\comment\widgets\Comment::widget([
-                            'comment' => $comment,
-                            'justEdited' => true
-                        ])
-        );
+        return $this->renderAjaxContent(\humhub\modules\comment\widgets\Comment::widget(['comment' => $comment]));
     }
 
     public function actionEdit()
@@ -142,9 +137,7 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
             throw new HttpException(403, Yii::t('CommentModule.controllers_CommentController', 'Access denied!'));
         }
 
-        return $this->renderAjax('load', [
-            'comment' => $this->contentAddon,
-        ]);
+        return $this->renderAjaxContent(\humhub\modules\comment\widgets\Comment::widget(['comment' => $comment]));
     }
 
     /**

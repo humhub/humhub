@@ -63,6 +63,9 @@ class FilePreview extends \yii\base\Widget
     }
     
     protected function getFiles() {
+        if(!$this->items && !$this->model) {
+            return [];
+        }
         return ($this->items) ? $this->items : $this->model->fileManager->findAll();
     }
 }

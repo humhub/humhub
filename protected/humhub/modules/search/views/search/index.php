@@ -50,6 +50,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
             </div>
         </div>
     </div>
+    
     <?php if ($model->keyword != ""): ?>
         <div class="row">
             <div class="col-md-2">

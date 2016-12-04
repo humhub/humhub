@@ -61,13 +61,13 @@ humhub.module('client', function(module, require, $) {
         if($form instanceof $.Event && $form.$form) {
             originalEvent = $form;
             $form = $form.$form;
+        } else if($form instanceof $.Event && $form.$trigger) {
+            originalEvent = $form;
+            $form = $form.$trigger.closest('form');
         } else if(cfg instanceof $.Event) {
             originalEvent = cfg;
             cfg = {};
-        } else if(!object.isString(url)) {
-            cfg = url;
-            url = cfg.url;
-        }
+        } 
 
         cfg = cfg || {};
         $form = object.isString($form) ? $($form) : $form;
@@ -224,7 +224,7 @@ humhub.module('client', function(module, require, $) {
     };
 
     var finish = function(originalEvent) {
-        if(originalEvent && object.isFunction(originalEvent.finish)) {
+        if(originalEvent && object.isFunction(originalEvent.finish) && originalEvent.block !== 'manual') {
             originalEvent.finish();
         }
     };

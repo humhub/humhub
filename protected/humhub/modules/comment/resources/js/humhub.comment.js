@@ -1,9 +1,53 @@
 humhub.module('comment', function(module, require, $) {
     var Content = require('content').Content;
+    var Widget = require('ui.widget').Widget;
     var object = require('util').object;
     var client = require('client');
     var loader = require('ui.loader');
     var additions = require('ui.additions');
+    
+    module.initOnPjaxLoad = false;
+
+    var Form = function(node, options) {
+        Widget.call(this, node, options);
+    };
+
+    object.inherits(Form, Widget);
+
+    Form.prototype.submit = function(evt) {
+        var that = this;
+        client.submit(evt, {dataType: 'html'}).then(function(response) {
+            that.addComment(response.html);
+            that.getInput().val('').trigger('autosize.resize');
+            that.getRichtext().addClass('atwho-placeholder').focus();
+            that.getUpload().reset();
+        }).catch(function(err) {
+            module.log.error(err, true);
+        });
+    };
+    
+    Form.prototype.addComment = function(html) {
+        var $html = $(html).hide();
+        this.getCommentsContainer().append($html);
+        additions.applyTo($html);
+        $html.fadeIn();
+    };
+    
+    Form.prototype.getUpload = function(html) {
+        return Widget.instance(this.$.find('[name="files[]"]'));
+    };
+    
+    Form.prototype.getCommentsContainer = function(html) {
+        return this.$.siblings('.comment');
+    };
+    
+    Form.prototype.getInput = function() {
+        return this.$.find('textarea');
+    };
+    
+    Form.prototype.getRichtext = function() {
+        return this.$.find('[contenteditable]');
+    };
 
     var Comment = function(node) {
         Content.call(this, node);
@@ -85,15 +129,23 @@ humhub.module('comment', function(module, require, $) {
             'size': '8px',
             'css': {
                 padding: '2px',
-                width: '60px' 
-                        
+                width: '60px'
+
             }
         });
-        
+
         this.$.find('.preferences').hide();
     };
-
-    module.initOnPjaxLoad = false;
+    
+    var showAll = function(evt) {
+        client.post(evt, {dataType:'html'}).then(function(response) {
+            var $container = evt.$trigger.parent();
+            $container.html(response.html);
+            additions.applyTo($container);
+        }).catch(function(err) {
+            module.log.error(err, true);
+        });
+    };
 
     var init = function() {
         $(document).on('mouseover', '.comment .media', function() {
@@ -117,6 +169,8 @@ humhub.module('comment', function(module, require, $) {
 
     module.export({
         init: init,
-        Comment: Comment
+        Comment: Comment,
+        Form: Form,
+        showAll: showAll
     });
 });

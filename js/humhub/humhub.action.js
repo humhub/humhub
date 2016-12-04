@@ -11,6 +11,7 @@ humhub.module('action', function(module, require, $) {
     var BLOCK_NONE = 'none';
     var BLOCK_SYNC = 'sync';
     var BLOCK_ASYNC = 'async';
+    var BLOCK_MANUAL = 'manual';
 
     var DATA_COMPONENT = 'action-component';
 
@@ -179,8 +180,6 @@ humhub.module('action', function(module, require, $) {
     Component.createInstance = function(ComponentClass, node, options) {
         return new ComponentClass(node, options);
     };
-
-
 
     Component.addSelector = function(selector) {
         Component._selectors.push(selector);
@@ -465,6 +464,8 @@ humhub.module('action', function(module, require, $) {
         // If the trigger contains an url setting we add it to the event object, and prefer the typed url over the global data-action-url
         event.url = this.data($trigger, 'url');
         event.params = this.data($trigger, 'params', {});
+        
+        event.block = this.data($trigger, 'block');
 
         //Get the handler id, either a stand alone handler or a content handler function e.g: 'edit' 
         event.handler = $trigger.data('action' + '-' + this.eventType);
@@ -578,6 +579,7 @@ humhub.module('action', function(module, require, $) {
         trigger: trigger,
         BLOCK_NONE: BLOCK_NONE,
         BLOCK_SYNC: BLOCK_SYNC,
-        BLOCK_ASYNC: BLOCK_ASYNC
+        BLOCK_ASYNC: BLOCK_ASYNC,
+        BLOCK_MANUAL: BLOCK_MANUAL
     });
 });

@@ -60,8 +60,10 @@ humhub.module('content', function(module, require, $) {
             if(!that.hasAction('delete')) {
                 return;
             }
+            
+            var modalOptions = options.modal || module.config.modal.deleteConfirm;
 
-            modal.confirm(options.modal).then(function($confirmed) {
+            modal.confirm(modalOptions).then(function($confirmed) {
                 if(!$confirmed) {
                     resolve(false);
                 }
@@ -132,7 +134,7 @@ humhub.module('content', function(module, require, $) {
     };
     
     var templates = {
-        permalinkBody : '<textarea rows="3" class="form-control permalink-txt">{permalink}</textarea><p class="help-block">{info}</p>',
+        permalinkBody : '<textarea rows="3" class="form-control permalink-txt" spellcheck="false" readonly>{permalink}</textarea><p class="help-block">{info}</p>',
         permalinkFooter : '<a href="#" data-modal-close class="btn btn-default">{buttonClose}</a><a href="{permalink}" class="btn btn-primary" data-ui-loader>{buttonOpen}</a>'
     };
 

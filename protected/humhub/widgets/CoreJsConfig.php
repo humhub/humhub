@@ -86,6 +86,12 @@ class CoreJsConfig extends Widget
                             'info' => Yii::t('base', 'Copy to clipboard: Ctrl/Cmd+C'),
                             'buttonOpen' => Yii::t('base', 'Open'),
                             'buttonClose' => Yii::t('base', 'Close'),
+                        ],
+                        'deleteConfirm' => [
+                            'header' => Yii::t('ContentModule.widgets_views_deleteLink', '<strong>Confirm</strong> post deletion'),
+                            'body' => Yii::t('ContentModule.widgets_views_deleteLink', 'Do you really want to delete this post? All likes and comments will be lost!'),
+                            'confirmText' => Yii::t('ContentModule.widgets_views_deleteLink', 'Delete'),
+                            'cancelText' => Yii::t('ContentModule.widgets_views_deleteLink', 'Cancel'),
                         ]
                     ]
                 ],

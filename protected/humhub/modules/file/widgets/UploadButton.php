@@ -5,7 +5,7 @@ namespace humhub\modules\file\widgets;
 use Yii;
 
 /**
- * FileUploadButtonWidget diplays a simple upload button with integrated file input.
+ * UploadButtonWidget renders an upload button with integrated file input.
  * 
  * @package humhub.modules_core.file.widgets
  * @since 1.2

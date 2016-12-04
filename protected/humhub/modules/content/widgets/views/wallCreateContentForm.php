@@ -52,13 +52,12 @@ use humhub\modules\space\models\Space;
                     <?= $submitButtonText ?>
                 </button>
  
-                <?php
-                // Creates Uploading Button
-                echo humhub\modules\file\widgets\FileUploadButton::widget(array(
-                    'uploaderId' => 'contentFormFiles',
-                    'fileListFieldName' => 'fileList',
-                ));
-                ?>
+                <?= humhub\modules\file\widgets\UploadButton::widget([
+                    'id' => 'contentFormFiles',
+                    'progress' => '#contentFormFiles_progress',
+                    'preview' => '#contentFormFiles_preview',
+                    'dropZone' => '#contentFormBody'
+                ])?>
 
                 <!-- public checkbox -->
                 <?php echo Html::checkbox("visibility", "", array('id' => 'contentForm_visibility', 'class' => 'contentForm hidden')); ?>
@@ -88,18 +87,12 @@ use humhub\modules\space\models\Space;
                             </ul>
                         </li>
                     </ul>
-
-
                 </div>
-
             </div>
-
-            <?php
-            // Creates a list of already uploaded Files
-            echo \humhub\modules\file\widgets\FileUploadList::widget(array(
-                'uploaderId' => 'contentFormFiles'
-            ));
-            ?>
+            
+            <?= \humhub\modules\file\widgets\UploadProgress::widget(['id' => 'contentFormFiles_progress']) ?>
+            <?= \humhub\modules\file\widgets\FilePreview::widget(['id' => 'contentFormFiles_preview', 'edit' => true, 'options' => ['style' => 'margin-top:10px;']]);?>
+            
         </div>
          <!-- /contentForm_Options -->
         <?php echo Html::endForm(); ?>
