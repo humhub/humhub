@@ -31,7 +31,7 @@ class Pjax extends \humhub\components\Widget
     public function init()
     {
         $this->clientOptions['pushRedirect'] = true;
-        $this->clientOptions['replaceRedirect'] = false;
+        $this->clientOptions['replaceRedirect'] = true;
         $this->clientOptions['cache'] = false;
         $this->clientOptions['timeout'] = 5000;
 

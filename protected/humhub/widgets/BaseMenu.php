@@ -230,6 +230,16 @@ class BaseMenu extends \yii\base\Widget
             if ($item['url'] == $url) {
                 $this->items[$key]['htmlOptions']['class'] = 'active';
                 $this->items[$key]['isActive'] = true;
+                $this->view->registerJs('humhub.modules.ui.navigation.setActive("'.$this->id.'", '.json_encode($this->items[$key]).');', \yii\web\View::POS_END, 'active-'.$this->id);
+            }
+        }
+    }
+    
+    public function getActive()
+    {
+        foreach ($this->items as $item) {
+            if ($item['isActive']) {
+               return $item;
             }
         }
     }
@@ -263,11 +273,16 @@ class BaseMenu extends \yii\base\Widget
         \yii\base\Event::on(static::className(), static::EVENT_RUN, function($event) use($url) {
             $event->sender->setActive($url);
         });
-        
+    }
+    
+    /**
+     * This function is used in combination with pjax to get sure the required menu is active
+     */
+    public static function setViewState() {
         $instance = new static();
-        
         if (!empty($instance->id)) {
-            $instance->view->registerJs('humhub.modules.ui.navigation.setActive("'.$instance->id.'", "'.$url.'");', \yii\web\View::POS_END, 'active-'.$instance->id);
+            $active = $instance->getActive();
+            $instance->view->registerJs('humhub.modules.ui.navigation.setActive("'.$instance->id.'", '.json_encode($active).');', \yii\web\View::POS_END, 'active-'.$instance->id);
         }
     }
 

@@ -27,16 +27,22 @@ humhub.module('ui.navigation', function (module, require, $) {
         }).on('humhub:modules:space:changed', function () {
             $('#top-menu-nav').find('li').removeClass('active');
         });
-    }
+    };
 
-    var setActive = function (id, url) {
-        module.setActiveItem($('#' + id).find('[href="' + url + '"]'));
+    var setActive = function (id, item) {
+        if(item && item.url) {
+            module.setActiveItem($('#' + id).find('[href="' + item.url + '"]'));
+        } else {
+            module.setActiveItem(null);
+        }
     };
 
     var setActiveItem = function ($item) {
-        if (!$item.length) {
-            module.log.warn('Could not activate navigation item', $item);
+        if (!$item || !$item.length) {
+            $('#top-menu-nav li').removeClass('active');
+            return;
         }
+        
         $item.closest('ul').find('li').removeClass('active');
         $item.closest('li').addClass('active');
         $item.trigger('blur');

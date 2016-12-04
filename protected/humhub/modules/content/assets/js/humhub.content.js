@@ -6,7 +6,9 @@
 
 humhub.module('content', function(module, require, $) {
     var client = require('client');
-    var object = require('util').object;
+    var util = require('util');
+    var object = util.object;
+    var string = util.string;
     var actions = require('action');
     var Component = actions.Component;
     var event = require('event');
@@ -112,21 +114,30 @@ humhub.module('content', function(module, require, $) {
     };
 
     Content.prototype.permalink = function(evt) {
-        var permaLink = evt.$trigger.data('content-permalink');
+        var options = module.config.modal.permalink;
+        options.permalink = evt.$trigger.data('content-permalink');
+        
         modal.global.set({
-            header: module.text('modal.permalink.head'),
-            body: '<textarea rows="3" class="form-control permalink-txt">' + permaLink + '</textarea><p class="help-block">' + module.text('modal.permalink.info') + '</p>',
-            footer: '<a href="' + permaLink + '" data-modal-close class="btn btn-default">' + module.text('modal.permalink.close') + '</a><a href="' + permaLink + '" class="btn btn-primary" data-ui-loader>' + module.text('modal.permalink.open') + '</a>'
+            header: options.head,
+            body: string.template(module.templates.permalinkBody, options),
+            footer: string.template(module.templates.permalinkFooter, options)
         }).show();
 
         modal.global.$.find('textarea').focus().select();
 
+        // Make sure the modal is closed when pjax loads
         event.one('humhub:ready', function() {
             modal.global.close();
         });
     };
+    
+    var templates = {
+        permalinkBody : '<textarea rows="3" class="form-control permalink-txt">{permalink}</textarea><p class="help-block">{info}</p>',
+        permalinkFooter : '<a href="#" data-modal-close class="btn btn-default">{buttonClose}</a><a href="{permalink}" class="btn btn-primary" data-ui-loader>{buttonOpen}</a>'
+    };
 
     module.export({
-        Content: Content
+        Content: Content,
+        templates: templates
     });
 });

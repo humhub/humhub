@@ -80,11 +80,13 @@ class CoreJsConfig extends Widget
                     ]
                 ],
                 'content' => [
-                    'text' => [
-                        'modal.permalink.head' => Yii::t('ContentModule.widgets_views_permaLink', '<strong>Permalink</strong> to this post'),
-                        'modal.permalink.info' => Yii::t('base', 'Copy to clipboard: Ctrl/Cmd+C'),
-                        'modal.button.open' => Yii::t('base', 'Open'),
-                        'modal.button.close' => Yii::t('base', 'Close'),
+                    'modal' => [
+                        'permalink' => [
+                            'head' => Yii::t('ContentModule.widgets_views_permaLink', '<strong>Permalink</strong> to this post'),
+                            'info' => Yii::t('base', 'Copy to clipboard: Ctrl/Cmd+C'),
+                            'buttonOpen' => Yii::t('base', 'Open'),
+                            'buttonClose' => Yii::t('base', 'Close'),
+                        ]
                     ]
                 ],
                 'comment' => [

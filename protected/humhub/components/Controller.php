@@ -43,15 +43,6 @@ class Controller extends \yii\web\Controller
     public $prependActionTitles = true;
 
     /**
-     * Can be used to set the active topmenu item.
-     * 
-     * 
-     * @see Controller::setActiveTopMenuItem
-     * @var type 
-     */
-    public $topMenuRoute;
-
-    /**
      * @inheritdoc
      */
     public function renderAjaxContent($content)
@@ -226,8 +217,8 @@ class Controller extends \yii\web\Controller
         $modluleId = (Yii::$app->controller->module) ? Yii::$app->controller->module->id : '';
         $this->view->registerJs('humhub.modules.ui.status.setState("' . $modluleId . '", "' . Yii::$app->controller->id . '", "' . Yii::$app->controller->action->id . '");', \yii\web\View::POS_BEGIN);
 
-        if (!empty($this->topMenuRoute)) {
-            \humhub\widgets\TopMenu::markAsActive(Url::to([$this->topMenuRoute]));
+        if(Yii::$app->request->isPjax) {
+            \humhub\widgets\TopMenu::setViewState();
         }
     }
 

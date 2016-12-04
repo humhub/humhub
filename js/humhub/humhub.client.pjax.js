@@ -5,7 +5,7 @@ humhub.module('client.pjax', function(module, require, $) {
 
     var init = function() {
         if (module.config.active) {
-            $(document).pjax('a:not([data-pjax-prevent],[target="_blank"])', "#layout-content", module.config.options);
+            $(document).pjax('a:not([data-pjax-prevent],[target="_blank"],[data-target])', "#layout-content", module.config.options);
             pjaxRedirectFix();
             module.installLoader();
         }

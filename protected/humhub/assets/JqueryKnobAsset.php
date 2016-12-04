@@ -9,6 +9,7 @@
 namespace humhub\assets;
 
 use yii\web\AssetBundle;
+use yii\web\View;
 
 /**
  * jquery-knob
@@ -17,6 +18,7 @@ use yii\web\AssetBundle;
  */
 class JqueryKnobAsset extends AssetBundle
 {
+    public $jsOptions = ['position' => View::POS_BEGIN];
 
     /**
      * @inheritdoc

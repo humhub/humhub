@@ -158,7 +158,7 @@ class UserController extends Controller
 
         if ($form->submitted('save') && $form->validate()) {
             if ($form->save()) {
-
+                $this->view->saved();
                 return $this->redirect(['/admin/user']);
             }
         }

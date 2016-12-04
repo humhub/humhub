@@ -1,6 +1,5 @@
 <?php
-
-
+humhub\modules\directory\assets\DirectoryAsset::register($this);
 ?>
 <div class="panel panel-default" id="user-statistics-panel">
 
@@ -43,11 +42,3 @@
 
     </div>
 </div>
-
-<script>
-    $(function () {
-        $(".knob").knob();
-        $(".knob-container").css("opacity", 1);
-    });
-
-</script>

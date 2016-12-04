@@ -1,6 +1,8 @@
 <?php
+
 use yii\helpers\Html;
 
+humhub\modules\directory\assets\DirectoryAsset::register($this);
 ?>
 
 <div class="panel panel-default" id="spaces-statistics-panel">
@@ -45,10 +47,3 @@ use yii\helpers\Html;
         <?php } ?>
     </div>
 </div>
-
-<script>
-    $(function () {
-        $(".knob").knob();
-        $(".knob-container").css("opacity", 1);
-    });
-</script>

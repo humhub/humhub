@@ -2,16 +2,17 @@
 
 use yii\helpers\Html;
 
+humhub\modules\directory\assets\DirectoryAsset::register($this);
 ?>
 
 
 <div class="panel panel-default" id="groups-statistics-panel">
 
     <!-- Display panel menu widget -->
-    <?php echo humhub\widgets\PanelMenu::widget(array('id' => 'groups-statistics-panel')); ?>
+<?php echo humhub\widgets\PanelMenu::widget(array('id' => 'groups-statistics-panel')); ?>
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.widgets_views_groupStats', '<strong>Group</strong> stats'); ?>
+<?php echo Yii::t('DirectoryModule.widgets_views_groupStats', '<strong>Group</strong> stats'); ?>
     </div>
     <div class="panel-body">
         <div class="knob-container" style="text-align: center; opacity: 0;">
@@ -43,10 +44,3 @@ use yii\helpers\Html;
         </div>
     </div>
 </div>
-
-<script>
-    $(function () {
-        $(".knob").knob();
-        $(".knob-container").css("opacity", 1);
-    });
-</script>
