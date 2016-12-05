@@ -19,7 +19,7 @@ class UploadButton extends UploadInput
      */
     public function run()
     {   
-        $defaultOptions = [
+        $defaultButtonOptions = [
             'class' => 'btn btn-default fileinput-button tt',
             'title' => Yii::t('FileModule.widgets_views_fileUploadButton', 'Upload files'),
             'data' => [
@@ -29,7 +29,7 @@ class UploadButton extends UploadInput
             ]
         ];
         
-        $options = \yii\helpers\ArrayHelper::merge($defaultOptions, $this->buttonOptions);
+        $options = \yii\helpers\ArrayHelper::merge($defaultButtonOptions, $this->buttonOptions);
         
         return $this->render('uploadButton', [
                     'input' => parent::run(),

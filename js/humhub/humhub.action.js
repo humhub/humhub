@@ -251,7 +251,7 @@ humhub.module('action', function(module, require, $) {
             var $targets = $(binding.selector);
             $targets.off(binding.event).on(binding.event, function(evt) {
                 module.log.debug('Handle direct trigger action', evt);
-                return binding.handle(evt, $(this));
+                return binding.handle({originalEvent: evt, $trigger: $(this)});
             });
             $targets.data('action-' + binding.event, true);
         });
@@ -264,13 +264,15 @@ humhub.module('action', function(module, require, $) {
      * @param {type} cfg
      * @returns {humhub_action_L5.ActionBinding}
      */
-    var ActionBinding = function(cfg) {
-        cfg = cfg || {};
-        this.parent = cfg.parent;
-        this.eventType = cfg.type;
-        this.event = cfg.event;
-        this.selector = cfg.selector;
-        this.directHandler = cfg.directHandler;
+    var ActionBinding = function(options) {
+        options = options || {};
+        this.parent = options.parent;
+        // e.g. click
+        this.eventType = options.type;
+        // namespaced event e.g. click.humhub-action
+        this.event = options.event;
+        this.selector = options.selector;
+        this.directHandler = options.directHandler;
     };
 
     /**
@@ -305,9 +307,12 @@ humhub.module('action', function(module, require, $) {
      * @param {type} $trigger the jQuery node which triggered the event
      * @returns {undefined}
      */
-    ActionBinding.prototype.handle = function(originalEvent, $trigger) {
-        if(originalEvent) {
-            originalEvent.preventDefault();
+    ActionBinding.prototype.handle = function(options) {
+        var options = options || {};
+        var $trigger = options.$trigger;
+
+        if(options.originalEvent) {
+            options.originalEvent.preventDefault();
         }
 
         if(this.isBlocked($trigger)) {
@@ -321,12 +326,12 @@ humhub.module('action', function(module, require, $) {
 
         module.log.debug('Handle Action', this);
 
-        var event = this.createActionEvent(originalEvent, $trigger);
+        var event = this.createActionEvent(options);
 
         try {
             // Check for a direct action handler
             if(object.isFunction(this.directHandler)) {
-                this.directHandler.apply($trigger, [event]);
+                this.directHandler.apply($trigger, _getArgs(event));
                 return;
             }
 
@@ -337,7 +342,7 @@ humhub.module('action', function(module, require, $) {
 
             // Check for global registered handlers
             if(_handler[event.handler]) {
-                _handler[event.handler].apply($trigger, [event]);
+                _handler[event.handler].apply($trigger, _getArgs(event));
                 return;
             }
 
@@ -353,8 +358,8 @@ humhub.module('action', function(module, require, $) {
             event.finish();
         } finally {
             // Just to get sure the handler is not called twice.
-            if(originalEvent) {
-                originalEvent.actionHandled = true;
+            if(options.originalEvent) {
+                options.originalEvent.actionHandled = true;
             }
 
             if(this.isBlockType($trigger, BLOCK_SYNC)) {
@@ -371,11 +376,26 @@ humhub.module('action', function(module, require, $) {
         }
 
         if(object.isFunction(target[handlerAction])) {
-            target[handlerAction](event);
+            // Handler arguments
+            target[handlerAction].apply(target, _getArgs(event));
             return true;
         }
 
         return false;
+    };
+
+    var _getArgs = function(event) {
+        if(!event.params) {
+            return [event];
+        }
+
+        if(object.isArray(event.params)) {
+            var args = event.params.slice();
+            args.unshift(event);
+            return args;
+        } else {
+            return [event, event.params];
+        }
     };
 
     /**
@@ -452,33 +472,30 @@ humhub.module('action', function(module, require, $) {
         $trigger.data('action-' + this.eventType + '-blocked', false);
     };
 
-    ActionBinding.prototype.createActionEvent = function(evt, $trigger) {
+    ActionBinding.prototype.createActionEvent = function(options) {
+        var $trigger = options.$trigger;
         var event = $.Event(this.eventType);
-        event.originalEvent = evt;
+        event.originalEvent = options.originalEvent;
 
-        // Add some additional action related data to our event.
-        event.$trigger = $trigger;
-
-        event.$target = $(this.data($trigger, 'target', $trigger));
-
-        // If the trigger contains an url setting we add it to the event object, and prefer the typed url over the global data-action-url
-        event.url = this.data($trigger, 'url');
-        event.params = this.data($trigger, 'params', {});
-        
-        event.block = this.data($trigger, 'block');
-
-        //Get the handler id, either a stand alone handler or a content handler function e.g: 'edit' 
-        event.handler = $trigger.data('action' + '-' + this.eventType);
+        var settings = {
+            $trigger : $trigger,
+            $target: $(this.data($trigger, 'target', $trigger)),
+            url: this.data($trigger, 'url'),
+            params: this.data($trigger, 'params', {}),
+            block: this.data($trigger, 'block'),
+            handler: $trigger.data('action' + '-' + this.eventType)
+        };
 
         if(this.isSubmit($trigger)) {
             // Either use closest form or data-action-target if provided
-            event.$form = this.data($trigger, 'target', $trigger.closest('form'));
+            settings.$form = $(this.data($trigger, 'target', $trigger.closest('form')));
         }
 
+        $.extend(event, settings, options);
+
         var that = this;
-        var eventType = this.eventType;
         event.finish = function() {
-            _removeLoaderFromEventTarget(evt);
+            _removeLoaderFromEventTarget(event.originalEvent);
             that.unblock($trigger);
         };
 
@@ -536,7 +553,7 @@ humhub.module('action', function(module, require, $) {
 
             module.log.debug('Detected unhandled action', actionBinding);
             updateBindings();
-            actionBinding.handle(evt, $(this));
+            actionBinding.handle({originalEvent: evt, $trigger: $(this)});
         });
 
         return;
@@ -554,21 +571,17 @@ humhub.module('action', function(module, require, $) {
      * @param {type} originalEvent
      * @returns {undefined}
      */
-    var trigger = function($trigger, type, originalEvent, block) {
-        if(block === false) {
-            $trigger.data('action-block', BLOCK_NONE);
-        } else if(object.isString(block)) {
-            $trigger.data('action-block', block);
-        }
+    var trigger = function($trigger, type, options) {
+        options.$trigger = $trigger;
 
-        if(!$trigger.data('action-' + type)) {
-            return;
+        if(!options.block) {
+            options.block = BLOCK_NONE;
         }
 
         new ActionBinding({
             type: type,
             event: type
-        }).handle(originalEvent, $trigger);
+        }).handle(options);
     };
 
     module.export({

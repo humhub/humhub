@@ -19,6 +19,20 @@ humhub.module('file', function(module, require, $) {
 
     Upload.component = 'humhub-file-upload';
 
+    Upload.prototype.init = function() {
+        this.fileCount = 0;
+        this.options.name = this.options.name || 'fileList[]';
+        this.$form = (this.$.data('upload-form')) ? $(this.$.data('upload-form')) : this.$.closest('form');
+        this.initProgress();
+        this.initPreview();
+        this.initFileUpload();
+        
+        var that = this;
+        this.on('upload', function() {
+            that.$.trigger('click');
+        });
+    };
+
     Upload.prototype.validate = function() {
         return this.$.is('[type="file"]');
     };
@@ -82,18 +96,9 @@ humhub.module('file', function(module, require, $) {
         return $('[data-action-target="' + this.getIdSelector() + '"]');
     };
 
-    Upload.prototype.init = function() {
-        this.fileCount = 0;
-        this.options.name = this.options.name || 'fileList[]';
-        this.$form = (this.$.data('upload-form')) ? $(this.$.data('upload-form')) : this.$.closest('form');
-        this.initProgress();
-        this.initPreview();
-        this.initFileUpload();
-    };
-    
     Upload.prototype.reset = function() {
         this.fileCount = 0;
-        this.$form.find('input[name="'+this.options.name+'"]').remove();
+        this.$form.find('input[name="' + this.options.name + '"]').remove();
         if(this.preview) {
             this.preview.reset();
         }
@@ -195,10 +200,6 @@ humhub.module('file', function(module, require, $) {
         });
     };
 
-    Upload.prototype.trigger = function() {
-        this.$.trigger('click');
-    };
-
     Upload.prototype.finish = function(e) {
         if(this.progress) {
             this.progress.fadeOut().then(function(progress) {
@@ -233,7 +234,7 @@ humhub.module('file', function(module, require, $) {
     };
 
     object.inherits(Preview, Widget);
-    
+
     Preview.component = 'humhub-file-preview';
 
     Preview.prototype.init = function(files) {
@@ -254,7 +255,7 @@ humhub.module('file', function(module, require, $) {
     };
 
     Preview.prototype.add = function(file) {
-        file.galleryId = this.$.attr('id')+'_file_preview_gallery';
+        file.galleryId = this.$.attr('id') + '_file_preview_gallery';
         var template = this.getTemplate(file);
         var $file = $(string.template(template, file));
         this.$list.append($file);
@@ -282,7 +283,7 @@ humhub.module('file', function(module, require, $) {
 
         $file.fadeIn();
     };
-    
+
     Preview.prototype.getTemplate = function(file) {
         if(this.options.fileEdit) {
             return Preview.template.file_edit;
@@ -312,7 +313,7 @@ humhub.module('file', function(module, require, $) {
             }
         });
     };
-    
+
     Preview.prototype.hasFiles = function() {
         return this.$list.find('li').length > 0;
     };
@@ -355,7 +356,7 @@ humhub.module('file', function(module, require, $) {
     };
 
     var upload = function(evt) {
-        Upload.instance(evt.$target).trigger();
+        Upload.instance(evt.$target).trigger('upload');
     };
 
     module.export({

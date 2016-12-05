@@ -64,10 +64,10 @@ class MultiSelectField extends BasePickerField
         return $result;
     }
 
-    protected function getAttributes()
+    protected function getData()
     {
-        $result = parent::getAttributes();
-        unset($result['data-picker-url']);
+        $result = parent::getData();
+        unset($result['picker-url']);
         return $result;
     }
 

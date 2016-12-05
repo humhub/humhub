@@ -2,7 +2,6 @@
 
 namespace humhub\modules\file\widgets;
 
-use Yii;
 use yii\helpers\Html;
 
 /**
@@ -11,14 +10,10 @@ use yii\helpers\Html;
  * @package humhub.modules_core.file.widgets
  * @since 1.2
  */
-class UploadProgress extends UploadInput
+class UploadProgress extends \humhub\widgets\JsWidget
 {
     
     public $jsWidget = "ui.progress.Progress";
-    
-    public $id;
-    
-    public $options = [];
     
     public $visible = false;
     
@@ -27,23 +22,14 @@ class UploadProgress extends UploadInput
      */
     public function run()
     {   
-        $defaultOptoins = [
-            'id' => $this->id,
-            'style' => 'margin:10px 0px;',
-            'data' => [
-                'ui-widget' => $this->jsWidget
-            ]
+        return Html::beginTag('div', $this->getOptions()).Html::endTag('div');
+    }
+    
+    public function getAttributes()
+    {
+        return [
+            'style' => 'margin:10px 0px'
         ];
-        
-        $options = \yii\helpers\ArrayHelper::merge($defaultOptoins, $this->options);
-                
-        if(!$this->visible) {
-            $options['style'] .= 'display:none';
-        }
-        
-        return Html::beginTag('div', $options).Html::endTag('div');
     }
 
 }
-
-?>

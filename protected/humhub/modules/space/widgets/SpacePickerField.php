@@ -31,16 +31,16 @@ class SpacePickerField extends BasePickerField
     /**
      * @inheritdoc 
      */
-    protected function getTexts()
+    protected function getData()
     {
-        $result = parent::getTexts();
+        $result = parent::getData();
         $allowMultiple = $this->maxSelection !== 1;
-        $result['data-placeholder'] = Yii::t('SpaceModule.widgets_SpacePickerField', 'Select {n,plural,=1{space} other{spaces}}', ['n' => ($allowMultiple) ? 2 : 1]);
-        $result['data-placeholder-more'] = Yii::t('SpaceModule.widgets_SpacePickerField', 'Add Space');
-        $result['data-no-result'] = Yii::t('SpaceModule.widgets_SpacePickerField', 'No spaces found for the given query');
+        $result['placeholder'] = Yii::t('SpaceModule.widgets_SpacePickerField', 'Select {n,plural,=1{space} other{spaces}}', ['n' => ($allowMultiple) ? 2 : 1]);
+        $result['placeholder-more'] = Yii::t('SpaceModule.widgets_SpacePickerField', 'Add Space');
+        $result['no-result'] = Yii::t('SpaceModule.widgets_SpacePickerField', 'No spaces found for the given query');
 
         if ($this->maxSelection) {
-            $result['data-maximum-selected'] = Yii::t('SpaceModule.widgets_SpacePickerField', 'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}', ['n' => $this->maxSelection]);
+            $result['maximum-selected'] = Yii::t('SpaceModule.widgets_SpacePickerField', 'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}', ['n' => $this->maxSelection]);
         }
         return $result;
     }

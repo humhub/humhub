@@ -34,22 +34,15 @@ use \yii\helpers\Url;
  * @since 1.2
  * @author buddha
  */
-abstract class BasePickerField extends \yii\base\Widget
+abstract class BasePickerField extends JsWidget
 {
-
-    /**
-     * Defines the select input field id
-     * 
-     * @var string 
-     */
-    public $id;
 
     /**
      * Defines the javascript picker implementation.
      * 
      * @var string 
      */
-    public $picker = 'ui.picker.Picker';
+    public $jsWidget = 'ui.picker.Picker';
 
     /**
      * Disabled
@@ -70,14 +63,6 @@ abstract class BasePickerField extends \yii\base\Widget
      * @var string
      */
     public $url;
-
-    /*
-     * Used to overwrite select input field attributes. This array can be used for overwriting
-     * texts, or other picker settings.
-     * 
-     * @var string
-     */
-    public $options = [];
 
     /**
      * Maximum amount of selection items.
@@ -178,6 +163,12 @@ abstract class BasePickerField extends \yii\base\Widget
     public $focus = false;
 
     /**
+     * @inheritdoc
+     * @var boolean 
+     */
+    public $init = true;
+
+    /**
      * Used to retrieve the option text of a given $item.
      * 
      * @param \yii\db\ActiveRecord $item selected item
@@ -211,7 +202,7 @@ abstract class BasePickerField extends \yii\base\Widget
             $selection[$id] = $option['data-text'];
         }
 
-        $options = $this->getInputAttributes();
+        $options = $this->getOptions();
         $options['options'] = $selectedOptions;
 
         if ($this->form != null) {
@@ -268,11 +259,11 @@ abstract class BasePickerField extends \yii\base\Widget
             'data-text' => $this->getItemText($item),
             'data-image' => $this->getItemImage($item),
         ];
-        
-        if($selected) {
+
+        if ($selected) {
             $result['selected'] = 'selected';
         }
-        
+
         return $result;
     }
 
@@ -309,48 +300,13 @@ abstract class BasePickerField extends \yii\base\Widget
         return $itemClass::find()->where([$this->itemKey => $selection])->all();
     }
 
-    /**
-     * Assembles the select field input attributes by merging the default values with
-     * the widgets $options array.
-     * 
-     * @return type
-     */
-    protected function getInputAttributes()
-    {
-        $attributes = array_merge($this->getAttributes(), $this->getTexts());
-        return \yii\helpers\ArrayHelper::merge($attributes, $this->options);
-    }
-
-    /**
-     * Returns an array of select field input attributes for this widget instance.
-     * These attributes are used to configure the picker.
-     * 
-     * The following configuration attributes are available:
-     * 
-     *  - data-ui-picker: has to be set for all picker instances and can contain a javascript picker class.
-     *  - data-picker-url: url used for search queries.
-     *  - data-maximum-selection-length: maximum amount of allowed selection items.
-     *  - data-maximum-input-length: maximum allowed characters for the search query.
-     *  - data-minimum-input-length: minimum required characters for the search query.
-     * 
-     * @return array
-     */
     protected function getAttributes()
     {
         return [
-            'id' => $this->id,
-            'data-ui-widget' => $this->picker,
-            'data-ui-init' => true,
-            'data-picker-url' => $this->getUrl(),
-            'data-picker-focus' => ($this->focus) ? 'true' : null,
             'multiple' => 'multiple',
             'size' => '1',
             'class' => 'form-control',
             'style' => 'width:100%',
-            'data' => ['disabled-items' => (!$this->disabledItems) ? null : $this->disabledItems],
-            'data-maximum-selection-length' => $this->maxSelection,
-            'data-maximum-input-length' => $this->maxInput,
-            'data-minimum-input-length' => $this->minInput,
         ];
     }
 
@@ -369,7 +325,7 @@ abstract class BasePickerField extends \yii\base\Widget
      * 
      * @return array
      */
-    protected function getTexts()
+    protected function getData()
     {
         $allowMultiple = $this->maxSelection !== 1;
 
@@ -377,17 +333,23 @@ abstract class BasePickerField extends \yii\base\Widget
         $placeholderMore = ($this->placeholderMore != null) ? $this->placeholderMore : Yii::t('UserModule.widgets_BasePickerField', 'Add more...');
 
         $result = [
-            'data-placeholder' => $placeholder,
-            'data-placeholder-more' => $placeholderMore,
-            'data-no-result' => Yii::t('UserModule.widgets_BasePickerField', 'Your search returned no matches.'),
-            'data-format-ajax-error' => Yii::t('UserModule.widgets_BasePickerField', 'An unexpected error occured while loading the result.'),
-            'data-load-more' => Yii::t('UserModule.widgets_BasePickerField', 'Load more'),
-            'data-input-too-short' => Yii::t('UserModule.widgets_BasePickerField', 'Please enter at least {n} character', ['n' => $this->minInput]),
-            'data-input-too-long' => Yii::t('UserModule.widgets_BasePickerField', 'You reached the maximum number of allowed charachters ({n}).', ['n' => $this->maxInput])
+            'picker-url' => $this->getUrl(),
+            'picker-focus' => ($this->focus) ? 'true' : null,
+            'disabled-items' => (!$this->disabledItems) ? null : $this->disabledItems,
+            'maximum-selection-length' => $this->maxSelection,
+            'maximum-input-length' => $this->maxInput,
+            'minimum-input-length' => $this->minInput,
+            'placeholder' => $placeholder,
+            'placeholder-more' => $placeholderMore,
+            'no-result' => Yii::t('UserModule.widgets_BasePickerField', 'Your search returned no matches.'),
+            'format-ajax-error' => Yii::t('UserModule.widgets_BasePickerField', 'An unexpected error occured while loading the result.'),
+            'load-more' => Yii::t('UserModule.widgets_BasePickerField', 'Load more'),
+            'input-too-short' => Yii::t('UserModule.widgets_BasePickerField', 'Please enter at least {n} character', ['n' => $this->minInput]),
+            'input-too-long' => Yii::t('UserModule.widgets_BasePickerField', 'You reached the maximum number of allowed charachters ({n}).', ['n' => $this->maxInput])
         ];
 
         if ($this->maxSelection) {
-            $result['data-maximum-selected'] = Yii::t('UserModule.widgets_BasePickerField', 'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.', ['n' => $this->maxSelection]);
+            $result['maximum-selected'] = Yii::t('UserModule.widgets_BasePickerField', 'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.', ['n' => $this->maxSelection]);
         }
         return $result;
     }

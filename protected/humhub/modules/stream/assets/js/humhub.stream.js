@@ -813,11 +813,16 @@ humhub.module('stream', function(module, require, $) {
 
         if(!stream) {
             module.log.info('Non-Wall-Stream Page!');
+            _unload();
             return;
         } else {
             _initWallStream(stream);
             _initFilterNav();
         }
+    };
+    
+    var _unload = function() {
+        $(window).off('scroll.humhub:modules:stream');
     };
 
     var _initWallStream = function(stream) {
@@ -831,7 +836,7 @@ humhub.module('stream', function(module, require, $) {
             stream.prependEntry(html);
         });
 
-        $(window).scroll(function() {
+        $(window).off('scroll.humhub:modules:stream').on('scroll.humhub:modules:stream', function() {
             if(stream.isShowSingleEntry()) {
                 return;
             }

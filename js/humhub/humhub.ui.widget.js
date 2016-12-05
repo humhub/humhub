@@ -10,23 +10,37 @@ humhub.module('ui.widget', function(module, require, $) {
     var additions = require('ui.additions');
     var Component = require('action').Component;
     var object = require('util').object;
-    
+    var action = require('action');
+    var event = require('event');
+
     // Add selector for component detection so we can use data-ui-widget instead of data-action-component
     Component.addSelector('ui-widget');
-    
+
     var Widget = function(node, options) {
         Component.call(this, (node instanceof $) ? node : $(node), options);
         this.errors = [];
         this.options = this.initOptions(options || {});
 
-        if (!this.validate()) {
+        // Use internal events
+        event.sub(this);
+
+        if(!this.validate()) {
             module.log.warn('Could not initialize widget.', this.errors);
         } else {
+            this.fire('before-init', [this]);
             this.init(this.$.data('ui-init'));
+            this.fire('after-init', [this]);
         }
     };
-    
+
     object.inherits(Widget, Component);
+
+    Widget.prototype.fire = function(event, args) {
+        if(this.$.data('action-' + event)) {
+            action.trigger(this.$, event, {params: args});
+        }
+        this.trigger(event, args);
+    };
 
     /**
      * Defines the data attribute used for identification of the widget and widget class.
@@ -104,7 +118,7 @@ humhub.module('ui.widget', function(module, require, $) {
     Widget.prototype.fadeOut = function() {
         var that = this;
         return new Promise(function(resolve, reject) {
-            if (that.$.is(':visible')) {
+            if(that.$.is(':visible')) {
                 that.$.fadeOut('fast', function() {
                     resolve(that);
                 });
@@ -115,16 +129,16 @@ humhub.module('ui.widget', function(module, require, $) {
     Widget.prototype.fadeIn = function() {
         var that = this;
         return new Promise(function(resolve, reject) {
-            if (!that.$.is(':visible')) {
+            if(!that.$.is(':visible')) {
                 that.$.fadeIn('fast', function() {
                     resolve(that);
                 });
             }
         });
     };
-    
+
     Widget.exists = function(ns) {
-        return $('[data-ui-widget="'+ns+'"]').length > 0;
+        return $('[data-ui-widget="' + ns + '"]').length > 0;
     };
 
 
@@ -138,6 +152,6 @@ humhub.module('ui.widget', function(module, require, $) {
 
     module.export({
         Widget: Widget,
-        init: init
+        init: init,
     });
 });

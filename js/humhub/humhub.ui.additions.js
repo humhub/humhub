@@ -65,6 +65,9 @@ humhub.module('ui.additions', function (module, require, $) {
     };
 
     var init = function () {
+        // Jquery ui tooltip conflicts with bootstrap, here we change the ui tooltip namespace
+        //$.widget.bridge('uitooltip', $.ui.tooltip);
+        
         event.on('humhub:ready', function (evt) {
             module.applyTo($('body'));
         });

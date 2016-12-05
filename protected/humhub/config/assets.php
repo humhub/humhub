@@ -32,7 +32,12 @@ return [
         'baseUrl' => '@web/assets',
         'bundles' => [
             'yii\bootstrap\BootstrapPluginAsset' => [
-                'js' => ['js/bootstrap.min.js']
+                'js' => ['js/bootstrap.min.js'],
+                'depends' => [
+                    'yii\web\JqueryAsset',
+                    'yii\bootstrap\BootstrapAsset',
+                    'humhub\assets\JuiBootstrapBridgeAsset'
+                ]
             ],
         ]
     ],

@@ -23,7 +23,7 @@ class UserPickerField extends BasePickerField
     /**
      * @inheritdoc 
      */
-    public $picker = 'user.picker.UserPicker';
+    public $jsWidget = 'user.picker.UserPicker';
 
     /**
      * @inheritdoc 
@@ -53,16 +53,16 @@ class UserPickerField extends BasePickerField
     /**
      * @inheritdoc 
      */
-    protected function getTexts()
+    protected function getData()
     {
-        $result = parent::getTexts();
+        $result = parent::getData();
         $allowMultiple = $this->maxSelection !== 1;
-        $result['data-placeholder'] = Yii::t('UserModule.widgets_UserPickerField', 'Select {n,plural,=1{user} other{users}}', ['n' => ($allowMultiple) ? 2 : 1]);
-        $result['data-placeholder-more'] = Yii::t('UserModule.widgets_SpacePickerField', 'Add user');
-        $result['data-no-result'] = Yii::t('UserModule.widgets_UserPickerField', 'No users found for the given query.');
+        $result['placeholder'] = Yii::t('UserModule.widgets_UserPickerField', 'Select {n,plural,=1{user} other{users}}', ['n' => ($allowMultiple) ? 2 : 1]);
+        $result['placeholder-more'] = Yii::t('UserModule.widgets_SpacePickerField', 'Add user');
+        $result['no-result'] = Yii::t('UserModule.widgets_UserPickerField', 'No users found for the given query.');
 
         if ($this->maxSelection) {
-            $result['data-maximum-selected'] = Yii::t('UserModule.widgets_UserPickerField', 'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.', ['n' => $this->maxSelection]);
+            $result['maximum-selected'] = Yii::t('UserModule.widgets_UserPickerField', 'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.', ['n' => $this->maxSelection]);
         }
         return $result;
     }

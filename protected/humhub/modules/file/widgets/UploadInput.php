@@ -18,15 +18,10 @@ use yii\helpers\Html;
  * @package humhub.modules_core.file.widgets
  * @since 1.2
  */
-class UploadInput extends \yii\base\Widget
+class UploadInput extends \humhub\widgets\JsWidget
 {
 
     const DEFAULT_FORM_NAME = 'guids[]';
-
-    /**
-     * @var String unique id of this uploader
-     */
-    public $id;
 
     /**
      * javascript widget implementation.
@@ -34,6 +29,12 @@ class UploadInput extends \yii\base\Widget
      * @var type 
      */
     public $jsWidget = 'file.Upload';
+
+    /**
+     * @inheritdoc
+     * @var type 
+     */
+    public $init = true;
 
     /**
      * Active Model can be set to attach files to this model.
@@ -98,16 +99,10 @@ class UploadInput extends \yii\base\Widget
     public $progress;
 
     /**
-     * Additional input field attributes.
-     * @var type 
-     */
-    public $options = [];
-
-    /**
      * Used to hide/show the actual input element.
      * @var type 
      */
-    public $hidden = true;
+    public $visible = false;
 
     /**
      * Draws the Upload Button output.
@@ -117,42 +112,37 @@ class UploadInput extends \yii\base\Widget
         return Html::input('file', 'files[]', null, $this->getOptions());
     }
 
-    public function getOptions()
+    public function getAttributes()
+    {
+        return [
+            'multiple' => 'multiple'
+        ];
+    }
+
+    public function getData()
     {
         $formSelector = ($this->form instanceof \yii\widgets\ActiveForm) ? '#' + $this->form->getId() : $this->form;
         $resultFieldName = ($this->model && $this->attribute) ? $this->model->formName() + '[' + $this->attribute + '][]' : self::DEFAULT_FORM_NAME;
-        $style = ($this->hidden) ? 'display:none;' : '';
 
-        $defaultOptions = [
-            'id' => $this->id,
-            'multiple' => 'multiple',
-            'style' => $style,
-            'data' => [
-                'ui-widget' => $this->jsWidget,
-                'ui-init' => '',
-                'upload-url' => $this->url,
-                'upload-drop-zone' => $this->dropZone,
-                'upload-progress' => $this->progress,
-                'upload-preview' => $this->preview,
-                'upload-form' => $formSelector,
-                'result-field-name' => $resultFieldName
-            ]
+        $result = [
+            'upload-url' => $this->url,
+            'upload-drop-zone' => $this->dropZone,
+            'upload-progress' => $this->progress,
+            'upload-preview' => $this->preview,
+            'upload-form' => $formSelector,
+            'result-field-name' => $resultFieldName
         ];
-
+        
         if ($this->model) {
-            $defaultOptions['data']['upload-model'] = $this->model->className();
-            $defaultOptions['data']['upload-model-id'] = $this->model->getPrimaryKey();
-        }
-        
-        if($this->max) {
-            $defaultOptions['data']['max-number-of-files'] = $this->max;
-            $defaultOptions['data']['max-number-of-files-message'] =  Yii::t('FileModule.widgets_UploadInput', 'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.', ['n' => $this->max]);
-        
+            $result['upload-model'] = $this->model->className();
+            $result['upload-model-id'] = $this->model->getPrimaryKey();
         }
 
-        return \yii\helpers\ArrayHelper::merge($defaultOptions, $this->options);
+        if ($this->max) {
+            $result['max-number-of-files'] = $this->max;
+            $result['max-number-of-files-message'] = Yii::t('FileModule.widgets_UploadInput', 'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.', ['n' => $this->max]);
+        }
+        
+        return $result;
     }
-
 }
-
-?>

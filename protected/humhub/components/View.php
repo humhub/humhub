@@ -88,7 +88,6 @@ class View extends \yii\web\View
      */
     public function renderAjaxContent($content)
     {
-
         // Make sure not to load add these asset, especially the bootstrap asset could overwrite the theme.
         unset($this->assetBundles['yii\bootstrap\BootstrapAsset']);
         unset($this->assetBundles['yii\web\JqueryAsset']);

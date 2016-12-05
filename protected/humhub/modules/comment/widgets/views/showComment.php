@@ -11,7 +11,6 @@ $canDelete = $comment->canDelete();
 
 <div class="media" id="comment_<?= $comment->id; ?>" 
      data-action-component="comment.Comment" 
-     data-content-key="<?= $comment->content->id ?>"
      data-content-delete-url="<?= Url::to(["/comment/comment/delete", 'contentModel' => $comment->object_model, 'contentId' => $comment->object_id, 'id' => $comment->id]) ?>">
     <?php if ($canWrite || $canDelete) : ?>
         <div class="comment-entry-loader pull-right"></div>

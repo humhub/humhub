@@ -61,6 +61,9 @@ Please see the following file for 1.2 changes (at the buttom):
 - Refactored:
     - modules/search/views/search/index.php 
 
+- Pjax
+    - modules/tour/widgets/views/tourPanel.php
+
 We've integrated a new Space and UserPicker widget. Please check the following files for 
 
 ## Migrate to 1.1
