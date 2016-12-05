@@ -20,7 +20,6 @@ $richOutput = humhub\widgets\RichText::widget(['text' => $post->message, 'record
 
     $(document).ready(function () {
 
-        debugger;
         // save the count of characters
         var _words = '<?php echo strlen(strip_tags($richOutput)); ?>';
         var _postHeight = $('#post-content-<?php echo $post->id; ?>').outerHeight();
