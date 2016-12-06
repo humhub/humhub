@@ -38,8 +38,8 @@ use yii\helpers\Url;
         // init at plugin
         $editableContent.atwho({
             at: "@",
-            data: ["<?php echo Yii::t('base', 'Please type at least 3 characters') ?>"],
-            insert_tpl: "<a href='<?php echo Url::to(['/user/profile']); ?>/&uguid=${guid}' target='_blank' class='atwho-user' data-user-guid='@-${type}${guid}'>${atwho-data-value}</a>",
+            data: [{image: '', 'cssClass': 'hint', name: "<?= Yii::t('base', 'Please type at least 3 characters') ?>"}],
+            insert_tpl: "<a href='${link}' target='_blank' class='atwho-user' data-user-guid='${atwho-at}-${type}${guid}'>${atwho-data-value}&#x200b;</a>",
             tpl: "<li class='hint' data-value=''>${name}</li>",
             search_key: "name",
             limit: 10,
@@ -49,7 +49,9 @@ use yii\helpers\Url;
                     var match, regexp;
                     regexp = new RegExp(/(\s+|^)@([\u00C0-\u1FFF\u2C00-\uD7FF\w\s\-\']*$)/);
                     match = regexp.exec(subtext);
-
+                    
+                    this.setting.tpl = "<li class='hint' data-value=''>${name}</li>";
+                    
                     if (match && typeof match[2] !== 'undefined') {
                         return match[2];
                     }
@@ -57,26 +59,23 @@ use yii\helpers\Url;
                     return null;
                 },
                 remote_filter: function (query, callback) {
-
-                    // set plugin settings for showing hint
                     this.setting.highlight_first = false;
-                    this.setting.tpl = "<li data-value=''><?php echo Yii::t('base', 'Please type at least 3 characters') ?></li>";
-                    //this.setting.tpl = "<li class='hint' data-value=''>${name}</li>";
-
+                    
+                    // Render loading user feedback.
+                    this.setting.tpl = "<li class='hint' data-value=''>${name}</li>";
+                    this.view.render([{"type":"test","cssClass": "hint", "name":"<?= Yii::t('base', 'Loading...') ?>","image":"","link":""}]);
+            
                     // check the char length and data-query attribute for changing plugin settings for showing results
-                    if (query.length >= 3 && $('#<?php echo $id; ?>_contenteditable').attr('data-query') == '1') {
-
+                    if (query.length >= 3 && $('#<?= $id; ?>_contenteditable').attr('data-query') == '1') {
                         // set plugin settings for showing results
                         this.setting.highlight_first = true;
-                        this.setting.tpl = "<li data-value='@${name}'>${image} ${name}</li>",
-                                // load data
-                                $.getJSON("<?php echo Url::to([$userSearchUrl]); ?>", {keyword: query}, function (data) {
-                                    callback(data);
-                                });
+                        this.setting.tpl = '<li class="${cssClass}" data-value="@${name}">${image} ${name}</li>';
+                        $.getJSON("<?php echo Url::to([$userSearchUrl]); ?>", {keyword: query}, function (data) {
+                            callback(data);
+                        });
 
                         // reset query count
                         query.length = 0;
-
                     }
                 }
             }
