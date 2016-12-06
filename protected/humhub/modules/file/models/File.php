@@ -88,7 +88,7 @@ class File extends \humhub\components\ActiveRecord
             array(['mime_type'], 'string', 'max' => 150),
             array('filename', 'validateExtension'),
             array('filename', 'validateSize'),
-            array('mime_type', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-]/', 'message' => Yii::t('FileModule.models_File', 'Invalid Mime-Type')),
+            array('mime_type', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-\+]/', 'message' => Yii::t('FileModule.models_File', 'Invalid Mime-Type')),
             array(['file_name', 'title'], 'string', 'max' => 255),
             array(['created_at', 'updated_at'], 'safe'),
         );
@@ -262,6 +262,10 @@ class File extends \humhub\components\ActiveRecord
 
     public function getPreviewImageUrl($maxWidth = 1000, $maxHeight = 1000)
     {
+        if($this->isMimeType('image/svg+xml')) {
+            return $this->getUrl();
+        }
+        
         $suffix = 'pi_' . $maxWidth . "x" . $maxHeight;
 
         $originalFilename = $this->getStoredFilePath();
@@ -291,6 +295,11 @@ class File extends \humhub\components\ActiveRecord
 
         ImageConverter::Resize($originalFilename, $previewFilename, array('mode' => 'max', 'width' => $maxWidth, 'height' => $maxHeight));
         return $this->getUrl($suffix);
+    }
+    
+    public function isMimeType($mime)
+    {
+        return $this->mime_type === $mime;
     }
 
     public function getExtension()

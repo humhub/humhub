@@ -20,7 +20,7 @@ $object = $this->context->object;
                     echo "gallery-" . $object->getUniqueId();
                 }
                 ?>" href="<?php echo $file->getUrl(); ?>#.jpeg"  data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
-                    <img src='<?php echo $file->getPreviewImageUrl($maxPreviewImageWidth ? $maxPreviewImageWidth : 200, $maxPreviewImageHeight ? $maxPreviewImageHeight : 200); ?>'>
+                        <img src='<?= $file->getPreviewImageUrl($maxPreviewImageWidth ? $maxPreviewImageWidth : 200, $maxPreviewImageHeight ? $maxPreviewImageHeight : 200); ?>' style="max-height:200px;max-width:200px">
                 </a>
             <?php endif; ?>
 
