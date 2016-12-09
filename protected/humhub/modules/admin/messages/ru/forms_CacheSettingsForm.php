@@ -18,7 +18,7 @@
  */
 return [
     'APC' => 'APC',
-    'Cache Backend' => 'Кеширование бекэнда',
+    'Cache Backend' => 'Кэширование бэкенда',
     'Default Expire Time (in seconds)' => 'Время ожидания по умолчанию (в секундах)',
     'File' => 'Файл',
     'No caching (Testing only!)' => 'Без кэширования (только тестирование!)',

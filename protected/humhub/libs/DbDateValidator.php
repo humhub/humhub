@@ -58,7 +58,10 @@ class DbDateValidator extends \yii\validators\DateValidator
                 // To ensure we're saving 00:00:00 time infos.
                 $date->setTimezone(new \DateTimeZone('UTC'));
             }
-            $model->$attribute = $date->format($this->convertToFormat);
+
+            if ($this->convertToFormat !== null) {
+                $model->$attribute = $date->format($this->convertToFormat);
+            }
         }
     }
 
@@ -83,10 +86,10 @@ class DbDateValidator extends \yii\validators\DateValidator
             $attributeName = $this->timeAttribute;
             return $model->$attributeName;
         }
-        
+
         return '';
     }
-    
+
     /**
      * Parses a date and optionally a time if timeAttribute is specified.
      * 

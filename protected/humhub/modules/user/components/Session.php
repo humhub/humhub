@@ -43,7 +43,7 @@ class Session extends DbSession
         // http://us.php.net/manual/en/function.session-set-save-handler.php
         try {
             $userId = new Expression('NULL');
-            if (!Yii::$app->user->isGuest) {
+            if (!Yii::$app->user->getIsGuest()) {
                 $userId = Yii::$app->user->id;
             }
 

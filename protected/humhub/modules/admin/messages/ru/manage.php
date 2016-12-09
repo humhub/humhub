@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Advanced' => 'Раширенные',
+  'Advanced' => 'Расширенные',
   'Basic' => 'Основные',
   'General' => 'Общее',
   'Permissions' => 'Доступ',

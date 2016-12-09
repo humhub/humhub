@@ -12,10 +12,8 @@ use Yii;
 use Zend\Ldap\Ldap;
 use Zend\Ldap\Node;
 use Zend\Ldap\Exception\LdapException;
-
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\ProfileField;
-
 
 /**
  * LDAP Authentication
@@ -158,6 +156,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
             if (isset(Yii::$app->params['ldap']['dateFields'][$name]) && $value != '') {
                 $dateFormat = Yii::$app->params['ldap']['dateFields'][$name];
                 $date = \DateTime::createFromFormat($dateFormat, $value);
+
                 if ($date !== false) {
                     $normalized[$name] = $date->format('Y-m-d 00:00:00');
                 } else {
@@ -165,8 +164,6 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
                 }
             }
         }
-
-
         return parent::normalizeUserAttributes($normalized);
     }
 
@@ -320,7 +317,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
             $user = AuthClientHelpers::getUserByAuthClient($authClient);
             if ($user === null) {
                 if (!AuthClientHelpers::createUser($authClient)) {
-                    Yii::warning('Could not automatically create LDAP user ' . $attributes['email'] . ' - check required attributes!');
+                    Yii::warning('Could not automatically create LDAP user  - check required attributes! (' . print_r($attributes, 1) . ')');
                 }
             } else {
                 AuthClientHelpers::updateUser($authClient, $user);

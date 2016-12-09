@@ -11,9 +11,11 @@ namespace humhub\modules\user\controllers;
 use Yii;
 use humhub\components\Controller;
 use humhub\modules\user\models\User;
+use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\authclient\AuthClientHelpers;
+use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 
 /**
  * AuthController handles login and logout
@@ -39,7 +41,7 @@ class AuthController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
             'external' => [
-                'class' => 'yii\authclient\AuthAction',
+                'class' => AuthAction::className(),
                 'successCallback' => [$this, 'onAuthSuccess'],
             ],
         ];
@@ -111,6 +113,11 @@ class AuthController extends Controller
             return $this->login($user, $authClient);
         }
 
+        if (!$authClient instanceof ApprovalBypass && !Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration')) {
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', "You're not registered."));
+            return $this->redirect(['/user/auth/login']);
+        }
+
         // Check if E-Mail is given
         if (!isset($attributes['email'])) {
             Yii::$app->session->setFlash('error', "Missing E-Mail Attribute from AuthClient.");
@@ -164,7 +171,6 @@ class AuthController extends Controller
             AuthClientHelpers::updateUser($authClient, $user);
 
             if (Yii::$app->user->login($user, $duration)) {
-                $user->updateAttributes(['last_login' => new \yii\db\Expression('NOW()')]);
                 Yii::$app->user->setCurrentAuthClient($authClient);
                 $url = Yii::$app->user->returnUrl;
             }

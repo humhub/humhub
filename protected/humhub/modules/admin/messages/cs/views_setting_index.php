@@ -19,7 +19,8 @@
 return [
     'Friendship' => '',
     'New users will automatically be added to these space(s).' => '',
-    '<strong>Confirm</strong> image deletion' => '<strong>Potvrďte</strong> smazání obrázku',
+    'Wall entry layout' => '',
+    '<strong>Confirm</strong> image deleting' => '<strong>Potvrďte</strong> smazání obrázku',
     'Cancel' => 'Zrušit',
     'Dashboard' => 'Nástěnka',
     'Delete' => 'Smazat',

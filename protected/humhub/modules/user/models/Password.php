@@ -118,7 +118,7 @@ class Password extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'algorithm' => 'Algorithm',
-            'password' => Yii::t('UserModule.base', 'Password'),
+            'currentPassword' => Yii::t('UserModule.base', 'Current password'),
             'salt' => 'Salt',
             'created_at' => 'Created At',
             'newPassword' => Yii::t('UserModule.base', 'New password'),

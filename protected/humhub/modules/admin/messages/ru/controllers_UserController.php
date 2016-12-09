@@ -19,10 +19,10 @@
 return [
     'Become this user' => 'Войти как данный пользователь',
     'Delete' => 'Удалить',
-    'Disabled' => 'Отключен',
-    'Enabled' => 'Включен',
+    'Disabled' => 'Отключён',
+    'Enabled' => 'Включён',
     'Save' => 'Сохранить',
-    'Unapproved' => 'Не подтвержден',
+    'Unapproved' => 'Не подтверждён',
     'User not found!' => 'Пользователь не найден!',
     'You cannot delete yourself!' => 'Вы не можете удалить себя!',
 ];

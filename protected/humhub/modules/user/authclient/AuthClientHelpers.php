@@ -164,7 +164,8 @@ class AuthClientHelpers
 
         $registration = new \humhub\modules\user\models\forms\Registration();
         $registration->enablePasswordForm = false;
-
+        $registration->enableEmailField = true;
+        
         if ($authClient instanceof interfaces\ApprovalBypass) {
             $registration->enableUserApproval = false;
         }

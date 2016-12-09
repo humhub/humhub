@@ -471,6 +471,10 @@ class Content extends \humhub\components\ActiveRecord
         if ($user !== null && $this->created_by == $user->id) {
             return true;
         }
+        
+        if($this->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
+            return true;
+        }
 
         // Global Admin can edit/delete arbitrarily content
         if (Yii::$app->getModule('content')->adminCanEditAllContent && Yii::$app->user->getIdentity()->isSystemAdmin()) {

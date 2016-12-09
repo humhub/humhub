@@ -22,6 +22,7 @@ return [
     'Friendship' => '',
     'New users will automatically be added to these space(s).' => '',
     'Save' => '',
+    'Wall entry layout' => '',
     'You\'re using no logo at the moment. Upload your logo now.' => '',
     'Cancel' => 'Hủy',
     'Dashboard' => 'Trang chính',

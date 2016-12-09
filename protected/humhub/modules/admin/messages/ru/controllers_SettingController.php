@@ -22,5 +22,5 @@ return [
     'No caching (Testing only!)' => 'Нет кэширования (только тестирование!)',
     'None - shows dropdown in user registration.' => 'Нет - показывать в выпадающем меню при регистрации пользователя.',
     'Saved' => 'Сохранено',
-    'Saved and flushed cache' => 'Сохранено, кеш сброшен',
+    'Saved and flushed cache' => 'Сохранено, кэш сброшен',
 ];

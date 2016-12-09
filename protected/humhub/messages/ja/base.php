@@ -18,6 +18,9 @@
  */
 return [
     'Ok' => '',
+    'Show more' => '',
+    'The date has to be in the past.' => '',
+    'Unsubscribe' => '',
     '<strong>Latest</strong> updates' => '<strong>最新</strong> 更新',
     'Account settings' => 'アカウント設定',
     'Administration' => '管理',

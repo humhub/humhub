@@ -19,6 +19,8 @@
 return [
     'The url contains illegal characters!' => '',
     'e.g. example for {baseUrl}/s/example' => '',
+    'the default start page of this space for members' => '',
+    'the default start page of this space for visitors' => '',
     'As owner of this space you can transfer this role to another administrator in space.' => 'Come proprietario di questo Space puoi trasferirne la proprietà ad un altro amministratore dello Space.',
     'Space owner' => 'Proprietario dello Space',
     'Transfer ownership' => 'Trasferisci proprietà',

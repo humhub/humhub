@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Auth Mode' => '',
+  'Auth Mode' => 'Auth Mode',
   'Created at' => 'Créé le',
   'Created by' => 'Créé par',
   'Default Space' => 'Espace par défaut',

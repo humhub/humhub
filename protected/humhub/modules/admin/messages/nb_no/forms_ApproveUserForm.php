@@ -1,5 +1,5 @@
 <?php
 return array (
   'Message' => 'Melding',
-  'Subject' => '',
+  'Subject' => 'Emne',
 );

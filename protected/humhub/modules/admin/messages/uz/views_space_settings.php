@@ -18,4 +18,5 @@
  */
 return [
     'Save' => '',
+    'Space Settings' => '',
 ];

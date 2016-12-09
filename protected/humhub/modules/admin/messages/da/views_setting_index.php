@@ -19,7 +19,8 @@
 return [
     'Friendship' => '',
     'New users will automatically be added to these space(s).' => '',
-    '<strong>Confirm</strong> image deletion' => '<strong>Bekræft</strong> billede sletning',
+    'Wall entry layout' => '',
+    '<strong>Confirm</strong> image deleting' => '<strong>Bekræft</strong> billede sletning',
     'Cancel' => 'Afbryd',
     'Dashboard' => 'Dashboard',
     'Delete' => 'Slet',

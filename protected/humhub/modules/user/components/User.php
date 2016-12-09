@@ -161,4 +161,14 @@ class User extends \yii\web\User
         return null;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function afterLogin($identity, $cookieBased, $duration)
+    {
+        $identity->updateAttributes(['last_login' => new \yii\db\Expression('NOW()')]);
+
+        parent::afterLogin($identity, $cookieBased, $duration);
+    }
+
 }

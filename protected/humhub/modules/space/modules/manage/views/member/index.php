@@ -66,7 +66,7 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                                         if ($space->isSpaceOwner($model->user->id) || Yii::$app->user->id == $model->user->id) {
                                             return;
                                         }
-                                        return Html::a(Yii::t('SpaceModule.views_admin_members', 'Remove'), $space->createUrl('reject-applicant', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST', 'data-confirm' => 'Are you sure?']);
+                                        return Html::a(Yii::t('SpaceModule.views_admin_members', 'Remove'), $space->createUrl('remove', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST', 'data-confirm' => 'Are you sure?']);
                                     },
                                             'update' => function () {
                                         return;

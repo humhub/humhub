@@ -27,25 +27,25 @@ return [
    <a href=\'{loginURL}\'>{loginURL}</a><br><br>
 
    Kind Regards<br>
-   {AdminName}<br><br>' => 'Здравствуйте {displayName},<br><br>
+   {AdminName}<br><br>' => 'Здравствуйте, {displayName},<br><br>
 
-   Ваша учетная запись была активирована.<br><br>
+   Ваша учётная запись была активирована.<br><br>
 
-   Кликните сюда, чтобы войти:<br>
+   Войти на сайт:<br>
    <a href=\'{loginURL}\'>{loginURL}</a><br><br>
 
-  С наилучшими пожеланиями<br>
+  С наилучшими пожеланиями,<br>
    {AdminName}<br><br>',
     'Hello {displayName},<br><br>
 
    your account request has been declined.<br><br>
 
    Kind Regards<br>
-   {AdminName}<br><br>' => 'Здравствуйте {displayName},<br><br>
+   {AdminName}<br><br>' => 'Здравствуйте, {displayName},<br><br>
 
-   Ваш запрос на регистрацию был отклонен.<br><br>
+   Ваш запрос на регистрацию был отклонён.<br><br>
 
-   С наилучшими пожеланиями<br>
+   С наилучшими пожеланиями,<br>
    {AdminName}<br><br>',
     'User not found!' => 'Пользователь не найден!',
 ];

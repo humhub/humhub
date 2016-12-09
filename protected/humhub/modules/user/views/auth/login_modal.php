@@ -96,7 +96,7 @@ use humhub\modules\user\widgets\AuthChoice;
                         <p><?php echo Yii::t('UserModule.views_auth_login', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
                         <?php $form = ActiveForm::begin(); ?>
 
-                        <?php echo $form->field($invite, 'email')->textInput(['id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email')]); ?>
+                        <?php echo $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email')]); ?>
                         <hr>
 
                         <?php
