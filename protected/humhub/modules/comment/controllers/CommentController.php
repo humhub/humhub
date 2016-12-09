@@ -137,7 +137,7 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
             throw new HttpException(403, Yii::t('CommentModule.controllers_CommentController', 'Access denied!'));
         }
 
-        return $this->renderAjaxContent(\humhub\modules\comment\widgets\Comment::widget(['comment' => $comment]));
+        return $this->renderAjaxContent(\humhub\modules\comment\widgets\Comment::widget(['comment' => $this->contentAddon]));
     }
 
     /**

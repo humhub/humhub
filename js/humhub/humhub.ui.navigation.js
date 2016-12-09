@@ -2,8 +2,6 @@ humhub.module('ui.navigation', function (module, require, $) {
 
     var event = require('event');
 
-    module.initOnPjaxLoad = false;
-
     var init = function () {
         module.initTopNav();
     };
@@ -24,7 +22,7 @@ humhub.module('ui.navigation', function (module, require, $) {
             });
             // Reset active config.
             module.config['active'] = undefined;
-        }).on('humhub:modules:space:changed', function () {
+        }).on('humhub:space:changed', function () {
             $('#top-menu-nav').find('li').removeClass('active');
         });
     };

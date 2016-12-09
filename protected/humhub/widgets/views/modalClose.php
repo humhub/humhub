@@ -4,9 +4,9 @@
             <script>
                 $(function () {humhub.modules.ui.status.success('<?= $success ?>')});
             </script>
-        <?php elseif (!(empty($saved))) : ?>
+        <?php elseif ($saved) : ?>
             <script>
-                $(function () {humhub.modules.ui.status.saved('<?= Yii::t('base', 'Saved') ?>')});
+                $(function () {humhub.modules.ui.status.success('<?= Yii::t('base', 'Saved') ?>')});
             </script>
         <?php elseif (!(empty($error))) : ?>
             <script>

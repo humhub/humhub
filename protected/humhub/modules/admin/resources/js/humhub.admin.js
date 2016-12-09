@@ -65,6 +65,7 @@ humhub.module('admin', function (module, require, $) {
 
     module.export({
         init: init,
+        initOnPjaxLoad: true,
         deletePageLogo: deletePageLogo,
         changeLogo: changeLogo
     });

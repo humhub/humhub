@@ -22,13 +22,15 @@ class CoreJsConfig extends Widget
 
     public function run()
     {
-        $userConfig = ['isGuest' => Yii::$app->user->isGuest];
+        
         if(!Yii::$app->user->isGuest) {
-            $user = Yii::$app->user->getIdentity();
-            $userConfig['guid'] = $user->displayName;
-            $userConfig['displayName'] = \yii\helpers\Html::encode($user->displayName);
-            $userConfig['image'] = $user->getProfileImage()->getUrl();
+            $userConfig = \humhub\modules\user\models\UserPicker::asJSON(Yii::$app->user->getIdentity());
+            $userConfig['isGuest'] = false;
+        } else {
+            $userConfig = ['isGuest' => true];
         }
+        
+        
         
         $this->getView()->registerJsConfig(
             [
@@ -53,6 +55,11 @@ class CoreJsConfig extends Widget
                     'defaultConfirmBody' => Yii::t('base', 'Do you really want to perform this action?'),
                     'defaultConfirmText' => Yii::t('base', 'Confirm'),
                     'defaultCancelText' => Yii::t('base', 'Cancel')
+                ],
+                'ui.widget' => [
+                    'text' => [
+                        'error.unknown' => Yii::t('base', 'No error information given.'),  
+                    ]
                 ],
                 'log' => [
                     'traceLevel' => (YII_DEBUG) ? 'DEBUG' : 'INFO',
@@ -107,7 +114,13 @@ class CoreJsConfig extends Widget
                     'text' => [
                         'success.delete' => Yii::t('CommentModule.widgets_views_showComment', 'Comment has been deleted')
                     ]
-                ]
+                ],
+                'space' => [
+                    'text' => [
+                        'success.archived' => Yii::t('base', 'The space has be archived.'),
+                        'success.unarchived' => Yii::t('base', 'The space has be unarchived.'),
+                    ]
+                ],
         ]);
     }
 

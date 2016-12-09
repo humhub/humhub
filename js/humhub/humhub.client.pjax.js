@@ -1,8 +1,6 @@
 humhub.module('client.pjax', function(module, require, $) {
     var event = require('event');
 
-    module.initOnPjaxLoad = false;
-
     var init = function() {
         if (module.config.active) {
             $(document).pjax('a:not([data-pjax-prevent],[target="_blank"],[data-target])', "#layout-content", module.config.options);
@@ -12,11 +10,17 @@ humhub.module('client.pjax', function(module, require, $) {
     };
 
     var pjaxRedirectFix = function() {
-        $(document).on("pjax:beforeSend", function(event, xhr, settings) {
+        $(document).on("pjax:beforeSend", function(evt, xhr, options) {
             // Ignore links with data-target attribute
             if ($(event.relatedTarget).data('target')) {
                 return false;
             }
+            
+            event.trigger('humhub:modules:client:pjax:beforeSend', {
+                'originalEvent': evt,
+                'xhr': xhr,
+                'options': options
+            });
         });
 
         $(document).on("pjax:success", function(evt, data, status, xhr, options) {

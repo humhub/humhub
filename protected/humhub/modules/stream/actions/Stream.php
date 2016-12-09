@@ -11,6 +11,7 @@ namespace humhub\modules\stream\actions;
 use Yii;
 use yii\base\Action;
 use humhub\modules\content\models\Content;
+use humhub\modules\stream\models\StreamQuery;
 use humhub\modules\user\models\User;
 use yii\base\ActionEvent;
 use yii\base\Exception;
@@ -23,18 +24,19 @@ use yii\base\Exception;
  */
 abstract class Stream extends Action
 {
+
     /**
      * @event ActionEvent Event triggered before this action is run.
      * This can be used for example to customize [[activeQuery]] before it gets executed.
      * @since 1.1.1
      */
     const EVENT_BEFORE_RUN = 'beforeRun';
+
     /**
      * @event ActionEvent Event triggered after this action is run.
      * @since 1.1.1
      */
     const EVENT_AFTER_RUN = 'afterRun';
-
 
     /**
      * Constants used for sorting
@@ -57,7 +59,7 @@ abstract class Stream extends Action
      * @var string
      */
     public $mode;
-    
+
     /**
      * Used to load single content entries.
      * @since 1.2
@@ -93,6 +95,8 @@ abstract class Stream extends Action
 
     /**
      * @var \yii\db\ActiveQuery
+     * 
+     * @deprecated since version 1.2 use $streamQuery->query() instead
      */
     public $activeQuery;
 
@@ -103,155 +107,88 @@ abstract class Stream extends Action
      * @var User
      */
     public $user;
+    
+    /**
+     * Used to filter the stream content entrie classes against a given array.
+     * @var type 
+     * @since 1.2
+     */
+    public $includes = [];
+    
+    /**
+     * Used to filter our specific types
+     * @var type 
+     * @since 1.2
+     */
+    public $excludes = [];
+    
+    /**
+     * Stream query model instance
+     * @var type 
+     * @since 1.2
+     */
+    protected $streamQuery;
 
     /**
      * @inheritdocs
      */
     public function init()
     {
-        $this->activeQuery = Content::find();
-
-        // If no user is set, take current if logged in
-        if ($this->user === null && !Yii::$app->user->isGuest) {
-            $this->user = Yii::$app->user->getIdentity();
-        }
+        $this->streamQuery = StreamQuery::find($this->includes, $this->excludes)->forUser($this->user);
 
         // Read parameters
         if (!Yii::$app->request->isConsoleRequest) {
-            $this->contentId = Yii::$app->getRequest()->get('id');
+            $this->streamQuery->load(Yii::$app->request->get());
             
-            $from = Yii::$app->getRequest()->get('from', 0);
-            if ($from != 0) {
-                $this->from = (int) $from;
+            $this->setActionSettings();
+            
+            if (Yii::$app->getRequest()->get('mode', $this->mode) === self::MODE_ACTIVITY) {
+                $this->streamQuery->includes(\humhub\modules\activity\models\Activity::className());
+                $this->streamQuery->query()->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\modules\activity\models\Activity::className()]);
+                // Note that if $this->user is null the streamQuery will use the current user identity!
+                $this->streamQuery->query()->andWhere('content.created_by != :userId', [':userId' => $this->streamQuery->user->id]);
             }
 
-            /**
-             * Sorting
-             */
-            $sort = Yii::$app->getRequest()->get('sort', Yii::$app->getModule('content')->settings->get('stream.defaultSort'));
-            if ($sort === static::SORT_CREATED_AT || $sort === static::SORT_UPDATED_AT) {
-                $this->sort = $sort;
-            } else {
-                $this->sort = static::SORT_CREATED_AT;
-            }
-
-            $limit = Yii::$app->getRequest()->get('limit', '');
-            if ($limit != "" && $limit <= self::MAX_LIMIT) {
-                $this->limit = $limit;
-            }
-            
-            $mode = Yii::$app->getRequest()->get('mode', '');
-            if ($mode != "" && ($mode == self::MODE_ACTIVITY || $mode == self::MODE_NORMAL)) {
-                $this->mode = $mode;
-            }
-            
             foreach (explode(',', Yii::$app->getRequest()->get('filters', "")) as $filter) {
-                $this->filters[] = trim($filter);
+                $this->streamQuery->addFilter(trim($filter));
             }
         }
-
+        
+        // Build query and set activeQuery.
+        $this->activeQuery = $this->streamQuery->query(true);
+        $this->user = $this->streamQuery->user;
+        
+        // Update action filters with merged request and configured action filters.
+        $this->filters = $this->streamQuery->filters;
+        
+        // Append additional filter of subclasses.
         $this->setupCriteria();
         $this->setupFilters();
     }
-
-    public function setupCriteria()
+    
+    protected function setActionSettings()
     {
-        $this->activeQuery->joinWith('createdBy');
-        $this->activeQuery->joinWith('contentContainer');
-
-        $this->activeQuery->limit($this->limit);
-        $this->activeQuery->andWhere(['user.status' => User::STATUS_ENABLED]);
-
-        /**
-         * Handle Stream Mode (Normal Stream or Activity Stream)
-         */
-        if ($this->mode == self::MODE_ACTIVITY) {
-            $this->activeQuery->andWhere(['content.object_model' => \humhub\modules\activity\models\Activity::className()]);
-
-            // Dont show own activities
-            if ($this->user !== null) {
-                $this->activeQuery->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\modules\activity\models\Activity::className()]);
-                $this->activeQuery->andWhere('content.created_by != :userId', array(':userId' => $this->user->id));
-            }
-        } else {
-            $this->activeQuery->andWhere(['!=', 'content.object_model', \humhub\modules\activity\models\Activity::className()]);
+        // Merge configured filters set for this action with request filters.
+        $this->streamQuery->addFilter($this->filters);
+        
+        // Overwrite limit if there was no setting in the request.
+        if(empty($this->streamQuery->limit)) {
+            $this->streamQuery->limit = $this->limit;
         }
         
-        if($this->isSingleContentQuery()) {
-            $this->activeQuery->andWhere(['content.id' => $this->contentId]);
-            return;
-        }
-
-        /**
-         * Setup Sorting
-         */
-        if ($this->sort == self::SORT_UPDATED_AT) {
-            $this->activeQuery->orderBy('content.stream_sort_date DESC');
-            if ($this->from != "") {
-                $this->activeQuery->andWhere("content.stream_sort_date < (SELECT updated_at FROM content wd WHERE wd.id=" . $this->from . ")");
-            }
-        } else {
-            $this->activeQuery->orderBy('content.id DESC');
-            if ($this->from != "")
-                $this->activeQuery->andWhere("content.id < " . $this->from);
-        }
-    }
-
-    /**
-     * Setup additional filters
-     */
-    public function setupFilters()
-    {
-        if (in_array('entry_files', $this->filters)) {
-            $fileSelector = (new \yii\db\Query())
-                    ->select(["id"])
-                    ->from('file')
-                    ->where('file.object_model=content.object_model AND file.object_id=content.object_id')
-                    ->limit(1);
-            $fileSelectorSql = Yii::$app->db->getQueryBuilder()->build($fileSelector)[0];
-
-            $this->activeQuery->andWhere('(' . $fileSelectorSql . ') IS NOT NULL');
-        }
-
-        // Setup Post specific filters
-        if (in_array('posts_links', $this->filters)) {
-            $this->activeQuery->leftJoin('post', 'content.object_id=post.id AND content.object_model=:postModel', ['postModel' => \humhub\modules\post\models\Post::className()]);
-            $this->activeQuery->andWhere("post.url is not null");
-        }
-
-        // Only apply archived filter when we should load more than one entry
-        if ($this->limit != 1) {
-            if (!in_array('entry_archived', $this->filters)) {
-                $this->activeQuery->andWhere("(content.archived != 1 OR content.archived IS NULL)");
-            }
-        }
-        
-        // Show only mine items
-        if (in_array('entry_mine', $this->filters) && $this->user !== null) {
-            $this->activeQuery->andWhere(['content.created_by' => $this->user->id]);
-        }
-        
-        // Show only items where the current user is involed
-        if (in_array('entry_userinvoled', $this->filters) && $this->user !== null) {
-
-            $this->activeQuery->leftJoin('user_follow', 'content.object_model=user_follow.object_model AND content.object_id=user_follow.object_id AND user_follow.user_id = :userId', ['userId' => $this->user->id]);
-            $this->activeQuery->andWhere("user_follow.id IS NOT NULL");
-        }
-       
-        if (in_array('model_posts', $this->filters)) {
-            $this->activeQuery->andWhere(["content.object_model" => \humhub\modules\post\models\Post::className()]);
-        }
-        // Visibility filters
-        if (in_array('visibility_private', $this->filters)) {
-            $this->activeQuery->andWhere(['content.visibility' => Content::VISIBILITY_PRIVATE]);
-        }
-        if (in_array('visibility_public', $this->filters)) {
-            $this->activeQuery->andWhere(['content.visibility' => Content::VISIBILITY_PUBLIC]);
+        if(empty($this->streamQuery->sort)) {
+            $this->streamQuery->sort = $this->sort;
         }
     }
     
-    public function isSingleContentQuery() {
-        return $this->contentId != null;
+    public function setupCriteria()
+    {
+        // Can be overwritten by subtypes to add additional critegia.
+    }
+    
+    public function setupFilters()
+    {
+        // Can be overwritten by subtypes to add additional filters.
     }
 
     /**
@@ -266,24 +203,34 @@ abstract class Stream extends Action
 
         $output['content'] = [];
 
-        foreach ($this->activeQuery->all() as $content) {
+        foreach ($this->streamQuery->all() as $content) {
             try {
                 $output['content'][$content->id] = static::getContentResultEntry($content);
-            } catch(Exception $e) {
-                // We do not want to kill the stream action in prod environments in case the rendering of an entry fails.
-                if(YII_ENV_PROD) {
+            } catch (Exception $e) {
+                // Don't kill the stream action in prod environments in case the rendering of an entry fails.
+                if (YII_ENV_PROD) {
                     Yii::error($e);
                 } else {
                     throw $e;
                 }
             }
         }
+        
         $output['total'] = count($output['content']);
         $output['isLast'] = ($output['total'] < $this->activeQuery->limit);
         $output['contentOrder'] = array_keys($output['content']);
 
-
         return $output;
+    }
+    
+    /**
+     * Is inital stream requests (show first stream content)
+     * 
+     * @return boolean Is initial request
+     */
+    protected function isInitialRequest()
+    {
+        return ($this->from == '' && $this->limit != 1);
     }
 
     /**
@@ -310,23 +257,13 @@ abstract class Stream extends Action
             'object' => $underlyingObject,
             'content' => $underlyingObject->getWallOut()
                 ], true);
-        
+
         $result['sticked'] = (boolean) $content->sticked;
         $result['archived'] = (boolean) $content->archived;
         $result['guid'] = $content->guid;
         $result['id'] = $content->id;
 
         return $result;
-    }
-
-    /**
-     * Is inital stream requests (show first stream content)
-     * 
-     * @return boolean Is initial request
-     */
-    protected function isInitialRequest()
-    {
-        return ($this->from == '' && $this->limit != 1);
     }
 
     /**
@@ -352,4 +289,5 @@ abstract class Stream extends Action
         $event = new ActionEvent($this);
         $this->trigger(self::EVENT_AFTER_RUN, $event);
     }
+
 }

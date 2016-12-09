@@ -119,10 +119,11 @@ class ContentContainerController extends Controller
                 return false;
             }
 
-            if ($this->contentContainer instanceof Space) {
+            if ($this->contentContainer instanceof Space && (Yii::$app->request->isPjax || !Yii::$app->request->isAjax)) {
                 $options = [
                     'guid' => $this->contentContainer->guid,
                     'name' => $this->contentContainer->name,
+                    'archived' => $this->contentContainer->isArchived(),
                     'image' => \humhub\modules\space\widgets\Image::widget([
                         'space' => $this->contentContainer,
                         'width' => 32,
@@ -130,11 +131,9 @@ class ContentContainerController extends Controller
                             'class' => 'current-space-image',
                         ]
                     ])
-                ];
-
-                if (Yii::$app->request->isPjax) {
-                    $this->view->registerJs('humhub.modules.space.setSpace(' . \yii\helpers\Json::encode($options) . ')');
-                }
+                ];  
+                
+                $this->view->registerJs('humhub.modules.space.setSpace(' . \yii\helpers\Json::encode($options) . ', '.\yii\helpers\Json::encode(Yii::$app->request->isPjax).')');
             }
 
             return true;

@@ -98,7 +98,7 @@ var humhub = humhub || (function($) {
 
         instance.id = 'humhub.modules.' + _cutModulePrefix(id);
         instance.require = require;
-        instance.initOnPjaxLoad = true;
+        instance.initOnPjaxLoad = false;
         instance.config = require('config').module(instance);
         instance.isModule = true;
 
@@ -374,6 +374,12 @@ var humhub = humhub || (function($) {
         });
         event.trigger('humhub:ready');
         $(document).trigger('humhub:ready', [true, humhub]);
+    }).on('humhub:modules:client:pjax:beforeSend', function(evt) {
+        $.each(moduleArr, function(i, module) {
+            if(module.unload) {
+                module.unload();
+            }
+        });
     });
 
     return {

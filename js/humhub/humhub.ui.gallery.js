@@ -5,10 +5,8 @@
  */
 humhub.module('ui.gallery', function (module, require, $) {
 
-    module.initOnPjaxLoad = false;
-
     var init = function () {
-        $(document).on('click', '[data-ui-gallery]', function (evt) {
+        $(document).on('click.humhub:ui:gallery', '[data-ui-gallery]', function (evt) {
             evt.preventDefault();
             evt.stopPropagation();
             var $this = $(this);

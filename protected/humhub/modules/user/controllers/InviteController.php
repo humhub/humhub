@@ -50,8 +50,10 @@ class InviteController extends Controller
             foreach ($model->getEmails() as $email) {
                 $this->createInvite($email);
             }
-
-            return $this->renderAjax('success');
+            
+            return \humhub\widgets\ModalClose::widget([
+                'success' => Yii::t('UserModule.user', 'User has been invited.')
+            ]);
         }
 
         return $this->renderAjax('index', array('model' => $model));

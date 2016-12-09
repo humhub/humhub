@@ -7,8 +7,6 @@ humhub.module('ui.picker', function(module, require, $) {
     var object = util.object;
     var string = util.string;
 
-    module.initOnPjaxLoad = false;
-
     var Picker = function(node, options) {
         Widget.call(this, node, options);
     };
@@ -288,6 +286,8 @@ humhub.module('ui.picker', function(module, require, $) {
             return;
         } else if($option.length) {
             $option.prop('selected', true);
+            this.$.triggerHandler('change');
+            this.renderPlaceholder(true);
         } else {
             this.$.append(string.template(Picker.template.option, {
                 id: id,
@@ -350,7 +350,7 @@ humhub.module('ui.picker', function(module, require, $) {
     };
     
     var init = function() {
-        additions.registerAddition('.multiselect_dropdown', function($match) {
+        additions.register('ui.picker', '.multiselect_dropdown', function($match) {
             $match.each(function() {
                 Picker.instance(this);
             });

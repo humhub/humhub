@@ -44,8 +44,7 @@
         "bower-asset/nprogress": "*",
         "bower-asset/At.js": "0.5.0",
         "bower-asset/animate.css": "*",
-        "bower-asset/html5shiv": "^3.7",
-        "jonnyw/php-phantomjs": "4.*"
+        "bower-asset/html5shiv": "^3.7"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "~2.0.0",

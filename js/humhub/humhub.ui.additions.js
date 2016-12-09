@@ -5,11 +5,10 @@
  * An addition can be registered for a specific selector e.g: <input data-addition-richtext ... />
  * It is possible to register multiple additions for the same selector.
  */
-humhub.module('ui.additions', function (module, require, $) {
+humhub.module('ui.additions', function(module, require, $) {
 
     var event = require('event');
-
-    module.initOnPjaxLoad = false;
+    var object = require('util.object');
 
     var _additions = {};
 
@@ -17,20 +16,27 @@ humhub.module('ui.additions', function (module, require, $) {
      * Registers an addition for a given jQuery selector. There can be registered
      * multiple additions for the same selector.
      * 
-     * @param {string} selector jQuery selector
-     * @param {function} addition addition function
+     * @param string id additionid
+     * @param string selector jQuery selector
+     * @param function addition addition function
      * @returns {undefined}
      */
-    var registerAddition = function (selector, addition) {
-        if (!_additions[selector]) {
-            _additions[selector] = [];
-        }
+    var register = function(id, selector, handler, options) {
+        options = options || {};
+        
+        if(!_additions[id] || options.overwrite) {
+            _additions[id] = {
+                'selector': selector,
+                'handler': handler
+            };
 
-        _additions[selector].push(addition);
-
-        // Make sure additions registrated after humhub:ready also affect element
-        if (humhub.initialized) {
-            apply($('body'), selector, addition);
+            // Make sure additions registrated after humhub:ready also affect element
+            if(humhub.initialized) {
+                apply($('body'), id);
+            }
+        } else if(options.extend) {
+            options.selector = selector;
+            module.extend(id, handler, options);
         }
     };
 
@@ -39,16 +45,19 @@ humhub.module('ui.additions', function (module, require, $) {
      * @param {type} element
      * @returns {undefined}
      */
-    var applyTo = function (element) {
+    var applyTo = function(element, options) {
+        options = options  || {};
+        
         var $element = (element instanceof $) ? element : $(element);
-        $.each(_additions, function (selector, additions) {
-            $.each(additions, function (i, addition) {
-                try {
-                    apply($element, selector, addition);
-                } catch (e) {
-                    module.log.error('Error while applying addition on selector ' + selector, e);
-                }
-            });
+        $.each(_additions, function(id) {
+            if(options.filter && !options.filter.indexOf(id)) {
+                return;
+            }
+            try {
+                module.apply($element, id);
+            } catch(e) {
+                module.log.error('Error while applying addition ' + id, e);
+            }
         });
     };
 
@@ -59,79 +68,111 @@ humhub.module('ui.additions', function (module, require, $) {
      * @param {type} addition
      * @returns {undefined}
      */
-    var apply = function ($element, selector, addition) {
-        var $match = $element.find(selector).addBack(selector);
-        addition.apply($match, [$match, $element]);
+    var apply = function($element, id) {
+        var addition = _additions[id];
+
+        if(!addition) {
+            return;
+        }
+
+        var $match = $element.find(addition.selector).addBack(addition.selector);
+        addition.handler.apply($match, [$match, $element]);
     };
 
-    var init = function () {
-        // Jquery ui tooltip conflicts with bootstrap, here we change the ui tooltip namespace
-        //$.widget.bridge('uitooltip', $.ui.tooltip);
-        
-        event.on('humhub:ready', function (evt) {
+    var init = function() {
+        event.on('humhub:ready', function(evt) {
             module.applyTo($('body'));
         });
-        
+
         // workaround for jp-player since it sets display to inline which results in a broken view...
-        $(document).on('click', '.jp-play', function() {
-            $(this).closest('.jp-controls').find('.jp-pause').css('display','block');
-        });
-                
-        $(document).on('pjax:beforeSend', function(evt) {
-            // Tooltip issue
-            // http://stackoverflow.com/questions/24841028/jquery-tooltip-add-div-role-log-in-my-page
-            // https://bugs.jqueryui.com/ticket/10689
-            $(".ui-helper-hidden-accessible").remove();
-            
-            // Jquery date picker div is not removed...
-            $('#ui-datepicker-div').remove();
+        $(document).on('click.humhub-jp-play', '.jp-play', function() {
+            $(this).closest('.jp-controls').find('.jp-pause').css('display', 'block');
         });
 
         // Autosize textareas
-        this.registerAddition('.autosize', function ($match) {
+        module.register('autosize', '.autosize', function($match) {
             $match.autosize();
         });
 
         // Show tooltips on elements
-       this.registerAddition('.tt', function ($match) {
+        module.register('tooltip', '.tt', function($match) {
             $match.tooltip({
                 html: false,
                 container: 'body'
             });
-            
+
             $match.on('click.tooltip', function() {
                 $('.tooltip').remove();
             });
         });
-        
-        $(document).on('click', function() {
+
+        $(document).on('click.humhub-ui-tooltip', function() {
             $('.tooltip').remove();
         });
 
         // Show popovers on elements
-        this.registerAddition('.po', function ($match) {
+        module.register('popover', '.po', function($match) {
             $match.popover({html: true});
         });
 
         // Activate placeholder text for older browsers (specially IE)
-        this.registerAddition('input, textarea', function ($match) {
+        /*this.register('placeholder','input, textarea', function($match) {
             $match.placeholder();
-        });
+        });*/
 
         // Replace the standard checkbox and radio buttons
-        this.registerAddition(':checkbox, :radio', function ($match) {
+        module.register('forms', ':checkbox, :radio', function($match) {
             $match.flatelements();
         });
 
         // Deprecated!
-        this.registerAddition('a[data-loader="modal"], button[data-loader="modal"]', function ($match) {
+        module.register('', 'a[data-loader="modal"], button[data-loader="modal"]', function($match) {
             $match.loader();
         });
+    };
+    
+    var extend = function(id, handler, options) {
+        options = options || {};
+        
+        if(_additions[id]) {
+            var addition = _additions[id];
+            if(options.prepend) {
+                addition.handler = object.chain(addition.handler, handler, addition.handler);
+            } else {
+                addition.handler = object.chain(addition.handler, addition.handler, handler);
+            }
+            
+            if(options.selector && options.selector !== addition.selector) {
+                addition.selector += ','+options.selector;
+            }
+            
+            if(options.applyOnInit) {
+                module.apply('body', id);
+            }
+            
+        } else if(options.selector){
+            options.extend = false; // Make sure we don't get caught in a loop somehow.
+            module.register(id, options.selector, handler, options);
+        }
+    };
+    
+    //TODO: additions.extend('id', handler); for extending existing additions.
 
-        //TODO: apply to html on startup, the problem is this could crash legacy code.
+    /**
+     * Cleanup some nodes required to prevent memoryleaks in pjax mode.
+     * @returns {undefined}
+     */
+    var unload = function() {
+        // Tooltip issue
+        // http://stackoverflow.com/questions/24841028/jquery-tooltip-add-div-role-log-in-my-page
+        // https://bugs.jqueryui.com/ticket/10689
+        $(".ui-helper-hidden-accessible").remove();
+
+        // Jquery date picker div is not removed...
+        $('#ui-datepicker-div').remove();
     };
 
-    var switchButtons = function (outButton, inButton, cfg) {
+    var switchButtons = function(outButton, inButton, cfg) {
         cfg = cfg || {};
         var animation = cfg.animation || 'bounceIn';
         var $out = (outButton instanceof $) ? outButton : $(outButton);
@@ -141,11 +182,11 @@ humhub.module('ui.additions', function (module, require, $) {
         if(cfg.remove) {
             $out.remove();
         }
-        
+
         $in.addClass('animated ' + animation).show();
     };
-    
-    var highlight = function (node) {
+
+    var highlight = function(node) {
         var $node = (node instanceof $) ? node : $(node);
         $node.addClass('highlight');
         $node.delay(200).animate({backgroundColor: 'transparent'}, 1000, function() {
@@ -154,11 +195,36 @@ humhub.module('ui.additions', function (module, require, $) {
         });
     };
 
+    var observe = function(node, options) {
+        if(object.isBoolean(options)) {
+            options = {applyOnInit: options};
+        } else if(!options) {
+            options = {};
+        }
+        
+        node = (node instanceof $) ? node[0] : node;
+
+        var observer = new MutationObserver(function(mutations) {
+            module.applyTo(node);
+        });
+
+        observer.observe(node, {childList: true, subtree: true});
+
+        if(options.applyOnInit) {
+            module.applyTo(node, options);
+        }
+
+        return node;
+    };
+
     module.export({
         init: init,
+        observe: observe,
+        unload: unload,
         applyTo: applyTo,
         apply: apply,
-        registerAddition: registerAddition,
+        extend: extend,
+        register: register,
         switchButtons: switchButtons,
         highlight: highlight
     });

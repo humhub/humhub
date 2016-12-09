@@ -10,6 +10,7 @@ humhub.module('directory', function(module, require, $) {
     };
     
     module.export({
-        init: init
+        init: init,
+        initOnPjaxLoad: true
     });
 });

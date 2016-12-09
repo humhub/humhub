@@ -155,7 +155,7 @@ class UploadAction extends Action
         $errorMessage = Yii::t('FileModule.actions_UploadAction', 'File {fileName} could not be uploaded!', ['fileName' => $file->file_name]);
 
         if ($file->getErrors()) {
-            $errorMessage = $file->getErrors()['uploadedFile'];
+            $errorMessage = $file->getErrors('uploadedFile');
         }
 
         return [

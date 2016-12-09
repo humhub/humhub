@@ -14,6 +14,8 @@ humhub.module('action', function(module, require, $) {
     var BLOCK_MANUAL = 'manual';
 
     var DATA_COMPONENT = 'action-component';
+    
+    module.initOnPjax = true;
 
     var Component = function(node, options) {
         if(!node) {

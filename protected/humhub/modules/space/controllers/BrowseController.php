@@ -56,23 +56,32 @@ class BrowseController extends Controller
             'pageSize' => $limit
         ]);
 
-        $json = [];
-        foreach ($searchResultSet->getResultInstances() as $space) {
-            $spaceInfo = [];
-            $spaceInfo['guid'] = $space->guid;
-            $spaceInfo['title'] = Html::encode($space->name);
-            $spaceInfo['tags'] = Html::encode($space->tags);
-            $spaceInfo['image'] = Image::widget(['space' => $space, 'width' => 24]);
-            $spaceInfo['link'] = $space->getUrl();
-            
-            if($target === 'chooser') {
-                $spaceInfo['output'] = \humhub\modules\space\widgets\SpaceChooserItem::widget(['space' => $space]);
-            }
 
-            $json[] = $spaceInfo;
+
+        $json = [];
+        $withChooserItem = $target === 'chooser';
+        foreach ($searchResultSet->getResultInstances() as $space) {
+            $json[] = self::getSpaceResult($space, $withChooserItem);
         }
 
         return $json;
+    }
+
+    public static function getSpaceResult($space, $withChooserItem = true, $options = [])
+    {
+        $spaceInfo = [];
+        $spaceInfo['guid'] = $space->guid;
+        $spaceInfo['title'] = Html::encode($space->name);
+        $spaceInfo['tags'] = Html::encode($space->tags);
+        $spaceInfo['image'] = Image::widget(['space' => $space, 'width' => 24]);
+        $spaceInfo['link'] = $space->getUrl();
+
+        if ($withChooserItem) {
+            $options = array_merge(['space' => $space, 'isMember' => false, 'isFollowing' => false], $options);
+            $spaceInfo['output'] = \humhub\modules\space\widgets\SpaceChooserItem::widget($options);
+        }
+
+        return $spaceInfo;
     }
 
 }

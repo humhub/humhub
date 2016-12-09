@@ -174,7 +174,9 @@ humhub.module('file', function(module, require, $) {
 
     Upload.prototype.handleFileResponse = function(file) {
         if(file.error) {
+            this.errors.push(file.name+':');
             this.errors.push(file.errors);
+            this.errors.push('&nbsp;');
         } else if(this.$form && this.$form.length) {
             this.fileCount++;
             var name = this.options.name || 'fileList[]';
@@ -304,7 +306,7 @@ humhub.module('file', function(module, require, $) {
                     module.log.success('success.delete', true);
                 }
                 if(!that.hasFiles()) {
-                    this.hide();
+                    that.hide();
                 }
             });
         }).catch(function(err) {

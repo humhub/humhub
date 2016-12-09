@@ -133,7 +133,6 @@ humhub.module('activity', function (module, require, $) {
         });
     };
 
-
     var getStream = function () {
         instance = instance || new ActivityStream($(ACTIVITY_STREAM_SELECTOR));
 
@@ -145,28 +144,29 @@ humhub.module('activity', function (module, require, $) {
     };
 
     var init = function () {
-        instance = undefined;
-
         var stream = getStream();
 
         if (!stream) {
-            module.log.info('Non-Activity-Stream page!');
-            return;
+            module.log.debug('Non-Activity-Stream page!');
+        } else {
+            stream.init();
         }
-        
-        // Cleanup nicescroll rails
-        $(document).one('pjax:beforeReplace', function() {
-            stream.$.css('overflow', 'hidden');
-            stream.$content.getNiceScroll().remove();
-        });
-
-        stream.init();
     };
-
+    
+    var unload = function() {
+        // Cleanup nicescroll rails from dom
+        if(instance && instance.$) {
+            instance.$.css('overflow', 'hidden');
+            instance.$content.getNiceScroll().remove();
+        }
+        instance = undefined;
+    };
 
     module.export({
         ActivityStream: ActivityStream,
         getStream: getStream,
-        init: init
+        init: init,
+        initOnPjaxLoad: true,
+        unload: unload
     });
 });

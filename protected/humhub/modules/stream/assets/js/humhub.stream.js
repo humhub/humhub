@@ -6,7 +6,6 @@ humhub.module('stream', function(module, require, $) {
 
     var util = require('util');
     var object = util.object;
-    var string = util.string;
     var client = require('client');
     var Content = require('content').Content;
     var Component = require('action').Component;
@@ -195,7 +194,7 @@ humhub.module('stream', function(module, require, $) {
             'size': '8px',
             'css': {
                 'padding': '0px',
-                 width: '60px' 
+                width: '60px'
             }
         });
     };
@@ -245,7 +244,6 @@ humhub.module('stream', function(module, require, $) {
 
         });
     };
-
 
     StreamEntry.prototype.unstick = function(evt) {
         var that = this;
@@ -329,7 +327,7 @@ humhub.module('stream', function(module, require, $) {
         }
 
         this.$stream = this.$;
-
+  
         //Cache some stream relevant data/nodes
         this.url = this.$.data(DATA_STREAM_URL);
         this.$content = this.$.find(this.cfg['contentSelector']);
@@ -399,10 +397,11 @@ humhub.module('stream', function(module, require, $) {
         }
 
         var that = this;
-        this.$.off('click').on('click', '.singleBackLink', function() {
+        this.$.off('click').on('click', '.singleBackLink', function(evt) {
             that.contentId = undefined;
             that.init();
             $(this).hide();
+            evt.preventDefault();
         });
 
         return promise;
@@ -536,14 +535,12 @@ humhub.module('stream', function(module, require, $) {
     Stream.prototype.initLoadConfig = function(cfg) {
         cfg = cfg || {};
         if(!object.isDefined(cfg['contentId'])) {
-            cfg['limit'] = object.isDefined(cfg['limit']) ? cfg['limit'] : this.loadCount;
+            cfg['limit'] = object.isDefined(cfg['limit']) ? cfg['limit'] : STREAM_LOAD_COUNT;
             cfg['from'] = object.isDefined(cfg['from']) ? cfg['from'] : this.getLastContentId();
             cfg['sort'] = cfg['sort'] || this.sort;
         } else {
             cfg['limit'] = 1;
         }
-
-        cfg['filter'] = cfg['filter'] || this.getFilterString();
 
         cfg['prepend'] = object.isDefined(cfg['prepend']) ? cfg['prepend'] : false;
         return cfg;
@@ -559,14 +556,15 @@ humhub.module('stream', function(module, require, $) {
     };
 
     Stream.prototype._load = function(cfg) {
-        cfg = cfg || {}
+        cfg = cfg || {};
+        var that = this;
         return client.ajax(this.url, {
             data: {
-                filters: cfg.filter,
-                sort: cfg.sort,
-                from: cfg.from,
-                limit: cfg.limit,
-                id: cfg.contentId
+                'StreamQuery[filters]': that.$.data('filters'),
+                'StreamQuery[sort]': cfg.sort,
+                'StreamQuery[from]': cfg.from,
+                'StreamQuery[limit]': cfg.limit,
+                'StreamQuery[id]': cfg.contentId
             }
         });
     };
@@ -688,19 +686,6 @@ humhub.module('stream', function(module, require, $) {
     };
 
     /**
-     * Creates a filter string out of the filter array.
-     * @returns {string}
-     */
-    Stream.prototype.getFilterString = function() {
-        var result = '';
-        $.each(this.$.data('filters'), function(i, filter) {
-            result += filter + ',';
-        });
-
-        return string.cutsuffix(result, ',');
-    };
-
-    /**
      * Adds a given filterId to the filter array.
      * 
      * @param {type} filterId
@@ -759,9 +744,10 @@ humhub.module('stream', function(module, require, $) {
     var WallStream = function(container, cfg) {
         cfg = cfg || {};
         cfg['filterPanel'] = $('.wallFilterPanel');
+
         Stream.call(this, container, cfg);
-        
-        if (module.config.horizontalImageScrollOnMobile && /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+
+        if(module.config.horizontalImageScrollOnMobile && /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
             this.$.addClass('mobile');
         }
 
@@ -797,6 +783,8 @@ humhub.module('stream', function(module, require, $) {
             this.$filter.show();
             this.$.find('.emptyStreamMessage').hide();
             this.$.find('.emptyFilterStreamMessage').hide();
+        } else {
+            this.$.find('.back_button_holder').show();
         }
 
         this.$entryCache = this.getEntryNodes();
@@ -806,22 +794,27 @@ humhub.module('stream', function(module, require, $) {
      * Initializes wall stream
      * @returns {undefined}
      */
-    var init = function() {
+    var init = function(pjax) {
         streams = {};
 
         var stream = getStream();
 
         if(!stream) {
             module.log.info('Non-Wall-Stream Page!');
-            _unload();
             return;
         } else {
             _initWallStream(stream);
             _initFilterNav();
         }
+
+        if(!pjax) {
+            event.on('humhub:modules:content:newEntry', function(evt, html) {
+                stream.prependEntry(html);
+            });
+        }
     };
-    
-    var _unload = function() {
+
+    var unload = function() {
         $(window).off('scroll.humhub:modules:stream');
     };
 
@@ -832,10 +825,6 @@ humhub.module('stream', function(module, require, $) {
 
         stream.init();
 
-        event.on('humhub:modules:content:newEntry', function(evt, html) {
-            stream.prependEntry(html);
-        });
-
         $(window).off('scroll.humhub:modules:stream').on('scroll.humhub:modules:stream', function() {
             if(stream.isShowSingleEntry()) {
                 return;
@@ -845,7 +834,7 @@ humhub.module('stream', function(module, require, $) {
             var windowHeight = $window.height();
             if(scrollTop === ($(document).height() - $window.height())) {
                 if(stream && !stream.loading && !stream.isShowSingleEntry() && !stream.lastEntryLoaded) {
-                    stream.loadEntries({loader:true});
+                    stream.loadEntries({loader: true});
                 }
             }
 
@@ -878,7 +867,8 @@ humhub.module('stream', function(module, require, $) {
     };
 
     var _initFilterNav = function() {
-        $(".wallFilter").click(function() {
+        $(".wallFilter").on('click', function(evt) {
+            evt.preventDefault();
             var $filter = $(this);
             var checkboxi = $filter.children("i");
             checkboxi.toggleClass('fa-square-o').toggleClass('fa-check-square-o');
@@ -890,7 +880,8 @@ humhub.module('stream', function(module, require, $) {
             getStream().init();
         });
 
-        $(".wallSorting").click(function() {
+        $(".wallSorting").on('click', function(evt) {
+            evt.preventDefault();
             var newSortingMode = $(this).attr('id');
 
             // uncheck all sortings
@@ -926,11 +917,13 @@ humhub.module('stream', function(module, require, $) {
     };
 
     module.export({
+        init: init,
+        initOnPjaxLoad: true,
+        unload: unload,
         StreamEntry: StreamEntry,
         Stream: Stream,
         WallStream: WallStream,
         getStream: getStream,
-        getEntry: getEntry,
-        init: init
+        getEntry: getEntry
     });
 });   

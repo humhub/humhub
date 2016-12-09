@@ -27,8 +27,9 @@ humhub.module('ui.widget', function(module, require, $) {
         if(!this.validate()) {
             module.log.warn('Could not initialize widget.', this.errors);
         } else {
-            this.fire('before-init', [this]);
-            this.init(this.$.data('ui-init'));
+            var initData = this.$.data('ui-init');
+            this.fire('before-init', [this, initData]);
+            this.init(initData);
             this.fire('after-init', [this]);
         }
     };
@@ -99,7 +100,13 @@ humhub.module('ui.widget', function(module, require, $) {
         msg += '<br /><br /><ul style="list-style:none;">';
 
         $.each(this.errors, function(i, error) {
-            msg += '<li>' + error[0] + '</li>';
+            if(error && !object.isArray(error)) {
+                msg += '<li>' + error + '</li>';
+            } else if(!error[0]) {
+                msg += '<li>' + module.text('error.unknown') + '</li>';
+            } else {
+                msg += '<li>' + error[0] + '</li>';
+            }
         });
 
         msg += '</ul>';
@@ -143,7 +150,7 @@ humhub.module('ui.widget', function(module, require, $) {
 
 
     var init = function() {
-        additions.registerAddition('[data-ui-init]', function($match) {
+        additions.register('ui.widget', '[data-ui-init]', function($match) {
             $match.each(function(i, node) {
                 Widget.instance(node);
             });

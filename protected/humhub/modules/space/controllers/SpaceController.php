@@ -61,6 +61,10 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     {
         $space = $this->getSpace();
 
+        if(Yii::$app->request->get('tour')) {
+            return $this->actionHome();
+        }
+        
         if (!$space->isMember()) {
             $defaultPageUrl = \humhub\modules\space\widgets\Menu::getGuestsDefaultPageUrl($space);
             if ($defaultPageUrl != null) {

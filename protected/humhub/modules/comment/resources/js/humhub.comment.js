@@ -5,8 +5,6 @@ humhub.module('comment', function(module, require, $) {
     var client = require('client');
     var loader = require('ui.loader');
     var additions = require('ui.additions');
-    
-    module.initOnPjaxLoad = false;
 
     var Form = function(node, options) {
         Widget.call(this, node, options);
@@ -29,7 +27,6 @@ humhub.module('comment', function(module, require, $) {
     Form.prototype.addComment = function(html) {
         var $html = $(html).hide();
         this.getCommentsContainer().append($html);
-        additions.applyTo($html);
         $html.fadeIn();
     };
     
@@ -51,6 +48,7 @@ humhub.module('comment', function(module, require, $) {
 
     var Comment = function(node) {
         Content.call(this, node);
+        additions.observe(this.$);
     };
 
     object.inherits(Comment, Content);
@@ -63,7 +61,6 @@ humhub.module('comment', function(module, require, $) {
             that.$.find('[contenteditable]').focus();
             that.$.find('.comment-cancel-edit-link').show();
             that.$.find('.comment-edit-link').hide();
-            additions.applyTo(that.$);
         }).finally(function() {
             that.loader(false);
         });
@@ -96,7 +93,7 @@ humhub.module('comment', function(module, require, $) {
         var id = this.$.attr('id');
         this.$.replaceWith(content);
         this.$ = $('#' + id);
-        additions.applyTo(this.$);
+        additions.observe(this.$, true);
     };
 
     Comment.prototype.cancelEdit = function(evt) {
@@ -141,7 +138,6 @@ humhub.module('comment', function(module, require, $) {
         client.post(evt, {dataType:'html'}).then(function(response) {
             var $container = evt.$trigger.parent();
             $container.html(response.html);
-            additions.applyTo($container);
         }).catch(function(err) {
             module.log.error(err, true);
         });

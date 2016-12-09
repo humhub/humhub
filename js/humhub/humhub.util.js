@@ -55,6 +55,18 @@ humhub.module('util', function(module, require, $) {
             }
             return typeof obj !== 'undefined';
         },
+        chain: function(thisObj) {
+            var handlers = [];
+            Array.prototype.push.apply(handlers, arguments);
+            handlers.shift();
+            
+            return function() {
+                var _arguments = arguments;
+                handlers.forEach(function(handler) {
+                    handler.apply(thisObj, _arguments);
+                });
+            }
+        },
         inherits: function(Sub, Parent) {
             for(var i in Parent) {
                 Sub[i] = Parent[i];

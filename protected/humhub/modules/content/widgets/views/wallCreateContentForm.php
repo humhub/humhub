@@ -1,26 +1,24 @@
 <?php
 
 use yii\helpers\Html;
-use yii\helpers\Url;
 use humhub\modules\space\models\Space;
 
 \humhub\modules\content\assets\ContentFormAsset::register($this);
 
+$this->registerJsConfig('content.form', [
+    'defaultVisibility' => $defaultVisibility,
+    'disabled' => ($contentContainer instanceof Space && $contentContainer->isArchived()),
+    'text' => [
+        'makePrivate' => Yii::t('ContentModule.widgets_views_contentForm', 'Make private'),
+        'makePublic' => Yii::t('ContentModule.widgets_views_contentForm', 'Make public'),
+        'info.archived' => Yii::t('ContentModule.widgets_views_contentForm', 'This space is archived.')
+]]);
 ?>
 
-<?php 
-    $this->registerJsConfig('content.form', [
-        'defaultVisibility' => $defaultVisibility,
-        'text' => [
-            'makePrivate' => Yii::t('ContentModule.widgets_views_contentForm', 'Make private'),
-            'makePublic' => Yii::t('ContentModule.widgets_views_contentForm', 'Make public')
-        ]]);
-?>
-
-<div class="panel panel-default">
-    <div class="panel-body" id="contentFormBody" style="display:none;" data-action-component="content.form.CreateForm" data-action-param="{defaultVisibility: <?= $defaultVisibility ?>}">
-        <?php echo Html::beginForm($submitUrl, 'POST'); ?>
-        <?php echo $form; ?>
+<div class="panel panel-default clearfix">
+    <div class="panel-body" id="contentFormBody" style="display:none;" data-action-component="content.form.CreateForm" >
+    <?= Html::beginForm($submitUrl, 'POST'); ?>
+        <?= $form; ?>
 
         <div id="notifyUserContainer" class="form-group" style="margin-top: 15px;display:none;">
 
@@ -32,26 +30,22 @@ use humhub\modules\space\models\Space;
                 'maxSelection' => 10,
                 'disabledItems' => [Yii::$app->user->guid],
                 'placeholder' => Yii::t('ContentModule.widgets_views_contentForm', 'Add a member to notify'),
-            ]);?>
+            ])?>
         </div>
 
-        <?php
-        echo Html::hiddenInput("containerGuid", $contentContainer->guid);
-        echo Html::hiddenInput("containerClass", get_class($contentContainer));
-        ?>
-
-        <ul id="contentFormError">
-        </ul>
+        <?= Html::hiddenInput("containerGuid", $contentContainer->guid); ?>
+        <?= Html::hiddenInput("containerClass", get_class($contentContainer)); ?>
         
+
+        <ul id="contentFormError"></ul>
+
         <div class="contentForm_options">
-
             <hr>
-
             <div class="btn_container">
                 <button id="post_submit_button" data-action-click="submit" data-action-submit data-ui-loader class="btn btn-info">
                     <?= $submitButtonText ?>
                 </button>
- 
+
                 <?= humhub\modules\file\widgets\UploadButton::widget([
                     'id' => 'contentFormFiles',
                     'progress' => '#contentFormFiles_progress',
@@ -89,16 +83,13 @@ use humhub\modules\space\models\Space;
                     </ul>
                 </div>
             </div>
-            
-            <?= \humhub\modules\file\widgets\UploadProgress::widget(['id' => 'contentFormFiles_progress']) ?>
-            <?= \humhub\modules\file\widgets\FilePreview::widget(['id' => 'contentFormFiles_preview', 'edit' => true, 'options' => ['style' => 'margin-top:10px;']]);?>
-            
-        </div>
-         <!-- /contentForm_Options -->
-        <?php echo Html::endForm(); ?>
 
+        <?= \humhub\modules\file\widgets\UploadProgress::widget(['id' => 'contentFormFiles_progress']) ?>
+        <?= \humhub\modules\file\widgets\FilePreview::widget(['id' => 'contentFormFiles_preview', 'edit' => true, 'options' => ['style' => 'margin-top:10px;']]); ?>
+
+        </div>
+        <!-- /contentForm_Options -->
+    <?php echo Html::endForm(); ?>
     </div>
     <!-- /panel body -->
 </div> <!-- /panel -->
-
-<div class="clearFloats"></div>

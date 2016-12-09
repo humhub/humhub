@@ -85,6 +85,7 @@ class AppAsset extends AssetBundle
         'humhub\assets\AnimateCssAsset',
         'humhub\assets\CoreApiAsset',
         'humhub\modules\content\assets\ContentAsset',
+        'humhub\modules\user\assets\UserAsset',
         'humhub\modules\user\assets\UserPickerAsset',
         'humhub\modules\comment\assets\CommentAsset',
         'humhub\assets\NProgressAsset',

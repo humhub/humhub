@@ -7,7 +7,7 @@ $this->context->loadResources($this);
 <script type="text/javascript">
 
     var gotoProfile = false;
-    $(document).on('ready pjax:success', function () {
+    $(document).on('ready', function () {
         // Create a new tour
         var spacesTour = new Tour({
             storage: false,
@@ -49,7 +49,7 @@ $this->context->loadResources($this);
                 element: ".wall-entry:eq(0)",
                 title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Posts</strong>')); ?>,
                 content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', 'Yours, and other users\' posts will appear here.<br><br>These can then be liked or commented on.')); ?>,
-                placement: "bottom"
+                placement: "top"
             },
             {
                 element: ".panel-activities",

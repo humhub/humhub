@@ -2,8 +2,6 @@ humhub.module('user.picker', function(module, require, $) {
     var object = require('util').object;
     var Picker = require('ui.picker').Picker;
 
-    module.initOnPjaxLoad = false;
-
     var UserPicker = function(node, options) {
         Picker.call(this, node, options);
     };
@@ -13,7 +11,7 @@ humhub.module('user.picker', function(module, require, $) {
     UserPicker.prototype.selectSelf = function() {
         var userConfig = require('config').get('user');
         if (userConfig && !userConfig.isGuest) {
-            this.select(userConfig.guid, userConfig.displayName, userConfig.image);
+            this.select(userConfig.guid, userConfig.text, userConfig.image);
         }
     };
 

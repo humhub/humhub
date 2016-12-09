@@ -22,23 +22,9 @@ use yii\bootstrap\ActiveForm;
             </div>
         </div>
         <div class="modal-footer">
-
-            <?php
-            echo \humhub\widgets\AjaxButton::widget([
-                'label' => Yii::t('UserModule.invite', 'Send invite'),
-                'ajaxOptions' => [
-                    'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
-                    'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
-                    'url' => Url::to(['/user/invite']),
-                ],
-                'htmlOptions' => [
-                    'class' => 'btn btn-primary'
-                ]
-            ]);
-            ?>
-
-            <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'invite-loader', 'cssClass' => 'loader-modal hidden']); ?>
+            <a href="#" class="btn btn-primary" data-action-click="ui.modal.submit" data-action-url="<?= Url::to(['/user/invite']) ?>" data-ui-loader>
+                <?= Yii::t('UserModule.invite', 'Send invite') ?>
+            </a>
         </div>
 
         <?php ActiveForm::end(); ?>

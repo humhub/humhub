@@ -12,8 +12,6 @@ humhub.module('ui.status', function (module, require, $) {
     var string = util.string;
     var client = require('client');
     
-    module.initOnPjaxLoad = false;
-    
     module.template = {
         info : '<i class="fa fa-info-circle info"></i><span>{msg}</span>',
         success : '<i class="fa fa-check-circle success"></i><span>{msg}</span>',

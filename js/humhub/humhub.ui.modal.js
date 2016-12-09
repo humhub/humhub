@@ -23,8 +23,6 @@ humhub.module('ui.modal', function (module, require, $) {
     var loader = require('ui.loader');
     var client = require('client', true);
 
-    module.initOnPjaxLoad = false;
-
     //Keeps track of all initialized modals
     var modals = [];
 
