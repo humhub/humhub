@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models;
 
+use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 
@@ -20,7 +21,7 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @property integer $object_id
  * @property integer $user_id
  */
-class Mentioning extends \humhub\components\ActiveRecord
+class Mentioning extends ActiveRecord
 {
 
     /**

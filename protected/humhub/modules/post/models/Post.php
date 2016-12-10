@@ -30,7 +30,7 @@ class Post extends ContentActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
-    public $wallEntryClass = "humhub\modules\post\widgets\WallEntry";
+    public $wallEntryClass = 'humhub\modules\post\widgets\WallEntry';
 
     /**
      * @inheritdoc
@@ -48,8 +48,6 @@ class Post extends ContentActiveRecord implements Searchable
         return [
             [['message'], 'required'],
             [['message'], 'string'],
-            [['created_at', 'updated_at'], 'safe'],
-            [['created_by', 'updated_by'], 'integer'],
             [['url'], 'string', 'max' => 255]
         ];
     }

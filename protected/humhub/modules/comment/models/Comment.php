@@ -8,8 +8,9 @@
 
 namespace humhub\modules\comment\models;
 
-use Yii;
+use humhub\modules\post\models\Post;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use Yii;
 
 /**
  * This is the model class for table "comment".
@@ -47,10 +48,9 @@ class Comment extends ContentAddonActiveRecord
      */
     public function rules()
     {
-        return array(
-            array(['created_by', 'updated_by'], 'integer'),
-            array(['message', 'created_at', 'updated_at'], 'safe'),
-        );
+        return [
+            [['message'], 'safe'],
+        ];
     }
 
     /**
@@ -67,7 +67,6 @@ class Comment extends ContentAddonActiveRecord
      */
     public function afterDelete()
     {
-
         try {
             $this->updateContentSearch();
         } catch (\yii\base\Exception $ex) {

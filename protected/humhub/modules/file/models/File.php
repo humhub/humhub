@@ -83,14 +83,13 @@ class File extends \humhub\components\ActiveRecord
     public function rules()
     {
         return array(
-            array(['created_by', 'updated_by', 'size'], 'integer'),
+            array(['size'], 'integer'),
             array(['guid'], 'string', 'max' => 45),
             array(['mime_type'], 'string', 'max' => 150),
             array('filename', 'validateExtension'),
             array('filename', 'validateSize'),
             array('mime_type', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-\+]/', 'message' => Yii::t('FileModule.models_File', 'Invalid Mime-Type')),
             array(['file_name', 'title'], 'string', 'max' => 255),
-            array(['created_at', 'updated_at'], 'safe'),
         );
     }
 
@@ -217,7 +216,7 @@ class File extends \humhub\components\ActiveRecord
 
         $fileParts = pathinfo($this->file_name);
 
-        return $fileParts['filename'] . "_" . $suffix . "." . $fileParts['extension'];
+        return $fileParts['filename'] . '_' . $suffix . (!empty($fileParts['extension']) ? '.' . $fileParts['extension'] : '');
     }
 
     /**

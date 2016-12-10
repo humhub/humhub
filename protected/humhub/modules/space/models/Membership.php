@@ -3,6 +3,7 @@
 namespace humhub\modules\space\models;
 
 use Yii;
+use humhub\components\ActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\content\models\WallEntry;
 use humhub\modules\activity\models\Activity;
@@ -25,7 +26,7 @@ use humhub\modules\activity\models\Activity;
  * @property string $updated_at
  * @property integer $updated_by
  */
-class Membership extends \yii\db\ActiveRecord
+class Membership extends ActiveRecord
 {
 
     const STATUS_INVITED = 1;
@@ -47,9 +48,9 @@ class Membership extends \yii\db\ActiveRecord
     {
         return [
             [['space_id', 'user_id'], 'required'],
-            [['space_id', 'user_id', 'originator_user_id', 'status', 'created_by', 'updated_by'], 'integer'],
+            [['space_id', 'user_id', 'originator_user_id', 'status'], 'integer'],
             [['request_message'], 'string'],
-            [['last_visit', 'created_at', 'group_id', 'updated_at'], 'safe'],
+            [['last_visit', 'group_id'], 'safe'],
         ];
     }
 
