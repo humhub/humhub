@@ -2,7 +2,6 @@
 
 namespace humhub\modules\content\models;
 
-
 use humhub\components\ActiveRecord;
 
 /**
@@ -34,8 +33,7 @@ class WallEntry extends ActiveRecord
     {
         return [
             [['wall_id', 'content_id'], 'required'],
-            [['wall_id', 'content_id', 'created_by', 'updated_by'], 'integer'],
-            [['created_at', 'updated_at'], 'safe']
+            [['wall_id', 'content_id'], 'integer'],
         ];
     }
 

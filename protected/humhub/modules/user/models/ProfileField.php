@@ -8,7 +8,9 @@
 
 namespace humhub\modules\user\models;
 
+use humhub\components\ActiveRecord;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "profile_field".
@@ -34,7 +36,7 @@ use Yii;
  * @property string $translation_category
  * @property integer $is_system
  */
-class ProfileField extends \yii\db\ActiveRecord
+class ProfileField extends ActiveRecord
 {
 
     /**
@@ -59,25 +61,23 @@ class ProfileField extends \yii\db\ActiveRecord
     {
         return array(
             array(['profile_field_category_id', 'field_type_class', 'internal_name', 'title', 'sort_order'], 'required'),
-            array(['profile_field_category_id', 'required', 'editable', 'searchable', 'show_at_registration', 'visible', 'sort_order', 'created_by', 'updated_by'], 'integer'),
+            array(['profile_field_category_id', 'required', 'editable', 'searchable', 'show_at_registration', 'visible', 'sort_order'], 'integer'),
             array(['module_id', 'field_type_class', 'title'], 'string', 'max' => 255),
             array('internal_name', 'string', 'max' => 100),
             array(['ldap_attribute', 'translation_category'], 'string', 'max' => 255),
             array('internal_name', 'checkInternalName'),
             array('internal_name', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9_]/', 'message' => Yii::t('UserModule.models_ProfileField', 'Only alphanumeric characters allowed!')),
             array('field_type_class', 'checkType'),
-            array(['description', 'created_at', 'updated_at'], 'safe'),
+            array(['description'], 'safe'),
         );
     }
 
     /**
-     * @return array relational rules.
+     * @return ActiveQuery
      */
-    public function relations()
+    public function getCategory()
     {
-        return array(
-            'category' => array(self::BELONGS_TO, 'ProfileFieldCategory', 'profile_field_category_id'),
-        );
+        return $this->hasOne(ProfileFieldCategory::className(), ['id' => 'profile_field_category_id']);
     }
 
     /**

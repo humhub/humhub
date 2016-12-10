@@ -2,7 +2,7 @@
 
 namespace humhub\modules\content\models;
 
-
+use humhub\components\ActiveRecord;
 
 /**
  * This is the model class for table "wall".
@@ -15,7 +15,7 @@ namespace humhub\modules\content\models;
  * @property string $updated_at
  * @property integer $updated_by
  */
-class Wall extends \yii\db\ActiveRecord
+class Wall extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -32,8 +32,7 @@ class Wall extends \yii\db\ActiveRecord
     {
         return [
             [['object_model', 'object_id'], 'required'],
-            [['object_id', 'created_by', 'updated_by'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['object_id'], 'integer'],
             [['object_model'], 'string', 'max' => 50]
         ];
     }
