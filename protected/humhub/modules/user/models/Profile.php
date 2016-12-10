@@ -69,7 +69,7 @@ class Profile extends \yii\db\ActiveRecord
         foreach (ProfileField::find()->all() as $profileField) {
             $rules = array_merge($rules, $profileField->getFieldType()->getFieldRules());
         }
-        
+
         return $rules;
     }
 
@@ -91,20 +91,65 @@ class Profile extends \yii\db\ActiveRecord
 
         foreach (ProfileField::find()->all() as $profileField) {
             // Some fields consist of multiple field definitions (e.g. Birthday)
-            foreach($profileField->fieldType->getFieldFormDefinition() as $fieldName => $definition) {
+            foreach ($profileField->fieldType->getFieldFormDefinition() as $fieldName => $definition) {
                 $scenarios['editAdmin'][] = $fieldName;
 
                 if ($profileField->editable && !in_array($profileField->internal_name, $syncAttributes)) {
                     $scenarios['editProfile'][] = $fieldName;
                 }
-                
+
                 if ($profileField->show_at_registration) {
                     $scenarios['registration'][] = $fieldName;
                 }
             }
         }
-  
+
         return $scenarios;
+    }
+
+    /**
+     * Internal
+     * 
+     * Just holds message labels for the Yii Message Command
+     */
+    private function translationOnly()
+    {
+        Yii::t('UserModule.models_Profile', 'Firstname');
+        Yii::t('UserModule.models_Profile', 'Lastname');
+        Yii::t('UserModule.models_Profile', 'Title');
+        Yii::t('UserModule.models_Profile', 'Street');
+        Yii::t('UserModule.models_Profile', 'Zip');
+        Yii::t('UserModule.models_Profile', 'City');
+        Yii::t('UserModule.models_Profile', 'Country');
+        Yii::t('UserModule.models_Profile', 'State');
+        Yii::t('UserModule.models_Profile', 'About');
+        Yii::t('UserModule.models_Profile', 'Birthday');
+        Yii::t('UserModule.models_Profile', 'Hide year in profile');
+
+        Yii::t('UserModule.models_Profile', 'Gender');
+        Yii::t('UserModule.models_Profile', 'Male');
+        Yii::t('UserModule.models_Profile', 'Female');
+        Yii::t('UserModule.models_Profile', 'Custom');
+        Yii::t('UserModule.models_Profile', 'Hide year in profile');
+
+        Yii::t('UserModule.models_Profile', 'Phone Private');
+        Yii::t('UserModule.models_Profile', 'Phone Work');
+        Yii::t('UserModule.models_Profile', 'Mobile');
+        Yii::t('UserModule.models_Profile', 'Fax');
+        Yii::t('UserModule.models_Profile', 'Skype Nickname');
+        Yii::t('UserModule.models_Profile', 'MSN');
+        Yii::t('UserModule.models_Profile', 'XMPP Jabber Address');
+
+        Yii::t('UserModule.models_Profile', 'Url');
+        Yii::t('UserModule.models_Profile', 'Facebook URL');
+        Yii::t('UserModule.models_Profile', 'LinkedIn URL');
+        Yii::t('UserModule.models_Profile', 'Xing URL');
+        Yii::t('UserModule.models_Profile', 'Youtube URL');
+        Yii::t('UserModule.models_Profile', 'Vimeo URL');
+        Yii::t('UserModule.models_Profile', 'Flickr URL');
+        Yii::t('UserModule.models_Profile', 'MySpace URL');
+        Yii::t('UserModule.models_Profile', 'Google+ URL');
+        Yii::t('UserModule.models_Profile', 'Twitter URL');
     }
 
     /**
@@ -112,46 +157,6 @@ class Profile extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-        /**
-         * Hack for Yii Messages Command 
-         * 
-         * Yii::t('UserModule.models_Profile', 'Firstname')
-         * Yii::t('UserModule.models_Profile', 'Lastname')
-         * Yii::t('UserModule.models_Profile', 'Title')
-         * Yii::t('UserModule.models_Profile', 'Street')
-         * Yii::t('UserModule.models_Profile', 'Zip')
-         * Yii::t('UserModule.models_Profile', 'City')
-         * Yii::t('UserModule.models_Profile', 'Country')
-         * Yii::t('UserModule.models_Profile', 'State')
-         * Yii::t('UserModule.models_Profile', 'About')
-         * Yii::t('UserModule.models_Profile', 'Birthday')
-         * Yii::t('UserModule.models_Profile', 'Hide year in profile')
-         * 
-         * Yii::t('UserModule.models_Profile', 'Gender')
-         * Yii::t('UserModule.models_Profile', 'Male')
-         * Yii::t('UserModule.models_Profile', 'Female')
-         * Yii::t('UserModule.models_Profile', 'Custom')
-         * Yii::t('UserModule.models_Profile', 'Hide year in profile')         * 
-         * 
-         * Yii::t('UserModule.models_Profile', 'Phone Private')
-         * Yii::t('UserModule.models_Profile', 'Phone Work')
-         * Yii::t('UserModule.models_Profile', 'Mobile')
-         * Yii::t('UserModule.models_Profile', 'Fax')
-         * Yii::t('UserModule.models_Profile', 'Skype Nickname')
-         * Yii::t('UserModule.models_Profile', 'MSN')
-         * Yii::t('UserModule.models_Profile', 'XMPP Jabber Address')
-         * 
-         * Yii::t('UserModule.models_Profile', 'Url')
-         * Yii::t('UserModule.models_Profile', 'Facebook URL')
-         * Yii::t('UserModule.models_Profile', 'LinkedIn URL')
-         * Yii::t('UserModule.models_Profile', 'Xing URL')
-         * Yii::t('UserModule.models_Profile', 'Youtube URL')
-         * Yii::t('UserModule.models_Profile', 'Vimeo URL')
-         * Yii::t('UserModule.models_Profile', 'Flickr URL')
-         * Yii::t('UserModule.models_Profile', 'MySpace URL')
-         * Yii::t('UserModule.models_Profile', 'Google+ URL')
-         * Yii::t('UserModule.models_Profile', 'Twitter URL')
-         */
         $labels = [];
         foreach (ProfileField::find()->all() as $profileField) {
             $labels = array_merge($labels, $profileField->fieldType->getLabels());
@@ -277,7 +282,7 @@ class Profile extends \yii\db\ActiveRecord
         }
 
         $fields = [];
-        
+
         $query = ProfileField::find();
         $query->where(['visible' => 1]);
         $query->orderBy('sort_order');

@@ -16,7 +16,7 @@ use yii\helpers\Html;
 
             <?php if ($userCount != 0) : ?>
                 <h1><?php echo Html::encode($group->name); ?></h1>
-                <?php foreach ($group->getUsers()->limit(30)->joinWith('profile')->orderBy(['profile.lastname' => SORT_ASC])->all() as $user) : ?>
+                <?php foreach ($group->getUsers()->active()->limit(30)->joinWith('profile')->orderBy(['profile.lastname' => SORT_ASC])->all() as $user) : ?>
                     <a id="<?php echo $user->guid; ?>" href="<?php echo $user->getUrl(); ?>">
                         <img data-toggle="tooltip" data-placement="top" title=""
                              data-original-title="<?php echo Html::encode($user->displayName); ?>"
