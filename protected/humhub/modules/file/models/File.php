@@ -217,7 +217,7 @@ class File extends \humhub\components\ActiveRecord
 
         $fileParts = pathinfo($this->file_name);
 
-        return $fileParts['filename'] . "_" . $suffix . "." . $fileParts['extension'];
+        return $fileParts['filename'] . '_' . $suffix . (!empty($fileParts['extension']) ? '.' . $fileParts['extension'] : '');
     }
 
     /**
