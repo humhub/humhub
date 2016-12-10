@@ -4,7 +4,6 @@ use yii\helpers\Url;
 ?>
 
 <script type="text/javascript">
-    var ccc = 0;
     $(document).ready(function() {
         //The original form input element will be hidden
         var $formInput = $('#<?php echo $id; ?>').hide();
