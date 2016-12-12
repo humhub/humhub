@@ -60,8 +60,6 @@ class RichTextEditor extends Widget
      */
     public function init()
     {
-        //$this->inputContent = RichText::translateEmojis($this->inputContent);
-        //$this->inputContent = RichText::translateMentioning($this->inputContent);
         $this->inputContent = nl2br($this->inputContent);
     }
 

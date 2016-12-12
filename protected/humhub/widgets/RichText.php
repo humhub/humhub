@@ -77,7 +77,7 @@ REGEXP;
             $this->text = preg_replace_callback($pattern, function ($match) use (&$oembedCount, &$maxOembedCount, &$that) {
 
                 // Try use oembed
-                if ($maxOembedCount > $oembedCount) {
+                if (!$this->edit && $maxOembedCount > $oembedCount) {
                     $oembed = UrlOembed::GetOembed($match[0]);
                     if ($oembed) {
                         $oembedCount++;
