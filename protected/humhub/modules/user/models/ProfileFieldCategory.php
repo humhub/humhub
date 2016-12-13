@@ -103,4 +103,16 @@ class ProfileFieldCategory extends ActiveRecord
         return $query;
     }
 
+    /**
+     * Internal
+     * 
+     * Just holds message labels for the Yii Message Command
+     */
+    private function translationOnly()
+    {
+        Yii::t('UserModule.models_ProfileFieldCategory', 'General');
+        Yii::t('UserModule.models_ProfileFieldCategory', 'Communication');
+        Yii::t('UserModule.models_ProfileFieldCategory', 'Social bookmarks');
+    }
+
 }
