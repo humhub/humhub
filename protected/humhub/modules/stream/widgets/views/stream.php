@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Url;
-use yii\web\View;
 
 \humhub\modules\stream\assets\StreamAsset::register($this);
 
@@ -27,6 +26,9 @@ $this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultS
 ?>
 
 <!-- Stream filter section -->
+<?php if($contentContainer && $contentContainer->isArchived()) : ?>
+    <span class="label label-warning pull-right" style="margin-top:10px;"><?php echo Yii::t('ContentModule.widgets_views_label', 'Archived'); ?></span>
+<?php endif; ?>
 <?php if ($this->context->showFilters) { ?>
     <ul class="nav nav-tabs wallFilterPanel" id="filter" style="display: none;">
         <li class=" dropdown">

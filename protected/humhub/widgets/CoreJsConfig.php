@@ -61,6 +61,13 @@ class CoreJsConfig extends Widget
                         'error.unknown' => Yii::t('base', 'No error information given.'),  
                     ]
                 ],
+                'ui.richtext' => [
+                    'emoji.url' =>  Yii::getAlias('@web/img/emoji/'),
+                    'text' => [
+                        'info.minInput' => Yii::t('base', 'Please type at least 3 characters'),  
+                        'info.loading' => Yii::t('base', 'Loading...'),  
+                    ]
+                ],
                 'log' => [
                     'traceLevel' => (YII_DEBUG) ? 'DEBUG' : 'INFO',
                     'text' => [
@@ -84,6 +91,12 @@ class CoreJsConfig extends Widget
                     'text' => [
                         'error.loadingResult' => Yii::t('base', 'An unexpected error occured while loading the search result.'),
                         'showMore' => Yii::t('base', 'Show more'),
+                    ]
+                ],
+                'post' => [
+                    'text' => [
+                        'default.readMore' => Yii::t('PostModule.widgets_views_post', 'Read full post...'),
+                        'default.readLess' => Yii::t('PostModule.widgets_views_post', 'Collapse'),
                     ]
                 ],
                 'content' => [

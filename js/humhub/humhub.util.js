@@ -59,7 +59,7 @@ humhub.module('util', function(module, require, $) {
             var handlers = [];
             Array.prototype.push.apply(handlers, arguments);
             handlers.shift();
-            
+
             return function() {
                 var _arguments = arguments;
                 handlers.forEach(function(handler) {
@@ -107,17 +107,33 @@ humhub.module('util', function(module, require, $) {
         }
     };
 
+    var entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+    };
+
     var string = {
+        escapeHtml: function(string) {
+            return String(string).replace(/[&<>"'`=\/]/g, function(s) {
+                return entityMap[s];
+            });
+        },
         capitalize: function(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
-        cutprefix: function(val, prefix) {
+        cutPrefix: function(val, prefix) {
             if(!this.startsWith(val, prefix)) {
                 return val;
             }
             return val.substring(prefix.length, val.length);
         },
-        cutsuffix: function(val, suffix) {
+        cutSuffix: function(val, suffix) {
             return val.slice(0, suffix.length * -1);
         },
         startsWith: function(val, prefix) {

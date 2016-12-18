@@ -102,7 +102,7 @@ class DashboardStreamTest extends HumHubDbTestCase
         $post2->save();
         $w2 = $post2->content->id;
         
-        $this->assertEquals($this->getStreamActionIds(2), array($w2, $w1));
+        $this->assertEquals($this->getStreamActionIds(2), [$w2, $w1]);
 
         $this->becomeUser('User3');
         $ids = $this->getStreamActionIds(2);

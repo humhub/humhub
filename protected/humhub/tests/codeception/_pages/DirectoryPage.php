@@ -12,5 +12,11 @@ class DirectoryPage extends BasePage
 {
 
     public $route = 'directory/directory';
+    
+    public function clickMembers()
+    {
+        $this->actor->click('Member');
+        $this->actor->waitForText('Member directory', 30);
+    }
 
 }

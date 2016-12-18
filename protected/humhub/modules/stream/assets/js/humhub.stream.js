@@ -238,8 +238,10 @@ humhub.module('stream', function(module, require, $) {
                 // Sinc the response does not only include the node itself we have to search it.
                 that.$ = $newEntry.find(DATA_STREAM_ENTRY_SELECTOR)
                         .addBack(DATA_STREAM_ENTRY_SELECTOR);
-                $newEntry.fadeIn(resolve);
-                that.apply();
+                $newEntry.fadeIn('fast', function() {
+                    that.apply();
+                    resolve();
+                });
             });
 
         });
@@ -294,6 +296,8 @@ humhub.module('stream', function(module, require, $) {
             if(response.success) {
                 that.reload().then(function() {
                     module.log.success('success.unarchive', true);
+                }).catch(function(err) {
+                    module.log.error('error.default', true);
                 });
             }
         }).catch(function(e) {
@@ -327,7 +331,7 @@ humhub.module('stream', function(module, require, $) {
         }
 
         this.$stream = this.$;
-  
+
         //Cache some stream relevant data/nodes
         this.url = this.$.data(DATA_STREAM_URL);
         this.$content = this.$.find(this.cfg['contentSelector']);
@@ -417,29 +421,9 @@ humhub.module('stream', function(module, require, $) {
         this.loading = false;
         this.$content.empty();
         this.$.hide();
-        //this.$.find(".s2_single").hide();
         this.hideLoader();
-        this.$filter.hide();
+        //this.$filter.hide();
         this.$.trigger('humhub:modules:stream:clear', this);
-    };
-
-    /**
-     * Loads a single stream entry by a given content id.
-     * 
-     * @param {type} contentId
-     * @returns {undefined}
-     */
-    Stream.prototype.loadEntry = function(contentId, cfg) {
-        cfg = cfg || {};
-        cfg['contentId'] = contentId;
-
-        var that = this;
-
-        return new Promise(function(resolve, reject) {
-            that.loadEntries(cfg).then(function($entryNode) {
-                resolve($entryNode);
-            }).catch(reject);
-        });
     };
 
     /**
@@ -456,7 +440,8 @@ humhub.module('stream', function(module, require, $) {
 
             if(!entry) {
                 module.log.warn('Attempt to reload non existing entry');
-                return reject();
+                reject();
+                return;
             }
 
             var contentId = entry.getKey();
@@ -470,6 +455,18 @@ humhub.module('stream', function(module, require, $) {
                 }
             }, reject);
         });
+    };
+    
+    /**
+     * Loads a single stream entry by a given content id.
+     * 
+     * @param {type} contentId
+     * @returns {undefined}
+     */
+    Stream.prototype.loadEntry = function(contentId, cfg) {
+        cfg = cfg || {};
+        cfg['contentId'] = contentId;
+        return this.loadEntries(cfg);
     };
 
     /**
@@ -491,7 +488,7 @@ humhub.module('stream', function(module, require, $) {
         return new Promise(function(resolve, reject) {
             var $result;
             // Don't proceed if stream is already loading
-            if(that.loading || that.lastEntryLoaded) {
+            if(!cfg.contentId && (that.loading || that.lastEntryLoaded)) {
                 resolve();
                 return;
             }
@@ -583,17 +580,22 @@ humhub.module('stream', function(module, require, $) {
     Stream.prototype.prependEntry = function(html) {
         var $html = $(html).hide();
         this.$content.prepend($html);
-        additions.applyTo($html);
-        $html.fadeIn();
-        this.onChange();
+        var that = this;
+        $html.fadeIn('fast', function() {
+            additions.applyTo($html);
+            that.onChange();
+        });
     };
 
     Stream.prototype.appendEntry = function(html) {
         var $html = $(html).hide();
         this.$content.append($html);
-        additions.applyTo($html);
-        $html.fadeIn();
-        this.onChange();
+        var that = this;
+        $html.fadeIn('fast', function() {
+            additions.applyTo($html);
+            that.onChange();
+        });
+
     };
 
 
@@ -613,7 +615,6 @@ humhub.module('stream', function(module, require, $) {
             }
             result += response.content[key].output;
         });
-
 
         var $result = $(result).hide();
 
@@ -778,7 +779,8 @@ humhub.module('stream', function(module, require, $) {
             this.$.find('.emptyStreamMessage').show();
             this.$filter.hide();
         } else if(!hasEntries) {
-            this.$.find('.emptyFilterStreamMessage').hide();
+            this.$.find('.emptyFilterStreamMessage').show();
+            this.$filter.show();
         } else if(!this.isShowSingleEntry()) {
             this.$filter.show();
             this.$.find('.emptyStreamMessage').hide();

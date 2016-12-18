@@ -17,11 +17,15 @@ humhub.module('comment', function(module, require, $) {
         client.submit(evt, {dataType: 'html'}).then(function(response) {
             that.addComment(response.html);
             that.getInput().val('').trigger('autosize.resize');
-            that.getRichtext().addClass('atwho-placeholder').focus();
+            that.getRichtext().$.addClass('atwho-placeholder').focus();
             that.getUpload().reset();
         }).catch(function(err) {
             module.log.error(err, true);
         });
+    };
+    
+    Form.prototype.getRichtext = function(html) {
+        return Widget.instance(this.$.find('div.humhub-ui-richtext'));
     };
     
     Form.prototype.addComment = function(html) {
@@ -41,10 +45,6 @@ humhub.module('comment', function(module, require, $) {
     Form.prototype.getInput = function() {
         return this.$.find('textarea');
     };
-    
-    Form.prototype.getRichtext = function() {
-        return this.$.find('[contenteditable]');
-    };
 
     var Comment = function(node) {
         Content.call(this, node);
@@ -58,12 +58,16 @@ humhub.module('comment', function(module, require, $) {
         var that = this;
         client.post(evt, {dataType: 'html'}).then(function(response) {
             that.$.find('.comment_edit_content').replaceWith(response.html);
-            that.$.find('[contenteditable]').focus();
+            that.getRichtext().focus();
             that.$.find('.comment-cancel-edit-link').show();
             that.$.find('.comment-edit-link').hide();
         }).finally(function() {
             that.loader(false);
         });
+    };
+    
+    Comment.prototype.getRichtext = function() {
+        return Widget.instance(this.$.find('div.humhub-ui-richtext'));
     };
 
     Comment.prototype.delete = function() {

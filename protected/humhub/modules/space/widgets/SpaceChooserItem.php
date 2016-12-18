@@ -56,6 +56,9 @@ class SpaceChooserItem extends Widget
         } else if($this->isFollowing) {
             $badge = '<i class="fa fa-star badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_spaceChooserItem', 'You are following this space') . '" aria-hidden="true"></i>';
             $data = 'data-space-following';
+        } else if($this->space->isArchived()) {
+            $badge = '<i class="fa fa-history badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_spaceChooserItem', 'This space is archived') . '" aria-hidden="true"></i>';
+            $data = 'data-space-archived'; 
         } else {
             $data = 'data-space-none';
         }

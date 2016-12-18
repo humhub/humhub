@@ -9,7 +9,9 @@ class UserFollowCest
     {
         $I->wantTo('test the user follow by directory link');
         
+        
         $I->amUser1();
+        //$I->wait(300);
         $I->amOnProfile();
         
         $I->createPost('New User1 profile post');

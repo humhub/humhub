@@ -18,7 +18,7 @@ use humhub\libs\ParameterEvent;
  *
  * @author luke
  */
-class RichText extends \humhub\components\Widget
+class RichText extends JsWidget
 {
 
     /**
@@ -166,7 +166,7 @@ REGEXP;
                 $user = \humhub\modules\user\models\User::findOne(['guid' => $hit[2]]);
                 if ($user !== null) {
                     if ($buildAnchors) {
-                        return ' <span contenteditable="false"><a href="' . $user->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-u' . $user->guid . '">@' . Html::encode($user->getDisplayName()) . '&#x200b;</a></span>' . $hit[3];
+                        return ' <span contenteditable="false"><a href="' . $user->getUrl() . '" target="_self" class="atwho-user" data-guid="@-u' . $user->guid . '">@' . Html::encode($user->getDisplayName()) . '&#x200b;</a></span>' . $hit[3];
                     }
                     return " @" . Html::encode($user->getDisplayName()) . $hit[3];
                 }
@@ -175,7 +175,7 @@ REGEXP;
 
                 if ($space !== null) {
                     if ($buildAnchors) {
-                        return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-user-guid="@-s' . $space->guid . '">@' . Html::encode($space->name) . '&#x200b;</a></span>' . $hit[3];
+                        return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-guid="@-s' . $space->guid . '">@' . Html::encode($space->name) . '&#x200b;</a></span>' . $hit[3];
                     }
                     return " @" . Html::encode($space->name) . $hit[3];
                 }

@@ -47,6 +47,12 @@ Please see the following file for 1.2 changes (at the buttom):
     - modules/space/views/membership/invite.php
     - modules/comment/widget/views/showComment.php
     - modules/files/widget/views/showFiles.php
+    - modules/post/widget/views/post.php
+- Richtext rewrite:
+    - modules/comment/widget/views/form.php
+    - modules/comment/views/comment/edit.php
+    - modules/post/views/post/edit.php
+    - modules/post/widget/views/form.php
 - UserPicker rewrite:
     - modules/admin/views/group/edit.php
     - modules/admin/views/group/members.php

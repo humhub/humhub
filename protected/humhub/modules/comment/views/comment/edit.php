@@ -10,17 +10,13 @@ use yii\helpers\Url;
     <?php $form = CActiveForm::begin(); ?>
     <?= Html::hiddenInput('contentModel', $contentModel); ?>
     <?= Html::hiddenInput('contentId', $contentId); ?>
-    <?= $form->textArea($comment, 'message', array('class' => 'form-control', 'id' => 'comment_input_' . $comment->id, 'placeholder' => Yii::t('CommentModule.views_edit', 'Edit your comment...'))); ?>
-
-    <!-- create contenteditable div for HEditorWidget to place the data -->
-    <div id="comment_input_<?= $comment->id; ?>_contenteditable" class="form-control atwho-input"
-         contenteditable="true"><?= \humhub\widgets\RichText::widget(['text' => $comment->message, 'edit' => true]); ?></div>
-
-    <?= \humhub\widgets\RichTextEditor::widget(array(
-        'id' => 'comment_input_' . $comment->id,
-        'inputContent' => $comment->message,
-        'record' => $comment,
-    ));?>
+  
+    <?= humhub\widgets\RichtextField::widget([
+            'id' => 'comment_input_'.$comment->id,
+            'placeholder' => Yii::t('CommentModule.views_edit', 'Edit your comment...'),
+            'model' => $comment,
+            'attribute' => 'message'
+        ]); ?>
 
     <div class="comment-buttons">
 

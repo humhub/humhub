@@ -32,11 +32,16 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
         <?php echo \humhub\widgets\DataSaved::widget(); ?>
 
         <div class="pull-right">
-            <?php if ($model->status == Space::STATUS_ENABLED) { ?>
-                <?php echo Html::a(Yii::t('SpaceModule.views_admin_edit', 'Archive'), $model->createUrl('/space/manage/default/archive'), array('class' => 'btn btn-warning', 'data-post' => 'POST')); ?>
-            <?php } elseif ($model->status == Space::STATUS_ARCHIVED) { ?>
-                <?php echo Html::a(Yii::t('SpaceModule.views_admin_edit', 'Unarchive'), $model->createUrl('/space/manage/default/unarchive'), array('class' => 'btn btn-warning', 'data-post' => 'POST')); ?>
-            <?php } ?>
+            <?php if ($model->status == Space::STATUS_ENABLED || $model->status == Space::STATUS_ARCHIVED) : ?> 
+                <a href="#"  <?= $model->status == Space::STATUS_ARCHIVED ? 'style="display:none;"' : '' ?> class="btn btn-warning archive"
+                   data-action-click="space.archive"  data-action-url="<?= $model->createUrl('/space/manage/default/archive') ?>" data-ui-loader>
+                    <?= Yii::t('SpaceModule.views_admin_edit', 'Archive') ?>
+                </a>
+                <a href="#" <?= $model->status == Space::STATUS_ENABLED ? 'style="display:none;"' : '' ?> class="btn btn-warning unarchive"
+                   data-action-click="space.unarchive" data-action-url="<?= $model->createUrl('/space/manage/default/unarchive') ?>"  data-ui-loader>
+                    <?= Yii::t('SpaceModule.views_admin_edit', 'Unarchive') ?>
+                </a>
+            <?php endif; ?>
         </div>
 
         <?php ActiveForm::end(); ?>

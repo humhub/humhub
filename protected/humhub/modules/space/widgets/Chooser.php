@@ -44,7 +44,11 @@ class Chooser extends Widget
         }
 
         $query->joinWith('space');
-        $query->where(['space_membership.user_id' => Yii::$app->user->id, 'space_membership.status' => Membership::STATUS_MEMBER]);
+        $query->where([
+            'space_membership.user_id' => Yii::$app->user->id, 
+            'space_membership.status' => Membership::STATUS_MEMBER,
+            'space.status' => \humhub\modules\space\models\Space::STATUS_ENABLED
+        ]);
 
         return $query;
     }

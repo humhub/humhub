@@ -10,6 +10,7 @@ humhub.module('ui.widget', function(module, require, $) {
     var additions = require('ui.additions');
     var Component = require('action').Component;
     var object = require('util').object;
+    var string = require('util').string;
     var action = require('action');
     var event = require('event');
 
@@ -21,26 +22,61 @@ humhub.module('ui.widget', function(module, require, $) {
         this.errors = [];
         this.options = this.initOptions(options || {});
 
-        // Use internal events
-        event.sub(this);
+        this.initWidgetEvents();
 
         if(!this.validate()) {
             module.log.warn('Could not initialize widget.', this.errors);
         } else {
             var initData = this.$.data('ui-init');
-            this.fire('before-init', [this, initData]);
+            this.fire('beforeInit', [this, initData]);
             this.init(initData);
-            this.fire('after-init', [this]);
+            this.fire('afterInit', [this]);
         }
     };
 
     object.inherits(Widget, Component);
 
-    Widget.prototype.fire = function(event, args) {
-        if(this.$.data('action-' + event)) {
-            action.trigger(this.$, event, {params: args});
+
+    Widget.prototype.initWidgetEvents = function() {
+        // Use internal event object for handling widget events.
+        event.sub(this);
+        
+        var that = this;
+        
+        // Bind dom events to widget events actions.
+        $.each(this.options, function(key, value) {
+            if(string.startsWith(key, 'widgetAction')) {
+                var eventType = string.cutPrefix(key, 'widgetAction').toLowerCase();
+                that.$.on(eventType+'.humhub:widget:events', function() {
+                    that.fire(eventType);
+                });
+            }
+        });
+    };
+    
+    Widget.prototype.fire = function(event, args, triggerDom) {
+        // Trigger action if there is an action handler set
+        var widgetAction = 'widgetAction' + string.capitalize(event);
+        if(this.options[widgetAction]){
+            var handler = this.options[widgetAction];
+            if(string.startsWith(handler, 'this.')) {
+                handler = string.cutPrefix(handler, 'this.');
+                var handlerFunc = object.resolve(this, handler);
+                if(object.isFunction(handlerFunc)) {
+                    handlerFunc.apply(this);
+                }
+            } else {
+                action.trigger(this.$, event, {handler: handler, params: args});
+            }
         }
+        
+        // Trigger internal widget event
         this.trigger(event, args);
+        
+        // If required, trigger dom event
+        if(triggerDom) {
+            this.$.trigger(event, args);
+        }
     };
 
     /**
@@ -69,6 +105,10 @@ humhub.module('ui.widget', function(module, require, $) {
      */
     Widget.prototype.validate = function() {
         return true;
+    };
+
+    Widget.prototype.isVisible = function() {
+        return this.$.is(':visible');
     };
 
     /**

@@ -45,7 +45,7 @@ humhub.module('ui.progress', function(module, require, $) {
 
     Progress.prototype.value = function() {
         var width = this.$progressBar[0].style.width;
-        return (width) ? parseInt(string.cutsuffix(width, '%')) : 0;
+        return (width) ? parseInt(string.cutSuffix(width, '%')) : 0;
     };
 
     Progress.prototype.reset = function() {

@@ -2,7 +2,6 @@
 namespace user\acceptance;
 
 use user\AcceptanceTester;
-use tests\codeception\_pages\DirectoryPage;
 use tests\codeception\_pages\AccountSettingsPage;
 
 class ProfileCest
@@ -16,7 +15,9 @@ class ProfileCest
         $I->clickAccountDropDown();
         $I->click('Account settings');
         $I->expectTo('see the profile edit form');
-        $I->seeElement('#profile-tabs');
+        
+        $I->waitForElementVisible('#profile-tabs', 20);
+        //$I->seeElement();
         
         $I->amGoingTo('fill only my firstname');
         $I->fillField('#profile-firstname', 'MyFirstName');
@@ -29,7 +30,7 @@ class ProfileCest
         $I->amGoingTo('fill all required fields plus birthday and hide year field');
         $I->fillField('#profile-lastname', 'MyLastName');
         $I->fillField('#profile-birthday', '4/16/87');
-        $I->click('/html/body/div[3]/div/div[2]/div/div[3]/form/div/div[1]/div[11]/label/div'); // Hide year in profile
+        $I->click('.field-profile-birthday_hide_year div'); // Hide year in profile
         
         $I->scrollToTop();
         
@@ -61,10 +62,11 @@ class ProfileCest
         $I->wantTo('ensure that my profile works as expected.');
         
         $I->amUser2();
-        DirectoryPage::openBy($I);
-        $I->click('Members');
+        $directory = $I->amOnDirectory();
+        $directory->clickMembers();
         $I->click('User1');
         
+        $I->waitForText('Profile menu');
         $I->expectTo('see the profile of User2');
         $I->see('Follow');
         $I->see('Stream');
@@ -75,15 +77,13 @@ class ProfileCest
         $I->see('Peter');
         $I->see('Tester');
         
-        AccountSettingsPage::openBy($I);
-        $I->click('Security');
-        #$I->wait(2);
+        $accountSettings = AccountSettingsPage::openBy($I);
+        $accountSettings->clickSecurity();
         $I->selectOption('select[data-attribute0*=ViewAboutPage]', 'Deny');
        
         $I->amUser1(true);
-        DirectoryPage::openBy($I);
-        $I->click('Members');
+        $directory = $I->amOnDirectory();
+        $directory->clickMembers();
         $I->click('User2');
-        
     }
 }

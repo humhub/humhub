@@ -361,6 +361,17 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         $this->status = self::STATUS_ENABLED;
         $this->save();
     }
+    
+    /**
+     * Returns wether or not a Space is archived.
+     * 
+     * @return boolean
+     * @since 1.2
+     */
+    public function isArchived()
+    {
+        return $this->status === self::STATUS_ARCHIVED;
+    }
 
     /**
      * Creates an url in space scope.

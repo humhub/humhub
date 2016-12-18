@@ -16,6 +16,7 @@ class ProfilePage extends BasePage
     public function clickAbout()
     {
         $this->actor->click('About');
+        $this->actor->waitForText('About this user', 30);
     }
 
 }

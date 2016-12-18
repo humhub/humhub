@@ -76,9 +76,9 @@ $this->registerJsConfig('space.chooser', [
 <?php if ($canCreateSpace): ?>
     <li>
         <div class="dropdown-footer">
-            <?= Html::a(Yii::t('SpaceModule.widgets_views_spaceChooser', 'Create new space'), 
-                    Url::to(['/space/create/create']), 
-                    ['class' => 'btn btn-info col-md-12', 'data-target' => '#globalModal']);?>
+            <a href="#" class="btn btn-info col-md-12" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/space/create/create']) ?>">
+                <?= Yii::t('SpaceModule.widgets_views_spaceChooser', 'Create new space') ?>
+            </a>
         </div>
     </li>
 <?php endif; ?>

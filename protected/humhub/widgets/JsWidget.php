@@ -61,15 +61,11 @@ class JsWidget extends Widget
     {
         $attributes = $this->getAttributes();
         $attributes['data'] = $this->getData();
-        $attributes['id'] = $this->id;
+        $attributes['id'] = $this->getId();
             
         $this->setDefaultOptions();
         
         $result = \yii\helpers\ArrayHelper::merge($attributes, $this->options);        
-        
-        if(empty($result['id'])) {
-            $result['id'] = $this->getId(true);
-        } 
         
         if(!$this->visible) {
             if(isset($result['style'])) {
@@ -86,7 +82,7 @@ class JsWidget extends Widget
     {   
         // Set event data
         foreach($this->events as $event => $handler) {
-            $this->options['data']['action-'.$event] = $handler;
+            $this->options['data']['widget-action-'.$event] = $handler;
         }
         
         $this->options['data']['ui-widget'] = $this->jsWidget;
@@ -94,6 +90,14 @@ class JsWidget extends Widget
         if(!empty($this->init)) {
             $this->options['data']['ui-init'] = $this->init;
         } 
+    }
+    
+    public function getId($autoGenerate = true)
+    {
+        if($this->id) {
+            return $this->id;
+        }
+        return parent::getId($autoGenerate);
     }
     
     protected function getData() 

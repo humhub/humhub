@@ -30,6 +30,10 @@ class DeleteLink extends \yii\base\Widget
      */
     public function run()
     {
+        if($this->content->content->isArchived()) {
+            return;
+        }
+        
         if ($this->content->content->canEdit()) {
             return $this->render('deleteLink', array(
                         'model' => $this->content->content->object_model,

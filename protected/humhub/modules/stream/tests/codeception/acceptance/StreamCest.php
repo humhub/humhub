@@ -6,7 +6,6 @@ use stream\AcceptanceTester;
 
 class StreamCest
 {
-
     public function testDeletePost(AcceptanceTester $I)
     {
         $I->amUser();
@@ -14,8 +13,8 @@ class StreamCest
         $I->wantToTest('the deletion of a stream entry');
         $I->amGoingTo('create a new post and delete it afterwards');
 
-        $I->click('#contentForm_message_contenteditable');
-        $I->fillField('#contentForm_message_contenteditable', 'This is my stream test post!');
+        $I->click('#contentForm_message');
+        $I->fillField('#contentForm_message', 'This is my stream test post!');
         $I->click('#post_submit_button');
 
         $newEntrySelector = '[data-content-key="12"]';
@@ -29,8 +28,8 @@ class StreamCest
         $I->click('Delete');
 
         $I->waitForElementVisible('#globalModalConfirm', 5);
-        $I->see('Do you really want to perform this action?');
-        $I->click('Confirm');
+        $I->see('Confirm post deletion');
+        $I->click('Delete', '#globalModalConfirm');
 
         $I->seeSuccess('The content has been deleted');
     }
@@ -144,16 +143,29 @@ class StreamCest
         $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my first stream test post', '.wall-entry');
 
+        $I->amGoingTo('edit load the edit form');
+        $I->click('.preferences', $newEntrySelector);
+        $I->waitForText('Edit', 10);
+        $I->click('Edit', $newEntrySelector);
+        
+        $I->waitForElementVisible($newEntrySelector . ' .content_edit', 20);
+        $I->amGoingTo('cancel my edit');
+        $I->click('.preferences', $newEntrySelector);
+        $I->waitForText('Cancel Edit', 10);
+        $I->click('Cancel Edit', $newEntrySelector);
+        $I->waitForElementNotVisible($newEntrySelector . ' .content_edit', 20);
+        $I->waitForElementVisible($newEntrySelector . ' .content', 20);
+        $I->see('This is my first stream test post!', $newEntrySelector);
+        
         $I->amGoingTo('edit my new post');
         $I->click('.preferences', $newEntrySelector);
         $I->waitForText('Edit', 10);
         $I->click('Edit', $newEntrySelector);
-
+        
         $I->waitForElementVisible($newEntrySelector . ' .content_edit', 20);
         $I->fillField($newEntrySelector . ' [contenteditable]', 'This is my edited post!');
         $I->click('Save', $newEntrySelector);
-        ;
-
+        
         $I->seeSuccess('Saved');
         $I->seeElement($newEntrySelector);
         $I->see('This is my edited post!', $newEntrySelector);
@@ -182,12 +194,51 @@ class StreamCest
         $I->click('Delete');
         
         $I->waitForElementVisible('#globalModalConfirm', 5);
-        $I->see('Do you really want to perform this action?');
-        $I->click('Confirm');
+        $I->see('Confirm post deletion');
+        $I->click('Delete', '#globalModalConfirm');
 
         $I->seeSuccess('The content has been deleted');
         $I->see('This space is still empty!');
         $I->dontSeeElement('#filter');
+    }
+    
+    public function testFilterInvolved(AcceptanceTester $I)
+    {
+        $I->amUser();
+        $I->amOnSpace2();
+        $I->waitForElementVisible('#filter');
+        $I->click('.stream-filter', '#filter');
+        $I->waitForElementVisible('#filter_entry_userinvolved');
+        $I->click('#filter_entry_userinvolved');
+        $I->waitForText('No matches with your selected filters!');
+        
+        $I->createPost('Involved Post.');
+        $I->dontSee('No matches with your selected filters!');
+        
+        $I->amGoingTo('Reset filter');
+        $I->click('.stream-filter', '#filter');
+        $I->waitForElementVisible('#filter_entry_userinvolved');
+        $I->click('#filter_entry_userinvolved');
+        
+        $I->waitForElementVisible('[data-content-key="10"]');
+        
+        $I->click('Comment', '[data-content-key="10"]');
+        $I->waitForElementVisible('#newCommentForm_humhubmodulespostmodelsPost_10');
+        $I->fillField('#newCommentForm_humhubmodulespostmodelsPost_10', 'My Comment');
+        $I->click('Send', '#comment_create_form_humhubmodulespostmodelsPost_10');
+        $I->waitForText('My Comment', 30, '#comment_humhubmodulespostmodelsPost_10 .comment');
+        
+        $I->click('Like', '[data-content-key="11"]');
+        
+        $I->click('.stream-filter', '#filter');
+        $I->waitForElementVisible('#filter_entry_userinvolved');
+        $I->click('#filter_entry_userinvolved');
+        $I->wait(1);
+        $I->waitForText('Involved Post.');
+
+        $I->seeElement('[data-content-key="10"]');
+        $I->seeElement('[data-content-key="11"]');
+        $I->seeElement('[data-content-key="12"]');
     }
 
     public function testSortStream(AcceptanceTester $I)

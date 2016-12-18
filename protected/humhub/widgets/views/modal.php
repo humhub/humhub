@@ -1,4 +1,5 @@
-<div id="<?= $id ?>" <?= $modalData ?> class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+<?= yii\helpers\Html::beginTag('div', $options) ?>
+
     <?= \humhub\widgets\ModalDialog::widget([
             'header' => $header,
             'animation' => $animation,
@@ -8,4 +9,5 @@
             'footer' => $footer,
             'initialLoader' => $initialLoader
     ]); ?>   
-</div>
+
+<?= yii\helpers\Html::endTag('div') ?>

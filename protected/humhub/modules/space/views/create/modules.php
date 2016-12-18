@@ -67,7 +67,7 @@ use yii\helpers\Url;
 
         <div class="modal-footer">
             <a href="#" class="btn btn-primary" 
-               data-action-click="ui.modal.submit" 
+               data-action-click="ui.modal.post" 
                data-ui-loader
                data-action-url="<?= Url::to(['/space/create/invite', 'spaceId' => $space->id]) ?>">
                    <?= Yii::t('SpaceModule.views_create_create', 'Next'); ?>

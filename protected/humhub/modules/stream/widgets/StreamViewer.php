@@ -89,7 +89,7 @@ class StreamViewer extends \yii\base\Widget
 
         // Add default Filters
         if (count($this->filters) === 0) {
-            $this->filters['filter_entry_userinvoled'] = Yii::t('ContentModule.widgets_views_stream', 'Where I´m involved');
+            $this->filters['filter_entry_userinvolved'] = Yii::t('ContentModule.widgets_views_stream', 'Where I´m involved');
             $this->filters['filter_entry_mine'] = Yii::t('ContentModule.widgets_views_stream', 'Created by me');
             $this->filters['filter_entry_files'] = Yii::t('ContentModule.widgets_views_stream', 'Content with attached files');
             $this->filters['filter_posts_links'] = Yii::t('ContentModule.widgets_views_stream', 'Posts with links');
@@ -135,7 +135,7 @@ class StreamViewer extends \yii\base\Widget
      */
     public function run()
     {
-        return $this->render('stream', ['streamUrl' => $this->getStreamUrl(), 'showFilters' => $this->showFilters, 'filters' => $this->filters]);
+        return $this->render('stream', ['streamUrl' => $this->getStreamUrl(), 'showFilters' => $this->showFilters, 'filters' => $this->filters, '', 'contentContainer' => $this->contentContainer]);
     }
 
 }

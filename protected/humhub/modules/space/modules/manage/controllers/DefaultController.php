@@ -64,6 +64,15 @@ class DefaultController extends Controller
         $this->ownerOnly();
         $space = $this->getSpace();
         $space->archive();
+        
+        if(Yii::$app->request->isAjax) {
+            Yii::$app->response->format = 'json';
+            return [
+                'success' => true,
+                'space' => \humhub\modules\space\controllers\BrowseController::getSpaceResult($space, true, ['isMember' => true])
+            ];
+        }
+        
         return $this->redirect($space->createUrl('/space/manage'));
     }
 
@@ -75,6 +84,15 @@ class DefaultController extends Controller
         $this->ownerOnly();
         $space = $this->getSpace();
         $space->unarchive();
+        
+        if(Yii::$app->request->isAjax) {
+            Yii::$app->response->format = 'json';
+            return [
+                'success' => true,
+                'space' => \humhub\modules\space\controllers\BrowseController::getSpaceResult($space, true, ['isMember' => true])
+            ];
+        }
+        
         return $this->redirect($space->createUrl('/space/manage'));
     }
 

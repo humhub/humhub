@@ -8,10 +8,7 @@ humhub.module('content.form', function(module, require, $) {
 
     var object = require('util').object;
     var client = require('client');
-
-    var config = require('config').module(module);
     var event = require('event');
-
     var Widget = require('ui.widget').Widget;
 
     var instance;
@@ -28,15 +25,20 @@ humhub.module('content.form', function(module, require, $) {
         // Hide options by default
         $('.contentForm_options').hide();
         $('#contentFormError').hide();
-        // Remove info text from the textinput
-        $('#contentFormBody').click(function() {
-            // Hide options by default
-            $('.contentForm_options').fadeIn();
-        });
 
         this.setDefaultVisibility();
 
         this.$.fadeIn('fast');
+
+        if(!module.config['disabled']) {
+            // Remove info text from the textinput
+            $('#contentFormBody').on('click.humhub:content:form', function() {
+                // Hide options by default
+                $('.contentForm_options').fadeIn();
+            });
+        } else {
+            $('#contentFormBody').find('.humhub-ui-richtext').trigger('disable');
+        }
     };
 
     CreateForm.prototype.actions = function() {
@@ -80,15 +82,14 @@ humhub.module('content.form', function(module, require, $) {
         this.resetFilePreview();
 
         $('#public').attr('checked', false);
-        $('#contentForm_message_contenteditable').addClass('atwho-placeholder').attr('spellcheck', 'false');
-        $('#contentFormBody').find('.atwho-input').trigger('clear');
+        $('#contentFormBody').find('.humhub-ui-richtext').trigger('clear');
     };
 
     CreateForm.prototype.resetNotifyUser = function() {
         $('#notifyUserContainer').hide();
         Widget.instance('#notifyUserInput').reset();
     };
-    
+
     CreateForm.prototype.resetFilePreview = function() {
         Widget.instance($('#contentFormFiles_preview')).reset();
     };
@@ -118,22 +119,22 @@ humhub.module('content.form', function(module, require, $) {
     };
 
     CreateForm.prototype.setDefaultVisibility = function() {
-        if(config['defaultVisibility']) {
+        if(module.config['defaultVisibility']) {
             this.setPublicVisibility();
         } else {
             this.setPrivateVisibility();
         }
-    }
+    };
 
     CreateForm.prototype.setPublicVisibility = function() {
         $('#contentForm_visibility').prop("checked", true);
-        $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i>' + config['text']['makePrivate']);
+        $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i>' + module.text(['makePrivate']));
         $('.label-public').removeClass('hidden');
     };
 
     CreateForm.prototype.setPrivateVisibility = function() {
         $('#contentForm_visibility').prop("checked", false);
-        $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i>' + config['text']['makePublic']);
+        $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i>' + module.text(['makePublic']));
         $('.label-public').addClass('hidden');
     };
 
@@ -143,12 +144,21 @@ humhub.module('content.form', function(module, require, $) {
     };
 
     var init = function() {
-        instance = Widget.instance($(CREATE_FORM_ROOT_SELECTOR));
+        var $root = $(CREATE_FORM_ROOT_SELECTOR);
+        if($root.length) {
+            instance = Widget.instance($root);
+        }
     };
+
+    var unload = function() {
+        instance = undefined;
+    }
 
     module.export({
         CreateForm: CreateForm,
         instance: instance,
-        init: init
+        init: init,
+        initOnPjaxLoad: true,
+        unload: unload
     });
 });

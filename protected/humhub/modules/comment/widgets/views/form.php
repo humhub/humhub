@@ -11,10 +11,12 @@ use yii\helpers\Url;
     <?php echo Html::hiddenInput('contentModel', $modelName); ?>
     <?php echo Html::hiddenInput('contentId', $modelId); ?>
 
-    <?php echo Html::textarea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'))); ?>
-
-    <?php echo humhub\widgets\RichTextEditor::widget(['id' => 'newCommentForm_' . $id]); ?>
-
+    <?= humhub\widgets\RichtextField::widget([
+        'id' => 'newCommentForm_' . $id,
+        'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'),
+        'name' => 'message'
+    ]); ?>
+    
     <div class="comment-buttons">
         <?= humhub\modules\file\widgets\UploadButton::widget([
             'id' => 'comment_create_upload_' . $id,

@@ -39,11 +39,11 @@ use yii\helpers\Url;
         $editableContent.atwho({
             at: "@",
             data: [{image: '', 'cssClass': 'hint', name: "<?= Yii::t('base', 'Please type at least 3 characters') ?>"}],
-            insert_tpl: "<a href='${link}' target='_blank' class='atwho-user' data-user-guid='${atwho-at}-${type}${guid}'>${atwho-data-value}&#x200b;</a>",
-            tpl: "<li class='hint' data-value=''>${name}</li>",
+            insertTpl: "<a href='${link}' target='_blank' class='atwho-user' data-user-guid='${atwho-at}-${type}${guid}'>${name}&#x200b;</a>",
+            displayTpl: "<li class='hint' data-value=''>${name}</li>",
             search_key: "name",
             limit: 10,
-            highlight_first: false,
+            highlightFirst: false,
             callbacks: {
                 matcher: function (flag, subtext, should_start_with_space) {
                     var match, regexp;
@@ -58,18 +58,18 @@ use yii\helpers\Url;
 
                     return null;
                 },
-                remote_filter: function (query, callback) {
+                remoteFilter: function (query, callback) {
                     this.setting.highlight_first = false;
                     
                     // Render loading user feedback.
-                    this.setting.tpl = "<li class='hint' data-value=''>${name}</li>";
+                    this.setting.displayTpl = "<li class='hint' data-value=''>${name}</li>";
                     this.view.render([{"type":"test","cssClass": "hint", "name":"<?= Yii::t('base', 'Loading...') ?>","image":"","link":""}]);
             
                     // check the char length and data-query attribute for changing plugin settings for showing results
                     if (query.length >= 3 && $('#<?= $id; ?>_contenteditable').attr('data-query') == '1') {
                         // set plugin settings for showing results
-                        this.setting.highlight_first = true;
-                        this.setting.tpl = '<li class="${cssClass}" data-value="@${name}">${image} ${name}</li>';
+                        this.setting.highlightFirst = true;
+                        this.setting.displayTpl = '<li class="${cssClass}" data-value="@${name}">${image} ${name}</li>';
                         $.getJSON("<?php echo Url::to([$userSearchUrl]); ?>", {keyword: query}, function (data) {
                             callback(data);
                         });
@@ -81,10 +81,10 @@ use yii\helpers\Url;
             }
         }).atwho({
             at: ":",
-            insert_tpl: "<img data-emoji-name=';${name};' class='atwho-emoji' with='18' height='18' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.svg'); ?>' />",
-            tpl: "<li class='atwho-emoji-entry' data-value=';${name};'><img with='18' height='18' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.svg'); ?>'/></li>",
+            insertTpl: "<img data-emoji-name=';${name};' class='atwho-emoji' with='18' height='18' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.svg'); ?>' />",
+            displayTpl: "<li class='atwho-emoji-entry' data-value=';${name};'><img with='18' height='18' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.svg'); ?>'/></li>",
             data: emojis_list,
-            highlight_first: true,
+            highlightFirst: true,
             limit: 100
         });
 
@@ -217,13 +217,15 @@ use yii\helpers\Url;
 
         // remove all line breaks
         html = html.replace(/(?:\r\n|\r|\n)/g, "");
+        
+        // At.js adds a zwj at the end of each mentioning
+        html = html.replace(/\u200d/g,'');
 
         // replace all <br> with new line break
         element.html(html.replace(/\<br\s*\>/g, '\n'));
-
+    
         // return plain text without html tags
         return element.text().trim();
-
     }
 
     /**

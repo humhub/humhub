@@ -32,7 +32,7 @@ class ArchiveLink extends \yii\base\Widget
      */
     public function run()
     {
-        if (!Yii::$app->controller instanceof ContentContainerController || !$this->content->content->canArchive()) {
+        if (!Yii::$app->controller instanceof ContentContainerController || !$this->content->content->canArchive() || $this->content->content->getContainer()->isArchived()) {
             return;
         }
 

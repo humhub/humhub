@@ -336,7 +336,7 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function isArchived()
     {
-        return ($this->archived);
+        return $this->archived || $this->getContainer()->isArchived();
     }
 
     /**

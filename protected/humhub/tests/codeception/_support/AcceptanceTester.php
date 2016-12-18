@@ -64,8 +64,8 @@ class AcceptanceTester extends \Codeception\Actor
 
     public function createPost($text)
     {
-        $this->click('#contentForm_message_contenteditable');
-        $this->fillField('#contentForm_message_contenteditable', $text);
+        $this->click('#contentForm_message');
+        $this->fillField('#contentForm_message', $text);
         $this->click('#post_submit_button');
         $this->waitForText($text, 30, '.wall-entry');
     }
@@ -157,6 +157,11 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->jsClick('#account-dropdown-link');
         $this->wait(2);
+    }
+    
+    public function amOnDirectory()
+    {
+        return tests\codeception\_pages\DirectoryPage::openBy($this);
     }
 
     public function amOnProfile()

@@ -18,14 +18,13 @@ $this->registerJsConfig('content.form', [
 <div class="panel panel-default clearfix">
     <div class="panel-body" id="contentFormBody" style="display:none;" data-action-component="content.form.CreateForm" >
     <?= Html::beginForm($submitUrl, 'POST'); ?>
+        
         <?= $form; ?>
 
         <div id="notifyUserContainer" class="form-group" style="margin-top: 15px;display:none;">
-
-            <?php $memberPickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl('/space/membership/search') : null ?>
             <?= humhub\modules\user\widgets\UserPickerField::widget([
                 'id' => 'notifyUserInput',
-                'url' => $memberPickerUrl,
+                'url' => ($contentContainer instanceof Space) ? $contentContainer->createUrl('/space/membership/search') : null,
                 'formName' => 'notifyUserInput',
                 'maxSelection' => 10,
                 'disabledItems' => [Yii::$app->user->guid],
@@ -35,7 +34,6 @@ $this->registerJsConfig('content.form', [
 
         <?= Html::hiddenInput("containerGuid", $contentContainer->guid); ?>
         <?= Html::hiddenInput("containerClass", get_class($contentContainer)); ?>
-        
 
         <ul id="contentFormError"></ul>
 

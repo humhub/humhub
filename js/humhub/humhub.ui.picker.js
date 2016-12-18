@@ -218,7 +218,7 @@ humhub.module('ui.picker', function(module, require, $) {
         selectionWithImage: '{imageNode}<span class="with-image">{text}</span> <i class="fa fa-times-circle picker-close"></i>',
         selectionNoImage: '<span class="no-image">{text}</span> <i class="fa fa-times-circle picker-close"></i>',
         result: '<a href="#" tabindex="-1" style="margin-right:5px;">{imageNode} {text}</a>',
-        resultDisabled: '<a href="#" title="{title}" data-placement="right" tabindex="-1" style="margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} {text}</a>',
+        resultDisabled: '<a href="#" title="{disabledText}" data-placement="right" tabindex="-1" style="margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} {text}</a>',
         imageNode: '<img class="img-rounded" src="{image}" alt="24x24" style="width:24px;height:24px;"  height="24" width="24">',
         option: '<option value="{id}" data-image="{image}" selected>{text}</option>',
     };
@@ -236,7 +236,7 @@ humhub.module('ui.picker', function(module, require, $) {
         }
 
         item.imageNode = this.getImageNode(item);
-
+        item.disabledText = item.disabledText || '';
         var template = (item.disabled) ? Picker.template.resultDisabled : Picker.template.result;
 
         var $result = $(string.template(template, item))

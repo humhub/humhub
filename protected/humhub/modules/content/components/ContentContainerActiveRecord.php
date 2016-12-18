@@ -213,5 +213,15 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     {
         return [];
     }
+    
+    /**
+     * Returns weather or not the contentcontainer is archived. (Default false).
+     * @return boolean 
+     * @since 1.2
+     */
+    public function isArchived()
+    {
+        return false;
+    }
 
 }

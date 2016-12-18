@@ -15,13 +15,12 @@ use yii\base\Widget;
  *
  * @author luke
  */
-class Modal extends Widget
-{
-    /**
-     * Unique modal container id
-     * @var type 
+class Modal extends JsWidget
+{   
+    /*
+     * @inheritdoc
      */
-    public $id;
+    public $jsWidget = 'ui.modal.Modal';
     
     /**
      * Header text
@@ -104,22 +103,45 @@ class Modal extends Widget
     
     public function run()
     {  
-        $modalData = '';
-        $modalData .= !$this->backdrop ? 'data-backdrop="static"' : '';
-        $modalData .= !$this->keyboard ? 'data-keyboard="false"' : '';
-        $modalData .= $this->show ? 'data-show="true"' : '';
-        
         return $this->render('modal', [
             'id' => $this->id,
+            'options' => $this->getOptions(),
             'header' => $this->header,
             'body' => $this->body,
             'footer' => $this->footer,
             'animation' => $this->animation,
             'size' => $this->size,
-            'modalData' => $modalData,
             'centerText' => $this->centerText,
             'initialLoader' => $this->initialLoader
         ]);
+    }
+    
+    public function getAttributes()
+    {
+        return [
+            'class' => "modal",
+            'tabindex' => "-1", 
+            'role' => "dialog", 
+            'aria-hidden' => "true"
+        ];
+    }
+    
+    public function getData()
+    {
+        $result = [];
+        if(!$this->backdrop) {
+            $result['backdrop'] = 'static';
+        }
+        
+        if(!$this->keyboard) {
+            $result['keyboard'] = 'false';
+        }
+        
+        if($this->show) {
+            $result['show'] = 'true';
+        }
+        
+        return $result;
     }
 
 }

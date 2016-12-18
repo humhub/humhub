@@ -140,8 +140,6 @@ abstract class Stream extends Action
         if (!Yii::$app->request->isConsoleRequest) {
             $this->streamQuery->load(Yii::$app->request->get());
             
-            $this->setActionSettings();
-            
             if (Yii::$app->getRequest()->get('mode', $this->mode) === self::MODE_ACTIVITY) {
                 $this->streamQuery->includes(\humhub\modules\activity\models\Activity::className());
                 $this->streamQuery->query()->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\modules\activity\models\Activity::className()]);
@@ -153,6 +151,8 @@ abstract class Stream extends Action
                 $this->streamQuery->addFilter(trim($filter));
             }
         }
+        
+        $this->setActionSettings();
         
         // Build query and set activeQuery.
         $this->activeQuery = $this->streamQuery->query(true);

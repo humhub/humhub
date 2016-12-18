@@ -19,7 +19,8 @@ class ContentFixture extends ActiveFixture
     public $depends = [
         'humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture',
         'humhub\modules\post\tests\codeception\fixtures\PostFixture',
-        'humhub\modules\comment\tests\codeception\fixtures\CommentFixture'
+        'humhub\modules\comment\tests\codeception\fixtures\CommentFixture',
+        'humhub\modules\like\tests\codeception\fixtures\LikeFixture'
     ];
 
 }

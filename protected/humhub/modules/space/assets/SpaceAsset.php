@@ -13,7 +13,7 @@ use yii\web\AssetBundle;
 class SpaceAsset extends AssetBundle
 {
 
-    public $jsOptions = ['position' => \yii\web\View::POS_END];
+    public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
     public $sourcePath = '@space/resources';
     public $css = [];
     public $js = [

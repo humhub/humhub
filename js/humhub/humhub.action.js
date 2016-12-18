@@ -350,7 +350,7 @@ humhub.module('action', function(module, require, $) {
 
             // As last resort we try to call the action by namespace for handlers like humhub.modules.myModule.myAction
             var handlerAction = event.handler.split('.').pop();
-            var target = require(string.cutsuffix(event.handler, '.' + handlerAction));
+            var target = require(string.cutSuffix(event.handler, '.' + handlerAction));
 
             if(!_executeAction(target, handlerAction, event)) {
                 module.log.error('actionHandlerNotFound', event.handler, true);
@@ -576,6 +576,7 @@ humhub.module('action', function(module, require, $) {
     var trigger = function($trigger, type, options) {
         options.$trigger = $trigger;
 
+        // For manually triggered action events we do not need a block in most cases.
         if(!options.block) {
             options.block = BLOCK_NONE;
         }

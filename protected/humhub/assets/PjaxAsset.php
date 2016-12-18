@@ -9,6 +9,7 @@
 namespace humhub\assets;
 
 use yii\web\AssetBundle;
+use yii\web\View;
 
 /**
  * select2
@@ -17,6 +18,8 @@ use yii\web\AssetBundle;
  */
 class PjaxAsset extends AssetBundle
 {   
+    public $jsOptions = ['position' => View::POS_HEAD];
+    
     /**
      * @inheritdoc
      */
@@ -33,7 +36,7 @@ class PjaxAsset extends AssetBundle
     public $js = ['js/jquery.pjax.modified.js'];
     
     public $depends = [
-        'yii\web\YiiAsset',
+        //'yii\web\YiiAsset',
     ];
   
 }

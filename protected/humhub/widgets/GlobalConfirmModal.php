@@ -25,6 +25,7 @@ class GlobalConfirmModal extends \yii\base\Widget
     {
         return \humhub\widgets\Modal::widget([
             'id' => 'globalModalConfirm',
+            'jsWidget' => 'ui.modal.ConfirmModal',
             'size' => 'extra-small',
             'centerText' => true,
             'backdrop' => false,

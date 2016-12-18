@@ -59,6 +59,7 @@ class CoreApiAsset extends AssetBundle
         'js/humhub/humhub.ui.navigation.js',
         'js/humhub/humhub.ui.gallery.js',
         'js/humhub/humhub.ui.picker.js',
+        'js/humhub/humhub.ui.richtext.js',
         // Note this should stay at last for other click event listeners beeing able to prevent pjax handling (e.g gallery)
         'js/humhub/humhub.client.pjax.js', 
     ];

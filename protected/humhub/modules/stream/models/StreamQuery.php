@@ -28,7 +28,7 @@ class StreamQuery extends \yii\base\Model
     const FILTER_FILES = "entry_files";
     const FILTER_ARCHIVED = "entry_archived";
     const FILTER_MINE = "entry_mine";
-    const FILTER_INVOLVED = "entry_userinvoled";
+    const FILTER_INVOLVED = "entry_userinvolved";
     const FILTER_PRIVATE = "visibility_private";
     const FILTER_PUBLIC = "visibility_public";
 
@@ -50,7 +50,7 @@ class StreamQuery extends \yii\base\Model
      * @var array Content type filter
      */
     protected $_excludes;
-    
+
     /**
      * Used to deactivate the default exclusion of activity  entries
      * @var type 
@@ -113,9 +113,8 @@ class StreamQuery extends \yii\base\Model
      * @var \yii\db\ActiveQuery 
      */
     protected $_query;
-    
     private $_built = false;
-    
+
     public function rules()
     {
         return [
@@ -148,7 +147,7 @@ class StreamQuery extends \yii\base\Model
         $instance = new static();
         return $instance->includes($includes)->excludes($excludes);
     }
-    
+
     public function init()
     {
         $this->_query = Content::find();
@@ -158,7 +157,7 @@ class StreamQuery extends \yii\base\Model
 
     public function content($contentId)
     {
-        if(!is_int($contentId)) {
+        if (!is_int($contentId)) {
             $this->contentId = $contentId;
         }
         return $this;
@@ -170,42 +169,42 @@ class StreamQuery extends \yii\base\Model
         $this->checkUser();
         return $this;
     }
-    
+
     public function filters($filters = [])
     {
         $this->filters = (is_string($filters)) ? [$this->filters] : $this->filters;
         return $this;
     }
-    
+
     public function addFilter($filters)
     {
-        if(!is_string($filters)) {
+        if (!is_string($filters)) {
             $this->filters[] = $filters;
-        } else if(is_array($filters)) {
+        } else if (is_array($filters)) {
             $this->filters = \yii\helpers\ArrayHelper::merge($this->filters, $filters);
         }
         return $this;
     }
-    
+
     public function includes($includes = [])
     {
-        if(is_string($includes)) {
+        if (is_string($includes)) {
             $this->_includes = [$includes];
-        } else if(is_array ($includes)) {
+        } else if (is_array($includes)) {
             $this->_includes = $includes;
         }
-        
+
         return $this;
     }
-    
+
     public function excludes($types = [])
     {
-        if(is_string($types)) {
+        if (is_string($types)) {
             $this->_excludes = [$types];
-        } else if(is_array ($types)) {
+        } else if (is_array($types)) {
             $this->_excludes = $types;
         }
-        
+
         return $this;
     }
 
@@ -234,18 +233,20 @@ class StreamQuery extends \yii\base\Model
     }
 
     public function query($build = false)
-    {
-        if($build) {
+    {    
+        if ($build) {
             $this->setupQuery();
         }
+
         return $this->_query;
     }
-    
+
     public function all()
     {
-        if(!$this->_built) {
+        if (!$this->_built) {
             $this->setupQuery();
         }
+
         return $this->_query->all();
     }
 
@@ -274,7 +275,7 @@ class StreamQuery extends \yii\base\Model
             $this->sort = static::SORT_CREATED_AT;
         }
     }
-    
+
     protected function checkFrom()
     {
         if (empty($this->from)) {
@@ -335,13 +336,14 @@ class StreamQuery extends \yii\base\Model
             $this->_query->andWhere(['content.created_by' => $this->originator->id]);
         }
     }
-    
-    public function isFIlter($filter) {
+
+    public function isFIlter($filter)
+    {
         return in_array($filter, $this->filters);
     }
 
     protected function setDefaultFilter()
-    {   
+    {
         if ($this->isFilter(self::FILTER_FILES)) {
             $this->filterFile();
         }
@@ -349,14 +351,14 @@ class StreamQuery extends \yii\base\Model
         // Only apply archived filter when we should load more than one entry
         if (!$this->isSingleContentQuery() && !$this->isFilter(self::FILTER_ARCHIVED)) {
             $this->unFilterArchived();
-        } 
+        }
 
         // Show only mine items
         if ($this->isFilter(self::FILTER_MINE)) {
             $this->filterMine();
         }
 
-        // Show only items where the current user is involed
+        // Show only items where the current user is invovled
         if ($this->isFilter(self::FILTER_INVOLVED)) {
             $this->filterInvolved();
         }
