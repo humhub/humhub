@@ -20,6 +20,7 @@ cache:
 services: mysql
 
 before_install:
+  - phantomjs -v
   - echo "extension=ldap.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 install:
@@ -34,14 +35,23 @@ install:
     cd protected/humhub/tests/codeception/bin
     php yii migrate/up --includeModuleMigrations=1 --interactive=0
     php yii installer/auto
+    #php yii search/rebuild
     cd ../../../../..
     cd protected/humhub/tests
     codecept build
     cd ../../../
 
 script:
+  - php -S 127.0.0.1:8080 > /dev/null 2>&1 &
+  # phantomjs --webdriver=4444 > /dev/null 2>&1 &
+  - sleep 5
+  # curl http://127.0.0.1:8080/index-test.php
   - |
-    phantomjs --webdriver=4444 > /dev/null 2>&1 &
-    php -S localhost:8080 > /dev/null 2>&1 &
     cd protected/humhub/tests/
     codecept run
+
+#after_failure:
+  # cd ../modules/user/tests/codeception/_output/
+  # cat user.functional.LoginCest.testUserLogin.fail.html
+  #cat ../modules/*/tests/codeception/_output/*.html
+    

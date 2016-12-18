@@ -7,6 +7,7 @@ $default = [
     'name' => 'HumHub Test',
     'language' => 'en-US',
     'params' => [
+        'allowedLanguages' => ['en'],
         'installed' => true,
         'settings' => [
             'core' => [
@@ -31,9 +32,6 @@ $default = [
             'showScriptName' => true,
             'scriptUrl' => 'index-test.php',
         ],
-    ],
-    'params' => [
-        'allowedLanguages' => ['en']
     ]
 ];
 
