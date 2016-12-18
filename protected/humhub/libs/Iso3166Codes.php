@@ -8,7 +8,7 @@ use Yii;
  * @author Sebastian Stumpf
  *        
  */
-class iso3166Codes
+class Iso3166Codes
 {
 
     public static $countries = array(
