@@ -74,8 +74,6 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
     {
         return [
             'user' => ['class' => \humhub\modules\user\tests\codeception\fixtures\UserFixture::className()],
-            'user_follow' => ['class' => \humhub\modules\user\tests\codeception\fixtures\UserFollowFixture::className()],
-            'profile' => ['class' => \humhub\modules\user\tests\codeception\fixtures\ProfileFixture::className()],
             'group' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupFixture::className()],
             'group_permission' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture::className()],
             'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::className()],
