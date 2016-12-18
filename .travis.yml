@@ -43,7 +43,7 @@ install:
 
 script:
   - php -S 127.0.0.1:8080 > /dev/null 2>&1 &
-  # phantomjs --webdriver=4444 > /dev/null 2>&1 &
+  - phantomjs --webdriver=4444 > /dev/null 2>&1 &
   - sleep 5
   # curl http://127.0.0.1:8080/index-test.php
   - |
