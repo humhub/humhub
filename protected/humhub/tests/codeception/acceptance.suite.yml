@@ -22,7 +22,7 @@ modules:
     config:
         WebDriver:
             url: http://localhost/codebase/humhub/v1.1-dev/index.php
-            browser: phantomjs
+            browser: firefox
             window_size: maximize
             restart: true
         #PhpBrowser:
