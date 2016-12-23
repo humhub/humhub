@@ -206,7 +206,7 @@ use humhub\modules\space\models\Space;
             
             $('#contentFrom_files').val('');
             $('#public').attr('checked', false);
-            $('#contentForm_message_contenteditable').html('<?php echo Html::encode(Yii::t("ContentModule.widgets_views_contentForm", "What's on your mind?")); ?>');
+            $('#contentForm_message_contenteditable').html('<?php echo Html::encode(Yii::t("ContentModule.widgets_views_contentForm", "What\'s on your mind?")); ?>');
             $('#contentForm_message_contenteditable').addClass('atwho-placeholder');
             
             $('#contentFormBody').find('.atwho-input').trigger('clear');
