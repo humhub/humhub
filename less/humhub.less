@@ -1,36 +1,181 @@
-@import "base.less";
-@import "topbar.less";
-@import "login.less";
-@import "dropdown.less";
-@import "media.less";
-@import "panel.less";
-@import "installer.less";
-@import "pagination.less";
-@import "bootstrap.less";
-@import "nav.less";
-@import "button.less";
-@import "form.less";
-@import "badge.less";
-@import "popover.less";
-@import "list-group.less";
-@import "modal.less";
-@import "tooltip.less";
-@import "progress.less";
-@import "table.less";
-@import "comment.less";
-@import "gridview.less";
-@import "oembed.less";
-@import "activities.less";
-@import "stream.less";
-@import "space.less";
-@import "file.less";
-@import "tour.less";
-@import "mentioning.less";
-@import "loader.less";
-@import "markdown.less";
-@import "sidebar.less";
-@import "datepicker.less";
-@import "user-feedback.less";
-@import "tags.less";
-@import "installed.less";
+// Import base components. Components can be deactivated by @prev-* variables.
+@prev-base: false;
+& when not(@prev-base) {
+    @import "base.less";
+}
+
+@prev-topbar: false;
+& when not(@prev-topbar) {
+    @import "topbar.less";
+}
+
+@prev-login: false;
+& when not(@prev-login) {
+    @import "login.less";
+}
+
+@prev-dropdown: false;
+& when not(@prev-dropdown) {
+    @import "dropdown.less";
+}
+
+@prev-media: false;
+& when not(@prev-media) {
+    @import "media.less";
+}
+
+@prev-panel: false;
+& when not(@prev-panel) {
+    @import "panel.less";
+}
+
+@prev-installer: false;
+& when not(@prev-installer) {
+    @import "installer.less";
+}
+
+@prev-pagination: false;
+& when not(@prev-pagination) {
+    @import "pagination.less";
+}
+
+@prev-well: false;
+& when not(@prev-well) {
+    @import "well.less";
+}
+
+@prev-nav: false;
+& when not(@prev-nav) {
+    @import "nav.less";
+}
+
+@prev-button: false;
+& when not(@prev-button) {
+    @import "button.less";
+}
+
+@prev-form: false;
+& when not(@prev-form) {
+    @import "form.less";
+}
+
+@prev-notification: false;
+& when not(@prev-notification) {
+    @import "notification.less";
+}
+
+@prev-badge: false;
+& when not(@prev-badge) {
+    @import "badge.less";
+}
+
+@prev-popover: false;
+& when not(@prev-popover) {
+    @import "popover.less";
+}
+
+@prev-list-group: false;
+& when not(@prev-list-group) {
+    @import "list-group.less";
+}
+
+@prev-modal: false;
+& when not(@prev-modal) {
+    @import "modal.less";
+}
+
+@prev-module: false;
+& when not(@prev-module) {
+    @import "module.less";
+}
+
+@prev-tooltip: false;
+& when not(@prev-tooltip) {
+    @import "tooltip.less";
+}
+
+@prev-progress: false;
+& when not(@prev-progress) {
+    @import "progress.less";
+}
+
+@prev-table: false;
+& when not(@prev-table) {
+    @import "table.less";
+}
+
+@prev-comment: false;
+& when not(@prev-comment) {
+    @import "comment.less";
+}
+
+@prev-gridview: false;
+& when not(@prev-gridview) {
+    @import "gridview.less";
+}
+
+@prev-oembed: false;
+& when not(@prev-oembed) {
+    @import "oembed.less";
+}
+
+@prev-activities: false;
+& when not(@prev-activities) {
+    @import "activities.less";
+}
+
+@prev-stream: false;
+& when not(@prev-stream) {
+    @import "stream.less";
+}
+
+@prev-space: false;
+& when not(@prev-space) {
+    @import "space.less";
+}
+
+@prev-file: false;
+& when not(@prev-file) {
+    @import "file.less";
+}
+
+@prev-tour: false;
+& when not(@prev-tour) {
+    @import "tour.less";
+}
+
+@prev-mentioning: false;
+& when not(@prev-mentioning) {
+    @import "mentioning.less";
+}
+
+@prev-loader: false;
+& when not(@prev-loader) {
+    @import "loader.less";
+}
+
+@prev-markdown: false;
+& when not(@prev-markdown) {
+    @import "markdown.less";
+}
+
+@prev-sidebar: false;
+& when not(@prev-sidebar) {
+    @import "sidebar.less";
+}
+
+@prev-datepicker: false;
+& when not(@prev-datepicker) {
+    @import "datepicker.less";
+}
+
+@prev-user-feedback: false;
+& when not(@prev-user-feedback) {
+    @import "user-feedback.less";
+}
+
+@prev-tags: false;
+& when not(@prev-tags) {
+    @import "tags.less";
+}
 

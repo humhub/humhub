@@ -2,23 +2,23 @@
 // Tables
 // --------------------------------------------------
 table {
-  margin-bottom:0px !important;
-  th {
-    font-size: 11px;
-    color: @font4;
-    font-weight: normal;
-  }
-  thead tr th {
-    border: none !important;
-  }
-  .time {
-    font-size: 12px;
-  }
-  td {
-    a:hover {
-      color: @info;
+    margin-bottom:0px !important;
+    th {
+        font-size: 11px;
+        color: @font4;
+        font-weight: normal;
     }
-  }
+    thead tr th {
+        border: none !important;
+    }
+    .time {
+        font-size: 12px;
+    }
+    td {
+        a:hover {
+            color: @info;
+        }
+    }
 }
 
 .table > thead > tr > th,
@@ -27,12 +27,21 @@ table {
 .table > thead > tr > td,
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
-  padding: 10px 10px 10px 0;
+    padding: 10px 10px 10px 0;
 
-  select {
-    font-size: 12px;
-    padding: 4px 8px;
-    height: 30px;
-    margin: 0;
-  }
+    select {
+        font-size: 12px;
+        padding: 4px 8px;
+        height: 30px;
+        margin: 0;
+    }
+}
+
+.table-middle > thead > tr > th,
+.table-middle > tbody > tr > th,
+.table-middle > tfoot > tr > th,
+.table-middle > thead > tr > td,
+.table-middle > tbody > tr > td,
+.table-middle > tfoot > tr > td {
+    vertical-align: middle !important;
 }
