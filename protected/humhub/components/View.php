@@ -27,12 +27,6 @@ class View extends \yii\web\View
     private $jsConfig = [];
 
     /**
-     * Is used to append a status message as success info.
-     * @var type 
-     */
-    private $statusMessage;
-
-    /**
      * Sets current page title
      * 
      * @param string $title
@@ -195,7 +189,7 @@ class View extends \yii\web\View
             echo '<title>' . $this->getPageTitle() . '</title>';
         }
 
-        if (Yii::$app->getSession()->hasFlash('view-status')) {
+        if (Yii::$app->params['installed'] && Yii::$app->getSession()->hasFlash('view-status')) {
             $viewStatus = Yii::$app->getSession()->getFlash('view-status');
             $type = strtolower(key($viewStatus));
             $value = Html::encode(array_values($viewStatus)[0]);
@@ -205,10 +199,12 @@ class View extends \yii\web\View
         if (Yii::$app->request->isAjax) {
             return parent::endBody();
         }
-
-
-        \humhub\widgets\CoreJsConfig::widget();
-
+                
+        // Since the JsConfig accesses user queries it fails before installation.
+        if(Yii::$app->params['installed']) {
+            \humhub\widgets\CoreJsConfig::widget();
+        }
+        
         // Add LayoutAddons and jsConfig registered by addons
         echo \humhub\widgets\LayoutAddons::widget();
         $this->flushJsConfig();

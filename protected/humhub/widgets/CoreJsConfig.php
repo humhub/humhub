@@ -30,8 +30,6 @@ class CoreJsConfig extends Widget
             $userConfig = ['isGuest' => true];
         }
         
-        
-        
         $this->getView()->registerJsConfig(
             [
                 'user' => $userConfig,
