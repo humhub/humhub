@@ -32,7 +32,14 @@ class FileController extends \humhub\components\Controller
             'acl' => [
                 'class' => AccessControl::className(),
                 'guestAllowedActions' => ['download']
-            ]
+            ],
+            'httpCache' => [
+                'class' => 'yii\filters\HttpCache',
+                'cacheControlHeader' => 'public, max-age=31536000',
+                'etagSeed' => function ($action, $params) {
+                    return serialize([\yii\helpers\Url::current()]);
+                },
+            ],
         ];
     }
 
