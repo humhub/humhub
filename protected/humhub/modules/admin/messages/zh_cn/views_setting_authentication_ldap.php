@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;' => '',
+    'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;' => '电子邮件LDAP属性。默认值：&quotmail&quot;',
     'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '在生产环境中强烈建议使用ATLS / SSL，以防止明文传输密码',
     'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => '定义过滤器应用，当尝试登录。 ％的uid替换登录操作的用户名。例如：＆QUOT;（sAMAccountName赋=％S）和QUOT;或QUOT;（UID =％S）和QUOT',
     'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;' => 'LDAP属性的用户名。例如：＆quotuid＆QUOT;或QUOT; sAMAccountName赋与QUOT',

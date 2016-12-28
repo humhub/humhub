@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Get an email, for every activity of other users you follow or work together in a workspace.' => '',
-    'Receive desktop notifications when you are online.' => '',
+    'Get an email, for every activity of other users you follow or work together in a workspace.' => '为了能和工作区中的其他用户交流活动或工作，获取一个电子邮件。',
+    'Receive desktop notifications when you are online.' => '当你在线时接收桌面通知。',
     'Always' => '一直',
     'Daily summary' => '每日概要',
     'Get an email, when other users comment or like your posts.' => '收到一封电子邮件，当其他用户的评论或喜欢你的文章。',

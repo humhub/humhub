@@ -20,6 +20,6 @@ return array (
   '<strong>Directory</strong> menu' => '目录菜单',
   'Groups' => '组',
   'Members' => '成员',
-  'Spaces' => '版块',
+  'Spaces' => '空间',
   'User profile posts' => '用户推送',
 );

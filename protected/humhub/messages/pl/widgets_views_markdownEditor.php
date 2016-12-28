@@ -29,4 +29,6 @@ return array (
   'list text here' => 'tutaj wpisz listę',
   'quote here' => 'tutaj wpisz cytat',
   'strong text' => 'pogrubiony tekst',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

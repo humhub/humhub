@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Updating module...' => '',
+    'Updating module...' => '更新模块...',
     '<strong>Modules</strong> directory' => '<strong>模块</strong> 目录',
     'Installed version:' => '安装版本:',
     'Latest compatible Version:' => '最新兼容版本:',

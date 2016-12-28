@@ -18,5 +18,5 @@
  */
 return array (
   'Change image' => '换图片',
-  'Current space image' => '当前版块图片',
+  'Current space image' => '当前空间图片',
 );

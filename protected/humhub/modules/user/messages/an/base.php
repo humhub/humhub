@@ -47,4 +47,5 @@ return [
     'Your new password must not equal your current password!' => '',
     'or' => '',
     'Delete' => 'Eliminar',
+    'Current Password' => '',
 ];

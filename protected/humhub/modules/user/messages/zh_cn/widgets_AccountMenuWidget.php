@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Security' => '',
+    'Security' => '安全',
     '<strong>Account</strong> settings' => '<strong>帐户</strong> 设置',
     'Modules' => '模块',
     'Profile' => '属性',

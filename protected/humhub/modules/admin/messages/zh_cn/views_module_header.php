@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.' => '',
-    'Purchases' => '',
+    'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.' => 'humhub模块扩展功能。在这里，你可以从Humhub市场安装和管理模块。',
+    'Purchases' => '购买',
     'Available updates' => '可用更新',
     'Browse online' => '在线浏览',
     'Installed' => '已安装',

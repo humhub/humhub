@@ -21,4 +21,6 @@ return [
     'Save profile' => ' ',
     'Saved' => ' ',
     'The entered e-mail address is already in use by another user.' => ' ',
+    'Members' => ' ',
+    'Guests' => ' ',
 ];

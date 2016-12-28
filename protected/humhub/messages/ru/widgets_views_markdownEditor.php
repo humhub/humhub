@@ -29,4 +29,6 @@ return array (
   'list text here' => 'текстовый список здесь',
   'quote here' => 'процитировать',
   'strong text' => 'выделенный текст',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

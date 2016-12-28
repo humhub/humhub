@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Stream (Default)' => '',
+    'Stream (Default)' => '流 (默认)',
     'Saved' => '保存',
 ];

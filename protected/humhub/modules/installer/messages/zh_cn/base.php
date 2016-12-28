@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Downloading & Installing Modules...' => '',
+    'Downloading & Installing Modules...' => '下载安装模块...',
 ];

@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Maximum value' => '',
-  'Minimum value' => '',
+  'Maximum value' => '最大值',
+  'Minimum value' => '最小值',
   'Number field options' => '数字区域选项',
 );

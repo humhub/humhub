@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'User \'{username}\' is already a member of this space!' => '',
-    'User \'{username}\' is already an applicant of this space!' => '',
+    'User \'{username}\' is already a member of this space!' => '用户 \'{username}\' 已经是这个空间的成员了!',
+    'User \'{username}\' is already an applicant of this space!' => '用户 \'{username}\' 已经申请了加入这个空间!',
     'Invites' => '邀请',
     'New user by e-mail (comma separated)' => '通过e-mail邀请新用户（以逗号分隔）',
     'User not found!' => '用户未找到',

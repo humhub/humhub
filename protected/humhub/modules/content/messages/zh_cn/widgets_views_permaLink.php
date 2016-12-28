@@ -20,4 +20,5 @@ return [
     '<strong>Permalink</strong> to this post' => '获取该记录<strong>链接</strong>',
     'Close' => '关闭',
     'Permalink' => '获取链接',
+    'Copy to clipboard: Ctrl+C, Enter' => '使用 Ctrl+C 键复制链接',
 ];
