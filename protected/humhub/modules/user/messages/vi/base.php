@@ -47,4 +47,5 @@ return [
     'General' => 'Chung',
     'New password' => 'Mật khẩu mới',
     'User' => 'Người dùng',
+    'Current Password' => '',
 ];

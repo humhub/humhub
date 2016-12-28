@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Allowed file extensions' => '',
-  'Hide file info (name, size) for images on wall' => '',
-  'Hide file list widget from showing files for these objects on wall.' => '',
-  'Maximum preview image height (in pixels, optional)' => '',
-  'Maximum preview image width (in pixels, optional)' => '',
+  'Allowed file extensions' => '允许文件扩展名',
+  'Hide file info (name, size) for images on wall' => '在墙上的图像隐藏文件信息（名称，大小）',
+  'Hide file list widget from showing files for these objects on wall.' => '从显示这些对象的文件的墙上隐藏文件列表控件。',
+  'Maximum preview image height (in pixels, optional)' => '最大预览图像高度（以像素为单位，可选）',
+  'Maximum preview image width (in pixels, optional)' => '最大预览图像宽度（以像素为单位，可选）',
   'Convert command not found!' => '反转命令没有找到',
   'Got invalid image magick response! - Correct command?' => '有无效的图像Magick响应！正确的命令？',
   'Image Magick convert command (optional)' => '图像Magick反转命令（可选）',

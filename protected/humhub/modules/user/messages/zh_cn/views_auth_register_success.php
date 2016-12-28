@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Registration successful' => '',
+    'Registration successful' => '注册成功',
     '<strong>Registration</strong> successful!' => '<strong>注册</strong> 成功!',
     'Please check your email and follow the instructions!' => '请检查邮件完成激活',
     'back to home' => '返回首页',

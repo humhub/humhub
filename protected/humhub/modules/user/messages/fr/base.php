@@ -47,4 +47,5 @@ return [
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Un utilisateur avec le même e-mail existe déjà, mais ne vous est pas rattaché. Se connecter d\'abord en utilisant cet e-mail pour effectuer ce rattachement.',
     'Your new password must not equal your current password!' => 'Votre nouveau mot de passe doit être différent de votre mot de passe actuel !',
     'or' => 'ou',
+    'Current Password' => '',
 ];

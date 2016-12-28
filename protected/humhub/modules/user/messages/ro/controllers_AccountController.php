@@ -4,4 +4,6 @@ return array (
   'Save profile' => '',
   'Saved' => '저장됨',
   'The entered e-mail address is already in use by another user.' => '',
+  'Members' => '',
+  'Guests' => '',
 );

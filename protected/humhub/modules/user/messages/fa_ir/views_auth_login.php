@@ -13,4 +13,5 @@ return array (
   'email' => 'ایمیل',
   'password' => 'گذرواژه',
   'username or email' => 'نام كاربري',
+  '<strong>Join</strong> the network' => '',
 );

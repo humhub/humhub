@@ -5,5 +5,5 @@ return array (
   'Followers' => '被关注',
   'Members' => '成员',
   'Ok' => 'Ok',
-  'Posts' => '',
+  'Posts' => '文章',
 );

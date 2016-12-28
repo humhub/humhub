@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Friends' => '',
+    'Friends' => '好友',
     '<strong>Something</strong> went wrong' => '未知错误',
     'Followers' => '被关注',
     'Following' => '关注',
     'Ok' => 'Ok',
-    'Spaces' => '版块',
+    'Spaces' => '空间',
 ];

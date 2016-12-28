@@ -21,4 +21,6 @@ return [
     'Save profile' => 'ذخیره‌ی پروفایل',
     'Saved' => 'ذخیره شد',
     'The entered e-mail address is already in use by another user.' => 'ایمیل وارد شده توسط یک کاربر دیگر در حال استفاده‌است.',
+    'Members' => '',
+    'Guests' => '',
 ];

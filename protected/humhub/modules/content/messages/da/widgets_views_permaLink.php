@@ -20,4 +20,5 @@ return [
     '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> til dette opslag',
     'Close' => 'Luk',
     'Permalink' => 'Permalink',
+    'Copy to clipboard: Ctrl+C, Enter' => '',
 ];

@@ -17,11 +17,11 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  ' Remove panel' => '移除版块',
+  ' Remove panel' => '移除空间',
   '<strong>Getting</strong> Started' => '<strong>马上</strong>开始',
   '<strong>Guide:</strong> Administration (Modules)' => '<strong>指南：</strong>管理（模块）',
   '<strong>Guide:</strong> Overview' => '<strong>指南：</strong>概述',
-  '<strong>Guide:</strong> Spaces' => '<strong>指南：</strong>版块',
+  '<strong>Guide:</strong> Spaces' => '<strong>指南：</strong>空间',
   '<strong>Guide:</strong> User profile' => '<strong>指南：</strong> 用户属性',
   'Get to know your way around the site\'s most important features with the following guides:' => '以下指南带你了解网站的主要功能。',
 );

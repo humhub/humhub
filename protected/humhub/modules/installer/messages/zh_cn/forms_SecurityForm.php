@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Allow access for non-registered users to public content (guest access)' => '',
-    'Allow friendships between members' => '',
-    'External user can register (The registration form will be displayed at Login))' => '',
-    'Newly registered users have to be activated by an admin first' => '',
-    'Registered members can invite new users via email' => '',
+    'Allow access for non-registered users to public content (guest access)' => '允许非注册用户访问公开内容（访客访问）',
+    'Allow friendships between members' => '允许成员之间',
+    'External user can register (The registration form will be displayed at Login))' => '外部用户可以注册（注册表单将显示在登录页）',
+    'Newly registered users have to be activated by an admin first' => '新注册的用户必须由管理员激活',
+    'Registered members can invite new users via email' => '注册会员可以通过电子邮件邀请新用户',
 ];

@@ -2,6 +2,8 @@
 
 namespace humhub\modules\comment;
 
+use Yii;
+
 /**
  * CommentModule adds the comment content addon functionalities.
  *
@@ -30,6 +32,14 @@ class Module extends \humhub\components\Module
         }
 
         return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getName()
+    {
+        return Yii::t('CommentModule.views_comment_show', 'Comments');
     }
     
     /**

@@ -75,6 +75,16 @@ class Invite extends ActiveRecord
     /**
      * @inheritdoc
      */
+    public function attributeLabels()
+    {
+        return [
+            'email' => Yii::t('UserModule.models_Invite', 'Email'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
         if ($insert && $this->token == '') {

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Here you can decide how new, unregistered users can access HumHub.' => '',
-    'Security <strong>Settings</strong>' => '',
+    'Here you can decide how new, unregistered users can access HumHub.' => '在这里你可以决是否允许定新的，未注册的用户访问HumHub。',
+    'Security <strong>Settings</strong>' => '安全 <strong>设置</strong>',
 ];

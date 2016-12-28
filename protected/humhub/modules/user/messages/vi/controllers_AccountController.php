@@ -21,4 +21,6 @@ return [
     'Save profile' => 'Lưu thông tin',
     'Saved' => 'Đã lưu',
     'The entered e-mail address is already in use by another user.' => 'Địa chỉ e -mail này đã được sử dụng bởi người dùng khác .',
+    'Members' => '',
+    'Guests' => '',
 ];

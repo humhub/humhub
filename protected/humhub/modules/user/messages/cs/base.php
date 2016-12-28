@@ -47,4 +47,5 @@ return [
     'Profile' => 'Profil',
     'Settings' => 'Nastavení',
     'User' => 'Uživatel',
+    'Current Password' => '',
 ];

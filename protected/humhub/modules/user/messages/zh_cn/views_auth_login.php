@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Login' => '',
-    'Remember me' => '',
+    'Login' => '登录',
+    'Remember me' => '记住密码',
     '<strong>Please</strong> sign in' => '<strong>请</strong> 登录',
     '<strong>Sign</strong> up' => '注册',
     'Create a new one.' => '创建一个新的',
@@ -30,4 +30,5 @@ return [
     'email' => '邮件',
     'password' => '密码',
     'username or email' => '用户名或邮箱',
+    '<strong>Join</strong> the network' => '<strong>加入</strong> 社交平台',
 ];

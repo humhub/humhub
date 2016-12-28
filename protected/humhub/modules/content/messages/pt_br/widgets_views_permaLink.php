@@ -20,4 +20,5 @@ return [
     '<strong>Permalink</strong> to this post' => '<strong>Link permanente</strong> para este post',
     'Close' => 'Fechar',
     'Permalink' => 'Link permanente',
+    'Copy to clipboard: Ctrl+C, Enter' => '',
 ];

@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>System</strong> Check' => '',
-  'Check again' => '',
-  'Congratulations! Everything is ok and ready to start over!' => '',
-  'Next' => '',
-  'This overview shows all system requirements of HumHub.' => '',
+  '<strong>System</strong> Check' => '<strong>系统</strong> 检测',
+  'Check again' => '重新检测',
+  'Congratulations! Everything is ok and ready to start over!' => '祝贺你!一切准备就绪！',
+  'Next' => '下一步',
+  'This overview shows all system requirements of HumHub.' => '以下展示了humhub的所有系统需求',
 );

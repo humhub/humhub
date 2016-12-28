@@ -17,14 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Administrators' => '',
-    'Color' => '',
-    'Default content visibility' => '',
-    'Homepage' => '',
-    'Homepage (Guests)' => '',
-    'Members' => '',
-    'Moderators' => '',
-    'Users' => '',
+    'Administrators' => '超级管理用户',
+    'Color' => '颜色',
+    'Default content visibility' => '默认内容可见性',
+    'Homepage' => '首页',
+    'Homepage (Guests)' => '首页 (游客)',
+    'Members' => '成员',
+    'Moderators' => '版主',
+    'Users' => '用户',
     'Created At' => '创建于',
     'Created By' => '创建人',
     'Description' => '描述',
@@ -36,6 +36,6 @@ return [
     'Updated At' => '修改于',
     'Updated by' => '修改人',
     'Visibility' => '可见性',
-    'You cannot create private visible spaces!' => '你不能创建私有的版块',
-    'You cannot create public visible spaces!' => '你不能创建公共版块',
+    'You cannot create private visible spaces!' => '你不能创建私有的空间',
+    'You cannot create public visible spaces!' => '你不能创建公共空间',
 ];

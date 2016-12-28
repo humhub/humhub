@@ -18,12 +18,12 @@
  */
 return [
     '<i class="fa fa-cog"></i>' => '',
-    'Cancel Membership' => '',
-    'Hide posts on dashboard' => '',
-    'Security' => '',
-    'Show posts on dashboard' => '',
-    'This option will hide new content from this space at your dashboard' => '',
-    'This option will show new content from this space at your dashboard' => '',
+    'Cancel Membership' => '取消成员',
+    'Hide posts on dashboard' => '在控制面板隐藏文章',
+    'Security' => '安全',
+    'Show posts on dashboard' => '在控制面板展示文章',
+    'This option will hide new content from this space at your dashboard' => '此选项将在控制面板上隐藏这个空间的新内容',
+    'This option will show new content from this space at your dashboard' => '此选项将在控制面板上展示这个空间的新内容',
     'Members' => '成员',
     'Modules' => '模块',
 ];

@@ -21,4 +21,6 @@ return [
     'Save profile' => 'Uložit profil',
     'Saved' => 'Uloženo',
     'The entered e-mail address is already in use by another user.' => 'Zadaná e-mailová adresa je již používána jiným uživatelem.',
+    'Members' => '',
+    'Guests' => '',
 ];

@@ -20,4 +20,5 @@ return [
     '<strong>Permalink</strong> to this post' => 'الوصلة الدائمة لهذه المحتويات',
     'Close' => 'إغلاق',
     'Permalink' => 'وصلة دائمة',
+    'Copy to clipboard: Ctrl+C, Enter' => '',
 ];
