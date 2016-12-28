@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Currently installed version: %currentVersion%' => '',
-    'HumHub is currently in debug mode. Disable it when running on production!' => '',
-    'Licences' => '',
-    'See installation manual for more details.' => '',
-    'There is a new update available! (Latest version: %version%)' => '',
-    'This HumHub installation is up to date!' => '',
+    'Currently installed version: %currentVersion%' => '当前安装版本: %currentVersion%',
+    'HumHub is currently in debug mode. Disable it when running on production!' => 'HumHub目前在调试模式。请在生产环境时禁用它！',
+    'Licences' => '许可证',
+    'See installation manual for more details.' => '查看安装手册获取更多细节',
+    'There is a new update available! (Latest version: %version%)' => '有新版本可用! (最新版: %version%)',
+    'This HumHub installation is up to date!' => 'HumHub已是最新！',
 ];

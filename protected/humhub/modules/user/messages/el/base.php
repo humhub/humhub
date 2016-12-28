@@ -47,4 +47,5 @@ return [
     'Notifications' => 'Ενημερώσεις',
     'Password' => 'Κωδικός',
     'User' => 'Χρήστης',
+    'Current Password' => '',
 ];

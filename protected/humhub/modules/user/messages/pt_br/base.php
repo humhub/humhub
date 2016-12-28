@@ -47,4 +47,5 @@ return [
     'User' => 'Usuário',
     'Your new password must not equal your current password!' => 'Sua nova senha não pode ser igual a sua senha atual!',
     'or' => 'ou',
+    'Current Password' => '',
 ];

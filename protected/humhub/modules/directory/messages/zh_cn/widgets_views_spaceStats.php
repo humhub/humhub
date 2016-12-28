@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>New</strong> spaces' => '<strong>新</strong>版块',
-  '<strong>Space</strong> stats' => '<strong>版块</strong>状态',
+  '<strong>New</strong> spaces' => '<strong>新</strong>空间',
+  '<strong>Space</strong> stats' => '<strong>空间</strong>状态',
   'Most members' => '大多数成员',
-  'Private spaces' => '私有版块',
-  'Total spaces' => '所有版块',
+  'Private spaces' => '私有空间',
+  'Total spaces' => '所有空间',
 );

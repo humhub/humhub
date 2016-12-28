@@ -47,4 +47,5 @@ return [
     'or' => '',
     'Delete' => 'Șterge',
     'Password' => '패스워드',
+    'Current Password' => '',
 ];

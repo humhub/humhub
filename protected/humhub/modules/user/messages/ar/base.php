@@ -47,4 +47,5 @@ return [
     'Delete' => 'حذف',
     'Password' => 'كلمة السر',
     'User' => 'المستخدم',
+    'Current Password' => '',
 ];

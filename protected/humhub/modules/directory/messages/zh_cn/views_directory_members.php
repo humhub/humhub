@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Group</strong> members - {group}' => '',
+    '<strong>Group</strong> members - {group}' => '<strong>分组</strong> 成员 - {group}',
     '<strong>Member</strong> directory' => '<strong>成员</strong> 目录',
     'No members found!' => '没发现成员',
     'Search' => '搜 索',

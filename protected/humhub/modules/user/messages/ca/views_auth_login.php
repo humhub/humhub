@@ -13,4 +13,5 @@ return array (
   'email' => 'correu electrònic',
   'password' => 'contrasenya',
   'username or email' => 'usuari o correu ',
+  '<strong>Join</strong> the network' => '',
 );

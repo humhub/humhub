@@ -33,7 +33,7 @@ class Application extends \yii\console\Application
 
         if ($this->isDatabaseInstalled()) {
             $baseUrl = Yii::$app->settings->get('baseUrl');
-            if ($baseUrl !== null) {
+            if (!empty($baseUrl)) {
                 Yii::setAlias(("@web"), $baseUrl);
                 $this->urlManager->scriptUrl = $baseUrl;
                 $this->urlManager->baseUrl = $baseUrl;

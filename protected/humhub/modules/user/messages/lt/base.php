@@ -47,4 +47,5 @@ return [
     'Profile' => 'Profilis',
     'Settings' => 'Nustatymai',
     'User' => 'Vartotojas',
+    'Current Password' => '',
 ];

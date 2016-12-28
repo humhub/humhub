@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Click here to create an account:' => '',
-    '{username} invited you to join "{space}" on {name}.' => '',
-    '{username} invited you to {name}.' => '',
+    'Click here to create an account:' => '点击这里创建一个新帐户：',
+    '{username} invited you to join "{space}" on {name}.' => '{username} 邀请你加入 "{space}" 的 {name}.',
+    '{username} invited you to {name}.' => '{username} 邀请你加入 {name}',
 ];

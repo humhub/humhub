@@ -47,4 +47,5 @@ return [
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Er bestaat al een gebruiker met hetzelfde mailadres, maar dit account is daar niet mee verbonden. Log in met je email adres en wachtwoord en koppel je accounts.',
     'Your new password must not equal your current password!' => 'Je nieuwe wachtwoord mag niet gelijk zijn aan je huidige wachtwoord',
     'or' => 'of',
+    'Current Password' => '',
 ];

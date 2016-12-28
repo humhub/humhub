@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Welcome</strong> to HumHub<br>Your Social Network Toolbox' => '',
-    'Next' => '',
-    'This wizard will install and configure your own HumHub instance.<br><br>To continue, click Next.' => '',
+    '<strong>Welcome</strong> to HumHub<br>Your Social Network Toolbox' => '<strong>欢迎来到</strong> HumHub<br>你的社交网络工具箱！',
+    'Next' => '下一步',
+    'This wizard will install and configure your own HumHub instance.<br><br>To continue, click Next.' => '该向导将安装和配置你自己的humhub实例.<br><br>点击下一步继续。',
 ];

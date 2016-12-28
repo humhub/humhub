@@ -2,8 +2,7 @@
 
 namespace humhub\modules\user\models;
 
-
-
+use humhub\components\ActiveRecord;
 
 /**
  * This is the model class for table "group_admin".
@@ -16,7 +15,7 @@ namespace humhub\modules\user\models;
  * @property string $updated_at
  * @property integer $updated_by
  */
-class GroupAdmin extends \yii\db\ActiveRecord
+class GroupAdmin extends ActiveRecord
 {
 
     /**
@@ -34,8 +33,7 @@ class GroupAdmin extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'group_id'], 'required'],
-            [['user_id', 'group_id', 'created_by', 'updated_by'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['user_id', 'group_id'], 'integer'],
             [['user_id', 'group_id'], 'unique', 'targetAttribute' => ['user_id', 'group_id'], 'message' => 'The combination of User ID and Group ID has already been taken.']
         ];
     }

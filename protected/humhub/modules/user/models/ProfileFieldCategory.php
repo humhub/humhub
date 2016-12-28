@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\models;
 
-
+use humhub\components\ActiveRecord;
 
 /**
  * This is the model class for table "profile_field_category".
@@ -26,7 +26,7 @@ namespace humhub\modules\user\models;
  * @property string $translation_category
  * @property integer $is_system
  */
-class ProfileFieldCategory extends \yii\db\ActiveRecord
+class ProfileFieldCategory extends ActiveRecord
 {
 
     /**
@@ -45,8 +45,7 @@ class ProfileFieldCategory extends \yii\db\ActiveRecord
         return [
             [['title', 'sort_order'], 'required'],
             [['description'], 'string'],
-            [['sort_order', 'module_id', 'visibility', 'created_by', 'updated_by', 'is_system'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['sort_order', 'module_id', 'visibility', 'is_system'], 'integer'],
             [['title', 'translation_category'], 'string', 'max' => 255]
         ];
     }
@@ -102,6 +101,18 @@ class ProfileFieldCategory extends \yii\db\ActiveRecord
         $query = $this->hasMany(ProfileField::className(), ['profile_field_category_id' => 'id']);
         $query->orderBy('sort_order');
         return $query;
+    }
+
+    /**
+     * Internal
+     * 
+     * Just holds message labels for the Yii Message Command
+     */
+    private function translationOnly()
+    {
+        Yii::t('UserModule.models_ProfileFieldCategory', 'General');
+        Yii::t('UserModule.models_ProfileFieldCategory', 'Communication');
+        Yii::t('UserModule.models_ProfileFieldCategory', 'Social bookmarks');
     }
 
 }

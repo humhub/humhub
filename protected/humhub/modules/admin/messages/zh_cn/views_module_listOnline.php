@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Buy (%price%)' => '',
-    'Disclaimer' => '',
-    'Installing module...' => '',
-    'Licence Key:' => '',
+    'Buy (%price%)' => '购买 (%price%)',
+    'Disclaimer' => '申明',
+    'Installing module...' => '安装模块...',
+    'Licence Key:' => '许可证密钥',
     '<strong>Modules</strong> directory' => '<strong>模块</strong> 目录',
     'Install' => '安装',
     'Latest compatible version:' => '最新兼容版本:',

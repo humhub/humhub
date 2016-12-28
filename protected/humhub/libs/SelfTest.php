@@ -205,7 +205,7 @@ class SelfTest
 
         // Checks APC Extension
         $title = 'PHP - APC Support';
-        if (function_exists('apc_add')) {
+        if (function_exists('apc_add') || function_exists('apcu_add')) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
                 'state' => 'OK'

@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add new provider' => '',
-    'Currently no provider active!' => '',
-    'Enabled OEmbed providers' => '',
+    'Add new provider' => '增加新的供应商',
+    'Currently no provider active!' => '当前没有可用的供应商！',
+    'Enabled OEmbed providers' => '可用的 OEmbed 供应商',
 ];

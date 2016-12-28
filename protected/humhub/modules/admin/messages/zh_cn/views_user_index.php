@@ -17,14 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Actions' => '',
-    'Add new user' => '',
-    'Group Manager' => '',
-    'Last login' => '',
-    'Overview' => '',
-    'Send invite' => '',
-    'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
-    'never' => '',
+    'Actions' => '动作',
+    'Add new user' => '增加新用户',
+    'Group Manager' => '组管理',
+    'Last login' => '最后登录',
+    'Overview' => '概览',
+    'Send invite' => '发送邀请',
+    'This overview contains a list of each registered user with actions to view, edit and delete users.' => '此概览包括所有注册用户列表信息，包括查看，编辑，删除操作。',
+    'never' => '从不',
     'Settings' => '设置',
     'Users' => '用户管理',
 ];

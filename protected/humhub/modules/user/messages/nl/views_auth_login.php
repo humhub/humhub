@@ -13,4 +13,5 @@ return array (
   'email' => 'e-mail',
   'password' => 'wachtwoord',
   'username or email' => 'gebruikersnaam of e-mail',
+  '<strong>Join</strong> the network' => '',
 );

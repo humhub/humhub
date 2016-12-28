@@ -29,4 +29,6 @@ return array (
   'list text here' => 'textul listei aici',
   'quote here' => 'citatul aici',
   'strong text' => 'text îngroșat',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

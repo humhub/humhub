@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Hide introduction tour panel on dashboard' => '',
-    'Profile visibility' => '',
-    'TimeZone' => '',
+    'Hide introduction tour panel on dashboard' => '从控制面板上隐藏介绍向导',
+    'Profile visibility' => '属性的可见性',
+    'TimeZone' => '时区',
     'Language' => '语言',
     'Tags' => '标签',
 ];

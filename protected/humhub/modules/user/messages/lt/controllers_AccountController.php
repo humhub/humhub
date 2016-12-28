@@ -21,4 +21,6 @@ return [
     'Save profile' => 'Išsaugoti profilį',
     'Saved' => 'Išsaugotas',
     'The entered e-mail address is already in use by another user.' => 'Šis elektroninis paštaus jau yra naudojamas.',
+    'Members' => '',
+    'Guests' => '',
 ];

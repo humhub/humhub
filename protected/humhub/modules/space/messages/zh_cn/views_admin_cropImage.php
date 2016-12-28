@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Modify</strong> space image' => '<strong>更改</strong> 版块图片',
+    '<strong>Modify</strong> space image' => '<strong>更改</strong> 空间图片',
     'Close' => '关闭',
 ];

@@ -83,9 +83,8 @@ class Content extends \humhub\components\ActiveRecord
     public function rules()
     {
         return [
-            [['object_id', 'visibility', 'sticked', 'created_by', 'updated_by'], 'integer'],
+            [['object_id', 'visibility', 'sticked'], 'integer'],
             [['archived'], 'safe'],
-            [['created_at', 'updated_at'], 'safe'],
             [['guid'], 'string', 'max' => 45],
             [['object_model'], 'string', 'max' => 100],
             [['object_model', 'object_id'], 'unique', 'targetAttribute' => ['object_model', 'object_id'], 'message' => 'The combination of Object Model and Object ID has already been taken.'],
@@ -164,8 +163,9 @@ class Content extends \humhub\components\ActiveRecord
         
         $this->stream_sort_date = new \yii\db\Expression('NOW()');
 
-        if ($this->created_by == "")
+        if ($this->created_by == "") {
             throw new Exception("Could not save content without created_by!");
+        }
 
         return parent::beforeSave($insert);
     }

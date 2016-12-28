@@ -47,4 +47,5 @@ return [
     'User' => 'Пользователь',
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Пользователь с таким e-mail уже существует, но он не привязан к вам. Зайдите с помощью вашего e-mail, чтобы привязать его',
     'or' => 'или ',
+    'Current Password' => '',
 ];

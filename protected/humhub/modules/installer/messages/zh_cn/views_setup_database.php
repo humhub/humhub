@@ -17,13 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Database</strong> Configuration' => '',
-    'Below you have to enter your database connection details. If you’re not sure about these, please contact your system administrator.' => '',
-    'Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)' => '',
-    'Initializing database...' => '',
-    'Next' => '',
-    'Ohh, something went wrong!' => '',
-    'The name of the database you want to run HumHub in.' => '',
-    'Your MySQL password.' => '',
-    'Your MySQL username' => '',
+    '<strong>Database</strong> Configuration' => '<strong>数据库</strong> 配置',
+    'Below you have to enter your database connection details. If you’re not sure about these, please contact your system administrator.' => '下面你必须输入数据库连接的详细信息。如果你不确定，请与系统管理员联系',
+    'Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)' => 'MySQL数据库服务器的主机名（例如:如果MySQL是同一台机器上运行,输入localhost）',
+    'Initializing database...' => '初始化数据库...',
+    'Next' => '下一步',
+    'Ohh, something went wrong!' => '糟糕, 出错了！',
+    'The name of the database you want to run HumHub in.' => '你想要存humhub数据的数据库名',
+    'Your MySQL password.' => '数据库存密码。',
+    'Your MySQL username' => '数据库用户名',
 ];

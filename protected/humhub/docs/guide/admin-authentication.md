@@ -90,6 +90,9 @@ return [
                     'class' => 'humhub\modules\user\authclient\GitHub',
                     'clientId' => 'Your GitHub Client ID here',
                     'clientSecret' => 'Your GitHub Client Secret here',
+                    // require read access to the users email
+                    // https://developer.github.com/v3/oauth/#scopes
+                    'scope' => 'user:email',
                 ],
             ],
         ],

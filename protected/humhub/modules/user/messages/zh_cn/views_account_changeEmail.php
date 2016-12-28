@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Your current E-mail address is <b>{email}</b>. You can change your current E-mail address here.' => '',
+    'Your current E-mail address is <b>{email}</b>. You can change your current E-mail address here.' => '你当前的邮箱地址是<b>{email}</b>。你可以在这里修改当前邮箱。',
     'Save' => '保存',
 ];

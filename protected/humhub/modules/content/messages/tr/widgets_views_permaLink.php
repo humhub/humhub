@@ -20,4 +20,5 @@ return [
     '<strong>Permalink</strong> to this post' => 'Gönderim için <strong>Permalink</strong>',
     'Close' => 'Kapat',
     'Permalink' => 'Permalink',
+    'Copy to clipboard: Ctrl+C, Enter' => '',
 ];
