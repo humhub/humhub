@@ -12,6 +12,7 @@ use Yii;
 use humhub\libs\ThemeHelper;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\models\Log;
 
 /**
  * SettingController
@@ -223,6 +224,39 @@ class SettingController extends Controller
     {
         $providers = UrlOembed::getProviders();
         return $this->render('oembed', array('providers' => $providers));
+    }
+
+    public function actionLogs()
+    {
+        $logsCount = Log::find()->count();
+        $dating = Log::find()
+            ->orderBy('log_time', 'asc')
+            ->limit(1)
+            ->one();
+
+        // I wish..
+        if ($dating) {
+            $dating = date('Y-m-d H:i:s', $dating->log_time);
+        } else {
+            $dating = "the begining of time";
+        }
+
+        $form = new \humhub\modules\admin\models\forms\LogsSettingsForm;
+        $limitAgeOptions = $form->options;
+        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
+
+            $timeAgo = strtotime($form->logsDateLimit);
+            Log::deleteAll(['<', 'log_time', $timeAgo]);
+            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            return $this->redirect(['/admin/setting/logs']);
+        }
+
+        return $this->render('logs', array(
+            'logsCount' => $logsCount,
+            'model' => $form,
+            'limitAgeOptions' => $limitAgeOptions,
+            'dating' => $dating
+        ));
     }
 
     /**
