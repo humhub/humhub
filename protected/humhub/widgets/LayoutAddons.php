@@ -26,8 +26,12 @@ class LayoutAddons extends BaseStack
     {
         $this->addWidget(GlobalModal::className());
         $this->addWidget(GlobalConfirmModal::className());
-        $this->addWidget(\humhub\modules\tour\widgets\Tour::className());
-        $this->addWidget(\humhub\modules\admin\widgets\TrackingWidget::className());
+        
+        if(Yii::$app->params['installed']) {
+            $this->addWidget(\humhub\modules\tour\widgets\Tour::className());
+            $this->addWidget(\humhub\modules\admin\widgets\TrackingWidget::className());
+        }
+        
         $this->addWidget(LoaderWidget::className(), ['show' => false, 'id' => "humhub-ui-loader-default"]);
         $this->addWidget(StatusBar::className());
         $this->addWidget(BlueimpGallery::className());
