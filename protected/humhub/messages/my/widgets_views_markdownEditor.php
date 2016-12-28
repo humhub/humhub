@@ -10,7 +10,7 @@ return array (
   'Image' => 'Imej',
   'Image/File' => 'Imej/Fail',
   'Insert Hyperlink' => 'Masukkan Pautan Hiper',
-  'Insert Image Hyperlink' => 'Masukkan Pautan Hiper Imej',
+  'Insert Image Hyperlink' => 'Masukkan Pautan Imej',
   'Italic' => 'Senget',
   'List' => 'Senarai',
   'Please wait while uploading...' => 'Sila tunggu sementara memuatnaik...',

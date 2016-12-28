@@ -24,7 +24,7 @@ return array (
   'emphasized text' => 'Texto enfatizado',
   'enter image description here' => 'Insira a descrição da imagem aqui',
   'enter image title here' => 'Insira o título da imagem aqui',
-  'enter link description here' => 'Insira descrição do link aqui',
+  'enter link description here' => 'Insira a descrição do link aqui',
   'heading text' => 'Texto do cabeçalho ',
   'list text here' => 'Listar texto aqui',
   'quote here' => 'Citação aqui',
