@@ -22,7 +22,7 @@ class AppAsset extends AssetBundle
         'css/flatelements.css',
         'resources/at/jquery.atwho.css',
     ];
-    public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
+    public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
     public $js = [
         'js/ekko-lightbox-modified.js',
         'js/modernizr.js',
