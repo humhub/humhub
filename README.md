@@ -1,7 +1,8 @@
 Zentrix - Social Network Kit
 ===========================
 
-[![Build Status](https://travis-ci.org/tribalfrost/Zentrix.svg?branch=master)](https://travis-ci.org/tribalfrost/Zentrix)
+Master: [![Build Status](https://travis-ci.org/tribalfrost/Zentrix.svg?branch=master)](https://travis-ci.org/tribalfrost/Zentrix)
+
 v0.5-dev: [![Build Status](https://travis-ci.org/tribalfrost/Zentrix.svg?branch=v0.5-dev)](https://travis-ci.org/tribalfrost/Zentrix)
 
 [![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
