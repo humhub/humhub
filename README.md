@@ -1,4 +1,4 @@
-Zentrix - Social Network Kit
+Zentrix - Social Network Kit & Business Managementtool. 
 ===========================
 [![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
 
@@ -7,7 +7,7 @@ Master: [![Build Status](https://travis-ci.org/tribalfrost/Zentrix.svg?branch=ma
 v0.5-dev: [![Build Status](https://travis-ci.org/tribalfrost/Zentrix.svg?branch=v0.5-dev)](https://travis-ci.org/tribalfrost/Zentrix)
 
 
-HumHub is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
+Zentrix is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
 
 It's perfect for individual:
 - Social Intranets
@@ -18,3 +18,4 @@ More information:
 - [Documentation & Class Reference](http://www.humhub.org/docs)
 - [Licence](http://www.humhub.org/licences)
 
+It's forked from: HumHub
