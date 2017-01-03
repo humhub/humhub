@@ -2,10 +2,9 @@ Zentrix - Social Network Kit & Business Managementtool.
 ===========================
 [![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
 
-Master: [![Build Status](https://travis-ci.org/tribalfrost/Zentrix.svg?branch=master)](https://travis-ci.org/tribalfrost/Zentrix)
-
-v0.5-dev: [![Build Status](https://travis-ci.org/tribalfrost/Zentrix.svg?branch=v0.5-dev)](https://travis-ci.org/tribalfrost/Zentrix)
-
+Master Branch | v0.5-dev Branch
+------------ | -------------
+[![Build Status](https://travis-ci.org/tribalfrost/Zentrix.svg?branch=master)](https://travis-ci.org/tribalfrost/Zentrix) | [![Build Status](https://travis-ci.org/tribalfrost/Zentrix.svg?branch=v0.5-dev)](https://travis-ci.org/tribalfrost/Zentrix)
 
 Zentrix is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
 
