@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @link https://www.tribalfrost.com
+ * @copyright Copyright (c) 2017 Tribalfrost Studio
  * @license https://www.humhub.com/licences
  */
 
