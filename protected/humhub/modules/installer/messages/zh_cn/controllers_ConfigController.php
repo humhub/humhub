@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Calvin Klein – Between love and madness lies obsession.' => '',
-    'Create Admin Account' => '',
-    'Nike – Just buy it. ;Wink;' => '',
-    'We\'re looking for great slogans of famous brands. Maybe you can come up with some samples?' => '',
-    'Welcome Space' => '',
-    'Yay! I\'ve just installed HumHub ;Cool;' => '',
-    'Your first sample space to discover the platform.' => '',
+    'Calvin Klein – Between love and madness lies obsession.' => '卡尔文 - 痴迷于爱和疯狂之间的谎言。',
+    'Create Admin Account' => '创建管理员账户',
+    'Nike – Just buy it. ;Wink;' => '耐克 - 夹斯特杜伊特。',
+    'We\'re looking for great slogans of famous brands. Maybe you can come up with some samples?' => '我们正在寻找伟大的口号。你能拿出一些样品吗？',
+    'Welcome Space' => '欢迎空间',
+    'Yay! I\'ve just installed HumHub ;Cool;' => '太棒了，我刚刚安装了HumHub',
+    'Your first sample space to discover the platform.' => '你的第一个样本空间发现平台。',
 ];

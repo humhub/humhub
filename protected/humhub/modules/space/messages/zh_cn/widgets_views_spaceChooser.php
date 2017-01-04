@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Create new space' => '创建新版块',
-  'My spaces' => '<strong>我的版块</strong>',
+  'Create new space' => '创建新空间',
+  'My spaces' => '<strong>我的空间</strong>',
   'Search' => '搜 索',
 );

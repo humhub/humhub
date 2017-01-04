@@ -19,6 +19,18 @@ use yii\base\Exception;
 /**
  * Stream is the basic action for content streams.
  *
+ * JSON output structure:
+ *      content             - array, content id is key
+ *           id             - int, id of content 
+ *           guid           - string, guid of contetn
+ *           sticked        - boolean, is content sticked
+ *           archived       - boolean, i scontent is archived
+ *           output         - string, the rendered html output of content
+ *      total               - int, total of content records
+ *      isLast              - boolean, is last content
+ *      contentOrder        - array, list of content ids
+ * 
+ * 
  * @author luke
  * @since 0.11
  */
@@ -107,21 +119,21 @@ abstract class Stream extends Action
      * @var User
      */
     public $user;
-    
+
     /**
      * Used to filter the stream content entrie classes against a given array.
      * @var type 
      * @since 1.2
      */
     public $includes = [];
-    
+
     /**
      * Used to filter our specific types
      * @var type 
      * @since 1.2
      */
     public $excludes = [];
-    
+
     /**
      * Stream query model instance
      * @var type 
@@ -130,16 +142,22 @@ abstract class Stream extends Action
     protected $streamQuery;
 
     /**
+     * @var string suppress similar content types in a row 
+     */
+    public $streamQueryClass = 'humhub\modules\stream\models\StreamSuppressQuery';
+
+    /**
      * @inheritdocs
      */
     public function init()
     {
-        $this->streamQuery = StreamQuery::find($this->includes, $this->excludes)->forUser($this->user);
+        $streamQueryClass = $this->streamQueryClass;
+        $this->streamQuery = $streamQueryClass::find($this->includes, $this->excludes)->forUser($this->user);
 
         // Read parameters
         if (!Yii::$app->request->isConsoleRequest) {
             $this->streamQuery->load(Yii::$app->request->get());
-            
+
             if (Yii::$app->getRequest()->get('mode', $this->mode) === self::MODE_ACTIVITY) {
                 $this->streamQuery->includes(\humhub\modules\activity\models\Activity::className());
                 $this->streamQuery->query()->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\modules\activity\models\Activity::className()]);
@@ -151,41 +169,41 @@ abstract class Stream extends Action
                 $this->streamQuery->addFilter(trim($filter));
             }
         }
-        
+
         $this->setActionSettings();
-        
+
         // Build query and set activeQuery.
         $this->activeQuery = $this->streamQuery->query(true);
         $this->user = $this->streamQuery->user;
-        
+
         // Update action filters with merged request and configured action filters.
         $this->filters = $this->streamQuery->filters;
-        
+
         // Append additional filter of subclasses.
         $this->setupCriteria();
         $this->setupFilters();
     }
-    
+
     protected function setActionSettings()
     {
         // Merge configured filters set for this action with request filters.
         $this->streamQuery->addFilter($this->filters);
-        
+
         // Overwrite limit if there was no setting in the request.
-        if(empty($this->streamQuery->limit)) {
+        if (empty($this->streamQuery->limit)) {
             $this->streamQuery->limit = $this->limit;
         }
-        
-        if(empty($this->streamQuery->sort)) {
+
+        if (empty($this->streamQuery->sort)) {
             $this->streamQuery->sort = $this->sort;
         }
     }
-    
+
     public function setupCriteria()
     {
-        // Can be overwritten by subtypes to add additional critegia.
+        // Can be overwritten by subtypes to add additional criterias.
     }
-    
+
     public function setupFilters()
     {
         // Can be overwritten by subtypes to add additional filters.
@@ -215,14 +233,20 @@ abstract class Stream extends Action
                 }
             }
         }
-        
-        $output['total'] = count($output['content']);
+
+        $output['total'] = count($output['content']);   //         // Required?
         $output['isLast'] = ($output['total'] < $this->activeQuery->limit);
         $output['contentOrder'] = array_keys($output['content']);
+        $output['lastContentId'] = end($output['contentOrder']);
+
+        if ($this->streamQuery instanceof \humhub\modules\stream\models\StreamSuppressQuery) {
+            $output['contentSuppressions'] = $this->streamQuery->getSuppressions();
+            $output['lastContentId'] = $this->streamQuery->getLastContentId();
+        }
 
         return $output;
     }
-    
+
     /**
      * Is inital stream requests (show first stream content)
      * 

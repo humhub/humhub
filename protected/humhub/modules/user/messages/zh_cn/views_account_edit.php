@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Here you can edit your general profile data, which is visible in the about page of your profile.' => '',
+    'Here you can edit your general profile data, which is visible in the about page of your profile.' => '在这里，你可以编辑一般属性数据，这些数据在你的属性页可见。',
 ];

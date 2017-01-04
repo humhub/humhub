@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add OEmbed provider' => '',
-    'Back to overview' => '',
-    'Edit OEmbed provider' => '',
-    'Url Prefix without http:// or https:// (e.g. youtube.com)' => '',
-    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => '',
+    'Add OEmbed provider' => '增加 OEmbed 供应商',
+    'Back to overview' => '返回概览',
+    'Edit OEmbed provider' => '修改 OEmbed 供应商',
+    'Url Prefix without http:// or https:// (e.g. youtube.com)' => '不带http://的Url 前缀（例如 youtube.com)',
+    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => '使用 %url% 作为 URL 的占位符。 合格应该为JSON。 (例如 http://www.youtube.com/oembed?url=%url%&format=json)',
     'Delete' => '删除',
     'Save' => '保存',
 ];

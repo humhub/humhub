@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Are you sure, that you want to delete this space? All published content will be removed!' => '你确定，你要删除这个版块？所有发布的内容将被删除！',
+    'Are you sure, that you want to delete this space? All published content will be removed!' => '你确定，你要删除这个空间？所有发布的内容将被删除！',
     'Delete' => '删除',
     'Please provide your password to continue!' => '请提供您的密码，以继续！',
 ];

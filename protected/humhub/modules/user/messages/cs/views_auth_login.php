@@ -13,4 +13,5 @@ return array (
   'email' => 'E-mailová adresa',
   'password' => 'Heslo',
   'username or email' => 'Uživatelské jméno nebo e-mail',
+  '<strong>Join</strong> the network' => '',
 );

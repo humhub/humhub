@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Security</strong> settings' => '',
-    '<strong>Space</strong> settings' => '',
-    'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.' => '',
+    '<strong>Security</strong> settings' => '<strong>安全</strong> 设置',
+    '<strong>Space</strong> settings' => '<strong>空间</strong> 设置',
+    'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.' => '权限分配给不同的用户角色。要编辑权限，选择要编辑的用户角色，并更改给定权限的下拉值。',
 ];

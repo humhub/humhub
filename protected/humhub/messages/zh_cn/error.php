@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Login</strong> required' => '',
-    'An internal server error occurred.' => '',
-    'You are not allowed to perform this action.' => '',
+    '<strong>Login</strong> required' => '<strong>必须</strong> 登录',
+    'An internal server error occurred.' => '发生了一个内部错误。',
+    'You are not allowed to perform this action.' => '你没有权限执行此操作。',
 ];

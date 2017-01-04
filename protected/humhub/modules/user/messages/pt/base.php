@@ -47,4 +47,5 @@ return [
     'New password' => 'Nova palavra passe',
     'Password' => 'Palavra-passe',
     'User' => 'Usuário',
+    'Current Password' => '',
 ];

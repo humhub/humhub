@@ -29,4 +29,6 @@ return array (
   'list text here' => 'متن را اینجا لیست کنید',
   'quote here' => 'اینجا بیان کنید',
   'strong text' => 'متن پررنگ',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

@@ -29,4 +29,6 @@ return array (
   'list text here' => 'نص القائمة هنا',
   'quote here' => 'نص الاقتباس هنا',
   'strong text' => 'خط عريض',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

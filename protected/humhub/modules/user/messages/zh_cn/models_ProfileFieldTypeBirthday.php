@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Hide age per default' => '',
+    'Hide age per default' => '从默认中隐藏年龄',
     '%y Years' => '%y 年',
     'Birthday field options' => '生日区域选项',
 ];

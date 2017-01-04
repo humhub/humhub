@@ -27,7 +27,7 @@ AppAsset::register($this);
     <body>
     <?php $this->beginBody() ?>
 
-    <div class="container installer" style="margin: 0 auto; max-width: 700px;">
+    <div class="container installer" style="margin: 0 auto; max-width: 770px;">
         <div class="logo">
             <a class="animated fadeIn" href="http://www.humhub.org" target="_blank" class="">
                 <img src="<?php echo Yii::getAlias("@web/resources/installer"); ?>/humhub-logo.png" alt="Logo">

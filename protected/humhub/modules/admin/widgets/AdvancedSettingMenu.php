@@ -69,6 +69,15 @@ class AdvancedSettingMenu extends \humhub\widgets\BaseMenu
             'isVisible' => Yii::$app->user->isAdmin(),
         ));
 
+        $this->addItem(array(
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Logs'),
+            'url' => Url::toRoute('/admin/setting/logs'),
+            'icon' => '<i class="fa fa-terminal"></i>',
+            'sortOrder' => 600,
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && (Yii::$app->controller->action->id == 'logs' || Yii::$app->controller->action->id == 'logs-edit')),
+            'isVisible' => Yii::$app->user->isAdmin(),
+        ));
+
 
         parent::init();
     }

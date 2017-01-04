@@ -47,4 +47,5 @@ return [
     'Password' => 'Contrasenya',
     'Profile' => 'Perfil',
     'Settings' => 'Configuració',
+    'Current Password' => '',
 ];

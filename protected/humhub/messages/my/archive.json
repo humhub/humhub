@@ -1,0 +1,3680 @@
+{
+	"Could not find requested module!": [
+		"Modul yang diminta tidak ditemui!"
+	],
+	"Invalid request.": [
+		"Permintaan tidak sah."
+	],
+	"Keyword:": [
+		"Kata kunci:"
+	],
+	"Nothing found with your input.": [
+		"Tiada yang ditemui berdasarkan input anda."
+	],
+	"Results": [
+		"Hasil"
+	],
+	"Show more results": [
+		"Papar hasil seterusnya"
+	],
+	"Sorry, nothing found!": [
+		"Maaf, tiada apa yang ditemui!"
+	],
+	"Welcome to %appName%": [
+		"Selamat datang kepada %appName%"
+	],
+	"<strong>Latest</strong> updates": [
+		"Kemaskini <strong>terkini</strong>"
+	],
+	"Account settings": [
+		"Tetapan akaun"
+	],
+	"Administration": [
+		"Pengurusan"
+	],
+	"Back": [
+		"Kembali"
+	],
+	"Back to dashboard": [
+		"Kembali ke papan utama"
+	],
+	"Choose language:": [
+		"Pilih bahasa:"
+	],
+	"Collapse": [
+		"Tutup"
+	],
+	"Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!": [
+		"Sumber kandungan addon mestilah daripada HActiveRecordContent atau HActiveRecordContentAddon!"
+	],
+	"Could not determine content container!": [
+		"Tidak dapat mengesahkan bekas kandungan!"
+	],
+	"Could not find content of addon!": [
+		"Kandungan addon tidak ditemui!"
+	],
+	"Error": [
+		"Kesalahan"
+	],
+	"Expand": [
+		"Buka"
+	],
+	"Insufficent permissions to create content!": [
+		"Tiada keizinan bagi mencipta kandungan!"
+	],
+	"It looks like you may have taken the wrong turn.": [
+		"Anda telah tersilap langkah."
+	],
+	"Language": [
+		"Bahasa"
+	],
+	"Latest news": [
+		"Berita baru"
+	],
+	"Login": [
+		"Log Masuk"
+	],
+	"Logout": [
+		"Log Keluar"
+	],
+	"Menu": [
+		"Menu"
+	],
+	"Module is not on this content container enabled!": [
+		"Modul tidak diaktikfkan pada bekas kandungan ini!"
+	],
+	"My profile": [
+		"Profil saya"
+	],
+	"New profile image": [
+		"Imej profil baru"
+	],
+	"Oooops...": [
+		"Oooops..."
+	],
+	"Search": [
+		"Cari"
+	],
+	"Search for users and spaces": [
+		"Cari ahli dan ruangan"
+	],
+	"Space not found!": [
+		"Ruangan tidak ditemui!"
+	],
+	"User Approvals": [
+		"Kelulusan Ahli"
+	],
+	"User not found!": [
+		"Ahli tidak ditemui!"
+	],
+	"You cannot create public visible content!": [
+		"Anda tidak boleh mencipta kandungan yang boleh dilihat awam!"
+	],
+	"Your daily summary": [
+		"Ringkasan harian anda"
+	],
+	"<strong>Login</strong> required": [
+		"<strong>Log masuk</strong> diwajibkan"
+	],
+	"Global {global} array cleaned using {method} method.": [
+		"Array global {global} dibersihkan menggunakan cara {method}"
+	],
+	"<strong>Upload</strong> error": [
+		"Kesalahan <strong>muatnaik</strong>"
+	],
+	"Close": [
+		"Tutup"
+	],
+	"Add image/file": [
+		"Tambah imej/fail"
+	],
+	"Add link": [
+		"Tambah pautan"
+	],
+	"Bold": [
+		"Tebal"
+	],
+	"Code": [
+		"Kod"
+	],
+	"Enter a url (e.g. http://example.com)": [
+		"Masukkan url (cth. https://hub.sch.my)"
+	],
+	"Heading": [
+		"Kepala"
+	],
+	"Image": [
+		"Imej"
+	],
+	"Image/File": [
+		"Imej/Fail"
+	],
+	"Insert Hyperlink": [
+		"Masukkan Pautan Hiper"
+	],
+	"Insert Image Hyperlink": [
+		"Masukkan Pautan Hiper Imej "
+	],
+	"Italic": [
+		"Senget"
+	],
+	"List": [
+		"Senarai"
+	],
+	"Please wait while uploading...": [
+		"Sila tunngu sementara memuatnaik..."
+	],
+	"Preview": [
+		"Semak"
+	],
+	"Quote": [
+		"Ungkap"
+	],
+	"Target": [
+		"Sasaran"
+	],
+	"Title": [
+		"Tajuk"
+	],
+	"Title of your link": [
+		"Tajuk pautan anda"
+	],
+	"URL/Link": [
+		"URL/Pautan"
+	],
+	"code text here": [
+		"teks kod di sini"
+	],
+	"emphasized text": [
+		"teks dicerahkan"
+	],
+	"enter image description here": [
+		"masukkan deskripsi imej di sini"
+	],
+	"enter image title here": [
+		"masukkan tajuk imej di sini"
+	],
+	"enter link description here": [
+		"masukkan deskripsi pautan di sini"
+	],
+	"heading text": [
+		"teks kepala"
+	],
+	"list text here": [
+		"teks bagi senarai di sini"
+	],
+	"quote here": [
+		"ungkap di sini"
+	],
+	"strong text": [
+		"teks tebal"
+	],
+	"Could not create activity for this object type!": [
+		"Tidak dapat mencipta aktiviti bagi jenis objek ini!"
+	],
+	"%displayName% created the new space %spaceName%": [
+		"%displayName% mencipta ruangan baru %spaceName%"
+	],
+	"%displayName% created this space.": [
+		"%displayName% mencipta ruangan ini."
+	],
+	"%displayName% joined the space %spaceName%": [
+		"%displayName% menyertai ruangan %spaceName%"
+	],
+	"%displayName% joined this space.": [
+		"%displayName% menyertai ruangan ini."
+	],
+	"%displayName% left the space %spaceName%": [
+		"%displayName% meninggalkan ruangan %spaceName%"
+	],
+	"%displayName% left this space.": [
+		"%displayName% meninggalkan ruangan ini."
+	],
+	"{user1} now follows {user2}.": [
+		"{user1} kini mengikuti {user2}."
+	],
+	"see online": [
+		"lihat di atas talian"
+	],
+	"via": [
+		"melalui"
+	],
+	"<strong>Latest</strong> activities": [
+		"Aktiviti <strong>terkini</strong>"
+	],
+	"There are no activities yet.": [
+		"Tiada aktiviti lagi."
+	],
+	"Hello {displayName},<br><br>\n  \n   your account has been activated.<br><br> \n   \n   Click here to login:<br>\n   <a href='{loginURL}'>{loginURL}</a><br><br>\n   \n   Kind Regards<br>\n   {AdminName}<br><br>": [
+		"Salam {displayName},<br><br>\n  \n   akaun anda telah diaktifkan.<br><br> \n   \n   Klik di sini untuk log masuk:<br>\n   <a href='{loginURL}'>{loginURL}</a><br><br>\n   \n   Yang benar,<br>\n   {AdminName}<br><br>"
+	],
+	"Hello {displayName},<br><br>\n  \n   your account request has been declined.<br><br> \n      \n   Kind Regards<br>\n   {AdminName}<br><br>": [
+		"Salam {displayName},<br><br>\n  \n   permintaan akaun anda telah ditolak.<br><br> \n      \n   Yang benar,<br>\n   {AdminName}<br><br>"
+	],
+	"Account Request for '{displayName}' has been approved.": [
+		"Permintaan akaun bagi '{displayName}' telah diluluskan."
+	],
+	"Account Request for '{displayName}' has been declined.": [
+		"La solicitud de cuenta para '{displayName}' ha sido denegada."
+	],
+	"Group not found!": [
+		"¡Grupo no encontrado!"
+	],
+	"Could not uninstall module first! Module is protected.": [
+		"¡No se pudo desinstalar el módulo primero! El módulo está protegido."
+	],
+	"Module path %path% is not writeable!": [
+		"¡La ruta del módulo %path% no se puede escribir!"
+	],
+	"Saved": [
+		"Guardado"
+	],
+	"Database": [
+		"Base de datos"
+	],
+	"No theme": [
+		"Sin tema"
+	],
+	"APC": [
+		"APC"
+	],
+	"Could not load LDAP! - Check PHP Extension": [
+		"¡No se pudo cargar LDAP! - Compruebe la extensión de PHP"
+	],
+	"File": [
+		"Archivo"
+	],
+	"No caching (Testing only!)": [
+		"Sin caché (Solo pruebas!)"
+	],
+	"None - shows dropdown in user registration.": [
+		"Ninguno - muestra el desplegable en el registro de usuario"
+	],
+	"Saved and flushed cache": [
+		"Guardado y vaciada la caché"
+	],
+	"Become this user": [
+		"Convertirse en este usuario"
+	],
+	"Delete": [
+		"Borrar"
+	],
+	"Disabled": [
+		"Deshabilitado"
+	],
+	"Enabled": [
+		"Habilitado"
+	],
+	"LDAP": [
+		"LDAP"
+	],
+	"Local": [
+		"Local"
+	],
+	"Save": [
+		"Guardar"
+	],
+	"Unapproved": [
+		"Desaprobado"
+	],
+	"You cannot delete yourself!": [
+		"¡No te puedes borrar a tí mismo!"
+	],
+	"Could not load category.": [
+		"No se pudo cargar la categoría."
+	],
+	"You can only delete empty categories!": [
+		"¡Sólo puedes borrar categorías vacias!"
+	],
+	"Group": [
+		"Grupo"
+	],
+	"Message": [
+		"Mensaje"
+	],
+	"Subject": [
+		"Asunto"
+	],
+	"Base DN": [
+		"DN de base"
+	],
+	"Enable LDAP Support": [
+		"Activar soporte LDAP"
+	],
+	"Encryption": [
+		"Cifrado"
+	],
+	"Fetch/Update Users Automatically": [
+		"Cargar/actualizar usuarios automáticamente"
+	],
+	"Hostname": [
+		"Nombre de servidor"
+	],
+	"Login Filter": [
+		"Filtro de inicio de sesión"
+	],
+	"Password": [
+		"Contraseña"
+	],
+	"Port": [
+		"Puerto"
+	],
+	"User Filer": [
+		"Filtro de usuario"
+	],
+	"Username": [
+		"Nombre de usuario"
+	],
+	"Username Attribute": [
+		"Atributo del nombre de usuario"
+	],
+	"Allow limited access for non-authenticated users (guests)": [
+		"Permitir acceso limitado para usuarios no autentificados (invitados)"
+	],
+	"Anonymous users can register": [
+		"Los usuarios anónimos pueden registrarse"
+	],
+	"Default user group for new users": [
+		"Grupo por defecto para nuevos usuarios"
+	],
+	"Default user idle timeout, auto-logout (in seconds, optional)": [
+		"Tiempo de inactividad antes de cerrar sesión (en segundos, opcional)"
+	],
+	"Default user profile visibility": [
+		"Visibilidad del perfil de usuario por defecto"
+	],
+	"Members can invite external users by email": [
+		"Los miembros pueden invitar a usuarios externos por correo electrónico"
+	],
+	"Require group admin approval after registration": [
+		"Requerir aprobación del administrador del grupo después de registrarse"
+	],
+	"Base URL": [
+		"URL Base"
+	],
+	"Default language": [
+		"Idioma por defecto"
+	],
+	"Default space": [
+		"Espacio por defecto"
+	],
+	"Invalid space": [
+		"Espacio no válido"
+	],
+	"Logo upload": [
+		"Subir logo"
+	],
+	"Name of the application": [
+		"Nombre de la aplicación"
+	],
+	"Show introduction tour for new users": [
+		"Mostrar guía de introducción a los nuevos usuarios"
+	],
+	"Show user profile post form on dashboard": [
+		"Mostrar el formulario para escribir entradas en Inicio"
+	],
+	"Cache Backend": [
+		"Modo de caché"
+	],
+	"Default Expire Time (in seconds)": [
+		"Tiempo de expiración por defecto (en segundos)"
+	],
+	"PHP APC Extension missing - Type not available!": [
+		"¡Falta la extensión PHP APC - El tipo no está disponible!"
+	],
+	"PHP SQLite3 Extension missing - Type not available!": [
+		"¡Falta la extensión PHP SQLite3 - El tipo no está disponible!"
+	],
+	"Dropdown space order": [
+		"Orden de los desplegables"
+	],
+	"Default pagination size (Entries per page)": [
+		"Tamaño de paginación por defecto (Entradas por página)"
+	],
+	"Display Name (Format)": [
+		"Mostrar nombre (Formato)"
+	],
+	"Theme": [
+		"Tema"
+	],
+	"Allowed file extensions": [
+		"Extensiones de archivos permitidas"
+	],
+	"Convert command not found!": [
+		"¡Comando convertir no encontrado!"
+	],
+	"Got invalid image magick response! - Correct command?": [
+		"¡Respuesta inválida de image magick! - ¿Comando correcto?"
+	],
+	"Hide file info (name, size) for images on wall": [
+		"Esconder la información (nombre, tamaño) para las imágenes en el muro"
+	],
+	"Hide file list widget from showing files for these objects on wall.": [
+		"Esconder el widget de la lista de archivos para estos objetos en el muro."
+	],
+	"Image Magick convert command (optional)": [
+		"Comando convertir de Image Magick (opcional)"
+	],
+	"Maximum preview image height (in pixels, optional)": [
+		"Altura máxima de previsualización de imagen (en píxeles, opcional)"
+	],
+	"Maximum preview image width (in pixels, optional)": [
+		"Ancho máximo de previsualización de imagen (en píxeles, opcional)"
+	],
+	"Maximum upload file size (in MB)": [
+		"Tamaño máximo de archivo para subir (en MB)"
+	],
+	"Use X-Sendfile for File Downloads": [
+		"Usar X-Sendfile para las descargas de archivos"
+	],
+	"Administrator users": [
+		"Usuarios administradores"
+	],
+	"Description": [
+		"Descripción"
+	],
+	"Ldap DN": [
+		"DN de LDAP"
+	],
+	"Name": [
+		"Nombre"
+	],
+	"Allow Self-Signed Certificates?": [
+		"¿Permitir cerfificados autofirmados?"
+	],
+	"E-Mail sender address": [
+		"Dirección del remitente del correo electrónico"
+	],
+	"E-Mail sender name": [
+		"Nombre del remitente del correo electrónico"
+	],
+	"Mail Transport Type": [
+		"Tipo de transporte de correo"
+	],
+	"Port number": [
+		"Número de puerto"
+	],
+	"Endpoint Url": [
+		"Endpoint URL"
+	],
+	"Url Prefix": [
+		"Prefijo URL"
+	],
+	"No Proxy Hosts": [
+		"Sin Proxy"
+	],
+	"Server": [
+		"Servidor"
+	],
+	"User": [
+		"Usuario"
+	],
+	"Super Admins can delete each content object": [
+		"Los superadministradores pueden borrar cada objeto contenido"
+	],
+	"Default Join Policy": [
+		"Política de unión por defecto"
+	],
+	"Default Visibility": [
+		"Visibilidad por defecto"
+	],
+	"HTML tracking code": [
+		"Código de seguimiento HTML"
+	],
+	"Module directory for module %moduleId% already exists!": [
+		"¡El directorio del módulo para el módulo %moduleId% ya existe!"
+	],
+	"Could not extract module!": [
+		"¡No se pudo extraer el módulo!"
+	],
+	"Could not fetch module list online! (%error%)": [
+		"¡No se pudo obtener la lista de módulos en línea! (%error%)"
+	],
+	"Could not get module info online! (%error%)": [
+		"¡No se pudo obtener la información del módulo en línea! (%error%)"
+	],
+	"Download of module failed!": [
+		"¡Falló la descarga del módulo!"
+	],
+	"Module directory %modulePath% is not writeable!": [
+		"¡El directorio del módulo %modulePath% no es escribible!"
+	],
+	"Module download failed! (%error%)": [
+		"¡Falló la descarga del módulo! (%error%)"
+	],
+	"No compatible module version found!": [
+		"¡No se encontró una versión compatible del módulo!",
+		"¡No se encontró un versión compatible del módulo!"
+	],
+	"Activated": [
+		"Activado"
+	],
+	"No modules installed yet. Install some to enhance the functionality!": [
+		"Aún no hay instalados módulos. ¡Añade alguno para extender las funcionalidades!"
+	],
+	"Version:": [
+		"Versión:"
+	],
+	"Installed": [
+		"Instalado"
+	],
+	"No modules found!": [
+		"¡¡No se han encontrado módulos!"
+	],
+	"All modules are up to date!": [
+		"¡Todos los módulos están la versión más reciente!"
+	],
+	"<strong>About</strong> HumHub": [
+		"<strong>Acerca de</strong> HumHub"
+	],
+	"Currently installed version: %currentVersion%": [
+		"Versión instalada actualmente: %currentVersion%"
+	],
+	"Licences": [
+		"Licencias"
+	],
+	"There is a new update available! (Latest version: %version%)": [
+		"¡Hay una nueva versión disponible! (Última versión: %version%)"
+	],
+	"This HumHub installation is up to date!": [
+		"¡Esta instalación de HumHub ya está actualizada!"
+	],
+	"Accept": [
+		"Aceptar"
+	],
+	"Decline": [
+		"No asistir"
+	],
+	"Accept user: <strong>{displayName}</strong> ": [
+		"Aceptar usuario: <strong>{displayName}</strong> "
+	],
+	"Cancel": [
+		"Cancelar"
+	],
+	"Send & save": [
+		"Enviar y guardar"
+	],
+	"Decline & delete user: <strong>{displayName}</strong>": [
+		"Declinar y borrar usuario: <strong>{displayName}</strong>"
+	],
+	"Email": [
+		"Correo electrónico"
+	],
+	"Search for email": [
+		"Buscar por correo electrónico"
+	],
+	"Search for username": [
+		"Buscar por usuario"
+	],
+	"<strong>Pending</strong> user approvals": [
+		"Aprobaciones de usuario <strong>pendientes</strong>"
+	],
+	"Here you see all users who have registered and still waiting for a approval.": [
+		"Aquí ves todos los usuarios que se han registrado y están esperando aprobación."
+	],
+	"<strong>Delete</strong> group": [
+		"<strong>Borrar</strong> grupo"
+	],
+	"Delete group": [
+		"Borrar grupo"
+	],
+	"To delete the group <strong>\"{group}\"</strong> you need to set an alternative group for existing users:": [
+		"Para borrar el grupo <strong>\"{group}\"</strong> tienes que establecer un grupo alternativo activo para los usuarios existentes:"
+	],
+	"<strong>Create</strong> new group": [
+		"<strong>Crear</strong> nuevo grupo"
+	],
+	"<strong>Edit</strong> group": [
+		"<strong>Editar</strong> grupo"
+	],
+	"Group name": [
+		"Nombre del grupo"
+	],
+	"Search for description": [
+		"Buscar por descripción"
+	],
+	"Search for group name": [
+		"Buscar por nombre de grupo"
+	],
+	"<strong>Manage</strong> groups": [
+		"<strong>Administrar</strong> grupos"
+	],
+	"Create new group": [
+		"Crear nuevo grupo"
+	],
+	"You can split users into different groups (for teams, departments etc.) and define standard spaces and admins for them.": [
+		"Puedes separar usuarios en diferentes grupos (para equipos, departamentos, etc.) y definir espacios estándar y administradores para ellos."
+	],
+	"Flush entries": [
+		"Limpiar entradas"
+	],
+	"<strong>Error</strong> logging": [
+		"Registro de <strong>errores</strong>"
+	],
+	"Displaying {count} entries per page.": [
+		"Mostrar {count} entradas por página."
+	],
+	"Total {count} entries found.": [
+		"Total {count} entradas encontradas."
+	],
+	"Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.": [
+		"Los módulos permiten extender las funcionalidades de HumHub. Aquí puedes instalar y configurar módulos de la HumHub Marketplace."
+	],
+	"Available updates": [
+		"Actualizaciones disponibles"
+	],
+	"Browse online": [
+		"Explorar en línea"
+	],
+	"<strong>Module</strong> details": [
+		"Detalles del <strong>módulo</strong>"
+	],
+	"This module doesn't provide further informations.": [
+		"Este módulo no proporciona información adicional."
+	],
+	"Processing...": [
+		"Procesando..."
+	],
+	"<strong>Modules</strong> directory": [
+		"Directorio de <strong>módulos</strong> "
+	],
+	"Are you sure? *ALL* module data will be lost!": [
+		"¿Estás seguro? ¡*TODOS* los datos del módulo se perderán!"
+	],
+	"Are you sure? *ALL* module related data and files will be lost!": [
+		"¿Estás seguro? ¡*TODOS* los archivos y datos relacionados con el módulo se perderán!"
+	],
+	"Configure": [
+		"Configurar"
+	],
+	"Disable": [
+		"Deshabilitar"
+	],
+	"Enable": [
+		"Habilitar"
+	],
+	"More info": [
+		"Más información"
+	],
+	"Set as default": [
+		"Establecer como predeterminado"
+	],
+	"Uninstall": [
+		"Desinstalar"
+	],
+	"Install": [
+		"Instalar"
+	],
+	"Latest compatible version:": [
+		"Última versión compatible:"
+	],
+	"Latest version:": [
+		"Última versión:"
+	],
+	"Installed version:": [
+		"Versión instalada:"
+	],
+	"Latest compatible Version:": [
+		"Última versión compatible:"
+	],
+	"Update": [
+		"Actualizar"
+	],
+	"%moduleName% - Set as default module": [
+		"%moduleName% - Establecer como módulo predeterminado"
+	],
+	"Always activated": [
+		"Siempre activado"
+	],
+	"Deactivated": [
+		"Desactivado"
+	],
+	"Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose \"always activated\".": [
+		"Aquí puedes elegir si un módulo debería estar activado automática en un espacio o perfil del usuario o no. Si el módulo debería estar activado, elige \"Siempre activado\"."
+	],
+	"Spaces": [
+		"Espacios"
+	],
+	"User Profiles": [
+		"Perfiles de usuarios"
+	],
+	"There is a new HumHub Version (%version%) available.": [
+		"Hay una nueva versión de HumHub (%version%) disponible."
+	],
+	"<strong>Authentication</strong> - Basic": [
+		"<strong>Autenticación</strong> - Básica"
+	],
+	"Basic": [
+		"Básica"
+	],
+	"Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)": [
+		"El valor mínimo son 20 segundos. Si la casilla está vacía, la sesión se terminará automáticamente después de 1400 segundos (24 minutos) si no hay actividad."
+	],
+	"Only applicable when limited access for non-authenticated users is enabled. Only affects new users.": [
+		"Sólo aplicable cuando hay acceso limitado activado para los usuarios no autentificados. Sólo afecta a los usuarios nuevos."
+	],
+	"<strong>Authentication</strong> - LDAP": [
+		"<strong>Autenticación</strong> - LDAP"
+	],
+	"A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.": [
+		"Una conexión TLS/SSL es altamente recomendada en entornos de producción para evitar que las contraseñas se transmitan en texto claro."
+	],
+	"Defines the filter to apply, when login is attempted. %uid replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;": [
+		"Define el filtro que aplicar cuando se intenta iniciar sesión. %uid reemplaza el nombre de usuario en la acción de iniciar sesión. Ejemplo: quot;(sAMAccountName=%s)&quot; o &quot;(uid=%s)&quot;"
+	],
+	"LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;": [
+		"Atributo LDAP para el nombre de usuario. Ejemplo: &quotuid&quot; o &quot;sAMAccountName&quot;"
+	],
+	"Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;": [
+		"Limita el acceso a usuarios que cumplan estos criterios. Ejemplo: &quot(objectClass=posixAccount)&quot; o &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;"
+	],
+	"Status: Error! (Message: {message})": [
+		"Estado: ¡Error! (Mensaje: {message})"
+	],
+	"Status: OK! ({userCount} Users)": [
+		"Estado: ¡Correcto! ({userCount} usuarios)"
+	],
+	"The default base DN used for searching for accounts.": [
+		"El DN base por defecto usado para buscar cuentas."
+	],
+	"The default credentials password (used only with username above).": [
+		"La contraseña de las credenciales por defecto (usada sólo con el nombre de usuario de arriba)."
+	],
+	"The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.": [
+		"El nombre de usuario de las credenciales por defecto. Algunos servidores requieren que este esté en formato DN. Este tiene que estar en formato DN si el servidor LDAP requiere un DN para unirse y la unión debería ser posible con nombres de usuario simples."
+	],
+	"<strong>Cache</strong> Settings": [
+		"Ajustes de la <strong>caché</strong>"
+	],
+	"Save & Flush Caches": [
+		"Guardar y vaciar cachés"
+	],
+	"<strong>CronJob</strong> settings": [
+		"Ajustes de <strong>CronJob</strong>"
+	],
+	"Crontab of user: {user}": [
+		"Crontab de usuario: {user}"
+	],
+	"Last run (daily):": [
+		"Última ejecución (diaria):"
+	],
+	"Last run (hourly):": [
+		"Última ejecución (por horas):"
+	],
+	"Never": [
+		"Nunca"
+	],
+	"Or Crontab of root user": [
+		"O Crontab de usuario root"
+	],
+	"Please make sure following cronjobs are installed:": [
+		"Por favor, asegúrate de los siguientes cronjobs están instalados:"
+	],
+	"Alphabetical": [
+		"Alfabético"
+	],
+	"Last visit": [
+		"Última visita"
+	],
+	"<strong>Design</strong> settings": [
+		"Ajustes de <strong>diseño</strong>"
+	],
+	"Firstname Lastname (e.g. John Doe)": [
+		"Nombre y Apellido (p.ej. John Doe)"
+	],
+	"Username (e.g. john)": [
+		"Usuario (p.ej. john)"
+	],
+	"<strong>File</strong> settings": [
+		"Ajustes de <strong>archivos</strong>"
+	],
+	"Comma separated list. Leave empty to allow all.": [
+		"Lista separada por comas. Deja en blanco para permitir todos"
+	],
+	"Comma separated list. Leave empty to show file list for all objects on wall.": [
+		"Lista separada por comas. Deja vacío para mostrar una lista de archivos para todos los objetos en el muro."
+	],
+	"Current Image Libary: {currentImageLibary}": [
+		"Librería de imagenes actual: {currentImageLibary}"
+	],
+	"If not set, height will default to 200px.": [
+		"Si no se ajusta, la altura por defecto será de 200 píxeles."
+	],
+	"If not set, width will default to 200px.": [
+		"Si no se ajusta, el ancho por defecto será de 200 píxeles."
+	],
+	"PHP reported a maximum of {maxUploadSize} MB": [
+		"PHP reportó un máximo de {maxUploadSize} MB"
+	],
+	"<strong>Basic</strong> settings": [
+		"Ajustes <strong>básicos</strong>"
+	],
+	"<strong>Confirm</strong> image deleting": [
+		"<strong>Confirmar</strong> la eliminación de la imagen"
+	],
+	"Dashboard": [
+		"Inicio"
+	],
+	"E.g. http://example.com/humhub": [
+		"P.ej. http://example.com/humhub"
+	],
+	"New users will automatically added to these space(s).": [
+		"Los nuevos usuarios serán automáticamente añadidos a estos espacios."
+	],
+	"You're using no logo at the moment. Upload your logo now.": [
+		"No estás usando un logo ahora. Sube tu logo ahora."
+	],
+	"<strong>Mailing</strong> defaults": [
+		"Predeterminados de <strong>correo</strong>"
+	],
+	"Activities": [
+		"Actividades"
+	],
+	"Always": [
+		"Siempre"
+	],
+	"Daily summary": [
+		"Resumen diario"
+	],
+	"Defaults": [
+		"Predeterminados"
+	],
+	"Define defaults when a user receive e-mails about notifications or new activities. This settings can be overwritten by users in account settings.": [
+		"Define los valores predeterminados para cuando un usuario recibe correos electrónicos sobre notificaciones o nuevas actividades. Estos ajustes pueden ser sobrescritos por los usuarios en los ajustes de la cuenta."
+	],
+	"Notifications": [
+		"Notificaciones"
+	],
+	"Server Settings": [
+		"Ajustes del servidor"
+	],
+	"When I´m offline": [
+		"Cuando no estoy en línea",
+		"Cuando estoy fuera de línea"
+	],
+	"<strong>Mailing</strong> settings": [
+		"Ajustes de <strong>correo</strong>"
+	],
+	"SMTP Options": [
+		"Opciones SMTP"
+	],
+	"<strong>OEmbed</strong> Provider": [
+		"Proveedor <strong>OEmbed</strong>"
+	],
+	"Add new provider": [
+		"Añadir nuevo proveedor"
+	],
+	"Currently active providers:": [
+		"Proveedores activos:"
+	],
+	"Currently no provider active!": [
+		"¡No hay ningún proveedor activo!"
+	],
+	"<strong>Add</strong> OEmbed Provider": [
+		"<strong>Añadir</strong> proveedor OEmbed"
+	],
+	"<strong>Edit</strong> OEmbed Provider": [
+		"<strong>Editar</strong> proveedor OEmbed"
+	],
+	"Url Prefix without http:// or https:// (e.g. youtube.com)": [
+		"Prefijo URL sin http:// o https:// (p.ej. youtube.com)"
+	],
+	"Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)": [
+		"Usa %url% como marcador para la URL. El formato necesario es JSON. (p.ej. http://www.youtube.com/oembed?url=%url%&format=json) "
+	],
+	"<strong>Proxy</strong> settings": [
+		"Ajustes del <strong>Proxy</strong>"
+	],
+	"<strong>Security</strong> settings and roles": [
+		"Roles y ajustes de <strong>seguridad</strong>"
+	],
+	"<strong>Self</strong> test": [
+		"<strong>Auto</strong> test"
+	],
+	"Checking HumHub software prerequisites.": [
+		"Comprobando prerequisitos software de HumHub."
+	],
+	"Re-Run tests": [
+		"Re-ejecutar tests"
+	],
+	"<strong>Statistic</strong> settings": [
+		"Ajustes de <strong>estadísticas</strong>"
+	],
+	"All": [
+		"Todos"
+	],
+	"Delete space": [
+		"Eliminar espacio"
+	],
+	"Edit space": [
+		"Editar espacio"
+	],
+	"Search for space name": [
+		"Buscar por nombre de espacio"
+	],
+	"Search for space owner": [
+		"Buscar por dueño del espacio"
+	],
+	"Space name": [
+		"Nombre del espacio"
+	],
+	"Space owner": [
+		"Dueño del espacio"
+	],
+	"View space": [
+		"Ver espacio"
+	],
+	"<strong>Manage</strong> spaces": [
+		"<strong>Gestionar</strong> espacios"
+	],
+	"Define here default settings for new spaces.": [
+		"Define aquí la configuració por defecto para los nuevos espacios."
+	],
+	"In this overview you can find every space and manage it.": [
+		"En esta vista puedes ver cada espacio y gestionarlo."
+	],
+	"Overview": [
+		"Resúmen",
+		"Resumen"
+	],
+	"Settings": [
+		"Ajustes"
+	],
+	"<strong>Space</strong> Settings": [
+		"Ajustes de <strong>Espacio</strong>"
+	],
+	"<strong>Add</strong> user": [
+		"<strong>Añadir</strong> usuario"
+	],
+	"Are you sure you want to delete this user? If this user is owner of some spaces, <b>you</b> will become owner of these spaces.": [
+		"¿Estás seguro de que desea eliminar este usuario? Si este usuario es dueño de algún espacio, <b>tú</b> serás el nuevo dueño de estos espacios."
+	],
+	"Delete user": [
+		"Eliminar usuario"
+	],
+	"Delete user: <strong>{username}</strong>": [
+		"Eliminar usuario: <strong>{username}</strong>"
+	],
+	"<strong>Edit</strong> user": [
+		"<strong>Editar</strong> usuario"
+	],
+	"Admin": [
+		"Administrador"
+	],
+	"Delete user account": [
+		"Eliminar cuenta de usuario"
+	],
+	"Edit user account": [
+		"Editar cuenta de usuario"
+	],
+	"No": [
+		"No"
+	],
+	"View user profile": [
+		"Ver perfiles de usuario"
+	],
+	"Yes": [
+		"Sí"
+	],
+	"<strong>Manage</strong> users": [
+		"<strong>Gestionar</strong> usuarios"
+	],
+	"Add new user": [
+		"Añadir nuevo usuario"
+	],
+	"In this overview you can find every registered user and manage him.": [
+		"En esta vista podrás encontrar cada usuario registrado y gestionarlo."
+	],
+	"<strong>Create</strong> new profile category": [
+		"<strong>Crear</strong> nueva categoría de perfil"
+	],
+	"<strong>Edit</strong> profile category": [
+		"<strong>Editar</strong> categoría de perfil"
+	],
+	"<strong>Create</strong> new profile field": [
+		"<strong>Crear</strong> nuevo campo de perfil"
+	],
+	"<strong>Edit</strong> profile field": [
+		"<strong>Editar</strong> campo de perfil"
+	],
+	"<strong>Manage</strong> profiles fields": [
+		"<strong>Gestionar</strong> campos del perfil"
+	],
+	"Add new category": [
+		"Añadir nueva categoría"
+	],
+	"Add new field": [
+		"Añadir nuevo campo"
+	],
+	"Security & Roles": [
+		"Seguridad y roles"
+	],
+	"<strong>Administration</strong> menu": [
+		"Menú de <strong>administración</strong>"
+	],
+	"About": [
+		"Acerca de"
+	],
+	"Authentication": [
+		"Autenticación"
+	],
+	"Caching": [
+		"Caché"
+	],
+	"Cron jobs": [
+		"Cronjobs"
+	],
+	"Design": [
+		"Diseño"
+	],
+	"Files": [
+		"Archivos"
+	],
+	"Groups": [
+		"Grupos"
+	],
+	"Logging": [
+		"Registro"
+	],
+	"Mailing": [
+		"Correos"
+	],
+	"Modules": [
+		"Módulos"
+	],
+	"OEmbed Provider": [
+		"Proveedor OEmbed"
+	],
+	"Proxy": [
+		"Proxy"
+	],
+	"Self test & update": [
+		"Auto test y actualización"
+	],
+	"Statistics": [
+		"Estadísticas"
+	],
+	"User approval": [
+		"Aprobación de usuarios"
+	],
+	"User profiles": [
+		"Perfiles de usuarios"
+	],
+	"Users": [
+		"Usuarios"
+	],
+	"Click here to review": [
+		"Haz clic aqui para revisar"
+	],
+	"New approval requests": [
+		"Nuevas peticiones de aprobación"
+	],
+	"One or more user needs your approval as group admin.": [
+		"Uno o más usuarios necesita tu aprobación como administrador del grupo."
+	],
+	"Could not delete comment!": [
+		"¡No se puedo borrar el comentario!"
+	],
+	"Invalid target class given": [
+		"Clase de objetivo no válida"
+	],
+	"Model & Id Parameter required!": [
+		"¡Los parámetros Model e ID son requeridos!"
+	],
+	"Target not found!": [
+		"¡Objetivo no encontrado!"
+	],
+	"Access denied!": [
+		"¡Acceso denegado!"
+	],
+	"Insufficent permissions!": [
+		"¡Permisos insuficientes!"
+	],
+	"Comment": [
+		"Comentario"
+	],
+	"%displayName% wrote a new comment ": [
+		"%displayName% escribió un nuevo comentario "
+	],
+	"Comments": [
+		"Comentarios"
+	],
+	"Edit your comment...": [
+		"Edita tu comentario..."
+	],
+	"%displayName% also commented your %contentTitle%.": [
+		"%displayName% también comentó tu %contentTitle%."
+	],
+	"%displayName% commented %contentTitle%.": [
+		"%displayName% comentó %contentTitle%."
+	],
+	"Show all {total} comments.": [
+		"Ver los {total} comentarios."
+	],
+	"Post": [
+		"Entrada"
+	],
+	"Write a new comment...": [
+		"Escribe un nuevo comentario..."
+	],
+	"Show %count% more comments": [
+		"Mostrar %count% comentarios más"
+	],
+	"Edit": [
+		"Editar"
+	],
+	"<strong>Confirm</strong> comment deleting": [
+		"<strong>Confirmar</strong> la eliminación del comentario"
+	],
+	"Do you really want to delete this comment?": [
+		"¿Seguro que quieres borrar este comentario?"
+	],
+	"Updated :timeago": [
+		"Actualizado :timeago"
+	],
+	"Maximum number of sticked items reached!\n\nYou can stick only two items at once.\nTo however stick this item, unstick another before!": [
+		"¡Número máximo de elementos fijos alcanzado!\n\nSolo puedes fijar dos elementos a la vez.\nPara fijar este elemento, tienes que desfijar otro antes."
+	],
+	"Could not load requested object!": [
+		"¡No se pudo cargar el objeto solicitado!"
+	],
+	"Invalid model given!": [
+		"¡Modelo inválido!"
+	],
+	"Unknown content class!": [
+		"¡Clase de contenido desconocida!"
+	],
+	"Could not find requested content!": [
+		"¡No se pudo encontrar el contenido solicitado!"
+	],
+	"Could not find requested permalink!": [
+		"¡No se pudo encontrar el permalink solicitado!"
+	],
+	"{userName} created a new {contentTitle}.": [
+		"{userName} creó un nuevo {contentTitle}."
+	],
+	"in": [
+		"en"
+	],
+	"Submit": [
+		"Publicar"
+	],
+	"No matches with your selected filters!": [
+		"¡No se han encontrado resultados con los filtros seleccionados!"
+	],
+	"Nothing here yet!": [
+		"¡No hay nada aquí todavía!"
+	],
+	"Move to archive": [
+		"Mover a archivo"
+	],
+	"Unarchive": [
+		"Desarchivar"
+	],
+	"Add a member to notify": [
+		"Añadir un miembro a notificar"
+	],
+	"Make private": [
+		"Hacer Privado"
+	],
+	"Make public": [
+		"Hacer Público"
+	],
+	"Notify members": [
+		"Notificar Miembros"
+	],
+	"Public": [
+		"Público"
+	],
+	"What's on your mind?": [
+		"¿Que estas pensando?",
+		"¿Qué tienes en mente?"
+	],
+	"<strong>Confirm</strong> post deleting": [
+		"<strong>Confirma</strong> el borrado de la entrada"
+	],
+	"Do you really want to delete this post? All likes and comments will be lost!": [
+		"¿Realmente deseas borrar esta entrada? ¡Todos los \"Me gusta\" y los comentarios se perderán!"
+	],
+	"Archived": [
+		"Archivado"
+	],
+	"Sticked": [
+		"Fijado"
+	],
+	"Turn off notifications": [
+		"Desactivar notificaciones"
+	],
+	"Turn on notifications": [
+		"Activar Notificaciones"
+	],
+	"<strong>Permalink</strong> to this post": [
+		"<strong>Permalink</strong> a esta entrada"
+	],
+	"Permalink": [
+		"Permalink"
+	],
+	"Stick": [
+		"Fijar"
+	],
+	"Unstick": [
+		"Desfijar"
+	],
+	"<b>Nobody wrote something yet.</b><br>Make the beginning and post something...": [
+		"<b>Nadie ha escrito nada aún.</b><br/>Marca un comienzo y escribe algo..."
+	],
+	"<b>This profile stream is still empty</b>": [
+		"<b>La actividad de este perfil aún está vacia</b>"
+	],
+	"<b>This space is still empty!</b><br>Start by posting something here...": [
+		"<b>¡Este espacio está aun vacio!</b><br/>Empieza por escribir algo aqui..."
+	],
+	"<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!": [
+		"<b>¡Tu Inicio está vacio!</b><br/>¡Escribe algo en tu perfil o únete a algún espacio!"
+	],
+	"<b>Your profile stream is still empty</b><br>Get started and post something...": [
+		"<b>La actividad de tu perfil aún está vacia</b><br/>Comienza escribiendo algo..."
+	],
+	"Nothing found which matches your current filter(s)!": [
+		"¡No se ha encontrado nada que coincida con tu filtro!"
+	],
+	"Show all": [
+		"Mostrar todo"
+	],
+	"Back to stream": [
+		"Volver a Actividad"
+	],
+	"Content with attached files": [
+		"Contenido con adjuntos"
+	],
+	"Created by me": [
+		"Creado por mi",
+		"Creada por mí"
+	],
+	"Creation time": [
+		"Fecha de creación"
+	],
+	"Filter": [
+		"Filtro"
+	],
+	"Include archived posts": [
+		"Incluir entradas archivadas"
+	],
+	"Last update": [
+		"Última actualización"
+	],
+	"Only private posts": [
+		"Solo entradas privadas"
+	],
+	"Only public posts": [
+		"Solo entradas públicas"
+	],
+	"Posts only": [
+		"Solo entradas"
+	],
+	"Posts with links": [
+		"Entradas con enlaces"
+	],
+	"Sorting": [
+		"Ordenación"
+	],
+	"Where I´m involved": [
+		"En los que estoy involucrado"
+	],
+	"<b>No public contents to display found!</b>": [
+		"<b>¡No se han encontrado contenidos públicos para mostrar!</b>"
+	],
+	"Directory": [
+		"Directorio"
+	],
+	"<strong>Member</strong> Group Directory": [
+		"Directorio de <strong>miembros</strong> de grupos"
+	],
+	"show all members": [
+		"mostrar todos los miembros"
+	],
+	"<strong>Directory</strong> menu": [
+		"Menú del <strong>directorio</strong>"
+	],
+	"Members": [
+		"Miembros"
+	],
+	"User profile posts": [
+		"Entradas de perfil de usuario"
+	],
+	"<strong>Member</strong> directory": [
+		"Directorio de <strong>miembros</strong>"
+	],
+	"Follow": [
+		"Seguir"
+	],
+	"No members found!": [
+		"¡No se encontraron miembros!"
+	],
+	"Unfollow": [
+		"Dejar de seguir"
+	],
+	"search for members": [
+		"buscar miembros"
+	],
+	"<strong>Space</strong> directory": [
+		"Directorio de <strong>espacios</strong>"
+	],
+	"No spaces found!": [
+		"¡No se encontraron espacios!"
+	],
+	"You are a member of this space": [
+		"Eres miembro de este espacio"
+	],
+	"search for spaces": [
+		"buscar espacios"
+	],
+	"<b>There are no profile posts yet!</b>": [
+		"<b>¡No hay entradas en el perfil de usuario todavía!</b>"
+	],
+	"<strong>Group</strong> stats": [
+		"Estadísticas de <strong>grupos</strong>"
+	],
+	"Average members": [
+		"Miembros promedio"
+	],
+	"Top Group": [
+		"Grupo en cabeza"
+	],
+	"Total groups": [
+		"Grupos en total"
+	],
+	"<strong>Member</strong> stats": [
+		"Estadísticas de <strong>miembros</strong>"
+	],
+	"<strong>New</strong> people": [
+		"<strong>Nueva</strong> gente"
+	],
+	"Follows somebody": [
+		"Siguen a alguien"
+	],
+	"Online right now": [
+		"En línea ahora mismo"
+	],
+	"Total users": [
+		"Usuarios en total"
+	],
+	"See all": [
+		"Ver todos"
+	],
+	"<strong>New</strong> spaces": [
+		"<strong>Nuevos</strong> espacios"
+	],
+	"<strong>Space</strong> stats": [
+		"Estadísticas de <strong>espacios</strong>"
+	],
+	"Most members": [
+		"Mas miembros"
+	],
+	"Private spaces": [
+		"Espacios privados"
+	],
+	"Total spaces": [
+		"Espacios en total"
+	],
+	"Could not find requested file!": [
+		"¡No se pudo encontrar el archivo solicitado!"
+	],
+	"Insufficient permissions!": [
+		"¡Permisos insuficientes!"
+	],
+	"Maximum file size ({maxFileSize}) has been exceeded!": [
+		"¡Límite de {maxFileSize} alcanzado!"
+	],
+	"This file type is not allowed!": [
+		"¡Este tipo de archivo no está permitido!"
+	],
+	"Created By": [
+		"Creado por"
+	],
+	"Created at": [
+		"Creado el"
+	],
+	"File name": [
+		"Nombre de archivo"
+	],
+	"Guid": [
+		"Guid"
+	],
+	"ID": [
+		"ID"
+	],
+	"Invalid Mime-Type": [
+		"Tipo Mime no válido"
+	],
+	"Mime Type": [
+		"Tipo Mime"
+	],
+	"Size": [
+		"Tamaño"
+	],
+	"Updated at": [
+		"Actualizado el"
+	],
+	"Updated by": [
+		"Actualizado por"
+	],
+	"Could not upload File:": [
+		"No se puede subir el archivo:"
+	],
+	"Upload files": [
+		"Subir archivos"
+	],
+	"List of already uploaded files:": [
+		"Lista de archivos ya subidos:"
+	],
+	"Create Admin Account": [
+		"Crear cuenta de administrador"
+	],
+	"Name of your network": [
+		"Nombre de tu red social"
+	],
+	"Name of Database": [
+		"Nombre de la base de datos"
+	],
+	"<strong>Admin</strong> Account": [
+		"Cuenta de <strong>administrador</strong>"
+	],
+	"You're almost done. In the last step you have to fill out the form to create an admin account. With this account you can manage the whole network.": [
+		"¡Ya casi has acabado! En el último paso necesitarás rellenar un formulario para crear una cuenta de administrador. Con esta cuenta podrás administrar la red entera."
+	],
+	"Next": [
+		"Siguiente"
+	],
+	"Of course, your new social network needs a name. Please change the default name with one you like. (For example the name of your company, organization or club)": [
+		"Como ya sabrás, tu nueva red social necesita un nombre. Por favor, cambia el nombre por defecto por el que tú quieras. (Por ejemplo, el nombre de tu compañía, organización o club)"
+	],
+	"Social Network <strong>Name</strong>": [
+		"<strong>Nombre<strong> de la red social"
+	],
+	"<strong>Setup</strong> Complete": [
+		"<strong>Instalación</strong> completada"
+	],
+	"<strong>Congratulations</strong>. You're done.": [
+		"<strong>¡Felicidades!</strong>. Ya has acabado."
+	],
+	"Sign in": [
+		"Iniciar sesión"
+	],
+	"The installation completed successfully! Have fun with your new social network.": [
+		"¡La instalación se ha completado correctamente!. Diviértete con tu nueva red social."
+	],
+	"<strong>Welcome</strong> to HumHub<br>Your Social Network Toolbox": [
+		"<strong>Bienvenido</strong> a HumHub<br>"
+	],
+	"This wizard will install and configure your own HumHub instance.<br><br>To continue, click Next.": [
+		"Este asistente instalará y configurará HumHub.<br><br>Para continuar, haz click en Siguiente."
+	],
+	"Yes, database connection works!": [
+		"¡Si, la conexión con la base de datos funciona!"
+	],
+	"<strong>Database</strong> Configuration": [
+		"Configuración de la <strong>base de datos</strong>"
+	],
+	"Below you have to enter your database connection details. If you’re not sure about these, please contact your system administrator.": [
+		"Debajo tendrás que escribir la configuración de la base de datos. Si no estás seguro de ello, por favor, contacta con el administrador del sistema."
+	],
+	"Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)": [
+		"Servidor de la base de datos (ej. localhost si MySQL está corriendo en la misma máquina)"
+	],
+	"Ohh, something went wrong!": [
+		"¡Algo fue mal!"
+	],
+	"The name of the database you want to run HumHub in.": [
+		"El nombre de la base de datos donde quieres que funcione HumHub."
+	],
+	"Your MySQL password.": [
+		"Tu contraseña MySQL"
+	],
+	"Your MySQL username": [
+		"Tu nombre de usuario MySQL"
+	],
+	"<strong>System</strong> Check": [
+		"Comprobar <strong>sistema</strong>"
+	],
+	"Check again": [
+		"Comprobar otra vez"
+	],
+	"Congratulations! Everything is ok and ready to start over!": [
+		"¡Felicidades! ¡Todo está correcto y listo para empezar!"
+	],
+	"This overview shows all system requirements of HumHub.": [
+		"Este resumen te mostrará todos los requisitos del sistema para que funcione HumHub."
+	],
+	"Could not find target class!": [
+		"¡No se pudo encontrar la clase objetivo!"
+	],
+	"Could not find target record!": [
+		"¡No se pudo encontrar el registro objetivo!"
+	],
+	"Invalid class given!": [
+		"¡Clase no válida!"
+	],
+	"<strong>Users</strong> who like this": [
+		"<strong>Usuarios</strong> que les gusta esto"
+	],
+	"{userDisplayName} likes {contentTitle}": [
+		"A {userDisplayName} le gusta {contentTitle}"
+	],
+	"%displayName% also likes the %contentTitle%.": [
+		"A %displayName% también le gusta  %contentTitle%."
+	],
+	"%displayName% likes %contentTitle%.": [
+		"A %displayName% le gusta %contentTitle%."
+	],
+	" likes this.": [
+		"le gusta."
+	],
+	"<strong>You</strong> like this.": [
+		"<strong>Te</strong> gusta."
+	],
+	"<strong>You</strong><br>": [
+		"<strong>Tú</strong><br>"
+	],
+	"Like": [
+		"Me gusta"
+	],
+	"Unlike": [
+		"Ya no me gusta"
+	],
+	"and {count} more like this.": [
+		"y a {count} más les gusta esto."
+	],
+	"Could not determine redirect url for this kind of source object!": [
+		"¡No se pudo determinar la url de redirección para este tipo de objeto fuente!"
+	],
+	"Could not load notification source object to redirect to!": [
+		"¡No se pudo cargar el objeto fuente de la notificación para redireccionar a él!"
+	],
+	"New": [
+		"Nuevo"
+	],
+	"Mark all as seen": [
+		"Marcar todas como vistas"
+	],
+	"There are no notifications yet.": [
+		"No hay notificaciones aún."
+	],
+	"%displayName% created a new post.": [
+		"%displayName% creó una nueva entrada."
+	],
+	"Edit your post...": [
+		"Edita tu entrada..."
+	],
+	"Read full post...": [
+		"Leer más..."
+	],
+	"Send & decline": [
+		"Enviar y declinar"
+	],
+	"Visible for all": [
+		"Visible para todos"
+	],
+	" Invite and request": [
+		"Invitar y enviar una solicitud"
+	],
+	"Could not delete user who is a space owner! Name of Space: {spaceName}": [
+		"¡No puedo borrar un usuario que es dueño de un espacio! Nombre del espacio: {spaceName}"
+	],
+	"Everyone can enter": [
+		"Todo el mundo puede entrar"
+	],
+	"Invite and request": [
+		"Invitar y enviar una solicitud"
+	],
+	"Only by invite": [
+		"Sólo por invitación"
+	],
+	"Private (Invisible)": [
+		"Privado (Invisible)"
+	],
+	"Public (Members & Guests)": [
+		"Público (Miembros y visitantes)"
+	],
+	"Public (Members only)": [
+		"Público (sólo miembros)"
+	],
+	"Public (Registered users only)": [
+		"Público (sólo usuarios registrados)"
+	],
+	"Public (Visible)": [
+		"Público (Visible)"
+	],
+	"Visible for all (members and guests)": [
+		"Visible para todos (miembros y visitantes)"
+	],
+	"Space is invisible!": [
+		"¡El espacio es invisible!"
+	],
+	"You need to login to view contents of this space!": [
+		"¡Necesitas iniciar sesión para ver los contenidos de este espacio!"
+	],
+	"As owner you cannot revoke your membership!": [
+		"¡Como propietario no puedes revocar tu suscripción!"
+	],
+	"Could not request membership!": [
+		"¡No se puedo solicitar la suscripción!"
+	],
+	"There is no pending invite!": [
+		"¡No hay invitaciones pendientes!"
+	],
+	"This action is only available for workspace members!": [
+		"¡Esta acción solo está disponible para miembros del espacio!"
+	],
+	"You are not allowed to join this space!": [
+		"¡No puedes unirte a este espacio!"
+	],
+	"Space title is already in use!": [
+		"¡El Titulo de espacio ya está en uso!"
+	],
+	"Type": [
+		"Tipo"
+	],
+	"Your password": [
+		"Tu contraseña"
+	],
+	"Invites": [
+		"Invitaciones"
+	],
+	"New user by e-mail (comma separated)": [
+		"Nuevo usuario por correo electrónico (separado por comas)"
+	],
+	"User is already member!": [
+		"¡El usuario ya es miembro!"
+	],
+	"{email} is already registered!": [
+		"¡{email} ya está registrado!"
+	],
+	"{email} is not valid!": [
+		"¡{email} no es válido!"
+	],
+	"Application message": [
+		"Mensaje de la aplicación"
+	],
+	"Scope": [
+		"Ámbito"
+	],
+	"Strength": [
+		"Fuerza"
+	],
+	"Created At": [
+		"Creado hace"
+	],
+	"Join Policy": [
+		"Política de acceso"
+	],
+	"Owner": [
+		"Propietario"
+	],
+	"Status": [
+		"Estado"
+	],
+	"Tags": [
+		"Etiquetas"
+	],
+	"Updated At": [
+		"Actualizado hace"
+	],
+	"Visibility": [
+		"Visibilidad"
+	],
+	"Website URL (optional)": [
+		"Dirección del sitio web (opcional)"
+	],
+	"You cannot create private visible spaces!": [
+		"¡No puedes crear espacios privados visibles!"
+	],
+	"You cannot create public visible spaces!": [
+		"¡No puedes crear espacios públicos visibles!"
+	],
+	"Select the area of your image you want to save as user avatar and click <strong>Save</strong>.": [
+		"Elige el área de tu imagen que quieres guardar como avatar y haz clic en <strong>Guardar</strong>."
+	],
+	"<strong>Modify</strong> space image": [
+		"<strong>Cambiar</strong> imagen del espacio"
+	],
+	"<strong>Delete</strong> space": [
+		"<strong>Eliminar</strong> espacio"
+	],
+	"Are you sure, that you want to delete this space? All published content will be removed!": [
+		"¿Estás seguro de que quieres eliminar este espacio? ¡Todo el contenido publicado sera borrado!"
+	],
+	"Please provide your password to continue!": [
+		"¡Por favor, escribe tu contraseña para continuar!"
+	],
+	"<strong>General</strong> space settings": [
+		"Ajustes <strong>generales</strong> del espacio"
+	],
+	"Archive": [
+		"Archivo"
+	],
+	"Choose the kind of membership you want to provide for this workspace.": [
+		"Elige el tipo de suscripción que quieres dar a este espacio."
+	],
+	"Choose the security level for this workspace to define the visibleness.": [
+		"Elige el nivel de seguridad para este espacio para definir la visibilidad."
+	],
+	"Search members": [
+		"Buscar miembros"
+	],
+	"<strong>Manage</strong> your space members": [
+		"<strong>Gestiona</strong> tus miembros del espacio"
+	],
+	"<strong>Outstanding</strong> sent invitations": [
+		"Invitaciones enviadas <strong>pendientes</strong>"
+	],
+	"<strong>Outstanding</strong> user requests": [
+		"Solicitudes de usuarios <strong>pendientes</strong>"
+	],
+	"<strong>Remove</strong> member": [
+		"<strong>Eliminar</strong> usuario"
+	],
+	"Allow this user to<br>invite other users": [
+		"Permitir a este usuario<br>invitar a otros usuarios"
+	],
+	"Allow this user to<br>make content public": [
+		"Permitir a este usuario<br>hacer contenidos públicos"
+	],
+	"Are you sure, that you want to remove this member from this space?": [
+		"¿Estás seguro de que quieres borrar este miembro de este espacio?"
+	],
+	"Can invite": [
+		"Puede invitar"
+	],
+	"Can share": [
+		"Puede compartir"
+	],
+	"Change space owner": [
+		"Cambiar dueño del espacio"
+	],
+	"External users who invited by email, will be not listed here.": [
+		"Los usuarios externos invitados por email no serán listados aquí."
+	],
+	"In the area below, you see all active members of this space. You can edit their privileges or remove it from this space.": [
+		"En el área debajo, están todos los miembros activos de este espacio. Puedes editar sus privilegios o borrarlos de este espacio."
+	],
+	"Is admin": [
+		"Es administrador"
+	],
+	"Make this user an admin": [
+		"Hacer este usuario administrador"
+	],
+	"No, cancel": [
+		"No, cancelar"
+	],
+	"Remove": [
+		"Borrar"
+	],
+	"Request message": [
+		"Mensaje de solicitud"
+	],
+	"Revoke invitation": [
+		"Revocar invitación"
+	],
+	"The following users waiting for an approval to enter this space. Please take some action now.": [
+		"Los siguientes usuarios están esperando aprobación para entrar en este espacio. Por favor, haz algo al respecto."
+	],
+	"The following users were already invited to this space, but haven't accepted the invitation yet.": [
+		"Los siguientes usuarios han sido invitados a este espacio, pero no han seguido la invitación todavia."
+	],
+	"The space owner is the super admin of a space with all privileges and normally the creator of the space. Here you can change this role to another user.": [
+		"El dueño del espacio es el super administrador de un espacio con todos los privilegios y normalmente es el creador del espacio. Aqui puedes cambiar este rol a otro usuario."
+	],
+	"Yes, remove": [
+		"Si, borrar"
+	],
+	"<strong>Space</strong> Modules": [
+		"<strong>Módulos</strong> del espacio"
+	],
+	"Are you sure? *ALL* module data for this space will be deleted!": [
+		"¿Estás seguro? ¡*TODOS* los datos del módulo de este espacio seran borrados!"
+	],
+	"Currently there are no modules available for this space!": [
+		"¡Actualmente no hay módulos disponibles para este espacio!"
+	],
+	"Enhance this space with modules.": [
+		"Mejora este espacio con módulos."
+	],
+	"<strong>Create</strong> new space": [
+		"<strong>Crear</strong> nuevo espacio"
+	],
+	"Advanced access settings": [
+		"Ajustes avanzados de acceso"
+	],
+	"Also non-members can see this<br>space, but have no access": [
+		"Los no miembros pueden ver este<br>\nespacio, pero no tienen acceso"
+	],
+	"Create": [
+		"Crear"
+	],
+	"Every user can enter your space<br>without your approval": [
+		"Todos los usuarios pueden entrar en este<br>\nespacio sin necesitar aprobación"
+	],
+	"For everyone": [
+		"Para todo el mundo"
+	],
+	"How you want to name your space?": [
+		"¿Cómo quieres llamar a tu espacio?"
+	],
+	"Please write down a small description for other users.": [
+		"Por favor, escribe una pequeña descripción para otros usuarios."
+	],
+	"This space will be hidden<br>for all non-members": [
+		"Este espacio estará oculto<br> para los no miembros."
+	],
+	"Users can also apply for a<br>membership to this space": [
+		"Los usuarios tambien puede pedir una<br>solicitud para este espacio"
+	],
+	"Users can be only added<br>by invitation": [
+		"Los usuarios solo se pueden añadir<br>por invitación"
+	],
+	"space description": [
+		"descripción del espacio"
+	],
+	"space name": [
+		"nombre del espacio"
+	],
+	"{userName} requests membership for the space {spaceName}": [
+		"{userName} solicita su suscripción al espacio {spaceName}"
+	],
+	"{userName} approved your membership for the space {spaceName}": [
+		"{userName} ha aprobado tu suscripción al espacio {spaceName}"
+	],
+	"{userName} declined your membership request for the space {spaceName}": [
+		"{userName} denegó tu solicitud de suscripción al espacio {spaceName}"
+	],
+	"{userName} invited you to the space {spaceName}": [
+		"{userName} te ha invitado al espacio {spaceName}"
+	],
+	"{userName} accepted your invite for the space {spaceName}": [
+		"{userName} aceptó tu invitación al espacio {spaceName}"
+	],
+	"{userName} declined your invite for the space {spaceName}": [
+		"{userName} declinó tu invitación al espacio {spaceName}"
+	],
+	"<b>This space is still empty!</b>": [
+		"<b>¡Este espacio está vacío todavía!</b>"
+	],
+	"Accept Invite": [
+		"Aceptar invitación"
+	],
+	"Become member": [
+		"Convertirse en miembro"
+	],
+	"Cancel membership": [
+		"Cancelar suscripción"
+	],
+	"Cancel pending membership application": [
+		"Cancelar solicitud de suscripcion pendiente"
+	],
+	"Deny Invite": [
+		"Rechazar invitación"
+	],
+	"Request membership": [
+		"Solicitar suscripción"
+	],
+	"You are the owner of this workspace.": [
+		"Eres el propietario de esta área de trabajo."
+	],
+	"created by": [
+		"creado por"
+	],
+	"<strong>Invite</strong> members": [
+		"<strong>Invitar</strong> miembros"
+	],
+	"Add an user": [
+		"Añadir un usuario"
+	],
+	"Email addresses": [
+		"Direcciones de correo electrónico"
+	],
+	"Invite by email": [
+		"Invitar por correo electrónico"
+	],
+	"New user?": [
+		"¿Nuevo usuario?"
+	],
+	"Pick users": [
+		"Selecciona usuarios"
+	],
+	"Send": [
+		"Enviar"
+	],
+	"To invite users to this space, please type their names below to find and pick them.": [
+		"Para invitar usuarios a este espacio, por favor escribe sus nombres debajo para encontrarlos y escogerlos."
+	],
+	"You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.": [
+		"Tambien puedes invitar usuarios externos, que no estén registrados aún. Simplemente añade sus direcciones de correo electrónico separadas por comas."
+	],
+	"<strong>Request</strong> space membership": [
+		"<strong>Solicitar</strong> suscripción al espacio"
+	],
+	"Please shortly introduce yourself, to become an approved member of this space.": [
+		"Por favor, preséntate brevemente, para ser un miembro aprobado de este espacio."
+	],
+	"Your request was successfully submitted to the space administrators.": [
+		"Tu solicitud ha sido enviada correctamente a los administradores del espacio."
+	],
+	"Ok": [
+		"Ok"
+	],
+	"User has become a member.": [
+		"El usuario se ha convertido en miembro."
+	],
+	"User has been invited.": [
+		"El usuario ha sido invitado."
+	],
+	"User has not been invited.": [
+		"El usuario no ha sido invitado."
+	],
+	"Back to workspace": [
+		"Volver al espacio"
+	],
+	"<strong>Space</strong> preferences": [
+		"Preferencias del <strong>espacio</strong>"
+	],
+	"General": [
+		"General"
+	],
+	"My Space List": [
+		"Mi lista de espacios"
+	],
+	"My space summary": [
+		"Mi resumen del espacio"
+	],
+	"Space directory": [
+		"Directorio de espacios"
+	],
+	"<strong>Space</strong> menu": [
+		"Menú <strong>espacio</strong>"
+	],
+	"Stream": [
+		"Actividad"
+	],
+	"Change image": [
+		"Cambiar imagen"
+	],
+	"Current space image": [
+		"Imagen actual del espacio"
+	],
+	"Do you really want to delete your title image?": [
+		"¿Seguro que quieres eliminar tu imagen de cabecera?"
+	],
+	"Do you really want to delete your profile image?": [
+		"¿Seguro que quieres eliminar tu foto de perfil?"
+	],
+	"Invite": [
+		"Invitar"
+	],
+	"<strong>Something</strong> went wrong": [
+		"<strong>Algo</strong> fue mal"
+	],
+	"Followers": [
+		"Seguidores"
+	],
+	"Posts": [
+		"Entradas"
+	],
+	"Please shortly introduce yourself, to become a approved member of this workspace.": [
+		"Por favor, preséntate brevemente, para ser un miembro aprobado de este espacio."
+	],
+	"Request workspace membership": [
+		"Solicitar suscripción al espacio",
+		"Solicitar suscripción a espacio"
+	],
+	"Your request was successfully submitted to the workspace administrators.": [
+		"Tu solicitud ha sido enviada con éxito a los administradores del espacio."
+	],
+	"Create new space": [
+		"Crear nuevo espacio"
+	],
+	"My spaces": [
+		"Mis espacios"
+	],
+	"<strong>Space</strong> info": [
+		"Información del <strong>espacio</strong>"
+	],
+	"more": [
+		"más"
+	],
+	"Accept invite": [
+		"Aceptar invitación"
+	],
+	"Deny invite": [
+		"Rechazar invitación"
+	],
+	"Leave space": [
+		"Dejar espacio"
+	],
+	"<strong>New</strong> member request": [
+		"<strong>Nuevas</strong> solicitudes de miembros"
+	],
+	"<strong>Space</strong> members": [
+		"Miembros del <strong>espacio</strong>"
+	],
+	"End guide": [
+		"Terminar"
+	],
+	"Next »": [
+		"Siguiente >>"
+	],
+	"« Prev": [
+		"<< Anterior"
+	],
+	"<strong>Administration</strong>": [
+		"<strong>Administración</strong>"
+	],
+	"<strong>Hurray!</strong> That's all for now.": [
+		"<strong>¡Enhorabuena!</strong> Esto es todo por ahora."
+	],
+	"<strong>Modules</strong>": [
+		"<strong>Módulos</strong>"
+	],
+	"As an admin, you can manage the whole platform from here.<br><br>Apart from the modules, we are not going to go into each point in detail here, as each has its own short description elsewhere.": [
+		"Como administrador, puedes gestionar la plataforma desde aquí.<br><br>Además de los módulos, no vamos a entrar en detalle aquí, ya que cada módulo muestra su propia descripción."
+	],
+	"You are currently in the tools menu. From here you can access the HumHub online marketplace, where you can install an ever increasing number of tools on-the-fly.<br><br>As already mentioned, the tools increase the features available for your space.": [
+		"Ahora te encuentras en el menú de herramientas. Desde aquí puedes acceder al Marketplace de HumHub, donde puedes instalar una cantidad cada vez mayor de módulos al instante.<br><br>Como ya se ha mencionado, los módulos incrementan las características de tu sitio."
+	],
+	"You have now learned about all the most important features and settings and are all set to start using the platform.<br><br>We hope you and all future users will enjoy using this site. We are looking forward to any suggestions or support you wish to offer for our project. Feel free to contact us via www.humhub.org.<br><br>Stay tuned. :-)": [
+		"Ahora ya has aprendido las características y los ajustes más importantes y ya estñas preparado para utilizar la plataforma.<br><br>Esperamos que tú y todos los futuros usuarios disfruten del sitio. Estamos siempre mejorando y siempre puedes enviarnos sugerencias o te podemos ofrecer soporte para tu proyecto. Siéntete libre de contactar con nosotros vía www.humhub.org.<br><br>Mantente en contacto :-)"
+	],
+	"<strong>Dashboard</strong>": [
+		"<strong>Inicio</strong>"
+	],
+	"This is your dashboard.<br><br>Any new activities or posts that might interest you will be displayed here.": [
+		"Esta es la pantalla de inicio.<br><br>Todas las nuevas actividades o posts que sean de tu interés se mostrarán aquí."
+	],
+	"<strong>Administration (Modules)</strong>": [
+		"<strong>Administración (Módulos)</strong>"
+	],
+	"<strong>Edit</strong> account": [
+		"<strong>Editar</strong> cuenta"
+	],
+	"<strong>Hurray!</strong> The End.": [
+		"<strong>¡Hurra!</strong> El final."
+	],
+	"<strong>Hurray!</strong> You're done!": [
+		"<strong>¡Hurra!</strong> ¡Lo has terminado!"
+	],
+	"<strong>Profile</strong> menu": [
+		"Menú del <strong>perfil</strong>",
+		"Menú de <strong>perfil</strong>"
+	],
+	"<strong>Profile</strong> photo": [
+		"Fotos del <strong>perfil</strong>"
+	],
+	"<strong>Profile</strong> stream": [
+		"Estados del <strong>perfil</strong>"
+	],
+	"<strong>User profile</strong>": [
+		"<strong>Perfil de usuario</strong>"
+	],
+	"Click on this button to update your profile and account settings. You can also add more information to your profile.": [
+		"Haz click en este botón para actualizar los ajustes de tu perfil y de tu cuenta. También puedes añadir más información a tu perfil."
+	],
+	"Each profile has its own pin board. Your posts will also appear on the dashboards of those users who are following you.": [
+		"Cada perfil tiene también sus posts. Tus posts también aparecerán en las pantallas de inicio de aquellos usuarios que te sigan."
+	],
+	"Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in “Modules” in the account settings menu.": [
+		"Igual que en el espacio, el perfil de usuario también puede ser personalizado con varios módulos.<br><br>Puedes ver qué módulos están disponibles para tu perfil en la sección \"Módulos\" en el menú de ajustes de tu cuenta."
+	],
+	"This is your public user profile, which can be seen by any registered user.": [
+		"Este es tu perfil de usuario público, que puede ser visto por cualquier usuario registrado."
+	],
+	"Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.": [
+		"Sube una nueva foto de perfil simplemente haciendo click aquí o arrastrándola. Haz lo mismo para actualizar tu foto de portada."
+	],
+	"You've completed the user profile guide!": [
+		"¡Has completado la guía del perfil de usuario!"
+	],
+	"You've completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />": [
+		"¡Has completado la guía del perfil de usuario!<br><br>Para seguir con la guía de administración, haz click aquí:<br /><br />"
+	],
+	"<strong>Most recent</strong> activities": [
+		"Actividades <strong>más recientes</strong>"
+	],
+	"<strong>Posts</strong>": [
+		"<strong>Mensajes</strong>"
+	],
+	"<strong>Profile Guide</strong>": [
+		"<strong>Guía de perfil</strong>"
+	],
+	"<strong>Space</strong>": [
+		"<strong>Espacio</strong>"
+	],
+	"<strong>Space</strong> navigation menu": [
+		"Menú de navegación del <strong>espacio</strong>"
+	],
+	"<strong>Writing</strong> posts": [
+		"Mensajes <strong>escritos</strong>"
+	],
+	"<strong>Yay! You're done.</strong>": [
+		"<strong>¡Bien! ¡Has terminado!</strong>"
+	],
+	"All users who are a member of this space will be displayed here.<br /><br />New members can be added by anyone who has been given access rights by the admin.": [
+		"Todos los usuarios que sean miembros de este espacio se mostrarán aquí.<br /><br />Cualquier persona que tenga accesos por el administrador podrá añadir nuevos miembros."
+	],
+	"Give other useres a brief idea what the space is about. You can add the basic information here.<br /><br />The space admin can insert and change the space's cover photo either by clicking on it or by drag&drop.": [
+		"Da a otros usuarios una breve idea sobre este espacio. Puedes añadir información básica aquí.<br /><br />El administrador del espacio puede insertar y cambiar la foto de portada haciendo click en ella o arrastrando una nueva."
+	],
+	"New posts can be written and posted here.": [
+		"Los nuevos mensajes se podrán escribir aquí."
+	],
+	"Once you have joined or created a new space you can work on projects, discuss topics or just share information with other users.<br><br>There are various tools to personalize a space, thereby making the work process more productive.": [
+		"Una vez que te hayas unido o creado un nuevo espacio puedes trabajar en proyectos, discutir sobre un tema o simplemente compartir información con otros usuarios.<br><br>Aquí hay varias herramientas para personalizar un espacio, que hará el trabajo más productivo."
+	],
+	"That's it for the space guide.<br><br>To carry on with the user profile guide, click here: ": [
+		"Esto es todo para la guía de los espacios.<br><br>Para seguir con la guía de perfiles de usuario, haz click aquí:"
+	],
+	"This is where you can navigate the space – where you find which modules are active or available for the particular space you are currently in. These could be polls, tasks or notes for example.<br><br>Only the space admin can manage the space's modules.": [
+		"Aquí es donde podrás navegar en el espacio - donde encontrarás qué módulos están activos o disponibles para el espacio particular en el que te encuentras. Estos pueden ser preguntas, tareas o notas, por ejemplo.<br><br>Sólo el administrador del espacio puede gestionar los módulos del espacio."
+	],
+	"This menu is only visible for space admins. Here you can manage your space settings, add/block members and activate/deactivate tools for this space.": [
+		"Este menú es solo visible para los miembros del espacio. Aquí puedes gestionar los ajustes del espacio, añadir/bloquear miembros y activar/desactivar herramientas para este espacio."
+	],
+	"To keep you up to date, other users' most recent activities in this space will be displayed here.": [
+		"Para estar al día, las actividades recientes de otros usuarios en este espacio se mostrarán aquí."
+	],
+	"Yours, and other users' posts will appear here.<br><br>These can then be liked or commented on.": [
+		"Tus posts y los de otros usuarios aparecerán aquí.<br><br>Éstos pueden ser comentados o les pueden haber dado al \"Me Gusta\"."
+	],
+	"<strong>Account</strong> Menu": [
+		"Menú de la <strong>cuenta</strong>"
+	],
+	"<strong>Notifications</strong>": [
+		"<strong>Notificaciones</strong>"
+	],
+	"<strong>Space</strong> Menu": [
+		"Menú del <strong>espacio</strong>"
+	],
+	"<strong>Start</strong> space guide": [
+		"<strong>Empezar</strong> la guía de los espacios"
+	],
+	"Don't lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.": [
+		"¡No te pierdas nada!<br /><br />Este icono te mantendrá informado de actividades y mensajes que te afectan directamente."
+	],
+	"The account menu gives you access to your private settings and allows you to manage your public profile.": [
+		"El menú de la cuenta te proporciona acceso a tus ajustes privados y te permite gestionar tu perfil público."
+	],
+	"This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:": [
+		"¡Este es el menú más importante y que probablemente será el que más utilices!<br><br>Accede a los espacios a los que te hayas unido y crea nuevos espacios aquí.<br><br>La siguiente guía te mostrará cómo:"
+	],
+	" Remove panel": [
+		"Eliminar panel"
+	],
+	"<strong>Getting</strong> Started": [
+		"<strong>Empezando</strong>"
+	],
+	"<strong>Guide:</strong> Administration (Modules)": [
+		"<strong>Guía:</strong> Administración (Módulos)"
+	],
+	"<strong>Guide:</strong> Overview": [
+		"<strong>Guía:</strong> Vista general"
+	],
+	"<strong>Guide:</strong> Spaces": [
+		"<strong>Guía:</strong> Espacios"
+	],
+	"<strong>Guide:</strong> User profile": [
+		"<strong>Guía</strong> Perfil de  usuario"
+	],
+	"Get to know your way around the site's most important features with the following guides:": [
+		"Entérate de todo lo que puedes hacer en esta red social con las siguientes guías:"
+	],
+	"This user account is not approved yet!": [
+		"¡Esta cuenta de usuario no está aprobada todavía!"
+	],
+	"You need to login to view this user profile!": [
+		"¡Necesitas iniciar sesión para ver este perfil de usuario!"
+	],
+	"Your password is incorrect!": [
+		"¡Tu contraseña no es correcta!"
+	],
+	"You cannot change your password here.": [
+		"No puedes cambiar tu contraseña aquí."
+	],
+	"Invalid link! Please make sure that you entered the entire url.": [
+		"¡Enlace no válido! Por favor, asegurate de que has introducir la url completa."
+	],
+	"Save profile": [
+		"Guardar perfil"
+	],
+	"The entered e-mail address is already in use by another user.": [
+		"El correo electrónico introducido ya está en uso por otro usuario."
+	],
+	"You cannot change your e-mail address here.": [
+		"No puedes cambiar tu dirección de correo electrónico aquí."
+	],
+	"Account": [
+		"Cuenta"
+	],
+	"Create account": [
+		"Crear cuenta"
+	],
+	"Current password": [
+		"Contraseña actual"
+	],
+	"E-Mail change": [
+		"Cambiar correo electrónico"
+	],
+	"New E-Mail address": [
+		"Nueva dirección de correo electrónico"
+	],
+	"Send activities?": [
+		"¿Enviar actividades?"
+	],
+	"Send notifications?": [
+		"¿Enviar notificaciones?"
+	],
+	"New password": [
+		"Nueva contraseña"
+	],
+	"New password confirm": [
+		"Nueva contraseña (confirmación)"
+	],
+	"Incorrect username/email or password.": [
+		"Usuario/correo electrónico o contraseña incorrectos."
+	],
+	"Remember me next time": [
+		"Recordarme la siguiente vez"
+	],
+	"Your account has not been activated by our staff yet.": [
+		"Tu cuenta no ha sido activada por nuestro personal aún."
+	],
+	"Your account is suspended.": [
+		"Tu cuenta está suspendida."
+	],
+	"Password recovery is not possible on your account type!": [
+		"¡No es posible recuperar la contraseña con tu tipo de cuenta!"
+	],
+	"E-Mail": [
+		"Correo electrónico"
+	],
+	"Password Recovery": [
+		"Recuperar contraseña"
+	],
+	"{attribute} \"{value}\" was not found!": [
+		"¡{attribute} \"{value}\" no ha sido encontrado!"
+	],
+	"E-Mail is already in use! - Try forgot password.": [
+		"¡Este correo electrónico ya está en uso! - Prueba a restablecer tu contraseña. "
+	],
+	"Invalid language!": [
+		"¡Idioma no válido!"
+	],
+	"Hide panel on dashboard": [
+		"Esconder panel en Inicio"
+	],
+	"Profile visibility": [
+		"Visibilidad del perfil"
+	],
+	"Default Space": [
+		"Espacio predeterminado"
+	],
+	"Group Administrators": [
+		"Grupo Administradores"
+	],
+	"LDAP DN": [
+		"DN de LDAP"
+	],
+	"Members can create private spaces": [
+		"Los miembros pueden crear espacios privados"
+	],
+	"Members can create public spaces": [
+		"Los miembros pueden crear espacios públicos"
+	],
+	"Birthday": [
+		"Cumpleaños"
+	],
+	"Custom": [
+		"Personalizado"
+	],
+	"Female": [
+		"Mujer"
+	],
+	"Gender": [
+		"Sexo"
+	],
+	"Hide year in profile": [
+		"Ocultar el año en el perfil"
+	],
+	"Male": [
+		"Hombre"
+	],
+	"City": [
+		"Ciudad"
+	],
+	"Country": [
+		"País"
+	],
+	"Facebook URL": [
+		"Enlace de Facebook "
+	],
+	"Fax": [
+		"Fax"
+	],
+	"Firstname": [
+		"Nombre"
+	],
+	"Flickr URL": [
+		"Enlace de Flickr"
+	],
+	"Google+ URL": [
+		"Enlace de Google+"
+	],
+	"Lastname": [
+		"Apellido"
+	],
+	"LinkedIn URL": [
+		"Enlace de LinkedIn"
+	],
+	"MSN": [
+		"MSN"
+	],
+	"Mobile": [
+		"Móvil"
+	],
+	"MySpace URL": [
+		"Enlace de MySpace"
+	],
+	"Phone Private": [
+		"Teléfono privado"
+	],
+	"Phone Work": [
+		"Teléfono del trabajo"
+	],
+	"Skype Nickname": [
+		"Nombre de Skype"
+	],
+	"State": [
+		"Estado"
+	],
+	"Street": [
+		"Calle"
+	],
+	"Twitter URL": [
+		"Enlace de Twitter"
+	],
+	"Url": [
+		"Web"
+	],
+	"Vimeo URL": [
+		"Enlace de Vimeo"
+	],
+	"XMPP Jabber Address": [
+		"Direccción Jabber XMPP"
+	],
+	"Xing URL": [
+		"Enlace de Xing"
+	],
+	"Youtube URL": [
+		"Enlace de Youtube"
+	],
+	"Zip": [
+		"Código postal"
+	],
+	"Created by": [
+		"Creado por"
+	],
+	"Editable": [
+		"Editable"
+	],
+	"Field Type could not be changed!": [
+		"¡El tipo de campo no se puede cambiar!"
+	],
+	"Fieldtype": [
+		"Tipo de campo"
+	],
+	"Internal Name": [
+		"Nombre interno"
+	],
+	"Internal name already in use!": [
+		"¡El nombre interno ya está en uso!"
+	],
+	"Internal name could not be changed!": [
+		"¡El nombre interno no se puede cambiar!"
+	],
+	"Invalid field type!": [
+		"¡Tipo de campo no válido!"
+	],
+	"LDAP Attribute": [
+		"Atributo LDAP"
+	],
+	"Module": [
+		"Módulo"
+	],
+	"Only alphanumeric characters allowed!": [
+		"¡Solo se permiten caracteres alfanuméricos!"
+	],
+	"Profile Field Category": [
+		"Categoría del campo de perfil"
+	],
+	"Required": [
+		"Requerido"
+	],
+	"Show at registration": [
+		"Mostrar en el registro"
+	],
+	"Sort order": [
+		"Orden"
+	],
+	"Translation Category ID": [
+		"ID de la categoría de traducción"
+	],
+	"Type Config": [
+		"Configuración de tipo"
+	],
+	"Visible": [
+		"Visible"
+	],
+	"Communication": [
+		"Comunicación"
+	],
+	"Social bookmarks": [
+		"Marcadores sociales"
+	],
+	"Datetime": [
+		"Fecha y hora"
+	],
+	"Number": [
+		"Número"
+	],
+	"Select List": [
+		"Lista de selección"
+	],
+	"Text": [
+		"Texto"
+	],
+	"Text Area": [
+		"Área de texto"
+	],
+	"%y Years": [
+		"%y Años"
+	],
+	"Birthday field options": [
+		"Opciones del campo Cumpleaños"
+	],
+	"Date(-time) field options": [
+		"Opciones del campo Fecha (y hora)"
+	],
+	"Show date/time picker": [
+		"Mostrar un selector de fecha/hora"
+	],
+	"Maximum value": [
+		"Valor máximo"
+	],
+	"Minimum value": [
+		"Valor mínimo"
+	],
+	"Number field options": [
+		"Opciones del campo Número"
+	],
+	"One option per line. Key=>Value Format (e.g. yes=>Yes)": [
+		"Una opción por línea. Formato Clave=>Valor (p.ej. si=Sí)"
+	],
+	"Please select:": [
+		"Por favor, elige:"
+	],
+	"Possible values": [
+		"Valores posibles"
+	],
+	"Select field options": [
+		"Opciones del campo Lista de selección"
+	],
+	"Default value": [
+		"Valor por defecto"
+	],
+	"Maximum length": [
+		"Longitud máxima"
+	],
+	"Minimum length": [
+		"Longitud mínima"
+	],
+	"Regular Expression: Error message": [
+		"Expresión regular: Mensaje de error"
+	],
+	"Regular Expression: Validator": [
+		"Expresión regular: Validar"
+	],
+	"Text Field Options": [
+		"Opciones del campo Texto"
+	],
+	"Validator": [
+		"Validar"
+	],
+	"Text area field options": [
+		"Opciones del campo Área de texto"
+	],
+	"Authentication mode": [
+		"Modo de autenticación"
+	],
+	"New user needs approval": [
+		"Nuevos usuarios necesitan aprobación"
+	],
+	"Username can contain only letters, numbers, spaces and special characters (+-._)": [
+		"El nombre de usuario sólo puede contener letras, números, espacios y caracteres especiales (+-._)"
+	],
+	"Wall": [
+		"Muro"
+	],
+	"<strong>Current E-mail address</strong>": [
+		"<strong>Dirección de correo electrónico actual</strong>"
+	],
+	"<strong>Change</strong> E-mail": [
+		"<strong>Cambiar</strong> correo electrónico"
+	],
+	"Your e-mail address has been successfully changed to {email}.": [
+		"Tu dirección de correo electrónico ha sido cambiada con éxito a {email}"
+	],
+	"We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.": [
+		"Acabamos de enviar un correo electrónico de confirmación a tu nueva dirección. <br/> Por favor, sigue las instrucciones que contiene."
+	],
+	"<strong>Change</strong> password": [
+		"<strong>Cambiar</strong> contraseña"
+	],
+	"<strong>Password</strong> changed": [
+		"<strong>Contraseña</strong> cambiada"
+	],
+	"Your password has been successfully changed!": [
+		"¡Tu contraseña ha sido cambiada con éxito!",
+		"¡Tu contraseña se ha cambiado satisfactoriamente!"
+	],
+	"<strong>Modify</strong> your profile image": [
+		"<strong>Modificar</strong> tu imagen de perfil"
+	],
+	"Enter your password to continue": [
+		"Introduce tu contraseña para continuar"
+	],
+	"<strong>Delete</strong> account": [
+		"<strong>Eliminar</strong> cuenta"
+	],
+	"Are you sure, that you want to delete your account?<br />All your published content will be removed! ": [
+		"¿Estas seguro de que quieres eliminar tu cuenta?<br/>¡Todo tu contenido publicado será borrado!"
+	],
+	"Delete account": [
+		"Eliminar cuenta"
+	],
+	"Sorry, as an owner of a workspace you are not able to delete your account!<br />Please assign another owner or delete them.": [
+		"Lo siento, como dueño de un espacio no puedes borrar tu cuenta. <br/>Por favor, asignale otro dueño o borralo."
+	],
+	"<strong>User</strong> details": [
+		"Detalles del <strong>usuario</strong>"
+	],
+	"<strong>User</strong> modules": [
+		"Módulos del <strong>usuario</strong>"
+	],
+	"Are you really sure? *ALL* module data for your profile will be deleted!": [
+		"¿Estás seguro? ¡*TODOS* los datos del módulo en tu perfil serán borrados!"
+	],
+	"Enhance your profile with modules.": [
+		"Mejora tu perfil con módulos."
+	],
+	"<strong>User</strong> settings": [
+		"Ajustes del <strong>usuario</strong>"
+	],
+	"Getting Started": [
+		"Empezando"
+	],
+	"Registered users only": [
+		"Sólo usuarios registrados"
+	],
+	"Visible for all (also unregistered users)": [
+		"Visible para todos (también usuarios no registrados)"
+	],
+	"<strong>Desktop</strong> Notifications": [
+		"Notificaciones de <strong>escritorio</strong>"
+	],
+	"<strong>Email</strong> Notifications": [
+		"Notificaciones por <strong>correo electrónico</strong>"
+	],
+	"Get a desktop notification when you are online.": [
+		"Activar notificaciones de escritorio cuando estás en línea."
+	],
+	"Get an email, by every activity from other users you follow or work<br>together in workspaces.": [
+		"Recibe un email por cada actividad de otros usuarios que sigas <br/>o que compartais espacio."
+	],
+	"Get an email, when other users comment or like your posts.": [
+		"Recibe un email cuando otros usuariso comentan o marcan \"Me gusta\" en tus entradas."
+	],
+	"<strong>Account</strong> registration": [
+		"Registro de <strong>cuenta</strong>"
+	],
+	"<strong>Your account</strong> has been successfully created!": [
+		"¡<strong>Tu cuenta</strong> ha sido creada con éxito!"
+	],
+	"After activating your account by the administrator, you will receive a notification by email.": [
+		"Después de que el administrador active tu cuenta, recibirás una notificación por correo electrónico"
+	],
+	"Go to login page": [
+		"Ir a la página de iniciar sesión"
+	],
+	"To log in with your new account, click the button below.": [
+		"Para iniciar sesión con tu nueva cuenta, haz clic en el botón de abajo."
+	],
+	"back to home": [
+		"Volver a Inicio"
+	],
+	"<strong>Please</strong> sign in": [
+		"<strong>Por favor</strong>, inicia sesión"
+	],
+	"<strong>Sign</strong> up": [
+		"Darse de <strong>alta</strong>"
+	],
+	"Create a new one.": [
+		"Crear una nueva."
+	],
+	"Don't have an account? Join the network by entering your e-mail address.": [
+		"¿No tienes una cuenta? Únete a la red introduciendo tu dirección de correo electrónico"
+	],
+	"Forgot your password?": [
+		"¿Olvidaste tu contraseña?"
+	],
+	"If you're already a member, please login with your username/email and password.": [
+		"Si ya eres miembro, por favor, inicia sesión con tu usuario o correo electrónico y tu contraseña."
+	],
+	"Register": [
+		"Registrarse"
+	],
+	"email": [
+		"correo electrónico"
+	],
+	"password": [
+		"contraseña"
+	],
+	"username or email": [
+		"Usuario o correo electrónico"
+	],
+	"<strong>Password</strong> recovery": [
+		"Recuperar <strong>contraseña</strong>"
+	],
+	"Just enter your e-mail address. We´ll send you recovery instructions!": [
+		"Escribe tu dirección de correo electrónico. ¡Ahí te enviaremos las instrucciones de recuperación!"
+	],
+	"Reset password": [
+		"Reiniciar contraseña"
+	],
+	"enter security code above": [
+		"introduce el código de seguridad de arriba"
+	],
+	"your email": [
+		"tu correo electrónico"
+	],
+	"We’ve sent you an email containing a link that will allow you to reset your password.": [
+		"Te hemos enviado un correo electrónico que contiene un enlace que te permitirá reiniciar tu contraseña."
+	],
+	"<strong>Password</strong> recovery!": [
+		"¡Recuperar <strong>contraseña</strong>!"
+	],
+	"<strong>Registration</strong> successful!": [
+		"¡<strong>Registrado</strong> con éxito!"
+	],
+	"Please check your email and follow the instructions!": [
+		"Por favor, comprueba tu correo electrónico y sigue las instrucciones."
+	],
+	"<strong>Password</strong> reset": [
+		"Reiniciar <strong>contraseña</strong>"
+	],
+	"<strong>Change</strong> your password": [
+		"<strong>Cambia</strong> tu contraseña"
+	],
+	"Change password": [
+		"Cambiar contraseña"
+	],
+	"<strong>Password</strong> changed!": [
+		"¡<strong>Contraseña</strong> cambiada!"
+	],
+	"<strong>Confirm</strong></strong> your new email address": [
+		"<strong>Confirma</strong> tu nueva dirección de correo electrónico"
+	],
+	"Confirm": [
+		"Confirmar"
+	],
+	"Hello": [
+		"Hola"
+	],
+	"You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.": [
+		"Has solicitado cambiar tu dirección de correo electrónico.<br/>Tu nueva dirección de correo electrónico es {newemail}.<br/><br/>Para confirmar tu nueva dirección de correo electrónico, por favor, haz clic en el botón de abajo."
+	],
+	"Hello {displayName}": [
+		"Hola {displayName}"
+	],
+	"If you don't use this link within 24 hours, it will expire.": [
+		"Este enlace caducará a las 24 horas."
+	],
+	"Please use the following link within the next day to reset your password.": [
+		"Por favor, utiliza el siguiente enlace en las próximas 24 horas para reiniciar tu contraseña."
+	],
+	"Reset Password": [
+		"Reiniciar contraseña"
+	],
+	"Registration Link": [
+		"Enlace de registro"
+	],
+	"Sign up": [
+		"Registrarse"
+	],
+	"Welcome to %appName%. Please click on the button below to proceed with your registration.": [
+		"Bienvenido a %appName%.Por favor, haz clic en el botón de abajo para proceder a registrarte."
+	],
+	"<br>A social network to increase your communication and teamwork.<br>Register now\n                                                        to join this space.": [
+		"<br>Un nuevo concepto de red social.<br>Registrate ahora para unirte a este espacio."
+	],
+	"Space Invite": [
+		"Invitaciones de espacio"
+	],
+	"You got a <strong>space</strong> invite": [
+		"Tienes una invitación a un <strong>espacio</strong>"
+	],
+	"invited you to the space:": [
+		"te invitó al espacio: "
+	],
+	"{userName} mentioned you in {contentTitle}.": [
+		"{userName} te mencionó en {contentTitle}."
+	],
+	"{userName} is now following you.": [
+		"{userName} te está siguiendo ahora."
+	],
+	"<strong>About</strong> this user": [
+		"<strong>Sobre</strong> este usuario"
+	],
+	"<strong>Modify</strong> your title image": [
+		"<strong>Modificar</strong> tu imagen de cabecera"
+	],
+	"<b>This profile stream is still empty!</b>": [
+		"<b>¡La actividad de este perfil está aún vacía!</b>"
+	],
+	"Do you really want to delete your logo image?": [
+		"¿Seguro que quieres eliminar el logo?"
+	],
+	"<strong>Account</strong> settings": [
+		"Ajustes de <strong>cuenta</strong>"
+	],
+	"Profile": [
+		"Perfil"
+	],
+	"Edit account": [
+		"Editar cuenta"
+	],
+	"Following": [
+		"Siguiendo"
+	],
+	"<strong>Following</strong> user": [
+		"<strong>Siguiendo</strong> a usuario"
+	],
+	"<strong>User</strong> followers": [
+		"Seguidores de <strong>usuario</strong>"
+	],
+	"<strong>Member</strong> in these spaces": [
+		"<strong>Miembros</strong> en estos espacios"
+	],
+	"<strong>User</strong> tags": [
+		"Etiquetas de <strong>usuario</strong>"
+	],
+	"No birthday.": [
+		"Sin cumpleaños."
+	],
+	"Back to modules": [
+		"Volver a módulos"
+	],
+	"Birthday Module Configuration": [
+		"Configuración del módulo Cumpleaños"
+	],
+	"The number of days future bithdays will be shown within.": [
+		"Número de días para mostrar los siguientes cumpleaños."
+	],
+	"Tomorrow": [
+		"Mañana"
+	],
+	"Upcoming": [
+		"Próximo"
+	],
+	"You may configure the number of days within the upcoming birthdays are shown.": [
+		"Debes configurar el número de días para mostrar los cumpleaños."
+	],
+	"becomes": [
+		"cumple"
+	],
+	"birthdays": [
+		"cumpleaños"
+	],
+	"days": [
+		"días"
+	],
+	"today": [
+		"hoy"
+	],
+	"years old.": [
+		"años"
+	],
+	"Active": [
+		"Activa"
+	],
+	"Mark as unseen for all users": [
+		"Marcar como no vista para todos los usuarios"
+	],
+	"Breaking News Configuration": [
+		"Configuración de noticias de última hora"
+	],
+	"Note: You can use markdown syntax.": [
+		"Nota: Puedes usar sintaxis markdown."
+	],
+	"End Date and Time": [
+		"Fecha y hora de fin"
+	],
+	"Recur": [
+		"Recurrente"
+	],
+	"Recur End": [
+		"Fin de recurrencia"
+	],
+	"Recur Interval": [
+		"Intervalo de recurrencia"
+	],
+	"Recur Type": [
+		"Tipo de recurrencia"
+	],
+	"Select participants": [
+		"Elige participantes"
+	],
+	"Start Date and Time": [
+		"Fecha y hora de inicio"
+	],
+	"You don't have permission to access this event!": [
+		"¡No tienes permiso para acceder a este evento!"
+	],
+	"You don't have permission to create events!": [
+		"¡No tienes permiso para crear eventos!"
+	],
+	"Adds an calendar for private or public events to your profile and mainmenu.": [
+		"Añade un calendario para eventos privados o publicos a tu perfil y menu principal."
+	],
+	"Adds an event calendar to this space.": [
+		"Añade un calendario de eventos a este espacio."
+	],
+	"All Day": [
+		"Todo el día"
+	],
+	"Attending users": [
+		"Usuarios que asistirán"
+	],
+	"Calendar": [
+		"Calendario"
+	],
+	"Declining users": [
+		"Usuarios que no asistirán"
+	],
+	"End Date": [
+		"Fecha de fin"
+	],
+	"End time must be after start time!": [
+		"¡La fecha de fin tiene que ser después de la fecha de inicio!"
+	],
+	"Event": [
+		"Evento"
+	],
+	"Event not found!": [
+		"¡Evento no encontrado!"
+	],
+	"Maybe attending users": [
+		"Usuarios que tal vez asistan"
+	],
+	"Participation Mode": [
+		"Modo de participación"
+	],
+	"Start Date": [
+		"Fecha de inicio"
+	],
+	"You don't have permission to delete this event!": [
+		"¡No tienes permisos para borrar este evento!"
+	],
+	"You don't have permission to edit this event!": [
+		"¡No tienes permisos para editar este evento!"
+	],
+	"%displayName% created a new %contentTitle%.": [
+		"%displayName% ha creado un nuevo %contentTitle%."
+	],
+	"%displayName% attends to %contentTitle%.": [
+		"%displayName% asistirá a %contentTitle%."
+	],
+	"%displayName% maybe attends to %contentTitle%.": [
+		"%displayName% tal vez asista a %contentTitle%."
+	],
+	"%displayName% not attends to %contentTitle%.": [
+		"%displayName% no asistirá a %contentTitle%."
+	],
+	"Start Date/Time": [
+		"Fecha/hora de inicio"
+	],
+	"<strong>Create</strong> event": [
+		"<strong>Crear</strong> evento"
+	],
+	"<strong>Edit</strong> event": [
+		"<strong>Editar</strong> evento"
+	],
+	"<strong>Note:</strong> This event will be created on your profile. To create a space event open the calendar on the desired space.": [
+		"<strong>Nota:</strong> Este evento se creará en tu perfil. Para crear un evento en un espacio abre el calendario en el espacio deseado."
+	],
+	"End Date/Time": [
+		"Fecha/hora de fin"
+	],
+	"Everybody can participate": [
+		"Todo el mundo puede participar"
+	],
+	"No participants": [
+		"Sin participantes"
+	],
+	"Participants": [
+		"Participantes"
+	],
+	"Created by:": [
+		"Creado por:"
+	],
+	"Edit this event": [
+		"Editar este evento"
+	],
+	"I´m attending": [
+		"Asistiré"
+	],
+	"I´m maybe attending": [
+		"Tal vez asista"
+	],
+	"I´m not attending": [
+		"No asistiré"
+	],
+	"Attend": [
+		"Asistir"
+	],
+	"Maybe": [
+		"Tal vez"
+	],
+	"<strong>Filter</strong> events": [
+		"<strong>Filtrar</strong> eventos"
+	],
+	"<strong>Select</strong> calendars": [
+		"<strong>Elegir</strong> calendario"
+	],
+	"Already responded": [
+		"Ya respondido"
+	],
+	"Followed spaces": [
+		"Espacios seguidos"
+	],
+	"Followed users": [
+		"Usuarios seguidos"
+	],
+	"My events": [
+		"Mis eventos"
+	],
+	"Not responded yet": [
+		"No respondido aún"
+	],
+	"<strong>Upcoming</strong> events ": [
+		"Eventos <strong>próximos</strong>"
+	],
+	":count attending": [
+		":count asistirán"
+	],
+	":count declined": [
+		":count no asistirán"
+	],
+	":count maybe": [
+		":count tal vez"
+	],
+	"Participants:": [
+		"Participantes: "
+	],
+	"Create new Page": [
+		"Crear nueva página"
+	],
+	"Custom Pages": [
+		"Páginas personalizadas"
+	],
+	"HTML": [
+		"HTML"
+	],
+	"IFrame": [
+		"IFrame"
+	],
+	"Link": [
+		"Link",
+		"Enlace"
+	],
+	"MarkDown": [
+		"MarkDown"
+	],
+	"Navigation": [
+		"Navegación"
+	],
+	"No custom pages created yet!": [
+		"¡No se han creado páginas personalizadas todavía!"
+	],
+	"Sort Order": [
+		"Orden de clasificación"
+	],
+	"Top Navigation": [
+		"Navegación superior"
+	],
+	"User Account Menu (Settings)": [
+		"Menú de cuenta de usuario (ajustes)"
+	],
+	"<strong>Create</strong> page": [
+		"<strong>Crear</strong> página"
+	],
+	"<strong>Edit</strong> page": [
+		"<strong>Editar</strong> página"
+	],
+	"Content": [
+		"Contenido"
+	],
+	"Default sort orders scheme: 100, 200, 300, ...": [
+		"Esquema de organización: 100, 200, 300, ..."
+	],
+	"Page title": [
+		"Título de página"
+	],
+	"URL": [
+		"URL"
+	],
+	"The item order was successfully changed.": [
+		"Orden del elemento modificado correctamente"
+	],
+	"Toggle view mode": [
+		"Cambiar a modo vista"
+	],
+	"You miss the rights to reorder categories.!": [
+		"¡No tienes permisos para reordenar categorías!"
+	],
+	"<strong>Confirm</strong> category deleting": [
+		"<strong>Confirmar</strong> borrado de la categoría"
+	],
+	"<strong>Confirm</strong> link deleting": [
+		"<strong>Confirmar</strong> borrado del enlace"
+	],
+	"Delete category": [
+		"Borrar categoría"
+	],
+	"Delete link": [
+		"Borrar enlace"
+	],
+	"Do you really want to delete this category? All connected links will be lost!": [
+		"¿Está seguro de que quiere borrar la categoría? Todos los enlaces serán eliminados"
+	],
+	"Do you really want to delete this link?": [
+		"¿Está seguro de que quiere borrar el enlace?"
+	],
+	"Extend link validation by a connection test.": [
+		"Probar el enlace"
+	],
+	"Linklist": [
+		"Lista de enlaces"
+	],
+	"Linklist Module Configuration": [
+		"Configuración del módulo de enlaces"
+	],
+	"Requested category could not be found.": [
+		"Categoría no encontrada"
+	],
+	"Requested link could not be found.": [
+		"Enlace no encontrado"
+	],
+	"Show the links as a widget on the right.": [
+		"Mostrar enlaces como bloque en la derecha"
+	],
+	"The category you want to create your link in could not be found!": [
+		"¡No se encuentra la categoría asociada al enlace!"
+	],
+	"There have been no links or categories added to this space yet.": [
+		"Aún no existen enlaces o categorias en el espacio."
+	],
+	"You can enable the extended validation of links for a space or user.": [
+		"Puede activar la validación extendida de enlaces para un espacio o usuario."
+	],
+	"You miss the rights to add/edit links!": [
+		"¡No tienes permisos para añadir/editar enlaces!"
+	],
+	"You miss the rights to delete this category!": [
+		"¡No tienes permisos para eliminar la categoría!"
+	],
+	"You miss the rights to delete this link!": [
+		"¡No tienes permisos para eliminar el enlace!"
+	],
+	"You miss the rights to edit this category!": [
+		"¡No tienes permisos para editar la categoría!"
+	],
+	"You miss the rights to edit this link!": [
+		"¡No tienes permisos para editar el enlace!"
+	],
+	"Messages": [
+		"Mensajes"
+	],
+	"You could not send an email to yourself!": [
+		"¡No te puedes enviar un correo electrónico a tí mismo!"
+	],
+	"Recipient": [
+		"Destinatario"
+	],
+	"New message from {senderName}": [
+		"Nuevo mensaje de {senderName}"
+	],
+	"and {counter} other users": [
+		"y otros {counter} usuarios"
+	],
+	"New message in discussion from %displayName%": [
+		"Nueva respuesta en la conversación de %displayName%"
+	],
+	"<strong>New</strong> message": [
+		"<strong>Nuevo</strong> mensaje"
+	],
+	"Reply now": [
+		"Responder ahora"
+	],
+	"sent you a new message:": [
+		"te ha enviado un nuevo mensaje: "
+	],
+	"sent you a new message in": [
+		"te ha enviado un nuevo mensaje en"
+	],
+	"Add more participants to your conversation...": [
+		"Añadir mas participantes a tu conversación..."
+	],
+	"Add user...": [
+		"Añadir usuario..."
+	],
+	"New message": [
+		"Nuevo mensaje"
+	],
+	"Edit message entry": [
+		"Editar mensaje"
+	],
+	"Messagebox": [
+		"Bandeja de mensajes"
+	],
+	"Inbox": [
+		"Bandeja de entrada"
+	],
+	"There are no messages yet.": [
+		"No hay mensajes aún."
+	],
+	"Write new message": [
+		"Escribir nuevo mensaje"
+	],
+	"<strong>Confirm</strong> deleting conversation": [
+		"<strong>Confirmar</strong> eliminación de la conversación"
+	],
+	"<strong>Confirm</strong> leaving conversation": [
+		"<strong>Confirmar</strong> salida de la conversación"
+	],
+	"<strong>Confirm</strong> message deletion": [
+		"<strong>Confirmar</strong> eliminación del mensaje"
+	],
+	"Add user": [
+		"Añadir usuario"
+	],
+	"Do you really want to delete this conversation?": [
+		"¿Seguro que quieres eliminar esta conversación?"
+	],
+	"Do you really want to delete this message?": [
+		"¿Seguro que quieres eliminar este mensaje?"
+	],
+	"Do you really want to leave this conversation?": [
+		"¿Seguro que quieres abandonar esta conversación?"
+	],
+	"Leave": [
+		"Abandonar"
+	],
+	"Leave discussion": [
+		"Dejar discusión"
+	],
+	"Write an answer...": [
+		"Escribe una respuesta..."
+	],
+	"User Posts": [
+		"Entradas de usuario"
+	],
+	"Sign up now": [
+		"Registrarse ahora"
+	],
+	"Show all messages": [
+		"Mostrar todos los mensajes"
+	],
+	"Send message": [
+		"Enviar mensaje"
+	],
+	"No users.": [
+		"Sin usuarios."
+	],
+	"The number of users must not be greater than a 7.": [
+		"El número de usuarios no debe ser mayor a 7."
+	],
+	"The number of users must not be negative.": [
+		"El número de usuarios no debe ser negativo."
+	],
+	"<strong>Most</strong> active people": [
+		"<strong>Usuarios</strong> más activos"
+	],
+	"Get a list": [
+		"Abrir lista"
+	],
+	"Most Active Users Module Configuration": [
+		"Configuración del módulo Usuarios más activos"
+	],
+	"The number of most active users that will be shown.": [
+		"El número de los usuarios más activos que se mostrará."
+	],
+	"You may configure the number users to be shown.": [
+		"Puedes configurar el número de usuarios para mostrar."
+	],
+	"Comments created": [
+		"Comentarios creados"
+	],
+	"Likes given": [
+		"\"Me gusta\" dados"
+	],
+	"Posts created": [
+		"Entradas creadas"
+	],
+	"Notes": [
+		"Notas"
+	],
+	"Etherpad API Key": [
+		"Clave de API de Etherpad"
+	],
+	"URL to Etherpad": [
+		"URL a Etherpad"
+	],
+	"Could not get note content!": [
+		"¡No se pudo obtener el contenido de la nota!"
+	],
+	"Could not get note users!": [
+		"¡No se pudo obtener los usuarios de la nota!"
+	],
+	"Note": [
+		"Nota"
+	],
+	"{userName} created a new note {noteName}.": [
+		"{userName} creó una nueva nota {noteName}."
+	],
+	"{userName} has worked on the note {noteName}.": [
+		"{userName} actualizó la nota {noteName}."
+	],
+	"API Connection successful!": [
+		"¡Conexión con éxito con la API!"
+	],
+	"Could not connect to API!": [
+		"¡No se puedo conectar con la API!"
+	],
+	"Current Status:": [
+		"Estado actual:"
+	],
+	"Notes Module Configuration": [
+		"Configuración del módulo de notas"
+	],
+	"Please read the module documentation under /protected/modules/notes/docs/install.txt for more details!": [
+		"Por favor, lee la documentación del módulo en /protected/modules/notes/docs/install.txt para mas detalles."
+	],
+	"Save & Test": [
+		"Guardar y probar"
+	],
+	"The notes module needs a etherpad server up and running!": [
+		"¡Este módulo de notas necesita un servidor Etherpad listo y funcionando!"
+	],
+	"Save and close": [
+		"Guardar y cerrar"
+	],
+	"{userName} created a new note and assigned you.": [
+		"{userName} creó una nota y la asignó a ti."
+	],
+	"{userName} has worked on the note {spaceName}.": [
+		"{userName} actualizó la nota {spaceName}."
+	],
+	"Open note": [
+		"Abrir nota"
+	],
+	"Title of your new note": [
+		"Título de tu nueva nota"
+	],
+	"No notes found which matches your current filter(s)!": [
+		"¡No se encontraron notas que coincidan con tu filtro actual!"
+	],
+	"There are no notes yet!": [
+		"¡No hay notas todavía!"
+	],
+	"Polls": [
+		"Votaciones"
+	],
+	"Could not load poll!": [
+		"¡No se pudo cargar la votación!"
+	],
+	"Invalid answer!": [
+		"¡Respuesta no válida!"
+	],
+	"Users voted for: <strong>{answer}</strong>": [
+		"Los usuarios votaron por: <strong>{answer}</strong>"
+	],
+	"Voting for multiple answers is disabled!": [
+		"¡Votar múltiples respuestas esta deshabilitado!"
+	],
+	"You have insufficient permissions to perform that operation!": [
+		"¡No tienes suficientes permisos para hacer esa operación!"
+	],
+	"Answers": [
+		"Respuestas"
+	],
+	"Multiple answers per user": [
+		"Multiples respuestas por usuario"
+	],
+	"Please specify at least {min} answers!": [
+		"¡Por favor, especifica al menos {min} respuestas!"
+	],
+	"Question": [
+		"Pregunta"
+	],
+	"{userName} voted the {question}.": [
+		"{userName} votó {question}."
+	],
+	"{userName} created a new {question}.": [
+		"{userName} creó una nueva {question}."
+	],
+	"User who vote this": [
+		"Usuarios que votaron esto"
+	],
+	"{userName} created a new poll and assigned you.": [
+		"{userName} creó una nueva votación y la asignó a ti."
+	],
+	"Ask": [
+		"Preguntar"
+	],
+	"Reset my vote": [
+		"Reiniciar mi voto"
+	],
+	"Vote": [
+		"Votar"
+	],
+	"and {count} more vote for this.": [
+		"y {count} mas votaron por esto."
+	],
+	"votes": [
+		"votos"
+	],
+	"Allow multiple answers per user?": [
+		"¿Permitir multiples respuestas por usuario?"
+	],
+	"Ask something...": [
+		"Pregunta algo..."
+	],
+	"Possible answers (one per line)": [
+		"Posibles respuestas (una por línea)"
+	],
+	"Display all": [
+		"Mostrar todas"
+	],
+	"No poll found which matches your current filter(s)!": [
+		"¡No se han encontrado votaciones que coincidan con tu filtro actual!"
+	],
+	"<b>There are no polls yet!</b>": [
+		"<b>¡No hay votaciones todavía!</b>"
+	],
+	"<b>There are no polls yet!</b><br>Be the first and create one...": [
+		"<b>¡No hay votaciones todavía!</b><br>Sé el primero y crea una..."
+	],
+	"Asked by me": [
+		"Preguntado por mí"
+	],
+	"No answered yet": [
+		"No respondida aún"
+	],
+	"Only private polls": [
+		"Sólo votaciones privadas"
+	],
+	"Only public polls": [
+		"Sólo votaciones públicas"
+	],
+	"Manage <strong>reported posts</strong>": [
+		"Administrar <strong>entradas reportadas</strong>"
+	],
+	"Reported posts": [
+		"Entradas reportadas"
+	],
+	"by :displayName": [
+		"por :displayName"
+	],
+	"Doesn't belong to space": [
+		"No pertenece a este espacio"
+	],
+	"Offensive": [
+		"Ofensivo"
+	],
+	"Spam": [
+		"Spam"
+	],
+	"Here you can manage reported users posts.": [
+		"Aquí puedes administrar las entradas de usuario reportadas."
+	],
+	"An user has reported your post as offensive.": [
+		"Un usuario ha reportado tu entrada como ofensiva."
+	],
+	"An user has reported your post as spam.": [
+		"Un usuario ha reportado tu entrada como spam."
+	],
+	"An user has reported your post for not belonging to the space.": [
+		"Un usuario ha reportado tu entrada por no pertenecer al espacio."
+	],
+	"%displayName% has reported %contentTitle% as offensive.": [
+		"%displayName% ha reportado %contentTitle% como ofensiva."
+	],
+	"%displayName% has reported %contentTitle% as spam.": [
+		"%displayName% ha reportado %contentTitle% como spam."
+	],
+	"%displayName% has reported %contentTitle% for not belonging to the space.": [
+		"%displayName% ha reportado %contentTitle% por no pertenecer al espacio."
+	],
+	"Here you can manage reported posts for this space.": [
+		"Aquí puedes administrar las entradas reportadas para este espacio."
+	],
+	"Appropriate": [
+		"Apropiado"
+	],
+	"Delete post": [
+		"Eliminar entrada"
+	],
+	"Reason": [
+		"Razón"
+	],
+	"Reporter": [
+		"Reportador"
+	],
+	"Tasks": [
+		"Tareas"
+	],
+	"Could not access task!": [
+		"¡No se pudo acceder a la tarea!"
+	],
+	"{userName} assigned to task {task}.": [
+		"{userName} asignado a tarea {task}."
+	],
+	"{userName} created task {task}.": [
+		"{userName} creó la tarea {task}."
+	],
+	"{userName} finished task {task}.": [
+		"{userName} completó la tarea {task}."
+	],
+	"{userName} assigned you to the task {task}.": [
+		"{userName} te asignó a la tarea {task}."
+	],
+	"{userName} created a new task {task}.": [
+		"{userName} creó una nueva tarea {task}."
+	],
+	"This task is already done": [
+		"Esta tarea ya está completada"
+	],
+	"You're not assigned to this task": [
+		"No estas asignado a esta tarea"
+	],
+	"Click, to finish this task": [
+		"Clic para completar esta tarea"
+	],
+	"This task is already done. Click to reopen.": [
+		"Esta tarea ya está completada. Clic para reabrir."
+	],
+	"<strong>My</strong> tasks": [
+		"<strong>Mis</strong> tareas"
+	],
+	"From space: ": [
+		"Del espacio:"
+	],
+	"No tasks found which matches your current filter(s)!": [
+		"¡No se han encontrado tareas que coincidan con tu filtro!"
+	],
+	"<b>There are no tasks yet!</b>": [
+		"<b>¡No hay tareas todavía!</b>"
+	],
+	"<b>There are no tasks yet!</b><br>Be the first and create one...": [
+		"<b>¡No hay tareas todavía!</b><br>Se el primero en crear una..."
+	],
+	"Assigned to me": [
+		"Asignadas a mí"
+	],
+	"Nobody assigned": [
+		"Nadie asignado"
+	],
+	"State is finished": [
+		"El estado es completada"
+	],
+	"State is open": [
+		"El estado es abierta"
+	],
+	"Assign users to this task": [
+		"Asignar usuarios a esta tarea"
+	],
+	"Deadline for this task?": [
+		"¿La fecha límite para esta tarea?"
+	],
+	"Preassign user(s) for this task.": [
+		"Asignar usuario(s) a esta tarea"
+	],
+	"What to do?": [
+		"Nak buat apa?"
+	],
+	"Translation Manager": [
+		"Pengurus Penterjemahan"
+	],
+	"Translations": [
+		"Penterjemahan"
+	],
+	"Translation Editor": [
+		"Editor Penterjemahan"
+	],
+	"<strong>Confirm</strong> page deleting": [
+		"<strong>Pastikan</strong> memadam laman"
+	],
+	"<strong>Confirm</strong> page reverting": [
+		"<strong>Pastikan</strong> memulihkan laman"
+	],
+	"<strong>Overview</strong> of all pages": [
+		"<strong>Ringkasan menyeluruh</strong> semua laman"
+	],
+	"<strong>Page</strong> history": [
+		"Sejarah <strong>laman</strong>"
+	],
+	"<strong>Wiki</strong> Module": [
+		"Module <strong>Wiki</strong>"
+	],
+	"Adds a wiki to this space.": [
+		"Tambahkan wiki ke ruangan ini."
+	],
+	"Adds a wiki to your profile.": [
+		"Tambahkan wiki ke profil anda."
+	],
+	"Back to page": [
+		"Kembali ke laman"
+	],
+	"Do you really want to delete this page?": [
+		"Apakah anda mahu memadamkan laman ini?"
+	],
+	"Do you really want to revert this page?": [
+		"Apakah anda mahu memulihkan laman ini?"
+	],
+	"Edit page": [
+		"Laman edit"
+	],
+	"Edited at": [
+		"Diedit pada"
+	],
+	"Go back": [
+		"Kembali"
+	],
+	"Invalid character in page title!": [
+		"Karakter tidak sah dalam tajuk laman!"
+	],
+	"Let's go!": [
+		"Mari pergi!"
+	],
+	"Main page": [
+		"Laman utama"
+	],
+	"New page": [
+		"Laman baru"
+	],
+	"No pages created yet.  So it's on you.<br>Create the first page now.": [
+		"Tiada laman yang dicipta. Jadi terpulang kepada anda.<br>Cipta laman baru sekarang."
+	],
+	"Page History": [
+		"Sejarah Laman"
+	],
+	"Page title already in use!": [
+		"Tajuk laman sudah digunakan!"
+	],
+	"Revert": [
+		"Pulihkan"
+	],
+	"Revert this": [
+		"Pulihkan ini"
+	],
+	"View": [
+		"Lihat"
+	],
+	"Wiki": [
+		"Wiki"
+	],
+	"by": [
+		"oleh"
+	],
+	"Wiki page": [
+		"Lamman wiki"
+	],
+	"<strong>Create</strong> new page": [
+		"<strong>Cipta</strong> laman baru"
+	],
+	"Enter a wiki page name or url (e.g. http://example.com)": [
+		"Masukkan nama laman wiki atau url (cth. https://hub.sch.my)"
+	],
+	"New page title": [
+		"Tajuk laman baru"
+	],
+	"Page content": [
+		"Kandungan laman"
+	],
+	"comment": [
+		"komen"
+	],
+	"post": [
+		"pos"
+	],
+	"Module is not enabled on this content container!": [
+		"Modul tidak diaktifkan pada bekas kandungan ini!"
+	],
+	"An internal server error occurred.": [
+		"Kesalaha dalaman server berlaku."
+	],
+	"You are not allowed to perform this action.": [
+		"Anda tidak dibenarkan melaksanakan tindakan ini."
+	],
+	"Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;": [
+		"Tetapkan tapisan untuk digunakan semasa log masuk. %s menggantikan nama ahli semasa log masuk. Contoh: quot;(sAMAccountName=%s)&quot; atau &quot;(uid=%s)&quot;"
+	]
+}

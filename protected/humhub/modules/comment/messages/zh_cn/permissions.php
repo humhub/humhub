@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Allows the user to add comments' => '',
-    'Allows the user to create posts' => '',
-    'Can manage (e.g. archive, stick or delete) arbitrary content' => '',
-    'Create comment' => '',
-    'Create post' => '',
-    'Manage content' => '',
+    'Allows the user to add comments' => '允许用户评论',
+    'Allows the user to create posts' => '允许用户发布文章',
+    'Can manage (e.g. archive, stick or delete) arbitrary content' => '可以管理（如归档，粘贴或删除）任意内容',
+    'Create comment' => '创建评论',
+    'Create post' => '创建文章',
+    'Manage content' => '管理内容',
 ];

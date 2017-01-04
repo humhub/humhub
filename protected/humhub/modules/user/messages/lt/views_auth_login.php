@@ -13,4 +13,5 @@ return array (
   'email' => 'elektroninio pašto adresas',
   'password' => 'slaptažodis',
   'username or email' => 'vartotojo vardas arba elektroninio pašto adresas',
+  '<strong>Join</strong> the network' => '',
 );

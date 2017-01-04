@@ -47,4 +47,5 @@ return [
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'En bruker med den samme e-mail eksisterer allerede og er ikke linket til deg. Logg inn med din e-mail og tilknytt konto først',
     'Your new password must not equal your current password!' => 'Ditt nye passord kan ikke være ditt samme som nåværende!',
     'or' => 'eller',
+    'Current Password' => '',
 ];

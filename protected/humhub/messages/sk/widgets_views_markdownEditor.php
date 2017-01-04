@@ -29,4 +29,6 @@ return array (
   'list text here' => '여기에 리스트 내용을 입력해주세요',
   'quote here' => '여기에 인용할 내용을 입력해주세요',
   'strong text' => '굵은 텍스트',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

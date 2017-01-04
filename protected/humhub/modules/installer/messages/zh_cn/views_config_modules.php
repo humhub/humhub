@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'HumHub is very flexible and can be adjusted and/or expanded for various different applications thanks to its’ different modules.  The following modules are just a few examples and the ones we thought are most important for your chosen application.<br><br>You can always install or remove modules later. You can find more available modules after installation in the admin area.' => '',
-    'Recommended <strong>Modules</strong>' => '',
+    'HumHub is very flexible and can be adjusted and/or expanded for various different applications thanks to its’ different modules.  The following modules are just a few examples and the ones we thought are most important for your chosen application.<br><br>You can always install or remove modules later. You can find more available modules after installation in the admin area.' => 'HumHub是非常灵活的，可以通过安装各种不同的应用模块来调整/或扩大功能。下面推荐几个我们认为重要的模块给你。当然，你也可以稍后在管理区域中安装更多模块。',
+    'Recommended <strong>Modules</strong>' => '推荐 <strong>模块',
 ];

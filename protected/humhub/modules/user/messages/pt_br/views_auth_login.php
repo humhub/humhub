@@ -30,4 +30,5 @@ return [
     'email' => 'e-mail',
     'password' => 'senha',
     'username or email' => 'nome do usuário ou e-mail',
+    '<strong>Join</strong> the network' => '',
 ];

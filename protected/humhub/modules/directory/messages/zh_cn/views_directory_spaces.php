@@ -17,9 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '<strong>Space</strong> directory' => '<strong>版块</strong> 目录',
-  'No spaces found!' => '没发现版块',
+  '<strong>Space</strong> directory' => '<strong>空间</strong> 目录',
+  'No spaces found!' => '没发现空间',
   'Search' => '搜 索',
-  'You are a member of this space' => '你是这个版块成员之一',
-  'search for spaces' => '查找版块',
+  'You are a member of this space' => '你是这个空间成员之一',
+  'search for spaces' => '查找空间',
 );

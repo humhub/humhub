@@ -29,4 +29,6 @@ return array (
   'list text here' => 'text list disini',
   'quote here' => 'quote disini',
   'strong text' => '@@',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

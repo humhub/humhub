@@ -15,7 +15,6 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\forms\AccountRecoverPassword;
 
-
 /**
  * Password Recovery
  *
@@ -28,11 +27,6 @@ class PasswordRecoveryController extends Controller
      * @inheritdoc
      */
     public $layout = "@humhub/modules/user/views/layouts/main";
-
-    /**
-     * @inheritdoc
-     */
-    public $subLayout = "_layout";
 
     /**
      * @inheritdoc

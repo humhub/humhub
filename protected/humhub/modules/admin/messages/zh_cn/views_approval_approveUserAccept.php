@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Accept user: <strong>{displayName}</strong> ' => '',
+  'Accept user: <strong>{displayName}</strong> ' => '接受用户: <strong>{displayName}</strong>',
   'Cancel' => '取消',
   'Send & save' => '发送并保存',
 );

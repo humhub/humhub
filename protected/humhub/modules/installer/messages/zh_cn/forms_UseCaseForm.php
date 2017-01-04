@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'I want to use HumHub for:' => '',
+    'I want to use HumHub for:' => '我想用HumHub来：',
 ];

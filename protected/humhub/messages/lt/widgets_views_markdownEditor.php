@@ -29,4 +29,6 @@ return array (
   'list text here' => 'Įrašyti tekstą čia',
   'quote here' => 'Cituoti čia',
   'strong text' => 'Paryškintas tekstas',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

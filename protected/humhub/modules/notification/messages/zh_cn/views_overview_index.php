@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Notification</strong> Overview' => '',
-    'Mark all as seen' => '',
-    'Module Filter' => '',
-    'No notifications found!' => '',
+    '<strong>Notification</strong> Overview' => '<strong>通知</strong> 概览',
+    'Mark all as seen' => '标记所有为已读',
+    'Module Filter' => '模块筛选',
+    'No notifications found!' => '没有发现通知！',
     'Filter' => '筛选',
 ];

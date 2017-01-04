@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models;
 
+use humhub\components\ActiveRecord;
 use Yii;
 use yii\helpers\Url;
 
@@ -28,7 +29,7 @@ use yii\helpers\Url;
  * @property string $firstname
  * @property string $lastname
  */
-class Invite extends \yii\db\ActiveRecord
+class Invite extends ActiveRecord
 {
 
     const SOURCE_SELF = "self";
@@ -49,7 +50,7 @@ class Invite extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_originator_id', 'space_invite_id', 'created_by', 'updated_by'], 'integer'],
+            [['user_originator_id', 'space_invite_id'], 'integer'],
             [['token'], 'unique'],
             [['firstname', 'lastname'], 'string', 'max' => 255],
             [['email', 'source', 'token'], 'string', 'max' => 45],
@@ -69,6 +70,16 @@ class Invite extends \yii\db\ActiveRecord
         $scenarios = parent::scenarios();
         $scenarios['invite'] = ['email'];
         return $scenarios;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'email' => Yii::t('UserModule.models_Invite', 'Email'),
+        ];
     }
 
     /**

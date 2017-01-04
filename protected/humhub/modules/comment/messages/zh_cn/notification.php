@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayNames} commented {contentTitle}.' => '',
-    '{displayName} commented {contentTitle}.' => '',
+    '{displayNames} commented {contentTitle}.' => '{displayNames} 评论了 {contentTitle}.',
+    '{displayName} commented {contentTitle}.' => '{displayName} 评论了 {contentTitle}.',
 ];

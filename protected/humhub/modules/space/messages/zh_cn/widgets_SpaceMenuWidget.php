@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Space</strong> menu' => '<strong>版块</strong> 菜单',
+    '<strong>Space</strong> menu' => '<strong>空间</strong> 菜单',
     'Stream' => '动态',
 ];

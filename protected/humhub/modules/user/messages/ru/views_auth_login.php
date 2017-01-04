@@ -30,4 +30,5 @@ return [
     'email' => 'e-mail',
     'password' => 'Пароль',
     'username or email' => 'Имя пользователя или e-mail',
+    '<strong>Join</strong> the network' => '',
 ];

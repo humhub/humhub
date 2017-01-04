@@ -35,7 +35,7 @@ class StreamQuery extends \yii\base\Model
     /**
      * Maximum wall entries per request
      */
-    const MAX_LIMIT = 50;
+    const MAX_LIMIT = 20;
 
     /**
      * Can be set to filter specific content types.
@@ -113,7 +113,8 @@ class StreamQuery extends \yii\base\Model
      * @var \yii\db\ActiveQuery 
      */
     protected $_query;
-    private $_built = false;
+    
+    protected $_built = false;
 
     public function rules()
     {

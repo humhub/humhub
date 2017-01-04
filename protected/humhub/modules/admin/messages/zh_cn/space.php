@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add new space' => '',
+    'Add new space' => '增加新的空间',
 ];
