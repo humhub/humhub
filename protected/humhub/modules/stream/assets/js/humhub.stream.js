@@ -488,7 +488,7 @@ humhub.module('stream', function(module, require, $) {
         return new Promise(function(resolve, reject) {
             var $result;
             // Don't proceed if stream is already loading
-            if(!cfg.contentId && (that.loading || that.lastEntryLoaded)) {
+            if(!cfg.contentId && !cfg.insertAfter && (that.loading || that.lastEntryLoaded)) {
                 resolve();
                 return;
             }
@@ -496,6 +496,7 @@ humhub.module('stream', function(module, require, $) {
             if(cfg.loader) {
                 that.showLoader();
             }
+            
             that.loading = true;
             that._load(cfg).then(function(response) {
                 if(cfg.loader) {
@@ -504,12 +505,12 @@ humhub.module('stream', function(module, require, $) {
 
                 // If its not a single entry load and we get no content, we expect last entry is loaded
                 // This may have to be change if we require to reload multiple elements.
-                if(!cfg['contentId'] && object.isEmpty(response.content)) {
+                if(!cfg.contentId && object.isEmpty(response.content)) {
                     that.lastEntryLoaded = true;
                     that.$.trigger('humhub:modules:stream:lastEntryLoaded');
                     //We call onChange here, since we want to display empty messages in case its the first call
                     that.onChange();
-                } else if(!cfg['contentId']) {
+                } else if(!cfg.contentId && !cfg.insertAfter) {
                     that.lastEntryLoaded = response.isLast;
                     $result = that.addEntries(response, cfg);
                 } else {
@@ -586,6 +587,16 @@ humhub.module('stream', function(module, require, $) {
             that.onChange();
         });
     };
+    
+    Stream.prototype.after = function(html, $entryNode) {
+        var $html = $(html).hide();
+        $entryNode.after($html);
+        var that = this;
+        $html.fadeIn('fast', function() {
+            additions.applyTo($html);
+            that.onChange();
+        });
+    };
 
     Stream.prototype.appendEntry = function(html) {
         var $html = $(html).hide();
@@ -595,7 +606,6 @@ humhub.module('stream', function(module, require, $) {
             additions.applyTo($html);
             that.onChange();
         });
-
     };
 
 
@@ -622,15 +632,18 @@ humhub.module('stream', function(module, require, $) {
             return $result;
         }
 
-        this.$.trigger('humhub:modules:stream:beforeAddEntries', [response, result]);
+        this.$.trigger('humhub:stream:beforeAddEntries', [response, result]);
 
+        
         if(cfg['prepend']) {
             this.prependEntry($result);
+        } else if(cfg.insertAfter) {
+            this.after($result, cfg.insertAfter);
         } else {
             this.appendEntry($result);
         }
 
-        this.$.trigger('humhub:modules:stream:afterAddEntries', [response, result]);
+        this.$.trigger('humhub:stream:afterAddEntries', [response, result]);
         $result.fadeIn('fast');
         return $result;
     };
@@ -753,16 +766,27 @@ humhub.module('stream', function(module, require, $) {
         }
 
         var that = this;
+        
         this.$.on('humhub:modules:stream:clear', function() {
             that.$.find(".emptyStreamMessage").hide();
             that.$.find(".emptyFilterStreamMessage").hide();
             that.$.find('.back_button_holder').hide();
         });
 
-        this.$.on('humhub:modules:stream:afterAppendEntries', function(evt, stream) {
-            if(that.isShowSingleEntry()) {
-                that.$.find('.back_button_holder').show();
-            }
+        this.$.on('humhub:stream:afterAddEntries', function(evt, resp, res) {
+            $.each(resp.contentSuppressions, function(key, values) {
+                var entry = that.entry(key);
+                var $loadDiv = $('<div class="load-suppressed"><a href="#" data-ui-loader>'+values.length+' more...</a></div>');
+                entry.$.after($loadDiv);
+                $loadDiv.on('click', function(evt) {
+                    evt.preventDefault();
+                    that.loadEntries({'insertAfter': entry.$, 'from': key, 'limit': values.length}).then(function(resp) {
+                        $loadDiv.remove();
+                    }).catch(function(err) {
+                        module.log.error(err, true);
+                    });
+                })
+            });
         });
 
         this.$.on('humhub:modules:stream:lastEntryLoaded', function() {
