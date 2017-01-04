@@ -29,11 +29,19 @@ class ApprovalRequest extends BaseNotification
      * @inheritdoc
      */
     public $markAsSeenOnClick = false;
+    
+    /**
+     *  @inheritdoc
+     */
+    public function category()
+    {
+        return new SpaceMemberNotificationCategory;
+    }
 
     /**
      * @inheritdoc
      */
-    public function getAsHtml()
+    public function html()
     {
         return Yii::t('SpaceModule.notification', '{displayName} requests membership for the space {spaceName}', array(
                     '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),

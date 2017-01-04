@@ -1,78 +1,323 @@
 // Markdown
 .markdown-render {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-weight: bold !important;
-  }
-  h1 {
-    font-size: 28px !important;
-  }
-  h2 {
-    font-size: 24px !important;
-  }
-  h3 {
-    font-size: 18px !important;
-  }
-  h4 {
-    font-size: 16px !important;
-  }
-  h5 {
-    font-size: 14px !important;
-  }
-  h6 {
-    color: #999;
-    font-size: 14px !important;
-  }
-  pre {
-    padding: 0;
-    border: none;
-    border-radius: 3px;
-    code {
-      padding: 10px;
-      border-radius: 3px;
-      font-size: 12px !important;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-weight: bold !important;
     }
-  }
-  a,
-  a:visited {
-    background-color: inherit;
-    text-decoration: none;
-    color: @info !important;
-  }
-  img {
-    max-width: 100%;
-    display: table-cell !important;
-  }
-
-  table {
-    width: 100%;
-    th {
-      font-size: 13px;
-      font-weight: 700;
-      color: @font3;
+    h1 {
+        font-size: 28px !important;
+    }
+    h2 {
+        font-size: 24px !important;
+    }
+    h3 {
+        font-size: 18px !important;
+    }
+    h4 {
+        font-size: 16px !important;
+    }
+    h5 {
+        font-size: 14px !important;
+    }
+    h6 {
+        color: #999;
+        font-size: 14px !important;
+    }
+    pre {
+        padding: 0;
+        border: none;
+        border-radius: 3px;
+        code {
+            padding: 10px;
+            border-radius: 3px;
+            font-size: 12px !important;
+        }
+    }
+    a,
+    a:visited {
+        background-color: inherit;
+        text-decoration: none;
+        color: @info !important;
+    }
+    img {
+        max-width: 100%;
+        display: table-cell !important;
     }
 
-    thead {
-      tr {
-        border-bottom: 1px solid @background3;
-      }
-    }
+    table {
+        width: 100%;
+        th {
+            font-size: 13px;
+            font-weight: 700;
+            color: @font3;
+        }
 
-    tbody tr td, thead tr th {
-      border: 1px solid @background3 !important;
-      padding: 4px;
+        thead {
+            tr {
+                border-bottom: 1px solid @background3;
+            }
+        }
+
+        tbody tr td, thead tr th {
+            border: 1px solid @background3 !important;
+            padding: 4px;
+        }
     }
-  }
 }
 
 .md-editor.active {
-  border: 2px solid @info !important;
+    border: 2px solid @info !important;
 }
 
 .md-editor textarea {
-  padding: 10px !important;
+    padding: 10px !important;
+}
+
+[data-ui-markdown] {
+    
+    word-break: break-all;
+    
+    h1, h2, h3, h4, h5, h6 {
+        margin: 0  0 1em 0;
+        text-align: start;
+    }
+    
+    h1 {
+        font-size: 2.6em !important;
+    }
+    
+    h2 {
+        font-size: 2.15em !important;
+    }
+    
+    h3 {
+        font-size: 1.7em !important;
+    }
+    
+    h4 {
+        font-size: 1.25em !important;
+    }
+    
+    h5 {
+        font-size: 1em !important;
+    }
+    
+    h6 {
+        font-size: .85em !important;
+    }
+    
+    p, pre, blockquote {
+        margin: 0 0 1.1em;
+    }
+    
+    blockquote {
+        border-left-width: 10px;
+        background-color: rgba(128,128,128,0.05);
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        padding: 15px 20px;
+        font-size: 1em;
+        border-left: 5px solid #888888;
+        
+    }
+    
+    table {
+        margin-bottom: 20px;
+        max-width: 100%;
+        background-color: transparent;
+        border-collapse: collapse;
+        border-spacing: 0px;
+    }
+    
+    table caption+thead tr:first-child th, 
+    table caption+thead tr:first-child td, 
+    table colgroup+thead tr:first-child th, 
+    table colgroup+thead tr:first-child td, 
+    table thead:first-child tr:first-child th, 
+    table thead:first-child tr:first-child td {
+        border-top: 0px;
+    }
+    
+    table thead th {
+        vertical-align: bottom;
+    }
+    
+    table th {
+        font-weight: bold;
+        text-align: left;
+    }
+    
+    table th, table td {
+        padding: 8px;
+        line-height: 20px;
+        vertical-align: top;
+        border-top: 1px solid #ddd;
+    }
+    
+    dt, dd {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        line-height: 1.45;
+    }
+    
+    dt {
+        font-weight: bold;
+    }
+    
+    dd {
+        margin-left: 40px;
+    }
+    
+    pre {
+        text-align: start;
+        border: 0;
+        padding: 10px 20px;
+        border-radius: 5px;
+        code {
+            white-space: pre !important;
+        }
+    }
+   
+    
+    blockquote ul:last-child, blockquote ol:last-child {
+        margin-bottom: 0px;
+    }
+    
+    ul, ol {
+        margin-top: 0;
+        margin-bottom: 10.5px;
+    }
+    
+    .footnote {
+        vertical-align: top;
+        position: relative;
+        top: -0.5em;
+        font-size: .8em;
+    }
+}
+
+
+blockquote {
+	border-left: 2px dotted #888;
+	padding-left: 5px;
+	background: #d0f0ff;
+}
+
+.wmd-panel
+{
+	//margin-left: 25%;
+	//margin-right: 25%;
+	//width: 50%;
+	min-width: 500px;
+}
+
+.wmd-button-bar 
+{
+	width: 100%;
+	background-color: Silver; 
+}
+
+.wmd-input 
+{ 
+	height: 300px;
+	width: 100%;
+	background-color: Gainsboro;
+	border: 1px solid DarkGray;
+}
+
+.wmd-preview 
+{ 
+	//background-color: #c0e0ff; 
+}
+
+.wmd-button-row 
+{
+	position: relative; 
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	margin-top: 10px;
+	padding: 0px;  
+	height: 20px;
+}
+
+.wmd-spacer
+{
+	width: 1px; 
+	height: 20px; 
+	margin-left: 14px;
+	
+	position: absolute;
+	background-color: Silver;
+	display: inline-block; 
+	list-style: none;
+}
+
+.wmd-button {
+    width: 20px;
+    height: 20px;
+    padding-left: 2px;
+    padding-right: 3px;
+    position: absolute;
+    display: inline-block;
+    list-style: none;
+    cursor: pointer;
+}
+
+.wmd-button > span {
+    background-image: url(../img/wmd-buttons.png);
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
+.wmd-spacer1
+{
+    left: 50px;
+}
+.wmd-spacer2
+{
+    left: 175px;
+}
+.wmd-spacer3
+{
+    left: 300px;
+}
+
+
+
+
+.wmd-prompt-background
+{
+	background-color: Black;
+}
+
+.wmd-prompt-dialog
+{
+	border: 1px solid #999999;
+	background-color: #F5F5F5;
+}
+
+.wmd-prompt-dialog > div {
+	font-size: 0.8em;
+	font-family: arial, helvetica, sans-serif;
+}
+
+
+.wmd-prompt-dialog > form > input[type="text"] {
+	border: 1px solid #999999;
+	color: black;
+}
+
+.wmd-prompt-dialog > form > input[type="button"]{
+	border: 1px solid #888888;
+	font-family: trebuchet MS, helvetica, sans-serif;
+	font-size: 0.8em;
+	font-weight: bold;
 }

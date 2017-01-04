@@ -26,11 +26,19 @@ class InviteDeclined extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = "space";
+    
+    /**
+     *  @inheritdoc
+     */
+    public function category()
+    {
+        return new SpaceMemberNotificationCategory;
+    }
 
     /**
      * @inheritdoc
      */
-    public function getAsHtml()
+    public function html()
     {
         return Yii::t('SpaceModule.notification', '{displayName} declined your invite for the space {spaceName}', array(
                     '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),

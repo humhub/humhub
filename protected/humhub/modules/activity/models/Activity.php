@@ -36,6 +36,8 @@ class Activity extends ContentActiveRecord
         return [
             [
                 'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
+                'classAttribute' => 'source_class',
+                'pkAttribute' => 'source_pk',
                 'mustBeInstanceOf' => [
                     \yii\db\ActiveRecord::className(),
                 ]
@@ -57,9 +59,9 @@ class Activity extends ContentActiveRecord
     public function rules()
     {
         return [
-            [['object_id'], 'integer'],
+            [['source_pk'], 'integer'],
             [['class'], 'string', 'max' => 100],
-            [['module', 'object_model'], 'string', 'max' => 100]
+            [['module', 'source_class'], 'string', 'max' => 100]
         ];
     }
 

@@ -110,8 +110,10 @@
                                 // assign label to checkbox
                                 $this.parent().attr('for', $this.attr('id'));
 
+                                var $checkbox = $('<div class="regular-checkbox-box"></div>').attr('style', $this.attr('style'));
+                                
                                 // add new checkbox element
-                                $this.parent().append('<div class="regular-checkbox-box"></div>');
+                                $this.parent().append($checkbox);
                             }
                         }
 

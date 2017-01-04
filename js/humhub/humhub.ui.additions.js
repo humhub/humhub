@@ -10,6 +10,8 @@ humhub.module('ui.additions', function(module, require, $) {
     var event = require('event');
     var object = require('util.object');
 
+    var richtext = require('ui.richtext', true);
+
     var _additions = {};
 
     /**
@@ -23,7 +25,7 @@ humhub.module('ui.additions', function(module, require, $) {
      */
     var register = function(id, selector, handler, options) {
         options = options || {};
-        
+
         if(!_additions[id] || options.overwrite) {
             _additions[id] = {
                 'selector': selector,
@@ -46,8 +48,8 @@ humhub.module('ui.additions', function(module, require, $) {
      * @returns {undefined}
      */
     var applyTo = function(element, options) {
-        options = options  || {};
-        
+        options = options || {};
+
         var $element = (element instanceof $) ? element : $(element);
         $.each(_additions, function(id) {
             if(options.filter && !options.filter.indexOf(id)) {
@@ -106,6 +108,38 @@ humhub.module('ui.additions', function(module, require, $) {
             });
         });
 
+        module.register('markdown', '[data-ui-markdown]', function($match) {
+            var converter = new Markdown.Converter();
+            Markdown.Extra.init(converter);
+            $match.each(function() {
+                var $this = $(this);
+                
+                if($this.data('markdownProcessed')) {
+                    return;
+                }
+                
+
+                // Export all richtext features
+                var features = {};
+                $this.find('[data-richtext-feature]').each(function() {
+                    var $this = $(this);
+                    features[$this.data('guid')] = $this.clone();
+                    $this.replaceWith($this.data('guid'));
+                });
+                
+                var text = richtext.Richtext.plainText($this.clone());
+                var result = converter.makeHtml(text);
+         
+                // Rewrite richtext feature
+                $.each(features, function(guid, $element) {
+                    result = result.replace(guid.trim(), $('<div></div>').html($element).html());
+                });
+
+
+                $this.html(result).data('markdownProcessed', true);
+            });
+        });
+
         $(document).on('click.humhub-ui-tooltip', function() {
             $('.tooltip').remove();
         });
@@ -117,8 +151,8 @@ humhub.module('ui.additions', function(module, require, $) {
 
         // Activate placeholder text for older browsers (specially IE)
         /*this.register('placeholder','input, textarea', function($match) {
-            $match.placeholder();
-        });*/
+         $match.placeholder();
+         });*/
 
         // Replace the standard checkbox and radio buttons
         module.register('forms', ':checkbox, :radio', function($match) {
@@ -130,10 +164,10 @@ humhub.module('ui.additions', function(module, require, $) {
             $match.loader();
         });
     };
-    
+
     var extend = function(id, handler, options) {
         options = options || {};
-        
+
         if(_additions[id]) {
             var addition = _additions[id];
             if(options.prepend) {
@@ -141,21 +175,21 @@ humhub.module('ui.additions', function(module, require, $) {
             } else {
                 addition.handler = object.chain(addition.handler, addition.handler, handler);
             }
-            
+
             if(options.selector && options.selector !== addition.selector) {
-                addition.selector += ','+options.selector;
+                addition.selector += ',' + options.selector;
             }
-            
+
             if(options.applyOnInit) {
                 module.apply('body', id);
             }
-            
-        } else if(options.selector){
+
+        } else if(options.selector) {
             options.extend = false; // Make sure we don't get caught in a loop somehow.
             module.register(id, options.selector, handler, options);
         }
     };
-    
+
     //TODO: additions.extend('id', handler); for extending existing additions.
 
     /**
@@ -201,7 +235,7 @@ humhub.module('ui.additions', function(module, require, $) {
         } else if(!options) {
             options = {};
         }
-        
+
         node = (node instanceof $) ? node[0] : node;
 
         var observer = new MutationObserver(function(mutations) {

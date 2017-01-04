@@ -95,7 +95,10 @@ humhub.module('log', function (module, require, $) {
             if(msg instanceof Error && level >= TRACE_WARN) {
                 details = msg;
                 msg = this.getMessage(details.message, level, true);
-            } else  if(msg.status && level >= TRACE_WARN) {
+            } else if(msg.error && msg.error.message) { // client.Response
+                details = msg;
+                msg = msg.error.message;
+            } else  if(msg.status && level >= TRACE_WARN) { // client.Response.status
                 details = msg;
                 msg = this.getMessage(msg.status, level, true);
             } else if(object.isString(msg) || object.isNumber(msg)) {

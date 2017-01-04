@@ -46,7 +46,7 @@ class SpaceModelMembership extends Behavior
 
         return false;
     }
-    
+
     /**
      * Checks if a given Userid is allowed to leave this space.
      * A User is allowed to leave, if the can_cancel_membership flag in the space_membership table is 1. If it is 2, the decision is delegated to the space.
@@ -56,17 +56,17 @@ class SpaceModelMembership extends Behavior
      */
     public function canLeave($userId = "")
     {
-    
+
         // Take current userid if none is given
         if ($userId == "")
             $userId = Yii::$app->user->id;
-    
+
         $membership = $this->getMembership($userId);
 
         if ($membership != null && !empty($membership->can_cancel_membership)) {
             return $membership->can_cancel_membership === 1 || ($membership->can_cancel_membership === 2 && !empty($this->owner->members_can_leave));
-        }          
-    
+        }
+
         return false;
     }
 
@@ -182,8 +182,9 @@ class SpaceModelMembership extends Behavior
      */
     public function getMembership($userId = "")
     {
-        if ($userId == "")
+        if ($userId == "") {
             $userId = Yii::$app->user->id;
+        }
 
         return Membership::findOne(['user_id' => $userId, 'space_id' => $this->owner->id]);
     }
@@ -209,7 +210,7 @@ class SpaceModelMembership extends Behavior
 
         $userInvite = Invite::findOne(['email' => $email]);
         // No invite yet
-         if ($userInvite == null) {
+        if ($userInvite == null) {
             // Invite EXTERNAL user
             $userInvite = new Invite();
             $userInvite->email = $email;
@@ -224,12 +225,12 @@ class SpaceModelMembership extends Behavior
             $userInvite->user_originator_id = $originatorUserId;
             $userInvite->space_invite_id = $this->owner->id;
         }
-        
-        if($userInvite->validate() && $userInvite->save()) {
+
+        if ($userInvite->validate() && $userInvite->save()) {
             $userInvite->sendInviteMail();
             return true;
-        } 
-        
+        }
+
         return false;
     }
 
@@ -279,51 +280,58 @@ class SpaceModelMembership extends Behavior
      * If user is applicant approve it.
      *
      * @param type $userId
-     * @param type $originatorUserId
+     * @param type $originatorId
      */
-    public function inviteMember($userId, $originatorUserId)
+    public function inviteMember($userId, $originatorId)
     {
         $membership = $this->getMembership($userId);
 
         if ($membership != null) {
-
-            // User is already member
-            if ($membership->status == Membership::STATUS_MEMBER) {
-                return;
-            }
-
-            // User requested already membership, just approve him
-            if ($membership->status == Membership::STATUS_APPLICANT) {
-                $this->addMember(Yii::$app->user->id);
-                return;
-            }
-
-            // Already invite, reinvite him
-            if ($membership->status == Membership::STATUS_INVITED) {
-                // Remove existing notification
-                $notification = new \humhub\modules\space\notifications\Invite;
-                $notification->source = $this->owner;
-                $notification->delete(User::findOne(['id' => $userId]));
+            switch ($membership->status) {
+                case Membership::STATUS_APPLICANT:
+                    // If user is an applicant of this space add user and return.
+                    $this->addMember(Yii::$app->user->id);
+                case Membership::STATUS_MEMBER:
+                    // If user is already a member just ignore the invitation. 
+                    return;
+                case Membership::STATUS_INVITED:
+                    // If user is already invited, remove old invite notification and retrigger
+                    $oldNotification = new \humhub\modules\space\notifications\Invite(['source' => $this->owner]);
+                    $oldNotification->delete(User::findOne(['id' => $userId]));
+                    break;
             }
         } else {
-            $membership = new Membership;
+            $membership = new Membership([
+                'space_id' => $this->owner->id,
+                'user_id' => $userId,
+                'status' => Membership::STATUS_INVITED,
+                'group_id' => Space::USERGROUP_MEMBER
+            ]);
         }
 
+        // Update or set originator 
+        $membership->originator_user_id = $originatorId;
 
-        $membership->space_id = $this->owner->id;
-        $membership->user_id = $userId;
-        $membership->originator_user_id = $originatorUserId;
-
-        $membership->status = Membership::STATUS_INVITED;
-        $membership->group_id = Space::USERGROUP_MEMBER;
-
-        if (!$membership->save()) {
+        if ($membership->save()) {
+            $this->sendInviteNotification($userId, $originatorId);
+        } else {
             throw new \yii\base\Exception("Could not save membership!" . print_r($membership->getErrors(), 1));
         }
+    }
 
-        $notification = new \humhub\modules\space\notifications\Invite;
-        $notification->source = $this->owner;
-        $notification->originator = User::findOne(['id' => $originatorUserId]);
+    /**
+     * Sends an Invite Notification to the given user.
+     * 
+     * @param type $userId
+     * @param type $originatorId
+     */
+    protected function sendInviteNotification($userId, $originatorId)
+    {
+        $notification = new \humhub\modules\space\notifications\Invite([
+            'source' => $this->owner,
+            'originator' => User::findOne(['id' => $originatorId])
+        ]);
+
         $notification->send(User::findOne(['id' => $userId]));
     }
 
@@ -412,8 +420,9 @@ class SpaceModelMembership extends Behavior
      */
     public function removeMember($userId = "")
     {
-        if ($userId == "")
+        if ($userId == "") {
             $userId = Yii::$app->user->id;
+        }
 
         $user = User::findOne(['id' => $userId]);
 

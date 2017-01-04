@@ -13,11 +13,16 @@ use yii\helpers\Url;
 use yii\bootstrap\Html;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentAddonActiveRecord;
 
 /**
- * BaseNotification
+ * A BaseNotification class describes the behaviour and the type of a Notification.
+ * A BaseNotification is created and can be sent to one or multiple users over different targets.
+ * 
+ * The BaseNotification can should be created like this:
+ * 
+ * MyNotification::instance()->from($originator)->about($source)->sendBulk($userList);
+ * 
+ * This will send Notifications to different NotificationTargets by using a queue.
  *
  * @author luke
  */
@@ -25,34 +30,10 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
 {
 
     /**
-     * Space this notification belongs to. (Optional)
-     * If source is a Content, ContentAddon or ContentContainer this will be
-     * automatically set.
-     *
-     * @var \humhub\modules\space\models\Space
+     * Can be used to delay the NotificationJob execution.
+     * @var type 
      */
-    public $space;
-
-    /**
-     * Layout file for web version
-     *
-     * @var string
-     */
-    protected $layoutWeb = "@notification/views/layouts/web.php";
-
-    /**
-     * Layout file for mail version
-     *
-     * @var string
-     */
-    protected $layoutMail = "@notification/views/layouts/mail.php";
-
-    /**
-     * Layout file for mail plaintext version
-     *
-     * @var string
-     */
-    protected $layoutMailPlaintext = "@notification/views/layouts/mail_plaintext.php";
+    public $delay = 0;
 
     /**
      * @var boolean automatically mark notification as seen after click on it
@@ -70,17 +51,71 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     protected $_groupKey = null;
 
     /**
+     * @var \humhub\modules\notification\components\NotificationCategory cached category instance 
+     */
+    protected $_category = null;
+
+    /**
+     * @inheritdoc
+     */
+    public $recordClass = Notification::class;
+
+    /**
+     * Returns the notification category instance. If no category class is set (default) the default notification settings
+     * can't be overwritten.
+     * 
+     * The category instance is cached, once created.
+     * 
+     * If the Notification configuration should be configurable subclasses have to overwrite this method.
+     * 
+     * @return \humhub\modules\notification\components\NotificationCategory
+     */
+    public function getCategory()
+    {
+        if (!$this->_category) {
+            $this->_category = $this->category();
+        }
+        return $this->_category;
+    }
+
+    /**
+     * Returns a new NotificationCategory instance.
+     * 
+     * This function should be overwritten by subclasses to append this BaseNotification
+     * to the returned category. If no category instance is returned, the BaseNotification behavriour (targets) will not be
+     * configurable.
+     * 
+     * @return \humhub\modules\notification\components\NotificationCategory
+     */
+    protected function category()
+    {
+        return null;
+    }
+
+    /**
+     * @return string title text for this notification
+     */
+    public function getTitle()
+    {
+        $category = $this->getCategory();
+        if ($category) {
+            return Yii::t('NotificationModule.base', 'There are new updates available at {baseUrl} - ({category})', ['baseUrl' => Url::base(true), 'category' => $category]);
+        } else {
+            return Yii::t('NotificationModule.base', 'There are new updates available at {baseUrl}', ['baseUrl' => Url::base(true)]);
+        }
+    }
+
+    /**
      * @inheritdoc
      */
     public function getViewParams($params = [])
     {
-        $params['url'] = Url::to(['/notification/entry', 'id' => $this->record->id], true);
-        $params['space'] = $this->space;
-        $params['isNew'] = ($this->record->seen != 1);
-        $params['asHtml'] = $this->getAsHtml();
-        $params['asText'] = $this->getAsText();
+        $result = [
+            'url' => Url::to(['/notification/entry', 'id' => $this->record->id], true),
+            'isNew' => !$this->record->seen,
+        ];
 
-        return parent::getViewParams($params);
+        return \yii\helpers\ArrayHelper::merge(parent::getViewParams($result), $params);
     }
 
     /**
@@ -100,57 +135,98 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     }
 
     /**
-     * Sends this notification to a User
+     * Sends this notification to all notification targets of this User
      *
      * @param User $user
      */
     public function send(User $user)
     {
-
-        if ($this->moduleId == "") {
-            throw new \yii\base\InvalidConfigException("No moduleId given!");
+        if (empty($this->moduleId)) {
+            throw new \yii\base\InvalidConfigException('No moduleId given for "' . $this->className() . '"');
         }
 
         // Skip - do not set notification to the originator
-        if ($this->originator !== null && $user->id == $this->originator->id) {
+        if ($this->originator && $this->originator->id == $user->id) {
             return;
         }
-
-        $notification = new Notification;
-        $notification->user_id = $user->id;
-        $notification->class = $this->className();
-        $notification->module = $this->moduleId;
-        $notification->seen = 0;
-
-        // Load group key
-        if ($this->_groupKey === null) {
-            $this->_groupKey = $this->getGroupKey();
+        
+        //$this->queueJob($user);
+        $this->saveRecord($user);
+        foreach (Yii::$app->notification->getTargets($user) as $target) {
+            $target->send($this, $user);
         }
+    }
 
-        if ($this->_groupKey !== '') {
-            $notification->group_key = $this->getGroupKey();
-        }
+    /**
+     * Queues the notification job. The Job is responsible for creating and sending
+     * the Notifications out to its NotificationTargets.
+     * 
+     * @param User $user
+     */
+    protected function queueJob(User $user)
+    {
+        Yii::$app->notificationQueue->push(new NotificationJob([
+            'notification' => $this,
+            'user_id' => $user->id
+        ]));
+    }
 
-        if ($this->source !== null) {
+    public function save(User $user)
+    {
+        // We reuse our record instance to save multiple records.
+        $this->record->id = null;
+        $this->record->isNewRecord = true;
+        $this->record->user_id = $user->id;
+        return $this->record->save();
+    }
 
+    /**
+     * Creates the an Notification instance of the current BaseNotification type for the
+     * given $user.
+     * 
+     * @param User $user
+     */
+    public function saveRecord(User $user)
+    {
+        $notification = new Notification([
+            'user_id' => $user->id,
+            'class' => static::class,
+            'module' => $this->moduleId,
+            'group_key' => $this->getGroupKey(),
+        ]);
+
+        if ($this->source) {
             $notification->source_pk = $this->source->getPrimaryKey();
             $notification->source_class = $this->source->className();
-
-            // Automatically set spaceId if source is Content/Addon/Container
-            if ($this->source instanceof ContentActiveRecord || $this->source instanceof ContentAddonActiveRecord) {
-                if ($this->source->content->container instanceof \humhub\modules\space\models\Space) {
-                    $notification->space_id = $this->source->content->container->id;
-                }
-            } elseif ($this->source instanceof \humhub\modules\space\models\Space) {
-                $notification->space_id = $this->source->id;
-            }
+            $notification->space_id = $this->getSpaceId();
         }
 
-        if ($this->originator !== null) {
+        if ($this->originator) {
             $notification->originator_user_id = $this->originator->id;
         }
 
         $notification->save();
+        $this->record = $notification;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function about($source)
+    {
+        parent::about($source);
+        $this->record->space_id = $this->getSpaceId();
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function from($originator)
+    {
+        $this->originator = $originator;
+        $this->record->originator_user_id = $originator->id;
+        return $this;
     }
 
     /**
@@ -160,7 +236,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     {
         $condition = [];
 
-        $condition['class'] = $this->className();
+        $condition['class'] = static::class;
 
         if ($user !== null) {
             $condition['user_id'] = $user->id;
@@ -201,71 +277,38 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
         $similarNotifications = Notification::find()
                 ->where(['source_class' => $this->record->source_class, 'source_pk' => $this->record->source_pk, 'user_id' => $this->record->user_id])
                 ->andWhere(['!=', 'seen', '1']);
-        foreach ($similarNotifications->all() as $n) {
-            $n->getClass()->markAsSeen();
+        foreach ($similarNotifications->all() as $notification) {
+            $notification->getClass()->markAsSeen();
         }
     }
 
     /**
-     * Returns key to group notifications.
-     * If empty notification grouping is disabled.
+     * Returns a key for grouping notifications.
+     * If null is returned (default) the notification grouping for this BaseNotification type disabled.
+     * 
+     * The returned key could for example be a combination of classname related content id.
      * 
      * @return string the group key
      */
     public function getGroupKey()
     {
-        return "";
-    }
-
-    /**
-     * Should be overwritten by subclasses. This method provides a user friendly
-     * title for the different notification types.
-     * 
-     * @return string e.g. New Like
-     */
-    public static function getTitle()
-    {
         return null;
     }
 
     /**
-     * Returns text version of this notification
+     * Renders the Notificaiton for the given NotificationTarget.
+     * Subclasses are able to use custom renderer for different targets by overwriting this function.
      * 
-     * @return string
+     * @param NotificationTarger $target
+     * @return string render result
      */
-    public function getAsText()
+    public function render(NotificationTarget $target = null)
     {
-        $html = $this->getAsHtml();
-
-        if ($html === null) {
-            return null;
+        if (!$target) {
+            $target = Yii::$app->notification->getTarget(WebNotificationTarget::class);
         }
 
-        return strip_tags($html);
-    }
-
-    /**
-     * Returns Html text of this notification, 
-     * 
-     * @return type
-     */
-    public function getAsHtml()
-    {
-        return null;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function render($mode = self::OUTPUT_WEB, $params = array())
-    {
-        // Set default notification view - when not specified
-        if ($this->viewName === null) {
-            $this->viewName = 'default';
-            $this->viewPath = '@notification/views/notification';
-        }
-
-        return parent::render($mode, $params);
+        return $target->getRenderer()->render($this);
     }
 
     /**
@@ -320,6 +363,44 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
         }
 
         return $users;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function asArray()
+    {
+        $result = parent::asArray();
+        $result['title'] = $this->getTitle();
+        return $result;
+    }
+
+    /**
+     * Should be overwritten by subclasses for a html representation of the notification.
+     * @return type
+     */
+    public function html()
+    {
+        // Only for backward compatibility.
+        return $this->getAsHtml();
+    }
+
+    /**
+     * Use text() instead
+     * @deprecated since version 1.2
+     */
+    public function getAsText()
+    {
+        return $this->text();
+    }
+
+    /**
+     * Use html() instead
+     * @deprecated since version 1.2
+     */
+    public function getAsHtml()
+    {
+        return null;
     }
 
 }

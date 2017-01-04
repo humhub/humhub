@@ -26,7 +26,7 @@ class ContentCreated extends \humhub\modules\notification\components\BaseNotific
     /**
      * @inheritdoc
      */
-    public function getAsHtml()
+    public function html()
     {
         return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} created {contentTitle}.', array(
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),

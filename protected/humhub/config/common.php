@@ -16,6 +16,20 @@ $config = [
         'moduleManager' => [
             'class' => '\humhub\components\ModuleManager'
         ],
+        'notification' => [
+            'class' => 'humhub\modules\notification\components\NotificationManager',
+            'targets' => [
+                [
+                    'class' => 'humhub\modules\notification\components\WebNotificationTarget',
+                    'renderer' => ['class' => 'humhub\modules\notification\components\WebTargetRenderer']
+                ],
+                [
+                    'class' => 'humhub\modules\notification\components\MailNotificationTarget',
+                    'renderer' => ['class' => 'humhub\modules\notification\components\MailTargetRenderer']
+                ],
+                //['class' => '\humhub\modules\notification\components\MobileNotificationTarget']
+            ]
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [

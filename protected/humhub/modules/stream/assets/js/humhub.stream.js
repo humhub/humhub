@@ -615,7 +615,7 @@ humhub.module('stream', function(module, require, $) {
             }
             result += response.content[key].output;
         });
-
+        
         var $result = $(result).hide();
 
         if(cfg['preventInsert']) {

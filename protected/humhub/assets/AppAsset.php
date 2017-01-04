@@ -92,6 +92,7 @@ class AppAsset extends AssetBundle
         'humhub\assets\NProgressAsset',
         'humhub\assets\IE9FixesAsset',
         'humhub\assets\IEFixesAsset',
+        'humhub\assets\PagedownConverterAsset',
     ];
 
 }

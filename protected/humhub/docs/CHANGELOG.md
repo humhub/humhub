@@ -28,4 +28,5 @@ HumHub Change Log
 - Enh: Picker widgets rewrite (UserPicker/SpacePicker/MultiselectDropdown). (buddha)
 - Enh: Richtext widget rewrite. (buddha)
 - Enh: Removed almost all inline JS blocks. (buddha)
-- Enh: StreamAction now uses flexible StreamQuery Model.
+- Enh: StreamAction now uses flexible StreamQuery Model. (buddha)
+- Enh: Post markdown support. (buddha)

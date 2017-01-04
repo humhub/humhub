@@ -30,6 +30,11 @@ class RequestDeclined extends BaseNotification
      */
     public $markAsSeenOnClick = true;
 
+    public function category()
+    {
+        return new FriendshipNotificationCategory;
+    }
+    
     /**
      * @inheritdoc
      */

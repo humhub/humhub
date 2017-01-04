@@ -12,6 +12,7 @@ use Yii;
 use humhub\libs\ThemeHelper;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\notification\models\forms\NotificationSettings;
 
 /**
  * SettingController
@@ -138,7 +139,20 @@ class SettingController extends Controller
             $this->view->saved();
         }
 
-        return $this->render('mailing', array('model' => $form));
+        return $this->render('mailing', ['model' => $form]);
+    }
+    
+    /**
+     * Notification Mailing Settings
+     */
+    public function actionNotification()
+    {
+        $form = new NotificationSettings();
+        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
+            $this->view->saved();
+        }
+
+        return $this->render('notification', ['model' => $form]);
     }
 
     /**

@@ -8,7 +8,7 @@
 
 ?>
 <li class="<?php if ($isNew) : ?>new<?php endif; ?>">
-    <a href="<?php echo $url; ?>">
+    <a href="<?= $url; ?>">
         <div class="media">
 
             <!-- show user image -->
@@ -30,10 +30,10 @@
             <!-- show content -->
             <div class="media-body">
 
-                <?php echo $content; ?>
+                <?= $content; ?>
 
                 <br> <?php echo humhub\widgets\TimeAgo::widget(['timestamp' => $record->created_at]); ?> 
-                <?php if ($isNew) : ?> <span class="label label-danger"><?php echo Yii::t('NotificationModule.views_notificationLayout', 'New'); ?></span><?php endif; ?>
+                <?php if ($isNew) : ?> <span class="label label-danger"><?= Yii::t('NotificationModule.views_notificationLayout', 'New'); ?></span><?php endif; ?>
             </div>
 
         </div>

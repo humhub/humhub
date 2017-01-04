@@ -186,7 +186,7 @@ class AcceptanceTester extends \Codeception\Actor
 
     public function seeInNotifications($text)
     {
-        $this->click('.notifications');
+        $this->click('.notifications .fa-bell');
         $this->waitForText('Notifications', 5, '.notifications');
         $this->waitForText($text, 5, '.notifications');
         $this->click('.notifications');

@@ -23,6 +23,8 @@ class Followed extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = 'user';
+    
+    public $viewName = 'xxx';
 
     /**
      * @inheritdoc
@@ -35,7 +37,7 @@ class Followed extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function getAsHtml()
+    public function html()
     {
         return Yii::t('UserModule.notification', '{displayName} is now following you.', array(
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),

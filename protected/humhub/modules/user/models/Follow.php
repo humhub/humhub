@@ -59,20 +59,18 @@ class Follow extends \yii\db\ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
-
         if ($insert && $this->object_model == User::className()) {
-            $notification = new \humhub\modules\user\notifications\Followed();
-            $notification->originator = $this->user;
-            $notification->send($this->getTarget());
-
-            $activity = new \humhub\modules\user\activities\UserFollow();
-            $activity->source = $this;
-            $activity->container = $this->user;
-            $activity->originator = $this->user;
-            $activity->create();
+            \humhub\modules\user\notifications\Followed::instance()
+                    ->from($this->user)
+                    ->about($this)
+                    ->send($this->getTarget());
+            
+            \humhub\modules\user\activities\UserFollow::instance()
+                    ->from($this->user)
+                    ->container($this->user)
+                    ->about($this)
+                    ->save();
         }
-
-
 
         return parent::afterSave($insert, $changedAttributes);
     }
@@ -86,7 +84,7 @@ class Follow extends \yii\db\ActiveRecord
             $notification->originator = $this->user;
             $notification->delete($this->getTarget());
 
-            foreach (Activity::findAll(['object_model' => $this->className(), 'object_id' => $this->id]) as $activity) {
+            foreach (Activity::findAll(['source_class' => $this->className(), 'source_pk' => $this->id]) as $activity) {
                 $activity->delete();
             }
         }

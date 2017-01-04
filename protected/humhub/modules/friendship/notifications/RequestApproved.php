@@ -33,6 +33,14 @@ class RequestApproved extends BaseNotification
     /**
      * @inheritdoc
      */
+    public function category()
+    {
+        return new FriendshipNotificationCategory;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getUrl()
     {
         return $this->originator->getUrl();
@@ -41,19 +49,11 @@ class RequestApproved extends BaseNotification
     /**
      * @inheritdoc
      */
-    public static function getTitle()
+    public function html()
     {
-        return Yii::t('FriendshipModule.notifications_RequestApproved', 'Friendship Approved');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAsHtml()
-    {
-        return Yii::t('FriendshipModule.notification', '{displayName} accepted your friend request.', array(
+        return Yii::t('FriendshipModule.notification', '{displayName} accepted your friend request.', [
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-        ));
+        ]);
     }
 
 }

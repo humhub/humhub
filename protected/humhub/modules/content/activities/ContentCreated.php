@@ -33,14 +33,14 @@ class ContentCreated extends BaseActivity
     /**
      * @inheritdoc
      */
-    public function render($mode = self::OUTPUT_WEB, $params = array())
+    public function render($params = array())
     {
         if ($this->source === null) {
             Yii::error('Could not render ContentCreated Activity without given source - ' . $this->record->id);
             return; 
         }
 
-        return parent::render($mode, $params);
+        return parent::render($params);
     }
 
 }

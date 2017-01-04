@@ -12,6 +12,7 @@ use Yii;
 use yii\base\Exception;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\interfaces\ContentOwner;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
@@ -41,7 +42,7 @@ use humhub\modules\content\models\Content;
  * 
  * @author Luke
  */
-class ContentActiveRecord extends ActiveRecord implements \humhub\modules\content\interfaces\ContentTitlePreview
+class ContentActiveRecord extends ActiveRecord implements ContentOwner
 {
 
     /**
@@ -188,7 +189,7 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
     /**
      * Related Content model
      * 
-     * @return \yii\db\ActiveQuery
+     * @return Content
      */
     public function getContent()
     {

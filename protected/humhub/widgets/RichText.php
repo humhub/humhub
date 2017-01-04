@@ -145,7 +145,7 @@ REGEXP;
         return preg_replace_callback('@;(\w*?);@', function($hit) use(&$show, &$emojis) {
             if (in_array($hit[1], $emojis)) {
                 if ($show) {
-                    return Html::img(Yii::getAlias("@web/img/emoji/" . $hit[1] . ".svg"), array('data-emoji-name' => $hit[0], 'class' => 'atwho-emoji', 'width' => '18', 'height' => '18', 'alt' => $hit[1]));
+                    return Html::img(Yii::getAlias("@web/img/emoji/" . $hit[1] . ".svg"), array('data-emoji-name' => $hit[0], 'data-richtext-feature' => '', 'data-guid' => "@-emoji".$hit[0], 'class' => 'atwho-emoji', 'width' => '18', 'height' => '18', 'alt' => $hit[1]));
                 }
                 return '';
             }
@@ -166,7 +166,7 @@ REGEXP;
                 $user = \humhub\modules\user\models\User::findOne(['guid' => $hit[2]]);
                 if ($user !== null) {
                     if ($buildAnchors) {
-                        return ' <span contenteditable="false"><a href="' . $user->getUrl() . '" target="_self" class="atwho-user" data-guid="@-u' . $user->guid . '">@' . Html::encode($user->getDisplayName()) . '&#x200b;</a></span>' . $hit[3];
+                        return ' <span contenteditable="false"><a href="' . $user->getUrl() . '" target="_self" class="atwho-user" data-richtext-feature data-guid="@-u' . $user->guid . '">@' . Html::encode($user->getDisplayName()) . '&#x200b;</a></span>' . $hit[3];
                     }
                     return " @" . Html::encode($user->getDisplayName()) . $hit[3];
                 }
@@ -175,7 +175,7 @@ REGEXP;
 
                 if ($space !== null) {
                     if ($buildAnchors) {
-                        return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-guid="@-s' . $space->guid . '">@' . Html::encode($space->name) . '&#x200b;</a></span>' . $hit[3];
+                        return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-richtext-feature data-guid="@-s' . $space->guid . '">@' . Html::encode($space->name) . '&#x200b;</a></span>' . $hit[3];
                     }
                     return " @" . Html::encode($space->name) . $hit[3];
                 }

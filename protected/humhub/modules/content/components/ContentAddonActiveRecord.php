@@ -11,6 +11,7 @@ namespace humhub\modules\content\components;
 use Yii;
 use yii\base\Exception;
 use humhub\components\ActiveRecord;
+use humhub\modules\content\interfaces\ContentOwner;
 
 /**
  * HActiveRecordContentAddon is the base active record for content addons.
@@ -28,7 +29,7 @@ use humhub\components\ActiveRecord;
  * @package humhub.components
  * @since 0.5
  */
-class ContentAddonActiveRecord extends ActiveRecord implements \humhub\modules\content\interfaces\ContentTitlePreview
+class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
 {
 
     /**

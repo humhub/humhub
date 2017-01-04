@@ -41,14 +41,6 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
     /**
      * @inheritdoc
      */
-    public static function getTitle()
-    {
-        return Yii::t('CommentModule.notifications_NewComment', 'New Comment');
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getGroupKey()
     {
         $model = $this->getCommentedRecord();

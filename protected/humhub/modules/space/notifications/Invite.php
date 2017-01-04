@@ -29,11 +29,19 @@ class Invite extends BaseNotification
      * @inheritdoc
      */
     public $markAsSeenOnClick = false;
+    
+    /**
+     *  @inheritdoc
+     */
+    public function category()
+    {
+        return new SpaceMemberNotificationCategory;
+    }
 
     /**
      * @inheritdoc
      */
-    public function getAsHtml()
+    public function html()
     {
         return Yii::t('SpaceModule.notification', '{displayName} invited you to the space {spaceName}', array(
                     '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),

@@ -327,5 +327,10 @@ class Module extends \yii\base\Module
     {
         return [];
     }
+    
+    public function hasNotifications()
+    {
+        return !empty($this->getNotifications());
+    }
 
 }

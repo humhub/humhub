@@ -30,7 +30,12 @@ humhub.module('client', function(module, require, $) {
     };
 
     Response.prototype.setError = function(errorThrown) {
-        this.error = errorThrown;
+        try {
+            this.error = JSON.parse(this.response);
+        } catch(e) {/* Nothing todo... */}
+        
+        this.error = this.error || {};
+        this.errorThrown = errorThrown;
         this.validationError = (this.status === 400);
         return this;
     };

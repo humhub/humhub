@@ -64,7 +64,7 @@ use yii\helpers\Html;
                                                             <tr>
                                                                 <td style="font-size: 13px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:left; ">
 
-                                                                    <?php echo $content; ?>
+                                                                    <?= $content; ?>
 
                                                                     <!-- check if activity object has a space -->
                                                                     <?php if ($space !== null): ?>

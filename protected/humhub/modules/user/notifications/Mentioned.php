@@ -13,8 +13,8 @@ use yii\bootstrap\Html;
 use humhub\modules\notification\components\BaseNotification;
 
 /**
- * MentionedNotification is fired to all users which are mentionied
- * in a HActiveRecordContent or HActiveRecordContentAddon
+ * Mentioned Notification is fired to all users which are mentionied
+ * in a ContentActiveRecord or ContentAddonActiveRecord
  */
 class Mentioned extends BaseNotification
 {
@@ -29,8 +29,7 @@ class Mentioned extends BaseNotification
      */
     public function send(\humhub\modules\user\models\User $user)
     {
-        // Do additional access check here, because the mentioned user may have
-        // no access to the content
+        // Do additional access check here, because the mentioned user may have no access to the content
         if (!$this->source->content->canRead($user->id)) {
             return;
         }
@@ -41,15 +40,7 @@ class Mentioned extends BaseNotification
     /**
      * @inheritdoc
      */
-    public static function getTitle()
-    {
-        return Yii::t('UserModule.notification', 'Mentioned');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAsHtml()
+    public function html()
     {
         return Yii::t('UserModule.notification', '{displayName} mentioned you in {contentTitle}.', array(
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),

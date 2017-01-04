@@ -11,7 +11,7 @@ namespace humhub\modules\activity\components;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\Content;
 
 /**
  * BaseActivity is the base class for all activities.
@@ -22,9 +22,10 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
 {
 
     /**
+     * Default content visibility of this Activity.
      * @var int
      */
-    public $visibility = 1;
+    public $visibility = Content::VISIBILITY_PRIVATE;
 
     /**
      * @inheritdoc
@@ -40,6 +41,11 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
      * @inheritdoc
      */
     public $layoutMailPlaintext = "@humhub/modules/notification/views/layouts/mail_plaintext.php";
+    
+    /**
+     * @inheritdoc
+     */
+    public $recordClass = Activity::class;
 
     /**
      * @var boolean
@@ -55,11 +61,12 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
             throw new \yii\base\InvalidConfigException("Missing viewName!");
         }
 
-        if ($this->visibility === null) {
-            $this->visibility = \humhub\modules\content\models\Content::VISIBILITY_PRIVATE;
-        }
-
         parent::init();
+    }
+    
+    public function render($params = array())
+    {
+        
     }
 
     /**
@@ -68,8 +75,12 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
     public function getViewParams($params = [])
     {
         $params['clickable'] = $this->clickable;
-
         return parent::getViewParams($params);
+    }
+    
+    public function save()
+    {
+        return $this->record->save();
     }
 
     /**
@@ -87,40 +98,51 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
             throw new \yii\base\InvalidConfigException("Invalid source object given!");
         }
 
-        if ($this->container == null) {
-            $this->container = $this->getContentContainerFromSource();
-
-            if ($this->container == null) {
-                throw new \yii\base\InvalidConfigException("Could not determine content container for activity!");
-            }
-        }
-
         $this->saveModelInstance();
     }
-
-    protected function getContentContainerFromSource()
+    
+    /**
+     * @inheritdoc
+     */
+    public function from($originator)
     {
-        if ($this->hasContentSource()) {
-            return $this->source->content->container;
-        } elseif ($this->source instanceof ContentContainerActiveRecord) {
-            return $this->source;
-        }
+        parent::from($originator);
+        $this->record->content->created_by = $originator->id;
+        return $this;
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function about($source)
+    {
+        parent::from($source);
+        $this->record->content->visibility = $this->getContentVisibility();
+        return $this;
     }
 
-    protected function hasContentSource()
+
+    /**
+     * Builder function for setting ContentContainerActiveRecord
+     * @param \humhub\modules\content\components\ContentContainerActiveRecord $container
+     */
+    public function container($container)
     {
-        return $this->source instanceof ContentActiveRecord || $this->source instanceof ContentAddonActiveRecord;
+        $this->record->content->container = $container;
+        return $this;
     }
 
     private function saveModelInstance()
     {
-        $model = new Activity();
-        $model->class = $this->className();
-        $model->module = $this->moduleId;
-        $model->object_model = $this->source->className();
-        $model->object_id = $this->source->getPrimaryKey();
-        $model->content->container = $this->container;
-        $model->content->visibility = $this->getContentVisibility();
+        $this->record->source_class = $this->source->className();
+        $this->record->source_pk = $this->source->getPrimaryKey();
+        $this->record->content->visibility = $this->getContentVisibility();
+
+        if (!$this->content->container) {
+            $model->content->container = $this->getContentContainer();
+            
+        }
+
         $model->content->created_by = $this->getOriginatorId();
 
         if ($model->content->created_by == null) {
@@ -134,7 +156,7 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
 
     protected function getContentVisibility()
     {
-        return $this->hasContentSource() ? $this->source->content->visibility : $this->visibility;
+        return $this->hasContent() ? $this->getContent()->visibility : $this->visibility;
     }
 
     protected function getOriginatorId()

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use Yii;
 use humhub\libs\BaseSettingsManager;
 
 /**
@@ -28,6 +29,22 @@ class ContentContainerSettingsManager extends BaseSettingsManager
      * @var ContentContainerActiveRecord the content container this settings manager belongs to
      */
     public $contentContainer;
+    
+    /**
+     * Returns the setting value of this container for the given setting $name.
+     * If there is not container specific setting, this function will search for a global setting or
+     * return default or null if there is also no global setting.
+     * 
+     * @param type $name
+     * @param type $default
+     * @return boolean
+     * @since 1.2
+     */
+    public function getInherit($name, $default = null) {
+        $result = $this->get($name);
+        return ($result != null) ? $result
+            : Yii::$app->getModule($this->moduleId)->settings->get($name, $default);
+    }
 
     /**
      * @inheritdoc

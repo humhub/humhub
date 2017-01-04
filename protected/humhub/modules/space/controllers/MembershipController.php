@@ -157,7 +157,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
         // Check Permissions to Invite
         if (!$space->canInvite()) {
-            throw new HttpException(403, 'Access denied - You cannot invite members!');
+            throw new HttpException(403, Yii::t('SpaceModule.controllers_MembershipController', 'Access denied - You cannot invite members!'));
         }
 
         $model = new \humhub\modules\space\models\forms\InviteForm();

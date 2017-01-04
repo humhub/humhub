@@ -1,5 +1,5 @@
 <?php
-namespace user;
+namespace notification;
 
 /**
  * Inherited Methods

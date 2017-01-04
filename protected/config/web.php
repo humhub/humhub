@@ -5,7 +5,7 @@ return [
     'modules' => [
         'debug' => [
             'class' => 'yii\debug\Module',
-            //'allowedIPs' => ['*'],
+            'allowedIPs' => ['*'],
         ],
     ],
 ];

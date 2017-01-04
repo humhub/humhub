@@ -27,6 +27,14 @@ class Notification extends \humhub\components\ActiveRecord
      */
     public $group_count;
 
+    public function init()
+    {
+        parent::init();
+        if ($this->seen == null) {
+            $this->seen = 0;
+        }
+    }
+
     /**
      * @inheritdoc
      */
@@ -46,13 +54,23 @@ class Notification extends \humhub\components\ActiveRecord
             [['class', 'source_class'], 'string', 'max' => 100]
         ];
     }
+    
+    /**
+     * Use getBaseModel instead.
+     * @deprecated since version 1.2
+     * @param type $params
+     */
+    public function getClass($params = [])
+    {
+        return $this->getBaseModel($params);
+    }
 
     /**
      * Returns the business model of this notification
      * 
      * @return \humhub\modules\notification\components\BaseNotification
      */
-    public function getClass($params = [])
+    public function getBaseModel($params = [])
     {
         if (class_exists($this->class)) {
             $params['source'] = $this->getSourceObject();
@@ -155,7 +173,7 @@ class Notification extends \humhub\components\ActiveRecord
     public static function findGrouped()
     {
         $query = self::find();
-        $query->addSelect(['notification.*', 
+        $query->addSelect(['notification.*',
             new \yii\db\Expression('count(distinct(originator_user_id)) as group_count'),
             new \yii\db\Expression('max(created_at) as group_created_at'),
             new \yii\db\Expression('min(seen) as group_seen'),

@@ -114,7 +114,7 @@ humhub.module('ui.richtext', function(module, require, $) {
             sel.addRange(range);
         }
     };
-    
+
     /**
      * Empty spans prevent text deletions in some browsers, so we have to get sure there are no empty spans present.
      * @param {type} $node
@@ -259,17 +259,17 @@ humhub.module('ui.richtext', function(module, require, $) {
         tooltip = tooltip || this.options.disabledText;
         this.$.removeAttr('contenteditable').attr({
             disabled: 'disabled',
-            title : tooltip,
+            title: tooltip,
         }).tooltip({
-            placement : 'bottom'
+            placement: 'bottom'
         });
     };
-    
+
     Richtext.prototype.clear = function() {
         this.$.html('');
         this.checkPlaceholder();
     };
-    
+
     Richtext.prototype.focus = function() {
         this.$.trigger('focus');
     };
@@ -294,7 +294,17 @@ humhub.module('ui.richtext', function(module, require, $) {
             }
         });
 
-        var html = $clone.html();
+        return Richtext.plainText($clone);
+    };
+
+    Richtext.plainText = function(element, options) {
+        options = options || {};
+        var $element = element instanceof $ ? element : $(element);
+
+        var html = $element.html();
+        
+        // remove all line breaks
+        html = html.replace(/(?:\r\n|\r|\n)/g, "");
 
         // replace html space
         html = html.replace(/\&nbsp;/g, ' ');
@@ -309,18 +319,17 @@ humhub.module('ui.richtext', function(module, require, $) {
         html = html.replace(/\<p>\<br\s*\\*>\<\/p>/g, '<br>');
         html = html.replace(/\<\/p>/g, '<br>');
 
-        // remove all line breaks
-        html = html.replace(/(?:\r\n|\r|\n)/g, "");
-        
         // At.js adds a zwj at the end of each mentioning
-        html = html.replace(/\u200d/g,'');
+        html = html.replace(/\u200d/g, '');
 
         // replace all <br> with new line break
-        $clone.html(html.replace(/\<br\s*\>/g, '\n'));
+        html = html.replace(/\<br\s*\>/g, '\n');
 
         // return plain text without html tags
+        var $clone = (options.clone) ? $element.clone() : $element;
+        $clone.html(html);
         return $clone.text().trim();
-    };
+    }
 
     Richtext.features = {};
 

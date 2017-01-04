@@ -23,7 +23,7 @@ class StreamCest
         $I->see('This is my stream test post', '.wall-entry');
 
         $I->amGoingTo('Delte my new post');
-        $I->click('.preferences', $newEntrySelector);
+        $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->wait(1);
         $I->click('Delete');
 
@@ -49,7 +49,7 @@ class StreamCest
         $I->see('This is my stream test post', '.wall-entry');
 
         $I->amGoingTo('Archive my new post');
-        $I->click('.preferences', $newEntrySelector);
+        $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Move to archive', 10);
         $I->click('Move to archive', $newEntrySelector);
 
@@ -70,7 +70,7 @@ class StreamCest
 
         $I->amGoingTo('unarchive this post again');
 
-        $I->click('.preferences', $newEntrySelector);
+        $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Unarchive', 10);
         $I->click('Unarchive', $newEntrySelector);
 
@@ -80,7 +80,7 @@ class StreamCest
         $I->dontSee('Archived', $newEntrySelector);
 
         $I->amGoingTo('archive the post again with include archived filter');
-        $I->click('.preferences', $newEntrySelector);
+        $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Move to archive', 10);
         $I->click('Move to archive', $newEntrySelector);
         $I->seeSuccess('The content has been archived.');
@@ -112,7 +112,7 @@ class StreamCest
         $I->see('This is my second stream test post', '.s2_streamContent div:nth-child(1)');
 
         $I->amGoingTo('stick my first entry');
-        $I->click('.preferences', $newEntrySelector);
+        $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Stick', 10);
         $I->click('Stick', $newEntrySelector);
         $I->seeSuccess('The content has been sticked.');
@@ -121,7 +121,7 @@ class StreamCest
         $I->see('Sticked', $newEntrySelector);
 
         $I->amGoingTo('unstick my first entry');
-        $I->click('.preferences', $newEntrySelector);
+        $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Unstick', 10);
         $I->click('Unstick', $newEntrySelector);
         $I->seeSuccess('The content has been unsticked.');
@@ -144,13 +144,13 @@ class StreamCest
         $I->see('This is my first stream test post', '.wall-entry');
 
         $I->amGoingTo('edit load the edit form');
-        $I->click('.preferences', $newEntrySelector);
+        $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Edit', 10);
         $I->click('Edit', $newEntrySelector);
         
         $I->waitForElementVisible($newEntrySelector . ' .content_edit', 20);
         $I->amGoingTo('cancel my edit');
-        $I->click('.preferences', $newEntrySelector);
+        $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Cancel Edit', 10);
         $I->click('Cancel Edit', $newEntrySelector);
         $I->waitForElementNotVisible($newEntrySelector . ' .content_edit', 20);
@@ -158,7 +158,7 @@ class StreamCest
         $I->see('This is my first stream test post!', $newEntrySelector);
         
         $I->amGoingTo('edit my new post');
-        $I->click('.preferences', $newEntrySelector);
+        $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Edit', 10);
         $I->click('Edit', $newEntrySelector);
         
@@ -189,7 +189,7 @@ class StreamCest
         $I->amGoingTo('Delete my new post again.');
         $I->dontSee('This space is still empty!');
         $I->seeElement('#filter');
-        $I->click('.preferences', '[data-stream-entry]:nth-of-type(1)');
+        $I->click('.preferences .dropdown-toggle', '[data-stream-entry]:nth-of-type(1)');
         $I->wait(1);
         $I->click('Delete');
         

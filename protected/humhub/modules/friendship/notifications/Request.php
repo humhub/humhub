@@ -37,19 +37,19 @@ class Request extends BaseNotification
     {
         return $this->originator->getUrl();
     }
-
+    
     /**
      * @inheritdoc
      */
-    public static function getTitle()
+    public function category()
     {
-        return Yii::t('FriendshipModule.notifications_Request', 'Friendship Request');
+        return new FriendshipNotificationCategory;
     }
 
     /**
      * @inheritdoc
      */
-    public function getAsHtml()
+    public function html()
     {
         return Yii::t('FriendshipModule.notification', '{displayName} sent you a friend request.', array(
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
