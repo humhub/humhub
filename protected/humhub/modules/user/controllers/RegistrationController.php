@@ -9,7 +9,6 @@
 namespace humhub\modules\user\controllers;
 
 use Yii;
-
 use yii\web\HttpException;
 use yii\authclient\ClientInterface;
 use humhub\components\Controller;
@@ -30,11 +29,6 @@ class RegistrationController extends Controller
      * @inheritdoc
      */
     public $layout = "@humhub/modules/user/views/layouts/main";
-
-    /**
-     * @inheritdoc
-     */
-    public $subLayout = "_layout";
 
     /**
      * @inheritdoc
