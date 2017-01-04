@@ -5,7 +5,7 @@ namespace humhub\components\rendering;
 use Yii;
 
 /**
- * A ViewPathRender is a simple Renderer implementation for rendering Viewable
+ * A ViewPathRenderer is a simple Renderer implementation for rendering Viewable
  * instances by searching for the Viewable viewName within the given $viewPath.
  * 
  * If no $viewPath is given, we'll determine the view path of the viewable as following:

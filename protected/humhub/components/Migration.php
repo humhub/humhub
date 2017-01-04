@@ -31,7 +31,7 @@ class Migration extends \yii\db\Migration
      */
     protected function renameClass($oldClass, $newClass)
     {
-        $this->updateSilent('activity', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        $this->updateSilent('activity', ['source_class' => $newClass], ['source_pk' => $oldClass]);
         $this->updateSilent('activity', ['class' => $newClass], ['class' => $oldClass]);
         $this->updateSilent('comment', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('content', ['object_model' => $newClass], ['object_model' => $oldClass]);
@@ -59,9 +59,9 @@ class Migration extends \yii\db\Migration
          */
         $updateSql = "
             UPDATE activity 
-            LEFT JOIN `like` ON like.object_model=activity.object_model AND like.object_id=activity.object_id
-            SET activity.object_model=:likeModelClass, activity.object_id=like.id
-            WHERE activity.class=:likedActivityClass AND like.id IS NOT NULL and activity.object_model != :likeModelClass
+            LEFT JOIN `like` ON like.object_model=activity.source_class AND like.object_id=activity.source_pk
+            SET activity.source_class=:likeModelClass, activity.source_pk=like.id
+            WHERE activity.class=:likedActivityClass AND like.id IS NOT NULL and activity.source_class != :likeModelClass
         ";
         Yii::$app->db->createCommand($updateSql, [
             ':likeModelClass' => \humhub\modules\like\models\Like::className(),

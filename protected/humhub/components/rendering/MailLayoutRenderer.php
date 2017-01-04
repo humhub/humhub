@@ -11,6 +11,7 @@ use Yii;
  */
 class MailLayoutRenderer extends LayoutRenderer
 {
+
     /**
      * Layout for text rendering.
      * @var type 
@@ -24,19 +25,20 @@ class MailLayoutRenderer extends LayoutRenderer
      * @param \humhub\components\rendering\Viewable $viewable
      * @return type
      */
-    public function renderText(Viewable $viewable , $params = [])
+    public function renderText(Viewable $viewable, $params = [])
     {
         $textRenderer = new LayoutRenderer([
             'layout' => $this->getTextLayout($viewable)
-        ]);    
-        
+        ]);
+
         $params['content'] = $viewable->text();
 
         return strip_tags($textRenderer->render($viewable, $params));
     }
-    
-    public function getTextLayout(Viewable $viewable )
+
+    public function getTextLayout(Viewable $viewable)
     {
         return $this->textLayout;
     }
+
 }
