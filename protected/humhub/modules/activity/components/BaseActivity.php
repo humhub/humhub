@@ -139,18 +139,18 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
         $this->record->content->visibility = $this->getContentVisibility();
 
         if (!$this->content->container) {
-            $model->content->container = $this->getContentContainer();
+            $this->record->content->container = $this->getContentContainer();
             
         }
 
-        $model->content->created_by = $this->getOriginatorId();
+        $this->record->content->created_by = $this->getOriginatorId();
 
-        if ($model->content->created_by == null) {
+        if ($this->record->content->created_by == null) {
             throw new \yii\base\InvalidConfigException("Could not determine originator for activity!");
         }
 
-        if (!$model->validate() || !$model->save()) {
-            throw new \yii\base\Exception("Could not save activity!" . $model->getErrors());
+        if (!$this->record->validate() || !$this->record->save()) {
+            throw new \yii\base\Exception("Could not save activity!" . $this->record->getErrors());
         }
     }
 
