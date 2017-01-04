@@ -2725,6 +2725,45 @@ img.bounceIn {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+ul.tag_input {
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  padding: 0 0 9px 4px;
+}
+ul.tag_input li img {
+  margin: 0 5px 0 0;
+}
+.tag_input_field {
+  outline: none;
+  border: none !important;
+  padding: 5px 4px 0 !important;
+  width: 170px;
+  margin: 2px 0 0 !important;
+}
+.userInput,
+.spaceInput {
+  background-color: #6fdbe8;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 3px;
+  font-size: 12px !important;
+  padding: 2px;
+  float: left;
+  margin: 3px 4px 0 0;
+}
+.userInput i,
+.spaceInput i {
+  padding: 0 6px;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 8px;
+}
 /**
  * Define or overwrite your theme variables here.
  *
