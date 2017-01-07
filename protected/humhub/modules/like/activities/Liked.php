@@ -31,13 +31,13 @@ class Liked extends BaseActivity
     /**
      * @inheritdoc
      */
-    public function render($mode = self::OUTPUT_WEB, $params = array())
+    public function render($params = [])
     {
         $like = $this->source;
         $likeSource = $like->getSource();
         $params['preview'] = $this->getContentInfo($likeSource);
 
-        return parent::render($mode, $params);
+        return parent::render($params);
     }
 
 }

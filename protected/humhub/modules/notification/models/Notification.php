@@ -26,6 +26,23 @@ class Notification extends \humhub\components\ActiveRecord
      * @var int number of found grouped notifications
      */
     public $group_count;
+    
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
+                'classAttribute' => 'source_class',
+                'pkAttribute' => 'source_pk',
+                'mustBeInstanceOf' => [
+                    \yii\db\ActiveRecord::className(),
+                ]
+            ]
+        ];
+    }
 
     public function init()
     {
@@ -73,7 +90,7 @@ class Notification extends \humhub\components\ActiveRecord
     public function getBaseModel($params = [])
     {
         if (class_exists($this->class)) {
-            $params['source'] = $this->getSourceObject();
+            $params['source'] = $this->getPolymorphicRelation();
             $params['originator'] = $this->originator;
             $params['groupCount'] = $this->group_count;
             if ($this->group_count > 1) {

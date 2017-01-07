@@ -36,8 +36,6 @@ class Activity extends ContentActiveRecord
         return [
             [
                 'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
-                'classAttribute' => 'source_class',
-                'pkAttribute' => 'source_pk',
                 'mustBeInstanceOf' => [
                     \yii\db\ActiveRecord::className(),
                 ]
@@ -59,9 +57,9 @@ class Activity extends ContentActiveRecord
     public function rules()
     {
         return [
-            [['source_pk'], 'integer'],
+            [['object_id'], 'integer'],
             [['class'], 'string', 'max' => 100],
-            [['module', 'source_class'], 'string', 'max' => 100]
+            [['module', 'object_model'], 'string', 'max' => 100]
         ];
     }
 
@@ -73,12 +71,13 @@ class Activity extends ContentActiveRecord
     public function getActivityBaseClass()
     {
         if (class_exists($this->class)) {
-            return Yii::createObject([
+            $result = Yii::createObject([
                         'class' => $this->class,
-                        'record' => $this,
                         'originator' => $this->content->createdBy,
                         'source' => $this->getSource(),
             ]);
+            $result->record = $this; // If we include the record in createObject, it somehow loses activerecord data (id etc...)
+            return $result;
         } else {
             throw new Exception("Could not find BaseActivity " . $this->class . " for Activity Record.");
         }

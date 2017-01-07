@@ -48,7 +48,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
     /**
      * @var string the module id which this activity belongs to (required)
      */
-    public $moduleId = "";
+    public $moduleId;
     
     
     /**
@@ -74,9 +74,9 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
     {
         parent::init();
         if($this->recordClass) {
-            $this->record = Yii::createObject($this->recordClass, [
-                'class' => $this->className()
-            ]);
+            $this->record = Yii::createObject($this->recordClass);
+            $this->record->class = $this->className();
+            $this->record->module = $this->moduleId;
         }
     }
     
@@ -111,8 +111,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
     public function about($source)
     {
         $this->source = $source;
-        $this->record->source_pk = $this->source->getPrimaryKey();
-        $this->record->source_class = $this->source->className();
+        $this->record->setPolymorphicRelation($source);
         return $this;
     }
     

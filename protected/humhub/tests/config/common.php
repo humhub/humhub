@@ -4,8 +4,8 @@ return [
     'components' => [
         'db' => [
             'dsn' => 'mysql:host=localhost;dbname=humhub_test',
-            'username' => 'travis',
-            'password' => '',
+            'username' => 'root',
+            'password' => 'kingbuddha',
             'charset' => 'utf8',
             'attributes'=>[
                 PDO::ATTR_PERSISTENT => true

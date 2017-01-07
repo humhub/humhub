@@ -1,7 +1,10 @@
 <?php
 
 return [
-    'fixtures' => ['default']
+    'fixtures' => [
+        'default',
+        'content' => 'humhub\modules\content\tests\codeception\fixtures\ContentFixture',
+    ]
 ];
 
 

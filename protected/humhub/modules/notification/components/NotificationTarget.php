@@ -51,6 +51,9 @@ abstract class NotificationTarget extends \yii\base\Object
      */
     public $defaultSetting = false;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();

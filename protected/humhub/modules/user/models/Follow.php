@@ -84,7 +84,7 @@ class Follow extends \yii\db\ActiveRecord
             $notification->originator = $this->user;
             $notification->delete($this->getTarget());
 
-            foreach (Activity::findAll(['source_class' => $this->className(), 'source_pk' => $this->id]) as $activity) {
+            foreach (Activity::findAll(['object_model' => $this->className(), 'object_id' => $this->id]) as $activity) {
                 $activity->delete();
             }
         }

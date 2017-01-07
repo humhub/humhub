@@ -1,83 +1,86 @@
 Testing (since v1.2)
 ====================
 
-## Testenvironment setup
+## Test Environment Setup
 
-1. Install codeception
-
-composer global require "codeception/codeception=2.0.*" "codeception/specify=*" "codeception/verify=*"
-
-2. Create test Database:
-
-CREATE DATABASE `humhub_test` CHARACTER SET utf8 COLLATE utf8_general_ci;
-
-3. Configure database access
-
-Configure your database auth in @humhub/tests/config/common.php:
-
-´´´
-...
-'components' => [
-        'db' => [
-            'dsn' => 'mysql:host=localhost;dbname=humhub_test',
-            'username' => 'myUser',
-            'password' => 'myPassword',
-            'charset' => 'utf8',
-        ], 
-        ...
-]
-...
-´´´
-
-4. Migrate Up:
+-  Install codeception ([http://codeception.com/install](http://codeception.com/install))
+-  Composer require codeception:
 
 ```
-cd protected/humhub/tests/codeception/bin
-php yii migrate/up --includeModuleMigrations=1 --interactive=0
-php yii installer/auto
-``` 
+composer global require "codeception/codeception=2.0.*" "codeception/specify=*" "codeception/verify=*"
+```
 
-5. Install test environment:
+- Create test Database:
 
-´´´
- cd protected/humhub/tests/codeception/bin
- php yii migrate/up --includeModuleMigrations=1 --interactive=0
- php yii installer/auto
-´´´
+```
+CREATE DATABASE `humhub_test` CHARACTER SET utf8 COLLATE utf8_general_ci;
+```
 
-6. Set HUMHUB_PATH system variable
+- Configure database access:
 
-You should set the HUMHUB_PATH environment which should point to your HumHub root directory you want to use for testing.
-This is only required for non core module tests and can also be set in your modules test configuration ´/tests/config/test.php´:
+Configure the database connection for your test environment in `@humhub/tests/config/common.php`:
 
-´´´
-return [
-    'humhub_root' => '/path/to/my/humhub/root',
-];
-´´´
 
-> Note: The test environment only works with HumHub v1.2 or later.
+ 
+    'components' => [
+	    'db' => [
+	    'dsn' => 'mysql:host=localhost;dbname=humhub_test',
+		    'username' => 'myUser',
+		    'password' => 'myPassword',
+		    'charset' => 'utf8',
+    	], 
+    ]
 
-### Test configuration
+
+- Run Database Migrations:
+    
+    
+```cd protected/humhub/tests/codeception/bin```
+
+```php yii migrate/up --includeModuleMigrations=1 --interactive=0```
+
+```php yii installer/auto```
+
+>Note: You'll have to run the migrations for your test environment manually in order to keep your test environment up to date.
+
+- Install test environment:
+
+```cd protected/humhub/tests/codeception/bin```
+
+```php yii migrate/up --includeModuleMigrations=1 --interactive=0```
+
+```php yii installer/auto```
+
+- Set `HUMHUB_PATH` system variable
+
+The `HUMHUB_PATH` is used by your test environment to determine the humhub root path.
+This is only required for non core module tests and can also be set in your modules test configuration `/tests/config/test.php`:
+
+    return [
+    	'humhub_root' => '/path/to/my/humhub/root',
+    ];
+
+
+## Test configuration
 
 The settings of your default configuration files in your `humhub_root/protected/humhub/tests/config` directory can be overwritten for each module
-within the corresponding `module_root/tests/config` files.
+within the corresponding `<module_root>/tests/config` files.
 
-The following configuration files should can be used to overwrite the defaults:
+The following configuration files can be used to overwrite the test configuration:
 
- - The initial test configuration _test.php_ is used to set general test settings as the path to your humhub_root.
- - The configuration of _common.php_ is used for all suites and can be overwritten by settings in a suite configuation.
+ - The initial test configuration `test.php` is used to set general test configurations as the path to your `humhub_root` or used fixtures.
+ - The configuration of `common.php` is used for all suites and can be overwritten by settings in a suite configuation.
  - Suite specific test configurations (e.g. functional.php) are used to configure humhub for suite tests.
 
 The configurations for a suite will be merged in the following order:
 
- - humhub_root/protected/humhub/tests/config/functional.php
- - module_root/tests/config/common.php
- - module_root/tests/config/functional.php
- - module_root/tests/config/env/<env>/common.php (if exists)
- - module_root/tests/config/env/<env>/functional.php (if exists) 
+ - @humhub/protected/humhub/tests/config/functional.php
+ - @myModule/tests/config/common.php
+ - @myModule/tests/config/functional.php
+ - @myModule/tests/config/env/myenv/common.php (if exists)
+ - @myModule/tests/config/env/myenv/functional.php (if exists) 
 
-#### Environments
+### Environments
 
 For running a test for a specific environment you'll have to set te `--env` argument for your testrun.
 
@@ -144,17 +147,18 @@ return [
 
 ### Run single test
 
-´´´
+```
 codecept run codeception/acceptance/TestCest:testFunction
-´´´
+```
 
 ### Run acceptance tests
 #### with phantomjs
 
 - Run phantomjs server (is installed with composer update)
 
-cd protected/vendor/bin
-phantomjs --webdriver=44444
+```cd protected/vendor/bin```
+
+```phantomjs --webdriver=44444```
 
 #### with chrome driver (selenium)
 
@@ -162,17 +166,17 @@ phantomjs --webdriver=44444
 
 Start selenium:
 
-´´´
+```
 java -Dwebdriver.chrome.driver=chromedriver.exe -jar selenium-server-standalone-2.53.0.jar
-´´´
+```
 
 Start test server:
 
-´´´
-cd /myhumHubInstallation
-php -S localhost:8080
-´´´
+```cd /myhumHubInstallation```
 
-run with chrome environment
-codecept run acceptance --env chrome
+```php -S localhost:8080```
+
+run with chrome environment:
+
+```codecept run acceptance --env chrome```
 

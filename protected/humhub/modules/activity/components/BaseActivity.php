@@ -116,7 +116,7 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
      */
     public function about($source)
     {
-        parent::from($source);
+        parent::about($source);
         $this->record->content->visibility = $this->getContentVisibility();
         return $this;
     }
@@ -134,11 +134,10 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
 
     private function saveModelInstance()
     {
-        $this->record->source_class = $this->source->className();
-        $this->record->source_pk = $this->source->getPrimaryKey();
+        $this->record->setPolymorphicRelation($this->source);
         $this->record->content->visibility = $this->getContentVisibility();
 
-        if (!$this->content->container) {
+        if (!$this->record->content->container) {
             $this->record->content->container = $this->getContentContainer();
             
         }
@@ -149,7 +148,7 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
             throw new \yii\base\InvalidConfigException("Could not determine originator for activity!");
         }
 
-        if (!$this->record->validate() || !$this->record->save()) {
+        if (!$this->record->save()) {
             throw new \yii\base\Exception("Could not save activity!" . $this->record->getErrors());
         }
     }

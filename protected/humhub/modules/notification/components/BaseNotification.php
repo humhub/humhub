@@ -196,8 +196,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
         ]);
 
         if ($this->source) {
-            $notification->source_pk = $this->source->getPrimaryKey();
-            $notification->source_class = $this->source->className();
+            $notification->setPolymorphicRelation($this->source);
             $notification->space_id = $this->getSpaceId();
         }
 
