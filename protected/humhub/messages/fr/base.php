@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Show more' => '',
-    'The date has to be in the past.' => '',
-    'Unsubscribe' => '',
+    'Show more' => 'Voir plus',
+    'The date has to be in the past.' => 'La date doit se situer dans le passé.',
+    'Unsubscribe' => 'Se désabonner',
     '<strong>Latest</strong> updates' => '<strong>Dernières</strong> mises à jour',
     'Account settings' => 'Paramètres du compte',
     'Administration' => 'Administration',
