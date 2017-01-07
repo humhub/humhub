@@ -138,9 +138,8 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
         $this->record->source_pk = $this->source->getPrimaryKey();
         $this->record->content->visibility = $this->getContentVisibility();
 
-        if (!$this->content->container) {
+        if (!$this->record->content->container) {
             $this->record->content->container = $this->getContentContainer();
-            
         }
 
         $this->record->content->created_by = $this->getOriginatorId();

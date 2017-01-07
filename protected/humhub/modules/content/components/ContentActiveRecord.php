@@ -50,6 +50,12 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      * @var string WallEntry widget class
      */
     public $wallEntryClass = "";
+    
+    /**
+     * Defines if originator automatically follows this content when saved.
+     * @var type 
+     */
+    public $autoFollow = true;
 
 
     /**
@@ -170,7 +176,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     public function afterSave($insert, $changedAttributes)
     {
         // Auto follow this content
-        if ($this->className() != \humhub\modules\activity\models\Activity::className()) {
+        if($this->autoFollow) {
             $this->follow($this->content->created_by);
         }
 

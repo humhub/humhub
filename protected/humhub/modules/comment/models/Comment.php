@@ -9,6 +9,7 @@
 namespace humhub\modules\comment\models;
 
 use humhub\modules\post\models\Post;
+use humhub\modules\comment\activities\NewComment;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use Yii;
 
@@ -94,19 +95,17 @@ class Comment extends ContentAddonActiveRecord
         // flush the cache
         $this->flushCache();
 
-        $activity = new \humhub\modules\comment\activities\NewComment();
-        $activity->source = $this;
-        $activity->create();
+        NewComment::instance()->about($this)->save();
 
         // Handle mentioned users
         // Execute before NewCommentNotification to avoid double notification when mentioned.
         \humhub\modules\user\models\Mentioning::parse($this, $this->message);
 
         if ($insert) {
-            $notification = new \humhub\modules\comment\notifications\NewComment();
-            $notification->source = $this;
-            $notification->originator = $this->user;
-            $notification->sendBulk($this->content->getPolymorphicRelation()->getFollowers(null, true, true));
+            \humhub\modules\comment\notifications\NewComment::instance()
+                    ->from($this->user)
+                    ->about($this)
+                    ->sendBulk($this->content->getPolymorphicRelation()->getFollowers(null, true, true));
         }
 
         $this->updateContentSearch();
