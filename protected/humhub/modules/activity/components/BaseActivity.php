@@ -139,7 +139,6 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
 
         if (!$this->record->content->container) {
             $this->record->content->container = $this->getContentContainer();
-            
         }
 
         $this->record->content->created_by = $this->getOriginatorId();
