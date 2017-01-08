@@ -65,7 +65,7 @@ class MailTargetRenderer extends \humhub\components\rendering\MailLayoutRenderer
      */
     public function getViewFile(Viewable $viewable)
     {
-        $viewFile = $this->getViewPath($viewable) . '/notification/mail/' . $viewable->getViewName();
+        $viewFile = $this->getViewPath($viewable) . '/mail/' . $viewable->getViewName();
 
         if (!file_exists($viewFile)) {
             $viewFile = Yii::getAlias($this->defaultViewPath) . DIRECTORY_SEPARATOR . $viewable->getViewName();
@@ -91,7 +91,7 @@ class MailTargetRenderer extends \humhub\components\rendering\MailLayoutRenderer
      */
     public function getLayout(Viewable $viewable)
     {
-        $layout = $this->getViewPath($viewable) . '/layouts/notification/mail/' . $viewable->getViewName();
+        $layout = $this->getViewPath($viewable) . '/layouts/mail/' . $viewable->getViewName();
 
         if (!file_exists($layout)) {
             $layout = Yii::getAlias($this->defaultLayout);
@@ -113,7 +113,7 @@ class MailTargetRenderer extends \humhub\components\rendering\MailLayoutRenderer
      */
     public function getTextLayout(Viewable $viewable)
     {
-        $layout = $this->getViewPath($viewable) . '/layouts/notification/mail/plaintext/' . $viewable->getViewName();
+        $layout = $this->getViewPath($viewable) . '/layouts/mail/plaintext/' . $viewable->getViewName();
 
         if (!file_exists($layout)) {
             $layout = Yii::getAlias($this->defaultTextLayout);

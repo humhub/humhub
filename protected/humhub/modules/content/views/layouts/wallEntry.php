@@ -13,15 +13,16 @@
 <?php
 $cssClass = ($entry->sticked) ? 'wall-entry sticked-entry' : 'wall-entry';
 $isActivity = $entry->object_model == humhub\modules\activity\models\Activity::className();
+?>
 
+<?php if (!$isActivity) : ?>
+ 
+    <div class="<?= $cssClass ?>" data-stream-entry data-stream-sticked="<?= $entry->sticked ?>"
+         data-action-component="stream.StreamEntry" data-content-key="<?= $entry->id; ?>" >
+        
+<?php endif; ?>
 
-if (!$isActivity) :
-    ?>
-    <div class="<?php echo $cssClass ?>" data-stream-entry data-stream-sticked="<?= $entry->sticked ?>"
-         data-action-component="stream.StreamEntry" data-content-key="<?php echo $entry->id; ?>" >
-    <?php endif; ?>
-
-    <?php echo $content; ?>
+<?php echo $content; ?>
 
 <?php if (!$isActivity) : ?>
     </div>

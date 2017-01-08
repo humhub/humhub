@@ -63,11 +63,6 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
 
         parent::init();
     }
-    
-    public function render($params = array())
-    {
-        
-    }
 
     /**
      * @inheritdoc

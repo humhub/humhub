@@ -27,17 +27,11 @@ class Liked extends BaseActivity
      * @inheritdoc
      */
     public $viewName = 'liked';
-
-    /**
-     * @inheritdoc
-     */
-    public function render($params = [])
-    {
+    
+    public function getViewParams($params = array()) {
         $like = $this->source;
         $likeSource = $like->getSource();
         $params['preview'] = $this->getContentInfo($likeSource);
-
-        return parent::render($params);
+        return parent::getViewParams($params);
     }
-
 }

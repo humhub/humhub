@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\notification\components;
+namespace humhub\modules\activity\components;
 
 use Yii;
 use humhub\components\rendering\Viewable;
@@ -19,23 +19,30 @@ use humhub\components\rendering\Viewable;
  * 
  * @author buddha
  */
-class WebTargetRenderer extends \humhub\components\rendering\LayoutRenderer
+class WebRenderer extends \humhub\components\rendering\LayoutRenderer
 {
 
     /**
      * @var string default view path 
      */
-    public $defaultViewPath = '@notification/views/notification';
-    
-    /*
-     * @var string default view
-     */
-    public $defaultView = '@notification/views/notification/default.php';
+    public $defaultViewPath = '@activity/views';
 
     /**
      * @var string default layout
      */
-    public $defaultLayout = '@notification/views/layouts/web.php';
+    public $defaultLayout = '@humhub/modules/activity/views/layouts/web.php';
+    
+    /**
+     * @inheritdoc
+     */
+    public function render(Viewable $viewable, $params = [])
+    {
+        if(!$this->getViewFile($viewable)) {
+            $params['content'] = $viewable->html();
+        }
+        
+        return parent::render($viewable, $params);
+    }
 
     /**
      * Returns the view file for the given Viewable Notification.
@@ -52,14 +59,14 @@ class WebTargetRenderer extends \humhub\components\rendering\LayoutRenderer
      */
     public function getViewFile(Viewable $viewable)
     {
-        $viewFile = $this->getViewPath($viewable) . '/' . $viewable->getViewName();
+        $viewFile = $this->getViewPath($viewable) . DIRECTORY_SEPARATOR . $viewable->getViewName();
         
         if (!file_exists($viewFile)) {
             $viewFile = Yii::getAlias($this->defaultViewPath) . DIRECTORY_SEPARATOR . $viewable->getViewName();
         }
 
         if (!file_exists($viewFile)) {
-            $viewFile = Yii::getAlias($this->defaultView);
+            return null;
         }
 
         return $viewFile;

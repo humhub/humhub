@@ -71,7 +71,7 @@ class ViewPathRenderer extends \yii\base\Object implements Renderer
         }
 
         $class = new \ReflectionClass($viewable);
-        return dirname(dirname($class->getFileName())) . DIRECTORY_SEPARATOR . 'views';
+        return dirname($class->getFileName()) . DIRECTORY_SEPARATOR . 'views';
     }
 
 }

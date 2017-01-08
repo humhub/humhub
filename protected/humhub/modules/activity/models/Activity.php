@@ -11,6 +11,7 @@ namespace humhub\modules\activity\models;
 use Yii;
 use yii\base\Exception;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\activity\components\WebRenderer;
 
 /**
  * This is the model class for table "activity".
@@ -94,12 +95,13 @@ class Activity extends ContentActiveRecord
     public function getWallOut($params = [])
     {
         $cacheKey = 'activity_wall_out_' . Yii::$app->language . '_' . $this->id;
-        $output = Yii::$app->cache->get($cacheKey);
+        $output = false;
 
         if ($output === false) {
             $activity = $this->getActivityBaseClass();
             if ($activity !== null) {
-                $output = $activity->render();
+                $renderer = new WebRenderer();
+                $output = $renderer->render($activity);
                 Yii::$app->cache->set($cacheKey, $output);
                 return $output;
             }
