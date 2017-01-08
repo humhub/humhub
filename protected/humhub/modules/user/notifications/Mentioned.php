@@ -25,6 +25,14 @@ class Mentioned extends BaseNotification
     public $moduleId = 'user';
 
     /**
+     * @inheritdoc
+     */
+    public function category()
+    {
+        return new MentionedNotificationCategory;
+    }
+
+    /**
      * inheritdoc
      */
     public function send(\humhub\modules\user\models\User $user)

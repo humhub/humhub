@@ -22,6 +22,13 @@ class ContentCreated extends \humhub\modules\notification\components\BaseNotific
      * @inheritdoc
      */
     public $moduleId = 'content';
+    
+    /**
+     * @inheritdoc
+     */
+    public function category() {
+        return new \humhub\modules\content\notifications\ContentCreatedNotificationCategory();
+    }
 
     /**
      * @inheritdoc

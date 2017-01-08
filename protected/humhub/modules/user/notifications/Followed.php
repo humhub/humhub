@@ -23,8 +23,14 @@ class Followed extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = 'user';
-    
-    public $viewName = 'xxx';
+
+    /**
+     * @inheritdoc
+     */
+    public function category()
+    {
+        return new FollowedNotificationCategory();
+    }
 
     /**
      * @inheritdoc

@@ -22,8 +22,8 @@ namespace humhub\modules\user\behaviors;
 
 use Yii;
 use yii\base\Behavior;
-
 use humhub\modules\user\models\Follow;
+use humhub\modules\user\models\User;
 
 /**
  * HFollowableBehavior adds following methods to HActiveRecords
@@ -60,20 +60,19 @@ class Followable extends Behavior
      */
     public function follow($userId = "", $withNotifications = true)
     {
-        if ($userId == "")
+        if ($userId == "") {
             $userId = Yii::$app->user->id;
+        }
 
         // User cannot follow himself
-        if ($this->owner->className() == \humhub\modules\user\models\User::className() && $this->owner->getPrimaryKey() == $userId) {
+        if ($this->owner instanceof User && $this->owner->id == $userId) {
             return false;
         }
 
         $follow = $this->getFollowRecord($userId);
         if ($follow === null) {
-            $follow = new \humhub\modules\user\models\Follow();
-            $follow->user_id = $userId;
-            $follow->object_id = $this->owner->getPrimaryKey();
-            $follow->object_model = $this->owner->className();
+            $follow = new Follow(['user_id' => $userId]);
+            $follow->setPolyMorphicRelation($this->owner);
         }
 
         if ($withNotifications) {

@@ -31,7 +31,7 @@ class SpaceMemberNotificationCategory extends NotificationCategory
      */
     public function getDescription()
     {
-        return Yii::t('SpaceModule.notifications_SpaceMemberNotificationCategory', 'Receive Notifications for Space Approval and Invite events');
+        return Yii::t('SpaceModule.notifications_SpaceMemberNotificationCategory', 'Receive Notifications for Space Approval and Invite events.');
     }
     
     /**

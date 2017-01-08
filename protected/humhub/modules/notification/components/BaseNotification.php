@@ -99,7 +99,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     {
         $category = $this->getCategory();
         if ($category) {
-            return Yii::t('NotificationModule.base', 'There are new updates available at {baseUrl} - ({category})', ['baseUrl' => Url::base(true), 'category' => $category]);
+            return Yii::t('NotificationModule.base', 'There are new updates available at {baseUrl} - ({category})', ['baseUrl' => Url::base(true), 'category' => $category->getTitle()]);
         } else {
             return Yii::t('NotificationModule.base', 'There are new updates available at {baseUrl}', ['baseUrl' => Url::base(true)]);
         }
@@ -141,15 +141,16 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     public function send(User $user)
     {
+
         if (empty($this->moduleId)) {
             throw new \yii\base\InvalidConfigException('No moduleId given for "' . $this->className() . '"');
-        }
+        };
 
         // Skip - do not set notification to the originator
         if ($this->originator && $this->originator->id == $user->id) {
             return;
         }
-        
+
         //$this->queueJob($user);
         $this->saveRecord($user);
         foreach (Yii::$app->notification->getTargets($user) as $target) {
@@ -204,7 +205,10 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
             $notification->originator_user_id = $this->originator->id;
         }
 
-        $notification->save();
+        if (!$notification->save()) {
+            Yii::error('Could not save Notification Record for' . $this->className() . ' ' . print_r($notification->getErrors()));
+        }
+
         $this->record = $notification;
     }
 
@@ -231,7 +235,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     /**
      * Deletes this notification
      */
-    public function delete(\humhub\modules\user\models\User $user = null)
+    public function delete(User $user = null)
     {
         $condition = [];
 

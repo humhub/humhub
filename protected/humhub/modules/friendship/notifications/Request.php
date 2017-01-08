@@ -51,9 +51,9 @@ class Request extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('FriendshipModule.notification', '{displayName} sent you a friend request.', array(
+        return Yii::t('FriendshipModule.notification', '{displayName} sent you a friend request.', [
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-        ));
+        ]);
     }
 
 }

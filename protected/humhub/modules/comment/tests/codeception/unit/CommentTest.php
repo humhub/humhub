@@ -8,7 +8,7 @@ use Codeception\Specify;
 use humhub\modules\post\models\Post;
 use humhub\modules\comment\models\Comment;
 
-class ContentContainerStreamTest extends HumHubDbTestCase
+class CommentTest extends HumHubDbTestCase
 {
 
     use Specify;
@@ -24,14 +24,12 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         ]);
 
         $comment->save();
-
-        print_r($comment->content->getPolymorphicRelation()->getFollowers(null, true, true)->all());
-        die();
         
+        $this->assertMailSent(1, 'Comment Notification Mail sent');
         $this->assertNotEmpty($comment->id);
         $this->assertNotEmpty($comment->content->getPolymorphicRelation()->getFollowers(null, true, true));
         
-        $this->assertNotNull(\humhub\modules\activity\models\Activity::findOne(['source_class' => Comment::class, 'source_pk' => $comment->id]));
+        $this->assertNotNull(\humhub\modules\activity\models\Activity::findOne(['object_model' => Comment::class, 'object_id' => $comment->id]));
         $this->assertNotNull(\humhub\modules\notification\models\Notification::findOne(['source_class' => Comment::class, 'source_pk' => $comment->id]));
     }
 

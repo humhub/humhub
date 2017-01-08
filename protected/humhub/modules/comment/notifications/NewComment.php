@@ -24,6 +24,13 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
      * @inheritdoc
      */
     public $moduleId = 'comment';
+    
+    /**
+     * @inheritdoc
+     */
+    public function category() {
+        return new CommentNotificationCategory();
+    }
 
     /**
      * @inheritdoc
@@ -50,7 +57,7 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
     /**
      * @inheritdoc
      */
-    public function getAsHtml()
+    public function html()
     {
         $contentInfo = $this->getContentInfo($this->getCommentedRecord());
 

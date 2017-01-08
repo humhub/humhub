@@ -31,7 +31,7 @@ class FriendshipNotificationCategory extends NotificationCategory
      */
     public function getDescription()
     {
-        return Yii::t('SpaceModule.notifications_FriendshipNotificationCategory', 'Receive Notifications for Friendship Request and Approval events');
+        return Yii::t('SpaceModule.notifications_FriendshipNotificationCategory', 'Receive Notifications for Friendship Request and Approval events.');
     }
     
     /**

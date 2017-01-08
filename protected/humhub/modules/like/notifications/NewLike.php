@@ -25,6 +25,10 @@ class NewLike extends BaseNotification
      */
     public $moduleId = 'like';
 
+    public function category() {
+        return new LikeNotificationCategory();
+    }
+    
     /**
      * @inheritdoc
      */

@@ -41,7 +41,7 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
      * @inheritdoc
      */
     public $layoutMailPlaintext = "@humhub/modules/notification/views/layouts/mail_plaintext.php";
-    
+
     /**
      * @inheritdoc
      */
@@ -72,7 +72,7 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
         $params['clickable'] = $this->clickable;
         return parent::getViewParams($params);
     }
-    
+
     public function save()
     {
         return $this->record->save();
@@ -95,7 +95,7 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
 
         $this->saveModelInstance();
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -105,7 +105,7 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
         $this->record->content->created_by = $originator->id;
         return $this;
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -113,9 +113,11 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
     {
         parent::about($source);
         $this->record->content->visibility = $this->getContentVisibility();
+        if (!$this->record->content->container && $this->getContentContainer()) {
+            $this->container($this->getContentContainer());
+        }
         return $this;
     }
-
 
     /**
      * Builder function for setting ContentContainerActiveRecord
@@ -132,7 +134,7 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
         $this->record->setPolymorphicRelation($this->source);
         $this->record->content->visibility = $this->getContentVisibility();
 
-        if (!$this->record->content->container) {
+        if (!$this->record->content->container && $this->getContentContainer()) {
             $this->record->content->container = $this->getContentContainer();
         }
 

@@ -15,6 +15,8 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
 use humhub\modules\user\models\Invite;
 use humhub\modules\admin\permissions\ManageSpaces;
+use humhub\modules\space\notifications\ApprovalRequestAccepted;
+use humhub\modules\space\notifications\InviteAccepted;
 
 /**
  * SpaceModelMemberBehavior bundles all membership related methods of the Space model.
@@ -243,19 +245,21 @@ class SpaceModelMembership extends Behavior
     public function requestMembership($userId, $message = "")
     {
 
+        $user = ($userId instanceof User) ? $userId : User::findOne(['id' => $userId]);
+
         // Add Membership
-        $membership = new Membership;
-        $membership->space_id = $this->owner->id;
-        $membership->user_id = $userId;
-        $membership->status = Membership::STATUS_APPLICANT;
-        $membership->group_id = Space::USERGROUP_MEMBER;
-        $membership->request_message = $message;
+        $membership = new Membership([
+            'space_id' => $this->owner->id,
+            'user_id' => $user->id,
+            'status' => Membership::STATUS_APPLICANT,
+            'group_id' => Space::USERGROUP_MEMBER,
+            'request_message' => $message
+        ]);
+
         $membership->save();
 
-        $notification = new \humhub\modules\space\notifications\ApprovalRequest();
-        $notification->source = $this->owner;
-        $notification->originator = User::findOne(['id' => $userId]);
-        $notification->sendBulk($this->getAdmins());
+        \humhub\modules\space\notifications\ApprovalRequest::instance()
+                ->from($user)->about($this->owner)->sendBulk($this->getAdmins());
     }
 
     /**
@@ -351,19 +355,19 @@ class SpaceModelMembership extends Behavior
 
         if ($membership == null) {
             // Add Membership
-            $membership = new Membership;
-            $membership->space_id = $this->owner->id;
-            $membership->user_id = $userId;
-            $membership->status = Membership::STATUS_MEMBER;
-            $membership->group_id = Space::USERGROUP_MEMBER;
-            $membership->can_cancel_membership = $canLeave;
+            $membership = new Membership([
+                'space_id' => $this->owner->id,
+                'user_id' => $userId,
+                'status' => Membership::STATUS_MEMBER,
+                'group_id' => Space::USERGROUP_MEMBER,
+                'can_cancel_membership' => $canLeave
+            ]);
 
             $userInvite = Invite::findOne(['email' => $user->email]);
+
             if ($userInvite !== null && $userInvite->source == Invite::SOURCE_INVITE) {
-                $notification = new \humhub\modules\space\notifications\InviteAccepted();
-                $notification->originator = $user;
-                $notification->source = $this->owner;
-                $notification->send(User::findOne(['id' => $userInvite->user_originator_id]));
+                InviteAccepted::instance()->from($user)->about($this->owner)
+                        ->send(User::findOne(['id' => $userInvite->user_originator_id]));
             }
         } else {
 
@@ -374,18 +378,14 @@ class SpaceModelMembership extends Behavior
 
             // User requested membership
             if ($membership->status == Membership::STATUS_APPLICANT) {
-                $notification = new \humhub\modules\space\notifications\ApprovalRequestAccepted();
-                $notification->source = $this->owner;
-                $notification->originator = Yii::$app->user->getIdentity();
-                $notification->send($user);
+                ApprovalRequestAccepted::instance()
+                        ->from(Yii::$app->user->getIdentity())->about($this->owner)->send($user);
             }
 
             // User was invited
             if ($membership->status == Membership::STATUS_INVITED) {
-                $notification = new \humhub\modules\space\notifications\InviteAccepted();
-                $notification->source = $this->owner;
-                $notification->originator = $user;
-                $notification->send(User::findOne(['id' => $membership->originator_user_id]));
+                InviteAccepted::instance()->from($user)->about($this->owner)
+                        ->send(User::findOne(['id' => $membership->originator_user_id]));
             }
 
             // Update Membership
@@ -393,24 +393,17 @@ class SpaceModelMembership extends Behavior
         }
         $membership->save();
 
-        $activity = new \humhub\modules\space\activities\MemberAdded;
-        $activity->source = $this->owner;
-        $activity->originator = $user;
-        $activity->create();
+        // Create Activity
+        \humhub\modules\space\activities\MemberAdded::instance()->from($user)->about($this->owner)->save();
 
         // Members can't also follow the space
         $this->owner->unfollow($userId);
 
         // Delete invite notification for this user
-        $notificationInvite = new \humhub\modules\space\notifications\Invite;
-        $notificationInvite->source = $this->owner;
-        $notificationInvite->delete($user);
+        \humhub\modules\space\notifications\Invite::instance()->about($this->owner)->delete($user);
 
         // Delete pending approval request notifications for this user
-        $notificationApprovalRequest = new \humhub\modules\space\notifications\ApprovalRequest();
-        $notificationApprovalRequest->source = $this->owner;
-        $notificationApprovalRequest->originator = $user;
-        $notificationApprovalRequest->delete();
+        \humhub\modules\space\notifications\ApprovalRequest::instance()->from($user)->about($this->owner)->delete();
     }
 
     /**

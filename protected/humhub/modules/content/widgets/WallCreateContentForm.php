@@ -118,6 +118,7 @@ class WallCreateContentForm extends Widget
         if ($visibility == Content::VISIBILITY_PUBLIC && !$contentContainer->permissionManager->can(new \humhub\modules\content\permissions\CreatePublicContent())) {
             $visibility = Content::VISIBILITY_PRIVATE;
         }
+
         $record->content->visibility = $visibility;
         $record->content->container = $contentContainer;
 
@@ -132,7 +133,7 @@ class WallCreateContentForm extends Widget
                 }
             }
         }
-        
+
         if ($record->validate() && $record->save()) {
             $record->fileManager->attach(Yii::$app->request->post('fileList'));
             return \humhub\modules\stream\actions\Stream::getContentResultEntry($record->content);

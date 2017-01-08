@@ -8,7 +8,6 @@
 
 namespace humhub\modules\user\models;
 
-
 use humhub\modules\activity\models\Activity;
 
 /**
@@ -29,6 +28,21 @@ class Follow extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'user_follow';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
+                'mustBeInstanceOf' => [
+                    \yii\db\ActiveRecord::className(),
+                ]
+            ]
+        ];
     }
 
     /**
@@ -64,7 +78,7 @@ class Follow extends \yii\db\ActiveRecord
                     ->from($this->user)
                     ->about($this)
                     ->send($this->getTarget());
-            
+
             \humhub\modules\user\activities\UserFollow::instance()
                     ->from($this->user)
                     ->container($this->user)

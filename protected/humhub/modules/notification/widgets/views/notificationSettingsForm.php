@@ -21,7 +21,7 @@ use yii\bootstrap\Html
             <?php foreach ($model->categories($user) as $category): ?>
                 <tr>
                     <td>
-                        <?= $category->getTitle() ?>
+                        <strong><?= $category->getTitle() ?></strong>
                     </td>
                     <td>
                         <?= $category->getDescription() ?>

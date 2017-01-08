@@ -82,10 +82,8 @@ class PolymorphicRelation extends Behavior {
             $this->_cached = $object;
 
             if ($object instanceof \yii\db\ActiveRecord) {
-                $class = $this->classAttribute;
-                $this->owner->$class = $object->className();
-                $pk = $this->pkAttribute;
-                $this->owner->$pk = $object->getPrimaryKey();
+                $this->owner->setAttribute($this->classAttribute, $object->className());
+                $this->owner->setAttribute($this->pkAttribute, $object->getPrimaryKey());
             }
         }
     }
@@ -95,6 +93,8 @@ class PolymorphicRelation extends Behavior {
      */
     public function resetPolymorphicRelation() {
         $this->_cached = null;
+        $this->owner->setAttribute($this->classAttribute, null);
+        $this->owner->setAttribute($this->pkAttribute, null);
     }
 
     /**
@@ -118,4 +118,5 @@ class PolymorphicRelation extends Behavior {
         Yii::error('Got invalid underlying object type! (' . $object->className() . ')');
         return false;
     }
+
 }

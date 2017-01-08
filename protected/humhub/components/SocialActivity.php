@@ -49,8 +49,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
      * @var string the module id which this activity belongs to (required)
      */
     public $moduleId;
-    
-    
+
     /**
      * An SocialActivity can be represented in the database as ActiveRecord.
      * By defining the $recordClass an ActiveRecord will be created automatically within the
@@ -59,27 +58,27 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
      * @var \yii\db\ActiveRecord The related record for this activitiy
      */
     public $record;
-    
+
     /**
      * @var string Record class used for instantiation.
      */
     public $recordClass;
-    
+
     /**
      * @var string view name used for rendering the activity 
      */
     public $viewName = 'default.php';
-    
+
     public function init()
     {
         parent::init();
-        if($this->recordClass) {
+        if ($this->recordClass) {
             $this->record = Yii::createObject($this->recordClass);
             $this->record->class = $this->className();
             $this->record->module = $this->moduleId;
         }
     }
-    
+
     /**
      * Static initializer should be prefered over new initialization, since it makes use
      * of Yii::createObject dependency injection/configuration.
@@ -90,7 +89,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
     {
         return Yii::createObject(static::class, $options);
     }
-    
+
     /**
      * Builder function for the originator.
      * 
@@ -102,7 +101,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
         $this->originator = $originator;
         return $this;
     }
-    
+
     /**
      * Builder function for the source.
      * @param type $source
@@ -114,15 +113,15 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
         $this->record->setPolymorphicRelation($source);
         return $this;
     }
-    
+
     /**
      * @inheritdoc
      */
     public function getViewName()
     {
         // If no suffix is given, we assume a php file.
-        if(!strpos($this->viewName, '.')) {
-            return $this->viewName. '.php';
+        if (!strpos($this->viewName, '.')) {
+            return $this->viewName . '.php';
         } else {
             return $this->viewName;
         }
@@ -135,7 +134,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
     {
         $result = [
             'originator' => $this->originator,
-            'source' =>  $this->source,
+            'source' => $this->source,
             'contentContainer' => $this->getContentContainer(),
             'space' => $this->getSpace(),
             'record' => $this->record,
@@ -267,8 +266,8 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
             'text' => $this->text(),
             'html' => $this->html()
         ];
-        
-        if($this->originator) {
+
+        if ($this->originator) {
             $result['originator_id'] = $this->originator->id;
         }
 

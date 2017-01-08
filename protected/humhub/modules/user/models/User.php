@@ -11,7 +11,6 @@ namespace humhub\modules\user\models;
 use Yii;
 use yii\base\Exception;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Space;
@@ -595,7 +594,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         return $this->hasMany(Space::className(), ['id' => 'space_id'])
                         ->viaTable('space_membership', ['user_id' => 'id']);
     }
-    
+
     public function getFollowSpaces()
     {
         // TODO: SHOW ONLY REAL MEMBERSHIPS

@@ -145,7 +145,9 @@ abstract class NotificationTarget extends \yii\base\Object
         } catch (\Exception $e) {
             Yii::error($e);
             $this->acknowledge($notification, false);
-            //TODO: increment retry count.
+            if(!YII_ENV_PROD) {
+                throw $e;
+            }
         }
     }
 

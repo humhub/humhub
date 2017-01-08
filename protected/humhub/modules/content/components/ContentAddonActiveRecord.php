@@ -207,4 +207,3 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
     }
 
 }
-

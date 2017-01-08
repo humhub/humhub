@@ -98,7 +98,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
         if ($space->join_policy == Space::JOIN_POLICY_APPLICATION) {
             // Redirect to Membership Request Form
-            return $this->redirect($this->createUrl('//space/space/requestMembershipForm', array('sguid' => $this->getSpace()->guid)));
+            return $this->redirect($this->createUrl('//space/space/requestMembershipForm', ['sguid' => $this->getSpace()->guid]));
         }
 
         $space->addMember(Yii::$app->user->id);

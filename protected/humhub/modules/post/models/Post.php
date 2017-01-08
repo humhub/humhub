@@ -145,4 +145,5 @@ class Post extends ContentActiveRecord implements Searchable
 
         return '';
     }
+
 }

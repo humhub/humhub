@@ -24,6 +24,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         // Test Originator
         $this->assertEquals($activity->originator->id, Yii::$app->user->getIdentity()->id, 'Originator id before save');
         $this->assertEquals($activity->record->content->created_by, Yii::$app->user->getIdentity()->id, 'Content originator before save');
+        $this->assertEquals($activity->record->content->contentcontainer_id, $post->content->container->id, 'ContentContainer before save');
         
         // Test Source
         $this->assertEquals($activity->source->id, $post->id, 'Source id before save');
@@ -50,6 +51,6 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         $this->assertNotNull($testActivity->getContent(), 'Activity::getContent');
         $this->assertEquals($testActivity->getContent()->id, $post->content->id, 'Compare activity content with source content.');
         
-        $this->assertEquals($testActivity->getContentContainer()->id, $post->content->getContainer()->id, 'Activity::getContentContainer content');
+        $this->assertEquals($testActivity->getContentContainer()->id, $post->content->container->id, 'Activity::getContentContainer content');
     }
 }
