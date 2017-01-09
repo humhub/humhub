@@ -238,7 +238,7 @@ abstract class Stream extends Action
         $output['contentOrder'] = array_keys($output['content']);
         $output['lastContentId'] = end($output['contentOrder']);
 
-        if ($this->streamQuery instanceof \humhub\modules\stream\models\StreamSuppressQuery) {
+        if ($this->streamQuery instanceof \humhub\modules\stream\models\StreamSuppressQuery && !$this->streamQuery->isSingleContentQuery()) {
             $output['contentSuppressions'] = $this->streamQuery->getSuppressions();
             $output['lastContentId'] = $this->streamQuery->getLastContentId();
         }

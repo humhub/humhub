@@ -16,7 +16,6 @@ humhub.module('user.picker', function(module, require, $) {
     };
 
     var actionSelectSelf = function(event) {
-        debugger;
         var picker = UserPicker.instance(event.$target);
         if (picker instanceof UserPicker) {
             picker.selectSelf();

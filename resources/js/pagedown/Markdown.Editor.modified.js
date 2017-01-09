@@ -888,8 +888,6 @@
                         stateObj.start = inputArea.selectionStart;
                         stateObj.end = inputArea.selectionEnd;
                     } else if(doc.selection) {
-                        debugger;
-                        console.log(doc.selection);
                         stateObj.text = util.fixEolChars(inputArea.value);
 
                         // IE loses the selection in the textarea when buttons are

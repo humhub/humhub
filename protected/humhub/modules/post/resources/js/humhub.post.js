@@ -53,7 +53,6 @@ humhub.module('post', function(module, require, $) {
     };
 
     Post.prototype.toggleCollapse = function() {
-        debugger;
         if(this.$.data('state') === 'collapsed') {
             this.expand();
         } else {

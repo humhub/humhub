@@ -38,7 +38,7 @@ class StreamSuppressQuery extends StreamQuery
     public function all()
     {
         // Only suppress on 3 or more contents to deliever
-        if ($this->limit < 3) {
+        if ($this->limit < 3 || $this->isSingleContentQuery()) {
             return parent::all();
         }
 

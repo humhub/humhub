@@ -229,6 +229,10 @@ var humhub = humhub || (function($) {
 
     var event = modules['event'] = {
         events: $({}),
+        off: function(events, selector, handler) {
+            this.events.off(events, selector, handler);
+            return this;
+        },
         on: function(event, selector, data, handler) {
             this.events.on(event, selector, data, handler);
             return this;

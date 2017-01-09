@@ -142,11 +142,15 @@ humhub.module('stream', function(module, require, $) {
     };
 
     StreamEntry.prototype.cancelEdit = function() {
-        var $that = this.$;
+        var that = this;
         this.loader();
         this.reload().then(function() {
-            $that.find('.stream-entry-edit-link').show();
-            $that.find('.stream-entry-cancel-edit-link').hide();
+            that.$.find('.stream-entry-edit-link').show();
+            that.$.find('.stream-entry-cancel-edit-link').hide();
+        }).catch(function(err) {
+            module.log.error(err, true);
+        }).finally(function() {
+            that.loader(false);
         });
     };
 
@@ -232,14 +236,16 @@ humhub.module('stream', function(module, require, $) {
     StreamEntry.prototype.replace = function(newEntry) {
         var that = this;
         return new Promise(function(resolve, reject) {
-            var $newEntry = $(newEntry).hide();
+            var $newEntry = $(newEntry).css('opacity', 0);
             that.$.fadeOut(function() {
                 that.$.replaceWith($newEntry);
                 // Sinc the response does not only include the node itself we have to search it.
                 that.$ = $newEntry.find(DATA_STREAM_ENTRY_SELECTOR)
                         .addBack(DATA_STREAM_ENTRY_SELECTOR);
+                
                 that.apply();
-                $newEntry.fadeIn('fast', function() {
+                
+                $newEntry.hide().css('opacity', 1).fadeIn('fast', function() {
                     resolve();
                 });
             });
@@ -579,34 +585,34 @@ humhub.module('stream', function(module, require, $) {
     };
 
     Stream.prototype.prependEntry = function(html) {
-        var $html = $(html).hide();
+        var $html = $(html).css('opacity', 0);
         this.$content.prepend($html);
         var that = this;
         
         additions.applyTo($html);
-        $html.fadeIn('fast', function() {
+        $html.hide().css('opacity', 1).fadeIn('fast', function() {
             that.onChange();
         });
     };
     
     Stream.prototype.after = function(html, $entryNode) {
-        var $html = $(html).hide();
+        var $html = $(html).css('opacity', 0);
         $entryNode.after($html);
         var that = this;
         
         additions.applyTo($html);
-        $html.fadeIn('fast', function() {
+        $html.hide().css('opacity', 1).fadeIn('fast', function() {
             that.onChange();
         });
     };
 
     Stream.prototype.appendEntry = function(html) {
-        var $html = $(html).hide();
+        var $html = $(html).css('opacity', 0);;
         this.$content.append($html);
         var that = this;
         
         additions.applyTo($html);
-        $html.fadeIn('fast', function() {
+        $html.hide().css('opacity', 1).fadeIn('fast', function() {
             that.onChange();
         });
     };
@@ -629,11 +635,15 @@ humhub.module('stream', function(module, require, $) {
             result += response.content[key].output;
         });
         
-        var $result = $(result).hide();
+        
+        var $result = $(result);
 
         if(cfg['preventInsert']) {
             return $result;
         }
+        
+        // Do not use .hide() since some additions need to calculate dimensions...
+        $result.css('opacity', 0);
 
         this.$.trigger('humhub:stream:beforeAddEntries', [response, result]);
 
@@ -645,7 +655,7 @@ humhub.module('stream', function(module, require, $) {
         } else {
             this.appendEntry($result);
         }
-
+        $result.hide().css('opacity', 1);
         this.$.trigger('humhub:stream:afterAddEntries', [response, result]);
         $result.fadeIn('fast');
         return $result;
@@ -837,8 +847,8 @@ humhub.module('stream', function(module, require, $) {
         }
 
         if(!pjax) {
-            event.on('humhub:modules:content:newEntry', function(evt, html) {
-                stream.prependEntry(html);
+            event.on('humhub:modules:content:newEntry.stream', function(evt, html) {
+                getStream().prependEntry(html);
             });
         }
     };
