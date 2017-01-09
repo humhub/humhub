@@ -155,9 +155,9 @@ humhub.module('ui.additions', function(module, require, $) {
          });*/
 
         // Replace the standard checkbox and radio buttons
-        module.register('forms', ':checkbox, :radio', function($match) {
-            $match.flatelements();
-        });
+       /* module.register('forms', ':checkbox, :radio', function($match) {
+            //$match.flatelements();
+        });*/
 
         // Deprecated!
         module.register('', 'a[data-loader="modal"], button[data-loader="modal"]', function($match) {

@@ -29,10 +29,8 @@ use yii\bootstrap\Html
 
                     <?php foreach ($model->targets() as $target): ?>
                         <td class="text-center">
-                            <label style="margin:0px;">
-                                <?php $disabled = !$target->isEditable($model->user) || $category->isFixedSetting($target)?>
-                                <?= Html::checkbox($model->getSettingFormname($category, $target), $target->isCategoryEnabled($category, $model->user), ['style' => 'margin:0px;', 'disabled' => $disabled]) ?>
-                            </label>
+                            <?php $disabled = !$target->isEditable($model->user) || $category->isFixedSetting($target) ?>
+                            <?= Html::checkbox($model->getSettingFormname($category, $target), $target->isCategoryEnabled($category, $model->user), ['style' => 'margin:0px;', 'disabled' => $disabled]) ?>
                         </td>
                     <?php endforeach; ?>
 

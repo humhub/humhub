@@ -18,7 +18,7 @@ use \yii\helpers\Url;
  * And the following methods:
  * 
  * - getItemText for retrieving the option text for an item
- * - getItemImage for terieving the option image (if required)
+ * - getItemImage for retrieving the option image (if required)
  * 
  * 
  * The json result of a picker search query should return an array of items with the following key/values:
@@ -45,7 +45,7 @@ abstract class BasePickerField extends JsWidget
     public $jsWidget = 'ui.picker.Picker';
 
     /**
-     * Disabled
+     * Disabled items
      */
     public $disabledItems;
 
@@ -128,20 +128,20 @@ abstract class BasePickerField extends JsWidget
     public $model;
 
     /**
-     * Input form name.
-     * This can be provided if no form and model is provided for custom input field setting.
-     * 
-     * @var type 
-     */
-    public $formName;
-
-    /**
      * Model attribute which holds the picker value. The referenced model attribute has to be an
      * array.
      * 
      * @var string 
      */
     public $attribute;
+
+    /**
+     * Input form name.
+     * This can be set if no form and model is provided for custom input field setting.
+     * 
+     * @var type 
+     */
+    public $formName;
 
     /**
      * Can be used to overwrite the default placeholder.
@@ -311,8 +311,8 @@ abstract class BasePickerField extends JsWidget
     }
 
     /**
-     * Returns an array of texts configurations for this picker isntance.
-     * Following texts can be configured:
+     * Returns an array of data attributes for this picker isntance.
+     * Following data attributes can be configured by default:
      * 
      *  - data-placeholder: Placeholder text if no value is set.
      *  - data-placeholder-more: Placeholder text displayed if at least one item is set.

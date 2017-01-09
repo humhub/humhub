@@ -40,7 +40,6 @@ class CoreApiAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub/legacy/jquery.flatelements.js',
         'js/humhub/legacy/jquery.loader.js',
         'js/humhub/legacy/app.js',
         'js/humhub/humhub.core.js', 
@@ -48,6 +47,7 @@ class CoreApiAsset extends AssetBundle
         'js/humhub/humhub.log.js', 
         //'js/humhub/humhub.scripts.js', 
         'js/humhub/humhub.ui.additions.js',
+        'js/humhub/humhub.ui.form.elements.js',
         'js/humhub/humhub.ui.loader.js', 
         'js/humhub/humhub.action.js',
         'js/humhub/humhub.ui.widget.js', 
