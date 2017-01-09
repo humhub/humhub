@@ -103,6 +103,11 @@ textarea.placeholder {
     font-size: 12px;
 }
 
+.help-block:not(.help-block-error):hover {
+    color: @font2 !important;
+    font-size: 12px;
+}
+
 .input-group-addon {
     border: none;
 }
@@ -169,31 +174,43 @@ a.label-warning:hover {
 
 // Flatelements
 .onoffswitch-inner:before {
-  background-color: @info;
-  color: #fff;
+    background-color: @info;
+    color: #fff;
 }
 
 .onoffswitch-inner:after {
-  background-color: @background3;
-  color: #999;
-  text-align: right;
+    background-color: @background3;
+    color: #999;
+    text-align: right;
 }
 
 .regular-checkbox:checked + .regular-checkbox-box {
-  border: 2px solid @info;
-  background: @info;
-  color: white;
+    border: 2px solid @info;
+    background: @info;
+    color: white;
+}
+
+.regular-checkbox-box.disabled {
+    background: @background3 !important;
+    border: 2px solid @background3 !important;
+    cursor: not-allowed;
 }
 
 .regular-radio:checked + .regular-radio-button:after {
-  background: @info;
+    background: @info;
 }
 
 .regular-radio:checked + .regular-radio-button {
-  background-color: none;
-  color: #99a1a7;
-  border: 2px solid @background3;
-  margin-right: 5px;
+    background-color: none;
+    color: #99a1a7;
+    border: 2px solid @background3;
+    margin-right: 5px;
+}
+
+.regular-radio.disabled {
+    background: @background3 !important;
+    border: 2px solid @background3 !important;
+    cursor: not-allowed;
 }
 
 //

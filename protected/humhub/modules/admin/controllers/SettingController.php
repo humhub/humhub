@@ -149,7 +149,7 @@ class SettingController extends Controller
     public function actionNotification()
     {
         $form = new NotificationSettings();
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
             $this->view->saved();
         }
 

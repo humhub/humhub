@@ -3,60 +3,60 @@
 namespace humhub\modules\notification\models\forms;
 
 use Yii;
-use humhub\modules\notification\models\Notification;
 
-/**
- * @package humhub.forms
- * @since 0.5
- */
 class FilterForm extends \yii\base\Model
 {
-    const FILTER_OTHER = 'other';
 
     /**
      * Contains the current module filters
      * @var type array
      */
-    public $moduleFilter;
-    
+    public $categoryFilter;
+
     /**
      * Contains all available module filter
      * @var type array
      */
-    public $moduleFilterSelection;
-    
+    public $categoryFilterSelection;
+
     /**
      * Contains all notifications by modulenames
      * @var type 
      */
-    public $moduleNotifications;
-    
-     public function rules()
+    public $notifications;
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
     {
         return [
-            [['moduleFilter'], 'safe'],
+            [['categoryFilter'], 'safe'],
         ];
     }
-    
+
+    /**
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-            'moduleFilter' => Yii::t('NotificationModule.views_overview_index', 'Module Filter'),
+            'categoryFilter' => Yii::t('NotificationModule.views_overview_index', 'Module Filter'),
         ];
     }
-    
+
     /**
      * Preselects all possible module filter
      */
-    public function initFilter()
+    public function init()
     {
-        $this->moduleFilter = [];
-        
-        foreach($this->getModuleFilterSelection() as $moduleName => $title) {
-            $this->moduleFilter[] = $moduleName;
+        $this->categoryFilter = [];
+
+        foreach ($this->getCategoryFilterSelection() as $moduleName => $title) {
+            $this->categoryFilter [] = $moduleName;
         }
     }
-    
+
     /**
      * Returns all Notifications classes of modules not selected in the filter
      * 
@@ -65,73 +65,54 @@ class FilterForm extends \yii\base\Model
     public function getExcludeClassFilter()
     {
         $result = [];
-        $moduleNotifications = $this->getModuleNotifications();
-        
-        foreach($this->moduleFilterSelection as $moduleName => $title) {
-            if($moduleName != self::FILTER_OTHER && !in_array($moduleName, $this->moduleFilter)) {
-                $result = array_merge($result, $moduleNotifications[$moduleName]);
+
+        foreach ($this->getNotifications() as $notification) {
+            $categoryId = $notification->getCategory()->id;
+            if (!in_array($categoryId, $this->categoryFilter)) {
+                $result[] = $notification->className();
             }
         }
         return $result;
     }
-    
+
     /**
-     * Returns all Notifications classes of modules selected in the filter
+     * Returns all available notification categories as checkbox list selection.
      * @return type
      */
-    public function getIncludeClassFilter()
+    public function getCategoryFilterSelection()
     {
-        $result = [];
-        $moduleNotifications = $this->getModuleNotifications();
-        
-        foreach($this->moduleFilter as $moduleName) {
-            if($moduleName != self::FILTER_OTHER) {
-                $result = array_merge($result, $moduleNotifications[$moduleName]);
+        if ($this->categoryFilterSelection == null) {
+            $this->categoryFilterSelection = [];
+
+            foreach (Yii::$app->notification->getNotificationCategories(Yii::$app->user->getIdentity()) as $category) {
+                $this->categoryFilterSelection[$category->id] = $category->getTitle();
             }
         }
-        return $result;
+        return $this->categoryFilterSelection;
     }
-    
-    public function getModuleFilterSelection()
-    {
-        if($this->moduleFilterSelection == null) {
-            $this->moduleFilterSelection = [];
-            
-            foreach(array_keys($this->getModuleNotifications()) as $moduleName) {
-                $this->moduleFilterSelection[$moduleName] = $moduleName;
-            }
-            
-            $this->moduleFilterSelection[self::FILTER_OTHER] = Yii::t('NotificationModule.models_forms_FilterForm', 'Other');
-        }
-        return $this->moduleFilterSelection;
-    }
-    
-    public function getModuleNotifications()
-    {
-        if($this->moduleNotifications == null) {
-            $this->moduleNotifications = Notification::getModuleNotifications();
-        }
-        
-        return $this->moduleNotifications;
-    }
-    
+
     /**
-     * Determines if this filter should exclude specific modules (if other filter is selected)
-     * or rather include specific module filter.
-     * 
-     * @return boolean true if other was selected, else false
+     * Returns all available BaseNotification classes with a NotificationCategory.
+     * @return type
      */
-    public function isExcludeFilter()
+    public function getNotifications()
     {
-        return $this->isActive() && in_array(self::FILTER_OTHER, $this->moduleFilter);
+        if ($this->notifications == null) {
+            $this->notifications = array_filter(Yii::$app->notification->getNotifications(), function($notification) {
+                return $notification->getCategory() != null;
+            });
+        }
+
+        return $this->notifications;
     }
-    
+
     /**
      * Checks if this filter is active (at least one filter selected)
      * @return type
      */
-    public function isActive()
+    public function hasFilter()
     {
-        return $this->moduleFilter != null;
+        return $this->categoryFilter != null;
     }
+
 }

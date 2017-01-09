@@ -24,12 +24,13 @@ humhub.module('comment', function(module, require, $) {
         });
     };
     
-    Form.prototype.getRichtext = function(html) {
+    Form.prototype.getRichtext = function() {
         return Widget.instance(this.$.find('div.humhub-ui-richtext'));
     };
     
     Form.prototype.addComment = function(html) {
         var $html = $(html).hide();
+        additions.applyTo($html);
         this.getCommentsContainer().append($html);
         $html.fadeIn();
     };

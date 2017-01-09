@@ -18,6 +18,8 @@ class NotificationCategoryTest extends HumHubDbTestCase
 
     public function testGlobalCategorySetting()
     {
+        $this->becomeUser('Admin');
+        
         $notification = new TestNotification();
         $category = $notification->getCategory();
         $mailTarget = Yii::$app->notification->getTarget(MailNotificationTarget::class);
@@ -41,6 +43,8 @@ class NotificationCategoryTest extends HumHubDbTestCase
     
     public function testFixedCategorySetting()
     {
+        $this->becomeUser('Admin');
+        
         $notification = new SpecialNotification();
         $category = $notification->getCategory();
         $mailTarget = Yii::$app->notification->getTarget(MailNotificationTarget::class);
@@ -65,10 +69,12 @@ class NotificationCategoryTest extends HumHubDbTestCase
     }
     
     public function testInvisibleCategorySetting()
-    {
+    {   
         // SpecialCategory is invisible for this user.
         $this->becomeUser('User1');
         $user = Yii::$app->user->getIdentity();
+        
+        $this->becomeUser('Admin');
         $notification = new SpecialNotification();
         $category = $notification->getCategory();
         $mailTarget = Yii::$app->notification->getTarget(MailNotificationTarget::class);
@@ -110,6 +116,7 @@ class NotificationCategoryTest extends HumHubDbTestCase
     {
         $this->becomeUser('User2');
         $user = Yii::$app->user->getIdentity();
+        
         $notification = new TestNotification();
         $category = $notification->getCategory();
         $mailTarget = Yii::$app->notification->getTarget(MailNotificationTarget::class);
@@ -118,6 +125,8 @@ class NotificationCategoryTest extends HumHubDbTestCase
         // Check default settings.
         $this->assertFalse($mailTarget->isEnabled($notification, $user));
         $this->assertTrue($webTarget->isEnabled($notification, $user));
+        
+        $this->becomeUser('Admin');
         
         // Change global default settings, deny both targets.
         $settingForm = new NotificationSettings([
@@ -133,15 +142,18 @@ class NotificationCategoryTest extends HumHubDbTestCase
         $this->assertFalse($mailTarget->isEnabled($notification, $user));
         $this->assertFalse($webTarget->isEnabled($notification, $user));
         
+        $this->becomeUser('User2');
+        
         // Change user settings.
         $userSettings = new NotificationSettings([
+            'user' => $user,
             'settings' => [
                 $mailTarget->getSettingKey($category) => true,
                 $webTarget->getSettingKey($category) => true,
             ]
         ]);
         
-        $userSettings->save($user);
+        $userSettings->save();
         
         // Check that global settings are unaffected
         $this->assertFalse($mailTarget->isEnabled($notification));

@@ -215,6 +215,15 @@ abstract class NotificationTarget extends \yii\base\Object
         $category = $notification->getCategory();
         return ($category) ? $this->isCategoryEnabled($category, $user) : $this->defaultSetting;
     }
+    
+    /**
+     * Checks if the settings for this target are editable.
+     * @return boolean
+     */
+    public function isEditable(user $user = null)
+    {
+        return true;
+    }
 
     /**
      * Returns the enabled setting of this target for the given $category.
@@ -229,7 +238,7 @@ abstract class NotificationTarget extends \yii\base\Object
             return false;
         }
         
-        if($category->isFixedSettings($this)) {
+        if($category->isFixedSetting($this)) {
             return $category->getDefaultSetting($this);
         }
 

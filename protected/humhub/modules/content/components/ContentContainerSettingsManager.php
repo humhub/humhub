@@ -42,7 +42,7 @@ class ContentContainerSettingsManager extends BaseSettingsManager
      */
     public function getInherit($name, $default = null) {
         $result = $this->get($name);
-        return ($result != null) ? $result
+        return ($result !== null) ? $result
             : Yii::$app->getModule($this->moduleId)->settings->get($name, $default);
     }
 

@@ -238,8 +238,8 @@ humhub.module('stream', function(module, require, $) {
                 // Sinc the response does not only include the node itself we have to search it.
                 that.$ = $newEntry.find(DATA_STREAM_ENTRY_SELECTOR)
                         .addBack(DATA_STREAM_ENTRY_SELECTOR);
+                that.apply();
                 $newEntry.fadeIn('fast', function() {
-                    that.apply();
                     resolve();
                 });
             });
@@ -582,8 +582,9 @@ humhub.module('stream', function(module, require, $) {
         var $html = $(html).hide();
         this.$content.prepend($html);
         var that = this;
+        
+        additions.applyTo($html);
         $html.fadeIn('fast', function() {
-            additions.applyTo($html);
             that.onChange();
         });
     };
@@ -592,8 +593,9 @@ humhub.module('stream', function(module, require, $) {
         var $html = $(html).hide();
         $entryNode.after($html);
         var that = this;
+        
+        additions.applyTo($html);
         $html.fadeIn('fast', function() {
-            additions.applyTo($html);
             that.onChange();
         });
     };
@@ -602,8 +604,9 @@ humhub.module('stream', function(module, require, $) {
         var $html = $(html).hide();
         this.$content.append($html);
         var that = this;
+        
+        additions.applyTo($html);
         $html.fadeIn('fast', function() {
-            additions.applyTo($html);
             that.onChange();
         });
     };

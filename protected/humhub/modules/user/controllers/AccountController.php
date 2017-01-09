@@ -12,6 +12,7 @@ use Yii;
 use yii\web\HttpException;
 use humhub\modules\user\components\BaseAccountController;
 use humhub\modules\user\models\User;
+use humhub\modules\notification\models\forms\NotificationSettings;
 
 /**
  * AccountController provides all standard actions for the current logged in
@@ -32,7 +33,7 @@ class AccountController extends BaseAccountController
             'connected-accounts' => Yii::t('UserModule.base', 'Connected accounts'),
             'edit-modules' => Yii::t('UserModule.base', 'Modules'),
             'delete' => Yii::t('UserModule.base', 'Delete'),
-            'emailing' => Yii::t('UserModule.base', 'Notifications'),
+            'notification' => Yii::t('UserModule.base', 'Notifications'),
             'change-email' => Yii::t('UserModule.base', 'Email'),
             'change-email-validate' => Yii::t('UserModule.base', 'Email'),
             'change-password' => Yii::t('UserModule.base', 'Password'),
@@ -110,7 +111,7 @@ class AccountController extends BaseAccountController
             $user->time_zone = $model->timeZone;
             $user->visibility = $model->visibility;
             $user->save();
-           
+
             $this->view->saved();
             return $this->redirect(['edit-settings']);
         }
@@ -261,6 +262,20 @@ class AccountController extends BaseAccountController
     }
 
     /**
+     * Notification Mailing Settings
+     */
+    public function actionNotification()
+    {
+        $form = new NotificationSettings(['user' => Yii::$app->user->getIdentity()]);
+        
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
+            $this->view->saved();
+        }
+
+        return $this->render('notification', ['model' => $form]);
+    }
+
+    /**
      * Change EMail Options
      *
      * @todo Add Group
@@ -268,15 +283,14 @@ class AccountController extends BaseAccountController
     public function actionEmailing()
     {
         $model = new \humhub\modules\user\models\forms\AccountEmailing();
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
             $this->view->saved();
         }
-        
+
         return $this->render('emailing', array('model' => $model));
     }
 
-    
     /**
      * Change Current Password
      *

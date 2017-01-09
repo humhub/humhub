@@ -31,13 +31,15 @@ use yii\widgets\ActiveForm;
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong><?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?></strong>
+                    <hr style="margin-bottom:0px"/>
                 </div>
+                
                 <div class="panel-body">
                     <?php $form = ActiveForm::begin(['id' => 'notification_overview_filter', 'method' => 'GET']); ?>
                     <div style="padding-left: 5px;">
-                        <?php echo $form->field($filterForm, 'moduleFilter')->checkboxList($filterForm->getModuleFilterSelection())->label(false); ?>
+                        <?= $form->field($filterForm, 'categoryFilter')->checkboxList($filterForm->getCategoryFilterSelection())->label(false); ?>
                     </div>
-                    <button class="btn btn-primary btn-xm" type="submit" data-ui-loader><?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?></button>
+                    <button class="btn btn-primary btn-xm" type="submit" data-ui-loader><?= Yii::t('NotificationModule.views_overview_index', 'Apply'); ?></button>
                     <?php ActiveForm::end(); ?>
                 </div>
             </div>
@@ -53,7 +55,7 @@ use yii\widgets\ActiveForm;
             evt.preventDefault();
             $.ajax({
                 'type': 'GET',
-                'url': '<?php echo yii\helpers\Url::to(['/notification/list/mark-as-seen', 'ajax' => 1]); ?>',
+                'url': '<?= yii\helpers\Url::to(['/notification/list/mark-as-seen', 'ajax' => 1]); ?>',
                 'success': function () {
                     location.reload();
                 }

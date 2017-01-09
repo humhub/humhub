@@ -54,7 +54,7 @@ class ListController extends Controller
         $notifications = $query->all();
         $lastEntryId = 0;
         foreach ($notifications as $notification) {
-            $output .= $notification->getClass()->render();
+            $output .= $notification->getBaseModel()->render();
             $lastEntryId = $notification->id;
         }
 

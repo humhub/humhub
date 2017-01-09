@@ -69,16 +69,16 @@
 
                             // build new slider construct
                             var _newHTML = '<label class="onoffswitch-label" for="' + $this.attr('id') + '">' +
-                                '<div class="onoffswitch-inner"></div>' +
-                                '<div class="onoffswitch-switch"></div>' +
-                                '</label>';
+                                    '<div class="onoffswitch-inner"></div>' +
+                                    '<div class="onoffswitch-switch"></div>' +
+                                    '</label>';
 
                             // add new slider construckt
                             $this.parent().append(_newHTML);
 
                             // build closing slider construct
                             _newHTML = '<label class="onoffswitch-label" for="' + $this.attr('id') + '">' + _label + '</label>' +
-                                '<div class="onoffswitch-clear"></div>';
+                                    '<div class="onoffswitch-clear"></div>';
 
                             // add closing slider contruct
                             $this.parent().parent().after(_newHTML);
@@ -97,6 +97,7 @@
                             // add new class
                             $this.parent().parent().addClass('regular-checkbox-container');
 
+
                             // add a new <div> at the end to clear floats
                             $this.parent().parent().append('<div class="regular-checkbox-clear"></div>');
                         }
@@ -111,7 +112,11 @@
                                 $this.parent().attr('for', $this.attr('id'));
 
                                 var $checkbox = $('<div class="regular-checkbox-box"></div>').attr('style', $this.attr('style'));
-                                
+
+                                if ($this.is(':disabled')) {
+                                    $checkbox.addClass('disabled');
+                                }
+
                                 // add new checkbox element
                                 $this.parent().append($checkbox);
                             }
@@ -140,9 +145,15 @@
 
                             // assign label to radio element
                             $this.parent().attr('for', $this.attr('id'));
+                            
+                            var $radio = $('<div class="regular-radio-button"></div>');
+
+                            if ($this.is(':disabled')) {
+                                $radio.addClass('disabled');
+                            }
 
                             // add new radio element
-                            $this.parent().append('<div class="regular-radio-button"></div>');
+                            $this.parent().append($radio);
                         }
                     }
 

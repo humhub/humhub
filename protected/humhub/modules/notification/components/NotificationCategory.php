@@ -80,7 +80,7 @@ abstract class NotificationCategory extends \yii\base\Object
      * @param type $target
      * @return type
      */
-    public function isFixedSettings(NotificationTarget $target)
+    public function isFixedSetting(NotificationTarget $target)
     {
         return in_array($target->id, $this->getFixedSettings());
     }
