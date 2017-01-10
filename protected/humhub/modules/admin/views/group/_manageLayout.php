@@ -1,11 +1,10 @@
 <?php
 
-use yii\bootstrap\Html;
-use yii\helpers\Url;
+use humhub\libs\Html;
 ?>
 <div class="panel-body">
     <div class="pull-right">
-        <?= \humhub\widgets\BackButton::widget(['text' => Yii::t('AdminModule.user', 'Back to overview'), 'route' => 'index']); ?>
+        <?= Html::backButton(['index'], ['label' => Yii::t('AdminModule.base', 'Back to overview')]); ?>
     </div>   
 
     <?php if (!$group->isNewRecord) : ?>
