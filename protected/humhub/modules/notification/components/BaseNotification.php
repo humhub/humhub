@@ -27,8 +27,7 @@ use humhub\modules\user\models\User;
  * @author luke
  */
 abstract class BaseNotification extends \humhub\components\SocialActivity
-{
-
+{   
     /**
      * Can be used to delay the NotificationJob execution.
      * @var type 

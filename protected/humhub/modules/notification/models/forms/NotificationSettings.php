@@ -12,14 +12,43 @@ use Yii;
 class NotificationSettings extends \yii\base\Model
 {
 
+    /**
+     * Will hold the selected notification settings. Note this will only be filled with selected settings
+     * and not with deselected notification settings.
+     * 
+     * @var []
+     */
     public $settings = [];
+    
+    /**
+     * @var string[] Holds the selected spaces for receiving content created notifications.
+     */
+    public $spaces = [];
+    
+    /**
+     * The user
+     * @var type 
+     */
     public $user;
     protected $_targets;
+    
+    public function init()
+    {
+        // Note the user object has to be provided in the model constructor.
+        $this->spaces = Yii::$app->notification->getSpaces($this->user);
+    }
 
     public function rules()
     {
         return [
-            ['settings', 'safe']
+            [['settings', 'spaces'], 'safe']
+        ];
+    }
+    
+    public function attributeLabels()
+    {
+        return [
+            'spaces' => Yii::t('NotificationModule.models_forms_NotificationSettings', 'Receive Notifications for the following spaces:')
         ];
     }
 
@@ -51,13 +80,15 @@ class NotificationSettings extends \yii\base\Model
         if (!$this->validate()) {
             return false;
         }
+        
+        //$this->saveSpaceSettings();
+        Yii::$app->notification->setSpaces($this->spaces, $this->user);
 
-        $module = Yii::$app->getModule('notification');
-        $settingManager = ($this->user) ? $module->settings->user($this->user) : $module->settings;
+        $settings = $this->getSettings();
         
         // Save all active settings
         foreach ($this->settings as $settingKey => $value) {
-            $settingManager->set($settingKey, $value);
+            $settings->set($settingKey, $value);
         }
 
         // Save all inactive settings
@@ -73,12 +104,18 @@ class NotificationSettings extends \yii\base\Model
                 
                 $settingKey = $target->getSettingKey($category);
                 if (!array_key_exists($settingKey, $this->settings)) {
-                    $settingManager->set($settingKey, false);
+                    $settings->set($settingKey, false);
                 }
             }
         }
 
         return true;
+    }
+    
+    public function getSettings()
+    {
+        $module = Yii::$app->getModule('notification');
+        return ($this->user) ? $module->settings->user($this->user) : $module->settings;
     }
 
     public function checkPermission()

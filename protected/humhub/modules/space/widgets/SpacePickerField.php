@@ -19,14 +19,9 @@ class SpacePickerField extends BasePickerField
      * @inheritdoc 
      */
     public $defaultRoute = '/space/browse/search-json';
-
-    /**
-     * @inheritdoc 
-     */
-    public function init() {
-        $this->itemClass = \humhub\modules\space\models\Space::className();
-        $this->itemKey = 'guid';
-    }
+    
+    public $itemClass = \humhub\modules\space\models\Space::class;
+    public $itemKey = 'guid';
 
     /**
      * @inheritdoc 

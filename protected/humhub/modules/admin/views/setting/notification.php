@@ -7,10 +7,9 @@ use yii\widgets\ActiveForm;
     <h4><?= Yii::t('AdminModule.setting', 'Notification Settings'); ?></h4>
     <div class="help-block">
         <?= Yii::t('AdminModule.setting', 
-                'Here you can configure the default notification behaviour for your users.'); ?><br />
-        <?= Yii::t('AdminModule.setting', 'You can enable outgoing notifications for a category by choosing the disired notification targets.'); ?>
+                'Here you can configure the default notification behaviour for your users.'); ?>
     </div>
-    
+    <br />
     <?php $form = ActiveForm::begin() ?>
         <?= humhub\modules\notification\widgets\NotificationSettingsForm::widget([
             'model' => $model,

@@ -42,7 +42,7 @@ class Content extends \humhub\components\ActiveRecord
      *
      * @var Array User
      */
-    public $notifyUsersOfNewContent = array();
+    public $notifyUsersOfNewContent = [];
 
     // Visibility Modes
     const VISIBILITY_PRIVATE = 0;
@@ -177,12 +177,15 @@ class Content extends \humhub\components\ActiveRecord
     {
 
         if ($insert) {
-
+            $followers = $this->getFollowers();
             foreach ($this->notifyUsersOfNewContent as $user) {
                 $this->getPolymorphicRelation()->follow($user->id);
             }
 
-            $notification = new \humhub\modules\content\notifications\ContentCreated;
+            \humhub\modules\content\notifications\ContentCreated::instance()
+                    ->from($this->user)
+                    ->about($this->getPolymorphicRelation())
+                    ->sendBulk();
             $notification->source = $this->getPolymorphicRelation();
             $notification->originator = $this->user;
             $notification->sendBulk($this->notifyUsersOfNewContent);
@@ -195,6 +198,15 @@ class Content extends \humhub\components\ActiveRecord
         }
 
         return parent::afterSave($insert, $changedAttributes);
+    }
+    
+    /**
+     * Returns all followers of this content. This can either be user set as notifyUsers when the content was created
+     * or space follower with notify settings.
+     */
+    public function getFollowers()
+    {
+        $follower = $this->notifyUsersOfNewContent
     }
 
     /**

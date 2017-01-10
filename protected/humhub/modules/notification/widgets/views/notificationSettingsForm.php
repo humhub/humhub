@@ -4,6 +4,18 @@
 
 use yii\bootstrap\Html
 ?>
+
+<?php if($showSpaces) : ?>
+    <?= humhub\modules\space\widgets\SpacePickerField::widget([
+        'form' => $form,
+        'model' => $model,
+        'attribute' => 'spaces',
+        'maxSelection' => 10
+    ])?>
+<?php endif;?>
+<div class="help-block" style="margin-bottom: 0px;">
+ <?= Yii::t('NotificationModule.widgets_views_notificationSettingsForm', 'You can enable outgoing notifications for a given category by choosing the disired notification targets.'); ?>
+</div>
 <div class="grid-view table-responsive">
     <table class="table table-middle table-hover">
         <thead>

@@ -23,6 +23,11 @@ class NotificationSettingsForm extends \yii\base\Widget
      * @var type 
      */
     public $user;
+    
+    /**
+     * @var type 
+     */
+    public $showSpaces = true;
 
     /**
      * @inheritdoc
@@ -32,7 +37,8 @@ class NotificationSettingsForm extends \yii\base\Widget
         return $this->render('notificationSettingsForm', [
             'form' => $this->form,
             'model' => $this->model,
-            'user' => $this->user
+            'user' => $this->user,
+            'showSpaces' => $this->showSpaces
         ]);
     }
 }

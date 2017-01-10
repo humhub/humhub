@@ -2,6 +2,7 @@
 namespace humhub\modules\notification\components;
 
 use Yii;
+use humhub\modules\user\models\User;
 
 /**
  * Description of NotificationManager
@@ -40,7 +41,7 @@ class NotificationManager
      * @param type $user
      * @return type
      */
-    public function getTargets($user = null)
+    public function getTargets(User $user = null)
     {
         if($this->_targets) {
             return $this->_targets;
@@ -63,6 +64,24 @@ class NotificationManager
                 return $target;
             }
         }
+    }
+    
+    public function getSpaces(User $user = null)
+    {
+        $module = Yii::$app->getModule('notification');
+        
+        if($user) {
+            return $module->settings->user($user)->getSerializedInherit('sendNotificationSpaces', []);  
+        } else {
+            return $module->settings->getSerialized('sendNotificationSpaces', []);  
+        }   
+    }
+    
+    public function setSpaces($value, User $user = null)
+    {
+        $module = Yii::$app->getModule('notification');
+        $settings = ($user) ? $module->settings->user($user) : $module->settings;
+        $settings->setSerialized('sendNotificationSpaces', $value);     
     }
 
     /**
