@@ -206,7 +206,7 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function getFollowers()
     {
-        $follower = $this->notifyUsersOfNewContent
+        //$follower = $this->notifyUsersOfNewContent;
     }
 
     /**
