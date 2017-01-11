@@ -34,7 +34,7 @@ use \yii\helpers\Url;
  * @since 1.2
  * @author buddha
  */
-abstract class BasePickerField extends JsWidget
+abstract class BasePickerField extends InputWidget
 {
 
     /**
@@ -285,7 +285,6 @@ abstract class BasePickerField extends JsWidget
     /**
      * Loads all items of the given $selection array.
      * The $selection array contains all selected itemKeys.
-     * 
      * 
      * @param array $selection array of itemKeys
      * @return type array of items of type $itemClass or empty array for an empty selection
