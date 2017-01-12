@@ -131,19 +131,6 @@ class SettingController extends Controller
     }
 
     /**
-     * E-Mail Mailing Settings
-     */
-    public function actionMailing()
-    {
-        $form = new \humhub\modules\admin\models\forms\MailingDefaultsForm();
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            $this->view->saved();
-        }
-
-        return $this->render('mailing', ['model' => $form]);
-    }
-    
-    /**
      * Notification Mailing Settings
      */
     public function actionNotification()

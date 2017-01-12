@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -267,28 +267,12 @@ class AccountController extends BaseAccountController
     public function actionNotification()
     {
         $form = new NotificationSettings(['user' => Yii::$app->user->getIdentity()]);
-        
+
         if ($form->load(Yii::$app->request->post()) && $form->save()) {
             $this->view->saved();
         }
 
         return $this->render('notification', ['model' => $form]);
-    }
-
-    /**
-     * Change EMail Options
-     *
-     * @todo Add Group
-     */
-    public function actionEmailing()
-    {
-        $model = new \humhub\modules\user\models\forms\AccountEmailing();
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
-            $this->view->saved();
-        }
-
-        return $this->render('emailing', array('model' => $model));
     }
 
     /**

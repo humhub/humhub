@@ -47,7 +47,7 @@ class MailNotificationTarget extends NotificationTarget
             'notifications' => $notification->render($this),
             'notifications_plaintext' => $this->getText($notification)
         ];
-
+        
         return Yii::$app->mailer->compose($this->view, $viewParams)
                         ->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')])
                         ->setTo($user->email)

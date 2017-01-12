@@ -49,6 +49,7 @@ class Followable extends Behavior
      */
     private function getFollowRecord($userId)
     {
+        $userId = ($userId instanceof User) ? $userId->id : $userId;
         return Follow::find()->where(['object_model' => $this->owner->className(), 'object_id' => $this->owner->getPrimaryKey(), 'user_id' => $userId])->one();
     }
 
@@ -58,9 +59,11 @@ class Followable extends Behavior
      * @param int $userId
      * @return boolean
      */
-    public function follow($userId = "", $withNotifications = true)
+    public function follow($userId = null, $withNotifications = true)
     {
-        if ($userId == "") {
+        if($userId instanceof User) {
+            $userId = $userId->id;
+        } else if (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
         }
 
@@ -94,10 +97,13 @@ class Followable extends Behavior
      * @param int $userId
      * @return boolean
      */
-    public function unfollow($userId = "")
+    public function unfollow($userId = null)
     {
-        if ($userId == "")
+        if($userId instanceof User) {
+            $userId = $userId->id;
+        } else if (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
+        }
 
         $record = $this->getFollowRecord($userId);
         if ($record !== null) {
@@ -119,9 +125,11 @@ class Followable extends Behavior
      * @param boolean $withNotifcations if true, only return true when also notifications enabled
      * @return boolean Is object followed by user
      */
-    public function isFollowedByUser($userId = "", $withNotifications = false)
+    public function isFollowedByUser($userId = null, $withNotifications = false)
     {
-        if ($userId == "") {
+        if($userId instanceof User) {
+            $userId = $userId->id;
+        } else if (!$userId || $userId == "") {
             $userId = \Yii::$app->user->id;
         }
 

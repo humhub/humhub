@@ -9,6 +9,8 @@
 namespace humhub\modules\user\models;
 
 use humhub\modules\activity\models\Activity;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 
 /**
  * This is the model class for table "user_follow".
@@ -28,6 +30,17 @@ class Follow extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'user_follow';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        // Set send_notifications to 0 by default
+        if ($this->send_notifications === null) {
+            $this->send_notifications = 0;
+        }
     }
 
     /**
@@ -118,6 +131,40 @@ class Follow extends \yii\db\ActiveRecord
             return $targetClass::findOne(['id' => $this->object_id]);
         }
         return null;
+    }
+
+    /**
+     * Returns all followed spaces of the given user as ActiveQuery.
+     * 
+     * @param \humhub\modules\user\models\User $user
+     * @return \yii\db\ActiveQuery Space query of all followed spaces
+     */
+    public static function getFollowedSpacesQuery(User $user, $withNotifications = null)
+    {
+        $query = Space::find()->leftJoin('user_follow', 'user_follow.user_id=:userId AND user_follow.object_model=:spaceModel', 
+                [':userId' => $user->id, ':spaceModel' => Space::class]);
+
+        if ($withNotifications === true) {
+            $query->where(['user_follow.send_notifications' => 1]);
+        } else if ($withNotifications === false) {
+            $query->where(['user_follow.send_notifications' => 0]);
+        }
+
+        return $query;
+    }
+
+    public static function getFollowersQuery(\yii\db\ActiveRecord $target, $withNotifications = null)
+    {
+        $query = User::find()->leftJoin('user_follow', 'user.id=user_follow.user_id AND user_follow.object_model=:spaceModel AND user_follow.object_id=:spaceId', 
+                [':spaceModel' => $target->className(), ':spaceId' => $target->getPrimaryKey()]);
+
+        if ($withNotifications === true) {
+            $query->where(['user_follow.send_notifications' => 1]);
+        } else if ($withNotifications === false) {
+            $query->where(['user_follow.send_notifications' => 0]);
+        }
+        
+        return $query;
     }
 
 }

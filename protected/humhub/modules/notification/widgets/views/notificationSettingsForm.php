@@ -9,7 +9,8 @@ use yii\bootstrap\Html
     <?= humhub\modules\space\widgets\SpacePickerField::widget([
         'form' => $form,
         'model' => $model,
-        'attribute' => 'spaces',
+        'attribute' => 'spaceGuids',
+        'defaultResults' => $defaultSpaces,
         'maxSelection' => 10
     ])?>
 <?php endif;?>

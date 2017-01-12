@@ -18,6 +18,7 @@ use Yii;
  * @property string $created_at
  * @property integer $desktop_notified
  * @property integer $originator_user_id
+ * @property integer $send_web_notifications
  */
 class Notification extends \humhub\components\ActiveRecord
 {
@@ -47,8 +48,13 @@ class Notification extends \humhub\components\ActiveRecord
     public function init()
     {
         parent::init();
-        if ($this->seen == null) {
+        if ($this->seen === null) {
             $this->seen = 0;
+        }
+        
+        // Disable web notification by default, they will be enabld within the web target if allowed by the user.
+        if($this->send_web_notifications === null) {
+            $this->send_web_notifications = 0;
         }
     }
 
@@ -195,6 +201,7 @@ class Notification extends \humhub\components\ActiveRecord
             new \yii\db\Expression('max(created_at) as group_created_at'),
             new \yii\db\Expression('min(seen) as group_seen'),
         ]);
+        $query->andWhere(['send_web_notifications' => 1]);
         $query->addGroupBy(['COALESCE(group_key, id)', 'class']);
         $query->orderBy(['group_seen' => SORT_ASC, 'group_created_at' => SORT_DESC]);
 

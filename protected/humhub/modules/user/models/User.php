@@ -595,16 +595,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
                         ->viaTable('space_membership', ['user_id' => 'id']);
     }
 
-    public function getFollowSpaces()
-    {
-        // TODO: SHOW ONLY REAL MEMBERSHIPS
-        return $this->hasMany(Space::className(), ['id' => 'object_id'])
-                        ->viaTable('user_follow', ['user_id' => 'id'], function($query) {
-                            /* @var $query \yii\db\ActiveQuery */
-                            $query->andWhere(['object_model' => Space::className()]);
-                        });
-    }
-
     /**
      * @return type
      */

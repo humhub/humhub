@@ -118,7 +118,7 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
         $path = Yii::getAlias('@runtime/mail');
         $mailCount = count(glob($path . '/*.eml'));
 
-        if (!$count) {
+        if ($count === true) {
             $this->assertTrue($mailCount > 0, $msg);
         } else {
             $this->assertEquals($count, $mailCount, $msg);

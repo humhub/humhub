@@ -3,6 +3,10 @@ namespace humhub\modules\notification\components;
 
 use Yii;
 use humhub\modules\user\models\User;
+use humhub\modules\space\models\Membership;
+use humhub\modules\user\models\Follow;
+use humhub\modules\space\models\Space;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * Description of NotificationManager
@@ -66,22 +70,90 @@ class NotificationManager
         }
     }
     
-    public function getSpaces(User $user = null)
+    public function getContainerFollowers(ContentContainerActiveRecord $space)
     {
-        $module = Yii::$app->getModule('notification');
-        
-        if($user) {
-            return $module->settings->user($user)->getSerializedInherit('sendNotificationSpaces', []);  
-        } else {
-            return $module->settings->getSerialized('sendNotificationSpaces', []);  
-        }   
+        $members = Membership::getSpaceMembersQuery($space, true, true)->all();
+        $followers = Follow::getFollowersQuery($space, true)->all();
+        return array_merge($members, $followers);
     }
     
-    public function setSpaces($value, User $user = null)
+    /**
+     * Returns all spaces this user is following (including member spaces) with sent_notification setting.
+     * 
+     * @param User $user
+     * @return type
+     */
+    public function getSpaces(User $user)
     {
-        $module = Yii::$app->getModule('notification');
-        $settings = ($user) ? $module->settings->user($user) : $module->settings;
-        $settings->setSerialized('sendNotificationSpaces', $value);     
+        $memberSpaces = Membership::getUserSpaceQuery($user, true, true)->all();
+        $followSpaces = Follow::getFollowedSpacesQuery($user, true)->all();
+        
+        return array_merge($memberSpaces, $followSpaces);
+    }
+    
+    /**
+     * Returns all spaces this user is following (including member spaces) without sent_notification setting.
+     * 
+     * @param User $user
+     * @return type
+     */
+    public function getNonNotificationSpaces(User $user)
+    {
+        $memberSpaces = Membership::getUserSpaceQuery($user, true, false)->all();
+        $followSpaces = Follow::getFollowedSpacesQuery($user, false)->all();
+        
+        return array_merge($memberSpaces, $followSpaces);
+    }
+    
+    /**
+     * Sets the notification space settings for this user (or global if no user is given).
+     * 
+     * @param User $user
+     * @param string[] $spaces array of space guids
+     */
+    public function setSpaces(User $user = null, $spaceGuids)
+    {
+        if(!$user) {
+            return Yii::$app->getModule('notification')->settings->setSerialized('sendNotificationSpaces', $spaceGuids);  
+        }
+        
+        $spaces = Space::findAll(['guid' => $spaceGuids]);
+        
+        // Save actual selection.
+        foreach($spaces as $space) {
+            $membership = $space->getMembership($user->id);
+            if($membership) {
+                $membership->send_notifications = 1;
+                $membership->save();
+                continue;
+            }
+            
+            $followed = $space->getFollowedRecord($user);
+            if($followed) {
+                $followed->send_notifications = 1;
+                $followed->save();
+                continue;
+            }
+            
+            $space->follow($user, true);
+        }
+        
+        $spaceIds = array_map(function($space) { return $space->id; }, $spaces);
+        
+        // Update non selected membership spaces
+        \humhub\modules\space\models\Membership::updateAll(['send_notifications' => 0], [ 
+            'and',
+            ['user_id' => $user->id],
+            ['not in', 'space_id', $spaceIds]
+        ]);
+        
+        // Update non selected following spaces
+        \humhub\modules\user\models\Follow::updateAll(['send_notifications' => 0], [ 
+            'and',
+            ['user_id' => $user->id],
+            ['object_model' => Space::class],
+            ['not in', 'object_id', $spaceIds]
+        ]);
     }
 
     /**

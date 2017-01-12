@@ -9,11 +9,11 @@ use yii\widgets\ActiveForm;
         <?= Yii::t('AdminModule.setting', 
                 'Here you can configure the default notification behaviour for your users.'); ?>
     </div>
-    <br />
     <?php $form = ActiveForm::begin() ?>
         <?= humhub\modules\notification\widgets\NotificationSettingsForm::widget([
             'model' => $model,
-            'form' => $form
+            'form' => $form,
+            'showSpaces' => false
         ]) ?>
         <br />
         <button type="submit" class="btn btn-primary" data-ui-loader><?= Yii::t('base', 'Save');?></button>

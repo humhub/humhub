@@ -130,7 +130,8 @@ abstract class NotificationTarget extends \yii\base\Object
      */
     public function send(BaseNotification $notification, User $user)
     {
-        if ($this->isAcknowledged($notification)) {
+        // Do not send if this target is not enabled or this notification is already acknowledged.
+        if(!$this->isEnabled($notification, $user) || $this->isAcknowledged($notification)) {
             return;
         }
 
@@ -233,7 +234,7 @@ abstract class NotificationTarget extends \yii\base\Object
      * @return boolean
      */
     public function isCategoryEnabled(NotificationCategory $category, User $user = null)
-    {
+    {        
         if(!$category->isVisible($user)) {
             return false;
         }

@@ -273,7 +273,6 @@ abstract class Stream extends Action
             throw new Exception('Could not get contents underlying object!');
         }
         $underlyingObject->populateRelation('content', $content);
-
         $result['output'] = Yii::$app->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
             'entry' => $content,
             'user' => $underlyingObject->content->createdBy,

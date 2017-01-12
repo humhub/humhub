@@ -27,7 +27,8 @@ use humhub\modules\user\models\User;
  * @author luke
  */
 abstract class BaseNotification extends \humhub\components\SocialActivity
-{   
+{
+
     /**
      * Can be used to delay the NotificationJob execution.
      * @var type 
@@ -124,37 +125,76 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     public function sendBulk($users)
     {
+        if (empty($this->moduleId)) {
+            throw new \yii\base\InvalidConfigException('No moduleId given for "' . $this->className() . '"');
+        }
+
         if ($users instanceof \yii\db\ActiveQuery) {
             $users = $users->all();
         }
 
-        foreach ($users as $user) {
-            $this->send($user);
+        // Filter out duplicates and the originator and save records
+        $filteredUsers = $this->saveAndFilterRecords($users);
+        
+        foreach (Yii::$app->notification->getTargets() as $target) {
+            $target->sendBulk($this, $filteredUsers);
         }
     }
 
     /**
-     * Sends this notification to all notification targets of this User
+     * Saves an Notification record for users and filters out duplicates and the originator of the notification.
+     * This function will return the array with unique user instances.
+     * 
+     * @param User[] $users
+     */
+    protected function saveAndFilterRecords($users)
+    {
+        $userIds = [];
+        $filteredUsers = [];
+        foreach ($users as $user) {
+            // Filter our duplicates and the originator of this notification.
+            if (!in_array($user->id, $userIds) && !$this->isOriginator($user)) {
+                $this->saveRecord($user);
+                $filteredUsers[] = $user;
+                $userIds[] = $user->id;
+            }
+        }
+        return $filteredUsers;
+    }
+
+    /**
+     * Sends this notification to all notification targets of the given User.
+     * This function will not send notifications to the originator itself.
      *
      * @param User $user
      */
     public function send(User $user)
     {
-
         if (empty($this->moduleId)) {
             throw new \yii\base\InvalidConfigException('No moduleId given for "' . $this->className() . '"');
-        };
+        }
 
-        // Skip - do not set notification to the originator
-        if ($this->originator && $this->originator->id == $user->id) {
+        if ($this->isOriginator($user)) {
             return;
         }
 
         //$this->queueJob($user);
         $this->saveRecord($user);
+
         foreach (Yii::$app->notification->getTargets($user) as $target) {
             $target->send($this, $user);
         }
+    }
+
+    /**
+     * Checks if the given $user is the originator of this notification.
+     * 
+     * @param User $user
+     * @return boolean
+     */
+    protected function isOriginator(User $user)
+    {
+        return $this->originator && $this->originator->id == $user->id;
     }
 
     /**

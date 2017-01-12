@@ -11,8 +11,8 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
         <?= humhub\modules\notification\widgets\NotificationSettingsForm::widget([
-                 'model' => $model,
-            'form' => $form
+                'model' => $model,
+                'form' => $form
         ]) ?>
         <br />
         <button type="submit" class="btn btn-primary" data-ui-loader><?= Yii::t('base', 'Save');?></button>

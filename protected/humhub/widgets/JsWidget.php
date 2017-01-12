@@ -2,7 +2,7 @@
 namespace humhub\widgets;
 
 
-use yii\base\Widget;
+use humhub\components\Widget;
 /**
  * Description of JsWidget
  *

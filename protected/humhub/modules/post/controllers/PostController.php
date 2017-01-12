@@ -37,8 +37,8 @@ class PostController extends \humhub\modules\content\components\ContentContainer
           }
          */
 
-        return \humhub\modules\content\widgets\WallCreateContentForm::create($post, $this->contentContainer);
-    }
+         return \humhub\modules\content\widgets\WallCreateContentForm::create($post, $this->contentContainer);
+        }
 
     public function actionEdit()
     {

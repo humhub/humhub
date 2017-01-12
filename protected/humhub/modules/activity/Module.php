@@ -11,6 +11,7 @@ namespace humhub\modules\activity;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\MailUpdateSender;
+use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 
 /**
  * Activity BaseModule
@@ -37,7 +38,7 @@ class Module extends \humhub\components\Module
             // Use Default Setting
             $receive_email_activities = Yii::$app->getModule('activity')->settings->get('receive_email_activities');
         }
-        
+
         // User never wants activity content
         if ($receive_email_activities == User::RECEIVE_EMAIL_NEVER) {
             return [];
@@ -87,6 +88,30 @@ class Module extends \humhub\components\Module
         $user->updateAttributes([
             'last_activity_email' => new \yii\db\Expression('NOW()')
         ]);
+
+        return $activities;
+    }
+
+    /**
+     * Returns all configurable Activitiess
+     * 
+     * @since 1.2
+     * @return ConfigurableActivityInterface[] a list of configurable activities
+     */
+    public static function getConfigurableActivities()
+    {
+        $activities = [];
+        foreach (Yii::$app->getModules(false) as $moduleId => $module) {
+            $module = Yii::$app->getModule($moduleId);
+            if ($module instanceof \humhub\components\Module) {
+                foreach ($module->getActivityClasses() as $class) {
+                    $activity = new $class;
+                    if ($activity instanceof ConfigurableActivityInterface) {
+                        $activities[] = $activity;
+                    }
+                }
+            }
+        }
 
         return $activities;
     }
