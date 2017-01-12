@@ -1,4 +1,4 @@
-humhub.module('ui.picker', function(module, require, $) {
+humhub.module('ui.picker', function (module, require, $) {
 
     var Widget = require('ui.widget').Widget;
     var loader = require('ui.loader');
@@ -7,26 +7,29 @@ humhub.module('ui.picker', function(module, require, $) {
     var object = util.object;
     var string = util.string;
 
-    var Picker = function(node, options) {
+    var Picker = function (node, options) {
         Widget.call(this, node, options);
     };
 
     Picker.component = 'humhub-ui-picker';
-    
+
     object.inherits(Picker, Widget);
 
-    Picker.prototype.init = function() {
-        if(this.options.pickerUrl) {
+    Picker.prototype.init = function () {
+        if (this.options.pickerUrl) {
             this.options.ajax = this.ajaxOptions();
+            if (this.options.defaultResults && this.options.defaultResults.length) {
+                this.options.dataAdapter = $.fn.select2.amd.require('select2/data/extended-ajax');
+            }
         }
         _initSelect2(this.$, this.options);
     };
 
-    Picker.prototype.validate = function() {
+    Picker.prototype.validate = function () {
         return this.$.is('select');
     };
 
-    Picker.prototype.getDefaultOptions = function() {
+    Picker.prototype.getDefaultOptions = function () {
         var that = this;
         return {
             theme: "humhub",
@@ -35,22 +38,22 @@ humhub.module('ui.picker', function(module, require, $) {
             templateResult: $.proxy(that.templateResult, that),
             sorter: that.sortResults,
             language: {
-                inputTooShort: function() {
+                inputTooShort: function () {
                     return that.$.data('input-too-short');
                 },
-                inputTooLong: function() {
+                inputTooLong: function () {
                     return that.$.data('input-too-long');
                 },
-                errorLoading: function() {
+                errorLoading: function () {
                     return module.text('error.loadingResult');
                 },
-                loadingMore: function() {
+                loadingMore: function () {
                     return module.text('showMore');
                 },
-                noResults: function() {
+                noResults: function () {
                     return that.$.data('no-result');
                 },
-                maximumSelected: function() {
+                maximumSelected: function () {
                     return that.$.data('maximum-selected');
                 }
             }
@@ -60,14 +63,14 @@ humhub.module('ui.picker', function(module, require, $) {
     /**
      * Returns default ajax options.
      */
-    Picker.prototype.ajaxOptions = function() {
+    Picker.prototype.ajaxOptions = function () {
         var defaultOptions = {
             delay: 250,
             dataType: 'json',
             type: 'GET',
             url: this.options.pickerUrl,
             data: this.ajaxData,
-            processResults: $.proxy(this.prepareResult, this)
+            processResults: $.proxy(this.prepareResult, this),
         };
         return $.extend(defaultOptions, this.options.ajax);
     };
@@ -77,7 +80,7 @@ humhub.module('ui.picker', function(module, require, $) {
      * 
      * @param {type} params select2 search parameter
      */
-    Picker.prototype.ajaxData = function(params) {
+    Picker.prototype.ajaxData = function (params) {
         return {
             keyword: params.term,
             page: params.page
@@ -96,16 +99,16 @@ humhub.module('ui.picker', function(module, require, $) {
      * @param {type} results
      * @returns {unresolved}
      */
-    Picker.prototype.sortResults = function(results) {
-        results.sort(function(a, b) {
-            if(a.disabled !== b.disabled) {
+    Picker.prototype.sortResults = function (results) {
+        results.sort(function (a, b) {
+            if (a.disabled !== b.disabled) {
                 return (a.disabled < b.disabled) ? -1 : 1;
-            } else if(a.priority !== b.priority) {
+            } else if (a.priority !== b.priority) {
                 return (a.priority > b.priority) ? -1 : 1;
             } else {
                 var aQueryIndex = a.text.indexOf(a.term);
                 var bQueryIndex = b.text.indexOf(a.term);
-                if(aQueryIndex !== bQueryIndex) {
+                if (aQueryIndex !== bQueryIndex) {
                     return (aQueryIndex > bQueryIndex) ? -1 : 1;
                 }
                 return 0;
@@ -121,12 +124,12 @@ humhub.module('ui.picker', function(module, require, $) {
      * @param {type} options widget options
      * @returns {undefined}
      */
-    var _initSelect2 = function($node, options) {
+    var _initSelect2 = function ($node, options) {
         // This is a patch for removing select items by backspace see: https://github.com/select2/select2/issues/3354
-        $.fn.select2.amd.require(['select2/selection/search'], function(Search) {
+        $.fn.select2.amd.require(['select2/selection/search'], function (Search) {
             var oldRemoveChoice = Search.prototype.searchRemoveChoice;
 
-            Search.prototype.searchRemoveChoice = function() {
+            Search.prototype.searchRemoveChoice = function () {
                 oldRemoveChoice.apply(this, arguments);
                 this.$search.val('');
                 $node.select2('close');
@@ -135,21 +138,21 @@ humhub.module('ui.picker', function(module, require, $) {
             var select2 = $node.select2(options).data('select2');
 
             // Get sure our placeholder is rendered when focus out
-            select2.$container.on('focusout', function() {
+            select2.$container.on('focusout', function () {
                 Widget.instance($node).renderPlaceholder();
             });
 
             // Patch for https://github.com/select2/select2/issues/4614#issuecomment-251277428 strange rendering behaviour
-            select2.on('results:message', function(params) {
+            select2.on('results:message', function (params) {
                 this.dropdown._resizeDropdown();
                 this.dropdown._positionDropdown();
             });
 
             // Thefollowing two listeners enables placeholder for non empty selection fields
-            $node.on('select2:select', function() {
+            $node.on('select2:select', function () {
                 $('.tooltip').remove();
                 Widget.instance($node).renderPlaceholder(true);
-            }).on('select2:close', function() {
+            }).on('select2:close', function () {
                 $('.tooltip').remove();
             });
 
@@ -157,13 +160,13 @@ humhub.module('ui.picker', function(module, require, $) {
             Widget.instance($node).renderPlaceholder(true);
 
             // Focus if auto focus is active
-            if($node.data('picker-focus')) {
+            if ($node.data('picker-focus')) {
                 Widget.instance($node).focus();
             }
         });
     };
 
-    Picker.prototype.focus = function() {
+    Picker.prototype.focus = function () {
         this.$.select2('focus');
     };
 
@@ -172,17 +175,17 @@ humhub.module('ui.picker', function(module, require, $) {
      * 
      * @returns {undefined}
      */
-    Picker.prototype.renderPlaceholder = function(delayed) {
-        if(delayed) {
+    Picker.prototype.renderPlaceholder = function (delayed) {
+        if (delayed) {
             var that = this;
-            setTimeout(function() {
+            setTimeout(function () {
                 that.renderPlaceholder();
             }, 50);
         }
 
-        if(this.$.children(':selected').length >= this.$.data('maximum-selection-length')) {
+        if (this.$.children(':selected').length >= this.$.data('maximum-selection-length')) {
             this.$.data('select2').$selection.find('input').attr('placeholder', null);
-        } else if(this.$.val()) {
+        } else if (this.$.val()) {
             this.$.data('select2').$selection.find('input').attr('placeholder', this.options.placeholderMore);
         } else {
             this.$.data('select2').$selection.find('input').attr('placeholder', this.options.placeholder);
@@ -196,7 +199,7 @@ humhub.module('ui.picker', function(module, require, $) {
      * @param {type} container
      * @returns {jQuery|$}
      */
-    Picker.prototype.templateSelection = function(data, container) {
+    Picker.prototype.templateSelection = function (data, container) {
         data.text = data.text || $(data.element).data('text');
         data.image = data.image || $(data.element).data('image');
         data.imageNode = this.getImageNode(data);
@@ -206,7 +209,7 @@ humhub.module('ui.picker', function(module, require, $) {
 
         // Initialize item close button
         var that = this;
-        $result.filter('.picker-close').on('click', function() {
+        $result.filter('.picker-close').on('click', function () {
             $(this).siblings('.select2-selection__choice__remove').trigger('click');
             that.deselect(data.id);
         });
@@ -229,9 +232,9 @@ humhub.module('ui.picker', function(module, require, $) {
      * @param {type} item
      * @returns {jQuery|$}
      */
-    Picker.prototype.templateResult = function(item) {
+    Picker.prototype.templateResult = function (item) {
         // If no item id is given the function was called for the search term.
-        if(!item.id) {
+        if (!item.id) {
             return loader.set($('<div></div>'), {'css': {'padding': '4px'}});
         }
 
@@ -241,11 +244,11 @@ humhub.module('ui.picker', function(module, require, $) {
 
         var $result = $(string.template(template, item))
                 .tooltip({html: false, container: 'body', placement: "bottom"})
-                .on('click', function(evt) {
+                .on('click', function (evt) {
                     evt.preventDefault();
                 });
 
-        if(item.term) {
+        if (item.term) {
             $result.highlight(item.term);
         }
 
@@ -258,10 +261,10 @@ humhub.module('ui.picker', function(module, require, $) {
      * @param {type} image
      * @returns {String}
      */
-    Picker.prototype.getImageNode = function(item) {
+    Picker.prototype.getImageNode = function (item) {
         var image = item.image;
 
-        if(!image) {
+        if (!image) {
             return '';
         }
 
@@ -278,13 +281,13 @@ humhub.module('ui.picker', function(module, require, $) {
      * @param string image item image
      * @returns {undefined}
      */
-    Picker.prototype.select = function(id, text, image) {
+    Picker.prototype.select = function (id, text, image) {
         var $option = this.getOption(id);
 
         // Only select if not already selected
-        if($option.length && $option.is(':selected')) {
+        if ($option.length && $option.is(':selected')) {
             return;
-        } else if($option.length) {
+        } else if ($option.length) {
             $option.prop('selected', true);
             this.$.triggerHandler('change');
             this.renderPlaceholder(true);
@@ -305,7 +308,7 @@ humhub.module('ui.picker', function(module, require, $) {
      * @param {type} id
      * @returns {undefined}
      */
-    Picker.prototype.deselect = function(id) {
+    Picker.prototype.deselect = function (id) {
         this.getOption(id).remove();
         this.$.trigger('change');
     };
@@ -316,22 +319,23 @@ humhub.module('ui.picker', function(module, require, $) {
      * @param {type} id
      * @returns {unresolved}
      */
-    Picker.prototype.getOption = function(id) {
-        return this.$.children().filter(function() {
+    Picker.prototype.getOption = function (id) {
+        return this.$.children().filter(function () {
             return this.value === id;
         });
     };
 
-    Picker.prototype.prepareResult = function(data, params) {
+    Picker.prototype.prepareResult = function (data, params) {
         var that = this;
-        $.each(data, function(i, item) {
-            item.id = item.guid || item.id;
+        $.each(data, function (i, item) {
             item.term = params.term;
-            if(that.isDisabledItem(item)) {
+            if (that.isDisabledItem(item)) {
                 item.disabled = true;
             }
-            // Compatibility with old picker implementation
-            item.text = item.text || item.title || item.displayName;
+            // Compatibility with old picker implementation and data attributes
+            item.id = item.guid || item.id || item['data-id'];
+            item.text = item.text || item.title || item.displayName || item['data-text'];
+            item.image = item.image || item['data-image'];
         });
 
         return {
@@ -339,21 +343,75 @@ humhub.module('ui.picker', function(module, require, $) {
             /*pagination: {more: (params.page * 30) < data.total_count}*/
         };
     };
-    
-    Picker.prototype.reset = function() {
+
+    Picker.prototype.reset = function () {
         this.$.val('');
         this.$.trigger('change');
     };
 
-    Picker.prototype.isDisabledItem = function(item) {
+    Picker.prototype.isDisabledItem = function (item) {
         return (this.options.disabledItems && this.options.disabledItems.indexOf(item.id) >= 0);
     };
-    
-    var init = function() {
-        additions.register('ui.picker', '.multiselect_dropdown', function($match) {
-            $match.each(function() {
+
+    var init = function () {
+        additions.register('ui.picker', '.multiselect_dropdown', function ($match) {
+            $match.each(function () {
                 Picker.instance(this);
             });
+        });
+
+        // This extension allows preselected values in our picker if the mininput value is not exceded.
+        // http://stackoverflow.com/questions/33080739/select2-default-options-with-ajax
+        // https://gist.github.com/govorov/3ee75f54170735153349b0a430581195
+        $.fn.select2.amd.define('select2/data/extended-ajax', ['./ajax', '../utils', './minimumInputLength'], function (AjaxAdapter, Utils, MinimumInputLength) {
+
+            function ExtendedAjaxAdapter($element, options) {
+                //we need explicitly process minimumInputLength value 
+                //to decide should we use AjaxAdapter or return defaultResults,
+                //so it is impossible to use MinimumLength decorator here
+                this.minimumInputLength = options.get('minimumInputLength');
+                this.defaultResults = options.get('defaultResults');
+
+                ExtendedAjaxAdapter.__super__.constructor.call(this, $element, options);
+            }
+
+            Utils.Extend(ExtendedAjaxAdapter, AjaxAdapter);
+
+            //override original query function to support default results
+            var originQuery = AjaxAdapter.prototype.query;
+
+            ExtendedAjaxAdapter.prototype.query = function (params, callback) {
+                var defaultResults = (typeof this.defaultResults == 'function') ? this.defaultResults.call(this) : this.defaultResults;
+                if (defaultResults && defaultResults.length && (!params.term || params.term.length < this.minimumInputLength)) {
+                    if (!params.term || !params.term.length) {
+                        var processedResults = this.processResults(defaultResults, params);
+                        callback(processedResults);
+                        return;
+                    }
+
+                    // If search term
+                    var filterResult = [];
+                    $.each(defaultResults, function (index, item) {
+                        if (item['data-text'].toLowerCase().indexOf(params.term.toLowerCase()) >= 0) {
+                            filterResult.push(item);
+                        }
+                    });
+
+                    if (filterResult.length) {
+                        var processedResults = this.processResults(filterResult, params);
+                        callback(processedResults);   
+                    } else {
+                        this.container.$results.empty();
+                    }
+
+                    var $message = $('<li role="treeitem" aria-live="assertive" class="select2-results__option select2-results__message">' + this.options.get('inputTooShort') + '</li>');
+                    this.container.$results.prepend($message);
+                } else {
+                    originQuery.call(this, params, callback);
+                }
+            };
+
+            return ExtendedAjaxAdapter;
         });
     };
 
