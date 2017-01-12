@@ -2,12 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\activity;
 
+use Yii;
+use humhub\modules\activity\components\MailSummaryProcessor;
+use humhub\modules\activity\components\MailSummary;
 use humhub\modules\activity\models\Activity;
 
 /**
@@ -17,6 +20,20 @@ use humhub\modules\activity\models\Activity;
  */
 class Events extends \yii\base\Object
 {
+
+    /**
+     * Handles cron run event to send mail summaries to the users
+     * 
+     * @param \yii\base\ActionEvent $event
+     */
+    public static function onCronRun($event)
+    {
+        if (Yii::$app->controller->action->id == 'hourly') {
+            MailSummaryProcessor::process(MailSummary::INTERVAL_HOURY);
+        } elseif (Yii::$app->controller->action->id == 'daily') {
+            MailSummaryProcessor::process(MailSummary::INTERVAL_DAILY);
+        }
+    }
 
     /**
      * On delete of some active record, check if there are related activities and delete them.

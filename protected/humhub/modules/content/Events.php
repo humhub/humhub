@@ -10,12 +10,11 @@ namespace humhub\modules\content;
 
 use Yii;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\components\MailUpdateSender;
 
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @author luke
  */
 class Events extends \yii\base\Object
@@ -98,16 +97,6 @@ class Events extends \yii\base\Object
     }
 
     /**
-     * Handle cron runs
-     * 
-     * @param \yii\base\ActionEvent $event
-     */
-    public static function onCronRun($event)
-    {
-        MailUpdateSender::processCron($event->sender);
-    }
-
-    /**
      * On rebuild of the search index, rebuild all user records
      *
      * @param type $event
@@ -124,7 +113,7 @@ class Events extends \yii\base\Object
 
     /**
      * After a components\ContentActiveRecord was saved
-     * 
+     *
      * @param \yii\base\Event $event
      */
     public static function onContentActiveRecordSave($event)
@@ -136,7 +125,7 @@ class Events extends \yii\base\Object
 
     /**
      * After a components\ContentActiveRecord was deleted
-     * 
+     *
      * @param \yii\base\Event $event
      */
     public static function onContentActiveRecordDelete($event)

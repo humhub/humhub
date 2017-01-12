@@ -12,6 +12,7 @@ use Yii;
 use yii\base\Model;
 use yii\base\Exception;
 use humhub\modules\activity\Module;
+use humhub\modules\activity\components\MailSummary;
 use humhub\modules\user\models\User;
 
 /**
@@ -115,9 +116,9 @@ class MailSummaryForm extends Model
     public function getIntervals()
     {
         return [
-            User::RECEIVE_EMAIL_NEVER => Yii::t('ActivityModule.base', 'Never'),
-            User::RECEIVE_EMAIL_WHEN_OFFLINE => Yii::t('ActivityModule.base', 'Hourly'),
-            User::RECEIVE_EMAIL_ALWAYS => Yii::t('ActivityModule.base', 'Daily')
+            MailSummary::INTERVAL_NONE => Yii::t('ActivityModule.base', 'Never'),
+            MailSummary::INTERVAL_HOURY => Yii::t('ActivityModule.base', 'Hourly'),
+            MailSummary::INTERVAL_DAILY => Yii::t('ActivityModule.base', 'Daily')
         ];
     }
 

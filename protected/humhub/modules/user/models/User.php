@@ -46,14 +46,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     const STATUS_NEED_APPROVAL = 2;
 
     /**
-     * E-Mail Settings (Value Stored in UserSetting)
-     */
-    const RECEIVE_EMAIL_NEVER = 0;
-    const RECEIVE_EMAIL_DAILY_SUMMARY = 1;
-    const RECEIVE_EMAIL_WHEN_OFFLINE = 2;
-    const RECEIVE_EMAIL_ALWAYS = 3;
-
-    /**
      * Visibility Modes
      */
     const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members

@@ -45,8 +45,7 @@ class InitialData
         Yii::$app->settings->set('mailer.transportType', 'php');
         Yii::$app->settings->set('mailer.systemEmailAddress', 'social@example.com');
         Yii::$app->settings->set('mailer.systemEmailName', 'My Social Network');
-        Yii::$app->getModule('activity')->settings->set('receive_email_activities', User::RECEIVE_EMAIL_DAILY_SUMMARY);
-        Yii::$app->getModule('notification')->settings->set('receive_email_notifications', User::RECEIVE_EMAIL_WHEN_OFFLINE);
+        Yii::$app->getModule('activity')->settings->set('mailSummaryInterval', \humhub\modules\activity\components\MailSummary::INTERVAL_DAILY);
 
         // File
         Yii::$app->getModule('file')->settings->set('maxFileSize', '1048576' * 5);
