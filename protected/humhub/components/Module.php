@@ -9,8 +9,6 @@
 namespace humhub\components;
 
 use Yii;
-
-
 use yii\helpers\Json;
 
 /**
@@ -102,14 +100,14 @@ class Module extends \yii\base\Module
     public function getImage()
     {
         $url = $this->getPublishedUrl('/module_image.png');
-        
-        if($url == null) {
+
+        if ($url == null) {
             $url = Yii::getAlias("@web/img/default_module.jpg");
         }
 
         return $url;
     }
-    
+
     /**
      * Returns the url of an asset file and publishes all module assets if
      * the file is not published yet.
@@ -122,16 +120,16 @@ class Module extends \yii\base\Module
         $path = $this->getAssetPath();
 
         // If the file has not been published yet we publish the module assets
-        if(!$this->isPublished($relativePath)) {
+        if (!$this->isPublished($relativePath)) {
             $this->publishAssets();
         }
-        
+
         // If its still not published the file does not exist
-        if($this->isPublished($relativePath)) {
-            return Yii::$app->assetManager->getPublishedUrl($path).$relativePath;
+        if ($this->isPublished($relativePath)) {
+            return Yii::$app->assetManager->getPublishedUrl($path) . $relativePath;
         }
     }
-    
+
     /**
      * Checks if a specific asset file has already been published
      * @param string $relativePath
@@ -141,9 +139,8 @@ class Module extends \yii\base\Module
     {
         $path = $this->getAssetPath();
         $publishedPath = Yii::$app->assetManager->getPublishedPath($path);
-        return $publishedPath !== false && is_file($publishedPath.$relativePath);
+        return $publishedPath !== false && is_file($publishedPath . $relativePath);
     }
-
 
     /**
      * Get Assets Url
@@ -152,22 +149,22 @@ class Module extends \yii\base\Module
      */
     public function getAssetsUrl()
     {
-        if(($published = $this->publishAssets()) != null) {
+        if (($published = $this->publishAssets()) != null) {
             return $published[1];
         }
     }
-    
+
     /**
      * Publishes the basePath/resourcesPath (assets) module directory if existing.
      * @return array
      */
     public function publishAssets()
     {
-        if($this->hasAssets()) {
+        if ($this->hasAssets()) {
             return Yii::$app->assetManager->publish($this->getAssetPath(), ['forceCopy' => true]);
         }
     }
-    
+
     /**
      * Determines whether or not this module has an asset directory. 
      * @return boolean
@@ -178,7 +175,7 @@ class Module extends \yii\base\Module
         $path = Yii::getAlias($path);
         return is_string($path) && is_dir($path);
     }
-    
+
     private function getAssetPath()
     {
         return $this->getBasePath() . '/' . $this->resourcesPath;
@@ -327,10 +324,34 @@ class Module extends \yii\base\Module
     {
         return [];
     }
-    
+
     public function hasNotifications()
     {
         return !empty($this->getNotifications());
+    }
+
+    /**
+     * Returns a list of activity class names this modules provides.
+     * 
+     * @since 1.2
+     * @return array list of activity class names
+     */
+    public function getActivityClasses()
+    {
+        $class = get_class($this);
+        if (($pos = strrpos($class, '\\')) !== false) {
+            $activityNamespace = substr($class, 0, $pos) . '\\activities';
+        }
+
+        $activities = [];
+        $activityDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'activities';
+        if (is_dir($activityDirectory)) {
+            foreach (\humhub\modules\file\libs\FileHelper::findFiles($activityDirectory, ['recursive' => false,]) as $file) {
+                $activities[] = $activityNamespace . '\\' . basename($file, '.php');
+            }
+        }
+
+        return $activities;
     }
 
 }
