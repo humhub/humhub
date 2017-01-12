@@ -54,4 +54,20 @@ class Liked extends BaseActivity implements ConfigurableActivityInterface
         return Yii::t('LikeModule.activities', 'Whenever someone likes something (e.g. a post or comment).');
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getTitle()
+    {
+        return Yii::t('CommentModule.activities', 'New like');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDescription()
+    {
+        return Yii::t('CommentModule.activities', 'Somebody liked something.');
+    }
+
 }

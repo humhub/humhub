@@ -63,6 +63,15 @@ class SettingsMenu extends \humhub\widgets\BaseMenu
         ]);
 
         $this->addItem([
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Mail summaries'),
+            'url' => Url::toRoute('/activity/admin/defaults'),
+            'icon' => '<i class="fa fa-envelope"></i>',
+            'sortOrder' => 400,
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'activity' && Yii::$app->controller->id == 'admin' && (Yii::$app->controller->action->id == 'defaults')),
+            'isVisible' => $canEditSettings
+        ]);
+
+        $this->addItem([
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Advanced'),
             'url' => Url::toRoute('/admin/setting/advanced'),
             'icon' => '<i class="fa fa-lock"></i>',
