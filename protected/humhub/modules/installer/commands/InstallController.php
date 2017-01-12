@@ -42,7 +42,6 @@ class InstallController extends Controller
         $user->email = 'humhub@example.com';
         $user->status = User::STATUS_ENABLED;
         $user->language = '';
-        $user->last_activity_email = new \yii\db\Expression('NOW()');
         if (!$user->save()) {
             throw new \yii\base\Exception("Could not save user");
         }

@@ -248,7 +248,6 @@ class ConfigController extends Controller
                 $userModel->email = "david.roberts@example.com";
                 $userModel->language = '';
                 $userModel->tags = "Microsoft Office, Marketing, SEM, Digital Native";
-                $userModel->last_activity_email = new \yii\db\Expression('NOW()');
                 $userModel->save();
 
                 $profileImage = new \humhub\libs\ProfileImage($userModel->guid);
@@ -275,7 +274,6 @@ class ConfigController extends Controller
                 $userModel2->email = "sara.schuster@example.com";
                 $userModel2->language = '';
                 $userModel2->tags = "Yoga, Travel, English, German, French";
-                $userModel2->last_activity_email = new \yii\db\Expression('NOW()');
                 $userModel2->save();
 
                 $profileImage2 = new \humhub\libs\ProfileImage($userModel2->guid);
@@ -426,7 +424,6 @@ class ConfigController extends Controller
             $form->models['User']->status = User::STATUS_ENABLED;
             $form->models['User']->language = '';
             $form->models['User']->tags = 'Administration, Support, HumHub';
-            $form->models['User']->last_activity_email = new \yii\db\Expression('NOW()');
             $form->models['User']->save();
 
             $form->models['Profile']->user_id = $form->models['User']->id;
