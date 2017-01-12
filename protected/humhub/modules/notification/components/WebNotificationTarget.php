@@ -23,14 +23,9 @@ class WebNotificationTarget extends NotificationTarget
         if(!$notification->record) {
             throw new \yii\base\Exception('Notification record not found for BaseNotification "'.$notification->className().'"');
         }
-    }
-    
-    /**
-     * @inheritdoc
-     */
-    public function isEditable(User $user = null)
-    {
-        return false;
+        
+        $notification->record->send_web_notifications = true;
+        $notification->record->save();
     }
 
     public function getTitle()

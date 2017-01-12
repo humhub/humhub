@@ -69,7 +69,7 @@ class DefaultController extends Controller
             Yii::$app->response->format = 'json';
             return [
                 'success' => true,
-                'space' => \humhub\modules\space\controllers\BrowseController::getSpaceResult($space, true, ['isMember' => true])
+                'space' => \humhub\modules\space\widgets\Chooser::getSpaceResult($space, true, ['isMember' => true])
             ];
         }
         
@@ -89,7 +89,7 @@ class DefaultController extends Controller
             Yii::$app->response->format = 'json';
             return [
                 'success' => true,
-                'space' => \humhub\modules\space\controllers\BrowseController::getSpaceResult($space, true, ['isMember' => true])
+                'space' => \humhub\modules\space\widgets\Chooser::getSpaceResult($space, true, ['isMember' => true])
             ];
         }
         

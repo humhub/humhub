@@ -110,11 +110,14 @@ class SpaceModelMembership extends Behavior
      * @param type $userId
      * @return type
      */
-    public function setSpaceOwner($userId = "")
+    public function setSpaceOwner($userId = null)
     {
 
-        if ($userId == 0)
+        if($userId instanceof User) {
+            $userId = $userId->id;
+        } else if (!$userId ||$userId == 0) {
             $userId = Yii::$app->user->id;
+        }
 
         $this->setAdmin($userId);
 
@@ -144,10 +147,13 @@ class SpaceModelMembership extends Behavior
     /**
      * Is given User owner of this Space
      */
-    public function isSpaceOwner($userId = "")
+    public function isSpaceOwner($userId = null)
     {
-        if ($userId == "")
+        if($userId instanceof User) {
+            $userId = $userId->id;
+        } else if (!$userId ||$userId == "") {
             $userId = Yii::$app->user->id;
+        }
 
         if ($this->owner->created_by == $userId) {
             return true;
@@ -162,11 +168,13 @@ class SpaceModelMembership extends Behavior
      * @param type $userId
      * @return type
      */
-    public function setAdmin($userId = "")
+    public function setAdmin($userId = null)
     {
-
-        if ($userId == 0)
+        if($userId instanceof User) {
+            $userId = $userId->id;
+        } else if (!$userId || $userId == 0) {
             $userId = Yii::$app->user->id;
+        }
 
         $membership = $this->getMembership($userId);
         if ($membership != null) {
@@ -182,9 +190,11 @@ class SpaceModelMembership extends Behavior
      *
      * If none Record is found, null is given
      */
-    public function getMembership($userId = "")
+    public function getMembership($userId = null)
     {
-        if ($userId == "") {
+        if($userId instanceof User) {
+            $userId = $userId->id;
+        } else if (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
         }
 

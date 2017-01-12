@@ -160,7 +160,7 @@ class Content extends \humhub\components\ActiveRecord
                 $this->created_by = Yii::$app->user->id;
             }
         }
-        
+
         $this->stream_sort_date = new \yii\db\Expression('NOW()');
 
         if ($this->created_by == "") {
@@ -175,38 +175,25 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
+        $contentSource = $this->getPolymorphicRelation();
 
-        if ($insert) {
-            $followers = $this->getFollowers();
-            foreach ($this->notifyUsersOfNewContent as $user) {
-                $this->getPolymorphicRelation()->follow($user->id);
-            }
-
-            \humhub\modules\content\notifications\ContentCreated::instance()
-                    ->from($this->user)
-                    ->about($this->getPolymorphicRelation())
-                    ->sendBulk();
-            $notification->source = $this->getPolymorphicRelation();
-            $notification->originator = $this->user;
-            $notification->sendBulk($this->notifyUsersOfNewContent);
-
-            if (!$this->getPolymorphicRelation() instanceof \humhub\modules\activity\models\Activity) {
-                $activity = new \humhub\modules\content\activities\ContentCreated;
-                $activity->source = $this->getPolymorphicRelation();
-                $activity->create();
-            }
+        foreach ($this->notifyUsersOfNewContent as $user) {
+            $contentSource->follow($user->id);
         }
 
+        if ($insert && !$contentSource instanceof \humhub\modules\activity\models\Activity) {
+            $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getContainerFollowers($this->getContainer()));
+            
+            \humhub\modules\content\notifications\ContentCreated::instance()
+                    ->from($this->user)
+                    ->about($contentSource)
+                    ->sendBulk($notifyUsers);
+
+            \humhub\modules\content\activities\ContentCreated::instance()
+                    ->about($contentSource)->save();
+        }
+        
         return parent::afterSave($insert, $changedAttributes);
-    }
-    
-    /**
-     * Returns all followers of this content. This can either be user set as notifyUsers when the content was created
-     * or space follower with notify settings.
-     */
-    public function getFollowers()
-    {
-        //$follower = $this->notifyUsersOfNewContent;
     }
 
     /**
@@ -483,8 +470,8 @@ class Content extends \humhub\components\ActiveRecord
         if ($user !== null && $this->created_by == $user->id) {
             return true;
         }
-        
-        if($this->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
+
+        if ($this->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
             return true;
         }
 

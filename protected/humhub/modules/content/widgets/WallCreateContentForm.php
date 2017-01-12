@@ -134,7 +134,7 @@ class WallCreateContentForm extends Widget
             }
         }
 
-        if ($record->validate() && $record->save()) {
+        if ($record->save()) {
             $record->fileManager->attach(Yii::$app->request->post('fileList'));
             return \humhub\modules\stream\actions\Stream::getContentResultEntry($record->content);
         }

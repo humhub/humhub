@@ -4,6 +4,7 @@ namespace humhub\modules\space\widgets;
 
 use Yii;
 use humhub\widgets\BasePickerField;
+use yii\helpers\Html;
 
 /**
  * Mutliselect input field for selecting space guids.
@@ -19,7 +20,6 @@ class SpacePickerField extends BasePickerField
      * @inheritdoc 
      */
     public $defaultRoute = '/space/browse/search-json';
-    
     public $itemClass = \humhub\modules\space\models\Space::class;
     public $itemKey = 'guid';
 

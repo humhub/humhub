@@ -119,7 +119,7 @@ class StreamQuery extends \yii\base\Model
     public function rules()
     {
         return [
-            [['limit', 'from'], 'number'],
+            [['limit', 'from', 'contentId'], 'number'],
             [['limit', 'filters', 'sort', 'from'], 'safe']
         ];
     }

@@ -47,7 +47,7 @@ class PermaController extends Controller
         $content = Content::findOne(['id' => $id]);
         
         if ($content !== null) {
-            return $this->redirect($content->container->createUrl(null, array('contentId' => $id)));
+            return $this->redirect($content->container->createUrl(null, ['contentId' => $id]));
         }
 
         throw new HttpException(404, Yii::t('ContentModule.controllers_PermaController', 'Could not find requested content!'));

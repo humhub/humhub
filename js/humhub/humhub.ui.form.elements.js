@@ -16,7 +16,7 @@ humhub.module('ui.form.elements', function (module, require, $) {
 
     var initCheckbox = function ($input) {
 
-        if ($input.data('form_element')) {
+        if ($input.data('form_element') || $input.hasClass('hidden')) {
             return;
         }
 

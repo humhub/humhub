@@ -568,7 +568,7 @@ humhub.module('stream', function(module, require, $) {
                 'StreamQuery[sort]': cfg.sort,
                 'StreamQuery[from]': cfg.from,
                 'StreamQuery[limit]': cfg.limit,
-                'StreamQuery[id]': cfg.contentId
+                'StreamQuery[contentId]': cfg.contentId
             }
         });
     };
