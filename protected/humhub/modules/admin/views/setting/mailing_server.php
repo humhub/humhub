@@ -5,7 +5,7 @@ use humhub\compat\CHtml;
 use humhub\models\Setting;
 
 ?>
-<?php $this->beginContent('@admin/views/setting/_emailLayout.php') ?>
+<?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
 <?php $form = CActiveForm::begin(); ?>
 
