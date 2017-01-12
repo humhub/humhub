@@ -22,4 +22,9 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
      */
     public $enableClientValidation = false;
 
+    /**
+     * @inheritdoc
+     */
+    public $fieldClass = 'humhub\widgets\ActiveField';
+
 }
