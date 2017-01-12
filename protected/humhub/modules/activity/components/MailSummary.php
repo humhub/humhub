@@ -62,15 +62,10 @@ class MailSummary extends Component
         }
 
         try {
-            $mail = Yii::$app->mailer->compose([
-                'html' => '@humhub/modules/content/views/mails/Update',
-                'text' => '@humhub/modules/content/views/mails/plaintext/Update'
-                    ], [
+            $mail = Yii::$app->mailer->compose(['html' => '@activity/views/mails/mailSummary', 'text' => '@activity/views/mails/mailSummary'], [
                 'activities' => $outputHtml,
                 'activities_plaintext' => $outputPlaintext,
             ]);
-
-            $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
             $mail->setTo($this->user->email);
             $mail->setSubject($this->getSubject());
             if ($mail->send()) {
@@ -84,7 +79,7 @@ class MailSummary extends Component
 
     /**
      * Returns the subject of the MailSummary
-     * 
+     *
      * @return string the subject of mail summary
      */
     protected function getSubject()
@@ -100,7 +95,7 @@ class MailSummary extends Component
 
     /**
      * Returns the list of activities for the e-mail summary
-     * 
+     *
      * @return \humhub\modules\activity\models\Activity[] the activities
      */
     protected function getActivities()

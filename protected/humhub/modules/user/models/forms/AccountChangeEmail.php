@@ -78,7 +78,6 @@ class AccountChangeEmail extends \yii\base\Model
             'newEmail' => $this->newEmail,
             'approveUrl' => Url::to([empty($approveUrl) ? "/user/account/change-email-validate" : $approveUrl, 'email' => $this->newEmail, 'token' => $token], true),
         ]);
-        $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
         $mail->setTo($this->newEmail);
         $mail->setSubject(Yii::t('UserModule.forms_AccountChangeEmailForm', 'E-Mail change'));
         $mail->send();

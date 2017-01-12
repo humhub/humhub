@@ -84,7 +84,6 @@ class AccountRecoverPassword extends \yii\base\Model
             'user' => $user,
             'linkPasswordReset' => Url::to(["/user/password-recovery/reset", 'token' => $token, 'guid' => $user->guid], true)
         ]);
-        $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
         $mail->setTo($user->email);
         $mail->setSubject(Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'Password Recovery'));
         $mail->send();

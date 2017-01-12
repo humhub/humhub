@@ -87,7 +87,7 @@ $config = [
             'class' => 'yii\caching\DummyCache',
         ],
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
+            'class' => 'humhub\components\Mailer',
             'viewPath' => '@humhub/views/mail',
             'view' => [
                 'class' => '\yii\web\View',
