@@ -85,6 +85,16 @@ class MailSummaryForm extends Model
     }
 
     /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'interval' => Yii::t('ActivityModule.base', 'You will only receive an e-mail if there is something new.'),
+        ];
+    }
+
+    /**
      * Returns available modes how to handle given spaces
      * 
      * @return array the modes
