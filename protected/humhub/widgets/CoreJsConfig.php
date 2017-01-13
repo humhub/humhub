@@ -74,6 +74,7 @@ class CoreJsConfig extends Widget
                         'success.edit' => Yii::t('base', 'Saved'),
                         0 => Yii::t('base', 'An unexpected error occured. If this keeps happening, please contact a site administrator.'),
                         403 => Yii::t('base', 'You are not allowed to run this action.'),
+                        404 => Yii::t('base', 'The requested resource could not be found.'),
                         405 => Yii::t('base', 'Error while running your last action (Invalid request method).'),
                         500 => Yii::t('base', 'An unexpected server error occured. If this keeps happening, please contact a site administrator.')
                     ]

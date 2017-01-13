@@ -14,6 +14,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\permissions\ManageContent;
 
 /**
  * This is the model class for table "content".
@@ -182,7 +183,7 @@ class Content extends \humhub\components\ActiveRecord
         }
 
         if ($insert && !$contentSource instanceof \humhub\modules\activity\models\Activity) {
-            $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getContainerFollowers($this->getContainer()));
+            $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
             
             \humhub\modules\content\notifications\ContentCreated::instance()
                     ->from($this->user)
@@ -315,7 +316,7 @@ class Content extends \humhub\components\ActiveRecord
             return false;
         }
 
-        return $this->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent());
+        return $this->getContainer()->permissionManager->can(new ManageContent());
     }
 
     /**
@@ -351,7 +352,7 @@ class Content extends \humhub\components\ActiveRecord
             return false;
         }
 
-        return $this->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent());
+        return $this->getContainer()->permissionManager->can(new ManageContent());
     }
 
     /**
@@ -471,7 +472,7 @@ class Content extends \humhub\components\ActiveRecord
             return true;
         }
 
-        if ($this->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
+        if ($this->getContainer()->permissionManager->can(new ManageContent())) {
             return true;
         }
 

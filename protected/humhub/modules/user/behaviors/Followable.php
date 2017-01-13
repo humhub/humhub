@@ -78,11 +78,7 @@ class Followable extends Behavior
             $follow->setPolyMorphicRelation($this->owner);
         }
 
-        if ($withNotifications) {
-            $follow->send_notifications = 1;
-        } else {
-            $follow->send_notifications = 0;
-        }
+        $follow->send_notifications = $withNotifications;
 
         if (!$follow->save()) {
             return false;

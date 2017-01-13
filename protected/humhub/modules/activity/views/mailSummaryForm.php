@@ -14,10 +14,9 @@ use humhub\modules\space\widgets\SpacePickerField;
 <?= $form->field($model, 'activities')->checkboxList($model->getActivitiesArray(), ['labelOptions' => ['encode' => false], 'encode' => true]); ?>
 
 <br />
-<hr />
 <?= Html::saveButton(); ?>
 <?php if ($model->userSettingsLoaded): ?>
-    <?= Html::a(Yii::t('ActivityModule.base', 'Reset to defaults'), ['reset'], ['class' => 'btn btn-default pull-right', 'data-ui-loader' => '', 'data-method' => 'POST']); ?>
+    <?= Html::a(Yii::t('NotificationModule.base', 'Reset to defaults'), ['reset'], ['class' => 'btn btn-default pull-right', 'data-ui-loader' => '', 'data-method' => 'POST']); ?>
 <?php endif; ?>
 
 <?php ActiveForm::end(); ?>

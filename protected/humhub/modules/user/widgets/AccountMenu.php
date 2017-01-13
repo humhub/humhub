@@ -52,6 +52,15 @@ class AccountMenu extends BaseMenu
             'sortOrder' => 105,
             'isActive' => (Yii::$app->controller->module->id == 'activity'),
         ));
+        
+        $this->addItem(array(
+            'label' => Yii::t('UserModule.account', 'Notifications'),
+            'icon' => '<i class="fa fa-star"></i>',
+            'group' => 'account',
+            'url' => Url::toRoute('/notification/user'),
+            'sortOrder' => 106,
+            'isActive' => (Yii::$app->controller->module->id == 'notification'),
+        ));
 
         $this->addItem(array(
             'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Settings'),

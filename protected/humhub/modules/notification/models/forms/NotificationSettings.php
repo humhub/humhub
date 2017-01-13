@@ -44,8 +44,11 @@ class NotificationSettings extends \yii\base\Model
         if($this->user) {
             // Note the user object has to be provided in the model constructor.
             $spaces = Yii::$app->notification->getSpaces($this->user);
-            $this->spaceGuids = array_map(function ($space) { return $space->guid; }, $spaces);
+            $this->spaceGuids = array_map(function ($space) { return $space->guid;}, $spaces);
         }
+        
+        $module = Yii::$app->getModule('notification');
+        return ($this->user) ? $module->settings->user($this->user) : $module->settings;
     }
 
     /**
@@ -64,8 +67,20 @@ class NotificationSettings extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'spaceGuids' => Yii::t('NotificationModule.models_forms_NotificationSettings', 'Receive Notifications for the following spaces:')
+            'spaceGuids' => Yii::t('NotificationModule.models_forms_NotificationSettings', 'Receive \'New Content\' Notifications for the following spaces')
         ];
+    }
+    
+    /**
+     * Checks if this form has already been saved before.
+     * @return boolean
+     */
+    public function isUserSettingLoaded()
+    {
+        if($this->user) {
+            return $this->getSettings()->get('notification.like_email') !== null;
+        }
+        return false;
     }
 
     /**
@@ -185,5 +200,21 @@ class NotificationSettings extends \yii\base\Model
         } else {
             return Yii::$app->user->id == $this->user->id;
         }
+    }
+    
+    public function resetUserSettings()
+    {
+        if(!$this->user) {
+            return false;
+        }
+        
+        $settings = $this->getSettings();
+        foreach($this->targets() as $target) {
+            foreach($this->categories() as $category) {
+                $settings->delete($target->getSettingKey($category));
+            }
+        }
+        Yii::$app->notification->setSpaces($this->user, []);
+        return true;
     }
 }

@@ -106,7 +106,8 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         $this->forcePostRequest();
         $space = $this->getSpace();
         if (!$space->isMember()) {
-            $space->follow();
+            // follow without notifications by default
+            $space->follow(null, false);
         }
 
         if (Yii::$app->request->isAjax) {

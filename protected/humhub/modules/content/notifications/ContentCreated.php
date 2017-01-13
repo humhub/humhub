@@ -40,6 +40,22 @@ class ContentCreated extends \humhub\modules\notification\components\BaseNotific
                     'contentTitle' => $this->getContentInfo($this->source)
         ));
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getTitle()
+    {
+        return Yii::t('ContentModule.notifications_ContentCreated', 'There is new content your are following available at '.Html::encode(Yii::$app->name));
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getHeadline()
+    {
+        return Yii::t('ContentModule.notifications_ContentCreated', 'New content available');
+    }
 
 }
 

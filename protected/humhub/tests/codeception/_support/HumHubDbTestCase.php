@@ -34,7 +34,19 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
         $this->initModules();
         $this->unloadFixtures();
         $this->loadFixtures();
+        $this->reloadSettings();
         $this->deleteMails();
+    }
+
+    protected function reloadSettings()
+    {
+        Yii::$app->settings->reload();
+        
+        foreach (Yii::$app->modules as $module) {
+            if ($module instanceof \humhub\components\Module) {
+                $module->settings->reload();
+            }
+        }
     }
 
     protected function deleteMails()

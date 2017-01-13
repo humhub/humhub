@@ -22,6 +22,7 @@ class MailNotificationTarget extends NotificationTarget
      * @var type 
      */
     public $defaultSetting = true;
+    
     public $view = [
         'html' => '@humhub/modules/content/views/mails/Update',
         'text' => '@humhub/modules/content/views/mails/plaintext/Update'
@@ -44,6 +45,7 @@ class MailNotificationTarget extends NotificationTarget
         Yii::$app->view->params['showUnsubscribe'] = true;
 
         $viewParams = [
+            'headline' => $notification->getHeadline(),
             'notifications' => $notification->render($this),
             'notifications_plaintext' => $this->getText($notification)
         ];

@@ -338,7 +338,7 @@ class StreamQuery extends \yii\base\Model
         }
     }
 
-    public function isFIlter($filter)
+    public function isFilter($filter)
     {
         return in_array($filter, $this->filters);
     }

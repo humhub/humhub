@@ -38,13 +38,17 @@ class SpaceModelMembership extends Behavior
     {
 
         // Take current userid if none is given
-        if ($userId == "")
+        if ($userId == "" && !Yii::$app->user->isGuest) {
             $userId = Yii::$app->user->id;
+        } elseif($userId == "" && Yii::$app->user->isGuest) {
+            return false;
+        }
 
         $membership = $this->getMembership($userId);
 
-        if ($membership != null && $membership->status == Membership::STATUS_MEMBER)
+        if ($membership != null && $membership->status == Membership::STATUS_MEMBER) {
             return true;
+        }
 
         return false;
     }
@@ -60,8 +64,9 @@ class SpaceModelMembership extends Behavior
     {
 
         // Take current userid if none is given
-        if ($userId == "")
+        if ($userId == "") {
             $userId = Yii::$app->user->id;
+        }
 
         $membership = $this->getMembership($userId);
 

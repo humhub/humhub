@@ -170,6 +170,15 @@ abstract class BaseSettingsManager extends Component
             $this->_loaded = $cached;
         }
     }
+    
+    /**
+     * Reloads all values from database
+     */
+    public function reload()
+    {
+        $this->invalidateCache();
+        $this->loadValues();
+    }
 
     /**
      * Invalidates settings cache

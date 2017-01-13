@@ -104,6 +104,14 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
             return Yii::t('NotificationModule.base', 'There are new updates available at {baseUrl}', ['baseUrl' => Url::base(true)]);
         }
     }
+    
+    /**
+     * @return string the headline for this notification used for example in mails.
+     */
+    public function getHeadline()
+    {
+        return Yii::t('base', '<strong>Latest</strong> updates');
+    }
 
     /**
      * @inheritdoc
@@ -414,6 +422,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     {
         $result = parent::asArray();
         $result['title'] = $this->getTitle();
+        $result['headline'] = $this->getHeadline();
         return $result;
     }
 

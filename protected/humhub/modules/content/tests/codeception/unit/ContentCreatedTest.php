@@ -37,12 +37,13 @@ class ContentCreatedTest extends HumHubDbTestCase
 
         $post = new \humhub\modules\post\models\Post(['message' => 'MyTestContent']);
         $post->content->setContainer(Space::findOne(['id' => 2]));
+        $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
         $post->save();
 
         // Note Admin is following Space2 so we expect one notification mail.
         $this->assertMailSent(1, 'ContentCreated Notification Mail sent');
     }
-    
+
     /**
      * Disable mail notifications for a follower.
      */
@@ -52,13 +53,13 @@ class ContentCreatedTest extends HumHubDbTestCase
         $admin = User::findOne(['id' => 1]);
 
         // Disable $user1 notification settings.
-        Yii::$app->getModule('notification')->settings->user($admin)->set('content_created_email', 0);
+        Yii::$app->getModule('notification')->settings->user($admin)->set('notification.content_created_email', 0);
 
         $this->becomeUser('User2');
 
         $post = new \humhub\modules\post\models\Post(['message' => 'MyTestContent']);
         $post->content->setContainer(Space::findOne(['id' => 2]));
-
+        $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
         $post->save();
 
         $this->assertMailSent(0, 'ContentCreated Notification Mail sent');
@@ -73,13 +74,31 @@ class ContentCreatedTest extends HumHubDbTestCase
 
         $post = new \humhub\modules\post\models\Post(['message' => 'MyTestContent']);
         $post->content->setContainer(Space::findOne(['id' => 2]));
-        
+        $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
         // Add User1
         $post->content->notifyUsersOfNewContent = [User::findOne(['id' => 2])];
         $post->save();
 
         // We expect two notification mails one for following User1 and one for notifyUserOfNewContent User3.
         $this->assertMailSent(2, 'ContentCreated Notification Mail sent');
+    }
+
+    /**
+     * Check that space follower are not notified about private content.
+     */
+    public function testExcludeFollowerForPrivateCotnentNotification()
+    {
+        $this->becomeUser('User2');
+
+        $post = new \humhub\modules\post\models\Post(['message' => 'MyTestContent']);
+        $post->content->setContainer(Space::findOne(['id' => 2]));
+        // Add User1
+        $post->content->notifyUsersOfNewContent = [User::findOne(['id' => 2])];
+        $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PRIVATE;
+        $post->save();
+
+        // We expect two notification mails one for following User1 and one for notifyUserOfNewContent User3.
+        $this->assertMailSent(1, 'ContentCreated Notification Mail sent');
     }
 
     /**
@@ -91,7 +110,7 @@ class ContentCreatedTest extends HumHubDbTestCase
 
         $post = new \humhub\modules\post\models\Post(['message' => 'MyTestContent']);
         $post->content->setContainer(Space::findOne(['id' => 2]));
-        
+        $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
         // Add an already following user again in the notifyUser field.
         $post->content->notifyUsersOfNewContent = [User::findOne(['id' => 1])];
         $post->save();
@@ -109,6 +128,7 @@ class ContentCreatedTest extends HumHubDbTestCase
 
         $post = new \humhub\modules\post\models\Post(['message' => 'MyTestContent']);
         $post->content->setContainer(Space::findOne(['id' => 3]));
+        $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
         $post->save();
 
         $this->assertMailSent(1, 'ContentCreated Notification Mail sent');
@@ -123,11 +143,12 @@ class ContentCreatedTest extends HumHubDbTestCase
 
         $post = new \humhub\modules\post\models\Post(['message' => 'MyTestContent']);
         $post->content->setContainer(Space::findOne(['id' => 3]));
+        $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
         $post->save();
 
         $this->assertMailSent(0, 'ContentCreated Notification Mail sent');
     }
-    
+
     /**
      * Test the deactivation of the mail target for new content.
      */
@@ -136,12 +157,14 @@ class ContentCreatedTest extends HumHubDbTestCase
         $this->becomeUser('User3');
 
         // Disable $user1 notification settings.
-        Yii::$app->getModule('notification')->settings->user(User::findOne(['id' => 2]))->set('content_created_email', 0);
-        
+        Yii::$app->getModule('notification')->settings->user(User::findOne(['id' => 2]))->set('notification.content_created_email', 0);
+
         $post = new \humhub\modules\post\models\Post(['message' => 'MyTestContent']);
         $post->content->setContainer(Space::findOne(['id' => 3]));
+        $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
         $post->save();
 
         $this->assertMailSent(0, 'ContentCreated Notification Mail sent');
     }
+
 }

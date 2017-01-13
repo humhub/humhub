@@ -14,10 +14,8 @@ use yii\bootstrap\Html
         'maxSelection' => 10
     ])?>
 <?php endif;?>
-<div class="help-block" style="margin-bottom: 0px;">
- <?= Yii::t('NotificationModule.widgets_views_notificationSettingsForm', 'You can enable outgoing notifications for a given category by choosing the disired notification targets.'); ?>
-</div>
-<div class="grid-view table-responsive">
+
+<div class="grid-view table-responsive" style="padding-top:0px;">
     <table class="table table-middle table-hover">
         <thead>
             <tr>

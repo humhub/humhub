@@ -176,7 +176,7 @@ abstract class NotificationTarget extends \yii\base\Object
      */
     public function getSettingKey($category)
     {
-        return $category->id . '_' . $this->id;
+        return 'notification.'.$category->id . '_' . $this->id;
     }
 
     /**

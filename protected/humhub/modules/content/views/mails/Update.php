@@ -24,7 +24,7 @@
                                                 <tr>
                                                     <td  style="font-size: 18px; line-height: 22px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:left;">
                                                         <span style="color: #555555; font-weight: 300;">
-                                                            <a href="#" style="text-decoration: none; color: #555555; font-weight: 300;"><?php echo Yii::t('base', '<strong>Latest</strong> updates'); ?></a>
+                                                            <a href="#" style="text-decoration: none; color: #555555; font-weight: 300;"><?= $headline ?></a>
                                                         </span>
                                                     </td>
                                                 </tr>

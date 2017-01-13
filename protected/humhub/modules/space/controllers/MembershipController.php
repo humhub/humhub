@@ -128,6 +128,20 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
         return $this->renderAjax('requestMembership', ['model' => $model, 'space' => $space]);
     }
+    
+    public function actionRevokeNotifications()
+    {
+        $space = $this->getSpace();
+        Yii::$app->notification->setSpaceSetting(Yii::$app->user->getIdentity(), $space, false);
+        return $this->redirect($space->getUrl());
+    }
+    
+    public function actionReceiveNotifications()
+    {
+        $space = $this->getSpace();
+        Yii::$app->notification->setSpaceSetting(Yii::$app->user->getIdentity(), $space, true);
+        return $this->redirect($space->getUrl());
+    }
 
     /**
      * Revokes Membership for this workspace
