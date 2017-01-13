@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -26,21 +26,6 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
      * @var int
      */
     public $visibility = Content::VISIBILITY_PRIVATE;
-
-    /**
-     * @inheritdoc
-     */
-    public $layoutWeb = "@humhub/modules/activity/views/layouts/web.php";
-
-    /**
-     * @var string the layotu file for mail view
-     */
-    public $layoutMail = "@humhub/modules/activity/views/layouts/mail.php";
-
-    /**
-     * @inheritdoc
-     */
-    public $layoutMailPlaintext = "@humhub/modules/notification/views/layouts/mail_plaintext.php";
 
     /**
      * @inheritdoc

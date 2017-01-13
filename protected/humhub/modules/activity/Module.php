@@ -21,6 +21,11 @@ class Module extends \humhub\components\Module
 {
 
     /**
+     * @inheritdocs
+     */
+    public $resourcesPath = 'resources';
+
+    /**
      * Returns all configurable Activitiess
      * 
      * @since 1.2

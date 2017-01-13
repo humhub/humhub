@@ -32,27 +32,45 @@ class MailSummaryProcessor
     {
         $users = User::find()->distinct()->joinWith(['httpSessions', 'profile'])->where(['user.status' => User::STATUS_ENABLED]);
 
+        $interactive = false;
         $totalUsers = $users->count();
         $processed = 0;
-
-        Console::startProgress($processed, $totalUsers, 'Sending update e-mails to users... ', false);
-
         $mailsSent = 0;
+
+        if ($interval == MailSummary::INTERVAL_DAILY) {
+            if ($interactive) {
+                Console::startProgress($processed, $totalUsers, 'Sending daily e-mail summary to users... ', false);
+            }
+        } elseif ($interval === MailSummary::INTERVAL_HOURY) {
+            if ($interactive) {
+                Console::startProgress($processed, $totalUsers, 'Sending hourly e-mail summary to users... ', false);
+            }
+        } else {
+            return;
+        }
+
         foreach ($users->each() as $user) {
 
             // Check if user wants summary in the given interval
-            if (self::shouldSendToUser($user, $interval)) {
-                $mailSummary = Yii::configure(MailSummary::className(), ['user' => $user, 'interval' => $interval]);
+            if (self::checkUser($user, $interval)) {
+                $mailSummary = Yii::createObject([
+                            'class' => MailSummary::className(),
+                            'user' => $user,
+                            'interval' => $interval
+                ]);
                 if ($mailSummary->send()) {
                     $mailsSent++;
                 }
             }
-
-            Console::updateProgress(++$processed, $totalUsers);
+            if ($interactive) {
+                Console::updateProgress( ++$processed, $totalUsers);
+            }
         }
 
-        Console::endProgress(true);
-        Yii::$app->controller->stdout('done - ' . $mailsSent . ' email(s) sent.' . PHP_EOL, Console::FG_GREEN);
+        if ($interactive) {
+            Console::endProgress(true);
+            Yii::$app->controller->stdout('done - ' . $mailsSent . ' email(s) sent.' . PHP_EOL, Console::FG_GREEN);
+        }
     }
 
     /**
@@ -61,15 +79,15 @@ class MailSummaryProcessor
      * @param User $user
      * @param int $interval
      */
-    protected static function shouldSendToUser(User $user, $interval)
+    protected static function checkUser(User $user, $interval)
     {
         if (empty($user->email)) {
             return false;
         }
 
         $activityModule = Yii::$app->getModule('activity');
-        $defaultInterval = $activityModule->settings->get('mailSummaryInterval', MailSummary::INTERVAL_DAILY);
-        $wantedInterval = $activityModule->settings->user($user)->get('mailSummaryInterval', $defaultInterval);
+        $defaultInterval = (int) $activityModule->settings->get('mailSummaryInterval', MailSummary::INTERVAL_DAILY);
+        $wantedInterval = (int) $activityModule->settings->user($user)->get('mailSummaryInterval', $defaultInterval);
 
         if ($interval !== $wantedInterval) {
             return false;

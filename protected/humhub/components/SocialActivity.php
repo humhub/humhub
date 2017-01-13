@@ -69,6 +69,9 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
      */
     public $viewName = 'default.php';
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();

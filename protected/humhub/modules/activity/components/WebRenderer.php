@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\activity\components;
 
 use Yii;
@@ -31,16 +37,16 @@ class WebRenderer extends \humhub\components\rendering\LayoutRenderer
      * @var string default layout
      */
     public $defaultLayout = '@humhub/modules/activity/views/layouts/web.php';
-    
+
     /**
      * @inheritdoc
      */
     public function render(Viewable $viewable, $params = [])
     {
-        if(!$this->getViewFile($viewable)) {
+        if (!$this->getViewFile($viewable)) {
             $params['content'] = $viewable->html();
         }
-        
+
         return parent::render($viewable, $params);
     }
 
@@ -60,7 +66,7 @@ class WebRenderer extends \humhub\components\rendering\LayoutRenderer
     public function getViewFile(Viewable $viewable)
     {
         $viewFile = $this->getViewPath($viewable) . DIRECTORY_SEPARATOR . $viewable->getViewName();
-        
+
         if (!file_exists($viewFile)) {
             $viewFile = Yii::getAlias($this->defaultViewPath) . DIRECTORY_SEPARATOR . $viewable->getViewName();
         }

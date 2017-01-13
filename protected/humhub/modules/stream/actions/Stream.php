@@ -158,10 +158,7 @@ abstract class Stream extends Action
             $this->streamQuery->load(Yii::$app->request->get());
 
             if (Yii::$app->getRequest()->get('mode', $this->mode) === self::MODE_ACTIVITY) {
-                $this->streamQuery->includes(\humhub\modules\activity\models\Activity::className());
-                $this->streamQuery->query()->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\modules\activity\models\Activity::className()]);
-                // Note that if $this->user is null the streamQuery will use the current user identity!
-                $this->streamQuery->query()->andWhere('content.created_by != :userId', [':userId' => $this->streamQuery->user->id]);
+                $this->mode = self::MODE_ACTIVITY;
             }
 
             foreach (explode(',', Yii::$app->getRequest()->get('filters', "")) as $filter) {
@@ -195,6 +192,13 @@ abstract class Stream extends Action
 
         if (empty($this->streamQuery->sort)) {
             $this->streamQuery->sort = $this->sort;
+        }
+
+        if ($this->mode == self::MODE_ACTIVITY) {
+            $this->streamQuery->includes(\humhub\modules\activity\models\Activity::className());
+            $this->streamQuery->query()->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\modules\activity\models\Activity::className()]);
+            // Note that if $this->user is null the streamQuery will use the current user identity!
+            $this->streamQuery->query()->andWhere('content.created_by != :userId', [':userId' => $this->streamQuery->user->id]);
         }
     }
 

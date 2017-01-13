@@ -26,8 +26,8 @@ class MailSummary extends Component
      * Intervals
      */
     const INTERVAL_NONE = 0;
-    const INTERVAL_DAILY = 1;
-    const INTERVAL_HOURY = 2;
+    const INTERVAL_HOURY = 1;
+    const INTERVAL_DAILY = 2;
 
     /**
      * @var \humhub\modules\user\models\User the user
@@ -45,6 +45,16 @@ class MailSummary extends Component
     public $maxActivityCount = 50;
 
     /**
+     * @var string the mail summary layout file for html mails
+     */
+    public $mailSummaryLayout = '@activity/views/mails/mailSummary';
+
+    /**
+     * @var string the mail summary layout file for plaintext mails
+     */
+    public $mailSummaryLayoutPlaintext = '@activity/views/mails/plaintext/mailSummary';
+
+    /**
      * Sends the summary mail to the user
      */
     public function send()
@@ -56,16 +66,22 @@ class MailSummary extends Component
         $outputHtml = '';
         $outputPlaintext = '';
 
+        $mailRenderer = new MailRenderer();
         foreach ($this->getActivities() as $activity) {
-            $outputHtml .= $activity->render(BaseActivity::OUTPUT_MAIL);
-            $outputPlaintext .= $activity->render(BaseActivity::OUTPUT_MAIL_PLAINTEXT);
+            $outputHtml .= $mailRenderer->render($activity);
+            $outputPlaintext .= $mailRenderer->renderText($activity);
+        }
+
+        if (empty($outputHtml)) {
+            return false;
         }
 
         try {
-            $mail = Yii::$app->mailer->compose(['html' => '@activity/views/mails/mailSummary', 'text' => '@activity/views/mails/mailSummary'], [
+            $mail = Yii::$app->mailer->compose(['html' => $this->layout, 'text' => $this->layoutPlaintext], [
                 'activities' => $outputHtml,
-                'activities_plaintext' => $outputPlaintext,
+                'activitiesPlaintext' => $outputPlaintext,
             ]);
+
             $mail->setTo($this->user->email);
             $mail->setSubject($this->getSubject());
             if ($mail->send()) {
@@ -100,7 +116,9 @@ class MailSummary extends Component
      */
     protected function getActivities()
     {
-        $lastMailDate = $this->user->last_activity_email;
+
+#        $lastMailDate = $this->user->last_activity_email;
+        $lastMailDate = "";
         if ($lastMailDate == "" || $lastMailDate == "0000-00-00 00:00:00") {
             $lastMailDate = new \yii\db\Expression('NOW() - INTERVAL 24 HOUR');
         }
@@ -113,15 +131,22 @@ class MailSummary extends Component
         $stream->activeQuery->andWhere(['>', 'content.created_at', $lastMailDate]);
 
         $activities = [];
-        foreach ($stream->activeQuery->all() as $wallEntry) {
+        foreach ($stream->activeQuery->all() as $content) {
             try {
-                $activity = $wallEntry->content->getPolymorphicRelation();
-                $activities[] = $activity->getActivityBaseClass();
+                $activity = $content->getPolymorphicRelation();
+                if ($activity instanceof \humhub\modules\activity\models\Activity) {
+                    /**
+                     * @var $activity \humhub\modules\activity\models\Activity
+                     */
+                    $activities[] = $activity->getActivityBaseClass();
+                }
             } catch (Exception $ex) {
                 Yii::error($ex->getMessage());
                 return [];
             }
         }
+
+        return $activities;
     }
 
 }
