@@ -67,6 +67,11 @@ class I18N extends \yii\i18n\I18N
      */
     public function setGuestLocale()
     {
+        if (is_a(Yii::$app, 'yii\console\Application')) {
+            $this->setDefaultLocale();
+            return;
+        }
+
         $languageChooser = new ChooseLanguage();
         if ($languageChooser->load(Yii::$app->request->post()) && $languageChooser->save()) {
             Yii::$app->language = $languageChooser->language;

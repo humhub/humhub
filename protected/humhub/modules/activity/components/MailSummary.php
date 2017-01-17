@@ -47,12 +47,12 @@ class MailSummary extends Component
     /**
      * @var string the mail summary layout file for html mails
      */
-    public $mailSummaryLayout = '@activity/views/mails/mailSummary';
+    public $layout = '@activity/views/mails/mailSummary';
 
     /**
      * @var string the mail summary layout file for plaintext mails
      */
-    public $mailSummaryLayoutPlaintext = '@activity/views/mails/plaintext/mailSummary';
+    public $layoutPlaintext = '@activity/views/mails/plaintext/mailSummary';
 
     /**
      * Sends the summary mail to the user
@@ -62,6 +62,8 @@ class MailSummary extends Component
         if ($this->user === null || empty($this->user->email)) {
             return false;
         }
+
+        Yii::$app->i18n->setUserLocale($this->user);
 
         $outputHtml = '';
         $outputPlaintext = '';
@@ -91,6 +93,8 @@ class MailSummary extends Component
         } catch (Exception $ex) {
             Yii::error('Could not send mail to: ' . $this->user->email . ' - Error:  ' . $ex->getMessage());
         }
+
+        Yii::$app->i18n->autosetLocale();
     }
 
     /**
