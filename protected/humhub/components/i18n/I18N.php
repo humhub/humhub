@@ -2,15 +2,18 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\components\i18n;
 
 use Yii;
+use humhub\models\forms\ChooseLanguage;
 
 /**
+ * I18N provides features related with internationalization (I18N) and localization (L10N).
+ * 
  * @inheritdoc
  */
 class I18N extends \yii\i18n\I18N
@@ -20,6 +23,78 @@ class I18N extends \yii\i18n\I18N
      * @var string path which contains message overwrites
      */
     public $messageOverwritePath = '@config/messages';
+
+    /**
+     * Automatically sets the current locale
+     */
+    public function autosetLocale()
+    {
+        if (!Yii::$app->params['installed'] || Yii::$app->user->isGuest) {
+            $this->setGuestLocale();
+        } else {
+            $this->setUserLocale(Yii::$app->user->getIdentity());
+        }
+    }
+
+    /**
+     * Sets the current locale for a given user.
+     * If no user is given the currently logged in user will be used.
+     * 
+     * @param \humhub\modules\user\models\User $user
+     */
+    public function setUserLocale($user)
+    {
+        if ($user === null) {
+            throw \yii\base\InvalidParamException("User cannot be null!");
+        }
+
+        if (!empty($user->language)) {
+            Yii::$app->language = $user->language;
+        }
+
+        if (!($user->time_zone)) {
+            Yii::$app->formatter->timeZone = $user->time_zone;
+        }
+        Yii::$app->formatter->defaultTimeZone = Yii::$app->timeZone;
+
+        $this->fixLocaleCodes();
+    }
+
+    /**
+     * Sets the locale for the current guest user.
+     * 
+     * The language is determined by the a cookie 
+     */
+    public function setGuestLocale()
+    {
+        if (is_a(Yii::$app, 'yii\console\Application')) {
+            $this->setDefaultLocale();
+            return;
+        }
+
+        $languageChooser = new ChooseLanguage();
+        if ($languageChooser->load(Yii::$app->request->post()) && $languageChooser->save()) {
+            Yii::$app->language = $languageChooser->language;
+        } else {
+            $language = $languageChooser->getSavedLanguage();
+            if ($language === null) {
+                // Use browser preferred language
+                $language = Yii::$app->request->getPreferredLanguage(array_keys($this->getAllowedLanguages()));
+            }
+            Yii::$app->language = $language;
+        }
+
+        $this->fixLocaleCodes();
+    }
+
+    /**
+     * Sets the system default locale
+     */
+    public function setDefaultLocale()
+    {
+        Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
+        $this->fixLocaleCodes();
+    }
 
     /**
      * @inheritdoc
@@ -69,6 +144,11 @@ class I18N extends \yii\i18n\I18N
         return parent::getMessageSource($category);
     }
 
+    /**
+     * Returns an array of allowed/available language codes
+     * 
+     * @return array the allowed languages
+     */
     public function getAllowedLanguages()
     {
         $availableLanguages = Yii::$app->params['availableLanguages'];
@@ -143,6 +223,17 @@ class I18N extends \yii\i18n\I18N
             $moduleCategory = ucfirst($moduleId);
         }
         return $moduleCategory . "Module.";
+    }
+
+    /**
+     * Ensure that old language codes are translated to the
+     * current format.
+     */
+    protected function fixLocaleCodes()
+    {
+        if (Yii::$app->language == 'en') {
+            Yii::$app->language = 'en-US';
+        }
     }
 
 }

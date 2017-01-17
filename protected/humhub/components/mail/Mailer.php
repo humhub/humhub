@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\components;
+namespace humhub\components\mail;
 
 use Yii;
 
@@ -19,6 +19,11 @@ use Yii;
  */
 class Mailer extends \yii\swiftmailer\Mailer
 {
+
+    /**
+     * @inheritdoc
+     */
+    public $messageClass = 'humhub\components\mail\Message';
 
     /**
      * Creates a new message instance and optionally composes its body content via view rendering.

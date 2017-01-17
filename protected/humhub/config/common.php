@@ -27,7 +27,7 @@ $config = [
                     'class' => 'humhub\modules\notification\components\MailNotificationTarget',
                     'renderer' => ['class' => 'humhub\modules\notification\components\MailTargetRenderer']
                 ],
-                //['class' => '\humhub\modules\notification\components\MobileNotificationTarget']
+            //['class' => '\humhub\modules\notification\components\MobileNotificationTarget']
             ]
         ],
         'log' => [
@@ -87,7 +87,7 @@ $config = [
             'class' => 'yii\caching\DummyCache',
         ],
         'mailer' => [
-            'class' => 'humhub\components\Mailer',
+            'class' => 'humhub\components\mail\Mailer',
             'viewPath' => '@humhub/views/mail',
             'view' => [
                 'class' => '\yii\web\View',
@@ -100,7 +100,7 @@ $config = [
         'assetManager' => [
             'class' => '\humhub\components\AssetManager',
             'appendTimestamp' => true,
-            'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD ? 'assets-prod.php' : 'assets-dev.php')),  
+            'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD ? 'assets-prod.php' : 'assets-dev.php')),
         ],
         'view' => [
             'class' => '\humhub\components\View',
