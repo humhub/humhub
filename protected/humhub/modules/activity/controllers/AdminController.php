@@ -21,6 +21,16 @@ use humhub\modules\activity\models\MailSummaryForm;
 class AdminController extends Controller
 {
 
+    /**
+     * @inheritdoc
+     */
+    public static function getAccessRules()
+    {
+        return [
+            ['permissions' => \humhub\modules\admin\permissions\ManageSettings::className()]
+        ];
+    }
+
     public function actionDefaults()
     {
         $this->subLayout = '@admin/views/layouts/setting';
