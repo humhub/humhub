@@ -12,6 +12,8 @@ use Yii;
 use yii\base\Exception;
 use yii\base\Component;
 use humhub\modules\dashboard\components\actions\DashboardStream;
+use humhub\modules\content\models\ContentContainer;
+use humhub\modules\activity\models\MailSummaryForm;
 
 /**
  * MailSummary is send to the user with a list of new activities
@@ -87,7 +89,7 @@ class MailSummary extends Component
             $mail->setTo($this->user->email);
             $mail->setSubject($this->getSubject());
             if ($mail->send()) {
-                //TODO: Store date of last activity e-mail send
+                $this->setLastSummaryDate();
                 return true;
             }
         } catch (Exception $ex) {
@@ -120,19 +122,26 @@ class MailSummary extends Component
      */
     protected function getActivities()
     {
-
-#        $lastMailDate = $this->user->last_activity_email;
-        $lastMailDate = "";
-        if ($lastMailDate == "" || $lastMailDate == "0000-00-00 00:00:00") {
-            $lastMailDate = new \yii\db\Expression('NOW() - INTERVAL 24 HOUR');
-        }
-
         $stream = new DashboardStream('stream', Yii::$app->controller);
         $stream->limit = $this->maxActivityCount;
         $stream->mode = DashboardStream::MODE_ACTIVITY;
         $stream->user = $this->user;
         $stream->init();
-        $stream->activeQuery->andWhere(['>', 'content.created_at', $lastMailDate]);
+        $stream->activeQuery->andWhere(['>', 'content.created_at', $this->getLastSummaryDate()]);
+
+        // Handle suppressed activities
+        $suppressedActivities = $this->getSuppressedActivities();
+        if (!empty($suppressedActivities)) {
+            $stream->activeQuery->leftJoin('activity ax', 'ax.id=content.object_id');
+            $stream->activeQuery->andWhere(['NOT IN', 'ax.class', $suppressedActivities]);
+        }
+
+        // Handle defined content container mode
+        $limitContainer = $this->getLimitContentContainers();
+        if (!empty($limitContainer)) {
+            $mode = ($this->getLimitContentContainerMode() == MailSummaryForm::LIMIT_MODE_INCLUDE) ? 'IN' : 'NOT IN';
+            $stream->activeQuery->andWhere([$mode, 'content.contentcontainer_id', $limitContainer]);
+        }
 
         $activities = [];
         foreach ($stream->activeQuery->all() as $content) {
@@ -151,6 +160,81 @@ class MailSummary extends Component
         }
 
         return $activities;
+    }
+
+    /**
+     * Stores the date of the last summary mail
+     */
+    protected function setLastSummaryDate()
+    {
+        Yii::$app->getModule('activity')->settings->user($this->user)->set('mailSummaryLast', time());
+    }
+
+    /**
+     * Returns the last summary date
+     * 
+     * @return string|\yii\db\Expression of the last summary mail
+     */
+    protected function getLastSummaryDate()
+    {
+        $lastSent = (int) Yii::$app->getModule('activity')->settings->user($this->user)->get('mailSummaryLast');
+        if (empty($lastSent)) {
+            $lastSent = new \yii\db\Expression('NOW() - INTERVAL 24 HOUR');
+        } else {
+            $lastSent = date('Y-m-d G:i:s', $lastSent);
+        }
+        return $lastSent;
+    }
+
+    /**
+     * Returns the mode (exclude, include) of given content containers
+     * 
+     * @see MailSummaryForm
+     * @return int mode
+     */
+    protected function getLimitContentContainerMode()
+    {
+        $activityModule = Yii::$app->getModule('activity');
+        $default = $activityModule->settings->get('mailSummaryLimitSpacesMode', '');
+        return $activityModule->settings->user($this->user)->get('mailSummaryLimitSpacesMode', $default);
+    }
+
+    /**
+     * Returns a list of content containers which should be included or excluded.
+     * 
+     * @return array list of contentcontainer ids
+     */
+    protected function getLimitContentContainers()
+    {
+        $spaces = [];
+        $activityModule = Yii::$app->getModule('activity');
+        $defaultLimitSpaces = $activityModule->settings->get('mailSummaryLimitSpaces', '');
+        $limitSpaces = $activityModule->settings->user($this->user)->get('mailSummaryLimitSpaces', $defaultLimitSpaces);
+        foreach (explode(',', $limitSpaces) as $guid) {
+            $contentContainer = ContentContainer::findOne(['guid' => $guid]);
+            if ($contentContainer !== null) {
+                $spaces[] = $contentContainer->id;
+            }
+        }
+        return $spaces;
+    }
+
+    /**
+     * Returns a list of suppressed activity classes
+     * 
+     * @return array suppressed activity class names
+     */
+    protected function getSuppressedActivities()
+    {
+        $activityModule = Yii::$app->getModule('activity');
+        $defaultActivitySuppress = $activityModule->settings->get('mailSummaryActivitySuppress', '');
+        $activitySuppress = $activityModule->settings->user($this->user)->get('mailSummaryActivitySuppress', $defaultActivitySuppress);
+
+        if (empty($activitySuppress)) {
+            return [];
+        }
+
+        return explode(',', trim($activitySuppress));
     }
 
 }
