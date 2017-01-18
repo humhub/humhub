@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Stick' => 'چسباندن',
-  'Unstick' => 'رها کردن',
+  'Pinned' => 'چسباندن',
+  'Unpinned' => 'رها کردن',
 );
