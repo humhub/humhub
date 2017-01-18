@@ -10,7 +10,7 @@ $config = [
     'name' => 'HumHub',
     'version' => '1.2.0-dev',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
-    'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader'],
+    'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue'],
     'sourceLanguage' => 'en',
     'components' => [
         'moduleManager' => [
@@ -121,6 +121,13 @@ $config = [
             'class' => 'humhub\modules\user\authclient\Collection',
             'clients' => [],
         ],
+        'queue' => [
+            'class' => humhub\components\queue\Queue::class,
+            'driver' => [
+                //'class' => 'humhub\components\queue\driver\MySQL',
+                'class' => 'humhub\components\queue\driver\Sync',
+            ],
+        ],
     ],
     'params' => [
         'installed' => false,
@@ -216,8 +223,5 @@ $config = [
         'enablePjax' => false,
     ]
 ];
-
-
-
 
 return $config;

@@ -9,8 +9,8 @@
 namespace humhub\modules\activity;
 
 use Yii;
-use humhub\modules\activity\components\MailSummaryProcessor;
 use humhub\modules\activity\components\MailSummary;
+use humhub\modules\activity\jobs\SendMailSummary;
 use humhub\modules\activity\models\Activity;
 
 /**
@@ -29,9 +29,9 @@ class Events extends \yii\base\Object
     public static function onCronRun($event)
     {
         if (Yii::$app->controller->action->id == 'hourly') {
-            MailSummaryProcessor::process(MailSummary::INTERVAL_HOURY);
+            Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_HOURY]));
         } elseif (Yii::$app->controller->action->id == 'daily') {
-            MailSummaryProcessor::process(MailSummary::INTERVAL_DAILY);
+            Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_DAILY]));
         }
     }
 
