@@ -19,9 +19,11 @@ use humhub\modules\notification\models\forms\NotificationSettings;
  * @author Luke
  */
 class AdminController extends Controller
-{
-
-    public static function getAcessRules()
+{   
+    /**
+     * @inheritdoc
+     */
+    public static function getAccessRules()
     {
         return [
             ['permissions' => \humhub\modules\admin\permissions\ManageSettings::className()]

@@ -26,7 +26,7 @@ use \yii\helpers\Url;
                         <li class="divider"></li>
                         <?php else: ?>
                         <li>
-                            <a href="<?php echo $item['url']; ?>">
+                            <a <?= isset($item['id']) ? 'id="'.$item['id'].'"' : '' ?> href="<?php echo $item['url']; ?>">
                                 <?php echo $item['icon'] . ' ' .$item['label']; ?>
                             </a>
                         </li>

@@ -20,7 +20,7 @@ $testConfig = [
          */
         ],
         'user' => [
-            'enableAutoLogin' => false
+            'enableAutoLogin' => true
         ],
         // Default ErrorAction results in 'Unable to resolve the request "error/index" exception
         'errorHandler' => [

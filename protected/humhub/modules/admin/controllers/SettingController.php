@@ -52,7 +52,10 @@ class SettingController extends Controller
         return parent::init();
     }
 
-    public static function getAcessRules()
+    /**
+     * @inheritdoc
+     */
+    public static function getAccessRules()
     {
         return [
             ['permissions' => \humhub\modules\admin\permissions\ManageSettings::className()]

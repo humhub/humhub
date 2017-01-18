@@ -64,7 +64,7 @@ class ProfileCest
         $I->amUser2();
         $directory = $I->amOnDirectory();
         $directory->clickMembers();
-        $I->click('User1');
+        $I->click('Peter Tester');
         
         $I->waitForText('Profile menu');
         $I->expectTo('see the profile of User2');
@@ -84,6 +84,8 @@ class ProfileCest
         $I->amUser1(true);
         $directory = $I->amOnDirectory();
         $directory->clickMembers();
-        $I->click('User2');
+        $I->click('Sara Tester');
+        $I->wait(3);
+        $I->dontSee('About');
     }
 }

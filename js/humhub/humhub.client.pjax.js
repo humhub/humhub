@@ -1,7 +1,7 @@
-humhub.module('client.pjax', function(module, require, $) {
+humhub.module('client.pjax', function (module, require, $) {
     var event = require('event');
 
-    var init = function() {
+    var init = function () {
         if (module.config.active) {
             $(document).pjax('a:not([data-pjax-prevent],[target],[data-target],[data-toggle])', "#layout-content", module.config.options);
             pjaxRedirectFix();
@@ -9,13 +9,13 @@ humhub.module('client.pjax', function(module, require, $) {
         }
     };
 
-    var pjaxRedirectFix = function() {
-        $(document).on("pjax:beforeSend", function(evt, xhr, options) {
+    var pjaxRedirectFix = function () {
+        $(document).on("pjax:beforeSend", function (evt, xhr, options) {
             // Ignore links with data-target attribute
             if ($(event.relatedTarget).data('target')) {
                 return false;
             }
-            
+
             event.trigger('humhub:modules:client:pjax:beforeSend', {
                 'originalEvent': evt,
                 'xhr': xhr,
@@ -23,7 +23,7 @@ humhub.module('client.pjax', function(module, require, $) {
             });
         });
 
-        $(document).on("pjax:success", function(evt, data, status, xhr, options) {
+        $(document).on("pjax:success", function (evt, data, status, xhr, options) {
             event.trigger('humhub:modules:client:pjax:success', {
                 'originalEvent': evt,
                 'data': data,
@@ -31,11 +31,16 @@ humhub.module('client.pjax', function(module, require, $) {
                 'xhr': xhr,
                 'options': options
             });
+            
+            // Update default ajax url, used if no url is given.
+            $.ajaxSetup({
+                url: window.location.href
+            });
         });
 
-        $.ajaxPrefilter('html', function(options, originalOptions, jqXHR) {
+        $.ajaxPrefilter('html', function (options, originalOptions, jqXHR) {
             var orgErrorHandler = options.error;
-            options.error = function(xhr, textStatus, errorThrown) {
+            options.error = function (xhr, textStatus, errorThrown) {
                 if (isPjaxRedirect(xhr)) {
                     options.url = xhr.getResponseHeader('X-PJAX-REDIRECT-URL');
                     options.replace = true;
@@ -48,7 +53,7 @@ humhub.module('client.pjax', function(module, require, $) {
         });
     };
 
-    var isPjaxRedirect = function(xhr) {
+    var isPjaxRedirect = function (xhr) {
         if (!xhr) {
             return false;
         }
@@ -57,22 +62,22 @@ humhub.module('client.pjax', function(module, require, $) {
         return redirect && xhr.getResponseHeader('X-PJAX-REDIRECT-URL') != "" && xhr.getResponseHeader('X-PJAX-REDIRECT-URL') !== null;
     };
 
-    var installLoader = function() {
+    var installLoader = function () {
         NProgress.configure({showSpinner: false});
         NProgress.configure({template: '<div class="bar" role="bar"></div>'});
 
-        $(document).on('pjax:start', function(evt, xhr, options) {
+        $(document).on('pjax:start', function (evt, xhr, options) {
             NProgress.start();
         });
 
-        $(document).on('pjax:end', function(evt, xhr, options) {
+        $(document).on('pjax:end', function (evt, xhr, options) {
             if (!isPjaxRedirect(xhr)) {
                 NProgress.done();
             }
         });
     };
-    
-    var isActive = function() {
+
+    var isActive = function () {
         return module.config.active;
     };
 

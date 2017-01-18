@@ -249,9 +249,13 @@ class StreamCest
         $I->amGoingTo('create a new post and delete it afterwards');
 
         $I->createPost('POST1');
+        $I->wait(1);
         $I->createPost('POST2');
+        $I->wait(1);
         $I->createPost('POST3');
+        $I->wait(1);
         $I->createPost('POST4');
+        $I->wait(1);
         $I->createPost('POST5');
 
         $I->see('POST5', '.s2_streamContent > [data-stream-entry]:nth-of-type(1)');

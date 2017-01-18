@@ -20,7 +20,6 @@ use humhub\modules\activity\models\MailSummaryForm;
  */
 class AdminController extends Controller
 {
-
     /**
      * @inheritdoc
      */

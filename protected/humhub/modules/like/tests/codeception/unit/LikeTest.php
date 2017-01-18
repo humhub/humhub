@@ -2,6 +2,8 @@
 
 namespace tests\codeception\unit\modules\like;
 
+use Yii;
+use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\like\models\Like;
@@ -12,7 +14,7 @@ class LikeTest extends HumHubDbTestCase
 
     use Specify;
 
-    public function testAcceptFriendShip()
+    public function testLikePost()
     {
         $this->becomeUser('User2');
 
@@ -20,6 +22,8 @@ class LikeTest extends HumHubDbTestCase
             'object_model' => Post::class,
             'object_id' => 1
         ]);
+        
+        Yii::$app->getModule('notification')->settings->user(User::findOne(['id' => 1]))->set('notification.like_email', 1);
 
         $this->assertTrue($like->save(), 'Save like.');
         $this->assertMailSent(1, 'Like notification sent');

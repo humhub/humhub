@@ -16,7 +16,7 @@ return [
               'theme' => 
                     array (
                       'name' => 'HumHub',
-                      'basePath' => '@humhub/themes/HumHub',
+                      'basePath' => '@webroot/themes/HumHub',
                     ),
             ),
         ],

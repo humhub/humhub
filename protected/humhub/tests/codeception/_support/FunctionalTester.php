@@ -51,6 +51,7 @@ class FunctionalTester extends \Codeception\Actor
             $this->amUser1();
         } else {
             LoginPage::openBy($this)->login($user, $password);
+            tests\codeception\_pages\DashboardPage::openBy($this);
             $this->see('Dashboard');
         }
     }

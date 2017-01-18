@@ -128,6 +128,9 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
 
     /**
      * Sends this notification to a set of users.
+     * 
+     * This function will filter out duplicates and the originator itself if given in the
+     * $users array.
      *
      * @param mixed $users can be an array of User records or an ActiveQuery.
      */
@@ -144,9 +147,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
         // Filter out duplicates and the originator and save records
         $filteredUsers = $this->saveAndFilterRecords($users);
         
-        foreach (Yii::$app->notification->getTargets() as $target) {
-            $target->sendBulk($this, $filteredUsers);
-        }
+        Yii::$app->notification->sendBulk($this, $filteredUsers);
     }
 
     /**
@@ -188,10 +189,8 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
 
         //$this->queueJob($user);
         $this->saveRecord($user);
-
-        foreach (Yii::$app->notification->getTargets($user) as $target) {
-            $target->send($this, $user);
-        }
+        
+        Yii::$app->notification->send($this, $user); 
     }
 
     /**

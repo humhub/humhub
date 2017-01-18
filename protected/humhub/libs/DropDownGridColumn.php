@@ -50,6 +50,7 @@ class DropDownGridColumn extends DataColumn
         if (!isset($this->ajaxOptions['type'])) {
             $this->ajaxOptions['type'] = 'POST';
         }
+        
         $this->ajaxOptions['data'] = new \yii\web\JsExpression('data');
 
         $this->grid->view->registerJs("$('.editableCell').change(function() {

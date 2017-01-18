@@ -11,13 +11,15 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 
 /**
- * Description of NotificationManager
- *
+ * The NotificationManager component is responsible for sending BaseNotifications to Users over different
+ * NotificationTargets by using the send and sendBulk function.
+ * 
+ * A NotificationTarget may be disabled for a specific user and will be skipped.
+ * 
  * @author buddha
  */
 class NotificationManager
 {
-
     /**
      * 
      * @var array Target configuration.
@@ -40,6 +42,33 @@ class NotificationManager
      * @var type 
      */
     protected $_categories;
+
+    /**
+     * Sends the given $notification to all enabled targets of the given $users if possible
+     * as bulk message.
+     * 
+     * @param \humhub\modules\notification\components\BaseNotification $notification
+     * @param User[] $users
+     */
+    public function sendBulk(BaseNotification $notification, $users)
+    {
+        foreach ($this->getTargets() as $target) {
+            $target->sendBulk($notification, $users);
+        }
+    }
+    
+    /**
+     * Sends the given $notification to all enabled targets of a single user.
+     * 
+     * @param \humhub\modules\notification\components\BaseNotification $notification
+     * @param User $user target user
+     */
+    public function send(BaseNotification $notification, User $user)
+    {
+        foreach ($this->getTargets($user) as $target) {
+            $target->send($notification, $user);
+        }
+    }
 
     /**
      * Returns all active targets for the given user.
@@ -119,7 +148,7 @@ class NotificationManager
      */
     public function getContainerFollowers(ContentContainerActiveRecord $container, $public = true)
     {
-        if ($cotnainer instanceof Space) {
+        if ($container instanceof Space) {
             $members = Membership::getSpaceMembersQuery($container, true, true)->all();
             $followers = (!$public) ? [] : Follow::getFollowersQuery($container, true)->all();
             return array_merge($members, $followers);

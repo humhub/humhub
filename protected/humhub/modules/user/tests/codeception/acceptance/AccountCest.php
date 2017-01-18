@@ -31,7 +31,6 @@ class AccountCest
         $I->see('Speichern');
         $I->click('Save');
         $I->waitForElementVisible('.data-saved', 5);
-         * 
         
         $I->selectOption('#accountsettings-language', 'English(US)');
         $I->click('Save');
@@ -61,23 +60,22 @@ class AccountCest
         $I->waitForText('User settings');
         
         $I->click('Notifications'); //Notification tab
-        $I->waitForText('Send notifications');
+        $I->waitForText('Notification Settings');
         
         $I->expectTo('see the notification settings form');
-        $I->see('Send notifications?');
-        $I->see('Send activities?');
-        $I->selectOption('AccountEmailing[receive_email_notifications]', 'Never');
-        $I->selectOption('AccountEmailing[receive_email_activities]', 'Never');
-        $I->click('.regular-checkbox-box');
+        $I->see('Following');
+        $I->see('Mentionings');
+        $I->jsClick('[name="NotificationSettings[settings][notification.followed_web]"]');
+        $I->jsClick('[name="NotificationSettings[settings][notification.comments_web]"]');
         
         $I->click('Save');
         
         $I->seeSuccess('Saved');
         
-        // Refresh page
-        $I->amOnPage('index-test.php?r=user%2Faccount%2Femailing');
-        $I->waitForElementVisible('#accountemailing-receive_email_activities');
-        $I->seeOptionIsSelected('AccountEmailing[receive_email_notifications]', 'Never');
-        $I->seeOptionIsSelected('AccountEmailing[receive_email_activities]', 'Never');
+        // Todo proper checkbox tests...
+        /*$I->amOnPage('index-test.php?r=notification%2Fuser');
+        $I->waitForText('Notification Settings');
+        $I->seeInField('[name="NotificationSettings[settings][notification.followed_web]"]', 0);
+        $I->seeInField('[name="NotificationSettings[settings][notification.comments_web]"]', 0);*/
     }
 }
