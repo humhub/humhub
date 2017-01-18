@@ -2,7 +2,7 @@ Requirements
 ============
 
 ### General Requirements:
-* PHP 5.4+
+* PHP 5.6+
 * MySQL
 * Shell access (e.g. ssh) to server  
 * Apache 2.x 
