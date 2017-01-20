@@ -9,4 +9,5 @@ return array (
   'Select List' => 'リストを選択',
   'Text' => 'テキスト',
   'Text Area' => 'テキストエリア',
+  'Checkbox' => '',
 );
