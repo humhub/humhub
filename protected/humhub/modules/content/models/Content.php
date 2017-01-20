@@ -193,6 +193,12 @@ class Content extends \humhub\components\ActiveRecord
 
             \humhub\modules\content\activities\ContentCreated::instance()
                     ->about($contentSource)->save();
+
+            Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
+                'contentContainerId' => $this->container->id,
+                'visibility' => $this->visibility,
+                'contentId' => $this->id
+            ]));
         }
 
         return parent::afterSave($insert, $changedAttributes);
