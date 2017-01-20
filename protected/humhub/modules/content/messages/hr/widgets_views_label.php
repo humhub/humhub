@@ -19,5 +19,5 @@
 return [
     'Archived' => '',
     'Public' => '',
-    'Sticked' => '',
+    'Pinned' => '',
 ];

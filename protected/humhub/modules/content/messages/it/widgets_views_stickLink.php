@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Stick' => 'In evidenza',
-  'Unstick' => 'Disevidenzia',
+  'Pinned' => 'In evidenza',
+  'Unpinned' => 'Disevidenzia',
 );

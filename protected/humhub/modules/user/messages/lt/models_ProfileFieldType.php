@@ -26,4 +26,5 @@ return [
     'Select List' => 'Pažymėtas sąrašas',
     'Text' => 'Tekstas',
     'Text Area' => 'Vieta tekstui',
+    'Checkbox' => '',
 ];

@@ -26,4 +26,5 @@ return [
     'Date' => 'Dato',
     'Text' => 'Tekst',
     'Text Area' => 'Tekst Område',
+    'Checkbox' => '',
 ];

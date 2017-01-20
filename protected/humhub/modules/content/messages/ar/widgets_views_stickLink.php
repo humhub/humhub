@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Stick' => 'تثبيت',
-  'Unstick' => 'إلغاء التثبيت',
+  'Pinned' => 'تثبيت',
+  'Unpinned' => 'إلغاء التثبيت',
 );

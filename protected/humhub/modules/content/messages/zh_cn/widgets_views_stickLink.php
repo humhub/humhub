@@ -17,6 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Stick' => '标记',
-  'Unstick' => '取消标记',
+  'Pinned' => '标记',
+  'Unpinned' => '取消标记',
 );

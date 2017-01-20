@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Stick' => 'Fixa a dalt',
-  'Unstick' => 'Desfixa',
+  'Pinned' => 'Fixa a dalt',
+  'Unpinned' => 'Desfixa',
 );

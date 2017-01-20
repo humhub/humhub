@@ -26,4 +26,5 @@ return [
     'Select List' => 'Selecione a lista',
     'Text' => 'Texto',
     'Text Area' => 'Área de Texto',
+    'Checkbox' => '',
 ];

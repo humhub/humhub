@@ -10,7 +10,7 @@
  */
 ?>
 <?php if ($object->content->isSticked()) : ?>
-    <span class="label label-danger"><?php echo Yii::t('ContentModule.widgets_views_label', 'Sticked'); ?></span>
+    <span class="label label-danger"><?php echo Yii::t('ContentModule.widgets_views_label', 'Pinned'); ?></span>
 <?php endif; ?>
 
 <?php if ($object->content->isArchived()) : ?>

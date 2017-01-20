@@ -2,5 +2,5 @@
 return array (
   'Archived' => '',
   'Public' => '',
-  'Sticked' => '',
+  'Pinned' => '',
 );
