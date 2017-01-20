@@ -8,7 +8,10 @@
 
 namespace humhub\components\queue;
 
+use Yii;
+use yii\base\Event;
 use zhuravljov\yii\queue\Queue as BaseQueue;
+use zhuravljov\yii\queue\ErrorEvent;
 
 /**
  * Queue
@@ -18,5 +21,19 @@ use zhuravljov\yii\queue\Queue as BaseQueue;
  */
 class Queue extends BaseQueue
 {
-    
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        Event::on(Queue::class, Queue::EVENT_AFTER_ERROR, function(ErrorEvent $errorEvent) {
+            /* @var $exception \Expection */
+            $exception = $errorEvent->error;
+            Yii::error('Could not executed queued job! Message: ' . $exception->getMessage() . ' Trace:' . $exception->getTraceAsString(), 'queue');
+        });
+    }
+
 }
