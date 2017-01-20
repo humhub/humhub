@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -33,6 +33,19 @@ use humhub\modules\space\models\Space;
 class Membership extends \yii\db\ActiveRecord
 {
 
+    /**
+     * @event \humhub\modules\space\MemberEvent
+     */
+    const EVENT_MEMBER_REMOVED = 'memberRemoved';
+
+    /**
+     * @event \humhub\modules\space\MemberEvent
+     */
+    const EVENT_MEMBER_ADDED = 'memberAdded';
+
+    /**
+     * Status Codes
+     */
     const STATUS_INVITED = 1;
     const STATUS_APPLICANT = 2;
     const STATUS_MEMBER = 3;

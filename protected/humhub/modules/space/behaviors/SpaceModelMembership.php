@@ -17,6 +17,7 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\notifications\ApprovalRequestAccepted;
 use humhub\modules\space\notifications\InviteAccepted;
+use humhub\modules\space\MemberEvent;
 
 /**
  * SpaceModelMemberBehavior bundles all membership related methods of the Space model.
@@ -40,7 +41,7 @@ class SpaceModelMembership extends Behavior
         // Take current userid if none is given
         if ($userId == "" && !Yii::$app->user->isGuest) {
             $userId = Yii::$app->user->id;
-        } elseif($userId == "" && Yii::$app->user->isGuest) {
+        } elseif ($userId == "" && Yii::$app->user->isGuest) {
             return false;
         }
 
@@ -118,9 +119,9 @@ class SpaceModelMembership extends Behavior
     public function setSpaceOwner($userId = null)
     {
 
-        if($userId instanceof User) {
+        if ($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId ||$userId == 0) {
+        } else if (!$userId || $userId == 0) {
             $userId = Yii::$app->user->id;
         }
 
@@ -154,9 +155,9 @@ class SpaceModelMembership extends Behavior
      */
     public function isSpaceOwner($userId = null)
     {
-        if($userId instanceof User) {
+        if ($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId ||$userId == "") {
+        } else if (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
         }
 
@@ -175,7 +176,7 @@ class SpaceModelMembership extends Behavior
      */
     public function setAdmin($userId = null)
     {
-        if($userId instanceof User) {
+        if ($userId instanceof User) {
             $userId = $userId->id;
         } else if (!$userId || $userId == 0) {
             $userId = Yii::$app->user->id;
@@ -197,7 +198,7 @@ class SpaceModelMembership extends Behavior
      */
     public function getMembership($userId = null)
     {
-        if($userId instanceof User) {
+        if ($userId instanceof User) {
             $userId = $userId->id;
         } else if (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
@@ -406,8 +407,14 @@ class SpaceModelMembership extends Behavior
             // Update Membership
             $membership->status = Membership::STATUS_MEMBER;
         }
+
         $membership->save();
 
+        MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_ADDED, new MemberEvent([
+            'space' => $this->owner, 'user' => $user
+        ]));
+        
+        
         // Create Activity
         \humhub\modules\space\activities\MemberAdded::instance()->from($user)->about($this->owner)->save();
 
@@ -450,6 +457,10 @@ class SpaceModelMembership extends Behavior
             $activity->source = $this->owner;
             $activity->originator = $user;
             $activity->create();
+
+            MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_REMOVED, new MemberEvent([
+                'space' => $this->owner, 'user' => $user
+            ]));
         } elseif ($membership->status == Membership::STATUS_INVITED && $membership->originator !== null) {
             // Was invited, but declined the request - inform originator
             $notification = new \humhub\modules\space\notifications\InviteDeclined();
