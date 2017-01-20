@@ -50,13 +50,21 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      * @var string WallEntry widget class
      */
     public $wallEntryClass = "";
-    
+
     /**
      * Defines if originator automatically follows this content when saved.
      * @var type 
      */
     public $autoFollow = true;
 
+    /**
+     * The stream channel where this content should displayed.
+     * Set to null when this content should not appear on the stream.
+     * 
+     * @since 1.2
+     * @var string|null the stream channel
+     */
+    protected $streamChannel = 'default';
 
     /**
      * @inheritdoc
@@ -100,6 +108,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
     /**
      * Returns a description of this particular content.
+     * 
      * This will be used to create a text preview of the content record. (e.g. in Activities or Notifications)
      * You need to override this method in your content implementation.
      *
@@ -167,6 +176,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
             throw new Exception("Could not validate associated Content Record! (" . print_r($this->content->getErrors(), 1) . ")");
         }
 
+        $this->content->setAttribute('stream_channel', $this->streamChannel, false);
+
         return parent::beforeSave($insert);
     }
 
@@ -176,7 +187,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     public function afterSave($insert, $changedAttributes)
     {
         // Auto follow this content
-        if($this->autoFollow) {
+        if ($this->autoFollow) {
             $this->follow($this->content->created_by);
         }
 

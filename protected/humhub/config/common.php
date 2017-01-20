@@ -128,6 +128,12 @@ $config = [
                 'class' => 'humhub\components\queue\driver\Sync',
             ],
         ],
+        'live' => [
+            'class' => humhub\modules\live\components\Sender::class,
+            'driver' => [
+                'class' => 'humhub\modules\live\driver\Database',
+            ],
+        ],
     ],
     'params' => [
         'installed' => false,

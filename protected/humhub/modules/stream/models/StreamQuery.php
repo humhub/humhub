@@ -33,6 +33,12 @@ class StreamQuery extends \yii\base\Model
     const FILTER_PUBLIC = "visibility_public";
 
     /**
+     * Default channels
+     */
+    const CHANNEL_DEFAULT = 'default';
+    const CHANNEL_ACTIVITY = 'activity';
+
+    /**
      * Maximum wall entries per request
      */
     const MAX_LIMIT = 20;
@@ -45,17 +51,16 @@ class StreamQuery extends \yii\base\Model
     protected $_includes;
 
     /**
+     * @var string stream channel to display
+     */
+    protected $_channel;
+
+    /**
      * Can be set to filter out specific content types.
      * 
      * @var array Content type filter
      */
     protected $_excludes;
-
-    /**
-     * Used to deactivate the default exclusion of activity  entries
-     * @var type 
-     */
-    public $prevenActivityFilter = false;
 
     /**
      * The user which requested the stream. By default the current user identity.
@@ -113,7 +118,6 @@ class StreamQuery extends \yii\base\Model
      * @var \yii\db\ActiveQuery 
      */
     protected $_query;
-    
     protected $_built = false;
 
     public function rules()
@@ -234,7 +238,7 @@ class StreamQuery extends \yii\base\Model
     }
 
     public function query($build = false)
-    {    
+    {
         if ($build) {
             $this->setupQuery();
         }
@@ -259,6 +263,11 @@ class StreamQuery extends \yii\base\Model
         $this->checkFrom();
         $this->setupCriteria();
         $this->setupFilters();
+
+        if (empty($this->_channel)) {
+            $this->channel(self::CHANNEL_DEFAULT);
+        }
+
         $this->_built = true;
     }
 
@@ -441,16 +450,24 @@ class StreamQuery extends \yii\base\Model
             $this->_excludes = [$this->_excludes];
         }
 
-        // Filter out Activity Entrys by default
-        if (!$this->prevenActivityFilter && !in_array(\humhub\modules\activity\models\Activity::className(), $this->_includes)) {
-            $this->_excludes[] = \humhub\modules\activity\models\Activity::className();
-        }
-
         if (count($this->_excludes) === 1) {
             $this->_query->andWhere(['!=', "content.object_model", $this->_excludes[0]]);
         } else if (!empty($this->_excludes)) {
             $this->_query->andWhere(['NOT IN', 'content.object_model', $this->_excludes]);
         }
+    }
+
+    /**
+     * Sets the channel for this stream query
+     * 
+     * @param string $channel
+     * @return StreamQuery
+     */
+    public function channel($channel)
+    {
+        $this->_channel = $channel;
+        $this->_query->andWhere(['content.stream_channel' => $channel]);
+        return $this;
     }
 
 }

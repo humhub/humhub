@@ -28,11 +28,16 @@ class Activity extends ContentActiveRecord
      * @inheritdoc
      */
     public $wallEntryClass = "humhub\modules\activity\widgets\Activity";
-    
+
     /**
      * @inheritdoc
      */
     public $autoFollow = false;
+
+    /**
+     * @inheritdoc
+     */
+    protected $streamChannel = 'activity';
 
     /**
      * @inheritdoc

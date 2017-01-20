@@ -158,7 +158,11 @@ class ModuleManager extends \yii\base\Component
         // Register Event Handlers
         if (isset($config['events'])) {
             foreach ($config['events'] as $event) {
-                Event::on($event['class'], $event['event'], $event['callback']);
+                if (isset($event['class'])) {
+                    Event::on($event['class'], $event['event'], $event['callback']);
+                } else {
+                    Event::on($event[0], $event[1], $event[2]);
+                }
             }
         }
     }

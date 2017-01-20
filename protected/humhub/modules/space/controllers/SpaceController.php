@@ -14,7 +14,6 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\stream\actions\ContentContainerStream;
 
-
 /**
  * SpaceController is the main controller for spaces.
  *
@@ -61,10 +60,10 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     {
         $space = $this->getSpace();
 
-        if(Yii::$app->request->get('tour')) {
+        if (Yii::$app->request->get('tour')) {
             return $this->actionHome();
         }
-        
+
         if (!$space->isMember()) {
             $defaultPageUrl = \humhub\modules\space\widgets\Menu::getGuestsDefaultPageUrl($space);
             if ($defaultPageUrl != null) {
@@ -105,14 +104,17 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     {
         $this->forcePostRequest();
         $space = $this->getSpace();
+
+        $success = false;
+
         if (!$space->isMember()) {
             // follow without notifications by default
-            $space->follow(null, false);
+            $success = $space->follow(null, false);
         }
 
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = 'json';
-            return ['success' => true];
+            return ['success' => $success];
         }
 
         return $this->redirect($space->getUrl());
@@ -125,11 +127,12 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     {
         $this->forcePostRequest();
         $space = $this->getSpace();
-        $space->unfollow();
+
+        $success = $space->unfollow();
 
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = 'json';
-            return ['success' => true];
+            return ['success' => $success];
         }
 
         return $this->redirect($space->getUrl());

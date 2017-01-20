@@ -58,6 +58,11 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
         return parent::getViewParams($params);
     }
 
+    /**
+     * Stores the activity in database
+     * 
+     * @return boolean 
+     */
     public function save()
     {
         return $this->record->save();

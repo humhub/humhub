@@ -12,6 +12,7 @@ use Yii;
 use yii\base\Action;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
+use humhub\modules\stream\models\StreamQuery;
 use yii\base\ActionEvent;
 use yii\base\Exception;
 
@@ -195,9 +196,7 @@ abstract class Stream extends Action
         }
 
         if ($this->mode == self::MODE_ACTIVITY) {
-            $this->streamQuery->includes(\humhub\modules\activity\models\Activity::className());
-            $this->streamQuery->query()->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\modules\activity\models\Activity::className()]);
-            // Note that if $this->user is null the streamQuery will use the current user identity!
+            $this->streamQuery->channel(StreamQuery::CHANNEL_ACTIVITY);
             $this->streamQuery->query()->andWhere('content.created_by != :userId', [':userId' => $this->streamQuery->user->id]);
         }
     }
