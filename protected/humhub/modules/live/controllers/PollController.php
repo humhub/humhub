@@ -38,7 +38,7 @@ class PollController extends Controller
 
     /**
      * An array of legitimate content container ids
-     * 
+     *
      * @see \humhub\modules\live\Module::getLegitimateContentContainerIds()
      * @var array
      */
@@ -68,7 +68,7 @@ class PollController extends Controller
     /**
      * Returns a list of new live events for the current user
      * The GET parameter is a unix timestamp of the last update.
-     * 
+     *
      * @return string the json response
      */
     public function actionIndex()
@@ -93,7 +93,7 @@ class PollController extends Controller
 
     /**
      * Unserializes an event from database
-     * 
+     *
      * @param string serialized event
      * @return LiveEvent the live event
      */
@@ -116,7 +116,7 @@ class PollController extends Controller
 
     /**
      * Checks if the live event is visible for the current user.
-     * 
+     *
      * @param LiveEvent $liveEvent
      * @return boolean is visible
      */
@@ -127,7 +127,7 @@ class PollController extends Controller
 
     /**
      * Creates a query to lookup live events.
-     * 
+     *
      * @param int $lastQueryTime the last lookup
      * @return \yii\db\ActiveQuery the query
      */
@@ -152,8 +152,8 @@ class PollController extends Controller
         // Own content e.g. direct chat message, own profile
         $query->orWhere([
             'and',
-            ['IN', 'contentcontainer_id', $this->containerIds[Content::VISIBILITY_NONE]],
-            ['IN', 'visibility', [Content::VISIBILITY_PRIVATE, Content::VISIBILITY_PUBLIC, Content::VISIBILITY_NONE]],
+            ['IN', 'contentcontainer_id', $this->containerIds[Content::VISIBILITY_OWNER]],
+            ['IN', 'visibility', [Content::VISIBILITY_PRIVATE, Content::VISIBILITY_PUBLIC, Content::VISIBILITY_OWNER]],
         ]);
 
         // Global messages
@@ -167,8 +167,8 @@ class PollController extends Controller
     /**
      * Returns the last query timestamp by the last GET parameter
      * The parameter is validated, if invalid or empty the current time
-     * will be returned. 
-     * 
+     * will be returned.
+     *
      * @return int the validated last query time
      */
     protected function getLastQueryTime()

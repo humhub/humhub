@@ -13,7 +13,7 @@ use humhub\modules\content\models\Content;
 
 /**
  * Live event for new notifications
- * 
+ *
  * @since 1.2
  */
 class NewNotification extends LiveEvent
@@ -30,7 +30,7 @@ class NewNotification extends LiveEvent
     public function init()
     {
         parent::init();
-        $this->visibility = Content::VISIBILITY_NONE;
+        $this->visibility = Content::VISIBILITY_OWNER;
     }
 
 }

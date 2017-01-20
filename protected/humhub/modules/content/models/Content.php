@@ -45,10 +45,20 @@ class Content extends \humhub\components\ActiveRecord
      */
     public $notifyUsersOfNewContent = [];
 
-    // Visibility Modes
+    /**
+     * @var int The private visibility mode (e.g. for space member content or user profile posts for friends)
+     */
     const VISIBILITY_PRIVATE = 0;
+
+    /**
+     * @var int Public visibility mode, e.g. content which are visibile for followers
+     */
     const VISIBILITY_PUBLIC = 1;
-    const VISIBILITY_NONE = 2;
+
+    /**
+     * @var int Owner visibility mode, only visible for contentContainer + content owner
+     */
+    const VISIBILITY_OWNER = 2;
 
     /**
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
