@@ -48,6 +48,7 @@ class Content extends \humhub\components\ActiveRecord
     // Visibility Modes
     const VISIBILITY_PRIVATE = 0;
     const VISIBILITY_PUBLIC = 1;
+    const VISIBILITY_NONE = 2;
 
     /**
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
@@ -184,7 +185,7 @@ class Content extends \humhub\components\ActiveRecord
 
         if ($insert && !$contentSource instanceof \humhub\modules\activity\models\Activity) {
             $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
-            
+
             \humhub\modules\content\notifications\ContentCreated::instance()
                     ->from($this->user)
                     ->about($contentSource)
@@ -193,7 +194,7 @@ class Content extends \humhub\components\ActiveRecord
             \humhub\modules\content\activities\ContentCreated::instance()
                     ->about($contentSource)->save();
         }
-        
+
         return parent::afterSave($insert, $changedAttributes);
     }
 
