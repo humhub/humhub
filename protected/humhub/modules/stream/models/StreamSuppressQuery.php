@@ -81,7 +81,7 @@ class StreamSuppressQuery extends StreamQuery
     protected function isSuppressed(&$results, $content)
     {
         // TODO: Make configurable
-        $doNotSuppress = [\humhub\modules\post\models\Post::className()];
+        $doNotSuppress = [\humhub\modules\post\models\Post::class, \humhub\modules\activity\models\Activity::class];
 
         // Check if content type is suppressable
         if (in_array($content->object_model, $doNotSuppress)) {
