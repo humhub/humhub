@@ -57,6 +57,7 @@ class Followable extends Behavior
      * Follows the owner object
      *
      * @param int $userId
+     * @param boolean $withNotifications (since 1.2) sets the send_notifications setting of the membership default true
      * @return boolean
      */
     public function follow($userId = null, $withNotifications = true)

@@ -142,35 +142,49 @@ class Follow extends \yii\db\ActiveRecord
 
     /**
      * Returns all followed spaces of the given user as ActiveQuery.
+     * If $withNotifications is set only follower with the given send_notifications setting are returned.
      * 
      * @param \humhub\modules\user\models\User $user
      * @param boolean|null $withNotifications by notification setting (default is null without notification handling)
      * @return \yii\db\ActiveQuery Space query of all followed spaces
+     * @since 1.2
      */
     public static function getFollowedSpacesQuery(User $user, $withNotifications = null)
     {
-        $query = Space::find()->leftJoin('user_follow', 'user_follow.user_id=:userId AND user_follow.object_model=:spaceModel', [':userId' => $user->id, ':spaceModel' => Space::class]);
-
+        $subQuery = self::find()
+                ->where(['user_follow.user_id' => $user->id, 'user_follow.object_model' => Space::class])
+                ->andWhere('user_follow.object_id=space.id');
+        
         if ($withNotifications === true) {
-            $query->where(['user_follow.send_notifications' => 1]);
+            $subQuery->andWhere(['user_follow.send_notifications' => 1]);
         } else if ($withNotifications === false) {
-            $query->where(['user_follow.send_notifications' => 0]);
+            $subQuery->andWhere(['user_follow.send_notifications' => 0]);
         }
-
-        return $query;
+        
+        return Space::find()->where(['exists', $subQuery]);
     }
 
+    /**
+     * Returns all active users following the given $target record.
+     * If $withNotifications is set only follower with the given send_notifications setting are returned.
+     * 
+     * @param \yii\db\ActiveRecord $target
+     * @param type $withNotifications
+     * @return type
+     */
     public static function getFollowersQuery(\yii\db\ActiveRecord $target, $withNotifications = null)
     {
-        $query = User::find()->leftJoin('user_follow', 'user.id=user_follow.user_id AND user_follow.object_model=:spaceModel AND user_follow.object_id=:spaceId', [':spaceModel' => $target->className(), ':spaceId' => $target->getPrimaryKey()]);
-
+        $subQuery = self::find()
+                ->where(['user_follow.object_model' => $target->className(), 'user_follow.object_id' => $target->getPrimaryKey()])
+                ->andWhere('user_follow.user_id=user.id');
+        
         if ($withNotifications === true) {
-            $query->where(['user_follow.send_notifications' => 1]);
+            $subQuery->andWhere(['user_follow.send_notifications' => 1]);
         } else if ($withNotifications === false) {
-            $query->where(['user_follow.send_notifications' => 0]);
+            $subQuery->andWhere(['user_follow.send_notifications' => 0]);
         }
-
-        return $query;
+        
+        return User::find()->active()->andWhere(['exists', $subQuery]);
     }
 
 }

@@ -211,26 +211,33 @@ class Membership extends \yii\db\ActiveRecord
      * Returns an ActiveQuery selcting all memberships for the given $user.
      *  
      * @param User $user
-     * @param integer $status the status of the Space by default Space::STATUS_ENABLED.
+     * @param integer $membershipSatus the status of the Space by default self::STATUS_MEMBER.
+     * @param integer $spaceStatus the status of the Space by default Space::STATUS_ENABLED.
      * @return \yii\db\ActiveQuery
+     * @since 1.2
      */
-    public static function findByUser(User $user = null, $status = Space::STATUS_ENABLED)
+    public static function findByUser(User $user = null, $membershipSatus = self::STATUS_MEMBER, $spaceStatus = Space::STATUS_ENABLED)
     {
+        if (!$user) {
+            $user = Yii::$app->user->getIdentity();
+        }
+        
         $query = Membership::find();
 
         if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
-            $query->orderBy('name ASC');
+            $query->orderBy('space.name ASC');
         } else {
-            $query->orderBy('last_visit DESC');
+            $query->orderBy('space_membership.last_visit DESC');
         }
 
-        $query->joinWith('space')->where([
-            'space_membership.user_id' => $user->id,
-            'space.status' => \humhub\modules\space\models\Space::STATUS_ENABLED
-        ]);
+        $query->joinWith('space')->where(['space_membership.user_id' => $user->id]);
+        
+        if($spaceStatus) {
+            $query->andWhere(['space.status' => $spaceStatus]);
+        }
 
-        if ($status) {
-            $query->andWhere(['space_membership.status' => $status]);
+        if ($membershipSatus) {
+            $query->andWhere(['space_membership.status' => $membershipSatus]);
         }
 
         return $query;
