@@ -2,17 +2,18 @@
 
 namespace humhub\modules\stream\widgets;
 
-use humhub\modules\content\components\ContentContainerActiveRecord;
 use Yii;
 use yii\base\Exception;
 use yii\helpers\Url;
+use humhub\components\Widget;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * Stream View Widget creates a stream.
  *
- * @since 0.11
+ * @since 1.2
  */
-class StreamViewer extends \yii\base\Widget
+class StreamViewer extends Widget
 {
 
     /**
@@ -77,7 +78,6 @@ class StreamViewer extends \yii\base\Widget
      */
     public $messageStreamEmptyCss = "";
 
-
     /**
      * Inits the Wall Stream Widget
      */
@@ -120,7 +120,7 @@ class StreamViewer extends \yii\base\Widget
     {
         $params = array_merge([
             'mode' => \humhub\modules\stream\actions\Stream::MODE_NORMAL
-        ], $this->streamActionParams);
+                ], $this->streamActionParams);
 
         if ($this->contentContainer) {
             return $this->contentContainer->createUrl($this->streamAction, $params);
