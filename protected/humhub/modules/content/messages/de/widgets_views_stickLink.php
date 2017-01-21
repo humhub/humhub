@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Stick' => 'Anheften',
-  'Unstick' => 'Nicht mehr anheften',
+  'Pinned' => 'Anheften',
+  'Unpinned' => 'Nicht mehr anheften',
 );

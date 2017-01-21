@@ -26,4 +26,5 @@ return [
     'Text' => '',
     'Text Area' => '',
     'Country' => 'País',
+    'Checkbox' => '',
 ];

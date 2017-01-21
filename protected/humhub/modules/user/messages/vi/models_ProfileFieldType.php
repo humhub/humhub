@@ -26,4 +26,5 @@ return [
     'Select List' => 'Danh sách',
     'Text' => 'Chữ',
     'Text Area' => 'Khung chữ',
+    'Checkbox' => '',
 ];

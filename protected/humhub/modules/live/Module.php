@@ -38,13 +38,13 @@ class Module extends \humhub\components\Module
     public static $legitimateCachePrefix = 'live.contentcontainerId.legitmation.';
 
     /**
-     * Returns an array of content container ids which belongs to the given user. 
-     * 
+     * Returns an array of content container ids which belongs to the given user.
+     *
      * There are three separeted lists by visibility level:
      *  - Content::VISIBILITY_PUBLIC [1,2,3,4]   (Public visibility only)
      *  - Content::VISIBILITY_PRIVATE [5,6,7]    (Public and private visibility)
-     *  - Content::VISIBILITY_NONE (10)          (No visibility, direct to the user)
-     * 
+     *  - Content::VISIBILITY_OWNER (10)          (No visibility, direct to the user)
+     *
      * @todo Add user to user following
      * @param User $user the User
      * @param boolean $cached use caching
@@ -58,11 +58,11 @@ class Module extends \humhub\components\Module
             $legitimation = [
                 Content::VISIBILITY_PUBLIC => [],
                 Content::VISIBILITY_PRIVATE => [],
-                Content::VISIBILITY_NONE => [],
+                Content::VISIBILITY_OWNER => [],
             ];
 
             // Add users own content container (user == contentcontainer)
-            $legitimation[Content::VISIBILITY_NONE][] = $user->contentContainerRecord->id;
+            $legitimation[Content::VISIBILITY_OWNER][] = $user->contentContainerRecord->id;
 
             // Collect user space membership with private content visibility
             $spaces = \humhub\modules\space\models\Membership::GetUserSpaces($user->id);
@@ -70,7 +70,7 @@ class Module extends \humhub\components\Module
                 $legitimation[Content::VISIBILITY_PRIVATE][] = $space->contentContainerRecord->id;
             }
 
-            // Include friends 
+            // Include friends
             if (Yii::$app->getModule('friendship')->isEnabled) {
                 foreach (Friendship::getFriendsQuery($user)->all() as $user) {
                     $legitimation[Content::VISIBILITY_PRIVATE] = $user->contentContainerRecord->id;

@@ -122,6 +122,13 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                     ->from($this->user)
                     ->about($this)
                     ->sendBulk($this->getCommentedRecord()->getFollowers(null, true, true));
+
+            Yii::$app->live->send(new \humhub\modules\comment\live\NewComment([
+                'contentContainerId' => $this->content->container->id,
+                'visibility' => $this->content->visibility,
+                'contentId' => $this->content->id,
+                'commentId' => $this->id
+            ]));
         }
 
         $this->updateContentSearch();

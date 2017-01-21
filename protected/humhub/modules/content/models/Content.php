@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -45,10 +45,20 @@ class Content extends \humhub\components\ActiveRecord
      */
     public $notifyUsersOfNewContent = [];
 
-    // Visibility Modes
+    /**
+     * @var int The private visibility mode (e.g. for space member content or user profile posts for friends)
+     */
     const VISIBILITY_PRIVATE = 0;
+
+    /**
+     * @var int Public visibility mode, e.g. content which are visibile for followers
+     */
     const VISIBILITY_PUBLIC = 1;
-    const VISIBILITY_NONE = 2;
+
+    /**
+     * @var int Owner visibility mode, only visible for contentContainer + content owner
+     */
+    const VISIBILITY_OWNER = 2;
 
     /**
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
@@ -142,8 +152,9 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function beforeSave($insert)
     {
-        if ($this->object_model == "" || $this->object_id == "")
+        if ($this->object_model == "" || $this->object_id == "") {
             throw new Exception("Could not save content with object_model or object_id!");
+        }
 
 
         // Set some default values
@@ -184,6 +195,7 @@ class Content extends \humhub\components\ActiveRecord
         }
 
         if ($insert && !$contentSource instanceof \humhub\modules\activity\models\Activity) {
+
             $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
 
             \humhub\modules\content\notifications\ContentCreated::instance()
@@ -193,6 +205,12 @@ class Content extends \humhub\components\ActiveRecord
 
             \humhub\modules\content\activities\ContentCreated::instance()
                     ->about($contentSource)->save();
+
+            Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
+                'contentContainerId' => $this->container->id,
+                'visibility' => $this->visibility,
+                'contentId' => $this->id
+            ]));
         }
 
         return parent::afterSave($insert, $changedAttributes);
