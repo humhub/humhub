@@ -11,10 +11,10 @@ namespace humhub\modules\notification\widgets;
 use Yii;
 
 /**
- * NotificationListWidget shows an stream of notifications for an user at the top menu.
+ * Notificaiton overview widget.
  *
- * @author andystrobel
- * @since 0.5
+ * @author buddha
+ * @since 1.1
  */
 class Overview extends \yii\base\Widget
 {
@@ -24,8 +24,9 @@ class Overview extends \yii\base\Widget
      */
     public function run()
     {
-        if (Yii::$app->user->isGuest)
+        if (Yii::$app->user->isGuest) {
             return;
+        }
 
         return $this->render('overview', array(
                     'update' => \humhub\modules\notification\controllers\ListController::getUpdates(),

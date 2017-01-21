@@ -78,7 +78,7 @@ class HeaderControlsMenu extends \humhub\widgets\BaseMenu
 
             if (!$membership->send_notifications) {
                 $this->addItem(array(
-                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Receive notifications'),
+                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Receive Notifications for new content'),
                     'group' => 'admin',
                     'url' => $this->space->createUrl('/space/membership/receive-notifications'),
                     'icon' => '<i class="fa fa-star"></i>',
@@ -88,7 +88,7 @@ class HeaderControlsMenu extends \humhub\widgets\BaseMenu
                 ));
             } else {
                 $this->addItem(array(
-                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Don\'t receive notifications' ),
+                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Don\'t receive notifications for new content'),
                     'group' => 'admin',
                     'url' => $this->space->createUrl('/space/membership/revoke-notifications'),
                     'icon' => '<i class="fa fa-star-o"></i>',

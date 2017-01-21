@@ -146,9 +146,6 @@ abstract class NotificationTarget extends \yii\base\Object
         } catch (\Exception $e) {
             Yii::error($e);
             $this->acknowledge($notification, false);
-            if(!YII_ENV_PROD) {
-                throw $e;
-            }
         }
     }
 
@@ -160,10 +157,6 @@ abstract class NotificationTarget extends \yii\base\Object
      */
     public function sendBulk(BaseNotification $notification, $users)
     {
-        if ($users instanceof \yii\db\ActiveQuery) {
-            $users = $users->all();
-        }
-
         foreach ($users as $user) {
             $this->send($notification, $user);
         }

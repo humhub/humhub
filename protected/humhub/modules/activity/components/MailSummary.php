@@ -70,7 +70,7 @@ class MailSummary extends Component
         $outputHtml = '';
         $outputPlaintext = '';
 
-        $mailRenderer = new MailRenderer();
+        $mailRenderer = new ActivityMailRenderer();
         foreach ($this->getActivities() as $activity) {
             $outputHtml .= $mailRenderer->render($activity);
             $outputPlaintext .= $mailRenderer->renderText($activity);

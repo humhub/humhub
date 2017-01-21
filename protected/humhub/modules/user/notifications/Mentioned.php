@@ -22,6 +22,11 @@ class Mentioned extends BaseNotification
     /**
      * @inheritdoc
      */
+    public $viewName = 'mentioned';
+
+    /**
+     * @inheritdoc
+     */
     public $moduleId = 'user';
 
     /**
@@ -30,6 +35,18 @@ class Mentioned extends BaseNotification
     public function category()
     {
         return new MentionedNotificationCategory;
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getViewName()
+    {
+        if($this->source instanceof \humhub\modules\comment\models\Comment) {
+            return 'mentionedComment';
+        }
+        
+        return 'mentioned';
     }
 
     /**
@@ -43,6 +60,18 @@ class Mentioned extends BaseNotification
         }
 
         return parent::send($user);
+    }
+
+    /**
+     * inheritdoc
+     */
+    public function getTitle(\humhub\modules\user\models\User $user)
+    {
+        return Yii::t('UserModule.notification', "{displayName} just mentioned you in {contentTitle} \"{preview}\"", [
+                    'displayName' => Html::encode($this->originator->displayName),
+                    'contentTitle' => $this->getContentName(),
+                    'preview' => $this->getContentPreview()
+        ]);
     }
 
     /**

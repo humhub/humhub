@@ -4,23 +4,29 @@ return [
     'components' => [
         'db' => [
             'dsn' => 'mysql:host=localhost;dbname=humhub_test',
-            'username' => 'root',
-            'password' => 'kingbuddha',
+            'username' => 'travis',
+            'password' => '',
             'charset' => 'utf8',
-            'attributes'=>[
+            'attributes' => [
                 PDO::ATTR_PERSISTENT => true
             ]
-        ], 
-        'view' => 
-            array (
-              'theme' => 
-                    array (
-                      'name' => 'HumHub',
-                      'basePath' => '@webroot/themes/HumHub',
-                    ),
-            ),
         ],
+        'view' => [
+            'theme' =>
+            [
+                'name' => 'HumHub',
+                'basePath' => '@webroot/themes/HumHub',
+            ],
+        ],
+        'queue' => [
+            'class' => humhub\components\queue\Queue::class,
+            'driver' => [
+                'class' => 'humhub\components\queue\driver\Instant',
+            ],
+        ],
+    ],
     'params' => [
         'installed' => true,
+        'moduleAutoloadPaths' => ['/home/travis/build/humhub'],
     ]
 ];

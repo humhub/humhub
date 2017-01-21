@@ -202,6 +202,14 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
         parent::afterSave($insert, $changedAttributes);
     }
+    
+    /**
+     * @return \humhub\modules\user\models\User the owner of this content record
+     */
+    public function getOwner()
+    {
+        return $this->content->createdBy;
+    }
 
     /**
      * Related Content model
@@ -224,7 +232,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     {
         return Yii::createObject(ActiveQueryContent::className(), [get_called_class()]);
     }
-
 }
 
 ?>

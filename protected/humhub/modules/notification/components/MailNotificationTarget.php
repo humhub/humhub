@@ -4,6 +4,7 @@ namespace humhub\modules\notification\components;
 
 use Yii;
 use humhub\modules\user\models\User;
+use yii\helpers\Html;
 
 /**
  *
@@ -23,9 +24,12 @@ class MailNotificationTarget extends NotificationTarget
      */
     public $defaultSetting = true;
     
+    /**
+     * @var array Notification mail layout. 
+     */
     public $view = [
-        'html' => '@humhub/modules/content/views/mails/Update',
-        'text' => '@humhub/modules/content/views/mails/plaintext/Update'
+        'html' => '@notification/views/mails/Update',
+        'text' => '@notification/views/mails/plaintext/Update'
     ];
 
     /**
@@ -39,32 +43,28 @@ class MailNotificationTarget extends NotificationTarget
     /**
      * @inheritdoc
      */
-    public function handle(BaseNotification $notification, User $user)
+    public function handle(BaseNotification $notification, User $recipient)
     {
-        // TODO: find cleaner solution...
         Yii::$app->view->params['showUnsubscribe'] = true;
-
-        $viewParams = [
-            'headline' => $notification->getHeadline(),
-            'notifications' => $notification->render($this),
-            'notifications_plaintext' => $this->getText($notification)
-        ];
+        
+        // Note: the renderer is configured in common.php by default its an instance of MailNotificatoinTarget
+        $renderer = $this->getRenderer();
+        
+        $viewParams = \yii\helpers\ArrayHelper::merge([
+            'headline' => $notification->getHeadline($recipient),
+            'notification' => $notification,
+            'space' => $notification->getSpace(),
+            'content' => $renderer->render($notification),
+            'content_plaintext' => $renderer->renderText($notification)
+        ], $notification->getViewParams());
+        
+        $from = $notification->originator 
+                ? Html::encode($notification->originator->displayName).' ('.Html::encode(Yii::$app->name).')' 
+                : Yii::$app->settings->get('mailer.systemEmailName');
         
         return Yii::$app->mailer->compose($this->view, $viewParams)
-                        ->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')])
-                        ->setTo($user->email)
-                        ->setSubject($notification->getTitle())->send();
+                        ->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => $from])
+                        ->setTo($recipient->email)
+                        ->setSubject($notification->getTitle($recipient))->send();
     }
-
-    public function getText(BaseNotification $notification)
-    {
-        $textRenderer = $this->getRenderer();
-
-        if (!method_exists($textRenderer, 'renderText')) {
-            $textRenderer = Yii::createObject(MailTargetRenderer::class);
-        }
-
-        return $textRenderer->renderText($notification);
-    }
-
 }

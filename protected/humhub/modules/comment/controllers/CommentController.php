@@ -90,10 +90,8 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
             return '';
         }
 
-        $comment = new Comment;
-        $comment->message = $message;
-        $comment->object_model = $this->parentContent->className();
-        $comment->object_id = $this->parentContent->getPrimaryKey();
+        $comment = new Comment(['message' => $message]);
+        $comment->setPolyMorphicRelation($this->parentContent);
         $comment->save();
         $comment->fileManager->attach($files);
 

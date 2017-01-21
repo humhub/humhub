@@ -20,7 +20,14 @@ use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 class NewComment extends BaseActivity implements ConfigurableActivityInterface
 {
 
+    /**
+     * @inheritdoc
+     */
     public $moduleId = 'comment';
+
+    /**
+     * @inheritdoc
+     */
     public $viewName = "newComment";
 
     /**

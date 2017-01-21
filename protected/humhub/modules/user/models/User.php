@@ -469,6 +469,18 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
         return false;
     }
+    
+    /**
+     * Checks if the given $user instance shares the same identity with this
+     * user instance.
+     * 
+     * @param \humhub\modules\user\models\User $user
+     * @return boolean
+     */
+    public function is(User $user)
+    {
+        return $user->id === $this->id;
+    }
 
     /**
      * @inheritdoc

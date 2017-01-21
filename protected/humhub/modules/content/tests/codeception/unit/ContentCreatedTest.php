@@ -5,7 +5,6 @@ namespace tests\codeception\unit;
 use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
-use humhub\modules\content\tests\codeception\unit\models\TestContent;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 
@@ -13,20 +12,6 @@ class ContentCreatedTest extends HumHubDbTestCase
 {
 
     use Specify;
-
-    /**
-     * Create a Mock Content class and assign a notify user save it and check if an email was sent and test wallout.
-     */
-    public function testWallOut()
-    {
-        $this->becomeUser('User2');
-
-        $testContent = new TestContent(['message' => 'MyTestContent']);
-        $testContent->content->setContainer(Space::findOne(['id' => 2]));
-        $testContent->save();
-
-        $this->assertEquals('<div>Wallentry:MyTestContent</div>', trim($testContent->getWallOut()));
-    }
 
     /**
      * Test CreateContent notification for a space follower with send_notification setting (see user_follow fixture)

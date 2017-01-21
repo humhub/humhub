@@ -12,6 +12,8 @@ use Yii;
 use yii\helpers\Url;
 use yii\bootstrap\Html;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\jobs\SendNotification;
+use humhub\modules\notification\jobs\SendBulkNotification;
 use humhub\modules\user\models\User;
 
 /**
@@ -28,12 +30,6 @@ use humhub\modules\user\models\User;
  */
 abstract class BaseNotification extends \humhub\components\SocialActivity
 {
-
-    /**
-     * Can be used to delay the NotificationJob execution.
-     * @var type 
-     */
-    public $delay = 0;
 
     /**
      * @var boolean automatically mark notification as seen after click on it
@@ -93,9 +89,10 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     }
 
     /**
+     * @param User $user the recipient
      * @return string title text for this notification
      */
-    public function getTitle()
+    public function getTitle(User $user)
     {
         $category = $this->getCategory();
         if ($category) {
@@ -106,11 +103,12 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     }
     
     /**
-     * @return string the headline for this notification used for example in mails.
+     * @param User $user the recipient
+     * @return string the headline for this notification, can be used for example in mails.
      */
-    public function getHeadline()
+    public function getHeadline(User $user)
     {
-        return Yii::t('base', '<strong>Latest</strong> updates');
+        return null;
     }
 
     /**
@@ -118,8 +116,18 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     public function getViewParams($params = [])
     {
+        if($this->hasContent() && $this->getContent()->updated_at instanceof \yii\db\Expression) {
+            $this->getContent()->refresh();
+            $date = $this->getContent()->updated_at;
+        } else if($this->hasContent()) {
+            $date = $this->getContent()->updated_at;
+        } else {
+            $date = null;
+        }
+        
         $result = [
             'url' => Url::to(['/notification/entry', 'id' => $this->record->id], true),
+            'date' => $date,
             'isNew' => !$this->record->seen,
         ];
 
@@ -145,25 +153,23 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
         }
 
         // Filter out duplicates and the originator and save records
-        $filteredUsers = $this->saveAndFilterRecords($users);
+        $filteredUsers = $this->filterRecepients($users);
         
-        Yii::$app->notification->sendBulk($this, $filteredUsers);
+        Yii::$app->queue->push(new SendBulkNotification(['notification' => $this, 'recepients' => $filteredUsers]));
     }
 
     /**
-     * Saves an Notification record for users and filters out duplicates and the originator of the notification.
-     * This function will return the array with unique user instances.
+     * Filters out duplicates and the originator of the notification itself.
      * 
      * @param User[] $users
+     * @return User[] array of unique user instances
      */
-    protected function saveAndFilterRecords($users)
+    protected function filterRecepients($users)
     {
         $userIds = [];
         $filteredUsers = [];
         foreach ($users as $user) {
-            // Filter our duplicates and the originator of this notification.
             if (!in_array($user->id, $userIds) && !$this->isOriginator($user)) {
-                $this->saveRecord($user);
                 $filteredUsers[] = $user;
                 $userIds[] = $user->id;
             }
@@ -186,11 +192,8 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
         if ($this->isOriginator($user)) {
             return;
         }
-
-        //$this->queueJob($user);
-        $this->saveRecord($user);
         
-        Yii::$app->notification->send($this, $user); 
+        Yii::$app->queue->push(new SendNotification(['notification' => $this, 'recepient' => $user]));
     }
 
     /**
@@ -202,29 +205,6 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     protected function isOriginator(User $user)
     {
         return $this->originator && $this->originator->id == $user->id;
-    }
-
-    /**
-     * Queues the notification job. The Job is responsible for creating and sending
-     * the Notifications out to its NotificationTargets.
-     * 
-     * @param User $user
-     */
-    protected function queueJob(User $user)
-    {
-        Yii::$app->notificationQueue->push(new NotificationJob([
-            'notification' => $this,
-            'user_id' => $user->id
-        ]));
-    }
-
-    public function save(User $user)
-    {
-        // We reuse our record instance to save multiple records.
-        $this->record->id = null;
-        $this->record->isNewRecord = true;
-        $this->record->user_id = $user->id;
-        return $this->record->save();
     }
 
     /**
@@ -417,11 +397,11 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     /**
      * @inheritdoc
      */
-    public function asArray()
+    public function asArray(User $user)
     {
-        $result = parent::asArray();
-        $result['title'] = $this->getTitle();
-        $result['headline'] = $this->getHeadline();
+        $result = parent::asArray($user);
+        $result['title'] = $this->getTitle($user);
+        $result['headline'] = $this->getHeadline($user);
         return $result;
     }
 

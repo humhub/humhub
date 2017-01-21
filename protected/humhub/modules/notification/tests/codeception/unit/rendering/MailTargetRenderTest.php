@@ -9,9 +9,8 @@ use humhub\modules\notification\components\MailNotificationTarget;
 
 class MailTargetRenderTest extends HumHubDbTestCase
 {
-
     use Specify;
-
+    
     public function testDefaultView()
     {
         $notification = notifications\TestedMailViewNotification::instance();
@@ -27,17 +26,9 @@ class MailTargetRenderTest extends HumHubDbTestCase
         $notification->viewName = 'special';
         $target = Yii::$app->notification->getTarget(MailNotificationTarget::class);
         $renderer = $target->getRenderer();
-        $this->assertContains('<div>Special:<h1>TestedMailViewNotificationHTML</h1></div>', $renderer->render($notification));
+        $result = $renderer->render($notification);
+        $this->assertContains('<div>Special:<h1>TestedMailViewNotificationHTML</h1></div>', $result);
+        $this->assertContains('<div>MyLayout:', $result);
         $this->assertContains('TestedMailViewNotificationText', $renderer->renderText($notification));
-    }
-    
-    public function testOverwriteLayoutFile()
-    {
-        $notification = notifications\TestedMailViewNotification::instance();
-        $notification->viewName = 'specialLayout';
-        $target = Yii::$app->notification->getTarget(MailNotificationTarget::class);
-        $renderer = $target->getRenderer();
-        $this->assertEquals('<div>MyLayout:<h1>TestedMailViewNotificationHTML</h1></div>',  trim($renderer->render($notification)));
-        $this->assertEquals('MyLayout:TestedMailViewNotificationText',  trim($renderer->renderText($notification)));
     }
 }

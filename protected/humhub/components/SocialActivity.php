@@ -10,10 +10,12 @@ namespace humhub\components;
 
 use Yii;
 use yii\helpers\Html;
+use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\widgets\RichText;
+use humhub\libs\Helpers;
 
 /**
  * This class represents a social Activity triggered within the network.
@@ -262,7 +264,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
     /**
      * Returns an array representation of this notification.
      */
-    public function asArray()
+    public function asArray(User $user)
     {
         $result = [
             'class' => $this->className(),
@@ -288,15 +290,61 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
      *
      * This is a combination a the type of the content with a short preview
      * of it.
+     * 
+     * If no $content is provided the contentInfo of $source is returned.
      *
      * @param Content $content
      * @return string
      */
-    public function getContentInfo(ContentOwner $content)
-    {
+    public function getContentInfo(ContentOwner $content = null)
+    {   
+        if(!$this->hasContent() && !$content) {
+            return;
+        }else if(!$content) {
+            $content = $this->source;
+        }
+        
         return Html::encode($content->getContentName()) .
                 ' "' .
                 RichText::widget(['text' => $content->getContentDescription(), 'minimal' => true, 'maxLength' => 60]) . '"';
+    }
+    
+    /**
+     * Returns the content name of $content or if not $content is provided of the
+     * notification source.
+     * 
+     * @param ContentOwner $content
+     * @return type
+     */
+    public function getContentName(ContentOwner $content = null) 
+    {
+        if(!$this->hasContent() && !$content) {
+            return;
+        }else if(!$content) {
+            $content = $this->source;
+        }
+        
+        return $content->getContentName();
+    }
+    
+    /**
+     * Returns a short preview text of the content. The max length can be defined by setting
+     * $maxLength (25 by default).
+     *
+     *  If no $content is provided the contentPreview of $source is returned.
+     * 
+     * @param Content $content
+     * @return string
+     */
+    public function getContentPreview(ContentOwner $content = null, $maxLength = 25)
+    {
+        if(!$this->hasContent() && !$content) {
+            return;
+        } else if(!$content) {
+            $content = $this->source;
+        }
+        
+        return RichText::widget(['text' => $content->getContentDescription(), 'minimal' => true, 'maxLength' => $maxLength]);
     }
 
 }
