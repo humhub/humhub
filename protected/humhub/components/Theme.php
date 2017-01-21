@@ -12,7 +12,6 @@ use Yii;
 use yii\helpers\FileHelper;
 use humhub\libs\ThemeHelper;
 
-
 /**
  * @inheritdoc
  */
@@ -160,12 +159,17 @@ class Theme extends \yii\base\Theme
      * Stores color informations to configuration for use in modules.
      */
     public function storeColorsToConfig()
-    {
-        $lessFileName = $this->getBasePath() . '/css/theme.less';
-        if (file_exists($lessFileName)) {
-            $less = file_get_contents($lessFileName);
-
-            $startDefault = strpos($less, '@default') + 10;
+    {   
+        // Parse default values
+        $variables = $this->parseLessVariables(Yii::getAlias('@webroot/less/variables.less'));
+        // Overwrite theme values
+        $variables = \yii\helpers\ArrayHelper::merge($variables, $this->parseLessVariables($this->getBasePath() . '/less/variables.less'));
+        
+        // Set variable settings
+        foreach($variables as $variable => $value) {
+            Yii::$app->settings->set('theme.variable.'.$variable, $value);
+        }
+            /*$startDefault = strpos($less, '@default') + 10;
             $startPrimary = strpos($less, '@primary') + 10;
             $startInfo = strpos($less, '@info') + 7;
             $startSuccess = strpos($less, '@success') + 10;
@@ -178,8 +182,24 @@ class Theme extends \yii\base\Theme
             Yii::$app->settings->set('colorInfo', substr($less, $startInfo, $length));
             Yii::$app->settings->set('colorSuccess', substr($less, $startSuccess, $length));
             Yii::$app->settings->set('colorWarning', substr($less, $startWarning, $length));
-            Yii::$app->settings->set('colorDanger', substr($less, $startDanger, $length));
+            Yii::$app->settings->set('colorDanger', substr($less, $startDanger, $length));*/
+    }
+
+    /**
+     * Parses the given file for less variables and returns an array with variablename as key and the value.
+     * @param type $lessFile the less file to parse
+     */
+    protected function parseLessVariables($lessFile)
+    {
+        if (file_exists($lessFile)) {
+            $variables = [];
+            preg_match_all('/@(.*?):\s(.*?);/', file_get_contents($lessFile), $regexResult, PREG_SET_ORDER);
+            foreach ($regexResult as $regexHit) {
+                $variables[$regexHit[1]] = $regexHit[2];
+            }
+            return $variables;
         }
+        return [];
     }
 
     /**
