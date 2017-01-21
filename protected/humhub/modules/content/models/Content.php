@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -152,8 +152,9 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function beforeSave($insert)
     {
-        if ($this->object_model == "" || $this->object_id == "")
+        if ($this->object_model == "" || $this->object_id == "") {
             throw new Exception("Could not save content with object_model or object_id!");
+        }
 
 
         // Set some default values
@@ -194,6 +195,7 @@ class Content extends \humhub\components\ActiveRecord
         }
 
         if ($insert && !$contentSource instanceof \humhub\modules\activity\models\Activity) {
+
             $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
 
             \humhub\modules\content\notifications\ContentCreated::instance()

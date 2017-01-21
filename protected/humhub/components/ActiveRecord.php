@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -92,6 +92,22 @@ class ActiveRecord extends \yii\db\ActiveRecord
         }
 
         return $this->_fileManager;
+    }
+
+    /**
+     * Returns the errors as string for all attribute or a single attribute.
+     * 
+     * @since 1.2
+     * @param string $attribute attribute name. Use null to retrieve errors for all attributes.
+     * @return string the error message
+     */
+    public function getErrorMessage($attribute = null)
+    {
+        $message = '';
+        foreach ($this->getErrors($attribute) as $attribute => $errors) {
+            $message .= $attribute . ': ' . implode(', ', $errors) . ', ';
+        }
+        return $message;
     }
 
 }
