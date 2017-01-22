@@ -88,7 +88,7 @@ class AccountMenu extends BaseMenu
                 'group' => 'account',
                 'url' => Url::toRoute('//user/account/edit-modules'),
                 'sortOrder' => 120,
-                'isActive' => (Yii::$app->controller->action->id == "editModules"),
+                'isActive' => (Yii::$app->controller->action->id == "edit-modules"),
             ));
         }
 
