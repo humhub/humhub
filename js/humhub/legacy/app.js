@@ -33,3 +33,11 @@ function htmlDecode(value) {
 function parseHtml(htmlString) {
     return htmlString;
 }
+
+
+/**
+ * Used previously to format/fix time fields on focus out
+ * 
+ * @deprecated 1.2
+ */
+$.fn.format = function (options) {;}
