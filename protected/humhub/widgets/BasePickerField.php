@@ -96,7 +96,7 @@ abstract class BasePickerField extends InputWidget
      * @var array 
      */
     public $selection;
-    
+
     /**
      * @var array Array of item instances used as long the minInput is not exceed. 
      */
@@ -240,6 +240,7 @@ abstract class BasePickerField extends InputWidget
     {
         if (!$this->selection && $this->model != null) {
             $attribute = $this->attribute;
+
             $this->selection = $this->loadItems($this->model->$attribute);
         }
 
@@ -308,6 +309,11 @@ abstract class BasePickerField extends InputWidget
             return [];
         }
 
+        // For older version (prior 1.2) - try to convert comma separated list to array 
+        if (!is_array($selection)) {
+            $selection = explode(',', $selection);
+        }
+
         $itemClass = $this->itemClass;
         return $itemClass::find()->where([$this->itemKey => $selection])->all();
     }
@@ -366,10 +372,11 @@ abstract class BasePickerField extends InputWidget
         }
         return $result;
     }
-    
-    protected function getDefaultResultData() {
+
+    protected function getDefaultResultData()
+    {
         $result = [];
-        foreach($this->defaultResults as $item) {
+        foreach ($this->defaultResults as $item) {
             $result[] = $this->buildItemOption($item);
         }
         return $result;
