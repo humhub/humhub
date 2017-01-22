@@ -24,10 +24,12 @@ function htmlDecode(value) {
 }
 
 
-
-
-
-
-
-
-
+/**
+ * Dummy method for compatibility reasons (prio 1.2)
+ *
+ * @deprecated since 1.2
+ * @returns string
+ */
+function parseHtml(htmlString) {
+    return htmlString;
+}
