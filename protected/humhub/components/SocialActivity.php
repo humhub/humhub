@@ -15,7 +15,6 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\widgets\RichText;
-use humhub\libs\Helpers;
 
 /**
  * This class represents a social Activity triggered within the network.
@@ -30,7 +29,7 @@ use humhub\libs\Helpers;
  * @since 1.1
  * @author buddha
  */
-abstract class SocialActivity extends \yii\base\Object implements rendering\Viewable
+abstract class SocialActivity extends \yii\base\Object implements rendering\Viewable, \Serializable
 {
 
     /**
@@ -345,6 +344,34 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
         }
         
         return RichText::widget(['text' => $content->getContentDescription(), 'minimal' => true, 'maxLength' => $maxLength]);
+    }
+    
+    /**
+     * Serializes the $source and $originator fields.
+     * 
+     * @see ActiveRecord::serialize() for the serialization of your $source
+     * @link http://php.net/manual/en/function.serialize.php
+     * @since 1.2
+     * @return string
+     */
+    public function serialize()
+    {
+        return serialize(['source' => $this->source, 'originator' => $this->originator]);
+    }
+
+    /**
+     * Unserializes the given string, calls the init() function and sets the $source and $originator fields (and $record indirectyl).
+     * 
+     * @see ActiveRecord::unserialize() for the serialization of your $source
+     * @link http://php.net/manual/en/function.unserialize.php
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
+    {
+        $this->init();
+        $unserializedArr = unserialize($serialized);
+        $this->from($unserializedArr['originator']);
+        $this->about($unserializedArr['source']);
     }
 
 }

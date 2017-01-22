@@ -101,7 +101,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
             return Yii::t('NotificationModule.base', 'There are new updates available at {baseUrl}', ['baseUrl' => Url::base(true)]);
         }
     }
-    
+
     /**
      * @param User $user the recipient
      * @return string the headline for this notification, can be used for example in mails.
@@ -116,15 +116,15 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     public function getViewParams($params = [])
     {
-        if($this->hasContent() && $this->getContent()->updated_at instanceof \yii\db\Expression) {
+        if ($this->hasContent() && $this->getContent()->updated_at instanceof \yii\db\Expression) {
             $this->getContent()->refresh();
             $date = $this->getContent()->updated_at;
-        } else if($this->hasContent()) {
+        } else if ($this->hasContent()) {
             $date = $this->getContent()->updated_at;
         } else {
             $date = null;
         }
-        
+
         $result = [
             'url' => Url::to(['/notification/entry', 'id' => $this->record->id], true),
             'date' => $date,
@@ -152,29 +152,11 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
             $users = $users->all();
         }
 
-        // Filter out duplicates and the originator and save records
-        $filteredUsers = $this->filterRecepients($users);
-        
-        Yii::$app->queue->push(new SendBulkNotification(['notification' => $this, 'recepients' => $filteredUsers]));
-    }
-
-    /**
-     * Filters out duplicates and the originator of the notification itself.
-     * 
-     * @param User[] $users
-     * @return User[] array of unique user instances
-     */
-    protected function filterRecepients($users)
-    {
-        $userIds = [];
-        $filteredUsers = [];
-        foreach ($users as $user) {
-            if (!in_array($user->id, $userIds) && !$this->isOriginator($user)) {
-                $filteredUsers[] = $user;
-                $userIds[] = $user->id;
-            }
+        try {
+            Yii::$app->queue->push(new SendBulkNotification(['notification' => $this, 'recepients' => $users]));
+        } catch (\Exception $e) {
+            Yii::error($e);
         }
-        return $filteredUsers;
     }
 
     /**
@@ -192,8 +174,12 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
         if ($this->isOriginator($user)) {
             return;
         }
-        
-        Yii::$app->queue->push(new SendNotification(['notification' => $this, 'recepient' => $user]));
+
+        try {
+            Yii::$app->queue->push(new SendNotification(['notification' => $this, 'recepient' => $user]));
+        } catch (\Exception $e) {
+            Yii::error($e);
+        }
     }
 
     /**
@@ -202,7 +188,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      * @param User $user
      * @return boolean
      */
-    protected function isOriginator(User $user)
+    public function isOriginator(User $user)
     {
         return $this->originator && $this->originator->id == $user->id;
     }

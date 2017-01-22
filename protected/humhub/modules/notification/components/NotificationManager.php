@@ -52,10 +52,31 @@ class NotificationManager
      */
     public function sendBulk(BaseNotification $notification, $users)
     {
+        $recepients = $this->filterRecepients($notification, $users);
         foreach ($this->getTargets() as $target) {
-            $target->sendBulk($notification, $users);
+            $target->sendBulk($notification, $recepients);
         }
     }
+    
+    /**
+     * Filters out duplicates and the originator of the notification itself.
+     * 
+     * @param User[] $users
+     * @return User[] array of unique user instances
+     */
+    protected function filterRecepients(BaseNotification $notification, $users)
+    {
+        $userIds = [];
+        $filteredUsers = [];
+        foreach ($users as $user) {
+            if (!in_array($user->id, $userIds) && !$notification->isOriginator($user)) {
+                $filteredUsers[] = $user;
+                $userIds[] = $user->id;
+            }
+        }
+        return $filteredUsers;
+    }
+
     
     /**
      * Sends the given $notification to all enabled targets of a single user.
