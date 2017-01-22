@@ -31,7 +31,7 @@ class Migration extends \yii\db\Migration
      */
     protected function renameClass($oldClass, $newClass)
     {
-        $this->updateSilent('activity', ['object_model' => $newClass], ['object_id' => $oldClass]);
+        $this->updateSilent('activity', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('activity', ['class' => $newClass], ['class' => $oldClass]);
         $this->updateSilent('comment', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('content', ['object_model' => $newClass], ['object_model' => $oldClass]);
