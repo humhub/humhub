@@ -26,7 +26,7 @@ use humhub\modules\content\permissions\ManageContent;
  * @property string $object_model
  * @property integer $object_id
  * @property integer $visibility
- * @property integer $sticked
+ * @property integer $pinned
  * @property string $archived
  * @property string $created_at
  * @property integer $created_by
@@ -95,7 +95,7 @@ class Content extends \humhub\components\ActiveRecord
     public function rules()
     {
         return [
-            [['object_id', 'visibility', 'sticked'], 'integer'],
+            [['object_id', 'visibility', 'pinned'], 'integer'],
             [['archived'], 'safe'],
             [['guid'], 'string', 'max' => 45],
             [['object_model'], 'string', 'max' => 100],
@@ -164,8 +164,8 @@ class Content extends \humhub\components\ActiveRecord
         if (!$this->visibility) {
             $this->visibility = self::VISIBILITY_PRIVATE;
         }
-        if (!$this->sticked) {
-            $this->sticked = 0;
+        if (!$this->pinned) {
+            $this->pinned = 0;
         }
 
         if ($insert) {
@@ -294,42 +294,42 @@ class Content extends \humhub\components\ActiveRecord
     }
 
     /**
-     * Checks if the content object is sticked
+     * Checks if the content object is pinned
      *
      * @return Boolean
      */
-    public function isSticked()
+    public function isPinned()
     {
-        return ($this->sticked);
+        return ($this->pinned);
     }
 
     /**
-     * Sticks the content object
+     * Pins the content object
      */
-    public function stick()
+    public function pin()
     {
-        $this->sticked = 1;
+        $this->pinned = 1;
         //This prevents the call of beforesave, and the setting of update_at
-        $this->updateAttributes(['sticked']);
+        $this->updateAttributes(['pinned']);
     }
 
     /**
-     * Unsticks the content object
+     * Unpins the content object
      */
-    public function unstick()
+    public function unpin()
     {
 
-        $this->sticked = 0;
-        $this->updateAttributes(['sticked']);
+        $this->pinned = 0;
+        $this->updateAttributes(['pinned']);
     }
 
     /**
-     * Checks if the user can stick this content.
+     * Checks if the user can pin this content.
      * This is only allowed for workspace owner.
      *
      * @return boolean
      */
-    public function canStick()
+    public function canPin()
     {
         if ($this->isArchived()) {
             return false;
@@ -339,13 +339,13 @@ class Content extends \humhub\components\ActiveRecord
     }
 
     /**
-     * Creates a list of sticked content objects of the wall
+     * Creates a list of pinned content objects of the wall
      *
      * @return Int
      */
-    public function countStickedItems()
+    public function countPinnedItems()
     {
-        return Content::find()->where(['content.contentcontainer_id' => $this->contentcontainer_id, 'content.sticked' => 1])->count();
+        return Content::find()->where(['content.contentcontainer_id' => $this->contentcontainer_id, 'content.pinned' => 1])->count();
     }
 
     /**
@@ -381,8 +381,8 @@ class Content extends \humhub\components\ActiveRecord
     {
         if ($this->canArchive()) {
 
-            if ($this->isSticked()) {
-                $this->unstick();
+            if ($this->isPinned()) {
+                $this->unpin();
             }
 
             $this->archived = 1;

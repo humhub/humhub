@@ -1,4 +1,4 @@
-function wallStick(url) {
+function wallPin(url) {
     $.ajax({
         dataType: "json",
         type: 'post',
@@ -18,7 +18,7 @@ function wallStick(url) {
     });
 }
 
-function wallUnstick(url) {
+function wallUnpin(url) {
     $.ajax({
         dataType: "json",
         type: 'post',

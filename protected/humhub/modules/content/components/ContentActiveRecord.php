@@ -24,7 +24,7 @@ use humhub\modules\content\interfaces\ContentOwner;
  * - Related ContentContainer (must be set before save!)
  * - Visibility
  * - Meta informations (created_at, created_by, ...)
- * - Wall handling, archiving, sticking, ...
+ * - Wall handling, archiving, pinning, ...
  * 
  * Before adding a new ContentActiveRecord instance, you need at least assign an ContentContainer.
  * 

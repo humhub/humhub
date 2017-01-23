@@ -129,11 +129,11 @@ class ContentController extends Controller
     }
 
     /**
-     * Sticks an wall entry & corresponding content object.
+     * Pins an wall entry & corresponding content object.
      *
      * Returns JSON Output.
      */
-    public function actionStick()
+    public function actionPin()
     {
         Yii::$app->response->format = 'json';
 
@@ -143,14 +143,14 @@ class ContentController extends Controller
         $json['success'] = false;
 
         $content = Content::findOne(['id' => Yii::$app->request->get('id', "")]);
-        if ($content !== null && $content->canStick()) {
-            if ($content->countStickedItems() < 2) {
-                $content->stick();
+        if ($content !== null && $content->canPin()) {
+            if ($content->countPinnedItems() < 2) {
+                $content->pin();
 
                 $json['success'] = true;
                 $json['contentId'] = $content->id;
             } else {
-                $json['info'] = Yii::t('ContentModule.controllers_ContentController', "Maximum number of sticked items reached!\n\nYou can stick only two items at once.\nTo however stick this item, unstick another before!");
+                $json['info'] = Yii::t('ContentModule.controllers_ContentController', "Maximum number of pinned items reached!\n\nYou can pin to top only two items at once.\nTo however pin this item, unpin another before!");
             }
         } else {
             $json['error'] = Yii::t('ContentModule.controllers_ContentController', "Could not load requested object!");
@@ -160,11 +160,11 @@ class ContentController extends Controller
     }
 
     /**
-     * Sticks an wall entry & corresponding content object.
+     * Unpins an wall entry & corresponding content object.
      *
      * Returns JSON Output.
      */
-    public function actionUnStick()
+    public function actionUnPin()
     {
         Yii::$app->response->format = 'json';
 
@@ -174,8 +174,8 @@ class ContentController extends Controller
         $json['success'] = false;
 
         $content = Content::findOne(['id' => Yii::$app->request->get('id', "")]);
-        if ($content !== null && $content->canStick()) {
-            $content->unstick();
+        if ($content !== null && $content->canPin()) {
+            $content->unpin();
             $json['success'] = true;
         }
 
