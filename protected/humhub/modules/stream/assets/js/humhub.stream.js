@@ -211,7 +211,7 @@ humhub.module('stream', function(module, require, $) {
         additions.highlight(this.getContent());
     };
 
-    StreamEntry.prototype.stick = function(evt) {
+    StreamEntry.prototype.pin = function(evt) {
         var that = this;
         this.loader();
         var stream = this.stream();
@@ -220,7 +220,7 @@ humhub.module('stream', function(module, require, $) {
                 that.remove().then(function() {
                     stream.loadEntry(that.getKey(), {'prepend': true});
                 });
-                module.log.success('success.stick');
+                module.log.success('success.pin');
             } else if(data.info) {
                 module.log.info(data.info, true);
             } else {
@@ -253,12 +253,12 @@ humhub.module('stream', function(module, require, $) {
         });
     };
 
-    StreamEntry.prototype.unstick = function(evt) {
+    StreamEntry.prototype.unpin = function(evt) {
         var that = this;
         this.loader();
         client.post(evt.url).then(function(data) {
             that.stream().init();
-            module.log.success('success.unstick');
+            module.log.success('success.unpin');
         }).catch(function(e) {
             module.log.error(e, true);
             that.loader(false);

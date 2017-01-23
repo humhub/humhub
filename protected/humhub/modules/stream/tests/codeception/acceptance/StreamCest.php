@@ -88,11 +88,11 @@ class StreamCest
         $I->see('Archived', $newEntrySelector);
     }
 
-    public function testStickPost(AcceptanceTester $I)
+    public function testPinPost(AcceptanceTester $I)
     {
         $I->amUser();
         $I->amOnSpace2();
-        $I->wantToTest('the stick of posts');
+        $I->wantToTest('the pin of posts');
         $I->amGoingTo('create a new post and delete it afterwards');
 
         $I->createPost('This is my first stream test post!');
@@ -111,22 +111,22 @@ class StreamCest
         $I->expectTo('my new post beeing the latest entry');
         $I->see('This is my second stream test post', '.s2_streamContent div:nth-child(1)');
 
-        $I->amGoingTo('stick my first entry');
+        $I->amGoingTo('pin my first entry');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
-        $I->waitForText('Stick', 10);
-        $I->click('Stick', $newEntrySelector);
-        $I->seeSuccess('The content has been sticked.');
+        $I->waitForText('Pin', 10);
+        $I->click('Pin', $newEntrySelector);
+        $I->seeSuccess('The content has been pinned.');
 
         $I->see('This is my first stream test post!', '.s2_streamContent div:nth-child(1)');
-        $I->see('Sticked', $newEntrySelector);
+        $I->see('Pinned', $newEntrySelector);
 
-        $I->amGoingTo('unstick my first entry');
+        $I->amGoingTo('unpin my first entry');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
-        $I->waitForText('Unstick', 10);
-        $I->click('Unstick', $newEntrySelector);
-        $I->seeSuccess('The content has been unsticked.');
+        $I->waitForText('Unpin', 10);
+        $I->click('Unpin', $newEntrySelector);
+        $I->seeSuccess('The content has been unpinned.');
         $I->see('This is my second stream test post!', '.s2_streamContent div:nth-child(1)');
-        $I->dontSee('Sticked', $newEntrySelector);
+        $I->dontSee('Pinned', $newEntrySelector);
     }
 
     public function testEditPost(AcceptanceTester $I)

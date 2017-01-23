@@ -9,7 +9,7 @@
  * @since 0.5
  */
 ?>
-<?php if ($object->content->isSticked()) : ?>
+<?php if ($object->content->isPinned()) : ?>
     <span class="label label-danger"><?php echo Yii::t('ContentModule.widgets_views_label', 'Pinned'); ?></span>
 <?php endif; ?>
 

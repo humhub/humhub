@@ -4,7 +4,7 @@ namespace humhub\modules\content\widgets;
 
 /**
  * Labels for Wall Entries
- * This widget will attached labels like Sticked, Archived to Wall Entries
+ * This widget will attached labels like Pinned, Archived to Wall Entries
  *
  * @package humhub.modules_core.wall.widgets
  * @since 0.5

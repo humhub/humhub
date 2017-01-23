@@ -22,8 +22,8 @@ use yii\base\Exception;
  * JSON output structure:
  *      content             - array, content id is key
  *           id             - int, id of content 
- *           guid           - string, guid of contetn
- *           sticked        - boolean, is content sticked
+ *           guid           - string, guid of content
+ *           pinned         - boolean, is content pinned
  *           archived       - boolean, i scontent is archived
  *           output         - string, the rendered html output of content
  *      total               - int, total of content records
@@ -283,7 +283,7 @@ abstract class Stream extends Action
             'content' => $underlyingObject->getWallOut()
                 ], true);
 
-        $result['sticked'] = (boolean) $content->sticked;
+        $result['pinned'] = (boolean) $content->pinned;
         $result['archived'] = (boolean) $content->archived;
         $result['guid'] = $content->guid;
         $result['id'] = $content->id;

@@ -242,10 +242,10 @@ function Stream(baseElement) {
             var $streamDiv = $(me.baseDiv).find(".s2_streamContent");
             var $newEntryHtml = $(parseEntriesHtml(json)).hide();
 
-            var $firstUnstickedEntry = $streamDiv.find('.wall-entry:not(.sticked-entry)').first();
+            var $firstUnpinnedEntry = $streamDiv.find('.wall-entry:not(.pinned-entry)').first();
 
-            if ($firstUnstickedEntry.length) {
-                $firstUnstickedEntry.before($newEntryHtml);
+            if ($firstUnpinnedEntry.length) {
+                $firstUnpinnedEntry.before($newEntryHtml);
                 $newEntryHtml.fadeIn('fast');
             } else {
                 $newEntryHtml.prependTo($streamDiv).fadeIn('fast');
