@@ -8,6 +8,7 @@
 
 namespace humhub\modules\post\permissions;
 
+use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 
@@ -40,23 +41,25 @@ class CreatePost extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title;
-
-    /**
-     * @inheritdoc
-     */
-    protected $description;
-
-    /**
-     * @inheritdoc
-     */
     protected $moduleId = 'post';
 
-    public function __construct($config = array())
+    /**
+     * @inheritdoc
+     */
+    public function getTitle()
     {
-        parent::__construct($config);
-        $this->title = \Yii::t('CommentModule.permissions', 'Create post');
-        $this->description = \Yii::t('CommentModule.permissions', 'Allows the user to create posts');
+        return Yii::t('PostModule.permissions', 'Create post');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDescription()
+    {
+        if ($this->contentContainer instanceof User) {
+            return Yii::t('PostModule.permissions', 'Allow others to create new posts on your profile page');
+        }
+        return Yii::t('PostModule.permissions', 'Allows the user to create posts');
     }
 
 }

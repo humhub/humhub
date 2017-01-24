@@ -48,7 +48,7 @@ class BasePermission extends \yii\base\Object
 
     /**
      * A list of groupIds which allowed per default.
-     * 
+     *
      * @var array default allowed groups
      */
     protected $defaultAllowedGroups = [
@@ -59,7 +59,7 @@ class BasePermission extends \yii\base\Object
     /**
      * A list of groupIds which are fixed group state.
      * See defaultState for default setting.
-     * 
+     *
      * @var array default fixed groups
      */
     protected $fixedGroups = [
@@ -70,14 +70,22 @@ class BasePermission extends \yii\base\Object
 
     /**
      * The default state of this permission
-     * 
+     *
      * @var string
      */
     protected $defaultState = self::STATE_DENY;
 
     /**
-     * Returns the ID
+     * Optional contentContainer instance to improve title and description.
      * 
+     * @since 1.2
+     * @var \humhub\modules\content\components\ContentContainerActiveRecord
+     */
+    public $contentContainer = null;
+
+    /**
+     * Returns the ID
+     *
      * @return string the id of the permission
      */
     public function getId()
@@ -91,7 +99,7 @@ class BasePermission extends \yii\base\Object
 
     /**
      * Returns the title
-     * 
+     *
      * @return string the title of the permission
      */
     public function getTitle()
@@ -101,7 +109,7 @@ class BasePermission extends \yii\base\Object
 
     /**
      * Returns the description
-     * 
+     *
      * @return string the description of the permission
      */
     public function getDescription()
@@ -110,8 +118,8 @@ class BasePermission extends \yii\base\Object
     }
 
     /**
-     * Returns the module id 
-     * 
+     * Returns the module id
+     *
      * @return string the moduleid of the permission
      */
     public function getModuleId()
@@ -123,57 +131,56 @@ class BasePermission extends \yii\base\Object
      * Returns the default state of the permission.
      * The defaultState is either defined by setting $defaultState attribute
      * or by overwriting the $defaultState by means of the configuration param 'defaultPermissions'.
-     * 
+     *
      * If the $defaultState is set to denied, we can grant the permission for specific groups by defining
      * the $defaultAllowedGroups array.
-     * 
+     *
      * @return int the default state
      */
     public function getDefaultState($groupId)
     {
         $configuredState = $this->getConfiguredState($groupId);
-        
-        if($configuredState != null) {
+
+        if ($configuredState != null) {
             return $configuredState;
         } else if ($this->defaultState == self::STATE_ALLOW) {
             return self::STATE_ALLOW;
-        } else {        
+        } else {
             return (int) (in_array($groupId, $this->defaultAllowedGroups));
         }
     }
-    
+
     /**
      * Returns the default state set in the configration params 'defaultPermissions'.
      * This method returns null in case the default state for this permission or group is not set in
      * the configuration.
-     * 
+     *
      * @param type $groupId
      * @return type
      * @since 1.2
      */
     protected function getConfiguredState($groupId)
-    {   
-        if(isset(Yii::$app->params['defaultPermissions'][self::className()]) 
-                && isset(Yii::$app->params['defaultPermissions'][self::className()][$groupId])) {
+    {
+        if (isset(Yii::$app->params['defaultPermissions'][self::className()]) && isset(Yii::$app->params['defaultPermissions'][self::className()][$groupId])) {
             return Yii::$app->params['defaultPermissions'][self::className()][$groupId];
         }
-        
+
         return null;
     }
 
     /**
      * Checks if permission state can be changed
-     * 
+     *
      * @return boolean
      */
     public function canChangeState($groupId)
     {
-        return (in_array($groupId, $this->fixedGroups));
+        return (!in_array($groupId, $this->fixedGroups));
     }
 
     /**
      * Checks the given id belongs to this permission
-     * 
+     *
      * @return boolean
      */
     public function hasId($id)
@@ -183,7 +190,7 @@ class BasePermission extends \yii\base\Object
 
     /**
      * Returns the label for given State
-     * 
+     *
      * @return string the label
      */
     public static function getLabelForState($state)
