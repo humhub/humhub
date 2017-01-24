@@ -130,6 +130,7 @@ class I18N extends \yii\i18n\I18N
         // Try to automatically assign Module->MessageSource
         foreach (Yii::$app->moduleManager->getModules(['includeCoreModules' => true, 'returnClass' => true]) as $moduleId => $className) {
             $moduleCategory = $this->getTranslationCategory($moduleId);
+
             if (substr($category, 0, strlen($moduleCategory)) === $moduleCategory) {
                 $reflector = new \ReflectionClass($className);
 
@@ -141,6 +142,7 @@ class I18N extends \yii\i18n\I18N
                 ];
             }
         }
+
         return parent::getMessageSource($category);
     }
 
@@ -210,19 +212,11 @@ class I18N extends \yii\i18n\I18N
      *      long_module_name -> LongModuleNameModule.
      * 
      * @param string $moduleId
-     * @return strign Category Id
+     * @return string Category Id
      */
     protected function getTranslationCategory($moduleId)
     {
-        $moduleCategory = "";
-        if (strpos($moduleId, '_') !== false) {
-            foreach (explode("_", $moduleId) as $part) {
-                $moduleCategory .= ucfirst($part);
-            }
-        } else {
-            $moduleCategory = ucfirst($moduleId);
-        }
-        return $moduleCategory . "Module.";
+        return implode('', array_map("ucfirst", preg_split("/(_|\-)/", $moduleId))) . 'Module.';
     }
 
     /**
