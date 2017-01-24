@@ -39,37 +39,37 @@
 }
 
 .btn-default {
-  background: @background2;
-  color: @font2 !important;
+  background: @default;
+  color: @text-color-secondary !important;
   &:hover,
   &:focus {
-    background: darken(@background2, 2%);
+    background: darken(@default, 2%);
     text-decoration: none;
-    color: @font2;
+    color: @text-color-secondary;
   }
   &:active,
   &.active {
     outline: 0;
-    background: darken(@background2, 5%);
+    background: darken(@default, 5%);
   }
 }
 
 .btn-default[disabled],
 .btn-default.disabled {
-  background: lighten(@background2, 2%);
+  background: lighten(@default, 2%);
   &:hover,
   &:focus {
-    background: lighten(@background2, 2%);
+    background: lighten(@default, 2%);
   }
   &:active,
   &.active {
-    background: lighten(@background2, 2%);
+    background: lighten(@default, 2%);
   }
 }
 
 .btn-primary {
   background: @primary;
-  color: white !important;
+  color: @text-color-contrast !important;
   &:hover,
   &:focus {
     background: darken(@primary, 5%);
@@ -97,7 +97,7 @@
 
 .btn-info {
   background: @info;
-  color: white !important;
+  color: @text-color-contrast !important;
   &:hover,
   &:focus {
     background: darken(@info, 5%) !important;
@@ -125,7 +125,7 @@
 
 .btn-danger {
   background: @danger;
-  color: white !important;
+  color: @text-color-contrast !important;
   &:hover,
   &:focus {
     background: darken(@danger, 5%);
@@ -153,7 +153,7 @@
 
 .btn-success {
   background: @success;
-  color: white !important;
+  color: @text-color-contrast !important;
   &:hover,
   &:focus {
     background: darken(@success, 5%);
@@ -181,7 +181,7 @@
 
 .btn-warning {
   background: @warning;
-  color: white !important;
+  color: @text-color-contrast !important;
   &:hover,
   &:focus {
     background: darken(@warning, 2%);

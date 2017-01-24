@@ -13,7 +13,7 @@
 }
 
 .form-control {
-    border: 2px solid @background2;
+    border: 2px solid @background-color-page;
     box-shadow: none;
     &:focus {
         border: 2px solid @info;
@@ -65,21 +65,21 @@ label.control-label {
 
 // Placeholder text
 ::-webkit-input-placeholder {
-    color: @font4 !important;
+    color: @text-color-soft !important;
 }
 
 ::-moz-placeholder {
-    color: @font4 !important;
+    color: @text-color-soft !important;
 }
 
 /* firefox 19+ */
 :-ms-input-placeholder {
-    color: @font4 !important;
+    color: @text-color-soft !important;
 }
 
 /* ie */
 input:-moz-placeholder {
-    color: @font4 !important;
+    color: @text-color-soft !important;
 }
 
 // Placeholder text for empty content
@@ -99,12 +99,12 @@ textarea.placeholder {
 }
 
 .help-block:not(.help-block-error) {
-    color: @font5 !important;
+    color: @text-color-soft2 !important;
     font-size: 12px;
 }
 
 .help-block:not(.help-block-error):hover {
-    color: @font2 !important;
+    color: @text-color-secondary !important;
     font-size: 12px;
 }
 
@@ -132,12 +132,12 @@ textarea.placeholder {
 }
 
 .label-default {
-    background: @background2;
-    color: @font2 !important;
+    background: @background-color-page;
+    color: @text-color-secondary !important;
 }
 
 a.label-default:hover {
-    background: darken(@background2, 5%) !important;
+    background: darken(@background-color-page, 5%) !important;
 }
 
 .label-info {
@@ -173,17 +173,6 @@ a.label-warning:hover {
 }
 
 // Flatelements
-.onoffswitch-inner:before {
-    background-color: @info;
-    color: #fff;
-}
-
-.onoffswitch-inner:after {
-    background-color: @background3;
-    color: #999;
-    text-align: right;
-}
-
 .regular-checkbox:checked + .regular-checkbox-box {
     border: 2px solid @info;
     background: @info;
