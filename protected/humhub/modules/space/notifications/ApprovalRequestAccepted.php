@@ -24,6 +24,11 @@ class ApprovalRequestAccepted extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = "space";
+    
+    /**
+     * @inheritdoc
+     */
+    public $viewName = "approvalAccepted";
 
     /**
      *  @inheritdoc
@@ -31,6 +36,14 @@ class ApprovalRequestAccepted extends BaseNotification
     public function category()
     {
         return new SpaceMemberNotificationCategory;
+    }
+    
+    /**
+     *  @inheritdoc
+     */
+    public function getTitle(\humhub\modules\user\models\User $user)
+    {
+        return strip_tags($this->html());
     }
 
     /**

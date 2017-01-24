@@ -25,10 +25,19 @@ class NewLike extends BaseNotification
      */
     public $moduleId = 'like';
 
-    public function category() {
+    /**
+     * @inheritdoc
+     */
+    public $viewName = 'newLike';
+
+    /**
+     * @inheritdoc
+     */
+    public function category()
+    {
         return new LikeNotificationCategory();
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -36,6 +45,31 @@ class NewLike extends BaseNotification
     {
         $model = $this->getLikedRecord();
         return $model->className() . '-' . $model->getPrimaryKey();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTitle(\humhub\modules\user\models\User $user)
+    {
+        $contentInfo = $this->getContentInfo($this->getLikedRecord());
+
+        if ($this->groupCount > 1) {
+            return Yii::t('LikeModule.notification', "{displayNames} likes your {contentTitle}.", [
+                        'displayNames' => strip_tags($this->getGroupUserDisplayNames()),
+                        'contentTitle' => $contentInfo
+            ]);
+        }
+        
+        return Yii::t('LikeModule.notification', "{displayName} likes your {contentTitle}.", [
+                    'displayName' => Html::encode($this->originator->displayName),
+                    'contentTitle' => $contentInfo
+        ]);
+    }
+
+    public function getLikedReccord()
+    {
+        return $this->source->getPolyMorphicRelation();
     }
 
     /**
@@ -51,7 +85,7 @@ class NewLike extends BaseNotification
                         'contentTitle' => $contentInfo
             ]);
         }
-        
+
         return Yii::t('LikeModule.notification', "{displayName} likes {contentTitle}.", [
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
                     'contentTitle' => $contentInfo

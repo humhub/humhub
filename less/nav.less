@@ -4,19 +4,19 @@
 .tab-sub-menu {
     padding-left: 10px;
     li > a:hover, li > a:focus {
-        background-color: @background1;
+        background-color: @background-color-secondary;
         border-bottom-color: #ddd;
     }
     
     li.active > a {
-        background-color:#FFFFFF;
+        background-color:@background-color-main;
         border-bottom-color: transparent;
     }
 }
 
 .tab-menu {
     padding-top:10px;
-    background-color: #FFFFFF;
+    background-color: @background-color-main;
     
     .nav-tabs {
         padding-left: 10px;
@@ -25,7 +25,7 @@
             padding-top:12px;
             border-color: #ddd;
             border-bottom:1px solid #ddd;
-            background-color: @background1;
+            background-color: @background-color-secondary;
             max-height: 41px;
             outline: none;
         }
@@ -36,7 +36,7 @@
         }
         
         li > a:hover {
-            background-color: @background1;
+            background-color: @background-color-secondary;
         }
         
         li.active > a, li.active > a:hover {
@@ -45,7 +45,7 @@
         } 
         
         li.active > a {
-            background-color:#FFFFFF;
+            background-color: @background-color-main;
             border-bottom-color: transparent;
         }
     }
@@ -57,6 +57,7 @@
   .dropdown-menu {
     background-color: @primary;
     border: none;
+    
     li.divider {
       background-color: darken(@primary, 5%);
       border-bottom: none;
@@ -86,7 +87,7 @@
     li:hover,
     li.selected {
       border-left: 3px solid @info;
-      color: #fff !important;
+      color: @text-color-contrast !important;
       background-color: darken(@primary, 5%) !important;
     }
   }
@@ -94,7 +95,7 @@
 
 .nav-pills.preferences {
   .dropdown .dropdown-toggle {
-    color: @font4;
+    color: @text-color-soft;
   }
   .dropdown.open {
     .dropdown-toggle,
@@ -170,30 +171,30 @@
 .nav .caret,
 .nav .caret:hover,
 .nav .caret:active {
-  border-top-color: @font3;
-  border-bottom-color: @font3;
+  border-top-color: @text-color-highlight;
+  border-bottom-color: @text-color-highlight;
 }
 
 .nav li.dropdown > a:hover .caret,
 .nav li.dropdown > a:active .caret {
-  border-top-color: @font3;
-  border-bottom-color: @font3;
+  border-top-color: @text-color-highlight;
+  border-bottom-color: @text-color-highlight;
 }
 
 .nav .open > a .caret,
 .nav .open > a:hover .caret,
 .nav .open > a:focus .caret {
-  border-top-color: @font3;
-  border-bottom-color: @font3;
+  border-top-color: @text-color-highlight;
+  border-bottom-color: @text-color-highlight;
 }
 
 .nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {
   border-color: #ededed;
-  color: @font3;
+  color: @text-color-highlight;
   .caret {
-    color: @font3;
+    color: @text-color-highlight;
   }
 }
 

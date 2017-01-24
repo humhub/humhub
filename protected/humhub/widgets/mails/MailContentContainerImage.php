@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\notification\widgets;
+namespace humhub\widgets\mails;
 
 use humhub\modules\space\models\Space;
 

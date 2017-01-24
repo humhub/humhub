@@ -1,4 +1,5 @@
 <?php
+
 /* @var $this yii\web\View */
 /* @var $viewable humhub\modules\content\notifications\ContentCreated */
 /* @var $url string */
@@ -14,11 +15,18 @@
 /* @var text string */
 ?>
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
-<?= humhub\modules\notification\widgets\MailContentEntry::widget([
-    'originator' => $originator,
-    'content' => $viewable->source,
-    'date' => $date,
-    'space' => $space
-])
-?>
+
+    <?= humhub\widgets\mails\MailContentEntry::widget([
+        'originator' => $originator,
+        'content' => $viewable->source,
+        'date' => $date,
+        'space' => $space
+    ]) ?>
+
+    <?= \humhub\widgets\mails\MailButtonList::widget([
+        'buttons' => [
+            humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('ContentModule.notifications_mails', 'View Online')])
+        ]
+    ]) ?>
+
 <?php $this->endContent();

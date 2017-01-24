@@ -18,6 +18,8 @@ use humhub\libs\ThemeHelper;
 class Theme extends \yii\base\Theme
 {
 
+    const VARIABLES_CACHE_ID = 'theme_variables';
+
     /**
      * Name of the Theme
      *
@@ -34,6 +36,11 @@ class Theme extends \yii\base\Theme
      * Indicates that resources should be published via assetManager
      */
     public $publishResources = false;
+
+    /**
+     * @var array theme variables loaded from the themes variables.less merged with default variables.less file.
+     */
+    private $_variables;
 
     /**
      * @inheritdoc
@@ -159,35 +166,90 @@ class Theme extends \yii\base\Theme
      * Stores color informations to configuration for use in modules.
      */
     public function storeColorsToConfig()
-    {   
-        // Parse default values
-        $variables = $this->parseLessVariables(Yii::getAlias('@webroot/less/variables.less'));
-        // Overwrite theme values
-        $variables = \yii\helpers\ArrayHelper::merge($variables, $this->parseLessVariables($this->getBasePath() . '/less/variables.less'));
-        
-        // Set variable settings
-        foreach($variables as $variable => $value) {
-            Yii::$app->settings->set('theme.variable.'.$variable, $value);
-        }
-            /*$startDefault = strpos($less, '@default') + 10;
-            $startPrimary = strpos($less, '@primary') + 10;
-            $startInfo = strpos($less, '@info') + 7;
-            $startSuccess = strpos($less, '@success') + 10;
-            $startWarning = strpos($less, '@warning') + 10;
-            $startDanger = strpos($less, '@danger') + 9;
-            $length = 7;
+    {
+        $this->loadVariables();
 
-            Yii::$app->settings->set('colorDefault', substr($less, $startDefault, $length));
-            Yii::$app->settings->set('colorPrimary', substr($less, $startPrimary, $length));
-            Yii::$app->settings->set('colorInfo', substr($less, $startInfo, $length));
-            Yii::$app->settings->set('colorSuccess', substr($less, $startSuccess, $length));
-            Yii::$app->settings->set('colorWarning', substr($less, $startWarning, $length));
-            Yii::$app->settings->set('colorDanger', substr($less, $startDanger, $length));*/
+        // @deprecated since 1.2 color settings 
+        Yii::$app->settings->set('colorDefault', $this->variable('default'));
+        Yii::$app->settings->set('colorPrimary', $this->variable('default'));
+        Yii::$app->settings->set('colorInfo', $this->variable('default'));
+        Yii::$app->settings->set('colorSuccess', $this->variable('default'));
+        Yii::$app->settings->set('colorWarning', $this->variable('default'));
+        Yii::$app->settings->set('colorDanger', $this->variable('default'));
     }
 
     /**
-     * Parses the given file for less variables and returns an array with variablename as key and the value.
+     * Reloads the less variables within the variable.less file and caches the result.
+     * 
+     * Note: this function merges the default less variables with the actual theme variables.
+     * 
+     * @since 1.2
+     */
+    public function loadVariables()
+    {
+        $variables = $this->parseThemeVariables('variables.less');
+
+        Yii::$app->cache->delete(self::VARIABLES_CACHE_ID);
+        $this->_variables = [];
+
+        // Set variable settings
+        foreach ($variables as $variable => $value) {
+            $this->_variables[$variable] = $value;
+        }
+
+        Yii::$app->cache->set(self::VARIABLES_CACHE_ID, $this->_variables);
+    }
+
+    /**
+     * Searches for a theme varaible with the given $key.
+     * 
+     * @since 1.2
+     * @param string $key
+     * @return string
+     */
+    public function variable($key, $default = null)
+    {
+        if (empty($this->_variables)) {
+            $this->_variables = Yii::$app->cache->get(self::VARIABLES_CACHE_ID);
+        }
+
+        if (empty($this->_variables)) {
+            $this->loadVariables();
+        }        
+        
+        $result = isset($this->_variables[$key]) ? $this->_variables[$key] : null;
+
+        // Compatibility with old themes prior v1.2
+        if(!$result && in_array($key, ['default', 'primary', 'info', 'success', 'warning', 'danger'])) {
+            $result = Yii::$app->settings->get('color'.ucfirst($key));
+        }
+        
+        return $result === null ? $default : $result;
+    }
+
+    /**
+     * Parses the varaibles of the given less fileName.
+     * This will merge the values of the default `@webroot/less/fileName.less` and 
+     * the actual theme values in `themeBasePath/less/fileName.less`.
+     * 
+     * @since 1.2
      * @param type $lessFile the less file to parse
+     */
+    public function parseThemeVariables($lessFileName)
+    {
+        // Parse default values
+        $variables = $this->parseLessVariables(Yii::getAlias('@webroot/less/'.$lessFileName));
+        
+        // Overwrite theme values
+        return \yii\helpers\ArrayHelper::merge($variables, $this->parseLessVariables($this->getBasePath() . '/less/'.$lessFileName));
+    }
+
+    /**
+     * Parses the variables of the given $lessFile.
+     *
+     * @since 1.2
+     * @param string $lessFile
+     * @return array key value pair of less variables
      */
     protected function parseLessVariables($lessFile)
     {
@@ -199,6 +261,7 @@ class Theme extends \yii\base\Theme
             }
             return $variables;
         }
+        
         return [];
     }
 

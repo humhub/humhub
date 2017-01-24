@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\notification\widgets;
+namespace humhub\widgets\mails;
 
 use Yii;
 use humhub\widgets\RichText;
@@ -65,6 +65,9 @@ class MailContentEntry extends \yii\base\Widget
             }
         } else if ($this->content instanceof \humhub\modules\content\interfaces\ContentOwner) {
             $content = RichText::widget(['text' => $this->content->getContentDescription(), 'minimal' => true]);
+            if(!$this->originator) {
+                $this->originator = $this->content->content->createdBy;
+            }
         }
 
 

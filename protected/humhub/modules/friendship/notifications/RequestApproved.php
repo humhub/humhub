@@ -24,6 +24,12 @@ class RequestApproved extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = "friendship";
+    
+    /**
+     * @inheritdoc
+     */
+    public $viewName = "friendshipApproved";
+    
 
     /**
      * @inheritdoc
@@ -46,6 +52,14 @@ class RequestApproved extends BaseNotification
         return $this->originator->getUrl();
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getTitle(\humhub\modules\user\models\User $user)
+    {
+        return strip_tags($this->html());
+    }
+    
     /**
      * @inheritdoc
      */

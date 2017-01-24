@@ -28,8 +28,8 @@ class MailNotificationTarget extends NotificationTarget
      * @var array Notification mail layout. 
      */
     public $view = [
-        'html' => '@notification/views/mails/Update',
-        'text' => '@notification/views/mails/plaintext/Update'
+        'html' => '@notification/views/mails/wrapper',
+        'text' => '@notification/views/mails/plaintext/wrapper'
     ];
 
     /**

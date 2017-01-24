@@ -24,6 +24,11 @@ class Request extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = "friendship";
+    
+    /**
+     * @inheritdoc
+     */
+    public $viewName = 'friendshipRequest';
 
     /**
      * @inheritdoc
@@ -44,6 +49,14 @@ class Request extends BaseNotification
     public function category()
     {
         return new FriendshipNotificationCategory;
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getTitle(\humhub\modules\user\models\User $user)
+    {
+        return strip_tags($this->html());
     }
 
     /**

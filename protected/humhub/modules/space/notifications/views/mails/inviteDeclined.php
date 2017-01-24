@@ -24,10 +24,25 @@
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
-            <td style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:left;">
+            <td style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:center;">
                 <?= $viewable->html(); ?>
             </td>
         </tr>
+        <tr>
+            <td height="20"></td>
+        </tr>
+        <tr>
+            <td>
+                <?=
+
+                \humhub\widgets\mails\MailButtonList::widget(['buttons' => [
+                        humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notifications_mails', 'View Online')])
+                ]]);
+
+                ?>
+            </td>
+        </tr>
+        <?php /*
         <tr>
             <td height="10"></td>
         </tr>
@@ -39,7 +54,7 @@
                         <td width="109"></td>
                         <td width="50"><?= \humhub\modules\notification\widgets\MailContentContainerImage::widget(['container' => $originator])?></td>
                         <td width="109"></td>
-                        <td width="25"><img src="<?= \yii\helpers\Url::to('@web/img/mail_ico_check.png', true); ?>" /></td>
+                        <td width="25"><img src="<?= \yii\helpers\Url::to('@web/img/mail_ico_no.png', true); ?>" /></td>
                         <td width="109"></td>
                         <td width="50"><?= \humhub\modules\notification\widgets\MailContentContainerImage::widget(['container' => $space])?></td>
                         <td></td>
@@ -47,5 +62,6 @@
                 </table>
             </td>
         </tr>
+        */?>
     </table>
 <?php $this->endContent();
