@@ -18,15 +18,17 @@ use yii\helpers\Html;
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,100,400,600' rel='stylesheet' type='text/css'>
             <style type="text/css">
 
-
+                <?php $defaultBackground =  Yii::$app->view->theme->variable('background-color-main', '#fff') ?>
+                <?php $colorPrimary =  Yii::$app->view->theme->variable('primary', '#708fa0') ?>
+                
                 .ReadMsgBody {
                     width: 100%;
-                    background-color: #ffffff;
+                    background-color: <?= $defaultBackground ?>;
                 }
 
                 .ExternalClass {
                     width: 100%;
-                    background-color: #ffffff;
+                    background-color: <?= $defaultBackground ?>;
                 }
 
                 .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
@@ -87,15 +89,15 @@ use yii\helpers\Html;
                 }
 
                 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-                    color: <?php echo Yii::$app->settings->get('colorInfo'); ?> !important;
+                    color: <?= Yii::$app->view->theme->variable('info', '#6fdbe8') ?> !important;
                 }
 
                 h1 a:active, h2 a:active, h3 a:active, h4 a:active, h5 a:active, h6 a:active {
-                    color: <?php echo Yii::$app->settings->get('colorInfo'); ?>!important;
+                    color: <?= Yii::$app->view->theme->variable('info', '#6fdbe8') ?> !important;
                 }
 
                 h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
-                    color: <?php echo Yii::$app->settings->get('colorInfo'); ?> !important;
+                    color: <?= Yii::$app->view->theme->variable('info', '#6fdbe8') ?> !important;
                 }
 
                 table td, table tr {
@@ -212,14 +214,14 @@ use yii\helpers\Html;
 
                     table[class="full-width-text"] {
                         width: 100% !important;
-                        background-color: #ffffff;
+                        background-color: <?= $defaultBackground ?>;
                         padding-left: 20px !important;
                         padding-right: 20px !important;
                     }
 
                     table[class="full-width-text2"] {
                         width: 100% !important;
-                        background-color: #ffffff;
+                        background-color: <?= $defaultBackground ?>;
                         padding-left: 20px !important;
                         padding-right: 20px !important;
                     }
@@ -374,14 +376,14 @@ use yii\helpers\Html;
 
                     table[class="full-width-text"] {
                         width: 100% !important;
-                        background-color: #ffffff;
+                        background-color: <?= $defaultBackground ?>;
                         padding-left: 20px !important;
                         padding-right: 20px !important;
                     }
 
                     table[class="full-width-text2"] {
                         width: 100% !important;
-                        background-color: #ffffff;
+                        background-color: <?= $defaultBackground ?>;
                         padding-left: 20px !important;
                         padding-right: 20px !important;
                     }
@@ -422,19 +424,19 @@ use yii\helpers\Html;
                     table[id="col-underline"] {
                         float: none !important;
                         width: 100% !important;
-                        border-bottom: 1px solid #eee;
+                        border-bottom: 1px solid <?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;
                     }
 
                     td[id="col-underline"] {
                         float: none !important;
                         width: 100% !important;
-                        border-bottom: 1px solid #eee;
+                        border-bottom: 1px solid <?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;
                     }
 
                     td[class="col-underline"] {
                         float: none !important;
                         width: 100% !important;
-                        border-bottom: 1px solid #eee;
+                        border-bottom: 1px solid <?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;
                     }
 
                     td[class="text-center"] {
@@ -516,31 +518,26 @@ use yii\helpers\Html;
             <?php $this->head() ?>
     </head>
 
-    <body style="font-size:12px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; background-color:#ededed; ">
+    <body style="font-size:12px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; background-color:<?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>; ">
         <?php $this->beginBody() ?>
 
         <!--start 100% wrapper (white background) -->
-        <table width="100%" id="mainStructure" border="0" cellspacing="0" cellpadding="0" style="background-color:#ededed;">
+        <table width="100%" id="mainStructure" border="0" cellspacing="0" cellpadding="0" style="background-color:<?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;">
 
 
             <!-- START VIEW HEADER -->
             <tr>
-                <td align="center" valign="top" style="background-color: <?php echo Yii::$app->settings->get('colorPrimary'); ?>; ">
+                <td align="center" valign="top" style="background-color: <?= $colorPrimary ?>; ">
 
                     <!-- start container 600 -->
-                    <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" bgcolor="<?php echo Yii::$app->settings->get('colorPrimary'); ?>"
-                           style="background-color: <?php echo Yii::$app->settings->get('colorPrimary'); ?>; ">
+                    <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" style="background-color: <?= $colorPrimary ?>;">
                         <tr>
                             <td valign="top">
 
-                                <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                                       bgcolor="<?php echo Yii::$app->settings->get('colorPrimary'); ?>" style="background-color: <?php echo Yii::$app->settings->get('colorPrimary'); ?>; ">
-                                    <!-- start space -->
+                                <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width" style="background-color: <?= $colorPrimary ?>; ">
                                     <tr>
-                                        <td valign="top" height="10">
-                                        </td>
+                                        <td valign="top" height="10"></td>
                                     </tr>
-                                    <!-- end space -->
                                     <tr>
                                         <td valign="top">
 
@@ -555,18 +552,20 @@ use yii\helpers\Html;
                                                                class="container2">
                                                             <tr>
                                                                 <td>
-                                                                    <table align="center" border="0" cellspacing="0"
-                                                                           cellpadding="0">
+<!-- Header app name begin-->
+                                                                    <table align="center" border="0" cellspacing="0" cellpadding="0">
                                                                         <tr>
-                                                                            <td style="font-size: 12px; line-height: 27px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:#ffffff; font-weight:300; text-align:center;">
-                                                                                <span
-                                                                                    style="text-decoration: none; color: #ffffff;"><a
-                                                                                        href="<?php echo Url::to(['/'], true); ?>"
-                                                                                        style="font-size: 18px; line-height: 27px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:#ffffff; font-weight:600; text-align:left;"><?php echo Html::encode(Yii::$app->name); ?></a></span>
-
+                                                                            <td style="text-align:center;">
+                                                                                <span style="text-decoration: none; color:<?= Yii::$app->view->theme->variable('text-color-contrast', '#ffffff') ?>;">
+                                                                                    <a href="<?php echo Url::to(['/'], true); ?>"
+                                                                                        style="font-size: 18px; line-height: 27px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-contrast', '#ffffff') ?>; font-weight:600; text-align:left;">
+                                                                                            <?php echo Html::encode(Yii::$app->name); ?>
+                                                                                    </a>
+                                                                                </span>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
+<!-- Header app name end-->
                                                                 </td>
                                                             </tr>
                                                             <!-- start space -->
@@ -636,8 +635,7 @@ use yii\helpers\Html;
             <tr>
                 <td valign="top" align="center" class="fix-box">
                     <table width="600" height="20" align="center" border="0" cellspacing="0" cellpadding="0"
-                           style="background-color: #ffffff; border-top-left-radius: 4px; border-top-right-radius: 4px;"
-                           class="full-width">
+                           style="background-color: <?= $defaultBackground ?>; border-top-left-radius: 4px; border-top-right-radius: 4px;" class="full-width">
                         <tr>
                             <td valign="top" height="20">
                         </tr>
@@ -670,8 +668,7 @@ use yii\helpers\Html;
                                         <td valign="top">
 
                                             <!-- start footer -->
-                                            <table width="560" align="center" border="0" cellspacing="0" cellpadding="0"
-                                                   class="full-width">
+                                            <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width">
 
                                                 <!-- start space -->
                                                 <tr>
@@ -682,24 +679,22 @@ use yii\helpers\Html;
 
                                                 <tr>
                                                     <td valign="middle">
-
-                                                        <table align="center" border="0" cellspacing="0" cellpadding="0"
-                                                               class="container2">
+                                                        <?php $soft2Color = Yii::$app->view->theme->variable('text-color-soft2', '#aeaeae')?>    
+                                                        <table align="center" border="0" cellspacing="0" cellpadding="0" class="container2">
 
                                                             <tr>
-                                                                <td align="center" valign="top"
-                                                                    style="font-size: 11px;  line-height: 18px; font-weight:300; text-align: center; font-family:Open Sans,Arail,Tahoma, Helvetica, Arial, sans-serif;">
+                                                                <td align="center" valign="top" style="font-size: 11px;  line-height: 18px; font-weight:300; text-align: center; font-family:Open Sans,Arail,Tahoma, Helvetica, Arial, sans-serif;">
                          
                                                                     <?php if (isset(Yii::$app->view->params['showUnsubscribe']) && Yii::$app->view->params['showUnsubscribe'] === true) : ?>
-                                                                        <span style="text-decoration: none; color: #a3a2a2;">
-                                                                            <a href="<?= Url::to(['/user/account/emailing'], true) ?>" style="text-decoration: none; color: #a3a2a2;"><?= Yii::t('base', 'Unsubscribe') ?></a>
+                                                                        <span style="text-decoration: none; color: <?= $soft2Color ?>;">
+                                                                            <a href="<?= Url::to(['/user/account/emailing'], true) ?>" style="text-decoration: none; color: <?= $soft2Color ?>;"><?= Yii::t('base', 'Unsubscribe') ?></a>
                                                                             • 
                                                                         </span> 
                                                                     <?php endif; ?>
 
-                                                                    <span style="text-decoration: none; color: #a3a2a2;">Powered by <a
-                                                                            href="http://www.humhub.org"
-                                                                            style="text-decoration: none; color: #a3a2a2;">HumHub</a> </span>
+                                                                    <span style="text-decoration: none; color:<?= $soft2Color ?>;">
+                                                                        Powered by <a href="http://www.humhub.org"  style="text-decoration: none; color: <?= $soft2Color ?>;">HumHub</a> 
+                                                                    </span>
 
                                                                 </td>
 

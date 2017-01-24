@@ -32,19 +32,35 @@
             <td height="10"></td>
         </tr>
         <tr>
-            <td style="border-top: 1px solid #eee;padding-top:10px;">
-                
+            <td height="10" style="border-top: 1px solid #eee;"></td>
+        </tr>
+        <tr>
+            <td style="padding-top:10px;">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
                     <tr>
                         <td width="109"></td>
-                        <td width="50"><?= \humhub\modules\notification\widgets\MailContentContainerImage::widget(['container' => $originator])?></td>
+                        <td width="50"><?= \humhub\widgets\mails\MailContentContainerImage::widget(['container' => $originator])?></td>
                         <td width="109"></td>
-                        <td width="25"><img src="<?= \yii\helpers\Url::to('@web/img/mail_ico_not.png', true); ?>" /></td>
+                        <td width="25"><img src="<?= \yii\helpers\Url::to('@web/img/mail_ico_check.png', true); ?>" /></td>
                         <td width="109"></td>
-                        <td width="50"><?= \humhub\modules\notification\widgets\MailContentContainerImage::widget(['container' => $space])?></td>
+                        <td width="50"><?= \humhub\widgets\mails\MailContentContainerImage::widget(['container' => $space])?></td>
                         <td></td>
                     </tr>
                 </table>
+            </td>
+        </tr>
+        <tr>
+            <td height="20"></td>
+        </tr>
+        <tr>
+            <td>
+                <?=
+
+                \humhub\widgets\mails\MailButtonList::widget(['buttons' => [
+                        humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notifications_mails', 'View Online')])
+                ]]);
+
+                ?>
             </td>
         </tr>
     </table>

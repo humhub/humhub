@@ -7,7 +7,7 @@
  */
 
 /* @var $this yii\web\View */
-/* @var $viewable humhub\modules\user\notifications\Followed */
+/* @var $viewable humhub\modules\space\notifications\ApprovalRequestDeclined */
 /* @var $url string */
 /* @var $date string */
 /* @var $isNew boolean */

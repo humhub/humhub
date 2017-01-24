@@ -6,43 +6,30 @@
 
 <?php $comment = $viewable->source; ?>
 <?php $contentRecord = $comment->getCommentedRecord() ?>
-
 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
     <tr>
         <td>
-            <table width="100%" style="background-color:#F5F5F5;border-radius:4px" border="0" cellspacing="0" cellpadding="0" align="left">
-                <tr>
-                    <td height="10"></td>
-                </tr>
-                <tr>
-                    <td style="padding-left:10px;">
-                        <?=
-                        humhub\modules\notification\widgets\MailContentEntry::widget([
-                            'originator' => $originator,
-                            'content' => $comment,
-                            'date' => $date,
-                            'space' => $space,
-                            'isComment' => true
-                        ]);
-                        ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td height="10"></td>
-                </tr>
-            </table
+             <?= humhub\widgets\mails\MailCommentEntry::widget([
+                'originator' => $originator,
+                'comment' => $comment,
+                'date' => $date,
+                'space' => $space,
+            ]);
+                ?>
         </td>
     </tr>
     <tr>
-        <td height="10"></td>
+        <td height="20"></td>
     </tr>
     <tr>
-        <td height="10" style="border-top: 1px solid #eee;"></td>
+        <td>
+            <?= humhub\widgets\mails\MailHeadline::widget(['level' => 3, 'text' => $contentRecord->getContentName() . ':', 'style' => 'text-transform:capitalize;']) ?>
+        </td>
     </tr>
     <tr>
-        <td >
+        <td style="padding:10px;border:1px solid <?= Yii::$app->view->theme->variable('background-color-secondary') ?>;border-radius:4px;">
             <?=
-            humhub\modules\notification\widgets\MailContentEntry::widget([
+            humhub\widgets\mails\MailContentEntry::widget([
                 'originator' => $contentRecord->owner,
                 'content' => $contentRecord,
                 'date' => $date,
@@ -51,7 +38,18 @@
             ?>
         </td>
     </tr>
-
+    <tr>
+        <td height="10"></td>
+    </tr>
+    <tr>
+        <td>
+            <?=
+            \humhub\widgets\mails\MailButtonList::widget(['buttons' => [
+                    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('UserModule.notifications_mails', 'View Online')])
+            ]]);
+            ?>
+        </td>
+    </tr>
 </table>
 <?php
 $this->endContent();

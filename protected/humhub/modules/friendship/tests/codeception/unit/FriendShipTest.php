@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\codeception\unit\modules\comment;
+namespace tests\codeception\unit\modules\friendship;
 
 use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -8,7 +8,7 @@ use Codeception\Specify;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\user\models\User;
 
-class ContentCreatedTest extends HumHubDbTestCase
+class FriendshipTest extends HumHubDbTestCase
 {
 
     use Specify;

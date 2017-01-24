@@ -229,6 +229,9 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     public function about($source)
     {
+        if(!$source) {
+            return;
+        }
         parent::about($source);
         $this->record->space_id = $this->getSpaceId();
         return $this;
@@ -239,6 +242,9 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     public function from($originator)
     {
+        if(!$originator) {
+            return;
+        }
         $this->originator = $originator;
         $this->record->originator_user_id = $originator->id;
         return $this;

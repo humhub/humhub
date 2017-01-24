@@ -25,12 +25,25 @@ class ApprovalRequestDeclined extends BaseNotification
      */
     public $moduleId = "space";
     
+     /**
+     * @inheritdoc
+     */
+    public $viewName = "approvalDeclined";
+    
     /**
      *  @inheritdoc
      */
     public function category()
     {
         return new SpaceMemberNotificationCategory;
+    }
+    
+    /**
+     *  @inheritdoc
+     */
+    public function getTitle(\humhub\modules\user\models\User $user)
+    {
+        return strip_tags($this->html());
     }
 
     /**

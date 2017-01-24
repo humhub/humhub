@@ -1,11 +1,13 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
 /* @var $this yii\web\View */
-/* @var $viewable humhub\modules\user\notifications\Followed */
+/* @var $viewable humhub\modules\friendship\notifications\Request */
 /* @var $url string */
 /* @var $date string */
 /* @var $isNew boolean */
@@ -18,7 +20,6 @@
 /* @var html string */
 /* @var text string */
 ?>
-
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
     <tr>
@@ -30,8 +31,11 @@
         <td height="10"></td>
     </tr>
     <tr>
-        <td style="border-top: 1px solid #eee;padding-top:10px;">
-            <?= \humhub\widgets\mails\MailContentContainerInfoBox::widget(['container' => $originator])?>
+        <td height="10" style="border-top: 1px solid <?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;;"></td>
+    </tr>
+    <tr>
+        <td>
+            <?= \humhub\widgets\mails\MailContentContainerInfoBox::widget(['container' => $originator]) ?>
         </td>
     </tr>
     <tr>
@@ -41,11 +45,10 @@
         <td>
             <?=
             \humhub\widgets\mails\MailButtonList::widget(['buttons' => [
-                    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('UserModule.notifications_mails', 'View Online')])
+                    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notifications_mails', 'View Online')])
             ]]);
             ?>
         </td>
     </tr>
 </table>
-<?php
-$this->endContent();
+<?php $this->endContent();

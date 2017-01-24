@@ -30,7 +30,7 @@ class InviteAccepted extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $viewName = "inviteDeclined";
+    public $viewName = "inviteAccepted";
     
     /**
      *  @inheritdoc

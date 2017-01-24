@@ -10,7 +10,7 @@ use yii\helpers\Html;
     <tr>
         <!-- START: Space IMAGE COLUMN -->
         <td width="40" valign="top" align="left" style="padding-right:20px;">
-            <?= humhub\modules\notification\widgets\MailContentContainerImage::widget(['container' => $container]); ?>
+            <?= humhub\widgets\mails\MailContentContainerImage::widget(['container' => $container]); ?>
         </td>
         <!-- END: Space IMAGE COLUMN-->
 
@@ -19,14 +19,14 @@ use yii\helpers\Html;
             <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
                 <tr>
                     <td>
-                        <a href="<?= $url ?>" style="font-size: 15px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:left; ">
+                        <a href="<?= $url ?>" style="font-size: 15px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555555') ?>; font-weight:300; text-align:left; ">
                             <?= Html::encode($container->displayName) ?>
                         </a>
                     </td>
                 </tr>
                 <tr>
-                    <td height="15" style="font-size: 15px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#aeaeae; font-weight:300; text-align:left; ">
-                        <?= $description ?>
+                    <td height="15" style="font-size: 15px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-soft2', '#555555') ?>; font-weight:300; text-align:left; ">
+                        <?= Html::encode($description) ?>
                     </td>
                 </tr>
             </table>

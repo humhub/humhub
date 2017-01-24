@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 /* @var $this yii\web\View */
-/* @var $viewable humhub\modules\user\notifications\Followed */
+/* @var $viewable humhub\modules\space\notifications\ApprovalRequest */
 /* @var $url string */
 /* @var $date string */
 /* @var $isNew boolean */
@@ -20,6 +20,7 @@
 ?>
 
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
     <tr>
         <td style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555555') ?>; font-weight:300; text-align:left;">
@@ -30,8 +31,19 @@
         <td height="10"></td>
     </tr>
     <tr>
-        <td style="border-top: 1px solid #eee;padding-top:10px;">
-            <?= \humhub\widgets\mails\MailContentContainerInfoBox::widget(['container' => $originator])?>
+        <td height="10" style="border-top: 1px solid #eee;"></td>
+    </tr>
+    <tr>
+        <td>
+            <?=
+            humhub\widgets\mails\MailContentEntry::widget([
+                'originator' => $originator,
+                'content' => $message,
+                'date' => $date,
+                'space' => $space,
+                'isComment' => true
+            ])
+            ?>
         </td>
     </tr>
     <tr>
@@ -41,11 +53,12 @@
         <td>
             <?=
             \humhub\widgets\mails\MailButtonList::widget(['buttons' => [
-                    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('UserModule.notifications_mails', 'View Online')])
+                    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notifications_mails', 'View Online')])
             ]]);
             ?>
         </td>
     </tr>
 </table>
+
 <?php
 $this->endContent();
