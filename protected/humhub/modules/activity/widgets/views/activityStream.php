@@ -14,7 +14,7 @@ $this->registerJsConfig([
 ?>
 
 <div class="panel panel-default panel-activities">
-    <div class="panel-heading"><?php echo Yii::t('ActivityModule.widgets_views_activityStream', '<strong>Latest</strong> activities'); ?></div>
+    <div class="panel-heading"><?= Yii::t('ActivityModule.widgets_views_activityStream', '<strong>Latest</strong> activities'); ?></div>
     <div id="activityStream" data-stream="<?= $streamUrl ?>">
         <ul id="activityContents" class="media-list activities" data-stream-content>
         </ul>

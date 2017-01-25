@@ -1,4 +1,4 @@
-<?php if ($clickable): ?><a href="#" onClick="activityShowItem(<?= $record->id; ?>); return false;"><?php endif; ?>
+<?php if ($clickable): ?><a href="<?= \yii\helpers\Url::to(['/activity/link', 'id' => $record->id])?>"><?php endif; ?>
     <li class="activity-entry" data-stream-entry data-action-component="activity.ActivityStreamEntry" data-content-key="<?= $record->content->id ?>">
         <div class="media">
             <?php if ($originator !== null) : ?>
