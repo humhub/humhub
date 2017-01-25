@@ -60,7 +60,7 @@ humhub.module('notification', function (module, require, $) {
         // Always reset the loading settings so we reload the whole dropdown.
         this.lastEntryLoaded = false;
         this.lastEntryId = 0;
-        
+
         // Since the handler will be called before the bootstrap trigger it's an open event if the dropdown is not visible yet
         this.isOpen = !this.$dropdown.is(':visible');
         if (this.isOpen) {
@@ -164,13 +164,26 @@ humhub.module('notification', function (module, require, $) {
     };
 
     NotificationDropDown.prototype.markAsSeen = function (evt) {
-        client.post(evt).then(function (response) {
+        return client.post(evt).then(function (response) {
             $('#badge-notifications').hide();
             $('#mark-seen-link').hide();
             updateTitle(false);
         }).catch(function (e) {
             module.log.error(e, true);
         });
+    };
+    
+    /**
+     * Global action handler (used in overview page).
+     * 
+     * @param {type} evt
+     * @returns {undefined}
+     */
+    var markAsSeen = function(evt) {
+       var widget = NotificationDropDown.instance('#notification_widget');
+       widget.markAsSeen(evt).then(function() {
+           location.reload();
+       });
     };
 
     var updateTitle = function ($count) {
@@ -187,6 +200,7 @@ humhub.module('notification', function (module, require, $) {
 
     var init = function ($pjax) {
         updateTitle($('#notification_widget').data('notification-count'));
+        initOverviewPage();
         if (!$pjax) {
             $("#dropdown-notifications ul.media-list").niceScroll({
                 cursorwidth: "7",
@@ -197,10 +211,21 @@ humhub.module('notification', function (module, require, $) {
                 railpadding: {top: 0, right: 3, left: 0, bottom: 0}
             });
         }
+        
+        
+    };
+
+    var initOverviewPage = function () {
+        if ($('#notification_overview_list').length) {
+            if (!$('#notification_overview_list li.new').length) {
+                $('#notification_overview_markseen').hide();
+            }
+        }
     };
 
     module.export({
         init: init,
+        markAsSeen: markAsSeen,
         sendDesktopNotifiaction: sendDesktopNotifiaction,
         NotificationDropDown: NotificationDropDown
     });
