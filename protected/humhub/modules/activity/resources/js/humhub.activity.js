@@ -44,10 +44,16 @@ humhub.module('activity', function (module, require, $) {
     ActivityStreamEntry.prototype.actions = function () {
         return [];
     };
-
-    ActivityStreamEntry.prototype.delete = function () {/* Not implemented */
+    
+    ActivityStreamEntry.prototype.actions = function () {
+        
     }
-    ActivityStreamEntry.prototype.edit = function () {/* Not implemented */
+
+    ActivityStreamEntry.prototype.delete = function () {
+        /* Not implemented */
+    }
+    ActivityStreamEntry.prototype.edit = function () {
+        /* Not implemented */
     }
 
     /**

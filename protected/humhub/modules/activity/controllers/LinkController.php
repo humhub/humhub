@@ -35,6 +35,17 @@ class LinkController extends Controller
         ];
     }
 
+    public function actionIndex()
+    {
+        $activityId = Yii::$app->request->get('id');
+        $activity = Activity::findOne(['id' => $activityId]);
+
+        if ($activity !== null && $activity->content->canRead()) {
+            $source = $activity->getSource();
+            $this->redirect($source->content->getUrl());
+        }
+    }
+
     /**
      * Returns a JSON Response with links of an Activity
      * 
@@ -61,7 +72,6 @@ class LinkController extends Controller
             } else {
                 $json['permaLink'] = $activity->content->getUrl();
             }
-
         }
 
         return $json;
