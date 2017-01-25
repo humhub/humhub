@@ -10,6 +10,7 @@ namespace humhub\modules\content\models;
 
 use Yii;
 use yii\base\Exception;
+use yii\helpers\Url;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -35,7 +36,7 @@ use humhub\modules\content\permissions\ManageContent;
  *
  * @since 0.5
  */
-class Content extends \humhub\components\ActiveRecord
+class Content extends ContentDeprecated
 {
 
     /**
@@ -105,34 +106,6 @@ class Content extends \humhub\components\ActiveRecord
     }
 
     /**
-     * User which created this Content
-     * Note: Use createdBy attribute instead.
-     *
-     * @deprecated since version 1.1
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUser()
-    {
-        return $this->createdBy;
-    }
-
-    /**
-     * Return space (if this content assigned to a space)
-     * Note: Use container attribute instead
-     *
-     * @deprecated since version 1.1
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSpace()
-    {
-        if ($this->getContainer() instanceof Space) {
-            return $this->getContainer();
-        }
-
-        return null;
-    }
-
-    /**
      * Returns a Content Object by given Class and ID
      *
      * @param string $className Class Name of the Content
@@ -196,21 +169,23 @@ class Content extends \humhub\components\ActiveRecord
 
         if ($insert && !$contentSource instanceof \humhub\modules\activity\models\Activity) {
 
-            $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
+            if ($this->container !== null) {
+                $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
 
-            \humhub\modules\content\notifications\ContentCreated::instance()
-                    ->from($this->user)
-                    ->about($contentSource)
-                    ->sendBulk($notifyUsers);
+                \humhub\modules\content\notifications\ContentCreated::instance()
+                        ->from($this->user)
+                        ->about($contentSource)
+                        ->sendBulk($notifyUsers);
 
-            \humhub\modules\content\activities\ContentCreated::instance()
-                    ->about($contentSource)->save();
+                \humhub\modules\content\activities\ContentCreated::instance()
+                        ->about($contentSource)->save();
 
-            Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
-                'contentContainerId' => $this->container->id,
-                'visibility' => $this->visibility,
-                'contentId' => $this->id
-            ]));
+                Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
+                    'contentContainerId' => $this->container->id,
+                    'visibility' => $this->visibility,
+                    'contentId' => $this->id
+                ]));
+            }
         }
 
         return parent::afterSave($insert, $changedAttributes);
@@ -228,44 +203,6 @@ class Content extends \humhub\components\ActiveRecord
         }
 
         parent::afterDelete();
-    }
-
-    /**
-     * Checks if the content can be deleted
-     * Note: Use canEdit method instead.
-     *
-     * @deprecated since version 1.1
-     * @param int $userId optional user id (if empty current user id will be used)
-     */
-    public function canDelete($userId = "")
-    {
-        return $this->canEdit(($userId !== '') ? User::findOne(['id' => $userId]) : null);
-    }
-
-    /**
-     * Checks if this content can readed
-     * Note: use canView method instead
-     *
-     * @deprecated since version 1.1
-     * @param int $userId
-     * @return boolean
-     */
-    public function canRead($userId = "")
-    {
-        return $this->canView(($userId !== '') ? User::findOne(['id' => $userId]) : null);
-    }
-
-    /**
-     * Checks if this content can be changed
-     * Note: use canEdit method instead
-     *
-     * @deprecated since version 1.1
-     * @param int $userId
-     * @return boolean
-     */
-    public function canWrite($userId = "")
-    {
-        return $this->canEdit(($userId !== '') ? User::findOne(['id' => $userId]) : null);
     }
 
     /**
@@ -355,7 +292,7 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function isArchived()
     {
-        return $this->archived || $this->getContainer()->isArchived();
+        return $this->archived || ($this->getContainer() !== null && $this->getContainer()->isArchived());
     }
 
     /**
@@ -421,7 +358,7 @@ class Content extends \humhub\components\ActiveRecord
             return $this->getPolymorphicRelation()->getUrl();
         }
 
-        return \yii\helpers\Url::toRoute(['/content/perma', 'id' => $this->id]);
+        return Url::toRoute(['/content/perma', 'id' => $this->id]);
     }
 
     /**
