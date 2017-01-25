@@ -3,7 +3,7 @@ humhub.module('client.pjax', function (module, require, $) {
 
     var init = function () {
         if (module.config.active) {
-            //$(document).pjax('a:not([data-pjax-prevent],[target],[data-target],[data-toggle])', "#layout-content", module.config.options);
+            $(document).pjax('a:not([data-pjax-prevent],[target],[data-target],[data-toggle])', "#layout-content", module.config.options);
             pjaxRedirectFix();
             module.installLoader();
         }

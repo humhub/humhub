@@ -1,4 +1,5 @@
 humhub.module('live', function(module, require, $) {    
+    var object = require('util').object;
     var liveClient;
 
     var init = function() {
@@ -14,8 +15,15 @@ humhub.module('live', function(module, require, $) {
             module.log.error(e);
         }
     };
+    
+    var setDelay = function(value) {
+        if(object.isFunction(liveClient.setDelay)) {
+            liveClient.setDelay(value);
+        }
+    };
 
     module.export({
-        init: init
+        init: init,
+        setDelay: setDelay
     });
 });

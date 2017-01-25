@@ -60,7 +60,9 @@ $canDelete = $comment->canDelete();
 
         <!-- Class comment_edit_content required since v1.2 -->
         <div class="content comment_edit_content" id="comment_editarea_<?= $comment->id; ?>">
-            <span id="comment-message-<?= $comment->id; ?>" class="comment-message"><?= humhub\widgets\RichText::widget(['text' => $comment->message, 'record' => $comment]); ?></span>
+            <span id="comment-message-<?= $comment->id; ?>" class="comment-message" data-ui-markdown>
+                <?= humhub\widgets\RichText::widget(['text' => $comment->message, 'record' => $comment]); ?>
+            </span>
             <?= humhub\modules\file\widgets\ShowFiles::widget(['object' => $comment]); ?>
         </div>
 

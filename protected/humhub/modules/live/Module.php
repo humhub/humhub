@@ -21,15 +21,26 @@ use humhub\modules\friendship\models\Friendship;
  */
 class Module extends \humhub\components\Module
 {
+
     /**
-     * Defines the minimum polling interval if the default polling client is active.
+     * Defines the minimum polling interval in seconds if the default polling client is active.
      */
     public $minPollInterval = 15;
-    
-     /**
-     * Defines the maximum polling interval if the default polling client is active.
+
+    /**
+     * Defines the maximum polling interval in seconds if the default polling client is active.
      */
     public $maxPollInterval = 45;
+    
+    /**
+     * Factor used in the actual interval calculation in case of user idle.
+     */
+    public $idleFactor = 0.1;
+    
+    /**
+     * Interval for updating the update delay in case of user idle in seconds.
+     */
+    public $idleInterval = 20;
 
     /**
      * @inheritdoc
@@ -62,7 +73,7 @@ class Module extends \humhub\components\Module
     public function getLegitimateContentContainerIds(User $user, $cached = true)
     {
         $legitimation = Yii::$app->cache->get(self::$legitimateCachePrefix . $user->id);
-       
+
         if ($legitimation === false) {
             $legitimation = [
                 Content::VISIBILITY_PUBLIC => [],

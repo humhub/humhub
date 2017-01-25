@@ -30,6 +30,8 @@ class CoreJsConfig extends Widget
             $userConfig = ['isGuest' => true];
         }
         
+        $liveModule = Yii::$app->getModule('live');
+        
         $this->getView()->registerJsConfig(
             [
                 'user' => $userConfig,
@@ -38,9 +40,10 @@ class CoreJsConfig extends Widget
                         'type' => 'humhub.modules.live.poll.PollClient',
                         'options' => [
                             'url' => Url::to(['/live/poll']),
-                            'minInterval' => Yii::$app->getModule('live')->minPollInterval, // Minimal polling request delay variation
-                            'maxInterval' => Yii::$app->getModule('live')->maxPollInterval, // Maximal polling request delay in seconds
-                            'idleFactor' => 1 // 
+                            'minInterval' => $liveModule->minPollInterval, // Minimal polling request interval in seconds.
+                            'maxInterval' => $liveModule->maxPollInterval, // Maximal polling request interval in seconds.
+                            'idleFactor' => $liveModule->idleFactor, // Factor used in the actual interval calculation in case of user idle.
+                            'idleInterval' => $liveModule->idleInterval //  Interval for updating the update delay in case of user idle in seconds.
                         ]
                     ]
   
