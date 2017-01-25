@@ -33,6 +33,18 @@ class CoreJsConfig extends Widget
         $this->getView()->registerJsConfig(
             [
                 'user' => $userConfig,
+                'live' => [
+                    'client' => [
+                        'type' => 'humhub.modules.live.poll.PollClient',
+                        'options' => [
+                            'url' => Url::to(['/live/poll']),
+                            'minInterval' => Yii::$app->getModule('live')->minPollInterval, // Minimal polling request delay variation
+                            'maxInterval' => Yii::$app->getModule('live')->maxPollInterval, // Maximal polling request delay in seconds
+                            'idleFactor' => 1 // 
+                        ]
+                    ]
+  
+                ],
                 'file' => [
                     'upload' => [
                         'url' => Url::to(['/file/file/upload']),

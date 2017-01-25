@@ -17,8 +17,11 @@ humhub.module('client', function (module, require, $) {
         //Textstatus = "timeout", "error", "abort", "parsererror", "application"
         this.textStatus = textStatus;
         this.dataType = dataType;
+        
+        var responseType =  xhr.getResponseHeader('content-type');
 
-        if (!dataType || dataType === 'json') {
+        // If we expect json and received json we merge the json result with our response object.
+        if (!dataType || dataType === 'json' && responseType.indexOf('json') > -1) {
             $.extend(this, this.response);
         } else if (dataType) {
             this[dataType] = this.response;

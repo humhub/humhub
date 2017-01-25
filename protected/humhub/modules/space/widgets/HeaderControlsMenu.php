@@ -81,7 +81,7 @@ class HeaderControlsMenu extends \humhub\widgets\BaseMenu
                     'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Receive Notifications for new content'),
                     'group' => 'admin',
                     'url' => $this->space->createUrl('/space/membership/receive-notifications'),
-                    'icon' => '<i class="fa fa-star"></i>',
+                    'icon' => '<i class="fa fa-bell"></i>',
                     'sortOrder' => 300,
                     'isActive' => (Yii::$app->controller->id == "module"),
                     'htmlOptions' => ['data-method' => 'POST']
@@ -91,7 +91,7 @@ class HeaderControlsMenu extends \humhub\widgets\BaseMenu
                     'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Don\'t receive notifications for new content'),
                     'group' => 'admin',
                     'url' => $this->space->createUrl('/space/membership/revoke-notifications'),
-                    'icon' => '<i class="fa fa-star-o"></i>',
+                    'icon' => '<i class="fa fa-bell-o"></i>',
                     'sortOrder' => 300,
                     'isActive' => (Yii::$app->controller->id == "module"),
                     'htmlOptions' => ['data-method' => 'POST']

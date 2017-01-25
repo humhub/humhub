@@ -169,7 +169,7 @@ class Theme extends \yii\base\Theme
     {
         $this->loadVariables();
 
-        // @deprecated since 1.2 color settings 
+        // @deprecated since version 1.2 color settings 
         Yii::$app->settings->set('colorDefault', $this->variable('default'));
         Yii::$app->settings->set('colorPrimary', $this->variable('default'));
         Yii::$app->settings->set('colorInfo', $this->variable('default'));

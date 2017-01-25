@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 <div class="panel-body">
     <h4><?= Yii::t('AdminModule.setting', 'Notification Settings'); ?></h4>
     <div class="help-block">
-        <?= Yii::t('NotificationModule.base', 'Notifications are sent instantly to users to inform them about new activities in your network.'); ?><br />
+        <?= Yii::t('NotificationModule.base', 'Notifications are sent directly to your users to inform them about new activities in your network.'); ?><br />
         <?= Yii::t('NotificationModule.base', 'On this page you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.'); ?>
         <br />
     </div>

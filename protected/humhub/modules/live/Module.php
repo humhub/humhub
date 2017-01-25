@@ -21,6 +21,15 @@ use humhub\modules\friendship\models\Friendship;
  */
 class Module extends \humhub\components\Module
 {
+    /**
+     * Defines the minimum polling interval if the default polling client is active.
+     */
+    public $minPollInterval = 15;
+    
+     /**
+     * Defines the maximum polling interval if the default polling client is active.
+     */
+    public $maxPollInterval = 45;
 
     /**
      * @inheritdoc
@@ -53,7 +62,7 @@ class Module extends \humhub\components\Module
     public function getLegitimateContentContainerIds(User $user, $cached = true)
     {
         $legitimation = Yii::$app->cache->get(self::$legitimateCachePrefix . $user->id);
-
+       
         if ($legitimation === false) {
             $legitimation = [
                 Content::VISIBILITY_PUBLIC => [],
@@ -73,7 +82,7 @@ class Module extends \humhub\components\Module
             // Include friends
             if (Yii::$app->getModule('friendship')->isEnabled) {
                 foreach (Friendship::getFriendsQuery($user)->all() as $user) {
-                    $legitimation[Content::VISIBILITY_PRIVATE] = $user->contentContainerRecord->id;
+                    $legitimation[Content::VISIBILITY_PRIVATE][] = $user->contentContainerRecord->id;
                 }
             }
 

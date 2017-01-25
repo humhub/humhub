@@ -14,9 +14,4 @@ namespace humhub\modules\notification;
 class Module extends \humhub\components\Module
 {
 
-    /**
-     * @var int the seconds the browser checks for new notifications
-     */
-    public $pollClientUpdateInterval = 20;
-
 }

@@ -336,7 +336,7 @@ humhub.module('action', function(module, require, $) {
                 this.directHandler.apply($trigger, _getArgs(event));
                 return;
             }
-
+            
             // Check for a component action handler
             if(Component.handleAction(event)) {
                 return;
@@ -401,8 +401,17 @@ humhub.module('action', function(module, require, $) {
     };
 
     /**
-     * data-action-click-url vs data-action-url-click
-     * data-action-click-block vs data-action-block-click
+     * Returns the value of data-action-click-<name> over data-action-<name>
+     * e.g.:
+     * 
+     * If the $trigger sets a data-action-click-url and data-action-url and we call
+     * 
+     * $actioNBinding.data($trigger, 'url');
+     * 
+     * We'll receive the data-action-click-url.
+     * 
+     * If no data-action-click-url is set it will return the fallback data-action-url setting.
+     * 
      * @param {type} $trigger
      * @param {type} name
      * @param {type} def
@@ -546,9 +555,11 @@ humhub.module('action', function(module, require, $) {
 
         $parent.off(actionEvent).on(actionEvent, selector, function(evt) {
             evt.preventDefault();
-            // Get sure we don't call the handler twice if the event was already handled by the handler attached to trigger.
+            
+            // Get sure we don't call the handler twice if the event was already handled by the directly attached handler.
+            // We have to rebind the handler only if we detect an unbound handler!
             if($(this).data('action-' + actionBinding.event) || (evt.originalEvent && evt.originalEvent.actionHandled)) {
-                module.log.debug('Action Handler already executed ' + actionEvent, actionBinding);
+                module.log.debug('Action Handler already executed by direct handler' + actionEvent, actionBinding);
                 module.log.debug('Handler event triggered by', $(this));
                 return;
             }
