@@ -70,6 +70,9 @@ Please see the following file for 1.2 changes (at the buttom):
 - Pjax
     - modules/tour/widgets/views/tourPanel.php
 
+- Notification:
+   - modules/notification/widget/views/overview.php
+
 We've integrated a new Space and UserPicker widget. Please check the following files for 
 
 ## Migrate to 1.1

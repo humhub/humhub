@@ -55,7 +55,7 @@ class AccountMenu extends BaseMenu
         
         $this->addItem(array(
             'label' => Yii::t('UserModule.account', 'Notifications'),
-            'icon' => '<i class="fa fa-star"></i>',
+            'icon' => '<i class="fa fa-bell"></i>',
             'group' => 'account',
             'url' => Url::toRoute('/notification/user'),
             'sortOrder' => 106,

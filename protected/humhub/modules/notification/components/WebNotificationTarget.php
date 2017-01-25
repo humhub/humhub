@@ -18,8 +18,7 @@ class WebNotificationTarget extends NotificationTarget
     public $id = 'web';
 
     /**
-     * Since the WebNotificationTarget only requires the Notification ActiveRecord to be persisted,
-     * this handler only check the presence of the related Notification record.
+     * Handles Webnotifications by setting the send_web_notifications flag and sending an live event.
      */
     public function handle(BaseNotification $notification, User $user)
     {
@@ -32,7 +31,8 @@ class WebNotificationTarget extends NotificationTarget
 
         Yii::$app->live->send(new \humhub\modules\notification\live\NewNotification([
             'notificationId' => $notification->record->id,
-            'contentContainerId' => $user->contentcontainer_id
+            'contentContainerId' => $user->contentcontainer_id,
+            'text' => $notification->text()
         ]));
     }
 

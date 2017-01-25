@@ -84,6 +84,8 @@ class AppAsset extends AssetBundle
         'humhub\assets\AtJsAsset',
         'humhub\assets\AnimateCssAsset',
         'humhub\assets\CoreApiAsset',
+        'humhub\modules\live\assets\LiveAsset',
+        'humhub\modules\notification\assets\NotificationAsset',
         'humhub\modules\content\assets\ContentAsset',
         'humhub\modules\user\assets\UserAsset',
         'humhub\modules\user\assets\UserPickerAsset',

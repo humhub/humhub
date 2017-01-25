@@ -211,12 +211,14 @@ class NotificationManager
     /**
      * Sets the notification space settings for this user (or global if no user is given).
      * 
+     * Those are the spaces for which the user want to receive ContentCreated Notifications.
+     * 
+     * @param string[] $spaceGuids array of space guids
      * @param User $user
-     * @param string[] $spaces array of space guids
      */
-    public function setSpaces(User $user = null, $spaceGuids)
+    public function setSpaces($spaceGuids, User $user = null)
     {
-        if (!$user) {
+        if (!$user) { // Note: global notification space settings are currently not active!
             return Yii::$app->getModule('notification')->settings->setSerialized('sendNotificationSpaces', $spaceGuids);
         }
 
@@ -246,7 +248,37 @@ class NotificationManager
             ['not in', 'object_id', $spaceIds]
         ]);
     }
+    
+    /**
+     * Defines the enable_html5_desktop_notifications setting for the given user or global if no user is given.
+     * 
+     * @param type $value
+     * @param User $user
+     */
+    public function setDesktopNoficationSettings($value = 0, User $user = null) 
+    {
+        $module = Yii::$app->getModule('notification');
+        $settingManager = ($user) ? $module->settings->user($user) : $module->settings;
+        $settingManager->set('enable_html5_desktop_notifications', $value);
+    }
+    
+    public function getDesktopNoficationSettings(User $user = null) 
+    {
+        if($user) {
+            return Yii::$app->getModule('notification')->settings->user($user)->getInherit('enable_html5_desktop_notifications');
+        } else {
+            return Yii::$app->getModule('notification')->settings->get('enable_html5_desktop_notifications');
+        }
+    }
 
+    /**
+     * Sets the send_notifications settings for the given space and user.
+     * 
+     * @param User $user user instance for which this settings will aplly
+     * @param Space $space which notifications will be followed / unfollowed
+     * @param type $follow the setting value (true by default)
+     * @return type
+     */
     public function setSpaceSetting(User $user = null, Space $space, $follow = true)
     {
         $membership = $space->getMembership($user->id);

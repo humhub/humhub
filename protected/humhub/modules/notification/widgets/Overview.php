@@ -28,10 +28,9 @@ class Overview extends \yii\base\Widget
             return;
         }
 
-        return $this->render('overview', array(
-                    'update' => \humhub\modules\notification\controllers\ListController::getUpdates(),
-                    'updateInterval' => Yii::$app->getModule('notification')->pollClientUpdateInterval
-        ));
+        return $this->render('overview', [
+            'update' => \humhub\modules\notification\controllers\ListController::getUpdates(),
+            'unseenCount' => \humhub\modules\notification\models\Notification::findUnseen()->count()]);
     }
 
 }
