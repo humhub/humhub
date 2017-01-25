@@ -54,7 +54,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             [['message'], 'safe'],
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -123,12 +123,14 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                     ->about($this)
                     ->sendBulk($this->getCommentedRecord()->getFollowers(null, true, true));
 
-            Yii::$app->live->send(new \humhub\modules\comment\live\NewComment([
-                'contentContainerId' => $this->content->container->id,
-                'visibility' => $this->content->visibility,
-                'contentId' => $this->content->id,
-                'commentId' => $this->id
-            ]));
+            if ($this->content->container) {
+                Yii::$app->live->send(new \humhub\modules\comment\live\NewComment([
+                    'contentContainerId' => $this->content->container->id,
+                    'visibility' => $this->content->visibility,
+                    'contentId' => $this->content->id,
+                    'commentId' => $this->id
+                ]));
+            }
         }
 
         $this->updateContentSearch();
@@ -146,7 +148,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             Yii::$app->search->update($this->getCommentedRecord());
         }
     }
-    
+
     /**
      * Returns the commented record e.g. a Post
      * 

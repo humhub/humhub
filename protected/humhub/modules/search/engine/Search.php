@@ -119,11 +119,9 @@ abstract class Search extends \yii\base\Component
             if ($obj->content->container !== null) {
                 $meta['containerModel'] = $obj->content->container->className();
                 $meta['containerPk'] = $obj->content->container->id;
-                if ($obj->content->visibility == Content::VISIBILITY_PRIVATE) {
-                    $meta['visibility'] = self::DOCUMENT_VISIBILITY_PRIVATE;
-                } else {
-                    $meta['visibility'] = self::DOCUMENT_VISIBILITY_PUBLIC;
-                }
+            }
+            if ($obj->content->visibility == Content::VISIBILITY_PUBLIC) {
+                $meta['visibility'] = self::DOCUMENT_VISIBILITY_PUBLIC;
             } else {
                 $meta['visibility'] = self::DOCUMENT_VISIBILITY_PRIVATE;
             }

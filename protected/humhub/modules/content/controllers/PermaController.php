@@ -46,7 +46,7 @@ class PermaController extends Controller
 
         $content = Content::findOne(['id' => $id]);
         
-        if ($content !== null) {
+        if ($content !== null && $content->container !== null) {
             return $this->redirect($content->container->createUrl(null, ['contentId' => $id]));
         }
 

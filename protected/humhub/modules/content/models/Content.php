@@ -169,21 +169,23 @@ class Content extends ContentDeprecated
 
         if ($insert && !$contentSource instanceof \humhub\modules\activity\models\Activity) {
 
-            $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
+            if ($this->container !== null) {
+                $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
 
-            \humhub\modules\content\notifications\ContentCreated::instance()
-                    ->from($this->user)
-                    ->about($contentSource)
-                    ->sendBulk($notifyUsers);
+                \humhub\modules\content\notifications\ContentCreated::instance()
+                        ->from($this->user)
+                        ->about($contentSource)
+                        ->sendBulk($notifyUsers);
 
-            \humhub\modules\content\activities\ContentCreated::instance()
-                    ->about($contentSource)->save();
+                \humhub\modules\content\activities\ContentCreated::instance()
+                        ->about($contentSource)->save();
 
-            Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
-                'contentContainerId' => $this->container->id,
-                'visibility' => $this->visibility,
-                'contentId' => $this->id
-            ]));
+                Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
+                    'contentContainerId' => $this->container->id,
+                    'visibility' => $this->visibility,
+                    'contentId' => $this->id
+                ]));
+            }
         }
 
         return parent::afterSave($insert, $changedAttributes);
@@ -290,7 +292,7 @@ class Content extends ContentDeprecated
      */
     public function isArchived()
     {
-        return $this->archived || $this->getContainer()->isArchived();
+        return $this->archived || ($this->getContainer() !== null && $this->getContainer()->isArchived());
     }
 
     /**

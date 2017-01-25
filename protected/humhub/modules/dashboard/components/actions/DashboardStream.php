@@ -55,8 +55,8 @@ class DashboardStream extends Stream
                     ->leftJoin('contentcontainer', 'user.id=contentcontainer.pk AND contentcontainer.class=:userClass')
                     ->where('user.status=1 AND user.visibility = ' . User::VISIBILITY_ALL);
             $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($publicProfilesSql)[0];
-
-            $this->activeQuery->andWhere('content.contentcontainer_id IN (' . $union . ')', [':spaceClass' => Space::className(), ':userClass' => User::className()]);
+           
+            $this->activeQuery->andWhere('content.contentcontainer_id IN (' . $union . ') OR content.contentcontainer_id IS NULL', [':spaceClass' => Space::className(), ':userClass' => User::className()]);
             $this->activeQuery->andWhere(['content.visibility' => Content::VISIBILITY_PUBLIC]);
         } else {
 
@@ -100,8 +100,8 @@ class DashboardStream extends Stream
             $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($wallIdsSql)[0];
 
             // Manual Union (https://github.com/yiisoft/yii2/issues/7992)
-            $this->activeQuery->andWhere('contentcontainer.id IN (' . $union . ')', [':spaceClass' => Space::className(), ':userClass' => User::className()]);
-
+            $this->activeQuery->andWhere('contentcontainer.id IN (' . $union . ') OR contentcontainer.id IS NULL', [':spaceClass' => Space::className(), ':userClass' => User::className()]);
+            
             /**
              * Begin visibility checks regarding the content container
              */
