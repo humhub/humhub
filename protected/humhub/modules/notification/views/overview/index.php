@@ -1,6 +1,8 @@
 <?php
 
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+
 ?>
 <div class="container">
     <div class="row">
@@ -8,7 +10,7 @@ use yii\widgets\ActiveForm;
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <?= Yii::t('NotificationModule.views_overview_index', '<strong>Notification</strong> Overview'); ?>
-                    <a id="notification_overview_markseen" href="#" class="pull-right heading-link" >
+                    <a id="notification_overview_markseen" href="#" data-action-click="notification.markAsSeen" data-action-url="<?= Url::to(['/notification/list/mark-as-seen']); ?>" class="pull-right heading-link" >
                         <b><?= Yii::t('NotificationModule.views_overview_index', 'Mark all as seen'); ?></b>
                     </a> 
                 </div>
@@ -46,20 +48,3 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 </div>
-
-<script type='text/javascript'>
-    if (!$('#notification_overview_list li.new').length) {
-        $('#notification_overview_markseen').hide();
-    } else {
-        $('#notification_overview_markseen').on('click', function (evt) {
-            evt.preventDefault();
-            $.ajax({
-                'type': 'GET',
-                'url': '<?= yii\helpers\Url::to(['/notification/list/mark-as-seen', 'ajax' => 1]); ?>',
-                'success': function () {
-                    location.reload();
-                }
-            });
-        });
-    }
-</script>
