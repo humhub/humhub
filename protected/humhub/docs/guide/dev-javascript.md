@@ -2,17 +2,17 @@ Javascript API
 =======
 
 Since version 1.2 HumHub provides a module based Javascript API within the `humhub` namespace.
-Instead of using inline script blocks in your views it's highly recommended using the new module system for your
-frontend scripts. The core components of this api are described in the following.
+Instead of embeding inline script blocks into your view files, it's highly recommended to use the new module system for your js scripts. 
+
+The usage of this API and it's core components are described in the following.
 
 
 ## Modules
 
 ### Module Asset
 
-Your Module script files should reside within the `asset/js` folder of your backend module and be appended at the bottom of your document by using yii's asset bundles.
+Module script files should reside within the `resources/js` folder of your humhub module and should ideally be appended at the bottom of your document. This can be achieved by using [Asset Bundles](http://www.yiiframework.com/doc-2.0/guide-structure-assets.html):
 
-Example:
 
 ```php
 namespace humhub\modules\example\assets;
@@ -21,29 +21,36 @@ use yii\web\AssetBundle;
 
 class ExampleAsset extends AssetBundle
 {
+	// You can also use View::POS_BEGIN to append your scripts to the beginning of the body element.
     public $jsOptions = ['position' => \yii\web\View::POS_END];
-    public $sourcePath = '@example/assets';
-    public $css = [];
+    public $sourcePath = '@example/resources';
     public $js = [
         'js/humhub.example.js'
     ];
 }
 ```
 
+> Note: Make sure to add your assets after the core scripts, which are added within the html head.
+
+> Note: Your Asset Bundle should reside in the `assets` subdirectory of your module.
+
 ### Module Registration
 
-Modules are registered by calling the `humhub.initModule`. This function
-requires an unique module id and your module function. The module function provides the following arumgents
+New Module are registered by calling the `humhub.module` function as in the following example.
+
+The first parameter of the `module` function is an unique module id. The second argument is the module function, which allows you to add module functions either by adding functions directly to the `module` argument or using the `module.export` function (prefered).
+
+The `module` function provides the following arguments:
 
 1. `module`: Your module instance, for exporting module functions and attributes.
 2. `require`: Method for injecting other modules.
-3. `$`: jQuery.
+3. `$`: jQuery instance.
 
-The following example shows the registraion of module with id 'example': 
+> Note: Only exported functions and attributes will be visible outside of the module.
 
 ```javascript
 // After registration, all exported functions will be available under the namespace humhub.modules.example
-humhub.initModule('example', function(module, require, $) {
+humhub.module('example', function(module, require, $) {
     // We require the client module
     var client = require('client');
 
@@ -58,13 +65,15 @@ humhub.initModule('example', function(module, require, $) {
         // Some logic
     }
 
+    var test = function() {
+        // Test function
+    }
+
     // Export multiple values by calling module.export.
     module.export({
+        test: test,
         myFunction: function() {
             ...
-        },
-        init: function() {
-            //This code will automatically be executed when dom is ready.
         }
     });
 });
@@ -76,6 +85,9 @@ humhub.initModule('example.mySubmodule', function(module, require, $) {
 ...
 }
 ```
+
+
+
 
 Accessing your example module:
 
