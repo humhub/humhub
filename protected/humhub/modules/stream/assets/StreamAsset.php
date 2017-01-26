@@ -10,15 +10,30 @@ namespace humhub\modules\stream\assets;
 
 use yii\web\AssetBundle;
 
+/**
+ * Stream related assets.
+ * 
+ * @since 1.2
+ * @author buddha
+ */
 class StreamAsset extends AssetBundle
 {
 
-    public $sourcePath = '@humhub/modules/stream/assets';
-    public $css = [];
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@stream/resources';
+
+    /**
+     * @inheritdoc
+     */
     public $js = [
         'js/humhub.stream.js',
     ];
     
+    /**
+     * @inheritdoc
+     */
     public $depends = [
         'humhub\modules\content\assets\ContentAsset'
     ];

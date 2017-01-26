@@ -6,34 +6,36 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\content\assets;
+namespace humhub\modules\file\assets;
 
 use yii\web\AssetBundle;
 
 /**
- * Content container asset for shared user/space js functionality.
+ * Fle related assets.
  * 
  * @since 1.2
  * @author buddha
  */
-class ContentContainerAsset extends AssetBundle
+class FileAsset extends AssetBundle
 {
 
     /**
      * @inheritdoc
      */
-    public $jsOptions = ['position' => \yii\web\View::POS_END];
-
-    /**
-     * @inheritdoc
-     */
-    public $sourcePath = '@content/resources';
+    public $sourcePath = '@file/resources';
 
     /**
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.content.container.js'
+        'js/humhub.file.js'
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    public $depends = [
+        'humhub\assets\CoreApiAsset'
     ];
 
 }
