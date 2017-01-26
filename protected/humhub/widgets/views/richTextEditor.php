@@ -78,17 +78,17 @@ use yii\helpers\Url;
             }
         }).atwho({
             at: ":",
-            insert_tpl: "<img data-emoji-name=';${name};' class='atwho-emoji' with='18' height='18' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.svg'); ?>' />",
-            tpl: "<li class='atwho-emoji-entry' data-value=';${name};'><img with='18' height='18' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.svg'); ?>'/></li>",
+            insert_tpl: "<img data-emoji-name=';${name};' class='atwho-emoji' with='18' height='18' src='<?php echo Yii::getAlias('@web-static/img/emoji/${name}.svg'); ?>' />",
+            tpl: "<li class='atwho-emoji-entry' data-value=';${name};'><img with='18' height='18' src='<?php echo Yii::getAlias('@web-static/img/emoji/${name}.svg'); ?>'/></li>",
             data: emojis_list,
             highlight_first: true,
             limit: 100
         });
-        
+
 
         //it seems atwho detatches the original element so we have to do a requery
         $editableContent = $('#<?php echo $id; ?>_contenteditable');
-        
+
         //This is a workaround for mobile browsers especially for Android Chrome which is not able to remove contenteditable="false" nodes.
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
             $editableContent.on('contextmenu', 'a, img', function() {
@@ -97,7 +97,7 @@ use yii\helpers\Url;
                 } else {
                     $(this).remove();
                 }
-                
+
                 _checkForEmptySpans($editableContent);
                 return false;
             });
@@ -202,7 +202,7 @@ use yii\helpers\Url;
                 // This is a workaround for a caret position issue in firefox https://bugzilla.mozilla.org/show_bug.cgi?id=904846
                 _checkCaretPositionAfterRemove($editableContent);
                 return false; // leave loop
-            } 
+            }
         });
     };
 

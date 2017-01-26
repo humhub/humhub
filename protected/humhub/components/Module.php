@@ -102,7 +102,7 @@ class Module extends \yii\base\Module
         $url = $this->getPublishedUrl('/module_image.png');
 
         if ($url == null) {
-            $url = Yii::getAlias("@web/img/default_module.jpg");
+            $url = Yii::getAlias("@web-static/img/default_module.jpg");
         }
 
         return $url;
@@ -111,7 +111,7 @@ class Module extends \yii\base\Module
     /**
      * Returns the url of an asset file and publishes all module assets if
      * the file is not published yet.
-     * 
+     *
      * @param string $relativePath relative file path e.g. /module_image.jpg
      * @return string
      */
@@ -166,7 +166,7 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Determines whether or not this module has an asset directory. 
+     * Determines whether or not this module has an asset directory.
      * @return boolean
      */
     private function hasAssets()
@@ -196,7 +196,7 @@ class Module extends \yii\base\Module
 
     /**
      * Disables a module
-     * 
+     *
      * This should delete all data created by this module.
      * When override this method make sure to invoke the parent implementation AFTER your implementation.
      */
@@ -293,7 +293,7 @@ class Module extends \yii\base\Module
 
     /**
      * URL to the module's configuration action
-     * 
+     *
      * @return string the configuration url
      */
     public function getConfigUrl()
@@ -304,9 +304,9 @@ class Module extends \yii\base\Module
     /**
      * Returns a list of permission objects this module provides.
      * If a ContentContainer is provided, the method should only return applicable permissions in content container context.
-     * 
+     *
      * @since 0.21
-     * @param \humhub\modules\content\components\ContentContainerActiveRecord $contentContainer optional contentcontainer 
+     * @param \humhub\modules\content\components\ContentContainerActiveRecord $contentContainer optional contentcontainer
      * @return array list of permissions
      */
     public function getPermissions($contentContainer = null)
@@ -316,7 +316,7 @@ class Module extends \yii\base\Module
 
     /**
      * Returns a list of notification classes this module provides.
-     * 
+     *
      * @since 1.1
      * @return array list of notification classes
      */
@@ -332,7 +332,7 @@ class Module extends \yii\base\Module
 
     /**
      * Returns a list of activity class names this modules provides.
-     * 
+     *
      * @since 1.2
      * @return array list of activity class names
      */

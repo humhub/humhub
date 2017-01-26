@@ -3,7 +3,7 @@
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-$this->registerJsFile('@web/resources/user/profileHeaderImageUpload.js');
+$this->registerJsFile('@web-static/resources/user/profileHeaderImageUpload.js');
 $this->registerJs("var userGuid='" . $user->guid . "';", \yii\web\View::POS_BEGIN);
 $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/profile-image-upload') . "';", \yii\web\View::POS_BEGIN);
 ?>

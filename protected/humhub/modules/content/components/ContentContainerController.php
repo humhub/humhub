@@ -43,9 +43,10 @@ class ContentContainerController extends Controller
 
     /**
      * @var boolean hides containers sidebar in layout
+     * @deprecated since version 1.2
      * @since 0.11
      */
-    public $hideSidebar = false;
+    public $hideSidebar = true;
 
     /**
      * Automatically loads the underlying contentContainer (User/Space) by using

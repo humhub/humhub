@@ -8,6 +8,8 @@
 
 namespace humhub\components;
 
+use Yii;
+
 /**
  * @inheritdoc
  */
@@ -18,6 +20,17 @@ class Application extends \yii\web\Application
      * @inheritdoc
      */
     public $controllerNamespace = 'humhub\\controllers';
+
+    /**
+     * @inheritdoc
+     */
+    public function bootstrap()
+    {
+        $request = $this->getRequest();
+        Yii::setAlias('@web-static', $request->getBaseUrl() . '/static');
+
+        parent::bootstrap();
+    }
 
     /**
      * @inheritdoc

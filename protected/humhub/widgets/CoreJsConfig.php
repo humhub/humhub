@@ -22,16 +22,16 @@ class CoreJsConfig extends Widget
 
     public function run()
     {
-        
+
         if(!Yii::$app->user->isGuest) {
             $userConfig = \humhub\modules\user\models\UserPicker::asJSON(Yii::$app->user->getIdentity());
             $userConfig['isGuest'] = false;
         } else {
             $userConfig = ['isGuest' => true];
         }
-        
+
         $liveModule = Yii::$app->getModule('live');
-        
+
         $this->getView()->registerJsConfig(
             [
                 'user' => $userConfig,
@@ -46,7 +46,7 @@ class CoreJsConfig extends Widget
                             'idleInterval' => $liveModule->idleInterval //  Interval for updating the update delay in case of user idle in seconds.
                         ]
                     ]
-  
+
                 ],
                 'file' => [
                     'upload' => [
@@ -71,14 +71,14 @@ class CoreJsConfig extends Widget
                 ],
                 'ui.widget' => [
                     'text' => [
-                        'error.unknown' => Yii::t('base', 'No error information given.'),  
+                        'error.unknown' => Yii::t('base', 'No error information given.'),
                     ]
                 ],
                 'ui.richtext' => [
-                    'emoji.url' =>  Yii::getAlias('@web/img/emoji/'),
+                    'emoji.url' =>  Yii::getAlias('@web-static/img/emoji/'),
                     'text' => [
-                        'info.minInput' => Yii::t('base', 'Please type at least 3 characters'),  
-                        'info.loading' => Yii::t('base', 'Loading...'),  
+                        'info.minInput' => Yii::t('base', 'Please type at least 3 characters'),
+                        'info.loading' => Yii::t('base', 'Loading...'),
                     ]
                 ],
                 'log' => [

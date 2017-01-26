@@ -41,7 +41,7 @@
                         <td width="109"></td>
                         <td width="50"><?= \humhub\widgets\mails\MailContentContainerImage::widget(['container' => $originator])?></td>
                         <td width="109"></td>
-                        <td width="25"><img src="<?= \yii\helpers\Url::to('@web/img/mail_ico_check.png', true); ?>" /></td>
+                        <td width="25"><img src="<?= \yii\helpers\Url::to('@web-static/img/mail_ico_check.png', true); ?>" /></td>
                         <td width="109"></td>
                         <td width="50"><?= \humhub\widgets\mails\MailContentContainerImage::widget(['container' => $space])?></td>
                         <td></td>

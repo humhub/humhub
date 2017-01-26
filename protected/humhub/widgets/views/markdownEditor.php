@@ -8,8 +8,8 @@ use yii\helpers\Html;
  * Register BootstrapMarkdown & changes
  */
 BootstrapMarkdownAsset::register($this);
-$this->registerCssFile('@web/css/bootstrap-markdown-override.css');
-$this->registerJsFile('@web/js/markdownEditor.js');
+$this->registerCssFile('@web-static/css/bootstrap-markdown-override.css');
+$this->registerJsFile('@web-static/js/markdownEditor.js');
 
 /**
  * Create a hidden field to store uploaded files guids
@@ -103,7 +103,7 @@ $this->registerJs("initMarkdownEditor('" . $fieldId . "')");
     <div class="modal-body">
     <div class="form-group">
     <label for="addLinkTitle"><?php echo Yii::t('widgets_views_markdownEditor', 'Title'); ?></label>
-    <input type="text" class="form-control linkTitle" 
+    <input type="text" class="form-control linkTitle"
     placeholder="<?php echo Yii::t('widgets_views_markdownEditor', 'Title of your link'); ?>">
     </div>
     <div class="form-group">
@@ -120,4 +120,3 @@ $this->registerJs("initMarkdownEditor('" . $fieldId . "')");
     </div>
     </div>
 </script>
-    

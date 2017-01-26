@@ -6,7 +6,10 @@ Here you will learn how you can adapt existing modules to working fine with actu
 
 ### Stream / Content Changes
 
-TBD
+The models WallEntry and Wall were removed. So all corresponding methods like getFirstWallEntryId() are not longer available.
+The stream handling is now handled directly by the Content model. Also all stream classes (widgets, actions) are moved into the humhub\modules\stream package.
+
+
 
 ### File module changes
 

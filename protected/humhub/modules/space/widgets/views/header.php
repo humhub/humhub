@@ -6,7 +6,7 @@
 use yii\helpers\Html;
 
 if ($space->isAdmin()) {
-    $this->registerJsFile('@web/resources/space/spaceHeaderImageUpload.js');
+    $this->registerJsFile('@web-static/resources/space/spaceHeaderImageUpload.js');
     $this->registerJsVar('profileImageUploaderUrl', $space->createUrl('/space/manage/image/upload'));
     $this->registerJsVar('profileHeaderUploaderUrl', $space->createUrl('/space/manage/image/banner-upload'));
 }

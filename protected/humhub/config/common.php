@@ -5,6 +5,8 @@ Yii::setAlias('@webroot', realpath(__DIR__ . '/../../../'));
 Yii::setAlias('@app', '@webroot/protected');
 Yii::setAlias('@humhub', '@app/humhub');
 Yii::setAlias('@config', '@app/config');
+Yii::setAlias('@webroot-static', '@webroot/static');
+
 
 $config = [
     'name' => 'HumHub',

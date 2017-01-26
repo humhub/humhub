@@ -37,7 +37,7 @@ class RichText extends JsWidget
     public $minimal = false;
 
     /**
-     * @var boolean edit mode 
+     * @var boolean edit mode
      */
     public $edit = false;
 
@@ -61,7 +61,7 @@ class RichText extends JsWidget
         if ($this->encode) {
             $this->text = Html::encode($this->text);
         }
-        
+
         if (!$this->minimal) {
             $maxOembedCount = 3; // Maximum OEmbeds
             $oembedCount = 0; // OEmbeds used
@@ -86,7 +86,7 @@ REGEXP;
                 }
                 return Html::a($match[0], Html::decode($match[0]), array('target' => '_blank'));
             }, $this->text);
-            
+
             // mark emails
             $this->text = preg_replace_callback('/[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})/', function ($match) {
                 return Html::mailto($match[0]);
@@ -104,18 +104,18 @@ REGEXP;
         }
 
         $this->text = trim($this->text);
-        
+
         if (!$this->minimal) {
             $output = nl2br($this->text);
         } else {
             $output = $this->text;
         }
-        
+
         // replace leading spaces with no break spaces to keep the text format
         $output = preg_replace_callback('/^( +)/m', function($m) {
-            return str_repeat("&nbsp;", strlen($m[1])); 
+            return str_repeat("&nbsp;", strlen($m[1]));
         }, $output);
-        
+
         $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
 
         return trim($output);
@@ -145,7 +145,7 @@ REGEXP;
         return preg_replace_callback('@;(\w*?);@', function($hit) use(&$show, &$emojis) {
             if (in_array($hit[1], $emojis)) {
                 if ($show) {
-                    return Html::img(Yii::getAlias("@web/img/emoji/" . $hit[1] . ".svg"), array('data-emoji-name' => $hit[0], 'data-richtext-feature' => '', 'data-guid' => "@-emoji".$hit[0], 'class' => 'atwho-emoji', 'width' => '18', 'height' => '18', 'alt' => $hit[1]));
+                    return Html::img(Yii::getAlias("@web-static/img/emoji/" . $hit[1] . ".svg"), array('data-emoji-name' => $hit[0], 'data-richtext-feature' => '', 'data-guid' => "@-emoji".$hit[0], 'class' => 'atwho-emoji', 'width' => '18', 'height' => '18', 'alt' => $hit[1]));
                 }
                 return '';
             }

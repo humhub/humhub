@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 if ($isProfileOwner) {
-    $this->registerJsFile('@web/resources/user/profileHeaderImageUpload.js');
+    $this->registerJsFile('@web-static/resources/user/profileHeaderImageUpload.js');
     $this->registerJs("var profileImageUploaderUserGuid='" . $user->guid . "';", \yii\web\View::POS_BEGIN);
     $this->registerJs("var profileImageUploaderCurrentUserGuid='" . Yii::$app->user->getIdentity()->guid . "';", \yii\web\View::POS_BEGIN);
     $this->registerJs("var profileImageUploaderUrl='" . Url::to(['/user/account/profile-image-upload', 'userGuid' => $user->guid]) . "';", \yii\web\View::POS_BEGIN);
