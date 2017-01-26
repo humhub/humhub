@@ -60,15 +60,12 @@ humhub.module('live.poll', function (module, require, $) {
         if (this.delay > this.options.maxInterval) {
             this.delay = this.options.maxInterval;
         }
-        
-        console.log('Updated delay to: '+this.delay);
     };
 
     /**
      * Runs an live update call and resets the timeout.
      */
     PollClient.prototype.update = function () {
-        console.log('DELAY: '+ this.delay);
         this.timeout = setTimeout(this.call, this.getDelay());
         client.get(this.getCallOptions())
                 .then(this.handle)

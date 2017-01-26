@@ -516,8 +516,9 @@ humhub.module('stream', function(module, require, $) {
                     that.$.trigger('humhub:modules:stream:lastEntryLoaded');
                     //We call onChange here, since we want to display empty messages in case its the first call
                     that.onChange();
-                } else if(!cfg.contentId && !cfg.insertAfter) {
+                } else if(!cfg.contentId && !cfg.insertAfter) { // Load More event
                     that.lastEntryLoaded = response.isLast;
+                    that.lastContentId = response.lastContentId;
                     $result = that.addEntries(response, cfg);
                 } else {
                     $result = that.addEntries(response, cfg);
@@ -540,7 +541,7 @@ humhub.module('stream', function(module, require, $) {
         cfg = cfg || {};
         if(!object.isDefined(cfg['contentId'])) {
             cfg['limit'] = object.isDefined(cfg['limit']) ? cfg['limit'] : STREAM_LOAD_COUNT;
-            cfg['from'] = object.isDefined(cfg['from']) ? cfg['from'] : this.getLastContentId();
+            cfg['from'] = object.isDefined(cfg['from']) ? cfg['from'] : this.lastContentId;
             cfg['sort'] = cfg['sort'] || this.sort;
         } else {
             cfg['limit'] = 1;
@@ -571,17 +572,6 @@ humhub.module('stream', function(module, require, $) {
                 'StreamQuery[contentId]': cfg.contentId
             }
         });
-    };
-
-    /**
-     * Returns the content id of the last entry loaded.
-     * @returns {unresolved}
-     */
-    Stream.prototype.getLastContentId = function() {
-        var $lastEntry = this.$.find(DATA_STREAM_ENTRY_SELECTOR).last();
-        if($lastEntry.length) {
-            return $lastEntry.data(DATA_STREAM_ENTRY_ID_SELECTOR);
-        }
     };
 
     Stream.prototype.prependEntry = function(html) {
