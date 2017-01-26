@@ -76,7 +76,7 @@ class ProfileImage
     public function getUrl($prefix = "", $scheme = false)
     {
         if (file_exists($this->getPath($prefix))) {
-            $path = '@web/' . $this->folder_images . '/';
+            $path = '@web/uploads/' . $this->folder_images . '/';
             $path .= $this->guid . $prefix;
             $path .= '.jpg?m=' . filemtime($this->getPath($prefix));
         } else {
