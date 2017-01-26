@@ -104,7 +104,7 @@ class DropDownGridColumn extends DataColumn
 
         if ($readonly) {
             if (isset($options[$model[$this->attribute]])) {
-                return $options[$model[$this->attribute]];
+                return Html::dropDownList($inputName, $model[$this->attribute], $options, array_merge($this->htmlOptions, ['readonly' => true, 'disabled' => true]));
             }
             return $model[$this->attribute];
         }
