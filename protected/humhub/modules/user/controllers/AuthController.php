@@ -109,6 +109,7 @@ class AuthController extends Controller
 
         // Login existing user 
         $user = AuthClientHelpers::getUserByAuthClient($authClient);
+        
         if ($user !== null) {
             return $this->login($user, $authClient);
         }

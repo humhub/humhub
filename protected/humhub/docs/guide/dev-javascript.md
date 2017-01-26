@@ -2,7 +2,7 @@ Javascript API
 =======
 
 Since version 1.2 HumHub provides a module based Javascript API within the `humhub` namespace.
-Instead of embeding inline script blocks into your view files, it's highly recommended to use the new module system for your js scripts. 
+Instead of embeding inline script blocks into your view files, it's highly recommended to use the new module system for your modules js scripts. 
 
 The usage of this API and it's core components are described in the following.
 
@@ -11,7 +11,7 @@ The usage of this API and it's core components are described in the following.
 
 ### Module Asset
 
-Module script files should reside within the `resources/js` folder of your humhub module and should ideally be appended at the bottom of your document. This can be achieved by using [Asset Bundles](http://www.yiiframework.com/doc-2.0/guide-structure-assets.html):
+Module script files should reside within the `resources/js` folder of your humhub module and should ideally be appended at the bottom of your document. This can be achieved by using [Asset Bundles](http://www.yiiframework.com/doc-2.0/guide-structure-assets.html).
 
 
 ```php
@@ -21,7 +21,7 @@ use yii\web\AssetBundle;
 
 class ExampleAsset extends AssetBundle
 {
-	// You can also use View::POS_BEGIN to append your scripts to the beginning of the body element.
+    // You can also use View::POS_BEGIN to append your scripts to the beginning of the body element.
     public $jsOptions = ['position' => \yii\web\View::POS_END];
     public $sourcePath = '@example/resources';
     public $js = [
@@ -34,62 +34,101 @@ class ExampleAsset extends AssetBundle
 
 > Note: Your Asset Bundle should reside in the `assets` subdirectory of your module.
 
-### Module Registration
+In your view you can register your Asset Bundle by calling
 
-New Module are registered by calling the `humhub.module` function as in the following example.
+```php
+\humhub\modules\example\assets\ExampleAsset::register($this);
+```
 
-The first parameter of the `module` function is an unique module id. The second argument is the module function, which allows you to add module functions either by adding functions directly to the `module` argument or using the `module.export` function (prefered).
+Where `$this` is the view instance. More infos about the use of Asset Bundles are available in the [Yii Guide](http://www.yiiframework.com/doc-2.0/guide-structure-assets.html).
 
-The `module` function provides the following arguments:
+### Write Custom Modules
 
-1. `module`: Your module instance, for exporting module functions and attributes.
-2. `require`: Method for injecting other modules.
-3. `$`: jQuery instance.
-
-> Note: Only exported functions and attributes will be visible outside of the module.
+Module are registered by calling the `humhub.module` function.
 
 ```javascript
 // After registration, all exported functions will be available under the namespace humhub.modules.example
 humhub.module('example', function(module, require, $) {
-    // We require the client module
-    var client = require('client');
-
-    // Private property
-    var myProperty;
-
-    // Definition of an exported object
-    module.myPublicObject = {};
-
-    // export single function
-    module.myPublicFunction = function() {
-        // Some logic
-    }
-
-    var test = function() {
-        // Test function
-    }
-
-    // Export multiple values by calling module.export.
-    module.export({
-        test: test,
-        myFunction: function() {
-            ...
-        }
-    });
+   ...
 });
+```
+Example of a submodule:
 
-...
-
+```javascript
 // Submodules can be registered as following
 humhub.initModule('example.mySubmodule', function(module, require, $) {
 ...
 }
 ```
 
+The first argument of the `humhub.module` function defines the module id, which should match with your backend module id. The second argument is the actual module function itself.
 
+Your module function is provided with the following arguments:
 
+1. `module` - Your module instance, used for exporting module logic and accessing module specific utilities as log, text, config
+2. `require` - Used for injecting other modules.
+3. `$` - jQuery instance.
 
-Accessing your example module:
+##### Module Exports
+
+Module functions and attributes can only be accessed outside of the module if they are exported, either by directly appending them to the `module` object or by calling `module.export`.
+
+```javascript
+humhub.module('example', function(module, require, $) {
+   
+    // export public function
+    module.myPublicFunction = function() {/* ... */}
+
+    // another public function exported later
+    var publicTwo = function() { /* ... */}
+
+    // Exports multiple values
+    module.export({
+        publicTwo: publicTwo,
+        publicThree: function() {/** Test function **/}
+    });
+});
+```
+##### Module Initialization
+
+Your module's initialization logic can be implemented by exporting an `init` function. This function will automatically be called after the page is loaded. 
+
+By default this function is only called once after a fresh page load (or directly after the registration if it was loaded per ajax). If your module requires an initialization also after Pjax page loads, your module has to set the  `initOnPjaxLoad` setting.
+
+```javascript
+module.initOnPjaxLoad = true;
+
+var init = function($pjax) { 
+    // Do some global initialization work, which needs to run in any case
+    if($pjax) {
+        // Runs only after a pjax page load
+    } else {
+        // Runs only after fresh page load
+    }
+}
+
+module.export({
+	init: init
+});
+```
+
+##### Module Unload
+
+For the purpose of cleaning up module related dom nodes etc. there is also an `unload` function, which is called before each Pjax page load. This function is mainly used to obsolete dom nodes to prevent memory leaks, remove obsolete dom listeners, or clear some module data.  
+
+```javascript
+var unload = function($pjax) { 
+    $('.moduleResidues').remove();
+}
+
+module.export({
+	unload: unload
+});
+```
+
+##### Module Dependencies
+
+Other modules can be injected into your module by using the `require` function. 
 
 ```javascript
 //Calling myFunction within another module
@@ -105,13 +144,9 @@ require('modules.example').myFunction();
 humhub.modules.example.myFunction();
 ```
 
-### Module Dependencies
+> Note: You should only require modules at the beginning of your own module, if you are sure the required module is already registered.
 
-As described before the `require` function can be used to inject other modules into your own module.
-Note that you should only require modules at the beginning of your own module, if you are sure the required module is already
-registered.
-
-The registration order should be assured by using the Assetbundle's `$depends` mechanism:
+If your module requires other modules, which are not part of the core you can ensure the order by means of the `$depends` attribute of your Asset Bundle:
 
 
 ```php
@@ -121,54 +156,27 @@ public $depends = [
 ];
 ```
 
-If you can't assure the module registration order, but need to require another module, you can either require it within your module function instead of the beginning 
-of your module or using the `lazy` flag of the require function. 
-The call to `require('anotherModule', true)` will return an empty namespace object, which will be filled after the required module is available.
+If you can't assure the module registration order for another  module, but need to require the module, you can either require it within your module function or use the `lazy` flag of the require function. 
 
->Note: If you use the `lazy` flat to require another module, you can't assure the required module will be initialized within your own module's `init` function.
+The call to `require('anotherModule', true)` will return an empty namespace object, in case the module was not registered yet. After the registration of the dependent module, the module will be available.
 
->Info: All core modules are registrated at the beginning of the body, so they are available very early.
-
-### Module Initialisation
-
-Modules can export a `init` function, which is called automatically after the document is ready.
+>Note: When using the `lazy` flag, you can't assure the required module will be initialized within your own module's `init` logic.
 
 ```javascript
 humhub.initModule('example', function(module, require, $) {
-    ...
+    // We can't ensure the initial logic of module2
+    var module2 = require('module2', true); 
 
-    var init = function() {
-        // Dom will be ready here.
+    // at this point module2 might be empty
+    
+    var myFunction = function() {
+        // myFunction should only be used outside of the init logic
+        module2.executeSomeFunction();
     }
-
-    // Export multiple values by calling module.export.
-    module.export({
-        init: init,
-        ...
-    });
 });
 ```
 
-Since HumHub can be operated in [[pjax]] mode as single page application.
-By default the `init` function of your module is automatically after a pjax load. This can be deactivated for modules
-which do not need to be reinitialized by setting
-
-```javascript
-module.initOnPjaxLoad = false
-```
-
-This mostly applies to modules which are not dependent on dynamic dom nodes.
-If you module needs to implement a special behaviour for pjax reloads, it can also listen to the following event
-
-```javascript
-var event = require('event');
-
-...
-
-event.on('humhub:modules:client:pjax:afterPageLoad', function() {
-...
-}
-```
+>Info: All core modules are appended to the head section of your document. So der should not be any dependency problem.
 
 ### Module Configuration
 
