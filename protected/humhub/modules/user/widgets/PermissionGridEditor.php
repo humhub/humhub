@@ -22,6 +22,11 @@ class PermissionGridEditor extends GridView
 {
 
     /**
+     * @var boolean hide not changeable permissions 
+     */
+    public $hideFixedPermissions = true;
+
+    /**
      * @inheritdoc
      */
     public $showHeader = false;
@@ -104,7 +109,7 @@ class PermissionGridEditor extends GridView
             protected function getDataProvider()
             {
                 return new ArrayDataProvider([
-                    'allModels' => $this->permissionManager->createPermissionArray($this->groupId, true),
+                    'allModels' => $this->permissionManager->createPermissionArray($this->groupId, $this->hideFixedPermissions),
                     'sort' => [
                         'attributes' => ['title', 'description', 'moduleId'],
                     ],
