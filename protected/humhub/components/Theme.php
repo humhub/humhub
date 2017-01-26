@@ -94,13 +94,13 @@ class Theme extends \yii\base\Theme
         }
 
         // Web Resource e.g. image
-        if (substr($path, 0, 5) === '@web/') {
-            $themedFile = str_replace('@web', $this->getBasePath(), $path);
+         if (substr($path, 0, 5) === '@web/' || substr($path, 0, 12) === '@web-static/') {
+            $themedFile = str_replace(['@web/', '@web-static/'], [$this->getBasePath(), $this->getBasePath() . DIRECTORY_SEPARATOR . 'static'], $path);
+            // Check if file exists in theme base dir
             if (file_exists($themedFile)) {
-                return str_replace('@web', $this->getBaseUrl(), $path);
-            } else {
-                return $path;
+                return str_replace(['@web/', '@web-static/'], [$this->getBaseUrl(), $this->getBaseUrl() . DIRECTORY_SEPARATOR . 'static'], $path);
             }
+            return $path;
         }
 
         return parent::applyTo($path);
