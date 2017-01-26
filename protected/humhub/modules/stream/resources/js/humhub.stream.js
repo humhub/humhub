@@ -384,6 +384,8 @@ humhub.module('stream', function(module, require, $) {
      * @returns {humhub.stream_L5.Stream.prototype}
      */
     Stream.prototype.init = function() {
+        this.lastContentId = 0;
+        this.lastEntryLoaded = false;
         var that = this;
         return new Promise(function(resolve, reject) {
             that.clear();
