@@ -28,6 +28,7 @@ class Application extends \yii\web\Application
     {
         $request = $this->getRequest();
         Yii::setAlias('@web-static', $request->getBaseUrl() . '/static');
+        Yii::setAlias('@webroot-static', '@webroot/static');
 
         parent::bootstrap();
     }
