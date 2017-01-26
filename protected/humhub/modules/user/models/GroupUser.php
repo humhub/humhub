@@ -11,7 +11,7 @@ namespace humhub\modules\user\models;
 use humhub\components\ActiveRecord;
 
 /**
- * This is the model class for table "group_admin".
+ * This is the model class for table "group_user".
  *
  * @property integer $id
  * @property integer $user_id

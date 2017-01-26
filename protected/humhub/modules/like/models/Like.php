@@ -100,6 +100,8 @@ class Like extends ContentAddonActiveRecord
         if ($this->getSource() instanceof ContentOwner && $this->getSource()->content->createdBy !== null) {
             // Send notification
             NewLike::instance()->from($this->user)->about($this)->send($this->getSource()->content->createdBy);
+            //Send notification to Admins
+            \humhub\modules\admin\notifications\UserUpdates::sendToAdmins($this, 'likes');
         }
 
         return parent::afterSave($insert, $changedAttributes);

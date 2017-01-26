@@ -84,7 +84,8 @@ class Module extends \humhub\components\Module
     {
         if (Yii::$app->user->isAdmin()) {
             return [
-                'humhub\modules\admin\notifications\NewVersionAvailable'
+                'humhub\modules\admin\notifications\NewVersionAvailable',
+                'humhub\modules\admin\notifications\UserUpdates'
             ];
         }
         return [];

@@ -2,7 +2,7 @@
 /* @var $model \humhub\modules\notification\models\forms\NotificationSettings */
 /* @var $form yii\widgets\ActiveForm */
 
-use yii\bootstrap\Html
+use yii\bootstrap\Html;
 ?>
 
 <br />
@@ -39,8 +39,10 @@ use yii\bootstrap\Html
                     </td>
                     <?php foreach ($model->targets() as $target): ?>
                         <td class="text-center">
-                            <?php $disabled = !$target->isEditable($model->user) || $category->isFixedSetting($target) ?>
-                            <?= Html::checkbox($model->getSettingFormname($category, $target), $target->isCategoryEnabled($category, $model->user), ['style' => 'margin:0px;', 'disabled' => $disabled]) ?>
+                            <?php if(! ($target->id == 'web' && $category->id == 'admin_user_updates')): ?>
+                                <?php $disabled = !$target->isEditable($model->user) || $category->isFixedSetting($target) ?>
+                                <?= Html::checkbox($model->getSettingFormname($category, $target), $target->isCategoryEnabled($category, $model->user), ['style' => 'margin:0px;', 'disabled' => $disabled]) ?>
+                            <?php endif; ?>
                         </td>
                     <?php endforeach; ?>
 

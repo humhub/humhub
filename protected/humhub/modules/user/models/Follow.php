@@ -98,6 +98,9 @@ class Follow extends \yii\db\ActiveRecord
                     ->container($this->user)
                     ->about($this)
                     ->save();
+
+            //Send notification to Admins
+            \humhub\modules\admin\notifications\UserUpdates::sendToAdmins($this, 'following');
         }
 
         $this->trigger(Follow::EVENT_FOLLOWING_CREATED, new FollowEvent(['user' => $this->user, 'target' => $this->getTarget()]));

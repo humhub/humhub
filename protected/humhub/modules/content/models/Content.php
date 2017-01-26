@@ -180,6 +180,9 @@ class Content extends ContentDeprecated
                 \humhub\modules\content\activities\ContentCreated::instance()
                         ->about($contentSource)->save();
 
+                //Send notification to Admins
+                \humhub\modules\admin\notifications\UserUpdates::sendToAdmins($this, 'new content');
+
                 Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
                     'contentContainerId' => $this->container->id,
                     'visibility' => $this->visibility,

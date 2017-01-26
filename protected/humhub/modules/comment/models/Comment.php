@@ -123,6 +123,9 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                     ->about($this)
                     ->sendBulk($this->getCommentedRecord()->getFollowers(null, true, true));
 
+            //Send notification to Admins
+            \humhub\modules\admin\notifications\UserUpdates::sendToAdmins($this, 'comments');
+
             if ($this->content->container) {
                 Yii::$app->live->send(new \humhub\modules\comment\live\NewComment([
                     'contentContainerId' => $this->content->container->id,
