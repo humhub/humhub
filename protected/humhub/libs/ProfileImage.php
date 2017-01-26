@@ -75,13 +75,12 @@ class ProfileImage
      */
     public function getUrl($prefix = "", $scheme = false)
     {
-        $path = "@web/";
         if (file_exists($this->getPath($prefix))) {
-            $path .= 'uploads/' . $this->folder_images . '/';
+            $path = '@web/' . $this->folder_images . '/';
             $path .= $this->guid . $prefix;
             $path .= '.jpg?m=' . filemtime($this->getPath($prefix));
         } else {
-            $path .= 'img/' . $this->defaultImage;
+            $path = '@web-static/img/' . $this->defaultImage;
             $path .= '.jpg';
             $path = Yii::$app->view->theme->applyTo($path);
         }
