@@ -118,13 +118,20 @@ class StreamQuery extends \yii\base\Model
      * @var \yii\db\ActiveQuery 
      */
     protected $_query;
+
+    /**
+     * @var boolean query built
+     */
     protected $_built = false;
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
             [['limit', 'from', 'contentId'], 'number'],
-            [['limit', 'filters', 'sort', 'from'], 'safe']
+            [['filters', 'sort'], 'safe']
         ];
     }
 

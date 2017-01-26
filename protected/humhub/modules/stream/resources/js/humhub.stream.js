@@ -1,4 +1,4 @@
-/**
+/**do
  * Core module for managing Streams and StreamItems
  * @type Function
  */
@@ -545,6 +545,7 @@ humhub.module('stream', function(module, require, $) {
             cfg['limit'] = object.isDefined(cfg['limit']) ? cfg['limit'] : STREAM_LOAD_COUNT;
             cfg['from'] = object.isDefined(cfg['from']) ? cfg['from'] : this.lastContentId;
             cfg['sort'] = cfg['sort'] || this.sort;
+            cfg['suppressionsOnly'] = object.isDefined(cfg['suppressionsOnly']) ? cfg['suppressionsOnly'] : false;
         } else {
             cfg['limit'] = 1;
         }
@@ -571,7 +572,8 @@ humhub.module('stream', function(module, require, $) {
                 'StreamQuery[sort]': cfg.sort,
                 'StreamQuery[from]': cfg.from,
                 'StreamQuery[limit]': cfg.limit,
-                'StreamQuery[contentId]': cfg.contentId
+                'StreamQuery[contentId]': cfg.contentId,
+                'StreamQuery[suppressionsOnly]': cfg.suppressionsOnly
             }
         });
     };
@@ -779,13 +781,13 @@ humhub.module('stream', function(module, require, $) {
         });
 
         this.$.on('humhub:stream:afterAddEntries', function(evt, resp, res) {
-            $.each(resp.contentSuppressions, function(key, values) {
+            $.each(resp.contentSuppressions, function(key, infos) {
                 var entry = that.entry(key);
-                var $loadDiv = $('<div class="load-suppressed"><a href="#" data-ui-loader>'+values.length+' more...</a></div>');
+                var $loadDiv = $('<div class="load-suppressed"><a href="#" data-ui-loader><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;'+infos.message+'&nbsp;&nbsp;<span class="badge">'+infos.contentName+'</span></a></div>');
                 entry.$.after($loadDiv);
                 $loadDiv.on('click', function(evt) {
                     evt.preventDefault();
-                    that.loadEntries({'insertAfter': entry.$, 'from': key, 'limit': values.length}).then(function(resp) {
+                    that.loadEntries({'insertAfter': entry.$, 'from': key, 'suppressionsOnly': true}).then(function(resp) {
                         $loadDiv.remove();
                     }).catch(function(err) {
                         module.log.error(err, true);
