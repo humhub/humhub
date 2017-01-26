@@ -1,11 +1,10 @@
 language: php
 
 php:
-  - 5.4
   - 5.5
   - 5.6
   - 7.0
-  
+  - 7.1
 matrix:
   fast_finish: true
 
@@ -63,7 +62,8 @@ script:
     cd protected/humhub/tests/
     codecept run
 after_failure:
-  - cd ../modules/space/tests/codeception/_output/
-  - cat space.acceptance.CreateSpaceCest.testCreateSpace.fail.html
+  - cd ../modules/user/tests/codeception/_output/
+  - ls
+  - cat user.acceptance.ProfileCest.testViewAboutPage.fail.html
    #cat ../modules/*/tests/codeception/_output/*.html
     
