@@ -43,12 +43,12 @@ class CreateSpaceCest
 
         // Fresh test environments (travis) won't have any preinstalled modules.
         // Perhaps we should fetch an module manually by default.
-        try {
+        /*try {
             $I->waitForText('Add Modules', 5, '#globalModal');
             $I->click('Next', '#globalModal');
         } catch (Exception $e) {
             // Do this if it's not present.
-        }
+        }*/
 
         $I->waitForText('Invite members', 10, '#globalModal');
         $I->selectUserFromPicker('#space-invite-user-picker', 'Peter Tester');
