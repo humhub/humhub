@@ -122,14 +122,14 @@ $config = [
             'clients' => [],
         ],
         'queue' => [
-            'class' => humhub\components\queue\Queue::class,
+            'class' => 'humhub\components\queue\Queue',
             'driver' => [
                 //'class' => 'humhub\components\queue\driver\MySQL',
                 'class' => 'humhub\components\queue\driver\Sync',
             ],
         ],
         'live' => [
-            'class' => humhub\modules\live\components\Sender::class,
+            'class' => 'humhub\modules\live\components\Sender',
             'driver' => [
                 'class' => 'humhub\modules\live\driver\Database',
             ],

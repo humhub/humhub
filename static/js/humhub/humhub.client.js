@@ -21,7 +21,7 @@ humhub.module('client', function (module, require, $) {
         var responseType =  xhr.getResponseHeader('content-type');
 
         // If we expect json and received json we merge the json result with our response object.
-        if (!dataType || dataType === 'json' && responseType.indexOf('json') > -1) {
+        if ((!dataType || dataType === 'json') && responseType && responseType.indexOf('json') > -1) {
             $.extend(this, this.response);
         } else if (dataType) {
             this[dataType] = this.response;
