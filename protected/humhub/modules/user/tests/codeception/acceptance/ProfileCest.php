@@ -62,11 +62,8 @@ class ProfileCest
         $I->wantTo('ensure that my profile works as expected.');
         
         $I->amUser2();
-        $directory = $I->amOnDirectory();
-        $directory->clickMembers();
-        $I->click('Peter Tester');
+        $I->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839d');
         
-        $I->waitForText('Profile menu');
         $I->expectTo('see the profile of User2');
         $I->see('Follow');
         $I->see('Stream');
@@ -82,10 +79,7 @@ class ProfileCest
         $I->selectOption('select[data-attribute0*=ViewAboutPage]', 'Deny');
        
         $I->amUser1(true);
-        $directory = $I->amOnDirectory();
-        $directory->clickMembers();
-        $I->click('Sara Tester');
-        $I->wait(3);
+        $I->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839e');
         $I->dontSee('About');
     }
 }
