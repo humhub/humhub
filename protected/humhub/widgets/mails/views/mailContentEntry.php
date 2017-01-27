@@ -11,7 +11,7 @@ use yii\helpers\Html;
 
 
 ?>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+<table width="100%" style="table-layout:fixed;" border="0" cellspacing="0" cellpadding="0" align="left">
     <tr>
         <!-- START: USER IMAGE COLUMN -->
         <td width="40" valign="top" align="left" style="padding-right:20px;">
@@ -26,7 +26,7 @@ use yii\helpers\Html;
         <!-- START: CONTENT AND ORIGINATOR DESCRIPTION -->
         <td valign="top">
             <?php if ($originator) : ?>
-                <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+                <table width="100%" style="table-layout:fixed;" border="0" cellspacing="0" cellpadding="0" align="left">
                     <tr>
                         <td>
                             <a href="<?= $originator->createUrl('/user/profile', [], true) ?>" style="font-size: 15px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight:300; text-align:left; ">
@@ -51,7 +51,7 @@ use yii\helpers\Html;
                     </tr>
                     <tr>
                         <?php if($isComment) : ?>
-                            <td height="15" style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left;">
+                            <td height="15" style="word-wrap:break-word;font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left;">
                                 <?= $content ?>
                             </td>
                         <?php else : ?>
@@ -70,7 +70,7 @@ use yii\helpers\Html;
             <td colspan="2" height="10"></td>
         </tr>
         <tr>
-            <td colspan="2" style="padding-top:5px; padding-bottom:5px; font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left; border-top: 1px solid <?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;">
+            <td colspan="2" style="word-wrap:break-word;padding-top:5px; padding-bottom:5px; font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left; border-top: 1px solid <?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;">
 
                 <?= $content ?>
 

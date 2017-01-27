@@ -238,7 +238,7 @@ class Theme extends \yii\base\Theme
     public function parseThemeVariables($lessFileName)
     {
         // Parse default values
-        $variables = $this->parseLessVariables(Yii::getAlias('@webroot/less/'.$lessFileName));
+        $variables = $this->parseLessVariables(Yii::getAlias('@web-static/less/'.$lessFileName));
         
         // Overwrite theme values
         return \yii\helpers\ArrayHelper::merge($variables, $this->parseLessVariables($this->getBasePath() . '/less/'.$lessFileName));

@@ -47,7 +47,7 @@ class Followable extends Behavior
      * @param int $userId
      * @return Follow
      */
-    private function getFollowRecord($userId)
+    public function getFollowRecord($userId)
     {
         $userId = ($userId instanceof User) ? $userId->id : $userId;
         return Follow::find()->where(['object_model' => $this->owner->className(), 'object_id' => $this->owner->getPrimaryKey(), 'user_id' => $userId])->one();

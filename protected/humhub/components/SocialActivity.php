@@ -303,9 +303,12 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
             $content = $this->source;
         }
         
+        $truncatedDescription = RichText::widget(['text' => $content->getContentDescription(), 'minimal' => true, 'maxLength' => 60]);
+        $trimmed = \humhub\libs\Helpers::trimText($truncatedDescription, 60);
+        
         return Html::encode($content->getContentName()) .
                 ' "' .
-                RichText::widget(['text' => $content->getContentDescription(), 'minimal' => true, 'maxLength' => 60]) . '"';
+                $trimmed. '"';
     }
     
     /**

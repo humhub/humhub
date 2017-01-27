@@ -45,7 +45,7 @@ class MailButton extends \yii\base\Widget
     public function run()
     {
         if ($this->type) {
-            $this->color = Yii::$app->view->theme->variable('info');
+            $this->color = Yii::$app->view->theme->variable($this->type);
         }
 
         if (!$this->color) {

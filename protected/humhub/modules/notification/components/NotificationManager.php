@@ -288,7 +288,7 @@ class NotificationManager
             return;
         }
 
-        $followed = $space->getFollowedRecord($user);
+        $followed = $space->getFollowRecord($user);
         if ($followed) {
             $followed->send_notifications = $follow;
             $followed->save();
