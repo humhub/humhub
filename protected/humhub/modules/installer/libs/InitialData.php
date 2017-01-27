@@ -12,7 +12,6 @@ use Yii;
 use yii\base\Exception;
 use humhub\modules\user\models\ProfileFieldCategory;
 use humhub\modules\user\models\ProfileField;
-use humhub\modules\user\models\User;
 use humhub\modules\user\models\Group;
 
 /**
@@ -61,9 +60,6 @@ class InitialData
         // Design
         Yii::$app->settings->set('theme', "HumHub");
         Yii::$app->getModule('space')->settings->set('spaceOrder', 0);
-
-        // read and save colors from current theme
-        \humhub\components\Theme::setColorVariables('HumHub');
 
         // Basic
         Yii::$app->getModule('tour')->settings->set('enable', 1);
