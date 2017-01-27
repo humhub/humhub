@@ -91,7 +91,7 @@ class PasswordRecoveryController extends Controller
         // Saved token - Format: randomToken.generationTime
         $savedTokenInfo = Yii::$app->getModule('user')->settings->contentContainer($user)->get('passwordRecoveryToken');
 
-        if ($savedTokenInfo !== "") {
+        if ($savedTokenInfo) {
             list($generatedToken, $generationTime) = explode('.', $savedTokenInfo);
             if (\humhub\libs\Helpers::same($generatedToken, $token)) {
                 // Check token generation time

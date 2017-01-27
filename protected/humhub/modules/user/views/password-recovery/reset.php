@@ -12,9 +12,9 @@ $this->pageTitle = Yii::t('UserModule.views_auth_resetPassword', 'Password reset
 
     <div class="row">
         <div id="password-recovery-form" class="panel panel-default animated bounceIn" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
-            <div class="panel-heading"><?php echo Yii::t('UserModule.views_auth_resetPassword', '<strong>Change</strong> your password'); ?></div>
+            <div class="panel-heading"><?= Yii::t('UserModule.views_auth_resetPassword', '<strong>Change</strong> your password'); ?></div>
             <div class="panel-body">
-                <?php $form = CActiveForm::begin(); ?>
+                <?php $form = CActiveForm::begin(['enableClientValidation'=>false]); ?>
                 
                     <?= $form->field($model, 'newPassword')->passwordInput(['class' => 'form-control', 'id' => 'new_password', 'maxlength' => 255, 'value' => ''])?>
 
