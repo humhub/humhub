@@ -1,6 +1,7 @@
 humhub.module('live.poll', function (module, require, $) {
     var client = require('client');
     var event = require('event');
+    var object = require('util').object;
 
     var DEFAULT_MIN_INTERVAL = 15;
     var DEFAULT_MAX_INTERVAL = 45;
@@ -29,7 +30,6 @@ humhub.module('live.poll', function (module, require, $) {
         }
 
         this.delay = this.options.minInterval;
-        this.lastCall = Date.now();
         this.call = $.proxy(this.update, this);
         this.handle = $.proxy(this.handleUpdate, this);
         
@@ -89,8 +89,13 @@ humhub.module('live.poll', function (module, require, $) {
      */
     PollClient.prototype.handleUpdate = function (response) {
         this.lastTs = response.queryTime;
-        this.lastCall = Date.now();
-        var events = _groupEvents(response.events);
+        
+        if(!object.isObject(response.events)) {
+            return;
+        }
+       
+        var events = this.groupEvents(response.events);
+        
         $.each(events, function (type, events) {
             try {
                 event.trigger(type, [events]);
@@ -98,14 +103,22 @@ humhub.module('live.poll', function (module, require, $) {
                 module.log.error(e);
             }
         });
+        
+        this.lastIds = Object.keys(response.events);
     };
 
     /**
-     * Groupes the liveEvents by type.
+     * Groups the liveEvents by type and filters out duplicates.
      */
-    var _groupEvents = function (events) {
+    PollClient.prototype.groupEvents = function (events) {
         var result = {};
+        var that = this;
         $.each(events, function (id, liveEvent) {
+            // Filter out already triggered events.
+            if(that.lastIds && that.lastIds.indexOf(id) > -1) {
+                return; // continue
+            }
+            
             if (!result[liveEvent.type]) {
                 result[liveEvent.type] = [liveEvent];
             } else {

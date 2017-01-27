@@ -94,18 +94,21 @@ humhub.module('notification', function (module, require, $) {
             $('span.time').timeago();
         }
 
-
         this.updateCount(parseInt(response.newNotifications));
         this.lastEntryLoaded = (response.counter < 6);
         this.$entryList.fadeIn('fast');
     };
 
     NotificationDropDown.prototype.updateCount = function ($count) {
+        if(this.$.data('notification-count') === $count) {
+            return;
+        }
+        
         $('#badge-notifications').hide();
         if (!$count) {
             $('#mark-seen-link').hide();
             $('#icon-notifications .fa').removeClass("animated swing");
-        } else if (this.$.data('notification-count') !== $count) {
+        } else {
             updateTitle($count);
             $('#badge-notifications').html($count);
             $('#mark-seen-link').show();

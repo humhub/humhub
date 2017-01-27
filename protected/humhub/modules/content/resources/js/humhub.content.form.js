@@ -32,7 +32,7 @@ humhub.module('content.form', function(module, require, $) {
 
         if(!module.config['disabled']) {
             // Remove info text from the textinput
-            $('#contentFormBody').on('click.humhub:content:form', function() {
+            $('#contentFormBody').on('click.humhub:content:form dragover.humhub:content:form', function() {
                 // Hide options by default
                 $('.contentForm_options').fadeIn();
             });
