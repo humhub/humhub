@@ -16,5 +16,15 @@ namespace humhub\modules\stream;
  */
 class Module extends \humhub\components\Module
 {
-    
+
+    /**
+     * @var array content classes to excludes from streams
+     */
+    public $streamExcludes = [];
+
+    /**
+     * @var array content classes which are not suppressed when in a row
+     */
+    public $streamSuppressQueryIgnore = [\humhub\modules\post\models\Post::class, \humhub\modules\activity\models\Activity::class];
+
 }

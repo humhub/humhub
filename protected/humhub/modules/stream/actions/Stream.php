@@ -151,6 +151,8 @@ abstract class Stream extends Action
      */
     public function init()
     {
+        $this->excludes = array_merge($this->excludes, Yii::$app->getModule('stream')->streamExcludes);
+
         $streamQueryClass = $this->streamQueryClass;
         $this->streamQuery = $streamQueryClass::find($this->includes, $this->excludes)->forUser($this->user);
 
@@ -223,6 +225,7 @@ abstract class Stream extends Action
 
         $output['content'] = [];
 
+        $i = 0;
         foreach ($this->streamQuery->all() as $content) {
             try {
                 $output['content'][$content->id] = static::getContentResultEntry($content);
@@ -234,10 +237,10 @@ abstract class Stream extends Action
                     throw $e;
                 }
             }
+            $i++;
         }
 
-        $output['total'] = count($output['content']);   //         // Required?
-        $output['isLast'] = ($output['total'] < $this->activeQuery->limit);
+        $output['isLast'] = ($i < $this->activeQuery->limit);
         $output['contentOrder'] = array_keys($output['content']);
         $output['lastContentId'] = end($output['contentOrder']);
 
