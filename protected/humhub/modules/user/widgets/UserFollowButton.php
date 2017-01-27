@@ -86,7 +86,7 @@ class UserFollowButton extends \yii\base\Widget
 
         if (Yii::$app->getModule('friendship')->getIsEnabled()) {
             // Don't show follow button, when friends
-            if (Friendship::getFriendsQuery($this->user)->one() !== null) {
+            if (Friendship::getStateForUser(Yii::$app->user->getIdentity(), $this->user)) {
                 return;
             }
         }
