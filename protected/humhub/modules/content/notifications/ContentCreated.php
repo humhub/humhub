@@ -54,31 +54,28 @@ class ContentCreated extends \humhub\modules\notification\components\BaseNotific
      */
     public function getTitle(User $user)
     {
+         $contentInfo = $this->getContentInfo();
         $space = $this->getSpace();
         if ($space) {
             if ($this->isExplicitNotifyUser($user)) {
-                return Yii::t('ContentModule.notifications_ContentCreated', '{originator} notifies you about {contentType} "{preview}" in {space}', 
+                return Yii::t('ContentModule.notifications_ContentCreated', '{originator} notifies you about {contentInfo} in {space}', 
                         ['originator' => Html::encode($this->originator->displayName),
                             'space' => Html::encode($space->displayName),
-                            'contentType' => $this->source->getContentName(),
-                            'preview' => Helpers::truncateText($this->source->getContentDescription(), 25)]);
+                            'contentInfo' => $contentInfo]);
             }
-            return Yii::t('ContentModule.notifications_ContentCreated', '{originator} just wrote {contentType} "{preview}" in space {space}', 
+            return Yii::t('ContentModule.notifications_ContentCreated', '{originator} just wrote {contentInfo} in space {space}', 
                     ['originator' => Html::encode($this->originator->displayName),
                             'space' => Html::encode($space->displayName),
-                            'contentType' => $this->source->getContentName(),
-                            'preview' => Helpers::truncateText($this->source->getContentDescription(), 25)]);
+                            'contentInfo' => $contentInfo]);
         } else {
             if ($this->isExplicitNotifyUser($user)) {
-                return Yii::t('ContentModule.notifications_ContentCreated', '{originator} notifies you about {contentType} "{preview}"', 
+                return Yii::t('ContentModule.notifications_ContentCreated', '{originator} notifies you about {contentInfo}', 
                         ['originator' => Html::encode($this->originator->displayName),
-                            'contentType' => $this->source->getContentName(),
-                            'preview' => Helpers::truncateText($this->source->getContentDescription(), 25)]);
+                            'contentInfo' => $contentInfo]);
             }
-            return Yii::t('ContentModule.notifications_ContentCreated', '{originator} just wrote {contentType} "{preview}"', 
+            return Yii::t('ContentModule.notifications_ContentCreated', '{originator} just wrote {contentInfo}', 
                         ['originator' => Html::encode($this->originator->displayName),
-                            'contentType' => $this->source->getContentName(),
-                            'preview' => Helpers::truncateText($this->source->getContentDescription(), 25)]);
+                            'contentInfo' => $contentInfo]);
         }
     }
 
