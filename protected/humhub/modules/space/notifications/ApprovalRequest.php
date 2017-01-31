@@ -28,8 +28,47 @@ class ApprovalRequest extends BaseNotification
     /**
      * @inheritdoc
      */
+    public $viewName = "approval";
+    public $message;
+
+    /**
+     * @inheritdoc
+     */
     public $markAsSeenOnClick = false;
-    
+
+    /**
+     * Sets the approval request message for this notification.
+     * 
+     * @param string $message
+     */
+    public function withMessage($message)
+    {
+        if($message) {
+            $this->message = $message;
+        }
+       
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getViewParams($params = array())
+    {
+        return \yii\helpers\ArrayHelper::merge(parent::getViewParams(['message' => $this->message]), $params);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTitle(\humhub\modules\user\models\User $user)
+    {
+        return Yii::t('SpaceModule.notification', '{displayName} requests membership for the space {spaceName}', [
+                    '{displayName}' => Html::encode($this->originator->displayName),
+                    '{spaceName}' => Html::encode($this->source->name)
+        ]);
+    }
+
     /**
      *  @inheritdoc
      */
@@ -43,10 +82,30 @@ class ApprovalRequest extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('SpaceModule.notification', '{displayName} requests membership for the space {spaceName}', array(
+        return Yii::t('SpaceModule.notification', '{displayName} requests membership for the space {spaceName}', [
                     '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
                     '{spaceName}' => Html::tag('strong', Html::encode($this->source->name))
-        ));
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function serialize()
+    {
+        return serialize(['source' => $this->source, 'originator' => $this->originator, 'message' => $this->message]);
+    }
+
+     /**
+     * @inheritdoc
+     */
+    public function unserialize($serialized)
+    {
+        $this->init();
+        $unserializedArr = unserialize($serialized);
+        $this->from($unserializedArr['originator']);
+        $this->about($unserializedArr['source']);
+        $this->withMessage($unserializedArr['message']);
     }
 
 }

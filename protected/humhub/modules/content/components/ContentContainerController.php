@@ -43,9 +43,10 @@ class ContentContainerController extends Controller
 
     /**
      * @var boolean hides containers sidebar in layout
+     * @deprecated since version 1.2
      * @since 0.11
      */
-    public $hideSidebar = false;
+    public $hideSidebar = true;
 
     /**
      * Automatically loads the underlying contentContainer (User/Space) by using
@@ -122,7 +123,7 @@ class ContentContainerController extends Controller
             if ($this->contentContainer instanceof Space && (Yii::$app->request->isPjax || !Yii::$app->request->isAjax)) {
                 $options = [
                     'guid' => $this->contentContainer->guid,
-                    'name' => $this->contentContainer->name,
+                    'name' => \yii\helpers\Html::encode($this->contentContainer->name),
                     'archived' => $this->contentContainer->isArchived(),
                     'image' => \humhub\modules\space\widgets\Image::widget([
                         'space' => $this->contentContainer,

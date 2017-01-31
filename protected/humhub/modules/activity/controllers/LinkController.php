@@ -36,35 +36,16 @@ class LinkController extends Controller
     }
 
     /**
-     * Returns a JSON Response with links of an Activity
-     * 
-     * @return string json
+     * Returns the link for the given activity.
      */
-    public function actionInfo()
+    public function actionIndex()
     {
-        Yii::$app->response->format = 'json';
-
-        $json = [];
-        $json['success'] = 'false';
-
         $activityId = Yii::$app->request->get('id');
         $activity = Activity::findOne(['id' => $activityId]);
 
         if ($activity !== null && $activity->content->canRead()) {
-            $json['success'] = 'true';
-            $json['wallEntryId'] = '0';
-
             $source = $activity->getSource();
-            if ($source instanceof ContentActiveRecord || $source instanceof ContentAddonActiveRecord) {
-                $json['wallEntryId'] = $source->content->getFirstWallEntryId();
-                $json['permaLink'] = $source->content->getUrl();
-            } else {
-                $json['permaLink'] = $activity->content->getUrl();
-            }
-
+            $this->redirect($source->content->getUrl());
         }
-
-        return $json;
     }
-
 }

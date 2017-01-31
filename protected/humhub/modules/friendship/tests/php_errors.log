@@ -1,0 +1,1 @@
+[23-Jan-2017 20:09:37 UTC] PHP Fatal error:  Cannot redeclare humhub\modules\friendship\notifications\RequestDeclined::$moduleId in E:\codebase\humhub\1.2\protected\humhub\modules\friendship\notifications\RequestDeclined.php on line 31

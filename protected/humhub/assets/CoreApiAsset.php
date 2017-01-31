@@ -19,12 +19,12 @@ class CoreApiAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $basePath = '@webroot';
+    public $basePath = '@webroot-static';
     
     /**
      * @inheritdoc
      */
-    public $baseUrl = '@web';
+    public $baseUrl = '@web-static';
     
     /**
      * @inheritdoc
@@ -45,7 +45,6 @@ class CoreApiAsset extends AssetBundle
         'js/humhub/humhub.core.js', 
         'js/humhub/humhub.util.js', 
         'js/humhub/humhub.log.js', 
-        //'js/humhub/humhub.scripts.js', 
         'js/humhub/humhub.ui.additions.js',
         'js/humhub/humhub.ui.form.elements.js',
         'js/humhub/humhub.ui.loader.js', 
@@ -54,7 +53,6 @@ class CoreApiAsset extends AssetBundle
         'js/humhub/humhub.ui.modal.js', 
         'js/humhub/humhub.ui.progress.js',
         'js/humhub/humhub.client.js',
-        'js/humhub/humhub.file.js',
         'js/humhub/humhub.ui.status.js',
         'js/humhub/humhub.ui.navigation.js',
         'js/humhub/humhub.ui.gallery.js',

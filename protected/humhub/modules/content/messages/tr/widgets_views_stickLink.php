@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Stick' => 'Başa Tuttur',
-  'Unstick' => 'Baştan Kaldır',
+  'Pinned' => 'Başa Tuttur',
+  'Unpinned' => 'Baştan Kaldır',
 );

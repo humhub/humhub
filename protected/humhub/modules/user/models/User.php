@@ -27,7 +27,6 @@ use humhub\modules\space\models\Space;
  * @property string $tags
  * @property string $language
  * @property string $time_zone
- * @property string $last_activity_email
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -45,14 +44,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     const STATUS_DISABLED = 0;
     const STATUS_ENABLED = 1;
     const STATUS_NEED_APPROVAL = 2;
-
-    /**
-     * E-Mail Settings (Value Stored in UserSetting)
-     */
-    const RECEIVE_EMAIL_NEVER = 0;
-    const RECEIVE_EMAIL_DAILY_SUMMARY = 1;
-    const RECEIVE_EMAIL_WHEN_OFFLINE = 2;
-    const RECEIVE_EMAIL_ALWAYS = 3;
 
     /**
      * Visibility Modes
@@ -97,7 +88,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
             [['status', 'visibility'], 'integer'],
             [['tags'], 'string'],
-            [['last_activity_email', 'last_login'], 'safe'],
             [['guid'], 'string', 'max' => 45],
             [['username'], 'string', 'max' => 50, 'min' => Yii::$app->params['user']['minUsernameLength']],
             [['time_zone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
@@ -179,7 +169,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             'auth_mode' => Yii::t('UserModule.models_User', 'Auth Mode'),
             'tags' => Yii::t('UserModule.models_User', 'Tags'),
             'language' => Yii::t('UserModule.models_User', 'Language'),
-            'last_activity_email' => Yii::t('UserModule.models_User', 'Last Activity Email'),
             'created_at' => Yii::t('UserModule.models_User', 'Created at'),
             'created_by' => Yii::t('UserModule.models_User', 'Created by'),
             'updated_at' => Yii::t('UserModule.models_User', 'Updated at'),
@@ -369,8 +358,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
                 }
             }
 
-            $this->last_activity_email = new \yii\db\Expression('NOW()');
-
             if ($this->status == "") {
                 $this->status = self::STATUS_ENABLED;
             }
@@ -481,6 +468,18 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         }
 
         return false;
+    }
+    
+    /**
+     * Checks if the given $user instance shares the same identity with this
+     * user instance.
+     * 
+     * @param \humhub\modules\user\models\User $user
+     * @return boolean
+     */
+    public function is(User $user)
+    {
+        return $user->id === $this->id;
     }
 
     /**
@@ -593,16 +592,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         // TODO: SHOW ONLY REAL MEMBERSHIPS
         return $this->hasMany(Space::className(), ['id' => 'space_id'])
                         ->viaTable('space_membership', ['user_id' => 'id']);
-    }
-
-    public function getFollowSpaces()
-    {
-        // TODO: SHOW ONLY REAL MEMBERSHIPS
-        return $this->hasMany(Space::className(), ['id' => 'object_id'])
-                        ->viaTable('user_follow', ['user_id' => 'id'], function($query) {
-                            /* @var $query \yii\db\ActiveQuery */
-                            $query->andWhere(['object_model' => Space::className()]);
-                        });
     }
 
     /**

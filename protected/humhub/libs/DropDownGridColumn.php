@@ -2,15 +2,17 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\libs;
 
-
+use Yii;
 use yii\grid\DataColumn;
+use yii\helpers\Json;
 use yii\helpers\Html;
+use yii\web\JsExpression;
 
 /**
  * DropDown Grid Column
@@ -50,12 +52,13 @@ class DropDownGridColumn extends DataColumn
         if (!isset($this->ajaxOptions['type'])) {
             $this->ajaxOptions['type'] = 'POST';
         }
-        $this->ajaxOptions['data'] = new \yii\web\JsExpression('data');
 
+        $this->ajaxOptions['data'] = new JsExpression('data');
+        $this->ajaxOptions['success'] = new JsExpression('function() { humhub.modules.ui.status.success("' . Yii::t('base', 'Saved') . '"); }');
         $this->grid->view->registerJs("$('.editableCell').change(function() {
                 data = {};
                 data[$(this).attr('name')] = $(this).val();
-                submitAttributes = $(this).data('submit-attributes').split(',');
+                submitAttributes = $(this).data('submit-attributes').split(', ');
                 for (var i in submitAttributes) {
                     data[submitAttributes[i]] = $(this).data('attribute'+i);
                 }
@@ -79,7 +82,7 @@ class DropDownGridColumn extends DataColumn
         }
 
         // We need to number the submit attributes because data attribute is not case sensitive
-        $this->htmlOptions['data-submit-attributes'] = implode(',', $this->submitAttributes);
+        $this->htmlOptions['data-submit-attributes'] = implode(', ', $this->submitAttributes);
         $i = 0;
         foreach ($this->submitAttributes as $attribute) {
             $this->htmlOptions['data-attribute' . $i] = $model[$attribute];
@@ -101,7 +104,7 @@ class DropDownGridColumn extends DataColumn
 
         if ($readonly) {
             if (isset($options[$model[$this->attribute]])) {
-                return $options[$model[$this->attribute]];
+                return Html::dropDownList($inputName, $model[$this->attribute], $options, array_merge($this->htmlOptions, ['readonly' => true, 'disabled' => true]));
             }
             return $model[$this->attribute];
         }

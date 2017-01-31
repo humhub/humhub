@@ -15,6 +15,15 @@ class LikeNotificationCategory extends NotificationCategory
 
     public $id = 'like';
 
+    public function getDefaultSetting(\humhub\modules\notification\components\NotificationTarget $target)
+    {
+        if($target instanceof \humhub\modules\notification\components\MailNotificationTarget) {
+            return false;
+        }
+        
+        return parent::getDefaultSetting($target);
+    }
+    
     public function getTitle()
     {
         return Yii::t('LikeModule.notifications_LikeNotificationCategory', 'Likes');

@@ -136,7 +136,7 @@ This Content record holds all neccessary information and provides common methods
 - ContentContainer which the Content belongs to
 - Meta Information (created_at, created_by, updated_at, updated_by)
 - Wall Assignments / Methods
-- Archiving / Sticking
+- Archiving / Pinning
 - And more...
 
 If you're implementing an ActiveRecord based on [[humhub\modules\content\components\ContentContainerActiveRecord]] you need to implement the following abstract methods:

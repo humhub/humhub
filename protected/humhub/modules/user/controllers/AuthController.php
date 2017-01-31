@@ -109,10 +109,11 @@ class AuthController extends Controller
 
         // Login existing user 
         $user = AuthClientHelpers::getUserByAuthClient($authClient);
+        
         if ($user !== null) {
             return $this->login($user, $authClient);
         }
-
+        
         if (!$authClient instanceof ApprovalBypass && !Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration')) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', "You're not registered."));
             return $this->redirect(['/user/auth/login']);
@@ -168,11 +169,12 @@ class AuthController extends Controller
                     $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
                 }
             }
+            
             AuthClientHelpers::updateUser($authClient, $user);
 
             if (Yii::$app->user->login($user, $duration)) {
                 Yii::$app->user->setCurrentAuthClient($authClient);
-                $url = Yii::$app->user->returnUrl;
+                $redirectUrl = Yii::$app->user->returnUrl;
             }
         } elseif ($user->status == User::STATUS_DISABLED) {
             Yii::$app->session->setFlash('error', 'Your account is disabled!');

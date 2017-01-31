@@ -21,12 +21,12 @@ class JqueryHighlightAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $basePath = '@webroot';
+    public $basePath = '@webroot-static';
     
     /**
      * @inheritdoc
      */
-    public $baseUrl = '@web';
+    public $baseUrl = '@web-static';
 
     /**
      * @inheritdoc

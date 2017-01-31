@@ -25,4 +25,7 @@ return [
     ['id' => 5, 'guid' => '5396d499-20d6-4233-800b-c6c86e5fa34b', 'class' => 'humhub\modules\space\models\Space', 'pk' => '2', 'owner_user_id' => 2],
     ['id' => 6, 'guid' => '5396d499-20d6-4233-800b-c6c86e5fa34c', 'class' => 'humhub\modules\space\models\Space', 'pk' => '3', 'owner_user_id' => 3],
     ['id' => 7, 'guid' => '5396d499-20d6-4233-800b-c6c86e5fa34d', 'class' => 'humhub\modules\space\models\Space', 'pk' => '4', 'owner_user_id' => 3],
+    ['id' => 8, 'guid' => '01e50e0d-82cd-41fc-8b0c-552392f5839f', 'class' => 'humhub\modules\user\models\User', 'pk' => '4', 'owner_user_id' => 4],
+    ['id' => 9, 'guid' => '01e50e0d-82cd-41fc-8b0c-552392f5839g', 'class' => 'humhub\modules\user\models\User', 'pk' => '5', 'owner_user_id' => 5],
+    ['id' => 10, 'guid' => '01e50e0d-82cd-41fc-8b0c-552392f5839h', 'class' => 'humhub\modules\user\models\User', 'pk' => '6', 'owner_user_id' => 6],
 ];

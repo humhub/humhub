@@ -7,7 +7,7 @@
 /** @var string $content */
 
 ?>
-<li class="<?php if ($isNew) : ?>new<?php endif; ?>">
+<li class="<?php if ($isNew) : ?>new<?php endif; ?>" data-notification-id="<?= $record->id ?>">
     <a href="<?= $url; ?>">
         <div class="media">
 

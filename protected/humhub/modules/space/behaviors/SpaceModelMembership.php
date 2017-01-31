@@ -17,6 +17,7 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\notifications\ApprovalRequestAccepted;
 use humhub\modules\space\notifications\InviteAccepted;
+use humhub\modules\space\MemberEvent;
 
 /**
  * SpaceModelMemberBehavior bundles all membership related methods of the Space model.
@@ -38,13 +39,17 @@ class SpaceModelMembership extends Behavior
     {
 
         // Take current userid if none is given
-        if ($userId == "")
+        if ($userId == "" && !Yii::$app->user->isGuest) {
             $userId = Yii::$app->user->id;
+        } elseif ($userId == "" && Yii::$app->user->isGuest) {
+            return false;
+        }
 
         $membership = $this->getMembership($userId);
 
-        if ($membership != null && $membership->status == Membership::STATUS_MEMBER)
+        if ($membership != null && $membership->status == Membership::STATUS_MEMBER) {
             return true;
+        }
 
         return false;
     }
@@ -60,8 +65,9 @@ class SpaceModelMembership extends Behavior
     {
 
         // Take current userid if none is given
-        if ($userId == "")
+        if ($userId == "") {
             $userId = Yii::$app->user->id;
+        }
 
         $membership = $this->getMembership($userId);
 
@@ -110,11 +116,14 @@ class SpaceModelMembership extends Behavior
      * @param type $userId
      * @return type
      */
-    public function setSpaceOwner($userId = "")
+    public function setSpaceOwner($userId = null)
     {
 
-        if ($userId == 0)
+        if ($userId instanceof User) {
+            $userId = $userId->id;
+        } else if (!$userId || $userId == 0) {
             $userId = Yii::$app->user->id;
+        }
 
         $this->setAdmin($userId);
 
@@ -144,10 +153,13 @@ class SpaceModelMembership extends Behavior
     /**
      * Is given User owner of this Space
      */
-    public function isSpaceOwner($userId = "")
+    public function isSpaceOwner($userId = null)
     {
-        if ($userId == "")
+        if ($userId instanceof User) {
+            $userId = $userId->id;
+        } else if (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
+        }
 
         if ($this->owner->created_by == $userId) {
             return true;
@@ -162,11 +174,13 @@ class SpaceModelMembership extends Behavior
      * @param type $userId
      * @return type
      */
-    public function setAdmin($userId = "")
+    public function setAdmin($userId = null)
     {
-
-        if ($userId == 0)
+        if ($userId instanceof User) {
+            $userId = $userId->id;
+        } else if (!$userId || $userId == 0) {
             $userId = Yii::$app->user->id;
+        }
 
         $membership = $this->getMembership($userId);
         if ($membership != null) {
@@ -182,9 +196,11 @@ class SpaceModelMembership extends Behavior
      *
      * If none Record is found, null is given
      */
-    public function getMembership($userId = "")
+    public function getMembership($userId = null)
     {
-        if ($userId == "") {
+        if ($userId instanceof User) {
+            $userId = $userId->id;
+        } else if (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
         }
 
@@ -259,7 +275,7 @@ class SpaceModelMembership extends Behavior
         $membership->save();
 
         \humhub\modules\space\notifications\ApprovalRequest::instance()
-                ->from($user)->about($this->owner)->sendBulk($this->getAdmins());
+                ->from($user)->about($this->owner)->withMessage($message)->sendBulk($this->getAdmins());
     }
 
     /**
@@ -391,8 +407,14 @@ class SpaceModelMembership extends Behavior
             // Update Membership
             $membership->status = Membership::STATUS_MEMBER;
         }
+
         $membership->save();
 
+        MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_ADDED, new MemberEvent([
+            'space' => $this->owner, 'user' => $user
+        ]));
+        
+        
         // Create Activity
         \humhub\modules\space\activities\MemberAdded::instance()->from($user)->about($this->owner)->save();
 
@@ -435,31 +457,26 @@ class SpaceModelMembership extends Behavior
             $activity->source = $this->owner;
             $activity->originator = $user;
             $activity->create();
+
+            MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_REMOVED, new MemberEvent([
+                'space' => $this->owner, 'user' => $user
+            ]));
         } elseif ($membership->status == Membership::STATUS_INVITED && $membership->originator !== null) {
             // Was invited, but declined the request - inform originator
-            $notification = new \humhub\modules\space\notifications\InviteDeclined();
-            $notification->source = $this->owner;
-            $notification->originator = $user;
-            $notification->send($membership->originator);
+            \humhub\modules\space\notifications\InviteDeclined::instance()
+                ->from($user)->about($this->owner)->send($membership->originator);
         } elseif ($membership->status == Membership::STATUS_APPLICANT) {
-            $notification = new \humhub\modules\space\notifications\ApprovalRequestDeclined();
-            $notification->source = $this->owner;
-            $notification->originator = Yii::$app->user->getIdentity();
-            $notification->send($user);
+            \humhub\modules\space\notifications\ApprovalRequestDeclined::instance()
+                    ->from(Yii::$app->user->getIdentity())->about($this->owner)->send($user);
         }
 
         foreach (Membership::findAll(['user_id' => $userId, 'space_id' => $this->owner->id]) as $membership) {
             $membership->delete();
         }
 
-        $notificationApproval = new \humhub\modules\space\notifications\ApprovalRequest();
-        $notificationApproval->source = $this->owner;
-        $notificationApproval->originator = $user;
-        $notificationApproval->delete();
+        \humhub\modules\space\notifications\ApprovalRequest::instance()->from($user)->about($this->owner)->delete();
 
-        $notificationInvite = new \humhub\modules\space\notifications\Invite();
-        $notificationInvite->source = $this->owner;
-        $notificationInvite->delete($user);
+        \humhub\modules\space\notifications\Invite::instance()->from($this->owner)->delete($user);
     }
 
 }

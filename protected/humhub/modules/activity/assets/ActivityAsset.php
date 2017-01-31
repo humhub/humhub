@@ -13,12 +13,11 @@ use yii\web\AssetBundle;
 class ActivityAsset extends AssetBundle
 {
 
-    public $sourcePath = '@activity/assets';
+    public $sourcePath = '@activity/resources';
     public $css = [];
     public $js = [
         'js/humhub.activity.js'
     ];
-    
     public $depends = [
         'humhub\assets\CoreApiAsset'
     ];

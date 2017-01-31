@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -24,7 +24,7 @@ use humhub\modules\content\interfaces\ContentOwner;
  * - Related ContentContainer (must be set before save!)
  * - Visibility
  * - Meta informations (created_at, created_by, ...)
- * - Wall handling, archiving, sticking, ...
+ * - Wall handling, archiving, pinning, ...
  * 
  * Before adding a new ContentActiveRecord instance, you need at least assign an ContentContainer.
  * 
@@ -47,16 +47,23 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
     /**
      * @see \humhub\modules\content\widgets\WallEntry
-     * @var string WallEntry widget class
+     * @var string the WallEntry widget class
      */
     public $wallEntryClass = "";
-    
+
     /**
-     * Defines if originator automatically follows this content when saved.
-     * @var type 
+     * @var boolean should the originator automatically follows this content when saved.
      */
     public $autoFollow = true;
 
+    /**
+     * The stream channel where this content should displayed.
+     * Set to null when this content should not appear on streams. 
+     * 
+     * @since 1.2
+     * @var string|null the stream channel
+     */
+    protected $streamChannel = 'default';
 
     /**
      * @inheritdoc
@@ -73,7 +80,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     public function __get($name)
     {
         /**
-         * Ensure there is always a corresponding Content 
+         * Ensure there is always a corresponding Content record
+         * @see Content
          */
         if ($name == 'content') {
             $content = parent::__get('content');
@@ -90,7 +98,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     /**
      * Returns the name of this type of content.
      * You need to override this method in your content implementation.
-     *
+     * 
      * @return string the name of the content
      */
     public function getContentName()
@@ -100,6 +108,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
     /**
      * Returns a description of this particular content.
+     * 
      * This will be used to create a text preview of the content record. (e.g. in Activities or Notifications)
      * You need to override this method in your content implementation.
      *
@@ -162,11 +171,11 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function beforeSave($insert)
     {
-
         if (!$this->content->validate()) {
-            throw new Exception("Could not validate associated Content Record! (" . print_r($this->content->getErrors(), 1) . ")");
+            throw new Exception("Could not validate associated Content record! (" . $this->content->getErrorMessage() . ")");
         }
 
+        $this->content->setAttribute('stream_channel', $this->streamChannel, false);
         return parent::beforeSave($insert);
     }
 
@@ -176,7 +185,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     public function afterSave($insert, $changedAttributes)
     {
         // Auto follow this content
-        if($this->autoFollow) {
+        if ($this->autoFollow) {
             $this->follow($this->content->created_by);
         }
 
@@ -190,6 +199,14 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
         $this->content->save();
 
         parent::afterSave($insert, $changedAttributes);
+    }
+    
+    /**
+     * @return \humhub\modules\user\models\User the owner of this content record
+     */
+    public function getOwner()
+    {
+        return $this->content->createdBy;
     }
 
     /**
@@ -213,7 +230,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     {
         return Yii::createObject(ActiveQueryContent::className(), [get_called_class()]);
     }
-
 }
 
 ?>

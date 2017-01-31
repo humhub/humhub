@@ -61,7 +61,7 @@ abstract class BaseConverter extends \yii\base\Object
      */
     public function getUrl()
     {
-        return $this->file->getUrl($this->getFileName());
+        return $this->file == null ? '' : $this->file->getUrl($this->getFileName());
     }
 
     /**

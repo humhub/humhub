@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use humhub\modules\space\widgets\Image;
 
-$this->registerJsFile('@web/resources/space/spacepicker.js', ['position' => \yii\web\View::POS_END]);
+$this->registerJsFile('@web-static/resources/space/spacepicker.js', ['position' => \yii\web\View::POS_END]);
 ?>
 
 <?php

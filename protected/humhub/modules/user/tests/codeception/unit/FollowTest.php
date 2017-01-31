@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\codeception\unit\modules\space;
+namespace tests\codeception\unit;
 
 use Yii;
 use tests\codeception\_support\HumHubDbTestCase;

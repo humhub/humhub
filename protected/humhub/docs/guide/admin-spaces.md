@@ -56,7 +56,7 @@ The available space groups are:
 The following permissions can be given to a specific group:
 
 - Create comment: Allows the user to add comments
-- Manage content: Can manage (e.g. archive, stick or delete) arbitrary content
+- Manage content: Can manage (e.g. archive, pin or delete) arbitrary content
 - Create public content: Allows the user to create public content
 - Create post: Allows the user to create posts
 - Invite users: Allows the user to invite new members to the space

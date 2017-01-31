@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,10 +10,12 @@ namespace humhub\modules\content\models;
 
 use Yii;
 use yii\base\Exception;
+use yii\helpers\Url;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\permissions\ManageContent;
 
 /**
  * This is the model class for table "content".
@@ -25,7 +27,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  * @property string $object_model
  * @property integer $object_id
  * @property integer $visibility
- * @property integer $sticked
+ * @property integer $pinned
  * @property string $archived
  * @property string $created_at
  * @property integer $created_by
@@ -34,7 +36,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  *
  * @since 0.5
  */
-class Content extends \humhub\components\ActiveRecord
+class Content extends ContentDeprecated
 {
 
     /**
@@ -44,9 +46,20 @@ class Content extends \humhub\components\ActiveRecord
      */
     public $notifyUsersOfNewContent = [];
 
-    // Visibility Modes
+    /**
+     * @var int The private visibility mode (e.g. for space member content or user profile posts for friends)
+     */
     const VISIBILITY_PRIVATE = 0;
+
+    /**
+     * @var int Public visibility mode, e.g. content which are visibile for followers
+     */
     const VISIBILITY_PUBLIC = 1;
+
+    /**
+     * @var int Owner visibility mode, only visible for contentContainer + content owner
+     */
+    const VISIBILITY_OWNER = 2;
 
     /**
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
@@ -83,41 +96,13 @@ class Content extends \humhub\components\ActiveRecord
     public function rules()
     {
         return [
-            [['object_id', 'visibility', 'sticked'], 'integer'],
+            [['object_id', 'visibility', 'pinned'], 'integer'],
             [['archived'], 'safe'],
             [['guid'], 'string', 'max' => 45],
             [['object_model'], 'string', 'max' => 100],
             [['object_model', 'object_id'], 'unique', 'targetAttribute' => ['object_model', 'object_id'], 'message' => 'The combination of Object Model and Object ID has already been taken.'],
             [['guid'], 'unique']
         ];
-    }
-
-    /**
-     * User which created this Content
-     * Note: Use createdBy attribute instead.
-     *
-     * @deprecated since version 1.1
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUser()
-    {
-        return $this->createdBy;
-    }
-
-    /**
-     * Return space (if this content assigned to a space)
-     * Note: Use container attribute instead
-     *
-     * @deprecated since version 1.1
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSpace()
-    {
-        if ($this->getContainer() instanceof Space) {
-            return $this->getContainer();
-        }
-
-        return null;
     }
 
     /**
@@ -140,8 +125,9 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function beforeSave($insert)
     {
-        if ($this->object_model == "" || $this->object_id == "")
+        if ($this->object_model == "" || $this->object_id == "") {
             throw new Exception("Could not save content with object_model or object_id!");
+        }
 
 
         // Set some default values
@@ -151,8 +137,8 @@ class Content extends \humhub\components\ActiveRecord
         if (!$this->visibility) {
             $this->visibility = self::VISIBILITY_PRIVATE;
         }
-        if (!$this->sticked) {
-            $this->sticked = 0;
+        if (!$this->pinned) {
+            $this->pinned = 0;
         }
 
         if ($insert) {
@@ -160,7 +146,7 @@ class Content extends \humhub\components\ActiveRecord
                 $this->created_by = Yii::$app->user->id;
             }
         }
-        
+
         $this->stream_sort_date = new \yii\db\Expression('NOW()');
 
         if ($this->created_by == "") {
@@ -175,38 +161,34 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
+        $contentSource = $this->getPolymorphicRelation();
 
-        if ($insert) {
-            $followers = $this->getFollowers();
-            foreach ($this->notifyUsersOfNewContent as $user) {
-                $this->getPolymorphicRelation()->follow($user->id);
-            }
+        foreach ($this->notifyUsersOfNewContent as $user) {
+            $contentSource->follow($user->id);
+        }
 
-            \humhub\modules\content\notifications\ContentCreated::instance()
-                    ->from($this->user)
-                    ->about($this->getPolymorphicRelation())
-                    ->sendBulk();
-            $notification->source = $this->getPolymorphicRelation();
-            $notification->originator = $this->user;
-            $notification->sendBulk($this->notifyUsersOfNewContent);
+        if ($insert && !$contentSource instanceof \humhub\modules\activity\models\Activity) {
 
-            if (!$this->getPolymorphicRelation() instanceof \humhub\modules\activity\models\Activity) {
-                $activity = new \humhub\modules\content\activities\ContentCreated;
-                $activity->source = $this->getPolymorphicRelation();
-                $activity->create();
+            if ($this->container !== null) {
+                $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
+
+                \humhub\modules\content\notifications\ContentCreated::instance()
+                        ->from($this->user)
+                        ->about($contentSource)
+                        ->sendBulk($notifyUsers);
+
+                \humhub\modules\content\activities\ContentCreated::instance()
+                        ->about($contentSource)->save();
+
+                Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
+                    'contentContainerId' => $this->container->id,
+                    'visibility' => $this->visibility,
+                    'contentId' => $this->id
+                ]));
             }
         }
 
         return parent::afterSave($insert, $changedAttributes);
-    }
-    
-    /**
-     * Returns all followers of this content. This can either be user set as notifyUsers when the content was created
-     * or space follower with notify settings.
-     */
-    public function getFollowers()
-    {
-        //$follower = $this->notifyUsersOfNewContent;
     }
 
     /**
@@ -221,44 +203,6 @@ class Content extends \humhub\components\ActiveRecord
         }
 
         parent::afterDelete();
-    }
-
-    /**
-     * Checks if the content can be deleted
-     * Note: Use canEdit method instead.
-     *
-     * @deprecated since version 1.1
-     * @param int $userId optional user id (if empty current user id will be used)
-     */
-    public function canDelete($userId = "")
-    {
-        return $this->canEdit(($userId !== '') ? User::findOne(['id' => $userId]) : null);
-    }
-
-    /**
-     * Checks if this content can readed
-     * Note: use canView method instead
-     *
-     * @deprecated since version 1.1
-     * @param int $userId
-     * @return boolean
-     */
-    public function canRead($userId = "")
-    {
-        return $this->canView(($userId !== '') ? User::findOne(['id' => $userId]) : null);
-    }
-
-    /**
-     * Checks if this content can be changed
-     * Note: use canEdit method instead
-     *
-     * @deprecated since version 1.1
-     * @param int $userId
-     * @return boolean
-     */
-    public function canWrite($userId = "")
-    {
-        return $this->canEdit(($userId !== '') ? User::findOne(['id' => $userId]) : null);
     }
 
     /**
@@ -287,58 +231,58 @@ class Content extends \humhub\components\ActiveRecord
     }
 
     /**
-     * Checks if the content object is sticked
+     * Checks if the content object is pinned
      *
      * @return Boolean
      */
-    public function isSticked()
+    public function isPinned()
     {
-        return ($this->sticked);
+        return ($this->pinned);
     }
 
     /**
-     * Sticks the content object
+     * Pins the content object
      */
-    public function stick()
+    public function pin()
     {
-        $this->sticked = 1;
+        $this->pinned = 1;
         //This prevents the call of beforesave, and the setting of update_at
-        $this->updateAttributes(['sticked']);
+        $this->updateAttributes(['pinned']);
     }
 
     /**
-     * Unsticks the content object
+     * Unpins the content object
      */
-    public function unstick()
+    public function unpin()
     {
 
-        $this->sticked = 0;
-        $this->updateAttributes(['sticked']);
+        $this->pinned = 0;
+        $this->updateAttributes(['pinned']);
     }
 
     /**
-     * Checks if the user can stick this content.
+     * Checks if the user can pin this content.
      * This is only allowed for workspace owner.
      *
      * @return boolean
      */
-    public function canStick()
+    public function canPin()
     {
         if ($this->isArchived()) {
             return false;
         }
 
-        return $this->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent());
+        return $this->getContainer()->permissionManager->can(new ManageContent());
     }
 
     /**
-     * Creates a list of sticked content objects of the wall
+     * Creates a list of pinned content objects of the wall
      *
      * @return Int
      */
-    public function countStickedItems()
+    public function countPinnedItems()
     {
-        return Content::find()->where(['content.contentcontainer_id' => $this->contentcontainer_id, 'content.sticked' => 1])->count();
+        return Content::find()->where(['content.contentcontainer_id' => $this->contentcontainer_id, 'content.pinned' => 1])->count();
     }
 
     /**
@@ -348,7 +292,7 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function isArchived()
     {
-        return $this->archived || $this->getContainer()->isArchived();
+        return $this->archived || ($this->getContainer() !== null && $this->getContainer()->isArchived());
     }
 
     /**
@@ -364,7 +308,7 @@ class Content extends \humhub\components\ActiveRecord
             return false;
         }
 
-        return $this->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent());
+        return $this->getContainer()->permissionManager->can(new ManageContent());
     }
 
     /**
@@ -374,8 +318,8 @@ class Content extends \humhub\components\ActiveRecord
     {
         if ($this->canArchive()) {
 
-            if ($this->isSticked()) {
-                $this->unstick();
+            if ($this->isPinned()) {
+                $this->unpin();
             }
 
             $this->archived = 1;
@@ -414,7 +358,7 @@ class Content extends \humhub\components\ActiveRecord
             return $this->getPolymorphicRelation()->getUrl();
         }
 
-        return \yii\helpers\Url::toRoute(['/content/perma', 'id' => $this->id]);
+        return Url::toRoute(['/content/perma', 'id' => $this->id]);
     }
 
     /**
@@ -483,8 +427,8 @@ class Content extends \humhub\components\ActiveRecord
         if ($user !== null && $this->created_by == $user->id) {
             return true;
         }
-        
-        if($this->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
+
+        if ($this->getContainer()->permissionManager->can(new ManageContent())) {
             return true;
         }
 

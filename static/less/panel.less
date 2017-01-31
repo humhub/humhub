@@ -1,0 +1,194 @@
+//
+// Panels
+// --------------------------------------------------
+.panel {
+    border: none;
+    background-color: @background-color-main;
+    box-shadow: 0 0 3px #dadada;
+    -webkit-box-shadow: 0 0 3px #dadada;
+    -moz-box-shadow: 0 0 3px #dadada;
+    border-radius: 4px;
+    position: relative;
+    h1 {
+        font-size: 16px;
+        font-weight: 300;
+        margin-top: 0;
+        color: @text-color-highlight;
+    }
+    .panel-heading {
+        .heading;
+        border-radius: 4px;
+        .heading-link {
+            color:#6fdbe8 !important;
+            font-size: 0.8em;
+        }
+    }
+    .panel-body {
+        padding: 10px;
+        font-size: 13px;
+        p {
+            color: @text-color-highlight;
+        }
+    }
+    .statistics {
+        .entry {
+            margin-left: 20px;
+            font-size: 12px;
+            .count {
+                color: @info;
+                font-weight: 600;
+                font-size: 20px;
+                line-height: 0.8em;
+            }
+        }
+    }
+    h3.media-heading {
+        small {
+            font-size: 75%;
+        }
+        small a {
+            color: @info;
+        }
+    }
+}
+
+.panel-danger {
+    border: 2px solid @danger;
+    .panel-heading {
+        color: @danger;
+    }
+}
+
+.panel-success {
+    border: 2px solid @success;
+    .panel-heading {
+        color: @success;
+    }
+}
+
+.panel-warning {
+    border: 2px solid @warning;
+    .panel-heading {
+        color: @warning;
+    }
+}
+
+.panel.profile {
+    position: relative;
+    .controls {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+}
+
+.panel.members,
+.panel.groups,
+.panel.follower,
+.panel.spaces {
+    .panel-body a img {
+        margin-bottom: 5px;
+    }
+}
+
+.panel-profile {
+    .panel-profile-header {
+        position: relative;
+        border: 3px solid #fff;
+        border-top-right-radius: 3px;
+        border-top-left-radius: 3px;
+        .img-profile-header-background {
+            border-radius: 3px;
+            min-height: 110px;
+        }
+        .img-profile-data {
+            position: absolute;
+            height: 100px;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            padding-left: 180px;
+            padding-top: 30px;
+            border-bottom-right-radius: 3px;
+            border-bottom-left-radius: 3px;
+            color: #fff;
+            pointer-events: none;
+            background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
+            /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(1%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.38)));
+            /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
+            /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
+            /* Opera 11.10+ */
+            background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
+            /* IE10+ */
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
+            /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#94000000', GradientType=0);
+            /* IE6-9 */
+            h1 {
+                font-size: 30px;
+                font-weight: 100;
+                margin-bottom: 7px;
+                color: #fff;
+                max-width: 600px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            h2 {
+                font-size: 16px;
+                font-weight: 400;
+                margin-top: 0;
+            }
+            h1.space {
+                font-size: 30px;
+                font-weight: 700;
+            }
+            h2.space {
+                font-size: 13px;
+                font-weight: 300;
+                max-width: 600px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+        .profile-user-photo-container {
+            position: absolute;
+            bottom: -50px;
+            left: 15px;
+            .profile-user-photo {
+                border: 3px solid #fff;
+                border-radius: 5px;
+            }
+        }
+    }
+    .panel-profile-controls {
+        padding-left: 160px;
+    }
+}
+
+.panel.pulse,
+.panel.fadeIn {
+    -webkit-animation-duration: 200ms;
+    -moz-animation-duration: 200ms;
+    animation-duration: 200ms;
+}
+
+@media (max-width: 767px) {
+    .panel-profile-controls {
+        padding-left: 0 !important;
+        padding-top: 50px;
+    }
+
+    .panel-profile .panel-profile-header .img-profile-data h1 {
+        font-size: 20px !important;
+    }
+}
+
+.panel-body > .tab-menu {
+    margin-left:-10px;
+    margin-right:-10px
+}

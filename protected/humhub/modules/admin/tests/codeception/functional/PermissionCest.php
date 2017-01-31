@@ -65,7 +65,7 @@ class PermissionCest
 
         $I->amOnPage(['/admin/user/edit', 'id' => 1]);
         $I->expectTo('see edit user profile view');
-        $I->see('Edit user:');
+        $I->see('User administration');
         $I->dontSee('Groups');
         $I->dontSee('You are not allowed to perform this action.');
 
@@ -116,7 +116,7 @@ class PermissionCest
 
         $I->amOnPage(['/admin/user/edit', 'id' => 1]);
         $I->expectTo('see edit user profile view');
-        $I->see('Edit user:');
+        $I->see('User administration');
         $I->see('Groups');
         $I->dontSee('You are not allowed to perform this action.');
 
@@ -185,7 +185,8 @@ class PermissionCest
         $I->dontSee('You are not allowed to perform this action.');
         $I->see('General Settings');
         $I->see('Appearance');
-        $I->see('E-Mails');
+        $I->see('E-Mail summaries');
+        $I->see('Notifications');
         $I->see('Advanced');
         $I->see('General');
 
@@ -193,9 +194,13 @@ class PermissionCest
         $I->dontSee('You are not allowed to perform this action.');
         $I->see('Appearance Settings');
 
-        $I->amOnPage(['/admin/setting/mailing']);
+        $I->amOnPage(['/notification/admin/defaults']);
         $I->dontSee('You are not allowed to perform this action.');
-        $I->see('E-Mail Settings');
+        $I->see('Notification Settings');
+        
+        $I->amOnPage(['/activity/admin/defaults']);
+        $I->dontSee('You are not allowed to perform this action.');
+        $I->see('E-Mail Summaries');
 
         $I->amOnPage(['/admin/setting/caching']);
         $I->dontSee('You are not allowed to perform this action.');

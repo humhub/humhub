@@ -1,2 +1,0 @@
-<div>Special:<?= $html ?></div>
-

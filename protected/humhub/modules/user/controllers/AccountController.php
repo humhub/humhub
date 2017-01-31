@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -13,7 +13,6 @@ use yii\web\HttpException;
 use humhub\modules\user\components\BaseAccountController;
 use humhub\modules\user\models\User;
 use humhub\modules\notification\models\forms\NotificationSettings;
-
 /**
  * AccountController provides all standard actions for the current logged in
  * user account.
@@ -127,12 +126,18 @@ class AccountController extends BaseAccountController
     public function actionSecurity()
     {
         $groups = [];
+        $groupAccessEnabled = (boolean) Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess');
 
         if (Yii::$app->getModule('friendship')->getIsEnabled()) {
-            $groups[User::USERGROUP_FRIEND] = 'Friends';
+            $groups[User::USERGROUP_FRIEND] = Yii::t('UserModule.account', 'Your friends');
+            $groups[User::USERGROUP_USER] = Yii::t('UserModule.account', 'Other users');
+        } else {
+            $groups[User::USERGROUP_USER] = Yii::t('UserModule.account', 'Users');
         }
-        $groups[User::USERGROUP_USER] = Yii::t('UserModule.controllers_AccountController', 'Members');
-        $groups[User::USERGROUP_GUEST] = Yii::t('UserModule.controllers_AccountController', 'Guests');
+
+        if ($groupAccessEnabled) {
+            $groups[User::USERGROUP_GUEST] = Yii::t('UserModule.account', 'Not registered users');
+        }
 
         $currentGroup = Yii::$app->request->get('groupId');
         if ($currentGroup == '' || !isset($groups[$currentGroup])) {
@@ -144,13 +149,13 @@ class AccountController extends BaseAccountController
             Yii::$app->response->format = 'json';
             $permission = $this->user->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
             if ($permission === null) {
-                throw new \yii\web\HttpException(500, 'Could not find permission!');
+                throw new HttpException(500, 'Could not find permission!');
             }
             $this->user->permissionManager->setGroupState($currentGroup, $permission, Yii::$app->request->post('state'));
             return [];
         }
 
-        return $this->render('security', ['user' => $this->getUser(), 'groups' => $groups, 'group' => $currentGroup]);
+        return $this->render('security', ['user' => $this->getUser(), 'groups' => $groups, 'group' => $currentGroup, 'multipleGroups' => (count($groups) > 1)]);
     }
 
     public function actionConnectedAccounts()
@@ -267,28 +272,12 @@ class AccountController extends BaseAccountController
     public function actionNotification()
     {
         $form = new NotificationSettings(['user' => Yii::$app->user->getIdentity()]);
-        
+
         if ($form->load(Yii::$app->request->post()) && $form->save()) {
             $this->view->saved();
         }
 
         return $this->render('notification', ['model' => $form]);
-    }
-
-    /**
-     * Change EMail Options
-     *
-     * @todo Add Group
-     */
-    public function actionEmailing()
-    {
-        $model = new \humhub\modules\user\models\forms\AccountEmailing();
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
-            $this->view->saved();
-        }
-
-        return $this->render('emailing', array('model' => $model));
     }
 
     /**

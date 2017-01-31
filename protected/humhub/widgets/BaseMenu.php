@@ -68,20 +68,27 @@ class BaseMenu extends \yii\base\Widget
      */
     public function addItem($item)
     {
-        if (!isset($item['label']))
+        if (!isset($item['label'])) {
             $item['label'] = 'Unnamed';
+        }
 
-        if (!isset($item['url']))
+        if (!isset($item['url'])) {
             $item['url'] = '#';
+        }
 
-        if (!isset($item['icon']))
+        if (!isset($item['icon'])) {
             $item['icon'] = '';
+        }
+        
+        
 
-        if (!isset($item['group']))
+        if (!isset($item['group'])) {
             $item['group'] = '';
+        }
 
-        if (!isset($item['htmlOptions']))
+        if (!isset($item['htmlOptions'])) {
             $item['htmlOptions'] = array();
+        }
 
         /**
          *
@@ -91,21 +98,26 @@ class BaseMenu extends \yii\base\Widget
             $item['htmlOptions']['target'] = $item['target'];
         }
 
-        if (!isset($item['sortOrder']))
+        if (!isset($item['sortOrder'])) {
             $item['sortOrder'] = 1000;
+        }
 
-        if (!isset($item['newItemCount']))
+        if (!isset($item['newItemCount'])) {
             $item['newItemCount'] = 0;
+        }
 
-        if (!isset($item['isActive']))
+        if (!isset($item['isActive'])) {
             $item['isActive'] = false;
 
-        if (isset($item['isVisible']) && !$item['isVisible'])
+        }
+        if (isset($item['isVisible']) && !$item['isVisible']) {
             return;
+        }
 
         // Build Item CSS Class
-        if (!isset($item['htmlOptions']['class']))
+        if (!isset($item['htmlOptions']['class'])) {
             $item['htmlOptions']['class'] = "";
+        }
 
         if ($item['isActive']) {
             $item['htmlOptions']['class'] .= " active";

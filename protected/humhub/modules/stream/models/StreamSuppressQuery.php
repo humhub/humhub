@@ -2,6 +2,7 @@
 
 namespace humhub\modules\stream\models;
 
+use Yii;
 use humhub\modules\stream\models\StreamQuery;
 
 /**
@@ -33,6 +34,41 @@ class StreamSuppressQuery extends StreamQuery
     protected $lastContentId;
 
     /**
+     * @var boolean return 
+     */
+    protected $suppressionsOnly = false;
+
+    /**
+     * @var int size of suppression row lookup
+     */
+    public $suppressionScanSize = 300;
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return array_merge(parent::rules(), [
+            ['suppressionsOnly', 'boolean', 'strict' => true, 'falseValue' => 'false', 'trueValue' => 'true']
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function load($data, $formName = null)
+    {
+        // Hack to ensure booleans for suppressionsOnly parameter
+        if (parent::load($data, $formName)) {
+            if ($this->suppressionsOnly == 'true') {
+                $this->suppressionsOnly = true;
+            } else {
+                $this->suppressionsOnly = false;
+            }
+        }
+    }
+
+    /**
      * @inheritdoc
      */
     public function all()
@@ -46,19 +82,21 @@ class StreamSuppressQuery extends StreamQuery
             $this->setupQuery();
         }
 
+        if ($this->suppressionsOnly) {
+            return $this->allSuppressions();
+        }
+
         $results = [];
         $originalLimit = $this->limit;
 
         // increase limit
-        $this->limit = $this->limit + 30;
+        $this->_query->limit = $this->limit + $this->suppressionScanSize;
 
         foreach ($this->_query->batch($originalLimit) as $contents) {
             foreach ($contents as $content) {
                 $this->lastContentId = $content->id;
-
                 if (!$this->isSuppressed($results, $content)) {
                     $results[] = $content;
-
                     // Enough results collected
                     if (count($results) === $originalLimit) {
                         break 2;
@@ -67,6 +105,44 @@ class StreamSuppressQuery extends StreamQuery
             }
         }
 
+        $this->_query->limit = $originalLimit;
+        $this->isQueryExecuted = true;
+
+        return $results;
+    }
+
+    /**
+     * This is a special case, this is used to "load more" of suppressed contents.
+     * 
+     * @return Content[] the list of content objects
+     */
+    protected function allSuppressions()
+    {
+        $results = [];
+        $originalLimit = $this->limit;
+
+        // increase limit
+        $this->_query->limit = $this->limit + $this->suppressionScanSize;
+
+        foreach ($this->_query->batch($originalLimit) as $contents) {
+            foreach ($contents as $content) {
+
+                // End of suppression row
+                if (isset($results[0]) && $results[0]->object_model != $content->object_model) {
+                    break 2;
+                }
+
+                $this->lastContentId = $content->id;
+
+                if (count($results) < $originalLimit) {
+                    $results[] = $content;
+                } else {
+                    $this->addSuppression(end($results), $content);
+                }
+            }
+        }
+
+        $this->_query->limit = $originalLimit;
         $this->isQueryExecuted = true;
 
         return $results;
@@ -75,27 +151,41 @@ class StreamSuppressQuery extends StreamQuery
     /**
      * Checks if this content should be suppressed
      * 
-     * @param type $results
-     * @param type $content
+     * @param array $results a reference of the current results
+     * @param Content $content the content object to check
+     * 
+     * @return boolean is suppressed item
      */
     protected function isSuppressed(&$results, $content)
     {
-        // TODO: Make configurable
-        $doNotSuppress = [\humhub\modules\post\models\Post::className()];
-
         // Check if content type is suppressable
-        if (in_array($content->object_model, $doNotSuppress)) {
+        if (in_array($content->object_model, Yii::$app->getModule('stream')->streamSuppressQueryIgnore)) {
             return false;
         }
 
         // Checks if previous two contents have the same content class model
         $c = count($results) - 1;
         if ($c >= 1 && $results[$c - 1]->object_model === $results[$c]->object_model && $content->object_model === $results[$c]->object_model) {
-            $this->suppressions[$results[$c]->id][] = $content->id;
+            $this->addSuppression($results[$c], $content);
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Adds new suppression
+     * 
+     * @param \humhub\modules\content\models\Content $parentContent
+     * @param \humhub\modules\content\models\Content $content
+     */
+    public function addSuppression($parentContent, $content)
+    {
+        if (!isset($this->suppressions[$parentContent->id]['parentContent'])) {
+            $this->suppressions[$parentContent->id]['parentContent'] = $parentContent;
+            $this->suppressions[$parentContent->id]['contentIds'] = [];
+        }
+        $this->suppressions[$parentContent->id]['contentIds'][] = $content->id;
     }
 
     /**
@@ -110,7 +200,22 @@ class StreamSuppressQuery extends StreamQuery
             throw new \yii\base\Exception("Execute query first via all() method before reading suppressed items.");
         }
 
-        return $this->suppressions;
+        $results = [];
+        foreach ($this->suppressions as $parentContentId => $infos) {
+            /* @var $contentInstance \humhub\modules\content\components\ContentActiveRecord  */
+            $contentInstance = $infos['parentContent']->getPolymorphicRelation();
+            if ($contentInstance === null) {
+                Yii::error('Could not load content instance with id: ' . $parentContentId, 'stream');
+                continue;
+            }
+
+            $results[$parentContentId] = [
+                'contentName' => $contentInstance->getContentName(),
+                'message' => Yii::t('StreamModule.base', 'Show {i} more.', ['i' => count($infos['contentIds'])])
+            ];
+        }
+
+        return $results;
     }
 
     /**

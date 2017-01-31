@@ -20,5 +20,5 @@ return [
     '<strong>Change</strong> your password' => '<strong>Ändere</strong> dein Passwort',
     'Back' => 'Zurück',
     'Change password' => 'Passwort ändern',
-    'Password reset' => 'Psswort zurücksetzen',
+    'Password reset' => 'Passwort zurücksetzen',
 ];

@@ -28,7 +28,7 @@ use humhub\modules\space\models\Space;
 class Group extends ActiveRecord
 {
     const SCENARIO_EDIT = 'edit';
-    
+
     /**
      * @inheritdoc
      */
@@ -69,7 +69,7 @@ class Group extends ActiveRecord
             'show_at_directory' => Yii::t('UserModule.models_User', 'Show At Directory'),
         ];
     }
-    
+
     public function getDefaultSpace()
     {
         return Space::findOne(['id' => $this->space_id]);
@@ -83,7 +83,7 @@ class Group extends ActiveRecord
     {
         return self::findOne(['is_admin_group' => '1']);
     }
-    
+
     public static function getAdminGroupId()
     {
         $adminGroupId = Yii::$app->getModule('user')->settings->get('group.adminGroupId');
@@ -240,7 +240,6 @@ class Group extends ActiveRecord
             $mail = Yii::$app->mailer->compose(['html' => '@humhub//views/mail/TextOnly'], [
                 'message' => $html,
             ]);
-            $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
             $mail->setTo($manager->email);
             $mail->setSubject(Yii::t('UserModule.models_User', "New user needs approval"));
             $mail->send();
@@ -250,7 +249,7 @@ class Group extends ActiveRecord
 
     /**
      * Returns groups which are available in user registration
-     * 
+     *
      * @return Group[] the groups which can be selected in registration
      */
     public static function getRegistrationGroups()

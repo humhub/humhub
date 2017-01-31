@@ -80,14 +80,20 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
     /**
      * Limits the returned records to the given ContentContainer.
      * 
-     * @param ContentContainerActiveRecord $container
+     * @param ContentContainerActiveRecord $container|null or null for global content
      * @return \humhub\modules\content\components\ActiveQueryContent
      * @throws \yii\base\Exception
      */
     public function contentContainer($container)
     {
-        $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
-        $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => $container->className()]);
+        if ($container === null) {
+            $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
+            $this->andWhere(['IS', 'contentcontainer.pk', new \yii\db\Expression('NULL')]);
+        } else {
+            $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
+            $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => $container->className()]);
+        }
+
         return $this;
     }
 

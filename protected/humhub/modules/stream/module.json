@@ -1,0 +1,9 @@
+{
+    "id": "stream",
+    "name": "Stream",
+    "description": "Stream Core",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.2"
+}

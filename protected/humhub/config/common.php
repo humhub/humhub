@@ -10,7 +10,7 @@ $config = [
     'name' => 'HumHub',
     'version' => '1.2.0-dev',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
-    'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader'],
+    'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue'],
     'sourceLanguage' => 'en',
     'components' => [
         'moduleManager' => [
@@ -27,7 +27,7 @@ $config = [
                     'class' => 'humhub\modules\notification\components\MailNotificationTarget',
                     'renderer' => ['class' => 'humhub\modules\notification\components\MailTargetRenderer']
                 ],
-                //['class' => '\humhub\modules\notification\components\MobileNotificationTarget']
+            //['class' => '\humhub\modules\notification\components\MobileNotificationTarget']
             ]
         ],
         'log' => [
@@ -87,7 +87,7 @@ $config = [
             'class' => 'yii\caching\DummyCache',
         ],
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
+            'class' => 'humhub\components\mail\Mailer',
             'viewPath' => '@humhub/views/mail',
             'view' => [
                 'class' => '\yii\web\View',
@@ -100,7 +100,7 @@ $config = [
         'assetManager' => [
             'class' => '\humhub\components\AssetManager',
             'appendTimestamp' => true,
-            'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD ? 'assets-prod.php' : 'assets-dev.php')),  
+            'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD ? 'assets-prod.php' : 'assets-dev.php')),
         ],
         'view' => [
             'class' => '\humhub\components\View',
@@ -120,6 +120,19 @@ $config = [
         'authClientCollection' => [
             'class' => 'humhub\modules\user\authclient\Collection',
             'clients' => [],
+        ],
+        'queue' => [
+            'class' => 'humhub\components\queue\Queue',
+            'driver' => [
+                //'class' => 'humhub\components\queue\driver\MySQL',
+                'class' => 'humhub\components\queue\driver\Sync',
+            ],
+        ],
+        'live' => [
+            'class' => 'humhub\modules\live\components\Sender',
+            'driver' => [
+                'class' => 'humhub\modules\live\driver\Database',
+            ],
         ],
     ],
     'params' => [
@@ -216,8 +229,5 @@ $config = [
         'enablePjax' => false,
     ]
 ];
-
-
-
 
 return $config;

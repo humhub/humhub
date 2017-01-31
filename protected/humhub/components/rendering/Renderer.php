@@ -8,6 +8,7 @@ namespace humhub\components\rendering;
  * by converting it's data into a specific format.
  *
  * @author buddha
+ * @since 1.2
  */
 interface Renderer
 {
@@ -17,6 +18,10 @@ interface Renderer
      * The renderer  will usually use the $viewable->viewName to determine the target view and
      * forward the given $params to $viewable->getViewParams($params). By doing so, the
      * $params can be used to overwrite the default view parameter of $viewable.
+     * 
+     * It is upon the renderer implementation to handle non existing views. 
+     * They could throw a yii\base\ViewNotFoundException, or provide a
+     * default view.
      * 
      * @param \humhub\components\rendering\Viewable $viewable
      * @param type $params

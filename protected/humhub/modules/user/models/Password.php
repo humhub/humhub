@@ -136,8 +136,9 @@ class Password extends \yii\db\ActiveRecord
     public function validatePassword($password)
     {
 
-        if (Yii::$app->security->compareString($this->password, $this->hashPassword($password)))
+        if (Yii::$app->security->compareString($this->password, $this->hashPassword($password))) {
             return true;
+        }
 
         return false;
     }

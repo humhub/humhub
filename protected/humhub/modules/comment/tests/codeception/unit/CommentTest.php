@@ -2,7 +2,6 @@
 
 namespace tests\codeception\unit\modules\comment\components;
 
-use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\post\models\Post;

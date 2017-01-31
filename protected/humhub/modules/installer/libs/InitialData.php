@@ -12,7 +12,6 @@ use Yii;
 use yii\base\Exception;
 use humhub\modules\user\models\ProfileFieldCategory;
 use humhub\modules\user\models\ProfileField;
-use humhub\modules\user\models\User;
 use humhub\modules\user\models\Group;
 
 /**
@@ -45,8 +44,7 @@ class InitialData
         Yii::$app->settings->set('mailer.transportType', 'php');
         Yii::$app->settings->set('mailer.systemEmailAddress', 'social@example.com');
         Yii::$app->settings->set('mailer.systemEmailName', 'My Social Network');
-        Yii::$app->getModule('activity')->settings->set('receive_email_activities', User::RECEIVE_EMAIL_DAILY_SUMMARY);
-        Yii::$app->getModule('notification')->settings->set('receive_email_notifications', User::RECEIVE_EMAIL_WHEN_OFFLINE);
+        Yii::$app->getModule('activity')->settings->set('mailSummaryInterval', \humhub\modules\activity\components\MailSummary::INTERVAL_DAILY);
 
         // File
         Yii::$app->getModule('file')->settings->set('maxFileSize', '1048576' * 5);
@@ -62,9 +60,6 @@ class InitialData
         // Design
         Yii::$app->settings->set('theme', "HumHub");
         Yii::$app->getModule('space')->settings->set('spaceOrder', 0);
-
-        // read and save colors from current theme
-        \humhub\components\Theme::setColorVariables('HumHub');
 
         // Basic
         Yii::$app->getModule('tour')->settings->set('enable', 1);

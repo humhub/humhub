@@ -26,7 +26,12 @@ class InviteDeclined extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = "space";
-    
+
+    /**
+     * @inheritdoc
+     */
+    public $viewName = "inviteDeclined";
+
     /**
      *  @inheritdoc
      */
@@ -36,14 +41,30 @@ class InviteDeclined extends BaseNotification
     }
 
     /**
+     *  @inheritdoc
+     */
+    public function getSpace()
+    {
+        return $this->source;
+    }
+
+    public function getTitle(\humhub\modules\user\models\User $user)
+    {
+        return Yii::t('SpaceModule.notification', '{displayName} declined your invite for the space {spaceName}', [
+                    '{displayName}' => Html::encode($this->originator->displayName),
+                    '{spaceName}' => Html::encode($this->getSpace()->name)
+        ]);
+    }
+
+    /**
      * @inheritdoc
      */
     public function html()
     {
-        return Yii::t('SpaceModule.notification', '{displayName} declined your invite for the space {spaceName}', array(
+        return Yii::t('SpaceModule.notification', '{displayName} declined your invite for the space {spaceName}', [
                     '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                    '{spaceName}' => Html::tag('strong', Html::encode($this->source->name))
-        ));
+                    '{spaceName}' => Html::tag('strong', Html::encode($this->getSpace()->name))
+        ]);
     }
 
 }

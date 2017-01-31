@@ -98,6 +98,11 @@ abstract class BasePickerField extends InputWidget
     public $selection;
 
     /**
+     * @var array Array of item instances used as long the minInput is not exceed. 
+     */
+    public $defaultResults = [];
+
+    /**
      * The item class used to load items by means of the model attribute value.
      * 
      * @var string 
@@ -235,6 +240,7 @@ abstract class BasePickerField extends InputWidget
     {
         if (!$this->selection && $this->model != null) {
             $attribute = $this->attribute;
+
             $this->selection = $this->loadItems($this->model->$attribute);
         }
 
@@ -253,9 +259,17 @@ abstract class BasePickerField extends InputWidget
         return $result;
     }
 
+    /**
+     * Responsible for building the option data for an item.
+     * 
+     * @param type $item
+     * @param type $selected
+     * @return string
+     */
     protected function buildItemOption($item, $selected = true)
     {
         $result = [
+            'data-id' => $this->getItemKey($item),
             'data-text' => $this->getItemText($item),
             'data-image' => $this->getItemImage($item),
         ];
@@ -293,6 +307,11 @@ abstract class BasePickerField extends InputWidget
     {
         if (empty($selection)) {
             return [];
+        }
+
+        // For older version (prior 1.2) - try to convert comma separated list to array 
+        if (!is_array($selection)) {
+            $selection = explode(',', $selection);
         }
 
         $itemClass = $this->itemClass;
@@ -344,11 +363,21 @@ abstract class BasePickerField extends InputWidget
             'format-ajax-error' => Yii::t('UserModule.widgets_BasePickerField', 'An unexpected error occured while loading the result.'),
             'load-more' => Yii::t('UserModule.widgets_BasePickerField', 'Load more'),
             'input-too-short' => Yii::t('UserModule.widgets_BasePickerField', 'Please enter at least {n} character', ['n' => $this->minInput]),
-            'input-too-long' => Yii::t('UserModule.widgets_BasePickerField', 'You reached the maximum number of allowed charachters ({n}).', ['n' => $this->maxInput])
+            'input-too-long' => Yii::t('UserModule.widgets_BasePickerField', 'You reached the maximum number of allowed charachters ({n}).', ['n' => $this->maxInput]),
+            'default-results' => $this->getDefaultResultData()
         ];
 
         if ($this->maxSelection) {
             $result['maximum-selected'] = Yii::t('UserModule.widgets_BasePickerField', 'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.', ['n' => $this->maxSelection]);
+        }
+        return $result;
+    }
+
+    protected function getDefaultResultData()
+    {
+        $result = [];
+        foreach ($this->defaultResults as $item) {
+            $result[] = $this->buildItemOption($item);
         }
         return $result;
     }

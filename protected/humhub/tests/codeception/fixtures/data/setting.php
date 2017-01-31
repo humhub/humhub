@@ -1,15 +1,14 @@
 <?php
-
 return [
-    ['name' => 'name', 'value' => 'HumHub', 'module_id' => NULL],
-    ['name' => 'baseUrl', 'value' => 'http://dev2/humhub_test', 'module_id' => NULL],
-    ['name' => 'paginationSize', 'value' => '10', 'module_id' => NULL],
-    ['name' => 'displayNameFormat', 'value' => '{profile.firstname} {profile.lastname}', 'module_id' => NULL],
+    ['name' => 'name', 'value' => 'HumHub', 'module_id' => 'base'],
+    ['name' => 'baseUrl', 'value' => 'http://dev2/humhub_test', 'module_id' => 'base'],
+    ['name' => 'paginationSize', 'value' => '10', 'module_id' => 'base'],
+    ['name' => 'displayNameFormat', 'value' => '{profile.firstname} {profile.lastname}', 'module_id' => 'base'],
     ['name' => 'authInternal', 'value' => '1', 'module_id' => 'authentication'],
     ['name' => 'auth.needApproval', 'value' => '0', 'module_id' => 'user'],
     ['name' => 'auth.anonymousRegistration', 'value' => '1', 'module_id' => 'user'],
     ['name' => 'auth.internalUsersCanInvite', 'value' => '1', 'module_id' => 'user'],
-    ['name' => 'mailer.transportType', 'value' => 'php', 'module_id' => 'base'],
+    ['name' => 'mailer.transportType', 'value' => 'file', 'module_id' => 'base'],
     ['name' => 'mailer.systemEmailAddress', 'value' => 'social@example.com', 'module_id' => 'base'],
     ['name' => 'mailer.systemEmailName', 'value' => 'My Social Network', 'module_id' => 'base'],
     ['name' => 'receive_email_activities', 'value' => '1', 'module_id' => 'activity'],
@@ -21,4 +20,9 @@ return [
     ['name' => 'installationId', 'value' => '99846c45e9b9b0962238986a6fed519a', 'module_id' => 'admin'],
     ['name' => 'theme', 'value' => 'HumHub', 'module_id' => 'base'],
     ['name' => 'tour', 'value' => '1', 'module_id' => 'base'],
+    ['name' => 'colorDefault', 'value' => '#ededed', 'module_id' => 'base'],
+    ['name' => 'colorPrimary', 'value' => '#708fa0', 'module_id' => 'base'],
+    ['name' => 'colorInfo', 'value' => '#6fdbe8', 'module_id' => 'base'],
+    ['name' => 'colorSuccess', 'value' => '#97d271', 'module_id' => 'base'],
+    ['name' => 'colorDanger', 'value' => '#ff8989', 'module_id' => 'base'],
 ];

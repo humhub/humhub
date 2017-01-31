@@ -20,6 +20,7 @@ use Yii;
  * '@myModule/views/layouts/myLayout.php'
  *
  * @author buddha
+ * @since 1.2
  */
 class LayoutRenderer extends ViewPathRenderer
 {
@@ -30,20 +31,25 @@ class LayoutRenderer extends ViewPathRenderer
     public $layout;
 
     /**
-     * @inheritdoc
+     * If a $layout is given the result will embed the rendered viewFile into the
+     * given $layout.
+     *
+     * @param \humhub\components\rendering\Viewable $viewable
+     * @param type $params
+     * @return string
      */
     public function render(Viewable $viewable, $params = [])
     {
-        // Render the view itself
         $viewParams = $viewable->getViewParams($params);
         
+        // Render the viewFile
         if(!isset($viewParams['content'])) {
             $viewParams['content'] = parent::renderView($viewable, $viewParams);
         }
         
+        // Embed content in layout if valid layout is given.
         $layout = $this->getLayout($viewable);
         
-        // Embed view into layout if provided
         if ($layout) {
             return Yii::$app->getView()->renderFile($layout, $viewParams, $viewable);
         } else {
@@ -51,6 +57,13 @@ class LayoutRenderer extends ViewPathRenderer
         }
     }
     
+    /**
+     * Returns the layout file path.
+     * Subclasses may use the $viewable to determine the layout path.
+     * 
+     * @param \humhub\components\rendering\Viewable $viewable
+     * @return string
+     */
     protected function getLayout(Viewable $viewable)
     {
         return $this->layout;

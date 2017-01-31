@@ -20,8 +20,8 @@ class TabbedFormAsset extends AssetBundle
     
     public $jsOptions = ['position' => \yii\web\View::POS_END];
     
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
+    public $basePath = '@webroot-static';
+    public $baseUrl = '@web-static';
 
     /**
      * @inheritdoc

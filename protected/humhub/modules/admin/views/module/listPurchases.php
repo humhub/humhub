@@ -7,8 +7,8 @@ use yii\helpers\Html;
 
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_module_listOnline', '<strong>Modules</strong> directory'); ?></div>
     <?php echo $this->render('_header'); ?>
-    
-    <div class="panel-body"> 
+
+    <div class="panel-body">
         <!-- search form -->
         <?php echo Html::beginForm(Url::to(['//admin/module/list-purchases']), 'post', array('class' => 'form-search')); ?>
         <div class="row">
@@ -43,7 +43,7 @@ use yii\helpers\Html;
                 <div class="media ">
 
                     <?php
-                    $moduleImageUrl = Yii::getAlias('@web/img/default_module.jpg');
+                    $moduleImageUrl = Yii::getAlias('@web-static/img/default_module.jpg');
                     if (isset($module['moduleImageUrl']) && $module['moduleImageUrl'] != "") {
                         $moduleImageUrl = $module['moduleImageUrl'];
                     }

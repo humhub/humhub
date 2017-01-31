@@ -1,0 +1,65 @@
+//
+// General
+// --------------------------------------------------
+body {
+  padding-top: 130px;
+  background-color: @background-color-page;
+  color: @text-color-main;
+  font-family: 'Open Sans', sans-serif;
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    color: @text-color-highlight;
+    text-decoration: none;
+  }
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+// Cols (change position property to prevent the cutting of tooltips or menus)
+.col-md-1,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9,
+.col-md-10,
+.col-md-11,
+.col-md-12 {
+  position: inherit;
+}
+
+h4 {
+  font-weight: 300;
+  font-size: 150%;
+}
+
+input[type=text],
+input[type=password],
+input[type=select] {
+  /* Remove First */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.powered,
+.powered a {
+  color: #b8c7d3 !important;
+}
+
+.langSwitcher {
+  display: inline-block;
+}

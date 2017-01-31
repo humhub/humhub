@@ -46,24 +46,24 @@ class ContentContainerStream extends Stream
             }
         }
 
-        // Add all sticked contents to initial request
+        // Add all pinned contents to initial request
         if ($this->isInitialRequest() || $this->isSingleContentQuery()) {
-            // Get number of sticked contents
-            $stickedQuery = clone $this->activeQuery;
-            $stickedQuery->andWhere(['content.sticked' => 1]);
-            $stickedCount = $stickedQuery->count();
+            // Get number of pinned contents
+            $pinnedQuery = clone $this->activeQuery;
+            $pinnedQuery->andWhere(['content.pinned' => 1]);
+            $pinnedCount = $pinnedQuery->count();
 
-            // Increase query result limit to ensure there are also not sticked entries
-            $this->activeQuery->limit += $stickedCount;
+            // Increase query result limit to ensure there are also not pinned entries
+            $this->activeQuery->limit += $pinnedCount;
 
-            // Modify order - sticked content first
+            // Modify order - pinned content first
             $oldOrder = $this->activeQuery->orderBy;
             $this->activeQuery->orderBy("");
-            $this->activeQuery->addOrderBy('content.sticked DESC');
+            $this->activeQuery->addOrderBy('content.pinned DESC');
             $this->activeQuery->addOrderBy($oldOrder);
         } else {
-            // No sticked content in further queries
-            $this->activeQuery->andWhere("content.sticked = 0");
+            // No pinned content in further queries
+            $this->activeQuery->andWhere("content.pinned = 0");
         }
     }
 

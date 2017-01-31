@@ -2,7 +2,7 @@
 namespace humhub\widgets;
 
 
-use yii\base\Widget;
+use humhub\components\Widget;
 /**
  * Description of JsWidget
  *
@@ -50,6 +50,13 @@ class JsWidget extends Widget
      */
     public $visible = true;
     
+    /**
+     * Assembles all widget attributes and data settings of this widget.
+     * Those attributes/options are are normally transfered to the js client by ordinary html attributes
+     * or by using data-* attributes.
+     * 
+     * @return array
+     */
     protected function getOptions()
     {
         $attributes = $this->getAttributes();
@@ -71,6 +78,10 @@ class JsWidget extends Widget
         return $result;
     }
     
+    /**
+     * Sets some default data options required by all widgets as the widget implementation
+     * and the widget evetns and initialization trigger.
+     */
     public function setDefaultOptions() 
     {   
         // Set event data
@@ -85,6 +96,15 @@ class JsWidget extends Widget
         } 
     }
     
+    /**
+     * Returns the html id of this widget, if no id is set this function will generate
+     * an id if $autoGenerate is set to true (default).
+     * 
+     * Note that the id is automatically included within the <code>getOptions()<code> function.
+     * 
+     * @param type $autoGenerate
+     * @return type
+     */
     public function getId($autoGenerate = true)
     {
         if($this->id) {
@@ -93,11 +113,23 @@ class JsWidget extends Widget
         return parent::getId($autoGenerate);
     }
     
+    /**
+     * Returns an array of data-* attributes to configure your clientside js widget. 
+     * Note that this function does not require to add the data- prefix. This will be done by Yii.
+     * 
+     * The data-* attributes should be inserted to the widgets root element.
+     * 
+     * @return type
+     */
     protected function getData() 
     {
         return [];
     }
     
+    /**
+     * Returns all html attributes for used by this widget and will normally inserted in the widgets root html element.
+     * @return type
+     */
     protected function getAttributes()
     {
         return [];

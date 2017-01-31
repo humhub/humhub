@@ -29,7 +29,7 @@ class Module extends \humhub\components\Module
     {
         if ($contentContainer !== null) {
             return [
-                new permissions\CreatePost()
+                new permissions\CreatePost(['contentContainer' => $contentContainer])
             ];
         }
 

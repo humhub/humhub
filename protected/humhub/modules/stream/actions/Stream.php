@@ -12,6 +12,7 @@ use Yii;
 use yii\base\Action;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
+use humhub\modules\stream\models\StreamQuery;
 use yii\base\ActionEvent;
 use yii\base\Exception;
 
@@ -21,8 +22,8 @@ use yii\base\Exception;
  * JSON output structure:
  *      content             - array, content id is key
  *           id             - int, id of content 
- *           guid           - string, guid of contetn
- *           sticked        - boolean, is content sticked
+ *           guid           - string, guid of content
+ *           pinned         - boolean, is content pinned
  *           archived       - boolean, i scontent is archived
  *           output         - string, the rendered html output of content
  *      total               - int, total of content records
@@ -150,6 +151,8 @@ abstract class Stream extends Action
      */
     public function init()
     {
+        $this->excludes = array_merge($this->excludes, Yii::$app->getModule('stream')->streamExcludes);
+
         $streamQueryClass = $this->streamQueryClass;
         $this->streamQuery = $streamQueryClass::find($this->includes, $this->excludes)->forUser($this->user);
 
@@ -158,10 +161,7 @@ abstract class Stream extends Action
             $this->streamQuery->load(Yii::$app->request->get());
 
             if (Yii::$app->getRequest()->get('mode', $this->mode) === self::MODE_ACTIVITY) {
-                $this->streamQuery->includes(\humhub\modules\activity\models\Activity::className());
-                $this->streamQuery->query()->leftJoin('activity', 'content.object_id=activity.id AND content.object_model=:activityModel', ['activityModel' => \humhub\modules\activity\models\Activity::className()]);
-                // Note that if $this->user is null the streamQuery will use the current user identity!
-                $this->streamQuery->query()->andWhere('content.created_by != :userId', [':userId' => $this->streamQuery->user->id]);
+                $this->mode = self::MODE_ACTIVITY;
             }
 
             foreach (explode(',', Yii::$app->getRequest()->get('filters', "")) as $filter) {
@@ -196,6 +196,11 @@ abstract class Stream extends Action
         if (empty($this->streamQuery->sort)) {
             $this->streamQuery->sort = $this->sort;
         }
+
+        if ($this->mode == self::MODE_ACTIVITY) {
+            $this->streamQuery->channel(StreamQuery::CHANNEL_ACTIVITY);
+            $this->streamQuery->query()->andWhere('content.created_by != :userId', [':userId' => $this->streamQuery->user->id]);
+        }
     }
 
     public function setupCriteria()
@@ -220,6 +225,7 @@ abstract class Stream extends Action
 
         $output['content'] = [];
 
+        $i = 0;
         foreach ($this->streamQuery->all() as $content) {
             try {
                 $output['content'][$content->id] = static::getContentResultEntry($content);
@@ -231,10 +237,10 @@ abstract class Stream extends Action
                     throw $e;
                 }
             }
+            $i++;
         }
 
-        $output['total'] = count($output['content']);   //         // Required?
-        $output['isLast'] = ($output['total'] < $this->activeQuery->limit);
+        $output['isLast'] = ($i < $this->activeQuery->limit);
         $output['contentOrder'] = array_keys($output['content']);
         $output['lastContentId'] = end($output['contentOrder']);
 
@@ -273,7 +279,6 @@ abstract class Stream extends Action
             throw new Exception('Could not get contents underlying object!');
         }
         $underlyingObject->populateRelation('content', $content);
-
         $result['output'] = Yii::$app->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
             'entry' => $content,
             'user' => $underlyingObject->content->createdBy,
@@ -281,7 +286,7 @@ abstract class Stream extends Action
             'content' => $underlyingObject->getWallOut()
                 ], true);
 
-        $result['sticked'] = (boolean) $content->sticked;
+        $result['pinned'] = (boolean) $content->pinned;
         $result['archived'] = (boolean) $content->archived;
         $result['guid'] = $content->guid;
         $result['id'] = $content->id;

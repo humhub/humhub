@@ -19,7 +19,14 @@ use humhub\components\behaviors\AccessControl;
 class Controller extends \humhub\components\Controller
 {
 
+    /**
+     * @inheritdoc
+     */
     public $subLayout = "@humhub/modules/admin/views/layouts/main";
+    
+    /**
+     * @var boolean if true only allows access for system admins else the access is restricted by getAccessRules()
+     */
     public $adminOnly = true;
 
     /**
@@ -45,12 +52,12 @@ class Controller extends \humhub\components\Controller
             'acl' => [
                 'class' => AccessControl::className(),
                 'adminOnly' => $this->adminOnly,
-                'rules' => static::getAcessRules()
+                'rules' => static::getAccessRules()
             ]
         ];
     }
 
-    public static function getAcessRules()
+    public static function getAccessRules()
     {
         // Workaround for module configuration actions
         if (Yii::$app->controller->module->id != 'admin') {

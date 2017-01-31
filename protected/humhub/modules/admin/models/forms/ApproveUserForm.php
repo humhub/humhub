@@ -40,7 +40,6 @@ class ApproveUserForm extends \yii\base\Model
     public function send($email)
     {
         $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], ['message' => $this->message]);
-        $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
         $mail->setTo($email);
         $mail->setSubject($this->subject);
         $mail->send();

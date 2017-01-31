@@ -198,7 +198,7 @@ class AccessControl extends \yii\base\ActionFilter
     }
 
     /**
-     * Checks the the current controller actions against the allowed rule action.
+     * Checks the current controller action against the allowed rule action.
      * If the rule does not contain any action settings, the rule is allowed for all controller actions.
      * 
      * @param array $rule

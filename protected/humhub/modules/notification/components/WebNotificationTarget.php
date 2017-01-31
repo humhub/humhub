@@ -1,4 +1,5 @@
 <?php
+
 namespace humhub\modules\notification\components;
 
 use Yii;
@@ -10,31 +11,34 @@ use humhub\modules\user\models\User;
  */
 class WebNotificationTarget extends NotificationTarget
 {
+
     /**
      * @inheritdoc
      */
     public $id = 'web';
-    
+
     /**
-     * Since the WebNotificationTarget only requires the Notification ActiveRecord to be persisted,
-     * this handler only check the presence of the related Notification record.
+     * Handles Webnotifications by setting the send_web_notifications flag and sending an live event.
      */
-    public function handle(BaseNotification $notification, User $user) {
-        if(!$notification->record) {
-            throw new \yii\base\Exception('Notification record not found for BaseNotification "'.$notification->className().'"');
-        }
-    }
-    
-    /**
-     * @inheritdoc
-     */
-    public function isEditable(User $user = null)
+    public function handle(BaseNotification $notification, User $user)
     {
-        return false;
+        if (!$notification->record) {
+            throw new \yii\base\Exception('Notification record not found for BaseNotification "' . $notification->className() . '"');
+        }
+
+        $notification->record->send_web_notifications = true;
+        $notification->record->save();
+
+        Yii::$app->live->send(new \humhub\modules\notification\live\NewNotification([
+            'notificationId' => $notification->record->id,
+            'contentContainerId' => $user->contentcontainer_id,
+            'text' => $notification->text()
+        ]));
     }
 
     public function getTitle()
     {
         return Yii::t('NotificationModule.components_WebNotificationTarget', 'Web');
     }
+
 }

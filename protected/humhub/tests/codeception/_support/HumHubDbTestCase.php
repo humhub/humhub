@@ -34,7 +34,19 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
         $this->initModules();
         $this->unloadFixtures();
         $this->loadFixtures();
+        $this->reloadSettings();
         $this->deleteMails();
+    }
+
+    protected function reloadSettings()
+    {
+        Yii::$app->settings->reload();
+        
+        foreach (Yii::$app->modules as $module) {
+            if ($module instanceof \humhub\components\Module) {
+                $module->settings->reload();
+            }
+        }
     }
 
     protected function deleteMails()
@@ -118,7 +130,7 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
         $path = Yii::getAlias('@runtime/mail');
         $mailCount = count(glob($path . '/*.eml'));
 
-        if (!$count) {
+        if ($count === true) {
             $this->assertTrue($mailCount > 0, $msg);
         } else {
             $this->assertEquals($count, $mailCount, $msg);

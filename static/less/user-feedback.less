@@ -1,0 +1,128 @@
+//
+// Statusbar
+// --------------------------------------------------
+.status-bar-body {
+    color: white; 
+    position: fixed; 
+    width: 100%; 
+    background-color: rgba(0, 0, 0, 0.7); 
+    text-align: center; 
+    padding: 20px;
+    z-index: 9999999; 
+    bottom: 0px; 
+    display: block;
+    line-height:20px;
+}
+
+.status-bar-close {
+    color:white;
+    fonfont-weight:bold;
+    font-size:21px;
+    cursor: pointer;
+}
+
+.status-bar-close:hover {
+    color:white;
+}
+
+.status-bar-close i {
+    vertical-align:top !important;
+    padding-top:3px;
+}
+
+.status-bar-content i {
+    margin-right:10px;
+    font-size:21px;
+    vertical-align:middle;
+}
+
+.status-bar-content .showMore {
+    color: @info;
+    float:right;
+    margin-left:10px;
+    font-size:0.7em;
+    cursor:pointer;
+    vertical-align:middle;
+    white-space:nowrap;
+}
+
+.status-bar-content .status-bar-details {
+    text-align:left;
+    font-size:0.7em;
+    margin-top:20px;
+    max-height:200px;
+    overflow:auto;
+}
+
+.status-bar-content span {
+    vertical-align:middle;
+}
+
+.status-bar-content i.error, .status-bar-content i.fatal {
+    color:@danger;
+}
+
+.status-bar-content i.warning {
+    color:@warning;
+}
+
+.status-bar-content i.info, .status-bar-content i.debug {
+    color:@info;
+}
+
+.status-bar-content i.success {
+    color:#85CA2B;
+}
+
+//
+// Third Party Tools
+// --------------------------------------------------
+// Highlight
+.highlight {
+  background-color: @background-color-highlight;
+}
+
+//
+// Bootstrap Alert panels
+// --------------------------------------------------
+.alert-default {
+  color: @text-color-highlight;
+  background-color: @background-color-secondary;
+  border-color: @background-color-page;
+  font-size: 13px;
+  .info {
+    margin: 10px 0;
+  }
+}
+
+.alert-success {
+  color: @text-color-success;
+  background-color: @background-color-success;
+  border-color: @border-color-success;
+}
+
+.alert-warning {
+  color: @text-color-warning;
+  background-color: @background-color-warning;
+  border-color: @border-color-warning;
+}
+
+.alert-danger {
+  color: @text-color-danger;
+  background-color: @background-color-danger;
+  border-color: @border-color-danger;
+}
+
+//
+// data-saved feedback Deprecated since 1.2
+// --------------------------------------------------
+.data-saved {
+  padding-left: 10px;
+  color: @info;
+}
+
+img.bounceIn {
+  -webkit-animation-duration: 800ms;
+  -moz-animation-duration: 800ms;
+  animation-duration: 800ms;
+}

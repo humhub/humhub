@@ -20,12 +20,12 @@ class AppAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $basePath = '@webroot';
+    public $basePath = '@webroot-static';
 
     /**
      * @inheritdoc
      */
-    public $baseUrl = '@web';
+    public $baseUrl = '@web-static';
 
     /**
      * @inheritdoc
@@ -46,12 +46,8 @@ class AppAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        //'js/ekko-lightbox-modified.js',
         'js/blueimp-gallery.min.js',
-        //'js/modernizr.js', // In use???
         'js/jquery.highlight.min.js',
-        //'js/wysihtml5-0.3.0.js',
-        //'js/bootstrap3-wysihtml5.js',
         'js/desktop-notify-min.js',
         'js/desktop-notify-config.js',
         'js/jquery.nicescroll.min.js',
@@ -66,15 +62,10 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapPluginAsset',
-        /**
-         * Temporary disabled
-         * https://github.com/inuyaksa/jquery.nicescroll/issues/574
-         */
-        //'humhub\assets\JqueryNiceScrollAsset', 
         'humhub\assets\BluebirdAsset',
         'humhub\assets\JqueryTimeAgoAsset',
         'humhub\assets\JqueryWidgetAsset',
-        'humhub\assets\JqueryColorAsset', //TODO: only required for post/comment/stream
+        'humhub\assets\JqueryColorAsset',
         'humhub\assets\JqueryPlaceholderAsset',
         'humhub\assets\FontAwesomeAsset',
         'humhub\assets\BlueimpFileUploadAsset',
@@ -84,9 +75,12 @@ class AppAsset extends AssetBundle
         'humhub\assets\AtJsAsset',
         'humhub\assets\AnimateCssAsset',
         'humhub\assets\CoreApiAsset',
+        'humhub\modules\live\assets\LiveAsset',
+        'humhub\modules\notification\assets\NotificationAsset',
         'humhub\modules\content\assets\ContentAsset',
         'humhub\modules\user\assets\UserAsset',
         'humhub\modules\user\assets\UserPickerAsset',
+        'humhub\modules\file\assets\FileAsset',
         'humhub\modules\post\assets\PostAsset',
         'humhub\modules\comment\assets\CommentAsset',
         'humhub\assets\NProgressAsset',

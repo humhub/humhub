@@ -1,0 +1,9 @@
+{
+    "id": "live",
+    "name": "Live",
+    "description": "Live Core",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

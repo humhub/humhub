@@ -12,7 +12,6 @@ use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
 
-
 /**
  * Cronjobs
  *
@@ -40,9 +39,7 @@ class CronController extends Controller
 
         $this->trigger(self::EVENT_ON_HOURLY_RUN);
 
-        $this->stdout("\n\nAll cron tasks finished.\n\n", Console::FG_GREEN);
         Yii::$app->settings->set('cronLastHourlyRun', time());
-
         return self::EXIT_CODE_NORMAL;
     }
 
@@ -55,9 +52,7 @@ class CronController extends Controller
 
         $this->trigger(self::EVENT_ON_DAILY_RUN);
 
-        $this->stdout("\n\nAll cron tasks finished.\n\n", Console::FG_GREEN);
         Yii::$app->settings->set('cronLastDailyRun', time());
-
         return self::EXIT_CODE_NORMAL;
     }
 

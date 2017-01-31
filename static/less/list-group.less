@@ -1,0 +1,48 @@
+//
+// List-Group
+// --------------------------------------------------
+.list-group-item {
+  padding: 6px 15px;
+  border: none;
+  border-width: 0 !important;
+  border-left: 3px solid #fff !important;
+  font-size: 12px;
+  font-weight: 600;
+  i {
+    font-size: 14px;
+  }
+}
+
+a.list-group-item:hover,
+a.list-group-item.active,
+a.list-group-item.active:hover,
+a.list-group-item.active:focus {
+  z-index: 2;
+  color: @text-color-highlight;
+  background-color: @background-color-secondary;
+  border-left: 3px solid @info !important;
+}
+
+@media (max-width: 991px) {
+  .list-group {
+    margin-left: 4px;
+  }
+
+  .list-group-item {
+    display: inline-block !important;
+    border-radius: 3px !important;
+    margin: 4px 0;
+    margin-bottom: 4px !important;
+  }
+
+  .list-group-item {
+    border: none !important;
+
+  }
+
+  a.list-group-item:hover, a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {
+    border: none !important;
+    background: @primary !important;
+    color: #fff !important;
+  }
+}

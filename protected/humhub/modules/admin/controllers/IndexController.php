@@ -24,7 +24,7 @@ class IndexController extends Controller
      */
     public $adminOnly = false;
 
-    public static function getAcessRules()
+    public static function getAccessRules()
     {
         return [
             ['permissions' => Yii::$app->getModule('admin')->getPermissions()]

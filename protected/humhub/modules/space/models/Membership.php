@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,7 +10,7 @@ namespace humhub\modules\space\models;
 
 use Yii;
 use humhub\modules\user\models\User;
-
+use humhub\modules\space\models\Space;
 
 /**
  * This is the model class for table "space_membership".
@@ -28,10 +28,24 @@ use humhub\modules\user\models\User;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
+ * @property integer send_notifications
  */
 class Membership extends \yii\db\ActiveRecord
 {
 
+    /**
+     * @event \humhub\modules\space\MemberEvent
+     */
+    const EVENT_MEMBER_REMOVED = 'memberRemoved';
+
+    /**
+     * @event \humhub\modules\space\MemberEvent
+     */
+    const EVENT_MEMBER_ADDED = 'memberAdded';
+
+    /**
+     * Status Codes
+     */
     const STATUS_INVITED = 1;
     const STATUS_APPLICANT = 2;
     const STATUS_MEMBER = 3;
@@ -79,17 +93,17 @@ class Membership extends \yii\db\ActiveRecord
 
     public function getUser()
     {
-        return $this->hasOne(\humhub\modules\user\models\User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     public function getOriginator()
     {
-        return $this->hasOne(\humhub\modules\user\models\User::className(), ['id' => 'originator_user_id']);
+        return $this->hasOne(User::className(), ['id' => 'originator_user_id']);
     }
 
     public function getSpace()
     {
-        return $this->hasOne(\humhub\modules\space\models\Space::className(), ['id' => 'space_id']);
+        return $this->hasOne(Space::className(), ['id' => 'space_id']);
     }
 
     public function beforeSave($insert)
@@ -146,6 +160,7 @@ class Membership extends \yii\db\ActiveRecord
             if ($orderSetting != 0) {
                 $orderBy = 'last_visit DESC';
             }
+
             $memberships = self::find()->joinWith('space')->where(['user_id' => $userId, 'space_membership.status' => self::STATUS_MEMBER])->orderBy($orderBy);
 
             $spaces = array();
@@ -163,9 +178,10 @@ class Membership extends \yii\db\ActiveRecord
      * @since 1.0
      * @param \humhub\modules\user\models\User $user
      * @param boolean $memberOnly include only member status - no pending/invite states
+     * @param boolean $withNotificationsOnly include only memberships with sendNotification setting
      * @return \yii\db\ActiveQuery for space model
      */
-    public static function getUserSpaceQuery($user, $memberOnly = true)
+    public static function getUserSpaceQuery(User $user, $memberOnly = true, $withNotifications = null)
     {
         $query = Space::find();
         $query->leftJoin('space_membership', 'space_membership.space_id=space.id and space_membership.user_id=:userId', [':userId' => $user->id]);
@@ -174,7 +190,55 @@ class Membership extends \yii\db\ActiveRecord
             $query->andWhere(['space_membership.status' => self::STATUS_MEMBER]);
         }
 
+        if ($withNotifications === true) {
+            $query->andWhere(['space_membership.send_notifications' => 1]);
+        } else if ($withNotifications === false) {
+            $query->andWhere(['space_membership.send_notifications' => 0]);
+        }
+
+        if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
+            $query->orderBy('name ASC');
+        } else {
+            $query->orderBy('last_visit DESC');
+        }
+
         $query->orderBy(['name' => SORT_ASC]);
+
+        return $query;
+    }
+
+    /**
+     * Returns an ActiveQuery selcting all memberships for the given $user.
+     *  
+     * @param User $user
+     * @param integer $membershipSatus the status of the Space by default self::STATUS_MEMBER.
+     * @param integer $spaceStatus the status of the Space by default Space::STATUS_ENABLED.
+     * @return \yii\db\ActiveQuery
+     * @since 1.2
+     */
+    public static function findByUser(User $user = null, $membershipSatus = self::STATUS_MEMBER, $spaceStatus = Space::STATUS_ENABLED)
+    {
+        if (!$user) {
+            $user = Yii::$app->user->getIdentity();
+        }
+        
+        $query = Membership::find();
+
+        if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
+            $query->orderBy('space.name ASC');
+        } else {
+            $query->orderBy('space_membership.last_visit DESC');
+        }
+
+        $query->joinWith('space')->where(['space_membership.user_id' => $user->id]);
+        
+        if($spaceStatus) {
+            $query->andWhere(['space.status' => $spaceStatus]);
+        }
+
+        if ($membershipSatus) {
+            $query->andWhere(['space_membership.status' => $membershipSatus]);
+        }
 
         return $query;
     }
@@ -187,15 +251,22 @@ class Membership extends \yii\db\ActiveRecord
      * @param boolean $membersOnly Only return approved members
      * @return \humhub\modules\user\components\ActiveQueryUser
      */
-    public static function getSpaceMembersQuery($space, $membersOnly = true)
+    public static function getSpaceMembersQuery(Space $space, $membersOnly = true, $withNotifications = null)
     {
         $query = User::find()->active();
         $query->join('LEFT JOIN', 'space_membership', 'space_membership.user_id=user.id');
+
         if ($membersOnly) {
             $query->andWhere(['space_membership.status' => self::STATUS_MEMBER]);
         }
-        $query->andWhere(['space_id' => $space->id]);
-        $query->defaultOrder();
+
+        if ($withNotifications === true) {
+            $query->andWhere(['space_membership.send_notifications' => 1]);
+        } else if ($withNotifications === false) {
+            $query->andWhere(['space_membership.send_notifications' => 0]);
+        }
+
+        $query->andWhere(['space_id' => $space->id])->defaultOrder();
         return $query;
     }
 

@@ -11,7 +11,7 @@ namespace humhub\modules\activity\models;
 use Yii;
 use yii\base\Exception;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\activity\components\WebRenderer;
+use humhub\modules\activity\components\ActivityWebRenderer;
 
 /**
  * This is the model class for table "activity".
@@ -28,11 +28,16 @@ class Activity extends ContentActiveRecord
      * @inheritdoc
      */
     public $wallEntryClass = "humhub\modules\activity\widgets\Activity";
-    
+
     /**
      * @inheritdoc
      */
     public $autoFollow = false;
+
+    /**
+     * @inheritdoc
+     */
+    protected $streamChannel = 'activity';
 
     /**
      * @inheritdoc
@@ -100,13 +105,12 @@ class Activity extends ContentActiveRecord
         if ($output === false) {
             $activity = $this->getActivityBaseClass();
             if ($activity !== null) {
-                $renderer = new WebRenderer();
+                $renderer = new ActivityWebRenderer();
                 $output = $renderer->render($activity);
                 Yii::$app->cache->set($cacheKey, $output);
                 return $output;
             }
         }
-
         return $output;
     }
 
@@ -120,5 +124,4 @@ class Activity extends ContentActiveRecord
     {
         return $this->getPolymorphicRelation();
     }
-
 }

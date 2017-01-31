@@ -5,23 +5,24 @@
 use yii\bootstrap\Html
 ?>
 
+<br />
+<?= $form->field($model, 'desktopNotifications')->checkbox(); ?>
+
 <?php if($showSpaces) : ?>
     <?= humhub\modules\space\widgets\SpacePickerField::widget([
         'form' => $form,
         'model' => $model,
-        'attribute' => 'spaces',
+        'attribute' => 'spaceGuids',
+        'defaultResults' => $defaultSpaces,
         'maxSelection' => 10
     ])?>
 <?php endif;?>
-<div class="help-block" style="margin-bottom: 0px;">
- <?= Yii::t('NotificationModule.widgets_views_notificationSettingsForm', 'You can enable outgoing notifications for a given category by choosing the disired notification targets.'); ?>
-</div>
-<div class="grid-view table-responsive">
+
+<div class="grid-view table-responsive permission-grid-editor" style="padding-top:0px;">
     <table class="table table-middle table-hover">
         <thead>
             <tr>
-                <th><?= Yii::t('NotificationModule.widgets_views_notificationSettingsForm', 'Category') ?></th>
-                <th><?= Yii::t('NotificationModule.widgets_views_notificationSettingsForm', 'Description') ?></th>
+                <th><?= Yii::t('NotificationModule.widgets_views_notificationSettingsForm', 'Type') ?></th>
                 <?php foreach ($model->targets() as $target): ?>
                     <th class="text-center">
                         <?= $target->getTitle(); ?>
@@ -33,12 +34,9 @@ use yii\bootstrap\Html
             <?php foreach ($model->categories() as $category): ?>
                 <tr>
                     <td>
-                        <strong><?= $category->getTitle() ?></strong>
-                    </td>
-                    <td>
+                        <strong><?= $category->getTitle() ?></strong><br />
                         <?= $category->getDescription() ?>
                     </td>
-
                     <?php foreach ($model->targets() as $target): ?>
                         <td class="text-center">
                             <?php $disabled = !$target->isEditable($model->user) || $category->isFixedSetting($target) ?>

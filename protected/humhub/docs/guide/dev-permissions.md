@@ -71,7 +71,7 @@ Example of [[humhub\modules\content\models\ContentContainerPermission|ContentCon
 
  - [[humhub\modules\space\permissions\InviteUsers]] - Permission to invite users to a space.
  - [[humhub\modules\mail\permissions\SendMail]] - Allows/Disallows other users to send messages.
- - [[humhub\modules\content\permissions\ManageContent]] - Permission to archive, stick or delete content within a space.
+ - [[humhub\modules\content\permissions\ManageContent]] - Permission to archive, pin to top or delete content within a space.
 
 ### Verify ContentContainer Permissions
 

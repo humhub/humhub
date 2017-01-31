@@ -22,17 +22,32 @@ class CoreJsConfig extends Widget
 
     public function run()
     {
-        
+
         if(!Yii::$app->user->isGuest) {
             $userConfig = \humhub\modules\user\models\UserPicker::asJSON(Yii::$app->user->getIdentity());
             $userConfig['isGuest'] = false;
         } else {
             $userConfig = ['isGuest' => true];
         }
-        
+
+        $liveModule = Yii::$app->getModule('live');
+
         $this->getView()->registerJsConfig(
             [
                 'user' => $userConfig,
+                'live' => [
+                    'client' => [
+                        'type' => 'humhub.modules.live.poll.PollClient',
+                        'options' => [
+                            'url' => Url::to(['/live/poll']),
+                            'minInterval' => $liveModule->minPollInterval, // Minimal polling request interval in seconds.
+                            'maxInterval' => $liveModule->maxPollInterval, // Maximal polling request interval in seconds.
+                            'idleFactor' => $liveModule->idleFactor, // Factor used in the actual interval calculation in case of user idle.
+                            'idleInterval' => $liveModule->idleInterval //  Interval for updating the update delay in case of user idle in seconds.
+                        ]
+                    ]
+
+                ],
                 'file' => [
                     'upload' => [
                         'url' => Url::to(['/file/file/upload']),
@@ -56,14 +71,14 @@ class CoreJsConfig extends Widget
                 ],
                 'ui.widget' => [
                     'text' => [
-                        'error.unknown' => Yii::t('base', 'No error information given.'),  
+                        'error.unknown' => Yii::t('base', 'No error information given.'),
                     ]
                 ],
                 'ui.richtext' => [
-                    'emoji.url' =>  Yii::getAlias('@web/img/emoji/'),
+                    'emoji.url' =>  Yii::getAlias('@web-static/img/emoji/'),
                     'text' => [
-                        'info.minInput' => Yii::t('base', 'Please type at least 3 characters'),  
-                        'info.loading' => Yii::t('base', 'Loading...'),  
+                        'info.minInput' => Yii::t('base', 'Please type at least 3 characters'),
+                        'info.loading' => Yii::t('base', 'Loading...'),
                     ]
                 ],
                 'log' => [
@@ -74,6 +89,7 @@ class CoreJsConfig extends Widget
                         'success.edit' => Yii::t('base', 'Saved'),
                         0 => Yii::t('base', 'An unexpected error occured. If this keeps happening, please contact a site administrator.'),
                         403 => Yii::t('base', 'You are not allowed to run this action.'),
+                        404 => Yii::t('base', 'The requested resource could not be found.'),
                         405 => Yii::t('base', 'Error while running your last action (Invalid request method).'),
                         500 => Yii::t('base', 'An unexpected server error occured. If this keeps happening, please contact a site administrator.')
                     ]

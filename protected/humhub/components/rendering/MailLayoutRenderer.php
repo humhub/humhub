@@ -2,19 +2,19 @@
 
 namespace humhub\components\rendering;
 
-use Yii;
-
 /**
- * Description of MailLayoutRenderer
+ * MailLayoutRenderer extends the LayoutRenderer with a renderText function.
  *
  * @author buddha
+ * @since 1.2
  */
 class MailLayoutRenderer extends LayoutRenderer
 {
+    
+    public $subPath = 'mails';
 
     /**
-     * Layout for text rendering.
-     * @var type 
+     * @var string Layout file path
      */
     public $textLayout;
 
@@ -28,14 +28,23 @@ class MailLayoutRenderer extends LayoutRenderer
     public function renderText(Viewable $viewable, $params = [])
     {
         $textRenderer = new LayoutRenderer([
+            'subPath' => 'mails/plaintext', 
+            'parent' => $this->parent,
             'layout' => $this->getTextLayout($viewable)
         ]);
 
+        // exclude the view only embed the viewable text to the textlayout.
         $params['content'] = $viewable->text();
 
         return strip_tags($textRenderer->render($viewable, $params));
     }
 
+    /**
+     * Returns the $textLayout for the given $viewable.
+     * 
+     * @param \humhub\components\rendering\Viewable $viewable
+     * @return type
+     */
     public function getTextLayout(Viewable $viewable)
     {
         return $this->textLayout;

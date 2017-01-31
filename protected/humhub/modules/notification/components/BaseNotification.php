@@ -12,6 +12,8 @@ use Yii;
 use yii\helpers\Url;
 use yii\bootstrap\Html;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\jobs\SendNotification;
+use humhub\modules\notification\jobs\SendBulkNotification;
 use humhub\modules\user\models\User;
 
 /**
@@ -27,12 +29,7 @@ use humhub\modules\user\models\User;
  * @author luke
  */
 abstract class BaseNotification extends \humhub\components\SocialActivity
-{   
-    /**
-     * Can be used to delay the NotificationJob execution.
-     * @var type 
-     */
-    public $delay = 0;
+{
 
     /**
      * @var boolean automatically mark notification as seen after click on it
@@ -92,9 +89,10 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     }
 
     /**
+     * @param User $user the recipient
      * @return string title text for this notification
      */
-    public function getTitle()
+    public function getTitle(User $user)
     {
         $category = $this->getCategory();
         if ($category) {
@@ -105,12 +103,31 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     }
 
     /**
+     * @param User $user the recipient
+     * @return string the headline for this notification, can be used for example in mails.
+     */
+    public function getHeadline(User $user)
+    {
+        return null;
+    }
+
+    /**
      * @inheritdoc
      */
     public function getViewParams($params = [])
     {
+        if ($this->hasContent() && $this->getContent()->updated_at instanceof \yii\db\Expression) {
+            $this->getContent()->refresh();
+            $date = $this->getContent()->updated_at;
+        } else if ($this->hasContent()) {
+            $date = $this->getContent()->updated_at;
+        } else {
+            $date = null;
+        }
+
         $result = [
             'url' => Url::to(['/notification/entry', 'id' => $this->record->id], true),
+            'date' => $date,
             'isNew' => !$this->record->seen,
         ];
 
@@ -119,65 +136,61 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
 
     /**
      * Sends this notification to a set of users.
+     * 
+     * This function will filter out duplicates and the originator itself if given in the
+     * $users array.
      *
      * @param mixed $users can be an array of User records or an ActiveQuery.
      */
     public function sendBulk($users)
     {
+        if (empty($this->moduleId)) {
+            throw new \yii\base\InvalidConfigException('No moduleId given for "' . $this->className() . '"');
+        }
+
         if ($users instanceof \yii\db\ActiveQuery) {
             $users = $users->all();
         }
 
-        foreach ($users as $user) {
-            $this->send($user);
+        try {
+            Yii::$app->queue->push(new SendBulkNotification(['notification' => $this, 'recepients' => $users]));
+        } catch (\Exception $e) {
+            Yii::error($e);
         }
     }
 
     /**
-     * Sends this notification to all notification targets of this User
+     * Sends this notification to all notification targets of the given User.
+     * This function will not send notifications to the originator itself.
      *
      * @param User $user
      */
     public function send(User $user)
     {
-
         if (empty($this->moduleId)) {
             throw new \yii\base\InvalidConfigException('No moduleId given for "' . $this->className() . '"');
-        };
+        }
 
-        // Skip - do not set notification to the originator
-        if ($this->originator && $this->originator->id == $user->id) {
+        if ($this->isOriginator($user)) {
             return;
         }
 
-        //$this->queueJob($user);
-        $this->saveRecord($user);
-        foreach (Yii::$app->notification->getTargets($user) as $target) {
-            $target->send($this, $user);
+        try {
+            Yii::$app->queue->push(new SendNotification(['notification' => $this, 'recepient' => $user]));
+        } catch (\Exception $e) {
+            Yii::error($e);
         }
     }
 
     /**
-     * Queues the notification job. The Job is responsible for creating and sending
-     * the Notifications out to its NotificationTargets.
+     * Checks if the given $user is the originator of this notification.
      * 
      * @param User $user
+     * @return boolean
      */
-    protected function queueJob(User $user)
+    public function isOriginator(User $user)
     {
-        Yii::$app->notificationQueue->push(new NotificationJob([
-            'notification' => $this,
-            'user_id' => $user->id
-        ]));
-    }
-
-    public function save(User $user)
-    {
-        // We reuse our record instance to save multiple records.
-        $this->record->id = null;
-        $this->record->isNewRecord = true;
-        $this->record->user_id = $user->id;
-        return $this->record->save();
+        return $this->originator && $this->originator->id == $user->id;
     }
 
     /**
@@ -216,6 +229,9 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     public function about($source)
     {
+        if(!$source) {
+            return;
+        }
         parent::about($source);
         $this->record->space_id = $this->getSpaceId();
         return $this;
@@ -226,6 +242,9 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     public function from($originator)
     {
+        if(!$originator) {
+            return;
+        }
         $this->originator = $originator;
         $this->record->originator_user_id = $originator->id;
         return $this;
@@ -370,10 +389,11 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     /**
      * @inheritdoc
      */
-    public function asArray()
+    public function asArray(User $user)
     {
-        $result = parent::asArray();
-        $result['title'] = $this->getTitle();
+        $result = parent::asArray($user);
+        $result['title'] = $this->getTitle($user);
+        $result['headline'] = $this->getHeadline($user);
         return $result;
     }
 

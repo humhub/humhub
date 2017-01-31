@@ -1,0 +1,45 @@
+//
+// Login
+// --------------------------------------------------
+.login-container {
+  background-color: @primary;
+  background-image: linear-gradient(to right, @primary 0%, lighten(@primary, 10%) 50%, lighten(@primary, 10%) 100%), linear-gradient(to right, lighten(@primary, 5%) 0%, lighten(@primary, 25%) 51%, lighten(@primary, 20%) 100%);
+  background-size: 100% 100%;
+  position: relative;
+  padding-top: 40px;
+
+  .text {
+    color: #fff;
+    font-size: 12px;
+    margin-bottom: 15px;
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+  .panel a {
+    color: @info;
+  }
+  h1,
+  h2 {
+    color: #fff !important;
+  }
+  .panel {
+    box-shadow: 0 0 15px #627d92;
+    -moz-box-shadow: 0 0 15px #627d92;
+    -webkit-box-shadow: 0 0 15px #627d92;
+    .panel-heading,
+    .panel-body {
+      padding: 15px;
+    }
+  }
+  select {
+    color: @text-color-highlight;
+  }
+}
+
+#account-login-form {
+  .form-group {
+    margin-bottom: 10px;
+  }
+}

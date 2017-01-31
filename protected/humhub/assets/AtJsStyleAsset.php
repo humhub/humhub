@@ -12,19 +12,27 @@ use yii\web\AssetBundle;
 
 /**
  * jquery-At.js
- * 
+ *
  * @author buddha
  */
 class AtJsStyleAsset extends AssetBundle
 {
-   
+
     /**
      * @inheritdoc
      */
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
+    public $basePath = '@webroot-static';
+
+    /**
+     * @inheritdoc
+     */
+    public $baseUrl = '@web-static';
+
+    /**
+     * @inheritdoc
+     */
     public $css = [
         'css/jquery.atwho.modified.css',
     ];
-    
+
 }

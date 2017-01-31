@@ -26,4 +26,5 @@ return [
     'Select List' => 'Seznam možností',
     'Text' => 'Text',
     'Text Area' => 'Textové pole',
+    'Checkbox' => '',
 ];

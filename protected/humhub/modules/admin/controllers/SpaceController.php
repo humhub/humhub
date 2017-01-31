@@ -36,7 +36,7 @@ class SpaceController extends Controller
         return parent::init();
     }
 
-    public static function getAcessRules()
+    public static function getAccessRules()
     {
         return [
             ['permissions' => [

@@ -52,7 +52,10 @@ class SettingController extends Controller
         return parent::init();
     }
 
-    public static function getAcessRules()
+    /**
+     * @inheritdoc
+     */
+    public static function getAccessRules()
     {
         return [
             ['permissions' => \humhub\modules\admin\permissions\ManageSettings::className()]
@@ -130,19 +133,6 @@ class SettingController extends Controller
         return $this->render('statistic', array('model' => $form));
     }
 
-    /**
-     * E-Mail Mailing Settings
-     */
-    public function actionMailing()
-    {
-        $form = new \humhub\modules\admin\models\forms\MailingDefaultsForm();
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            $this->view->saved();
-        }
-
-        return $this->render('mailing', ['model' => $form]);
-    }
-    
     /**
      * Notification Mailing Settings
      */
