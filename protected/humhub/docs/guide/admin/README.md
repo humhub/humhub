@@ -6,9 +6,11 @@ Installation
 * [Requirements](requirements.md)
 * [Installation](installation.md)
 
-Updating
---------
+Updating HumHub
+---------------
 * [Updating](updating.md)
+* [Updating from a version below 0.20](updating-020.md)
+
 
 Administration Topics
 ---------------------
