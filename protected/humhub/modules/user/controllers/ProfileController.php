@@ -84,7 +84,7 @@ class ProfileController extends ContentContainerController
     public function actionFollow()
     {
         $this->forcePostRequest();
-        $this->getUser()->follow();
+        $this->getUser()->follow(Yii::$app->user->getIdentity(), false);
 
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = 'json';

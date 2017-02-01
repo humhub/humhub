@@ -34,6 +34,8 @@ use humhub\modules\user\models\User;
  */
 class Followable extends Behavior
 {
+    
+    private $_followerCache = [];
 
     public function beforeDelete($event)
     {
@@ -117,9 +119,11 @@ class Followable extends Behavior
 
     /**
      * Checks if the given user follows this owner record.
+     * 
+     * Note that the followers for this owner will be cached.
      *
      * @param int $userId
-     * @param boolean $withNotifcations if true, only return true when also notifications enabled
+     * @param boolean $withNotifications if true, only return true when also notifications enabled
      * @return boolean Is object followed by user
      */
     public function isFollowedByUser($userId = null, $withNotifications = false)
@@ -130,8 +134,13 @@ class Followable extends Behavior
             $userId = \Yii::$app->user->id;
         }
 
-        $record = $this->getFollowRecord($userId);
-        if ($record !== null) {
+        if(!isset($this->_followerCache[$userId])) {
+            $this->_followerCache[$userId] = $this->getFollowRecord($userId);
+        }
+        
+        $record = $this->_followerCache[$userId];
+        
+        if ($record) {
             if ($withNotifications && $record->send_notifications == 1) {
                 return true;
             } elseif (!$withNotifications) {
