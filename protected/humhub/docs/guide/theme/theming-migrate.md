@@ -1,31 +1,51 @@
 # Theming Migration Guide
 
-Here you will learn how you can adapt existing themes to working fine with actually versions.
+Here you will learn how you can adapt existing themes to work with the latest HumHub versions.
 
 ## Migrate to 1.2
 
+### Use of new Theming
+
+HumHub 1.2 introduced an enhanced theming structure, which allows you to overwrite only the style definitions you want to change. This leads to smaller and cleaner themes without the need to manually maintain each small style change or addition of a new release. Please refer to the  [Theming Guide](theming-index.md) for more details about the new theme structure.
+
+> Note: You can still use your old theme, but you'll have to maintain your theme manually as before. You should at least create your themes `variables.less` file as described in the following, since these variables are used within your mails.
+
+The steps below, describe how to merge your old theme to the new theming structure:
+
+1. Download HumHub 1.2.
+2. Copy your theme folder to `humhub\themes` of your HumHub 1.2 project folder.
+3. Copy the following directory into your theme `humhub\themes\HumHub\less`.
+4. Seperate your theme variables into `humhub\themes\yourTheme\less\variables.less`. Use the new variable names used in `humhub\static\less\variables.less`.
+5. Ideally, only add the differences between your theme and the default theme to `humhub\themes\yourTheme\less\theme.less`.
+6. Build your theme with `lessc -x build.less ../css/theme.css`.
+
+If your theme overwrites major parts of the defalt theme, you can disable the import of some default less files by setting variables as for example `@prev-login: true;` to disable the import of `humhub/static/less/login.less`. Please see the [Theming Guide](theming-index.md) for more information about this technique.
+
+> Info: You should rebuild your theme after each HumHub release to adopt new theme changes automatically.
+
+> Info: If your theme directory resides outside the `themes` directory, you'll have to edit the `@HUMHUB` variable within the `build.less` file to point to the `static/less` directory of your HumHub v1.2 directory.
+
 ### Stream
 
-The new stream js rewrite requires some additional data-* attributes, which have to be added in case your theme overwrites either the stream or
-streamentry view/layout. Furthermore the frontend modules configuration was added to the `stream.php` file. 
-Please see the following files for changes:
+The new stream javascript rewrite requires some additional data-* attributes, which have to be added in case your theme overwrites one of the mentioned files.
 
-`protected/humhub/modules/stream/widget/views/stream.php`
+Please check the following files for changes, in case your theme does overwrite those files:
 
-`protected/humhub/modules/content/views/layouts/wallEntry.php`
+- protected/humhub/modules/stream/widget/views/stream.php
+- protected/humhub/modules/content/views/layouts/wallEntry.php
 
 The same applies to the activity stream:
 
-`protected/humhub/modules/activity/widget/views/activityStream.php`
+- protected/humhub/modules/activity/widget/views/activityStream.php
+- protected/humhub/modules/activity/views/layouts/web.php
 
-`protected/humhub/modules/activity/views/layouts/web.php`
+### Legacy Themes
 
-### Status Bar
+Old themes, should check the following file for changes:
 
-We added a new status bar and a loader for pjax loading to the theme.less.
-Please see the following file for 1.2 changes (at the buttom):
+`humhub/themes/HumHub/css/theme.deprecated.less`
 
-`themes/HumHub/css/theme.less`
+> Note: This file will not be maintained in the future.
 
 ### Layout
 
@@ -36,11 +56,18 @@ Please see the following file for 1.2 changes (at the buttom):
 
 ### Gallery
 
-- Use data-ui-gallery instead of old data-toggle and data-gallery
+The old **ekko lighbox** was replaced by the [blueimp ](https://blueimp.github.io/Gallery/) gallery. If your theme
+does overwrite a view with gallery images, you'll have to use the new **data-ui-gallery** attribute instead of the
+**data-toggle** and **data-gallery** attributes. Please check the following files:
 
-### Please check the following view files for changes if you have overwritten them in your theme: 
+- modules/file/widgets/views/showFiles.php
+- modules/space/widgets/views/header.php
+- modules/tour/views/tour/welcome.php
+- modules/user/widgets/views/profileHeader.php
 
-- Rewrite (API):
+### Check the following view files for changes if you have overwritten them in your theme: 
+
+- **JS Rewrite**:
     - modules/like/widget/views/likeLink.php 
     - modules/admin/views/setting/design.php 
     - modules/space/views/create/invite.php
@@ -48,32 +75,33 @@ Please see the following file for 1.2 changes (at the buttom):
     - modules/comment/widget/views/showComment.php
     - modules/files/widget/views/showFiles.php
     - modules/post/widget/views/post.php
-- Richtext rewrite:
+- **Richtext rewrite**:
     - modules/comment/widget/views/form.php
     - modules/comment/views/comment/edit.php
     - modules/post/views/post/edit.php
     - modules/post/widget/views/form.php
-- UserPicker rewrite:
+- **UserPicker rewrite**:
     - modules/admin/views/group/edit.php
     - modules/admin/views/group/members.php
     - modules/content/widgets/views/wallCreateContentForm.php
-- TabbedForm:
+- **TabbedForm**:
     - modules/admin/views/user/add.php 
     - modules/admin/views/user/edit.php 
-    ... Add views
-- Space Picker
-    ... Add views
+    - modules/user/views/account/_userProfileLayout.php 
+    - modules/user/views/account/_userSettingsLayout.php 
+- **Space Picker**
+    - modules/admin/views/group/edit.php
+    - modules/admin/views/setting/basic.php
+    - modules/search/views/search/index.php
 
-- Refactored:
+- **Refactored**:
     - modules/search/views/search/index.php 
 
-- Pjax
+- **Pjax**
     - modules/tour/widgets/views/tourPanel.php
 
-- Notification:
-   - modules/notification/widget/views/overview.php
-
-We've integrated a new Space and UserPicker widget. Please check the following files for 
+- **Notification**:
+   - modules/notification/widget/views/overview.php 
 
 ## Migrate to 1.1
 
