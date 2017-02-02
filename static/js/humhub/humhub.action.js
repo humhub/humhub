@@ -555,18 +555,20 @@ humhub.module('action', function(module, require, $) {
 
         $parent.off(actionEvent).on(actionEvent, selector, function(evt) {
             evt.preventDefault();
+            var $this = $(this);
             
             // Get sure we don't call the handler twice if the event was already handled by the directly attached handler.
             // We have to rebind the handler only if we detect an unbound handler!
-            if($(this).data('action-' + actionBinding.event) || (evt.originalEvent && evt.originalEvent.actionHandled)) {
+            // Note, since jquery object loses data after removed from dom, we also check if the trigger is still in dom, if not we do not execute the action.
+            if($this.data('action-' + actionBinding.event) || !$this.closest('body').length ||  (evt.originalEvent && evt.originalEvent.actionHandled)) {
                 module.log.debug('Action Handler already executed by direct handler' + actionEvent, actionBinding);
-                module.log.debug('Handler event triggered by', $(this));
+                module.log.debug('Handler event triggered by', $this);
                 return;
             }
 
             module.log.debug('Detected unhandled action', actionBinding);
             updateBindings();
-            actionBinding.handle({originalEvent: evt, $trigger: $(this)});
+            actionBinding.handle({originalEvent: evt, $trigger: $this});
         });
 
         return;

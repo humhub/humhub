@@ -6,7 +6,7 @@
  * 
  * @type @exp;humhub|@call;humhub.core_L4|Function
  */
-var humhub = humhub || (function($) {
+var humhub = humhub || (function ($) {
     /**
      * Contains the modules namespace e.g. modules.ui.modal
      * @type object
@@ -87,12 +87,12 @@ var humhub = humhub || (function($) {
      * @param {type} module
      * @returns {undefined}
      */
-    var module = function(id, moduleFunction) {
+    var module = function (id, moduleFunction) {
         //Create module in the namespace and add helper functions
         var instance = resolveNameSpace(id, true);
 
         // Do not register modules twice!
-        if(instance.id) {
+        if (instance.id) {
             return;
         }
 
@@ -102,32 +102,32 @@ var humhub = humhub || (function($) {
         instance.config = require('config').module(instance);
         instance.isModule = true;
 
-        instance.text = function($key) {
+        instance.text = function ($key) {
             var textCfg = instance.config['text'];
             return (textCfg) ? textCfg[$key] : undefined;
         };
 
-        instance.export = function(exports) {
+        instance.export = function (exports) {
             $.extend(instance, exports);
         };
 
         // Setup the module by calling the moduleFunction
         try {
             moduleFunction(instance, require, $);
-        } catch(err) {
+        } catch (err) {
             console.error('Error while creating module: ' + id, err);
         }
 
         moduleArr.push(instance);
 
-        if(instance.init && instance.initOnPjaxLoad) {
+        if (instance.init && instance.initOnPjaxLoad) {
             pjaxInitModules.push(instance);
         }
 
-        //Initialize the module when document is ready
+        //Initialize the modules when document is ready
         if(!humhub.initialized) {
             initialModules.push(instance);
-        } else {
+        } else { // Init modules added asynchronously (ajax/pjax)
             addModuleLogger(instance);
             initModule(instance);
         }
@@ -148,9 +148,9 @@ var humhub = humhub || (function($) {
      * @returns object - the module instance if already initialized else undefined
      * 
      * */
-    var require = function(moduleNS, lazy) {
+    var require = function (moduleNS, lazy) {
         var module = resolveNameSpace(moduleNS, lazy);
-        if(!module) {
+        if (!module) {
             //TODO: load remote module dependencies
             console.error('No module found for namespace: ' + moduleNS);
         }
@@ -164,17 +164,17 @@ var humhub = humhub || (function($) {
      * @param {Boolean} init - if set to true, creates namespaces if not already present
      * @returns object - the given module
      */
-    var resolveNameSpace = function(typePath, init) {
+    var resolveNameSpace = function (typePath, init) {
         try {
             //cut humhub.modules prefix if present
             var moduleSuffix = _cutModulePrefix(typePath);
 
             //Iterate through the namespace and return the last entry
             var result = modules;
-            $.each(moduleSuffix.split('.'), function(i, subPath) {
-                if(subPath in result) {
+            $.each(moduleSuffix.split('.'), function (i, subPath) {
+                if (subPath in result) {
                     result = result[subPath];
-                } else if(init) {
+                } else if (init) {
                     result = result[subPath] = {};
                 } else {
                     result = undefined; //path not found
@@ -182,7 +182,7 @@ var humhub = humhub || (function($) {
                 }
             });
             return result;
-        } catch(e) {
+        } catch (e) {
             var log = require('log') || console;
             log.error('Error while resolving namespace: ' + typePath, e);
         }
@@ -193,35 +193,35 @@ var humhub = humhub || (function($) {
      */
     var config = modules['config'] = {
         id: 'config',
-        get: function(module, key, defaultVal) {
-            if(arguments.length === 1) {
+        get: function (module, key, defaultVal) {
+            if (arguments.length === 1) {
                 return this.module(module);
-            } else if(_isDefined(key)) {
+            } else if (_isDefined(key)) {
                 var result = this.module(module)[key];
                 return (_isDefined(result)) ? result : defaultVal;
             }
         },
-        module: function(module) {
+        module: function (module) {
             module = (module.id) ? module.id : module;
             module = _cutModulePrefix(module);
-            if(!this[module]) {
+            if (!this[module]) {
                 this[module] = {};
             }
             return this[module];
         },
-        is: function(module, key, defaultVal) {
+        is: function (module, key, defaultVal) {
             return this.get(module, key, defaultVal) === true;
         },
-        set: function(moduleId, key, value) {
+        set: function (moduleId, key, value) {
             //Moduleid with multiple values
-            if(arguments.length === 1) {
+            if (arguments.length === 1) {
                 var that = this;
-                $.each(moduleId, function(moduleKey, config) {
+                $.each(moduleId, function (moduleKey, config) {
                     that.set(moduleKey, config);
                 });
-            } else if(arguments.length === 2) {
+            } else if (arguments.length === 2) {
                 $.extend(this.module(moduleId), key);
-            } else if(arguments.length === 3) {
+            } else if (arguments.length === 3) {
                 this.module(moduleId)[key] = value;
             }
         }
@@ -229,23 +229,23 @@ var humhub = humhub || (function($) {
 
     var event = modules['event'] = {
         events: $({}),
-        off: function(events, selector, handler) {
+        off: function (events, selector, handler) {
             this.events.off(events, selector, handler);
             return this;
         },
-        on: function(event, selector, data, handler) {
+        on: function (event, selector, data, handler) {
             this.events.on(event, selector, data, handler);
             return this;
         },
-        trigger: function(eventType, extraParameters) {
+        trigger: function (eventType, extraParameters) {
             this.events.trigger(eventType, extraParameters);
             return this;
         },
-        one: function(event, selector, data, handler) {
+        one: function (event, selector, data, handler) {
             this.events.one(event, selector, data, handler);
             return this;
         },
-        sub: function(target) {
+        sub: function (target) {
             target.events = $({});
             target.on = $.proxy(event.on, target);
             target.one = $.proxy(event.one, target);
@@ -253,7 +253,7 @@ var humhub = humhub || (function($) {
             target.trigger = $.proxy(event.trigger, target);
             target.triggerCondition = $.proxy(event.triggerCondition, target);
         },
-        triggerCondition: function(target, event, extraParameters) {
+        triggerCondition: function (target, event, extraParameters) {
             var $target;
             /**
              * Supports the following cases:
@@ -263,13 +263,13 @@ var humhub = humhub || (function($) {
              * event.triggerCondition('#test', 'testevent');
              * event.triggerCondition('#test', 'testevent', ['asdf']);
              */
-            switch(arguments.length) {
+            switch (arguments.length) {
                 case 1:
                     $target = this.events;
                     event = target;
                     break;
                 case 2:
-                    if($.isArray(event)) {
+                    if ($.isArray(event)) {
                         $target = this.events;
                         extraParameters = event;
                     } else {
@@ -281,7 +281,7 @@ var humhub = humhub || (function($) {
                     break;
             }
 
-            if(!event) {
+            if (!event) {
                 return false;
             }
 
@@ -296,7 +296,7 @@ var humhub = humhub || (function($) {
      * @param {type} value
      * @returns {unresolved}
      */
-    var _cutModulePrefix = function(value) {
+    var _cutModulePrefix = function (value) {
         return _cutPrefix(_cutPrefix(value, 'humhub.'), 'modules.');
     };
 
@@ -308,8 +308,8 @@ var humhub = humhub || (function($) {
      * @param {type} prefix
      * @returns {unresolved}
      */
-    var _cutPrefix = function(value, prefix) {
-        if(!_startsWith(value, prefix)) {
+    var _cutPrefix = function (value, prefix) {
+        if (!_startsWith(value, prefix)) {
             return value;
         }
         return value.substring(prefix.length, value.length);
@@ -321,48 +321,48 @@ var humhub = humhub || (function($) {
      * @param {type} prefix
      * @returns {Boolean}
      */
-    var _startsWith = function(val, prefix) {
-        if(!val || !prefix) {
+    var _startsWith = function (val, prefix) {
+        if (!val || !prefix) {
             return false;
         }
         return val.indexOf(prefix) === 0;
     };
 
-    var _isDefined = function(obj) {
+    var _isDefined = function (obj) {
         return typeof obj !== 'undefined';
     };
 
-    var addModuleLogger = function(module, log) {
+    var addModuleLogger = function (module, log) {
         log = log || require('log');
         module.log = log.module(module);
     };
 
     //Initialize all initial modules
-    $(document).ready(function() {
+    $(document).ready(function () {
         var log = require('log');
 
-        $.each(moduleArr, function(i, module) {
+        $.each(moduleArr, function (i, module) {
             addModuleLogger(module, log);
         });
 
-        $.each(initialModules, function(i, module) {
+        $.each(initialModules, function (i, module) {
             initModule(module);
         });
-
+        
         humhub.initialized = true;
         event.trigger('humhub:ready');
         $(document).trigger('humhub:ready', [false, humhub]);
     });
 
-    var initModule = function(module) {
+    var initModule = function (module) {
         var log = require('log');
         event.trigger('humhub:beforeInitModule', module);
-        if(module.init) {
+        if (module.init) {
             try {
                 event.trigger(module.id.replace('.', ':') + ':beforeInit');
                 module.init();
                 event.trigger(module.id.replace('.', ':') + ':afterInit');
-            } catch(err) {
+            } catch (err) {
                 log.error('Could not initialize module: ' + module.id, err);
             }
         }
@@ -370,19 +370,27 @@ var humhub = humhub || (function($) {
         log.debug('Module initialized: ' + module.id);
     };
 
-    event.on('humhub:modules:client:pjax:success', function(evt) {
-        $.each(pjaxInitModules, function(i, module) {
-            if(module.initOnPjaxLoad) {
+    // Used to prevent the double initialization of modules loades by pjax.
+    var unloaded = [];
+
+    event.on('humhub:modules:client:pjax:success', function (evt) {        
+        // Init all modules again which were unloaded in the beforeSend and are configured for pjax initialization.
+        // Note: this does not include modules loaded by the pjax request, those are initialized in the module function.
+        $.each(pjaxInitModules, function (i, module) {
+            if (module.initOnPjaxLoad && unloaded.indexOf(module.id) > -1) {
                 module.init(true);
             }
         });
+        
         event.trigger('humhub:ready');
         $(document).trigger('humhub:ready', [true, humhub]);
-    }).on('humhub:modules:client:pjax:beforeSend', function(evt) {
-        $.each(moduleArr, function(i, module) {
-            if(module.unload) {
+    }).on('humhub:modules:client:pjax:beforeSend', function (evt) {
+        unloaded = [];
+        $.each(moduleArr, function (i, module) {
+            if (module.unload) {
                 module.unload();
             }
+            unloaded.push(module.id);
         });
     });
 

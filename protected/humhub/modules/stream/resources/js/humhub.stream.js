@@ -650,8 +650,10 @@ humhub.module('stream', function(module, require, $) {
             this.appendEntry($result);
         }
         $result.hide().css('opacity', 1);
-        this.$.trigger('humhub:stream:afterAddEntries', [response, result]);
-        $result.fadeIn('fast');
+        $result.fadeIn('fast').promise().done(function() {
+            that.$.trigger('humhub:stream:afterAddEntries', [response, $result]);
+        });
+        
         return $result;
     };
 
@@ -783,7 +785,7 @@ humhub.module('stream', function(module, require, $) {
         this.$.on('humhub:stream:afterAddEntries', function(evt, resp, res) {
             $.each(resp.contentSuppressions, function(key, infos) {
                 var entry = that.entry(key);
-                var $loadDiv = $('<div class="load-suppressed"><a href="#" data-ui-loader><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;'+infos.message+'&nbsp;&nbsp;<span class="badge">'+infos.contentName+'</span></a></div>');
+                var $loadDiv = $('<div class="load-suppressed" style="display:none;"><a href="#" data-ui-loader><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;'+infos.message+'&nbsp;&nbsp;<span class="badge">'+infos.contentName+'</span></a></div>');
                 entry.$.after($loadDiv);
                 $loadDiv.on('click', function(evt) {
                     evt.preventDefault();
@@ -792,7 +794,8 @@ humhub.module('stream', function(module, require, $) {
                     }).catch(function(err) {
                         module.log.error(err, true);
                     });
-                })
+                });
+                $loadDiv.fadeIn('fast');
             });
         });
 
