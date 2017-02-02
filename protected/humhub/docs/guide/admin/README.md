@@ -1,22 +1,29 @@
 Installation & Administration
 =============================
 
-Installation
-------------
+Getting Started
+---------------
 * [Requirements](requirements.md)
 * [Installation](installation.md)
+* [Configuration](installation-configuration.md)
 
 Updating HumHub
 ---------------
-* [Updating](updating.md)
-* [Updating from a version below 0.20](updating-020.md)
+
+New versions come every few months, sometimes even weeks apart. Some are major, most are minor, but they all bring a slew of innovations, improvements and bug fixes. It is therefore highly advised to keep up with the latest version.
+
+* [Automatic update](updating-automatic.md)
+* [Manual update](updating.md)
 
 
 Administration Topics
 ---------------------
-* [Advanced Configuration](advanced-configuration.md)
-* [Authentication](authentication.md)
-* [Console](console.md)
-* [Search](search.md)
-* [XSendFile](xsendfile.md)
+* [Security](security.md)
+* [Backup HumHub](backup.md)
+* [Performance Tuning](performance.md)
+* [Custom Configurations](advanced-configuration.md)
+* [Authentication and LDAP](authentication.md)
+* [Search System](search.md)
+* [Translations](translations.md)
 * [Logging](logging.md)
+* [Troubleshooting and Help](troubleshooting.md)

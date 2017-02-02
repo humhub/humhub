@@ -4,8 +4,27 @@ Authentication
 LDAP
 ----
 
-You can enable authentication against LDAP (e.g. against Active Directory or OpenLDAP) via
-`Administration -> Settings -> User -> LDAP`.
+You can enable authentication against LDAP (e.g. against Active Directory or OpenLDAP) at: `Administration -> Users -> Settings-> LDAP`.
+The profile field attribute mapping can be defined at `Administration -> Users -> Profile -> Select profile field -> LDAP Attribute`.
+
+### Date field synchronisation
+
+If you're using custom date formats in our ldap backend, you can specify different formats
+in the [configuration file](advanced-configuration.md).
+
+```php
+    'params' => [
+        'ldap' => [
+            'dateFields' => [
+                'somedatefield' => 'Y.m.d'
+            ],
+        ],
+    ],
+```
+
+Note: Make sure to use lower case in the field.
+
+
 
 Facebook
 --------
