@@ -6,6 +6,7 @@ Getting Started
 * [Overview](overview.md)
 * [Git/Composer Installation](git-installation.md)
 * [Development Environment](environment.md)
+* [Coding Standards](coding-standards.md)
 
 
 Module Development
@@ -18,10 +19,6 @@ Module Development
 * [Settings and Configuration](modules-settings.md)
 * [Models / Database](modules-db.md)
 * [Internationalization](modules-i18n.md)
-
-Module Tutorial
----------------
-* [Create basic structure](tutorial-basic-structure.md)
 
 Special Topics
 --------------
