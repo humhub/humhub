@@ -1,52 +1,25 @@
-HumHub Guide 
-============
+Welcome 
+=======
 
-Introduction
-------------
-* [About HumHub](intro-index.md)
-* [Licence](intro-licence.md)
-* [Bundled Software](intro-bundled_software.md)
+Here you will find helpful information on how to create, maintain, and make the most of an social network built using the HumHub solution.
 
-Getting Started
----------------
+All documentations located on docs.humhub.org refers to the latest version of HumHub. If you're using an older version, you can find the related documentation in the 
+folder /protected/humhub/docs.
 
-* [Requirements](admin-requirements.md)
-* [Installation](admin-installation.md)
-* [Updating](admin-updating.md)
+Documentations
+--------------
+- [Installation and Administration](admin/README.md)
+- [Theming](theme/README.md)
+- [Core and Module Development](developer/README.md)
 
-Administration
----------------------
-* [Advanced Configuration](admin-adv-config.md)
-* [Authentication](admin-authentication.md)
-* [Console](admin-adv-console.md)
-* [Search](admin-adv-search.md)
-* [XSendFile](admin-adv-xsendfile.md)
-* [Logging](admin-adv-logging.md)
 
-Development
----------------------
+Appendix
+--------
+- [About HumHub](about.md)
+- [Licences](licences.md)
+- [Bundled Software](bundled-software.md)
 
-* [Getting Started](dev-index.md)
-* [Update / Migration](dev-migrate.md)
-* [Content](dev-content.md)
-* [Permissions](dev-permissions.md)
-* [Notifications](dev-notifications.md)
-* [Activities](dev-activities.md)
-* [Streams](dev-stream.md)
-* [Events](dev-events.md)
-* [Widgets](dev-widgets.md)
-* [Internationalization](dev-i18n.md)
-* [Authentication](dev-authentication.md)
-* [Models / Database](dev-db.md)
-* [Search](dev-search.md)
-* [CronJobs](dev-cron.md)
-* [Settings and Configuration](dev-settings.md)
-* [Console Application](dev-console.md)
-* [Module Development](dev-module.md)
 
-Theming
--------
 
-* [Getting Started](theming-index.md)
-* [Update / Migrate](theming-migrate.md)
+
 
