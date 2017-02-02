@@ -2,7 +2,7 @@ Installation
 ============
 
 > Note: It's also possible to install and build HumHub directly from our **Git Repository**.
-Please see [Developer Installation](../dev/git-installation.md) for more details.
+Please see [Developer Installation](../developer/git-installation.md) for more details.
 
 
 
@@ -50,6 +50,6 @@ Web Installer
 
 Open the installation guide in your browser (e.g. [http://localhost/humhub](http://localhost/humhub))
 
-> Warning: Don't forget to proceed with the [Configuration](configuration.md) chapter after the installation.
+> Warning: Don't forget to proceed with the [Configuration](installation-configuration.md) chapter after the installation.
 
 

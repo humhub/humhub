@@ -25,5 +25,4 @@ Administration Topics
 * [Authentication and LDAP](authentication.md)
 * [Search System](search.md)
 * [Translations](translations.md)
-* [Logging](logging.md)
 * [Troubleshooting and Help](troubleshooting.md)

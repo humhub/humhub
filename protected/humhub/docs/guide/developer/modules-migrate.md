@@ -13,7 +13,7 @@ The stream handling is now handled directly by the Content model. Also all strea
 
 ### File module changes
 
-Please refer the new [File Handling](dev-files.md) documentation section for more details regarding the new file management API.
+Please refer the new [File Handling](files.md) documentation section for more details regarding the new file management API.
 
 - Deprecated widgets:
     - humhub\modules\user\widgets\UserPicker (replaced with humhub\modules\user\widgets\UserPickerField)
@@ -70,7 +70,7 @@ TBD
 - Renamed space header settings menu dropdown class
   from  [[humhub\modules\space\modules\manage\widgets\Menu]] to [[humhub\modules\space\widgets\HeaderControlsMenu]]
 
-- Refactored settings system. see [Settings Documentation](dev-settings.md) for more details.
+- Refactored settings system. see [Settings Documentation](modules-settings.md) for more details.
   Old settings api is still available in 1.1.x 
 
 - Refactored user group system
@@ -85,7 +85,7 @@ TBD
 **Important: This release upgrades from Yii1 to Yii2 Framework!**
 
 This requires an extensive migration of all custom modules/themes.
-Find more details here: [HumHub 0.20 Migration](dev-migrate-0.20.md)
+Find more details here: [HumHub 0.20 Migration](modules-migrate-0.20.md)
 
 ## Migrate from 0.11 to 0.12
 

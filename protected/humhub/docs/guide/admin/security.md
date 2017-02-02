@@ -30,11 +30,18 @@ By default these folders are protected with a ".htaccess" file.
 Limit User Access
 -----------------
 
-TBD
+If you're running a private social network, make sure the user registration is disabled or the approval system for new users is enabled.
+
+- Disable user registration: `Administration -> Users -> Settings -> Anonymous users can register`
+- Enable user approvals: `Administration -> Users -> Settings -> Require group admin approval after registration`
+- Make sure guest access is disabled: `Administration -> Users -> Settings -> Allow limited access for non-authenticated users (guests)`
 
 Keep up with the latest HumHub version
 ---------------------------------------
 
-TBD
+As admin you'll receive a notification when a new HumHub version is released. We recommend to always use the latest stable version.
+
+We take security very seriously and continuously improving the security features of HumHub. 
+
 
 
