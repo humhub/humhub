@@ -1,11 +1,21 @@
 Requirements
 ============
 
-### General Requirements:
-* PHP 5.6+
-* MySQL
+> Note: All vital requirements will be also checked during the web installer.
+
+Server Requirements
+-------------------
+
 * Shell access (e.g. ssh) to server  
-* Apache 2.x 
+* PHP 5.6 or later
+* MySQL (5.1 or later) or MariaDB with InnoDB storage engine installed
+* A minimum 500 MB of free disk space
+* A minimum 64 MB of memory allocated to PHP
+* A minimum of 50 MB of database space
+
+
+Required PHP Extensions
+-----------------------
 * PHP CUrl  Extension (w/ SSL Support) <http://de1.php.net/manual/en/curl.setup.php>
 * PHP Multibyte String Support <http://php.net/manual/en/mbstring.setup.php> 
 * PHP PDO MySQL Extension (http://www.php.net/manual/en/ref.pdo-mysql.php)
@@ -14,39 +24,26 @@ Requirements
 * PHP INTL Extension (http://php.net/manual/en/intro.intl.php)
 * PHP FileInfo Extension (http://php.net/manual/en/fileinfo.installation.php)
 
-### Optional:
+
+Optional PHP Extensions
+-----------------------
+
 * ImageMagick
 * PHP LDAP Support
 * PHP APC
 * PHP Memcached
-* Apache XSendfile
 
-### Packages for Debian/Ubuntu users
 
-#### For PHP 5.x
+Database
+--------
+The database user you tell HumHub to connect with must have the following privileges:
 
-* imagemagick
-* php5-curl
-* php5-mysql
-* php5-gd
-* php5-cli
-* php5-intl
-* php5-ldap		(optional)
-* php-apc		(optional)
-* php5-memcached	(optional)
-* libapache2-mod-xsendfile (optional)
-
-#### For PHP 7.0 on Ubuntu
-
-* imagemagick
-* php7.0-curl
-* php7.0-mbstring
-* php7.0-mysql
-* php7.0-gd
-* php7.0-cli
-* php7.0-intl
-* php7.0-ldap		(optional)
-* php7.0-opcache	(optional)
-* php-memcache	(optional)
-* libapache2-mod-xsendfile (optional)
-
+- SELECT
+- INSERT
+- DELETE
+- UPDATE
+- CREATE
+- ALTER
+- INDEX
+- DROP
+- REFERENCES

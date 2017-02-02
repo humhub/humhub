@@ -13,6 +13,7 @@ return [
         'allowedLanguages' => ['de', 'fr']
     ]
 ];
+```
 
 Overwrite translation messages
 ------------------------------

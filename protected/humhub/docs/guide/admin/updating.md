@@ -1,7 +1,7 @@
 Updating
 ========
 
-> Warning: Before you run an update please check, if your installed modules and themes are compatible with your target version. If not, you can follow the migration guides.
+> Warning: Please check before you run an update, that your installed modules and themes are compatible with the new version. If not, you can follow the migration guides.
 - [Theme Migration Guide](theming-migrate.md)
 - [Module Migration Guide](dev-migrate.md)
 
