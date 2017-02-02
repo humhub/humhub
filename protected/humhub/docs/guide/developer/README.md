@@ -1,23 +1,34 @@
 Developement Guide
 ==================
 
-Development
----------------------
+Getting Started
+---------------
+* [Overview](dev-index.md)
+* [Development Environment](dev-index.md)
 
-* [Getting Started](dev-index.md)
-* [Update / Migration](dev-migrate.md)
+Core Components
+---------------
 * [Content](dev-content.md)
-* [Permissions](dev-permissions.md)
 * [Notifications](dev-notifications.md)
+* [Models / Database](dev-db.md)
 * [Activities](dev-activities.md)
-* [Streams](dev-stream.md)
 * [Events](dev-events.md)
-* [Widgets](dev-widgets.md)
+* [Settings and Configuration](dev-settings.md)
+
+Module Development
+------------------
+* [Introduction](dev-module.md)
+* [Basic Structure](dev-module.md)
+* [Update / Migration](dev-migrate.md)
+
+
+Special Topics
+--------------
 * [Internationalization](dev-i18n.md)
 * [Authentication](dev-authentication.md)
-* [Models / Database](dev-db.md)
 * [Search](dev-search.md)
 * [CronJobs](dev-cron.md)
-* [Settings and Configuration](dev-settings.md)
 * [Console Application](dev-console.md)
-* [Module Development](dev-module.md)
+* [Streams](dev-stream.md)
+* [Permissions](dev-permissions.md)
+* [Widgets](dev-widgets.md)
