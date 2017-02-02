@@ -1,12 +1,18 @@
 Overview
 ========
 
-## Getting Started
+HumHub is a very powerful platform, and part of its power lies in the fact that it is very easy to build upon and expand through modules and overriding code.
+HumHub is written mostly in PHP based on the Yii Framework.  
 
-- HumHub is based on Yii 2.0 PHP Framework (http://www.yiiframework.com/)
-- [The Definitive Guide to Yii 2.0](http://www.yiiframework.com/doc-2.0/guide-index.html) 
+Other languages used throughout are JavaScript, HTML, SQL and CSS. 
+It uses a Model-View-Controller (MVC)-like pattern for its software architecture. Additionally, it uses technologies such as Yii2, jQuery, Bootstrap, Less, etc.
+In this guide, you will find all the necessary information to customize HumHub.
 
-## Application Overview
+As HumHub is based on Yii 2.0 PHP Framework (http://www.yiiframework.com/) make sure you're also familiar with this framework.
+[The Definitive Guide to Yii 2.0](http://www.yiiframework.com/doc-2.0/guide-index.html) 
+
+Application Overview
+--------------------
 
 Humhub is based on _PHP5_ and _Yii2_ and leverages the highly modular and flexible nature of _Yii_.
 Before learning about the internals of HumHub, you should be familiar with the basic concepts of
@@ -46,72 +52,3 @@ The HumHub core contains several core modules as well as extended Yii components
  - **space:**  Space related functionality
  - **tour:**  HumHub user-guide
  - **user:**  Basic user module
-
-## Development Environment Notes
-
-- Use Composer Installation as described in the [Installation Guide](admin-installation.md#via-gitcomposer)
-- Switch to development mode in ``index.php`` (described [here](admin-installation.md#disable-errors-debugging))
-- Disable Caching under **Administration -> Settings -> Caching -> None**
-
-## Enable Yii Debug Module
-
-Add following block to your local web configuration (/protected/config/web.php)
-
-```php
-<?php
-return [
-    // ...
-    'bootstrap' => ['debug'],
-	'modules' => [
-		// ...
-    
-	    'debug' => [
-	        'class' => 'yii\debug\Module',
-	        'allowedIPs' => ['127.0.0.1', '::1'],
-	    ],
-
-		// ...
-	]
-];
-?>
-```
-
-## Enable Gii 
-
-### Web
-
-Add following block to your local web configuration (/protected/config/web.php)
-
-```php
-return [
-     // ...
-	 'modules' => [
-		// ...
-    
-	    'gii' => [
-	        'class' => 'yii\gii\Module',
-	        'allowedIPs' => ['127.0.0.1', '::1'],
-	    ],
-
-		// ...
-	]
-];
-?>
-```
-
-
-### Console
-
-Add following block to your local console configuration (/protected/config/console.php)
-
-```php
-return [
-    // ...
-    'bootstrap' => ['gii'],
-    'modules' => [
-        'gii' => 'yii\gii\Module',
-    ],
-    // ...
-];
-```
-

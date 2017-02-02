@@ -1,17 +1,22 @@
-Modules - Getting Started
-=================
+Basic Module Structure
+======================
 
-Basically modules in HumHub are identical to Yii2 modules [http://www.yiiframework.com/doc-2.0/guide-structure-modules.html](http://www.yiiframework.com/doc-2.0/guide-structure-modules.html).
+## Module folder structure
 
-You can use either the Yii's module base class [[yii\base\Module]] or the enhanced HumHub module base class [[humhub\components\Module]].
+* **controllers/**
+* **models/** 
+* **views/**
+* **Module.php** (more information below)
+* **config.php** (more information below)
+* **module.json** (more information below)
 
-The enhanced HumHub module class provides additional features like:
-- Dynamic module management (enable / disable / install / uninstall) via administration interface
-- Usable as Space or User Profile module
+
+## Base Module Class
+
+TBD
 
 
 ## config.php
-
 
 If the module is placed inside the */protected/modules* folder, you can create a *config.php* in the module directory which provides automatic loading without manually modifing the application config.
 
@@ -62,3 +67,4 @@ This file holds basic information about the module like name, description or cur
     }
 }
 ```
+

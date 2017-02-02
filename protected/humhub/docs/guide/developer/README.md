@@ -3,32 +3,33 @@ Developement Guide
 
 Getting Started
 ---------------
-* [Overview](dev-index.md)
-* [Development Environment](dev-index.md)
+* [Overview](overview.md)
+* [Git/Composer Installation](git-installation.md)
+* [Development Environment](environment.md)
 
-Core Components
----------------
-* [Content](dev-content.md)
-* [Notifications](dev-notifications.md)
-* [Models / Database](dev-db.md)
-* [Activities](dev-activities.md)
-* [Events](dev-events.md)
-* [Settings and Configuration](dev-settings.md)
 
 Module Development
 ------------------
-* [Introduction](dev-module.md)
-* [Basic Structure](dev-module.md)
-* [Update / Migration](dev-migrate.md)
+* [Introduction](modules-index.md)
+* [Basic Structure](modules-structure.md)
+* [Migration/Updates](modules-migrate.md)
+* [Content](content.md)
+* [Events](modules-events.md)
+* [Settings and Configuration](modules-settings.md)
+* [Models / Database](modules-db.md)
+* [Internationalization](modules-i18n.md)
 
+Module Tutorial
+---------------
+* [Create basic structure](tutorial-basic-structure.md)
 
 Special Topics
 --------------
-* [Internationalization](dev-i18n.md)
-* [Authentication](dev-authentication.md)
-* [Search](dev-search.md)
-* [CronJobs](dev-cron.md)
-* [Console Application](dev-console.md)
-* [Streams](dev-stream.md)
-* [Permissions](dev-permissions.md)
-* [Widgets](dev-widgets.md)
+* [Notifications](notifications.md)
+* [Activities](activities.md)
+* [Authentication](authentication.md)
+* [Search](search.md)
+* [Console Application](console.md)
+* [Streams](stream.md)
+* [Permissions](permissions.md)
+* [Widgets](widgets.md)
