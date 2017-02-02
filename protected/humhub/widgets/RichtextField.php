@@ -128,11 +128,18 @@ class RichtextField extends JsWidget
 
     /**
      * @inheritdoc
-     * @var boolean 
      */
     public $init = true;
     
+    /**
+     * @inheritdoc
+     */
     public $visible = true;
+    
+    /**
+     * @var boolean defines if the default label should be rendered. This is only available if $form is given.
+     */
+    public $label = false;
 
     /**
      * @inhertidoc
@@ -146,8 +153,9 @@ class RichtextField extends JsWidget
         $modelAttribute = $this->attribute;
         
         if ($this->form != null) {
-            $input = $this->form->field($this->model, $this->attribute)->textarea($inputOptions);
+            $input = $this->form->field($this->model, $this->attribute)->textarea($inputOptions)->label(false);
             $richText = Html::tag('div', RichText::widget(['text' => $this->model->$modelAttribute, 'edit' => true]), $this->getOptions());
+            $richText = $this->form->label($this->model, $this->attribute, ['class' => 'control-label']).$richText;
         } else if ($this->model != null) {
             $input = Html::activeTextarea($this->model, $this->attribute, $inputOptions);
             $richText = Html::tag('div', RichText::widget(['text' => $this->model->$modelAttribute, 'edit' => true]), $this->getOptions());
