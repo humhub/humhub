@@ -190,7 +190,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     public function isOriginator(User $user)
     {
-        return $this->originator && $this->originator->id == $user->id;
+        return $this->originator && $this->originator->id === $user->id;
     }
 
     /**

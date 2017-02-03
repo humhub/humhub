@@ -32,6 +32,7 @@ class WebNotificationTarget extends NotificationTarget
         Yii::$app->live->send(new \humhub\modules\notification\live\NewNotification([
             'notificationId' => $notification->record->id,
             'contentContainerId' => $user->contentcontainer_id,
+            'ts' => time(),
             'text' => $notification->text()
         ]));
     }

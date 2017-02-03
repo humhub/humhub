@@ -33,10 +33,6 @@ class SendBulkNotification extends ActiveJob
      */
     public function run()
     {   
-        foreach($this->recepients as $recepient) {
-            $this->notification->saveRecord($recepient);
-        }
-        
         Yii::$app->notification->sendBulk($this->notification, $this->recepients); 
     }
 }

@@ -53,6 +53,11 @@ class NotificationManager
     public function sendBulk(BaseNotification $notification, $users)
     {
         $recepients = $this->filterRecepients($notification, $users);
+        
+        foreach($recepients as $recepient) {
+            $notification->saveRecord($recepient);
+        }
+        
         foreach ($this->getTargets() as $target) {
             $target->sendBulk($notification, $recepients);
         }
@@ -86,6 +91,11 @@ class NotificationManager
      */
     public function send(BaseNotification $notification, User $user)
     {
+        if($notification->isOriginator($user)) {
+            return;
+        }
+        
+        $notification->saveRecord($user);
         foreach ($this->getTargets($user) as $target) {
             $target->send($notification, $user);
         }
