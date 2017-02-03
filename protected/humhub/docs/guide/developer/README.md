@@ -6,7 +6,6 @@ Getting Started
 * [Overview](overview.md)
 * [Git/Composer Installation](git-installation.md)
 * [Development Environment](environment.md)
-* [Coding Standards](coding-standards.md)
 
 
 Module Development
@@ -30,3 +29,8 @@ Special Topics
 * [Streams](stream.md)
 * [Permissions](permissions.md)
 * [Widgets](widgets.md)
+
+Core Development
+----------------
+* [Build assets](core-build-assets.md)
+* [Coding Standards](core-coding-standards.md)

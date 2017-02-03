@@ -57,7 +57,7 @@ class ZendLuceneSearch extends Search
         if ($obj instanceof ContentActiveRecord) {
             $comments = "";
             foreach (Comment::findAll(['object_id' => $obj->getPrimaryKey(), 'object_model' => $obj->className()]) as $comment) {
-                $comments .= " " . $comment->message;
+                $comments .= ' ' . $comment->user->displayName . ' ' . $comment->message;
             }
             $doc->addField(\ZendSearch\Lucene\Document\Field::Text('comments', $comments, 'UTF-8'));
         }
@@ -155,7 +155,7 @@ class ZendLuceneSearch extends Search
         \ZendSearch\Lucene\Search\Query\Wildcard::setMinPrefixLength(0);
 
         $query = new \ZendSearch\Lucene\Search\Query\Boolean();
-        
+
         $emptyQuery = true;
         foreach (explode(" ", $keyword) as $k) {
             // Require a minimum of non-wildcard characters

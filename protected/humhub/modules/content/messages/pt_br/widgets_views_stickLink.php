@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Pinned' => 'Colar',
-  'Unpinned' => 'Descolar',
+  'Stick' => 'Fixar',
+  'Unstick' => 'Desafixar',
 );
