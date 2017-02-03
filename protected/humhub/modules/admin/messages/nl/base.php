@@ -20,7 +20,7 @@ return array (
   'Security' => 'Beveiliging',
   'Self test' => 'Zelf-test',
   'Spaces' => 'Ruimtes',
-  'Statistics' => 'Statestieken',
+  'Statistics' => 'Statistieken',
   'User posts' => 'Gebruiker posts',
   'Userprofiles' => 'Gebruikerprofielen',
   'Users' => 'Gebruikers',
