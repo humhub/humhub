@@ -47,4 +47,5 @@ return [
     'or' => '',
     'Delete' => 'Hapus',
     'Notifications' => 'Pemberitahuan',
+    'Current Password' => '',
 ];

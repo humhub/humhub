@@ -47,4 +47,5 @@ return [
     'or' => '',
     'Delete' => 'Ta bort',
     'Password' => 'Lösenord',
+    'Current Password' => '',
 ];

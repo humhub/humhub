@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'ID' => '',
-    'LDAP Attribute' => '',
-    'Searchable' => '',
-    'Translation Category ID' => '',
-    'Type Config' => '',
+    'ID' => 'ID',
+    'LDAP Attribute' => 'LDAP 属性',
+    'Searchable' => '可搜索',
+    'Translation Category ID' => '翻译分类 ID',
+    'Type Config' => '类型配置',
     'Created at' => '关键时间',
     'Created by' => '创建人',
     'Description' => '描述',

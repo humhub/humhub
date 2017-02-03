@@ -17,19 +17,19 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Advanced' => '',
-    'Appearance' => '',
-    'E-Mails' => '',
-    'Information' => '',
+    'Advanced' => '高级',
+    'Appearance' => '外观',
+    'E-Mails' => '邮箱',
+    'Information' => '信息',
     'OEmbed' => '',
-    'Proxy' => '',
+    'Proxy' => '代理',
     '<strong>Administration</strong> menu' => '<strong>管理</strong> 菜单',
     'Caching' => '缓存设置',
     'Files' => '附件设置',
     'General' => '一般',
     'Modules' => '模块管理',
     'Settings' => '设置',
-    'Spaces' => '版块管理',
+    'Spaces' => '空间管理',
     'Statistics' => '静态页',
     'Users' => '用户管理',
 ];

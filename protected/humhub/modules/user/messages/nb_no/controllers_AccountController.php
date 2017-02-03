@@ -4,4 +4,6 @@ return array (
   'Save profile' => 'Lagre profil',
   'Saved' => 'Lagret',
   'The entered e-mail address is already in use by another user.' => 'E-mail adressen du har skrevet benyttes av en annen bruker.',
+  'Members' => '',
+  'Guests' => '',
 );

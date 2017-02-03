@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Create new profile category' => '',
-    'Edit profile category' => '',
+    'Create new profile category' => '创建新的属性分类',
+    'Edit profile category' => '编辑属性分类',
     'Delete' => '删除',
     'Save' => '保存',
 ];

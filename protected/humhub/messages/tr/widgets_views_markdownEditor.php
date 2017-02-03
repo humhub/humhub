@@ -29,4 +29,6 @@ return array (
   'list text here' => 'metin listesi girin',
   'quote here' => 'alıntı girin',
   'strong text' => 'kalın metin',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

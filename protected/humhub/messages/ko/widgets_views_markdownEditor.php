@@ -29,4 +29,6 @@ return array (
   'list text here' => '리스트 내용을 여기에 적어주세요',
   'quote here' => '인용 내용을 여기에 적어주세요',
   'strong text' => '볼드 문자',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

@@ -47,4 +47,5 @@ return [
     'Security' => 'Güvenlik',
     'Settings' => 'Ayarlar',
     'User' => 'Kullanıcı',
+    'Current Password' => '',
 ];

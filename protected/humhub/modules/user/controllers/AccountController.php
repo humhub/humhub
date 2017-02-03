@@ -130,8 +130,8 @@ class AccountController extends BaseAccountController
         if (Yii::$app->getModule('friendship')->getIsEnabled()) {
             $groups[User::USERGROUP_FRIEND] = 'Friends';
         }
-        $groups[User::USERGROUP_USER] = 'Members';
-        $groups[User::USERGROUP_GUEST] = 'Guests';
+        $groups[User::USERGROUP_USER] = Yii::t('UserModule.controllers_AccountController', 'Members');
+        $groups[User::USERGROUP_GUEST] = Yii::t('UserModule.controllers_AccountController', 'Guests');
 
         $currentGroup = Yii::$app->request->get('groupId');
         if ($currentGroup == '' || !isset($groups[$currentGroup])) {

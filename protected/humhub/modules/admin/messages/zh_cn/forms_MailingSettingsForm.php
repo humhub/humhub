@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Allow Self-Signed Certificates?' => '',
+  'Allow Self-Signed Certificates?' => '允许自己签名的证书吗？',
   'E-Mail sender address' => '发送者邮件地址',
   'E-Mail sender name' => '发送者姓名',
   'Encryption' => '加密',

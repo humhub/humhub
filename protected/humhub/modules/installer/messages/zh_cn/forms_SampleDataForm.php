@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Set up example content (recommended)' => '',
+    'Set up example content (recommended)' => '设置示例内容（推荐）',
 ];

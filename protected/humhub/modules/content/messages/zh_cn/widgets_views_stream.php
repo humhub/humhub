@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Load more' => '',
-    'No matches with your selected filters!' => '',
-    'Nothing here yet!' => '',
+    'Load more' => '加载更多',
+    'No matches with your selected filters!' => '没有符合你筛选条件的数据！',
+    'Nothing here yet!' => '空空如也！',
     'Back to stream' => '返回动态',
     'Content with attached files' => '内容含有附件',
     'Created by me' => '我创建的',

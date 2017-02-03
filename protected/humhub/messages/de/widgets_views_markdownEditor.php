@@ -29,4 +29,6 @@ return array (
   'list text here' => 'Listen-Element ',
   'quote here' => 'Zitiere hier',
   'strong text' => 'Fetter Text',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

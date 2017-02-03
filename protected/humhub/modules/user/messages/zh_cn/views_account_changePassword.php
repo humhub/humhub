@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Your current password can be changed here.' => '',
+    'Your current password can be changed here.' => '你可以在这里修改当前密码。',
     'Save' => '保存',
 ];

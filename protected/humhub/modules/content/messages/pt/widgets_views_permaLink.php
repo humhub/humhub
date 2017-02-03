@@ -20,4 +20,5 @@ return [
     '<strong>Permalink</strong> to this post' => '@@@@',
     'Close' => 'Fechar',
     'Permalink' => '@@@@',
+    'Copy to clipboard: Ctrl+C, Enter' => '',
 ];

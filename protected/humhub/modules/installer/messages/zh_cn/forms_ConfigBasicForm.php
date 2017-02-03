@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Name of your network' => '',
+  'Name of your network' => '你的网络名称',
 );

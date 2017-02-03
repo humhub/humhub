@@ -29,4 +29,6 @@ return array (
   'quote here' => '',
   'strong text' => '',
   'Title' => '標題',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

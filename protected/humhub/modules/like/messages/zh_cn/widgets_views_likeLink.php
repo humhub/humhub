@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You' => '',
-    'You like this.' => '',
-    'and {count} more like this.' => '',
-    ' likes this.' => '赞这个',
+    'You' => '你',
+    'You like this.' => '你赞了这个。',
+    'and {count} more like this.' => '和其它{count}人点赞了这个.',
+    ' likes this.' => '赞这个。',
     'Like' => '赞',
     'Unlike' => '取消赞',
 ];

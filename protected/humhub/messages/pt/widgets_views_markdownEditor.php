@@ -29,4 +29,6 @@ return array (
   'strong text' => 'texto forte',
   'Close' => 'Fechar',
   'Title' => 'Título',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );

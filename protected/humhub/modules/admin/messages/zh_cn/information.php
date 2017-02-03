@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'About HumHub' => '',
-    'CronJobs' => '',
-    'Database' => '',
-    'Logging' => '',
-    'Prerequisites' => '',
+    'About HumHub' => '关于HumHub',
+    'CronJobs' => '定时任务',
+    'Database' => '数据库',
+    'Logging' => '日志',
+    'Prerequisites' => '环境需求',
 ];

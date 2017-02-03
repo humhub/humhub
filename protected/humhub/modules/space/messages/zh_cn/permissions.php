@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Allows the user to create public content' => '',
-    'Allows the user to invite new members to the space' => '',
-    'Can create hidden (private) spaces.' => '',
-    'Can create public visible spaces. (Listed in directory)' => '',
-    'Create private space' => '',
-    'Create public content' => '',
-    'Create public space' => '',
-    'Invite users' => '',
+    'Allows the user to create public content' => '允许用户创建公共内容',
+    'Allows the user to invite new members to the space' => '允许用户邀请新成员进空间',
+    'Can create hidden (private) spaces.' => '可以创建私有的空间。',
+    'Can create public visible spaces. (Listed in directory)' => '可以创建公共空间。(展示在目录)',
+    'Create private space' => '创建私有空间',
+    'Create public content' => '创建公共内容',
+    'Create public space' => '创建公共空间',
+    'Invite users' => '邀请用户',
 ];

@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'There is a new HumHub Version ({version}) available.' => '',
+    'There is a new HumHub Version ({version}) available.' => '有一个新的HumHub版本({version}) 可用。',
 ];

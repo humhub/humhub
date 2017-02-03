@@ -11,6 +11,7 @@ namespace humhub\modules\post\models;
 use Yii;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\interfaces\Searchable;
+use humhub\modules\user\models\User;
 
 /**
  * This is the model class for table "post".
@@ -123,6 +124,7 @@ class Post extends ContentActiveRecord implements Searchable
         $attributes = array(
             'message' => $this->message,
             'url' => $this->url,
+            'user' => $this->getPostAuthorName()
         );
 
         $this->trigger(self::EVENT_SEARCH_ADD, new \humhub\modules\search\events\SearchAddEvent($attributes));
@@ -130,4 +132,17 @@ class Post extends ContentActiveRecord implements Searchable
         return $attributes;
     }
 
+    /**
+     * @return string
+     */
+    private function getPostAuthorName()
+    {
+        $user = User::findOne(['id' => $this->created_by]);
+
+        if ($user->isActive()) {
+            return $user->getDisplayName();
+        }
+
+        return '';
+    }
 }

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Create new profile field' => '',
-    'Edit profile field' => '',
+    'Create new profile field' => '创建新的属性域',
+    'Edit profile field' => '编辑属性域',
 ];

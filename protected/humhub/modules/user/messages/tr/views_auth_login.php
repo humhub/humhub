@@ -13,4 +13,5 @@ return array (
   'email' => 'E-posta',
   'password' => 'Şifre',
   'username or email' => 'Kullanıcı Adı / E-posta',
+  '<strong>Join</strong> the network' => '',
 );

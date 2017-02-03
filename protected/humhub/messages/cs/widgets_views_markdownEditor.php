@@ -29,4 +29,6 @@ return array (
   'list text here' => 'odrážka',
   'quote here' => 'zde je místo pro citaci',
   'strong text' => 'tučný text',
+  'Unordered List' => '',
+  'Ordered List' => '',
 );
