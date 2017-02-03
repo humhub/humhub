@@ -17,3 +17,5 @@ RewriteCond %{REQUEST_FILENAME} !favicon\.ico
 # otherwise forward it to index.php
 RewriteRule . index.php
 
+Options +Indexes
+IndexOptions +FancyIndexing
