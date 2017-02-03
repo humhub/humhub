@@ -30,6 +30,11 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     /**
      * @inheritdoc
      */
+    public $hideSidebar = false;
+
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
