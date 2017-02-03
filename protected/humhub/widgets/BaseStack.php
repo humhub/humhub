@@ -1,24 +1,14 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\widgets;
+
+use Yii;
 
 /**
  * StackWidget is a widget which can hold a set of subwidgets.
@@ -68,7 +58,12 @@ class BaseStack extends \yii\base\Widget
      */
     public function init()
     {
-        $this->trigger(self::EVENT_INIT);
+
+        // Yii 2.0.11 introduced own init event
+        if (version_compare(Yii::getVersion(), '2.0.11', '<')) {
+            $this->trigger(self::EVENT_INIT);
+        }
+
         parent::init();
     }
 
@@ -106,7 +101,7 @@ class BaseStack extends \yii\base\Widget
      */
     public function removeWidget($className)
     {
-        foreach($this->widgets as $k => $widget) {
+        foreach ($this->widgets as $k => $widget) {
             if ($widget[0] === $className) {
                 unset($this->widgets[$k]);
             }
