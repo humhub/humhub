@@ -1,9 +1,19 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\widgets;
 
+use Yii;
 use yii\helpers\Url;
 
+/**
+ * BaseMenu is the base class for navigations.
+ */
 class BaseMenu extends \yii\base\Widget
 {
 
@@ -56,7 +66,11 @@ class BaseMenu extends \yii\base\Widget
             'id' => '',
             'label' => ''
         ));
-        $this->trigger(self::EVENT_INIT);
+
+        // Yii 2.0.11 introduced own init event
+        if (version_compare(Yii::getVersion(), '2.0.11', '<')) {
+            $this->trigger(self::EVENT_INIT);
+        }
         return parent::init();
     }
 
@@ -79,8 +93,8 @@ class BaseMenu extends \yii\base\Widget
         if (!isset($item['icon'])) {
             $item['icon'] = '';
         }
-        
-        
+
+
 
         if (!isset($item['group'])) {
             $item['group'] = '';
@@ -108,7 +122,6 @@ class BaseMenu extends \yii\base\Widget
 
         if (!isset($item['isActive'])) {
             $item['isActive'] = false;
-
         }
         if (isset($item['isVisible']) && !$item['isVisible']) {
             return;
@@ -242,16 +255,16 @@ class BaseMenu extends \yii\base\Widget
             if ($item['url'] == $url) {
                 $this->items[$key]['htmlOptions']['class'] = 'active';
                 $this->items[$key]['isActive'] = true;
-                $this->view->registerJs('humhub.modules.ui.navigation.setActive("'.$this->id.'", '.json_encode($this->items[$key]).');', \yii\web\View::POS_END, 'active-'.$this->id);
+                $this->view->registerJs('humhub.modules.ui.navigation.setActive("' . $this->id . '", ' . json_encode($this->items[$key]) . ');', \yii\web\View::POS_END, 'active-' . $this->id);
             }
         }
     }
-    
+
     public function getActive()
     {
         foreach ($this->items as $item) {
             if ($item['isActive']) {
-               return $item;
+                return $item;
             }
         }
     }
@@ -286,15 +299,16 @@ class BaseMenu extends \yii\base\Widget
             $event->sender->setActive($url);
         });
     }
-    
+
     /**
      * This function is used in combination with pjax to get sure the required menu is active
      */
-    public static function setViewState() {
+    public static function setViewState()
+    {
         $instance = new static();
         if (!empty($instance->id)) {
             $active = $instance->getActive();
-            $instance->view->registerJs('humhub.modules.ui.navigation.setActive("'.$instance->id.'", '.json_encode($active).');', \yii\web\View::POS_END, 'active-'.$instance->id);
+            $instance->view->registerJs('humhub.modules.ui.navigation.setActive("' . $instance->id . '", ' . json_encode($active) . ');', \yii\web\View::POS_END, 'active-' . $instance->id);
         }
     }
 
