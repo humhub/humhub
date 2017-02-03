@@ -5,10 +5,15 @@ use yii\db\Migration;
 
 class m160205_203955_foreign_keys extends Migration
 {
+
     public function up()
     {
-        $this->addForeignKey('fk_like-created_by', 'like', 'created_by', 'user', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('fk_like-target_user_id', 'like', 'target_user_id', 'user', 'id', 'CASCADE', 'CASCADE');
+        try {
+            $this->addForeignKey('fk_like-created_by', 'like', 'created_by', 'user', 'id', 'CASCADE', 'CASCADE');
+            $this->addForeignKey('fk_like-target_user_id', 'like', 'target_user_id', 'user', 'id', 'CASCADE', 'CASCADE');
+        } catch (Exception $ex) {
+            
+        }
     }
 
     public function down()
@@ -20,13 +25,13 @@ class m160205_203955_foreign_keys extends Migration
     }
 
     /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
+      // Use safeUp/safeDown to run migration code within a transaction
+      public function safeUp()
+      {
+      }
 
-    public function safeDown()
-    {
-    }
-    */
+      public function safeDown()
+      {
+      }
+     */
 }
