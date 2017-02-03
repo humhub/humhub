@@ -7,6 +7,9 @@
 Yii::setAlias('@webroot', __DIR__ . '/../../../');
 Yii::setAlias('@web', '/');
 
+Yii::setAlias('@webroot-static', __DIR__ . '/../../../static');
+Yii::setAlias('@web-static', '/static');
+
 return [
     // Adjust command/callback for JavaScript files compressing:
     'jsCompressor' => 'grunt uglify:assets  --from={from} --to={to} -d',
@@ -20,8 +23,8 @@ return [
     'targets' => [
         'all' => [
             'class' => 'yii\web\AssetBundle',
-            'basePath' => '@webroot',
-            'baseUrl' => '@web',
+            'basePath' => '@webroot-static',
+            'baseUrl' => '@web-static',
             'js' => 'js/all-{hash}.js',
             'css' => 'css/all-{hash}.css',
         ],

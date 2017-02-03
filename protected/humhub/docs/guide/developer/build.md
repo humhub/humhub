@@ -4,6 +4,7 @@ Build
 ## Setup
  - Install NPM
  - Install Grunt (http://gruntjs.com/getting-started)
+```
  - call npm update in humhub root
 
 > Note: Since symlinks are not supported in some virtual machine shared folders the update command should be called from the host
