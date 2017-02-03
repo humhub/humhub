@@ -42,26 +42,8 @@ class SpaceChooserItem extends Widget
     public function run()
     {
 
-        $data = '';
-        $badge = '';
-
-        /*if ($this->isMember && $this->space->isSpaceOwner()) {
-            $badge = '<i class="fa fa-key badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_views_spaceChooserItem', 'Owner') . '" aria-hidden="true"></i>';
-            $data = 'data-space-owner';
-        }*/
-        
-        if($this->isMember) {
-            $badge = '<i class="fa fa-users badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_spaceChooserItem', 'You are a member of this space') . '" aria-hidden="true"></i>';
-            $data = 'data-space-member';
-        } else if($this->isFollowing) {
-            $badge = '<i class="fa fa-star badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_spaceChooserItem', 'You are following this space') . '" aria-hidden="true"></i>';
-            $data = 'data-space-following';
-        } else if($this->space->isArchived()) {
-            $badge = '<i class="fa fa-history badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_spaceChooserItem', 'This space is archived') . '" aria-hidden="true"></i>';
-            $data = 'data-space-archived'; 
-        } else {
-            $data = 'data-space-none';
-        }
+        $data = $this->getDataAttribute();
+        $badge = $this->getBadge();
 
         return $this->render('spaceChooserItem', [
                     'space' => $this->space,
@@ -72,4 +54,27 @@ class SpaceChooserItem extends Widget
         ]);
     }
 
+    public function getBadge()
+    {
+        if ($this->isMember) {
+            return '<i class="fa fa-users badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_spaceChooserItem', 'You are a member of this space') . '" aria-hidden="true"></i>';
+        } else if ($this->isFollowing) {
+            return '<i class="fa fa-star badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_spaceChooserItem', 'You are following this space') . '" aria-hidden="true"></i>';
+        } else if ($this->space->isArchived()) {
+            return '<i class="fa fa-history badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_spaceChooserItem', 'This space is archived') . '" aria-hidden="true"></i>';
+        }
+    }
+    
+    public function getDataAttribute()
+    {
+        if ($this->isMember) {
+            return 'data-space-member';
+        } else if ($this->isFollowing) {
+            return 'data-space-following';
+        } else if ($this->space->isArchived()) {
+            return 'data-space-archived';
+        } else {
+            return 'data-space-none';
+        }
+    }
 }
