@@ -98,7 +98,7 @@ humhub.module('live.poll', function (module, require, $) {
         
         $.each(events, function (type, events) {
             try {
-                event.trigger(type, [events]);
+                event.trigger(type, [events, response]);
             } catch (e) {
                 module.log.error(e);
             }

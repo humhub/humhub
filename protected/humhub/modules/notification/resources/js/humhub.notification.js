@@ -27,13 +27,13 @@ humhub.module('notification', function (module, require, $) {
         this.originalTitle = document.title;
         this.initDropdown();
         this.handleResult(update);
-        this.sendDesktopNotifications(update);
+        //this.sendDesktopNotifications(update);
 
         var that = this;
-        event.on('humhub.modules.notification.live.NewNotification', function (evt, events) {
+        event.on('humhub.modules.notification.live.NewNotification', function (evt, events, update) {
             var count = (that.$.data('notification-count')) ? parseInt(that.$.data('notification-count')) + events.length : events.length;
             that.updateCount(count);
-            that.sendDesktopNotifications(events);
+            that.sendDesktopNotifications(events, update.lastSessionTime);
         });
     };
 
@@ -124,7 +124,7 @@ humhub.module('notification', function (module, require, $) {
         this.$.data('notification-count', $count);
     };
 
-    NotificationDropDown.prototype.sendDesktopNotifications = function (response) {
+    NotificationDropDown.prototype.sendDesktopNotifications = function (response, lastSessionTime) {
         if (!response) {
             return;
         }
@@ -138,6 +138,10 @@ humhub.module('notification', function (module, require, $) {
             }
         } else if (object.isArray(response)) { // Live events
             $.each(response, function (i, liveEvent) {
+                if(lastSessionTime && lastSessionTime > liveEvent.data.ts) {
+                    return; // continue
+                }
+                
                 if (liveEvent.data && liveEvent.data.text) {
                     module.sendDesktopNotifiaction(liveEvent.data.text);
                 }

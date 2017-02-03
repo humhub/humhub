@@ -46,6 +46,8 @@ class ListController extends Controller
         foreach ($notifications as $notification) {
             $output .= $notification->getBaseModel()->render();
             $lastEntryId = $notification->id;
+            $notification->desktop_notified = 1;
+            $notification->update();
         }
 
         return [

@@ -119,7 +119,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
         if ($insert) {
             \humhub\modules\comment\notifications\NewComment::instance()
-                    ->from($this->user)
+                    ->from(Yii::$app->user->getIdentity())
                     ->about($this)
                     ->sendBulk($this->getCommentedRecord()->getFollowers(null, true, true));
 

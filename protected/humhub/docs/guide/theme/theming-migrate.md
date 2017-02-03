@@ -43,16 +43,13 @@ The same applies to the activity stream:
 
 Old themes, should check the following file for changes:
 
-`humhub/themes/HumHub/css/theme.deprecated.less`
+- humhub/themes/HumHub/css/theme.deprecated.less
 
 > Note: This file will not be maintained in the future.
 
-### Layout
+### Layout (Pjax)
 
-// Pjax changes
 - Add 'top-menu-nav' to main.php layout.
-- How to migrate custom top-nav
-- space chooser module / how to overwrite use space api
 
 ### Gallery
 
@@ -65,9 +62,11 @@ does overwrite a view with gallery images, you'll have to use the new **data-ui-
 - modules/tour/views/tour/welcome.php
 - modules/user/widgets/views/profileHeader.php
 
-### Check the following view files for changes if you have overwritten them in your theme: 
+### JS Rewrite: 
 
-- **JS Rewrite**:
+The JS Rewrite removed many inline script blocks from views and uses the new Javascript Module System with data-* attributes. Many UI Components and Widget had been rewritten.
+
+- **General Rewrite**:
     - modules/like/widget/views/likeLink.php 
     - modules/admin/views/setting/design.php 
     - modules/space/views/create/invite.php
@@ -93,13 +92,10 @@ does overwrite a view with gallery images, you'll have to use the new **data-ui-
     - modules/admin/views/group/edit.php
     - modules/admin/views/setting/basic.php
     - modules/search/views/search/index.php
-
 - **Refactored**:
     - modules/search/views/search/index.php 
-
 - **Pjax**
     - modules/tour/widgets/views/tourPanel.php
-
 - **Notification**:
    - modules/notification/widget/views/overview.php 
 
