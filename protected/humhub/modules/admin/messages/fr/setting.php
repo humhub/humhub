@@ -5,7 +5,7 @@ return array (
   'E-Mail Settings' => 'Paramètres d\'e-mail',
   'General' => 'Général',
   'General Settings' => 'Paramètres généraux',
-  'Here you can configurate the e-mail behaviour and mail-server settings of your social network.' => '',
+  'Here you can configurate the e-mail behaviour and mail-server settings of your social network.' => 'cIci vous pouvez configurer les paramètres de votre compte mail et serveur mail de votre réseau social.',
   'Here you can configurate the registration behaviour and additinal user settings of your social network.' => '',
   'Here you can configure basic settings of your social network.' => 'Vous pouvez configurer ici les paramètres basiques de votre réseau social.',
   'LDAP' => 'LDAP',

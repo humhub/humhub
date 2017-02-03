@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<i class="fa fa-cog"></i>' => '',
+  '<i class="fa fa-cog"></i>' => '<i class="fa fa-cog"></i>',
   'Cancel Membership' => 'Cancelar Adesão',
   'Hide posts on dashboard' => 'Ocultar posts no painel',
   'Members' => 'Membros',
