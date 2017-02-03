@@ -46,6 +46,7 @@ class MailNotificationTarget extends NotificationTarget
     public function handle(BaseNotification $notification, User $recipient)
     {
         Yii::$app->view->params['showUnsubscribe'] = true;
+        Yii::$app->view->params['unsubscribeUrl'] = \yii\helpers\Url::to(['/notification/user'], true);
         
         // Note: the renderer is configured in common.php by default its an instance of MailNotificatoinTarget
         $renderer = $this->getRenderer();

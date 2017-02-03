@@ -686,8 +686,9 @@ use yii\helpers\Html;
                                                                 <td align="center" valign="top" style="font-size: 11px;  line-height: 18px; font-weight:300; text-align: center; font-family:Open Sans,Arail,Tahoma, Helvetica, Arial, sans-serif;">
                          
                                                                     <?php if (isset(Yii::$app->view->params['showUnsubscribe']) && Yii::$app->view->params['showUnsubscribe'] === true) : ?>
+                                                                        <?php $url = (isset(Yii::$app->view->params['unsubscribeUrl'])) ? Yii::$app->view->params['unsubscribeUrl'] : \yii\helpers\Url::to(['/notification/user'], true) ?>
                                                                         <span style="text-decoration: none; color: <?= $soft2Color ?>;">
-                                                                            <a href="<?= Url::to(['/user/account/emailing'], true) ?>" style="text-decoration: none; color: <?= $soft2Color ?>;"><?= Yii::t('base', 'Unsubscribe') ?></a>
+                                                                            <a href="<?= $url ?>" style="text-decoration: none; color: <?= $soft2Color ?>;"><?= Yii::t('base', 'Unsubscribe') ?></a>
                                                                             • 
                                                                         </span> 
                                                                     <?php endif; ?>
