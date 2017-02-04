@@ -201,4 +201,19 @@ class Helpers
         return $check === 0;
     }
 
+    /**
+     * Set sql_mode=TRADITIONAL for mysql server.
+     *
+     * This static function is intended as closure for on afterOpen raised by yii\db\Connection and
+     * should be configured in dynamic.php like this: 'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
+     *
+     * @param $event
+     */
+    public static function SqlMode($event) {
+        /* set sql_mode only for mysql */
+        if ($event->sender->driverName == 'mysql') {
+            $event->sender->createCommand('SET sql_mode="TRADITIONAL"')->execute();
+        }
+    }
+
 }
