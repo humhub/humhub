@@ -213,7 +213,7 @@ class Helpers
     {
         /* set sql_mode only for mysql */
         if ($event->sender->driverName == 'mysql') {
-            $event->sender->createCommand('SET sql_mode="TRADITIONAL"')->execute();
+            $event->sender->createCommand('SET SESSION sql_mode=""; SET SESSION sql_mode="NO_ENGINE_SUBSTITUTION"')->execute();
         }
     }
 
