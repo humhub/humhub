@@ -43,7 +43,7 @@ class InviteButton extends Widget
             return;
         }
         
-        return Html::a('<i class="fa fa-plus"></i> '. Yii::t('SpaceModule.widgets_views_inviteButton', 'Invite'), $this->space->createUrl('/space/membership/invite'), ['class' => 'btn btn-primary', 'data-target' => '#globalModal']);
+        return $this->render('inviteButton', ['space' => $this->space]);
     }
 
 }
