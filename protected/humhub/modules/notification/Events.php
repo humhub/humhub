@@ -8,6 +8,7 @@
 
 namespace humhub\modules\notification;
 
+use Yii;
 use humhub\modules\notification\models\Notification;
 
 /**
@@ -130,6 +131,13 @@ class Events extends \yii\base\Object
             'source_class' => $event->sender->className(),
             'source_pk' => $event->sender->getPrimaryKey(),
         ]);
+    }
+    
+    public static function onLayoutAddons($event)
+    {
+        if(Yii::$app->request->isPjax) {
+            $event->sender->addWidget(widgets\UpdateNotificationCount::className());
+        }
     }
 
 }

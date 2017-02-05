@@ -226,6 +226,11 @@ class View extends \yii\web\View
             $value = Html::encode(array_values($viewStatus)[0]);
             $this->registerJs('humhub.modules.ui.status.' . $type . '("' . $value . '")', View::POS_END, 'viewStatusMessage');
         }
+        
+        if (Yii::$app->request->isPjax) {
+            echo \humhub\widgets\LayoutAddons::widget();
+            $this->flushJsConfig();
+        }
 
         if (Yii::$app->request->isAjax) {
             return parent::endBody();

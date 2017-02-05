@@ -219,7 +219,7 @@ humhub.module('notification', function (module, require, $) {
             });
         }
         
-        
+        module.menu = NotificationDropDown.instance('#notification_widget'); 
     };
 
     var initOverviewPage = function () {

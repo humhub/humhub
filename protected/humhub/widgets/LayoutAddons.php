@@ -24,22 +24,23 @@ class LayoutAddons extends BaseStack
      */
     public function init()
     {
-        $this->addWidget(GlobalModal::className());
-        $this->addWidget(GlobalConfirmModal::className());
-        
-        if(Yii::$app->params['installed']) {
-            $this->addWidget(\humhub\modules\tour\widgets\Tour::className());
-            $this->addWidget(\humhub\modules\admin\widgets\TrackingWidget::className());
-        }
-        
-        $this->addWidget(LoaderWidget::className(), ['show' => false, 'id' => "humhub-ui-loader-default"]);
-        $this->addWidget(StatusBar::className());
-        $this->addWidget(BlueimpGallery::className());
+        if(!Yii::$app->request->isPjax) {
+            $this->addWidget(GlobalModal::className());
+            $this->addWidget(GlobalConfirmModal::className());
 
-        if (Yii::$app->params['enablePjax']) {
-            $this->addWidget(Pjax::className());
-        }
+            if(Yii::$app->params['installed']) {
+                $this->addWidget(\humhub\modules\tour\widgets\Tour::className());
+                $this->addWidget(\humhub\modules\admin\widgets\TrackingWidget::className());
+            }
 
+            $this->addWidget(LoaderWidget::className(), ['show' => false, 'id' => "humhub-ui-loader-default"]);
+            $this->addWidget(StatusBar::className());
+            $this->addWidget(BlueimpGallery::className());
+
+            if (Yii::$app->params['enablePjax']) {
+                $this->addWidget(Pjax::className());
+            }
+        }
         parent::init();
     }
 
