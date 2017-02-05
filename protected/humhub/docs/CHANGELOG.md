@@ -30,3 +30,9 @@ HumHub Change Log
 - Enh: Removed almost all inline JS blocks. (buddha)
 - Enh: StreamAction now uses flexible StreamQuery Model. (buddha)
 - Enh: Post markdown support. (buddha)
+- Enh: Added 'live' module for push/pull messages to the frontend (luke-)
+- Enh: Added asynchronous job queues (luke-)
+- Enh: Changed minimum PHP version to 5.6
+- Enh: Added possibility of global content (content w/o contentcontainer) (luke)
+- Enh: Added new profile field type: checkbox (luke-)
+- Enh: Refactored mail summaries activity module (luke-)
