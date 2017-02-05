@@ -44,6 +44,7 @@ humhub.module('log', function (module, require, $) {
 
         if (!result) {
             result = config.traceLevel || TRACE_INFO;
+            result = traceLevels.indexOf(result);
         }
 
         return this.traceLevel = result;
