@@ -133,11 +133,10 @@ class Membership extends \yii\db\ActiveRecord
     public function countNewItems($since = "")
     {
         $query = \humhub\modules\content\models\Content::find();
-        $query->where(['!=', 'object_model', \humhub\modules\activity\widgets\Activity::className()]);
+        $query->where(['!=', 'object_model', \humhub\modules\activity\models\Activity::class]);
         $query->andWhere(['contentcontainer_id' => $this->space->contentContainerRecord->id]);
         $query->andWhere(['>', 'created_at', $this->last_visit]);
-        $count = $query->count();
-        return $count;
+        return $query->count();
     }
 
     /**
