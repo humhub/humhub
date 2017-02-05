@@ -20,6 +20,7 @@ use humhub\modules\content\models\Content;
  */
 class NotificationManager
 {
+
     /**
      * 
      * @var array Target configuration.
@@ -53,16 +54,15 @@ class NotificationManager
     public function sendBulk(BaseNotification $notification, $users)
     {
         $recepients = $this->filterRecepients($notification, $users);
-        
-        foreach($recepients as $recepient) {
+
+        foreach ($recepients as $recepient) {
             $notification->saveRecord($recepient);
-        }
-        
-        foreach ($this->getTargets() as $target) {
-            $target->sendBulk($notification, $recepients);
+            foreach ($this->getTargets() as $target) {
+                $target->send($notification, $recepient);
+            }
         }
     }
-    
+
     /**
      * Filters out duplicates and the originator of the notification itself.
      * 
@@ -82,7 +82,6 @@ class NotificationManager
         return $filteredUsers;
     }
 
-    
     /**
      * Sends the given $notification to all enabled targets of a single user.
      * 
@@ -91,10 +90,10 @@ class NotificationManager
      */
     public function send(BaseNotification $notification, User $user)
     {
-        if($notification->isOriginator($user)) {
+        if ($notification->isOriginator($user)) {
             return;
         }
-        
+
         $notification->saveRecord($user);
         foreach ($this->getTargets($user) as $target) {
             $target->send($notification, $user);
@@ -258,23 +257,23 @@ class NotificationManager
             ['not in', 'object_id', $spaceIds]
         ]);
     }
-    
+
     /**
      * Defines the enable_html5_desktop_notifications setting for the given user or global if no user is given.
      * 
      * @param type $value
      * @param User $user
      */
-    public function setDesktopNoficationSettings($value = 0, User $user = null) 
+    public function setDesktopNoficationSettings($value = 0, User $user = null)
     {
         $module = Yii::$app->getModule('notification');
         $settingManager = ($user) ? $module->settings->user($user) : $module->settings;
         $settingManager->set('enable_html5_desktop_notifications', $value);
     }
-    
-    public function getDesktopNoficationSettings(User $user = null) 
+
+    public function getDesktopNoficationSettings(User $user = null)
     {
-        if($user) {
+        if ($user) {
             return Yii::$app->getModule('notification')->settings->user($user)->getInherit('enable_html5_desktop_notifications');
         } else {
             return Yii::$app->getModule('notification')->settings->get('enable_html5_desktop_notifications');

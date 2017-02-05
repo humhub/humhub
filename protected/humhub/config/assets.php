@@ -31,8 +31,8 @@ return [
     ],
     // Asset manager configuration:
     'assetManager' => [
-        'basePath' => '@webroot/assets',
-        'baseUrl' => '@web/assets',
+        'basePath' => '@webroot-static/assets',
+        'baseUrl' => '@web-static/assets',
         'bundles' => [
             'yii\bootstrap\BootstrapPluginAsset' => [
                 'js' => ['js/bootstrap.min.js'],

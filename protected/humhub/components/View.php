@@ -82,11 +82,6 @@ class View extends \yii\web\View
      */
     public function renderAjaxContent($content)
     {
-        // Make sure not to load add these asset, especially the bootstrap asset could overwrite the theme.
-        unset($this->assetBundles['yii\bootstrap\BootstrapAsset']);
-        unset($this->assetBundles['yii\web\JqueryAsset']);
-        unset($this->assetBundles['yii\web\YiiAsset']);
-        
         ob_start();
         ob_implicit_flush(false);
 
@@ -94,10 +89,46 @@ class View extends \yii\web\View
         $this->head();
         $this->beginBody();
         echo $content;
+        $this->unregisterAjaxAssets();
         $this->endBody();
         $this->endPage(true);
 
         return ob_get_clean();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderAjax($view, $params = array(), $context = null)
+    {
+
+        $viewFile = $this->findViewFile($view, $context);
+
+        ob_start();
+        ob_implicit_flush(false);
+
+        $this->beginPage();
+        $this->head();
+        $this->beginBody();
+        echo $this->renderFile($viewFile, $params, $context);
+        $this->unregisterAjaxAssets();
+        $this->endBody();
+
+
+        $this->endPage(true);
+
+        return ob_get_clean();
+    }
+
+    /**
+     * Unregisters standard assets on ajax requests
+     */
+    protected function unregisterAjaxAssets()
+    {
+        unset($this->assetBundles['yii\bootstrap\BootstrapAsset']);
+        unset($this->assetBundles['yii\web\JqueryAsset']);
+        unset($this->assetBundles['yii\web\YiiAsset']);
+        unset($this->assetBundles['all']);
     }
 
     /**
@@ -199,12 +230,12 @@ class View extends \yii\web\View
         if (Yii::$app->request->isAjax) {
             return parent::endBody();
         }
-                
+
         // Since the JsConfig accesses user queries it fails before installation.
-        if(Yii::$app->params['installed']) {
+        if (Yii::$app->params['installed']) {
             \humhub\widgets\CoreJsConfig::widget();
         }
-        
+
         // Add LayoutAddons and jsConfig registered by addons
         echo \humhub\widgets\LayoutAddons::widget();
         $this->flushJsConfig();

@@ -278,6 +278,13 @@ abstract class Stream extends Action
         if ($underlyingObject === null) {
             throw new Exception('Could not get contents underlying object!');
         }
+
+        // Fix for newly created content
+        if ($content->created_at instanceof \yii\db\Expression) {
+            $content->created_at = date('Y-m-d G:i:s');
+            $content->updated_at = $content->created_at;
+        }
+
         $underlyingObject->populateRelation('content', $content);
         $result['output'] = Yii::$app->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
             'entry' => $content,

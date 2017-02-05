@@ -8,37 +8,44 @@ class m160415_180332_wall_remove extends Migration
 
     public function up()
     {
-        $this->addColumn('content', 'show_in_stream', $this->boolean()->defaultValue(true));
-        $this->addColumn('content', 'stream_sort_date', $this->dateTime());
+
+        /**
+         * Allow restart of this migration
+         */
+        try {
+            $this->addColumn('content', 'show_in_stream', $this->boolean()->defaultValue(true));
+            $this->addColumn('content', 'stream_sort_date', $this->dateTime());
+        } catch (Exception $ex) {
+            
+        }
 
         /**
          * Populate stream_updated_at attribute
          */
-        $this->update('content', [
-            'stream_sort_date' => new Expression('(SELECT updated_at FROM wall_entry WHERE wall_entry.content_id=content.id LIMIT 1)')
-                ], [
-            'IS', 'stream_sort_date', new Expression('NULL')
-        ]);
+        /*
+        $this->db->createCommand('UPDATE content LEFT JOIN wall_entry ON wall_entry.content_id=content.id 
+                SET content.stream_sort_date=wall_entry.updated_at
+        WHERE content.stream_sort_date IS NULL')->excute();
+        */
+        
         $this->update('content', ['stream_sort_date' => new Expression('created_at')], ['IS', 'stream_sort_date', new Expression('NULL')]);
 
         /**
          * Populate show_in_stream attribute
          */
-        $this->update('content', [
-            'show_in_stream' => 0
-                ], [
-            'IS', new Expression('(SELECT wall_entry.id FROM wall_entry WHERE wall_entry.content_id=content.id LIMIT 1)'), new Expression('NULL')
-        ]);
+        /*
+        $this->db->createCommand('UPDATE content LEFT JOIN wall_entry ON wall_entry.content_id=content.id 
+                SET content.show_in_stream=0
+        WHERE wall_entry.id IS NULL')->excute();
+        */
 
-        
-        
         $this->dropForeignKey('fk_space-wall_id', 'space');
         $this->dropForeignKey('fk_wall_entry-wall_id', 'wall_entry');
-        
+
         $this->dropColumn('user', 'wall_id');
         $this->dropColumn('space', 'wall_id');
         $this->dropColumn('contentcontainer', 'wall_id');
-        
+
         $this->dropTable('wall_entry');
         $this->dropTable('wall');
     }
