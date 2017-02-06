@@ -56,6 +56,7 @@ class InitialData
 
         // Caching
         Yii::$app->settings->set('cache.class', 'yii\caching\FileCache');
+        Yii::$app->settings->set('cache.useApcu', '0');
         Yii::$app->settings->set('cache.expireTime', '3600');
         Yii::$app->getModule('admin')->settings->set('installationId', md5(uniqid("", true)));
 

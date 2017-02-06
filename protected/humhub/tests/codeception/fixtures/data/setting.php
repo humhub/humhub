@@ -17,6 +17,7 @@ return array(
     array('name' => 'maxFileSize', 'value' => '1048576', 'module_id' => 'file'),
     array('name' => 'forbiddenExtensions', 'value' => 'exe', 'module_id' => 'file'),
     array('name' => 'cache.class', 'value' => 'CFileCache', 'module_id' => 'base'),
+    array('name' => 'cache.useApcu', 'value' => '0', 'module_id' => 'base'),
     array('name' => 'cache.expireTime', 'value' => '3600', 'module_id' => 'base'),
     array('name' => 'installationId', 'value' => '99846c45e9b9b0962238986a6fed519a', 'module_id' => 'admin'),
     array('name' => 'theme', 'value' => 'HumHub', 'module_id' => 'base'),

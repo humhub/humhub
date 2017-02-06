@@ -109,9 +109,11 @@ class DynamicConfig extends \yii\base\Object
 
         // Add Caching
         $cacheClass = Yii::$app->settings->get('cache.class');
+        $cacheUseApcu = Yii::$app->settings->get('cache.useApcu');
         if (in_array($cacheClass, ['yii\caching\DummyCache', 'yii\caching\ApcCache', 'yii\caching\FileCache'])) {
             $config['components']['cache'] = [
                 'class' => $cacheClass,
+                'useApcu' => $cacheUseApcu,
                 'keyPrefix' => Yii::$app->id
             ];
         }
