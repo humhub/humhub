@@ -30,7 +30,7 @@ humhub.module('notification', function (module, require, $) {
         //this.sendDesktopNotifications(update);
 
         var that = this;
-        event.on('humhub.modules.notification.live.NewNotification', function (evt, events, update) {
+        event.on('humhub:modules:notification:live:NewNotification', function (evt, events, update) {
             var count = (that.$.data('notification-count')) ? parseInt(that.$.data('notification-count')) + events.length : events.length;
             that.updateCount(count);
             that.sendDesktopNotifications(events, update.lastSessionTime);

@@ -1073,7 +1073,7 @@ else
             */
 
             // attacklab: sentinel workarounds for lack of \A and \Z, safari\khtml bug
-            text += "~0";
+           /* text += "~0";
 
             text = text.replace(/(?:\n\n|^\n?)((?:(?:[ ]{4}|\t).*\n+)+)(\n*[ ]{0,3}[^ \t\n]|(?=~0))/g,
                 function (wholeMatch, m1, m2) {
@@ -1094,7 +1094,7 @@ else
             // attacklab: strip sentinel
             text = text.replace(/~0/, "");
 
-            return text;
+            return text;*/
         }
 
         function _DoCodeSpans(text) {
@@ -1139,7 +1139,7 @@ else
             /gm, function(){...});
             */
 
-            text = text.replace(/(^|[^\\`])(`+)(?!`)([^\r]*?[^`])\2(?!`)/gm,
+            /*text = text.replace(/(^|[^\\`])(`+)(?!`)([^\r]*?[^`])\2(?!`)/gm,
                 function (wholeMatch, m1, m2, m3, m4) {
                     var c = m3;
                     //c = c.replace(/^([ \t]*)/g, ""); // leading whitespace
@@ -1150,7 +1150,7 @@ else
                 }
             );
 
-            return text;
+            return text;*/
         }
 
         function _EncodeCode(text) {

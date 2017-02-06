@@ -22,5 +22,20 @@ class NewContent extends LiveEvent
      * @var int the id of the new content
      */
     public $contentId;
+    
+    /**
+     * @var string space guid for space content container 
+     */
+    public $sguid;
+    
+    /**
+     * @var string user guid for user content container 
+     */
+    public $uguid;
+    
+    /**
+     * @var string originator guid 
+     */
+    public $originator;
 
 }

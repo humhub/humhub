@@ -179,9 +179,13 @@ class Content extends ContentDeprecated
 
                 \humhub\modules\content\activities\ContentCreated::instance()
                         ->about($contentSource)->save();
+               
 
                 Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
-                    'contentContainerId' => $this->container->id,
+                    'sguid' => ($this->container instanceof Space) ? $this->container->guid : null,
+                    'uguid' => ($this->container instanceof User) ? $this->container->guid : null,
+                    'originator' => $this->user->guid,
+                    'contentContainerId' => $this->container->contentContainerRecord->id,
                     'visibility' => $this->visibility,
                     'contentId' => $this->id
                 ]));

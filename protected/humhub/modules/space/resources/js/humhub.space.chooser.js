@@ -13,6 +13,7 @@ humhub.module('space.chooser', function (module, require, $) {
     var object = require('util').object;
     var pjax = require('client.pjax');
     var additions = require('ui.additions');
+    var user = require('user');
 
     var SELECTOR_ITEM = '[data-space-chooser-item]';
     var SELECTOR_ITEM_REMOTE = '[data-space-none],[data-space-archived]';
@@ -45,6 +46,13 @@ humhub.module('space.chooser', function (module, require, $) {
 
     SpaceChooser.prototype.initEvents = function () {
         var that = this;
+        
+        this.$.find('[data-message-count]').each(function() {
+            var $this = $(this);
+            if($this.data('message-count') > 0) {
+                $this.show();
+            }
+        });
 
         // Forward click events to actual link
         this.$.on('click', SELECTOR_ITEM, function (evt) {
@@ -75,7 +83,37 @@ humhub.module('space.chooser', function (module, require, $) {
             that.removeItem(space);
         }).on('humhub:space:unarchived', function (evt, space) {
             that.prependItem(space);
+        }).on('humhub:modules:content:live:NewContent', function(evt, liveEvents) {
+            that.handleNewContent(liveEvents);
         });
+    };
+
+    SpaceChooser.prototype.handleNewContent = function (liveEvents) {
+        var that = this;
+        var increments = {};
+        
+        liveEvents.forEach(function(event) {
+            if(event.data.uguid || event.data.originator === user.guid) {
+                return;
+            } else if(increments[event.data.sguid]) {
+                increments[event.data.sguid]++;
+            } else {
+                increments[event.data.sguid] = 1;
+            }
+        });
+        
+        $.each(increments, function(guid, count) {
+            that.incrementMessageCount(guid, count);
+        });
+    };
+    
+    SpaceChooser.prototype.incrementMessageCount = function (guid, count) {
+        var $messageCount = this.findItem(guid).find('[data-message-count]');
+        
+        var newCount = $messageCount.data('message-count') + count;
+        
+        $messageCount.hide().text(newCount).data('message-count', newCount);
+        setTimeout(function() {$messageCount.show();}, 100);
     };
 
     SpaceChooser.prototype.prependItem = function (space) {
@@ -95,10 +133,12 @@ humhub.module('space.chooser', function (module, require, $) {
     };
 
     SpaceChooser.prototype.findItem = function (space) {
-        return this.$.find('[data-space-guid="' + space.guid + '"]');
+        var guid = object.isString(space) ? space : space.guid;
+        return this.$.find('[data-space-guid="' + guid + '"]');
     };
 
     SpaceChooser.prototype.removeItem = function (space) {
+        var guid = object.isString(space) ? space : space.guid;
         this.getItems().filter('[data-space-guid="' + space.guid + '"]').remove();
     };
 
