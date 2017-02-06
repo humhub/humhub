@@ -11,6 +11,7 @@ Documentations
 - [Installation and Administration](admin/README.md)
 - [Theming](theme/README.md)
 - [Core and Module Development](developer/README.md)
+- [Enterprise Edition](ee-README.md)
 
 
 Appendix

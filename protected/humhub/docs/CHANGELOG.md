@@ -36,3 +36,4 @@ HumHub Change Log
 - Enh: Added possibility of global content (content w/o contentcontainer) (luke)
 - Enh: Added new profile field type: checkbox (luke-)
 - Enh: Refactored mail summaries activity module (luke-)
+- Enh: Moved all static files (js, fonts, css) into own static folder @web-static (luke-)

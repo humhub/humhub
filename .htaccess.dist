@@ -12,9 +12,6 @@ RewriteRule ^(.*) - [E=BASE:%1]
 RewriteCond %{HTTP:Authorization} .
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-RewriteCond %{ENV:REDIRECT_STATUS} ^$
-RewriteRule ^index\.php(/(.*)|$) %{ENV:BASE}/$2 [R=301,L]
-
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule .? - [L]
 
