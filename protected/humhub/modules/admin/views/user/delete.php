@@ -5,7 +5,6 @@ use yii\helpers\Url;
 ?>
 <div class="panel-body">
     <h4><?php echo Yii::t('AdminModule.views_user_delete', 'Delete user'); ?></h4>
-
     <p>
         <?php echo Yii::t('AdminModule.views_user_delete', 'Are you sure you want to delete this user? If this user is owner of some spaces, <b>you</b> will become owner of these spaces.'); ?>
     </p>

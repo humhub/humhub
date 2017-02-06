@@ -2,13 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\admin;
 
 use Yii;
+use humhub\modules\user\models\User;
+use humhub\modules\space\models\Space;
 
 /**
  * Admin Module
@@ -35,13 +37,20 @@ class Module extends \humhub\components\Module
      * @var boolean is marketplace enabled?
      */
     public $marketplaceEnabled = true;
-    
-    
+
+    /**
+     * @inheritdoc
+     */
+    public $resourcesPath = 'resources';
+
     /**
      * @var boolean check daily for new HumHub version
      */
     public $dailyCheckForNewVersion = true;
-    
+
+    /**
+     * @inheritdoc
+     */
     public function getName()
     {
         return Yii::t('AdminModule.base', 'Admin');
@@ -50,14 +59,35 @@ class Module extends \humhub\components\Module
     /**
      * @inheritdoc
      */
-    public function getNotifications() 
+    public function getPermissions($contentContainer = null)
     {
-        if(Yii::$app->user->isAdmin()) {
+        if ($contentContainer instanceof Space) {
+            return [];
+        } elseif ($contentContainer instanceof User) {
+            return [];
+        }
+
+        return [
+            new permissions\ManageModules(),
+            new permissions\ManageSettings(),
+            new permissions\SeeAdminInformation(),
+            new permissions\ManageUsers(),
+            new permissions\ManageGroups(),
+            new permissions\ManageSpaces(),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getNotifications()
+    {
+        if (Yii::$app->user->isAdmin()) {
             return [
-                'humhub\modules\user\notifications\Followed',
-                'humhub\modules\user\notifications\Mentioned'
+                'humhub\modules\admin\notifications\NewVersionAvailable'
             ];
-        } 
+        }
         return [];
     }
+
 }

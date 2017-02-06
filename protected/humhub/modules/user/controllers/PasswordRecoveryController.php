@@ -15,7 +15,6 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\forms\AccountRecoverPassword;
 
-
 /**
  * Password Recovery
  *
@@ -28,11 +27,6 @@ class PasswordRecoveryController extends Controller
      * @inheritdoc
      */
     public $layout = "@humhub/modules/user/views/layouts/main";
-
-    /**
-     * @inheritdoc
-     */
-    public $subLayout = "_layout";
 
     /**
      * @inheritdoc
@@ -97,7 +91,7 @@ class PasswordRecoveryController extends Controller
         // Saved token - Format: randomToken.generationTime
         $savedTokenInfo = Yii::$app->getModule('user')->settings->contentContainer($user)->get('passwordRecoveryToken');
 
-        if ($savedTokenInfo !== "") {
+        if ($savedTokenInfo) {
             list($generatedToken, $generationTime) = explode('.', $savedTokenInfo);
             if (\humhub\libs\Helpers::same($generatedToken, $token)) {
                 // Check token generation time

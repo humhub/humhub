@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Stick' => 'Coller',
-  'Unstick' => 'Décoller',
+  'Pinned' => 'Coller',
+  'Unpinned' => 'Décoller',
 );

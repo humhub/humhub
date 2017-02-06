@@ -21,21 +21,19 @@ use yii\widgets\ActiveForm;
 
     <?php $allowedLanguages = Yii::$app->i18n->getAllowedLanguages(); ?>
     <?php if (count($allowedLanguages) > 1) : ?>
-        <?php echo $languageDropDown = $form->field($model, 'defaultLanguage')->dropdownList($allowedLanguages); ?>
+        <?php echo $languageDropDown = $form->field($model, 'defaultLanguage')->dropDownList($allowedLanguages); ?>
     <?php endif; ?>
 
-    <?php echo $form->field($model, 'timeZone')->dropdownList(\humhub\libs\TimezoneHelper::generateList()); ?>
-    <?php echo $form->field($model, 'defaultSpaceGuid')->textInput(['id' => 'space_select']); ?>
-    <?php echo $form->field($model, 'defaultStreamSort')->dropdownList($model->getDefaultStreamSortOptions()); ?>
-
-    <?php
-    echo \humhub\modules\space\widgets\Picker::widget([
-        'inputId' => 'space_select',
+    <?php echo $form->field($model, 'timeZone')->dropDownList(\humhub\libs\TimezoneHelper::generateList()); ?>
+    
+    <?= humhub\modules\space\widgets\SpacePickerField::widget([
+        'form' => $form,
         'model' => $model,
-        'maxSpaces' => 50,
-        'attribute' => 'defaultSpaceGuid'
-    ]);
-    ?>
+        'attribute' => 'defaultSpaceGuid',
+        'selection' => $model->defaultSpaces
+    ])?>
+    
+    <?php echo $form->field($model, 'defaultStreamSort')->dropDownList($model->getDefaultStreamSortOptions()); ?>
 
     <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_index', 'New users will automatically be added to these space(s).'); ?></p>
 

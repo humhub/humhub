@@ -1,0 +1,44 @@
+//
+// Tooltips
+// --------------------------------------------------
+.tooltip-inner {
+  background-color: @primary;
+  max-width: 400px;
+  text-align: left;
+  font-weight: 300;
+  padding: 2px 8px 4px;
+  font-weight: bold;
+  white-space: pre-wrap;
+}
+
+.tooltip {
+  &.top .tooltip-arrow {
+    border-top-color: @primary;
+  }
+  &.top-left .tooltip-arrow {
+    border-top-color: @primary;
+  }
+  &.top-right .tooltip-arrow {
+    border-top-color: @primary;
+  }
+  &.right .tooltip-arrow {
+    border-right-color: @primary;
+  }
+  &.left .tooltip-arrow {
+    border-left-color: @primary;
+  }
+  &.bottom .tooltip-arrow {
+    border-bottom-color: @primary;
+  }
+  &.bottom-left .tooltip-arrow {
+    border-bottom-color: @primary;
+  }
+  &.bottom-right .tooltip-arrow {
+    border-bottom-color: @primary;
+  }
+}
+
+.tooltip.in {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}

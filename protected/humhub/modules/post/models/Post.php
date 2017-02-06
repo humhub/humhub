@@ -87,22 +87,6 @@ class Post extends ContentActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'message' => 'Message',
-            'url' => 'Url',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By',
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getContentName()
     {
         return Yii::t('PostModule.models_Post', 'post');
@@ -145,4 +129,5 @@ class Post extends ContentActiveRecord implements Searchable
 
         return '';
     }
+
 }

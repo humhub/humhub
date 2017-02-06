@@ -1,11 +1,10 @@
 language: php
 
 php:
-  - 5.4
   - 5.5
   - 5.6
   - 7.0
-
+  - 7.1
 matrix:
   fast_finish: true
 
@@ -20,27 +19,51 @@ cache:
 services: mysql
 
 before_install:
+  - phantomjs -v
   - echo "extension=ldap.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 install:
+  #- wget http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux64.zip
+  #- unzip chromedriver_linux64.zip -d ./
+  #- export CHROME_BIN=chromium-browser
+  # Start xvfb for gui test
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  # Download and start selenium
+  - sleep 3 # give xvfb some time to start
+  - echo "Download selenium-server-standalone jar file"
+  - wget -c -nc --retry-connrefused --tries=0 http://goo.gl/EoH85x -O selenium-server-standalone.jar
+  - echo "Run selenium server - background process"
+  - nohup bash -c "java -jar selenium-server-standalone.jar &" && sleep 1; cat nohup.out
+  # Run Composer update
   - travis_retry composer self-update && composer --version
   - travis_retry composer global require "fxp/composer-asset-plugin:~1.1.0"
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - travis_retry composer install --dev --prefer-dist --no-interaction
-  - travis_retry composer global require "codeception/codeception=2.0.*" "codeception/specify=*" "codeception/verify=*"
-
+  - travis_retry composer global require "codeception/codeception=2.1.*" "codeception/specify=*" "codeception/verify=*"
+  # Install test environment
   - |
     mysql -e 'CREATE DATABASE `humhub_test` CHARACTER SET utf8 COLLATE utf8_general_ci;'
     cd protected/humhub/tests/codeception/bin
     php yii migrate/up --includeModuleMigrations=1 --interactive=0
     php yii installer/auto
+    php yii search/rebuild
     cd ../../../../..
     cd protected/humhub/tests
     codecept build
     cd ../../../
 
 script:
+  - php -S 127.0.0.1:8080 > /dev/null 2>&1 &
+  #- phantomjs --webdriver=4444 > /dev/null 2>&1 & # Not in use since phantomjs hangs with QIODevice::write (QTcpSocket): device not open
+  - sleep 5
+  - curl http://127.0.0.1:8080/index-test.php
   - |
-    php -S localhost:8080 > /dev/null 2>&1 &
     cd protected/humhub/tests/
     codecept run
+after_failure:
+  - cd ../modules/user/tests/codeception/_output/
+  - ls
+  - cat useracceptancePasswordRecoveryCest.testPasswordRecovery.fail.html
+   #cat ../modules/*/tests/codeception/_output/*.html
+    

@@ -17,6 +17,9 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\User;
 
 use humhub\modules\admin\models\forms\UserEditForm;
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\admin\permissions\ManageSettings;
 
 /**
  * User management
@@ -26,6 +29,11 @@ use humhub\modules\admin\models\forms\UserEditForm;
 class UserController extends Controller
 {
 
+    /**
+     * @inheritdoc
+     */
+    public $adminOnly = false;
+
     public function init()
     {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Users'));
@@ -33,17 +41,34 @@ class UserController extends Controller
         return parent::init();
     }
 
+    public static function getAccessRules()
+    {
+        return [
+            ['permissions' => [
+                    ManageUsers::className(),
+                    ManageGroups::className()
+                ]],
+            ['permissions' => ManageSettings::className(), 'actions' => ['index']]
+        ];
+    }
+
     /**
      * Returns a List of Users
      */
     public function actionIndex()
     {
-        $searchModel = new \humhub\modules\admin\models\UserSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        return $this->render('index', array(
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel
-        ));
+        if (Yii::$app->user->can([new ManageUsers(), new ManageGroups()])) {
+            $searchModel = new \humhub\modules\admin\models\UserSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            return $this->render('index', array(
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel
+            ));
+        } else if (Yii::$app->user->can(new ManageSettings())) {
+            $this->redirect(['/admin/authentication']);
+        } else {
+            $this->forbidden();
+        }
     }
 
     /**
@@ -55,7 +80,7 @@ class UserController extends Controller
     {
         $user = UserEditForm::findOne(['id' => Yii::$app->request->get('id')]);
         $user->initGroupSelection();
-        
+
         if ($user == null) {
             throw new \yii\web\HttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
         }
@@ -85,7 +110,12 @@ class UserController extends Controller
                 'groupSelection' => [
                     'id' => 'user_edit_groups',
                     'type' => 'multiselectdropdown',
-                    'items' => UserEditForm::getGroupItems()
+                    'items' => UserEditForm::getGroupItems(),
+                    'options' => [
+                        'data-placeholder' => Yii::t('AdminModule.controllers_UserController', 'Select Groups'),
+                        'data-placeholder-more' => Yii::t('AdminModule.controllers_UserController', 'Add Groups...')
+                        ],
+                    'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageGroups())
                 ],
                 'status' => [
                     'type' => 'dropdownlist',
@@ -113,6 +143,7 @@ class UserController extends Controller
                 'type' => 'submit',
                 'label' => Yii::t('AdminModule.controllers_UserController', 'Become this user'),
                 'class' => 'btn btn-danger',
+                'isVisible' => $this->canBecomeUser($user)
             ),
             'delete' => array(
                 'type' => 'submit',
@@ -127,13 +158,13 @@ class UserController extends Controller
 
         if ($form->submitted('save') && $form->validate()) {
             if ($form->save()) {
-
+                $this->view->saved();
                 return $this->redirect(['/admin/user']);
             }
         }
 
         // This feature is used primary for testing, maybe remove this in future
-        if ($form->submitted('become')) {
+        if ($form->submitted('become') && $this->canBecomeUser($user)) {
 
             Yii::$app->user->switchIdentity($form->models['User']);
             return $this->redirect(Url::home());
@@ -144,6 +175,12 @@ class UserController extends Controller
         }
 
         return $this->render('edit', array('hForm' => $form, 'user' => $user));
+    }
+    
+    public function canBecomeUser($user) {
+        return Yii::$app->user->isAdmin() 
+                && $user->id != Yii::$app->user->getIdentity()->id
+                && !$user->isSystemAdmin();
     }
 
     public function actionAdd()

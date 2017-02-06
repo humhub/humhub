@@ -18,7 +18,7 @@ use humhub\libs\ParameterEvent;
  *
  * @author luke
  */
-class RichText extends \humhub\components\Widget
+class RichText extends JsWidget
 {
 
     /**
@@ -37,7 +37,7 @@ class RichText extends \humhub\components\Widget
     public $minimal = false;
 
     /**
-     * @var boolean edit mode 
+     * @var boolean edit mode
      */
     public $edit = false;
 
@@ -61,7 +61,7 @@ class RichText extends \humhub\components\Widget
         if ($this->encode) {
             $this->text = Html::encode($this->text);
         }
-        
+
         if (!$this->minimal) {
             $maxOembedCount = 3; // Maximum OEmbeds
             $oembedCount = 0; // OEmbeds used
@@ -77,8 +77,8 @@ REGEXP;
             $this->text = preg_replace_callback($pattern, function ($match) use (&$oembedCount, &$maxOembedCount, &$that) {
 
                 // Try use oembed
-                if (!$this->edit && $maxOembedCount > $oembedCount) {
-                    $oembed = UrlOembed::GetOembed($match[0]);
+                if ($maxOembedCount > $oembedCount) {
+                    $oembed = UrlOembed::GetOEmbed($match[0]);
                     if ($oembed) {
                         $oembedCount++;
                         return $oembed;
@@ -86,7 +86,7 @@ REGEXP;
                 }
                 return Html::a($match[0], Html::decode($match[0]), array('target' => '_blank'));
             }, $this->text);
-            
+
             // mark emails
             $this->text = preg_replace_callback('/[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})/', function ($match) {
                 return Html::mailto($match[0]);
@@ -104,18 +104,18 @@ REGEXP;
         }
 
         $this->text = trim($this->text);
-        
+
         if (!$this->minimal) {
             $output = nl2br($this->text);
         } else {
             $output = $this->text;
         }
-        
+
         // replace leading spaces with no break spaces to keep the text format
         $output = preg_replace_callback('/^( +)/m', function($m) {
-            return str_repeat("&nbsp;", strlen($m[1])); 
+            return str_repeat("&nbsp;", strlen($m[1]));
         }, $output);
-        
+
         $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
 
         return trim($output);
@@ -145,7 +145,7 @@ REGEXP;
         return preg_replace_callback('@;(\w*?);@', function($hit) use(&$show, &$emojis) {
             if (in_array($hit[1], $emojis)) {
                 if ($show) {
-                    return Html::img(Yii::getAlias("@web/img/emoji/" . $hit[1] . ".svg"), array('data-emoji-name' => $hit[0], 'class' => 'atwho-emoji', 'width' => '18', 'height' => '18', 'alt' => $hit[1]));
+                    return Html::img(Yii::getAlias("@web-static/img/emoji/" . $hit[1] . ".svg"), array('data-emoji-name' => $hit[0], 'data-richtext-feature' => '', 'data-guid' => "@-emoji".$hit[0], 'class' => 'atwho-emoji', 'width' => '18', 'height' => '18', 'alt' => $hit[1]));
                 }
                 return '';
             }
@@ -166,7 +166,7 @@ REGEXP;
                 $user = \humhub\modules\user\models\User::findOne(['guid' => $hit[2]]);
                 if ($user !== null) {
                     if ($buildAnchors) {
-                        return ' <span contenteditable="false"><a href="' . $user->getUrl() . '" contenteditable="false" target="_self" class="atwho-user richtext-link" data-user-guid="@-u' . $user->guid . '">@' . Html::encode($user->getDisplayName()) . '&#x200b;</a></span>' . $hit[3];
+                        return ' <span contenteditable="false"><a href="' . $user->getUrl() . '" target="_self" class="atwho-user" data-richtext-feature data-guid="@-u' . $user->guid . '">@' . Html::encode($user->getDisplayName()) . '&#x200b;</a></span>' . $hit[3];
                     }
                     return " @" . Html::encode($user->getDisplayName()) . $hit[3];
                 }
@@ -175,7 +175,7 @@ REGEXP;
 
                 if ($space !== null) {
                     if ($buildAnchors) {
-                        return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" contenteditable="false" class="atwho-user richtext-link" data-user-guid="@-s' . $space->guid . '">@' . Html::encode($space->name) . '&#x200b;</a></span>' . $hit[3];
+                        return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-richtext-feature data-guid="@-s' . $space->guid . '">@' . Html::encode($space->name) . '&#x200b;</a></span>' . $hit[3];
                     }
                     return " @" . Html::encode($space->name) . $hit[3];
                 }

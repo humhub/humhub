@@ -48,7 +48,7 @@ class EntryController extends Controller
         if ($notification->markAsSeenOnClick) {
             $notification->markAsSeen();
         }
-
+        
         // Redirect to notification URL
         return $this->redirect($notification->getUrl());
     }

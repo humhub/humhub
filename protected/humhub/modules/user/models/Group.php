@@ -27,11 +27,7 @@ use humhub\modules\space\models\Space;
  */
 class Group extends ActiveRecord
 {
-
     const SCENARIO_EDIT = 'edit';
-
-    public $managerGuids;
-    public $defaultSpaceGuid;
 
     /**
      * @inheritdoc
@@ -47,18 +43,10 @@ class Group extends ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required', 'on' => self::SCENARIO_EDIT],
             [['space_id'], 'integer'],
-            [['description', 'managerGuids', 'defaultSpaceGuid'], 'string'],
+            [['description'], 'string'],
             [['name'], 'string', 'max' => 45]
         ];
-    }
-
-    public function scenarios()
-    {
-        $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_EDIT] = ['name', 'description', 'managerGuids', 'defaultSpaceGuid', 'show_at_registration', 'show_at_directory'];
-        return $scenarios;
     }
 
     /**
@@ -82,77 +70,9 @@ class Group extends ActiveRecord
         ];
     }
 
-    public function beforeSave($insert)
+    public function getDefaultSpace()
     {
-
-        // When on edit form scenario, save also defaultSpaceGuid/managerGuids
-        if ($this->scenario == self::SCENARIO_EDIT) {
-            if ($this->defaultSpaceGuid == "") {
-                $this->space_id = "";
-            } else {
-                $space = \humhub\modules\space\models\Space::findOne(['guid' => rtrim($this->defaultSpaceGuid, ',')]);
-                if ($space !== null) {
-                    $this->space_id = $space->id;
-                }
-            }
-        }
-
-        return parent::beforeSave($insert);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function afterSave($insert, $changedAttributes)
-    {
-        if ($this->scenario == self::SCENARIO_EDIT) {
-            $managerGuids = explode(",", $this->managerGuids);
-            foreach ($managerGuids as $managerGuid) {
-                // Ensure guids valid characters
-                $managerGuid = preg_replace("/[^A-Za-z0-9\-]/", '', $managerGuid);
-
-                // Try to load user and get/create the GroupUser relation with isManager
-                $user = \humhub\modules\user\models\User::findOne(['guid' => $managerGuid]);
-                if ($user != null) {
-                    $groupUser = GroupUser::findOne(['group_id' => $this->id, 'user_id' => $user->id]);
-                    if ($groupUser != null && !$groupUser->is_group_manager) {
-                        $groupUser->is_group_manager = true;
-                        $groupUser->save();
-                    } else {
-                        $this->addUser($user, true);
-                    }
-                }
-            }
-
-            //Remove admins not contained in the selection
-            foreach ($this->getManager()->all() as $admin) {
-                if (!in_array($admin->guid, $managerGuids)) {
-                    $groupUser = GroupUser::findOne(['group_id' => $this->id, 'user_id' => $admin->id]);
-                    if ($groupUser != null) {
-                        $groupUser->is_group_manager = false;
-                        $groupUser->save();
-                    }
-                }
-            }
-        }
-
-        parent::afterSave($insert, $changedAttributes);
-    }
-
-    public function populateDefaultSpaceGuid()
-    {
-        $defaultSpace = Space::findOne(['id' => $this->space_id]);
-        if ($defaultSpace !== null) {
-            $this->defaultSpaceGuid = $defaultSpace->guid;
-        }
-    }
-
-    public function populateManagerGuids()
-    {
-        $this->managerGuids = "";
-        foreach ($this->manager as $manager) {
-            $this->managerGuids .= $manager->guid . ",";
-        }
+        return Space::findOne(['id' => $this->space_id]);
     }
 
     /**
@@ -162,6 +82,16 @@ class Group extends ActiveRecord
     public static function getAdminGroup()
     {
         return self::findOne(['is_admin_group' => '1']);
+    }
+
+    public static function getAdminGroupId()
+    {
+        $adminGroupId = Yii::$app->getModule('user')->settings->get('group.adminGroupId');
+        if($adminGroupId == null) {
+            $adminGroupId = self::getAdminGroup()->id;
+            Yii::$app->getModule('user')->settings->set('group.adminGroupId', $adminGroupId);
+        }
+        return $adminGroupId;
     }
 
     /**
@@ -310,7 +240,6 @@ class Group extends ActiveRecord
             $mail = Yii::$app->mailer->compose(['html' => '@humhub//views/mail/TextOnly'], [
                 'message' => $html,
             ]);
-            $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
             $mail->setTo($manager->email);
             $mail->setSubject(Yii::t('UserModule.models_User', "New user needs approval"));
             $mail->send();
@@ -320,7 +249,7 @@ class Group extends ActiveRecord
 
     /**
      * Returns groups which are available in user registration
-     * 
+     *
      * @return Group[] the groups which can be selected in registration
      */
     public static function getRegistrationGroups()

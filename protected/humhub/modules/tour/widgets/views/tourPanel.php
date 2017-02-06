@@ -30,23 +30,27 @@ use yii\helpers\Url;
         </p>
 
         <ul class="tour-list">
-            <li id="interface_entry" class="<?php if ($interface == 1) : ?>completed<?php endif; ?>"><a
-                    href="<?php echo Url::to(['/dashboard/dashboard', 'tour' => true]); ?>"><i
-                        class="fa fa-play-circle-o"></i><?php echo Yii::t('TourModule.widgets_views_tourPanel', '<strong>Guide:</strong> Overview'); ?>
-                </a></li>
-            <li class="<?php if ($spaces == 1) : ?>completed<?php endif; ?>"><a id="interface-tour-link"
-                                                                                href="<?php echo Url::to(['/tour/tour/start-space-tour']); ?>"><i
-                        class="fa fa-play-circle-o"></i><?php echo Yii::t('TourModule.widgets_views_tourPanel', '<strong>Guide:</strong> Spaces'); ?>
-                </a></li>
-            <li class="<?php if ($profile == 1) : ?>completed<?php endif; ?>"><a
-                    href="<?php echo Yii::$app->user->getIdentity()->createUrl('//user/profile', array('tour' => 'true')); ?>"><i
-                        class="fa fa-play-circle-o"></i><?php echo Yii::t('TourModule.widgets_views_tourPanel', '<strong>Guide:</strong> User profile'); ?>
-                </a></li>
+            <li id="interface_entry" class="<?php if ($interface == 1) : ?>completed<?php endif; ?>">
+                <a href="<?php echo Url::to(['/dashboard/dashboard', 'tour' => true]); ?>" data-pjax-prevent>
+                    <i class="fa fa-play-circle-o"></i><?= Yii::t('TourModule.widgets_views_tourPanel', '<strong>Guide:</strong> Overview'); ?>
+                </a>
+            </li>
+            <li class="<?php if ($spaces == 1) : ?>completed<?php endif; ?>">
+                <a id="interface-tour-link" href="<?php echo Url::to(['/tour/tour/start-space-tour']); ?>" data-pjax-prevent>
+                    <i class="fa fa-play-circle-o"></i><?php echo Yii::t('TourModule.widgets_views_tourPanel', '<strong>Guide:</strong> Spaces'); ?>
+                </a>
+            </li>
+            <li class="<?php if ($profile == 1) : ?>completed<?php endif; ?>">
+                <a href="<?php echo Yii::$app->user->getIdentity()->createUrl('//user/profile', array('tour' => 'true')); ?>" data-pjax-prevent>
+                    <i class="fa fa-play-circle-o"></i><?php echo Yii::t('TourModule.widgets_views_tourPanel', '<strong>Guide:</strong> User profile'); ?>
+                </a>
+            </li>
             <?php if (Yii::$app->user->isAdmin() == true) : ?>
-                <li class="<?php if ($administration == 1) : ?>completed<?php endif; ?>"><a
-                        href="<?php echo Url::to(['/admin/module/list-online', 'tour' => 'true']); ?>"><i
-                            class="fa fa-play-circle-o"></i><?php echo Yii::t('TourModule.widgets_views_tourPanel', '<strong>Guide:</strong> Administration (Modules)'); ?>
-                    </a></li>
+                <li class="<?php if ($administration == 1) : ?>completed<?php endif; ?>">
+                    <a href="<?php echo Url::to(['/admin/module/list-online', 'tour' => 'true']); ?>" data-pjax-prevent>
+                        <i class="fa fa-play-circle-o"></i><?php echo Yii::t('TourModule.widgets_views_tourPanel', '<strong>Guide:</strong> Administration (Modules)'); ?>
+                    </a>
+                </li>
             <?php endif; ?>
         </ul>
     </div>
@@ -55,7 +59,7 @@ use yii\helpers\Url;
 <?php if ($showWelcome) : ?>
     <script type="text/javascript">
 
-        $(document).ready(function () {
+        $(document).on('ready pjax:success', function () {
 
             $('#globalModal').modal({
                 show: true,

@@ -49,7 +49,7 @@ class ModuleController extends Controller
             return $this->redirect($space->createUrl('/space/manage/module'));
         } else {
             Yii::$app->response->format = 'json';
-            return [];
+            return ['success' => true];
         }
     }
 
@@ -75,7 +75,7 @@ class ModuleController extends Controller
             return $this->redirect($space->createUrl('/space/manage/module'));
         } else {
             Yii::$app->response->format = 'json';
-            return [];
+            return ['success' => true];
         }
 
     }

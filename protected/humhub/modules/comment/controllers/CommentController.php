@@ -77,11 +77,11 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
         if (Yii::$app->user->isGuest) {
             throw new HttpException(403, 'Guests can not comment.');
         }
-        
+
         if (!Yii::$app->getModule('comment')->canComment($this->parentContent->content)) {
             throw new HttpException(403, 'You are not allowed to comment.');
         }
-        
+
         $message = Yii::$app->request->post('message');
         $files = Yii::$app->request->post('fileList');
 
@@ -90,23 +90,15 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
             return '';
         }
 
-        $comment = new Comment;
-        $comment->message = $message;
-        $comment->object_model = $this->parentContent->className();
-        $comment->object_id = $this->parentContent->getPrimaryKey();
+        $comment = new Comment(['message' => $message]);
+        $comment->setPolyMorphicRelation($this->parentContent);
         $comment->save();
-
-        \humhub\modules\file\models\File::attachPrecreated($comment, $files);
+        $comment->fileManager->attach($files);
 
         // Reload comment to get populated created_at field
         $comment->refresh();
 
-        return $this->renderAjaxContent(
-            \humhub\modules\comment\widgets\Comment::widget([
-                'comment' => $comment,
-                'justEdited' => true
-            ])
-        );
+        return $this->renderAjaxContent(\humhub\modules\comment\widgets\Comment::widget(['comment' => $comment]));
     }
 
     public function actionEdit()
@@ -135,6 +127,17 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
         ));
     }
 
+    public function actionLoad()
+    {
+        $this->loadContentAddon(Comment::className(), Yii::$app->request->get('id'));
+
+        if (!$this->contentAddon->canRead()) {
+            throw new HttpException(403, Yii::t('CommentModule.controllers_CommentController', 'Access denied!'));
+        }
+
+        return $this->renderAjaxContent(\humhub\modules\comment\widgets\Comment::widget(['comment' => $this->contentAddon]));
+    }
+
     /**
      * Handles AJAX Request for Comment Deletion.
      * Currently this is only allowed for the Comment Owner.
@@ -143,9 +146,11 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
     {
         $this->forcePostRequest();
         $this->loadContentAddon(Comment::className(), Yii::$app->request->get('id'));
+        Yii::$app->response->format = 'json';
 
         if ($this->contentAddon->canDelete()) {
             $this->contentAddon->delete();
+            return ['success' => true];
         } else {
             throw new HttpException(500, Yii::t('CommentModule.controllers_CommentController', 'Insufficent permissions!'));
         }

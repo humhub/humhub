@@ -2,7 +2,6 @@
 
 namespace tests\codeception\_support;
 
-use tests\codeception\fixtures\UserFixture;
 use Codeception\Module;
 use yii\test\FixtureTrait;
 use yii\test\InitDbFixture;
@@ -37,6 +36,8 @@ class FixtureHelper extends Module
      */
     public function _beforeSuite($settings = [])
     {
+        //Prevents [ReflectionException] Class db does not exist for included module tests
+        include __DIR__.'/../functional/_bootstrap.php';
         $this->loadFixtures();
     }
 
@@ -64,12 +65,15 @@ class FixtureHelper extends Module
     public function fixtures()
     {
         return [
-            'user' => [
-                'class' => UserFixture::className()
-            ],
-            'password' => [
-                'class' => \tests\codeception\fixtures\UserPasswordFixture::className()
-            ]
+            'user' => ['class' => \humhub\modules\user\tests\codeception\fixtures\UserFixture::className()],
+            'group' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupFixture::className()],
+            'group_permission' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture::className()],
+            'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::className()],
+            'space' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::className()],
+            'space_membership' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture::className()],
+            'contentcontainer' => [ 'class' => \humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture::className()],
+            'notification' => [ 'class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::className()],
+            'activity' => [ 'class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::className()],
         ];
     }
 }

@@ -48,21 +48,27 @@ class SettingsManager extends BaseSettingsManager
     }
 
     /**
-     * Returns ContentContainerSettingsManager for current logged in user
+     * Returns ContentContainerSettingsManager for the given $user or current logged in user
      * @return ContentContainerSettingsManager 
      */
-    public function user()
+    public function user($user = null)
     {
-        return $this->contentContainer(Yii::$app->user->getIdentity());
+        if(!$user) {
+            $user = Yii::$app->user->getIdentity();
+        }
+        
+        return $this->contentContainer($user);
     }
 
     /**
-     * Returns ContentContainerSettingsManager for current logged in user
+     * Returns ContentContainerSettingsManager for the given $space or current controller space
      * @return ContentContainerSettingsManager 
      */
-    public function space()
+    public function space($space = null)
     {
-        if (Yii::$app->controller instanceof \humhub\modules\content\components\ContentContainerController) {
+        if($space != null) {
+            return $this->contentContainer($space);
+        } elseif (Yii::$app->controller instanceof \humhub\modules\content\components\ContentContainerController) {
             if (Yii::$app->controller->contentContainer instanceof \humhub\modules\space\models\Space) {
                 return $this->contentContainer(Yii::$app->controller->contentContainer);
             }

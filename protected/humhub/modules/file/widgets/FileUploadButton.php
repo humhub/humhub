@@ -13,6 +13,7 @@ namespace humhub\modules\file\widgets;
  *
  * @package humhub.modules_core.file.widgets
  * @since 0.5
+ * @deprecated since version 1.2
  */
 class FileUploadButton extends \yii\base\Widget
 {

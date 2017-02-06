@@ -1,0 +1,18 @@
+# Codeception Test Suite Configuration
+
+# suite for functional (integration) tests.
+# emulate web requests and make application process them.
+# (tip: better to use with frameworks).
+
+# RUN `build` COMMAND AFTER ADDING/REMOVING MODULES.
+class_name: FunctionalTester
+modules:
+    enabled:
+      - Filesystem
+      - Yii2
+      - tests\codeception\_support\TestHelper
+      - tests\codeception\_support\DynamicFixtureHelper
+      - tests\codeception\_support\HumHubHelper
+    config:
+        Yii2:
+            configFile: 'codeception/config/functional.php'

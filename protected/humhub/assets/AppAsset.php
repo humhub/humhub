@@ -10,54 +10,84 @@ namespace humhub\assets;
 
 use yii\web\AssetBundle;
 
+/**
+ * The AppAsset assets are included in the core layout.
+ * This Assetbundle includes some core dependencies and the humhub core api.
+ */
 class AppAsset extends AssetBundle
 {
 
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
+    /**
+     * @inheritdoc
+     */
+    public $basePath = '@webroot-static';
+
+    /**
+     * @inheritdoc
+     */
+    public $baseUrl = '@web-static';
+
+    /**
+     * @inheritdoc
+     */
     public $css = [
-        'css/animate.min.css',
         'css/temp.css',
         'css/bootstrap-wysihtml5.css',
         'css/flatelements.css',
-        'resources/at/jquery.atwho.css',
+        'css/blueimp-gallery.min.css'
     ];
-    public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
+
+    /**
+     * @inheritdoc
+     */
+    public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
+
+    /**
+     * @inheritdoc
+     */
     public $js = [
-        'js/ekko-lightbox-modified.js',
-        'js/modernizr.js',
-        'js/jquery.cookie.js',
+        'js/blueimp-gallery.min.js',
         'js/jquery.highlight.min.js',
-        'js/jquery.autosize.min.js',
-        'js/wysihtml5-0.3.0.js',
-        'js/bootstrap3-wysihtml5.js',
-        'js/jquery.color-2.1.0.min.js',
-        'js/jquery.flatelements.js',
-        'js/jquery.loader.js',
         'js/desktop-notify-min.js',
         'js/desktop-notify-config.js',
-        'resources/at/jquery.caret.min.js',
-        'resources/at/jquery.atwho.min.js',
+        'js/jquery.nicescroll.min.js',
         'resources/file/fileuploader.js',
         'resources/user/userpicker.js',
-        'js/jquery.nicescroll.min.js',
-        'js/app.js',
     ];
+
+    /**
+     * @inheritdoc
+     */
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapPluginAsset',
-        /**
-         * Temporary disabled
-         * https://github.com/inuyaksa/jquery.nicescroll/issues/574
-         */
-        //'humhub\assets\JqueryNiceScrollAsset', 
+        'humhub\assets\BluebirdAsset',
         'humhub\assets\JqueryTimeAgoAsset',
-        'humhub\assets\JqueryKnobAsset',
         'humhub\assets\JqueryWidgetAsset',
+        'humhub\assets\JqueryColorAsset',
         'humhub\assets\JqueryPlaceholderAsset',
         'humhub\assets\FontAwesomeAsset',
         'humhub\assets\BlueimpFileUploadAsset',
+        'humhub\assets\JqueryHighlightAsset',
+        'humhub\assets\JqueryCookieAsset',
+        'humhub\assets\JqueryAutosizeAsset',
+        'humhub\assets\AtJsAsset',
+        'humhub\assets\AnimateCssAsset',
+        'humhub\assets\CoreApiAsset',
+        'humhub\modules\live\assets\LiveAsset',
+        'humhub\modules\notification\assets\NotificationAsset',
+        'humhub\modules\content\assets\ContentAsset',
+        'humhub\modules\user\assets\UserAsset',
+        'humhub\modules\user\assets\UserPickerAsset',
+        'humhub\modules\file\assets\FileAsset',
+        'humhub\modules\post\assets\PostAsset',
+        'humhub\modules\space\assets\SpaceAsset',
+        'humhub\modules\comment\assets\CommentAsset',
+        'humhub\assets\NProgressAsset',
+        'humhub\assets\IE9FixesAsset',
+        'humhub\assets\IEFixesAsset',
+        'humhub\assets\PagedownConverterAsset',
     ];
 
 }

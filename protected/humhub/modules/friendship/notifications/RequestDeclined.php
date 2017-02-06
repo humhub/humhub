@@ -24,6 +24,11 @@ class RequestDeclined extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = "friendship";
+    
+    /**
+     * @inheritdoc
+     */
+    public $viewName = "friendshipDeclined";
 
     /**
      * @inheritdoc
@@ -33,19 +38,32 @@ class RequestDeclined extends BaseNotification
     /**
      * @inheritdoc
      */
+    public function category()
+    {
+        return new FriendshipNotificationCategory;
+    }
+    
+    /**
+     * @inheritdoc
+     */
     public function getUrl()
     {
         return $this->originator->getUrl();
+    }
+    
+    public function getTitle(\humhub\modules\user\models\User $user)
+    {
+        return strip_tags($this->html());
     }
 
     /**
      * @inheritdoc
      */
-    public function getAsHtml()
+    public function html()
     {
-        return Yii::t('FriendshipModule.notification', '{displayName} declined your friend request.', array(
+        return Yii::t('FriendshipModule.notification', '{displayName} declined your friend request.', [
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-        ));
+        ]);
     }
 
 }

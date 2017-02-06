@@ -1,0 +1,115 @@
+//
+// Media-Object
+// --------------------------------------------------
+.media-list {
+    li {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        border-left: 3px solid white;
+        font-size: 12px;
+        a {
+            color: @text-color-highlight;
+        }
+    }
+
+    .badge-space-type {
+        background-color: @background-color-secondary;
+        border: 1px solid @background3;
+        color: @background4;
+        padding: 3px 3px 2px 3px;
+    }
+
+    li.new {
+        border-left: 3px solid lighten(@info, 30%);
+        background-color: lighten(@info, 30%);
+    }
+    li:hover,
+        li.selected {
+        background-color: @background-color-secondary;
+        border-left: 3px solid @info;
+    }
+}
+
+.media-list li.placeholder {
+    font-size: 14px !important;
+    border-bottom: none;
+}
+
+.media-list li.placeholder:hover {
+    background: none !important;
+    border-left: 3px solid white;
+}
+
+.media-left,
+.media > .pull-left {
+    padding-right: 0;
+    margin-right:10px;
+}
+
+.media:after {
+    content: '';
+    clear: both;
+    display: block;
+}
+
+.media {
+    .time {
+        font-size: 11px;
+        color: @text-color-soft;
+    }
+    .img-space {
+        position: absolute;
+        top: 35px;
+        left: 35px;
+    }
+    .media-body {
+        font-size: 13px;
+        h4.media-heading {
+            font-size: 14px;
+            font-weight: 500;
+            color: @text-color-highlight;
+            a {
+                color: @text-color-highlight;
+            }
+            small,
+            small a {
+                font-size: 11px;
+                color: @text-color-soft;
+            }
+            .content {
+                margin-right: 35px;
+            }
+        }
+
+        .content a {
+            word-break: break-all;
+        }
+
+        h5 {
+            color: @text-color-soft2;
+            font-weight: 300;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            min-height: 15px;
+        }
+        .module-controls {
+            font-size: 85%;
+            a {
+                color: @info;
+            }
+        }
+    }
+    .content {
+        a {
+            color: @info;
+        }
+    }
+    .content .files a {
+        color: @text-color-highlight;
+    }
+}
+
+.content span {
+    .text-break;
+}

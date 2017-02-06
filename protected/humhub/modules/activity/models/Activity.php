@@ -11,6 +11,7 @@ namespace humhub\modules\activity\models;
 use Yii;
 use yii\base\Exception;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\activity\components\ActivityWebRenderer;
 
 /**
  * This is the model class for table "activity".
@@ -27,6 +28,16 @@ class Activity extends ContentActiveRecord
      * @inheritdoc
      */
     public $wallEntryClass = "humhub\modules\activity\widgets\Activity";
+
+    /**
+     * @inheritdoc
+     */
+    public $autoFollow = false;
+
+    /**
+     * @inheritdoc
+     */
+    protected $streamChannel = 'activity';
 
     /**
      * @inheritdoc
@@ -71,12 +82,13 @@ class Activity extends ContentActiveRecord
     public function getActivityBaseClass()
     {
         if (class_exists($this->class)) {
-            return Yii::createObject([
+            $result = Yii::createObject([
                         'class' => $this->class,
-                        'record' => $this,
-                        'originator' => $this->content->user,
+                        'originator' => $this->content->createdBy,
                         'source' => $this->getSource(),
             ]);
+            $result->record = $this; // If we include the record in createObject, it somehow loses activerecord data (id etc...)
+            return $result;
         } else {
             throw new Exception("Could not find BaseActivity " . $this->class . " for Activity Record.");
         }
@@ -88,17 +100,17 @@ class Activity extends ContentActiveRecord
     public function getWallOut($params = [])
     {
         $cacheKey = 'activity_wall_out_' . Yii::$app->language . '_' . $this->id;
-        $output = Yii::$app->cache->get($cacheKey);
+        $output = false;
 
         if ($output === false) {
             $activity = $this->getActivityBaseClass();
             if ($activity !== null) {
-                $output = $activity->render();
+                $renderer = new ActivityWebRenderer();
+                $output = $renderer->render($activity);
                 Yii::$app->cache->set($cacheKey, $output);
                 return $output;
             }
         }
-
         return $output;
     }
 
@@ -112,5 +124,4 @@ class Activity extends ContentActiveRecord
     {
         return $this->getPolymorphicRelation();
     }
-
 }

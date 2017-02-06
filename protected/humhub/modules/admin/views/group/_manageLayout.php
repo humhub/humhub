@@ -1,11 +1,10 @@
 <?php
 
-use yii\bootstrap\Html;
-use yii\helpers\Url;
+use humhub\libs\Html;
 ?>
 <div class="panel-body">
     <div class="pull-right">
-        <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default')); ?>
+        <?= Html::backButton(['index'], ['label' => Yii::t('AdminModule.base', 'Back to overview')]); ?>
     </div>   
 
     <?php if (!$group->isNewRecord) : ?>
@@ -15,7 +14,9 @@ use yii\helpers\Url;
     <?php endif; ?>
 </div>
 
-<br />
+<?php if (!$group->isNewRecord) : ?>
+    <br />
+<?php endif; ?>
 
 <?php if (!$group->isNewRecord) : ?>
     <?php if ($group->is_admin_group) : ?>

@@ -12,10 +12,10 @@ use Yii;
 use humhub\modules\content\components\ContentContainerController;
 
 /**
- * StickLink for Wall Entries
+ * PinLink for Wall Entries
  *
  * This widget will attached to the WallEntryControlsWidget and displays
- * the "Stick or Unstick" Link to the Content Objects.
+ * the "Pin or Unpin" Link to the Content Objects.
  *
  * @since 0.5
  */
@@ -32,7 +32,7 @@ class ArchiveLink extends \yii\base\Widget
      */
     public function run()
     {
-        if (!Yii::$app->controller instanceof ContentContainerController || !$this->content->content->canArchive()) {
+        if (!Yii::$app->controller instanceof ContentContainerController || !$this->content->content->canArchive() || $this->content->content->getContainer()->isArchived()) {
             return;
         }
 

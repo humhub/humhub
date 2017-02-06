@@ -6,7 +6,7 @@ use yii\helpers\Html;
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('AdminModule.views_module_listUpdates', '<strong>Modules</strong> directory'); ?></div>
    <?php echo $this->render('_header'); ?>
-    
+
     <div class="panel-body">
         <?php if (count($modules) == 0): ?>
             <br>
@@ -15,9 +15,9 @@ use yii\helpers\Html;
         <?php endif; ?>
 
         <?php foreach ($modules as $module): ?>
-            
+
             <?php
-            $moduleImageUrl = Yii::getAlias('@web/img/default_module.jpg');
+            $moduleImageUrl = Yii::getAlias('@web-static/img/default_module.jpg');
             if (isset($module['moduleImageUrl']) && $module['moduleImageUrl'] != "") {
                 $moduleImageUrl = $module['moduleImageUrl'];
             }

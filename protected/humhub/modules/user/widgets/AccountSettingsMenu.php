@@ -37,9 +37,9 @@ class AccountSettingsMenu extends \humhub\widgets\BaseMenu
         
         $this->addItem(array(
             'label' => Yii::t('UserModule.base', 'Notifications'),
-            'url' => Url::toRoute(['/user/account/emailing']),
+            'url' => Url::toRoute(['/user/account/notification']),
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'emailing'),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'notification'),
         ));
 
         if (count($this->getSecondoaryAuthProviders()) != 0) {

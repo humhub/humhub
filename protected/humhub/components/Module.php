@@ -9,8 +9,6 @@
 namespace humhub\components;
 
 use Yii;
-
-
 use yii\helpers\Json;
 
 /**
@@ -102,18 +100,18 @@ class Module extends \yii\base\Module
     public function getImage()
     {
         $url = $this->getPublishedUrl('/module_image.png');
-        
-        if($url == null) {
-            $url = Yii::getAlias("@web/img/default_module.jpg");
+
+        if ($url == null) {
+            $url = Yii::getAlias("@web-static/img/default_module.jpg");
         }
 
         return $url;
     }
-    
+
     /**
      * Returns the url of an asset file and publishes all module assets if
      * the file is not published yet.
-     * 
+     *
      * @param string $relativePath relative file path e.g. /module_image.jpg
      * @return string
      */
@@ -122,16 +120,16 @@ class Module extends \yii\base\Module
         $path = $this->getAssetPath();
 
         // If the file has not been published yet we publish the module assets
-        if(!$this->isPublished($relativePath)) {
+        if (!$this->isPublished($relativePath)) {
             $this->publishAssets();
         }
-        
+
         // If its still not published the file does not exist
-        if($this->isPublished($relativePath)) {
-            return Yii::$app->assetManager->getPublishedUrl($path).$relativePath;
+        if ($this->isPublished($relativePath)) {
+            return Yii::$app->assetManager->getPublishedUrl($path) . $relativePath;
         }
     }
-    
+
     /**
      * Checks if a specific asset file has already been published
      * @param string $relativePath
@@ -141,9 +139,8 @@ class Module extends \yii\base\Module
     {
         $path = $this->getAssetPath();
         $publishedPath = Yii::$app->assetManager->getPublishedPath($path);
-        return $publishedPath !== false && is_file($publishedPath.$relativePath);
+        return $publishedPath !== false && is_file($publishedPath . $relativePath);
     }
-
 
     /**
      * Get Assets Url
@@ -152,24 +149,24 @@ class Module extends \yii\base\Module
      */
     public function getAssetsUrl()
     {
-        if(($published = $this->publishAssets()) != null) {
+        if (($published = $this->publishAssets()) != null) {
             return $published[1];
         }
     }
-    
+
     /**
      * Publishes the basePath/resourcesPath (assets) module directory if existing.
      * @return array
      */
     public function publishAssets()
     {
-        if($this->hasAssets()) {
+        if ($this->hasAssets()) {
             return Yii::$app->assetManager->publish($this->getAssetPath(), ['forceCopy' => true]);
         }
     }
-    
+
     /**
-     * Determines whether or not this module has an asset directory. 
+     * Determines whether or not this module has an asset directory.
      * @return boolean
      */
     private function hasAssets()
@@ -178,7 +175,7 @@ class Module extends \yii\base\Module
         $path = Yii::getAlias($path);
         return is_string($path) && is_dir($path);
     }
-    
+
     private function getAssetPath()
     {
         return $this->getBasePath() . '/' . $this->resourcesPath;
@@ -199,7 +196,7 @@ class Module extends \yii\base\Module
 
     /**
      * Disables a module
-     * 
+     *
      * This should delete all data created by this module.
      * When override this method make sure to invoke the parent implementation AFTER your implementation.
      */
@@ -296,7 +293,7 @@ class Module extends \yii\base\Module
 
     /**
      * URL to the module's configuration action
-     * 
+     *
      * @return string the configuration url
      */
     public function getConfigUrl()
@@ -307,9 +304,9 @@ class Module extends \yii\base\Module
     /**
      * Returns a list of permission objects this module provides.
      * If a ContentContainer is provided, the method should only return applicable permissions in content container context.
-     * 
+     *
      * @since 0.21
-     * @param \humhub\modules\content\components\ContentContainerActiveRecord $contentContainer optional contentcontainer 
+     * @param \humhub\modules\content\components\ContentContainerActiveRecord $contentContainer optional contentcontainer
      * @return array list of permissions
      */
     public function getPermissions($contentContainer = null)
@@ -319,13 +316,42 @@ class Module extends \yii\base\Module
 
     /**
      * Returns a list of notification classes this module provides.
-     * 
+     *
      * @since 1.1
      * @return array list of notification classes
      */
     public function getNotifications()
     {
         return [];
+    }
+
+    public function hasNotifications()
+    {
+        return !empty($this->getNotifications());
+    }
+
+    /**
+     * Returns a list of activity class names this modules provides.
+     *
+     * @since 1.2
+     * @return array list of activity class names
+     */
+    public function getActivityClasses()
+    {
+        $class = get_class($this);
+        if (($pos = strrpos($class, '\\')) !== false) {
+            $activityNamespace = substr($class, 0, $pos) . '\\activities';
+        }
+
+        $activities = [];
+        $activityDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'activities';
+        if (is_dir($activityDirectory)) {
+            foreach (\humhub\modules\file\libs\FileHelper::findFiles($activityDirectory, ['recursive' => false,]) as $file) {
+                $activities[] = $activityNamespace . '\\' . basename($file, '.php');
+            }
+        }
+
+        return $activities;
     }
 
 }

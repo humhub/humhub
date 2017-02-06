@@ -4,9 +4,14 @@ use yii\db\Migration;
 
 class m160714_142827_remove_space_id extends Migration
 {
+
     public function up()
     {
-        $this->dropColumn('comment', 'space_id');
+        try {
+            $this->dropColumn('comment', 'space_id');
+        } catch (Exception $ex) {
+            
+        }
     }
 
     public function down()
@@ -17,13 +22,13 @@ class m160714_142827_remove_space_id extends Migration
     }
 
     /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
+      // Use safeUp/safeDown to run migration code within a transaction
+      public function safeUp()
+      {
+      }
 
-    public function safeDown()
-    {
-    }
-    */
+      public function safeDown()
+      {
+      }
+     */
 }

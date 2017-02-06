@@ -9,6 +9,8 @@
 namespace humhub\modules\comment\models;
 
 use humhub\modules\post\models\Post;
+use \humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\comment\activities\NewComment;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use Yii;
 
@@ -32,7 +34,7 @@ use Yii;
  * @package humhub.modules_core.comment.models
  * @since 0.5
  */
-class Comment extends ContentAddonActiveRecord
+class Comment extends ContentAddonActiveRecord implements ContentOwner
 {
 
     /**
@@ -50,6 +52,21 @@ class Comment extends ContentAddonActiveRecord
     {
         return [
             [['message'], 'safe'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
+                'mustBeInstanceOf' => [
+                    \yii\db\ActiveRecord::className(),
+                ]
+            ]
         ];
     }
 
@@ -94,19 +111,26 @@ class Comment extends ContentAddonActiveRecord
         // flush the cache
         $this->flushCache();
 
-        $activity = new \humhub\modules\comment\activities\NewComment();
-        $activity->source = $this;
-        $activity->create();
+        NewComment::instance()->about($this)->save();
 
         // Handle mentioned users
         // Execute before NewCommentNotification to avoid double notification when mentioned.
         \humhub\modules\user\models\Mentioning::parse($this, $this->message);
 
         if ($insert) {
-            $notification = new \humhub\modules\comment\notifications\NewComment();
-            $notification->source = $this;
-            $notification->originator = $this->user;
-            $notification->sendBulk($this->content->getPolymorphicRelation()->getFollowers(null, true, true));
+            \humhub\modules\comment\notifications\NewComment::instance()
+                    ->from(Yii::$app->user->getIdentity())
+                    ->about($this)
+                    ->sendBulk($this->getCommentedRecord()->getFollowers(null, true, true));
+
+            if ($this->content->container) {
+                Yii::$app->live->send(new \humhub\modules\comment\live\NewComment([
+                    'contentContainerId' => $this->content->container->id,
+                    'visibility' => $this->content->visibility,
+                    'contentId' => $this->content->id,
+                    'commentId' => $this->id
+                ]));
+            }
         }
 
         $this->updateContentSearch();
@@ -120,9 +144,19 @@ class Comment extends ContentAddonActiveRecord
      */
     protected function updateContentSearch()
     {
-        if ($this->content->getPolymorphicRelation() instanceof \humhub\modules\search\interfaces\Searchable) {
-            Yii::$app->search->update($this->content->getPolymorphicRelation());
+        if ($this->getCommentedRecord() instanceof \humhub\modules\search\interfaces\Searchable) {
+            Yii::$app->search->update($this->getCommentedRecord());
         }
+    }
+
+    /**
+     * Returns the commented record e.g. a Post
+     * 
+     * @return \humhub\modules\content\components\ContentActiveRecord
+     */
+    public function getCommentedRecord()
+    {
+        return $this->content->getPolymorphicRelation();
     }
 
     /**

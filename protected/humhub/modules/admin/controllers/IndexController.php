@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\controllers;
 
+use Yii;
 use humhub\modules\admin\components\Controller;
 
 /**
@@ -19,11 +20,24 @@ class IndexController extends Controller
 {
 
     /**
+     * @inheritdoc
+     */
+    public $adminOnly = false;
+
+    public static function getAccessRules()
+    {
+        return [
+            ['permissions' => Yii::$app->getModule('admin')->getPermissions()]
+        ];
+    }
+
+    /**
      * List all available user groups
      */
     public function actionIndex()
     {
-        return $this->redirect(['/admin/user']);
+        $adminMenu = new \humhub\modules\admin\widgets\AdminMenu();
+        return $this->redirect($adminMenu->items[0]['url']);
     }
 
 }

@@ -8,13 +8,27 @@ Yii::setAlias('@config', '@app/config');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.1.2',
+    'version' => '1.2.0-beta.1',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
-    'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader'],
+    'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue'],
     'sourceLanguage' => 'en',
     'components' => [
         'moduleManager' => [
             'class' => '\humhub\components\ModuleManager'
+        ],
+        'notification' => [
+            'class' => 'humhub\modules\notification\components\NotificationManager',
+            'targets' => [
+                [
+                    'class' => 'humhub\modules\notification\components\WebNotificationTarget',
+                    'renderer' => ['class' => 'humhub\modules\notification\components\WebTargetRenderer']
+                ],
+                [
+                    'class' => 'humhub\modules\notification\components\MailNotificationTarget',
+                    'renderer' => ['class' => 'humhub\modules\notification\components\MailTargetRenderer']
+                ],
+            //['class' => '\humhub\modules\notification\components\MobileNotificationTarget']
+            ]
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -73,10 +87,10 @@ $config = [
             'class' => 'yii\caching\DummyCache',
         ],
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
+            'class' => 'humhub\components\mail\Mailer',
             'viewPath' => '@humhub/views/mail',
             'view' => [
-                'class' => '\humhub\components\View',
+                'class' => '\yii\web\View',
                 'theme' => [
                     'class' => '\humhub\components\Theme',
                     'name' => 'HumHub'
@@ -86,6 +100,7 @@ $config = [
         'assetManager' => [
             'class' => '\humhub\components\AssetManager',
             'appendTimestamp' => true,
+            'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD ? 'assets-prod.php' : 'assets-dev.php')),
         ],
         'view' => [
             'class' => '\humhub\components\View',
@@ -105,6 +120,19 @@ $config = [
         'authClientCollection' => [
             'class' => 'humhub\modules\user\authclient\Collection',
             'clients' => [],
+        ],
+        'queue' => [
+            'class' => 'humhub\components\queue\Queue',
+            'driver' => [
+                //'class' => 'humhub\components\queue\driver\MySQL',
+                'class' => 'humhub\components\queue\driver\Sync',
+            ],
+        ],
+        'live' => [
+            'class' => 'humhub\modules\live\components\Sender',
+            'driver' => [
+                'class' => 'humhub\modules\live\driver\Database',
+            ],
         ],
     ],
     'params' => [
@@ -194,13 +222,12 @@ $config = [
         ],
         // Allowed languages limitation (optional)
         'allowedLanguages' => [],
+        'defaultPermissions' => [],
         'tour' => [
             'acceptableNames' => ['interface', 'administration', 'profile', 'spaces']
         ],
+        'enablePjax' => true,
     ]
 ];
-
-
-
 
 return $config;

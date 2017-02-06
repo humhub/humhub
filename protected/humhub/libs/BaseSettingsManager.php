@@ -82,6 +82,33 @@ abstract class BaseSettingsManager extends Component
 
         $this->invalidateCache();
     }
+    
+    /**
+     * Can be used to set object/arrays as a serialized values.
+     * 
+     * 
+     * @param string $name
+     * @param mixed $value array or object
+     */
+    public function setSerialized($name, $value)
+    {
+        $this->set($name, \yii\helpers\Json::encode($value));
+    }
+    
+    /**
+     * Receives a value which was saved as serialized value.
+     * 
+     * @param string $name
+     * @param mixed $default the setting value or null when not exists
+     */
+    public function getSerialized($name, $default = null)
+    {
+        $value = $this->get($name, $default);
+        if(is_string($value)) {
+            $value = \yii\helpers\Json::decode($value);
+        }
+        return $value;
+    }
 
     /**
      * Returns value of setting
@@ -142,6 +169,15 @@ abstract class BaseSettingsManager extends Component
         } else {
             $this->_loaded = $cached;
         }
+    }
+    
+    /**
+     * Reloads all values from database
+     */
+    public function reload()
+    {
+        $this->invalidateCache();
+        $this->loadValues();
     }
 
     /**

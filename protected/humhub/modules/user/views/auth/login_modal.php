@@ -130,7 +130,7 @@ use humhub\modules\user\widgets\AuthChoice;
     $('body').find(':checkbox, :radio').flatelements();
 
 
-    $(document).ready(function () {
+    $(document).on('ready pjax:success', function () {
         $('#login_username').focus();
 
     });

@@ -29,6 +29,7 @@ namespace humhub\widgets;
  * @package humhub.widgets
  * @since 0.5
  * @author Andreas Strobel
+ * @deprecated 1.2 Prefer using js api humhub.ui.modal.confirm.
  */
 class ModalConfirm extends \yii\base\Widget
 {

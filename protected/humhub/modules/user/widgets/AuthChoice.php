@@ -17,10 +17,10 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
 
     /**
      * Used to retrieve the auth clients in a static way
-     * @var type 
+     * @var type
      */
     private static $authclientCollection = 'authClientCollection';
-    
+
     /**
      * @var int number of clients to show without folding
      */
@@ -60,7 +60,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
 
         return $this->_clients;
     }
-    
+
     /**
      * Returns default auth clients list.
      * @return ClientInterface[] auth clients list.
@@ -68,10 +68,10 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     public static function hasClients()
     {
         $authClients = self::filterClients(Yii::$app->get(self::$authclientCollection)->getClients());
-       
+
         return count($authClients) > 0;
     }
-    
+
     /**
      * Filters out clients which need login form
      * @param type $clients
@@ -81,7 +81,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     {
         $result = [];
         foreach ($clients as $client) {
-            
+
             // Don't show clients which need login form
             if (!$client instanceof \humhub\modules\user\authclient\BaseFormAuth) {
                 $result[] = $client;
@@ -101,7 +101,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
 
         return $baseAuthUrl;
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -113,7 +113,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
             return parent::init();
         }
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -133,13 +133,13 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     {
         $clients = $this->getClients();
         $clientCount = count($clients);
-       
+
         if ($clientCount == 0) {
             return;
         }
 
-        $this->view->registerCssFile('@web/resources/user/authChoice.css');
-        $this->view->registerJsFile('@web/resources/user/authChoice.js');
+        $this->view->registerCssFile('@web-static/resources/user/authChoice.css');
+        $this->view->registerJsFile('@web-static/resources/user/authChoice.js');
 
         echo Html::beginTag('div', ['class' => 'authChoice']);
 

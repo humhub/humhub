@@ -9,12 +9,9 @@
 namespace humhub\modules\space\controllers;
 
 use Yii;
-
 use yii\web\HttpException;
-
-use humhub\modules\user\widgets\UserPicker;
+use humhub\modules\user\models\UserPicker;
 use humhub\modules\space\models\Space;
-
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\user\widgets\UserListBox;
@@ -61,7 +58,8 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         return UserPicker::filter([
                     'query' => $space->getMembershipUser(),
                     'keyword' => Yii::$app->request->get('keyword'),
-                    'fillUser' => true
+                    'fillUser' => true,
+                    'disabledText' => Yii::t('SpaceModule.controllers_SpaceController', 'This user is not a member of this space.')
         ]);
     }
 
@@ -82,7 +80,8 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         return UserPicker::filter([
                     'query' => $space->getNonMembershipUser(),
                     'keyword' => Yii::$app->request->get('keyword'),
-                    'fillUser' => true
+                    'fillUser' => true,
+                    'disabledText' => Yii::t('SpaceModule.controllers_SpaceController', 'This user is already a member of this space.')
         ]);
     }
 
@@ -99,7 +98,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
         if ($space->join_policy == Space::JOIN_POLICY_APPLICATION) {
             // Redirect to Membership Request Form
-            return $this->redirect($this->createUrl('//space/space/requestMembershipForm', array('sguid' => $this->getSpace()->guid)));
+            return $this->redirect($this->createUrl('//space/space/requestMembershipForm', ['sguid' => $this->getSpace()->guid]));
         }
 
         $space->addMember(Yii::$app->user->id);
@@ -128,6 +127,20 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         }
 
         return $this->renderAjax('requestMembership', ['model' => $model, 'space' => $space]);
+    }
+    
+    public function actionRevokeNotifications()
+    {
+        $space = $this->getSpace();
+        Yii::$app->notification->setSpaceSetting(Yii::$app->user->getIdentity(), $space, false);
+        return $this->redirect($space->getUrl());
+    }
+    
+    public function actionReceiveNotifications()
+    {
+        $space = $this->getSpace();
+        Yii::$app->notification->setSpaceSetting(Yii::$app->user->getIdentity(), $space, true);
+        return $this->redirect($space->getUrl());
     }
 
     /**
@@ -158,11 +171,8 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
         // Check Permissions to Invite
         if (!$space->canInvite()) {
-            throw new HttpException(403, 'Access denied - You cannot invite members!');
+            throw new HttpException(403, Yii::t('SpaceModule.controllers_MembershipController', 'Access denied - You cannot invite members!'));
         }
-
-        $canInviteExternal = Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
-
 
         $model = new \humhub\modules\space\models\forms\InviteForm();
         $model->space = $space;
@@ -178,19 +188,23 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
             }
 
             // Invite non existing members
-            if ($canInviteExternal) {
+            if (Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite')) {
                 foreach ($model->getInvitesExternal() as $email) {
                     $statusInvite = ($space->inviteMemberByEMail($email, Yii::$app->user->id)) ? Membership::STATUS_INVITED : false;
                 }
             }
 
-            return $this->renderAjax('statusInvite', [
-                        'status' => $statusInvite,
-                        'canInviteExternal' => $canInviteExternal
-            ]);
+            switch ($statusInvite) {
+                case Membership::STATUS_INVITED:
+                    return \humhub\widgets\ModalClose::widget(['success' => Yii::t('SpaceModule.views_space_statusInvite', 'User has been invited.')]);
+                case Membership::STATUS_MEMBER:
+                    return \humhub\widgets\ModalClose::widget(['success' => Yii::t('SpaceModule.views_space_statusInvite', 'User has become a member.')]);
+                default:
+                    return \humhub\widgets\ModalClose::widget(['warn' => Yii::t('SpaceModule.views_space_statusInvite', 'User has not been invited.')]);
+            }
         }
 
-        return $this->renderAjax('invite', array('model' => $model, 'space' => $space, 'canInviteExternal' => $canInviteExternal));
+        return $this->renderAjax('invite', array('model' => $model, 'space' => $space));
     }
 
     /**

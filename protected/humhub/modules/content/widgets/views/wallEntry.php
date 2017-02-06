@@ -5,7 +5,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentContainerController;
 
-$user = $object->content->user;
+$user = $object->content->createdBy;
 $container = $object->content->container;
 ?>
 
@@ -13,7 +13,9 @@ $container = $object->content->container;
     <div class="panel-body">
 
         <div class="media">
-
+            <!-- since v1.2 -->
+            <div class="stream-entry-loader"></div>
+            
             <!-- start: show wall entry options -->
             <ul class="nav nav-pills preferences">
                 <li class="dropdown ">
@@ -89,11 +91,11 @@ $container = $object->content->container;
                 <?php endif; ?>
                 <?php echo $content; ?>
             </div>
-
-            <?php echo \humhub\modules\content\widgets\WallEntryAddons::widget(['object' => $object]); ?>
+            
+            <!-- wall-entry-addons class required since 1.2 -->
+            <div class="stream-entry-addons clearfix">
+                <?php echo \humhub\modules\content\widgets\WallEntryAddons::widget(['object' => $object]); ?>
+            </div>
         </div>
-
-
     </div>
-
 </div>

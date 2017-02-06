@@ -6,7 +6,7 @@
 use yii\helpers\Html;
 
 if ($space->isAdmin()) {
-    $this->registerJsFile('@web/resources/space/spaceHeaderImageUpload.js');
+    $this->registerJsFile('@web-static/resources/space/spaceHeaderImageUpload.js');
     $this->registerJsVar('profileImageUploaderUrl', $space->createUrl('/space/manage/image/upload'));
     $this->registerJsVar('profileHeaderUploaderUrl', $space->createUrl('/space/manage/image/banner-upload'));
 }
@@ -98,8 +98,7 @@ if ($space->isAdmin()) {
 
             <?php if ($space->profileImage->hasImage()) : ?>
                 <!-- profile image output-->
-                <a data-toggle="lightbox" data-gallery="" href="<?= $space->profileImage->getUrl('_org'); ?>"
-                   data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Close'); ?></button>'>
+                <a data-ui-gallery="spaceHeader" href="<?= $space->profileImage->getUrl('_org'); ?>">
                        <?php echo \humhub\modules\space\widgets\Image::widget(['space' => $space, 'width' => 140]); ?>
                 </a>
             <?php else : ?>

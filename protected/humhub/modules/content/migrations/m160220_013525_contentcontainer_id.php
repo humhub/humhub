@@ -44,7 +44,14 @@ class m160220_013525_contentcontainer_id extends Migration
         $this->addForeignKey('fk-create-user', 'content', 'created_by', 'user', 'id', 'SET NULL');
         $this->addForeignKey('fk-update-user', 'content', 'updated_by', 'user', 'id', 'SET NULL');
 
+
         $this->dropColumn('content', 'space_id');
+
+        try {
+            $this->dropForeignKey('fk_content-user_id', 'content');
+        } catch (Exception $ex) {
+            
+        }
         $this->dropColumn('content', 'user_id');
     }
 

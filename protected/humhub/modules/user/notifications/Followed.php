@@ -27,6 +27,19 @@ class Followed extends BaseNotification
     /**
      * @inheritdoc
      */
+    public $viewName = 'followed';
+
+    /**
+     * @inheritdoc
+     */
+    public function category()
+    {
+        return new FollowedNotificationCategory();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getUrl()
     {
         return $this->originator->getUrl();
@@ -35,11 +48,21 @@ class Followed extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function getAsHtml()
+    public function getTitle(\humhub\modules\user\models\User $user)
     {
-        return Yii::t('UserModule.notification', '{displayName} is now following you.', array(
+        return Yii::t('UserModule.notification', '{displayName} is now following you', [
+                    'displayName' => Html::encode($this->originator->displayName),
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function html()
+    {
+        return Yii::t('UserModule.notification', '{displayName} is now following you.', [
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-        ));
+        ]);
     }
 
 }

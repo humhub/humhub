@@ -7,6 +7,7 @@ use humhub\modules\space\models\Space;
 use humhub\commands\IntegrityController;
 use humhub\commands\CronController;
 use humhub\components\ActiveRecord;
+use humhub\widgets\LayoutAddons;
 
 return [
     'id' => 'notification',
@@ -17,7 +18,8 @@ return [
         array('class' => Space::className(), 'event' => Space::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onSpaceDelete')),
         array('class' => IntegrityController::className(), 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => array(Events::className(), 'onIntegrityCheck')),
         array('class' => CronController::className(), 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => array(Events::className(), 'onCronDailyRun')),
-        array('class' => ActiveRecord::className(), 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::className(), 'onActiveRecordDelete'])
+        array('class' => ActiveRecord::className(), 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::className(), 'onActiveRecordDelete']),
+        array('class' => LayoutAddons::className(), 'event' => LayoutAddons::EVENT_BEFORE_RUN, 'callback' => [Events::className(), 'onLayoutAddons'])
     ),
 ];
 ?>

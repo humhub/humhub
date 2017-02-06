@@ -28,16 +28,48 @@ class Invite extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $markAsSeenOnClick = false;
+    public $viewName = "invite";
 
     /**
      * @inheritdoc
      */
-    public function getAsHtml()
+    public $markAsSeenOnClick = false;
+
+    /**
+     *  @inheritdoc
+     */
+    public function category()
+    {
+        return new SpaceMemberNotificationCategory;
+    }
+    
+    /**
+     *  @inheritdoc
+     */
+    public function getSpace()
+    {
+        return $this->source;
+    }
+
+    /**
+     *  @inheritdoc
+     */
+    public function getTitle(\humhub\modules\user\models\User $user)
+    {
+        return Yii::t('SpaceModule.notification', '{displayName} just invited you to the space {spaceName}', array(
+                    '{displayName}' => Html::encode($this->originator->displayName),
+                    '{spaceName}' => Html::encode($this->getSpace()->name)
+        ));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function html()
     {
         return Yii::t('SpaceModule.notification', '{displayName} invited you to the space {spaceName}', array(
                     '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                    '{spaceName}' => Html::tag('strong', Html::encode($this->source->name))
+                    '{spaceName}' => Html::tag('strong', Html::encode($this->getSpace()->name))
         ));
     }
 

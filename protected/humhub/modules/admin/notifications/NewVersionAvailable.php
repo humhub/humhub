@@ -34,6 +34,14 @@ class NewVersionAvailable extends BaseNotification
     {
         return \yii\helpers\Url::to(['/admin/information/about']);
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function category()
+    {
+        return new AdminNotificationCategory;
+    }
 
     /**
      * @inheritdoc
@@ -46,7 +54,7 @@ class NewVersionAvailable extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function getAsHtml()
+    public function html()
     {
         return Yii::t('AdminModule.notification', "There is a new HumHub Version ({version}) available.", ['version' => Html::tag('strong', $this->getLatestHumHubVersion())]);
     }

@@ -25,7 +25,6 @@ $config = yii\helpers\ArrayHelper::merge(
                 $consoleConfig
 );
 
-
 $application = new humhub\components\console\Application($config);
 $application->params['installed'] = false;
 

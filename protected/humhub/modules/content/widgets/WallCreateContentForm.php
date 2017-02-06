@@ -118,15 +118,15 @@ class WallCreateContentForm extends Widget
         if ($visibility == Content::VISIBILITY_PUBLIC && !$contentContainer->permissionManager->can(new \humhub\modules\content\permissions\CreatePublicContent())) {
             $visibility = Content::VISIBILITY_PRIVATE;
         }
+
         $record->content->visibility = $visibility;
-        
         $record->content->container = $contentContainer;
 
         // Handle Notify User Features of ContentFormWidget
         // ToDo: Check permissions of user guids
         $userGuids = Yii::$app->request->post('notifyUserInput');
-        if ($userGuids != "") {
-            foreach (explode(",", $userGuids) as $guid) {
+        if (!empty($userGuids)) {
+            foreach ($userGuids as $guid) {
                 $user = User::findOne(['guid' => trim($guid)]);
                 if ($user) {
                     $record->content->notifyUsersOfNewContent[] = $user;
@@ -134,10 +134,9 @@ class WallCreateContentForm extends Widget
             }
         }
 
-        // Store List of attached Files to add them after Save
-        $record->content->attachFileGuidsAfterSave = Yii::$app->request->post('fileList');
-        if ($record->validate() && $record->save()) {
-            return array('wallEntryId' => $record->content->getFirstWallEntryId());
+        if ($record->save()) {
+            $record->fileManager->attach(Yii::$app->request->post('fileList'));
+            return \humhub\modules\stream\actions\Stream::getContentResultEntry($record->content);
         }
 
         return array('errors' => $record->getErrors());

@@ -11,9 +11,9 @@ namespace humhub\assets;
 use yii\web\AssetBundle;
 
 /**
- * jquery-knob
+ * select2 bootstrap asset
  * 
- * @author luke
+ * @author buddha
  */
 class Select2BootstrapAsset extends AssetBundle
 {
@@ -21,12 +21,17 @@ class Select2BootstrapAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/select2-bootstrap-theme';
+    public $basePath = '@webroot-static';
     
     /**
      * @inheritdoc
      */
-    public $css = ['dist/select2-bootstrap.css'];
+    public $baseUrl = '@web-static';
+    
+    /**
+     * @inheritdoc
+     */
+    public $css = ['resources/css/select2Theme/select2-humhub.css'];
     
     /**
      *

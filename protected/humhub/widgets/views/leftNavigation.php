@@ -8,7 +8,7 @@
 ?>
 
 <!-- start: list-group navi for large devices -->
-<div class="panel panel-default">
+<div id="<?= $this->context->id; ?>" class="panel panel-default">
     <?php foreach ($this->context->getItemGroups() as $group) : ?>
 
         <?php $items = $this->context->getItems($group['id']); ?>

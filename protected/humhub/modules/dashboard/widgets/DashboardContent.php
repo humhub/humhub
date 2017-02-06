@@ -2,9 +2,10 @@
 
 namespace humhub\modules\dashboard\widgets;
 
+use Yii;
+use humhub\modules\stream\widgets\StreamViewer;
 use humhub\components\Widget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use Yii;
 
 class DashboardContent extends Widget
 {
@@ -30,7 +31,7 @@ class DashboardContent extends Widget
             $messageStreamEmpty = Yii::t('DashboardModule.views_dashboard_index', '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!');
         }
 
-        echo \humhub\modules\content\widgets\Stream::widget([
+        echo StreamViewer::widget([
             'streamAction' => '//dashboard/dashboard/stream',
             'showFilters' => false,
             'messageStreamEmpty' => $messageStreamEmpty

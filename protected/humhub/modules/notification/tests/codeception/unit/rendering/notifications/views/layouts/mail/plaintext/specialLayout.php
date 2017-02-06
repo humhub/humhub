@@ -1,0 +1,2 @@
+MyLayout:<?= $content ?>
+

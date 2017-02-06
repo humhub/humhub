@@ -43,6 +43,11 @@ class LoaderWidget extends \yii\base\Widget
      * @var string
      */
     public $cssClass = "";
+    
+    /**
+     * defines if the loader is initially shown
+     */
+    public $show = true;
 
     /**
      * Displays / Run the Widgets
@@ -52,6 +57,7 @@ class LoaderWidget extends \yii\base\Widget
         return $this->render('loader', [
             'id' => $this->id,
             'cssClass' => $this->cssClass,
+            'show' => $this->show
         ]);
     }
 

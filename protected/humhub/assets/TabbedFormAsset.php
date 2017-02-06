@@ -11,25 +11,23 @@ namespace humhub\assets;
 use yii\web\AssetBundle;
 
 /**
- * jquery-knob
+ * tabbed form asset
  * 
- * @author luke
+ * @author buddha
  */
 class TabbedFormAsset extends AssetBundle
 {
     
-    public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
+    public $jsOptions = ['position' => \yii\web\View::POS_END];
     
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
+    public $basePath = '@webroot-static';
+    public $baseUrl = '@web-static';
 
     /**
      * @inheritdoc
      */
-    public $js = ['js/tabbedForm.js'];
+    public $js = ['js/humhub/humhub.ui.form.js'];
     
-    public $depends = [
-        'humhub\assets\AppAsset'
-    ];
+  
     
 }

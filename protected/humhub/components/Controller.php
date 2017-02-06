@@ -5,38 +5,90 @@
  * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
 namespace humhub\components;
 
-
+use Yii;
 use yii\helpers\Url;
-
+use yii\helpers\Html;
 
 /**
- * Description of Controller
+ * Base Controller 
  *
+ * @inheritdoc
  * @author luke
  */
 class Controller extends \yii\web\Controller
 {
 
-    public $subLayout;
+    /**
+     * @var null|string the name of the sub layout to be applied to this controller's views.
+     * This property mainly affects the behavior of [[render()]].
+     */
+    public $subLayout = null;
 
+    /**
+     * @var string title of the rendered page 
+     */
     public $pageTitle;
 
+    /**
+     * @var array page titles
+     */
     public $actionTitlesMap = [];
-    
+
+    /**
+     * @var boolean append page title 
+     */
     public $prependActionTitles = true;
 
+    /**
+     * @inheritdoc
+     */
     public function renderAjaxContent($content)
     {
         return $this->getView()->renderAjaxContent($content, $this);
     }
 
+    /**
+     * Renders a static string by applying the layouts (sublayout + layout.
+     * 
+     * @param string $content the static string being rendered
+     * @return string the rendering result of the layout with the given static string as the `$content` variable.
+     * If the layout is disabled, the string will be returned back.
+     * 
+     * @since 1.2
+     */
+    public function renderContent($content)
+    {
+
+        // Apply Sublayout if provided
+        if ($this->subLayout !== null) {
+            $content = $this->getView()->render($this->subLayout . '.php', ['content' => $content], $this);
+        }
+
+        // Return Pjax Snippet
+        if (Yii::$app->request->isPjax) {
+            return $this->renderAjaxContent($content);
+        }
+
+
+        $layoutFile = $this->findLayoutFile($this->getView());
+        if ($layoutFile !== false) {
+            return $this->getView()->renderFile($layoutFile, ['content' => Html::tag('div', $content, ['id' => 'layout-content'])], $this);
+        } else {
+            return $content;
+        }
+    }
+
+    /**
+     * Throws HttpException in case the request is not an post request.
+     * @throws \yii\web\HttpException
+     */
     public function forcePostRequest()
     {
         if (\Yii::$app->request->method != 'POST') {
-            print "Invalid method!";
-            die();
+            throw new \yii\web\HttpException(405, Yii::t('ContentModule.controllers_ContentController', 'Invalid request method!'));
         }
     }
 
@@ -47,8 +99,17 @@ class Controller extends \yii\web\Controller
     public function htmlRedirect($url = "")
     {
         return $this->renderPartial('@humhub/views/htmlRedirect.php', array(
-            'url' => Url::to($url)
+                    'url' => Url::to($url)
         ));
+    }
+
+    /**
+     * @throws ForbiddenHttpException
+     * @since 1.2
+     */
+    protected function forbidden()
+    {
+        throw new \yii\web\ForbiddenHttpException(Yii::t('error', 'You are not allowed to perform this action.'));
     }
 
     /**
@@ -67,15 +128,19 @@ class Controller extends \yii\web\Controller
     {
         if (parent::beforeAction($action)) {
             if (array_key_exists($this->action->id, $this->actionTitlesMap)) {
-                if($this->prependActionTitles) {
+                if ($this->prependActionTitles) {
                     $this->prependPageTitle($this->actionTitlesMap[$this->action->id]);
                 } else {
                     $this->appendPageTitle($this->actionTitlesMap[$this->action->id]);
                 }
             }
-            if (! empty($this->pageTitle)) {
+
+            if (!empty($this->pageTitle)) {
                 $this->getView()->pageTitle = $this->pageTitle;
             }
+
+            $this->setJsViewStatus();
+
             return true;
         }
         return false;
@@ -84,7 +149,7 @@ class Controller extends \yii\web\Controller
     /**
      * Append a page title.
      *
-     * @param string $title            
+     * @param string $title
      */
     public function appendPageTitle($title)
     {
@@ -94,7 +159,7 @@ class Controller extends \yii\web\Controller
     /**
      * Prepend a page title.
      *
-     * @param string $title            
+     * @param string $title
      */
     public function prependPageTitle($title)
     {
@@ -104,7 +169,7 @@ class Controller extends \yii\web\Controller
     /**
      * Set the page title.
      *
-     * @param string $title            
+     * @param string $title
      */
     public function setPageTitle($title)
     {
@@ -124,4 +189,37 @@ class Controller extends \yii\web\Controller
         $this->actionTitlesMap = is_array($map) ? $map : [];
         $this->prependActionTitles = $prependActionTitles;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function redirect($url, $statusCode = 302)
+    {
+        if (Yii::$app->request->isPjax) {
+            Yii::$app->response->statusCode = $statusCode;
+            Yii::$app->response->headers->add('X-PJAX-REDIRECT-URL', Url::to($url));
+            return;
+        }
+
+        return Yii::$app->getResponse()->redirect(Url::to($url), $statusCode);
+    }
+
+    /**
+     * Sets some ui state as current controller/module and active topmenu.
+     * 
+     * This is required for some modules in pjax mode.
+     * 
+     * @since 1.2
+     * @param type $url
+     */
+    public function setJsViewStatus()
+    {
+        $modluleId = (Yii::$app->controller->module) ? Yii::$app->controller->module->id : '';
+        $this->view->registerJs('humhub.modules.ui.status.setState("' . $modluleId . '", "' . Yii::$app->controller->id . '", "' . Yii::$app->controller->action->id . '");', \yii\web\View::POS_BEGIN);
+
+        if(Yii::$app->request->isPjax) {
+            \humhub\widgets\TopMenu::setViewState();
+        }
+    }
+
 }

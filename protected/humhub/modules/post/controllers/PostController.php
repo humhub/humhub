@@ -37,8 +37,8 @@ class PostController extends \humhub\modules\content\components\ContentContainer
           }
          */
 
-        return \humhub\modules\content\widgets\WallCreateContentForm::create($post, $this->contentContainer);
-    }
+         return \humhub\modules\content\widgets\WallCreateContentForm::create($post, $this->contentContainer);
+        }
 
     public function actionEdit()
     {
@@ -54,9 +54,9 @@ class PostController extends \humhub\modules\content\components\ContentContainer
 
         if ($model->load(Yii::$app->request->post())) {
             // Reload record to get populated updated_at field
-            if($model->validate() && $model->save()) {
+            if ($model->validate() && $model->save()) {
                 $model = Post::findOne(['id' => $id]);
-                return $this->renderAjaxContent($model->getWallOut(['justEdited' => true]));
+                return $this->renderAjaxContent($model->getWallOut());
             } else {
                 Yii::$app->response->statusCode = 400;
             }

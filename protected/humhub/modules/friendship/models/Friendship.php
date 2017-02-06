@@ -8,8 +8,11 @@
 
 namespace humhub\modules\friendship\models;
 
-
 use humhub\modules\user\models\User;
+use humhub\modules\friendship\FriendshipEvent;
+use humhub\modules\friendship\notifications\RequestDeclined;
+use humhub\modules\friendship\notifications\Request;
+use humhub\modules\friendship\notifications\RequestApproved;
 
 /**
  * This is the model class for table "user_friendship".
@@ -24,6 +27,16 @@ use humhub\modules\user\models\User;
  */
 class Friendship extends \humhub\components\ActiveRecord
 {
+
+    /**
+     * @event \humhub\modules\friendship\FriendshipEvent
+     */
+    const EVENT_FRIENDSHIP_CREATED = 'friendshipCreated';
+
+    /**
+     * @event \humhub\modules\friendship\FriendshipEvent
+     */
+    const EVENT_FRIENDSHIP_REMOVED = 'friendshipRemoved';
 
     /**
      * Friendship States
@@ -87,27 +100,24 @@ class Friendship extends \humhub\components\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-
         if ($insert) {
             // Check if this is an request (friend has no entry in table)
             $state = self::getStateForUser($this->user, $this->friendUser);
+
             if ($state === self::STATE_REQUEST_SENT) {
                 // Send Request Notification
-                $notification = new \humhub\modules\friendship\notifications\Request();
-                $notification->originator = $this->user;
-                $notification->source = $this;
-                $notification->send($this->friendUser);
+                Request::instance()->from($this->user)->about($this)->send($this->friendUser);
             } elseif ($state === self::STATE_FRIENDS) {
                 // Remove request notification
-                $notification = new \humhub\modules\friendship\notifications\Request();
-                $notification->originator = $this->friendUser;
-                $notification->delete($this->user);
+                Request::instance()->from($this->friendUser)->delete($this->user);
 
                 // User approved friends request notification
-                $notification = new \humhub\modules\friendship\notifications\RequestApproved();
-                $notification->originator = $this->user;
-                $notification->source = $this;
-                $notification->send($this->friendUser);
+                RequestApproved::instance()->from($this->user)->about($this)->send($this->friendUser);
+
+                $this->trigger(self::EVENT_FRIENDSHIP_CREATED, new FriendshipEvent([
+                    'user1' => $this->user,
+                    'user2' => $this->friendUser,
+                ]));
             }
         }
 
@@ -211,7 +221,7 @@ class Friendship extends \humhub\components\ActiveRecord
         $friendship = new Friendship();
         $friendship->user_id = $user->id;
         $friendship->friend_user_id = $friend->id;
-        $friendship->save();
+        return $friendship->save();
     }
 
     /**
@@ -226,7 +236,6 @@ class Friendship extends \humhub\components\ActiveRecord
         $myFriendship = Friendship::findOne(['user_id' => $user->id, 'friend_user_id' => $friend->id]);
         $friendsFriendship = Friendship::findOne(['user_id' => $friend->id, 'friend_user_id' => $user->id]);
 
-
         if ($friendsFriendship !== null) {
             $friendsFriendship->delete();
         }
@@ -235,9 +244,14 @@ class Friendship extends \humhub\components\ActiveRecord
             $myFriendship->delete();
         } elseif ($friendsFriendship !== null) {
             // Is declined friendship request - send declined notification
-            $notification = new \humhub\modules\friendship\notifications\RequestDeclined();
-            $notification->originator = $user;
-            $notification->send($friend);
+            RequestDeclined::instance()->from($user)->send($friend);
+        }
+
+        if ($myFriendship !== null && $friendsFriendship !== null) {
+            // Trigger event is friendship was mutual
+            FriendshipEvent::trigger(Friendship::class, Friendship::EVENT_FRIENDSHIP_REMOVED, new FriendshipEvent([
+                'user1' => $user, 'user2' => $friend
+            ]));
         }
     }
 

@@ -1,12 +1,12 @@
 <?php
 
-use yii\bootstrap\Html;
+use humhub\libs\Html;
 use yii\helpers\Url;
 ?>
 
 <div class="panel-body">
     <div class="pull-right">
-        <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default')); ?>
+        <?= Html::backButton(['index'], ['label' => Yii::t('AdminModule.base', 'Back to overview'), 'class' => 'pull-right']); ?>
     </div>   
 
 

@@ -167,7 +167,8 @@ class HForm extends \yii\base\Component
     {
         $output = "";
         foreach ($buttons as $buttonName => $definition) {
-            if ($definition['type'] == 'submit') {
+            $definition['isVisible'] = isset($definition['isVisible']) ? $definition['isVisible'] : true;
+            if ($definition['type'] == 'submit' && $definition['isVisible']) {
                 $output .= \yii\helpers\Html::submitButton($definition['label'], ['name' => $buttonName, 'class' => $definition['class'], 'data-ui-loader' => '']);
                 $output .= "&nbsp;";
             }
@@ -177,6 +178,10 @@ class HForm extends \yii\base\Component
 
     public function renderField($name, $definition, $forms)
     {
+        if (isset($definition['isVisible']) && !$definition['isVisible'] ) {
+            return;
+        }
+
         $output = "";
 
         // Determine Model
@@ -217,9 +222,13 @@ class HForm extends \yii\base\Component
                     case 'text':
                         return $this->form->field($model, $name)->textInput($options);
                     case 'multiselectdropdown':
-                        $options['class'] = 'form-control multiselect_dropdown';
-                        $options['multiple'] = 'multiple';
-                        return $this->form->field($model, $name)->listBox($definition['items'], $options);
+                        return \humhub\widgets\MultiSelectField::widget([
+                            'form' => $this->form,
+                            'model' => $model,
+                            'attribute' => $name,
+                            'items' => $definition['items'], 
+                            'options' => $definition['options']
+                        ]);
                     case 'dropdownlist':
                         return $this->form->field($model, $name)->dropDownList($definition['items'], $options);
                     case 'checkbox':

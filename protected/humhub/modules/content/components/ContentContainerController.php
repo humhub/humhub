@@ -45,7 +45,7 @@ class ContentContainerController extends Controller
      * @var boolean hides containers sidebar in layout
      * @since 0.11
      */
-    public $hideSidebar = false;
+    public $hideSidebar = true;
 
     /**
      * Automatically loads the underlying contentContainer (User/Space) by using
@@ -117,6 +117,23 @@ class ContentContainerController extends Controller
             if (Yii::$app->user->isGuest && Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') != 1) {
                 Yii::$app->user->loginRequired();
                 return false;
+            }
+
+            if ($this->contentContainer instanceof Space && (Yii::$app->request->isPjax || !Yii::$app->request->isAjax)) {
+                $options = [
+                    'guid' => $this->contentContainer->guid,
+                    'name' => \yii\helpers\Html::encode($this->contentContainer->name),
+                    'archived' => $this->contentContainer->isArchived(),
+                    'image' => \humhub\modules\space\widgets\Image::widget([
+                        'space' => $this->contentContainer,
+                        'width' => 32,
+                        'htmlOptions' => [
+                            'class' => 'current-space-image',
+                        ]
+                    ])
+                ];  
+                
+                $this->view->registerJs('humhub.modules.space.setSpace(' . \yii\helpers\Json::encode($options) . ', '.\yii\helpers\Json::encode(Yii::$app->request->isPjax).')');
             }
 
             return true;

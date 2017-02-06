@@ -43,17 +43,12 @@ class OverviewController extends Controller
         $notifications = [];
 
         $filterForm = new FilterForm();
-        $filterForm->initFilter();
         $filterForm->load(Yii::$app->request->get());
 
         $query = Notification::findGrouped();
-        $query->andWhere(['user_id' => Yii::$app->user->id]);
 
-
-        if ($filterForm->isExcludeFilter()) {
+        if ($filterForm->hasFilter()) {
             $query->andFilterWhere(['not in', 'class', $filterForm->getExcludeClassFilter()]);
-        } else if ($filterForm->isActive()) {
-            $query->andFilterWhere(['in', 'class', $filterForm->getIncludeClassFilter()]);
         } else {
             return $this->render('index', [
                         'notificationEntries' => [],

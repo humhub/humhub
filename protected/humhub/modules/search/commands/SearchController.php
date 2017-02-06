@@ -16,7 +16,7 @@ use Yii;
  * @package humhub.modules_core.search.console
  * @since 0.12
  */
-class SearchController extends \yii\console\controller
+class SearchController extends \yii\console\Controller
 {
 
     /**

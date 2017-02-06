@@ -10,8 +10,6 @@ namespace humhub\modules\space\controllers;
 
 use Yii;
 use humhub\components\Controller;
-use yii\helpers\Html;
-use humhub\modules\space\widgets\Image;
 
 /**
  * BrowseController
@@ -55,21 +53,20 @@ class BrowseController extends Controller
             'pageSize' => $limit
         ]);
 
-        $json = array();
-        foreach ($searchResultSet->getResultInstances() as $space) {
-            $spaceInfo = array();
-            $spaceInfo['guid'] = $space->guid;
-            $spaceInfo['title'] = Html::encode($space->name);
-            $spaceInfo['tags'] = Html::encode($space->tags);
-            $spaceInfo['image'] = Image::widget(['space' => $space, 'width' => 24]);
-            $spaceInfo['link'] = $space->getUrl();
+        return $this->prepareResult($searchResultSet);
+    }
 
-            $json[] = $spaceInfo;
+    protected function prepareResult($searchResultSet)
+    {
+        $target = Yii::$app->request->get('target');
+        
+        $json = [];
+        $withChooserItem = ($target === 'chooser');
+        foreach ($searchResultSet->getResultInstances() as $space) {
+            $json[] = \humhub\modules\space\widgets\Chooser::getSpaceResult($space, $withChooserItem);
         }
 
         return $json;
     }
 
 }
-
-?>

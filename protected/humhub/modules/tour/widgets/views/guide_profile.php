@@ -9,7 +9,7 @@ $this->context->loadResources($this);
 
     var gotoAdministration = false;
 
-    $(document).ready(function () {
+    $(document).on('ready', function () {
         // Create a new tour
         var profileTour = new Tour({
             storage: false,

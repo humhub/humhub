@@ -47,9 +47,10 @@ class LikeController extends \humhub\modules\content\components\ContentAddonCont
         if ($like === null) {
 
             // Create Like Object
-            $like = new Like();
-            $like->object_model = $this->contentModel;
-            $like->object_id = $this->contentId;
+            $like = new Like([
+                'object_model' => $this->contentModel,
+                'object_id' => $this->contentId
+            ]);
             $like->save();
         }
 

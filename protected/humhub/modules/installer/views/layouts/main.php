@@ -18,7 +18,6 @@ AppAsset::register($this);
         <?= Html::csrfMetaTags() ?>
 
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias("@web"); ?>/css/bootstrap.min.css"/>
-        <link type="text/css" href="<?php echo Yii::getAlias("@web"); ?>/css/animate.min.css" rel="stylesheet"/>
         <?php $this->head() ?>
 
         <!-- start: render additional head (css and js files) -->
@@ -28,10 +27,10 @@ AppAsset::register($this);
     <body>
     <?php $this->beginBody() ?>
 
-    <div class="container installer" style="margin: 0 auto; max-width: 700px;">
+    <div class="container installer" style="margin: 0 auto; max-width: 770px;">
         <div class="logo">
             <a class="animated fadeIn" href="http://www.humhub.org" target="_blank" class="">
-                <img src="<?php echo Yii::getAlias("@web/resources/installer"); ?>/humhub-logo.png" alt="Logo">
+                <img src="<?php echo Yii::getAlias("@web-static/resources/installer"); ?>/humhub-logo.png" alt="Logo">
             </a>
         </div>
 

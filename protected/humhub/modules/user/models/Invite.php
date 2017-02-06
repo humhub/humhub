@@ -132,7 +132,6 @@ class Invite extends ActiveRecord
                 'token' => $this->token,
                 'registrationUrl' => $registrationUrl
             ]);
-            $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSelf', 'Registration Link'));
             $mail->send();
@@ -152,7 +151,6 @@ class Invite extends ActiveRecord
                 'space' => $this->space,
                 'registrationUrl' => $registrationUrl
             ]);
-            $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSpace', 'Invitation to join: {space}', ['space' => $this->space->name]));
             $mail->send();
@@ -177,7 +175,6 @@ class Invite extends ActiveRecord
                 'token' => $this->token,
                 'registrationUrl' => $registrationUrl
             ]);
-            $mail->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.invite', 'Invitation to join'));
             $mail->send();

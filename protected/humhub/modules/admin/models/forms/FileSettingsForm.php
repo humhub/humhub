@@ -18,7 +18,6 @@ class FileSettingsForm extends \yii\base\Model
     public $hideImageFileInfo;
     public $useXSendfile;
     public $allowedExtensions;
-    public $showFilesWidgetBlacklist;
 
     /**
      * @inheritdoc
@@ -36,7 +35,6 @@ class FileSettingsForm extends \yii\base\Model
         $this->hideImageFileInfo = $settingsManager->get('hideImageFileInfo');
         $this->useXSendfile = $settingsManager->get('useXSendfile');
         $this->allowedExtensions = $settingsManager->get('allowedExtensions');
-        $this->showFilesWidgetBlacklist = $settingsManager->get('showFilesWidgetBlacklist');
     }
 
     /**
@@ -46,7 +44,7 @@ class FileSettingsForm extends \yii\base\Model
     {
         return array(
             array('imageMagickPath', 'checkImageMagick'),
-            array(['allowedExtensions', 'showFilesWidgetBlacklist'], 'match', 'pattern' => '/^[A-Za-z0-9_,]+$/u'),
+            array(['allowedExtensions'], 'match', 'pattern' => '/^[A-Za-z0-9_,]+$/u'),
             array(['maxFileSize', 'useXSendfile', 'maxPreviewImageWidth', 'maxPreviewImageHeight', 'hideImageFileInfo'], 'integer'),
         );
     }
@@ -64,7 +62,6 @@ class FileSettingsForm extends \yii\base\Model
             'maxPreviewImageHeight' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum preview image height (in pixels, optional)'),
             'hideImageFileInfo' => Yii::t('AdminModule.forms_FileSettingsForm', 'Hide file info (name, size) for images on wall'),
             'allowedExtensions' => Yii::t('AdminModule.forms_FileSettingsForm', 'Allowed file extensions'),
-            'showFilesWidgetBlacklist' => Yii::t('AdminModule.forms_FileSettingsForm', 'Hide file list widget from showing files for these objects on wall.'),
         );
     }
 
@@ -107,7 +104,6 @@ class FileSettingsForm extends \yii\base\Model
         $settingsManager->set('hideImageFileInfo', $this->hideImageFileInfo);
         $settingsManager->set('useXSendfile', $this->useXSendfile);
         $settingsManager->set('allowedExtensions', strtolower($this->allowedExtensions));
-        $settingsManager->set('showFilesWidgetBlacklist', $this->showFilesWidgetBlacklist);
 
         return true;
     }

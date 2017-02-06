@@ -9,7 +9,7 @@ namespace humhub\modules\user\models\fieldtype;
 
 use humhub\modules\user\models\User;
 use Yii;
-use humhub\libs\ISO3166Codes;
+use humhub\libs\Iso3166Codes;
 
 /**
  * ProfileFieldTypeSelect handles numeric profile fields.
@@ -54,15 +54,15 @@ class CountrySelect extends Select
         
         // if no options set basically return a translated map of all defined countries
         if (empty($this->options) || trim($this->options) == false) {
-            $items = ISO3166Codes::$countries;
+            $items = iso3166Codes::$countries;
             foreach ($items as $code => $value) {
-                $items[$code] = ISO3166Codes::country($code);
+                $items[$code] = iso3166Codes::country($code);
             }
         } else {
             foreach (explode(",", $this->options) as $code) {
                 
                 $key = trim($code);
-                $value = ISO3166Codes::country($key, true);
+                $value = iso3166Codes::country($key, true);
                 if (! empty($key) && $key !== $value) {
                     $items[trim($key)] = trim($value);
                 }
@@ -86,7 +86,7 @@ class CountrySelect extends Select
         $value = $user->profile->$internalName;
         
         if (! $raw) {
-            return \yii\helpers\Html::encode(ISO3166Codes::country($value));
+            return \yii\helpers\Html::encode(iso3166Codes::country($value));
         }
         
         return $value;

@@ -44,6 +44,14 @@ class AdvancedSettingMenu extends \humhub\widgets\BaseMenu
             'isVisible' => Yii::$app->user->isAdmin(),
         ));
         $this->addItem(array(
+            'label' => Yii::t('AdminModule.views_setting_mailing', 'E-Mail'),
+            'url' => Url::toRoute(['/admin/setting/mailing-server']),
+            'icon' => '<i class="fa fa-envelope"></i>',
+            'sortOrder' => 250,
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && Yii::$app->controller->action->id == 'mailing-server'),
+        ));
+
+        $this->addItem(array(
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Proxy'),
             'url' => Url::toRoute('/admin/setting/proxy'),
             'icon' => '<i class="fa fa-sitemap"></i>',
@@ -66,6 +74,15 @@ class AdvancedSettingMenu extends \humhub\widgets\BaseMenu
             'icon' => '<i class="fa fa-cloud"></i>',
             'sortOrder' => 500,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && (Yii::$app->controller->action->id == 'oembed' || Yii::$app->controller->action->id == 'oembed-edit')),
+            'isVisible' => Yii::$app->user->isAdmin(),
+        ));
+
+        $this->addItem(array(
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Logs'),
+            'url' => Url::toRoute('/admin/setting/logs'),
+            'icon' => '<i class="fa fa-terminal"></i>',
+            'sortOrder' => 600,
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && (Yii::$app->controller->action->id == 'logs' || Yii::$app->controller->action->id == 'logs-edit')),
             'isVisible' => Yii::$app->user->isAdmin(),
         ));
 

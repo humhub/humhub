@@ -7,7 +7,7 @@ class m150928_140718_setColorVariables extends Migration
 {
     public function up()
     {
-        \humhub\components\Theme::setColorVariables(Yii::$app->view->theme->name);
+        //\humhub\components\Theme::setColorVariables(Yii::$app->view->theme->name);
     }
 
     public function down()

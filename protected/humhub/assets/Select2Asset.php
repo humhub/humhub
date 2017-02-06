@@ -11,15 +11,12 @@ namespace humhub\assets;
 use yii\web\AssetBundle;
 
 /**
- * jquery-knob
+ * select2
  * 
- * @author luke
+ * @author buddha
  */
 class Select2Asset extends AssetBundle
-{
-
-    public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
-    
+{   
     /**
      * @inheritdoc
      */
@@ -28,7 +25,7 @@ class Select2Asset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $js = ['dist/js/select2.min.js'];
+    public $js = ['dist/js/select2.full.js'];
     
     /**
      * @inheritdoc
@@ -36,7 +33,9 @@ class Select2Asset extends AssetBundle
     public $css = ['dist/css/select2.min.css'];
     
     public $depends = [
-        'humhub\assets\AppAsset'
+        'yii\web\JqueryAsset',
+        
+        'yii\bootstrap\BootstrapAsset'
     ];
-
+  
 }

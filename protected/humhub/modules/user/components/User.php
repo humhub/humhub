@@ -61,17 +61,44 @@ class User extends \yii\web\User
 
         return $this->getIdentity()->guid;
     }
+    
+    /**
+     * Shortcut for getPermisisonManager()->can().
+     * 
+     * Note: This method is used to verify global GroupPermissions and not ContentContainerPermissions.
+     * 
+     * @param mixed $permission
+     * @see PermissionManager::can()
+     * @return boolean
+     * @since 1.2
+     */
+    public function can($permission, $params = [], $allowCaching = true)
+    {
+        // Compatibility with Yii2 base permission system.
+        if(is_string($permission)) {
+            return parent::can($permission, $params, $allowCaching);
+        }
+        
+        return $this->getPermissionManager()->can($permission, $params, $allowCaching);
+    }
 
+    /**
+     * @return PermissionManager instance with the related identity instance as permission subject.
+     */
     public function getPermissionManager()
     {
         if ($this->permissionManager !== null) {
             return $this->permissionManager;
         }
 
-        $this->permissionManager = new PermissionManager;
+        $this->permissionManager = new PermissionManager(['subject' => $this->getIdentity()]);
         return $this->permissionManager;
     }
 
+    /**
+     * Determines if this user is able to change the password.
+     * @return boolean
+     */
     public function canChangePassword()
     {
         foreach ($this->getAuthClients() as $authClient) {
@@ -83,6 +110,10 @@ class User extends \yii\web\User
         return false;
     }
 
+    /**
+     * Determines if this user is able to change the email address.
+     * @return boolean
+     */
     public function canChangeEmail()
     {
         if (in_array('email', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()))) {
@@ -92,6 +123,10 @@ class User extends \yii\web\User
         return true;
     }
 
+    /**
+     * Determines if this user is able to delete his account.
+     * @return boolean
+     */
     public function canDeleteAccount()
     {
         foreach ($this->getAuthClients() as $authClient) {

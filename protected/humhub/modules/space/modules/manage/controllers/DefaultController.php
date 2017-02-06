@@ -11,7 +11,6 @@ namespace humhub\modules\space\modules\manage\controllers;
 use Yii;
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\DeleteForm;
-use humhub\modules\space\models\SpacePages;
 
 /**
  * Default space admin action
@@ -30,7 +29,7 @@ class DefaultController extends Controller
         $space->scenario = 'edit';
 
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
+            $this->view->saved();
             return $this->redirect($space->createUrl('index'));
         }
         return $this->render('index', ['model' => $space]);
@@ -44,7 +43,7 @@ class DefaultController extends Controller
         $space->indexGuestUrl = Yii::$app->getModule('space')->settings->space()->get('indexGuestUrl');
         
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
+            $this->view->saved();
             return $this->redirect($space->createUrl('advanced'));
         }
 
@@ -65,6 +64,15 @@ class DefaultController extends Controller
         $this->ownerOnly();
         $space = $this->getSpace();
         $space->archive();
+        
+        if(Yii::$app->request->isAjax) {
+            Yii::$app->response->format = 'json';
+            return [
+                'success' => true,
+                'space' => \humhub\modules\space\widgets\Chooser::getSpaceResult($space, true, ['isMember' => true])
+            ];
+        }
+        
         return $this->redirect($space->createUrl('/space/manage'));
     }
 
@@ -76,6 +84,15 @@ class DefaultController extends Controller
         $this->ownerOnly();
         $space = $this->getSpace();
         $space->unarchive();
+        
+        if(Yii::$app->request->isAjax) {
+            Yii::$app->response->format = 'json';
+            return [
+                'success' => true,
+                'space' => \humhub\modules\space\widgets\Chooser::getSpaceResult($space, true, ['isMember' => true])
+            ];
+        }
+        
         return $this->redirect($space->createUrl('/space/manage'));
     }
 

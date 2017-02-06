@@ -13,14 +13,9 @@ use humhub\libs\ProfileImage;
 use humhub\modules\user\models\User;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\content\models\Wall;
 
 /**
  * ContentContainerActiveRecord for ContentContainer Models e.g. Space or User.
- *
- * Required Attributes:
- *      - wall_id
- *      - guid
  *
  * Required Methods:
  *      - getProfileImage()
@@ -30,7 +25,7 @@ use humhub\modules\content\models\Wall;
  * @since 1.0
  * @author Luke
  */
-class ContentContainerActiveRecord extends ActiveRecord
+abstract class ContentContainerActiveRecord extends ActiveRecord
 {
 
     /**
@@ -126,19 +121,10 @@ class ContentContainerActiveRecord extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-
-            $wall = new Wall();
-            $wall->object_model = $this->className();
-            $wall->object_id = $this->id;
-            $wall->save();
-            $this->wall_id = $wall->id;
-            $this->update(false, ['wall_id']);
-
             $contentContainer = new ContentContainer;
             $contentContainer->guid = $this->guid;
             $contentContainer->class = $this->className();
             $contentContainer->pk = $this->getPrimaryKey();
-            $contentContainer->wall_id = $this->wall_id;
             if ($this instanceof User) {
                 $contentContainer->owner_user_id = $this->id;
             } elseif ($this->hasAttribute('created_by')) {
@@ -194,6 +180,21 @@ class ContentContainerActiveRecord extends ActiveRecord
         $this->permissionManager->contentContainer = $this;
         return $this->permissionManager;
     }
+    
+    /**
+     * Shortcut for getPermisisonManager()->can().
+     * 
+     * Note: This method is used to verify ContentContainerPermissions and not GroupPermissions.
+     * 
+     * @param mixed $permission
+     * @see PermissionManager::can()
+     * @return boolean
+     * @since 1.2
+     */
+    public function can($permission, $params = [], $allowCaching = true)
+    {
+        return $this->getPermissionManager()->can($permission, $params, $allowCaching);
+    }
 
     /**
      * Returns current users group
@@ -211,6 +212,16 @@ class ContentContainerActiveRecord extends ActiveRecord
     public function getUserGroups()
     {
         return [];
+    }
+    
+    /**
+     * Returns weather or not the contentcontainer is archived. (Default false).
+     * @return boolean 
+     * @since 1.2
+     */
+    public function isArchived()
+    {
+        return false;
     }
 
 }

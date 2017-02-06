@@ -1,9 +1,19 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\widgets;
 
+use Yii;
 use yii\helpers\Url;
 
+/**
+ * BaseMenu is the base class for navigations.
+ */
 class BaseMenu extends \yii\base\Widget
 {
 
@@ -29,6 +39,12 @@ class BaseMenu extends \yii\base\Widget
     public $type = "";
 
     /**
+     * @var string dom element id
+     * @since 1.2
+     */
+    public $id;
+
+    /**
      * Template of the navigation
      *
      * Available default template views:
@@ -50,7 +66,11 @@ class BaseMenu extends \yii\base\Widget
             'id' => '',
             'label' => ''
         ));
-        $this->trigger(self::EVENT_INIT);
+
+        // Yii 2.0.11 introduced own init event
+        if (version_compare(Yii::getVersion(), '2.0.11', '<')) {
+            $this->trigger(self::EVENT_INIT);
+        }
         return parent::init();
     }
 
@@ -62,20 +82,27 @@ class BaseMenu extends \yii\base\Widget
      */
     public function addItem($item)
     {
-        if (!isset($item['label']))
+        if (!isset($item['label'])) {
             $item['label'] = 'Unnamed';
+        }
 
-        if (!isset($item['url']))
+        if (!isset($item['url'])) {
             $item['url'] = '#';
+        }
 
-        if (!isset($item['icon']))
+        if (!isset($item['icon'])) {
             $item['icon'] = '';
+        }
 
-        if (!isset($item['group']))
+
+
+        if (!isset($item['group'])) {
             $item['group'] = '';
+        }
 
-        if (!isset($item['htmlOptions']))
+        if (!isset($item['htmlOptions'])) {
             $item['htmlOptions'] = array();
+        }
 
         /**
          *
@@ -85,21 +112,25 @@ class BaseMenu extends \yii\base\Widget
             $item['htmlOptions']['target'] = $item['target'];
         }
 
-        if (!isset($item['sortOrder']))
+        if (!isset($item['sortOrder'])) {
             $item['sortOrder'] = 1000;
+        }
 
-        if (!isset($item['newItemCount']))
+        if (!isset($item['newItemCount'])) {
             $item['newItemCount'] = 0;
+        }
 
-        if (!isset($item['isActive']))
+        if (!isset($item['isActive'])) {
             $item['isActive'] = false;
-
-        if (isset($item['isVisible']) && !$item['isVisible'])
+        }
+        if (isset($item['isVisible']) && !$item['isVisible']) {
             return;
+        }
 
         // Build Item CSS Class
-        if (!isset($item['htmlOptions']['class']))
+        if (!isset($item['htmlOptions']['class'])) {
             $item['htmlOptions']['class'] = "";
+        }
 
         if ($item['isActive']) {
             $item['htmlOptions']['class'] .= " active";
@@ -213,7 +244,7 @@ class BaseMenu extends \yii\base\Widget
         $this->trigger(self::EVENT_RUN);
         return $this->render($this->template, array());
     }
-    
+
     /**
      * Activates the menu item with the given url
      * @param type $url
@@ -224,13 +255,24 @@ class BaseMenu extends \yii\base\Widget
             if ($item['url'] == $url) {
                 $this->items[$key]['htmlOptions']['class'] = 'active';
                 $this->items[$key]['isActive'] = true;
+                $this->view->registerJs('humhub.modules.ui.navigation.setActive("' . $this->id . '", ' . json_encode($this->items[$key]) . ');', \yii\web\View::POS_END, 'active-' . $this->id);
             }
         }
     }
-    
+
+    public function getActive()
+    {
+        foreach ($this->items as $item) {
+            if ($item['isActive']) {
+                return $item;
+            }
+        }
+    }
+
     /*
      * Deactivates the menu item with the given url
      */
+
     public function setInactive($url)
     {
         foreach ($this->items as $key => $item) {
@@ -259,6 +301,18 @@ class BaseMenu extends \yii\base\Widget
     }
 
     /**
+     * This function is used in combination with pjax to get sure the required menu is active
+     */
+    public static function setViewState()
+    {
+        $instance = new static();
+        if (!empty($instance->id)) {
+            $active = $instance->getActive();
+            $instance->view->registerJs('humhub.modules.ui.navigation.setActive("' . $instance->id . '", ' . json_encode($active) . ');', \yii\web\View::POS_END, 'active-' . $instance->id);
+        }
+    }
+
+    /**
      * Remove the active class from a menue item.
      * 
      * @param string $url
@@ -269,9 +323,9 @@ class BaseMenu extends \yii\base\Widget
         if (is_array($url)) {
             $url = Url::to($url);
         }
-        
+
         \yii\base\Event::on(static::className(), static::EVENT_RUN, function($event) use($url) {
-             $event->sender->setInactive($url);
+            $event->sender->setInactive($url);
         });
     }
 

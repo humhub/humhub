@@ -2,5 +2,5 @@
 return array (
   'Archived' => 'آرشیوشده',
   'Public' => 'عمومی',
-  'Sticked' => 'چسبیده',
+  'Pinned' => 'چسبیده',
 );

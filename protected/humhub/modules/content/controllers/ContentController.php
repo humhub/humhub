@@ -9,6 +9,7 @@
 namespace humhub\modules\content\controllers;
 
 use Yii;
+use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\modules\content\models\Content;
 
@@ -34,6 +35,13 @@ class ContentController extends Controller
         ];
     }
 
+    public function actionDeleteById()
+    {
+        Yii::$app->response->format = 'json';
+        $id = (int) Yii::$app->request->get('id');
+        Content::findOne($id);
+    }
+    
     /**
      * Deletes a content object
      *
@@ -44,22 +52,27 @@ class ContentController extends Controller
         Yii::$app->response->format = 'json';
 
         $this->forcePostRequest();
-        $json = [
-            'success' => 'false'
-        ];
 
         $model = Yii::$app->request->get('model');
-        $id = (int) Yii::$app->request->get('id');
+        
+        //Due to backward compatibility we use the old delte mechanism in case a model parameter is provided
+        $id = (int) ($model != null) ? Yii::$app->request->get('id') : Yii::$app->request->post('id');
 
-        $contentObj = Content::get($model, $id);
+        $contentObj = ($model != null) ? Content::Get($model, $id) : Content::findOne($id);
 
-        if ($contentObj !== null && $contentObj->content->canEdit() && $contentObj->delete()) {
+        if(!$contentObj->canDelete()) {
+            throw new HttpException(400, Yii::t('ContentModule.controllers_ContentController', 'Could not delete content: Access denied!'));
+        }
+        
+        if ($contentObj !== null && $contentObj->delete()) {
             $json = [
                 'success' => true,
                 'uniqueId' => $contentObj->getUniqueId(),
                 'model' => $model,
                 'pk' => $id
             ];
+        } else {
+            throw new HttpException(500, Yii::t('ContentModule.controllers_ContentController', 'Could not delete content!'));
         }
 
         return $json;
@@ -85,7 +98,6 @@ class ContentController extends Controller
             $content->archive();
 
             $json['success'] = true;
-            $json['wallEntryIds'] = $content->getWallEntryIds();
         }
 
         return $json;
@@ -111,18 +123,17 @@ class ContentController extends Controller
             $content->unarchive();
 
             $json['success'] = true;
-            $json['wallEntryIds'] = $content->getWallEntryIds();
         }
 
         return $json;
     }
 
     /**
-     * Sticks an wall entry & corresponding content object.
+     * Pins an wall entry & corresponding content object.
      *
      * Returns JSON Output.
      */
-    public function actionStick()
+    public function actionPin()
     {
         Yii::$app->response->format = 'json';
 
@@ -132,28 +143,28 @@ class ContentController extends Controller
         $json['success'] = false;
 
         $content = Content::findOne(['id' => Yii::$app->request->get('id', "")]);
-        if ($content !== null && $content->canStick()) {
-            if ($content->countStickedItems() < 2) {
-                $content->stick();
+        if ($content !== null && $content->canPin()) {
+            if ($content->countPinnedItems() < 2) {
+                $content->pin();
 
                 $json['success'] = true;
-                $json['wallEntryIds'] = $content->getWallEntryIds();
+                $json['contentId'] = $content->id;
             } else {
-                $json['errorMessage'] = Yii::t('ContentModule.controllers_ContentController', "Maximum number of sticked items reached!\n\nYou can stick only two items at once.\nTo however stick this item, unstick another before!");
+                $json['info'] = Yii::t('ContentModule.controllers_ContentController', "Maximum number of pinned items reached!\n\nYou can pin to top only two items at once.\nTo however pin this item, unpin another before!");
             }
         } else {
-            $json['errorMessage'] = Yii::t('ContentModule.controllers_ContentController', "Could not load requested object!");
+            $json['error'] = Yii::t('ContentModule.controllers_ContentController', "Could not load requested object!");
         }
 
         return $json;
     }
 
     /**
-     * Sticks an wall entry & corresponding content object.
+     * Unpins an wall entry & corresponding content object.
      *
      * Returns JSON Output.
      */
-    public function actionUnStick()
+    public function actionUnPin()
     {
         Yii::$app->response->format = 'json';
 
@@ -163,10 +174,9 @@ class ContentController extends Controller
         $json['success'] = false;
 
         $content = Content::findOne(['id' => Yii::$app->request->get('id', "")]);
-        if ($content !== null && $content->canStick()) {
-            $content->unstick();
+        if ($content !== null && $content->canPin()) {
+            $content->unpin();
             $json['success'] = true;
-            $json['wallEntryIds'] = $content->getWallEntryIds();
         }
 
         return $json;

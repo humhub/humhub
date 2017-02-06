@@ -31,6 +31,7 @@ use humhub\modules\user\models\UserFilter;
  *
  * @package humhub.modules_core.user.widgets
  * @since 0.5
+ * @deprecated since 1.2 use UserPickerField widget for rendering a picker and \humhub\modules\user\models\UserPicker for search queries.
  * @author Luke
  */
 class UserPicker extends \yii\base\Widget
@@ -124,7 +125,6 @@ class UserPicker extends \yii\base\Widget
      */
     public function run()
     {
-
         // Try to get current field value, when model & attribute attributes are specified.
         $currentValue = "";
         if ($this->model != null && $this->attribute != null) {
@@ -244,7 +244,7 @@ class UserPicker extends \yii\base\Widget
             }
             return $result;
         } else {
-            return self::createJsonUserInfo($users, $permission, $priority);
+            return self::createJSONUserInfo($users, $permission, $priority);
         }
     }
 
@@ -268,11 +268,14 @@ class UserPicker extends \yii\base\Widget
         
         $priority = ($priority == null) ? 0 : $priority;
         
+        $text = Html::encode($user->displayName);
         $userInfo = [];
         $userInfo['id'] = $user->id;
         $userInfo['guid'] = $user->guid;
         $userInfo['disabled'] = $disabled;
-        $userInfo['displayName'] = Html::encode($user->displayName);
+        // Deprecated since v1.2 used by old user picker implementation...
+        $userInfo['displayName'] = $text;
+        $userInfo['text'] = $text;
         $userInfo['image'] = $user->getProfileImage()->getUrl();
         $userInfo['priority'] = $priority;
         $userInfo['link'] = $user->getUrl();

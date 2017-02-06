@@ -23,7 +23,6 @@ use yii\helpers\Url;
  *
  * @property integer $id
  * @property string $guid
- * @property integer $wall_id
  * @property string $name
  * @property string $description
  * @property string $url
@@ -234,17 +233,19 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         }
 
         // Take current userid if none is given
-        if ($userId == "")
+        if ($userId == "") {
             $userId = Yii::$app->user->id;
+        }
 
         // Checks if User is already member
-        if ($this->isMember($userId))
+        if ($this->isMember($userId)) {
             return false;
+        }
 
         // No one can join
-        if ($this->join_policy == self::JOIN_POLICY_NONE)
-            return
-                    false;
+        if ($this->join_policy == self::JOIN_POLICY_NONE) {
+            return false;
+        }
 
         return true;
     }
@@ -360,6 +361,17 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $this->status = self::STATUS_ENABLED;
         $this->save();
+    }
+    
+    /**
+     * Returns wether or not a Space is archived.
+     * 
+     * @return boolean
+     * @since 1.2
+     */
+    public function isArchived()
+    {
+        return $this->status === self::STATUS_ARCHIVED;
     }
 
     /**

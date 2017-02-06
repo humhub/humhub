@@ -44,8 +44,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
                 <div class="col-md-8 text-right">
                     <small>
                         <?php echo Yii::t('UserModule.views_auth_login', 'Forgot your password?'); ?>
-                        <a
-                            href="<?php echo Url::toRoute('/user/password-recovery'); ?>"><br><?php echo Yii::t('UserModule.views_auth_login', 'Create a new one.') ?></a>
+                        <a href="<?php echo Url::toRoute('/user/password-recovery'); ?>" data-pjax-prevent><br><?php echo Yii::t('UserModule.views_auth_login', 'Create a new one.') ?></a>
                     </small>
                 </div>
             </div>
@@ -86,7 +85,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
     $(function () {
         // set cursor to login field
         $('#login_username').focus();
-    })
+    });
 
     // Shake panel after wrong validation
 <?php if ($model->hasErrors()) { ?>

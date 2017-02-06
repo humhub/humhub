@@ -84,8 +84,8 @@ class FollowButton extends \yii\base\Widget
         }
 
         // Add class for javascript handling
-        $this->followOptions['class'] .= ' followSpaceButton';
-        $this->unfollowOptions['class'] .= ' unfollowSpaceButton';
+        $this->followOptions['class'] .= ' followButton';
+        $this->unfollowOptions['class'] .= ' unfollowButton';
 
         // Hide inactive button
         if ($this->space->isFollowedByUser()) {
@@ -94,15 +94,26 @@ class FollowButton extends \yii\base\Widget
             $this->unfollowOptions['style'] .= ' display:none;';
         }
 
-        // Add UserId Buttons
-        $this->followOptions['data-spaceid'] = $this->space->id;
-        $this->unfollowOptions['data-spaceid'] = $this->space->id;
+        // Add SpaceIds
+        $this->followOptions['data-content-container-id'] = $this->space->id;
+        $this->unfollowOptions['data-content-container-id'] = $this->space->id;
+        
+        // Add JS Action
+        $this->followOptions['data-action-click'] = 'content.container.follow';
+        $this->unfollowOptions['data-action-click'] = 'content.container.unfollow';
+        
+        // Add Action Url
+        $this->followOptions['data-action-url'] = $this->space->createUrl('/space/space/follow');
+        $this->unfollowOptions['data-action-url'] = $this->space->createUrl('/space/space/unfollow');
+        
+        // Add Action Url
+        $this->followOptions['data-ui-loader'] = '';
+        $this->unfollowOptions['data-ui-loader'] = '';
 
+        \humhub\modules\content\assets\ContentContainerAsset::register($this->view);
 
-        $this->view->registerJsFile('@web/resources/space/followButton.js');
-
-        return Html::a($this->unfollowLabel, $this->space->createUrl('/space/space/unfollow'), $this->unfollowOptions) .
-                Html::a($this->followLabel, $this->space->createUrl('/space/space/follow'), $this->followOptions);
+        return Html::a($this->unfollowLabel, '#', $this->unfollowOptions) .
+                Html::a($this->followLabel, '#', $this->followOptions);
     }
 
 }

@@ -1,6 +1,8 @@
 <?php
 
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+
 ?>
 <div class="container">
     <div class="row">
@@ -8,7 +10,7 @@ use yii\widgets\ActiveForm;
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <?= Yii::t('NotificationModule.views_overview_index', '<strong>Notification</strong> Overview'); ?>
-                    <a id="notification_overview_markseen" href="#" class="pull-right heading-link" >
+                    <a id="notification_overview_markseen" href="#" data-action-click="notification.markAsSeen" data-action-url="<?= Url::to(['/notification/list/mark-as-seen']); ?>" class="pull-right heading-link" >
                         <b><?= Yii::t('NotificationModule.views_overview_index', 'Mark all as seen'); ?></b>
                     </a> 
                 </div>
@@ -31,33 +33,18 @@ use yii\widgets\ActiveForm;
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong><?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?></strong>
+                    <hr style="margin-bottom:0px"/>
                 </div>
+                
                 <div class="panel-body">
                     <?php $form = ActiveForm::begin(['id' => 'notification_overview_filter', 'method' => 'GET']); ?>
                     <div style="padding-left: 5px;">
-                        <?php echo $form->field($filterForm, 'moduleFilter')->checkboxList($filterForm->getModuleFilterSelection())->label(false); ?>
+                        <?= $form->field($filterForm, 'categoryFilter')->checkboxList($filterForm->getCategoryFilterSelection())->label(false); ?>
                     </div>
-                    <button class="btn btn-primary btn-xm" type="submit"><?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?></button>
+                    <button class="btn btn-primary btn-xm" type="submit" data-ui-loader><?= Yii::t('NotificationModule.views_overview_index', 'Apply'); ?></button>
                     <?php ActiveForm::end(); ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script type='text/javascript'>
-    if (!$('#notification_overview_list li.new').length) {
-        $('#notification_overview_markseen').hide();
-    } else {
-        $('#notification_overview_markseen').on('click', function (evt) {
-            evt.preventDefault();
-            $.ajax({
-                'type': 'GET',
-                'url': '<?php echo yii\helpers\Url::to(['/notification/list/mark-as-seen', 'ajax' => 1]); ?>',
-                'success': function () {
-                    location.reload();
-                }
-            });
-        });
-    }
-</script>

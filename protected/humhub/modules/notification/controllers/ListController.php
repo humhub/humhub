@@ -11,7 +11,6 @@ namespace humhub\modules\notification\controllers;
 use Yii;
 use humhub\components\Controller;
 use humhub\modules\notification\models\Notification;
-use humhub\modules\notification\components\BaseNotification;
 
 /**
  * ListController
@@ -40,27 +39,21 @@ class ListController extends Controller
     {
         Yii::$app->response->format = 'json';
 
-        $query = Notification::findGrouped();
-
-        $maxId = (int) Yii::$app->request->get('from', 0);
-        if ($maxId != 0) {
-            $query->andWhere(['<', 'id', $maxId]);
-        }
-        $query->andWhere(['user_id' => Yii::$app->user->id]);
-        $query->limit(6);
-
-        $output = "";
-
-        $notifications = $query->all();
+        $notifications = Notification::loadMore(Yii::$app->request->get('from', 0));
         $lastEntryId = 0;
+        
+        $output = "";
         foreach ($notifications as $notification) {
-            $output .= $notification->getClass()->render();
+            $output .= $notification->getBaseModel()->render();
             $lastEntryId = $notification->id;
+            $notification->desktop_notified = 1;
+            $notification->update();
         }
 
         return [
-            'output' => $output,
+            'newNotifications' => Notification::findUnseen()->count(),
             'lastEntryId' => $lastEntryId,
+            'output' => $output,
             'counter' => count($notifications)
         ];
     }
@@ -70,6 +63,8 @@ class ListController extends Controller
      */
     public function actionMarkAsSeen()
     {
+        $this->forcePostRequest();
+        
         Yii::$app->response->format = 'json';
         $count = Notification::updateAll(['seen' => 1], ['user_id' => Yii::$app->user->id]);
 
@@ -81,6 +76,8 @@ class ListController extends Controller
 
     /**
      * Returns new notifications
+     * 
+     * @deprecated since version 1.2
      */
     public function actionGetUpdateJson()
     {
@@ -98,20 +95,14 @@ class ListController extends Controller
      */
     public static function getUpdates()
     {
-        $user = Yii::$app->user->getIdentity();
+        $update['newNotifications'] = Notification::findUnseen()->count();
 
-        $query = Notification::findGrouped()
-                ->andWhere(['seen' => 0])
-                ->orWhere(['IS', 'seen', new \yii\db\Expression('NULL')])
-                ->andWhere(['user_id' => $user->id]);
-
-        $update['newNotifications'] = $query->count();
-        $query->andWhere(['desktop_notified' => 0]);
-
-        $update['notifications'] = array();
-        foreach ($query->all() as $notification) {
-            if (Yii::$app->getModule('notification')->settings->user()->get("enable_html5_desktop_notifications", Yii::$app->getModule('notification')->settings->get('enable_html5_desktop_notifications'))) {
-                $update['notifications'][] = $notification->getClass()->render(BaseNotification::OUTPUT_TEXT);
+        $unnotified = Notification::findUnnotifiedInFrontend()->all();
+        
+        $update['notifications'] = [];
+        foreach ($unnotified as $notification) {
+            if(Yii::$app->getModule('notification')->settings->user()->getInherit('enable_html5_desktop_notifications', true)) {
+                $update['notifications'][] = $notification->getBaseModel()->text();
             }
             $notification->desktop_notified = 1;
             $notification->update();

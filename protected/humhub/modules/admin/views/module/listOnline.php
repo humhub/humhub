@@ -42,7 +42,7 @@ use yii\helpers\Html;
                 <div class="media <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>module-installed<?php endif; ?>">
 
                     <?php
-                    $moduleImageUrl = Yii::getAlias('@web/img/default_module.jpg');
+                    $moduleImageUrl = Yii::getAlias('@web-static/img/default_module.jpg');
                     if (isset($module['moduleImageUrl']) && $module['moduleImageUrl'] != "") {
                         $moduleImageUrl = $module['moduleImageUrl'];
                     }

@@ -1,0 +1,70 @@
+// Space > Admin
+.space-owner {
+    text-align: center;
+    margin: 14px 0;
+    font-size: 13px;
+    color: #999;
+}
+
+// Member sign for directory list
+.space-member-sign {
+    color: @success;
+    position: absolute;
+    top: 42px;
+    left: 42px;
+    font-size: 16px;
+    background: #fff;
+    width: 24px;
+    height: 24px;
+    padding: 2px 3px 1px 4px;
+    border-radius: 50px;
+    border: 2px solid @success;
+}
+
+#space-menu-dropdown i.type {
+    font-size:16px;
+    color: #BFBFBF;
+}
+
+#space-menu-spaces [data-space-chooser-item] {
+    cursor: pointer;
+}
+
+#space-menu-dropdown .input-group-addon {
+    border-radius: 0px 4px 4px 0px;
+}
+
+#space-menu-dropdown .input-group-addon.focus {
+    border-radius: 0px 4px 4px 0px;
+    border: 2px solid @info;
+    border-left: 0px;
+}
+
+#space-menu-search {
+    border-right: 0px;
+}
+
+#space-directory-link i {
+    margin-right:0px;
+}
+
+.space-acronym {
+    color: #fff;
+    text-align: center;
+    display: inline-block;
+}
+
+.current-space-image {
+    margin-right: 3px;
+    margin-top: 3px;
+}
+
+@media (max-width: 767px) {
+    #space-menu > .title {
+        display: none;
+    }
+
+    #space-menu-dropdown {
+        width: 300px !important;
+    }
+}

@@ -40,7 +40,7 @@ class Migration extends \yii\db\Migration
         $this->updateSilent('notification', ['source_class' => $newClass], ['source_class' => $oldClass]);
         $this->updateSilent('user_mentioning', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('user_follow', ['object_model' => $newClass], ['object_model' => $oldClass]);
-        $this->updateSilent('wall', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        //$this->updateSilent('wall', ['object_model' => $newClass], ['object_model' => $oldClass]);
 
         /**
          * Looking up "NewLike" activities with this className

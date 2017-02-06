@@ -3,11 +3,18 @@
 /**
  * Application configuration shared by all test types
  */
-return [
+$default = [
     'name' => 'HumHub Test',
     'language' => 'en-US',
     'params' => [
+        'allowedLanguages' => ['en'],
         'installed' => true,
+        'settings' => [
+            'core' => [
+                'name' => 'HumHub Test',
+                'baseUrl' => 'http://localhost:8080',
+            ]
+        ]
     ],
     'controllerMap' => [
         'fixture' => [
@@ -18,12 +25,6 @@ return [
         ],
     ],
     'components' => [
-        'db' => [
-            'dsn' => 'mysql:host=localhost;dbname=humhub_test',
-            'username' => 'travis',
-            'password' => '',
-            'charset' => 'utf8',
-        ], 
         'mailer' => [
             'useFileTransport' => true,
         ],
@@ -31,5 +32,12 @@ return [
             'showScriptName' => true,
             'scriptUrl' => 'index-test.php',
         ],
-    ],
+    ]
 ];
+
+return yii\helpers\ArrayHelper::merge(
+    // Default Test Config
+    $default,
+     // User Overwrite
+    require(dirname(__DIR__).'/../config/common.php')
+);

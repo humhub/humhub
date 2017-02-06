@@ -1,0 +1,99 @@
+// Content create form
+.contentForm_options {
+    margin-top: 10px;
+    min-height: 29px;
+    
+    .btn_container {
+        position: relative;
+        .label-public {
+            position: absolute;
+            right: 40px;
+            top: 11px;
+        }
+    }
+}
+
+#contentFormError {
+  color: @danger;
+  padding-left: 0;
+  list-style: none;
+}
+
+// Empty stream info
+.placeholder-empty-stream {
+    background-image: url("../img/placeholder-postform-arrow.png");
+    background-repeat: no-repeat;
+    padding: 37px 0 0 70px;
+    margin-left: 90px;
+}
+
+// Wall-Entries
+.wall-entry {
+    position: relative;
+    .media {
+        overflow: visible;
+    }
+    .well {
+        margin-bottom: 0;
+        .comment {
+            .show-all-link {
+                font-size: 12px;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.wall-entry-controls {
+    /* Important since 1.2 */
+    display:inline-block;
+}
+
+.wall-entry-controls,
+.wall-entry-controls a {
+    font-size: 11px;
+    color: @text-color-soft2;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.wallFilterPanel {
+  li {
+    font-size: 11px;
+    font-weight: 600;
+    a {
+      color: @text-color-highlight;
+    }
+  }
+  .dropdown-menu {
+    li {
+      margin-bottom: 0;
+      a {
+        font-size: 12px;
+      }
+      a:hover {
+        color: @text-color-contrast !important;
+      }
+    }
+  }
+}
+
+.stream-entry-loader {
+    float:right;
+    margin-top:5px;
+}
+
+.load-suppressed {
+    margin-top:-10px;
+    margin-bottom:15px;
+    text-align:center;
+    
+    a {
+        display:inline-block;
+        background-color: white;
+        padding:5px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        font-size: 11px
+    }
+}

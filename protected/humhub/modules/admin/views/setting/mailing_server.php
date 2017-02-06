@@ -5,7 +5,7 @@ use humhub\compat\CHtml;
 use humhub\models\Setting;
 
 ?>
-<?php $this->beginContent('@admin/views/setting/_emailLayout.php') ?>
+<?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
 <?php $form = CActiveForm::begin(); ?>
 
@@ -62,7 +62,7 @@ use humhub\models\Setting;
             <strong>Encryption Options</strong>
             <div class="checkbox">
                 <label>
-                    <?php echo $form->checkbox($model, 'allowSelfSignedCerts', array('class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.allowSelfSignedCerts'))); ?>
+                    <?php echo $form->checkBox($model, 'allowSelfSignedCerts', array('class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.allowSelfSignedCerts'))); ?>
                     <?php echo $model->getAttributeLabel('allowSelfSignedCerts'); ?>
                 </label>
             </div>

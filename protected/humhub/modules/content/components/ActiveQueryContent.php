@@ -80,14 +80,20 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
     /**
      * Limits the returned records to the given ContentContainer.
      * 
-     * @param ContentContainerActiveRecord $container
+     * @param ContentContainerActiveRecord $container|null or null for global content
      * @return \humhub\modules\content\components\ActiveQueryContent
      * @throws \yii\base\Exception
      */
     public function contentContainer($container)
     {
-        $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
-        $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => $container->className()]);
+        if ($container === null) {
+            $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
+            $this->andWhere(['IS', 'contentcontainer.pk', new \yii\db\Expression('NULL')]);
+        } else {
+            $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
+            $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => $container->className()]);
+        }
+
         return $this;
     }
 
@@ -151,7 +157,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
                     ->select("sf.id")
                     ->from('user_follow')
                     ->leftJoin('space sf', 'sf.id=user_follow.object_id AND user_follow.object_model=:spaceClass')
-                    ->where('user_follow.user_id=:userId AND sf.wall_id IS NOT NULL');
+                    ->where('user_follow.user_id=:userId AND sf.id IS NOT NULL');
             $conditions[] = 'contentcontainer.pk IN (' . Yii::$app->db->getQueryBuilder()->build($spaceFollow)[0] . ') AND contentcontainer.class = :spaceClass';
             $params[':spaceClass'] = Space::className();
             $params[':userId'] = $user->id;
@@ -162,7 +168,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
                     ->select(["uf.id"])
                     ->from('user_follow')
                     ->leftJoin('user uf', 'uf.id=user_follow.object_id AND user_follow.object_model=:userClass')
-                    ->where('user_follow.user_id=:userId AND uf.wall_id IS NOT NULL');
+                    ->where('user_follow.user_id=:userId AND uf.id IS NOT NULL');
             $conditions[] = 'contentcontainer.pk IN (' . Yii::$app->db->getQueryBuilder()->build($userFollow)[0] . ' AND contentcontainer.class=:userClass)';
             $params[':userClass'] = User::className();
             $params[':userId'] = $user->id;

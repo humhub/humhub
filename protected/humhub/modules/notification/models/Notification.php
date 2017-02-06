@@ -18,6 +18,7 @@ use Yii;
  * @property string $created_at
  * @property integer $desktop_notified
  * @property integer $originator_user_id
+ * @property integer $send_web_notifications
  */
 class Notification extends \humhub\components\ActiveRecord
 {
@@ -26,6 +27,36 @@ class Notification extends \humhub\components\ActiveRecord
      * @var int number of found grouped notifications
      */
     public $group_count;
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
+                'classAttribute' => 'source_class',
+                'pkAttribute' => 'source_pk',
+                'mustBeInstanceOf' => [
+                    \yii\db\ActiveRecord::className(),
+                ]
+            ]
+        ];
+    }
+
+    public function init()
+    {
+        parent::init();
+        if ($this->seen === null) {
+            $this->seen = 0;
+        }
+
+        // Disable web notification by default, they will be enabld within the web target if allowed by the user.
+        if ($this->send_web_notifications === null) {
+            $this->send_web_notifications = 0;
+        }
+    }
 
     /**
      * @inheritdoc
@@ -48,14 +79,24 @@ class Notification extends \humhub\components\ActiveRecord
     }
 
     /**
+     * Use getBaseModel instead.
+     * @deprecated since version 1.2
+     * @param type $params
+     */
+    public function getClass($params = [])
+    {
+        return $this->getBaseModel($params);
+    }
+
+    /**
      * Returns the business model of this notification
      * 
      * @return \humhub\modules\notification\components\BaseNotification
      */
-    public function getClass($params = [])
+    public function getBaseModel($params = [])
     {
         if (class_exists($this->class)) {
-            $params['source'] = $this->getSourceObject();
+            $params['source'] = $this->getPolymorphicRelation();
             $params['originator'] = $this->originator;
             $params['groupCount'] = $this->group_count;
             if ($this->group_count > 1) {
@@ -148,22 +189,74 @@ class Notification extends \humhub\components\ActiveRecord
     }
 
     /**
-     * Finds notifications grouped when available
+     * Loads a certain amount ($limit) of grouped notifications from a given id set by $from.
+     * 
+     * @param integer $from notificatoin id which was the last loaded entry.
+     * @param limit $limit limit count of results.
+     * @since 1.2
+     */
+    public static function loadMore($from = 0, $limit = 6)
+    {
+        $query = Notification::findGrouped();
+
+        if ($from != 0) {
+            $query->andWhere(['<', 'id', $from]);
+        }
+
+        $query->limit($limit);
+
+        return $query->all();
+    }
+
+    /**
+     * Finds grouped notifications if $sendWebNotifications is set to 1 we filter only notifications
+     * with send_web_notifications setting to 1.
      * 
      * @return \yii\db\ActiveQuery
      */
-    public static function findGrouped()
+    public static function findGrouped(User $user = null, $sendWebNotifications = 1)
     {
+        $user = ($user) ? $user : Yii::$app->user->getIdentity();
+
         $query = self::find();
-        $query->addSelect(['notification.*', 
+        $query->addSelect(['notification.*',
             new \yii\db\Expression('count(distinct(originator_user_id)) as group_count'),
             new \yii\db\Expression('max(created_at) as group_created_at'),
             new \yii\db\Expression('min(seen) as group_seen'),
         ]);
+
+        $query->andWhere(['user_id' => $user->id]);
+
+        $query->andWhere(['send_web_notifications' => $sendWebNotifications]);
         $query->addGroupBy(['COALESCE(group_key, id)', 'class']);
         $query->orderBy(['group_seen' => SORT_ASC, 'group_created_at' => SORT_DESC]);
 
         return $query;
+    }
+
+    /**
+     * Finds all grouped unseen notifications for the given user or the current loggedIn user
+     * if no User instance is provided.
+     * 
+     * @param \humhub\modules\notification\models\User $user
+     * @since 1.2
+     */
+    public static function findUnseen(User $user = null)
+    {
+        return Notification::findGrouped($user)
+                        ->andWhere(['seen' => 0])
+                        ->orWhere(['IS', 'seen', new \yii\db\Expression('NULL')]);
+    }
+
+    /**
+     * Finds all grouped unseen notifications which were not already sent to the frontend.
+     * 
+     * @param \humhub\modules\notification\models\User $user
+     *  @since 1.2
+     */
+    public static function findUnnotifiedInFrontend(User $user = null)
+    {
+        return self::findUnseen($user)->andWhere(['desktop_notified' => 0]);
     }
 
 }

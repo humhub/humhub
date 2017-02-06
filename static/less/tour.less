@@ -1,0 +1,21 @@
+// TourModule
+ul.tour-list {
+  list-style: none;
+  margin-bottom: 0;
+  padding-left: 10px;
+  li {
+    padding-top: 5px;
+    a {
+      color: @info;
+      .fa {
+        width: 16px;
+      }
+    }
+  }
+  li.completed {
+    a {
+      text-decoration: line-through;
+      color: @text-color-soft;
+    }
+  }
+}

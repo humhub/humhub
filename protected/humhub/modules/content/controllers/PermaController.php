@@ -45,36 +45,13 @@ class PermaController extends Controller
         $id = (int) Yii::$app->request->get('id', "");
 
         $content = Content::findOne(['id' => $id]);
-        if ($content !== null) {
-            return $this->redirect($content->getUrl());
+        
+        if ($content !== null && $content->container !== null) {
+            return $this->redirect($content->container->createUrl(null, ['contentId' => $id]));
         }
 
         throw new HttpException(404, Yii::t('ContentModule.controllers_PermaController', 'Could not find requested content!'));
     }
-
-    /**
-     * On given WallEntryId redirect the user to the corresponding content object.
-     *
-     * This is mainly used by ActivityStream or Permalinks.
-     */
-    public function actionWallEntry()
-    {
-
-        // Id of wall entry
-        $id = Yii::$app->request->get('id', "");
-
-        $wallEntry = WallEntry::find()->joinWith('content')->where(['wall_entry.id' => $id])->one();
-
-        if ($wallEntry != null) {
-            $obj = $wallEntry->content; // Type of IContent
-            if ($obj) {
-                return $this->redirect($obj->container->createUrl(null, array('wallEntryId' => $id)));
-            }
-        }
-
-        throw new HttpException(404, Yii::t('ContentModule.controllers_PermaController', 'Could not find requested permalink!'));
-    }
-
 }
 
 ?>

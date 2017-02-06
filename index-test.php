@@ -12,15 +12,17 @@ if (!in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
 
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'test');
+defined('YII_ENV_TEST') or define('YII_ENV_TEST', true);
 
 
 require(__DIR__ . '/protected/vendor/autoload.php');
 require(__DIR__ . '/protected/vendor/yiisoft/yii2/Yii.php');
 
 $config = yii\helpers\ArrayHelper::merge(
-    require(__DIR__ . '/protected/humhub/tests/codeception/config/acceptance.php'),
     // add more configurations here
-    (is_readable(__DIR__ . '/protected/config/dynamic.php')) ? require(__DIR__ . '/protected/config/dynamic.php') : []
+    (is_readable(__DIR__ . '/protected/humhub/tests/codeception/config/dynamic.php')) ? require(__DIR__ . '/protected/humhub/tests/codeception/config/dynamic.php') : [],
+    
+    require(__DIR__ . '/protected/humhub/tests/codeception/config/acceptance.php')
 );
 
 (new humhub\components\Application($config))->run();

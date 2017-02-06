@@ -119,7 +119,7 @@ use yii\helpers\Html;
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
                                                     <td width="auto" align="center" valign="middle" height="32"
-                                                        style=" background-color:<?php echo Yii::$app->settings->get('colorPrimary'); ?>;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#ffffff; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
+                                                        style=" background-color:<?= $this->theme->variable('primary'); ?>;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#ffffff; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
 
                                                         <span style="color: #ffffff; font-weight: 300;">
                                                             <a href="<?php echo Url::toRoute(['/user/registration', 'token' => $token], true); ?>"

@@ -87,7 +87,7 @@ class TourController extends \humhub\components\Controller
             throw new HttpException(404, 'Could not find any public space to run tour!');
         }
 
-        return $this->redirect($space->createUrl('/space/space', array('tour' => true)));
+        return $this->redirect($space->createUrl('/space/space', ['tour' => true]));
     }
 
     /**

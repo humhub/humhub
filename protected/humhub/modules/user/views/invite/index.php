@@ -18,27 +18,13 @@ use yii\bootstrap\ActiveForm;
             <?php echo Yii::t('UserModule.invite', 'Please add the email addresses of people you want to invite below.'); ?>
             <br/><br/>
             <div class="form-group">
-                <?php echo $form->field($model, 'emails')->textArea(['rows' => '3', 'placeholder' => Yii::t('UserModule.invite', 'Email address(es)'), 'id' => 'emails'])->label(false)->hint(Yii::t('UserModule.invite', 'Separate multiple email addresses by comma.')); ?>
+                <?php echo $form->field($model, 'emails')->textarea(['rows' => '3', 'placeholder' => Yii::t('UserModule.invite', 'Email address(es)'), 'id' => 'emails'])->label(false)->hint(Yii::t('UserModule.invite', 'Separate multiple email addresses by comma.')); ?>
             </div>
         </div>
         <div class="modal-footer">
-
-            <?php
-            echo \humhub\widgets\AjaxButton::widget([
-                'label' => Yii::t('UserModule.invite', 'Send invite'),
-                'ajaxOptions' => [
-                    'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
-                    'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
-                    'url' => Url::to(['/user/invite']),
-                ],
-                'htmlOptions' => [
-                    'class' => 'btn btn-primary'
-                ]
-            ]);
-            ?>
-
-            <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'invite-loader', 'cssClass' => 'loader-modal hidden']); ?>
+            <a href="#" class="btn btn-primary" data-action-click="ui.modal.submit" data-action-url="<?= Url::to(['/user/invite']) ?>" data-ui-loader>
+                <?= Yii::t('UserModule.invite', 'Send invite') ?>
+            </a>
         </div>
 
         <?php ActiveForm::end(); ?>

@@ -9,8 +9,9 @@
 namespace humhub\modules\like\models;
 
 use Yii;
-
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\like\notifications\NewLike;
 
 /**
  * This is the model class for table "like".
@@ -42,6 +43,21 @@ class Like extends ContentAddonActiveRecord
     public static function tableName()
     {
         return 'like';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
+                'mustBeInstanceOf' => [
+                    \yii\db\ActiveRecord::className(),
+                ]
+            ]
+        ];
     }
 
     /**
@@ -79,16 +95,11 @@ class Like extends ContentAddonActiveRecord
     {
         Yii::$app->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
 
-        $activity = new \humhub\modules\like\activities\Liked();
-        $activity->source = $this;
-        $activity->create();
-        
-        // source itsself does not need to have creadedBy attribute
-        if ($this->getSource()->hasAttribute('content') && $this->getSource()->content->createdBy !== null) {
-            $notification = new \humhub\modules\like\notifications\NewLike();
-            $notification->source = $this;
-            $notification->originator = $this->user;
-            $notification->send($this->getSource()->content->createdBy);
+        \humhub\modules\like\activities\Liked::instance()->about($this)->save();
+
+        if ($this->getSource() instanceof ContentOwner && $this->getSource()->content->createdBy !== null) {
+            // Send notification
+            NewLike::instance()->from(Yii::$app->user->getIdentity())->about($this)->send($this->getSource()->content->createdBy);
         }
 
         return parent::afterSave($insert, $changedAttributes);

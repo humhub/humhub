@@ -22,8 +22,8 @@ namespace humhub\modules\user\behaviors;
 
 use Yii;
 use yii\base\Behavior;
-
 use humhub\modules\user\models\Follow;
+use humhub\modules\user\models\User;
 
 /**
  * HFollowableBehavior adds following methods to HActiveRecords
@@ -34,6 +34,8 @@ use humhub\modules\user\models\Follow;
  */
 class Followable extends Behavior
 {
+    
+    private $_followerCache = [];
 
     public function beforeDelete($event)
     {
@@ -47,8 +49,9 @@ class Followable extends Behavior
      * @param int $userId
      * @return Follow
      */
-    private function getFollowRecord($userId)
+    public function getFollowRecord($userId)
     {
+        $userId = ($userId instanceof User) ? $userId->id : $userId;
         return Follow::find()->where(['object_model' => $this->owner->className(), 'object_id' => $this->owner->getPrimaryKey(), 'user_id' => $userId])->one();
     }
 
@@ -56,31 +59,29 @@ class Followable extends Behavior
      * Follows the owner object
      *
      * @param int $userId
+     * @param boolean $withNotifications (since 1.2) sets the send_notifications setting of the membership default true
      * @return boolean
      */
-    public function follow($userId = "", $withNotifications = true)
+    public function follow($userId = null, $withNotifications = true)
     {
-        if ($userId == "")
+        if($userId instanceof User) {
+            $userId = $userId->id;
+        } else if (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
+        }
 
         // User cannot follow himself
-        if ($this->owner->className() == \humhub\modules\user\models\User::className() && $this->owner->getPrimaryKey() == $userId) {
+        if ($this->owner instanceof User && $this->owner->id == $userId) {
             return false;
         }
 
         $follow = $this->getFollowRecord($userId);
         if ($follow === null) {
-            $follow = new \humhub\modules\user\models\Follow();
-            $follow->user_id = $userId;
-            $follow->object_id = $this->owner->getPrimaryKey();
-            $follow->object_model = $this->owner->className();
+            $follow = new Follow(['user_id' => $userId]);
+            $follow->setPolyMorphicRelation($this->owner);
         }
 
-        if ($withNotifications) {
-            $follow->send_notifications = 1;
-        } else {
-            $follow->send_notifications = 0;
-        }
+        $follow->send_notifications = $withNotifications;
 
         if (!$follow->save()) {
             return false;
@@ -95,10 +96,13 @@ class Followable extends Behavior
      * @param int $userId
      * @return boolean
      */
-    public function unfollow($userId = "")
+    public function unfollow($userId = null)
     {
-        if ($userId == "")
+        if($userId instanceof User) {
+            $userId = $userId->id;
+        } else if (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
+        }
 
         $record = $this->getFollowRecord($userId);
         if ($record !== null) {
@@ -115,19 +119,28 @@ class Followable extends Behavior
 
     /**
      * Checks if the given user follows this owner record.
+     * 
+     * Note that the followers for this owner will be cached.
      *
      * @param int $userId
-     * @param boolean $withNotifcations if true, only return true when also notifications enabled
+     * @param boolean $withNotifications if true, only return true when also notifications enabled
      * @return boolean Is object followed by user
      */
-    public function isFollowedByUser($userId = "", $withNotifications = false)
+    public function isFollowedByUser($userId = null, $withNotifications = false)
     {
-        if ($userId == "") {
+        if($userId instanceof User) {
+            $userId = $userId->id;
+        } else if (!$userId || $userId == "") {
             $userId = \Yii::$app->user->id;
         }
 
-        $record = $this->getFollowRecord($userId);
-        if ($record !== null) {
+        if(!isset($this->_followerCache[$userId])) {
+            $this->_followerCache[$userId] = $this->getFollowRecord($userId);
+        }
+        
+        $record = $this->_followerCache[$userId];
+        
+        if ($record) {
             if ($withNotifications && $record->send_notifications == 1) {
                 return true;
             } elseif (!$withNotifications) {
@@ -208,8 +221,6 @@ class Followable extends Behavior
      */
     public function getFollowingObjects($query)
     {
-
-
         $query->leftJoin('user_follow', 'user.id=user_follow.object_id AND user_follow.object_model=:object_model', ['object_model' => $this->owner->className()]);
         $query->andWhere(['user_follow.user_id' => $this->owner->id]);
 

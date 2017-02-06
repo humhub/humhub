@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace tests\codeception\fixtures;
+namespace humhub\tests\codeception\fixtures;
 
 use yii\test\ActiveFixture;
 
@@ -14,6 +14,5 @@ class SettingFixture extends ActiveFixture
 {
 
     public $modelClass = 'humhub\models\Setting';
-    public $dataFile = '@tests/codeception/fixtures/data/setting.php';
 
 }

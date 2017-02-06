@@ -28,9 +28,14 @@ class NewLike extends BaseNotification
     /**
      * @inheritdoc
      */
-    public static function getTitle()
+    public $viewName = 'newLike';
+
+    /**
+     * @inheritdoc
+     */
+    public function category()
     {
-        return Yii::t('LikeModule.notifiations_NewLike', 'New Like');
+        return new LikeNotificationCategory();
     }
 
     /**
@@ -45,20 +50,46 @@ class NewLike extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function getAsHtml()
+    public function getTitle(\humhub\modules\user\models\User $user)
     {
         $contentInfo = $this->getContentInfo($this->getLikedRecord());
 
         if ($this->groupCount > 1) {
-            return Yii::t('LikeModule.notification', "{displayNames} likes {contentTitle}.", array(
+            return Yii::t('LikeModule.notification', "{displayNames} likes your {contentTitle}.", [
+                        'displayNames' => strip_tags($this->getGroupUserDisplayNames()),
+                        'contentTitle' => $contentInfo
+            ]);
+        }
+        
+        return Yii::t('LikeModule.notification', "{displayName} likes your {contentTitle}.", [
+                    'displayName' => Html::encode($this->originator->displayName),
+                    'contentTitle' => $contentInfo
+        ]);
+    }
+
+    public function getLikedReccord()
+    {
+        return $this->source->getPolyMorphicRelation();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function html()
+    {
+        $contentInfo = $this->getContentInfo($this->getLikedRecord());
+
+        if ($this->groupCount > 1) {
+            return Yii::t('LikeModule.notification', "{displayNames} likes {contentTitle}.", [
                         'displayNames' => $this->getGroupUserDisplayNames(),
                         'contentTitle' => $contentInfo
-            ));
+            ]);
         }
-        return Yii::t('LikeModule.notification', "{displayName} likes {contentTitle}.", array(
+
+        return Yii::t('LikeModule.notification', "{displayName} likes {contentTitle}.", [
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
                     'contentTitle' => $contentInfo
-        ));
+        ]);
     }
 
     /**

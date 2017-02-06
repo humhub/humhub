@@ -20,20 +20,99 @@ use humhub\modules\user\models\GroupPermission;
 class PermissionManager extends \yii\base\Component
 {
 
+    /**
+     * User identity.
+     * @var \humhub\modules\user\models\User 
+     */
+    public $subject;
+
+    /**
+     * Cached Permission array.
+     * @var array 
+     */
     protected $permissions = null;
 
-    public function can(BasePermission $permission)
+    /**
+     * Permission access cache.
+     * @var array 
+     */
+    protected $_access = [];
+
+    /**
+     * Verifies a given $permission or $permission array for a permission subject.
+     * 
+     * If $params['all'] is set to true and a $permission array is given all given permissions
+     * have to be verified successfully otherwise (default) only one permission test has to pass.
+     * 
+     * @param type $permission
+     * @param type $params
+     * @param type $allowCaching
+     * @return boolean
+     */
+    public function can($permission, $params = [], $allowCaching = true)
     {
-        $groups = Yii::$app->user->getIdentity()->groups;
-        if ($this->getGroupState($groups, $permission) == BasePermission::STATE_ALLOW) {
-            return true;
+        if (is_array($permission)) {
+            $verifyAll = isset($params['all']) ? $params['all'] : false;
+            foreach ($permission as $current) {
+                $can = $this->can($current, $params, $allowCaching);
+                if ($can && !$verifyAll) {
+                    return true;
+                } else if (!$can && $verifyAll) {
+                    return false;
+                }
+            }
+            return false;
+        } else if ($allowCaching) {
+            $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
+            $key = $permission::className();
+            if (!isset($this->_access[$key])) {
+                $this->_access[$key] = $this->verify($permission);
+            }
+            return $this->_access[$key];
+        } else {
+            $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
+            return $this->verify($permission);
+        }
+    }
+
+    /**
+     * Verifies a single permission for a given permission subject.
+     * 
+     * @param BasePermission $permission
+     * @return boolean
+     */
+    protected function verify(BasePermission $permission)
+    {
+        $subject = $this->getSubject();
+        if ($subject) {
+            return $this->getGroupState($subject->groups, $permission) == BasePermission::STATE_ALLOW;
         }
 
         return false;
     }
 
     /**
-     * Sets the state for a group
+     * Returns the permission subject identity.
+     * If the permission objects $subject property is not set this method returns the currently 
+     * logged in user identity.
+     * 
+     * @return \humhub\modules\user\models\User
+     */
+    protected function getSubject()
+    {
+        return ($this->subject != null) ? $this->subject : Yii::$app->user->getIdentity();
+    }
+
+    /**
+     * Clears access cache
+     */
+    public function clear()
+    {
+        $this->_access = [];
+    }
+
+    /**
+     * Sets the state for a given groupId.
      * 
      * @param string $groupId
      * @param BasePermission $permission
@@ -62,7 +141,7 @@ class PermissionManager extends \yii\base\Component
         $record->state = $state;
         $record->save();
     }
-    
+
     /**
      * Returns the group permission state of the given group or goups.
      * If the provided $group is an array we check if one of the group states
@@ -75,11 +154,11 @@ class PermissionManager extends \yii\base\Component
      */
     public function getGroupState($groups, BasePermission $permission, $returnDefaultState = true)
     {
-        if(is_array($groups)) {
+        if (is_array($groups)) {
             $state = "";
-            foreach($groups as $group) {
+            foreach ($groups as $group) {
                 $state = $this->getSingleGroupState($group, $permission, $returnDefaultState);
-                if($state === BasePermission::STATE_ALLOW) {
+                if ($state === BasePermission::STATE_ALLOW) {
                     return $state;
                 }
             }
@@ -98,10 +177,10 @@ class PermissionManager extends \yii\base\Component
      */
     private function getSingleGroupState($groupId, BasePermission $permission, $returnDefaultState = true)
     {
-        if($groupId instanceof \humhub\modules\user\models\Group) {
+        if ($groupId instanceof \humhub\modules\user\models\Group) {
             $groupId = $groupId->id;
         }
-        
+
         // Check if database entry exists
         $dbRecord = $this->getGroupStateRecord($groupId, $permission);
 
@@ -207,13 +286,18 @@ class PermissionManager extends \yii\base\Component
     /**
      * Returns Permission Array
      * 
-     * @param type $groupId
-     * @return type
+     * @param int $groupId id of the group
+     * @return array the permission array
      */
-    public function createPermissionArray($groupId)
+    public function createPermissionArray($groupId, $returnOnlyChangeable = false)
     {
+
         $permissions = [];
         foreach ($this->getPermissions() as $permission) {
+            if ($returnOnlyChangeable && !$permission->canChangeState($groupId)) {
+                continue;
+            }
+
             $permissions[] = [
                 'id' => $permission->id,
                 'title' => $permission->title,
@@ -221,7 +305,7 @@ class PermissionManager extends \yii\base\Component
                 'moduleId' => $permission->moduleId,
                 'permissionId' => $permission->id,
                 'states' => [
-                    BasePermission::STATE_DEFAULT => BasePermission::getLabelForState('') . ' - ' . BasePermission::getLabelForState($permission->getDefaultState($groupId)),
+                    BasePermission::STATE_DEFAULT => BasePermission::getLabelForState(BasePermission::STATE_DEFAULT) . ' - ' . BasePermission::getLabelForState($permission->getDefaultState($groupId)),
                     BasePermission::STATE_DENY => BasePermission::getLabelForState(BasePermission::STATE_DENY),
                     BasePermission::STATE_ALLOW => BasePermission::getLabelForState(BasePermission::STATE_ALLOW),
                 ],

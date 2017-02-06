@@ -158,7 +158,11 @@ class ModuleManager extends \yii\base\Component
         // Register Event Handlers
         if (isset($config['events'])) {
             foreach ($config['events'] as $event) {
-                Event::on($event['class'], $event['event'], $event['callback']);
+                if (isset($event['class'])) {
+                    Event::on($event['class'], $event['event'], $event['callback']);
+                } else {
+                    Event::on($event[0], $event[1], $event[2]);
+                }
             }
         }
     }
@@ -324,6 +328,16 @@ class ModuleManager extends \yii\base\Component
         $this->enabledModules[] = $module->id;
         $this->register($module->getBasePath());
     }
+    
+    public function enableModules($modules = [])
+    {
+        foreach ($modules as $module) {
+            $module = ($module instanceof Module) ? $module : $this->getModule($module);
+            if($module != null) {
+                $module->enable();
+            }
+        }
+    }
 
     /**
      * Disables a module
@@ -343,6 +357,16 @@ class ModuleManager extends \yii\base\Component
         }
 
         Yii::$app->setModule($module->id, 'null');
+    }
+    
+    public function disableModules($modules = [])
+    {
+        foreach ($modules as $module) {
+            $module = ($module instanceof Module) ? $module : $this->getModule($module);
+            if($module != null) {
+                $module->disable();
+            }
+        }
     }
 
 }

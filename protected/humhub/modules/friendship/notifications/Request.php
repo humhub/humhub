@@ -24,6 +24,11 @@ class Request extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = "friendship";
+    
+    /**
+     * @inheritdoc
+     */
+    public $viewName = 'friendshipRequest';
 
     /**
      * @inheritdoc
@@ -37,23 +42,31 @@ class Request extends BaseNotification
     {
         return $this->originator->getUrl();
     }
-
+    
     /**
      * @inheritdoc
      */
-    public static function getTitle()
+    public function category()
     {
-        return Yii::t('FriendshipModule.notifications_Request', 'Friendship Request');
+        return new FriendshipNotificationCategory;
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getTitle(\humhub\modules\user\models\User $user)
+    {
+        return strip_tags($this->html());
     }
 
     /**
      * @inheritdoc
      */
-    public function getAsHtml()
+    public function html()
     {
-        return Yii::t('FriendshipModule.notification', '{displayName} sent you a friend request.', array(
+        return Yii::t('FriendshipModule.notification', '{displayName} sent you a friend request.', [
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-        ));
+        ]);
     }
 
 }

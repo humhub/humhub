@@ -12,6 +12,8 @@ use Yii;
 use humhub\libs\ThemeHelper;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\models\Log;
+use humhub\modules\notification\models\forms\NotificationSettings;
 
 /**
  * SettingController
@@ -20,6 +22,11 @@ use humhub\modules\admin\components\Controller;
  */
 class SettingController extends Controller
 {
+
+    /**
+     * @inheritdoc
+     */
+    public $adminOnly = false;
 
     /**
      * @inheritdoc
@@ -45,6 +52,16 @@ class SettingController extends Controller
         return parent::init();
     }
 
+    /**
+     * @inheritdoc
+     */
+    public static function getAccessRules()
+    {
+        return [
+            ['permissions' => \humhub\modules\admin\permissions\ManageSettings::className()]
+        ];
+    }
+
     public function actionIndex()
     {
         return $this->redirect(['basic']);
@@ -57,7 +74,7 @@ class SettingController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\BasicSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['/admin/setting/basic']);
         }
 
@@ -89,7 +106,7 @@ class SettingController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             Yii::$app->cache->flush();
             Yii::$app->assetManager->clear();
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
+            $this->view->success(Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
             return $this->redirect(['/admin/setting/caching']);
         }
 
@@ -109,8 +126,7 @@ class SettingController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\StatisticSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['/admin/setting/statistic']);
         }
 
@@ -118,16 +134,16 @@ class SettingController extends Controller
     }
 
     /**
-     * E-Mail Mailing Settings
+     * Notification Mailing Settings
      */
-    public function actionMailing()
+    public function actionNotification()
     {
-        $form = new \humhub\modules\admin\models\forms\MailingDefaultsForm();
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+        $form = new NotificationSettings();
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
+            $this->view->saved();
         }
 
-        return $this->render('mailing', array('model' => $form));
+        return $this->render('notification', ['model' => $form]);
     }
 
     /**
@@ -137,7 +153,7 @@ class SettingController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\MailingSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['/admin/setting/mailing-server']);
         }
 
@@ -151,7 +167,7 @@ class SettingController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\DesignSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['/admin/setting/design']);
         }
 
@@ -170,7 +186,7 @@ class SettingController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\FileSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['/admin/setting/file']);
         }
 
@@ -198,7 +214,7 @@ class SettingController extends Controller
 
 
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_ProxyController', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['/admin/setting/proxy']);
         }
 
@@ -212,6 +228,39 @@ class SettingController extends Controller
     {
         $providers = UrlOembed::getProviders();
         return $this->render('oembed', array('providers' => $providers));
+    }
+
+    public function actionLogs()
+    {
+        $logsCount = Log::find()->count();
+        $dating = Log::find()
+            ->orderBy('log_time', 'asc')
+            ->limit(1)
+            ->one();
+
+        // I wish..
+        if ($dating) {
+            $dating = date('Y-m-d H:i:s', $dating->log_time);
+        } else {
+            $dating = "the begining of time";
+        }
+
+        $form = new \humhub\modules\admin\models\forms\LogsSettingsForm;
+        $limitAgeOptions = $form->options;
+        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
+
+            $timeAgo = strtotime($form->logsDateLimit);
+            Log::deleteAll(['<', 'log_time', $timeAgo]);
+            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            return $this->redirect(['/admin/setting/logs']);
+        }
+
+        return $this->render('logs', array(
+            'logsCount' => $logsCount,
+            'model' => $form,
+            'limitAgeOptions' => $limitAgeOptions,
+            'dating' => $dating
+        ));
     }
 
     /**

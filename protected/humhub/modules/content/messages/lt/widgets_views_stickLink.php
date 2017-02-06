@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Stick' => 'Prisegti',
-  'Unstick' => 'Atsegti',
+  'Pinned' => 'Prisegti',
+  'Unpinned' => 'Atsegti',
 );

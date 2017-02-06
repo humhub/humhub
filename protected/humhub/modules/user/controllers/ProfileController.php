@@ -10,6 +10,7 @@ namespace humhub\modules\user\controllers;
 
 use Yii;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
 
@@ -44,8 +45,8 @@ class ProfileController extends ContentContainerController
     {
         return array(
             'stream' => array(
-                'class' => \humhub\modules\content\components\actions\ContentContainerStream::className(),
-                'mode' => \humhub\modules\content\components\actions\ContentContainerStream::MODE_NORMAL,
+                'class' => ContentContainerStream::className(),
+                'mode' => ContentContainerStream::MODE_NORMAL,
                 'contentContainer' => $this->contentContainer
             ),
         );
@@ -83,10 +84,11 @@ class ProfileController extends ContentContainerController
     public function actionFollow()
     {
         $this->forcePostRequest();
-        $this->getUser()->follow();
+        $this->getUser()->follow(Yii::$app->user->getIdentity(), false);
 
         if (Yii::$app->request->isAjax) {
-            return;
+            Yii::$app->response->format = 'json';
+            return ['success' => true];
         }
 
         return $this->redirect($this->getUser()->getUrl());
@@ -98,7 +100,8 @@ class ProfileController extends ContentContainerController
         $this->getUser()->unfollow();
 
         if (Yii::$app->request->isAjax) {
-            return;
+            Yii::$app->response->format = 'json';
+            return ['success' => true];
         }
 
         return $this->redirect($this->getUser()->getUrl());

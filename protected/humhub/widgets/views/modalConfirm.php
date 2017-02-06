@@ -67,7 +67,7 @@ if ($confirmJS != "") {
                         ],
                         'htmlOptions' => [
                             'return' => 'true',
-                            'class' => 'btn btn-primary',
+                            'class' => 'btn btn-primary modalConfirm',
                             'data-dismiss' => 'modal'
                         ]
                     ]);

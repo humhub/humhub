@@ -4,6 +4,8 @@ assets/*
 protected/runtime/*
 !protected/runtime/.gitignore
 
+node_modules
+
 protected/config/local/*
 !protected/config/local/.gitignore
 
@@ -31,3 +33,4 @@ favicon.ico
 /.settings
 /.buildpath
 /.project
+/protected/vendor/

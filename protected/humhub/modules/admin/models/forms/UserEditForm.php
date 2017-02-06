@@ -1,13 +1,7 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace humhub\modules\admin\models\forms;
 
+use Yii;
 use humhub\modules\user\models\Group;
 
 
@@ -46,8 +40,7 @@ class UserEditForm extends \humhub\modules\user\models\User
         
         parent::init();
     }
-    
-    
+        
     public function scenarios()
     {
         $scenarios = parent::scenarios();
@@ -69,22 +62,23 @@ class UserEditForm extends \humhub\modules\user\models\User
      */
     public function afterSave($insert, $changedAttributes)
     {
-        //Check old group selection and remove non selected groups
-        foreach($this->currentGroups as $userGroup) {
-            if(!$this->isInGroupSelection($userGroup)) {
-                $this->getGroupUsers()->where(['group_id' => $userGroup->id])->one()->delete();
+        if(Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageGroups())) {
+            //Check old group selection and remove non selected groups
+            foreach($this->currentGroups as $userGroup) {
+                if(!$this->isInGroupSelection($userGroup)) {
+                    $this->getGroupUsers()->where(['group_id' => $userGroup->id])->one()->delete();
+                }
+            }
+
+            $this->groupSelection = ($this->groupSelection == null) ? [] : $this->groupSelection;
+
+            //Add all new selectedGroups to the given user
+            foreach ($this->groupSelection as $groupId) {
+                if (!$this->isCurrentlyMemberOf($groupId)) {
+                    Group::findOne($groupId)->addUser($this);
+                }
             }
         }
-        
-        $this->groupSelection = ($this->groupSelection == null) ? [] : $this->groupSelection;
-        
-        //Add all new selectedGroups to the given user
-        foreach ($this->groupSelection as $groupId) {
-            if (!$this->isCurrentlyMemberOf($groupId)) {
-                Group::findOne($groupId)->addUser($this);
-            }
-        }
-        
         return parent::afterSave($insert, $changedAttributes);
     }
     

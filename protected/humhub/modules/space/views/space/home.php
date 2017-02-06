@@ -10,7 +10,7 @@ if ($canCreatePosts) {
     $emptyMessage = Yii::t('SpaceModule.views_space_index', '<b>You are not member of this space and there is no public content, yet!</b>');
 }
 
-echo \humhub\modules\content\widgets\Stream::widget([
+echo humhub\modules\stream\widgets\StreamViewer::widget([
     'contentContainer' => $space,
     'streamAction' => '/space/space/stream',
     'messageStreamEmpty' => $emptyMessage,
