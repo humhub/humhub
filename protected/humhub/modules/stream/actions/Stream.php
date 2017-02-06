@@ -14,7 +14,6 @@ use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
 use humhub\modules\stream\models\StreamQuery;
 use yii\base\ActionEvent;
-use yii\base\Exception;
 
 /**
  * Stream is the basic action for content streams.
@@ -229,7 +228,7 @@ abstract class Stream extends Action
         foreach ($this->streamQuery->all() as $content) {
             try {
                 $output['content'][$content->id] = static::getContentResultEntry($content);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Don't kill the stream action in prod environments in case the rendering of an entry fails.
                 if (YII_ENV_PROD) {
                     Yii::error($e);
