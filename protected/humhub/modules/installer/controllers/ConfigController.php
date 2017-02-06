@@ -235,7 +235,7 @@ class ConfigController extends Controller
                 // Add sample image to admin
                 $admin = User::find()->where(['id' => 1])->one();
                 $adminImage = new \humhub\libs\ProfileImage($admin->guid);
-                $adminImage->setNew(Yii::getAlias("@webroot/resources/installer/user_male_1.jpg"));
+                $adminImage->setNew(Yii::getAlias("@webroot-static/resources/installer/user_male_1.jpg"));
 
                 // Create second user
                 $userModel = new User();
@@ -251,7 +251,7 @@ class ConfigController extends Controller
                 $userModel->save();
 
                 $profileImage = new \humhub\libs\ProfileImage($userModel->guid);
-                $profileImage->setNew(Yii::getAlias("@webroot/resources/installer/user_male_2.jpg"));
+                $profileImage->setNew(Yii::getAlias("@webroot-static/resources/installer/user_male_2.jpg"));
 
                 $profileModel->user_id = $userModel->id;
                 $profileModel->firstname = "David";
@@ -277,7 +277,7 @@ class ConfigController extends Controller
                 $userModel2->save();
 
                 $profileImage2 = new \humhub\libs\ProfileImage($userModel2->guid);
-                $profileImage2->setNew(Yii::getAlias("@webroot/resources/installer/user_female_1.jpg"));
+                $profileImage2->setNew(Yii::getAlias("@webroot-static/resources/installer/user_female_1.jpg"));
 
                 $profileModel2->user_id = $userModel2->id;
                 $profileModel2->firstname = "Sara";
