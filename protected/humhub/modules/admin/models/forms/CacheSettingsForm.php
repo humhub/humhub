@@ -14,6 +14,7 @@ class CacheSettingsForm extends Model
 {
 
     public $type;
+    public $useApcu;
     public $expireTime;
 
     /**
@@ -25,6 +26,7 @@ class CacheSettingsForm extends Model
 
         $settingsManager = Yii::$app->settings;
         $this->type = $settingsManager->get('cache.class');
+        $this->useApcu = $settingsManager->get('cache.useApcu');
         $this->expireTime = $settingsManager->get('cache.expireTime');
     }
 
@@ -36,7 +38,7 @@ class CacheSettingsForm extends Model
         return array(
             array(['type', 'expireTime'], 'required'),
             array('type', 'checkCacheType'),
-            array('expireTime', 'integer'),
+            array(['expireTime', 'useApcu'], 'integer'),
             array('type', 'in', 'range' => array_keys($this->getTypes())),
         );
     }
@@ -48,6 +50,7 @@ class CacheSettingsForm extends Model
     {
         return array(
             'type' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'Cache Backend'),
+            'useApcu' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'Use APCu'),
             'expireTime' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'Default Expire Time (in seconds)'),
         );
     }
@@ -69,7 +72,7 @@ class CacheSettingsForm extends Model
      */
     public function checkCacheType($attribute, $params)
     {
-        if ($this->type == 'yii\caching\ApcCache' && !function_exists('apc_add')) {
+        if ($this->type == 'yii\caching\ApcCache' && (!function_exists('apc_add') && !function_exists('apcu_add'))) {
             $this->addError($attribute, \Yii::t('AdminModule.forms_CacheSettingsForm', "PHP APC Extension missing - Type not available!"));
         }
     }
@@ -84,6 +87,7 @@ class CacheSettingsForm extends Model
         $settingsManager = Yii::$app->settings;
 
         $settingsManager->set('cache.class', $this->type);
+        $settingsManager->set('cache.useApcu', $this->useApcu);
         $settingsManager->set('cache.expireTime', $this->expireTime);
 
         \humhub\libs\DynamicConfig::rewrite();

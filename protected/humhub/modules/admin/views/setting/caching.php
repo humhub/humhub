@@ -14,7 +14,16 @@ use humhub\models\Setting;
 <div class="form-group">
     <?php echo $form->labelEx($model, 'type'); ?>
     <?php echo $form->dropDownList($model, 'type', $cacheTypes, array('class' => 'form-control', 'readonly' => Setting::IsFixed('cache.class'))); ?>
-    <br>
+    <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_caching', 'PHP 7.0 and above use APCu instead of APC!') ?></p>
+</div>
+
+<div class="form-group">
+    <div class="checkbox">
+        <label>
+            <?php echo $form->checkBox($model, 'useApcu', array('disabled' => Setting::IsFixed('cache.useApcu'))); ?>
+            <?php echo $model->getAttributeLabel('useApcu'); ?>
+        </label>
+    </div>
 </div>
 
 <div class="form-group">
