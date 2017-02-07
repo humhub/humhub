@@ -128,6 +128,10 @@ humhub.module('notification', function (module, require, $) {
         if (!response) {
             return;
         }
+        
+        if(!module.config.sendDesktopNotifications) {
+            return;
+        }
 
         if (response.text) { // Single Notification
             module.sendDesktopNotifiaction(response.text);
