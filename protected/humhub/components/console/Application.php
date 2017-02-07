@@ -36,6 +36,7 @@ class Application extends \yii\console\Application
             if (!empty($baseUrl)) {
                 Yii::setAlias('@web', $baseUrl);
                 Yii::setAlias('@web-static', '@web/static');
+                Yii::setAlias('@webroot-static', '@webroot/static');
 
                 $this->urlManager->scriptUrl = $baseUrl;
                 $this->urlManager->baseUrl = $baseUrl;
