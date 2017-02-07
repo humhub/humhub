@@ -182,7 +182,9 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
             } elseif (isset($attributes['mail'])) {
                 $this->idAttribute = 'mail';
                 $this->userTableIdAttribute = 'email';
-            } elseif (isset($attributes['uid'])) { $this->idAttribute = 'uid'; $this->userTableIdAttribute = 'username';
+            } elseif (isset($attributes['uid'])) {
+                $this->idAttribute = 'uid';
+                $this->userTableIdAttribute = 'username';
                 throw new \yii\base\Exception("Could not automatically determine unique user id from ldap node!");
             }
         }
