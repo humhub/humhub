@@ -80,7 +80,7 @@ class ViewPathRenderer extends \yii\base\Object implements Renderer
      * Returnes the viewFile of the given Viewable.
      * 
      * @param \humhub\components\rendering\Viewable $viewable
-     * @return type
+     * @return string|null the view filename or null when not exists
      */
     public function getViewFile(Viewable $viewable)
     {
@@ -93,8 +93,8 @@ class ViewPathRenderer extends \yii\base\Object implements Renderer
             // Fallback to original file without subPath
             return $this->getViewPath($viewable, false) . DIRECTORY_SEPARATOR . $viewFileName;
         }
-
-        throw new \yii\base\InvalidConfigException("Could not find view file");
+        
+        return null;
     }
 
     /**
