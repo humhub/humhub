@@ -67,6 +67,7 @@ class AccountTopMenu extends BaseMenu
             'label' => Yii::t('base', 'Logout'),
             'id' => 'account-logout',
             'icon' => '<i class="fa fa-sign-out"></i>',
+            'pjax' => false,
             'url' => Url::toRoute('/user/auth/logout'),
             'sortOrder' => 700,
         ));
