@@ -106,6 +106,8 @@ humhub.module('notification', function (module, require, $) {
         
         $('#badge-notifications').hide();
         if (!$count) {
+            updateTitle(false);
+            $('#badge-notifications').html('0');
             $('#mark-seen-link').hide();
             $('#icon-notifications .fa').removeClass("animated swing");
         } else {
@@ -175,10 +177,11 @@ humhub.module('notification', function (module, require, $) {
     };
 
     NotificationDropDown.prototype.markAsSeen = function (evt) {
+        var that = this;
         return client.post(evt).then(function (response) {
             $('#badge-notifications').hide();
             $('#mark-seen-link').hide();
-            updateTitle(false);
+            that.updateCount(0);
         }).catch(function (e) {
             module.log.error(e, true);
         });

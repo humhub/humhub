@@ -40,6 +40,7 @@ class CoreJsConfig extends Widget
                         'type' => 'humhub.modules.live.poll.PollClient',
                         'options' => [
                             'url' => Url::to(['/live/poll']),
+                            'initTime' => time(),
                             'minInterval' => $liveModule->minPollInterval, // Minimal polling request interval in seconds.
                             'maxInterval' => $liveModule->maxPollInterval, // Maximal polling request interval in seconds.
                             'idleFactor' => $liveModule->idleFactor, // Factor used in the actual interval calculation in case of user idle.

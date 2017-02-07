@@ -20,6 +20,7 @@ humhub.module('live.poll', function (module, require, $) {
         this.options.maxInterval = options.maxInterval || DEFAULT_MAX_INTERVAL;
         this.options.idleFactor = options.idleFactor || DEFAULT_IDLE_FACTOR;
         this.options.idleInterval = options.idleDelay || DEFAULT_IDLE_INTERVAL;
+        this.options.initTime = options.initTime || Date.now();
         this.init();
     };
 
@@ -32,6 +33,7 @@ humhub.module('live.poll', function (module, require, $) {
         this.delay = this.options.minInterval;
         this.call = $.proxy(this.update, this);
         this.handle = $.proxy(this.handleUpdate, this);
+        this.lastTs = this.options.initTime;
         
         
         var that = this;
