@@ -29,7 +29,7 @@ use Yii;
  */
 class ViewPathRenderer extends \yii\base\Object implements Renderer
 {
-    
+
     /**
      * Can be used to search the parent's view folder (e.g. the modules base view folder) for the view file.
      * Otherwise this renderer searches for a direct views subdirectory.
@@ -38,7 +38,7 @@ class ViewPathRenderer extends \yii\base\Object implements Renderer
      * @var boolean if set to true the renderer will search in the parents view directory for the view.
      */
     public $parent = false;
-    
+
     /**
      * @var string a subpath within the view folder used for searching the view e.g mails. This will only be used if $viewPath is not given.
      */
@@ -84,9 +84,19 @@ class ViewPathRenderer extends \yii\base\Object implements Renderer
      */
     public function getViewFile(Viewable $viewable)
     {
-        return $this->getViewPath($viewable) . '/' . $this->suffix($viewable->getViewName());
+        $viewFileName = $this->suffix($viewable->getViewName());
+        $viewPath = $this->getViewPath($viewable);
+
+        if (file_exists($viewPath . DIRECTORY_SEPARATOR . $viewFileName)) {
+            return $viewPath . DIRECTORY_SEPARATOR . $viewFileName;
+        } elseif (!empty($this->subPath)) {
+            // Fallback to original file without subPath
+            return $this->getViewPath($viewable, false) . DIRECTORY_SEPARATOR . $viewFileName;
+        }
+
+        throw new \yii\base\InvalidConfigException("Could not find view file");
     }
-    
+
     /**
      * Checks if the given $viewName has a file suffix or not.
      * If the viewName does not have a suffix we assume a php file and append '.php'.
@@ -103,28 +113,29 @@ class ViewPathRenderer extends \yii\base\Object implements Renderer
             return $viewName;
         }
     }
-    
 
     /**
      * Returns the directory containing the view files for this event.
      * The default implementation returns the 'views' subdirectory under the directory containing the notification class file.
+     * 
+     * @param Viewable $viewable The viewable
+     * @param boolean $useSubPath use the subpath if provided
      * @return string the directory containing the view files for this notification.
      */
-    public function getViewPath(Viewable $viewable)
+    public function getViewPath(Viewable $viewable, $useSubPath = true)
     {
         if ($this->viewPath) {
             return Yii::getAlias($this->viewPath);
         }
 
         $class = new \ReflectionClass($viewable);
-        
-        $dir = ($this->parent) ? dirname(dirname($class->getFileName())) . '/' . 'views'
-                : dirname($class->getFileName()) . '/' . 'views';  
-        
-        if(!empty($this->subPath)) {
-            $dir .= '/' . $this->subPath;
+
+        $dir = ($this->parent) ? dirname(dirname($class->getFileName())) . '/' . 'views' : dirname($class->getFileName()) . '/' . 'views';
+
+        if (!empty($this->subPath) && $useSubPath) {
+            $dir .= DIRECTORY_SEPARATOR . $this->subPath;
         }
-        
+
         return $dir;
     }
 
