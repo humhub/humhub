@@ -30,6 +30,9 @@ class Liked extends BaseActivity implements ConfigurableActivityInterface
      */
     public $viewName = 'liked';
 
+    /**
+     * @inheritdoc
+     */
     public function getViewParams($params = array())
     {
         $like = $this->source;

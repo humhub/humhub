@@ -34,19 +34,6 @@ class ContentCreated extends BaseActivity implements ConfigurableActivityInterfa
     /**
      * @inheritdoc
      */
-    public function render($params = array())
-    {
-        if ($this->source === null) {
-            Yii::error('Could not render ContentCreated Activity without given source - ' . $this->record->id);
-            return;
-        }
-
-        return parent::render($params);
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getTitle()
     {
         return Yii::t('ContentModule.activities', 'Contents');
