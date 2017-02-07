@@ -50,15 +50,6 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getViewParams($params = [])
-    {
-        $params['clickable'] = $this->clickable;
-        return parent::getViewParams($params);
-    }
-
-    /**
      * Stores the activity in database
      * 
      * @return boolean 
@@ -119,6 +110,12 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
         return $this;
     }
 
+    /**
+     * Saves the underlying Activity model record.
+     * 
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\Exception
+     */
     private function saveModelInstance()
     {
         $this->record->setPolymorphicRelation($this->source);
@@ -139,11 +136,21 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
         }
     }
 
+    /**
+     * Returns the visibility of the content
+     * 
+     * @return int the visibility
+     */
     protected function getContentVisibility()
     {
         return $this->hasContent() ? $this->getContent()->visibility : $this->visibility;
     }
 
+    /**
+     * Returns the user id of the originator of this activity
+     * 
+     * @return int user id
+     */
     protected function getOriginatorId()
     {
         if ($this->originator !== null) {
