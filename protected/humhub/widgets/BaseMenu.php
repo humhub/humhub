@@ -95,13 +95,16 @@ class BaseMenu extends \yii\base\Widget
         }
 
 
-
         if (!isset($item['group'])) {
             $item['group'] = '';
         }
 
         if (!isset($item['htmlOptions'])) {
             $item['htmlOptions'] = array();
+        }
+        
+        if (!isset($item['pjax'])) {
+            $item['pjax'] = true;
         }
 
         /**

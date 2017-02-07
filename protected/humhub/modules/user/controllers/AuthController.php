@@ -78,14 +78,14 @@ class AuthController extends Controller
         $invite = new Invite();
         $invite->scenario = 'invite';
         if ($invite->load(Yii::$app->request->post()) && $invite->selfInvite()) {
-            if (Yii::$app->request->getIsAjax()) {
-                return $this->render('register_success_modal', ['model' => $invite]);
+            if (Yii::$app->request->isAjax) {
+                return $this->renderAjax('register_success_modal', ['model' => $invite]);
             } else {
                 return $this->render('register_success', ['model' => $invite]);
             }
         }
 
-        if (Yii::$app->request->getIsAjax()) {
+        if (Yii::$app->request->isAjax) {
             return $this->renderAjax('login_modal', array('model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()));
         }
         return $this->render('login', array('model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()));

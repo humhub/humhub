@@ -71,5 +71,12 @@ class MailNotificationTarget extends NotificationTarget
 
         Yii::$app->i18n->autosetLocale();
     }
-
+    
+    /**
+     * @inheritdoc
+     */
+    public function isActive(User $user = null)
+    {
+        return Yii::$app->params['installed'];
+    }
 }
