@@ -153,7 +153,7 @@ abstract class NotificationTarget extends \yii\base\Object
      * Used for handling the given $notification for multiple $users.
      * 
      * @param BaseNotification $notification
-     * @param type $users
+     * @param User[] $users
      */
     public function sendBulk(BaseNotification $notification, $users)
     {
