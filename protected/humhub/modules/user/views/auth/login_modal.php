@@ -126,10 +126,6 @@ use humhub\modules\user\widgets\AuthChoice;
 </div>
 
 <script type="text/javascript">
-    // Replace the standard checkbox and radio buttons
-    $('body').find(':checkbox, :radio').flatelements();
-
-
     $(document).on('ready pjax:success', function () {
         $('#login_username').focus();
 
@@ -137,10 +133,9 @@ use humhub\modules\user\widgets\AuthChoice;
 
     $('.tab-register a').on('shown.bs.tab', function (e) {
         $('#register-email').focus();
-    })
+    });
 
     $('.tab-login a').on('shown.bs.tab', function (e) {
         $('#login_username').focus();
-    })
-
+    });
 </script>

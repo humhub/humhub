@@ -68,4 +68,12 @@ class MailNotificationTarget extends NotificationTarget
                         ->setTo($recipient->email)
                         ->setSubject($notification->getTitle($recipient))->send();
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function isActive(User $user = null)
+    {
+        return Yii::$app->params['installed'];
+    }
 }
