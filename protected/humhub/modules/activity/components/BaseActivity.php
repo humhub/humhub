@@ -50,6 +50,15 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
     }
 
     /**
+     * @inheritdoc		
+     */
+    public function getViewParams($params = [])
+    {
+        $params['clickable'] = $this->clickable;
+        return parent::getViewParams($params);
+    }
+
+    /**
      * Stores the activity in database
      * 
      * @return boolean 
