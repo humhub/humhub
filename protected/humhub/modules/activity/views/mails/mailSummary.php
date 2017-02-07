@@ -1,4 +1,3 @@
-<?php $this->beginContent('@activity/views/layouts/mail.php', $_params_); ?>
 <tr>
     <td align="center" valign="top"  class="fix-box">
 
@@ -57,4 +56,3 @@
 </tr>
 
 <?= $activities; ?>
-<?php $this->endContent(); ?>
