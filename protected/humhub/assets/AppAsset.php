@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -11,8 +11,11 @@ namespace humhub\assets;
 use yii\web\AssetBundle;
 
 /**
- * The AppAsset assets are included in the core layout.
+ * AppAsset includes HumHub core assets to the main layout.
  * This Assetbundle includes some core dependencies and the humhub core api.
+ * 
+ * Note: All CSS/JS files will be compressed and bundled. If you need dynamic
+ * css/js loading e.g. based on users locale: see AppDynamicAsset
  */
 class AppAsset extends AssetBundle
 {
@@ -89,5 +92,15 @@ class AppAsset extends AssetBundle
         'humhub\assets\IEFixesAsset',
         'humhub\assets\PagedownConverterAsset',
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public static function register($view)
+    {
+        $view->registerAssetBundle(AppDynamicAsset::class);
+
+        return parent::register($view);
+    }
 
 }
