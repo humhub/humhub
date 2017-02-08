@@ -5,13 +5,41 @@ use yii\db\Migration;
 
 class m160205_203913_foreign_keys extends Migration
 {
+
     public function up()
     {
-        $this->addForeignKey('fk_space_membership-user_id', 'space_membership', 'user_id', 'user', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('fk_space_membership-space_id', 'space_membership', 'space_id', 'space', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('fk_space_module-space_id', 'space_module', 'space_id', 'space', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('fk_space-wall_id', 'space', 'wall_id', 'wall', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('fk_space_module-module_id', 'space_module', 'module_id', 'module_enabled', 'module_id', 'CASCADE', 'CASCADE');
+        // Cleanup orphaned records
+        $this->db->createCommand('DELETE space_module FROM space_module LEFT JOIN space s ON s.id=space_module.space_id WHERE s.id IS NULL')->execute();
+
+        try {
+            $this->addForeignKey('fk_space_membership-user_id', 'space_membership', 'user_id', 'user', 'id', 'CASCADE', 'CASCADE');
+        } catch (Exception $ex) {
+            Yii::error($ex->getMessage());
+        }
+
+        try {
+            $this->addForeignKey('fk_space_membership-space_id', 'space_membership', 'space_id', 'space', 'id', 'CASCADE', 'CASCADE');
+        } catch (Exception $ex) {
+            Yii::error($ex->getMessage());
+        }
+
+        try {
+            $this->addForeignKey('fk_space_module-space_id', 'space_module', 'space_id', 'space', 'id', 'CASCADE', 'CASCADE');
+        } catch (Exception $ex) {
+            Yii::error($ex->getMessage());
+        }
+
+        try {
+            $this->addForeignKey('fk_space-wall_id', 'space', 'wall_id', 'wall', 'id', 'CASCADE', 'CASCADE');
+        } catch (Exception $ex) {
+            Yii::error($ex->getMessage());
+        }
+
+        try {
+            $this->addForeignKey('fk_space_module-module_id', 'space_module', 'module_id', 'module_enabled', 'module_id', 'CASCADE', 'CASCADE');
+        } catch (Exception $ex) {
+            Yii::error($ex->getMessage());
+        }
     }
 
     public function down()
@@ -26,13 +54,13 @@ class m160205_203913_foreign_keys extends Migration
     }
 
     /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
+      // Use safeUp/safeDown to run migration code within a transaction
+      public function safeUp()
+      {
+      }
 
-    public function safeDown()
-    {
-    }
-    */
+      public function safeDown()
+      {
+      }
+     */
 }
