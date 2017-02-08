@@ -198,7 +198,9 @@ abstract class Stream extends Action
 
         if ($this->mode == self::MODE_ACTIVITY) {
             $this->streamQuery->channel(StreamQuery::CHANNEL_ACTIVITY);
-            $this->streamQuery->query()->andWhere('content.created_by != :userId', [':userId' => $this->streamQuery->user->id]);
+            if($this->streamQuery->user) {
+                $this->streamQuery->query()->andWhere('content.created_by != :userId', [':userId' => $this->streamQuery->user->id]);
+            }
         }
     }
 
