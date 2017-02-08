@@ -1375,7 +1375,10 @@ else
 
 
             // MODIFIED TO ALLOW LEADING SPACES
-            text = text.replace(/ /g, '\u00a0');
+            text = text.replace(/^( )+/gm, function(x) { 
+                return new Array(x.length + 1).join('&nbsp;');
+            });
+            
             // Strip leading and trailing lines:
             text = text.replace(/^\n+/g, "");
             text = text.replace(/\n+$/g, "");
