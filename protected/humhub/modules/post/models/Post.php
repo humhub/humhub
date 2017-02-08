@@ -123,7 +123,7 @@ class Post extends ContentActiveRecord implements Searchable
     {
         $user = User::findOne(['id' => $this->created_by]);
 
-        if ($user->isActive()) {
+        if ($user !== null && $user->isActive()) {
             return $user->getDisplayName();
         }
 
