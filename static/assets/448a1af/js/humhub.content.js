@@ -66,6 +66,7 @@ humhub.module('content', function(module, require, $) {
             modal.confirm(modalOptions).then(function($confirmed) {
                 if(!$confirmed) {
                     resolve(false);
+                    return;
                 }
 
                 that.loader();

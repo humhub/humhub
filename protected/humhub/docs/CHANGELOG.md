@@ -3,7 +3,7 @@ HumHub Change Log
 
 1.2.0-beta.2 under development
 ------------------------------
-
+- Fix: TimeAgo locale not loaded in production mode, added AppDynamicAsset (luke-)
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------
