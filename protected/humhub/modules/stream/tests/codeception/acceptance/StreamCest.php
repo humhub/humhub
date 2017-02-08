@@ -15,6 +15,7 @@ class StreamCest
 
         $I->click('#contentForm_message');
         $I->fillField('#contentForm_message', 'This is my stream test post!');
+        $I->scrollTo(['css' => '#post_submit_button']);
         $I->click('#post_submit_button');
 
         $newEntrySelector = '[data-content-key="12"]';
