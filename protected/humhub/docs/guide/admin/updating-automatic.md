@@ -2,7 +2,7 @@ Automatic Updating
 ==================
 
 > Warning: Please check before you run an update, that your installed modules and themes are compatible with the new version. If not, you can follow the migration guides.
-- [Theme Migration Guide](https://github.com/humhub/humhub/blob/master/protected/humhub/docs/guide/theme/)
+- [Theme Migration Guide](https://github.com/humhub/humhub/blob/master/protected/humhub/docs/guide/theme/theming-migrate.md)
 - [Module Migration Guide](https://github.com/humhub/humhub/blob/master/protected/humhub/docs/guide/developer/modules-migrate.md)
 
 > NOTE: Backup your data before updating! See: [Backup Chapter](backup.md)
