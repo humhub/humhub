@@ -1,8 +1,12 @@
 HumHub Change Log
 =================
 
-1.2.0 under development
------------------------
+1.2.0-beta.2 under development
+------------------------------
+
+
+1.2.0-beta.1 (February 08, 2017)
+--------------------------------
 - Enh: Moved HumHub browser icons to HumHub theme (luke-)
 - Enh: Moved support css/js for older IE version into own AssetBundles (luke-)
 - Enh: Moved CSRF Tag output to View renderHeader (luke-)
