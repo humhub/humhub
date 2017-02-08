@@ -50,13 +50,22 @@ class Events extends \yii\base\Object
     {
         $integrityController = $event->sender;
 
+        $integrityController->showTestHeadline("User Module - ContentContainer (" . User::find()->count() . " entries)");
+        foreach (User::find()->joinWith(['contentContainerRecord'])->all() as $user) {
+            if ($user->contentContainerRecord === null) {
+                if ($integrityController->showFix("Deleting user " . $user->id . " without content container record!")) {
+                    $user->delete();
+                }
+            }
+        }
+
         $integrityController->showTestHeadline("User Module - Users (" . User::find()->count() . " entries)");
         foreach (User::find()->joinWith(['profile'])->all() as $user) {
-            if ($user->profile == null) {
+            if ($user->profile->isNewRecord) {
                 $integrityController->showWarning("User with id " . $user->id . " has no profile record!");
             }
         }
-        
+
         foreach (GroupUser::find()->joinWith(['user'])->all() as $groupUser) {
             if ($groupUser->user == null) {
                 if ($integrityController->showFix("Deleting group admin " . $groupUser->id . " without existing user!")) {
