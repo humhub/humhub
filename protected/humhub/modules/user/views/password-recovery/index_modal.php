@@ -11,7 +11,7 @@ use yii\helpers\Url;
             <h4 class="modal-title" id="myModalLabel"><?php echo Yii::t('UserModule.views_auth_recoverPassword', '<strong>Password</strong> recovery'); ?></h4>
         </div>
         <div class="modal-body">
-            <?php $form = CActiveForm::begin(); ?>
+            <?php $form = CActiveForm::begin(['enableClientValidation' => false]); ?>
 
             <p><?php echo Yii::t('UserModule.views_auth_recoverPassword', 'Just enter your e-mail address. We´ll send you recovery instructions!'); ?></p>
 
