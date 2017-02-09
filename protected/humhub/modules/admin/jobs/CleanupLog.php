@@ -8,7 +8,6 @@
 
 namespace humhub\modules\admin\jobs;
 
-use Yii;
 use humhub\components\queue\ActiveJob;
 use humhub\modules\admin\models\Log;
 
