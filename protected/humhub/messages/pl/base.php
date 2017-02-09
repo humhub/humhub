@@ -18,7 +18,7 @@ return array (
   'It looks like you may have taken the wrong turn.' => 'Chyba zabłądziłeś.',
   'Language' => 'Język',
   'Latest news' => 'Najnowsze wiadomości',
-  'Login' => 'Login',
+  'Login' => 'Zaloguj',
   'Logout' => 'Wyloguj',
   'Menu' => 'Menu',
   'Module is not enabled on this content container!' => 'Moduł w tym kontenerze nie jest uruchomiony!',
@@ -36,5 +36,5 @@ return array (
   'The date has to be in the past.' => 'Wpisana data musi być wcześniejsza.',
   'Unsubscribe' => 'Anuluj subskrybcję',
   'User not found!' => 'Użytkownik nie został znaleziony',
-  'Your daily summary' => 'Podsumowanie dzienne',
+  'Your daily summary' => 'Twoje dzienne podsumowanie',
 );
