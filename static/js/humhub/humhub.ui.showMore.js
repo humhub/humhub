@@ -67,6 +67,6 @@ humhub.module('ui.showMore', function (module, require, $) {
 
     module.export({
         init: init,
-        CollapseContent
+        CollapseContent: CollapseContent
     });
 });
