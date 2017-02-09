@@ -8,6 +8,7 @@ HumHub Change Log
 - Enh: Combined all directory translations into base message category (luke-)
 - Enh: Added logging table cleanup job (luke-)
 - Enh: Added new version check as ActiveJob (luke-)
+- Enh: Moved user configuration params 'minUsernameLength' + 'adminCanChangeProfileImages' to user module class (luke-)
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------

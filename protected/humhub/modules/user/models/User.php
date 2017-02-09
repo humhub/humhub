@@ -89,7 +89,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             [['status', 'visibility'], 'integer'],
             [['tags'], 'string'],
             [['guid'], 'string', 'max' => 45],
-            [['username'], 'string', 'max' => 50, 'min' => Yii::$app->params['user']['minUsernameLength']],
+            [['username'], 'string', 'max' => 50, 'min' => Yii::$app->getModule('user')->minimumUsernameLength],
             [['time_zone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
@@ -469,11 +469,11 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
         return false;
     }
-    
+
     /**
      * Checks if the given $user instance shares the same identity with this
      * user instance.
-     * 
+     *
      * @param \humhub\modules\user\models\User $user
      * @return boolean
      */
