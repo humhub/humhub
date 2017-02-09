@@ -6,6 +6,7 @@ HumHub Change Log
 - Fix: TimeAgo locale not loaded in production mode, added AppDynamicAsset (luke-)
 - Enh: Translation message rebuild and auto translated duplicates (luke-)
 - Enh: Combined all directory translations into base message category (luke-)
+- Enh: Added logging table cleanup job (luke-)
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------

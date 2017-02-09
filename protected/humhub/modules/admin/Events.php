@@ -11,7 +11,6 @@ namespace humhub\modules\admin;
 use Yii;
 use humhub\modules\admin\models\Log;
 
-
 /**
  * @package humhub.modules_core.admin
  * @since 0.5
@@ -47,14 +46,7 @@ class Events extends \yii\base\Object
     {
         $controller = $event->sender;
 
-        $controller->stdout("Deleting old logs... ");
-        
-        $settings = Yii::$app->settings;
-        $timeAgo = strtotime($settings->get('logsDateLimit'));
-        $deleted = Log::deleteAll(['<', 'log_time', $timeAgo]);
-
-        $controller->stdout('done - ' . $deleted . ' records deleted.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
-
+        Yii::$app->queue->push(new \humhub\modules\admin\jobs\CleanupLog());
 
         if (!Yii::$app->getModule('admin')->dailyCheckForNewVersion) {
             return;
