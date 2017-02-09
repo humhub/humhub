@@ -11,6 +11,7 @@ humhub.module('notification', function (module, require, $) {
     var event = require('event');
     var client = require('client');
     var status = require('ui.status');
+    var user = require('user');
 
     module.initOnPjaxLoad = true;
 
@@ -100,10 +101,10 @@ humhub.module('notification', function (module, require, $) {
     };
 
     NotificationDropDown.prototype.updateCount = function ($count) {
-        if(this.$.data('notification-count') === $count) {
+        if (this.$.data('notification-count') === $count) {
             return;
         }
-        
+
         $('#badge-notifications').hide();
         if (!$count) {
             updateTitle(false);
@@ -130,8 +131,8 @@ humhub.module('notification', function (module, require, $) {
         if (!response) {
             return;
         }
-        
-        if(!module.config.sendDesktopNotifications) {
+
+        if (!module.config.sendDesktopNotifications) {
             return;
         }
 
@@ -144,10 +145,10 @@ humhub.module('notification', function (module, require, $) {
             }
         } else if (object.isArray(response)) { // Live events
             $.each(response, function (i, liveEvent) {
-                if(lastSessionTime && lastSessionTime > liveEvent.data.ts) {
+                if (lastSessionTime && lastSessionTime > liveEvent.data.ts) {
                     return; // continue
                 }
-                
+
                 if (liveEvent.data && liveEvent.data.text) {
                     module.sendDesktopNotifiaction(liveEvent.data.text);
                 }
@@ -186,18 +187,18 @@ humhub.module('notification', function (module, require, $) {
             module.log.error(e, true);
         });
     };
-    
+
     /**
      * Global action handler (used in overview page).
      * 
      * @param {type} evt
      * @returns {undefined}
      */
-    var markAsSeen = function(evt) {
-       var widget = NotificationDropDown.instance('#notification_widget');
-       widget.markAsSeen(evt).then(function() {
-           location.reload();
-       });
+    var markAsSeen = function (evt) {
+        var widget = NotificationDropDown.instance('#notification_widget');
+        widget.markAsSeen(evt).then(function () {
+            location.reload();
+        });
     };
 
     var updateTitle = function ($count) {
@@ -213,6 +214,10 @@ humhub.module('notification', function (module, require, $) {
     };
 
     var init = function ($pjax) {
+        if (user.isGuest()) {
+            return;
+        }
+        
         updateTitle($('#notification_widget').data('notification-count'));
         initOverviewPage();
         if (!$pjax) {
@@ -225,8 +230,8 @@ humhub.module('notification', function (module, require, $) {
                 railpadding: {top: 0, right: 3, left: 0, bottom: 0}
             });
         }
-        
-        module.menu = NotificationDropDown.instance('#notification_widget'); 
+
+        module.menu = NotificationDropDown.instance('#notification_widget');
     };
 
     var initOverviewPage = function () {
