@@ -98,9 +98,10 @@ class AppAsset extends AssetBundle
      */
     public static function register($view)
     {
+        $instance = parent::register($view);
         $view->registerAssetBundle(AppDynamicAsset::class);
 
-        return parent::register($view);
+        return $instance;
     }
 
 }
