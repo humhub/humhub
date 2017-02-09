@@ -31,7 +31,7 @@ return array (
   'Save' => 'Enregistrer',
   'Search' => 'Rechercher',
   'Search for users and spaces' => 'Rechercher des utilisateurs ou des espaces',
-  'Show more' => 'Montrer plus ',
+  'Show more' => 'Montrer plus',
   'Space not found!' => 'Espace non trouvé !',
   'The date has to be in the past.' => 'La date doit être révolue',
   'Unsubscribe' => 'désinscrition',

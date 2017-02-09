@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Space Settings' => '',
+    'Space Settings' => 'Paramètres de l\'espace',
     'Save' => 'Enregistrer',
 ];
