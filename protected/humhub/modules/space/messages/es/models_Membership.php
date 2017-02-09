@@ -7,5 +7,5 @@ return array (
   'Request Message' => '',
   'Status' => 'Estado',
   'Updated At' => 'Actualizado hace',
-  'Updated By' => '',
+  'Updated By' => 'Actualizado por',
 );
