@@ -5,5 +5,5 @@ return array (
   'Delete' => 'Effacer',
   'Do you really want to delete this comment?' => 'Souhaitez-vous vraiment supprimer ce commentaire ?',
   'Edit' => 'Editer',
-  'Updated :timeago' => 'mis à jour :timeago',
+  'Updated :timeago' => 'Mis à jour :timeago',
 );
