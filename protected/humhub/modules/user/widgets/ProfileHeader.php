@@ -53,6 +53,8 @@ class ProfileHeader extends \yii\base\Widget
                 $this->isProfileOwner = true;
             }
         }
+
+        parent::init();
     }
 
     /**
