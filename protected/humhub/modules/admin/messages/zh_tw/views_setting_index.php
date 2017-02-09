@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> image deletion' => '',
-    'Cancel' => '',
     'Dashboard' => '',
     'Delete' => '',
     'E.g. http://example.com/humhub' => '',

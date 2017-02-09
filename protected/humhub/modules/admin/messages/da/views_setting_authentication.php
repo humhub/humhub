@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'General' => '',
+    'LDAP' => '',
     'Visible for members only' => '',
     'Visible for members+guests' => '',
     'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => 'Minumum værdi er 20 sekunder. Hvis den ikke er sat, vil sessioner udløbe efter 1400 sekunder (24 minutter) uanset aktivitet (standard session-udløb)',

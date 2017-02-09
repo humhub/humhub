@@ -17,9 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Maximum number of sticked items reached!
+    'Could not delete content!' => '',
+    'Could not delete content: Access denied!' => '',
+    'Invalid request method!' => '',
+    'Maximum number of pinned items reached!
 
-You can stick only two items at once.
-To however stick this item, unstick another before!' => 'Достигнуто максимальное количество отмеченных объектов! За один раз вы можете отметить только два объекта. Чтобы отметить этот объект, уберите выделение с другого!',
+You can pin to top only two items at once.
+To however pin this item, unpin another before!' => '',
     'Could not load requested object!' => 'Не могу загрузить запрошенный объект!',
 ];

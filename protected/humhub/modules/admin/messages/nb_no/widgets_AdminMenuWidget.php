@@ -17,13 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'E-Mail summaries' => '',
+    'Logs' => '',
+    'Notifications' => '',
     'OEmbed' => '',
     'Proxy' => '',
     '<strong>Administration</strong> menu' => '<strong>Administrasjons</strong> meny',
     'Advanced' => 'Avansert',
     'Appearance' => 'Utseende ',
     'Caching' => 'Caching',
-    'E-Mails' => 'E-Mails',
     'Files' => 'Filer',
     'General' => 'Generelt ',
     'Information' => 'Informasjon',

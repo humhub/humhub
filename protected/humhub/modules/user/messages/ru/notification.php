@@ -17,7 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Mentioned' => 'Упомянут',
+    '{displayName} is now following you' => '',
+    '{displayName} just mentioned you in {contentTitle} "{preview}"' => '',
     '{displayName} is now following you.' => '{displayName} подписан на вас.',
     '{displayName} mentioned you in {contentTitle}.' => '{displayName} упомянул вас в {contentTitle}.',
 ];

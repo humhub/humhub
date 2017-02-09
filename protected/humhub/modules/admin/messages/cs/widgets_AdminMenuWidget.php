@@ -19,8 +19,10 @@
 return [
     'Advanced' => '',
     'Appearance' => '',
-    'E-Mails' => '',
+    'E-Mail summaries' => '',
     'Information' => '',
+    'Logs' => '',
+    'Notifications' => '',
     'OEmbed' => '',
     'Proxy' => '',
     '<strong>Administration</strong> menu' => '<strong>Menu</strong> administrace',

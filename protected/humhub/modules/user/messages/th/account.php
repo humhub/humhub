@@ -17,6 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Security</strong> settings' => '',
     '<strong>User</strong> settings' => '',
     '<strong>Your</strong> profile' => '',
+    'E-Mail Summaries' => '',
+    'Not registered users' => '',
+    'Notifications' => '',
+    'Other users' => '',
+    'Users' => '',
+    'Your friends' => '',
 ];

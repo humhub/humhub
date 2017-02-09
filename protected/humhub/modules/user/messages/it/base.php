@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Current Password' => '',
     'Currently in use' => '',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => '',
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '',
     'You\'re not registered.' => '',
     'Your new password must not equal your current password!' => '',
-    '<strong>Security</strong> settings' => 'Impostazioni <strong>Sicurezza</strong>',
     'Basic Settings' => 'Impostazioni base',
     'Change Email' => 'Modifica email',
     'Change Password' => 'Modifica password',
@@ -47,5 +47,4 @@ return [
     'Settings' => 'Impostazioni',
     'User' => 'Utente',
     'or' => 'o',
-    'Current Password' => '',
 ];

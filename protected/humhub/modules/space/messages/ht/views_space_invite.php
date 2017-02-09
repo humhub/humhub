@@ -18,8 +18,6 @@
  */
 return [
     '<strong>Invite</strong> members' => '',
-    'Add an user' => '',
-    'Close' => '',
     'Done' => '',
     'Email addresses' => '',
     'Invite by email' => '',

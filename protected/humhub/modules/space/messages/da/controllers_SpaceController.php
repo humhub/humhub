@@ -18,6 +18,8 @@
  */
 return [
     'Sorry, you are not allowed to leave this space!' => '',
+    'This user is already a member of this space.' => '',
+    'This user is not a member of this space.' => '',
     'As owner you cannot revoke your membership!' => 'Som ejer kan du ikke tilbagekalde din medlemskab!',
     'Could not request membership!' => 'Kunne ikke anmode om medlemskab!',
     'There is no pending invite!' => 'Der er ingen ventende invitation!',

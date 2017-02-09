@@ -19,8 +19,10 @@
 return [
     'Advanced' => '',
     'Appearance' => '',
-    'E-Mails' => '',
+    'E-Mail summaries' => '',
     'Information' => '',
+    'Logs' => '',
+    'Notifications' => '',
     'OEmbed' => '',
     '<strong>Administration</strong> menu' => 'Menú de <strong>administración</strong>',
     'Caching' => 'Caché',

@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Don\'t receive notifications for new content' => '',
+    'Receive Notifications for new content' => '',
     'Security' => '',
     '<i class="fa fa-cog"></i>' => '<i class="fa fa-cog"></i>',
     'Cancel Membership' => 'Afbryd Medlemsskab',

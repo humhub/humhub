@@ -17,13 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Security</strong> settings' => '',
     'Basic Settings' => '',
     'Change Email' => '',
     'Change Password' => '',
     'Connect account' => '',
     'Connected Accounts' => '',
     'Connected accounts' => '',
+    'Current Password' => '',
     'Currently in use' => '',
     'Delete Account' => '',
     'Disconnect account' => '',
@@ -47,5 +47,4 @@ return [
     'Profile' => 'Profil',
     'Settings' => 'Ustawienia',
     'User' => 'Użytkownik',
-    'Current Password' => '',
 ];

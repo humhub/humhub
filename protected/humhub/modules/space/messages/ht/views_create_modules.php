@@ -18,5 +18,4 @@
  */
 return [
     'Add <strong>Modules</strong>' => '',
-    'Next' => '',
 ];

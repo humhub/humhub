@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'About page' => 'Page À propos',
-    'Allows access to your about page' => 'Autoriser l\'accès à votre page À propos',
+    'Allows access to your about page with personal information' => '',
+    'View your about page' => '',
 ];

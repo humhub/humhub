@@ -17,11 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'E-Mail summaries' => '',
+    'Logs' => '',
+    'Notifications' => '',
     '<strong>Administration</strong> menu' => 'Menu d\'<strong>Administration</strong>',
     'Advanced' => 'Avancé',
     'Appearance' => 'Apparence',
     'Caching' => 'Cache',
-    'E-Mails' => 'E-mails',
     'Files' => 'Fichiers',
     'General' => 'Général',
     'Information' => 'Information',

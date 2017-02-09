@@ -17,7 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Description' => '描述',
-    'Title' => '标题',
-    'Module' => '模块',
+    'Permission' => '',
 ];

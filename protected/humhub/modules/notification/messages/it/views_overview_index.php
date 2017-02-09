@@ -18,6 +18,7 @@
  */
 return [
     '<strong>Notification</strong> Overview' => '',
+    'Apply' => '',
     'Module Filter' => '',
     'Filter' => 'Filtro',
     'Mark all as seen' => 'Segna tutte come lette',

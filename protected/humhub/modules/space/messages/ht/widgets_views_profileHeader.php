@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Something</strong> went wrong' => '',
-    'Close' => '',
     'Followers' => '',
     'Members' => '',
     'Ok' => '',

@@ -17,14 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Confirm</strong> image deleting' => '<strong>确认</strong> 删除图片',
-    'Friendship' => '好友',
-    'New users will automatically be added to these space(s).' => '新用户会自动加入到这些空间。',
-    'Wall entry layout' => '墙的布局',
-    'You\'re using no logo at the moment. Upload your logo now.' => '你当前还没有LOGO。现在上传LOGO。',
-    'Cancel' => '取消',
+    '<strong>Confirm</strong> image deletion' => '',
     'Dashboard' => '<strong>主面板</strong>',
     'Delete' => '删除',
     'E.g. http://example.com/humhub' => '例如 http://example.com/humhub',
+    'Friendship' => '好友',
+    'New users will automatically be added to these space(s).' => '新用户会自动加入到这些空间。',
     'Save' => '保 存',
+    'Wall entry layout' => '墙的布局',
+    'You\'re using no logo at the moment. Upload your logo now.' => '你当前还没有LOGO。现在上传LOGO。',
 ];

@@ -25,7 +25,6 @@ return [
     'Email' => '',
     'Firstname' => '',
     'Language' => '',
-    'Last Activity Email' => '',
     'Last Login' => '',
     'Lastname' => '',
     'Manager' => '',

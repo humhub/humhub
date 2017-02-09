@@ -19,8 +19,5 @@
 return [
     'Invalid link! Please make sure that you entered the entire url.' => 'Link inválido! Por favor, tenha certeza que você digitou a url inteira.',
     'Save profile' => 'Salvar perfil',
-    'Saved' => 'Salvo',
     'The entered e-mail address is already in use by another user.' => 'O email digitado já está em uso por outro usuário.',
-    'Members' => '',
-    'Guests' => '',
 ];

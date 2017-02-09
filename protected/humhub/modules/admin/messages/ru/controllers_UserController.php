@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Add Groups...' => '',
+    'Select Groups' => '',
     'Become this user' => 'Войти как данный пользователь',
     'Delete' => 'Удалить',
     'Disabled' => 'Отключён',

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'About page' => '属性页面',
-    'Allows access to your about page' => '允许访问你的属性页面',
+    'Allows access to your about page with personal information' => '',
+    'View your about page' => '',
 ];
