@@ -17,6 +17,7 @@ HumHub Change Log
 - Fix: Mutliple use of same emoji in richtext.
 - Enh: Use of Yiis new afterRun for humhub Widgets.
 - Fix: Word break issue in markdown posts.
+- Fix: Richtext with emoji only on post edit where ignored.
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------
