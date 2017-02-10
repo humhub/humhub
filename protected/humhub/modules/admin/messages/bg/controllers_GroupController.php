@@ -20,4 +20,5 @@ return [
     'Group not found!' => '',
     'Group user not found!' => '',
     'No value found!' => '',
+    'User is already a member of this group.' => '',
 ];

@@ -2,7 +2,7 @@
 return array (
   '<strong>Manage</strong> members' => '',
   'Actions' => 'Eylemler',
-  'Remove' => '',
+  'Remove' => 'Sil',
   'Role' => '',
   'never' => 'asla',
 );

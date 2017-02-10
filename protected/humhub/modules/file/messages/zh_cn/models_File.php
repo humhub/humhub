@@ -18,7 +18,4 @@
  */
 return [
     'Image dimensions are too big to be processed with current server memory limit!' => '图像尺寸太大，超出了当前服务器内存处理限制！',
-    'Invalid Mime-Type' => '无效的类型',
-    'Maximum file size ({maxFileSize}) has been exceeded!' => '已超过最大文件大小({maxFileSize})！',
-    'This file type is not allowed!' => '不允许该文件类型！',
 ];

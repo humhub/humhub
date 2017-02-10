@@ -17,11 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Add Groups...' => '',
     'Become this user' => '',
     'Delete' => '',
     'Disabled' => '',
     'Enabled' => '',
     'Save' => '',
+    'Select Groups' => '',
     'Unapproved' => '',
     'You cannot delete yourself!' => '',
     'User not found!' => 'Użytkownik nie znaleziony. ',

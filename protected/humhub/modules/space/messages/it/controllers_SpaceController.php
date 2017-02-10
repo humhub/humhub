@@ -18,6 +18,8 @@
  */
 return [
     'Sorry, you are not allowed to leave this space!' => '',
+    'This user is already a member of this space.' => '',
+    'This user is not a member of this space.' => '',
     'As owner you cannot revoke your membership!' => 'Come proprietario non puoi revocare la tua membership!',
     'Could not request membership!' => 'Non puoi richiedere la membership!',
     'There is no pending invite!' => 'Non ci sono inviti pendenti!',

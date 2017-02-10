@@ -18,6 +18,12 @@
  */
 return [
     'Load more' => '',
+    'The content has been archived.' => '',
+    'The content has been deleted.' => '',
+    'The content has been pinned.' => '',
+    'The content has been unarchived.' => '',
+    'The content has been unpinned.' => '',
+    'Your last edit state has been saved!' => '',
     'Back to stream' => 'Powrót do strumienia',
     'Content with attached files' => 'Zawartość z załączonymi plikami',
     'Created by me' => 'Utworzone przez mnie',

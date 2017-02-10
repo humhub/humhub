@@ -1,7 +1,7 @@
 <?php
 return array (
   'Add OEmbed provider' => '',
-  'Back to overview' => '',
+  'Back to overview' => 'Tilbake til oversikt',
   'Delete' => 'Slett',
   'Edit OEmbed provider' => '',
   'Save' => 'Lagre',

@@ -17,8 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Confirm</strong> image deleting' => '',
-    'Cancel' => '',
+    '<strong>Confirm</strong> image deletion' => '',
     'Dashboard' => '',
     'Delete' => '',
     'E.g. http://example.com/humhub' => '',

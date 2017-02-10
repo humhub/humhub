@@ -32,7 +32,7 @@ class Queue extends BaseQueue
         Event::on(Queue::class, Queue::EVENT_AFTER_ERROR, function(ErrorEvent $errorEvent) {
             /* @var $exception \Expection */
             $exception = $errorEvent->error;
-            Yii::error('Could not executed queued job! Message: ' . $exception->getMessage() . ' Trace:' . $exception->getTraceAsString(), 'queue');
+            Yii::error('Could not execute queued job! Message: ' . $exception->getMessage() . ' Trace:' . $exception->getTraceAsString(), 'queue');
         });
     }
 

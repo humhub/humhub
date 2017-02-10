@@ -1,6 +1,6 @@
 <?php
 return array (
-  'About' => '',
+  'About' => 'Informazioni',
   'Birthday' => 'Compleanno',
   'City' => 'Città',
   'Country' => 'Paese',
@@ -27,10 +27,9 @@ return array (
   'Title' => 'Titolo',
   'Twitter URL' => '',
   'Url' => '',
-  'User' => 'Utente',
   'Vimeo URL' => '',
   'XMPP Jabber Address' => '',
   'Xing URL' => '',
-  'Youtube URL' => '',
+  'YouTube URL' => '',
   'Zip' => 'CAP',
 );

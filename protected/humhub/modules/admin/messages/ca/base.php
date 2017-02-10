@@ -2,10 +2,11 @@
 return array (
   'About' => 'Informació',
   'Add purchased module by licence key' => '',
-  'Admin' => '',
+  'Admin' => 'Administrador',
   'Administration' => 'Administració',
   'Approval' => '',
   'Authentication' => '',
+  'Back to overview' => '',
   'Basic' => '',
   'Caching' => '',
   'Cronjobs' => '',

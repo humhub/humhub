@@ -18,5 +18,4 @@
  */
 return [
     'Stream (Default)' => '流 (默认)',
-    'Saved' => '保存',
 ];

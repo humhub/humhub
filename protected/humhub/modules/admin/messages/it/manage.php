@@ -3,5 +3,5 @@ return array (
   'Advanced' => '',
   'Basic' => 'Di base',
   'General' => 'Generale',
-  'Permissions' => '',
+  'Permissions' => 'Permessi',
 );

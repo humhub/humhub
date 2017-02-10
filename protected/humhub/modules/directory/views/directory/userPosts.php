@@ -7,8 +7,8 @@ if (!Yii::$app->user->isGuest) {
 echo \humhub\modules\stream\widgets\StreamViewer::widget(array(
     'streamAction' => '//directory/directory/stream',
     'messageStreamEmpty' => (!Yii::$app->user->isGuest) ?
-            Yii::t('DirectoryModule.views_directory_userPosts', '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...') :
-            Yii::t('DirectoryModule.views_directory_userPosts', '<b>There are no profile posts yet!</b>'),
+            Yii::t('DirectoryModule.base', '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...') :
+            Yii::t('DirectoryModule.base', '<b>There are no profile posts yet!</b>'),
     'messageStreamEmptyCss' => (!Yii::$app->user->isGuest) ?
             'placeholder-empty-stream' :
             '',

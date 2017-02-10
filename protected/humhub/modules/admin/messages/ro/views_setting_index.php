@@ -17,13 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Confirm</strong> image deleting' => '',
+    '<strong>Confirm</strong> image deletion' => '',
     'E.g. http://example.com/humhub' => '',
     'Friendship' => '',
     'New users will automatically be added to these space(s).' => '',
     'Wall entry layout' => '',
     'You\'re using no logo at the moment. Upload your logo now.' => '',
-    'Cancel' => 'Anulează',
     'Dashboard' => 'Panou',
     'Delete' => 'Șterge',
     'Save' => 'Salvează',

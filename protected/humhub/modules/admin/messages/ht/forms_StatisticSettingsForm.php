@@ -18,4 +18,5 @@
  */
 return [
     'HTML tracking code' => '',
+    'Maximum allowed age for logs.' => '',
 ];

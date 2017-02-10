@@ -4,6 +4,12 @@ HumHub Change Log
 1.2.0-beta.2 under development
 ------------------------------
 - Fix: TimeAgo locale not loaded in production mode, added AppDynamicAsset (luke-)
+- Enh: Translation message rebuild and auto translated duplicates (luke-)
+- Enh: Combined all directory translations into base message category (luke-)
+- Enh: Added logging table cleanup job (luke-)
+- Enh: Added new version check as ActiveJob (luke-)
+- Enh: Moved user configuration params 'minUsernameLength' + 'adminCanChangeProfileImages' to user module class (luke-)
+- Enh: Added .editorconfig code style configuration file (luke-)
 - Fix: Search view links not working (buddh4)
 - Fix: Markdown in comment layout issue (buddh4)
 - Enh: humhub.ui.showMore module for cutting post text and comments (buddh4)

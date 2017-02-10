@@ -20,7 +20,4 @@ return [
     'Invalid link! Please make sure that you entered the entire url.' => '',
     'Save profile' => '',
     'The entered e-mail address is already in use by another user.' => '',
-    'Saved' => 'Desat',
-    'Members' => '',
-    'Guests' => '',
 ];

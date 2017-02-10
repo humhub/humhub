@@ -1,6 +1,5 @@
 <?php
-
 return array (
   'Checkbox field options' => '',
-    'Default value' => '',
+  'Default value' => 'مقدار پیش‌فرض',
 );

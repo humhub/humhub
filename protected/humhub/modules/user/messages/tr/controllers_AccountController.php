@@ -19,8 +19,5 @@
 return [
     'Invalid link! Please make sure that you entered the entire url.' => 'Geçersiz link! Lütfen url nin tamamını girdiğinizden emin olun.',
     'Save profile' => 'Profili kaydet',
-    'Saved' => 'Kaydedildi',
     'The entered e-mail address is already in use by another user.' => 'Girdiğin mail adresi zaten başka bir kullanıcı tarafından kullanımda.',
-    'Members' => '',
-    'Guests' => '',
 ];

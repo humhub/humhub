@@ -1,9 +1,9 @@
 <?php
 return array (
-  'About' => '',
-  'Birthday' => '',
+  'About' => 'Om',
+  'Birthday' => 'Bursdag',
   'City' => '',
-  'Country' => '',
+  'Country' => 'Land',
   'Custom' => '',
   'Facebook URL' => '',
   'Fax' => '',
@@ -27,10 +27,9 @@ return array (
   'Title' => 'Tittel',
   'Twitter URL' => '',
   'Url' => '',
-  'User' => '',
   'Vimeo URL' => '',
   'XMPP Jabber Address' => '',
   'Xing URL' => '',
-  'Youtube URL' => '',
+  'YouTube URL' => '',
   'Zip' => '',
 );

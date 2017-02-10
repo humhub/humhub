@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Add Groups...' => '',
+    'Select Groups' => '',
     'Become this user' => '이 사용자로 로그인',
     'Delete' => '삭제',
     'Disabled' => '비활성화됨',

@@ -23,7 +23,6 @@ return [
     'New users will automatically be added to these space(s).' => '',
     'Wall entry layout' => '',
     'You\'re using no logo at the moment. Upload your logo now.' => '',
-    'Cancel' => 'Cancel·la',
     'Dashboard' => 'Inici',
     'Delete' => 'Suprimeix',
     'Save' => 'Desa',

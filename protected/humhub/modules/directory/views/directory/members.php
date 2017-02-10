@@ -8,9 +8,9 @@ use humhub\modules\friendship\models\Friendship;
 
     <div class="panel-heading">
         <?php if ($group === null) : ?>
-            <?php echo Yii::t('DirectoryModule.views_directory_members', '<strong>Member</strong> directory'); ?>
+            <?php echo Yii::t('DirectoryModule.base', '<strong>Member</strong> directory'); ?>
         <?php else: ?>
-            <?php echo Yii::t('DirectoryModule.views_directory_members', '<strong>Group</strong> members - {group}', ['{group}' => $group->name]); ?>
+            <?php echo Yii::t('DirectoryModule.base', '<strong>Group</strong> members - {group}', ['{group}' => $group->name]); ?>
         <?php endif; ?>
     </div>
 
@@ -22,8 +22,8 @@ use humhub\modules\friendship\models\Friendship;
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <div class="form-group form-group-search">
-                    <?php echo Html::textInput("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('DirectoryModule.views_directory_members', 'search for members'))); ?>
-                    <?php echo Html::submitButton(Yii::t('DirectoryModule.views_directory_members', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
+                    <?php echo Html::textInput("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('DirectoryModule.base', 'search for members'))); ?>
+                    <?php echo Html::submitButton(Yii::t('DirectoryModule.base', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
                 </div>
             </div>
             <div class="col-md-3"></div>
@@ -31,7 +31,7 @@ use humhub\modules\friendship\models\Friendship;
         <?php echo Html::endForm(); ?>
 
         <?php if (count($users) == 0): ?>
-            <p><?php echo Yii::t('DirectoryModule.views_directory_members', 'No members found!'); ?></p>
+            <p><?php echo Yii::t('DirectoryModule.base', 'No members found!'); ?></p>
         <?php endif; ?>
 
     </div>

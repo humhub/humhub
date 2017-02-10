@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Could not delete content!' => '',
+    'Could not delete content: Access denied!' => '',
+    'Invalid request method!' => '',
+    'Maximum number of pinned items reached!
+
+You can pin to top only two items at once.
+To however pin this item, unpin another before!' => '',
     'Could not load requested object!' => '无法加载请求对象！',
-    'Maximum number of sticked items reached!
-
-You can stick only two items at once.
-To however stick this item, unstick another before!' => '粘贴项目达到最大数量！
-
-你可以一次只粘贴两个项目。
-任然坚持粘贴这个项目，请先放弃另一个！',
 ];

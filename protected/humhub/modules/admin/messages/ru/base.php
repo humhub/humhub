@@ -6,6 +6,7 @@ return array (
   'Administration' => 'Администрирование',
   'Approval' => 'Подтверждение',
   'Authentication' => 'Авторизация',
+  'Back to overview' => 'Вернуться',
   'Basic' => 'Основной',
   'Caching' => 'Кэширование',
   'Cronjobs' => 'Задания сron',
