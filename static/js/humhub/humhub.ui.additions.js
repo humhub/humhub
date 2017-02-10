@@ -123,16 +123,18 @@ humhub.module('ui.additions', function (module, require, $) {
                 var features = {};
                 $this.find('[data-richtext-feature]').each(function () {
                     var $this = $(this);
-                    features[$this.data('guid')] = $this.clone();
-                    $this.replaceWith($this.data('guid'));
+                    var featureKey = $this.data('guid') || '@-'+$this.attr('id');
+                    features[featureKey] = $this.clone();
+                    // We add a space to make sure our placeholder is not appended to any link or something.
+                    $this.replaceWith(' '+featureKey);
                 });
 
                 var text = richtext.Richtext.plainText($this.clone());
                 var result = converter.makeHtml(text);
 
                 // Rewrite richtext feature
-                $.each(features, function (guid, $element) {
-                    result = result.replace(guid.trim(), $('<div></div>').html($element).html());
+                $.each(features, function (featureKey, $element) {
+                    result = result.replace(new RegExp('( )?'+featureKey.trim(), 'g'), $('<div></div>').html($element).html());
                 });
 
 

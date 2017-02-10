@@ -4,6 +4,13 @@ HumHub Change Log
 1.2.0-beta.2 under development
 ------------------------------
 - Fix: TimeAgo locale not loaded in production mode, added AppDynamicAsset (luke-)
+- Fix: Search view links not working (buddh4)
+- Fix: Markdown in comment layout issue (buddh4)
+- Enh: humhub.ui.showMore module for cutting post text and comments (buddh4)
+- Fix: Javascript issues with guest users, removed initialitation of some modules for guest user (buddh4)
+- Fix: Mutliple use of same emoji in richtext.
+- Enh: Use of Yiis new afterRun for humhub Widgets.
+- Fix: Word break issue in markdown posts.
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------
