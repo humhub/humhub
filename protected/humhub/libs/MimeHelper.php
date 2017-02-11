@@ -2,14 +2,17 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\libs;
 
+use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\models\File;
+
 /**
- * Description of MimeHelper
+ * MimeHelper
  *
  * @author luke
  */
@@ -19,10 +22,14 @@ class MimeHelper
     /**
      * Returns Stylesheet Classname based on file extension
      *
-     * @return string CSS Class
+     * @param string|File $ext The file extension or file object
+     * @return string the CSS Class
      */
     public static function getMimeIconClassByExtension($ext)
     {
+        if ($ext instanceof \humhub\modules\file\models\File) {
+            $ext = FileHelper::getExtension($ext->file_name);
+        }
 
         // lowercase string
         $ext = strtolower($ext);
