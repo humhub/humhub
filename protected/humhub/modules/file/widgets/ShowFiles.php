@@ -39,7 +39,7 @@ class ShowFiles extends \yii\base\Widget
         }
 
         return $this->render('showFiles', [
-                    'files' => $this->object->fileManager->find()->all(),
+                    'files' => $this->object->fileManager->find()->andWhere(['show_in_stream' => true])->all(),
                     'previewImage' => new \humhub\modules\file\converter\PreviewImage(),
                     'hideImageFileInfo' => Yii::$app->getModule('file')->settings->get('hideImageFileInfo')
         ]);

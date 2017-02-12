@@ -10,6 +10,8 @@ HumHub Change Log
 - Enh: Added new version check as ActiveJob (luke-)
 - Enh: Moved user configuration params 'minUsernameLength' + 'adminCanChangeProfileImages' to user module class (luke-)
 - Enh: Added .editorconfig code style configuration file (luke-)
+- Enh: Added 'show_in_stream' column in file table to hide output in wall entries (luke-)
+- Enh: Added 'renderGalleryLink' link method to PreviewImage converter (luke-)
 - Fix: Search view links not working (buddh4)
 - Fix: Markdown in comment layout issue (buddh4)
 - Enh: humhub.ui.showMore module for cutting post text and comments (buddh4)
