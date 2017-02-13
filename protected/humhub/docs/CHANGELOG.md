@@ -20,6 +20,8 @@ HumHub Change Log
 - Enh: Use of Yiis new afterRun for humhub Widgets.
 - Fix: Word break issue in markdown posts.
 - Fix: Richtext with emoji only on post edit where ignored.
+- Fix: StorageManager setContent method broken
+- 
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------
