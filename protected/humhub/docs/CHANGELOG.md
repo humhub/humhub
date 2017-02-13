@@ -22,6 +22,7 @@ HumHub Change Log
 - Fix: Richtext with emoji only on post edit where ignored.
 - Fix: File StorageManager setContent method broken
 - Enh: Added FileHelper methods createLink & getContentContainer
+- Enh: Javascript HumHub Client - better handle ajax redirects
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------

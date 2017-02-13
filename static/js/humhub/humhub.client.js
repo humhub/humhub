@@ -17,8 +17,8 @@ humhub.module('client', function (module, require, $) {
         //Textstatus = "timeout", "error", "abort", "parsererror", "application"
         this.textStatus = textStatus;
         this.dataType = dataType;
-        
-        var responseType =  xhr.getResponseHeader('content-type');
+
+        var responseType = xhr.getResponseHeader('content-type');
 
         // If we expect json and received json we merge the json result with our response object.
         if ((!dataType || dataType === 'json') && responseType && responseType.indexOf('json') > -1) {
@@ -161,6 +161,21 @@ humhub.module('client', function (module, require, $) {
             var errorHandler = cfg.error;
             var error = function (xhr, textStatus, errorThrown) {
                 var response = new Response(xhr, url, textStatus, cfg.dataType).setError(errorThrown);
+
+                if (response.status == 302) {
+
+                    url = null;
+                    if (xhr.getResponseHeader('X-Pjax-Url')) {
+                        url = xhr.getResponseHeader('X-Pjax-Url');
+                    } else {
+                        url = xhr.getResponseHeader('X-Redirect');
+                    }
+
+                    if (url !== null) {
+                        document.location = url;
+                        return;
+                    }
+                }
 
                 if (errorHandler && object.isFunction(errorHandler)) {
                     errorHandler(response);
