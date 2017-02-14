@@ -92,7 +92,7 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
      */
     public function setContent($content, $variant = null)
     {
-        file_put_contents($this->get($variant), $this->content);
+        file_put_contents($this->get($variant), $content);
         @chmod($this->get($variant), $this->fileMode);
     }
 

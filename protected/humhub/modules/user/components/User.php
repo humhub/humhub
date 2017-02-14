@@ -61,7 +61,7 @@ class User extends \yii\web\User
 
         return $this->getIdentity()->guid;
     }
-    
+
     /**
      * Shortcut for getPermisisonManager()->can().
      * 
@@ -75,10 +75,10 @@ class User extends \yii\web\User
     public function can($permission, $params = [], $allowCaching = true)
     {
         // Compatibility with Yii2 base permission system.
-        if(is_string($permission)) {
+        if (is_string($permission)) {
             return parent::can($permission, $params, $allowCaching);
         }
-        
+
         return $this->getPermissionManager()->can($permission, $params, $allowCaching);
     }
 
@@ -169,6 +169,16 @@ class User extends \yii\web\User
         $identity->updateAttributes(['last_login' => new \yii\db\Expression('NOW()')]);
 
         parent::afterLogin($identity, $cookieBased, $duration);
+    }
+
+    /**
+     * Checks if the system configuration allows access for guests
+     * 
+     * @return boolean is guest access enabled and allowed
+     */
+    public static function isGuestAccessEnabled()
+    {
+        return (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess'));
     }
 
 }

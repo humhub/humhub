@@ -24,7 +24,7 @@ humhub.module('ui.modal', function(module, require, $) {
     var Widget = require('ui.widget').Widget;
 
     //Keeps track of all initialized modals
-    var modals = [];
+    var modals = {};
 
     var ERROR_DEFAULT_TITLE = 'Error';
     var ERROR_DEFAULT_MESSAGE = 'An unknown error occured!';
@@ -37,22 +37,19 @@ humhub.module('ui.modal', function(module, require, $) {
      * @param {string} id - id of the modal
      */
     var Modal = function(node, options) {
+        if(!$(node).length) {
+            node = this.createModal(node);
+        }
         Widget.call(this, node, options);
     };
 
-    object.inherits(Modal, Widget)
+    object.inherits(Modal, Widget);
 
     Modal.component = 'humhub-ui-modal';
-    ;
 
     Modal.prototype.init = function() {
-        if(!this.$.length) {
-            this.createModal(id);
-            this.reset();
-        }
-
         this.initModal(this.options);
-        modals.push(this);
+        modals[this.$.attr('id')] = this;
     };
 
     /**
@@ -71,8 +68,9 @@ humhub.module('ui.modal', function(module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.createModal = function(id) {
-        this.$ = $(this.getTemplate('container')).attr('id', id);
-        $('body').append(this.$);
+        var modal = $(this.getTemplate('container')).attr('id', id);
+        $('body').append(modal);
+        return modal;
     };
 
     Modal.prototype.getTemplate = function(id) {
@@ -584,7 +582,9 @@ humhub.module('ui.modal', function(module, require, $) {
     };
 
     var load = function(evt) {
-        module.global.load(evt).catch(function(err) {
+        var id = evt.$trigger.data('modal-id');
+        var modal = (id) ? module.get(id) : module.global;
+        modal.load(evt).catch(function(err) {
             module.log.error(err, true);
         });
     };
