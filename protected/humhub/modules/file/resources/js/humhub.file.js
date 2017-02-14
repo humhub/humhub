@@ -366,8 +366,8 @@ humhub.module('file', function(module, require, $) {
     Preview.template = {
         root: '<ul class="files" style="list-style:none; margin:0;padding:0px;"></ul>',
         file_edit: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{name}<span class="file_upload_remove_link" data-ui-loader> <i class="fa fa-times-circle"></i>&nbsp;</span></li>',
-        file: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content"><a href="{url}" target="_blank"><span class="filename">{name}</span></a><span class="time" style="padding-right: 20px;"> - {size_format}</span></li>',
-        file_image: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content"><a href="{url}" data-ui-gallery="{galleryId}"><span class="filename">{name}</span></a><span class="time" style="padding-right: 20px;"> - {size_format}</span></li>',
+        file: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{openLink}<span class="time" style="padding-right: 20px;"> - {size_format}</span></li>',
+        file_image: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{openLink}<span class="time" style="padding-right: 20px;"> - {size_format}</span></li>',
         popover: '<img alt="{name}" src="{thumbnailUrl}" />'
     };
 

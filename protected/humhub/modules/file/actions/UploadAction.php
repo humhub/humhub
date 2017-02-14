@@ -140,6 +140,7 @@ class UploadAction extends Action
             'mimeIcon' => MimeHelper::getMimeIconClassByExtension(FileHelper::getExtension($file->file_name)),
             'size_format' => Yii::$app->formatter->asSize($file->size),
             'url' => $file->getUrl(),
+            'openLink' => FileHelper::createLink($file),
             'thumbnailUrl' => $thumbnailUrl,
         ];
     }

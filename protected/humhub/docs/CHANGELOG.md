@@ -27,6 +27,8 @@ HumHub Change Log
 - Enh: TopMenu / TopMenuRightStack hide content when user is not logged in without guest mode
 - Enh: Added showUserName option in AccountTopMenu widget
 - Enh: Added isGuestAccessEnabled method in User component
+- Enh: Added flash variable (executeJavascript)to execute js on the next page load
+- Enh: Added possibility to create own file handlers (edit, create, import, export)
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------

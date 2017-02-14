@@ -11,6 +11,8 @@ namespace humhub\modules\file\libs;
 use humhub\libs\Html;
 use yii\helpers\Url;
 use humhub\modules\file\models\File;
+use humhub\modules\file\handler\FileHandlerCollection;
+use humhub\modules\file\handler\DownloadFileHandler;
 
 /**
  * FileHelper
@@ -54,11 +56,19 @@ class FileHelper extends \yii\helpers\FileHelper
     /**
      * Creates a file with options
      * 
+     * @since 1.2
      * @param \humhub\modules\file\models\File $file
+     * @return string the rendered HTML link
      */
     public static function createLink($file, $options = [], $htmlOptions = [])
     {
         $label = (isset($htmlOptions['label'])) ? $htmlOptions['label'] : Html::encode($file->fileName);
+
+        $fileHandlers = FileHandlerCollection::getByType([FileHandlerCollection::TYPE_VIEW, FileHandlerCollection::TYPE_EXPORT, FileHandlerCollection::TYPE_EDIT, FileHandlerCollection::TYPE_IMPORT], $file);
+        if (count($fileHandlers) === 1 && $fileHandlers[0] instanceof DownloadFileHandler) {
+            $htmlOptions['target'] = '_blank';
+            return Html::a($label, Url::to(['/file/file/download', 'guid' => $file->guid]), $htmlOptions);
+        }
 
         $htmlOptions = array_merge($htmlOptions, ['data-target' => '#globalModal']);
         return Html::a($label, Url::to(['/file/view', 'guid' => $file->guid]), $htmlOptions);
@@ -67,6 +77,7 @@ class FileHelper extends \yii\helpers\FileHelper
     /**
      * Determines the content container of a File record
      * 
+     * @since 1.2
      * @param File $file
      * @return \humhub\modules\content\components\ContentContainerActiveRecord the content container or null
      */
