@@ -20,6 +20,7 @@ HumHub Change Log
 - Enh: Use of Yiis new afterRun for humhub Widgets.
 - Fix: Word break issue in markdown posts.
 - Fix: Richtext with emoji only on post edit where ignored.
+- Enh: Added data-action-confirm for confirming actions.
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------
