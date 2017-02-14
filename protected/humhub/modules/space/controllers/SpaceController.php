@@ -157,7 +157,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         $title = Yii::t('SpaceModule.base', '<strong>Space</strong> followers');
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
-
+   
 }
 
 ?>

@@ -56,7 +56,7 @@ class CoreJsConfig extends Widget
                     ],
                     'text' => [
                         'error.upload' => Yii::t('base', 'Some files could not be uploaded:'),
-                        'success.delete' => Yii::t('base', 'The file has been deleted.'),
+                        'success.delete' => Yii::t('base', 'The file has been deleted.')
                     ]
                 ],
                 'action' => [
@@ -73,6 +73,8 @@ class CoreJsConfig extends Widget
                 'ui.widget' => [
                     'text' => [
                         'error.unknown' => Yii::t('base', 'No error information given.'),
+                        'info.title' => Yii::t('base', 'Info:'),
+                        'error.title' => Yii::t('base', 'Error:')
                     ]
                 ],
                 'ui.richtext' => [

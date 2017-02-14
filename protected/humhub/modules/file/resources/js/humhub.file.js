@@ -109,8 +109,14 @@ humhub.module('file', function(module, require, $) {
     };
 
     Upload.prototype.initPreview = function() {
-        this.preview = Preview.instance(this.$.data('upload-preview'));
-        this.preview.source = this;
+        if(this.$.data('upload-preview')) {
+            this.preview = Preview.instance(this.$.data('upload-preview'));
+            if(this.preview.setSource) {
+                this.preview.setSource(this);
+            } else {
+                this.preview.source;
+            }
+        }
     };
 
     Upload.prototype.initProgress = function() {
@@ -128,6 +134,7 @@ humhub.module('file', function(module, require, $) {
             start: this.options.start,
             progressall: this.options.progressall,
             done: this.options.done,
+            error: this.options.error,
             stop: this.options.stop
         };
 
@@ -135,10 +142,15 @@ humhub.module('file', function(module, require, $) {
             start: $.proxy(this.start, this),
             progressall: $.proxy(this.updateProgress, this),
             done: $.proxy(this.done, this),
+            error: $.proxy(this.error, this),
             stop: $.proxy(this.finish, this)
         });
 
         this.$.fileupload(this.options);
+    };
+    
+    Upload.prototype.error = function(e) {
+        module.log.error(e, true);
     };
 
     Upload.prototype.start = function(e, data) {
@@ -161,15 +173,17 @@ humhub.module('file', function(module, require, $) {
         }
     };
 
-    Upload.prototype.done = function(e, data) {
+    Upload.prototype.done = function(e, response) {
         var that = this;
-        $.each(data.result.files, function(index, file) {
+        $.each(response.result.files, function(index, file) {
             that.handleFileResponse(file);
         });
-
+        
         if(this.callbacks.done) {
-            this.callbacks.done(e, data);
+            this.callbacks.done(e, response);
         }
+        
+        this.fire('humhub:file:upload', [response]);
     };
 
     Upload.prototype.handleFileResponse = function(file) {
