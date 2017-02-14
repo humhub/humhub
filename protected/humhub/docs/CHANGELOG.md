@@ -29,6 +29,8 @@ HumHub Change Log
 - Enh: Added isGuestAccessEnabled method in User component
 - Enh: Added flash variable (executeJavascript)to execute js on the next page load
 - Enh: Added possibility to create own file handlers (edit, create, import, export)
+- Enh: Added data-action-process to handle modal processes
+- Enh: Added upload file event (humhub:file:created)
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------

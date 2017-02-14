@@ -78,6 +78,9 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
      */
     protected function renderLink($options)
     {
+        
+        $options['data-action-process'] = 'file-handler';
+        
         $label = ArrayHelper::remove($options, 'label', 'Label');
 
         if (isset($options['url'])) {

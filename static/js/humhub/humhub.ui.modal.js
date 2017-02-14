@@ -583,6 +583,13 @@ humhub.module('ui.modal', function(module, require, $) {
 
     var load = function(evt) {
         var id = evt.$trigger.data('modal-id');
+        if(!id) {
+            // try to autodetect modal id if we're currently in a modal
+            var $parent = evt.$trigger.closest('.modal');
+            if($parent.length) {
+                id = $parent.attr('id');
+            }
+        }
         var modal = (id) ? module.get(id) : module.global;
         modal.load(evt).catch(function(err) {
             module.log.error(err, true);
