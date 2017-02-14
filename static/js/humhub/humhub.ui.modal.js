@@ -474,9 +474,9 @@ humhub.module('ui.modal', function(module, require, $) {
         });
 
         module.globalConfirm = ConfirmModal.instance('#globalModalConfirm');
-        module.confirm = function(cfg) {
+        /*module.confirm = function(cfg) {
             return module.globalConfirm.open(cfg);
-        };
+        };*/
 
         _setModalEnforceFocus();
         _setGlobalModalTargetHandler();
@@ -596,7 +596,26 @@ humhub.module('ui.modal', function(module, require, $) {
         }
         return modal;
     };
-
+    
+    var confirm = function(evt) {
+        if(!(evt instanceof $.Event || evt instanceof $)) { // Simple config given
+            return module.globalConfirm.open(evt);
+        }
+        
+        var confirmOptions = (evt instanceof $.Event) ? _getConfirmOptionsByTrigger(evt.$trigger) : _getConfirmOptionsByTrigger(evt); 
+        
+        return module.confirm(confirmOptions);
+    };
+    
+    var _getConfirmOptionsByTrigger = function($trigger) {
+        return {
+            'body' : $trigger.data('confirm'),
+            'header' : $trigger.data('confirm-header'),
+            'confirmText' : $trigger.data('confirm-text'),
+            'cancelText' : $trigger.data('cancel-text')
+        };
+    };
+    
     var post = function(evt) {
         module.global.post(evt).catch(function(err) {
             module.log.error(err, true);
@@ -605,6 +624,7 @@ humhub.module('ui.modal', function(module, require, $) {
 
     module.export({
         init: init,
+        confirm: confirm,
         Modal: Modal,
         ConfirmModal: ConfirmModal,
         get: get,
