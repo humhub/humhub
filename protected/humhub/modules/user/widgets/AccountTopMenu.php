@@ -20,8 +20,19 @@ use humhub\widgets\BaseMenu;
 class AccountTopMenu extends BaseMenu
 {
 
+    /**
+     * @var boolean show user name
+     */
+    public $showUserName = true;
+
+    /**
+     * @inheritdoc
+     */
     public $template = "@humhub/modules/user/widgets/views/accountTopMenu";
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         if (Yii::$app->user->isGuest) {
@@ -74,4 +85,5 @@ class AccountTopMenu extends BaseMenu
 
         parent::init();
     }
+
 }

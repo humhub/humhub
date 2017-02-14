@@ -23,6 +23,9 @@ HumHub Change Log
 - Fix: File StorageManager setContent method broken
 - Enh: Added FileHelper methods createLink & getContentContainer
 - Enh: Javascript HumHub Client - better handle ajax redirects
+- Enh: TopMenu / TopMenuRightStack hide content when user is not logged in without guest mode
+- Enh: Added showUserName option in AccountTopMenu widget
+- Enh: Added isGuestAccessEnabled method in User component
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------

@@ -102,7 +102,7 @@ class BaseMenu extends \yii\base\Widget
         if (!isset($item['htmlOptions'])) {
             $item['htmlOptions'] = array();
         }
-        
+
         if (!isset($item['pjax'])) {
             $item['pjax'] = true;
         }
@@ -245,6 +245,11 @@ class BaseMenu extends \yii\base\Widget
     public function run()
     {
         $this->trigger(self::EVENT_RUN);
+
+        if (empty($this->template)) {
+            return;
+        }
+
         return $this->render($this->template, array());
     }
 
