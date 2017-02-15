@@ -33,13 +33,16 @@ class FileController extends \humhub\components\Controller
                 'class' => AccessControl::className(),
                 'guestAllowedActions' => ['download']
             ],
-            'httpCache' => [
-                'class' => 'yii\filters\HttpCache',
-                'cacheControlHeader' => 'public, max-age=31536000',
-                'etagSeed' => function ($action, $params) {
-                    return serialize([\yii\helpers\Url::current()]);
-                },
-            ],
+                /*
+                  'httpCache' => [
+                  'class' => 'yii\filters\HttpCache',
+                  'only' => ['download'],
+                  'cacheControlHeader' => 'public, max-age=31536000',
+                  'etagSeed' => function ($action, $params) {
+                  return serialize([\yii\helpers\Url::current()]);
+                  },
+                  ],
+                 */
         ];
     }
 
@@ -74,7 +77,7 @@ class FileController extends \humhub\components\Controller
         }
 
         $file->delete();
-        
+
         Yii::$app->response->format = 'json';
         return ['success' => true];
     }

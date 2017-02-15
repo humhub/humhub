@@ -12,11 +12,11 @@ humhub\modules\directory\assets\DirectoryAsset::register($this);
 <?php echo humhub\widgets\PanelMenu::widget(array('id' => 'groups-statistics-panel')); ?>
 
     <div class="panel-heading">
-<?php echo Yii::t('DirectoryModule.widgets_views_groupStats', '<strong>Group</strong> stats'); ?>
+<?php echo Yii::t('DirectoryModule.base', '<strong>Group</strong> stats'); ?>
     </div>
     <div class="panel-body">
         <div class="knob-container" style="text-align: center; opacity: 0;">
-            <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Total groups'); ?></strong><br><br>
+            <strong><?php echo Yii::t('DirectoryModule.base', 'Total groups'); ?></strong><br><br>
 
             <input id="groups-total" class="knob" data-width="120" data-height="140" data-displayPrevious="true" data-readOnly="true"
                    data-fgcolor="<?= $this->theme->variable('primary'); ?>" data-skin="tron"
@@ -28,7 +28,7 @@ humhub\modules\directory\assets\DirectoryAsset::register($this);
         <hr>
 
         <div class="knob-container" style="text-align: center; opacity: 0;">
-            <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Average members'); ?></strong><br><br>
+            <strong><?php echo Yii::t('DirectoryModule.base', 'Average members'); ?></strong><br><br>
 
             <input id="group-average" class="knob" data-width="120" data-height="140" data-displayPrevious="true" data-readOnly="true"
                    data-fgcolor="<?= $this->theme->variable('primary'); ?>"
@@ -40,7 +40,7 @@ humhub\modules\directory\assets\DirectoryAsset::register($this);
         <hr>
 
         <div style="text-align: center;">
-            <strong><?php echo Yii::t('DirectoryModule.widgets_views_groupStats', 'Top Group'); ?>:</strong> <?php echo Html::encode($statsTopGroup->name); ?>
+            <strong><?php echo Yii::t('DirectoryModule.base', 'Top Group'); ?>:</strong> <?php echo Html::encode($statsTopGroup->name); ?>
         </div>
     </div>
 </div>

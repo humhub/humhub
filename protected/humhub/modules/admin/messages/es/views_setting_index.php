@@ -17,11 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Confirm</strong> image deletion' => '',
     'Friendship' => '',
     'New users will automatically be added to these space(s).' => '',
     'Wall entry layout' => '',
-    '<strong>Confirm</strong> image deleting' => '<strong>Confirmar</strong> la eliminación de la imagen',
-    'Cancel' => 'Cancelar',
     'Dashboard' => 'Inicio',
     'Delete' => 'Borrar',
     'E.g. http://example.com/humhub' => 'P.ej. http://example.com/humhub',

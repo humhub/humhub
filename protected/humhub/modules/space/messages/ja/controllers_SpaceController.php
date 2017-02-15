@@ -18,6 +18,8 @@
  */
 return [
     'Sorry, you are not allowed to leave this space!' => '',
+    'This user is already a member of this space.' => '',
+    'This user is not a member of this space.' => '',
     'As owner you cannot revoke your membership!' => 'あなたは所有者なので自身のメンバーシップを取り消すことはできません！',
     'Could not request membership!' => 'メンバーシップを要求することができませんでした！',
     'There is no pending invite!' => '保留中の招待はありません！',

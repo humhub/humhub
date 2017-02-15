@@ -136,7 +136,7 @@ humhub.module('ui.widget', function(module, require, $) {
     };
 
     Widget.prototype.statusError = function(title) {
-        var msg = title || 'Error:';
+        var msg = title || module.text('error.title');;
         msg += '<br /><br /><ul style="list-style:none;">';
 
         $.each(this.errors, function(i, error) {
@@ -152,6 +152,24 @@ humhub.module('ui.widget', function(module, require, $) {
         msg += '</ul>';
         module.log.error(msg, true);
         this.errors = [];
+    };
+    
+    Widget.prototype.statusInfo = function(infos, title) {
+        var msg = title || module.text('info.title');
+        msg += '<br /><br /><ul style="list-style:none;">';
+
+        $.each(infos, function(i, error) {
+            if(error && !object.isArray(error)) {
+                msg += '<li>' + error + '</li>';
+            } else if(!error[0]) {
+                msg += '<li>' + module.text('error.unknown') + '</li>';
+            } else {
+                msg += '<li>' + error[0] + '</li>';
+            }
+        });
+
+        msg += '</ul>';
+        module.log.info(msg, true);
     };
 
     Widget.prototype.show = function() {

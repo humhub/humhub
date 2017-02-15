@@ -40,7 +40,7 @@ humhub.module('stream', function(module, require, $) {
     /**
      * The data-stream attribute of the stream root contains the stream url used for loading
      * stream entries.
-     * 
+     *
      * @type String
      */
     var DATA_STREAM_URL = 'stream';
@@ -67,9 +67,9 @@ humhub.module('stream', function(module, require, $) {
     /**
      * Represents a stream entry within a stream.
      * You can receive a StreamEntry instance by calling
-     * 
+     *
      * var entry = humhub.modules.stream.getStream().entry($myEntryContentId);
-     * 
+     *
      * @param {type} id
      * @returns {undefined}
      */
@@ -160,7 +160,7 @@ humhub.module('stream', function(module, require, $) {
 
     /**
      * Edit submit action event.
-     * 
+     *
      * @param {type} evt
      * @returns {undefined}
      */
@@ -242,9 +242,9 @@ humhub.module('stream', function(module, require, $) {
                 // Sinc the response does not only include the node itself we have to search it.
                 that.$ = $newEntry.find(DATA_STREAM_ENTRY_SELECTOR)
                         .addBack(DATA_STREAM_ENTRY_SELECTOR);
-                
+
                 that.apply();
-                
+
                 $newEntry.hide().css('opacity', 1).fadeIn('fast', function() {
                     resolve();
                 });
@@ -323,7 +323,7 @@ humhub.module('stream', function(module, require, $) {
 
     /**
      * Generic Stream implementation.
-     * 
+     *
      * @param {type} container id or jQuery object of the stream container
      * @returns {undefined}
      */
@@ -351,7 +351,7 @@ humhub.module('stream', function(module, require, $) {
 
     /**
      * Initializes the stream configuration with default values.
-     * 
+     *
      * @param {type} cfg
      * @returns {humhub_stream_L5.Stream.prototype.initConfig.cfg}
      */
@@ -369,7 +369,7 @@ humhub.module('stream', function(module, require, $) {
 
     /**
      * The stream itself does not provide any content actions.
-     * 
+     *
      * @returns {Array}
      */
     Stream.prototype.getContentActions = function() {
@@ -380,7 +380,7 @@ humhub.module('stream', function(module, require, $) {
      * Initializes the stream, by clearing the stream and reloading initial stream entries,
      * this should be called if any filter/sort settings are changed or the stream
      * needs an reload.
-     * 
+     *
      * @returns {humhub.stream_L5.Stream.prototype}
      */
     Stream.prototype.init = function() {
@@ -394,7 +394,7 @@ humhub.module('stream', function(module, require, $) {
                 resolve(that);
             }).catch(function(err) {
                 module.log.error(err, true);
-                that.$content.append('Stream could not be initilaized!');
+                that.$content.append('Stream could not be initialized!');
                 reject(err);
             });
         });
@@ -421,7 +421,7 @@ humhub.module('stream', function(module, require, $) {
 
     /**
      * Clears the stream content.
-     * 
+     *
      * @returns {undefined}
      */
     Stream.prototype.clear = function() {
@@ -437,7 +437,7 @@ humhub.module('stream', function(module, require, $) {
     /**
      * Reloads a given entry either by providing the contentId or a StreamEntry instance.
      * This function returns a Promise instance.
-     * 
+     *
      * @param {string|StreamEntry} entry
      * @returns {Promise}
      */
@@ -464,10 +464,10 @@ humhub.module('stream', function(module, require, $) {
             }, reject);
         });
     };
-    
+
     /**
      * Loads a single stream entry by a given content id.
-     * 
+     *
      * @param {type} contentId
      * @returns {undefined}
      */
@@ -479,7 +479,7 @@ humhub.module('stream', function(module, require, $) {
 
     /**
      * Loads new entries to a stream by the given stream settings.
-     * 
+     *
      * @param {type} limit
      * @param {type} from
      * @param {type} filter
@@ -504,7 +504,7 @@ humhub.module('stream', function(module, require, $) {
             if(cfg.loader) {
                 that.showLoader();
             }
-            
+
             that.loading = true;
             that._load(cfg).then(function(response) {
                 if(cfg.loader) {
@@ -582,18 +582,18 @@ humhub.module('stream', function(module, require, $) {
         var $html = $(html).css('opacity', 0);
         this.$content.prepend($html);
         var that = this;
-        
+
         additions.applyTo($html);
         $html.hide().css('opacity', 1).fadeIn('fast', function() {
             that.onChange();
         });
     };
-    
+
     Stream.prototype.after = function(html, $entryNode) {
         var $html = $(html).css('opacity', 0);
         $entryNode.after($html);
         var that = this;
-        
+
         additions.applyTo($html);
         $html.hide().css('opacity', 1).fadeIn('fast', function() {
             that.onChange();
@@ -604,7 +604,7 @@ humhub.module('stream', function(module, require, $) {
         var $html = $(html).css('opacity', 0);;
         this.$content.append($html);
         var that = this;
-        
+
         additions.applyTo($html);
         $html.hide().css('opacity', 1).fadeIn('fast', function() {
             that.onChange();
@@ -614,7 +614,7 @@ humhub.module('stream', function(module, require, $) {
 
     /**
      * Appends all entries of a given stream response to the stream content.
-     * 
+     *
      * @param {type} response
      * @returns {unresolved}
      */
@@ -628,20 +628,20 @@ humhub.module('stream', function(module, require, $) {
             }
             result += response.content[key].output;
         });
-        
-        
+
+
         var $result = $(result);
 
         if(cfg['preventInsert']) {
             return $result;
         }
-        
+
         // Do not use .hide() since some additions need to calculate dimensions...
         $result.css('opacity', 0);
 
         this.$.trigger('humhub:stream:beforeAddEntries', [response, result]);
 
-        
+
         if(cfg['prepend']) {
             this.prependEntry($result);
         } else if(cfg.insertAfter) {
@@ -653,7 +653,7 @@ humhub.module('stream', function(module, require, $) {
         $result.fadeIn('fast').promise().done(function() {
             that.$.trigger('humhub:stream:afterAddEntries', [response, $result]);
         });
-        
+
         return $result;
     };
 
@@ -674,7 +674,7 @@ humhub.module('stream', function(module, require, $) {
 
     /**
      * Checks if the stream has entries loaded.
-     * 
+     *
      * @returns {boolean}
      */
     Stream.prototype.hasEntries = function() {
@@ -683,7 +683,7 @@ humhub.module('stream', function(module, require, $) {
 
     /**
      * Returns the count of loaded stream entries.
-     * 
+     *
      * @returns {humhub_stream_L5.Stream.$.find.length}
      */
     Stream.prototype.getEntryCount = function() {
@@ -692,7 +692,7 @@ humhub.module('stream', function(module, require, $) {
 
     /**
      * Returns all stream entry nodes.
-     * 
+     *
      * @returns {unresolved}
      */
     Stream.prototype.getEntryNodes = function() {
@@ -710,7 +710,7 @@ humhub.module('stream', function(module, require, $) {
 
     /**
      * Adds a given filterId to the filter array.
-     * 
+     *
      * @param {type} filterId
      * @returns {undefined}
      */
@@ -725,7 +725,7 @@ humhub.module('stream', function(module, require, $) {
 
     /**
      * Clears a given filter.
-     * 
+     *
      * @param {type} filterId
      * @returns {undefined}
      */
@@ -759,7 +759,7 @@ humhub.module('stream', function(module, require, $) {
 
     /**
      * Stream implementation for main wall streams.
-     * 
+     *
      * @param {type} container
      * @param {type} cfg
      * @returns {undefined}
@@ -775,7 +775,7 @@ humhub.module('stream', function(module, require, $) {
         }
 
         var that = this;
-        
+
         this.$.on('humhub:modules:stream:clear', function() {
             that.$.find(".emptyStreamMessage").hide();
             that.$.find(".emptyFilterStreamMessage").hide();
@@ -874,13 +874,13 @@ humhub.module('stream', function(module, require, $) {
                 }
             }
 
-            /* 
+            /*
              This can be used to trace the currently visible entries
-             
+
              var lastKey;
              // Defines our base y position for changing the current entry
              var yLimit = scrollTop + (windowHeight / 2);
-             
+
              // Get id of current scroll item
              //TODO: chache the entry nodes !
              var matchingNodes = stream.$entryCache.map(function () {
@@ -889,11 +889,11 @@ humhub.module('stream', function(module, require, $) {
              return $this;
              }
              });
-             
-             // Get the id of the current element 
+
+             // Get the id of the current element
              var $current = matchingNodes[matchingNodes.length - 1];
              var currentKey = $current && $current.length ? $current.data('content-key') : "";
-             
+
              if (lastKey !== currentKey) {
              lastKey = currentKey;
              // Set/remove active class
@@ -962,4 +962,4 @@ humhub.module('stream', function(module, require, $) {
         getStream: getStream,
         getEntry: getEntry
     });
-});   
+});

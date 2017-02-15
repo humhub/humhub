@@ -6,6 +6,7 @@ return array (
   'Administration' => 'Yönetim',
   'Approval' => 'Onay',
   'Authentication' => 'Kimlik doğrulama',
+  'Back to overview' => 'Geri dön',
   'Basic' => 'Temel',
   'Caching' => 'Ön bellekleme',
   'Cronjobs' => 'Cronjobs',

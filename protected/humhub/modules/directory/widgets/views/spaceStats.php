@@ -11,12 +11,12 @@ humhub\modules\directory\assets\DirectoryAsset::register($this);
     <?= \humhub\widgets\PanelMenu::widget(array('id' => 'spaces-statistics-panel')); ?>
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', '<strong>Space</strong> stats'); ?>
+        <?php echo Yii::t('DirectoryModule.base', '<strong>Space</strong> stats'); ?>
     </div>
 
     <div class="panel-body">
         <div class="knob-container" style="text-align: center; opacity: 0;">
-            <strong><?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', 'Total spaces'); ?></strong><br><br>
+            <strong><?php echo Yii::t('DirectoryModule.base', 'Total spaces'); ?></strong><br><br>
 
             <input id="spaces-total" class="knob" data-width="120" data-height="140" data-displayprevious="true" data-readOnly="true"
                    data-fgcolor="<?= $this->theme->variable('primary'); ?>" data-skin="tron"
@@ -28,7 +28,7 @@ humhub\modules\directory\assets\DirectoryAsset::register($this);
         <hr>
 
         <div class="knob-container" style="text-align: center; opacity: 0;">
-            <strong><?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', 'Private spaces'); ?></strong><br><br>
+            <strong><?php echo Yii::t('DirectoryModule.base', 'Private spaces'); ?></strong><br><br>
 
             <input id="spaces-private" class="knob" data-width="120" data-height="140" data-displayprevious="true" data-readOnly="true"
                    data-fgcolor="<?= $this->theme->variable('primary'); ?>"
@@ -41,7 +41,7 @@ humhub\modules\directory\assets\DirectoryAsset::register($this);
 
         <?php if (isset($statsSpaceMostMembers->name)) { ?>
             <div style="text-align: center;">
-                <strong><?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', 'Most members'); ?>:
+                <strong><?php echo Yii::t('DirectoryModule.base', 'Most members'); ?>:
                 </strong> <?php echo Html::encode($statsSpaceMostMembers->name); ?>
             </div>
         <?php } ?>

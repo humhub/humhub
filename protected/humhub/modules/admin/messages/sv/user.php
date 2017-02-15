@@ -21,7 +21,6 @@ return [
     '<strong>Settings</strong> and Configuration' => '',
     '<strong>User</strong> administration' => '',
     'Add new group' => '',
-    'Back to overview' => '',
     'Groups' => '',
     'Manage group: {groupName}' => '',
     'Overview' => '',

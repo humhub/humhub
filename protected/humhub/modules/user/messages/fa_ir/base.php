@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Current Password' => '',
     'You\'re not registered.' => '',
     'Your new password must not equal your current password!' => '',
-    '<strong>Security</strong> settings' => '<strong>تنظيمات امنيتي</strong>',
     'Basic Settings' => 'تنظيمات پايه',
     'Change Email' => 'تغيير ايميل',
     'Change Password' => 'تغيير پسورد',
@@ -47,5 +47,4 @@ return [
     'User' => 'کاربر',
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'ايميل ديگري موجود است كه متعلق به شما نيست',
     'or' => 'يا',
-    'Current Password' => '',
 ];

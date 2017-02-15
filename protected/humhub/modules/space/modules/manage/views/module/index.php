@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-
 ?><div class="panel panel-default">
     <div class="panel-heading">
         <?php echo Yii::t('SpaceModule.views_admin_modules', '<strong>Space</strong> Modules'); ?>
@@ -26,26 +25,31 @@ use yii\helpers\Html;
                     <h4 class="media-heading"><?php echo $module->getContentContainerName($space); ?>
                         <?php if ($space->isModuleEnabled($moduleId)) : ?>
                             <small><span class="label label-success"><?php echo Yii::t('SpaceModule.views_admin_modules', 'Activated'); ?></span></small>
-                            <?php endif; ?>
+                        <?php endif; ?>
                     </h4>
 
                     <p><?php echo $module->getContentContainerDescription($space); ?></p>
-                    <?php if ($space->isModuleEnabled($moduleId)) : ?>
 
-                        <?php if ($space->canDisableModule($moduleId)): ?>
-                            <?php echo Html::a(Yii::t('SpaceModule.views_admin_modules', 'Disable'), $space->createUrl('/space/manage/module/disable', array('moduleId' => $moduleId)), array('data-method' => 'POST', 'class' => 'btn btn-sm btn-primary', 'data-confirm' => Yii::t('SpaceModule.views_admin_modules', 'Are you sure? *ALL* module data for this space will be deleted!'), 'data-ui-loader' => '')); ?>
-                        <?php endif; ?>
-
-                        <?php if ($module->getContentContainerConfigUrl($space) != "") : ?>
-                            <?php
-                            echo Html::a(
-                                    Yii::t('SpaceModule.views_admin_modules', 'Configure'), $module->getContentContainerConfigUrl($space), array('class' => 'btn btn-default')
-                            );
-                            ?>
-                        <?php endif; ?>
-                    <?php else: ?>
-                        <?php echo Html::a(Yii::t('SpaceModule.views_admin_modules', 'Enable'), $space->createUrl('/space/manage/module/enable', array('moduleId' => $moduleId)), array('data-method' => 'POST', 'class' => 'btn btn-sm btn-primary', 'data-ui-loader' => '')); ?>
+                    <?php if ($space->canDisableModule($moduleId)): ?>
+                        <a href="#" style="<?= $space->isModuleEnabled($moduleId) ? '' : 'display:none' ?>"
+                           data-action-click="space.disableModule" 
+                           data-action-url="<?= $space->createUrl('/space/manage/module/disable', ['moduleId' => $moduleId]) ?>" 
+                           data-action-confirm="<?= Yii::t('SpaceModule.views_admin_modules', 'Are you sure? *ALL* module data for this space will be deleted!') ?>"
+                           class="btn btn-sm btn-primary disable" data-ui-loader>
+                               <?= Yii::t('SpaceModule.views_admin_modules', 'Disable') ?>
+                        </a>
                     <?php endif; ?>
+
+                    <?php if ($module->getContentContainerConfigUrl($space)) : ?>
+                        <a href="<?= $module->getContentContainerConfigUrl($space) ?>" class="btn btn-default moduleConfigure" style="<?= $space->isModuleEnabled($moduleId) ? 'display:none' : '' ?>">
+                            <?= Yii::t('SpaceModule.views_admin_modules', 'Configure') ?>
+                        </a>
+                    <?php endif; ?>
+                    <a href="#" style="<?= $space->isModuleEnabled($moduleId) ? 'display:none' : '' ?>"
+                       data-action-click="space.enableModule" data-action-url="<?= $space->createUrl('/space/manage/module/enable', ['moduleId' => $moduleId]) ?>" 
+                       class="btn btn-sm btn-primary enable" data-ui-loader>
+                        <?= Yii::t('SpaceModule.views_admin_modules', 'Enable') ?>
+                    </a>
                 </div>
             </div>
         <?php endforeach; ?>

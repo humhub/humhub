@@ -18,6 +18,8 @@
  */
 return [
     'Sorry, you are not allowed to leave this space!' => '',
+    'This user is already a member of this space.' => '',
+    'This user is not a member of this space.' => '',
     'As owner you cannot revoke your membership!' => 'Būdamas savininku Jūs negalite atšaukti savo narystės!',
     'Could not request membership!' => 'Negalima prašyti narystės!',
     'There is no pending invite!' => 'Nėra laukiančių pakvietimų!',

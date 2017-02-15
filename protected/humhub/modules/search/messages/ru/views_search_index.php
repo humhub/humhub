@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Your search returned no matches.' => 'Ничего не найдено.',
+    'Specify space' => '',
     '<strong>Search </strong> results' => '<strong>Поиск </strong> результатов',
     'Advanced search settings' => 'Настройки расширенного поиска',
     'All' => 'Все',
@@ -26,4 +26,5 @@ return [
     'Search only in certain spaces:' => 'Искать только в определенных пространствах:',
     'Spaces' => 'Пространства',
     'Users' => 'Пользователи',
+    'Your search returned no matches.' => 'Ничего не найдено.',
 ];

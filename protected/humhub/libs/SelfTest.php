@@ -50,7 +50,7 @@ class SelfTest
             $checks[] = array(
                 'title' => Yii::t('base', $title),
                 'state' => 'ERROR',
-                'hint' => 'Minimum 5.4'
+                'hint' => 'Minimum 5.6'
             );
         }
 

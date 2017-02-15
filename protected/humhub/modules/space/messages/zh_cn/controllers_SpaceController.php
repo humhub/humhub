@@ -17,9 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Sorry, you are not allowed to leave this space!' => '抱歉，你不允许离开该空间！',
+    'This user is already a member of this space.' => '',
+    'This user is not a member of this space.' => '',
     'As owner you cannot revoke your membership!' => '作为拥有者，你不能撤消你的会员资格',
     'Could not request membership!' => '无法请求成为成员',
+    'Sorry, you are not allowed to leave this space!' => '抱歉，你不允许离开该空间！',
     'There is no pending invite!' => '没有请求！',
     'This action is only available for workspace members!' => '此操作仅适用于空间成员！',
     'You are not allowed to join this space!' => '您不可以参加这个空间！',

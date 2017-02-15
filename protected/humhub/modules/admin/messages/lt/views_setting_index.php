@@ -17,11 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Confirm</strong> image deletion' => '',
     'Friendship' => '',
     'New users will automatically be added to these space(s).' => '',
     'Wall entry layout' => '',
-    '<strong>Confirm</strong> image deleting' => '<strong>Patvirtinti</strong> paveikslėlio pašalinimą',
-    'Cancel' => 'Atšaukti',
     'Dashboard' => 'Prietaisų skydas',
     'Delete' => 'Ištrinti',
     'E.g. http://example.com/humhub' => 'Pvz., http://example.com/humhub',

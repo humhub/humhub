@@ -17,5 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'This space is archived.' => '',
     'What\'s on your mind?' => '',
 ];

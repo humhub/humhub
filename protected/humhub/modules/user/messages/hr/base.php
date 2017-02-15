@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Security</strong> settings' => '',
     'Basic Settings' => '',
     'Change Email' => '',
     'Change Password' => '',
@@ -25,6 +24,7 @@ return [
     'Connect account' => '',
     'Connected Accounts' => '',
     'Connected accounts' => '',
+    'Current Password' => '',
     'Currently in use' => '',
     'Delete' => '',
     'Delete Account' => '',
@@ -47,5 +47,4 @@ return [
     'You\'re not registered.' => '',
     'Your new password must not equal your current password!' => '',
     'or' => '',
-    'Current Password' => '',
 ];

@@ -143,6 +143,7 @@ humhub.module('comment', function(module, require, $) {
         client.post(evt, {dataType:'html'}).then(function(response) {
             var $container = evt.$trigger.parent();
             $container.html(response.html);
+            additions.applyTo($container);
         }).catch(function(err) {
             module.log.error(err, true);
         });

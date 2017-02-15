@@ -19,7 +19,7 @@
 return [
     'Allow access for non-registered users to public content (guest access)' => '',
     'Allow friendships between members' => '',
-    'External user can register (The registration form will be displayed at Login))' => '',
+    'External users can register (show registration form on login)' => '',
     'Newly registered users have to be activated by an admin first' => '',
     'Registered members can invite new users via email' => '',
 ];

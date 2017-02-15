@@ -12,7 +12,23 @@ use Yii;
  */
 class UploadButton extends UploadInput
 {
+    /**
+     * Additional button html options.
+     * @var array 
+     */
     public $buttonOptions = [];
+    
+    /**
+     * Show button tooltip on mousover.
+     * @var boolean 
+     */
+    public $tooltip = true;
+    
+    /**
+     * Tooltip position.
+     * @var string 
+     */
+    public $tooltipPosition = 'bottom';
     
     /**
      * Draws the Upload Button output.
@@ -20,10 +36,10 @@ class UploadButton extends UploadInput
     public function run()
     {   
         $defaultButtonOptions = [
-            'class' => 'btn btn-default fileinput-button tt',
+            'class' => ($this->tooltip) ? 'btn btn-default fileinput-button tt' : 'btn btn-default fileinput-button',
             'title' => Yii::t('FileModule.widgets_views_fileUploadButton', 'Upload files'),
             'data' => [
-                'placement' => "bottom",
+                'placement' => $this->tooltipPosition,
                 'action-click' => "file.upload", 
                 'action-target' => '#'.$this->id
             ]
@@ -36,7 +52,4 @@ class UploadButton extends UploadInput
                     'options' => $options
         ]);
     }
-
 }
-
-?>

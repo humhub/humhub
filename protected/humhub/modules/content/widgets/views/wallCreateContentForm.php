@@ -17,19 +17,21 @@ $this->registerJsConfig('content.form', [
 
 <div class="panel panel-default clearfix">
     <div class="panel-body" id="contentFormBody" style="display:none;" data-action-component="content.form.CreateForm" >
-    <?= Html::beginForm($submitUrl, 'POST'); ?>
-        
+        <?= Html::beginForm($submitUrl, 'POST'); ?>
+
         <?= $form; ?>
 
         <div id="notifyUserContainer" class="form-group" style="margin-top: 15px;display:none;">
-            <?= humhub\modules\user\widgets\UserPickerField::widget([
+            <?=
+            humhub\modules\user\widgets\UserPickerField::widget([
                 'id' => 'notifyUserInput',
                 'url' => ($contentContainer instanceof Space) ? $contentContainer->createUrl('/space/membership/search') : null,
                 'formName' => 'notifyUserInput',
                 'maxSelection' => 10,
                 'disabledItems' => [Yii::$app->user->guid],
                 'placeholder' => Yii::t('ContentModule.widgets_views_contentForm', 'Add a member to notify'),
-            ])?>
+            ])
+            ?>
         </div>
 
         <?= Html::hiddenInput("containerGuid", $contentContainer->guid); ?>
@@ -44,12 +46,15 @@ $this->registerJsConfig('content.form', [
                     <?= $submitButtonText ?>
                 </button>
 
-                <?= humhub\modules\file\widgets\UploadButton::widget([
-                    'id' => 'contentFormFiles',
-                    'progress' => '#contentFormFiles_progress',
-                    'preview' => '#contentFormFiles_preview',
-                    'dropZone' => '#contentFormBody'
-                ])?>
+                <?php
+                $uploadButton = humhub\modules\file\widgets\UploadButton::widget([
+                            'id' => 'contentFormFiles',
+                            'progress' => '#contentFormFiles_progress',
+                            'preview' => '#contentFormFiles_preview',
+                            'dropZone' => '#contentFormBody'
+                ]);
+                ?>
+                <?= humhub\modules\file\widgets\FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
 
                 <!-- public checkbox -->
                 <?php echo Html::checkbox("visibility", "", array('id' => 'contentForm_visibility', 'class' => 'contentForm hidden')); ?>
@@ -82,12 +87,12 @@ $this->registerJsConfig('content.form', [
                 </div>
             </div>
 
-        <?= \humhub\modules\file\widgets\UploadProgress::widget(['id' => 'contentFormFiles_progress']) ?>
-        <?= \humhub\modules\file\widgets\FilePreview::widget(['id' => 'contentFormFiles_preview', 'edit' => true, 'options' => ['style' => 'margin-top:10px;']]); ?>
+            <?= \humhub\modules\file\widgets\UploadProgress::widget(['id' => 'contentFormFiles_progress']) ?>
+            <?= \humhub\modules\file\widgets\FilePreview::widget(['id' => 'contentFormFiles_preview', 'edit' => true, 'options' => ['style' => 'margin-top:10px;']]); ?>
 
         </div>
         <!-- /contentForm_Options -->
-    <?php echo Html::endForm(); ?>
+        <?php echo Html::endForm(); ?>
     </div>
     <!-- /panel body -->
 </div> <!-- /panel -->

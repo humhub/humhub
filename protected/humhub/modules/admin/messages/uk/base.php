@@ -23,6 +23,7 @@ return [
     'Administration' => '',
     'Approval' => '',
     'Authentication' => '',
+    'Back to overview' => '',
     'Basic' => '',
     'Caching' => '',
     'Cronjobs' => '',

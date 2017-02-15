@@ -8,7 +8,7 @@ use yii\helpers\Html;
     <?php echo \humhub\widgets\PanelMenu::widget(array('id' => 'new-people-panel')); ?>
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.widgets_views_memberStats', '<strong>New</strong> people'); ?>
+        <?php echo Yii::t('DirectoryModule.base', '<strong>New</strong> people'); ?>
     </div>
     <div class="panel-body">
         <?php foreach ($newUsers->limit(10)->all() as $user) : ?>
@@ -28,7 +28,7 @@ use yii\helpers\Html;
             <?php echo Html::a('<i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('DirectoryModule.base', 'Send invite'), Url::to(['/user/invite']), array('data-target' => '#globalModal')); ?>
         <?php endif; ?>
         <?php if ($showMoreButton): ?>
-            <?php echo Html::a('<i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('DirectoryModule.widgets_views_newMembers', 'See all'), Url::to(['/directory/directory/members']), array('classx' => 'btn btn-xl btn-primary', 'class' => 'pull-right')); ?>
+            <?php echo Html::a('<i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('DirectoryModule.base', 'See all'), Url::to(['/directory/directory/members']), array('classx' => 'btn btn-xl btn-primary', 'class' => 'pull-right')); ?>
         <?php endif; ?>
 
     </div>

@@ -7,7 +7,7 @@ use yii\helpers\Url;
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.views_directory_spaces', '<strong>Space</strong> directory'); ?>
+        <?php echo Yii::t('DirectoryModule.base', '<strong>Space</strong> directory'); ?>
     </div>
 
     <div class="panel-body">
@@ -17,8 +17,8 @@ use yii\helpers\Url;
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <div class="form-group form-group-search">
-                    <?php echo Html::textInput("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('DirectoryModule.views_directory_spaces', 'search for spaces'))); ?>
-                    <?php echo Html::submitButton(Yii::t('DirectoryModule.views_directory_spaces', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
+                    <?php echo Html::textInput("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('DirectoryModule.base', 'search for spaces'))); ?>
+                    <?php echo Html::submitButton(Yii::t('DirectoryModule.base', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
                 </div>
             </div>
             <div class="col-md-3"></div>
@@ -27,7 +27,7 @@ use yii\helpers\Url;
 
 
         <?php if (count($spaces) == 0): ?>
-            <p><?php echo Yii::t('DirectoryModule.views_directory_spaces', 'No spaces found!'); ?></p>
+            <p><?php echo Yii::t('DirectoryModule.base', 'No spaces found!'); ?></p>
         <?php endif; ?>
 
     </div>
@@ -66,7 +66,7 @@ use yii\helpers\Url;
                     <?php if ($space->isMember()) { ?>
                         <i class="fa fa-user space-member-sign tt" data-toggle="tooltip" data-placement="top"
                            title=""
-                           data-original-title="<?php echo Yii::t('DirectoryModule.views_directory_spaces', 'You are a member of this space'); ?>"></i>
+                           data-original-title="<?php echo Yii::t('DirectoryModule.base', 'You are a member of this space'); ?>"></i>
                     <?php } ?>
 
                     <div class="media-body">

@@ -6,7 +6,7 @@ return array (
   '<strong>Space</strong>' => '',
   '<strong>Space</strong> members' => '<strong>Ruimte</strong> leden',
   '<strong>Space</strong> navigation menu' => '',
-  '<strong>Space</strong> preferences' => '',
+  '<strong>Space</strong> preferences' => '<strong>Ruimte</strong> voorkeuren',
   '<strong>Writing</strong> posts' => '',
   '<strong>Yay! You\'re done.</strong>' => '',
   'All users who are a member of this space will be displayed here.<br /><br />New members can be added by anyone who has been given access rights by the admin.' => '',

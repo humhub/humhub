@@ -5,7 +5,7 @@
  * An addition can be registered for a specific selector e.g: <input data-addition-richtext ... />
  * It is possible to register multiple additions for the same selector.
  */
-humhub.module('ui.additions', function(module, require, $) {
+humhub.module('ui.additions', function (module, require, $) {
 
     var event = require('event');
     var object = require('util.object');
@@ -23,20 +23,20 @@ humhub.module('ui.additions', function(module, require, $) {
      * @param function addition addition function
      * @returns {undefined}
      */
-    var register = function(id, selector, handler, options) {
+    var register = function (id, selector, handler, options) {
         options = options || {};
 
-        if(!_additions[id] || options.overwrite) {
+        if (!_additions[id] || options.overwrite) {
             _additions[id] = {
                 'selector': selector,
                 'handler': handler
             };
 
             // Make sure additions registrated after humhub:ready also affect element
-            if(humhub.initialized) {
+            if (humhub.initialized) {
                 apply($('body'), id);
             }
-        } else if(options.extend) {
+        } else if (options.extend) {
             options.selector = selector;
             module.extend(id, handler, options);
         }
@@ -47,17 +47,17 @@ humhub.module('ui.additions', function(module, require, $) {
      * @param {type} element
      * @returns {undefined}
      */
-    var applyTo = function(element, options) {
+    var applyTo = function (element, options) {
         options = options || {};
 
         var $element = (element instanceof $) ? element : $(element);
-        $.each(_additions, function(id) {
-            if(options.filter && !options.filter.indexOf(id)) {
+        $.each(_additions, function (id) {
+            if (options.filter && !options.filter.indexOf(id)) {
                 return;
             }
             try {
                 module.apply($element, id);
-            } catch(e) {
+            } catch (e) {
                 module.log.error('Error while applying addition ' + id, e);
             }
         });
@@ -70,10 +70,10 @@ humhub.module('ui.additions', function(module, require, $) {
      * @param {type} addition
      * @returns {undefined}
      */
-    var apply = function($element, id) {
+    var apply = function ($element, id) {
         var addition = _additions[id];
 
-        if(!addition) {
+        if (!addition) {
             return;
         }
 
@@ -81,58 +81,60 @@ humhub.module('ui.additions', function(module, require, $) {
         addition.handler.apply($match, [$match, $element]);
     };
 
-    var init = function() {
-        event.on('humhub:ready', function(evt) {
+    var init = function () {
+        event.on('humhub:ready', function (evt) {
             module.applyTo($('body'));
         });
 
         // workaround for jp-player since it sets display to inline which results in a broken view...
-        $(document).on('click.humhub-jp-play', '.jp-play', function() {
+        $(document).on('click.humhub-jp-play', '.jp-play', function () {
             $(this).closest('.jp-controls').find('.jp-pause').css('display', 'block');
         });
 
         // Autosize textareas
-        module.register('autosize', '.autosize', function($match) {
+        module.register('autosize', '.autosize', function ($match) {
             $match.autosize();
         });
 
         // Show tooltips on elements
-        module.register('tooltip', '.tt', function($match) {
+        module.register('tooltip', '.tt', function ($match) {
             $match.tooltip({
                 html: false,
                 container: 'body'
             });
 
-            $match.on('click.tooltip', function() {
+            $match.on('click.tooltip', function () {
                 $('.tooltip').remove();
             });
         });
 
-        module.register('markdown', '[data-ui-markdown]', function($match) {
+        module.register('markdown', '[data-ui-markdown]', function ($match) {
             var converter = new Markdown.Converter();
             Markdown.Extra.init(converter);
-            $match.each(function() {
+            $match.each(function () {
                 var $this = $(this);
-                
-                if($this.data('markdownProcessed')) {
+
+                if ($this.data('markdownProcessed')) {
                     return;
                 }
-                
+
 
                 // Export all richtext features
                 var features = {};
-                $this.find('[data-richtext-feature]').each(function() {
+                $this.find('[data-richtext-feature]').each(function () {
                     var $this = $(this);
-                    features[$this.data('guid')] = $this.clone();
-                    $this.replaceWith($this.data('guid'));
+                    var featureKey = $this.data('guid') || '@-'+$this.attr('id');
+                    features[featureKey] = $this.clone();
+                    // We add a space to make sure our placeholder is not appended to any link or something.
+                    $this.replaceWith(' '+featureKey);
                 });
-                
+
                 var text = richtext.Richtext.plainText($this.clone());
                 var result = converter.makeHtml(text);
-         
+
                 // Rewrite richtext feature
-                $.each(features, function(guid, $element) {
-                    result = result.replace(guid.trim(), $('<div></div>').html($element).html());
+                $.each(features, function (featureKey, $element) {
+                    result = result.replace(new RegExp('( )?'+featureKey.trim(), 'g'), $('<div></div>').html($element).html());
                 });
 
 
@@ -140,12 +142,12 @@ humhub.module('ui.additions', function(module, require, $) {
             });
         });
 
-        $(document).on('click.humhub-ui-tooltip', function() {
+        $(document).on('click.humhub-ui-tooltip', function () {
             $('.tooltip').remove();
         });
 
         // Show popovers on elements
-        module.register('popover', '.po', function($match) {
+        module.register('popover', '.po', function ($match) {
             $match.popover({html: true});
         });
 
@@ -155,36 +157,36 @@ humhub.module('ui.additions', function(module, require, $) {
          });*/
 
         // Replace the standard checkbox and radio buttons
-       /* module.register('forms', ':checkbox, :radio', function($match) {
-            //$match.flatelements();
-        });*/
+        /* module.register('forms', ':checkbox, :radio', function($match) {
+         //$match.flatelements();
+         });*/
 
         // Deprecated!
-        module.register('', 'a[data-loader="modal"], button[data-loader="modal"]', function($match) {
+        module.register('', 'a[data-loader="modal"], button[data-loader="modal"]', function ($match) {
             $match.loader();
         });
     };
-
-    var extend = function(id, handler, options) {
+    
+    var extend = function (id, handler, options) {
         options = options || {};
 
-        if(_additions[id]) {
+        if (_additions[id]) {
             var addition = _additions[id];
-            if(options.prepend) {
+            if (options.prepend) {
                 addition.handler = object.chain(addition.handler, handler, addition.handler);
             } else {
                 addition.handler = object.chain(addition.handler, addition.handler, handler);
             }
 
-            if(options.selector && options.selector !== addition.selector) {
+            if (options.selector && options.selector !== addition.selector) {
                 addition.selector += ',' + options.selector;
             }
 
-            if(options.applyOnInit) {
+            if (options.applyOnInit) {
                 module.apply('body', id);
             }
 
-        } else if(options.selector) {
+        } else if (options.selector) {
             options.extend = false; // Make sure we don't get caught in a loop somehow.
             module.register(id, options.selector, handler, options);
         }
@@ -196,7 +198,7 @@ humhub.module('ui.additions', function(module, require, $) {
      * Cleanup some nodes required to prevent memoryleaks in pjax mode.
      * @returns {undefined}
      */
-    var unload = function() {
+    var unload = function () {
         // Tooltip issue
         // http://stackoverflow.com/questions/24841028/jquery-tooltip-add-div-role-log-in-my-page
         // https://bugs.jqueryui.com/ticket/10689
@@ -206,45 +208,45 @@ humhub.module('ui.additions', function(module, require, $) {
         $('#ui-datepicker-div').remove();
     };
 
-    var switchButtons = function(outButton, inButton, cfg) {
+    var switchButtons = function (outButton, inButton, cfg) {
         cfg = cfg || {};
         var animation = cfg.animation || 'bounceIn';
         var $out = (outButton instanceof $) ? outButton : $(outButton);
         var $in = (inButton instanceof $) ? inButton : $(inButton);
 
         $out.hide();
-        if(cfg.remove) {
+        if (cfg.remove) {
             $out.remove();
         }
 
         $in.addClass('animated ' + animation).show();
     };
 
-    var highlight = function(node) {
+    var highlight = function (node) {
         var $node = (node instanceof $) ? node : $(node);
         $node.addClass('highlight');
-        $node.delay(200).animate({backgroundColor: 'transparent'}, 1000, function() {
+        $node.delay(200).animate({backgroundColor: 'transparent'}, 1000, function () {
             $node.removeClass('highlight');
             $node.css('backgroundColor', '');
         });
     };
 
-    var observe = function(node, options) {
-        if(object.isBoolean(options)) {
+    var observe = function (node, options) {
+        if (object.isBoolean(options)) {
             options = {applyOnInit: options};
-        } else if(!options) {
+        } else if (!options) {
             options = {};
         }
 
         node = (node instanceof $) ? node[0] : node;
 
-        var observer = new MutationObserver(function(mutations) {
+        var observer = new MutationObserver(function (mutations) {
             module.applyTo(node);
         });
 
         observer.observe(node, {childList: true, subtree: true});
 
-        if(options.applyOnInit) {
+        if (options.applyOnInit) {
             module.applyTo(node, options);
         }
 

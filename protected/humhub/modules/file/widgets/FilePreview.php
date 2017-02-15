@@ -2,6 +2,8 @@
 
 namespace humhub\modules\file\widgets;
 
+use humhub\modules\file\libs\FileHelper;
+
 /**
  * 
  * @package humhub.modules_core.file.widgets
@@ -46,7 +48,7 @@ class FilePreview extends \humhub\widgets\JsWidget
         $result = [];
 
         foreach ($files as $file) {
-            $result[] = \humhub\modules\file\actions\UploadAction::getFileResponse($file);
+            $result[] = FileHelper::getFileInfos($file);
         }
 
         return $result;

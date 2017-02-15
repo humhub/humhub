@@ -24,11 +24,6 @@ class Widget extends \yii\base\Widget
     const EVENT_CREATE = 'create';
 
     /**
-     * @event Event an event raised after run a widget.
-     */
-    const EVENT_AFTER_RUN = 'run';
-
-    /**
      * Creates a widget instance and runs it.
      * 
      * The widget rendering result is returned by this method.
@@ -49,7 +44,11 @@ class Widget extends \yii\base\Widget
         try {
             /* @var $widget Widget */
             $widget = Yii::createObject($config);
-            $out = $widget->process();
+            $out = '';
+            if ($widget->beforeRun()) {
+                $result = $widget->run();
+                $out = $widget->afterRun($result);
+            }
         } catch (\Exception $e) {
             // close the output buffer opened above if it has not been closed already
             if (ob_get_level() > 0) {
@@ -58,7 +57,6 @@ class Widget extends \yii\base\Widget
             throw $e;
         }
 
-        $widget->trigger(self::EVENT_AFTER_RUN);
         return ob_get_clean() . $out;
     }
 

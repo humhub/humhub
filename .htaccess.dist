@@ -18,3 +18,14 @@ RewriteRule .? - [L]
 RewriteRule .? %{ENV:BASE}/index.php [L]
 
 </IfModule>
+
+# Config files from vendor should not be readable via browser
+<FilesMatch "composer.json">
+    Order Allow,Deny
+    Deny from All
+</FilesMatch>
+
+<FilesMatch "composer.lock">
+    Order Allow,Deny
+    Deny from All
+</FilesMatch>

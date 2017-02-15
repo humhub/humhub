@@ -18,5 +18,4 @@
  */
 return [
     'Stream (Default)' => '',
-    'Saved' => '保存',
 ];

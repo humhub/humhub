@@ -4,6 +4,6 @@ return array (
   'Followers' => '',
   'Following' => '',
   'Friends' => '',
-  'Ok' => '',
+  'Ok' => 'تمام',
   'Spaces' => 'الباحات',
 );

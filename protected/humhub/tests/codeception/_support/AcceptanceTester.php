@@ -64,8 +64,10 @@ class AcceptanceTester extends \Codeception\Actor
 
     public function createPost($text)
     {
-        $this->click('#contentForm_message');
+        $this->jsClick('#contentForm_message');
+        $this->wait(1);
         $this->fillField('#contentForm_message', $text);
+        $this->wait(1);
         $this->click('#post_submit_button');
         $this->waitForText($text, 30, '.wall-entry');
     }

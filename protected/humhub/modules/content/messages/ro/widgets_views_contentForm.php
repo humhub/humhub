@@ -4,6 +4,6 @@ return array (
   'Make private' => '',
   'Make public' => '',
   'Notify members' => '',
-  'Public' => '',
-  'What\'s on your mind?' => '',
+  'Public' => 'Public',
+  'This space is archived.' => '',
 );

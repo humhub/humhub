@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> image deletion' => '',
-    'Cancel' => '',
     'E.g. http://example.com/humhub' => '',
     'Friendship' => '',
     'New users will automatically be added to these space(s).' => '',

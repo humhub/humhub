@@ -1,12 +1,12 @@
 <?php
 return array (
-  'Created at' => '',
+  'Created at' => 'تم النشر في',
   'Created by' => '',
-  'Description' => '',
+  'Description' => 'توضيج',
   'Editable' => '',
   'Field Type could not be changed!' => '',
   'Fieldtype' => '',
-  'ID' => '',
+  'ID' => '@ID@',
   'Internal Name' => '',
   'Internal name already in use!' => '',
   'Internal name could not be changed!' => '',
@@ -22,7 +22,7 @@ return array (
   'Title' => 'العنوان',
   'Translation Category ID' => '',
   'Type Config' => '',
-  'Updated at' => '',
-  'Updated by' => '',
+  'Updated at' => 'تم التحديث في',
+  'Updated by' => 'تم التحديث بواسطة',
   'Visible' => '',
 );
