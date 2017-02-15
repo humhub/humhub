@@ -32,6 +32,7 @@ HumHub Change Log
 - Enh: Added data-action-process to handle modal processes
 - Enh: Added upload file event (humhub:file:created)
 - Enh: Added custom file handler positions
+- Enh: Moved UploadAction::getFileResponse method to FileHelper::getFileInfos
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------

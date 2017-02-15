@@ -31,8 +31,8 @@ class UploadAction extends Action
     /**
      * The record to whom this files belongs to.
      * Optional, since "free" files can also attached to a record later.
-     * 
-     * @var \humhub\components\ActiveRecord the records 
+     *
+     * @var \humhub\components\ActiveRecord the records
      */
     public $record = null;
 
@@ -85,7 +85,7 @@ class UploadAction extends Action
             if ($this->record !== null) {
                 $this->record->fileManager->attach($file);
             }
-            return $this->getFileResponse($file);
+            return array_merge(['error' => false], FileHelper::getFileInfos($file));
         } else {
             return $this->getErrorResponse($file);
         }
@@ -118,36 +118,8 @@ class UploadAction extends Action
     }
 
     /**
-     * Returns the success response for a file upload as array
-     * 
-     * @param File $file
-     * @return array the basic file informations
-     */
-    public static function getFileResponse(File $file)
-    {
-        $thumbnailUrl = '';
-        $previewImage = new PreviewImage();
-        if ($previewImage->applyFile($file)) {
-            $thumbnailUrl = $previewImage->getUrl();
-        }
-
-        return [
-            'error' => false,
-            'name' => $file->file_name,
-            'guid' => $file->guid,
-            'size' => $file->size,
-            'mimeType' => $file->mime_type,
-            'mimeIcon' => MimeHelper::getMimeIconClassByExtension(FileHelper::getExtension($file->file_name)),
-            'size_format' => Yii::$app->formatter->asSize($file->size),
-            'url' => $file->getUrl(),
-            'openLink' => FileHelper::createLink($file),
-            'thumbnailUrl' => $thumbnailUrl,
-        ];
-    }
-
-    /**
      * Returns the error response for a file upload as array
-     * 
+     *
      * @param File $file
      * @return array the upload error information
      */
