@@ -3,7 +3,7 @@ Theming
 
 With **HumHub** you can easily create your own themes. Regardless of whether you want to build a complete new interface or you only want to do some small changes to better fit your needs.
 
-> Note: If you want to update an existing theme to a newer version of HumHub, please read the [Theming Migration Guide](migrate.md).
+> Note: If you want to update an existing theme to a newer version of HumHub, please read the [Theming Migration Guide](theming-migrate.md).
 
 ### What you need to know about theming in HumHub
 
