@@ -17,6 +17,8 @@ humhub.module('action', function(module, require, $) {
     var DATA_COMPONENT = 'action-component';
     
     module.initOnPjax = true;
+    
+    var processes = {};
 
     var Component = function(node, options) {
         if(!node) {
@@ -259,6 +261,10 @@ humhub.module('action', function(module, require, $) {
             $targets.data('action-' + binding.event, true);
         });
     };
+    
+    var getProcessTrigger = function(id) {
+        return processes[id];
+    };
 
     /**
      * ActionBinding instances are used to store the binding settings and handling
@@ -313,6 +319,10 @@ humhub.module('action', function(module, require, $) {
     ActionBinding.prototype.handle = function(options) {
         var options = options || {};
         var $trigger = options.$trigger;
+        
+        if(this.data($trigger, 'process')) {
+            processes[this.data($trigger, 'process')] = $trigger;
+        }
         
         if(this.data($trigger, 'confirm') && !options.confirmed) {
             var that = this;
@@ -621,6 +631,7 @@ humhub.module('action', function(module, require, $) {
         registerHandler: registerHandler,
         Component: Component,
         trigger: trigger,
+        getProcessTrigger: getProcessTrigger,
         BLOCK_NONE: BLOCK_NONE,
         BLOCK_SYNC: BLOCK_SYNC,
         BLOCK_ASYNC: BLOCK_ASYNC,

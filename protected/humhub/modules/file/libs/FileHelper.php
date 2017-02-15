@@ -2,17 +2,20 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\file\libs;
 
-use humhub\libs\Html;
+use Yii;
 use yii\helpers\Url;
+use humhub\libs\Html;
+use humhub\libs\MimeHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\file\handler\DownloadFileHandler;
+use humhub\modules\file\converter\PreviewImage;
 
 /**
  * FileHelper
@@ -60,7 +63,7 @@ class FileHelper extends \yii\helpers\FileHelper
      * @param \humhub\modules\file\models\File $file
      * @return string the rendered HTML link
      */
-    public static function createLink($file, $options = [], $htmlOptions = [])
+    public static function createLink(File $file, $options = [], $htmlOptions = [])
     {
         $label = (isset($htmlOptions['label'])) ? $htmlOptions['label'] : Html::encode($file->fileName);
 
@@ -81,7 +84,7 @@ class FileHelper extends \yii\helpers\FileHelper
      * @param File $file
      * @return \humhub\modules\content\components\ContentContainerActiveRecord the content container or null
      */
-    public static function getContentContainer($file)
+    public static function getContentContainer(File $file)
     {
         $relation = $file->getPolymorphicRelation();
 
@@ -92,6 +95,35 @@ class FileHelper extends \yii\helpers\FileHelper
         }
 
         return null;
+    }
+
+    /**
+     * Returns general file infos as array
+     * These information are mainly used by the frontend JavaScript application to handle files.
+     * 
+     * @since 1.2
+     * @param File $file the file
+     * @return array the file infos
+     */
+    public static function getFileInfos(File $file)
+    {
+        $thumbnailUrl = '';
+        $previewImage = new PreviewImage();
+        if ($previewImage->applyFile($file)) {
+            $thumbnailUrl = $previewImage->getUrl();
+        }
+
+        return [
+            'name' => $file->file_name,
+            'guid' => $file->guid,
+            'size' => $file->size,
+            'mimeType' => $file->mime_type,
+            'mimeIcon' => MimeHelper::getMimeIconClassByExtension(self::getExtension($file->file_name)),
+            'size_format' => Yii::$app->formatter->asSize($file->size),
+            'url' => $file->getUrl(),
+            'openLink' => FileHelper::createLink($file),
+            'thumbnailUrl' => $thumbnailUrl,
+        ];
     }
 
 }

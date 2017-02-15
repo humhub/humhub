@@ -18,6 +18,17 @@ abstract class BaseFileHandler extends \yii\base\Component
 {
 
     /**
+     * Output list position
+     */
+    const POSITION_TOP = '1';
+    const POSITION_STANDARD = '5';
+
+    /**
+     * @var int the position of the file handler
+     */
+    public $position = self::POSITION_STANDARD;
+
+    /**
      * @var \humhub\modules\file\models\File the file
      */
     public $file;
