@@ -14,4 +14,4 @@ ratings:
  - "**.php"
 
 exclude_paths:
-- **/messages/
+- "**/messages/"
