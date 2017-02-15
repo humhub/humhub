@@ -23,6 +23,11 @@ class DownloadFileHandler extends BaseFileHandler
     /**
      * @inheritdoc
      */
+    public $position = self::POSITION_TOP;
+
+    /**
+     * @inheritdoc
+     */
     public function getLinkAttributes()
     {
         return [

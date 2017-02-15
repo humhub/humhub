@@ -61,6 +61,8 @@ class FileHandlerCollection extends \yii\base\Component
         if ($this->type === self::TYPE_VIEW) {
             $this->register(Yii::createObject(['class' => DownloadFileHandler::class]));
         }
+
+        $this->sortHandler();
     }
 
     /**
@@ -95,6 +97,16 @@ class FileHandlerCollection extends \yii\base\Component
                     ])->handlers);
         }
         return $handlers;
+    }
+
+    /**
+     * Sorts the registered handlers
+     */
+    protected function sortHandler()
+    {
+        usort($this->handlers, function(BaseFileHandler $a, BaseFileHandler $b) {
+            return strcmp($a->position, $b->position);
+        });
     }
 
 }
