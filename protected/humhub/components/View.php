@@ -220,19 +220,20 @@ class View extends \yii\web\View
             echo '<title>' . $this->getPageTitle() . '</title>';
         }
 
-        if (Yii::$app->params['installed'] && Yii::$app->getSession()->hasFlash('view-status')) {
-            $viewStatus = Yii::$app->getSession()->getFlash('view-status');
-            $type = strtolower(key($viewStatus));
-            $value = Html::encode(array_values($viewStatus)[0]);
-            $this->registerJs('humhub.modules.ui.status.' . $type . '("' . $value . '")', View::POS_END, 'viewStatusMessage');
-        }
-
-        if (Yii::$app->session->hasFlash('executeJavascript')) {
-            $position = self::POS_READY;
-            if (Yii::$app->session->hasFlash('executeJavascriptPosition')) {
-                $position = Yii::$app->session->hasFlash('executeJavascriptPosition');
+        if (Yii::$app->params['installed']) {
+            if (Yii::$app->getSession()->hasFlash('view-status')) {
+                $viewStatus = Yii::$app->getSession()->getFlash('view-status');
+                $type = strtolower(key($viewStatus));
+                $value = Html::encode(array_values($viewStatus)[0]);
+                $this->registerJs('humhub.modules.ui.status.' . $type . '("' . $value . '")', View::POS_END, 'viewStatusMessage');
             }
-            $this->registerJs(Yii::$app->session->getFlash('executeJavascript'));
+            if (Yii::$app->session->hasFlash('executeJavascript')) {
+                $position = self::POS_READY;
+                if (Yii::$app->session->hasFlash('executeJavascriptPosition')) {
+                    $position = Yii::$app->session->hasFlash('executeJavascriptPosition');
+                }
+                $this->registerJs(Yii::$app->session->getFlash('executeJavascript'));
+            }
         }
 
         if (Yii::$app->request->isPjax) {
