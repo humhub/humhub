@@ -8,7 +8,6 @@ humhub.module('space', function (module, require, $) {
     var client = require('client');
     var additions = require('ui.additions');
     var event = require('event');
-    var modal = require('modal');
     
     // Current space options (guid, image)
     var options;
