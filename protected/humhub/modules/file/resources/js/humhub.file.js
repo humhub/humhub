@@ -111,9 +111,9 @@ humhub.module('file', function (module, require, $) {
     };
 
     Upload.prototype.initPreview = function () {
-        if(this.$.data('upload-preview')) {
+        if (this.$.data('upload-preview')) {
             this.preview = Preview.instance(this.$.data('upload-preview'));
-            if(this.preview.setSource) {
+            if (this.preview.setSource) {
                 this.preview.setSource(this);
             } else {
                 this.preview.source;
@@ -150,8 +150,8 @@ humhub.module('file', function (module, require, $) {
 
         this.$.fileupload(this.options);
     };
-    
-    Upload.prototype.error = function(e) {
+
+    Upload.prototype.error = function (e) {
         module.log.error(e, true);
     };
 
@@ -175,16 +175,16 @@ humhub.module('file', function (module, require, $) {
         }
     };
 
-    Upload.prototype.done = function(e, response) {
+    Upload.prototype.done = function (e, response) {
         var that = this;
-        $.each(response.result.files, function(index, file) {
+        $.each(response.result.files, function (index, file) {
             that.handleFileResponse(file);
         });
-        
+
         if (this.callbacks.done) {
             this.callbacks.done(e, response);
         }
-        
+
         this.fire('humhub:file:upload', [response]);
     };
 
@@ -374,10 +374,19 @@ humhub.module('file', function (module, require, $) {
     };
 
     var init = function () {
-        event.on('humhub:file:created', function (evt, file) {
+        event.on('humhub:file:created', function (evt, files) {
+
+            if (!object.isArray(files)) {
+                files = [files];
+            }
+
             var $processTrigger = action.getProcessTrigger('file-handler');
             var upload = Widget.instance($processTrigger.closest('.btn-group').find('[data-ui-widget]'));
-            upload.handleFileResponse(file);
+
+            $.each(files, function (index, file) {
+                upload.handleFileResponse(file);
+            });
+
             upload.finish();
         });
     };
