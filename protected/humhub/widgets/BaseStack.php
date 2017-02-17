@@ -20,6 +20,8 @@
 
 namespace humhub\widgets;
 
+use Yii;
+
 /**
  * StackWidget is a widget which can hold a set of subwidgets.
  *
@@ -68,7 +70,12 @@ class BaseStack extends \yii\base\Widget
      */
     public function init()
     {
-        $this->trigger(self::EVENT_INIT);
+
+        // Yii 2.0.11 introduced own init event
+        if (version_compare(Yii::getVersion(), '2.0.11', '<')) {
+            $this->trigger(self::EVENT_INIT);
+        }
+
         parent::init();
     }
 
@@ -106,7 +113,7 @@ class BaseStack extends \yii\base\Widget
      */
     public function removeWidget($className)
     {
-        foreach($this->widgets as $k => $widget) {
+        foreach ($this->widgets as $k => $widget) {
             if ($widget[0] === $className) {
                 unset($this->widgets[$k]);
             }

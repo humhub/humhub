@@ -2,6 +2,7 @@
 
 namespace humhub\widgets;
 
+use Yii;
 use yii\helpers\Url;
 
 class BaseMenu extends \yii\base\Widget
@@ -50,7 +51,11 @@ class BaseMenu extends \yii\base\Widget
             'id' => '',
             'label' => ''
         ));
-        $this->trigger(self::EVENT_INIT);
+        // Yii 2.0.11 introduced own init event
+        if (version_compare(Yii::getVersion(), '2.0.11', '<')) {
+            $this->trigger(self::EVENT_INIT);
+        }
+
         return parent::init();
     }
 
@@ -213,7 +218,7 @@ class BaseMenu extends \yii\base\Widget
         $this->trigger(self::EVENT_RUN);
         return $this->render($this->template, array());
     }
-    
+
     /**
      * Activates the menu item with the given url
      * @param type $url
@@ -227,10 +232,11 @@ class BaseMenu extends \yii\base\Widget
             }
         }
     }
-    
+
     /*
      * Deactivates the menu item with the given url
      */
+
     public function setInactive($url)
     {
         foreach ($this->items as $key => $item) {
@@ -269,9 +275,9 @@ class BaseMenu extends \yii\base\Widget
         if (is_array($url)) {
             $url = Url::to($url);
         }
-        
+
         \yii\base\Event::on(static::className(), static::EVENT_RUN, function($event) use($url) {
-             $event->sender->setInactive($url);
+            $event->sender->setInactive($url);
         });
     }
 
