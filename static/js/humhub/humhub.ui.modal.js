@@ -616,15 +616,15 @@ humhub.module('ui.modal', function(module, require, $) {
     
     var _getConfirmOptionsByTrigger = function($trigger) {
         return {
-            'body' : $trigger.data('confirm'),
-            'header' : $trigger.data('confirm-header'),
-            'confirmText' : $trigger.data('confirm-text'),
-            'cancelText' : $trigger.data('cancel-text')
+            'body' : $trigger.data('action-confirm'),
+            'header' : $trigger.data('action-confirm-header'),
+            'confirmText' : $trigger.data('action-confirm-text'),
+            'cancelText' : $trigger.data('action-cancel-text')
         };
     };
     
     var post = function(evt) {
-        module.global.post(evt).catch(function(err) {
+        return module.global.post(evt).catch(function(err) {
             module.log.error(err, true);
         });
     };

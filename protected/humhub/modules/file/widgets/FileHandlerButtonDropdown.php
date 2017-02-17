@@ -34,6 +34,11 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
      * @var \humhub\modules\file\handler\BaseFileHandler[] the handlers to show
      */
     public $handlers;
+    
+    /**
+     * @var boolean if true the dropdown-menu will be assigned with an dropdown-menu-right class.
+     */
+    public $pullRight = false;
 
     /**
      * @inheritdoc
@@ -57,7 +62,10 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
 
         if (count($this->handlers) !== 0) {
             $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>';
-            $output .= Html::beginTag('ul', ['class' => 'dropdown-menu']);
+            
+            $cssClass = ($this->pullRight) ? 'dropdown-menu dropdown-menu-right' : 'dropdown-menu';
+            
+            $output .= Html::beginTag('ul', ['class' => $cssClass]);
             foreach ($this->handlers as $handler) {
                 $output .= Html::beginTag('li');
                 $output .= $this->renderLink($handler->getLinkAttributes());

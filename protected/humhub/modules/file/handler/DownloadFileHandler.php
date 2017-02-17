@@ -32,9 +32,14 @@ class DownloadFileHandler extends BaseFileHandler
     {
         return [
             'label' => Yii::t('FileModule.base', 'Download') . ' <small>(' . Yii::$app->formatter->asShortSize($this->file->size, 1) . ')</small>',
-            'href' => Url::to(['/file/file/download', 'guid' => $this->file->guid]),
+            'href' => self::getUrl($this->file),
             'target' => '_blank',
         ];
+    }
+    
+    public static function getUrl($file, $download = 0)
+    {
+        return Url::to(['/file/file/download', 'guid' => $file->guid, 'download' => $download]);
     }
 
 }

@@ -31,12 +31,33 @@ class UploadButton extends UploadInput
     public $tooltipPosition = 'bottom';
     
     /**
+     * Defines the button color class like btn-default, btn-primary
+     * @var type 
+     */
+    public $cssButtonClass = 'btn-default';
+    
+    /**
+     * Either defines a label string or true to use the default label.
+     * If set to false, no button label is printed.
+     * @var type 
+     */
+    public $label = false;
+    
+    /**
      * Draws the Upload Button output.
      */
     public function run()
     {   
+        if($this->label === true) {
+            $this->label = '&nbsp;'.Yii::t('base', 'Upload');
+        } else if($this->label === false) {
+            $this->label = '';
+        } else {
+            $this->label = '&nbsp;'.$this->label;
+        }
+        
         $defaultButtonOptions = [
-            'class' => ($this->tooltip) ? 'btn btn-default fileinput-button tt' : 'btn btn-default fileinput-button',
+            'class' => ($this->tooltip) ? 'btn '.$this->cssButtonClass.' fileinput-button tt' : 'btn '.$this->cssButtonClass.'  fileinput-button',
             'title' => Yii::t('FileModule.widgets_views_fileUploadButton', 'Upload files'),
             'data' => [
                 'placement' => $this->tooltipPosition,
@@ -49,7 +70,8 @@ class UploadButton extends UploadInput
         
         return $this->render('uploadButton', [
                     'input' => parent::run(),
-                    'options' => $options
+                    'options' => $options,
+                    'label' => $this->label
         ]);
     }
 }
