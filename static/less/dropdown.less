@@ -67,3 +67,32 @@
     }
   }
 }
+
+ul.contextMenu {
+    border: 1px solid @background3;
+    li.divider {
+      background-color: @background-color-secondary;
+      border-bottom: none;
+      margin: 9px 1px !important;
+    }
+    li {
+      border-left: 3px solid white;
+      a {
+        color: @text-color-highlight;
+        font-size: 14px;
+        font-weight: 400;
+        padding: 4px 15px;
+        i {
+          margin-right: 5px;
+        }
+      }
+      a:hover {
+        background: none;
+      }
+    }
+    li:hover,
+    li.selected {
+      border-left: 3px solid @info;
+      background-color: @background-color-secondary !important;
+    }
+  }

@@ -265,3 +265,66 @@ humhub.module('ui.additions', function (module, require, $) {
         highlight: highlight
     });
 });
+
+/**
+ * Context Menu
+ */
+(function ($, window) {
+    $.fn.contextMenu = function (settings) {
+        return this.each(function () {
+
+            // Open context menu
+            $(this).on("contextmenu",
+                    function (e) {
+                        // return native menu if pressing control
+                        if (e.ctrlKey) {
+                            return;
+                        }
+
+                        // Make sure all menus are hidden
+                        $('.contextMenu').hide();
+
+                        var menuSelector = settings.getMenuSelector.call(this, $(e.target));
+
+                        var oParent = $(menuSelector).parent().offsetParent().offset();
+                        var posTop = e.clientY - oParent.top;
+                        var posLeft = e.clientX - oParent.left;
+
+                        // open menu
+                        var $menu = $(menuSelector).data("invokedOn", $(e.target)).show().css({
+                            position: "absolute",
+                            left: getMenuPosition(posLeft, 'width', 'scrollLeft'),
+                            top: getMenuPosition(posTop, 'height', 'scrollTop')
+                        }).off('click').on('click', 'a', function (e) {
+                            $menu.hide();
+
+                            var $invokedOn = $menu.data("invokedOn");
+                            var $selectedMenu = $(e.target);
+
+                            settings.menuSelected.call(this, $invokedOn, $selectedMenu, e);
+                        });
+
+                        return false;
+                    });
+
+            // make sure menu closes on any click
+            $(document).click(function () {
+                $('.contextMenu').hide();
+            });
+        });
+
+        function getMenuPosition(mouse, direction, scrollDir) {
+            var win = $(window)[direction]();
+            var scroll = $(window)[scrollDir]();
+            var menu = $(settings.menuSelector)[direction]();
+            var position = mouse + scroll;
+
+            // opening menu would pass the side of the page
+            if (mouse + menu > win && menu < mouse)
+                position -= menu;
+
+            return position;
+        }
+
+    };
+})(jQuery, window);
