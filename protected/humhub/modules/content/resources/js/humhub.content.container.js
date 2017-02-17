@@ -26,8 +26,42 @@ humhub.module('content.container', function (module, require, $) {
         });
     };
     
+    var enableModule = function (evt) {
+        client.post(evt).then(function (response) {
+            if (response.success) {
+                additions.switchButtons(evt.$trigger, evt.$trigger.siblings('.disable'));
+                evt.$trigger.siblings('.moduleConfigure').fadeIn('fast');
+            }
+            if(evt.$trigger.data('reload')) {
+                client.reload();
+            }
+        }).catch(function(err) {
+            module.log.error(err, true);
+        }).finally(function() {
+            evt.finish();
+        });
+    };
+
+    var disableModule = function (evt) {
+        client.post(evt).then(function (response) {
+            if (response.success) {
+                additions.switchButtons(evt.$trigger, evt.$trigger.siblings('.enable'));
+                evt.$trigger.siblings('.moduleConfigure').fadeOut('fast');
+            }
+            if(evt.$trigger.data('reload')) {
+                client.reload();
+            }
+        }).catch(function(err) {
+            module.log.error(err, true);
+        }).finally(function() {
+            evt.finish();
+        });
+    };
+    
     module.export({
         follow: follow,
-        unfollow: unfollow
+        unfollow: unfollow,
+        enableModule: enableModule,
+        disableModule: disableModule
     });
 });

@@ -82,6 +82,7 @@ class AppAsset extends AssetBundle
         'humhub\modules\live\assets\LiveAsset',
         'humhub\modules\notification\assets\NotificationAsset',
         'humhub\modules\content\assets\ContentAsset',
+        'humhub\modules\content\assets\ContentContainerAsset',
         'humhub\modules\user\assets\UserPickerAsset',
         'humhub\modules\file\assets\FileAsset',
         'humhub\modules\post\assets\PostAsset',

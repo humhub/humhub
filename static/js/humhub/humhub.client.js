@@ -66,6 +66,14 @@ humhub.module('client', function (module, require, $) {
 
         return result;
     };
+    
+    var reload = function(preventPjax) {
+        if(!preventPjax && module.pjax.config.active) {
+            module.pjax.reload();
+        } else {
+            location.reload(true);
+        }
+    }
 
     var submit = function ($form, cfg, originalEvent) {
         if ($form instanceof $.Event && $form.$form && $form.length) {
@@ -273,33 +281,10 @@ humhub.module('client', function (module, require, $) {
         post: post,
         get: get,
         html: html,
+        reload: reload,
         submit: submit,
         init: init,
         //upload: upload,
         Response: Response
     });
 });
-
-/**
- * 
- var handleResponse = function (json, callback) {
- var response = new Response(json);
- if (json.content) {
- response.$content = $('<div>' + json.content + '</div>');
- 
- //Find all remote scripts and remove them from the partial
- var scriptSrcArr = [];
- response.$content.find('script[src]').each(function () {
- scriptSrcArr.push($(this).attr('src'));
- $(this).remove();
- });
- 
- //Load the remote scripts synchronously only if they are not already loaded.
- scripts.loadOnceSync(scriptSrcArr, function () {
- callback(response);
- });
- } else {
- callback(response);
- }
- };
- */

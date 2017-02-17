@@ -323,6 +323,16 @@ humhub.module('action', function(module, require, $) {
         if(this.data($trigger, 'process')) {
             processes[this.data($trigger, 'process')] = $trigger;
         }
+
+        
+
+        if(options.originalEvent) {
+            options.originalEvent.preventDefault();
+        }
+
+        module.log.debug('Handle Action', this);
+
+        var event = this.createActionEvent(options);
         
         if(this.data($trigger, 'confirm') && !options.confirmed) {
             var that = this;
@@ -330,18 +340,16 @@ humhub.module('action', function(module, require, $) {
                 if(confirmed) {
                     options.confirmed = true;
                     that.handle(options);
+                } else {
+                    event.finish();
                 }
             });
             return;
         }
-
+        
         // Reset value just to get sure the options are not reused.
         options.confirmed = undefined;
-
-        if(options.originalEvent) {
-            options.originalEvent.preventDefault();
-        }
-
+        
         if(this.isBlocked($trigger)) {
             module.log.warn('Blocked action execution ', $trigger);
             return;
@@ -350,10 +358,6 @@ humhub.module('action', function(module, require, $) {
         if(this.isBlockAction($trigger)) {
             this.block($trigger);
         }
-
-        module.log.debug('Handle Action', this);
-
-        var event = this.createActionEvent(options);
 
         try {
             // Check for a direct action handler

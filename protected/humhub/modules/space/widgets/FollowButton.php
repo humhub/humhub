@@ -110,8 +110,6 @@ class FollowButton extends \yii\base\Widget
         $this->followOptions['data-ui-loader'] = '';
         $this->unfollowOptions['data-ui-loader'] = '';
 
-        \humhub\modules\content\assets\ContentContainerAsset::register($this->view);
-
         return Html::a($this->unfollowLabel, '#', $this->unfollowOptions) .
                 Html::a($this->followLabel, '#', $this->followOptions);
     }

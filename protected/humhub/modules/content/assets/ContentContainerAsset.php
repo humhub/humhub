@@ -22,11 +22,6 @@ class ContentContainerAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $jsOptions = ['position' => \yii\web\View::POS_END];
-
-    /**
-     * @inheritdoc
-     */
     public $sourcePath = '@content/resources';
 
     /**

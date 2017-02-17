@@ -28,28 +28,6 @@ humhub.module('space', function (module, require, $) {
     var guid = function() {
         return (options) ? options.guid : null;
     };
-
-    var enableModule = function (evt) {
-        client.post(evt).then(function (response) {
-            if (response.success) {
-                additions.switchButtons(evt.$trigger, evt.$trigger.siblings('.disable'));
-                evt.$trigger.siblings('.moduleConfigure').fadeIn('fast');
-            }
-        }).catch(function(err) {
-            module.log.error(err, true);
-        });
-    };
-
-    var disableModule = function (evt) {
-        client.post(evt).then(function (response) {
-            if (response.success) {
-                additions.switchButtons(evt.$trigger, evt.$trigger.siblings('.enable'));
-                evt.$trigger.siblings('.moduleConfigure').fadeOut('fast');
-            }
-        }).catch(function(err) {
-            module.log.error(err, true);
-        });
-    };
     
     var archive = function(evt) {
         client.post(evt).then(function(response) {
