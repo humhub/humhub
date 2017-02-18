@@ -74,11 +74,6 @@ AppAsset::register($this);
         <?php endif; ?>
         <!-- end: show content -->
 
-        <script type="text/javascript">
-            // Replace the standard checkbox and radio buttons
-            $('body').find(':checkbox, :radio').flatelements();
-        </script>
-
         <?= \humhub\widgets\LayoutAddons::widget(); ?>
         <?php $this->endBody() ?>
         <div class="text text-center powered">

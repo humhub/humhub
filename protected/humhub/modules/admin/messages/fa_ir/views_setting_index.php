@@ -17,9 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Confirm</strong> image deletion' => '',
     'Wall entry layout' => '',
-    '<strong>Confirm</strong> image deleting' => '<strong>تایید</strong> حذف عکس',
-    'Cancel' => 'انصراف',
     'Dashboard' => 'خانه',
     'Delete' => 'حذف',
     'E.g. http://example.com/humhub' => 'برای مثال http://example.com/humhub',

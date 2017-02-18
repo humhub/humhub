@@ -20,8 +20,19 @@ use humhub\widgets\BaseMenu;
 class AccountTopMenu extends BaseMenu
 {
 
+    /**
+     * @var boolean show user name
+     */
+    public $showUserName = true;
+
+    /**
+     * @inheritdoc
+     */
     public $template = "@humhub/modules/user/widgets/views/accountTopMenu";
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         if (Yii::$app->user->isGuest) {
@@ -67,10 +78,12 @@ class AccountTopMenu extends BaseMenu
             'label' => Yii::t('base', 'Logout'),
             'id' => 'account-logout',
             'icon' => '<i class="fa fa-sign-out"></i>',
+            'pjax' => false,
             'url' => Url::toRoute('/user/auth/logout'),
             'sortOrder' => 700,
         ));
 
         parent::init();
     }
+
 }

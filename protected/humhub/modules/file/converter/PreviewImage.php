@@ -11,6 +11,7 @@ namespace humhub\modules\file\converter;
 use Yii;
 use humhub\modules\file\models\File;
 use humhub\modules\file\libs\ImageConverter;
+use humhub\libs\Html;
 
 /**
  * PreviewImage Converter
@@ -22,7 +23,7 @@ class PreviewImage extends BaseConverter
 {
 
     public $imageInfo;
-    
+
     /**
      * @inheritdoc
      */
@@ -37,15 +38,15 @@ class PreviewImage extends BaseConverter
 
         parent::init();
     }
-    
+
     public function render($file = null)
     {
-        if($file) {
+        if ($file) {
             $this->applyFile($file);
         }
-        
+
         // Provide the natural height so the browser will include a placeholder height. Todo: smooth image loading
-        return \yii\helpers\Html::img($this->getUrl(), ['class'=>'animated fadeIn', 'height' => $this->height]);
+        return \yii\helpers\Html::img($this->getUrl(), ['class' => 'animated fadeIn', 'height' => $this->height]);
     }
 
     /**
@@ -54,9 +55,9 @@ class PreviewImage extends BaseConverter
     protected function convert($fileName)
     {
         if (!is_file($this->file->store->get($fileName))) {
-            ImageConverter::Resize($this->file->store->get(), $this->file->store->get($fileName), $this->options); 
+            ImageConverter::Resize($this->file->store->get(), $this->file->store->get($fileName), $this->options);
         }
-        
+
         $this->imageInfo = @getimagesize($this->file->store->get($fileName));
     }
 
@@ -85,32 +86,43 @@ class PreviewImage extends BaseConverter
 
         return true;
     }
-    
+
     public function getDimensions()
     {
-        if(!$this->imageInfo || !isset($this->imageInfo[3])) {
+        if (!$this->imageInfo || !isset($this->imageInfo[3])) {
             return;
         }
-        
+
         return $this->imageInfo[3];
     }
-    
+
     public function getWidth()
     {
-        if(!$this->imageInfo || !isset($this->imageInfo[0])) {
+        if (!$this->imageInfo || !isset($this->imageInfo[0])) {
             return 'auto';
         }
-        
+
         return $this->imageInfo[0];
     }
-    
+
     public function getHeight()
     {
-        if(!$this->imageInfo || !isset($this->imageInfo[1])) {
+        if (!$this->imageInfo || !isset($this->imageInfo[1])) {
             return 'auto';
         }
-        
+
         return $this->imageInfo[1];
+    }
+
+    /**
+     * Returns the gallery link to the original file
+     * 
+     * @param array $htmlOptions optional link html options
+     * @return string the link
+     */
+    public function renderGalleryLink($htmlOptions = [])
+    {
+        return Html::a($this->render(), $this->file->getUrl(), array_merge($htmlOptions, ['data-ui-gallery' => 'gallery-' . $this->file->guid]));
     }
 
 }

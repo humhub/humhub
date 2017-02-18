@@ -18,6 +18,8 @@
  */
 return [
     'Sorry, you are not allowed to leave this space!' => '',
+    'This user is already a member of this space.' => '',
+    'This user is not a member of this space.' => '',
     'As owner you cannot revoke your membership!' => 'Nemůžete si zrušit členství tomto prostoru, protože jste jeho vlastník!',
     'Could not request membership!' => 'Není možné požádat o členství!',
     'There is no pending invite!' => 'Momentálně zde není žádná pozvánka čekající na přijetí!',

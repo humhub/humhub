@@ -51,6 +51,7 @@ class WallEntry extends Widget
     public $wallEntryLayout = "@humhub/modules/content/widgets/views/wallEntry.php";
 
     /**
+     * @deprecated since version 1.2 use file model 'show_in_stream' attribute instead
      * @var boolean show files widget containing a list of all assigned files
      */
     public $showFiles = true;
@@ -90,8 +91,8 @@ class WallEntry extends Widget
         if ($this->contentObject->content->container instanceof Space && $this->contentObject->content->container->status == Space::STATUS_ARCHIVED) {
             return "";
         }
-        
-        return $this->contentObject->content->container->createUrl($this->editRoute, ['id' => $this->contentObject->id]); 
+
+        return $this->contentObject->content->container->createUrl($this->editRoute, ['id' => $this->contentObject->id]);
     }
 
     /**

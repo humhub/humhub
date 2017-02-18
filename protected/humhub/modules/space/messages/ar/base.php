@@ -2,7 +2,7 @@
 return array (
   '<strong>Space</strong> followers' => '',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => '',
-  'Default' => '',
+  'Default' => 'الإفتراضي',
   'Everyone can enter' => '',
   'Invite and request' => '',
   'No spaces found.' => '',
@@ -14,7 +14,7 @@ return array (
   'Public (Members only)' => '',
   'Public (Registered users only)' => '',
   'Public (Visible)' => '',
-  'Settings' => '',
+  'Settings' => 'الإعدادات',
   'Space' => '',
   'Visible for all (members and guests)' => '',
 );

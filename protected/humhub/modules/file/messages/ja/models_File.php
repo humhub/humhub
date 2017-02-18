@@ -18,7 +18,4 @@
  */
 return [
     'Image dimensions are too big to be processed with current server memory limit!' => '',
-    'Maximum file size ({maxFileSize}) has been exceeded!' => '',
-    'This file type is not allowed!' => '',
-    'Invalid Mime-Type' => '無効なMIMEタイプ',
 ];

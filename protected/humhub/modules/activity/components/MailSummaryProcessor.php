@@ -52,18 +52,23 @@ class MailSummaryProcessor
         foreach ($users->each() as $user) {
 
             // Check if user wants summary in the given interval
-            if (self::checkUser($user, $interval)) {
-                $mailSummary = Yii::createObject([
-                            'class' => MailSummary::className(),
-                            'user' => $user,
-                            'interval' => $interval
-                ]);
-                if ($mailSummary->send()) {
-                    $mailsSent++;
+            try {
+                if (self::checkUser($user, $interval)) {
+
+                    $mailSummary = Yii::createObject([
+                                'class' => MailSummary::className(),
+                                'user' => $user,
+                                'interval' => $interval
+                    ]);
+                    if ($mailSummary->send()) {
+                        $mailsSent++;
+                    }
                 }
+            } catch (\Exception $ex) {
+                Yii::error('Could not send activity mail to: ' . $user->displayName . ' (' . $ex->getMessage() . ')', 'activity');
             }
             if ($interactive) {
-                Console::updateProgress( ++$processed, $totalUsers);
+                Console::updateProgress(++$processed, $totalUsers);
             }
         }
 

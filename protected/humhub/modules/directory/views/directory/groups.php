@@ -7,7 +7,7 @@ use yii\helpers\Html;
 <div class="panel panel-default groups">
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.views_directory_groups', '<strong>Member</strong> Group Directory'); ?>
+        <?php echo Yii::t('DirectoryModule.base', '<strong>Member</strong> Group Directory'); ?>
     </div>
 
     <div class="panel-body">
@@ -25,7 +25,7 @@ use yii\helpers\Html;
                              width="40" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"/></a>
                     <?php endforeach; ?>
                     <?php if ($userCount >= 30) : ?>
-                        <?php echo Html::a(Yii::t('DirectoryModule.views_directory_groups', "show all members"), Url::to(['/directory/directory/members', 'keyword' => '', 'groupId' => $group->id])); ?>
+                        <?php echo Html::a(Yii::t('DirectoryModule.base', "show all members"), Url::to(['/directory/directory/members', 'keyword' => '', 'groupId' => $group->id])); ?>
                     <?php endif; ?>
                 <hr>
             <?php endif; ?>

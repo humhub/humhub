@@ -93,8 +93,6 @@ class PolymorphicRelation extends Behavior {
      */
     public function resetPolymorphicRelation() {
         $this->_cached = null;
-        $this->owner->setAttribute($this->classAttribute, null);
-        $this->owner->setAttribute($this->pkAttribute, null);
     }
 
     /**

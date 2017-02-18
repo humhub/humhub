@@ -6,6 +6,7 @@ return array (
   'Administration' => '管理',
   'Approval' => '通过',
   'Authentication' => '认证',
+  'Back to overview' => '返回概览',
   'Basic' => '基础',
   'Caching' => '缓存设置',
   'Cronjobs' => '定时任务',

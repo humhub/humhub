@@ -65,7 +65,7 @@ humhub.module('util', function(module, require, $) {
                 handlers.forEach(function(handler) {
                     handler.apply(thisObj, _arguments);
                 });
-            }
+            };
         },
         inherits: function(Sub, Parent) {
             for(var i in Parent) {

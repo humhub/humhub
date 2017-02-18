@@ -9,7 +9,7 @@ use yii\helpers\Html;
     <?php echo humhub\widgets\PanelMenu::widget(array('id' => 'new-spaces-panel')); ?>
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', '<strong>New</strong> spaces'); ?>
+        <?php echo Yii::t('DirectoryModule.base', '<strong>New</strong> spaces'); ?>
     </div>
     <div class="panel-body">
         <?php foreach ($newSpaces as $space) : ?>
@@ -32,7 +32,7 @@ use yii\helpers\Html;
         <?php if ($showMoreButton): ?>
             <br/>
             <br/>
-            <?php echo Html::a(Yii::t('DirectoryModule.widgets_views_newSpaces', 'See all'), array('/directory/directory/spaces'), array('class' => 'btn btn-xl btn-primary')); ?>
+            <?php echo Html::a(Yii::t('DirectoryModule.base', 'See all'), array('/directory/directory/spaces'), array('class' => 'btn btn-xl btn-primary')); ?>
         <?php endif; ?>
     </div>
 </div>

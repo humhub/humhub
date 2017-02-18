@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '{displayNames} likes your {contentTitle}.' => '',
+    '{displayName} likes your {contentTitle}.' => '',
     '{displayNames} likes {contentTitle}.' => '{displayNames} 赞了 {contentTitle}。',
     '{displayName} likes {contentTitle}.' => '{displayName} 赞了 {contentTitle}。',
 ];

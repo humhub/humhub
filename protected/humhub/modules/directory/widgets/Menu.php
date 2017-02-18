@@ -28,13 +28,13 @@ class Menu extends \humhub\widgets\BaseMenu
     {
         $this->addItemGroup(array(
             'id' => 'directory',
-            'label' => Yii::t('DirectoryModule.views_directory_layout', '<strong>Directory</strong> menu'),
+            'label' => Yii::t('DirectoryModule.base', '<strong>Directory</strong> menu'),
             'sortOrder' => 100,
         ));
 
         if (Yii::$app->getModule('directory')->isGroupListingEnabled()) {
             $this->addItem(array(
-                'label' => Yii::t('DirectoryModule.views_directory_layout', 'Groups'),
+                'label' => Yii::t('DirectoryModule.base', 'Groups'),
                 'group' => 'directory',
                 'url' => Url::to(['/directory/directory/groups']),
                 'sortOrder' => 100,
@@ -43,7 +43,7 @@ class Menu extends \humhub\widgets\BaseMenu
         }
 
         $this->addItem(array(
-            'label' => Yii::t('DirectoryModule.views_directory_layout', 'Members'),
+            'label' => Yii::t('DirectoryModule.base', 'Members'),
             'group' => 'directory',
             'url' => Url::to(['/directory/directory/members']),
             'sortOrder' => 200,
@@ -51,7 +51,7 @@ class Menu extends \humhub\widgets\BaseMenu
         ));
 
         $this->addItem(array(
-            'label' => Yii::t('DirectoryModule.views_directory_layout', 'Spaces'),
+            'label' => Yii::t('DirectoryModule.base', 'Spaces'),
             'group' => 'directory',
             'url' => Url::to(['/directory/directory/spaces']),
             'sortOrder' => 300,
@@ -59,7 +59,7 @@ class Menu extends \humhub\widgets\BaseMenu
         ));
 
         $this->addItem(array(
-            'label' => Yii::t('DirectoryModule.views_directory_layout', 'User profile posts'),
+            'label' => Yii::t('DirectoryModule.base', 'User profile posts'),
             'group' => 'directory',
             'url' => Url::to(['/directory/directory/user-posts']),
             'sortOrder' => 400,

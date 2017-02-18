@@ -8,6 +8,7 @@
 
 namespace humhub\modules\activity\components;
 
+use Yii;
 use humhub\components\rendering\MailLayoutRenderer;
 
 /**
@@ -18,6 +19,11 @@ use humhub\components\rendering\MailLayoutRenderer;
  */
 class ActivityMailRenderer extends MailLayoutRenderer
 {
+
+    /**
+     * @inheritdoc
+     */
+    public $subPath = 'mail';
 
     /**
      * @inheritdoc

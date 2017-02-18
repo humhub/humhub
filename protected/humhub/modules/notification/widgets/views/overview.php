@@ -5,6 +5,7 @@ use yii\helpers\Url;
 $this->registerJsConfig('notification', [
     'icon' => $this->theme->getBaseUrl().'/ico/notification-o.png',
     'loadEntriesUrl' => Url::to(['/notification/list']),
+    'sendDesktopNotifications' => boolval(Yii::$app->notification->getDesktopNoficationSettings(Yii::$app->user->getIdentity())),
     'text' =>  [
         'placeholder' => Yii::t('NotificationModule.widgets_views_list', 'There are no notifications yet.')
     ]

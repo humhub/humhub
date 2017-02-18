@@ -17,13 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Friendship' => 'Дружба',
-    'New users will automatically be added to these space(s).' => 'Новые пользователи будут автоматически добавлены в эти пространства.',
     '<strong>Confirm</strong> image deletion' => '<strong>Подтвердите</strong> удаление изображения',
-    'Cancel' => 'Отменить',
     'Dashboard' => 'События',
     'Delete' => 'Удалить',
     'E.g. http://example.com/humhub' => 'например, http://example.com/humhub',
+    'Friendship' => 'Дружба',
+    'New users will automatically be added to these space(s).' => 'Новые пользователи будут автоматически добавлены в эти пространства.',
     'Save' => 'Сохранить',
     'Wall entry layout' => 'Отображение записи на стене',
     'You\'re using no logo at the moment. Upload your logo now.' => 'На данный момент вы не используете логотип. Загрузить логотип сейчас.',

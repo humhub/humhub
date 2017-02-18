@@ -6,6 +6,7 @@ return array (
   'Administration' => 'Administrasjon',
   'Approval' => 'Godkjenn',
   'Authentication' => 'Autentisering',
+  'Back to overview' => 'Tilbake til oversikt',
   'Basic' => 'Basic',
   'Caching' => 'Caching',
   'Cronjobs' => 'Cronjobs',

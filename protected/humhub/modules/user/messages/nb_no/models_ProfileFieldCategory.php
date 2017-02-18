@@ -1,17 +1,6 @@
 <?php
 return array (
   'Communication' => '',
-  'Created at' => '',
-  'Created by' => '',
-  'Description' => '',
-  'General' => '',
-  'ID' => '',
-  'Module' => '',
+  'General' => 'Gennerelt',
   'Social bookmarks' => '',
-  'Sort order' => '',
-  'Title' => 'Tittel',
-  'Translation Category ID' => '',
-  'Updated at' => '',
-  'Updated by' => '',
-  'Visibility' => '',
 );

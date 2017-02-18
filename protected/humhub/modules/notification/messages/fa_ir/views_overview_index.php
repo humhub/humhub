@@ -18,6 +18,7 @@
  */
 return [
     '<strong>Notification</strong> Overview' => '',
+    'Apply' => '',
     'Filter' => 'فیلتر',
     'Mark all as seen' => 'علامت‌گذاری همه به عنوان دیده‌شده',
     'Module Filter' => 'فيلتر ماژول ها',

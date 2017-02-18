@@ -1,14 +1,13 @@
 <?php
 
 Yii::setAlias('@webroot', realpath(__DIR__ . '/../../../'));
-
 Yii::setAlias('@app', '@webroot/protected');
 Yii::setAlias('@humhub', '@app/humhub');
 Yii::setAlias('@config', '@app/config');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.2.0-beta.1',
+    'version' => '1.2.0-beta.2',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue'],
     'sourceLanguage' => 'en',
@@ -178,12 +177,6 @@ $config = [
             'id' => 'Bahasa Indonesia',
             'lt' => 'lietuvių kalba',
             'ht' => 'Kreyòl ayisyen',
-        ],
-        'user' => [
-            // Minimum username length
-            'minUsernameLength' => 4,
-            // Administrators can change profile image/banners of alle users
-            'adminCanChangeProfileImages' => false
         ],
         'ldap' => [
             // LDAP date field formats

@@ -10,7 +10,7 @@ namespace humhub\components\rendering;
  */
 class MailLayoutRenderer extends LayoutRenderer
 {
-    
+
     public $subPath = 'mails';
 
     /**
@@ -28,7 +28,7 @@ class MailLayoutRenderer extends LayoutRenderer
     public function renderText(Viewable $viewable, $params = [])
     {
         $textRenderer = new LayoutRenderer([
-            'subPath' => 'mails/plaintext', 
+            'subPath' => $this->subPath . '/plaintext',
             'parent' => $this->parent,
             'layout' => $this->getTextLayout($viewable)
         ]);

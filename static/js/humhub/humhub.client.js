@@ -17,8 +17,8 @@ humhub.module('client', function (module, require, $) {
         //Textstatus = "timeout", "error", "abort", "parsererror", "application"
         this.textStatus = textStatus;
         this.dataType = dataType;
-        
-        var responseType =  xhr.getResponseHeader('content-type');
+
+        var responseType = xhr.getResponseHeader('content-type');
 
         // If we expect json and received json we merge the json result with our response object.
         if ((!dataType || dataType === 'json') && responseType && responseType.indexOf('json') > -1) {
@@ -66,6 +66,14 @@ humhub.module('client', function (module, require, $) {
 
         return result;
     };
+    
+    var reload = function(preventPjax) {
+        if(!preventPjax && module.pjax.config.active) {
+            module.pjax.reload();
+        } else {
+            location.reload(true);
+        }
+    }
 
     var submit = function ($form, cfg, originalEvent) {
         if ($form instanceof $.Event && $form.$form && $form.length) {
@@ -161,6 +169,21 @@ humhub.module('client', function (module, require, $) {
             var errorHandler = cfg.error;
             var error = function (xhr, textStatus, errorThrown) {
                 var response = new Response(xhr, url, textStatus, cfg.dataType).setError(errorThrown);
+
+                if (response.status == 302) {
+
+                    url = null;
+                    if (xhr.getResponseHeader('X-Pjax-Url')) {
+                        url = xhr.getResponseHeader('X-Pjax-Url');
+                    } else {
+                        url = xhr.getResponseHeader('X-Redirect');
+                    }
+
+                    if (url !== null) {
+                        document.location = url;
+                        return;
+                    }
+                }
 
                 if (errorHandler && object.isFunction(errorHandler)) {
                     errorHandler(response);
@@ -258,33 +281,10 @@ humhub.module('client', function (module, require, $) {
         post: post,
         get: get,
         html: html,
+        reload: reload,
         submit: submit,
         init: init,
         //upload: upload,
         Response: Response
     });
 });
-
-/**
- * 
- var handleResponse = function (json, callback) {
- var response = new Response(json);
- if (json.content) {
- response.$content = $('<div>' + json.content + '</div>');
- 
- //Find all remote scripts and remove them from the partial
- var scriptSrcArr = [];
- response.$content.find('script[src]').each(function () {
- scriptSrcArr.push($(this).attr('src'));
- $(this).remove();
- });
- 
- //Load the remote scripts synchronously only if they are not already loaded.
- scripts.loadOnceSync(scriptSrcArr, function () {
- callback(response);
- });
- } else {
- callback(response);
- }
- };
- */

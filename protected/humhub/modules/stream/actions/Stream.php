@@ -10,6 +10,7 @@ namespace humhub\modules\stream\actions;
 
 use Yii;
 use yii\base\Action;
+use yii\base\Exception;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
 use humhub\modules\stream\models\StreamQuery;
@@ -198,7 +199,9 @@ abstract class Stream extends Action
 
         if ($this->mode == self::MODE_ACTIVITY) {
             $this->streamQuery->channel(StreamQuery::CHANNEL_ACTIVITY);
-            $this->streamQuery->query()->andWhere('content.created_by != :userId', [':userId' => $this->streamQuery->user->id]);
+            if($this->streamQuery->user) {
+                $this->streamQuery->query()->andWhere('content.created_by != :userId', [':userId' => $this->streamQuery->user->id]);
+            }
         }
     }
 

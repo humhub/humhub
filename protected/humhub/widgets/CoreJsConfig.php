@@ -40,6 +40,7 @@ class CoreJsConfig extends Widget
                         'type' => 'humhub.modules.live.poll.PollClient',
                         'options' => [
                             'url' => Url::to(['/live/poll']),
+                            'initTime' => time(),
                             'minInterval' => $liveModule->minPollInterval, // Minimal polling request interval in seconds.
                             'maxInterval' => $liveModule->maxPollInterval, // Maximal polling request interval in seconds.
                             'idleFactor' => $liveModule->idleFactor, // Factor used in the actual interval calculation in case of user idle.
@@ -55,7 +56,7 @@ class CoreJsConfig extends Widget
                     ],
                     'text' => [
                         'error.upload' => Yii::t('base', 'Some files could not be uploaded:'),
-                        'success.delete' => Yii::t('base', 'The file has been deleted.'),
+                        'success.delete' => Yii::t('base', 'The file has been deleted.')
                     ]
                 ],
                 'action' => [
@@ -72,6 +73,8 @@ class CoreJsConfig extends Widget
                 'ui.widget' => [
                     'text' => [
                         'error.unknown' => Yii::t('base', 'No error information given.'),
+                        'info.title' => Yii::t('base', 'Info:'),
+                        'error.title' => Yii::t('base', 'Error:')
                     ]
                 ],
                 'ui.richtext' => [
@@ -107,10 +110,10 @@ class CoreJsConfig extends Widget
                         'showMore' => Yii::t('base', 'Show more'),
                     ]
                 ],
-                'post' => [
+                'ui.showMore' => [
                     'text' => [
-                        'default.readMore' => Yii::t('PostModule.widgets_views_post', 'Read full post...'),
-                        'default.readLess' => Yii::t('PostModule.widgets_views_post', 'Collapse'),
+                        'readMore' => Yii::t('PostModule.widgets_views_post', 'Read full post...'),
+                        'readLess' => Yii::t('PostModule.widgets_views_post', 'Collapse'),
                     ]
                 ],
                 'content' => [

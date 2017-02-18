@@ -6,6 +6,7 @@ return array (
   'Administration' => 'مدیریت',
   'Approval' => 'تصويب',
   'Authentication' => 'احراز هويت',
+  'Back to overview' => 'برگشت به دید کلی',
   'Basic' => 'پايه',
   'Caching' => 'دخیره در حافظه‌ی موقت',
   'Cronjobs' => 'كرون جاب',

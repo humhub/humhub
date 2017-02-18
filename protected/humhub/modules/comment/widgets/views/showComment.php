@@ -48,8 +48,8 @@ $canDelete = $comment->canDelete();
              width="40"
              height="40" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"/>
     </a>
-
-    <div class="media-body">
+    <div>
+        <div class="media-body">
         <h4 class="media-heading"><a href="<?= $user->getUrl(); ?>"><?= Html::encode($user->displayName); ?></a>
             <small><?= \humhub\widgets\TimeAgo::widget(['timestamp' => $comment->created_at]); ?>
                 <?php if ($comment->updated_at != "" && $comment->created_at != $comment->updated_at): ?>
@@ -57,12 +57,12 @@ $canDelete = $comment->canDelete();
                 <?php endif; ?>
             </small>
         </h4>
-
-        <!-- Class comment_edit_content required since v1.2 -->
+        </div>
+        <!-- class comment_edit_content required since v1.2 -->
         <div class="content comment_edit_content" id="comment_editarea_<?= $comment->id; ?>">
-            <span id="comment-message-<?= $comment->id; ?>" class="comment-message" data-ui-markdown>
+            <div id="comment-message-<?= $comment->id; ?>" class="comment-message" data-ui-markdown data-ui-show-more data-read-more-text="<?= Yii::t('CommentModule.widgets_views_showComment', 'Read full comment...') ?>">
                 <?= humhub\widgets\RichText::widget(['text' => $comment->message, 'record' => $comment]); ?>
-            </span>
+            </div>
             <?= humhub\modules\file\widgets\ShowFiles::widget(['object' => $comment]); ?>
         </div>
 

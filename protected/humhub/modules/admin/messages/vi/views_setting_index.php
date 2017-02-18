@@ -24,7 +24,6 @@ return [
     'Save' => '',
     'Wall entry layout' => '',
     'You\'re using no logo at the moment. Upload your logo now.' => '',
-    'Cancel' => 'Hủy',
     'Dashboard' => 'Trang chính',
     'Delete' => 'Xóa',
 ];

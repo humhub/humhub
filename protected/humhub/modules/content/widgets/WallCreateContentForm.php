@@ -16,6 +16,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\file\handler\FileHandlerCollection;
 
 /**
  * WallCreateContentForm is the base widget to create  "quick" create content forms above Stream/Wall.
@@ -87,13 +88,17 @@ class WallCreateContentForm extends Widget
             $defaultVisibility = Content::VISIBILITY_PRIVATE;
         }
 
+        $fileHandlerImport = FileHandlerCollection::getByType(FileHandlerCollection::TYPE_IMPORT);
+        $fileHandlerCreate = FileHandlerCollection::getByType(FileHandlerCollection::TYPE_CREATE);
+
         return $this->render('@humhub/modules/content/widgets/views/wallCreateContentForm', array(
                     'form' => $this->renderForm(),
                     'contentContainer' => $this->contentContainer,
                     'submitUrl' => $this->contentContainer->createUrl($this->submitUrl),
                     'submitButtonText' => $this->submitButtonText,
                     'defaultVisibility' => $defaultVisibility,
-                    'canSwitchVisibility' => $canSwitchVisibility
+                    'canSwitchVisibility' => $canSwitchVisibility,
+                    'fileHandlers' => array_merge($fileHandlerCreate, $fileHandlerImport),
         ));
     }
 

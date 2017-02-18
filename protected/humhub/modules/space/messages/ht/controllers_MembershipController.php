@@ -18,4 +18,5 @@
  */
 return [
     '<strong>Members</strong>' => '',
+    'Access denied - You cannot invite members!' => '',
 ];

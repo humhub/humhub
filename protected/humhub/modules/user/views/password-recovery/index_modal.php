@@ -11,12 +11,11 @@ use yii\helpers\Url;
             <h4 class="modal-title" id="myModalLabel"><?php echo Yii::t('UserModule.views_auth_recoverPassword', '<strong>Password</strong> recovery'); ?></h4>
         </div>
         <div class="modal-body">
-            <?php $form = CActiveForm::begin(); ?>
+            <?php $form = CActiveForm::begin(['enableClientValidation' => false]); ?>
 
             <p><?php echo Yii::t('UserModule.views_auth_recoverPassword', 'Just enter your e-mail address. We´ll send you recovery instructions!'); ?></p>
 
             <div class="form-group">
-                <?php //echo $form->labelEx($model, 'email');  ?>
                 <?php echo $form->textField($model, 'email', array('class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'your email'))); ?>
                 <?php echo $form->error($model, 'email'); ?>
             </div>
@@ -34,32 +33,13 @@ use yii\helpers\Url;
             </div>
 
             <hr>
-            <?php
-            echo \humhub\widgets\AjaxButton::widget([
-                'label' => Yii::t('UserModule.views_auth_recoverPassword', 'Reset password'),
-                'ajaxOptions' => [
-                    'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
-                    'success' => 'function(html){ $("#globalModal").html(html); }',
-                    'url' => Url::to(['/user/password-recovery']),
-                ],
-                'htmlOptions' => [
-                    'class' => 'btn btn-primary', 'id' => 'recoverPasswordBtn'
-                ]
-            ]);
-            echo \humhub\widgets\AjaxButton::widget([
-                'label' => Yii::t('UserModule.views_auth_recoverPassword', 'Back'),
-                'ajaxOptions' => [
-                    'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
-                    'success' => 'function(html){ $("#globalModal").html(html); }',
-                    'url' => Url::to(['/user/auth/login']),
-                ],
-                'htmlOptions' => [
-                    'class' => 'btn btn-primary', 'id' => 'backBtn'
-                ]
-            ]);
-            ?>
+            <a href="#" class="btn btn-primary" data-action-click="ui.modal.submit" data-action-url="<?= Url::to(['/user/password-recovery']) ?>" data-ui-loader>
+                <?= Yii::t('UserModule.views_auth_recoverPassword', 'Reset password') ?>
+            </a>
+            &nbsp;
+            <a href="#" class="btn btn-default" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/user/auth/login']) ?>" data-ui-loader>
+                <?= Yii::t('UserModule.views_auth_recoverPassword', 'Back') ?>
+            </a>
             <?php CActiveForm::end() ?>
         </div>
 

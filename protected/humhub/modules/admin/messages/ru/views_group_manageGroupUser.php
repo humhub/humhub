@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add' => 'Добавить',
     'Add new members...' => 'Добавить участников...',
     'No' => 'Нет',
     'Remove from group' => 'Удалить из группы',

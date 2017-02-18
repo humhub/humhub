@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add' => '增加',
     'Add new members...' => '增加新的成员...',
     'No' => '不',
     'Remove from group' => '从分组移除',

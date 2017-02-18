@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Specify space' => '',
     'Your search returned no matches.' => '',
     '<strong>Search </strong> results' => '<strong>Wyniki</strong> wyszukiwania',
     'Advanced search settings' => 'Zaawansowane ustawienia wyszukiwania',

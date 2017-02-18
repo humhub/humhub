@@ -1,0 +1,12 @@
+{
+  "name": "jquery-timeago",
+  "license": "MIT",
+  "main": "jquery.timeago.js",
+  "ignore": [
+    "test",
+    "vendor"
+  ],
+  "dependencies": {
+    "jquery": ">=1.4"
+  }
+}

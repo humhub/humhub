@@ -13,9 +13,7 @@ class StreamCest
         $I->wantToTest('the deletion of a stream entry');
         $I->amGoingTo('create a new post and delete it afterwards');
 
-        $I->click('#contentForm_message');
-        $I->fillField('#contentForm_message', 'This is my stream test post!');
-        $I->click('#post_submit_button');
+        $I->createPost('This is my stream test post!');
 
         $newEntrySelector = '[data-content-key="12"]';
 

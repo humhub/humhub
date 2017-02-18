@@ -19,8 +19,5 @@
 return [
     'Invalid link! Please make sure that you entered the entire url.' => '无效链接！请确保输入完整的URL',
     'Save profile' => '保存信息',
-    'Saved' => '已保存',
     'The entered e-mail address is already in use by another user.' => '输入的电子邮件地址已被使用',
-    'Members' => '成员',
-    'Guests' => '游客',
 ];

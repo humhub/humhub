@@ -18,7 +18,6 @@
  */
 return [
     'Comma separated list. Leave empty to allow all.' => '',
-    'Comma separated list. Leave empty to show file list for all objects on wall.' => '',
     'If not set, height will default to 200px.' => '',
     'If not set, width will default to 200px.' => '',
     'Current Image Libary: {currentImageLibary}' => 'Image Libary corrente: {currentImageLibary}',

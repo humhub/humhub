@@ -18,7 +18,4 @@
  */
 return [
     'Image dimensions are too big to be processed with current server memory limit!' => '',
-    'Invalid Mime-Type' => 'Mime-Type non valido',
-    'Maximum file size ({maxFileSize}) has been exceeded!' => 'La grandezza massima del file ({maxFileSize}) è stata raggiunta!',
-    'This file type is not allowed!' => 'Questo tipo di file non è consentito!',
 ];

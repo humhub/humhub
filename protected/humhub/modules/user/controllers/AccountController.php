@@ -213,8 +213,13 @@ class AccountController extends BaseAccountController
         if (!$user->isModuleEnabled($moduleId)) {
             $user->enableModule($moduleId);
         }
-
-        return $this->redirect(['/user/account/edit-modules']);
+        
+        if (!Yii::$app->request->isAjax) {
+            return $this->redirect(['/user/account/edit-modules']);
+        } else {
+            Yii::$app->response->format = 'json';
+            return ['success' => true];
+        }
     }
 
     public function actionDisableModule()
@@ -228,7 +233,12 @@ class AccountController extends BaseAccountController
             $user->disableModule($moduleId);
         }
 
-        return $this->redirect(['/user/account/edit-modules']);
+         if (!Yii::$app->request->isAjax) {
+            return $this->redirect(['/user/account/edit-modules']);
+        } else {
+            Yii::$app->response->format = 'json';
+            return ['success' => true];
+        }
     }
 
     /**

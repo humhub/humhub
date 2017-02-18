@@ -33,7 +33,6 @@ class PagedownConverterAsset extends AssetBundle
      */
     public $js = [
         'resources/js/pagedown/Markdown.Converter.js',
-        'resources/js/pagedown/Markdown.Editor.js',
         'resources/js/pagedown/Markdown.Extra.js',
     ];
 

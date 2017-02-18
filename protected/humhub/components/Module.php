@@ -176,7 +176,7 @@ class Module extends \yii\base\Module
         return is_string($path) && is_dir($path);
     }
 
-    private function getAssetPath()
+    public function getAssetPath()
     {
         return $this->getBasePath() . '/' . $this->resourcesPath;
     }

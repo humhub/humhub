@@ -28,6 +28,10 @@ humhub.module('ui.navigation', function (module, require, $) {
     };
 
     var setActive = function (id, item) {
+        if(!id) {
+            return;
+        }
+        
         if(item && item.url) {
             module.setActiveItem($('#' + id).find('[href="' + item.url + '"]'));
         } else {

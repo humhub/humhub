@@ -44,7 +44,7 @@ use yii\helpers\Url;
                                 }
                                 ?>
                                 <a href="#" class="btn btn-sm btn-primary enable" 
-                                    data-action-click="space.enableModule" 
+                                    data-action-click="content.container.enableModule" 
                                     data-ui-loader
                                     data-action-url="<?= $space->createUrl('/space/manage/module/enable', ['moduleId' => $moduleId]) ?>">
                                      <?= Yii::t('SpaceModule.views_admin_modules', 'Enable'); ?>
@@ -52,7 +52,7 @@ use yii\helpers\Url;
                                 
                                 <a href="#" class="btn btn-sm btn-primary disable" 
                                    style="display:none"
-                                    data-action-click="space.disableModule" 
+                                    data-action-click="content.container.disableModule" 
                                     data-ui-loader
                                     data-action-url="<?= $space->createUrl('/space/manage/module/disable', ['moduleId' => $moduleId]) ?>">
                                      <?= Yii::t('SpaceModule.views_admin_modules', 'Disable'); ?>

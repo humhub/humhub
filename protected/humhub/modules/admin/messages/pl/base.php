@@ -6,6 +6,7 @@ return array (
   'Administration' => 'Administracja',
   'Approval' => 'Zatwierdzanie',
   'Authentication' => 'Uwieżytelnianie',
+  'Back to overview' => 'Wróć do omówienia',
   'Basic' => 'Podstawowe',
   'Caching' => 'Cache',
   'Cronjobs' => 'Zadania cron',

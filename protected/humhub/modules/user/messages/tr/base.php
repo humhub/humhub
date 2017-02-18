@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Security</strong> settings' => '',
     'Basic Settings' => '',
     'Change Email' => '',
     'Change Password' => '',
     'Connected Accounts' => '',
     'Connected accounts' => '',
+    'Current Password' => '',
     'Currently in use' => '',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => '',
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '',
@@ -47,5 +47,4 @@ return [
     'Security' => 'Güvenlik',
     'Settings' => 'Ayarlar',
     'User' => 'Kullanıcı',
-    'Current Password' => '',
 ];

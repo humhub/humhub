@@ -18,11 +18,13 @@
  */
 return [
     '<i class="fa fa-cog"></i>' => '',
-    'Security' => 'Безопасность',
+    'Don\'t receive notifications for new content' => '',
+    'Receive Notifications for new content' => '',
     'Cancel Membership' => 'Отменить участие',
     'Hide posts on dashboard' => 'Скрыть сообщения в панели "События"',
     'Members' => 'Участники',
     'Modules' => 'Модули',
+    'Security' => 'Безопасность',
     'Show posts on dashboard' => 'Показать сообщение в панели "События"',
     'This option will hide new content from this space at your dashboard' => 'Эта опция будет скрывать новый контент данного пространства в панели "События"',
     'This option will show new content from this space at your dashboard' => 'Эта опция будет показывать новый контент данного пространства в панели "События"',

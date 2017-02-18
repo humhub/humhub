@@ -199,7 +199,7 @@ humhub.module('ui.richtext', function(module, require, $) {
     };
 
     Richtext.prototype.checkPlaceholder = function(focus) {
-        if(!focus && !this.$.text().trim().length) {
+        if(!focus && !this.$.text().trim().length && !this.$.find('[data-richtext-feature]').length) {
             this.$.addClass('atwho-placeholder');
             this.$.html(this.options.placeholder);
             this.$.attr('spellcheck', 'false');

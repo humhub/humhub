@@ -1,0 +1,17 @@
+engines:
+ duplication:
+   enabled: true
+   config:
+     languages:
+     - php
+ phpcodesniffer:
+   enabled: true
+   config:
+    standard: "PSR1,PSR2"
+
+ratings:
+ paths:
+ - "**.php"
+
+exclude_paths:
+- "**/messages/"

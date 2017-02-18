@@ -58,7 +58,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
                     <div
                         class="panel-heading"><?php echo Yii::t('SearchModule.views_search_index', '<strong>Search </strong> results'); ?></div>
                     <div class="list-group">
-                        <a href='<?php echo Url::to(['/search/search/index', 'keyword' => $model->keyword, 'limitSpaceGuids' => $model->limitSpaceGuids, 'scope' => SearchForm::SCOPE_ALL]); ?>'
+                        <a data-pjax-prevent href='<?php echo Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_ALL]); ?>'
                            class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_ALL): ?>active<?php endif; ?>">
                             <div>
                                 <div class="edit_group "><?php echo Yii::t('SearchModule.views_search_index', 'All'); ?>
@@ -67,7 +67,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
                             </div>
                         </a>
                         <br/>
-                        <a href='<?php echo Url::to(['/search/search/index', 'keyword' => $model->keyword, 'limitSpaceGuids' => $model->limitSpaceGuids, 'scope' => SearchForm::SCOPE_CONTENT]); ?>'
+                        <a data-pjax-prevent href='<?php echo Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_CONTENT]); ?>'
                            class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_CONTENT): ?>active<?php endif; ?>">
                             <div>
                                 <div
@@ -76,7 +76,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
                                 </div>
                             </div>
                         </a>
-                        <a href='<?php echo Url::to(['/search/search/index', 'keyword' => $model->keyword, 'limitSpaceGuids' => $model->limitSpaceGuids, 'scope' => SearchForm::SCOPE_USER]); ?>'
+                        <a data-pjax-prevent href='<?php echo Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_USER]); ?>'
                            class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_USER): ?>active<?php endif; ?>">
                             <div>
                                 <div
@@ -85,7 +85,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
                                 </div>
                             </div>
                         </a>
-                        <a href='<?php echo Url::to(['/search/search/index', 'keyword' => $model->keyword, 'limitSpaceGuids' => $model->limitSpaceGuids, 'scope' => SearchForm::SCOPE_SPACE]); ?>'
+                        <a data-pjax-prevent href='<?php echo Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_SPACE]); ?>'
                            class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_SPACE): ?>active<?php endif; ?>">
                             <div>
                                 <div

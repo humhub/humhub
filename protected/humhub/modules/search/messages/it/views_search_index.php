@@ -18,6 +18,7 @@
  */
 return [
     'Search only in certain spaces:' => '',
+    'Specify space' => '',
     'Your search returned no matches.' => '',
     '<strong>Search </strong> results' => 'Risultati di <strong>Ricerca</strong>',
     'Advanced search settings' => 'Impostazioni di ricerca avanzate',

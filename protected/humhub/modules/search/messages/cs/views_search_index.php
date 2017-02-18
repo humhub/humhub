@@ -20,6 +20,7 @@ return [
     'Advanced search settings' => '',
     'Search for user, spaces and content' => '',
     'Search only in certain spaces:' => '',
+    'Specify space' => '',
     'Your search returned no matches.' => '',
     '<strong>Search </strong> results' => '<strong>Výsledky</strong> hledání',
     'All' => 'Vše',

@@ -3,6 +3,6 @@ return array (
   'About HumHub' => '',
   'CronJobs' => '',
   'Database' => 'Database',
-  'Logging' => '',
+  'Logging' => 'Logging',
   'Prerequisites' => 'Prerequisiti',
 );

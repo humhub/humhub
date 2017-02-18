@@ -7,6 +7,7 @@ humhub.module('action', function(module, require, $) {
     var object = require('util').object;
     var string = require('util').string;
     var loader = require('ui.loader');
+    var modal = require('ui.modal', true);
 
     var BLOCK_NONE = 'none';
     var BLOCK_SYNC = 'sync';
@@ -16,6 +17,8 @@ humhub.module('action', function(module, require, $) {
     var DATA_COMPONENT = 'action-component';
     
     module.initOnPjax = true;
+    
+    var processes = {};
 
     var Component = function(node, options) {
         if(!node) {
@@ -258,6 +261,10 @@ humhub.module('action', function(module, require, $) {
             $targets.data('action-' + binding.event, true);
         });
     };
+    
+    var getProcessTrigger = function(id) {
+        return processes[id];
+    };
 
     /**
      * ActionBinding instances are used to store the binding settings and handling
@@ -312,11 +319,37 @@ humhub.module('action', function(module, require, $) {
     ActionBinding.prototype.handle = function(options) {
         var options = options || {};
         var $trigger = options.$trigger;
+        
+        if(this.data($trigger, 'process')) {
+            processes[this.data($trigger, 'process')] = $trigger;
+        }
+
+        
 
         if(options.originalEvent) {
             options.originalEvent.preventDefault();
         }
 
+        module.log.debug('Handle Action', this);
+
+        var event = this.createActionEvent(options);
+        
+        if(this.data($trigger, 'confirm') && !options.confirmed) {
+            var that = this;
+            modal.confirm($trigger).then(function(confirmed) {
+                if(confirmed) {
+                    options.confirmed = true;
+                    that.handle(options);
+                } else {
+                    event.finish();
+                }
+            });
+            return;
+        }
+        
+        // Reset value just to get sure the options are not reused.
+        options.confirmed = undefined;
+        
         if(this.isBlocked($trigger)) {
             module.log.warn('Blocked action execution ', $trigger);
             return;
@@ -325,10 +358,6 @@ humhub.module('action', function(module, require, $) {
         if(this.isBlockAction($trigger)) {
             this.block($trigger);
         }
-
-        module.log.debug('Handle Action', this);
-
-        var event = this.createActionEvent(options);
 
         try {
             // Check for a direct action handler
@@ -606,6 +635,7 @@ humhub.module('action', function(module, require, $) {
         registerHandler: registerHandler,
         Component: Component,
         trigger: trigger,
+        getProcessTrigger: getProcessTrigger,
         BLOCK_NONE: BLOCK_NONE,
         BLOCK_SYNC: BLOCK_SYNC,
         BLOCK_ASYNC: BLOCK_ASYNC,

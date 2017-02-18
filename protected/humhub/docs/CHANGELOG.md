@@ -1,8 +1,45 @@
 HumHub Change Log
 =================
 
-1.2.0 under development
------------------------
+1.2.0-beta.2 under development
+------------------------------
+- Fix: TimeAgo locale not loaded in production mode, added AppDynamicAsset (luke-)
+- Enh: Translation message rebuild and auto translated duplicates (luke-)
+- Enh: Combined all directory translations into base message category (luke-)
+- Enh: Added logging table cleanup job (luke-)
+- Enh: Added new version check as ActiveJob (luke-)
+- Enh: Moved user configuration params 'minUsernameLength' + 'adminCanChangeProfileImages' to user module class (luke-)
+- Enh: Added .editorconfig code style configuration file (luke-)
+- Enh: Added 'show_in_stream' column in file table to hide output in wall entries (luke-)
+- Enh: Added 'renderGalleryLink' link method to PreviewImage converter (luke-)
+- Fix: Search view links not working (buddh4)
+- Fix: Markdown in comment layout issue (buddh4)
+- Enh: humhub.ui.showMore module for cutting post text and comments (buddh4)
+- Fix: Javascript issues with guest users, removed initialitation of some modules for guest user (buddh4)
+- Fix: Mutliple use of same emoji in richtext.
+- Enh: Use of Yiis new afterRun for humhub Widgets.
+- Fix: Word break issue in markdown posts.
+- Fix: Richtext with emoji only on post edit where ignored.
+- Enh: Added data-action-confirm for confirming actions.
+- Fix: File StorageManager setContent method broken
+- Enh: Added FileHelper methods createLink & getContentContainer
+- Enh: Javascript HumHub Client - better handle ajax redirects
+- Enh: TopMenu / TopMenuRightStack hide content when user is not logged in without guest mode
+- Enh: Added showUserName option in AccountTopMenu widget
+- Enh: Added isGuestAccessEnabled method in User component
+- Enh: Added flash variable (executeJavascript)to execute js on the next page load
+- Enh: Added possibility to create own file handlers (edit, create, import, export)
+- Enh: Added data-action-process to handle modal processes
+- Enh: Added upload file event (humhub:file:created)
+- Enh: Added custom file handler positions
+- Enh: Moved UploadAction::getFileResponse method to FileHelper::getFileInfos
+- Enh: Added JS context menu to ui.additions module
+- Enh: Enhanced ContentContainer Module enable/disable
+- Enh: Added client.reload for pjax and non pjax page reloads
+- Enh: Added ContentContainerAsset to AppAsset
+
+1.2.0-beta.1 (February 08, 2017)
+--------------------------------
 - Enh: Moved HumHub browser icons to HumHub theme (luke-)
 - Enh: Moved support css/js for older IE version into own AssetBundles (luke-)
 - Enh: Moved CSRF Tag output to View renderHeader (luke-)

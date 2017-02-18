@@ -34,7 +34,16 @@ class Application extends \yii\console\Application
         if ($this->isDatabaseInstalled()) {
             $baseUrl = Yii::$app->settings->get('baseUrl');
             if (!empty($baseUrl)) {
-                Yii::setAlias(("@web"), $baseUrl);
+
+                if (Yii::getAlias('@web', false) === false) {
+                    Yii::setAlias('@web', $baseUrl);
+                }
+                if (Yii::getAlias('@web-static', false) === false) {
+                    Yii::setAlias('@web-static', '@web/static');
+                }
+                if (Yii::getAlias('@webroot-static', false) === false) {
+                    Yii::setAlias('@webroot-static', '@webroot/static');
+                }
                 $this->urlManager->scriptUrl = $baseUrl;
                 $this->urlManager->baseUrl = $baseUrl;
 

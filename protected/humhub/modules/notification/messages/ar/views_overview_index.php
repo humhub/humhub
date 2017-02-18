@@ -18,6 +18,7 @@
  */
 return [
     '<strong>Notification</strong> Overview' => '',
+    'Apply' => '',
     'Mark all as seen' => '',
     'Module Filter' => '',
     'No notifications found!' => '',
