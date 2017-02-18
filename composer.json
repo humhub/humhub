@@ -46,8 +46,6 @@
         "bower-asset/At.js": "^1.5.1",
         "bower-asset/animate.css": "*",
         "bower-asset/html5shiv": "^3.7",
-        "fig-r/psr2r-sniffer": "0.3.1",
-        "spryker/code-sniffer": "0.7.2"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "~2.0.0",
