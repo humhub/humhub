@@ -134,8 +134,8 @@ class PermissionManager extends \yii\base\Component
             $record = $this->createPermissionRecord();
         }
 
-        $record->permission_id = $permission->id;
-        $record->module_id = $permission->moduleId;
+        $record->permission_id = $permission->getId();
+        $record->module_id = $permission->getModuleId();
         $record->class = $permission->className();
         $record->group_id = $groupId;
         $record->state = $state;
@@ -150,7 +150,7 @@ class PermissionManager extends \yii\base\Component
      * @param type $groups either an array of groups or group ids or an single group or goup id
      * @param BasePermission $permission
      * @param type $returnDefaultState
-     * @return type
+     * @return int|string
      */
     public function getGroupState($groups, BasePermission $permission, $returnDefaultState = true)
     {
@@ -219,8 +219,8 @@ class PermissionManager extends \yii\base\Component
     {
         return $this->getQuery()->andWhere([
                     'group_id' => $groupId,
-                    'module_id' => $permission->moduleId,
-                    'permission_id' => $permission->id
+                    'module_id' => $permission->getModuleId(),
+                    'permission_id' => $permission->getId()
                 ])->one();
     }
 
@@ -266,7 +266,7 @@ class PermissionManager extends \yii\base\Component
     /**
      * Creates a Permission Database record
      * 
-     * @return Permission
+     * @return GroupPermission
      */
     protected function createPermissionRecord()
     {
