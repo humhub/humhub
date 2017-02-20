@@ -37,6 +37,9 @@ HumHub Change Log
 - Enh: Enhanced ContentContainer Module enable/disable
 - Enh: Added client.reload for pjax and non pjax page reloads
 - Enh: Added ContentContainerAsset to AppAsset
+- Enh: Added editModal for editing wallentries within a modal instead of inline
+- Fix: Oembed not rendered in richtext.
+- Enh: Smarter show more logic - Only cut text if it overlaps the max height by a specific span.
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------

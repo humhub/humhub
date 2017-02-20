@@ -112,7 +112,7 @@ class UrlOembed extends \yii\db\ActiveRecord
                 try {
                     $data = \yii\helpers\Json::decode($jsonOut);
                     if (isset($data['type']) && ($data['type'] === "video" || $data['type'] === 'rich' || $data['type'] === 'photo')) {
-                        $html = "<div class='oembed_snippet' data-url='" . \yii\helpers\Html::encode($url) . "'>" . $data['html'] . "</div>";
+                        $html = "<div data-guid='".uniqid('oembed-')."' data-richtext-feature class='oembed_snippet' data-url='" . \yii\helpers\Html::encode($url) . "'>" . $data['html'] . "</div>";
                     }
                 } catch (\yii\base\InvalidParamException $ex) {
                     Yii::warning($ex->getMessage());
