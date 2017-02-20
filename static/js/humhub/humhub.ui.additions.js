@@ -121,9 +121,16 @@ humhub.module('ui.additions', function (module, require, $) {
 
                 // Export all richtext features
                 var features = {};
-                $this.find('[data-richtext-feature]').each(function () {
+                $this.find('[data-richtext-feature], .oembed_snippet').each(function () {
                     var $this = $(this);
+                    
                     var featureKey = $this.data('guid') || '@-'+$this.attr('id');
+                    
+                    // old oembeds
+                    if($this.is('.oembed_snippted') && !$this.data('guid')) {
+                        featureKey = '@-oembed-'+$this.data('url');
+                    }
+                    
                     features[featureKey] = $this.clone();
                     // We add a space to make sure our placeholder is not appended to any link or something.
                     $this.replaceWith(' '+featureKey);
@@ -150,16 +157,6 @@ humhub.module('ui.additions', function (module, require, $) {
         module.register('popover', '.po', function ($match) {
             $match.popover({html: true});
         });
-
-        // Activate placeholder text for older browsers (specially IE)
-        /*this.register('placeholder','input, textarea', function($match) {
-         $match.placeholder();
-         });*/
-
-        // Replace the standard checkbox and radio buttons
-        /* module.register('forms', ':checkbox, :radio', function($match) {
-         //$match.flatelements();
-         });*/
 
         // Deprecated!
         module.register('', 'a[data-loader="modal"], button[data-loader="modal"]', function ($match) {

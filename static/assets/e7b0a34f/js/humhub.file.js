@@ -163,6 +163,8 @@ humhub.module('file', function (module, require, $) {
         if (this.callbacks.start) {
             this.callbacks.start(e, data);
         }
+        
+        this.fire('humhub:file:uploadStart', [data]);
     };
 
     Upload.prototype.updateProgress = function (e, data) {
@@ -185,7 +187,7 @@ humhub.module('file', function (module, require, $) {
             this.callbacks.done(e, response);
         }
 
-        this.fire('humhub:file:upload', [response]);
+        this.fire('humhub:file:uploadEnd', [response]);
     };
 
     Upload.prototype.handleFileResponse = function (file) {
@@ -375,7 +377,7 @@ humhub.module('file', function (module, require, $) {
 
     var init = function () {
         event.on('humhub:file:created', function (evt, files) {
-
+            
             if (!object.isArray(files)) {
                 files = [files];
             }

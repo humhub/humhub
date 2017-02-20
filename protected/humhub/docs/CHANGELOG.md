@@ -37,6 +37,17 @@ HumHub Change Log
 - Enh: Enhanced ContentContainer Module enable/disable
 - Enh: Added client.reload for pjax and non pjax page reloads
 - Enh: Added ContentContainerAsset to AppAsset
+- Enh: Added editModal for editing wallentries within a modal instead of inline
+- Fix: Oembed not rendered in richtext.
+- Enh: Smarter show more logic - Only cut text if it overlaps the max height by a specific span.
+- Enh: Added getContextMenu for defining wallentry context options. 
+- Enh: Added editMode to WallEntry for allowing modal based edits.
+- Fix: file-preview text overflow in HumHub theme.
+- Fix #2280: Meta data (rotation) not respected for camera images (ImageMagick)
+- Fix: Activity stream rendering issue on page unload.
+- Enh: Optimized stream entry fade animation.
+
+
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------

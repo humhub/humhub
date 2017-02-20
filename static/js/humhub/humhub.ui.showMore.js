@@ -1,10 +1,12 @@
 humhub.module('ui.showMore', function (module, require, $) {
     var additions = require('ui.additions');
 
+    var DEFAULT_COLLAPSE_AT = 310;
+
     var CollapseContent = function (node, options) {
         this.options = options || {};
         this.$ = node instanceof $ ? node : $(node);
-        this.collapseAt = this.$.data('collapse-at') || 310;
+        this.collapseAt = this.$.data('collapse-at') || DEFAULT_COLLAPSE_AT;
         this.options.readMoreText = this.$.data('read-more-text') || module.text('readMore');
         this.options.readLessText = this.$.data('read-less-text') || module.text('readLess');
         this.init();
@@ -14,9 +16,10 @@ humhub.module('ui.showMore', function (module, require, $) {
         var that = this;
         var height = this.$.outerHeight();
         this.$collapseButton = this.$.siblings('.showMore');
+        var diff = height - this.collapseAt;
 
         // If height expands the max height we init the collapse post logic
-        if (height > this.collapseAt) {
+        if (height > this.collapseAt && diff > 70) {
             if (!this.$collapseButton.length) {
                 this.$collapseButton = $(module.templates.showMore);
                 that.$.after(this.$collapseButton);

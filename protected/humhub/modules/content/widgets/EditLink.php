@@ -23,26 +23,28 @@ class EditLink extends \yii\base\Widget
     /**
      * @var \humhub\modules\content\components\ContentActiveRecord
      */
-    public $content = null;
+    public $model = null;
 
     /**
-     * @var \humhub\modules\content\models\WallEntry
+     * @var string edit route.
      */
-    public $wallEntryWidget;
+    public $url;
 
     /**
      * Executes the widget.
      */
     public function run()
     {
-        $editUrl = $this->wallEntryWidget->getEditUrl();
-
-        if ($editUrl !== "" && $this->content->content->canWrite()) {
-            return $this->render('editLink', array(
-                        'id' => $this->content->content->object_id,
-                        'content' => $this->content,
-                        'editUrl' => $editUrl
-            ));
+        if(!$this->url) {
+            return;
+        }
+        
+        if ($this->model->content->canWrite()) {
+            return $this->render('editLink', [
+                        'id' => $this->model->content->object_id,
+                        'content' => $this->model,
+                        'editUrl' => $this->url
+            ]);
         }
     }
 

@@ -36,7 +36,7 @@ class ImageConverter
 
         if (Yii::$app->getModule('file')->settings->get('imageMagickPath')) {
             $convertCommand = Yii::$app->getModule('file')->settings->get('imageMagickPath');
-            $command = $convertCommand . " \"{$sourceFile}\" \"{$targetFile}\"";
+            $command = $convertCommand . " -auto-orient \"{$sourceFile}\" \"{$targetFile}\"";
             $ret = passthru($command);
         } else {
             $gdImage = self::getGDImageByFile($sourceFile);

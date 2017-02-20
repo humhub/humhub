@@ -11,6 +11,7 @@ humhub.module('stream', function(module, require, $) {
     var Component = require('action').Component;
     var loader = require('ui.loader');
     var event = require('event');
+    var modal = require('ui.modal');
     var additions = require('ui.additions');
 
     /**
@@ -131,6 +132,18 @@ humhub.module('stream', function(module, require, $) {
             module.log.error(e, true);
         }).finally(function() {
             that.loader(false);
+        });
+    };
+
+    StreamEntry.prototype.editModal = function(evt) {
+        var that = this;
+        modal.load(evt).then(function(response) {
+            modal.global.$.one('submitted', function() {
+                modal.global.close();
+                that.reload().then();
+            });
+        }).catch(function(e) {
+            module.log.error(e, true);
         });
     };
 
@@ -451,6 +464,8 @@ humhub.module('stream', function(module, require, $) {
                 reject();
                 return;
             }
+            
+            entry.loader();
 
             var contentId = entry.getKey();
             that.loadEntry(contentId, {'preventInsert': true}).then(function($entryNode) {
@@ -461,7 +476,9 @@ humhub.module('stream', function(module, require, $) {
                 } else {
                     entry.replace($entryNode).then(resolve);
                 }
-            }, reject);
+            }, reject).finally(function() {
+                entry.loader(false);
+            });
         });
     };
 
@@ -515,7 +532,7 @@ humhub.module('stream', function(module, require, $) {
                 // This may have to be change if we require to reload multiple elements.
                 if(!cfg.contentId && object.isEmpty(response.content)) {
                     that.lastEntryLoaded = true;
-                    that.$.trigger('humhub:modules:stream:lastEntryLoaded');
+                    that.$.trigger('humhub:stream:lastEntryLoaded');
                     //We call onChange here, since we want to display empty messages in case its the first call
                     that.onChange();
                 } else if(!cfg.contentId && !cfg.insertAfter) { // Load More event
@@ -527,7 +544,7 @@ humhub.module('stream', function(module, require, $) {
                 }
 
                 that.loading = false;
-                that.$.trigger('humhub:modules:stream:afterLoadEntries', this);
+                that.$.trigger('humhub:stream:afterLoadEntries', this);
                 resolve($result);
             }).catch(function(err) {
                 that.loading = false;
@@ -636,11 +653,15 @@ humhub.module('stream', function(module, require, $) {
             return $result;
         }
 
-        // Do not use .hide() since some additions need to calculate dimensions...
-        $result.css('opacity', 0);
+        // Filter our real nodes for fading effect
+        var $elements = $result.not('script, link').filter(function() {
+            return this.nodeType === 1; // filter out text nodes
+        });
+        
+        // We do not use .hide() since some additions need to calculate dimensions...
+        $elements.css('opacity', 0);
 
         this.$.trigger('humhub:stream:beforeAddEntries', [response, result]);
-
 
         if(cfg['prepend']) {
             this.prependEntry($result);
@@ -649,8 +670,10 @@ humhub.module('stream', function(module, require, $) {
         } else {
             this.appendEntry($result);
         }
-        $result.hide().css('opacity', 1);
-        $result.fadeIn('fast').promise().done(function() {
+        
+        // fade-in
+        $elements.hide().css('opacity', 1);
+        $elements.fadeIn('fast').promise().always(function() {
             that.$.trigger('humhub:stream:afterAddEntries', [response, $result]);
         });
 
@@ -799,7 +822,7 @@ humhub.module('stream', function(module, require, $) {
             });
         });
 
-        this.$.on('humhub:modules:stream:lastEntryLoaded', function() {
+        this.$.on('humhub:stream:lastEntryLoaded', function() {
             $('#btn-load-more').hide();
         });
 

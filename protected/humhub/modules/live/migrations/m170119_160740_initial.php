@@ -14,7 +14,12 @@ class m170119_160740_initial extends Migration
             'serialized_data' => $this->text()->notNull(),
             'created_at' => $this->integer()->notNull()
         ]);
-        $this->addForeignKey('contentcontainer', 'live', 'contentcontainer_id', 'contentcontainer', 'id', 'CASCADE', 'CASCADE');
+
+        try {
+            $this->addForeignKey('contentcontainer', 'live', 'contentcontainer_id', 'contentcontainer', 'id', 'CASCADE', 'CASCADE');
+        } catch (Exception $ex) {
+            Yii::error($ex->getMessage());
+        }
     }
 
     public function down()
