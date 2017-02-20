@@ -2,11 +2,11 @@ Updating
 ========
 
 > Warning: Please check before you run an update, that your installed modules and themes are compatible with the new version. If not, you can follow the migration guides.
-- [Theme Migration Guide](theming-migrate.md)
-- [Module Migration Guide](dev-migrate.md)
+- [Theme Migration Guide](https://github.com/humhub/humhub/blob/master/protected/humhub/docs/guide/theme/theming-migrate.md)
+- [Module Migration Guide](https://github.com/humhub/humhub/blob/master/protected/humhub/docs/guide/developer/modules-migrate.md)
 
 > NOTE: Only use this guide if you want to update from HumHub 0.20 or higher!
-> If you want to update from an older version (e.g. 0.11.2 or lower) to HumHub 0.20+, you have to use this guide: **[Upgrade to 0.20 and above](admin-updating-020.md "Guide: Upgrade to 0.20 and above")**
+> If you want to update from an older version (e.g. 0.11.2 or lower) to HumHub 0.20+, you have to use this guide: **[Upgrade to 0.20 and above](/admin/updating-020.md "Guide: Upgrade to 0.20 and above")**
 
 > NOTE: Backup your data before updating! See: [Backup Chapter](backup.md)
 
