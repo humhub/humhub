@@ -73,12 +73,11 @@ class Events extends \yii\base\Object
         $stackWidget = $event->sender;
         $content = $event->sender->object;
 
-        $stackWidget->addWidget(widgets\DeleteLink::className(), ['content' => $content]);
-        $stackWidget->addWidget(widgets\EditLink::className(), ['content' => $content, 'wallEntryWidget' => $stackWidget->wallEntryWidget]);
-        $stackWidget->addWidget(widgets\NotificationSwitchLink::className(), ['content' => $content]);
-        $stackWidget->addWidget(widgets\PermaLink::className(), ['content' => $content]);
-        $stackWidget->addWidget(widgets\PinLink::className(), ['content' => $content]);
-        $stackWidget->addWidget(widgets\ArchiveLink::className(), ['content' => $content]);
+        $stackWidget->addWidget(widgets\DeleteLink::className(), ['content' => $content], ['sortOrder' => 100]);
+        $stackWidget->addWidget(widgets\NotificationSwitchLink::className(), ['content' => $content], ['sortOrder' => 300]);
+        $stackWidget->addWidget(widgets\PermaLink::className(), ['content' => $content], ['sortOrder' => 400] );
+        $stackWidget->addWidget(widgets\PinLink::className(), ['content' => $content], ['sortOrder' => 500]);
+        $stackWidget->addWidget(widgets\ArchiveLink::className(), ['content' => $content], ['sortOrder' => 600]);
     }
 
     /**

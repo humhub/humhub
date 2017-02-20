@@ -134,6 +134,17 @@ humhub.module('ui.modal', function(module, require, $) {
         $content.append('<div class="modal-body" />');
         loader.set(this.getBody());
         this.isFilled = false;
+        
+        //reset listeners:
+        this.resetListener();
+    };
+    
+    /**
+     * Resets some listeners of this modal isntance.
+     * @returns {undefined}
+     */
+    Modal.prototype.resetListener = function() {
+        this.$.off('submitted');
     };
 
     /**
@@ -576,6 +587,8 @@ humhub.module('ui.modal', function(module, require, $) {
             if(!module.global.$.is(':visible')) {
                 module.global.show();
             }
+            
+            module.global.$.trigger('submitted');
         }).catch(function(error) {
             module.log.error(error, true);
         });
@@ -591,7 +604,7 @@ humhub.module('ui.modal', function(module, require, $) {
             }
         }
         var modal = (id) ? module.get(id) : module.global;
-        modal.load(evt).catch(function(err) {
+        return modal.load(evt).catch(function(err) {
             module.log.error(err, true);
         });
     };

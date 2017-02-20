@@ -67,8 +67,6 @@ humhub.module('space', function (module, require, $) {
         archive : archive,
         unarchive : unarchive,
         isSpacePage: isSpacePage,
-        setSpace: setSpace,
-        enableModule: enableModule,
-        disableModule: disableModule
+        setSpace: setSpace
     });
 });

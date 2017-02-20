@@ -84,14 +84,15 @@ class BaseStack extends \yii\base\Widget
 
             $out = $widgetClass::widget($widget[1]);
 
-            if ($out != "") {
+            if (!empty($out)) {
                 $content .= $out;
-                if ($i != count($this->getWidgets()))
+                if ($i != count($this->getWidgets())) {
                     $content .= $this->seperator;
+                }
             }
         }
 
-        print str_replace('{content}', $content, $this->template);
+        return str_replace('{content}', $content, $this->template);
     }
 
     /**
@@ -139,16 +140,17 @@ class BaseStack extends \yii\base\Widget
      * @param array $params widget definition
      * @param array $options extra option array with e.g. "sortOrder"
      */
-    public function addWidget($className, $params = array(), $options = array())
+    public function addWidget($className, $params = [], $options = [])
     {
-        if (!isset($options['sortOrder']))
+        if (!isset($options['sortOrder'])) {
             $options['sortOrder'] = 100;
+        }
 
-        $this->widgets[] = array(
+        $this->widgets[] = [
             $className,
             $params,
             $options
-        );
+        ];
     }
 
 }

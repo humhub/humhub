@@ -21,6 +21,16 @@ use humhub\modules\space\models\Space;
  */
 class WallEntry extends Widget
 {
+    /**
+     * Edit form is loaded to the wallentry itself.
+     */
+    const EDIT_MODE_INLINE = 'inline';
+    
+    /**
+     * Edit form is loaded into a modal.
+     */
+    const EDIT_MODE_MODAL = 'modal';
+    
 
     /**
      * The content object
@@ -42,6 +52,13 @@ class WallEntry extends Widget
      * @var string
      */
     public $editRoute = "";
+    
+    /**
+     * Defines the way the edit of this wallentry is displayed.
+     * 
+     * @var type 
+     */
+    public $editMode = self::EDIT_MODE_INLINE;
 
     /**
      * The wall entry layout to use
@@ -83,8 +100,8 @@ class WallEntry extends Widget
      */
     public function getEditUrl()
     {
-        if ($this->editRoute === "") {
-            return "";
+        if (empty($this->editRoute)) {
+            return;
         }
 
         // Don't show edit link, when content container is space and archived
@@ -93,6 +110,34 @@ class WallEntry extends Widget
         }
 
         return $this->contentObject->content->container->createUrl($this->editRoute, ['id' => $this->contentObject->id]);
+    }
+
+    /**
+     * Returns an array of contextmenu items either in form of a single array:
+     * 
+     * ['label' => 'mylabel', icon => 'fa-myicon', 'data-action-click' => 'myaction', ...]
+     * 
+     * or as widget type definition:
+     * 
+     * [MyWidget::class, [...], [...]]
+     * 
+     * If an $editRoute is set this function will include an edit button.
+     * The edit logic can be changed by changing the $editMode.
+     * 
+     * @return array
+     * @since 1.2
+     */
+    public function getContextMenu()
+    {
+        $result = [];
+        if (!empty($this->editRoute)) {
+            if($this->editMode === self::EDIT_MODE_INLINE) {
+                $result[] = [EditLink::class, ['model' => $this->contentObject, 'url' => $this->getEditUrl()], ['sortOrder' => 200]];
+            } else if($this->editMode === self::EDIT_MODE_MODAL) {
+                $result[] = [EditLinkModal::class, ['model' => $this->contentObject, 'url' =>$this->getEditUrl()], ['sortOrder' => 200]];
+            }
+        }
+        return $result;
     }
 
     /**
