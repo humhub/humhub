@@ -43,6 +43,7 @@ HumHub Change Log
 - Enh: Added getContextMenu for defining wallentry context options. 
 - Enh: Added editMode to WallEntry for allowing modal based edits.
 - Fix: file-preview text overflow in HumHub theme.
+- Fix #2280: Meta data (rotation) not respected for camera images (ImageMagick)
 - Fix: Activity stream rendering issue on page unload.
 - Enh: Optimized stream entry fade animation.
 
