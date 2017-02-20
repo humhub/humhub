@@ -40,6 +40,9 @@ HumHub Change Log
 - Enh: Added editModal for editing wallentries within a modal instead of inline
 - Fix: Oembed not rendered in richtext.
 - Enh: Smarter show more logic - Only cut text if it overlaps the max height by a specific span.
+- Enh: Added getContextMenu for defining wallentry context options. 
+- Enh: Added editMode to WallEntry for allowing modal based edits.
+- Fix: file-preview text overflow in HumHub theme.
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------
