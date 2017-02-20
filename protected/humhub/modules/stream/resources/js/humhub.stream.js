@@ -653,8 +653,13 @@ humhub.module('stream', function(module, require, $) {
             return $result;
         }
 
-        // Do not use .hide() since some additions need to calculate dimensions...
-        $result.css('opacity', 0);
+        // Filter our real nodes for fading effect
+        var $elements = $result.not('script, link').filter(function() {
+            return this.nodeType === 1; // filter out text nodes
+        });
+        
+        // We do not use .hide() since some additions need to calculate dimensions...
+        $elements.css('opacity', 0);
 
         this.$.trigger('humhub:stream:beforeAddEntries', [response, result]);
 
@@ -666,8 +671,7 @@ humhub.module('stream', function(module, require, $) {
             this.appendEntry($result);
         }
         
-        // Fade In
-        var $elements = $result.not('script, link');
+        // fade-in
         $elements.hide().css('opacity', 1);
         $elements.fadeIn('fast').promise().always(function() {
             that.$.trigger('humhub:stream:afterAddEntries', [response, $result]);

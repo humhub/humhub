@@ -158,16 +158,6 @@ humhub.module('ui.additions', function (module, require, $) {
             $match.popover({html: true});
         });
 
-        // Activate placeholder text for older browsers (specially IE)
-        /*this.register('placeholder','input, textarea', function($match) {
-         $match.placeholder();
-         });*/
-
-        // Replace the standard checkbox and radio buttons
-        /* module.register('forms', ':checkbox, :radio', function($match) {
-         //$match.flatelements();
-         });*/
-
         // Deprecated!
         module.register('', 'a[data-loader="modal"], button[data-loader="modal"]', function ($match) {
             $match.loader();

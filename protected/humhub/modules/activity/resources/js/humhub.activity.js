@@ -162,8 +162,8 @@ humhub.module('activity', function (module, require, $) {
     var unload = function() {
         // Cleanup nicescroll rails from dom
         if(instance && instance.$) {
-            instance.$.css('overflow', 'hidden');
             instance.$content.getNiceScroll().remove();
+            instance.$content.css('overflow', 'hidden');
         }
         instance = undefined;
     };
