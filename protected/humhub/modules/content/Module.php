@@ -51,7 +51,7 @@ class Module extends \humhub\components\Module
      * @since 1.2
      * @var integer Maximum allowed file uploads for posts/comments 
      */
-    public $maxAttachedFiles = 3;
+    public $maxAttachedFiles = 50;
 
     /**
      * @inheritdoc
