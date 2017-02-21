@@ -46,6 +46,12 @@ class Module extends \humhub\components\Module
      * @var string Custom e-mail subject for daily update mails - default: Your daily summary
      */
     public $emailSubjectDailyUpdate = null;
+    
+    /**
+     * @since 1.2
+     * @var integer Maximum allowed file uploads for posts/comments 
+     */
+    public $maxAttachedFiles = 3;
 
     /**
      * @inheritdoc

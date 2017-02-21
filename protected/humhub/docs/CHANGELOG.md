@@ -46,6 +46,7 @@ HumHub Change Log
 - Fix #2280: Meta data (rotation) not respected for camera images (ImageMagick)
 - Fix: Activity stream rendering issue on page unload.
 - Enh: Optimized stream entry fade animation.
+- Enh: Added $maxAttachedFiles to content module to restrict the uploaded file count of comments and posts
 
 
 
