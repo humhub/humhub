@@ -265,8 +265,9 @@ class View extends \yii\web\View
      */
     protected function flushJsConfig($key = null)
     {
-        $this->registerJs("humhub.config.set(" . json_encode($this->jsConfig) . ");", View::POS_BEGIN, $key);
-        $this->jsConfig = [];
+        if(!empty($this->jsConfig)) {
+            $this->registerJs("humhub.config.set(" . json_encode($this->jsConfig) . ");", View::POS_BEGIN, $key);
+            $this->jsConfig = [];
+        }
     }
-
 }
