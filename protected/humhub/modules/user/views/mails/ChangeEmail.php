@@ -6,14 +6,14 @@ use yii\helpers\Html;
     <td align="center" valign="top"   class="fix-box">
 
         <!-- start  container width 600px -->
-        <table width="600"  align="center" border="0" cellspacing="0" cellpadding="0" class="container"  style="background-color: #ffffff; ">
+        <table width="600"  align="center" border="0" cellspacing="0" cellpadding="0" class="container"  style="background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>;">
 
 
             <tr>
                 <td valign="top">
 
                     <!-- start container width 560px -->
-                    <table width="540"  align="center" border="0" cellspacing="0" cellpadding="0" class="full-width" bgcolor="#ffffff" style="background-color:#ffffff;">
+                    <table width="540"  align="center" border="0" cellspacing="0" cellpadding="0" class="full-width" style="background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>;">
 
 
                         <!-- start text content -->
@@ -25,10 +25,10 @@ use yii\helpers\Html;
                                             <!-- start button -->
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
-                                                    <td width="auto"  align="center" valign="middle" height="28" style=" background-color:#ffffff; background-clip: padding-box; font-size:26px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#a3a2a2; font-weight: 300; padding-left:18px; padding-right:18px; ">
+                                                    <td width="auto"  align="center" valign="middle" height="28" style="background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>;background-clip: padding-box; font-size:26px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#a3a2a2; font-weight: 300; padding-left:18px; padding-right:18px; ">
 
-                                                        <span style="color: #555555; font-weight: 300;">
-                                                            <?php echo Yii::t('UserModule.views_mails_ChangeEmail', '<strong>Confirm</strong></strong> your new email address'); ?>
+                                                        <span style="color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
+                                                            <?= Yii::t('UserModule.views_mails_ChangeEmail', '<strong>Confirm</strong></strong> your new email address'); ?>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -63,14 +63,14 @@ use yii\helpers\Html;
     <td align="center" valign="top"   class="fix-box">
 
         <!-- start  container width 600px -->
-        <table width="600"  align="center" border="0" cellspacing="0" cellpadding="0" class="container"  style="background-color: #ffffff; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;">
+        <table width="600"  align="center" border="0" cellspacing="0" cellpadding="0" class="container"  style="background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;">
 
 
             <tr>
                 <td valign="top">
 
                     <!-- start container width 560px -->
-                    <table width="540"  align="center" border="0" cellspacing="0" cellpadding="0" class="full-width" bgcolor="#ffffff" style="background-color:#ffffff;">
+                    <table width="540"  align="center" border="0" cellspacing="0" cellpadding="0" class="full-width" style="background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>;">
 
 
                         <!-- start text content -->
@@ -92,7 +92,7 @@ use yii\helpers\Html;
                                                 <!--end space height -->
 
                                                 <tr>
-                                                    <td  style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#777777; font-weight:300; text-align:left; ">
+                                                    <td  style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left; ">
 
                                                         <?php echo Yii::t('UserModule.views_mails_ChangeEmail', 'Hello'); ?> <?php echo Html::encode($user->displayName); ?>,<br><br>
 
@@ -119,11 +119,11 @@ use yii\helpers\Html;
                                             <!-- start button -->
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
-                                                    <td width="auto"  align="center" valign="middle" height="32" style=" background-color:<?= $this->theme->variable('primary'); ?>;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#ffffff; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
+                                                    <td width="auto"  align="center" valign="middle" height="32" style="background-color:<?= $this->theme->variable('primary'); ?>;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#ffffff; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
 
-                                                        <span style="color: #ffffff; font-weight: 300;">
-                                                            <a href="<?php echo $approveUrl; ?>" style="text-decoration: none; color: #ffffff; font-weight: 300;">
-                                                                <strong><?php echo Yii::t('UserModule.views_mails_ChangeEmail', 'Confirm'); ?></strong>
+                                                        <span style="color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300;">
+                                                            <a href="<?php echo $approveUrl; ?>" style="text-decoration: none; color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300;">
+                                                                <strong><?= Yii::t('UserModule.views_mails_ChangeEmail', 'Confirm'); ?></strong>
                                                             </a>
                                                         </span>
                                                     </td>

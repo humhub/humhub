@@ -8,7 +8,7 @@
 
         <!-- start  container width 600px -->
         <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
-               style="background-color: #ffffff; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;">
+               style="background-color: <?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;">
 
 
             <tr>
@@ -16,7 +16,7 @@
 
                     <!-- start container width 560px -->
                     <table width="540" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                           bgcolor="#ffffff" style="background-color:#ffffff;">
+                           style="background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>;">
 
 
                         <!-- start text content -->
@@ -38,7 +38,7 @@
                                                 <!--end space height -->
 
                                                 <tr>
-                                                    <td style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#777777; font-weight:300; text-align:left; ">
+                                                    <td style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left; ">
 
                                                         <?php echo $message; ?>
 

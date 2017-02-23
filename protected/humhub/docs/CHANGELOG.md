@@ -48,8 +48,8 @@ HumHub Change Log
 - Enh: Optimized stream entry fade animation.
 - Enh: Added $maxAttachedFiles to content module to restrict the uploaded file count of comments and posts
 - Fix: Hide notification count badge if notification count is 0
-- Fix: Only flush js config if not empty.
-
+- Fix: Only flush js config if not empty
+- Enh: Use of theme variables in mail all views
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------
