@@ -129,7 +129,6 @@ humhub.module('space.chooser', function (module, require, $) {
             var $space = $(space.output);
             this.$chooser.append($space);
             additions.applyTo($space);
-            console.log('append');
         }
     };
 
@@ -248,13 +247,11 @@ humhub.module('space.chooser', function (module, require, $) {
             if(data === true) { //Outdated result, just ignore this...
                 return;
             } else if (!data) {
-                console.log('triggerRemote !data: '+input);
                 that.onChange(input);
                 return;
             }
 
             $.each(data, function (index, space) {
-                console.log('append for '+input);
                 that.appendItem(space);
             });
 
