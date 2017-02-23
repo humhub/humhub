@@ -52,6 +52,7 @@ HumHub Change Log
 - Enh: Use of theme variables in mail all views
 - Fix: Submit comment with only files leads to Internal Server Error
 - Fix: Prevent spacechooser message count update on own content creation
+- Fix: Abort overlapping space chooser search requests
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------
