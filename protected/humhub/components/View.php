@@ -227,7 +227,7 @@ class View extends \yii\web\View
                 $value = Html::encode(array_values($viewStatus)[0]);
                 $this->registerJs('humhub.modules.ui.status.' . $type . '("' . $value . '")', View::POS_END, 'viewStatusMessage');
             }
-            if (Yii::$app->session->hasFlash('executeJavascript')) {
+            if (Yii::$app->params['installed'] && Yii::$app->session->hasFlash('executeJavascript')) {
                 $position = self::POS_READY;
                 if (Yii::$app->session->hasFlash('executeJavascriptPosition')) {
                     $position = Yii::$app->session->hasFlash('executeJavascriptPosition');
