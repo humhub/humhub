@@ -85,7 +85,8 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
         $message = Yii::$app->request->post('message');
         $files = Yii::$app->request->post('fileList');
 
-        if (trim($message) === '' && trim($files) === '') {
+
+        if (empty(trim($message)) && empty($files)) {
             // do not create empty comments
             return '';
         }

@@ -93,7 +93,7 @@ humhub.module('space.chooser', function (module, require, $) {
         var increments = {};
         
         liveEvents.forEach(function(event) {
-            if(event.data.uguid || event.data.originator === user.guid) {
+            if(event.data.uguid || event.data.originator === user.guid()) {
                 return;
             } else if(increments[event.data.sguid]) {
                 increments[event.data.sguid]++;
@@ -139,7 +139,7 @@ humhub.module('space.chooser', function (module, require, $) {
 
     SpaceChooser.prototype.removeItem = function (space) {
         var guid = object.isString(space) ? space : space.guid;
-        this.getItems().filter('[data-space-guid="' + space.guid + '"]').remove();
+        this.getItems().filter('[data-space-guid="' + guid + '"]').remove();
     };
 
     SpaceChooser.prototype.initSpaceSearch = function () {
