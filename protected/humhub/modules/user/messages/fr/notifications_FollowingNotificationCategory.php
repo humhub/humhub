@@ -1,7 +1,7 @@
 <?php
 return array (
   'Following' => 'Abonnements',
-  'Mentionings' => '',
-  'Receive Notifications when someone is following you.' => '',
-  'Receive Notifications when someone mentioned you in a post.' => '',
+  'Mentionings' => 'Mentions',
+  'Receive Notifications when someone is following you.' => 'Recevoir une notification lorsque quelqu’un vous suit.',
+  'Receive Notifications when someone mentioned you in a post.' => 'Recevoir une notification lorsque quelqu’un vous mentionne dans un poste',
 );
