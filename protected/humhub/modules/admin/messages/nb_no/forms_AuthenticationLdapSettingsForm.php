@@ -8,8 +8,8 @@ return array (
   'Hostname' => '',
   'Login Filter' => '',
   'Password' => 'Passord',
-  'Port' => '',
-  'User Filer' => '',
-  'Username' => '',
+  'Port' => 'Port',
+  'User Filer' => 'Bruker filter',
+  'Username' => 'Brukernavn',
   'Username Attribute' => '',
 );

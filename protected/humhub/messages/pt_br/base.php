@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>Confirm</strong> Action' => '',
-  '<strong>Latest</strong> updates' => 'Atualizações',
+  '<strong>Confirm</strong> Action' => '<strong>Confirmar</strong> Ação',
+  '<strong>Latest</strong> updates' => '<strong>Últimas</strong> atualizações',
   '<strong>Mail</strong> summary' => '',
   'Account settings' => 'Configurações da conta',
   'Administration' => 'Administração',
