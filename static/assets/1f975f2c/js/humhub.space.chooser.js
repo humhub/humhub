@@ -93,7 +93,7 @@ humhub.module('space.chooser', function (module, require, $) {
         var increments = {};
         
         liveEvents.forEach(function(event) {
-            if(event.data.uguid || event.data.originator === user.guid) {
+            if(event.data.uguid || event.data.originator === user.guid()) {
                 return;
             } else if(increments[event.data.sguid]) {
                 increments[event.data.sguid]++;
@@ -139,7 +139,7 @@ humhub.module('space.chooser', function (module, require, $) {
 
     SpaceChooser.prototype.removeItem = function (space) {
         var guid = object.isString(space) ? space : space.guid;
-        this.getItems().filter('[data-space-guid="' + space.guid + '"]').remove();
+        this.getItems().filter('[data-space-guid="' + guid + '"]').remove();
     };
 
     SpaceChooser.prototype.initSpaceSearch = function () {
@@ -242,8 +242,11 @@ humhub.module('space.chooser', function (module, require, $) {
 
     SpaceChooser.prototype.triggerRemoteSearch = function (input) {
         var that = this;
+        
         this.remoteSearch(input).then(function (data) {
-            if (!data) {
+            if(data === true) { //Outdated result, just ignore this...
+                return;
+            } else if (!data) {
                 that.onChange(input);
                 return;
             }
@@ -255,39 +258,52 @@ humhub.module('space.chooser', function (module, require, $) {
             that.highlight(input, SELECTOR_ITEM_REMOTE);
             that.onChange(input);
         }).catch(function (e) {
-            module.log.error(e, true);
+            if(!e.textStatus === "abort") {
+                module.log.error(e, true);
+            }
         });
     };
 
     SpaceChooser.prototype.remoteSearch = function (input) {
         var that = this;
         return new Promise(function (resolve, reject) {
+            if(that.currentXhr) {
+                that.currentXhr.abort();
+            }
+            
             // Clear all current remote results not matching the current search
             that.clearRemoteSearch(input);
             var url = module.config.remoteSearchUrl;
 
             if (!url) {
-                module.log.warn('Could not execute space remote search, set data-space-search-url in your space search input');
-                resolve();
+                reject('Could not execute space remote search, set data-space-search-url in your space search input');
                 return;
             } else if (input.length < 2) {
-                resolve();
+                resolve(false);
                 return;
             }
 
             var searchTs = Date.now();
-            var options = {data: {keyword: input, target: 'chooser'}};
+            var options = {data: {keyword: input, target: 'chooser'}, 
+                beforeSend: function(xhr) {
+                    that.currentXhr = xhr;
+                }};
 
             ui.loader.set(that.$remoteSearch, {'wrapper': '<li>', 'css': {padding: '5px'}});
+            
             client.get(url, options).then(function (response) {
-                that.$remoteSearch.empty();
+                that.currentXhr = undefined;
                 var lastSearchTs = that.$remoteSearch.data('last-search-ts');
                 var isOutDated = lastSearchTs && lastSearchTs > searchTs;
                 var hastData = response.data && response.data.length;
 
+                if(!isOutDated) {
+                    that.$remoteSearch.empty();
+                }
+
                 // If we got no result we return
                 if (!hastData || isOutDated) {
-                    resolve();
+                    resolve(isOutDated);
                 } else {
                     that.$remoteSearch.data('last-search-ts', searchTs);
                     resolve(response.data);
@@ -307,7 +323,7 @@ humhub.module('space.chooser', function (module, require, $) {
         // Clear all non member and non following spaces
         this.$chooser.find(SELECTOR_ITEM_REMOTE).each(function () {
             var $this = $(this);
-            if (!input || $this.find('.space-name').text().toLowerCase().search(input) < 0) {
+            if (!input || !input.length || $this.find('.space-name').text().toLowerCase().search(input) < 0) {
                 $this.remove();
             }
         });
