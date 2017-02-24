@@ -23,28 +23,29 @@ use humhub\modules\space\models\Space;
  */
 class ModuleController extends Controller
 {
+
     /**
      * @inheritdoc
      */
     public $adminOnly = false;
-
     private $_onlineModuleManager = null;
 
     /**
      * @inheritdoc
      */
-    public function init() {
+    public function init()
+    {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Modules'));
         return parent::init();
     }
-    
+
     public static function getAccessRules()
     {
         return [
             ['permissions' => \humhub\modules\admin\permissions\ManageModules::className()]
         ];
     }
-    
+
     public function actionIndex()
     {
         Yii::$app->moduleManager->flushCache();
@@ -212,28 +213,27 @@ class ModuleController extends Controller
     {
         $hasError = false;
         $message = "";
-        
+
         $licenceKey = Yii::$app->request->post('licenceKey', "");
         if ($licenceKey != "") {
             $result = \humhub\modules\admin\libs\HumHubAPI::request('v1/modules/registerPaid', ['licenceKey' => $licenceKey]);
             if (!isset($result['status'])) {
                 $hasError = true;
                 $message = 'Could not connect to HumHub API!';
-            } elseif ($result['status'] == 'ok' || $result['status'] == 'created' ) {
+            } elseif ($result['status'] == 'ok' || $result['status'] == 'created') {
                 $message = 'Module licence added!';
                 $licenceKey = "";
             } else {
                 $hasError = true;
                 $message = 'Invalid module licence key!';
             }
-                
         }
-        
+
         // Only showed purchased modules
         $onlineModules = $this->getOnlineModuleManager();
         $modules = $onlineModules->getModules(false);
-        
-        
+
+
         foreach ($modules as $i => $module) {
             if (!isset($module['purchased']) || !$module['purchased']) {
                 unset($modules[$i]);
@@ -276,8 +276,7 @@ class ModuleController extends Controller
     {
         return $this->renderAjax('thirdpartyDisclaimer', array());
     }
-    
-    
+
     /**
      * Sets default enabled/disabled on User or/and Space Modules
      *
@@ -301,11 +300,10 @@ class ModuleController extends Controller
 
         $spaceDefaultModule = null;
         if ($module->hasContentContainerType(Space::className())) {
-            $spaceDefaultModule = \humhub\modules\space\models\Module::findOne(['space_id' => 0, 'module_id' => $moduleId]);
+            $spaceDefaultModule = \humhub\modules\space\models\Module::find()->where(['module_id' => $moduleId])->andWhere(['IS', 'space_id', new \yii\db\Expression('NULL')])->one();
             if ($spaceDefaultModule === null) {
                 $spaceDefaultModule = new \humhub\modules\space\models\Module();
                 $spaceDefaultModule->module_id = $moduleId;
-                $spaceDefaultModule->space_id = 0;
                 $spaceDefaultModule->state = \humhub\modules\space\models\Module::STATE_DISABLED;
             }
             $model->spaceDefaultState = $spaceDefaultModule->state;
@@ -313,11 +311,10 @@ class ModuleController extends Controller
 
         $userDefaultModule = null;
         if ($module->hasContentContainerType(User::className())) {
-            $userDefaultModule = \humhub\modules\user\models\Module::findOne(['user_id' => 0, 'module_id' => $moduleId]);
+            $userDefaultModule = \humhub\modules\user\models\Module::find()->where(['module_id' => $moduleId])->andWhere(['IS', 'user_id', new \yii\db\Expression('NULL')])->one();
             if ($userDefaultModule === null) {
                 $userDefaultModule = new \humhub\modules\user\models\Module();
                 $userDefaultModule->module_id = $moduleId;
-                $userDefaultModule->user_id = 0;
                 $userDefaultModule->state = \humhub\modules\user\models\Module::STATE_DISABLED;
             }
             $model->userDefaultState = $userDefaultModule->state;
@@ -327,12 +324,16 @@ class ModuleController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($module->hasContentContainerType(Space::className())) {
                 $spaceDefaultModule->state = $model->spaceDefaultState;
-                $spaceDefaultModule->save();
+                if (!$spaceDefaultModule->save()) {
+                    throw new HttpException('Could not save: ' . print_r($spaceDefaultModule->getErrors(), 1));
+                }
             }
 
             if ($module->hasContentContainerType(User::className())) {
                 $userDefaultModule->state = $model->userDefaultState;
-                $userDefaultModule->save();
+                if (!$userDefaultModule->save()) {
+                    throw new HttpException('Could not save: ' . print_r($userDefaultModule->getErrors(), 1));
+                }                
             }
 
             return $this->renderModalClose();

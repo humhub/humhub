@@ -53,7 +53,8 @@ HumHub Change Log
 - Fix: Submit comment with only files leads to Internal Server Error
 - Fix: Prevent spacechooser message count update on own content creation
 - Fix: Abort overlapping space chooser search requests
-- Fix: Problem in notification group_count with only one involved user.
+- Fix: Problem in notification group_count with only one involved user
+- Fix #2257: Set module as default in space/user broken
 
 1.2.0-beta.1 (February 08, 2017)
 --------------------------------
