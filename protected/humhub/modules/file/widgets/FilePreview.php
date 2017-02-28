@@ -38,7 +38,7 @@ class FilePreview extends \humhub\widgets\JsWidget
     {
         return [
             'file-edit' => $this->edit,
-            'file-hide-image-files' => $this->hideImageFileInfo
+            'hide-image-file-info' => $this->hideImageFileInfo
         ];
     }
 

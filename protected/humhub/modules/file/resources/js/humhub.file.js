@@ -98,7 +98,6 @@ humhub.module('file', function (module, require, $) {
             $trigger.removeClass('disabled');
         }
         
-        debugger;
         if($trigger.data('bs.tooltip')) {
             $trigger.attr('data-original-title', this.originalTriggerTitle)
                         .tooltip('fixTitle');
@@ -336,9 +335,18 @@ humhub.module('file', function (module, require, $) {
         $file.find('.file_upload_remove_link').on('click', function () {
             that.delete(file);
         });
+        
+        if(this.isImage(file) && this.options.hideImageFileInfo) {
+            $file.find('.file-fileInfo').remove();
+        }
 
         $file.fadeIn();
     };
+    
+    Preview.prototype.isImage = function (file) {
+        return file.mimeIcon === 'mime-image';
+    }
+    
 
     Preview.prototype.getTemplate = function (file) {
         if (this.options.fileEdit) {
@@ -406,8 +414,8 @@ humhub.module('file', function (module, require, $) {
     Preview.template = {
         root: '<ul class="files" style="list-style:none; margin:0;padding:0px;"></ul>',
         file_edit: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{name}<span class="file_upload_remove_link" data-ui-loader> <i class="fa fa-times-circle"></i>&nbsp;</span></li>',
-        file: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{openLink}<span class="time" style="padding-right: 20px;"> - {size_format}</span></li>',
-        file_image: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{openLink}<span class="time" style="padding-right: 20px;"> - {size_format}</span></li>',
+        file: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{openLink}<span class="time file-fileInfo" style="padding-right: 20px;"> - {size_format}</span></li>',
+        file_image: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{openLink}<span class="time file-fileInfo" style="padding-right: 20px;"> - {size_format}</span></li>',
         popover: '<img alt="{name}" src="{thumbnailUrl}" />'
     };
 
