@@ -7,7 +7,7 @@ return array (
   'Connect account' => 'Połącz konto',
   'Connected Accounts' => 'Połączone konta',
   'Connected accounts' => 'Połączone konta',
-  'Current Password' => 'Aktualne hasło',
+  'Current Password' => 'Obecne hasło',
   'Currently in use' => 'Obecnie w użyciu',
   'Delete' => 'Usuń',
   'Delete Account' => 'Usuń konto',
