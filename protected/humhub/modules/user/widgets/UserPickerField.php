@@ -57,8 +57,14 @@ class UserPickerField extends BasePickerField
     {
         $result = parent::getData();
         $allowMultiple = $this->maxSelection !== 1;
-        $result['placeholder'] = Yii::t('UserModule.widgets_UserPickerField', 'Select {n,plural,=1{user} other{users}}', ['n' => ($allowMultiple) ? 2 : 1]);
-        $result['placeholder-more'] = Yii::t('UserModule.widgets_SpacePickerField', 'Add user');
+        $result['placeholder'] = ($this->placeholder != null) ? $this->placeholder : Yii::t('UserModule.widgets_UserPickerField', 'Select {n,plural,=1{user} other{users}}', ['n' => ($allowMultiple) ? 2 : 1]);
+        
+        if($this->placeholder && !$this->placeholderMore) {
+            $result['placeholder-more'] = $this->placeholder;
+        } else {
+            $result['placeholder-more'] = ($this->placeholderMore) ? $this->placeholderMore : Yii::t('UserModule.widgets_UserPickerField', 'Add more...');
+        }
+        
         $result['no-result'] = Yii::t('UserModule.widgets_UserPickerField', 'No users found for the given query.');
 
         if ($this->maxSelection) {
