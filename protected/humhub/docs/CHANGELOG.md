@@ -3,6 +3,7 @@ HumHub Change Log
 1.2.0-beta.2 under developement
 --------------------------------
 - Fix #2302: Hide file info for images on wall settings not applied.
+- Fix #2304: Users not loaded in user selection fields.
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------
