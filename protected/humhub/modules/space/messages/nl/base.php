@@ -15,6 +15,6 @@ return array (
   'Public (Registered users only)' => 'Publiek (Alleen geregistreerde gebruikers)',
   'Public (Visible)' => 'Publiek (Zichtbaar)',
   'Settings' => 'Instellingen',
-  'Space' => 'Space',
+  'Space' => 'Ruimte',
   'Visible for all (members and guests)' => 'Zichtbaar voor iedereen (leden en gasten)',
 );

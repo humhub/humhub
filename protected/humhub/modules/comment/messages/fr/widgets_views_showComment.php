@@ -7,6 +7,6 @@ return array (
   'Delete' => 'Effacer',
   'Do you really want to delete this comment?' => 'Souhaitez-vous vraiment supprimer ce commentaire ?',
   'Edit' => 'Editer',
-  'Read full comment...' => 'Lire le commentaire en entier ...',
+  'Read full comment...' => 'Lire le commentaire en entier...',
   'Updated :timeago' => 'Mis à jour :timeago',
 );
