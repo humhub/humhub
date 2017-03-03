@@ -143,12 +143,12 @@ class Helpers
      */
     public static function getBytesOfIniValue($valueString)
     {
-        switch (substr ($valueString, -1))
+        switch (substr($valueString, -1))
         {
             case 'M': case 'm': return (int)$valueString * 1048576;
             case 'K': case 'k': return (int)$valueString * 1024;
             case 'G': case 'g': return (int)$valueString * 1073741824;
-            default: return $valueString;
+            default: return (int) $valueString;
         }
     }
 
