@@ -43,9 +43,32 @@ Old themes, should check the following file for changes:
 
 > Note: This file will not be maintained in the future.
 
-## Layout (Pjax)
+## Pjax
 
-- Add 'top-menu-nav' to main.php layout.
+In v1.2 we introduced the pjax js library for faster partial page loads. Pjax enables us to navigate through the site without the need of full page loads.
+If Pjax is enabled (default) it has an impact on how your javascript is executed. 
+
+In Yii Javascript files are only loaded and executed once per full page load, therefore if you include code which makes use of for example `$(document).ready`, this code is only
+executed once if pjax is enabled, even if you navigate to another page.
+
+For this purpose you can either listen to `$(document).on('humhub:ready',...)` which is fired after a full page load and pjax page loads, or preferably implement a
+humhub module with an `init` function for your initialization logic.
+
+You can also disable pjax by using the following configuration param in your `protected/config/common.php`:
+
+return [
+    'params' => [
+        'enablePjax' => false,
+    ]
+]
+
+> Note: Since pjax provides a major performance boost, you should consider merging your Theme to the new pjax logic.
+
+## Layout
+
+- We cleaned up the themes [main.php](https://github.com/humhub/humhub/blob/master/protected/humhub/views/layouts/main.php)
+- Add 'top-menu-nav' to [main.php](https://github.com/humhub/humhub/blob/master/protected/humhub/views/layouts/main.php#L45) layout. This is required for pjax page loads.
+- We added the icon definition etc to the themes [head.php](https://github.com/humhub/humhub/blob/master/themes/HumHub/views/layouts/head.php)
 
 ## Gallery
 

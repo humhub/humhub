@@ -437,10 +437,13 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     /**
      * Returns users display name
      *
-     * @return string
+     * @return string the users display name (e.g. firstname + lastname)
      */
     public function getDisplayName()
     {
+        if (Yii::$app->getModule('user')->displayNameCallback !== null) {
+            return call_user_func(Yii::$app->getModule('user')->displayNameCallback, $this);
+        }
 
         $name = '';
 

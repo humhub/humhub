@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Upload</strong> error' => 'Erreur de <strong>chargement</strong>',
+  '<strong>Upload</strong> error' => 'Erreur de <strong>transfert</strong>',
   'Close' => 'Fermer',
-  'Could not upload File:' => 'Impossible d\'envoyer le fichier :',
+  'Could not upload File:' => 'Impossible de transférer le fichier :',
 );

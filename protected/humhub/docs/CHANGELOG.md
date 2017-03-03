@@ -1,6 +1,7 @@
 HumHub Change Log
 =================
-1.2.0-beta.2 under developement
+
+1.2.0-beta.3 under developement
 --------------------------------
 - Fix #2302: Hide file info for images on wall settings not applied.
 - Fix: German translation error in Admin -> Users -> Groups -> Members -> Add Member UserPicker.
@@ -14,6 +15,8 @@ HumHub Change Log
 - Fix: Use of Html::activeLabel instead of $form->label in RichtextField
 - Enh: Added pjax redirect capability to js client
 - Fix: Show default error in status bar if invalid message object was provided
+- Fix #2304: Users not loaded in user selection fields.
+- Enh: Added User module 'displayNameCallback' attribute for custom display name formats
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------

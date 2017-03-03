@@ -19,6 +19,19 @@ Module Development
 * [Models / Database](modules-db.md)
 * [Internationalization](modules-i18n.md)
 
+Javascript API
+------------------
+ * [Modules](javascript-index.md)
+ * [Components](javascript-components.md)
+ * [Additions](javascript-components.md)
+ * [Actions](javascript-actions.md)
+ * [Client](javascript-client.md)
+ * [Events](javascript-events.md)
+ * [Widgets](javascript-widgets.md)
+ * [Pjax](javascript-pjax.md)
+
+
+
 Special Topics
 --------------
 * [Notifications](notifications.md)
