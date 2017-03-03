@@ -2,14 +2,13 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use Yii;
+use humhub\libs\DynamicConfig;
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\actions\Stream;
-use humhub\libs\DynamicConfig;
+use Yii;
 
 /**
  * BasicSettingsForm
- *
  * @since 0.5
  */
 class BasicSettingsForm extends \yii\base\Model
@@ -59,7 +58,7 @@ class BasicSettingsForm extends \yii\base\Model
             ['timeZone', 'in', 'range' => \DateTimeZone::listIdentifiers()],
             ['defaultSpaceGuid', 'checkSpaceGuid'],
             [['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule'], 'in', 'range' => [0, 1]],
-            [['defaultStreamSort'], 'in', 'range' => array_keys($this->getDefaultStreamSortOptions())]
+            [['defaultStreamSort'], 'in', 'range' => array_keys($this->getDefaultStreamSortOptions())],
         ];
     }
 
@@ -68,22 +67,22 @@ class BasicSettingsForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'name' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Name of the application'),
             'baseUrl' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Base URL'),
             'defaultLanguage' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default language'),
             'timeZone' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Server Timezone'),
             'defaultSpaceGuid' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default space'),
             'tour' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show introduction tour for new users'),
-            'dashboardShowProfilePostForm' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show user profile post form on dashboard'),
+            'dashboardShowProfilePostForm' => Yii::t('AdminModule.forms_BasicSettingsForm',
+                'Show user profile post form on dashboard'),
             'enableFriendshipModule' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Enable user friendship system'),
-            'defaultStreamSort' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default stream content order')
-        );
+            'defaultStreamSort' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default stream content order'),
+        ];
     }
 
     /**
      * This validator function checks the defaultSpaceGuid.
-     *
      * @param type $attribute
      * @param type $params
      */
@@ -103,7 +102,6 @@ class BasicSettingsForm extends \yii\base\Model
 
     /**
      * Saves the form
-     *
      * @return boolean
      */
     public function save()
@@ -119,21 +117,25 @@ class BasicSettingsForm extends \yii\base\Model
         Yii::$app->getModule('content')->settings->set('stream.defaultSort', $this->defaultStreamSort);
 
         // Remove Old Default Spaces
-        foreach (Space::findAll(['auto_add_new_members' => 1]) as $space) {
-            if (!in_array($space->guid, $this->defaultSpaceGuid)) {
-                $space->auto_add_new_members = 0;
-                $space->save();
+        if (empty($this->defaultSpaceGuid)) {
+            Space::updateAll(['auto_add_new_members' => 0], ['auto_add_new_members' => 1]);
+        } else {
+            foreach (Space::findAll(['auto_add_new_members' => 1]) as $space) {
+                if (!in_array($space->guid, $this->defaultSpaceGuid)) {
+                    $space->auto_add_new_members = 0;
+                    $space->save();
+                }
+            }
+            // Add new Default Spaces
+            foreach ($this->defaultSpaceGuid as $spaceGuid) {
+                $space = Space::findOne(['guid' => $spaceGuid]);
+                if ($space != null && $space->auto_add_new_members != 1) {
+                    $space->auto_add_new_members = 1;
+                    $space->save();
+                }
             }
         }
 
-        // Add new Default Spaces
-        foreach ($this->defaultSpaceGuid as $spaceGuid) {
-            $space = Space::findOne(['guid' => $spaceGuid]);
-            if ($space != null && $space->auto_add_new_members != 1) {
-                $space->auto_add_new_members = 1;
-                $space->save();
-            }
-        }
         DynamicConfig::rewrite();
 
         return true;
@@ -141,8 +143,7 @@ class BasicSettingsForm extends \yii\base\Model
 
     /**
      * Returns available options for defaultStreamSort attribute
-     * 
-     * @return array 
+     * @return array
      */
     public function getDefaultStreamSortOptions()
     {
