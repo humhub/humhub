@@ -91,9 +91,11 @@ humhub.module('stream', function(module, require, $) {
         var content = this.contentComponent();
         var promise = (content && content.delete) ? content.delete() : this.super('delete');
 
+        var that = this;
         var stream = this.stream();
         promise.then(function($confirm) {
             if($confirm) {
+                that.remove(); // Make sure to remove the wallentry node.
                 module.log.success('success.delete');
             }
         }).catch(function(err) {
