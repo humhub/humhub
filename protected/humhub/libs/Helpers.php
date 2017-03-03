@@ -113,6 +113,8 @@ class Helpers
      *
      * @param String $val
      * @return int bytes
+     * @deprecated bug on PHP7 "A non well formed numeric value encountered"
+     * @see \humhub\libs\Helpers::getBytesOfIniValue instead
      */
     public static function GetBytesOfPHPIniValue($val)
     {
@@ -128,6 +130,26 @@ class Helpers
         }
 
         return $val;
+    }
+
+    /**
+     * Returns bytes of a PHP Ini Setting Value
+     * E.g. 10M will converted into 10485760
+     *
+     * Source: http://php.net/manual/en/function.ini-get.php#96996
+     *
+     * @param string $valueString
+     * @return int bytes
+     */
+    public static function getBytesOfIniValue($valueString)
+    {
+        switch (substr ($valueString, -1))
+        {
+            case 'M': case 'm': return (int)$valueString * 1048576;
+            case 'K': case 'k': return (int)$valueString * 1024;
+            case 'G': case 'g': return (int)$valueString * 1073741824;
+            default: return $valueString;
+        }
     }
 
     /**
@@ -150,7 +172,7 @@ class Helpers
     public static function CheckClassType($className, $type = "")
     {
         $className = preg_replace('/[^a-z0-9_\-\\\]/i', "", $className);
-        
+
         if (is_array($type)) {
             foreach ($type as $t) {
                 if (class_exists($className) && is_subclass_of($className, $t)) {
