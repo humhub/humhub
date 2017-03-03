@@ -19,7 +19,7 @@ use yii\helpers\Url;
                      style="width: 64px; height: 64px;"
                      src="<?php echo $module->getImage(); ?>">
 
-                <div class="media-body">
+                <div class="media-body" data-name="<?php echo $module->getName(); ?>">
                     <h4 class="media-heading"><?php echo $module->getName(); ?>
                         <small>
                             <?php if (Yii::$app->hasModule($module->id)) : ?>
