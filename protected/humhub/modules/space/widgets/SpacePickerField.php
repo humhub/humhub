@@ -8,23 +8,28 @@ use yii\helpers\Html;
 
 /**
  * Mutliselect input field for selecting space guids.
- * 
+ *
  * @package humhub.modules_core.space.widgets
  * @since 1.2
  * @author buddha
  */
 class SpacePickerField extends BasePickerField
 {
+    /**
+     * @inheritdoc
+     * Min guids string value of Space model equal 2
+     */
+    public $minInput = 2;
 
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
     public $defaultRoute = '/space/browse/search-json';
     public $itemClass = \humhub\modules\space\models\Space::class;
     public $itemKey = 'guid';
 
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
     protected function getData()
     {
@@ -41,15 +46,15 @@ class SpacePickerField extends BasePickerField
     }
 
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
     protected function getItemText($item)
     {
-        return \yii\helpers\Html::encode($item->getDisplayName());
+        return Html::encode($item->getDisplayName());
     }
 
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
     protected function getItemImage($item)
     {
