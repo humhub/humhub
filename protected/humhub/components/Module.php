@@ -325,6 +325,12 @@ class Module extends \yii\base\Module
         return [];
     }
 
+    /**
+     * Determines whether the module has notification classes or not
+     * 
+     * @since 1.2
+     * @return boolean has notifications
+     */
     public function hasNotifications()
     {
         return !empty($this->getNotifications());

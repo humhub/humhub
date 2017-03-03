@@ -66,6 +66,12 @@ class Module extends \humhub\components\Module
     public $minimumUsernameLength = 4;
 
     /**
+     * @var callable a callback that returns the user displayName
+     * @since 1.2
+     */
+    public $displayNameCallback = null;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
