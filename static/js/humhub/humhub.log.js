@@ -104,6 +104,8 @@ humhub.module('log', function (module, require, $) {
                 msg = this.getMessage(msg.status, level, true);
             } else if(object.isString(msg) || object.isNumber(msg)) {
                 msg = this.getMessage(msg, level, (!object.isDefined(msg) && level >= TRACE_WARN));
+            } else if(level >= TRACE_WARN){
+                msg = this.getMessage(null, level, true);
             }
 
             this._consoleLog(msg, level, details);

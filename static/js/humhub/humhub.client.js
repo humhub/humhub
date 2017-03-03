@@ -66,9 +66,9 @@ humhub.module('client', function (module, require, $) {
 
         return result;
     };
-    
-    var reload = function(preventPjax) {
-        if(!preventPjax && module.pjax.config.active) {
+
+    var reload = function (preventPjax) {
+        if (!preventPjax && module.pjax.config.active) {
             module.pjax.reload();
         } else {
             location.reload(true);
@@ -171,18 +171,7 @@ humhub.module('client', function (module, require, $) {
                 var response = new Response(xhr, url, textStatus, cfg.dataType).setError(errorThrown);
 
                 if (response.status == 302) {
-
-                    url = null;
-                    if (xhr.getResponseHeader('X-Pjax-Url')) {
-                        url = xhr.getResponseHeader('X-Pjax-Url');
-                    } else {
-                        url = xhr.getResponseHeader('X-Redirect');
-                    }
-
-                    if (url !== null) {
-                        document.location = url;
-                        return;
-                    }
+                    _redirect(xhr);
                 }
 
                 if (errorHandler && object.isFunction(errorHandler)) {
@@ -254,6 +243,24 @@ humhub.module('client', function (module, require, $) {
         };
 
         return promise;
+    };
+
+    var _redirect = function (xhr) {
+        var url = null;
+        if (xhr.getResponseHeader('X-Pjax-Url')) {
+            url = xhr.getResponseHeader('X-Pjax-Url');
+        } else {
+            url = xhr.getResponseHeader('X-Redirect');
+        }
+
+        if (url !== null) {
+            if(module.pjax && module.pjax.config.active) {
+                module.pjax.redirect(url);
+            } else {
+                document.location = url;
+            }
+            return;
+        }
     };
 
     var finish = function (originalEvent) {

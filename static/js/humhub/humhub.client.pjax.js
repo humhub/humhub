@@ -11,6 +11,10 @@ humhub.module('client.pjax', function (module, require, $) {
         }
     };
     
+    var redirect = function(url) {
+        $.pjax({url: url, container: PJAX_CONTAINER_SELECTOR});
+    };
+    
     var reload = function() {
         $.pjax.reload({container: PJAX_CONTAINER_SELECTOR});
     };
@@ -90,6 +94,7 @@ humhub.module('client.pjax', function (module, require, $) {
     module.export({
         init: init,
         reload: reload,
+        redirect: redirect,
         isActive: isActive,
         installLoader: installLoader,
     });

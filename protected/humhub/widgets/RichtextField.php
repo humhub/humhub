@@ -66,7 +66,7 @@ class RichtextField extends JsWidget
      * @var string
      */
     public $placeholder;
-    
+
     /**
      * The url used for the default @ metioning.
      * If there is no $searchUrl is given, the $searchRoute will be used instead.
@@ -74,7 +74,7 @@ class RichtextField extends JsWidget
      * @var string 
      */
     public $mentioningUrl;
-    
+
     /**
      * Route used for the default @ mentioning. This will only be used if
      * not $searchUrl is given.
@@ -82,7 +82,7 @@ class RichtextField extends JsWidget
      * @var string 
      */
     protected $mentioningRoute = "/search/search/mentioning";
-    
+
     /**
      * Richtext features supported for within this feature.
      * By default all features will be included.
@@ -90,14 +90,14 @@ class RichtextField extends JsWidget
      * @var array 
      */
     public $includes = [];
-    
+
     /**
      * Richtext features not supported in this richtext feature.
      * 
      * @var array 
      */
     public $excludes = [];
-    
+
     /**
      * Can be used to set the value in case no $model and $attribute is provided.
      * $model and $attribute is provided.
@@ -105,20 +105,20 @@ class RichtextField extends JsWidget
      * @var string 
      */
     public $value;
-    
+
     /**
      * If set to true the picker will be focused automatically.
      * 
      * @var boolean 
      */
     public $focus = false;
-    
+
     /**
      * Disables the input field.
      * @var boolean 
      */
     public $disabled = false;
-    
+
     /**
      * Will be used as userfeedback, why this richtext is disabled.
      * 
@@ -130,12 +130,12 @@ class RichtextField extends JsWidget
      * @inheritdoc
      */
     public $init = true;
-    
+
     /**
      * @inheritdoc
      */
     public $visible = true;
-    
+
     /**
      * @var boolean defines if the default label should be rendered. This is only available if $form is given.
      */
@@ -147,26 +147,41 @@ class RichtextField extends JsWidget
     public function run()
     {
         $inputOptions = $this->getAttributes();
-        $inputOptions['id'] = $this->getId(true).'_input';
+        $inputOptions['id'] = $this->getId(true) . '_input';
         $inputOptions['style'] = 'display:none;color';
         unset($inputOptions['contenteditable']);
         $modelAttribute = $this->attribute;
-        
+
         if ($this->form != null) {
             $input = $this->form->field($this->model, $this->attribute)->textarea($inputOptions)->label(false);
             $richText = Html::tag('div', RichText::widget(['text' => $this->model->$modelAttribute, 'edit' => true]), $this->getOptions());
-            $richText = $this->form->label($this->model, $this->attribute, ['class' => 'control-label']).$richText;
+            $richText = $this->getLabel() . $richText;
         } else if ($this->model != null) {
             $input = Html::activeTextarea($this->model, $this->attribute, $inputOptions);
             $richText = Html::tag('div', RichText::widget(['text' => $this->model->$modelAttribute, 'edit' => true]), $this->getOptions());
+            $richText = $this->getLabel() . $richText;
         } else {
             $input = Html::textarea(((!$this->name) ? 'richtext' : $this->name), $this->value, $inputOptions);
-            $richText = Html::tag('div', RichText::widget(['text' => $this->value, 'edit' => true]),$this->getOptions());
+            $richText = Html::tag('div', RichText::widget(['text' => $this->value, 'edit' => true]), $this->getOptions());
+            $richText = $this->getLabel() . $richText;
+        }
+
+        return $input . $richText;
+    }
+
+    public function getLabel()
+    {
+        if(!$this->label) {
+            return "";
         }
         
-        return $input.$richText;
+        if ($this->label === true && $this->model != null) {
+            return Html::activeLabel($this->model, $this->attribute, ['class' => 'control-label']);
+        } else {
+            return $this->label;
+        }
     }
-    
+
     public function getData()
     {
         $result = [
@@ -175,15 +190,15 @@ class RichtextField extends JsWidget
             'mentioning-url' => $this->getMentioningUrl(),
             'placeholder' => $this->placeholder,
         ];
-        
-        if($this->disabled) {
+
+        if ($this->disabled) {
             $result['disabled'] = true;
             $result['disabled-text'] = $this->disabledText;
         }
-        
+
         return $result;
     }
-    
+
     public function getAttributes()
     {
         return [
@@ -191,9 +206,10 @@ class RichtextField extends JsWidget
             'contenteditable' => "true",
         ];
     }
-    
+
     public function getMentioningUrl()
     {
         return ($this->mentioningUrl) ? $this->mentioningUrl : Url::to([$this->mentioningRoute]);
     }
+
 }

@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
                 'model' => $addGroupMemberForm,
                 'attribute' => 'userGuids',
                 'url' => Url::to(['/admin/group/new-member-search', 'id' => $group->id]),
-                'options' => ['data-placeholder' => Yii::t('AdminModule.views_group_manageGroupUser', 'Add new members...')],
+                'placeholder' => Yii::t('AdminModule.views_group_manageGroupUser', 'Add new members...'),
                 'focus' => true,
             ])
             ?>
