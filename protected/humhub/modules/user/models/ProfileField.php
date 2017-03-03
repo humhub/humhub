@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\user\models\fieldtype\BaseType;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -42,7 +43,7 @@ class ProfileField extends ActiveRecord
     /**
      * Field Type Instance
      *
-     * @var type
+     * @var BaseType
      */
     private $_fieldType = null;
 
@@ -137,7 +138,7 @@ class ProfileField extends ActiveRecord
     /**
      * Returns the ProfileFieldType Class for this Profile Field
      *
-     * @return ProfileFieldType
+     * @return BaseType
      */
     public function getFieldType()
     {
