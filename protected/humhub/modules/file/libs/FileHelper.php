@@ -119,7 +119,7 @@ class FileHelper extends \yii\helpers\FileHelper
             'size' => $file->size,
             'mimeType' => $file->mime_type,
             'mimeIcon' => MimeHelper::getMimeIconClassByExtension(self::getExtension($file->file_name)),
-            'size_format' => Yii::$app->formatter->asShortSize($file->size, $decimals = 1),
+            'size_format' => Yii::$app->formatter->asShortSize($file->size, 1),
             'url' => $file->getUrl(),
             'openLink' => FileHelper::createLink($file),
             'thumbnailUrl' => $thumbnailUrl,
