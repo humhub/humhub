@@ -13,6 +13,7 @@ return array (
   'Insert Image Hyperlink' => 'Afbeelding link invoegen',
   'Italic' => 'Cursief',
   'List' => 'Lijst',
+  'Ordered List' => 'Genummerde lijst',
   'Please wait while uploading...' => 'Even geduld aub...',
   'Preview' => 'Voorbeeld',
   'Quote' => 'Quote',
@@ -20,6 +21,7 @@ return array (
   'Title' => 'Titel',
   'Title of your link' => 'Titel van de link',
   'URL/Link' => 'URL/Link',
+  'Unordered List' => 'Opsommingslijst',
   'code text here' => 'Code tekst hier',
   'emphasized text' => 'benadrukte tekst',
   'enter image description here' => 'Afbeelding omschrijving',
@@ -29,6 +31,4 @@ return array (
   'list text here' => 'Lijsttekst',
   'quote here' => 'quote hier plaatsen',
   'strong text' => 'belangrijke tekst',
-  'Unordered List' => '',
-  'Ordered List' => '',
 );

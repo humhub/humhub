@@ -22,12 +22,16 @@ humhub.module('file', function (module, require, $) {
     Upload.component = 'humhub-file-upload';
 
     Upload.prototype.init = function () {
-        this.fileCount = 0;
+        this.fileCount = this.options.fileCount || 0;
         this.options.name = this.options.name || 'fileList[]';
         this.$form = (this.$.data('upload-form')) ? $(this.$.data('upload-form')) : this.$.closest('form');
         this.initProgress();
         this.initPreview();
         this.initFileUpload();
+        
+        if(!this.canUploadMore()) {
+            this.disable(this.$.data('max-number-of-files-message'));
+        }
 
         var that = this;
         this.on('upload', function () {
@@ -53,8 +57,7 @@ humhub.module('file', function (module, require, $) {
             autoUpload: false,
             singleFileUploads: false,
             add: function (e, data) {
-                if (that.options.maxNumberOfFiles
-                        && (that.fileCount + data.files.length > that.options.maxNumberOfFiles)) {
+                if (that.options.maxNumberOfFiles && (that.getFileCount() + data.files.length > that.options.maxNumberOfFiles)) {
                     that.handleMaxFileReached();
                 } else {
                     data.process().done(function () {
@@ -70,22 +73,37 @@ humhub.module('file', function (module, require, $) {
         module.log.warn(this.$.data('max-number-of-files-message'), true);
         this.$ = $(this.getIdSelector());
         if (!this.canUploadMore()) {
-            this.disable();
+            this.disable(this.$.data('max-number-of-files-message'));
         }
     };
 
-    Upload.prototype.disable = function () {
+    Upload.prototype.disable = function (message) {
         var $trigger = this.getTrigger();
         if ($trigger.length) {
-            $trigger.addClass('disabled')
-                    .attr('title', this.$.data('max-number-of-files-message'))
-                    .tooltip({
-                        html: false,
-                        container: 'body'
-                    });
+            $trigger.addClass('disabled');
+            this.originalTriggerTitle = $trigger.data('original-title');
+            message = message || 'disabled';
+            if(message && $trigger.data('bs.tooltip')) {
+                $trigger.attr('data-original-title', message)
+                        .tooltip('fixTitle');
+            }
         }
 
         this.$.prop('disabled', true);
+    };
+    
+    Upload.prototype.enable = function () {
+        var $trigger = this.getTrigger();
+        if ($trigger.length) {
+            $trigger.removeClass('disabled');
+        }
+        
+        if($trigger.data('bs.tooltip')) {
+            $trigger.attr('data-original-title', this.originalTriggerTitle)
+                        .tooltip('fixTitle');
+        }
+
+        this.$.prop('disabled', false);
     };
 
     Upload.prototype.getDropZone = function () {
@@ -116,9 +134,21 @@ humhub.module('file', function (module, require, $) {
             if (this.preview.setSource) {
                 this.preview.setSource(this);
             } else {
-                this.preview.source;
+                this.preview.source = this;
+            }
+            
+            // Get current file count form preview component.
+            if(object.isFunction(this.preview.getFileCount)) {
+                this.fileCount = this.preview.getFileCount();
             }
         }
+    };
+    
+    Upload.prototype.getFileCount = function () {
+        if(this.preview && object.isFunction(this.preview.getFileCount)) {
+            return this.preview.getFileCount();
+        }
+        return this.fileCount;
     };
 
     Upload.prototype.initProgress = function () {
@@ -212,6 +242,7 @@ humhub.module('file', function (module, require, $) {
             _delete(file).then(function (response) {
                 that.$form.find('[value="' + file.guid + '"]').remove();
                 module.log.success('success.delete', true);
+                that.enable();
                 resolve();
             }).catch(function (err) {
                 module.log.error(err, true);
@@ -241,12 +272,12 @@ humhub.module('file', function (module, require, $) {
         this.$ = $(this.getIdSelector());
 
         if (!this.canUploadMore()) {
-            this.disable();
+            this.disable(this.$.data('max-number-of-files-message'));
         }
     };
 
     Upload.prototype.canUploadMore = function () {
-        return !this.options.maxNumberOfFiles || (this.fileCount < this.options.maxNumberOfFiles);
+        return !this.options.maxNumberOfFiles || (this.getFileCount() < this.options.maxNumberOfFiles);
     };
 
     var Preview = function (node, options) {
@@ -272,6 +303,10 @@ humhub.module('file', function (module, require, $) {
         $.each(files, function (i, file) {
             that.add(file);
         });
+    };
+    
+    Preview.prototype.getFileCount = function () {
+        return this.$.find('.file-preview-item').length;
     };
 
     Preview.prototype.add = function (file) {
@@ -300,9 +335,18 @@ humhub.module('file', function (module, require, $) {
         $file.find('.file_upload_remove_link').on('click', function () {
             that.delete(file);
         });
+        
+        if(this.isImage(file) && this.options.hideImageFileInfo) {
+            $file.find('.file-fileInfo').remove();
+        }
 
         $file.fadeIn();
     };
+    
+    Preview.prototype.isImage = function (file) {
+        return file.mimeIcon === 'mime-image';
+    }
+    
 
     Preview.prototype.getTemplate = function (file) {
         if (this.options.fileEdit) {
@@ -370,8 +414,8 @@ humhub.module('file', function (module, require, $) {
     Preview.template = {
         root: '<ul class="files" style="list-style:none; margin:0;padding:0px;"></ul>',
         file_edit: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{name}<span class="file_upload_remove_link" data-ui-loader> <i class="fa fa-times-circle"></i>&nbsp;</span></li>',
-        file: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{openLink}<span class="time" style="padding-right: 20px;"> - {size_format}</span></li>',
-        file_image: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{openLink}<span class="time" style="padding-right: 20px;"> - {size_format}</span></li>',
+        file: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{openLink}<span class="time file-fileInfo" style="padding-right: 20px;"> - {size_format}</span></li>',
+        file_image: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{openLink}<span class="time file-fileInfo" style="padding-right: 20px;"> - {size_format}</span></li>',
         popover: '<img alt="{name}" src="{thumbnailUrl}" />'
     };
 

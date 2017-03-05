@@ -7,7 +7,7 @@
                 <td valign="top">
 
                     <!-- start container width 560px -->
-                    <table width="560"  align="center" border="0" cellspacing="0" cellpadding="0" class="full-width" bgcolor="#ffffff" style="background-color: <?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>">
+                    <table width="560"  align="center" border="0" cellspacing="0" cellpadding="0" class="full-width" style="background-color: <?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>">
 
                         <!-- start image content -->
                         <tr>

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\user\models;
 
 use Yii;
@@ -37,7 +43,7 @@ class Module extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['module_id', 'user_id'], 'required'],
+            [['module_id'], 'required'],
             [['user_id', 'state'], 'integer'],
             [['module_id'], 'string', 'max' => 255],
             [['user_id', 'module_id'], 'unique', 'targetAttribute' => ['user_id', 'module_id'], 'message' => 'The combination of Module ID and User ID has already been taken.']
@@ -57,16 +63,18 @@ class Module extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
-        if ($this->user_id == '') {
-            $this->user_id = 0;
-        }
-
         Yii::$app->cache->delete(self::STATES_CACHE_ID_PREFIX . $this->user_id);
         return parent::beforeSave($insert);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeDelete()
     {
         Yii::$app->cache->delete(self::STATES_CACHE_ID_PREFIX . $this->user_id);
@@ -77,10 +85,10 @@ class Module extends \yii\db\ActiveRecord
      * Returns an array of moduleId and the their states (enabled, disabled, force enabled)
      * for given user  id. If space id is 0 or empty, the default states will be returned.
      *
-     * @param int $userId
+     * @param int|null $userId or null for default states
      * @return array State of Module Ids
      */
-    public static function getStates($userId = 0)
+    public static function getStates($userId = null)
     {
         if (isset(self::$_states[$userId])) {
             return self::$_states[$userId];
@@ -88,8 +96,16 @@ class Module extends \yii\db\ActiveRecord
 
         $states = Yii::$app->cache->get(self::STATES_CACHE_ID_PREFIX . $userId);
         if ($states === false) {
-            $states = array();
-            foreach (self::find()->where(['user_id' => $userId])->all() as $userModule) {
+            $states = [];
+            $query = self::find();
+
+            if (empty($userId)) {
+                $query->andWhere(['IS', 'user_id', new \yii\db\Expression('NULL')]);
+            } else {
+                $query->andWhere(['user_id' => $userId]);
+            }
+
+            foreach ($query->all() as $userModule) {
                 $states[$userModule->module_id] = $userModule->state;
             }
             Yii::$app->cache->set(self::STATES_CACHE_ID_PREFIX . $userId, $states);

@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Advanced Settings' => '',
-  'Appearance Settings' => '',
-  'General' => 'Gennerelt',
-  'General Settings' => '',
+  'Advanced Settings' => 'Avanserte innstillinger',
+  'Appearance Settings' => 'Utseende innstillinger ',
+  'General' => 'Generelt',
+  'General Settings' => 'Generelle innstillinger ',
   'Here you can configurate the registration behaviour and additinal user settings of your social network.' => '',
   'Here you can configure basic settings of your social network.' => '',
   'LDAP' => '',

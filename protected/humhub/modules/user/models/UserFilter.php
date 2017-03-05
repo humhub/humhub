@@ -9,7 +9,7 @@
 namespace humhub\modules\user\models;
 
 use Yii;
-use \humhub\modules\user\widgets\UserPicker;
+use \humhub\modules\user\models\UserPicker;
 
 /**
  * Special user model class for the purpose of searching users.

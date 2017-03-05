@@ -25,7 +25,8 @@ use yii\helpers\Url;
             'model' => $comment,
             'dropZone' => '#comment_'.$comment->id,
             'preview' => '#comment_upload_preview_'.$comment->id,
-            'progress' => '#comment_upload_progress_'.$comment->id
+            'progress' => '#comment_upload_progress_'.$comment->id,
+            'max' => Yii::$app->getModule('content')->maxAttachedFiles
         ])?>
 
 

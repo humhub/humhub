@@ -110,7 +110,8 @@ class JsWidget extends Widget
         if($this->id) {
             return $this->id;
         }
-        return parent::getId($autoGenerate);
+        
+        return $this->id = parent::getId($autoGenerate);
     }
     
     /**

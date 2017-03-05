@@ -22,7 +22,8 @@ use yii\helpers\Url;
             'id' => 'comment_create_upload_' . $id,
             'progress' => '#comment_create_upload_progress_' . $id,
             'preview' => '#comment_create_upload_preview_' . $id,
-            'dropZone' => '#comment_create_form_'.$id
+            'dropZone' => '#comment_create_form_'.$id,
+            'max' => Yii::$app->getModule('content')->maxAttachedFiles
         ]); ?>
 
         <a href="#" class="btn btn-sm btn-default btn-comment-submit pull-left" 

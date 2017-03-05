@@ -21,7 +21,8 @@ use humhub\compat\CActiveForm;
             'model' => $post,
             'dropZone' => '#post_edit_' . $post->id . ':parent',
             'preview' => '#post_upload_preview_' . $post->id,
-            'progress' => '#post_upload_progress_' . $post->id
+            'progress' => '#post_upload_progress_' . $post->id,
+            'max' => Yii::$app->getModule('content')->maxAttachedFiles
         ])
         ?>
 

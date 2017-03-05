@@ -102,10 +102,14 @@ humhub.module('notification', function (module, require, $) {
 
     NotificationDropDown.prototype.updateCount = function ($count) {
         if (this.$.data('notification-count') === $count) {
+            if(!$count) {
+                $('#badge-notifications').hide();
+            }
             return;
         }
 
         $('#badge-notifications').hide();
+
         if (!$count) {
             updateTitle(false);
             $('#badge-notifications').html('0');

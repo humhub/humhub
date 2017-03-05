@@ -89,6 +89,7 @@ class CoreJsConfig extends Widget
                     'text' => [
                         'error.default' => Yii::t('base', 'An unexpected error occured. If this keeps happening, please contact a site administrator.'),
                         'success.saved' => Yii::t('base', 'Saved'),
+                        'saved' => Yii::t('base', 'Saved'),
                         'success.edit' => Yii::t('base', 'Saved'),
                         0 => Yii::t('base', 'An unexpected error occured. If this keeps happening, please contact a site administrator.'),
                         403 => Yii::t('base', 'You are not allowed to run this action.'),

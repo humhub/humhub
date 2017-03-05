@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Type' => 'Spacetyp',
+  'Type' => 'Art',
 );

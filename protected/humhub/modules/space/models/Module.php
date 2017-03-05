@@ -1,9 +1,14 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\space\models;
 
 use Yii;
-
 
 /**
  * This is the model class for table "space_module".
@@ -37,7 +42,7 @@ class Module extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['module_id', 'space_id'], 'required'],
+            [['module_id'], 'required'],
             [['space_id', 'state'], 'integer'],
             [['module_id'], 'string', 'max' => 255]
         ];
@@ -56,18 +61,18 @@ class Module extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
-
-        if ($this->space_id == "") {
-            $this->space_id = 0;
-        }
-
         Yii::$app->cache->delete(self::STATES_CACHE_ID_PREFIX . $this->space_id);
-
         return parent::beforeSave($insert);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeDelete()
     {
         Yii::$app->cache->delete(self::STATES_CACHE_ID_PREFIX . $this->space_id);
@@ -79,29 +84,46 @@ class Module extends \yii\db\ActiveRecord
      * Returns an array of moduleId and the their states (enabled, disabled, force enabled)
      * for given space id. If space id is 0 or empty, the default states will be returned.
      *
-     * @param int $spaceId
+     * @param int|null $spaceId the space id or null for the default state
      * @return array State of Module Ids
      */
-    public static function getStates($spaceId = 0)
+    public static function getStates($spaceId = null)
     {
+
+        // Used already cached values
         if (isset(self::$_states[$spaceId])) {
             return self::$_states[$spaceId];
         }
 
         $states = Yii::$app->cache->get(self::STATES_CACHE_ID_PREFIX . $spaceId);
         if ($states === false) {
-            $states = array();
-            foreach (self::find()->where(['space_id' => $spaceId])->all() as $spaceModule) {
+
+            $states = [];
+
+            $query = self::find();
+
+            if (empty($spaceId)) {
+                $query->andWhere(['IS', 'space_id', new \yii\db\Expression('NULL')]);
+            } else {
+                $query->andWhere(['space_id' => $spaceId]);
+            }
+
+            foreach ($query->all() as $spaceModule) {
                 $states[$spaceModule->module_id] = $spaceModule->state;
             }
+            
             Yii::$app->cache->set(self::STATES_CACHE_ID_PREFIX . $spaceId, $states);
         }
-
         self::$_states[$spaceId] = $states;
 
         return self::$_states[$spaceId];
     }
 
+    /**
+     * Returns space relation
+     * 
+     * @return ActiveQuery the relation query
+     */
     public function getSpace()
     {
         return $this->hasOne(Space::className(), ['id' => 'space_id']);

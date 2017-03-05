@@ -3,7 +3,7 @@
 namespace humhub\libs;
 
 use yii\helpers\Url;
-use yii\helpers\Html;
+use humhub\libs\Html;
 use humhub\modules\file\models\File;
 
 class Markdown extends \cebe\markdown\GithubMarkdown

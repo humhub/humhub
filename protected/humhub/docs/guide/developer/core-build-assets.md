@@ -1,10 +1,9 @@
-Build
-========
+Build assets
+============
 
 ## Setup
  - Install NPM
  - Install Grunt (http://gruntjs.com/getting-started)
-```
  - call npm update in humhub root
 
 > Note: Since symlinks are not supported in some virtual machine shared folders the update command should be called from the host
@@ -22,7 +21,7 @@ all assets are included seperatly.
 The compressed production assets are build by calling:
 
 ```
-yii asset humhub/config/assets.php humhub/config/assets-prod.php
+php yii asset humhub/config/assets.php humhub/config/assets-prod.php
 ```
 
 This will create the following files:

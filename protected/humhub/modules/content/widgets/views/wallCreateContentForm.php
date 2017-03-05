@@ -13,6 +13,7 @@ $this->registerJsConfig('content.form', [
         'makePublic' => Yii::t('ContentModule.widgets_views_contentForm', 'Make public'),
         'info.archived' => Yii::t('ContentModule.widgets_views_contentForm', 'This space is archived.')
 ]]);
+
 ?>
 
 <div class="panel panel-default clearfix">
@@ -51,7 +52,8 @@ $this->registerJsConfig('content.form', [
                             'id' => 'contentFormFiles',
                             'progress' => '#contentFormFiles_progress',
                             'preview' => '#contentFormFiles_preview',
-                            'dropZone' => '#contentFormBody'
+                            'dropZone' => '#contentFormBody',
+                            'max' => Yii::$app->getModule('content')->maxAttachedFiles
                 ]);
                 ?>
                 <?= humhub\modules\file\widgets\FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>

@@ -27,6 +27,11 @@ class Notification extends \humhub\components\ActiveRecord
      * @var int number of found grouped notifications
      */
     public $group_count;
+    
+    /*
+     * @var int number of involved users of grouped notifications
+     */
+    public $group_user_count;
 
     /**
      * @inheritdoc
@@ -98,7 +103,7 @@ class Notification extends \humhub\components\ActiveRecord
         if (class_exists($this->class)) {
             $params['source'] = $this->getPolymorphicRelation();
             $params['originator'] = $this->originator;
-            $params['groupCount'] = $this->group_count;
+            $params['groupCount'] = $this->group_user_count;
             if ($this->group_count > 1) {
                 // Make sure we're loaded the latest notification record
                 $params['record'] = self::find()
@@ -106,6 +111,7 @@ class Notification extends \humhub\components\ActiveRecord
                         ->andWhere(['class' => $this->class, 'user_id' => $this->user_id, 'group_key' => $this->group_key])
                         ->one();
                 $params['originator'] = $params['record']->originator;
+                
             } else {
                 $params['record'] = $this;
             }
@@ -220,7 +226,8 @@ class Notification extends \humhub\components\ActiveRecord
 
         $query = self::find();
         $query->addSelect(['notification.*',
-            new \yii\db\Expression('count(distinct(originator_user_id)) as group_count'),
+            new \yii\db\Expression('count(distinct(originator_user_id)) as group_user_count'),
+            new \yii\db\Expression('count(*) as group_count'),
             new \yii\db\Expression('max(created_at) as group_created_at'),
             new \yii\db\Expression('min(seen) as group_seen'),
         ]);

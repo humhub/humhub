@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Send activities?' => 'Envoyer les activités ?',
-  'Send notifications?' => 'Envoyer les notifications ?',
+  'Send activities?' => 'Envoyer des activités ?',
+  'Send notifications?' => 'Envoyer des alertes ?',
 );
