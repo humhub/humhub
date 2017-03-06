@@ -269,14 +269,14 @@
   }
 
   .nav > li > a {
-    padding: 6px 13px 0;
+    padding: 7px 13px 0;
     text-decoration: none;
     text-shadow: none;
     font-weight: 600;
     font-size: 10px;
+    min-height: 50px;
     text-transform: uppercase;
     text-align: center;
-    min-height: 49px;
     &:hover,
     &:active,
     &:focus {
@@ -292,6 +292,10 @@
       border-top-color: @text-color-secondary;
     }
   }
+    
+  .nav > li.active > a {
+    min-height: 47px;
+  }
 
   .nav > li > ul > li > a {
     border-left: 3px solid #fff;
@@ -305,9 +309,6 @@
     color: @text-color-highlight;
   }
 
-  .nav > li.active > a {
-    min-height: 46px;
-  }
   .nav > li > a#space-menu {
     padding-right: 13px;
     border-right: 1px solid #ededed;
