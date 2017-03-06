@@ -1,11 +1,16 @@
 humhub.module('like', function (module, require, $) {
     var client = require('client');
     var additions = require('ui.additions');
+    var Component = require('action').Component;
 
     var toggleLike = function (evt) {
         client.post(evt).then(function (response) {
             if(response.currentUserLiked) {
                 additions.switchButtons(evt.$trigger, evt.$trigger.siblings('.unlike'));
+                var component = Component.closest(evt.$trigger);
+                if(component) {
+                    component.$.trigger('humhub:like:liked');
+                }
             } else {
                 additions.switchButtons(evt.$trigger, evt.$trigger.siblings('.like'));
             }

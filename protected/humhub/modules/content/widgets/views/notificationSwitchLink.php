@@ -16,6 +16,7 @@
             'url' => Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 0]),
         ],
         'htmlOptions' => [
+            'class' => 'turnOffNotifications',
             'style' => 'display: ' . ($state ? 'block' : 'none'),
             'href' => '#',
             'id' => $offLinkId
@@ -31,6 +32,7 @@
             'url' => Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 1]),
         ],
         'htmlOptions' => [
+            'class' => 'turnOnNotifications',
             'style' => 'display: ' . ($state ? 'none' : 'block'),
             'href' => '#',
             'id' => $onLinkId
