@@ -45,8 +45,8 @@ return [
     'City' => 'Πόλη',
     'Country' => 'Χώρα',
     'Fax' => 'Φαξ',
-    'Firstname' => 'Μικρό όνομα',
-    'Lastname' => 'Επώνυμο',
+    'First name' => 'Μικρό όνομα',
+    'Last name' => 'Επώνυμο',
     'Mobile' => 'Κινητό',
     'Title' => 'Τίτλος',
 ];
