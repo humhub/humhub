@@ -34,6 +34,7 @@ use humhub\modules\space\models\Space;
  * @property string $last_login
  * @property integer $visibility
  * @property integer $contentcontainer_id
+ * @property Profile $profile
  */
 class User extends ContentContainerActiveRecord implements \yii\web\IdentityInterface, \humhub\modules\search\interfaces\Searchable
 {
@@ -201,7 +202,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     /**
      * @inheritdoc
      *
-     * @return ActiveQueryContent
+     * @return \humhub\modules\content\components\ActiveQueryContent
      */
     public static function find()
     {
