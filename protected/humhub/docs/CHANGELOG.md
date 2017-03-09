@@ -20,6 +20,7 @@ HumHub Change Log
 - Fix #2304: Users not loaded in user selection fields.
 - Enh: Added User module 'displayNameCallback' attribute for custom display name formats
 - Enh: Added Clipboard.js and Permalink "Copy to clipboard" link
+- Enh: Validate minimum PHP version in Console Application
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------

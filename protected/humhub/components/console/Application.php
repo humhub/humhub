@@ -28,6 +28,10 @@ class Application extends \yii\console\Application
      */
     public function init()
     {
+        if (version_compare(phpversion(), '5.6', '<')) {
+            throw new \yii\console\Exception('Installed PHP Version too old! Required minimum version PHP 5.6 (Installed: ' . phpversion() . ')');
+        }
+
         parent::init();
         $this->trigger(self::EVENT_ON_INIT);
 
