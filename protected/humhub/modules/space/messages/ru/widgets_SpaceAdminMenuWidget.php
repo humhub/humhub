@@ -18,8 +18,8 @@
  */
 return [
     '<i class="fa fa-cog"></i>' => '',
-    'Don\'t receive notifications for new content' => '',
-    'Receive Notifications for new content' => '',
+    'Don\'t receive notifications for new content' => 'Не получать уведомления о новом контенте',
+    'Receive Notifications for new content' => 'Получать уведомления о новом контенте',
     'Cancel Membership' => 'Отменить участие',
     'Hide posts on dashboard' => 'Скрыть сообщения в панели "События"',
     'Members' => 'Участники',
