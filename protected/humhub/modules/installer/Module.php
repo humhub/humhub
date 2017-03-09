@@ -43,6 +43,11 @@ class Module extends \humhub\components\Module
     public function init()
     {
         parent::init();
+
+        if (Yii::$app instanceof \yii\console\Application) {
+            return;
+        }
+
         $this->layout = '@humhub/modules/installer/views/layouts/main.php';
         $this->initConfigSteps();
         $this->sortConfigSteps();
@@ -77,11 +82,11 @@ class Module extends \humhub\components\Module
             // return the current connection state.
             return Yii::$app->db->getIsActive();
         } catch (Exception $e) {
-
+            
         } catch (\yii\base\Exception $e) {
-
+            
         } catch (\PDOException $e) {
-
+            
         }
         return false;
     }
@@ -127,8 +132,8 @@ class Module extends \humhub\components\Module
             'sort' => 100,
             'url' => Url::to(['/installer/config/basic']),
             'isCurrent' => function() {
-        return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'basic');
-    },
+                return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'basic');
+            },
         ];
 
 
@@ -139,8 +144,8 @@ class Module extends \humhub\components\Module
             'sort' => 150,
             'url' => Url::to(['/installer/config/use-case']),
             'isCurrent' => function() {
-        return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'use-case');
-    },
+                return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'use-case');
+            },
         ];
 
         /**
@@ -150,8 +155,8 @@ class Module extends \humhub\components\Module
             'sort' => 200,
             'url' => Url::to(['/installer/config/security']),
             'isCurrent' => function() {
-        return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'security');
-    },
+                return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'security');
+            },
         ];
 
         /**
@@ -161,8 +166,8 @@ class Module extends \humhub\components\Module
             'sort' => 300,
             'url' => Url::to(['/installer/config/modules']),
             'isCurrent' => function() {
-        return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'modules');
-    },
+                return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'modules');
+            },
         ];
 
         /**
@@ -172,8 +177,8 @@ class Module extends \humhub\components\Module
             'sort' => 400,
             'url' => Url::to(['/installer/config/admin']),
             'isCurrent' => function() {
-        return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'admin');
-    },
+                return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'admin');
+            },
         ];
 
 
@@ -184,8 +189,8 @@ class Module extends \humhub\components\Module
             'sort' => 450,
             'url' => Url::to(['/installer/config/sample-data']),
             'isCurrent' => function() {
-        return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'sample-data');
-    },
+                return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'sample-data');
+            },
         ];
 
         /**
@@ -195,8 +200,8 @@ class Module extends \humhub\components\Module
             'sort' => 1000,
             'url' => Url::to(['/installer/config/finish']),
             'isCurrent' => function() {
-        return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'finish');
-    },
+                return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'finish');
+            },
         ];
 
         $this->trigger(self::EVENT_INIT_CONFIG_STEPS);

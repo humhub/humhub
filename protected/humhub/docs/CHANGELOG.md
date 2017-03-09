@@ -25,6 +25,8 @@ HumHub Change Log
 - Fix: Better error handling/logging on corrupt GD Image files
 - Fix #2288: Pjax breaks OAuth2 ReturnUrl
 - Fix: Incorrect First name & Last name message key (githubjeka)
+- Fix: Do not store complete comments with search index (helnokaly)
+- Fix #2319: Run console application before installation
 
 
 1.2.0-beta.2 (February 24, 2017)
