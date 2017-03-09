@@ -22,6 +22,7 @@ HumHub Change Log
 - Enh: Added Clipboard.js and Permalink "Copy to clipboard" link
 - Enh: Validate minimum PHP version in Console Application
 - Enh: Added optional ActiveRecordContent::canEdit() method for custom ACLs
+- Fix: Better error handling/logging on corrupt GD Image files
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------
