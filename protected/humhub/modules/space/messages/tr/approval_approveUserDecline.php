@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Send & decline' => 'Gönder ve kabul etme',
+  'Send & decline' => 'Gönder ve Kabul etme',
 );
