@@ -23,6 +23,7 @@ HumHub Change Log
 - Enh: Validate minimum PHP version in Console Application
 - Enh: Added optional ActiveRecordContent::canEdit() method for custom ACLs
 - Fix: Better error handling/logging on corrupt GD Image files
+- Fix #2288: Pjax breaks OAuth2 ReturnUrl by parameters
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------
