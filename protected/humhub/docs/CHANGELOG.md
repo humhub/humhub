@@ -21,6 +21,7 @@ HumHub Change Log
 - Enh: Added User module 'displayNameCallback' attribute for custom display name formats
 - Enh: Added Clipboard.js and Permalink "Copy to clipboard" link
 - Enh: Validate minimum PHP version in Console Application
+- Enh: Added optional ActiveRecordContent::canEdit() method for custom ACLs
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------
