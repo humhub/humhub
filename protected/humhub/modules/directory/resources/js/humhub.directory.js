@@ -1,14 +1,15 @@
-humhub.module('directory', function(module, require, $) {
+humhub.module('directory', function (module, require, $) {
     var status = require('ui.status');
 
-    var init = function() {
+    var init = function () {
         var viewState = status.getState();
-        if(viewState.moduleId === 'directory') {
+
+        if ($('.knob-container').length) {
             $(".knob").knob();
             $(".knob-container").css("opacity", 1);
         }
     };
-    
+
     module.export({
         init: init,
         initOnPjaxLoad: true
