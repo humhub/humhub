@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Cancel Edit' => '',
-    'Comment has been deleted' => '',
-    'Read full comment...' => '',
+    'Cancel Edit' => '取消编辑',
+    'Comment has been deleted' => '评论已被删除',
+    'Read full comment...' => '阅读完整的评论...',
     '<strong>Confirm</strong> comment deleting' => '<strong>确认</strong> 删除评论',
     'Cancel' => '取消',
     'Delete' => '删除',

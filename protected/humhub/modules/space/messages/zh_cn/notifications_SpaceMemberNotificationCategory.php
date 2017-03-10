@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Receive Notifications for Space Approval and Invite events.' => '',
-    'Space Membership' => '',
+    'Receive Notifications for Space Approval and Invite events.' => '接收空间批准和邀请事件的通知。',
+    'Space Membership' => '空间成员',
 ];

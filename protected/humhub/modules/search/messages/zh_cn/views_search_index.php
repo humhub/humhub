@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Specify space' => '',
+    'Specify space' => '指定空间',
     '<strong>Search </strong> results' => '<strong>搜索 </strong> 结果',
     'Advanced search settings' => '高级搜索设置',
     'All' => '所有',

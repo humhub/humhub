@@ -6,9 +6,9 @@ use \yii\helpers\Url;
 <?php if (Yii::$app->user->isGuest): ?>
     <a href="#" class="btn btn-enter" data-action-click="ui.modal.load" data-action-url="<?= Url::toRoute('/user/auth/login'); ?>">
         <?php if (Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration')): ?>
-            <?= Yii::t('UserModule.base', 'Sign in / up'); ?>
+            <?= Yii::t('UserModule.widgets_views_accountTopMenu', 'Sign in / up'); ?>
         <?php else: ?>
-            <?= Yii::t('UserModule.base', 'Sign in'); ?>
+            <?= Yii::t('UserModule.widgets_views_accountTopMenu', 'Sign in'); ?>
         <?php endif; ?>
     </a>
 <?php else: ?>

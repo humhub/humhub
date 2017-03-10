@@ -7,4 +7,9 @@ return array (
   '<strong>Guide:</strong> Spaces' => '<strong>Gids:</strong> Ruimtes',
   '<strong>Guide:</strong> User profile' => '<strong>Gids:</strong> Gebruikers profiel',
   'Get to know your way around the site\'s most important features with the following guides:' => 'Leer de weg kennen op deze webpagina\'s door de belangrijkste kenmerken met de volgende gidsen te leren kennen:',
+  '<strong>Remove</strong> tour panel' => '',
+  'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.' =>
+      '',
+  'Ok' => '',
+  'Cancel' => '',
 );

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Maximum allowed age for logs.' => '',
+    'Maximum allowed age for logs.' => '日志允许的最长时间。',
     'HTML tracking code' => 'HTML的跟踪代码',
 ];

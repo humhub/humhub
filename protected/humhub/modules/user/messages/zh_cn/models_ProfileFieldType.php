@@ -26,5 +26,5 @@ return [
     'Select List' => '选择列表',
     'Text' => '文本',
     'Text Area' => '文本域',
-    'Checkbox' => '',
+    'Checkbox' => '复选框',
 ];

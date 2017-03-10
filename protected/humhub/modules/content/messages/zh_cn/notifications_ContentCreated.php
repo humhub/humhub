@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{originator} just wrote {contentInfo}' => '',
-    '{originator} just wrote {contentInfo} in space {space}' => '',
-    '{originator} notifies you about {contentInfo}' => '',
-    '{originator} notifies you about {contentInfo} in {space}' => '',
+    '{originator} just wrote {contentInfo}' => '{originator} 刚刚写了 {contentInfo}',
+    '{originator} just wrote {contentInfo} in space {space}' => '{originator} 刚刚在空间 {space} 写了 {contentInfo}',
+    '{originator} notifies you about {contentInfo}' => '{originator} 提醒你关于 {contentInfo}',
+    '{originator} notifies you about {contentInfo} in {space}' => '{originator} 在空间 {space} 提醒你关于 {contentInfo} ',
 ];

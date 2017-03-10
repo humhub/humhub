@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Administrative' => '',
-    'Receive Notifications for administrative events like available updates.' => '',
+    'Administrative' => '管理',
+    'Receive Notifications for administrative events like available updates.' => '接收管理事件的通知，例如有可用更新。',
 ];

@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Show {i} more.' => '',
+    'Show {i} more.' => '再展示 {i} 条。',
 ];

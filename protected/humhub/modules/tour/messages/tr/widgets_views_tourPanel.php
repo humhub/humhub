@@ -7,4 +7,9 @@ return array (
   '<strong>Guide:</strong> Spaces' => '<strong>Rehber:</strong> Mekanlar',
   '<strong>Guide:</strong> User profile' => '<strong>Rehber:</strong> Kullanıcı profili',
   'Get to know your way around the site\'s most important features with the following guides:' => 'Adımları takip ederek özelliklerini tanıyın:',
+  '<strong>Remove</strong> tour panel' => '',
+  'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.' =>
+      '',
+  'Ok' => '',
+  'Cancel' => '',
 );

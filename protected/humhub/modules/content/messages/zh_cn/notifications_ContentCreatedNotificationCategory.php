@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'New Content' => '',
-    'Receive Notifications for new content you follow.' => '',
+    'New Content' => '新内容',
+    'Receive Notifications for new content you follow.' => '你关注的人有了新动态时接受提醒',
 ];
