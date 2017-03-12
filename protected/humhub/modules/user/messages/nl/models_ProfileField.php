@@ -3,7 +3,7 @@ return array (
   'Created at' => 'Aangemaakt op',
   'Created by' => 'Aangemaakt door',
   'Description' => 'Beschrijving',
-  'Editable' => 'Bewerkbaar',
+  'Editable' => 'Aanpasbaar',
   'Field Type could not be changed!' => 'Veldtype kan niet aangepast worden!',
   'Fieldtype' => 'Veldtype',
   'ID' => 'ID',

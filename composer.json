@@ -46,6 +46,8 @@
         "bower-asset/At.js": "^1.5.1",
         "bower-asset/animate.css": "*",
         "bower-asset/html5shiv": "^3.7",
+        "bower-asset/clipboard.js": "*"
+
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "~2.0.0",

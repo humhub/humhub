@@ -19,6 +19,16 @@ HumHub Change Log
 - Fix: Show default error in status bar if invalid message object was provided
 - Fix #2304: Users not loaded in user selection fields.
 - Enh: Added User module 'displayNameCallback' attribute for custom display name formats
+- Enh: Added Clipboard.js and Permalink "Copy to clipboard" link
+- Enh: Validate minimum PHP version in Console Application
+- Enh: Added optional ActiveRecordContent::canEdit() method for custom ACLs
+- Fix: Better error handling/logging on corrupt GD Image files
+- Fix #2288: Pjax breaks OAuth2 ReturnUrl
+- Fix: Incorrect First name & Last name message key (githubjeka)
+- Fix: Do not store complete comments with search index (helnokaly)
+- Fix #2319: Run console application before installation
+- Fix: Directory Knob statistics on included modules (e.g. Enterprise Edition)
+
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------

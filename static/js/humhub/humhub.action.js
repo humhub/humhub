@@ -143,7 +143,7 @@ humhub.module('action', function(module, require, $) {
     };
 
     /**
-     * Creates an component instance out of the given node.
+     * Creates a component instance out of the given node.
      * @param {type} node
      * @param {type} options
      * @returns {undefined}

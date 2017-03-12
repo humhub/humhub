@@ -179,7 +179,7 @@ class Content extends ContentDeprecated
 
                 \humhub\modules\content\activities\ContentCreated::instance()
                         ->about($contentSource)->save();
-               
+
 
                 Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
                     'sguid' => ($this->container instanceof Space) ? $this->container->guid : null,
@@ -432,12 +432,18 @@ class Content extends ContentDeprecated
             return true;
         }
 
-        if ($this->getContainer()->permissionManager->can(new ManageContent())) {
+        if ($this->getContainer() !== null && $this->getContainer()->permissionManager->can(new ManageContent())) {
             return true;
         }
 
         // Global Admin can edit/delete arbitrarily content
         if (Yii::$app->getModule('content')->adminCanEditAllContent && Yii::$app->user->getIdentity()->isSystemAdmin()) {
+            return true;
+        }
+
+        // Check if underlying content implements own canEdit method
+        // ToDo: Implement this as interface 
+        if (method_exists($this->getPolymorphicRelation(), 'canEdit') && $this->getPolymorphicRelation()->canEdit($user)) {
             return true;
         }
 

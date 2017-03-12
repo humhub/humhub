@@ -78,6 +78,11 @@ humhub.module('stream', function(module, require, $) {
         Content.call(this, id);
         // Set the stream so we have it even if the entry is detached.
         this.stream();
+        var that = this;
+        this.$.on('humhub:like:liked', function() {
+            that.$.find('.turnOffNotifications').show();
+            that.$.find('.turnOnNotifications').hide();
+        });
     };
 
     object.inherits(StreamEntry, Content);

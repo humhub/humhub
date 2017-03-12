@@ -193,6 +193,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
             $htmlOption['class'] = '';
         }
         $htmlOptions['class'] .= ' ' . 'btn btn-default btn-ac-' . $client->getName();
+        $htmlOptions['data-pjax-prevent'] = '';
 
         $icon = (isset($viewOptions['cssIcon'])) ? '<i class="' . $viewOptions['cssIcon'] . '" aria-hidden="true"></i>' : '';
         echo parent::clientLink($client, $icon . $client->getTitle(), $htmlOptions);
