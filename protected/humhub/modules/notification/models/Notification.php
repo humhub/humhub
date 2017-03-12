@@ -235,7 +235,7 @@ class Notification extends \humhub\components\ActiveRecord
         $query->andWhere(['user_id' => $user->id]);
 
         $query->andWhere(['send_web_notifications' => $sendWebNotifications]);
-        $query->addGroupBy(['COALESCE(group_key, id)', 'class']);
+        $query->addGroupBy(['COALESCE(group_key, id)', 'class', 'id']);
         $query->orderBy(['group_seen' => SORT_ASC, 'group_created_at' => SORT_DESC]);
 
         return $query;
