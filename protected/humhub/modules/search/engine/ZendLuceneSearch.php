@@ -59,7 +59,7 @@ class ZendLuceneSearch extends Search
             foreach (Comment::findAll(['object_id' => $obj->getPrimaryKey(), 'object_model' => $obj->className()]) as $comment) {
                 $comments .= ' ' . $comment->user->displayName . ' ' . $comment->message;
             }
-            $doc->addField(\ZendSearch\Lucene\Document\Field::Text('comments', $comments, 'UTF-8'));
+            $doc->addField(\ZendSearch\Lucene\Document\Field::unStored('comments', $comments, 'UTF-8'));
         }
 
         if (\Yii::$app->request->isConsoleRequest) {

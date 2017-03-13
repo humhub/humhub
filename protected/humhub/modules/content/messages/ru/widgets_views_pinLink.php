@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Pin to top' => '',
-    'Unpin' => '',
+    'Pin to top' => 'Закрепить вначале',
+    'Unpin' => 'Открепить',
 ];

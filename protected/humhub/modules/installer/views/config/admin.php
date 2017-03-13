@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var $hForm \humhub\compat\HForm
+ * @see \humhub\modules\installer\controllers\ConfigController::actionAdmin()
+ */
+?>
 <div id="create-admin-account-form" class="panel panel-default animated fadeIn">
 
     <div class="panel-heading">

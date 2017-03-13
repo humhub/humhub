@@ -63,6 +63,11 @@ and setup its credentials at <https://console.developers.google.com/project/[you
 In order to enable using scopes for retrieving user attributes, you should also enable Google+ API at
 <https://console.developers.google.com/project/[yourProjectId]/apiui/api/plus>.
 
+Authorization callback URLs:
+- http://domain/path-to-humhub/user/auth/external?authclient=google (With clean urls enabled)
+- http://domain/path-to-humhub/index.php?r=user%2Fauth%2Fexternal&authclient=google (Without clean urls)
+
+
 Add following block to your configuration (protected/config/common.php):
 
 ```php

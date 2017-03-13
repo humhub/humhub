@@ -34,6 +34,7 @@ use humhub\modules\space\models\Space;
  * @property string $last_login
  * @property integer $visibility
  * @property integer $contentcontainer_id
+ * @property Profile $profile
  */
 class User extends ContentContainerActiveRecord implements \yii\web\IdentityInterface, \humhub\modules\search\interfaces\Searchable
 {
@@ -164,8 +165,8 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             'status' => Yii::t('UserModule.models_User', 'Status'),
             'username' => Yii::t('UserModule.models_User', 'Username'),
             'email' => Yii::t('UserModule.models_User', 'Email'),
-            'profile.firstname' => Yii::t('UserModule.models_User', 'Firstname'),
-            'profile.lastname' => Yii::t('UserModule.models_User', 'Lastname'),
+            'profile.firstname' => Yii::t('UserModule.models_Profile', 'First name'),
+            'profile.lastname' => Yii::t('UserModule.models_Profile', 'Last name'),
             'auth_mode' => Yii::t('UserModule.models_User', 'Auth Mode'),
             'tags' => Yii::t('UserModule.models_User', 'Tags'),
             'language' => Yii::t('UserModule.models_User', 'Language'),
@@ -201,7 +202,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     /**
      * @inheritdoc
      *
-     * @return ActiveQueryContent
+     * @return \humhub\modules\content\components\ActiveQueryContent
      */
     public static function find()
     {

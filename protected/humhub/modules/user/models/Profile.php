@@ -63,7 +63,7 @@ class Profile extends \yii\db\ActiveRecord
     {
         $rules = [
             [['user_id'], 'required'],
-            [['user_id'], 'integer']
+            [['user_id'], 'integer'],
         ];
 
         foreach (ProfileField::find()->all() as $profileField) {
@@ -109,13 +109,13 @@ class Profile extends \yii\db\ActiveRecord
 
     /**
      * Internal
-     * 
+     *
      * Just holds message labels for the Yii Message Command
      */
     private function translationOnly()
     {
-        Yii::t('UserModule.models_Profile', 'Firstname');
-        Yii::t('UserModule.models_Profile', 'Lastname');
+        Yii::t('UserModule.models_Profile', 'First name');
+        Yii::t('UserModule.models_Profile', 'Last name');
         Yii::t('UserModule.models_Profile', 'Title');
         Yii::t('UserModule.models_Profile', 'Street');
         Yii::t('UserModule.models_Profile', 'Zip');
@@ -159,7 +159,8 @@ class Profile extends \yii\db\ActiveRecord
     {
         $labels = [];
         foreach (ProfileField::find()->all() as $profileField) {
-            $labels = array_merge($labels, $profileField->fieldType->getLabels());
+            /** @var ProfileField $profileField */
+            $labels = array_merge($labels, $profileField->getFieldType()->getLabels());
         }
         return $labels;
     }
@@ -193,7 +194,7 @@ class Profile extends \yii\db\ActiveRecord
             );
 
             foreach (ProfileField::find()->orderBy('sort_order')->where(['profile_field_category_id' => $profileFieldCategory->id])->all() as $profileField) {
-
+                /** @var ProfileField $profileField */
                 $profileField->editable = true;
 
                 if (!in_array($profileField->internal_name, $safeAttributes)) {

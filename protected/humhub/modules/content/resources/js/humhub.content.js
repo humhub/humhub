@@ -4,7 +4,7 @@
  * @type undefined|Function
  */
 
-humhub.module('content', function(module, require, $) {
+humhub.module('content', function (module, require, $) {
     var client = require('client');
     var util = require('util');
     var object = util.object;
@@ -22,65 +22,65 @@ humhub.module('content', function(module, require, $) {
 
     Component.addSelector('content-component');
 
-    var Content = function(container) {
+    var Content = function (container) {
         Component.call(this, container);
     };
 
     object.inherits(Content, Component);
 
-    Content.getNodeByKey = function(key) {
+    Content.getNodeByKey = function (key) {
         return $('[data-content-key="' + key + '"]');
     };
 
-    Content.prototype.actions = function() {
+    Content.prototype.actions = function () {
         return ['create', 'edit', 'delete'];
     };
 
-    Content.prototype.getKey = function() {
+    Content.prototype.getKey = function () {
         return this.$.data(DATA_CONTENT_KEY);
     };
 
-    Content.prototype.create = function(addContentHandler) {
+    Content.prototype.create = function (addContentHandler) {
         //Note that this Content won't have an id, so the backend will create an instance
-        if(this.hasAction('create')) {
+        if (this.hasAction('create')) {
             return;
         }
 
         this.edit(addContentHandler);
     };
 
-    Content.prototype.edit = function(successHandler) {
+    Content.prototype.edit = function (successHandler) {
         // Currently there is no need for a default implementation
     };
 
-    Content.prototype.delete = function(options) {
+    Content.prototype.delete = function (options) {
         options = options || {};
         var that = this;
-        return new Promise(function(resolve, reject) {
-            if(!that.hasAction('delete')) {
+        return new Promise(function (resolve, reject) {
+            if (!that.hasAction('delete')) {
                 return;
             }
-            
+
             var modalOptions = options.modal || module.config.modal.deleteConfirm;
 
-            modal.confirm(modalOptions).then(function($confirmed) {
-                if(!$confirmed) {
+            modal.confirm(modalOptions).then(function ($confirmed) {
+                if (!$confirmed) {
                     resolve(false);
                     return;
                 }
 
                 that.loader();
                 var deleteUrl = that.data(DATA_CONTENT_DELETE_URL);
-                if(deleteUrl) {
+                if (deleteUrl) {
                     client.post(deleteUrl, {
                         data: {id: that.getKey()}
-                    }).then(function(response) {
-                        that.remove().then(function() {
+                    }).then(function (response) {
+                        that.remove().then(function () {
                             resolve(true);
                         });
-                    }).catch(function(err) {
+                    }).catch(function (err) {
                         reject(err);
-                    }).finally(function() {
+                    }).finally(function () {
                         that.loader(false);
                     });
                 } else {
@@ -101,14 +101,14 @@ humhub.module('content', function(module, require, $) {
      * @param {type} $show
      * @returns {undefined}
      */
-    Content.prototype.loader = function($show) {
+    Content.prototype.loader = function ($show) {
         // Has to be overwritten by content type
     };
 
-    Content.prototype.remove = function() {
+    Content.prototype.remove = function () {
         var that = this;
-        return new Promise(function(resolve, reject) {
-            that.$.animate({height: 'toggle', opacity: 'toggle'}, 'fast', function() {
+        return new Promise(function (resolve, reject) {
+            that.$.animate({height: 'toggle', opacity: 'toggle'}, 'fast', function () {
                 that.$.remove();
                 event.trigger('humhub:modules:content:afterRemove', that);
                 resolve(that);
@@ -116,10 +116,10 @@ humhub.module('content', function(module, require, $) {
         });
     };
 
-    Content.prototype.permalink = function(evt) {
+    Content.prototype.permalink = function (evt) {
         var options = module.config.modal.permalink;
         options.permalink = evt.$trigger.data('content-permalink');
-        
+
         modal.global.set({
             header: options.head,
             body: string.template(module.templates.permalinkBody, options),
@@ -129,14 +129,14 @@ humhub.module('content', function(module, require, $) {
         modal.global.$.find('textarea').focus().select();
 
         // Make sure the modal is closed when pjax loads
-        event.one('humhub:ready', function() {
+        event.one('humhub:ready', function () {
             modal.global.close();
         });
     };
-    
+
     var templates = {
-        permalinkBody : '<textarea rows="3" class="form-control permalink-txt" spellcheck="false" readonly>{permalink}</textarea><p class="help-block">{info}</p>',
-        permalinkFooter : '<a href="#" data-modal-close class="btn btn-default">{buttonClose}</a><a href="{permalink}" class="btn btn-primary" data-ui-loader>{buttonOpen}</a>'
+        permalinkBody: '<textarea rows="3" class="form-control permalink-txt" spellcheck="false" readonly>{permalink}</textarea><p class="help-block pull-right"><a href="#" onClick="clipboard.copy($(\'.permalink-txt\').text())"><i class="fa fa-clipboard" aria-hidden="true"></i> {info}</a></p>',
+        permalinkFooter: '<a href="#" data-modal-close class="btn btn-default">{buttonClose}</a><a href="{permalink}" class="btn btn-primary" data-ui-loader>{buttonOpen}</a>'
     };
 
     module.export({

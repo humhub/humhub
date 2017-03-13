@@ -1,4 +1,4 @@
 <?php
 return array (
-  'User has been invited.' => 'Gebruiker is uitgenodigd.',
+  'User has been invited.' => 'De gebruiker is uitgenodigd.',
 );

@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Do you really want to delete your logo image?' => 'Ben je zeker dat je je logo wilt verwijderen?',
+  'Do you really want to delete your logo image?' => 'Bent u zeker dat u uw logo wilt verwijderen?',
 );

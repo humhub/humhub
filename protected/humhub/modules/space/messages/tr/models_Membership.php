@@ -1,11 +1,11 @@
 <?php
 return array (
-  'Created At' => 'Oluşturulma zamanı',
+  'Created At' => 'Oluşturma zamanı',
   'Created By' => 'Oluşturan',
   'Last Visit' => 'Son ziyaret',
-  'Originator User ID' => 'Başlatan Kullanıcı İD',
-  'Request Message' => 'İstek Mesaj',
+  'Originator User ID' => 'Başlatan Kullanıcı ID',
+  'Request Message' => 'İstek Mesajı',
   'Status' => 'Durum',
   'Updated At' => 'Güncelleme zamanı',
-  'Updated By' => 'Güncellendi',
+  'Updated By' => 'Güncelleyen',
 );

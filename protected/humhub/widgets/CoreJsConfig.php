@@ -121,7 +121,7 @@ class CoreJsConfig extends Widget
                     'modal' => [
                         'permalink' => [
                             'head' => Yii::t('ContentModule.widgets_views_permaLink', '<strong>Permalink</strong> to this post'),
-                            'info' => Yii::t('base', 'Copy to clipboard: Ctrl/Cmd+C'),
+                            'info' => Yii::t('base', 'Copy to clipboard'),
                             'buttonOpen' => Yii::t('base', 'Open'),
                             'buttonClose' => Yii::t('base', 'Close'),
                         ],
