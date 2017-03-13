@@ -3,6 +3,8 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Enh: Added File::findByRecord for searching all attached files of a given ActiveRecord
+- Fix: Only set js view state for non full page load and pjax
 - Fix: Small gap on TopNav mouse hover (acs-ferreira)
 - Enh: Humand readable file sizes. (acs-ferreira)
 - Enh: Changed default $minInput of SpacePickerField to 2. (githubjeka)

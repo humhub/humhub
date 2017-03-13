@@ -136,12 +136,13 @@ class File extends FileCompat
     /**
      * Checks if given file can deleted.
      *
-     * If the file is not an instance of HActiveRecordContent or HActiveRecordContentAddon
+     * If the file is not an instance of ContentActiveRecord or ContentAddonActiveRecord
      * the file is readable for all unless there is method canWrite or canDelete implemented.
      */
     public function canDelete($userId = "")
     {
         $object = $this->getPolymorphicRelation();
+
         if ($object != null) {
             if ($object instanceof ContentAddonActiveRecord) {
                 return $object->canWrite($userId);
@@ -185,6 +186,17 @@ class File extends FileCompat
         }
 
         return $this->_store;
+    }
+    
+    /**
+     * Returns all attached Files of the given $record.
+     * 
+     * @param \yii\db\ActiveRecord $record
+     * @return File[]
+     */
+    public static function findByRecord(\yii\db\ActiveRecord $record)
+    {
+        return self::findAll(['object_model' => $record->className(), 'object_id' => $record->getPrimaryKey()]);
     }
 
 }
