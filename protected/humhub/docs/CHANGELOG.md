@@ -3,6 +3,11 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Enh: Added xhr to client response instances
+- Enh: Added response.header for receiving response header from xhr
+- Enh: Added post action to client module for data-action-click="client.post"
+- Fix: Try using options url as fallback in client calls if the action instance does not provide an url. e.g. client.post(evt, {url:...}
+- Enh: Enable setting ajax dataType from trigger e.g. data-action-click="modal.load" data-action-data-type="json"
 - Enh: Added action event.data for receiving action specific data options
 - Enh: Added default run for JsWidget
 - Enh: Added File::findByRecord for searching all attached files of a given ActiveRecord
