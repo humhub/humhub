@@ -82,14 +82,18 @@ class Controller extends \yii\web\Controller
     }
 
     /**
-     * Throws HttpException in case the request is not an post request.
+     * Throws HttpException in case the request is not an post request, otherwise returns true.
+     * 
      * @throws \yii\web\HttpException
+     * @return boolean returns true in case the current request is a POST
      */
     public function forcePostRequest()
     {
         if (\Yii::$app->request->method != 'POST') {
             throw new \yii\web\HttpException(405, Yii::t('ContentModule.controllers_ContentController', 'Invalid request method!'));
         }
+        
+        return true;
     }
 
     /**
@@ -139,7 +143,9 @@ class Controller extends \yii\web\Controller
                 $this->getView()->pageTitle = $this->pageTitle;
             }
 
-            $this->setJsViewStatus();
+            if(!Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
+                $this->setJsViewStatus();
+            }
 
             return true;
         }
