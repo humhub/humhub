@@ -3,7 +3,8 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
-- Enh: Added alignHeight setting to js loader module.
+- Fix: missing margin of wall-entry-controls in comments
+- Enh: Added alignHeight setting to js loader module
 - Enh: Allow Response as arguments for modal.setDialog
 - Enh: Enable modal loading events with dataType json
 - Enh: Allow direct class export instead of module export in JS Modules e.g. module.export = MyClass

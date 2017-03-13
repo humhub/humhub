@@ -2,47 +2,51 @@
 // Comments
 // --------------------------------------------------
 .comment-container {
-  margin-top: 10px;
+    margin-top: 10px;
+    .wall-entry-controls {
+        margin-left: 50px;
+    }
 }
 
 
 .comment {
-  .media {
-    position: relative !important;
-    margin-top: 0;
-    
-    .nav-pills.preferences {
-      display: none;
-      right: -3px;
-      top: -3px;
+    .media {
+        position: relative !important;
+        margin-top: 0;
+
+        .nav-pills.preferences {
+            display: none;
+            right: -3px;
+            top: -3px;
+        }
     }
-  }
-  
-  /*-- Since v1.2 overflow: visible */
-  .media-body {
-      overflow:visible;
-  }
+
+    /*-- Since v1.2 overflow: visible */
+    .media-body {
+        overflow:visible;
+    }
 }
 
 .comment.guest-mode {
-  .media:last-child {
-    .wall-entry-controls {
-      margin-bottom: 0;
+    .media:last-child {
+        .wall-entry-controls {
+            margin-bottom: 0;
+            margin-left: 50px;
+        }
+        hr {
+            display: none;
+        }
     }
-    hr {
-      display: none;
-    }
-  }
 }
 
 // jPlayer Extension
 .comment {
-  .jp-progress {
-    background-color: #dbdcdd !important;
-  }
-  .jp-play-bar {
-    background: #cacaca;
-  }
+    .jp-progress {
+        background-color: #dbdcdd !important;
+    }
+    .jp-play-bar {
+        background: #cacaca;
+    }
 }
 
 .comment-container .content_edit {
