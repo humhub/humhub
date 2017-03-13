@@ -3,9 +3,14 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Fix: Small gap on TopNav mouse hover (acs-ferreira)
+- Enh: Humand readable file sizes. (acs-ferreira)
+- Enh: Changed default $minInput of SpacePickerField to 2. (githubjeka)
+- Fix: Error when saving "Administration -> Settings -> General" without default space. (githubjeka)
+- Fix: #826: Notification status not updated right after like.
 - Fix: #2316: Reinvitation by email not working
 - Fix: #2314: Html helper namespace issue in Markdown.php class
-- Fix #2302: Hide file info for images on wall settings not applied.
+- Fix: #2302: Hide file info for images on wall settings not applied.
 - Fix: German translation error in Admin -> Users -> Groups -> Members -> Add Member UserPicker.
 - Fix: German translation "Notify Users" placeholder too long.
 - Fix: Admin group add members placeholder.
