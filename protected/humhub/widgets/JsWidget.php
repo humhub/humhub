@@ -1,8 +1,9 @@
 <?php
+
 namespace humhub\widgets;
 
-
 use humhub\components\Widget;
+
 /**
  * Description of JsWidget
  *
@@ -11,19 +12,20 @@ use humhub\components\Widget;
  */
 class JsWidget extends Widget
 {
+
     /**
      * Defines the select input field id
      * 
      * @var string 
      */
     public $id;
-    
+
     /**
      * Js Widget namespace
      * @var type 
      */
     public $jsWidget;
-    
+
     /*
      * Used to overwrite select input field attributes. This array can be used for overwriting
      * texts, or other picker settings.
@@ -31,25 +33,47 @@ class JsWidget extends Widget
      * @var string
      */
     public $options = [];
-    
+
     /**
      * Event action handler.
      * @var type 
      */
     public $events = [];
-    
+
     /**
      * Auto init flag.
      * @var mixed 
      */
     public $init = false;
-    
+
     /**
      * Used to hide/show the actual input element.
      * @var type 
      */
     public $visible = true;
-    
+
+    /**
+     * @var string html container element. 
+     */
+    public $container = 'div';
+
+    /**
+     * @var string html content. 
+     */
+    public $content;
+        
+    /**
+     * Default implementation of JsWidget.
+     * This will render a widget html element specified by $container and $content and the given $options/$event attributes.
+     * This function should be overwritten for widgets with a more complex rendering.
+     * 
+     * @return type
+     */
+    public function run()
+    {
+        return \yii\helpers\Html::tag($this->container, $this->content, $this->getOptions());
+    }
+
     /**
      * Assembles all widget attributes and data settings of this widget.
      * Those attributes/options are are normally transfered to the js client by ordinary html attributes
@@ -62,40 +86,40 @@ class JsWidget extends Widget
         $attributes = $this->getAttributes();
         $attributes['data'] = $this->getData();
         $attributes['id'] = $this->getId();
-            
+
         $this->setDefaultOptions();
-        
-        $result = \yii\helpers\ArrayHelper::merge($attributes, $this->options);        
-        
-        if(!$this->visible) {
-            if(isset($result['style'])) {
+
+        $result = \yii\helpers\ArrayHelper::merge($attributes, $this->options);
+
+        if (!$this->visible) {
+            if (isset($result['style'])) {
                 $result['style'] .= ';display:none;';
             } else {
                 $result['style'] = 'display:none;';
             }
         }
-        
+
         return $result;
     }
-    
+
     /**
      * Sets some default data options required by all widgets as the widget implementation
      * and the widget evetns and initialization trigger.
      */
-    public function setDefaultOptions() 
-    {   
+    public function setDefaultOptions()
+    {
         // Set event data
-        foreach($this->events as $event => $handler) {
-            $this->options['data']['widget-action-'.$event] = $handler;
+        foreach ($this->events as $event => $handler) {
+            $this->options['data']['widget-action-' . $event] = $handler;
         }
-        
+
         $this->options['data']['ui-widget'] = $this->jsWidget;
-        
-        if(!empty($this->init)) {
+
+        if (!empty($this->init)) {
             $this->options['data']['ui-init'] = $this->init;
-        } 
+        }
     }
-    
+
     /**
      * Returns the html id of this widget, if no id is set this function will generate
      * an id if $autoGenerate is set to true (default).
@@ -107,13 +131,13 @@ class JsWidget extends Widget
      */
     public function getId($autoGenerate = true)
     {
-        if($this->id) {
+        if ($this->id) {
             return $this->id;
         }
-        
+
         return $this->id = parent::getId($autoGenerate);
     }
-    
+
     /**
      * Returns an array of data-* attributes to configure your clientside js widget. 
      * Note that this function does not require to add the data- prefix. This will be done by Yii.
@@ -122,11 +146,11 @@ class JsWidget extends Widget
      * 
      * @return type
      */
-    protected function getData() 
+    protected function getData()
     {
         return [];
     }
-    
+
     /**
      * Returns all html attributes for used by this widget and will normally inserted in the widgets root html element.
      * @return type
@@ -135,4 +159,5 @@ class JsWidget extends Widget
     {
         return [];
     }
+
 }
