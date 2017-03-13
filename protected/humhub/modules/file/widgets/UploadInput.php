@@ -21,7 +21,7 @@ use yii\helpers\Html;
 class UploadInput extends \humhub\widgets\JsWidget
 {
 
-    const DEFAULT_FORM_NAME = 'guids[]';
+    const DEFAULT_FORM_NAME = 'fileList';
 
     /**
      * javascript widget implementation.
@@ -44,7 +44,7 @@ class UploadInput extends \humhub\widgets\JsWidget
     public $model;
 
     /**
-     * Can be used to overwrite the default result input name guids[] with a model
+     * Can be used to overwrite the default result input name files[] with a model
      * bound attribute formName.
      * 
      * @var string 
@@ -52,12 +52,19 @@ class UploadInput extends \humhub\widgets\JsWidget
     public $attribute;
 
     /**
-     * Can be used to overwrite the default result input name guids[] with a model
+     * Can be used to overwrite the default result input name files[] with a model
      * bound attribute formName.
      * 
      * @var string 
      */
     public $name;
+    
+    /**
+     * Defines the input name of the submitted array field containing the result guids.
+     * 
+     * @var string 
+     */
+    public $submitName;
 
     /**
      * Can be set if the upload button is not contained in the form itself.
@@ -103,6 +110,14 @@ class UploadInput extends \humhub\widgets\JsWidget
      * @var type 
      */
     public $visible = false;
+    
+        
+    /**
+     * This flag can be used in order to only allow a single guid to be submitted.
+     * Note that already attached files have to be removed manually.
+     * @var boolean 
+     */
+    public $single = false;
 
     /**
      * Draws the Upload Button output.
@@ -122,7 +137,15 @@ class UploadInput extends \humhub\widgets\JsWidget
     public function getData()
     {
         $formSelector = ($this->form instanceof \yii\widgets\ActiveForm) ? '#' + $this->form->getId() : $this->form;
-        $resultFieldName = ($this->model && $this->attribute) ? $this->model->formName() + '[' + $this->attribute + '][]' : self::DEFAULT_FORM_NAME;
+        
+        if($this->submitName) {
+            $submitName = $this->submitName;
+        } else {
+            $submitName = ($this->model && $this->attribute) ? $this->model->formName() . '[' . $this->attribute . ']' : self::DEFAULT_FORM_NAME;
+            if(!$this->single) {
+                $submitName .= '[]';
+            }
+        }
 
         $result = [
             'upload-url' => $this->url,
@@ -130,7 +153,8 @@ class UploadInput extends \humhub\widgets\JsWidget
             'upload-progress' => $this->progress,
             'upload-preview' => $this->preview,
             'upload-form' => $formSelector,
-            'result-field-name' => $resultFieldName
+            'upload-single' => $this->single,
+            'upload-submit-name' => $submitName
         ];
         
         if ($this->model) {

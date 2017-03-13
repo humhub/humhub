@@ -17,14 +17,6 @@ class UploadProgress extends \humhub\widgets\JsWidget
     
     public $visible = false;
     
-    /**
-     * Draws the Upload Button output.
-     */
-    public function run()
-    {   
-        return Html::beginTag('div', $this->getOptions()).Html::endTag('div');
-    }
-    
     public function getAttributes()
     {
         return [

@@ -3,7 +3,11 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
-- Fix: missing margin of wall-entry-controls in comments
+- Fix: Setting of submitName and upload input name in file upload JsWidget
+- Fix: Rendering of UploadButton without given id
+- Enh: Added preventPopover and popoverPosition options to file preview
+- Enh: Added uploadSingle option for uploads with only one file
+- Fix: Missing margin of wall-entry-controls in comments
 - Enh: Added alignHeight setting to js loader module
 - Enh: Allow Response as arguments for modal.setDialog
 - Enh: Enable modal loading events with dataType json

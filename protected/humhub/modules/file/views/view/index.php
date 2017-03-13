@@ -4,12 +4,11 @@ use humhub\libs\Html;
 use humhub\widgets\ModalDialog;
 use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
-use yii\bootstrap\ButtonDropdown;
-
-$modal = ModalDialog::begin(['header' => Yii::t('FileModule.base', '<strong>Open</strong> file', ['fileName' => Html::encode($file->file_name)])])
 ?>
 
+    <?php ModalDialog::begin(['header' => Yii::t('FileModule.base', '<strong>Open</strong> file', ['fileName' => Html::encode($file->file_name)])]) ?>
 <div class="modal-body">
+    
     <?php
     $thumbnailUrl = '';
     $previewImage = new PreviewImage();

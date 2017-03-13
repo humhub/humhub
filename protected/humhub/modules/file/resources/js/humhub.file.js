@@ -226,8 +226,15 @@ humhub.module('file', function (module, require, $) {
             this.errors.push(file.errors);
             this.errors.push('&nbsp;');
         } else if (this.$form && this.$form.length) {
-            this.fileCount++;
-            var name = this.options.name || 'fileList[]';
+            var name = this.options.uploadSubmitName || 'fileList[]';
+            
+            if(this.options.uploadSingle) {
+                this.$form.find('input[name="'+name+'"]').remove();
+                this.fileCount = 1;
+            } else {
+                this.fileCount++;
+            }
+            
             this.$form.append('<input type="hidden" name="' + name + '" value="' + file.guid + '">');
             if (this.preview) {
                 this.preview.show();
@@ -313,23 +320,27 @@ humhub.module('file', function (module, require, $) {
         file.galleryId = this.$.attr('id') + '_file_preview_gallery';
         var template = this.getTemplate(file);
         var $file = $(string.template(template, file));
+        
+        if(this.source && this.source.options.uploadSingle) {
+            this.$list.find('li').remove();
+        }
+        
         this.$list.append($file);
 
-        if (file.thumbnailUrl) {
+        if (file.thumbnailUrl && !this.options.preventPopover) {
             // Preload image
             new Image().src = file.thumbnailUrl;
-
             $file.find('.file-preview-content').popover({
                 html: true,
                 trigger: 'hover',
                 animation: 'fade',
                 delay: 100,
+                placement: this.options.popoverPosition || 'right',
                 content: function () {
                     return string.template(Preview.template.popover, file);
                 }
             });
-        }
-        ;
+        };
 
         var that = this;
         $file.find('.file_upload_remove_link').on('click', function () {
@@ -345,9 +356,8 @@ humhub.module('file', function (module, require, $) {
     
     Preview.prototype.isImage = function (file) {
         return file.mimeIcon === 'mime-image';
-    }
+    };
     
-
     Preview.prototype.getTemplate = function (file) {
         if (this.options.fileEdit) {
             return Preview.template.file_edit;

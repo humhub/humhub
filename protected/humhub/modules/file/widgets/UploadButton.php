@@ -42,7 +42,7 @@ class UploadButton extends UploadInput
      * @var type 
      */
     public $label = false;
-    
+     
     /**
      * Draws the Upload Button output.
      */
@@ -58,11 +58,11 @@ class UploadButton extends UploadInput
         
         $defaultButtonOptions = [
             'class' => ($this->tooltip) ? 'btn '.$this->cssButtonClass.' fileinput-button tt' : 'btn '.$this->cssButtonClass.'  fileinput-button',
-            'title' => Yii::t('FileModule.widgets_views_fileUploadButton', 'Upload files'),
+            'title' => ($this->tooltip === true) ? Yii::t('FileModule.widgets_views_fileUploadButton', 'Upload files') : $this->tooltip,
             'data' => [
                 'placement' => $this->tooltipPosition,
                 'action-click' => "file.upload", 
-                'action-target' => '#'.$this->id
+                'action-target' => '#'.$this->getId(true)
             ]
         ];
         

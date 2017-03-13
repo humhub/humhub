@@ -16,7 +16,8 @@ use yii\base\Behavior;
  *
  * @since 0.5
  */
-class PolymorphicRelation extends Behavior {
+class PolymorphicRelation extends Behavior
+{
 
     /**
      * @var string the class name attribute
@@ -43,7 +44,8 @@ class PolymorphicRelation extends Behavior {
      *
      * @return mixed
      */
-    public function getPolymorphicRelation() {
+    public function getPolymorphicRelation()
+    {
 
         if ($this->_cached !== null) {
             return $this->_cached;
@@ -77,7 +79,8 @@ class PolymorphicRelation extends Behavior {
      *
      * @param mixed $object
      */
-    public function setPolymorphicRelation($object) {
+    public function setPolymorphicRelation($object)
+    {
         if ($this->validateUnderlyingObjectType($object)) {
             $this->_cached = $object;
 
@@ -91,7 +94,8 @@ class PolymorphicRelation extends Behavior {
     /**
      * Resets the already loaded $_cached instance of related object
      */
-    public function resetPolymorphicRelation() {
+    public function resetPolymorphicRelation()
+    {
         $this->_cached = null;
     }
 
@@ -101,7 +105,8 @@ class PolymorphicRelation extends Behavior {
      * @param mixed $object
      * @return boolean
      */
-    private function validateUnderlyingObjectType($object) {
+    private function validateUnderlyingObjectType($object)
+    {
 
         if (count($this->mustBeInstanceOf) == 0) {
             return true;
