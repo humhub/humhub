@@ -3,6 +3,7 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Enh: Allow direct class export instead of module export in JS Modules e.g. module.export = MyClass
 - Enh: Added xhr to client response instances
 - Enh: Added response.header for receiving response header from xhr
 - Enh: Added post action to client module for data-action-click="client.post"

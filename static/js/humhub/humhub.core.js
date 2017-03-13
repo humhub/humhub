@@ -107,13 +107,17 @@ var humhub = humhub || (function ($) {
             return (textCfg) ? textCfg[$key] : undefined;
         };
 
-        instance.export = function (exports) {
+        var exportFunc = instance.export = function (exports) {
             $.extend(instance, exports);
         };
 
         // Setup the module by calling the moduleFunction
         try {
             moduleFunction(instance, require, $);
+            // Allows module.export = MyClass for exporting single classes/objects
+            if(exportFunc !== instance.export) {
+                _setNameSpace(instance.id, instance.export);
+            }
         } catch (err) {
             console.error('Error while creating module: ' + id, err);
         }
@@ -151,7 +155,6 @@ var humhub = humhub || (function ($) {
     var require = function (moduleNS, lazy) {
         var module = resolveNameSpace(moduleNS, lazy);
         if (!module) {
-            //TODO: load remote module dependencies
             console.error('No module found for namespace: ' + moduleNS);
         }
         return module;
@@ -185,6 +188,30 @@ var humhub = humhub || (function ($) {
         } catch (e) {
             var log = require('log') || console;
             log.error('Error while resolving namespace: ' + typePath, e);
+        }
+    };
+    
+    var _setNameSpace = function (path, obj) {
+        try {
+            //cut humhub.modules prefix if present
+            var moduleSuffix = _cutModulePrefix(path);
+
+            //Iterate through the namespace and return the last entry
+            var currentPath = modules;
+            var parent, last;
+            $.each(moduleSuffix.split('.'), function (i, subPath) {
+                if (subPath in currentPath) {
+                    last = subPath;
+                    parent = currentPath;
+                    currentPath = currentPath[subPath];
+                } else {
+                    return false; //leave each loop
+                }
+            });
+            parent[last] = obj;
+        } catch (e) {
+            var log = require('log') || console;
+            log.error('Error while setting namespace: ' + path, e);
         }
     };
 
