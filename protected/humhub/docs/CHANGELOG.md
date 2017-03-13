@@ -3,6 +3,8 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Enh: Added action event.data for receiving action specific data options
+- Enh: Added default run for JsWidget
 - Enh: Added File::findByRecord for searching all attached files of a given ActiveRecord
 - Fix: Only set js view state for non full page load and pjax
 - Fix: Small gap on TopNav mouse hover (acs-ferreira)

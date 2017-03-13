@@ -538,6 +538,10 @@ humhub.module('action', function(module, require, $) {
             _removeLoaderFromEventTarget(event.originalEvent);
             that.unblock($trigger);
         };
+        
+        event.data = function(key, def) {
+            return that.data($trigger, key, def);
+        };
 
         return event;
     };
