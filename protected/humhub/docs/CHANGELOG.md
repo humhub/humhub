@@ -3,6 +3,9 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Enh: Added alignHeight setting to js loader module.
+- Enh: Allow Response as arguments for modal.setDialog
+- Enh: Enable modal loading events with dataType json
 - Enh: Allow direct class export instead of module export in JS Modules e.g. module.export = MyClass
 - Enh: Added xhr to client response instances
 - Enh: Added response.header for receiving response header from xhr
