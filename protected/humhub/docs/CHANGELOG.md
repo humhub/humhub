@@ -3,6 +3,7 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Enh: Disable user and space follow by means of module settings
 - Fix: Setting of submitName and upload input name in file upload JsWidget
 - Fix: Rendering of UploadButton without given id
 - Enh: Added preventPopover and popoverPosition options to file preview
