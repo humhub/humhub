@@ -51,7 +51,8 @@ HumHub Change Log
 - Fix: Do not store complete comments with search index (helnokaly)
 - Fix #2319: Run console application before installation
 - Fix: Directory Knob statistics on included modules (e.g. Enterprise Edition)
-
+- Enh: Added widget to display user profile image
+- Enh: Directory view templates cleanups
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------
