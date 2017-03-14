@@ -21,16 +21,21 @@ use humhub\modules\space\models\Space;
  */
 class WallEntry extends Widget
 {
+
     /**
      * Edit form is loaded to the wallentry itself.
      */
     const EDIT_MODE_INLINE = 'inline';
-    
+
+    /**
+     * Opens the edit page in a new window.
+     */
+    const EDIT_MODE_NEW_WINDOW = 'new_window';
+
     /**
      * Edit form is loaded into a modal.
      */
     const EDIT_MODE_MODAL = 'modal';
-    
 
     /**
      * The content object
@@ -52,7 +57,7 @@ class WallEntry extends Widget
      * @var string
      */
     public $editRoute = "";
-    
+
     /**
      * Defines the way the edit of this wallentry is displayed.
      * 
@@ -130,12 +135,8 @@ class WallEntry extends Widget
     public function getContextMenu()
     {
         $result = [];
-        if (!empty($this->editRoute)) {
-            if($this->editMode === self::EDIT_MODE_INLINE) {
-                $result[] = [EditLink::class, ['model' => $this->contentObject, 'url' => $this->getEditUrl()], ['sortOrder' => 200]];
-            } else if($this->editMode === self::EDIT_MODE_MODAL) {
-                $result[] = [EditLinkModal::class, ['model' => $this->contentObject, 'url' =>$this->getEditUrl()], ['sortOrder' => 200]];
-            }
+        if (!empty($this->getEditUrl())) {
+            $result[] = [EditLink::class, ['model' => $this->contentObject, 'mode' => $this->editMode, 'url' => $this->getEditUrl()], ['sortOrder' => 200]];
         }
         return $result;
     }

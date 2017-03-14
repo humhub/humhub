@@ -44,7 +44,7 @@ class FollowButton extends \yii\base\Widget
     /**
      * @var array options for unfollow button 
      */
-    public $unfollowOptions = ['class' => 'btn btn-primary btn-sm'];
+    public $unfollowOptions = ['class' => 'btn btn-info btn-sm'];
 
     /**
      * @inheritdoc
@@ -110,6 +110,13 @@ class FollowButton extends \yii\base\Widget
         // Add Action Url
         $this->followOptions['data-ui-loader'] = '';
         $this->unfollowOptions['data-ui-loader'] = '';
+
+        $module = Yii::$app->getModule('space');
+
+        // still enable unfollow if following was disabled afterwards.
+        if ($module->disableFollow) {
+            return Html::a($this->unfollowLabel, '#', $this->unfollowOptions);
+        }
 
         return Html::a($this->unfollowLabel, '#', $this->unfollowOptions) .
                 Html::a($this->followLabel, '#', $this->followOptions);

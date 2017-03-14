@@ -70,6 +70,12 @@ class Module extends \humhub\components\Module
      * @since 1.2
      */
     public $displayNameCallback = null;
+    
+    /**
+     * @var boolean defines if the user following is disabled or not.
+     * @since 1.2 
+     */
+    public $disableFollow = false;
 
     /**
      * @inheritdoc

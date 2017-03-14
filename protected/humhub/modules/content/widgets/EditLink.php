@@ -29,6 +29,11 @@ class EditLink extends \yii\base\Widget
      * @var string edit route.
      */
     public $url;
+    
+    /**
+     * @var defines the edit type of the wallentry
+     */
+    public $mode;
 
     /**
      * Executes the widget.
@@ -43,7 +48,8 @@ class EditLink extends \yii\base\Widget
             return $this->render('editLink', [
                         'id' => $this->model->content->object_id,
                         'content' => $this->model,
-                        'editUrl' => $this->url
+                        'editUrl' => $this->url,
+                        'mode' => $this->mode
             ]);
         }
     }

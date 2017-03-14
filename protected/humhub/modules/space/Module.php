@@ -37,6 +37,12 @@ class Module extends \humhub\components\Module
     public $useUniqueSpaceNames = true;
     
     /**
+     * @var boolean defines if the space following is disabled or not.
+     * @since 1.2 
+     */
+    public $disableFollow = false;
+    
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)

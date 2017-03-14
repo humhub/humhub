@@ -61,7 +61,7 @@ class UserFollowButton extends \yii\base\Widget
         if (!isset($this->followOptions['class'])) {
             $this->followOptions['class'] = "";
         }
-        
+
         if (!isset($this->unfollowOptions['class'])) {
             $this->unfollowOptions['class'] = "";
         }
@@ -69,7 +69,7 @@ class UserFollowButton extends \yii\base\Widget
         if (!isset($this->followOptions['style'])) {
             $this->followOptions['style'] = "";
         }
-        
+
         if (!isset($this->unfollowOptions['style'])) {
             $this->unfollowOptions['style'] = "";
         }
@@ -105,18 +105,25 @@ class UserFollowButton extends \yii\base\Widget
         // Add UserId Buttons
         $this->followOptions['data-content-container-id'] = $this->user->id;
         $this->unfollowOptions['data-content-container-id'] = $this->user->id;
-        
+
         // Add JS Action
         $this->followOptions['data-action-click'] = 'content.container.follow';
         $this->unfollowOptions['data-action-click'] = 'content.container.unfollow';
-        
+
         // Add Action Url
         $this->followOptions['data-action-url'] = $this->user->createUrl('/user/profile/follow');
         $this->unfollowOptions['data-action-url'] = $this->user->createUrl('/user/profile/unfollow');
-        
+
         // Add Action Url
         $this->followOptions['data-ui-loader'] = '';
         $this->unfollowOptions['data-ui-loader'] = '';
+
+        $module = Yii::$app->getModule('user');
+
+        // still enable unfollow if following was disabled afterwards.
+        if ($module->disableFollow) {
+            return Html::a($this->unfollowLabel, '#', $this->unfollowOptions);
+        }
 
         return Html::a($this->unfollowLabel, '#', $this->unfollowOptions) .
                 Html::a($this->followLabel, '#', $this->followOptions);

@@ -107,6 +107,10 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
      */
     public function actionFollow()
     {
+        if(Yii::$app->getModule('space')->disableFollow) {
+            throw new \yii\web\HttpException(403, Yii::t('ContentModule.controllers_ContentController', 'This action is disabled!'));
+        }
+        
         $this->forcePostRequest();
         $space = $this->getSpace();
 
