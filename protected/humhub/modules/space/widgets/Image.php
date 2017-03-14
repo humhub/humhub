@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -21,21 +21,52 @@ class Image extends Widget
      * @var \humhub\modules\space\models\Space
      */
     public $space;
+
+    /**
+     * @var int number of characters used in the acronym
+     */
     public $acronymCount = 2;
-    public $width;
-    public $height;
+
+    /**
+     * @var int the width of the image
+     */
+    public $width = 50;
+
+    /**
+     * @var int the height of the image
+     */
+    public $height = null;
+
+    /**
+     * @var array html options for the generated tag
+     */
     public $htmlOptions = [];
+
+    /**
+     * @var boolean create link to the space
+     */
     public $link = false;
+
+    /**
+     * @var array Html Options of the link
+     */
     public $linkOptions = [];
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        if ($this->height === null) {
+            $this->height = $this->width;
+        }
+    }
 
     /**
      * @inheritdoc
      */
     public function run()
     {
-        if (!$this->height) {
-            $this->height = $this->width;
-        }
 
         if (!isset($this->linkOptions['href'])) {
             $this->linkOptions['href'] = $this->space->getUrl();
