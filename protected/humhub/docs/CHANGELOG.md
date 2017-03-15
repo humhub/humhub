@@ -4,6 +4,10 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Enh: added js module 'ui.view' for view state and utils - Changed 'ui.state.getState' to 'ui.view.getState'
+- Enh: added view helper as getHeight/Width and isSmall/Medium/Normal (width) to 'ui.view' js module
+- Fix: removed popover image preview from mobile
+- Fix: removed target-densitydpi not supported warning
 - Enh: Added Stream::renderEntry for rendering Streamentries from ContentActiveRecord
 - Fix: Wallentry menu not working in search view
 - Fix: Double notifications when mentioning in comments
