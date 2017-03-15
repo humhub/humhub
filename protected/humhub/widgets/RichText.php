@@ -62,7 +62,7 @@ class RichText extends JsWidget
             $this->text = Html::encode($this->text);
         }
 
-        if (!$this->minimal) {
+        if (!$this->minimal && !$this->edit) {
             $maxOembedCount = 3; // Maximum OEmbeds
             $oembedCount = 0; // OEmbeds used
             $that = $this;

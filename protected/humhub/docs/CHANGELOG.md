@@ -3,6 +3,8 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Enh: Raised collapse value for posts to full embeded youtube video height
+- Fix: Fixed oembed post edit
 - Enh: Included select2-humhub theme into the new theming
 - Enh: Added select2 dropdown for language selection in account and admin settings
 - Enh: Added data-ui-select2 addition for simple select2 dropdowns

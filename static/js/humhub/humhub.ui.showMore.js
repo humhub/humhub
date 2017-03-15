@@ -1,7 +1,7 @@
 humhub.module('ui.showMore', function (module, require, $) {
     var additions = require('ui.additions');
 
-    var DEFAULT_COLLAPSE_AT = 310;
+    var DEFAULT_COLLAPSE_AT = 380;
 
     var CollapseContent = function (node, options) {
         this.options = options || {};
