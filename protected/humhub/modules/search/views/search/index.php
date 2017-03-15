@@ -7,6 +7,8 @@ use humhub\modules\search\models\forms\SearchForm;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 
+humhub\modules\stream\assets\StreamAsset::register($this);
+
 ?>
 <div class="container">
     <div class="row">
@@ -104,9 +106,10 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
                     <?php if (count($results) > 0): ?>
                         <?php foreach ($results as $result): ?>
-
-                            <?php if ($result instanceof ContentActiveRecord || $result instanceof ContentContainerActiveRecord) : ?>
-                                <?php echo $result->getWallOut(); ?>
+                            <?php if ($result instanceof ContentActiveRecord) : ?>
+                                <?= humhub\modules\stream\actions\Stream::renderEntry($result) ?>
+                            <?php elseif ($result instanceof ContentContainerActiveRecord) : ?>
+                                 <?= $result->getWallOut(); ?>
                             <?php else: ?>
                                 No Output for Class <?php echo get_class($result); ?>
                             <?php endif; ?>

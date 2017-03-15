@@ -3,6 +3,8 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Enh: Added Stream::renderEntry for rendering Streamentries from ContentActiveRecord
+- Fix: Wallentry menu not working in search view
 - Fix: Double notifications when mentioning in comments
 - Enh: Raised collapse value for posts to full embeded youtube video height
 - Fix: Fixed oembed post edit

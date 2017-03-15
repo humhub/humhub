@@ -199,7 +199,7 @@ abstract class Stream extends Action
 
         if ($this->mode == self::MODE_ACTIVITY) {
             $this->streamQuery->channel(StreamQuery::CHANNEL_ACTIVITY);
-            if($this->streamQuery->user) {
+            if ($this->streamQuery->user) {
                 $this->streamQuery->query()->andWhere('content.created_by != :userId', [':userId' => $this->streamQuery->user->id]);
             }
         }
@@ -265,6 +265,32 @@ abstract class Stream extends Action
     }
 
     /**
+     * Renders the wallEntry of the given ContentActiveRecord.
+     * 
+     * If setting $partial to false this function will use the renderAjax function instead of renderPartial, which
+     * will directly append all dependencies to the result and if not used in a real ajax request will also append
+     * the Layoutadditions.
+     * 
+     * @param \humhub\modules\content\components\ContentActiveRecord $record content record instance
+     * @param boolean $partial whether or not to use renderPartial over renderAjax
+     * @return string rendered wallentry
+     */
+    public static function renderEntry(\humhub\modules\content\components\ContentActiveRecord $record, $partial = true)
+    {
+        if ($partial) {
+            return Yii::$app->controller->renderPartial('@humhub/modules/content/views/layouts/wallEntry', [
+                        'content' => $record->getWallOut(),
+                        'entry' => $record->content
+            ]);
+        } else {
+            return Yii::$app->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
+                        'content' => $record->getWallOut(),
+                        'entry' => $record->content
+            ]);
+        }
+    }
+
+    /**
      * Returns an array contains all informations required to display a content
      * in stream.
      * 
@@ -288,13 +314,8 @@ abstract class Stream extends Action
         }
 
         $underlyingObject->populateRelation('content', $content);
-        $result['output'] = Yii::$app->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
-            'entry' => $content,
-            'user' => $underlyingObject->content->createdBy,
-            'object' => $underlyingObject,
-            'content' => $underlyingObject->getWallOut()
-                ], true);
-
+        
+        $result['output'] = self::renderEntry($underlyingObject, false);
         $result['pinned'] = (boolean) $content->pinned;
         $result['archived'] = (boolean) $content->archived;
         $result['guid'] = $content->guid;
