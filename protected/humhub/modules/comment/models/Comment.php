@@ -115,13 +115,16 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
         // Handle mentioned users
         // Execute before NewCommentNotification to avoid double notification when mentioned.
-        \humhub\modules\user\models\Mentioning::parse($this, $this->message);
-
+        $mentionedUsers = \humhub\modules\user\models\Mentioning::parse($this, $this->message);
+        
         if ($insert) {
+            $followers = $this->getCommentedRecord()->getFollowers(null, true);
+            $this->filterMentionings($followers, $mentionedUsers);
+
             \humhub\modules\comment\notifications\NewComment::instance()
                     ->from(Yii::$app->user->getIdentity())
                     ->about($this)
-                    ->sendBulk($this->getCommentedRecord()->getFollowers(null, true, true));
+                    ->sendBulk($followers);
 
             if ($this->content->container) {
                 Yii::$app->live->send(new \humhub\modules\comment\live\NewComment([
@@ -136,6 +139,28 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         $this->updateContentSearch();
 
         return parent::afterSave($insert, $changedAttributes);
+    }
+    
+    /**
+     * Filters out all users contained in $mentionedUsers from $followers
+     *  
+     * @param User[] $followers 
+     * @param User[] $mentionedUsers 
+     */
+    private function filterMentionings(&$followers, $mentionedUsers)
+    {
+        if(empty($mentionedUsers)) {
+            return;
+        }
+        
+        foreach($followers as $i => $follower) {
+            foreach($mentionedUsers as $mentioned) {
+                if($follower->is($mentioned)) {
+                    unset($followers[$i]);
+                    continue 2;
+                }
+            }
+        }
     }
 
     /**

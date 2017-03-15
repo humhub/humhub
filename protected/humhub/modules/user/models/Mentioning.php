@@ -93,12 +93,13 @@ class Mentioning extends ActiveRecord
      *
      * @param HActiveRecordContent|HActiveRecordContentAddon $record
      * @param string $text
+     * @return User[] Mentioned users
      */
     public static function parse($record, $text)
     {
-
+        $result = [];
         if ($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord) {
-            preg_replace_callback('@\@\-u([\w\-]*?)($|\s|\.)@', function($hit) use(&$record) {
+            preg_replace_callback('@\@\-u([\w\-]*?)($|\s|\.)@', function($hit) use(&$record, &$result) {
                 $user = User::findOne(['guid' => $hit[1]]);
                 if ($user !== null) {
                     // Check the user was already mentioned (e.g. edit)
@@ -107,6 +108,8 @@ class Mentioning extends ActiveRecord
                         $mention = new Mentioning(['user_id' => $user->id]);
                         $mention->setPolymorphicRelation($record);
                         $mention->save();
+                        
+                        $result[] = $user;
 
                         // Mentioned users automatically follows the content
                         $record->content->getPolymorphicRelation()->follow($user->id);
@@ -116,6 +119,7 @@ class Mentioning extends ActiveRecord
         } else {
             throw new Exception("Mentioning can only used in HActiveRecordContent or HActiveRecordContentAddon objects!");
         }
+        return $result;
     }
 
     /**

@@ -28,7 +28,7 @@ use humhub\compat\CActiveForm;
 
         <!-- editSubmit action of surrounding StreamEntry component -->
         <button type="submit" class="btn btn-default btn-sm btn-comment-submit" data-ui-loader data-action-click="editSubmit" data-action-url="<?= $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]) ?>">
-<?= Yii::t('PostModule.views_edit', 'Save') ?>
+            <?= Yii::t('PostModule.views_edit', 'Save') ?>
         </button>
 
     </div>

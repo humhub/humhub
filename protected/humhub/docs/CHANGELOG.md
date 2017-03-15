@@ -3,6 +3,7 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Fix: Double notifications when mentioning in comments
 - Enh: Raised collapse value for posts to full embeded youtube video height
 - Fix: Fixed oembed post edit
 - Enh: Included select2-humhub theme into the new theming
