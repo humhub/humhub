@@ -1,6 +1,7 @@
 HumHub Change Log
 =================
 
+
 1.2.0-beta.3 under developement
 --------------------------------
 - Enh: Added Stream::renderEntry for rendering Streamentries from ContentActiveRecord
@@ -64,6 +65,8 @@ HumHub Change Log
 - Fix: Directory Knob statistics on included modules (e.g. Enterprise Edition)
 - Enh: Added widget to display user profile image
 - Enh: Directory view templates cleanups
+- Fix: All LDAP Users have been disabled and not reenabled by hourly cronjob if ldap server not reachable.
+- Enh: Cleanup authentication layout file 
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------
