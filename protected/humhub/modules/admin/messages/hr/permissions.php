@@ -23,7 +23,7 @@ return [
     'Can manage user- space- and general-settings.' => '',
     'Can manage users and groups' => '',
     'Can manage users and user profiles.' => '',
-    'Cann manage modules within the \'Administration ->  Modules\' section.' => '',
+    'Can manage modules within the \'Administration ->  Modules\' section.' => '',
     'Manage Groups' => '',
     'Manage Modules' => '',
     'Manage Settings' => '',

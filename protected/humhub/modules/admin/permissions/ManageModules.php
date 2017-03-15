@@ -26,7 +26,7 @@ class ManageModules extends BaseAdminPermission
     {
         parent::__construct($config);
         $this->title = \Yii::t('AdminModule.permissions', 'Manage Modules');
-        $this->description = \Yii::t('AdminModule.permissions', 'Cann manage modules within the \'Administration ->  Modules\' section.');
+        $this->description = \Yii::t('AdminModule.permissions', 'Can manage modules within the \'Administration ->  Modules\' section.');
     }
 
 }

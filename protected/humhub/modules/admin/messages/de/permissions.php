@@ -6,7 +6,7 @@ return array (
   'Can manage user- space- and general-settings.' => 'Darf Benutzer-, Space- und allgemeine Einstellungen verwalten.',
   'Can manage users and groups' => 'Darf Benutzer und Benutzergruppen verwalten.',
   'Can manage users and user profiles.' => 'Darf Benutzer und Benutzerprofile verwalten.',
-  'Cann manage modules within the \'Administration ->  Modules\' section.' => 'Darf Module innerhalb der Administration verwalten.',
+  'Can manage modules within the \'Administration ->  Modules\' section.' => 'Darf Module innerhalb der Administration verwalten.',
   'Manage Groups' => 'Gruppen verwalten',
   'Manage Modules' => 'Module verwalten',
   'Manage Settings' => 'Einstellungen verwalten',

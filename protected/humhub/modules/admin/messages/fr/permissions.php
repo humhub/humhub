@@ -6,7 +6,7 @@ return array (
   'Can manage user- space- and general-settings.' => 'Vous pouvez gérer utilisateurs, espaces et paramètres génégaux',
   'Can manage users and groups' => 'Vous pouvez géré utilisateurs et groups',
   'Can manage users and user profiles.' => 'Vous pouvez géré les profils utilisateurs ',
-  'Cann manage modules within the \'Administration ->  Modules\' section.' => 'Vous pouvez gérer les modules dans la section \'administration -> Modules\'',
+  'Can manage modules within the \'Administration ->  Modules\' section.' => 'Vous pouvez gérer les modules dans la section \'administration -> Modules\'',
   'Manage Groups' => 'Gréer les groupes',
   'Manage Modules' => 'Gérer les modules',
   'Manage Settings' => 'Grérer les paramètres',
