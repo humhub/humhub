@@ -29,7 +29,9 @@ class Select2BootstrapAsset extends AssetBundle
     public $baseUrl = '@web-static';
     
     /**
-     * @inheritdoc
+     * This is only included for backward compatibility for former 1.2 beta themes.
+     * After removing this, all themes have to be rebuilt.
+     * @deprecated since version 1.2.0-beta.3
      */
     public $css = ['resources/css/select2Theme/select2-humhub.css'];
     
@@ -40,5 +42,4 @@ class Select2BootstrapAsset extends AssetBundle
     public $depends = [
         'humhub\assets\Select2Asset'
     ];
-
 }

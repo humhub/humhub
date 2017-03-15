@@ -34,7 +34,7 @@
 // @see https://github.com/twbs/humhub-sass/blob/master/assets/stylesheets/humhub/_forms.scss#L115
 .humhub-input-defaults() {
     background-color: @input-bg;
-    border: 2px solid @background2;
+    border: 2px solid @background-color-page;
     border-radius: @input-border-radius;
     color: @input-color;
     font-family: @font-family-base;
@@ -185,9 +185,9 @@
          */
 
         &--highlighted[aria-selected] {
-            background-color: @background1;
+            background-color: @background-color-secondary;
             border-left:3px solid @info;
-            color: @font3;
+            color: @text-color-highlight;
         }
 
         .select2-results__option {
@@ -707,15 +707,15 @@
  */
 
 .has-warning {
-    .validation-state-focus(@state-warning-text);
+    .validation-state-focus(@warning);
 }
 
 .has-error {
-    .validation-state-focus(@state-danger-text);
+    .validation-state-focus(@danger);
 }
 
 .has-success {
-    .validation-state-focus(@state-success-text);
+    .validation-state-focus(@success);
 }
 
 /**

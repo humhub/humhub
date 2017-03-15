@@ -3,6 +3,10 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Enh: Included select2-humhub theme into the new theming
+- Enh: Added select2 dropdown for language selection in account and admin settings
+- Enh: Added data-ui-select2 addition for simple select2 dropdowns
+- Fix: Don't apply js additions if there was no matching element
 - Fix: #2336 use of invalid message key in comment notification (dutch)
 - Enh: Disable user and space follow by means of module settings
 - Fix: Setting of submitName and upload input name in file upload JsWidget

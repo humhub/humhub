@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
     <?php $allowedLanguages = Yii::$app->i18n->getAllowedLanguages(); ?>
     <?php if (count($allowedLanguages) > 1) : ?>
-        <?php echo $languageDropDown = $form->field($model, 'defaultLanguage')->dropDownList($allowedLanguages); ?>
+        <?php echo $languageDropDown = $form->field($model, 'defaultLanguage')->dropDownList($allowedLanguages, ['data-ui-select2' => '']); ?>
     <?php endif; ?>
 
     <?php echo $form->field($model, 'timeZone')->dropDownList(\humhub\libs\TimezoneHelper::generateList()); ?>
