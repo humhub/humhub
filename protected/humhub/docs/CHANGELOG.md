@@ -3,6 +3,7 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Fix: #2336 use of invalid message key in comment notification (dutch)
 - Enh: Disable user and space follow by means of module settings
 - Fix: Setting of submitName and upload input name in file upload JsWidget
 - Fix: Rendering of UploadButton without given id
