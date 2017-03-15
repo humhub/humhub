@@ -304,44 +304,51 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
 
         $userFilter = Yii::$app->getModule('user')->settings->get('auth.ldap.userFilter');
         $baseDn = Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn');
-        $userCollection = $this->getLdap()->search($userFilter, $baseDn, Ldap::SEARCH_SCOPE_SUB);
+        try {
+            $ldap = $this->getLdap();
 
-        $authClient = null;
+            $userCollection = $ldap->search($userFilter, $baseDn, Ldap::SEARCH_SCOPE_SUB);
 
-        $ids = [];
-        foreach ($userCollection as $attributes) {
-            $authClient = new static;
-            $authClient->setUserAttributes($attributes);
-            $attributes = $authClient->getUserAttributes();
+            $authClient = null;
+            $ids = [];
+            foreach ($userCollection as $attributes) {
+                $authClient = new static;
+                $authClient->setUserAttributes($attributes);
+                $attributes = $authClient->getUserAttributes();
 
-            $user = AuthClientHelpers::getUserByAuthClient($authClient);
-            if ($user === null) {
-                if (!AuthClientHelpers::createUser($authClient)) {
-                    Yii::warning('Could not automatically create LDAP user  - check required attributes! (' . print_r($attributes, 1) . ')');
+                $user = AuthClientHelpers::getUserByAuthClient($authClient);
+                if ($user === null) {
+                    if (!AuthClientHelpers::createUser($authClient)) {
+                        Yii::warning('Could not automatically create LDAP user  - check required attributes! (' . print_r($attributes, 1) . ')');
+                    }
+                } else {
+                    AuthClientHelpers::updateUser($authClient, $user);
                 }
-            } else {
-                AuthClientHelpers::updateUser($authClient, $user);
+
+                $ids[] = $attributes['id'];
             }
 
-            $ids[] = $attributes['id'];
-        }
-
-        /**
-         * Since userTableAttribute can be automatically set on user attributes
-         * try to take it from initialized authclient instance.
-         */
-        $userTableIdAttribute = $this->getUserTableIdAttribute();
-        if ($authClient !== null) {
-            $userTableIdAttribute = $authClient->getUserTableIdAttribute();
-        }
-
-        // Disable not longer existing users
-        foreach (AuthClientHelpers::getUsersByAuthClient($this)->each() as $user) {
-            if ($user->status !== User::STATUS_DISABLED && !in_array($user->getAttribute($userTableIdAttribute), $ids)) {
-                $user->status = User::STATUS_DISABLED;
-                $user->save();
-                Yii::warning('Disabled user ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!');
+            /**
+             * Since userTableAttribute can be automatically set on user attributes
+             * try to take it from initialized authclient instance.
+             */
+            $userTableIdAttribute = $this->getUserTableIdAttribute();
+            if ($authClient !== null) {
+                $userTableIdAttribute = $authClient->getUserTableIdAttribute();
             }
+
+            // Disable not longer existing users
+            foreach (AuthClientHelpers::getUsersByAuthClient($this)->each() as $user) {
+                if ($user->status !== User::STATUS_DISABLED && !in_array($user->getAttribute($userTableIdAttribute), $ids)) {
+                    $user->status = User::STATUS_DISABLED;
+                    $user->save();
+                    Yii::warning('Disabled user ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!');
+                }
+            }
+        } catch (\Zend\Ldap\Exception\LdapException $ex) {
+            Yii::warning('Could not connect to LDAP instance: ' . $ex->getMessage());
+        } catch (\Exception $ex) {
+            Yii::warning('An error occurred while user sync: ' . $ex->getMessage());
         }
     }
 

@@ -1,5 +1,7 @@
 HumHub Change Log
 =================
+- Fix: All LDAP Users have been disabled and not reenabled by hourly cronjob if ldap server not reachable.
+
 
 1.2.0-beta.3 under developement
 --------------------------------
