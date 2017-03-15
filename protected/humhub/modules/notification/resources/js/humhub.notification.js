@@ -10,7 +10,7 @@ humhub.module('notification', function (module, require, $) {
     var Widget = require('ui.widget').Widget;
     var event = require('event');
     var client = require('client');
-    var status = require('ui.status');
+    var view = require('ui.view');
     var user = require('user');
 
     module.initOnPjaxLoad = true;
@@ -207,9 +207,9 @@ humhub.module('notification', function (module, require, $) {
 
     var updateTitle = function ($count) {
         if ($count) {
-            document.title = '(' + $count + ') ' + status.getState().title;
+            document.title = '(' + $count + ') ' + view.getState().title;
         } else if ($count === false) {
-            document.title = status.getState().title;
+            document.title = view.getState().title;
         }
     };
 

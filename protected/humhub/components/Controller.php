@@ -221,7 +221,7 @@ class Controller extends \yii\web\Controller
     public function setJsViewStatus()
     {
         $modluleId = (Yii::$app->controller->module) ? Yii::$app->controller->module->id : '';
-        $this->view->registerJs('humhub.modules.ui.status.setState("' . $modluleId . '", "' . Yii::$app->controller->id . '", "' . Yii::$app->controller->action->id . '");', \yii\web\View::POS_BEGIN);
+        $this->view->registerJs('humhub.modules.ui.view.setState("' . $modluleId . '", "' . Yii::$app->controller->id . '", "' . Yii::$app->controller->action->id . '");', \yii\web\View::POS_BEGIN);
 
         if(Yii::$app->request->isPjax) {
             \humhub\widgets\TopMenu::setViewState();

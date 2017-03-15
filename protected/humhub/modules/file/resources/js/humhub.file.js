@@ -12,6 +12,8 @@ humhub.module('file', function (module, require, $) {
     var string = util.string;
     var action = require('action');
     var event = require('event');
+    
+    var view = require('ui.view');
 
     var Upload = function (node, options) {
         Widget.call(this, node, options);
@@ -330,16 +332,18 @@ humhub.module('file', function (module, require, $) {
         if (file.thumbnailUrl && !this.options.preventPopover) {
             // Preload image
             new Image().src = file.thumbnailUrl;
-            $file.find('.file-preview-content').popover({
-                html: true,
-                trigger: 'hover',
-                animation: 'fade',
-                delay: 100,
-                placement: this.options.popoverPosition || 'right',
-                content: function () {
-                    return string.template(Preview.template.popover, file);
-                }
-            });
+            if(!view.isSmall()) {
+                $file.find('.file-preview-content').popover({
+                    html: true,
+                    trigger: 'hover',
+                    animation: 'fade',
+                    delay: 100,
+                    placement: this.options.popoverPosition || 'right',
+                    content: function () {
+                        return string.template(Preview.template.popover, file);
+                    }
+                });
+            }
         };
 
         var that = this;
