@@ -23,7 +23,7 @@ class Controller extends \humhub\components\Controller
      * @inheritdoc
      */
     public $subLayout = "@humhub/modules/admin/views/layouts/main";
-    
+
     /**
      * @var boolean if true only allows access for system admins else the access is restricted by getAccessRules()
      */
@@ -35,7 +35,7 @@ class Controller extends \humhub\components\Controller
     public function init()
     {
         $this->appendPageTitle(\Yii::t('AdminModule.base', 'Administration'));
-        return parent::init();
+        parent::init();
     }
 
     /**
@@ -44,7 +44,7 @@ class Controller extends \humhub\components\Controller
     public function behaviors()
     {
         // Workaround for module configuration actions @see getAccessRules()
-        if (Yii::$app->controller->module->id != 'admin') {
+        if ($this->module->id != 'admin') {
             $this->adminOnly = false;
         }
 
