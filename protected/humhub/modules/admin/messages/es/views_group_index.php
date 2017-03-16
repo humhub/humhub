@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Actions' => '',
-  'Manage groups' => '',
+  'Actions' => 'Acciones',
+  'Manage groups' => 'Gestionar grupos',
   'Members' => 'Miembros',
 );
