@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Contents' => '',
-    'Whenever a new content (e.g. post) has been created.' => '',
+    'Contents' => '内容',
+    'Whenever a new content (e.g. post) has been created.' => '每当一个新的内容(例如 文章)被创建时。',
 ];

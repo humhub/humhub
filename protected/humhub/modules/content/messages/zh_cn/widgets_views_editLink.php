@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Cancel Edit' => '',
+    'Cancel Edit' => '取消编辑',
     'Edit' => '编辑',
 ];

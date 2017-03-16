@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Likes' => '',
-    'Receive Notifications when someone likes your content.' => '',
+    'Likes' => '赞',
+    'Receive Notifications when someone likes your content.' => '当有人赞了你的内容时接收提醒。',
 ];

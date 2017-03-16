@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Confirm</strong> image deletion' => '',
+    '<strong>Confirm</strong> image deletion' => '<strong>确认</strong> 删除图片',
     'Dashboard' => '<strong>主面板</strong>',
     'Delete' => '删除',
     'E.g. http://example.com/humhub' => '例如 http://example.com/humhub',

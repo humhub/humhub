@@ -17,5 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Sign in / up' => '登录 / 注册'
+    'Sign in / up' => '登录 / 注册',
+    'Sign in' => '登 录',
 ];

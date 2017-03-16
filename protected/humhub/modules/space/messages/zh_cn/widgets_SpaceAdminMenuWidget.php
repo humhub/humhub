@@ -18,8 +18,8 @@
  */
 return [
     '<i class="fa fa-cog"></i>' => '',
-    'Don\'t receive notifications for new content' => '',
-    'Receive Notifications for new content' => '',
+    'Don\'t receive notifications for new content' => '不接收新内容通知',
+    'Receive Notifications for new content' => '接收新内容通知',
     'Cancel Membership' => '取消成员',
     'Hide posts on dashboard' => '在控制面板隐藏文章',
     'Members' => '成员',

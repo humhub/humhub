@@ -8,10 +8,10 @@ use yii\helpers\Url;
     // Temporary workaround till panel widget rewrite in 0.10 verion
     $removeOptionHtml = "<li>" . \humhub\widgets\ModalConfirm::widget(array(
                 'uniqueID' => 'hide-panel-button',
-                'title' => '<strong>Remove</strong> tour panel',
-                'message' => 'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.',
-                'buttonTrue' => 'Ok',
-                'buttonFalse' => 'Cancel',
+                'title' => Yii::t('TourModule.widgets_views_tourPanel', '<strong>Remove</strong> tour panel'),
+                'message' => Yii::t('TourModule.widgets_views_tourPanel', 'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.'),
+                'buttonTrue' => Yii::t('TourModule.widgets_views_tourPanel', 'Ok'),
+                'buttonFalse' => Yii::t('TourModule.widgets_views_tourPanel', 'Cancel'),
                 'linkContent' => '<i class="fa fa-eye-slash"></i> ' . Yii::t('TourModule.widgets_views_tourPanel', ' Remove panel'),
                 'linkHref' => Url::to(["/tour/tour/hide-panel", "ajax" => 1]),
                 'confirmJS' => '$(".panel-tour").slideToggle("slow")'

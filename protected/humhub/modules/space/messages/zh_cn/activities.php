@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Space member joined' => '',
-    'Space member left' => '',
-    'Whenever a member leaves one of your spaces.' => '',
-    'Whenever a new member joined one of your spaces.' => '',
+    'Space member joined' => '空间成员加入',
+    'Space member left' => '空间成员离开',
+    'Whenever a member leaves one of your spaces.' => '每当有成员离开你的空间。',
+    'Whenever a new member joined one of your spaces.' => '每当有新成员加入你的空间。',
 ];

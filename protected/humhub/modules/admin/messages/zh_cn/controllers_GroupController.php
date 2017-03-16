@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'User is already a member of this group.' => '',
+    'User is already a member of this group.' => '用户已经是这个组的成员了。',
     'Group not found!' => '组未找到',
     'Group user not found!' => '用户组没有找到！',
     'No value found!' => '没有发现值',

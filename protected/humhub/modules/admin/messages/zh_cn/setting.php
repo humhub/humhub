@@ -18,7 +18,7 @@
  */
 return [
     'LDAP' => '',
-    'Notification Settings' => '',
+    'Notification Settings' => '通知设置',
     'Advanced Settings' => '高级设置',
     'Appearance Settings' => '外观设置',
     'General' => '一般',

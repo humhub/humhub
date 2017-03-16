@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'This space is archived.' => '',
+    'This space is archived.' => '这个空间已被归档。',
     'Add a member to notify' => '增加一个通知成员',
     'Make private' => '变成私有',
     'Make public' => '变成公开',

@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Apply' => '',
+    'Apply' => '应用',
     '<strong>Notification</strong> Overview' => '<strong>通知</strong> 概览',
     'Filter' => '筛选',
     'Mark all as seen' => '标记所有为已读',

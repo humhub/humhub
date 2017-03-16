@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'This space is archived.' => '',
+    'This space is archived.' => '该空间已归档。',
     'What\'s on your mind?' => '你想说些什么？',
 ];

@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'See online:' => '',
+    'See online:' => '在线看：',
     'see online' => '看在线',
     'via' => '通过',
 ];
