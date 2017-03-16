@@ -19,11 +19,11 @@ use humhub\modules\notification\models\forms\NotificationSettings;
  * @author Luke
  */
 class AdminController extends Controller
-{   
+{
     /**
      * @inheritdoc
      */
-    public static function getAccessRules()
+    public function getAccessRules()
     {
         return [
             ['permissions' => \humhub\modules\admin\permissions\ManageSettings::className()]
@@ -33,7 +33,7 @@ class AdminController extends Controller
     public function actionDefaults()
     {
         $this->subLayout = '@admin/views/layouts/setting';
-        
+
         $form = new NotificationSettings();
         if ($form->load(Yii::$app->request->post()) && $form->save()) {
             $this->view->saved();

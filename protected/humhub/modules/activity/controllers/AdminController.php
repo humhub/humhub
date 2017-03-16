@@ -23,7 +23,7 @@ class AdminController extends Controller
     /**
      * @inheritdoc
      */
-    public static function getAccessRules()
+    public function getAccessRules()
     {
         return [
             ['permissions' => \humhub\modules\admin\permissions\ManageSettings::className()]

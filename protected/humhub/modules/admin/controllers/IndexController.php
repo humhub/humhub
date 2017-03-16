@@ -13,7 +13,7 @@ use humhub\modules\admin\components\Controller;
 
 /**
  * IndexController is the admin section start point.
- * 
+ *
  * @since 0.5
  */
 class IndexController extends Controller
@@ -24,7 +24,10 @@ class IndexController extends Controller
      */
     public $adminOnly = false;
 
-    public static function getAccessRules()
+    /**
+     * @inheritdoc
+     */
+    public function getAccessRules()
     {
         return [
             ['permissions' => Yii::$app->getModule('admin')->getPermissions()]

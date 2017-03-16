@@ -75,6 +75,7 @@ HumHub Change Log
 - Enh: Cleanup authentication layout file 
 - Fix: Console image converter memory limit allocation
 - Enh: Added new controller init event
+- Enh: Made admin base controller method "getAccessRules()" non static
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------
