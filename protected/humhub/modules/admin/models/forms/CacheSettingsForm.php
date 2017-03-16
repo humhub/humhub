@@ -58,9 +58,9 @@ class CacheSettingsForm extends Model
     public function getTypes()
     {
         return array(
-            'yii\caching\DummyCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'No caching (Testing only!)'),
+            'yii\caching\DummyCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'No caching'),
             'yii\caching\FileCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'File'),
-            'yii\caching\ApcCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'APC'),
+            'yii\caching\ApcCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'APC(u)'),
         );
     }
 
@@ -69,8 +69,8 @@ class CacheSettingsForm extends Model
      */
     public function checkCacheType($attribute, $params)
     {
-        if ($this->type == 'yii\caching\ApcCache' && !function_exists('apc_add')) {
-            $this->addError($attribute, \Yii::t('AdminModule.forms_CacheSettingsForm', "PHP APC Extension missing - Type not available!"));
+        if ($this->type == 'yii\caching\ApcCache' && !function_exists('apc_add') && !function_exists('apc_addu')) {
+            $this->addError($attribute, \Yii::t('AdminModule.forms_CacheSettingsForm', "PHP APC(u) Extension missing - Type not available!"));
         }
     }
 

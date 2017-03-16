@@ -81,6 +81,7 @@ HumHub Change Log
 - Enh: Made admin base controller method "getAccessRules()" non static
 - Enh: Created new ImageController for user image and banner handling
 - Enh: Decreased OEmbed url max length 180chars (acs-ferreira)
+- Enh: Added APCu Support
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------
