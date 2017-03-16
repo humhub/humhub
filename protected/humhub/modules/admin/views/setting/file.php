@@ -22,7 +22,9 @@ use humhub\models\Setting;
 <div class="form-group">
     <?php echo $form->labelEx($model, 'maxFileSize'); ?>
     <?php echo $form->textField($model, 'maxFileSize', array('class' => 'form-control', 'readonly' => Setting::IsFixed('maxFileSize', 'file'))); ?>
-    <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'PHP reported a maximum of {maxUploadSize} MB', array('{maxUploadSize}' => $maxUploadSize)); ?></p>
+    <p class="help-block" <?= ($model->maxFileSize > $maxUploadSize) ? 'style="color:'.$this->theme->variable('danger').' !important"' : ''?>>
+        <?= Yii::t('AdminModule.views_setting_file', 'PHP reported a maximum of {maxUploadSize} MB', array('{maxUploadSize}' => $maxUploadSizeText)); ?>
+    </p>
 </div>
 
 <div class="form-group">

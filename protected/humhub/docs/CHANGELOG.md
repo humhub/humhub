@@ -4,6 +4,8 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Fix: Added unknown upload error if server cancels upload (e.g in case of a post_max_size violation issue)
+- Enh: Added warning if php max upload/post is less than the humhub setting.
 - Enh: Added mp4/ogg blueimp support in post gallery
 - Enh: Added global (default) notification space settings
 - Enh: #2359 Use Jplayer playlist feature for post mp3

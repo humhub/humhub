@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\file\libs\FileHelper;
-
+use yii\helpers\Html;
 
 $object = $this->context->object;
 ?>
@@ -13,15 +13,15 @@ $object = $this->context->object;
     <div class="post-files" id="post-files-<?php echo $object->getUniqueId(); ?>">
         <?php foreach ($files as $file): ?>
             <?php if ($previewImage->applyFile($file)): ?>
-                <a data-ui-gallery="<?= "gallery-" . $object->getUniqueId(); ?>" href="<?= $file->getUrl(); ?>#.jpeg" title="<?= $file->file_name ?>">
+                <a data-ui-gallery="<?= "gallery-" . $object->getUniqueId(); ?>" href="<?= $file->getUrl(); ?>#.jpeg" title="<?= Html::encode($file->file_name) ?>">
                     <?= $previewImage->render(); ?>
                 </a>
             <?php elseif(FileHelper::getExtension($file->file_name) == 'mp4'): ?>
-                <a data-ui-gallery="<?= "gallery-" . $object->getUniqueId(); ?>" type="video/mp4" href="<?= $file->getUrl(); ?>#.mp4" title="<?= $file->file_name ?>">
+                <a data-ui-gallery="<?= "gallery-" . $object->getUniqueId(); ?>" type="video/mp4" href="<?= $file->getUrl(); ?>#.mp4" title="<?= Html::encode($file->file_name) ?>">
                     <video src="<?= $file->getUrl() ?>" height="130" />
                 </a>
             <?php elseif(FileHelper::getExtension($file->file_name) == 'ogv'): ?>
-                <a data-ui-gallery="<?= "gallery-" . $object->getUniqueId(); ?>" type="video/ogg" href="<?= $file->getUrl(); ?>#.ogv" title="<?= $file->file_name ?>">
+                <a data-ui-gallery="<?= "gallery-" . $object->getUniqueId(); ?>" type="video/ogg" href="<?= $file->getUrl(); ?>#.ogv" title="<?= Html::encode($file->file_name) ?>">
                     <video src="<?= $file->getUrl() ?>" height="130" />
                 </a>
             <?php endif; ?>

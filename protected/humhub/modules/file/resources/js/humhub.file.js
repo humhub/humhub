@@ -211,6 +211,11 @@ humhub.module('file', function (module, require, $) {
 
     Upload.prototype.done = function (e, response) {
         var that = this;
+        
+        if(!response.result.files || !response.result.files.length) {
+            module.log.error('error.unknown', true);
+        }
+        
         $.each(response.result.files, function (index, file) {
             that.handleFileResponse(file);
         });

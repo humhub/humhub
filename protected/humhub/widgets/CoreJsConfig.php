@@ -56,6 +56,9 @@ class CoreJsConfig extends Widget
                     ],
                     'text' => [
                         'error.upload' => Yii::t('base', 'Some files could not be uploaded:'),
+                        'error.unknown' => Yii::$app->user->isAdmin() ? 
+                                    Yii::t('base', 'An unknown error occured while uploading. Hint: check your upload_max_filesize and post_max_size php settings.')
+                                    : Yii::t('base', 'An unknown error occured while uploading.'),
                         'success.delete' => Yii::t('base', 'The file has been deleted.')
                     ]
                 ],

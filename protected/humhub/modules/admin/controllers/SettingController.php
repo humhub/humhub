@@ -192,17 +192,25 @@ class SettingController extends Controller
 
         // Determine PHP Upload Max FileSize
         $maxUploadSize = \humhub\libs\Helpers::GetBytesOfPHPIniValue(ini_get('upload_max_filesize'));
+        $fileSizeKey = 'upload_max_filesize';
         if ($maxUploadSize > \humhub\libs\Helpers::GetBytesOfPHPIniValue(ini_get('post_max_size'))) {
             $maxUploadSize = \humhub\libs\Helpers::GetBytesOfPHPIniValue(ini_get('post_max_size'));
+            $fileSizeKey = 'post_max_size';
         }
+        
         $maxUploadSize = floor($maxUploadSize / 1024 / 1024);
-
+        $maxUploadSizeText = "(".$fileSizeKey."): ".$maxUploadSize;
+        
         // Determine currently used ImageLibary
         $currentImageLibary = 'GD';
-        if (Yii::$app->getModule('file')->settings->get('imageMagickPath'))
+        if (Yii::$app->getModule('file')->settings->get('imageMagickPath')) {
             $currentImageLibary = 'ImageMagick';
+        }
 
-        return $this->render('file', array('model' => $form, 'maxUploadSize' => $maxUploadSize, 'currentImageLibary' => $currentImageLibary));
+        return $this->render('file', ['model' => $form, 
+            'maxUploadSize' => $maxUploadSize, 
+            'maxUploadSizeText' => $maxUploadSizeText,
+            'currentImageLibary' => $currentImageLibary]);
     }
 
     /**
