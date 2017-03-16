@@ -9,6 +9,7 @@ use humhub\modules\user\models\Follow;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\models\ContentContainerSetting;
 
 /**
  * The NotificationManager component is responsible for sending BaseNotifications to Users over different
@@ -178,29 +179,76 @@ class NotificationManager
      */
     public function getContainerFollowers(ContentContainerActiveRecord $container, $public = true)
     {
+        $result = [];
         if ($container instanceof Space) {
+            $isDefault = $this->isDefaultNotificationSpace($container);
             $members = Membership::getSpaceMembersQuery($container, true, true)->all();
-            $followers = (!$public) ? [] : Follow::getFollowersQuery($container, true)->all();
-            return array_merge($members, $followers);
+            if ($public) {
+                // Add explicit follower and non explicit follower if $isDefault
+                $followers = $this->findFollowers($container, $isDefault)->all();
+                $result = array_merge($members, $followers);
+            } else if ($isDefault) {
+                // Add all members without explicit following and no notification settings.
+                $followers = Membership::getSpaceMembersQuery($container, true, false)
+                                ->andWhere(['not exists', $this->findNotExistingSettingSubQuery()])->all();
+                $result = array_merge($members, $followers);
+            } else {
+                $result = $members;
+            }
         } else if ($container instanceof User) {
             // Note the notification follow logic for users is currently not implemented.
             // TODO: perhaps return only friends if public is false?
-            return (!$public) ? [] : Follow::getFollowersQuery($container, true)->all();
+            $result = (!$public) ? [] : Follow::getFollowersQuery($container, true)->all();
         }
+        return $result;
+    }
+
+    private function isDefaultNotificationSpace($container)
+    {
+        $defaultSpaces = Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces');
+        return (empty($defaultSpaces)) ? false : in_array($container->guid, $defaultSpaces);
+    }
+
+    private function findFollowers($container, $isDefault = false)
+    {
+        // Find all followers with send_notifications = 1
+        $query = Follow::getFollowersQuery($container, true);
+
+        if ($isDefault) {
+            // Add all user with no notification setting
+            $query->orWhere([
+                'and', 'user.status=1', ['not exists', $this->findNotExistingSettingSubQuery()]
+            ]);
+        }
+
+        return $query;
+    }
+
+    private function findNotExistingSettingSubQuery()
+    {
+        return ContentContainerSetting::find()
+                        ->where('contentcontainer_setting.contentcontainer_id=user.contentcontainer_id')
+                        ->andWhere(['contentcontainer_setting.module_id' => 'notification'])
+                        ->andWhere(['contentcontainer_setting.name' => 'notification.like_email']);
     }
 
     /**
      * Returns all spaces this user is following (including member spaces) with sent_notification setting.
      * 
      * @param User $user
-     * @return type
+     * @return Space[]
      */
     public function getSpaces(User $user)
     {
-        $memberSpaces = Membership::getUserSpaceQuery($user, true, true)->all();
-        $followSpaces = Follow::getFollowedSpacesQuery($user, true)->all();
+        $isLoaded = (Yii::$app->getModule('notification')->settings->user($user)->get('notification.like_email') !== null);
+        if ($isLoaded) {
+            $memberSpaces = Membership::getUserSpaceQuery($user, true, true)->all();
+            $followSpaces = Follow::getFollowedSpacesQuery($user, true)->all();
 
-        return array_merge($memberSpaces, $followSpaces);
+            return array_merge($memberSpaces, $followSpaces);
+        } else {
+            return Space::findAll(['guid' => Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces')]);
+        }
     }
 
     /**
@@ -209,12 +257,18 @@ class NotificationManager
      * @param User $user
      * @return type
      */
-    public function getNonNotificationSpaces(User $user)
+    public function getNonNotificationSpaces(User $user = null, $limit = 25)
     {
-        $memberSpaces = Membership::getUserSpaceQuery($user, true, false)->all();
-        $followSpaces = Follow::getFollowedSpacesQuery($user, false)->all();
+        if ($user) {
+            $memberSpaces = Membership::getUserSpaceQuery($user, true, false)->limit($limit)->all();
+            $limit -= count($memberSpaces);
+            $followSpaces = Follow::getFollowedSpacesQuery($user, false)->limit($limit)->all();
 
-        return array_merge($memberSpaces, $followSpaces);
+            return array_merge($memberSpaces, $followSpaces);
+        } else {
+            return Space::find()->where(['not in', 'guid', Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces')])
+                            ->limit($limit)->all();
+        }
     }
 
     /**

@@ -151,5 +151,144 @@ class ContentCreatedTest extends HumHubDbTestCase
 
         $this->assertMailSent(0, 'ContentCreated Notification Mail sent');
     }
+    
+    /**
+     * Admin and User2 are member of Space1 -> Space1 is set to default notification space.
+     * After User2 posts new content Admin user should automatically be notified.
+     */
+    public function testDefaultSpaceFollowPrivatePostNotification()
+    {
+        $this->becomeUser('User2');
 
+        Yii::$app->notification->setSpaces(['5396d499-20d6-4233-800b-c6c86e5fa34a']);
+        $post = new \humhub\modules\post\models\Post(['message' => 'MyTestContent']);
+        $post->content->setContainer(Space::findOne(['id' => 1]));
+        $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PRIVATE;
+        $post->save();
+
+        // Note Admin is following Space2 so we expect one notification mail.
+        $this->assertMailSent(1, 'ContentCreated Notification Mail sent');
+    }
+    
+    /**
+     * Admin and User2 are member of Space1 -> Space1 is set to default notification space.
+     * Admin explicitly removes the default notification space.
+     */
+    public function testExplicitlyDisableDefaultNotificationSpace()
+    {
+        $this->becomeUser('Admin');
+
+        Yii::$app->notification->setSpaces(['5396d499-20d6-4233-800b-c6c86e5fa34a']);
+        
+        // Setting empty spaceguids settings
+        $settings = new \humhub\modules\notification\models\forms\NotificationSettings(['user' => User::findOne(['id' => 1])]);
+        $settings->save();
+        
+        $this->becomeUser('User2');
+        
+        $post = new \humhub\modules\post\models\Post(['message' => 'MyTestContent']);
+        $post->content->setContainer(Space::findOne(['id' => 1]));
+        $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PRIVATE;
+        $post->save();
+
+        // Note Admin is following Space2 so we expect one notification mail.
+        $this->assertMailSent(0, 'ContentCreated Notification Mail sent');
+    }
+    
+    /**
+     * After User2 posts new public post Admin all other users should be notified.
+     */
+    public function testDefaultSpaceFollowPublicPostNotification()
+    {
+        $this->becomeUser('User2');
+
+        Yii::$app->notification->setSpaces(['5396d499-20d6-4233-800b-c6c86e5fa34a']);
+        $post = new \humhub\modules\post\models\Post(['message' => 'MyTestContent']);
+        $post->content->setContainer(Space::findOne(['id' => 1]));
+        $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
+        $post->save();
+
+        // Note Admin is following Space2 so we expect one notification mail.
+        $this->assertMailSent(3, 'ContentCreated Notification Mail sent');
+    }
+    
+    /**
+     * Disable space as member and post public content.
+     */
+    public function testExplicitlyDisableDefaultNotificationPublicMember()
+    {
+        $this->becomeUser('Admin');
+
+        Yii::$app->notification->setSpaces(['5396d499-20d6-4233-800b-c6c86e5fa34a']);
+        
+        // Setting empty spaceguids settings
+        $settings = new \humhub\modules\notification\models\forms\NotificationSettings(['user' => User::findOne(['id' => 1])]);
+        $settings->save();
+        
+        $this->becomeUser('User2');
+        
+        $post = new \humhub\modules\post\models\Post(['message' => 'MyTestContent']);
+        $post->content->setContainer(Space::findOne(['id' => 1]));
+        $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
+        $post->save();
+
+        // Note Admin is following Space2 so we expect one notification mail.
+        $this->assertMailSent(2, 'ContentCreated Notification Mail sent');
+    }
+    
+    /**
+     * Disable space as member and post public content.
+     */
+    public function testExplicitlyDisableDefaultNotificationPublic()
+    {
+        $this->becomeUser('User1');
+
+        Yii::$app->notification->setSpaces(['5396d499-20d6-4233-800b-c6c86e5fa34a']);
+        
+        // Setting empty spaceguids settings
+        $settings = new \humhub\modules\notification\models\forms\NotificationSettings(['user' => User::findOne(['id' => 2])]);
+        $settings->save();
+        
+        $this->becomeUser('User2');
+        
+        $post = new \humhub\modules\post\models\Post(['message' => 'MyTestContent']);
+        $post->content->setContainer(Space::findOne(['id' => 1]));
+        $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
+        $post->save();
+
+        // Note Admin is following Space2 so we expect one notification mail.
+        $this->assertMailSent(2, 'ContentCreated Notification Mail sent');
+    }
+    
+    /**
+     * Disable space as member and post public content.
+     */
+    public function testExplicitlyDisableDefaultNotificationPublic2()
+    {
+        $this->becomeUser('User1');
+
+        Yii::$app->notification->setSpaces(['5396d499-20d6-4233-800b-c6c86e5fa34a']);
+        
+        // Setting empty spaceguids settings
+        $settings = new \humhub\modules\notification\models\forms\NotificationSettings(['user' => User::findOne(['id' => 2])]);
+        $settings->save();
+        
+        $this->becomeUser('Admin');
+
+        Yii::$app->notification->setSpaces(['5396d499-20d6-4233-800b-c6c86e5fa34a']);
+        
+        // Setting empty spaceguids settings
+        $settings = new \humhub\modules\notification\models\forms\NotificationSettings(['user' => User::findOne(['id' => 1])]);
+        $settings->save();
+        
+        $this->becomeUser('User2');
+        
+        $post = new \humhub\modules\post\models\Post(['message' => 'MyTestContent']);
+        $post->content->setContainer(Space::findOne(['id' => 1]));
+        $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
+        $post->save();
+
+        // Note Admin is following Space2 so we expect one notification mail.
+        $this->assertMailSent(1, 'ContentCreated Notification Mail sent');
+    }
 }

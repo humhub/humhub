@@ -52,6 +52,8 @@ class NotificationSettings extends \yii\base\Model
             $this->spaceGuids = array_map(function ($space) {
                 return $space->guid;
             }, $spaces);
+        } else {
+            $this->spaceGuids = Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces');
         }
         
         $this->desktopNotifications = Yii::$app->notification->getDesktopNoficationSettings($this->user);
@@ -231,7 +233,7 @@ class NotificationSettings extends \yii\base\Model
                 $settings->delete($target->getSettingKey($category));
             }
         }
-        Yii::$app->notification->setSpaces($this->user, []);
+        Yii::$app->notification->setSpaces([], $this->user);
         return true;
     }
 

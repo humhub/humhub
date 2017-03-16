@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
         <?= humhub\modules\notification\widgets\NotificationSettingsForm::widget([
             'model' => $model,
             'form' => $form,
-            'showSpaces' => false
+            'showSpaces' => true
         ]) ?>
         <br />
         <button type="submit" class="btn btn-primary" data-ui-loader><?= Yii::t('base', 'Save');?></button>

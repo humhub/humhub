@@ -36,9 +36,8 @@ class NotificationSettingsForm extends \yii\base\Widget
      */
     public function run()
     {
-        if($this->model->user) {
-            $this->defaultSpaces = Yii::$app->notification->getNonNotificationSpaces($this->model->user);
-        }
+        $this->defaultSpaces = Yii::$app->notification->getNonNotificationSpaces($this->model->user);
+
         
         return $this->render('notificationSettingsForm', [
             'form' => $this->form,
