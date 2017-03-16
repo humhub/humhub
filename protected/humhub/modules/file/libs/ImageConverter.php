@@ -114,6 +114,12 @@ class ImageConverter
         list ($width, $height) = getimagesize($sourceFile);
         // get defined memory limit from php_ini
         $memoryLimit = ini_get('memory_limit');
+
+        // No memory limit set
+        if ($memoryLimit == -1) {
+            return;
+        }
+
         // calc needed size for processing image dimensions in Bytes. 
         $neededMemory = floor(($width * $height * $bytesPerPixel * $tweakFactor + 1048576) / 1048576);
         $maxMemoryAllocation = Yii::$app->getModule('file')->settings->get(self::SETTINGS_NAME_MAX_MEMORY_ALLOCATION);
