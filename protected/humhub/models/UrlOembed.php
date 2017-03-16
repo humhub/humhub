@@ -30,7 +30,7 @@ class UrlOembed extends \yii\db\ActiveRecord
         return [
             [['url', 'preview'], 'required'],
             [['preview'], 'string'],
-            [['url'], 'string', 'max' => 255]
+            [['url'], 'string', 'max' => 180]
         ];
     }
 
