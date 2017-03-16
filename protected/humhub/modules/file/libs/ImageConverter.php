@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\libs;
 
+use humhub\libs\Helpers;
 use Yii;
 use yii\base\Exception;
 
@@ -89,15 +90,14 @@ class ImageConverter
 
     /**
      * Dynamically allocate enough memory to process the given image.
-     * 
+     *
      * @throws Exception if the memory is not sufficient to process the image.
      * @param String $sourceFile the source file.
      * @param boolean $test if true the memory will not really be allocated and no exception will be thrown.
-     * @return boolean true if sufficient memory is available. 
+     * @return boolean true if sufficient memory is available.
      */
     public static function allocateMemory($sourceFile, $test = false)
     {
-
         $width = 0;
         $height = 0;
         // buffer for memory needed by other stuff
@@ -121,6 +121,8 @@ class ImageConverter
         }
 
         // calc needed size for processing image dimensions in Bytes. 
+        $memoryLimit = Helpers::getBytesOfIniValue($memoryLimit) * 1048576;
+        // calc needed size for processing image dimensions in Bytes.        
         $neededMemory = floor(($width * $height * $bytesPerPixel * $tweakFactor + 1048576) / 1048576);
         $maxMemoryAllocation = Yii::$app->getModule('file')->settings->get(self::SETTINGS_NAME_MAX_MEMORY_ALLOCATION);
         $maxMemoryAllocation = $maxMemoryAllocation == null ? self::DEFAULT_MAX_ADDITIONAL_MEMORY_ALLOCATION : $maxMemoryAllocation;
