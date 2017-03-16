@@ -82,6 +82,9 @@ HumHub Change Log
 - Enh: Created new ImageController for user image and banner handling
 - Enh: Decreased OEmbed url max length 180chars (acs-ferreira)
 - Enh: Added APCu Support
+- Enh: Added ContentContainer integrity check (Daha62)
+- Fix #2331: Bug image load on PHP 7.1 with dynamic memory alloc (githubjeka)
+
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------
