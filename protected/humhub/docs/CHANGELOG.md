@@ -4,7 +4,7 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
-
+- Enh: Added global (default) notification space settings.
 - Enh: #2359 Use Jplayer playlist feature for post mp3
 - Enh: added js module 'ui.view' for view state and utils - Changed 'ui.state.getState' to 'ui.view.getState'
 - Enh: added view helper as getHeight/Width and isSmall/Medium/Normal (width) to 'ui.view' js module
