@@ -32,7 +32,10 @@ class LoggingController extends Controller
         return parent::init();
     }
 
-    public static function getAccessRules()
+    /**
+     * @inheritdoc
+     */
+    public function getAccessRules()
     {
         return [
             ['permissions' => \humhub\modules\admin\permissions\SeeAdminInformation::className()]

@@ -35,8 +35,11 @@ class ApprovalController extends Controller
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Approval'));
         return parent::init();
     }
-    
-    public static function getAccessRules()
+
+    /**
+     * @inheritdoc
+     */
+    public function getAccessRules()
     {
         return [
             ['permissions' => [

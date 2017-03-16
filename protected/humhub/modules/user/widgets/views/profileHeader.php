@@ -2,13 +2,14 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use humhub\modules\user\controllers\ImageController;
 
-if ($isProfileOwner) {
+if ($allowModifyProfileBanner || $allowModifyProfileImage) {
     $this->registerJsFile('@web-static/resources/user/profileHeaderImageUpload.js');
     $this->registerJs("var profileImageUploaderUserGuid='" . $user->guid . "';", \yii\web\View::POS_BEGIN);
     $this->registerJs("var profileImageUploaderCurrentUserGuid='" . Yii::$app->user->getIdentity()->guid . "';", \yii\web\View::POS_BEGIN);
-    $this->registerJs("var profileImageUploaderUrl='" . Url::to(['/user/account/profile-image-upload', 'userGuid' => $user->guid]) . "';", \yii\web\View::POS_BEGIN);
-    $this->registerJs("var profileHeaderUploaderUrl='" . Url::to(['/user/account/banner-image-upload', 'userGuid' => $user->guid]) . "';", \yii\web\View::POS_BEGIN);
+    $this->registerJs("var profileImageUploaderUrl='" . Url::to(['/user/image/upload', 'userGuid' => $user->guid, 'type' => ImageController::TYPE_PROFILE_IMAGE]) . "';", \yii\web\View::POS_BEGIN);
+    $this->registerJs("var profileHeaderUploaderUrl='" . Url::to(['/user/image/upload', 'userGuid' => $user->guid, 'type' => ImageController::TYPE_PROFILE_BANNER_IMAGE]) . "';", \yii\web\View::POS_BEGIN);
 }
 ?>
 <div class="panel panel-default panel-profile">
@@ -22,10 +23,10 @@ if ($isProfileOwner) {
                  width="100%" style="width: 100%; max-height: 192px;">
 
             <!-- check if the current user is the profile owner and can change the images -->
-            <?php if ($isProfileOwner) : ?>
+            <?php if ($allowModifyProfileBanner) : ?>
                 <form class="fileupload" id="bannerfileupload" action="" method="POST" enctype="multipart/form-data"
                       style="position: absolute; top: 0; left: 0; opacity: 0; width: 100%; height: 100%;">
-                    <input type="file" name="bannerfiles[]">
+                    <input type="file" name="images[]">
                 </form>
 
                 <?php
@@ -59,7 +60,7 @@ if ($isProfileOwner) {
             </div>
 
             <!-- check if the current user is the profile owner and can change the images -->
-            <?php if ($isProfileOwner): ?>
+            <?php if ($allowModifyProfileBanner): ?>
                 <div class="image-upload-buttons" id="banner-image-upload-buttons">
                     <a href="#" onclick="javascript:$('#bannerfileupload input').click();"
                        class="btn btn-info btn-sm"><i
@@ -70,7 +71,7 @@ if ($isProfileOwner) {
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo Url::to(['/user/account/crop-banner-image', 'userGuid' => $user->guid]); ?>"
+                       href="<?php echo Url::to(['/user/image/crop', 'userGuid' => $user->guid, 'type' => ImageController::TYPE_PROFILE_BANNER_IMAGE]); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static"><i
                             class="fa fa-edit"></i></a>
                         <?php
@@ -84,7 +85,7 @@ if ($isProfileOwner) {
                             'linkContent' => '<i class="fa fa-times"></i>',
                             'cssClass' => 'btn btn-danger btn-sm',
                             'style' => $user->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
-                            'linkHref' => Url::to(["/user/account/delete-profile-image", 'type' => 'banner', 'userGuid' => $user->guid]),
+                            'linkHref' => Url::to(['/user/image/delete', 'userGuid' => $user->guid, 'type' => ImageController::TYPE_PROFILE_BANNER_IMAGE]),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
                         ));
                         ?>
@@ -107,10 +108,10 @@ if ($isProfileOwner) {
                  <?php endif; ?>
 
             <!-- check if the current user is the profile owner and can change the images -->
-            <?php if ($isProfileOwner) : ?>
+            <?php if ($allowModifyProfileImage) : ?>
                 <form class="fileupload" id="profilefileupload" action="" method="POST" enctype="multipart/form-data"
                       style="position: absolute; top: 0; left: 0; opacity: 0; height: 140px; width: 140px;">
-                    <input type="file" name="profilefiles[]">
+                    <input type="file" name="images[]">
                 </form>
 
                 <div class="image-upload-loader" id="profile-image-upload-loader" style="padding-top: 60px;">
@@ -131,7 +132,7 @@ if ($isProfileOwner) {
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo Url::to(['/user/account/crop-profile-image', 'userGuid' => $user->guid]); ?>"
+                       href="<?php echo Url::to(['/user/image/crop', 'userGuid' => $user->guid, 'type' => ImageController::TYPE_PROFILE_IMAGE]); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static"><i
                             class="fa fa-edit"></i></a>
                         <?php
@@ -145,7 +146,7 @@ if ($isProfileOwner) {
                             'linkContent' => '<i class="fa fa-times"></i>',
                             'cssClass' => 'btn btn-danger btn-sm',
                             'style' => $user->getProfileImage()->hasImage() ? '' : 'display: none;',
-                            'linkHref' => Url::to(["/user/account/delete-profile-image", 'type' => 'profile', 'userGuid' => $user->guid]),
+                            'linkHref' => Url::to(["/user/image/delete", 'type' => ImageController::TYPE_PROFILE_IMAGE, 'userGuid' => $user->guid]),
                             'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
                         ));
                         ?>

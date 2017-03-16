@@ -27,7 +27,7 @@ class Notification extends \humhub\components\ActiveRecord
      * @var int number of found grouped notifications
      */
     public $group_count;
-    
+
     /*
      * @var int number of involved users of grouped notifications
      */
@@ -95,7 +95,7 @@ class Notification extends \humhub\components\ActiveRecord
 
     /**
      * Returns the business model of this notification
-     * 
+     *
      * @return \humhub\modules\notification\components\BaseNotification
      */
     public function getBaseModel($params = [])
@@ -111,7 +111,7 @@ class Notification extends \humhub\components\ActiveRecord
                         ->andWhere(['class' => $this->class, 'user_id' => $this->user_id, 'group_key' => $this->group_key])
                         ->one();
                 $params['originator'] = $params['record']->originator;
-                
+
             } else {
                 $params['record'] = $this;
             }
@@ -141,7 +141,7 @@ class Notification extends \humhub\components\ActiveRecord
 
     /**
      * Returns space of this notification
-     * 
+     *
      * @deprecated since version 1.1
      * @return type
      */
@@ -152,7 +152,7 @@ class Notification extends \humhub\components\ActiveRecord
 
     /**
      * Returns polymorphic relation linked with this notification
-     * 
+     *
      * @return \humhub\components\ActiveRecord
      */
     public function getSourceObject()
@@ -166,7 +166,7 @@ class Notification extends \humhub\components\ActiveRecord
 
     /**
      * Returns all available notifications of a module identified by its modulename.
-     * 
+     *
      * @return array with format [moduleId => notifications[]]
      */
     public static function getModuleNotifications()
@@ -196,7 +196,7 @@ class Notification extends \humhub\components\ActiveRecord
 
     /**
      * Loads a certain amount ($limit) of grouped notifications from a given id set by $from.
-     * 
+     *
      * @param integer $from notificatoin id which was the last loaded entry.
      * @param limit $limit limit count of results.
      * @since 1.2
@@ -217,7 +217,7 @@ class Notification extends \humhub\components\ActiveRecord
     /**
      * Finds grouped notifications if $sendWebNotifications is set to 1 we filter only notifications
      * with send_web_notifications setting to 1.
-     * 
+     *
      * @return \yii\db\ActiveQuery
      */
     public static function findGrouped(User $user = null, $sendWebNotifications = 1)
@@ -235,7 +235,24 @@ class Notification extends \humhub\components\ActiveRecord
         $query->andWhere(['user_id' => $user->id]);
 
         $query->andWhere(['send_web_notifications' => $sendWebNotifications]);
-        $query->addGroupBy(['COALESCE(group_key, id)', 'class']);
+        $query->addGroupBy([
+            'COALESCE(group_key, id)',
+            'id',
+            'class',
+            'user_id',
+            'notification.user_id',
+            'notification.seen',
+            'notification.source_class',
+            'notification.source_pk',
+            'notification.space_id',
+            'notification.emailed',
+            'notification.created_at',
+            'notification.desktop_notified',
+            'notification.originator_user_id',
+            'notification.module',
+            'notification.group_key',
+            'notification.send_web_notifications',
+        ]);
         $query->orderBy(['group_seen' => SORT_ASC, 'group_created_at' => SORT_DESC]);
 
         return $query;
@@ -244,7 +261,7 @@ class Notification extends \humhub\components\ActiveRecord
     /**
      * Finds all grouped unseen notifications for the given user or the current loggedIn user
      * if no User instance is provided.
-     * 
+     *
      * @param \humhub\modules\notification\models\User $user
      * @since 1.2
      */
@@ -257,7 +274,7 @@ class Notification extends \humhub\components\ActiveRecord
 
     /**
      * Finds all grouped unseen notifications which were not already sent to the frontend.
-     * 
+     *
      * @param \humhub\modules\notification\models\User $user
      *  @since 1.2
      */

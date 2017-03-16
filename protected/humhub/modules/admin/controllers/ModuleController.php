@@ -39,7 +39,10 @@ class ModuleController extends Controller
         return parent::init();
     }
 
-    public static function getAccessRules()
+    /**
+     * @inheritdoc
+     */
+    public function getAccessRules()
     {
         return [
             ['permissions' => \humhub\modules\admin\permissions\ManageModules::className()]
@@ -333,7 +336,7 @@ class ModuleController extends Controller
                 $userDefaultModule->state = $model->userDefaultState;
                 if (!$userDefaultModule->save()) {
                     throw new HttpException('Could not save: ' . print_r($userDefaultModule->getErrors(), 1));
-                }                
+                }
             }
 
             return $this->renderModalClose();

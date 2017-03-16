@@ -19,7 +19,7 @@ use humhub\modules\user\models\fieldtype\BaseType;
 
 /**
  * UserprofileController provides manipulation of the user's profile fields & categories.
- * 
+ *
  * @since 0.5
  */
 class UserProfileController extends Controller
@@ -40,7 +40,10 @@ class UserProfileController extends Controller
         return parent::init();
     }
 
-    public static function getAccessRules()
+    /**
+     * @inheritdoc
+     */
+    public function getAccessRules()
     {
         return [
             ['permissions' =>  \humhub\modules\admin\permissions\ManageUsers::className()]

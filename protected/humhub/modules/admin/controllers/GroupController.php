@@ -37,7 +37,10 @@ class GroupController extends Controller
         return parent::init();
     }
 
-    public static function getAccessRules()
+    /**
+     * @inheritdoc
+     */
+    public function getAccessRules()
     {
         return [
             ['permissions' => \humhub\modules\admin\permissions\ManageGroups::className()]
@@ -128,12 +131,12 @@ class GroupController extends Controller
         $this->forcePostRequest();
         $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
         $group->removeUser(Yii::$app->request->get('userId'));
-        
+
         if(Yii::$app->request->isAjax) {
             Yii::$app->response->format = 'json';
             return ['success' => true];
         }
-        
+
         return $this->redirect(['/admin/group/manage-group-users', 'id' => $group->id]);
     }
 
@@ -204,9 +207,9 @@ class GroupController extends Controller
 
         $subQuery = (new \yii\db\Query())->select('*')->from(GroupUser::tableName(). ' g')->where([
                     'and', 'g.user_id=user.id', ['g.group_id' => $group->id]]);
-        
+
         $query = User::find()->where(['not exists', $subQuery]);
-        
+
         $result = UserPicker::filter([
                     'keyword' => $keyword,
                     'query' => $query,

@@ -14,12 +14,12 @@ use humhub\modules\admin\libs\HumHubAPI;
 
 /**
  * Informations
- * 
+ *
  * @since 0.5
  */
 class InformationController extends Controller
 {
-    
+
     /**
      * @inheritdoc
      */
@@ -35,8 +35,11 @@ class InformationController extends Controller
         $this->subLayout = '@admin/views/layouts/information';
         return parent::init();
     }
-    
-    public static function getAccessRules()
+
+    /**
+     * @inheritdoc
+     */
+    public function getAccessRules()
     {
         return [
             ['permissions' => \humhub\modules\admin\permissions\SeeAdminInformation::className()]

@@ -76,6 +76,10 @@ HumHub Change Log
 - Enh: Directory view templates cleanups
 - Fix: All LDAP Users have been disabled and not reenabled by hourly cronjob if ldap server not reachable.
 - Enh: Cleanup authentication layout file 
+- Fix: Console image converter memory limit allocation
+- Enh: Added new controller init event
+- Enh: Made admin base controller method "getAccessRules()" non static
+- Enh: Created new ImageController for user image and banner handling
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------

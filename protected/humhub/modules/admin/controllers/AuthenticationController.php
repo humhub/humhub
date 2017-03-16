@@ -21,7 +21,7 @@ class AuthenticationController extends Controller
      * @inheritdoc
      */
     public $adminOnly = false;
-    
+
     /**
      * @inheritdoc
      */
@@ -37,7 +37,10 @@ class AuthenticationController extends Controller
         return parent::init();
     }
 
-    public static function getAccessRules()
+    /**
+     * @inheritdoc
+     */
+    public function getAccessRules()
     {
         return [
             ['permissions' => \humhub\modules\admin\permissions\ManageSettings::className()]

@@ -23,7 +23,7 @@ use humhub\modules\admin\permissions\ManageSettings;
 
 /**
  * User management
- * 
+ *
  * @since 0.5
  */
 class UserController extends Controller
@@ -41,7 +41,10 @@ class UserController extends Controller
         return parent::init();
     }
 
-    public static function getAccessRules()
+    /**
+     * @inheritdoc
+     */
+    public function getAccessRules()
     {
         return [
             ['permissions' => [
@@ -176,9 +179,9 @@ class UserController extends Controller
 
         return $this->render('edit', array('hForm' => $form, 'user' => $user));
     }
-    
+
     public function canBecomeUser($user) {
-        return Yii::$app->user->isAdmin() 
+        return Yii::$app->user->isAdmin()
                 && $user->id != Yii::$app->user->getIdentity()->id
                 && !$user->isSystemAdmin();
     }
