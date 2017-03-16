@@ -2,6 +2,7 @@
 
 namespace humhub\modules\user;
 
+use humhub\modules\content\models\ContentContainer;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
@@ -125,6 +126,19 @@ class Events extends \yii\base\Object
             if ($module->user == null) {
                 if ($integrityController->showFix("Deleting user-module " . $module->id . " of non existing user!")) {
                     $module->delete();
+                }
+            }
+        }
+
+        $userIds = User::find()->select('id')->asArray()->all();
+        foreach ($userIds as $key => $id) {
+            $userIds[$key] = $id['id'];
+        }
+        $integrityController->showTestHeadline("User Module - Content container (" . ContentContainer::find()->count() . " entries)");
+        foreach (ContentContainer::find()->where(['NOT IN', 'owner_user_id', $userIds])->all() as $contentContainer) {
+            if ($contentContainer['class'] == User::className() && $contentContainer['pk'] == $contentContainer['owner_user_id']) {
+                if ($integrityController->showFix("Deleting content container " . $contentContainer->id . " without existing user!")) {
+                    $contentContainer->delete();
                 }
             }
         }
