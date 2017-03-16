@@ -1,8 +1,7 @@
 <?php
 
-use yii\helpers\Html;
 use humhub\modules\file\libs\FileHelper;
-use humhub\libs\Helpers;
+
 
 $object = $this->context->object;
 ?>
@@ -19,22 +18,20 @@ $object = $this->context->object;
                 </a>
             <?php endif; ?>
         <?php endforeach; ?>
+        
+        <?php $playlist = [] ?>
+        
         <?php foreach ($files as $file): ?>
             <?php $fileExtension = FileHelper::getExtension($file->file_name); ?>
             <?php if ($fileExtension == "mp3") : ?>
-                <!-- Integrate jPlayer -->
-                <?= xj\jplayer\AudioWidget::widget(array(
-                    'id' => $file->id,
-                    'mediaOptions' => [
-                        'mp3' => $file->getUrl(),
-                        'title' =>  Html::encode(Helpers::trimText($file->file_name, 40))
-                    ],
-                    'jsOptions' => [
-                        'smoothPlayBar' => true
-                    ]
-                ))?>
+                <?php $playlist[] = $file ?>
             <?php endif; ?>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
+        
+        <?= \humhub\widgets\JPlayerPlaylistWidget::widget([
+            'playlist' => $playlist
+        ]); ?>
+        
     </div>
 
     <!-- Show List of all files -->
