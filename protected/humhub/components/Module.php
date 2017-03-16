@@ -14,6 +14,7 @@ use yii\helpers\Json;
 /**
  * Base Class for Modules / Extensions
  *
+ * @property SettingsManager $settings
  * @author luke
  */
 class Module extends \yii\base\Module
