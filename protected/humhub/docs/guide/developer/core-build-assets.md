@@ -18,7 +18,9 @@ HumHub uses Yii's build in mechanism for compressing and combining assets as jav
 HumHub will only use the compressed assets if operated in [production mode](admin-installation.md#disable-errors-debugging), otherwise
 all assets are included seperatly.
 
-The compressed production assets are build by calling:
+Before building your production assets, delete the content of your `static/assets` directory.
+
+Then build your production assets by calling:
 
 ```
 php yii asset humhub/config/assets.php humhub/config/assets-prod.php

@@ -1099,7 +1099,7 @@ else
 
         function _DoCodeSpans(text) {
             
-            return text;
+            //return text;
             //
             // * Backtick quotes are used for <code></code> spans.
             // 
@@ -1139,7 +1139,7 @@ else
             /gm, function(){...});
             */
 
-            /*text = text.replace(/(^|[^\\`])(`+)(?!`)([^\r]*?[^`])\2(?!`)/gm,
+            text = text.replace(/(^|[^\\`])(`+)(?!`)([^\r]*?[^`])\2(?!`)/gm,
                 function (wholeMatch, m1, m2, m3, m4) {
                     var c = m3;
                     //c = c.replace(/^([ \t]*)/g, ""); // leading whitespace
@@ -1150,7 +1150,7 @@ else
                 }
             );
 
-            return text;*/
+            return text;
         }
 
         function _EncodeCode(text) {

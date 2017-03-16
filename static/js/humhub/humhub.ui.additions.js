@@ -121,7 +121,7 @@ humhub.module('ui.additions', function (module, require, $) {
         });
 
         module.register('markdown', '[data-ui-markdown]', function ($match) {
-            var converter = new Markdown.Converter();
+            var converter = new Markdown.getSanitizingConverter();
             Markdown.Extra.init(converter);
             $match.each(function () {
                 var $this = $(this);
