@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\models;
 
+use humhub\libs\UUID;
+use humhub\modules\content\models\ContentContainer;
 use Yii;
 use yii\base\Exception;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -346,6 +348,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     public function beforeSave($insert)
     {
         if ($insert) {
+            $this->getValidGuid();
 
             if ($this->auth_mode == '') {
                 $passwordAuth = new \humhub\modules\user\authclient\Password();
@@ -647,6 +650,14 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         }
 
         return self::USERGROUP_USER;
+    }
+
+    private function getValidGuid()
+    {
+        if (ContentContainer::findOne(['guid' => $this->guid])) {
+            $this->guid = UUID::v4();
+            self::getValidGuid();
+        }
     }
 
 }
