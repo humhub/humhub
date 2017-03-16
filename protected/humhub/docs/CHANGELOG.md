@@ -76,6 +76,7 @@ HumHub Change Log
 - Fix: Console image converter memory limit allocation
 - Enh: Added new controller init event
 - Enh: Made admin base controller method "getAccessRules()" non static
+- Enh: Created new ImageController for user image and banner handling
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------

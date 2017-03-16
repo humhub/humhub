@@ -1,10 +1,10 @@
 /**
  * Handle Image Upload
  */
-$(document).on('ready pjax:success', function() {
+$(document).on('ready pjax:success', function () {
     'use strict';
-    
-    $('.fileupload').each(function() {
+
+    $('.fileupload').each(function () {
 
 
         if ($(this).attr('id') == "profilefileupload") {
@@ -19,18 +19,18 @@ $(document).on('ready pjax:success', function() {
                 singleFileUploads: true,
                 //formData: {'CSRF_TOKEN': csrfValue},
                 limitMultiFileUploads: 1,
-                progressall: function(e, data) {
+                progressall: function (e, data) {
                     var progress = parseInt(data.loaded / data.total * 100, 10);
                     $('#profile-image-upload-bar .progress-bar').css('width', progress + '%');
                 },
-                done: function(e, data) {
+                done: function (e, data) {
 
                     if (data.result.files.error == true) {
                         handleUploadError(data.result);
                     } else {
                         if (profileImageUploaderUserGuid === profileImageUploaderCurrentUserGuid) {
                             $('#user-account-image').attr('src', data.result.files.url + '&c=' + Math.random());
-                        } 
+                        }
                         $('#user-profile-image').attr('src', data.result.files.url + '&c=' + Math.random());
                         $('.user-' + profileImageUploaderUserGuid).attr('src', data.result.files.url + '&c=' + Math.random());
                         $('#user-profile-image').addClass('animated bounceIn');
@@ -43,9 +43,9 @@ $(document).on('ready pjax:success', function() {
 
 
                 }
-            }).bind('fileuploadstart', function(e) {
+            }).bind('fileuploadstart', function (e) {
                 $('#profile-image-upload-loader').show();
-            }).bind('fileuploadstart', function(e) {
+            }).bind('fileuploadstart', function (e) {
                 $('#user-profile-image').removeClass('animated bounceIn');
             })
 
@@ -61,11 +61,11 @@ $(document).on('ready pjax:success', function() {
                 singleFileUploads: true,
                 //formData: {'CSRF_TOKEN': csrfValue},
                 limitMultiFileUploads: 1,
-                progressall: function(e, data) {
+                progressall: function (e, data) {
                     var progress = parseInt(data.loaded / data.total * 100, 10);
                     $('#banner-image-upload-bar .progress-bar').css('width', progress + '%');
                 },
-                done: function(e, data) {
+                done: function (e, data) {
 
                     if (data.result.files.error == true) {
                         handleUploadError(data.result);
@@ -79,9 +79,9 @@ $(document).on('ready pjax:success', function() {
                     $('#banner-image-upload-loader').hide();
                     $('#banner-image-upload-bar .progress-bar').css('width', '0%');
                 }
-            }).bind('fileuploadstart', function(e) {
+            }).bind('fileuploadstart', function (e) {
                 $('#banner-image-upload-loader').show();
-            }).bind('fileuploadstart', function(e) {
+            }).bind('fileuploadstart', function (e) {
                 $('#user-banner-image').removeClass('animated bounceIn');
             })
 
@@ -107,7 +107,7 @@ function handleUploadError(json) {
 
 function resetProfileImage(json) {
 
-    if (json.type == 'profile') {
+    if (json.type == 'image') {
         $('#user-profile-image img').attr('src', json.defaultUrl);
         $('#user-profile-image').attr('src', json.defaultUrl);
         $('#deleteLinkPost_modal_profileimagedelete').hide();
@@ -121,41 +121,41 @@ function resetProfileImage(json) {
     $('.image-upload-buttons').hide();
 }
 
-$(document).on('ready pjax:success', function() {
+$(document).on('ready pjax:success', function () {
 
     // override standard drag and drop behavior
-    $(document).off('drop.humhub dragover.humhub').on('drop.humhub dragover.humhub', function(e) {
+    $(document).off('drop.humhub dragover.humhub').on('drop.humhub dragover.humhub', function (e) {
         e.preventDefault();
     });
 
     // show buttons at image rollover
-    $('#profilefileupload').mouseover(function() {
+    $('#profilefileupload').mouseover(function () {
         $('#profile-image-upload-buttons').show();
     })
 
     // show buttons also at buttons rollover (better: prevent the mouseleave event)
-    $('#profile-image-upload-buttons').mouseover(function() {
+    $('#profile-image-upload-buttons').mouseover(function () {
         $('#profile-image-upload-buttons').show();
     });
 
     // hide buttons at image mouse leave
-    $('#profilefileupload').mouseleave(function() {
+    $('#profilefileupload').mouseleave(function () {
         $('#profile-image-upload-buttons').hide();
     })
 
 
     // show buttons at image rollover
-    $('#bannerfileupload, .img-profile-data').mouseover(function() {
+    $('#bannerfileupload, .img-profile-data').mouseover(function () {
         $('#banner-image-upload-buttons').show();
     })
 
     // show buttons also at buttons rollover (better: prevent the mouseleave event)
-    $('#banner-image-upload-buttons').mouseover(function() {
+    $('#banner-image-upload-buttons').mouseover(function () {
         $('#banner-image-upload-buttons').show();
     })
 
     // hide buttons at image mouse leave
-    $('#bannerfileupload, .img-profile-data').mouseleave(function() {
+    $('#bannerfileupload, .img-profile-data').mouseleave(function () {
         $('#banner-image-upload-buttons').hide();
     })
 

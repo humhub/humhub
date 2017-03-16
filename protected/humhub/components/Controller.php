@@ -24,7 +24,7 @@ class Controller extends \yii\web\Controller
     /**
      * @event \yii\base\Event an event raised on init a controller.
      */
-    const EVENT_INIT = 'create';
+    const EVENT_INIT = 'init';
 
     /**
      * @var null|string the name of the sub layout to be applied to this controller's views.

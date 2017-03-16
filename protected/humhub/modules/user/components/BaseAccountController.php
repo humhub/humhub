@@ -20,13 +20,25 @@ use humhub\components\behaviors\AccessControl;
 class BaseAccountController extends \humhub\components\Controller
 {
 
+    /**
+     * @inheritdoc
+     */
     public $subLayout = "@humhub/modules/user/views/account/_layout";
 
-    public function init() {
+    /**
+     * @var \humhub\modules\user\models\User the user
+     */
+    public $user;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
         $this->appendPageTitle(\Yii::t('UserModule.base', 'My Account'));
         return parent::init();
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -46,7 +58,11 @@ class BaseAccountController extends \humhub\components\Controller
      */
     public function getUser()
     {
-        return Yii::$app->user->getIdentity();
+        if ($this->user === null) {
+            $this->user = Yii::$app->user->getIdentity();
+        }
+
+        return $this->user;
     }
 
 }

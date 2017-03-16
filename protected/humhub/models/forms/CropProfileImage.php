@@ -1,25 +1,12 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\models\forms;
-
 
 use yii\base\Model;
 
@@ -53,6 +40,16 @@ class CropProfileImage extends Model
      * @var Int is the height of the area
      */
     public $cropH;
+
+    /**
+     * @var int image ratio
+     */
+    public $aspectRatio = 1;
+
+    /**
+     * @var array crop default position
+     */
+    public $cropSetSelect = [0, 0, 100, 100];
 
     /**
      * Declares the validation rules.
