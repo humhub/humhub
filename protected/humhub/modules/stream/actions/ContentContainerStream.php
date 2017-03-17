@@ -47,7 +47,7 @@ class ContentContainerStream extends Stream
         }
 
         // Add all pinned contents to initial request
-        if ($this->isInitialRequest() || $this->isSingleContentQuery()) {
+        if ($this->isInitialRequest()) {
             // Get number of pinned contents
             $pinnedQuery = clone $this->activeQuery;
             $pinnedQuery->andWhere(['content.pinned' => 1]);

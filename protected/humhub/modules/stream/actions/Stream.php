@@ -173,6 +173,7 @@ abstract class Stream extends Action
 
         // Build query and set activeQuery.
         $this->activeQuery = $this->streamQuery->query(true);
+        $this->from = $this->streamQuery->from;
         $this->user = $this->streamQuery->user;
 
         // Update action filters with merged request and configured action filters.
@@ -304,7 +305,7 @@ abstract class Stream extends Action
         // Get Underlying Object (e.g. Post, Poll, ...)
         $underlyingObject = $content->getPolymorphicRelation();
         if ($underlyingObject === null) {
-            throw new Exception('Could not get contents underlying object! - contentid: '.$content->id);
+            throw new Exception('Could not get contents underlying object! - contentid: ' . $content->id);
         }
 
         // Fix for newly created content
@@ -314,7 +315,7 @@ abstract class Stream extends Action
         }
 
         $underlyingObject->populateRelation('content', $content);
-        
+
         $result['output'] = self::renderEntry($underlyingObject, false);
         $result['pinned'] = (boolean) $content->pinned;
         $result['archived'] = (boolean) $content->archived;
