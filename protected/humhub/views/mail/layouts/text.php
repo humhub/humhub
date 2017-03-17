@@ -1,6 +1,5 @@
 <?= $content; ?>
 
-
 ---
 
 <?php if (isset(Yii::$app->view->params['showUnsubscribe']) && Yii::$app->view->params['showUnsubscribe'] === true) : ?>

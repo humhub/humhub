@@ -88,7 +88,7 @@ HumHub Change Log
 - Enh: Added ContentContainer integrity check (Daha62)
 - Fix #2331: Bug image load on PHP 7.1 with dynamic memory alloc (githubjeka)
 - Fix #2367: `ImageConverter::allocateMemory` uses common units(MegaBates) of memory (githubjeka)
-
+- Fix: Better notification compatiblity - mail views and enabled WebNotificationTarget
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------
