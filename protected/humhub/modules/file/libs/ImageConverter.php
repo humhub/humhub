@@ -98,8 +98,13 @@ class ImageConverter
      */
     public static function allocateMemory($sourceFile, $test = false)
     {
-        $width = 0;
-        $height = 0;
+        if (!file_exists($sourceFile)) {
+            return true;
+        }
+
+        // getting the image width and height
+        list($width, $height) = getimagesize($sourceFile);
+
         // buffer for memory needed by other stuff
         $buffer = 10;
         // usually for RGB 3 pixels are used, for CMYK 4 pixels
@@ -107,22 +112,18 @@ class ImageConverter
         // tweak factor, experience value
         $tweakFactor = 2.2;
         // check if the file exists, if not it seems that we do not have to allocate memory and we return true
-        if (!file_exists($sourceFile)) {
-            return true;
-        }
-        // getting the image width and height
-        list ($width, $height) = getimagesize($sourceFile);
+
         // get defined memory limit from php_ini
         $memoryLimit = ini_get('memory_limit');
 
         // No memory limit set
         if ($memoryLimit == -1) {
-            return;
+            return false;
         }
 
-        // calc needed size for processing image dimensions in Bytes. 
-        $memoryLimit = Helpers::getBytesOfIniValue($memoryLimit) * 1048576;
-        // calc needed size for processing image dimensions in Bytes.        
+        // calc needed size for processing image dimensions in MegaBytes.
+        $memoryLimit = Helpers::getBytesOfIniValue($memoryLimit) / 1048576;
+        // calc needed size for processing image dimensions in MegaBytes.
         $neededMemory = floor(($width * $height * $bytesPerPixel * $tweakFactor + 1048576) / 1048576);
         $maxMemoryAllocation = Yii::$app->getModule('file')->settings->get(self::SETTINGS_NAME_MAX_MEMORY_ALLOCATION);
         $maxMemoryAllocation = $maxMemoryAllocation == null ? self::DEFAULT_MAX_ADDITIONAL_MEMORY_ALLOCATION : $maxMemoryAllocation;
