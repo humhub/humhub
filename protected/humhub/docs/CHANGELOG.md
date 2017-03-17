@@ -88,6 +88,7 @@ HumHub Change Log
 - Enh: Added ContentContainer integrity check (Daha62)
 - Fix #2331: Bug image load on PHP 7.1 with dynamic memory alloc (githubjeka)
 - Fix #2367: `ImageConverter::allocateMemory` uses common units(MegaBates) of memory (githubjeka)
+- Fix: #2369: typo issue (Felli)
 - Fix: Better notification compatiblity - mail views and enabled WebNotificationTarget
 - Fix #2312: Pinned post appears twice on stream 
 - Enh: Added option to show/hide deactivated user content in stream
