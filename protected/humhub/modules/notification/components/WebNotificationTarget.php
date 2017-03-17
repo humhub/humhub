@@ -18,6 +18,11 @@ class WebNotificationTarget extends NotificationTarget
     public $id = 'web';
 
     /**
+     * @inheritdoc
+     */
+    public $defaultSetting = true;
+
+    /**
      * Handles Webnotifications by setting the send_web_notifications flag and sending an live event.
      */
     public function handle(BaseNotification $notification, User $user)
