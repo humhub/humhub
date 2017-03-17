@@ -185,7 +185,7 @@ class PollController extends Controller
         }
         
         if ($last + $this->maxTimeDecay < $currentTime) {
-            Yii::warning('User requested too old live data! Requested: ' . $last . ' Now: ' . $currentTime, 'live');
+            Yii::info('User requested too old live data! Requested: ' . $last . ' Now: ' . $currentTime, 'live');
             $last = $currentTime;
         }
 
