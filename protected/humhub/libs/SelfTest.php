@@ -204,7 +204,7 @@ class SelfTest
         }
 
         // Checks APC Extension
-        $title = 'PHP - APC Support';
+        $title = 'PHP - APC(u) Support';
         if (function_exists('apc_add') || function_exists('apcu_add')) {
             $checks[] = array(
                 'title' => Yii::t('base', $title),
@@ -214,7 +214,7 @@ class SelfTest
             $checks[] = array(
                 'title' => Yii::t('base', $title),
                 'state' => 'WARNING',
-                'hint' => 'Optional - Install APC Extension for APC Caching'
+                'hint' => 'Optional - Install APCu Extension for APC Caching'
             );
         }
 

@@ -9,7 +9,7 @@ class m131203_110444_oembed extends Migration
     public function up()
     {
         $this->createTable('url_oembed', array(
-            'url' => 'varchar(255) NOT NULL',
+            'url' => 'varchar(180) NOT NULL',
             'preview' => 'text NOT NULL',
             'PRIMARY KEY (`url`)'
         ));

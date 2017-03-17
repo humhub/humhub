@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'No member or following spaces found.' => '',
-    'No result found for the given filter.' => '',
-    'To search for other spaces, type at least {count} characters.' => '',
+    'No member or following spaces found.' => '没有找到成员或者关注的空间。',
+    'No result found for the given filter.' => '没有找到符合筛选条件的记录。',
+    'To search for other spaces, type at least {count} characters.' => '搜索其它的空间, 至少输入 {count} 个字符。',
     'Create new space' => '创建新空间',
     'My spaces' => '<strong>我的空间</strong>',
     'Search' => '搜 索',

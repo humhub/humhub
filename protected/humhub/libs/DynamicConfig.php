@@ -11,7 +11,6 @@ namespace humhub\libs;
 use Yii;
 use yii\helpers\ArrayHelper;
 
-
 /**
  * DynamicConfig provides access to the dynamic configuration file.
  *
@@ -109,12 +108,19 @@ class DynamicConfig extends \yii\base\Object
 
         // Add Caching
         $cacheClass = Yii::$app->settings->get('cache.class');
-        if (in_array($cacheClass, ['yii\caching\DummyCache', 'yii\caching\ApcCache', 'yii\caching\FileCache'])) {
+        if (in_array($cacheClass, ['yii\caching\DummyCache', 'yii\caching\FileCache'])) {
             $config['components']['cache'] = [
                 'class' => $cacheClass,
                 'keyPrefix' => Yii::$app->id
             ];
+        } elseif ($cacheClass == 'yii\caching\ApcCache' && (function_exists('apcu_add') || function_exists('apc_add'))) {
+            $config['components']['cache'] = [
+                'class' => $cacheClass,
+                'keyPrefix' => Yii::$app->id,
+                'useApcu' => (function_exists('apcu_add'))
+            ];
         }
+
         // Add User settings
         $config['components']['user'] = array();
         if (Yii::$app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
@@ -133,7 +139,7 @@ class DynamicConfig extends \yii\base\Object
 
             if (Yii::$app->settings->get('mailer.username')) {
                 $mail['transport']['username'] = Yii::$app->settings->get('mailer.username');
-            } else if(!Yii::$app->settings->get('mailer.password')) {
+            } else if (!Yii::$app->settings->get('mailer.password')) {
                 $mail['transport']['authMode'] = 'null';
             }
 
@@ -163,7 +169,7 @@ class DynamicConfig extends \yii\base\Object
         $config['components']['mailer'] = $mail;
         $config = ArrayHelper::merge($config, ThemeHelper::getThemeConfig(Yii::$app->settings->get('theme')));
         $config['params']['config_created_at'] = time();
-        
+
         $config['params']['horImageScrollOnMobile'] = Yii::$app->settings->get('horImageScrollOnMobile');
 
         self::save($config);

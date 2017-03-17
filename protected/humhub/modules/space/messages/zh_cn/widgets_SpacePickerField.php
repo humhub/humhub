@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add Space' => '',
-    'No spaces found for the given query' => '',
-    'Select {n,plural,=1{space} other{spaces}}' => '',
-    'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}' => '',
+    'Add Space' => '增加空间',
+    'No spaces found for the given query' => '没有找到空间',
+    'Select {n,plural,=1{space} other{spaces}}' => '选择 {n,plural,=1{space} other{spaces}}',
+    'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}' => '此域只允许最大 {n,plural,=1{# space} other{# spaces}}',
 ];

@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '',
+    'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '此上传域只允许最大{n,plural,=1{# file} other{# files}}。',
 ];

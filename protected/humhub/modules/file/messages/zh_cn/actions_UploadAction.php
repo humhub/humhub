@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'File {fileName} could not be uploaded!' => '',
+    'File {fileName} could not be uploaded!' => '文件 {fileName} 不能被上传!',
 ];

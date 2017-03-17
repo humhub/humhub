@@ -24,4 +24,9 @@ return array (
   '<strong>Guide:</strong> Spaces' => '<strong>指南：</strong>空间',
   '<strong>Guide:</strong> User profile' => '<strong>指南：</strong> 用户属性',
   'Get to know your way around the site\'s most important features with the following guides:' => '以下指南带你了解网站的主要功能。',
+  '<strong>Remove</strong> tour panel' => '<strong>移出</strong> 指南',
+  'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.' =>
+  '此操作将会从你的主面板上移出用户指南. 你可以在<br>账户设置 <i class="fa fa-caret-right"></i> 设置 里重新打开。',
+  'Ok' => '确认',
+  'Cancel' => '取消',
 );
