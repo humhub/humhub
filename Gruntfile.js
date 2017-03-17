@@ -1,7 +1,10 @@
 module.exports = function (grunt) {
 
+    
+
     var uglifyAssetcfg = {};
     uglifyAssetcfg[grunt.option('to')] = grunt.option('from');
+    
     var cssMinAssetcfg = {};
     cssMinAssetcfg[grunt.option('to')] = [grunt.option('from')];
     
@@ -9,24 +12,22 @@ module.exports = function (grunt) {
     
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        concat: {
-            options: {
-                separator: ';',
-            },
-            dist: {
-                src: ['js/humhub.core.js', 'js/humhub.util.js', 'js/humhub.additions.js',
-                    'js/humhub.client.js', 'js/humhub.ui.js', 'js/humhub.ui.modal.js', 'js/humhub.actions.js',
-                    'js/humhub.content.js', 'js/humhub.stream.js'],
-                dest: 'js/dist/humhub.all.js'
-            }
-        },
-        watch: {
-            js: {
-                files: ['js/*.js'],
-                tasks: ['build']
-            }
-        },
         clean: ["assets/*"],
+        shell: {
+            buildAssets: {
+                command: "rm static/js/all-*.js ; rm static/css/all-*.css ; rm -rf static/assets/* ; cd protected ; php yii asset humhub/config/assets.php humhub/config/assets-prod.php"
+            },
+            buildSearch: {
+                command: "cd protected ; php yii search/rebuild"
+            },
+            buildTheme: {
+                command: function(name) {
+                    theme = name || grunt.option('name') || "HumHub";
+                    return "cd themes/"+theme+"/less ; lessc -x build.less ../css/theme.css";
+                }
+            }
+            
+        },
         uglify: {
             build: {
                 files: {
@@ -35,12 +36,7 @@ module.exports = function (grunt) {
             },
             assets: {
                 options: {
-                    preserveComments: /^!|@preserve|@license|@cc_on/i,
-                    //preserveComments: 'all',
-                   // ASCIIOnly: true,
-                    /*beautify: {
-                        "ascii_only": true
-                    },*/
+                    preserveComments: /^!|@preserve|@license|@cc_on/i
                 },
                 files: uglifyAssetcfg
             }
@@ -58,13 +54,30 @@ module.exports = function (grunt) {
             }
         }
     });
+    
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.registerTask('default', ['watch']);
-    grunt.registerTask('build', ['concat', 'uglify', 'clean']);
-        
+    grunt.loadNpmTasks('grunt-shell');
+    
+    //grunt.registerTask('default', ['watch']);
+    grunt.registerTask('build-assets', ['shell:buildAssets']);
+    grunt.registerTask('build-search', ['shell:buildSearch']);
+    
+    /**
+     * Build default HumHub theme:
+     * 
+     * > grunt build-theme
+     * 
+     * Build named theme:
+     * > grunt build-theme --name=MyTheme
+     * 
+     * or
+     * 
+     * > grunt shell:buildTheme:MyTheme
+     */
+    grunt.registerTask('build-theme', ['shell:buildTheme']);
 };

@@ -27,6 +27,12 @@ If you are using the command line tool [lessc](http://lesscss.org/), you can bui
 lessc -x themes/Example/less/build.less themes/Example/css/theme.css
 ```
 
+or respectively by using [grunt](../developer/core-build.md):
+
+```
+grunt build-theme --name=Example
+```
+
 > Info: For compiling your less file, there are also other alternatives like  [WinLess](http://winless.org/) or  [SimpLESS](https://wearekiss.com/simpless). 
 
 

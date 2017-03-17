@@ -18,6 +18,12 @@ cd /path/to/humhub/protected
 php yii search/rebuild
 ```
 
+or by means of [grunt](../developer/core-build.md):
+
+```
+grunt build-search
+```
+
 Zend Lucence Engine
 --------------------
 

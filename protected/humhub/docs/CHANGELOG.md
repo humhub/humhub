@@ -4,6 +4,7 @@ HumHub Change Log
 
 1.2.0-beta.3 under developement
 --------------------------------
+- Enh: Added Grunt tasks `build-assets`, `build-theme`, `build-search`
 - Fix: Error when saving account setting permission.
 - Fix: #2296 stream scroll issue for mobile webkit browsers (martinbeek)
 - Fix: Added unknown upload error if server cancels upload (e.g in case of a post_max_size violation issue)

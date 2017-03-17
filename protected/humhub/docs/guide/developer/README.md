@@ -45,5 +45,5 @@ Special Topics
 
 Core Development
 ----------------
-* [Build assets](core-build-assets.md)
+* [HumHub Build](core-build.md)
 * [Coding Standards](core-coding-standards.md)
