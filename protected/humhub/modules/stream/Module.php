@@ -27,4 +27,9 @@ class Module extends \humhub\components\Module
      */
     public $streamSuppressQueryIgnore = [\humhub\modules\post\models\Post::class, \humhub\modules\activity\models\Activity::class];
 
+    /**
+     * @var boolean show contents of deactivated users in stream
+     */
+    public $showDeactivatedUserContent = true;
+    
 }

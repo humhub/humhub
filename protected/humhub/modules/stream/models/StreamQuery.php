@@ -317,7 +317,10 @@ class StreamQuery extends \yii\base\Model
         $this->_query->joinWith('contentContainer');
 
         $this->_query->limit($this->limit);
-        $this->_query->andWhere(['user.status' => User::STATUS_ENABLED]);
+
+        if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {
+            $this->_query->andWhere(['user.status' => User::STATUS_ENABLED]);
+        }
 
         if ($this->contentId) {
             $this->_query->andWhere(['content.id' => $this->contentId]);

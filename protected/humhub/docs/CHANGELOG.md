@@ -90,6 +90,7 @@ HumHub Change Log
 - Fix #2367: `ImageConverter::allocateMemory` uses common units(MegaBates) of memory (githubjeka)
 - Fix: Better notification compatiblity - mail views and enabled WebNotificationTarget
 - Fix #2312: Pinned post appears twice on stream 
+- Enh: Added option to show/hide deactivated user content in stream
 
 
 1.2.0-beta.2 (February 24, 2017)
