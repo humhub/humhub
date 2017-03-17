@@ -304,7 +304,7 @@ abstract class Stream extends Action
         // Get Underlying Object (e.g. Post, Poll, ...)
         $underlyingObject = $content->getPolymorphicRelation();
         if ($underlyingObject === null) {
-            throw new Exception('Could not get contents underlying object!');
+            throw new Exception('Could not get contents underlying object! - contentid: '.$content->id);
         }
 
         // Fix for newly created content

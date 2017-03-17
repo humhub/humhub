@@ -152,11 +152,11 @@ class AccountController extends BaseAccountController
         // Handle permission state change
         if (Yii::$app->request->post('dropDownColumnSubmit')) {
             Yii::$app->response->format = 'json';
-            $permission = $this->user->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
+            $permission = $this->getUser()->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
             if ($permission === null) {
                 throw new HttpException(500, 'Could not find permission!');
             }
-            $this->user->permissionManager->setGroupState($currentGroup, $permission, Yii::$app->request->post('state'));
+            $this->getUser()->permissionManager->setGroupState($currentGroup, $permission, Yii::$app->request->post('state'));
             return [];
         }
 

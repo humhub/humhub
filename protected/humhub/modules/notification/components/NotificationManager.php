@@ -252,7 +252,7 @@ class NotificationManager
     }
 
     /**
-     * Returns all spaces this user is following (including member spaces) without sent_notification setting.
+     * Returns all spaces this user is not following.
      * 
      * @param User $user
      * @return type
@@ -266,8 +266,10 @@ class NotificationManager
 
             return array_merge($memberSpaces, $followSpaces);
         } else {
-            return Space::find()->where(['not in', 'guid', Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces')])
-                            ->limit($limit)->all();
+            $defaultSpaces = Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces');
+            return (empty($defaultSpaces)) 
+                ? Space::find()->limit($limit)->all() 
+                : Space::find()->where(['not in', 'guid', $defaultSpaces])->limit($limit)->all();
         }
     }
 

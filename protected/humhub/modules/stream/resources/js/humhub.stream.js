@@ -786,6 +786,12 @@ humhub.module('stream', function(module, require, $) {
     Stream.prototype.getEntryByNode = function($childNode) {
         return new this.cfg.streamEntryClass($childNode.closest(DATA_STREAM_ENTRY_SELECTOR));
     };
+    
+    Stream.prototype.actionLoadMore = function(evt) {
+        this.loadEntries({loader: true}).finally(function() {
+            evt.finish();
+        });
+    };
 
     /**
      * Stream implementation for main wall streams.
@@ -812,7 +818,9 @@ humhub.module('stream', function(module, require, $) {
             that.$.find('.back_button_holder').hide();
         });
 
-        this.$.on('humhub:stream:afterAddEntries', function(evt, resp, res) {
+        this.$.on('humhub:modules:stream:beforeLoadEntries', function() {
+            $('#btn-load-more').hide();
+        }).on('humhub:stream:afterAddEntries', function(evt, resp, res) {
             $.each(resp.contentSuppressions, function(key, infos) {
                 var entry = that.entry(key);
                 var $loadDiv = $('<div class="load-suppressed" style="display:none;"><a href="#" data-ui-loader><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;'+infos.message+'&nbsp;&nbsp;<span class="badge">'+infos.contentName+'</span></a></div>');
@@ -827,9 +835,8 @@ humhub.module('stream', function(module, require, $) {
                 });
                 $loadDiv.fadeIn('fast');
             });
-        });
-
-        this.$.on('humhub:stream:lastEntryLoaded', function() {
+            $('#btn-load-more').show();
+        }).on('humhub:stream:lastEntryLoaded', function() {
             $('#btn-load-more').hide();
         });
 
@@ -892,16 +899,18 @@ humhub.module('stream', function(module, require, $) {
         stream.init();
 
         $(window).off('scroll.humhub:modules:stream').on('scroll.humhub:modules:stream', function() {
-            if(stream.isShowSingleEntry()) {
+            if(!stream || stream.loading || stream.isShowSingleEntry() || stream.lastEntryLoaded) {
                 return;
             }
+            
             var $window = $(window);
-            var scrollTop = $window.scrollTop();
             var windowHeight = $window.height();
-            if(scrollTop === ($(document).height() - $window.height())) {
-                if(stream && !stream.loading && !stream.isShowSingleEntry() && !stream.lastEntryLoaded) {
-                    stream.loadEntries({loader: true});
-                }
+            var windowBottom = $window.scrollTop() + windowHeight;
+            var elementBottom = stream.$.offset().top  + stream.$.outerHeight();
+            var remaining = elementBottom - windowBottom;
+            if (remaining <= 300) {
+                $('#btn-load-more').hide();
+                setTimeout( function() { stream.loadEntries({loader: true}); });
             }
 
             /*

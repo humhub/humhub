@@ -111,7 +111,7 @@ class DynamicFixtureHelper extends Module
             'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::className()],
             'space' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::className()],
             'space_membership' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture::className()],
-            'contentcontainer' => [ 'class' => \humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture::className()],
+            'content' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentFixture::className()],
             'notification' => [ 'class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::className()],
             'activity' => [ 'class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::className()],
         ];
