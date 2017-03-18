@@ -34,15 +34,8 @@ class AccountSettingsMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'edit-settings'),
         ));
-        
-        $this->addItem(array(
-            'label' => Yii::t('UserModule.base', 'Notifications'),
-            'url' => Url::toRoute(['/user/account/notification']),
-            'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'notification'),
-        ));
 
-        if (count($this->getSecondoaryAuthProviders()) != 0) {
+        if (count($this->getSecondaryAuthProviders()) != 0) {
             $this->addItem(array(
                 'label' => Yii::t('UserModule.base', 'Connected Accounts'),
                 'url' => Url::toRoute(['/user/account/connected-accounts']),
@@ -59,7 +52,7 @@ class AccountSettingsMenu extends \humhub\widgets\BaseMenu
      * 
      * @return \yii\authclient\ClientInterface[]
      */
-    protected function getSecondoaryAuthProviders()
+    protected function getSecondaryAuthProviders()
     {
         $clients = [];
         foreach (Yii::$app->get('authClientCollection')->getClients() as $client) {

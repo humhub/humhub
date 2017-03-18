@@ -93,6 +93,7 @@ HumHub Change Log
 - Fix #2312: Pinned post appears twice on stream 
 - Enh: Added option to show/hide deactivated user content in stream
 - Enh: Allow any url route as homepage by homeUrl array application parameter
+- Fix #2255: Added missing Social Account Settings menu
 
 
 1.2.0-beta.2 (February 24, 2017)
