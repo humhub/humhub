@@ -95,6 +95,7 @@ HumHub Change Log
 - Enh: Allow any url route as homepage by homeUrl array application parameter
 - Fix #2255: Added missing Social Account Settings menu
 - Fix: Added missing file download http caching
+- Enh: Added console email test command
 
 
 1.2.0-beta.2 (February 24, 2017)
