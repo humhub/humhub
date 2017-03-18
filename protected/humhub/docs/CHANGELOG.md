@@ -97,6 +97,7 @@ HumHub Change Log
 - Fix: Added missing file download http caching
 - Enh: Added console email test command
 - Enh: Added stream module defaultStreamSuppressQueryIgnore to ease overwrites
+- Enh: Added 'archived' badge to archived spaces in directory
 
 
 1.2.0-beta.2 (February 24, 2017)

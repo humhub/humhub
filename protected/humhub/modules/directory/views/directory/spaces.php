@@ -60,7 +60,12 @@ use humhub\modules\directory\widgets\SpaceTagList;
                        <?php endif; ?>
 
                     <div class="media-body">
-                        <h4 class="media-heading"><a href="<?= $space->getUrl(); ?>"><?= Html::encode($space->name); ?></a></h4>
+                        <h4 class="media-heading"><a href="<?= $space->getUrl(); ?>"><?= Html::encode($space->name); ?></a>
+                            <?php if ($space->isArchived()) : ?>
+                                <span class="label label-warning"><?= Yii::t('ContentModule.widgets_views_label', 'Archived'); ?></span>
+                            <?php endif; ?>
+                        </h4>
+
                         <h5><?= Html::encode(Helpers::truncateText($space->description, 100)); ?></h5>
                         <?= SpaceTagList::widget(['space' => $space]); ?>
                     </div>
