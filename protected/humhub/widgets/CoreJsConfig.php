@@ -56,7 +56,7 @@ class CoreJsConfig extends Widget
                     ],
                     'text' => [
                         'error.upload' => Yii::t('base', 'Some files could not be uploaded:'),
-                        'error.unknown' => Yii::$app->user->isAdmin() ? 
+                        'error.unknown' => Yii::$app->user->isAdmin() ?
                                     Yii::t('base', 'An unknown error occured while uploading. Hint: check your upload_max_filesize and post_max_size php settings.')
                                     : Yii::t('base', 'An unknown error occured while uploading.'),
                         'success.delete' => Yii::t('base', 'The file has been deleted.')
@@ -151,8 +151,8 @@ class CoreJsConfig extends Widget
                 ],
                 'space' => [
                     'text' => [
-                        'success.archived' => Yii::t('base', 'The space has be archived.'),
-                        'success.unarchived' => Yii::t('base', 'The space has be unarchived.'),
+                        'success.archived' => Yii::t('base', 'The space has been archived.'),
+                        'success.unarchived' => Yii::t('base', 'The space has been unarchived.'),
                     ]
                 ],
         ]);
