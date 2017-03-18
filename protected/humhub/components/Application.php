@@ -9,6 +9,8 @@
 namespace humhub\components;
 
 use Yii;
+use yii\helpers\Url;
+use yii\base\Exception;
 
 /**
  * @inheritdoc
@@ -20,6 +22,11 @@ class Application extends \yii\web\Application
      * @inheritdoc
      */
     public $controllerNamespace = 'humhub\\controllers';
+
+    /**
+     * @var string|array the homepage url
+     */
+    private $_homeUrl = null;
 
     /**
      * @inheritdoc
@@ -35,8 +42,30 @@ class Application extends \yii\web\Application
         if (Yii::getAlias('@webroot-static', false) === false) {
             Yii::setAlias('@webroot-static', '@webroot/static');
         }
-        
+
         parent::bootstrap();
+    }
+
+    /**
+     * @return string the homepage URL
+     */
+    public function getHomeUrl()
+    {
+        if ($this->_homeUrl === null) {
+            throw new Exception('Home URL not defined!');
+        } elseif (is_array($this->_homeUrl)) {
+            return Url::to($this->_homeUrl);
+        } else {
+            return $this->_homeUrl;
+        }
+    }
+
+    /**
+     * @param string|array $value the homepage URL
+     */
+    public function setHomeUrl($value)
+    {
+        $this->_homeUrl = $value;
     }
 
     /**
