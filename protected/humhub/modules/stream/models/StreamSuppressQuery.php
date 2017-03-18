@@ -158,8 +158,11 @@ class StreamSuppressQuery extends StreamQuery
      */
     protected function isSuppressed(&$results, $content)
     {
+        /* @var $streamModule \humhub\modules\stream\Module */
+        $streamModule = Yii::$app->getModule('stream');
+
         // Check if content type is suppressable
-        if (in_array($content->object_model, Yii::$app->getModule('stream')->streamSuppressQueryIgnore)) {
+        if (in_array($content->object_model, array_merge($streamModule->streamSuppressQueryIgnore, $streamModule->defaultStreamSuppressQueryIgnore))) {
             return false;
         }
 

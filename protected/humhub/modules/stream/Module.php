@@ -25,11 +25,16 @@ class Module extends \humhub\components\Module
     /**
      * @var array content classes which are not suppressed when in a row
      */
-    public $streamSuppressQueryIgnore = [\humhub\modules\post\models\Post::class, \humhub\modules\activity\models\Activity::class];
+    public $streamSuppressQueryIgnore = [];
+
+    /**
+     * @var array default content classes which are not suppressed when in a row
+     */
+    public $defaultStreamSuppressQueryIgnore = [\humhub\modules\post\models\Post::class, \humhub\modules\activity\models\Activity::class];
 
     /**
      * @var boolean show contents of deactivated users in stream
      */
     public $showDeactivatedUserContent = true;
-    
+
 }
