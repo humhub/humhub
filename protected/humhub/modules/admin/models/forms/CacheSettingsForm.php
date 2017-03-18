@@ -69,7 +69,7 @@ class CacheSettingsForm extends Model
      */
     public function checkCacheType($attribute, $params)
     {
-        if ($this->type == 'yii\caching\ApcCache' && !function_exists('apc_add') && !function_exists('apc_addu')) {
+        if ($this->type == 'yii\caching\ApcCache' && !function_exists('apc_add') && !function_exists('apcu_add')) {
             $this->addError($attribute, \Yii::t('AdminModule.forms_CacheSettingsForm', "PHP APC(u) Extension missing - Type not available!"));
         }
     }
