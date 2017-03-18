@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -13,6 +13,7 @@ use yii\web\HttpException;
 use yii\base\Action;
 use humhub\modules\file\models\File;
 use humhub\modules\file\libs\FileHelper;
+use yii\filters\HttpCache;
 
 /**
  * DownloadAction
@@ -22,6 +23,12 @@ use humhub\modules\file\libs\FileHelper;
  */
 class DownloadAction extends Action
 {
+
+    /**
+     * @see HttpCache
+     * @var boolean enable Http Caching
+     */
+    public $enableHttpCache = true;
 
     /**
      * @var File the requested file object
@@ -47,6 +54,35 @@ class DownloadAction extends Action
         $this->download = (boolean) Yii::$app->request->get('download', false);
         $this->loadVariant(Yii::$app->request->get('variant', null));
         $this->checkFileExists();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeRun()
+    {
+        if (!parent::beforeRun()) {
+            return false;
+        }
+        if (!$this->enableHttpCache) {
+            return true;
+        }
+
+        $httpCache = new HttpCache();
+        $httpCache->lastModified = function() {
+            return Yii::$app->formatter->asTimestamp($this->file->updated_at);
+        };
+        $httpCache->etagSeed = function() {
+            if (file_exists($this->getStoredFilePath())) {
+                return md5_file($this->getStoredFilePath());
+            }
+            return null;
+        };
+        if (!$httpCache->beforeAction($this)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
