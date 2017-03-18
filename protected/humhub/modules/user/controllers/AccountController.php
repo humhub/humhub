@@ -282,20 +282,6 @@ class AccountController extends BaseAccountController
     }
 
     /**
-     * Notification Mailing Settings
-     */
-    public function actionNotification()
-    {
-        $form = new NotificationSettings(['user' => Yii::$app->user->getIdentity()]);
-
-        if ($form->load(Yii::$app->request->post()) && $form->save()) {
-            $this->view->saved();
-        }
-
-        return $this->render('notification', ['model' => $form]);
-    }
-
-    /**
      * Change Current Password
      *
      */
