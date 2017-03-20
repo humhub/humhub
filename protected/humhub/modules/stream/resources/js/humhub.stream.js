@@ -633,7 +633,7 @@ humhub.module('stream', function(module, require, $) {
     };
 
     Stream.prototype.appendEntry = function(html) {
-        var $html = $(html);
+        var $html = $(html).css('opacity', 0);
         this.$content.append($html);       
         
 
