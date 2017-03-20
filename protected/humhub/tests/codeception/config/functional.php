@@ -7,6 +7,7 @@ $_SERVER['SCRIPT_NAME'] = YII_TEST_ENTRY_URL;
  * Application configuration for functional tests
  */
 $testConfig = [
+    'class' => 'humhub\components\Application',
     'components' => [
         'request' => [
             // it's not recommended to run functional tests with CSRF validation enabled
