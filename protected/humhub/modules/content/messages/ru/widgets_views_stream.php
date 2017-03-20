@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'The content has been archived.' => '',
-    'The content has been deleted.' => '',
-    'The content has been pinned.' => '',
-    'The content has been unarchived.' => '',
-    'The content has been unpinned.' => '',
-    'Your last edit state has been saved!' => '',
+    'The content has been archived.' => 'Содержимое заархивировано.',
+    'The content has been deleted.' => 'Содержимое удалено.',
+    'The content has been pinned.' => 'Содержимое закреплено.',
+    'The content has been unarchived.' => 'Содержимое разархивировано.',
+    'The content has been unpinned.' => 'Содержимое откреплено.',
+    'Your last edit state has been saved!' => 'Последнее состояние сохранено.',
     'Back to stream' => 'Вернуться в ленту',
     'Content with attached files' => 'Контент с прикреплёнными файлами',
     'Created by me' => 'Созданные мной',
