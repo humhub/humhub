@@ -605,10 +605,14 @@ humhub.module('stream', function(module, require, $) {
     Stream.prototype.prependEntry = function(html) {
         var $html = $(html).css('opacity', 0);
         this.$content.prepend($html);
-        var that = this;
 
-        additions.applyTo($html);
-        $html.hide().css('opacity', 1).fadeIn('fast', function() {
+        var $elements = $html.not('script, link').filter(function() {
+            return this.nodeType === 1; // filter out text nodes
+        });
+
+        additions.applyTo($elements);
+        var that = this;
+        $elements.hide().css('opacity', 1).fadeIn('fast', function() {
             that.onChange();
         });
     };
@@ -616,25 +620,33 @@ humhub.module('stream', function(module, require, $) {
     Stream.prototype.after = function(html, $entryNode) {
         var $html = $(html).css('opacity', 0);
         $entryNode.after($html);
-        var that = this;
 
-        additions.applyTo($html);
-        $html.hide().css('opacity', 1).fadeIn('fast', function() {
+        var $elements = $html.not('script, link').filter(function() {
+            return this.nodeType === 1; // filter out text nodes
+        });
+
+        additions.applyTo($elements);
+        var that = this;
+        $elements.hide().css('opacity', 1).fadeIn('fast', function() {
             that.onChange();
         });
     };
 
     Stream.prototype.appendEntry = function(html) {
-        var $html = $(html).css('opacity', 0);;
-        this.$content.append($html);
-        var that = this;
+        var $html = $(html);
+        this.$content.append($html);       
+        
 
-        additions.applyTo($html);
-        $html.hide().css('opacity', 1).fadeIn('fast', function() {
+        var $elements = $html.not('script, link').filter(function() {
+            return this.nodeType === 1; // filter out text nodes
+        });
+
+        additions.applyTo($elements);
+        var that = this;
+        $elements.hide().css('opacity', 1).fadeIn('fast', function() {
             that.onChange();
         });
     };
-
 
     /**
      * Appends all entries of a given stream response to the stream content.
@@ -660,14 +672,6 @@ humhub.module('stream', function(module, require, $) {
             return $result;
         }
 
-        // Filter our real nodes for fading effect
-        var $elements = $result.not('script, link').filter(function() {
-            return this.nodeType === 1; // filter out text nodes
-        });
-        
-        // We do not use .hide() since some additions need to calculate dimensions...
-        $elements.css('opacity', 0);
-
         this.$.trigger('humhub:stream:beforeAddEntries', [response, result]);
 
         if(cfg['prepend']) {
@@ -678,12 +682,6 @@ humhub.module('stream', function(module, require, $) {
             this.appendEntry($result);
         }
         
-        // fade-in
-        $elements.hide().css('opacity', 1);
-        $elements.fadeIn('fast').promise().always(function() {
-            that.$.trigger('humhub:stream:afterAddEntries', [response, $result]);
-        });
-
         return $result;
     };
 
