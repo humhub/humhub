@@ -7,7 +7,7 @@
 ?>
 
 <script>
-    $(document).on('humhub:ready', function() {
+    $(document).one('humhub:ready', function() {
         if(humhub && humhub.modules.notification) {
             humhub.modules.notification.menu.updateCount(<?= $count ?>);
         }
