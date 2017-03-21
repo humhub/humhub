@@ -118,13 +118,17 @@ class MessageController extends \yii\console\controllers\MessageController
         if (preg_match('/(.*?)Module\./', $category, $result)) {
             if (strpos($result[1], '-') !== false || strpos($result[1], '_') !== false) {
                 // module id already in correct format (-,_)
-                $moduleId = strtolower($result[1]);
+                return Yii::$app->moduleManager->getModule($result[1], true);
             } else {
                 $moduleId = strtolower(preg_replace("/([A-Z])/", '_\1', lcfirst($result[1])));
+                try {
+                    return Yii::$app->moduleManager->getModule($moduleId, true);
+                } catch (\yii\base\Exception $ex) {
+                    // Module not found, try again with dash syntax
+                    $moduleId = strtolower(preg_replace("/([A-Z])/", '-\1', lcfirst($result[1])));
+                    return Yii::$app->moduleManager->getModule($moduleId, true);
+                }
             }
-
-            $module = Yii::$app->moduleManager->getModule($moduleId, true);
-            return $module;
         }
 
         return null;
