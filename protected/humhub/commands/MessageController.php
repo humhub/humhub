@@ -9,11 +9,8 @@
 namespace humhub\commands;
 
 use Yii;
-
-
 use yii\helpers\Console;
 use yii\helpers\FileHelper;
-
 
 /**
  * Extracts messages to be translated from source files.
@@ -119,7 +116,13 @@ class MessageController extends \yii\console\controllers\MessageController
     protected function getModuleByCategory($category)
     {
         if (preg_match('/(.*?)Module\./', $category, $result)) {
-            $moduleId = strtolower(preg_replace("/([A-Z])/", '_\1', lcfirst($result[1])));
+            if (strpos($result[1], '-') !== false || strpos($result[1], '_') !== false) {
+                // module id already in correct format (-,_)
+                $moduleId = strtolower($result[1]);
+            } else {
+                $moduleId = strtolower(preg_replace("/([A-Z])/", '_\1', lcfirst($result[1])));
+            }
+
             $module = Yii::$app->moduleManager->getModule($moduleId, true);
             return $module;
         }
