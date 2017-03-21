@@ -12,10 +12,8 @@ use Yii;
 use Zend\Ldap\Ldap;
 use Zend\Ldap\Node;
 use Zend\Ldap\Exception\LdapException;
-
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\ProfileField;
-
 
 /**
  * LDAP Authentication
@@ -166,7 +164,6 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
             }
         }
 
-
         return parent::normalizeUserAttributes($normalized);
     }
 
@@ -239,6 +236,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
         } catch (LdapException $ex) {
             // User not found in LDAP
         }
+        
         return '';
     }
 

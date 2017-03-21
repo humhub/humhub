@@ -6,4 +6,3 @@ echo strip_tags(Yii::t('LikeModule.views_activities_Like', '{userDisplayName} li
     '{userDisplayName}' => Html::encode($originator->displayName),
     '{contentTitle}' => $preview,
 )));
-?>

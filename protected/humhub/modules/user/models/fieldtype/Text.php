@@ -200,5 +200,3 @@ class Text extends BaseType
     }
 
 }
-
-?>

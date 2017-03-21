@@ -36,6 +36,7 @@ class ContentContainerSettingsManager extends BaseSettingsManager
     {
         $record = parent::createRecord();
         $record->contentcontainer_id = $this->contentContainer->contentContainerRecord->id;
+        
         return $record;
     }
 

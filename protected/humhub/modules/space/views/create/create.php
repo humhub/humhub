@@ -1,30 +1,31 @@
 <?php
-use humhub\widgets\ActiveForm;
+
 use yii\helpers\Url;
+use humhub\widgets\ActiveForm;
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
         <?php $form = ActiveForm::begin(); ?>
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('SpaceModule.views_create_create', '<strong>Create</strong> new space'); ?></h4>
+            <h4 class="modal-title" id="myModalLabel">
+                <?= Yii::t('SpaceModule.views_create_create', '<strong>Create</strong> new space'); ?>
+            </h4>
         </div>
         <div class="modal-body">
 
             <hr>
             <br>
-             <?= humhub\modules\space\widgets\SpaceNameColorInput::widget(['form' => $form, 'model' => $model])?>
+            <?= \humhub\modules\space\widgets\SpaceNameColorInput::widget(['form' => $form, 'model' => $model])?>
 
-            <?php echo $form->field($model, 'description')->textarea(['placeholder' => Yii::t('SpaceModule.views_create_create', 'space description'), 'rows' => '3']); ?>
+            <?= $form->field($model, 'description')->textarea(['placeholder' => Yii::t('SpaceModule.views_create_create', 'space description'), 'rows' => '3']); ?>
 
-            <a data-toggle="collapse" id="access-settings-link" href="#collapse-access-settings"
-               style="font-size: 11px;"><i
-                    class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.views_create_create', 'Advanced access settings'); ?>
+            <a data-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
+                <i class="fa fa-caret-right"></i> <?= Yii::t('SpaceModule.views_create_create', 'Advanced access settings'); ?>
             </a>
 
             <div id="collapse-access-settings" class="panel-collapse collapse">
-                <br/>
+                <br>
                 <div class="row">
                     <div class="col-md-6">
                         <?= $form->field($model, 'join_policy')->radioList($joinPolicyOptions); ?>
@@ -39,8 +40,7 @@ use yii\helpers\Url;
         <div class="modal-footer">
             <hr>
             <br>
-            <?php
-            echo \humhub\widgets\AjaxButton::widget([
+            <?= \humhub\widgets\AjaxButton::widget([
                 'label' => Yii::t('SpaceModule.views_create_create', 'Next'),
                 'ajaxOptions' => [
                     'type' => 'POST',
@@ -55,7 +55,7 @@ use yii\helpers\Url;
             ]);
             ?>
 
-            <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'create-loader', 'cssClass' => 'loader-modal hidden']); ?>
+            <?= \humhub\widgets\LoaderWidget::widget(['id' => 'create-loader', 'cssClass' => 'loader-modal hidden']); ?>
         </div>
 
         <?php ActiveForm::end(); ?>
@@ -64,7 +64,7 @@ use yii\helpers\Url;
 </div>
 
 
-<script type="text/javascript">
+<script>
 
     // Replace the standard checkbox and radio buttons
     $('.modal-dialog').find(':checkbox, :radio').flatelements();
@@ -74,8 +74,8 @@ use yii\helpers\Url;
 
     // Shake modal after wrong validation
 <?php if ($model->hasErrors()) { ?>
-        $('.modal-dialog').removeClass('fadeIn');
-        $('.modal-dialog').addClass('shake');
+    $('.modal-dialog').removeClass('fadeIn');
+    $('.modal-dialog').addClass('shake');
 <?php } ?>
 
     $('#collapse-access-settings').on('show.bs.collapse', function () {

@@ -78,7 +78,6 @@ class UserApprovalSearch extends User
             return $dataProvider;
         }
 
-
         /**
          * Limit Groups
          */

@@ -21,5 +21,3 @@ class WallEntryAddons extends \humhub\widgets\BaseStack
     public $object = null;
 
 }
-
-?>

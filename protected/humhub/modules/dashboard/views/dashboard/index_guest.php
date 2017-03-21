@@ -4,8 +4,7 @@
             <?= \humhub\modules\dashboard\widgets\DashboardContent::widget(); ?>
         </div>
         <div class="col-md-4 layout-sidebar-container">
-            <?php
-            echo \humhub\modules\dashboard\widgets\Sidebar::widget([
+            <?= \humhub\modules\dashboard\widgets\Sidebar::widget([
                 'widgets' => [
                     [
                         \humhub\modules\directory\widgets\NewMembers::className(),

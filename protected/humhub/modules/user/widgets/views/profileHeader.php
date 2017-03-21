@@ -18,13 +18,12 @@ if ($isProfileOwner) {
         <div class="image-upload-container" style="width: 100%; height: 100%; overflow:hidden;">
             <!-- profile image output-->
             <img class="img-profile-header-background" id="user-banner-image"
-                 src="<?php echo $user->getProfileBannerImage()->getUrl(); ?>"
+                 src="<?= $user->getProfileBannerImage()->getUrl(); ?>"
                  width="100%" style="width: 100%; max-height: 192px;">
 
             <!-- check if the current user is the profile owner and can change the images -->
             <?php if ($isProfileOwner) : ?>
-                <form class="fileupload" id="bannerfileupload" action="" method="POST" enctype="multipart/form-data"
-                      style="position: absolute; top: 0; left: 0; opacity: 0; width: 100%; height: 100%;">
+                <form class="fileupload" id="bannerfileupload" action="" method="POST" enctype="multipart/form-data" style="position: absolute; top: 0; left: 0; opacity: 0; width: 100%; height: 100%;">
                     <input type="file" name="bannerfiles[]">
                 </form>
 
@@ -39,8 +38,7 @@ if ($isProfileOwner) {
                 }
                 ?>
 
-                <div class="image-upload-loader" id="banner-image-upload-loader"
-                     style="padding: <?php echo $padding ?>;">
+                <div class="image-upload-loader" id="banner-image-upload-loader" style="padding: <?= $padding ?>;">
                     <div class="progress image-upload-progess-bar" id="banner-image-upload-bar">
                         <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="00"
                              aria-valuemin="0"
@@ -53,28 +51,24 @@ if ($isProfileOwner) {
 
             <!-- show user name and title -->
             <div class="img-profile-data">
-                <h1><?php echo Html::encode($user->displayName); ?></h1>
-
-                <h2><?php echo Html::encode($user->profile->title); ?></h2>
+                <h1><?= Html::encode($user->displayName); ?></h1>
+                <h2><?= Html::encode($user->profile->title); ?></h2>
             </div>
 
             <!-- check if the current user is the profile owner and can change the images -->
             <?php if ($isProfileOwner): ?>
                 <div class="image-upload-buttons" id="banner-image-upload-buttons">
-                    <a href="#" onclick="javascript:$('#bannerfileupload input').click();"
-                       class="btn btn-info btn-sm"><i
-                            class="fa fa-cloud-upload"></i></a>
-                    <a id="banner-image-upload-edit-button"
-                       style="<?php
+                    <a href="#" onclick="javascript:$('#bannerfileupload input').click();" class="btn btn-info btn-sm">
+                        <i class="fa fa-cloud-upload"></i></a>
+                    <a id="banner-image-upload-edit-button" style="<?php
                        if (!$user->getProfileBannerImage()->hasImage()) {
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo Url::to(['/user/account/crop-banner-image', 'userGuid' => $user->guid]); ?>"
+                       href="<?= Url::to(['/user/account/crop-banner-image', 'userGuid' => $user->guid]); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static"><i
                             class="fa fa-edit"></i></a>
-                        <?php
-                        echo \humhub\widgets\ModalConfirm::widget(array(
+                        <?= \humhub\widgets\ModalConfirm::widget(array(
                             'uniqueID' => 'modal_bannerimagedelete',
                             'linkOutput' => 'a',
                             'title' => Yii::t('UserModule.widgets_views_deleteBanner', '<strong>Confirm</strong> image deleting'),
@@ -96,14 +90,14 @@ if ($isProfileOwner) {
 
             <?php if ($user->profileImage->hasImage()) : ?>
                 <a data-toggle="lightbox" data-gallery="" href="<?= $user->profileImage->getUrl('_org'); ?>"
-                   data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
+                   data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?= Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
                     <img class="img-rounded profile-user-photo" id="user-profile-image"
-                         src="<?php echo $user->getProfileImage()->getUrl(); ?>"
+                         src="<?= $user->getProfileImage()->getUrl(); ?>"
                          data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;"/>
                 </a>
             <?php else : ?>
                 <img class="img-rounded profile-user-photo" id="user-profile-image"
-                     src="<?php echo $user->getProfileImage()->getUrl(); ?>"
+                     src="<?= $user->getProfileImage()->getUrl(); ?>"
                      data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;"/>
                  <?php endif; ?>
 
@@ -132,11 +126,10 @@ if ($isProfileOwner) {
                            echo 'display: none;';
                        }
                        ?>"
-                       href="<?php echo Url::to(['/user/account/crop-profile-image', 'userGuid' => $user->guid]); ?>"
+                       href="<?= Url::to(['/user/account/crop-profile-image', 'userGuid' => $user->guid]); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static"><i
                             class="fa fa-edit"></i></a>
-                        <?php
-                        echo \humhub\widgets\ModalConfirm::widget(array(
+                        <?= \humhub\widgets\ModalConfirm::widget(array(
                             'uniqueID' => 'modal_profileimagedelete',
                             'linkOutput' => 'a',
                             'title' => Yii::t('UserModule.widgets_views_deleteImage', '<strong>Confirm</strong> image deleting'),
@@ -154,8 +147,7 @@ if ($isProfileOwner) {
             <?php endif; ?>
 
         </div>
-
-
+    
     </div>
 
     <div class="panel-body">
@@ -169,40 +161,38 @@ if ($isProfileOwner) {
                         <?php if ($friendshipsEnabled): ?>
                             <a href="<?= Url::to(['/friendship/list/popup', 'userId' => $user->id]); ?>" data-target="#globalModal">
                                 <div class="pull-left entry">
-                                    <span class="count"><?php echo $countFriends; ?></span>
+                                    <span class="count"><?= $countFriends; ?></span>
                                     <br>
-                                    <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Friends'); ?></span>
+                                    <span class="title"><?= Yii::t('UserModule.widgets_views_profileHeader', 'Friends'); ?></span>
                                 </div>
                             </a>
                         <?php endif; ?>
 
                         <a href="<?= $user->createUrl('/user/profile/follower-list'); ?>" data-target="#globalModal">
                             <div class="pull-left entry">
-                                <span class="count"><?php echo $countFollowers; ?></span>
+                                <span class="count"><?= $countFollowers; ?></span>
                                 <br>
-                                <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Followers'); ?></span>
+                                <span class="title"><?= Yii::t('UserModule.widgets_views_profileHeader', 'Followers'); ?></span>
                             </div>
                         </a>
                         <a href="<?= $user->createUrl('/user/profile/followed-users-list'); ?>" data-target="#globalModal">
                             <div class="pull-left entry">
-                                <span class="count"><?php echo $countFollowing; ?></span>
+                                <span class="count"><?= $countFollowing; ?></span>
                                 <br>
-                                <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Following'); ?></span>
+                                <span class="title"><?= Yii::t('UserModule.widgets_views_profileHeader', 'Following'); ?></span>
                             </div>
                         </a>
                         <a href="<?= $user->createUrl('/user/profile/space-membership-list'); ?>" data-target="#globalModal">
                             <div class="pull-left entry">
-                                <span class="count"><?php echo $countSpaces; ?></span><br>
-                                <span class="title"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Spaces'); ?></span>
+                                <span class="count"><?= $countSpaces; ?></span><br>
+                                <span class="title"><?= Yii::t('UserModule.widgets_views_profileHeader', 'Spaces'); ?></span>
                             </div>
                         </a>
                     </div>
                     <!-- end: User statistics -->
 
                     <div class="controls controls-header pull-right">
-                        <?php
-                        echo \humhub\modules\user\widgets\ProfileHeaderControls::widget(
-                                array(
+                        <?= \humhub\modules\user\widgets\ProfileHeaderControls::widget(array(
                                     'user' => $user,
                                     'widgets' => array(
                                         array(\humhub\modules\user\widgets\ProfileEditButton::className(), array('user' => $user), array()),
@@ -219,21 +209,18 @@ if ($isProfileOwner) {
 </div>
 
 <!-- start: Error modal -->
-<div class="modal" id="uploadErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
+<div class="modal" id="uploadErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-extra-small animated pulse">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"
-                    id="myModalLabel"><?php echo Yii::t('UserModule.widgets_views_profileHeader', '<strong>Something</strong> went wrong'); ?></h4>
+                <h4 class="modal-title" id="myModalLabel"><?= Yii::t('UserModule.widgets_views_profileHeader', '<strong>Something</strong> went wrong'); ?></h4>
             </div>
             <div class="modal-body text-center">
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary"
-                        data-dismiss="modal"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Ok'); ?></button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><?= Yii::t('UserModule.widgets_views_profileHeader', 'Ok'); ?></button>
             </div>
         </div>
     </div>

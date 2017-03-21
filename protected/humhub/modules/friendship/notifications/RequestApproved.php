@@ -57,5 +57,3 @@ class RequestApproved extends BaseNotification
     }
 
 }
-
-?>

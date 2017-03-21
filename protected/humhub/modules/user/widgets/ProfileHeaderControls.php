@@ -16,5 +16,3 @@ class ProfileHeaderControls extends \humhub\widgets\BaseStack
     public $user;
 
 }
-
-?>

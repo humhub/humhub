@@ -8,12 +8,11 @@ use humhub\modules\space\models\Space;
 <div class="panel panel-default">
     <div class="panel-body" id="contentFormBody">
 
-        <?php echo Html::beginForm('', 'POST'); ?>
+        <?= Html::beginForm('', 'POST'); ?>
 
-        <ul id="contentFormError">
-        </ul>
+        <ul id="contentFormError"></ul>
 
-        <?php echo $form; ?>
+        <?= $form; ?>
 
         <div id="notifyUserContainer" class="form-group hidden" style="margin-top: 15px;">
             <input type="text" value="" id="notifyUserInput" name="notifyUserInput"/>
@@ -23,9 +22,10 @@ use humhub\modules\space\models\Space;
             if ($contentContainer instanceof Space) {
                 $userSearchUrl = $contentContainer->createUrl('/space/membership/search', array('keyword' => '-keywordPlaceholder-'));
             }
-
+            ?>
+			<?=
             /* add UserPickerWidget to notify members */
-            echo \humhub\modules\user\widgets\UserPicker::widget(array(
+            \humhub\modules\user\widgets\UserPicker::widget(array(
                 'inputId' => 'notifyUserInput',
                 'userSearchUrl' => $userSearchUrl,
                 'maxUsers' => 10,
@@ -36,10 +36,8 @@ use humhub\modules\space\models\Space;
             ?>
         </div>
 
-        <?php
-        echo Html::hiddenInput("containerGuid", $contentContainer->guid);
-        echo Html::hiddenInput("containerClass", get_class($contentContainer));
-        ?>
+        <?= Html::hiddenInput("containerGuid", $contentContainer->guid); ?>
+        <?= Html::hiddenInput("containerClass", get_class($contentContainer)); ?>
 
         <div class="contentForm_options">
 
@@ -47,17 +45,16 @@ use humhub\modules\space\models\Space;
 
             <div class="btn_container">
 
-                <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'postform-loader', 'cssClass' => 'loader-postform hidden']); ?>
+                <?= \humhub\widgets\LoaderWidget::widget(['id' => 'postform-loader', 'cssClass' => 'loader-postform hidden']); ?>
                 
-                <?php
-                echo \humhub\widgets\AjaxButton::widget([
+                <?= \humhub\widgets\AjaxButton::widget([
                     'label' => $submitButtonText,
                     'ajaxOptions' => [
                         'url' => $submitUrl,
                         'type' => 'POST',
                         'dataType' => 'json',
                         'beforeSend' => "function() { $('.contentForm').removeClass('error'); $('#contentFormError').hide(); $('#contentFormError').empty(); }",
-                        'beforeSend' => 'function(){ $("#contentFormError").hide(); $("#contentFormError li").remove(); $(".contentForm_options .btn").hide(); $("#postform-loader").removeClass("hidden"); }',
+                        'beforeSend' => 'function() { $("#contentFormError").hide(); $("#contentFormError li").remove(); $(".contentForm_options .btn").hide(); $("#postform-loader").removeClass("hidden"); }',
                         'success' => "function(response) { handleResponse(response);}"
                     ],
                     'htmlOptions' => [
@@ -67,9 +64,9 @@ use humhub\modules\space\models\Space;
                         'type' => 'submit'
                 ]]);
                 ?>
-                <?php
+                <?=
                 // Creates Uploading Button
-                echo humhub\modules\file\widgets\FileUploadButton::widget(array(
+                \humhub\modules\file\widgets\FileUploadButton::widget(array(
                     'uploaderId' => 'contentFormFiles',
                     'fileListFieldName' => 'fileList',
                 ));
@@ -86,16 +83,17 @@ use humhub\modules\space\models\Space;
                             // hide form buttons
                             $('.btn_container').hide();
                         }
-                    });</script>
+                    });
+                </script>
 
 
                 <!-- public checkbox -->
-                <?php echo Html::checkbox("visibility", "", array('id' => 'contentForm_visibility', 'class' => 'contentForm hidden')); ?>
+                <?= Html::checkbox("visibility", "", array('id' => 'contentForm_visibility', 'class' => 'contentForm hidden')); ?>
 
                 <!-- content sharing -->
                 <div class="pull-right">
 
-                    <span class="label label-success label-public hidden"><?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Public'); ?></span>
+                    <span class="label label-success label-public hidden"><?= Yii::t('ContentModule.widgets_views_contentForm', 'Public'); ?></span>
 
                     <ul class="nav nav-pills preferences" style="right: 0; top: 5px;">
                         <li class="dropdown">
@@ -104,13 +102,13 @@ use humhub\modules\space\models\Space;
                             <ul class="dropdown-menu pull-right">
                                 <li>
                                     <a href="javascript:notifyUser();"><i
-                                            class="fa fa-bell"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Notify members'); ?>
+                                            class="fa fa-bell"></i> <?= Yii::t('ContentModule.widgets_views_contentForm', 'Notify members'); ?>
                                     </a>
                                 </li>
                                 <?php if ($canSwitchVisibility): ?>
                                     <li>
                                         <a id="contentForm_visibility_entry" href="javascript:changeVisibility();"><i
-                                                class="fa fa-unlock"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Make public'); ?>
+                                                class="fa fa-unlock"></i> <?= Yii::t('ContentModule.widgets_views_contentForm', 'Make public'); ?>
                                         </a>
                                     </li>
                                 <?php endif; ?>
@@ -123,23 +121,22 @@ use humhub\modules\space\models\Space;
 
             </div>
 
-            <?php
-            // Creates a list of already uploaded Files
-            echo \humhub\modules\file\widgets\FileUploadList::widget(array(
+            <!-- Creates a list of already uploaded Files -->
+            <?= \humhub\modules\file\widgets\FileUploadList::widget(array(
                 'uploaderId' => 'contentFormFiles'
             ));
             ?>
 
         </div>
         <!-- /contentForm_Options -->
-        <?php echo Html::endForm(); ?>
+        <?= Html::endForm(); ?>
     </div>
     <!-- /panel body -->
 </div> <!-- /panel -->
 
 <div class="clearFloats"></div>
 
-<script type="text/javascript">
+<script>
 
     // Hide options by default
     jQuery('.contentForm_options').hide();
@@ -165,13 +162,13 @@ use humhub\modules\space\models\Space;
     
     function setPublicVisibility() {
         $('#contentForm_visibility').prop( "checked", true );
-        $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Make private'); ?>');
+        $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i> <?= Yii::t('ContentModule.widgets_views_contentForm', 'Make private'); ?>');
         $('.label-public').removeClass('hidden');
     }
     
     function setPrivateVisibility() {
         $('#contentForm_visibility').prop( "checked", false );
-        $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Make public'); ?>');
+        $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i> <?= Yii::t('ContentModule.widgets_views_contentForm', 'Make public'); ?>');
         $('.label-public').addClass('hidden');
     }
 
@@ -206,7 +203,7 @@ use humhub\modules\space\models\Space;
             
             $('#contentFrom_files').val('');
             $('#public').attr('checked', false);
-            $('#contentForm_message_contenteditable').html('<?php echo Html::encode(Yii::t("ContentModule.widgets_views_contentForm", "What's on your mind?")); ?>');
+            $('#contentForm_message_contenteditable').html('<?= Html::encode(Yii::t("ContentModule.widgets_views_contentForm", "What's on your mind?")); ?>');
             $('#contentForm_message_contenteditable').addClass('atwho-placeholder');
             
             $('#contentFormBody').find('.atwho-input').trigger('clear');

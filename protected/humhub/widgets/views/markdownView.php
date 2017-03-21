@@ -3,7 +3,7 @@ $this->registerJsFile('@web/resources/highlight.js/highlight.pack.js', ['positio
 $this->registerCssFile('@web/resources/highlight.js/styles/' . $highlightJsCss . '.css');
 ?>
 <div class="markdown-render">
-    <?php echo $content; ?>
+    <?= $content; ?>
 </div>
 
 <script>

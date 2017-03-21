@@ -8,7 +8,6 @@
 
 namespace humhub\modules\admin\models;
 
-
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use humhub\modules\user\models\User;
@@ -67,7 +66,7 @@ class UserSearch extends User
                 'id',
                 'username',
                 'email',
-        	'last_login',
+            'last_login',
                 'profile.firstname',
                 'profile.lastname',
                 'created_at',

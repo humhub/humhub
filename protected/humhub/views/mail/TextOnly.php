@@ -1,6 +1,4 @@
 <?php
-
-
 ?>
 
 <tr>
@@ -40,7 +38,7 @@
                                                 <tr>
                                                     <td style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#777777; font-weight:300; text-align:left; ">
 
-                                                        <?php echo $message; ?>
+                                                        <?= $message; ?>
 
                                                     </td>
                                                 </tr>

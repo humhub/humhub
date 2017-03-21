@@ -28,6 +28,7 @@ class ApprovalController extends Controller
     {
         $this->subLayout = '@admin/views/layouts/user';
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Approval'));
+        
         return parent::init();
     }
 
@@ -106,7 +107,6 @@ class ApprovalController extends Controller
 
     public function actionDecline()
     {
-
         $user = User::findOne(['id' => (int) Yii::$app->request->get('id')]);
 
         if ($user == null)
@@ -134,5 +134,3 @@ class ApprovalController extends Controller
     }
 
 }
-
-?>

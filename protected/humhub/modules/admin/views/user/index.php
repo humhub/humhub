@@ -6,9 +6,9 @@ use humhub\widgets\GridView;
 ?>
 
 <div class="panel-body">
-    <h4><?php echo Yii::t('AdminModule.user', 'Overview'); ?></h4>
+    <h4><?= Yii::t('AdminModule.user', 'Overview'); ?></h4>
     <div class="help-block">
-        <?php echo Yii::t('AdminModule.views_user_index', 'This overview contains a list of each registered user with actions to view, edit and delete users.'); ?>
+        <?= Yii::t('AdminModule.views_user_index', 'This overview contains a list of each registered user with actions to view, edit and delete users.'); ?>
     </div>
     <div class="table-responsive">
         <div class="pull-right">
@@ -16,8 +16,7 @@ use humhub\widgets\GridView;
             <?= Html::a('<i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.views_user_index', 'Send invite'), ['/user/invite'], ['class' => 'btn btn-success', 'data-target' => '#globalModal']); ?>
         </div>
 
-        <?php
-        echo GridView::widget([
+        <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [

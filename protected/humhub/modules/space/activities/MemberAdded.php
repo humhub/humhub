@@ -39,6 +39,7 @@ class MemberAdded extends BaseActivity
     public function init()
     {
         $this->visibility = \humhub\modules\content\models\Content::VISIBILITY_PRIVATE;
+        
         parent::init();
     }
 

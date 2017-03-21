@@ -6,14 +6,13 @@ use humhub\widgets\GridView;
 ?>
 
 <div class="panel-body">
-    <h4><?php echo Yii::t('AdminModule.views_approval_index', 'Pending user approvals'); ?></h4>
+    <h4><?= Yii::t('AdminModule.views_approval_index', 'Pending user approvals'); ?></h4>
 
     <div class="help-block">
-        <?php echo Yii::t('AdminModule.views_approval_index', 'The following list contains all registered users awaiting an approval.'); ?>
+        <?= Yii::t('AdminModule.views_approval_index', 'The following list contains all registered users awaiting an approval.'); ?>
     </div>
 
-    <?php
-    echo GridView::widget([
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [

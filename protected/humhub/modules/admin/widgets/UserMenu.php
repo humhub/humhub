@@ -39,7 +39,7 @@ class UserMenu extends \humhub\widgets\BaseMenu
         ));
         
         $approvalCount = \humhub\modules\admin\models\UserApprovalSearch::getUserApprovalCount();
-        if($approvalCount > 0) {
+        if ($approvalCount > 0) {
             $this->addItem(array(
                 'label' => Yii::t('AdminModule.user', 'Pending approvals') . ' <span class="label label-danger">'. $approvalCount .'</span>',
                 'url' => Url::to(['/admin/approval']),

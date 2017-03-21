@@ -80,5 +80,3 @@ class ProfileMenu extends \humhub\widgets\BaseMenu
     }
 
 }
-
-?>

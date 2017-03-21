@@ -11,24 +11,21 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
 <div class="modal-dialog modal-dialog-medium animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title"
-                id="myModalLabel">
-                    <?php echo Yii::t('TourModule.views_tour_welcome', 'Howdy <strong>%firstname%</strong>, thank you for using HumHub.', ['%firstname%' => $user->profile->firstname]); ?>
+            <h4 class="modal-title" id="myModalLabel">
+                <?= Yii::t('TourModule.views_tour_welcome', 'Howdy <strong>%firstname%</strong>, thank you for using HumHub.', ['%firstname%' => $user->profile->firstname]); ?>
             </h4>
         </div>
         <div class="modal-body">
             <div class="text-center">
-                <?php echo Yii::t('TourModule.views_tour_welcome', 'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.'); ?>
-                <br><br>
-                <br>
+                <?= Yii::t('TourModule.views_tour_welcome', 'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.'); ?>
+                <br><br><br>
             </div>
 
             <div class="row">
 
                 <div class="col-md-3">
 
-                    <div class="image-upload-container profile-user-photo-container"
-                         style="width: 140px; height: 140px;">
+                    <div class="image-upload-container profile-user-photo-container" style="width: 140px; height: 140px;">
 
                         <?php
                         /* Get original profile image URL */
@@ -43,17 +40,17 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
                             ?>
 
                             <!-- profile image output-->
-                            <a data-toggle="lightbox" data-gallery="" href="<?php echo $profileImageOrig; ?>#.jpeg"
-                               data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
+                            <a data-toggle="lightbox" data-gallery="" href="<?= $profileImageOrig; ?>#.jpeg"
+                               data-footer='<button type="button" class="btn btn-primary" data-dismiss="modal"><?= Yii::t('FileModule.widgets_views_showFiles', 'Close'); ?></button>'>
                                 <img class="img-rounded profile-user-photo" id="user-profile-image"
-                                     src="<?php echo $user->getProfileImage()->getUrl(); ?>"
+                                     src="<?= $user->getProfileImage()->getUrl(); ?>"
                                      data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;"/>
                             </a>
 
                         <?php } else { ?>
 
                             <img class="img-rounded profile-user-photo" id="user-profile-image"
-                                 src="<?php echo $user->getProfileImage()->getUrl(); ?>"
+                                 src="<?= $user->getProfileImage()->getUrl(); ?>"
                                  data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;"/>
 
 
@@ -61,9 +58,7 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
 
                         <!-- check if the current user is the profile owner and can change the images -->
 
-                        <form class="fileupload" id="profilefileupload" action="" method="POST"
-                              enctype="multipart/form-data"
-                              style="position: absolute; top: 0; left: 0; opacity: 0; height: 140px; width: 140px;">
+                        <form class="fileupload" id="profilefileupload" action="" method="POST" enctype="multipart/form-data" style="position: absolute; top: 0; left: 0; opacity: 0; height: 140px; width: 140px;">
                             <input type="file" name="profilefiles[]">
                         </form>
 
@@ -89,8 +84,7 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
                                href="<?php /* echo Url::toRoute('/user/account/crop-profile-image'); */ ?>"
                                class="btn btn-info btn-sm" data-target="#globalModal"><i
                                     class="fa fa-edit"></i></a>-->
-                            <?php
-                            echo \humhub\widgets\ModalConfirm::widget(array(
+                            <?= \humhub\widgets\ModalConfirm::widget(array(
                                 'uniqueID' => 'modal_profileimagedelete',
                                 'linkOutput' => 'a',
                                 'title' => Yii::t('UserModule.widgets_views_deleteImage', '<strong>Confirm</strong> image deleting'),
@@ -108,8 +102,8 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
 
 
                     </div>
-                    <p class="help-block text-center"><i
-                            class="fa fa-arrow-up"></i><br><?php echo Yii::t('TourModule.views_tour_welcome', 'Drag a photo here or click to browse your files'); ?>
+                    <p class="help-block text-center">
+                        <i class="fa fa-arrow-up"></i><br><?= Yii::t('TourModule.views_tour_welcome', 'Drag a photo here or click to browse your files'); ?>
                     </p>
 
                 </div>
@@ -117,32 +111,32 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
                     <?php $form = ActiveForm::begin(); ?>
                     <div class="row">
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'firstname')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your firstname')]); ?>
+                            <?= $form->field($user->profile, 'firstname')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your firstname')]); ?>
                         </div>
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'lastname')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your lastname')]); ?>
+                            <?= $form->field($user->profile, 'lastname')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your lastname')]); ?>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <?php echo $form->field($user->profile, 'title')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your title or position')]); ?>
+                            <?= $form->field($user->profile, 'title')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your title or position')]); ?>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <?php echo $form->field($user, 'tags')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your skills, knowledge and experience (comma seperated)')]); ?>
+                            <?= $form->field($user, 'tags')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your skills, knowledge and experience (comma seperated)')]); ?>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'birthday')->widget(yii\jui\DatePicker::className(), ['dateFormat' => Yii::$app->formatter->dateInputFormat, 'clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
+                            <?= $form->field($user->profile, 'birthday')->widget(yii\jui\DatePicker::className(), ['dateFormat' => Yii::$app->formatter->dateInputFormat, 'clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
                         </div>
                         <div class="col-md-6">
                             <br><br>
-                            <?php echo $form->field($user->profile, 'birthday_hide_year')->checkbox(['label' => Yii::t('TourModule.views_tour_welcome', 'Hide my year of birth')]); ?>
+                            <?= $form->field($user->profile, 'birthday_hide_year')->checkbox(['label' => Yii::t('TourModule.views_tour_welcome', 'Hide my year of birth')]); ?>
                         </div>
                     </div>
 
@@ -154,21 +148,19 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
 
                     <div class="row">
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'phone_work')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your phone number at work')]); ?>
+                            <?= $form->field($user->profile, 'phone_work')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your phone number at work')]); ?>
                         </div>
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'mobile')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your mobild phone number')]); ?>
+                            <?= $form->field($user->profile, 'mobile')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your mobild phone number')]); ?>
                         </div>
                     </div>
-
 
                     <div class="row">
                         <div class="col-md-12 text-right">
                             <hr>
                             <br>
 
-                            <?php
-                            echo \humhub\widgets\AjaxButton::widget([
+                            <?= \humhub\widgets\AjaxButton::widget([
                                 'label' => Yii::t('TourModule.views_tour_welcome', 'Save and close'),
                                 'ajaxOptions' => [
                                     'type' => 'POST',
@@ -182,7 +174,7 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
                             ]);
                             ?>
 
-                            <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'invite-loader', 'cssClass' => 'loader-modal hidden']); ?>
+                            <?= \humhub\widgets\LoaderWidget::widget(['id' => 'invite-loader', 'cssClass' => 'loader-modal hidden']); ?>
                         </div>
                     </div>
 
@@ -190,11 +182,8 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
                     <?php ActiveForm::end(); ?>
                 </div>
 
-
             </div>
         </div>
 
-
     </div>
-
 </div>

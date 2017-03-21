@@ -290,6 +290,7 @@ class File extends \humhub\components\ActiveRecord
         }
 
         ImageConverter::Resize($originalFilename, $previewFilename, array('mode' => 'max', 'width' => $maxWidth, 'height' => $maxHeight));
+        
         return $this->getUrl($suffix);
     }
 
@@ -299,6 +300,7 @@ class File extends \humhub\components\ActiveRecord
         if (isset($fileParts['extension'])) {
             return $fileParts['extension'];
         }
+        
         return '';
     }
 
@@ -327,7 +329,7 @@ class File extends \humhub\components\ActiveRecord
     public function canDelete($userId = "")
     {
         $object = $this->getPolymorphicRelation();
-        if($object != null) {
+        if ($object != null) {
             if ($object instanceof ContentAddonActiveRecord) {
                 return $object->canWrite($userId);
             }  else if ($object instanceof ContentActiveRecord) {
@@ -397,7 +399,7 @@ class File extends \humhub\components\ActiveRecord
             $this->addError($attribute, Yii::t('FileModule.models_File', 'Maximum file size ({maxFileSize}) has been exceeded!', array("{maxFileSize}" => Yii::$app->formatter->asSize(Yii::$app->getModule('file')->settings->get('maxFileSize')))));
         }
         // check if the file can be processed with php image manipulation tools in case it is an image
-        if(isset($this->uploadedFile) && in_array($this->uploadedFile->type, [image_type_to_mime_type(IMAGETYPE_PNG), image_type_to_mime_type(IMAGETYPE_GIF), image_type_to_mime_type(IMAGETYPE_JPEG)]) && !ImageConverter::allocateMemory($this->uploadedFile->tempName, true)) {
+        if (isset($this->uploadedFile) && in_array($this->uploadedFile->type, [image_type_to_mime_type(IMAGETYPE_PNG), image_type_to_mime_type(IMAGETYPE_GIF), image_type_to_mime_type(IMAGETYPE_JPEG)]) && !ImageConverter::allocateMemory($this->uploadedFile->tempName, true)) {
             $this->addError($attribute, Yii::t('FileModule.models_File', 'Image dimensions are too big to be processed with current server memory limit!'));
         }
     }

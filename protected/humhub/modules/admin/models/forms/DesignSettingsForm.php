@@ -130,6 +130,7 @@ class DesignSettingsForm extends \yii\base\Model
         }
 
         \humhub\libs\DynamicConfig::rewrite();
+        
         return true;
     }
 

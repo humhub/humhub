@@ -1,12 +1,8 @@
 <?php
-
-
 /* @var $this humhub\components\View */
 ?>
 <li>
-
-    <?php
-    echo humhub\widgets\ModalConfirm::widget(array(
+    <?= \humhub\widgets\ModalConfirm::widget(array(
         'uniqueID' => 'modal_permalink_' . $id,
         'linkOutput' => 'a',
         'title' => Yii::t('ContentModule.widgets_views_permaLink', '<strong>Permalink</strong> to this post'),
@@ -14,7 +10,7 @@
         'buttonFalse' => Yii::t('ContentModule.widgets_views_permaLink', 'Close'),
         'linkContent' => '<i class="fa fa-link"></i> ' . Yii::t('ContentModule.widgets_views_permaLink', 'Permalink'),
         'linkHref' => '',
-        'modalShownJS' => 'setTimeout(function(){$("#permalink-txt-' . $id . '").focus(); $("#permalink-txt-' . $id . '").select();}, 1);'
+        'modalShownJS' => 'setTimeout(function() {$("#permalink-txt-' . $id . '").focus(); $("#permalink-txt-' . $id . '").select();}, 1);'
     ));
     ?>
 </li>

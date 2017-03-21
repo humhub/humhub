@@ -6,16 +6,15 @@ use yii\helpers\Html;
     <div id="user-spaces-panel" class="panel panel-default members" style="position: relative;">
 
         <!-- Display panel menu widget -->
-        <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'user-spaces-panel']); ?>
+        <?= \humhub\widgets\PanelMenu::widget(['id' => 'user-spaces-panel']); ?>
 
         <div class="panel-heading">
-            <?php echo Yii::t('UserModule.widgets_views_userSpaces', '<strong>Member</strong> in these spaces'); ?>
+            <?= Yii::t('UserModule.widgets_views_userSpaces', '<strong>Member</strong> in these spaces'); ?>
         </div>
 
         <div class="panel-body">
             <?php foreach ($spaces as $space): ?>
-                <?php
-                echo \humhub\modules\space\widgets\Image::widget([
+                <?= \humhub\modules\space\widgets\Image::widget([
                     'space' => $space,
                     'width' => 24,
                     'htmlOptions' => [

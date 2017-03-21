@@ -24,7 +24,7 @@ class ImageController extends Controller
      */
     public function actionUpload()
     {
-        \Yii::$app->response->format = 'json';
+        Yii::$app->response->format = 'json';
 
         $model = new \humhub\models\forms\UploadProfileImage();
 
@@ -69,7 +69,6 @@ class ImageController extends Controller
             return $this->htmlRedirect($space->getUrl());
         }
 
-
         return $this->renderAjax('crop', array('model' => $model, 'profileImage' => $profileImage, 'space' => $space));
     }
 
@@ -78,7 +77,7 @@ class ImageController extends Controller
      */
     public function actionBannerUpload()
     {
-        \Yii::$app->response->format = 'json';
+        Yii::$app->response->format = 'json';
 
         $model = new \humhub\models\forms\UploadProfileImage();
         $json = array();
@@ -127,7 +126,7 @@ class ImageController extends Controller
      */
     public function actionDelete()
     {
-        \Yii::$app->response->format = 'json';
+        Yii::$app->response->format = 'json';
         $this->forcePostRequest();
 
         $space = $this->getSpace();
@@ -152,5 +151,3 @@ class ImageController extends Controller
     }
 
 }
-
-?>

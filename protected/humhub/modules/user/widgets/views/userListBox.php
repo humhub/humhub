@@ -7,16 +7,15 @@ use yii\helpers\Html;
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"
-                id="myModalLabel">
-                    <?php echo $title; ?>
+            <h4 class="modal-title" id="myModalLabel">
+                <?= $title; ?>
             </h4>
-            <br/>
+            <br>
         </div>
 
         <?php if (count($users) === 0): ?>
             <div class="modal-body">
-                <p><?php echo Yii::t('UserModule.base', 'No users found.'); ?></p>
+                <p><?= Yii::t('UserModule.base', 'No users found.'); ?></p>
             </div>
         <?php endif; ?>      
 
@@ -27,22 +26,20 @@ use yii\helpers\Html;
                 <!-- BEGIN: Results -->
                 <?php foreach ($users as $user) : ?>
                     <li>
-                        <a href="<?php echo $user->getUrl(); ?>">
-
+                        <a href="<?= $user->getUrl(); ?>">
                             <div class="media">
                                 <img class="media-object img-rounded pull-left"
-                                     src="<?php echo $user->getProfileImage()->getUrl(); ?>" width="50"
+                                     src="<?= $user->getProfileImage()->getUrl(); ?>" width="50"
                                      height="50" alt="50x50" data-src="holder.js/50x50"
                                      style="width: 50px; height: 50px;">
 
                                 <div class="media-body">
-                                    <h4 class="media-heading"><?php echo Html::encode($user->displayName); ?></h4>
-                                    <h5><?php echo Html::encode($user->profile->title); ?></h5>
+                                    <h4 class="media-heading"><?= Html::encode($user->displayName); ?></h4>
+                                    <h5><?= Html::encode($user->profile->title); ?></h5>
                                 </div>
                             </div>
                         </a>
                     </li>
-
 
                 <?php endforeach; ?>
                 <!-- END: Results -->
@@ -53,18 +50,15 @@ use yii\helpers\Html;
                 <?= \humhub\widgets\AjaxLinkPager::widget(['pagination' => $pagination]); ?>
             </div>
 
-
         </div>
-
 
     </div>
 
 </div>
 
-<script type="text/javascript">
+<script>
 
     // scroll to top of list
     $(".modal-body").animate({scrollTop: 0}, 200);
 
 </script>
-

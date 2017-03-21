@@ -8,7 +8,6 @@
 
 namespace humhub\modules\friendship\models;
 
-
 use humhub\modules\user\models\User;
 
 /**
@@ -87,7 +86,6 @@ class Friendship extends \humhub\components\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-
         if ($insert) {
             // Check if this is an request (friend has no entry in table)
             $state = self::getStateForUser($this->user, $this->friendUser);
@@ -225,7 +223,6 @@ class Friendship extends \humhub\components\ActiveRecord
         // Delete friends entry
         $myFriendship = Friendship::findOne(['user_id' => $user->id, 'friend_user_id' => $friend->id]);
         $friendsFriendship = Friendship::findOne(['user_id' => $friend->id, 'friend_user_id' => $user->id]);
-
 
         if ($friendsFriendship !== null) {
             $friendsFriendship->delete();

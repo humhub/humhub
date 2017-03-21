@@ -20,5 +20,3 @@ class UserTags extends \yii\base\Widget
     }
 
 }
-
-?>

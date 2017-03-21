@@ -9,7 +9,6 @@
 namespace humhub\modules\admin\controllers;
 
 use Yii;
-
 use yii\web\HttpException;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\libs\OnlineModuleManager;
@@ -72,7 +71,6 @@ class ModuleController extends Controller
      */
     public function actionDisable()
     {
-
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');
@@ -92,7 +90,6 @@ class ModuleController extends Controller
      */
     public function actionInstall()
     {
-
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');
@@ -113,7 +110,6 @@ class ModuleController extends Controller
      */
     public function actionRemove()
     {
-
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');
@@ -132,6 +128,7 @@ class ModuleController extends Controller
 
             Yii::$app->moduleManager->removeModule($module->id);
         }
+        
         return $this->redirect(['/admin/module/list']);
     }
 
@@ -142,7 +139,6 @@ class ModuleController extends Controller
      */
     public function actionUpdate()
     {
-
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');
@@ -212,14 +208,12 @@ class ModuleController extends Controller
             } else {
                 $hasError = true;
                 $message = 'Invalid module licence key!';
-            }
-                
+            }  
         }
         
         // Only showed purchased modules
         $onlineModules = $this->getOnlineModuleManager();
         $modules = $onlineModules->getModules(false);
-        
         
         foreach ($modules as $i => $module) {
             if (!isset($module['purchased']) || !$module['purchased']) {
@@ -237,7 +231,6 @@ class ModuleController extends Controller
      */
     public function actionInfo()
     {
-
         $moduleId = Yii::$app->request->get('moduleId');
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
@@ -282,8 +275,6 @@ class ModuleController extends Controller
             throw new HttpException(500, 'Invalid module type!');
         }
 
-
-
         $model = new \humhub\modules\admin\models\forms\ModuleSetAsDefaultForm();
 
         $spaceDefaultModule = null;
@@ -310,7 +301,6 @@ class ModuleController extends Controller
             $model->userDefaultState = $userDefaultModule->state;
         }
 
-
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($module->hasContentContainerType(Space::className())) {
                 $spaceDefaultModule->state = $model->spaceDefaultState;
@@ -330,7 +320,6 @@ class ModuleController extends Controller
 
     public function getOnlineModuleManager()
     {
-
         if ($this->_onlineModuleManager === null) {
             $this->_onlineModuleManager = new OnlineModuleManager();
         }

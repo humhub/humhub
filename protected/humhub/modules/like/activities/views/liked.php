@@ -6,4 +6,3 @@ echo Yii::t('LikeModule.views_activities_Like', '{userDisplayName} likes {conten
     '{userDisplayName}' => '<strong>' . Html::encode($originator->displayName) . '</strong>',
     '{contentTitle}' => $preview,
 ));
-?>

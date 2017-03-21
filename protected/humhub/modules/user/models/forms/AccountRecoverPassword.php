@@ -49,7 +49,6 @@ class AccountRecoverPassword extends \yii\base\Model
      */
     public function canRecoverPassword($attribute, $params)
     {
-
         if ($this->email != "") {
             $user = User::findOne(array('email' => $this->email));
             $passwordAuth = new \humhub\modules\user\authclient\Password();
@@ -66,7 +65,6 @@ class AccountRecoverPassword extends \yii\base\Model
      */
     public function recover()
     {
-
         $user = User::findOne(array('email' => $this->email));
 
         // Switch to users language - if specified
@@ -78,9 +76,9 @@ class AccountRecoverPassword extends \yii\base\Model
         Yii::$app->getModule('user')->settings->contentContainer($user)->set('passwordRecoveryToken', $token . '.' . time());
 
         $mail = Yii::$app->mailer->compose([
-			'html' => '@humhub/modules/user/views/mails/RecoverPassword',
-			'text' => '@humhub/modules/user/views/mails/plaintext/RecoverPassword'
-		], [
+            'html' => '@humhub/modules/user/views/mails/RecoverPassword',
+            'text' => '@humhub/modules/user/views/mails/plaintext/RecoverPassword'
+        ], [
             'user' => $user,
             'linkPasswordReset' => Url::to(["/user/password-recovery/reset", 'token' => $token, 'guid' => $user->guid], true)
         ]);

@@ -32,5 +32,3 @@ class SpaceStatistics extends \yii\base\Widget
     }
 
 }
-
-?>

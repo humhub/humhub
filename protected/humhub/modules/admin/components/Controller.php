@@ -22,7 +22,8 @@ class Controller extends \humhub\components\Controller
 
     public function init()
     {
-        $this->appendPageTitle(\Yii::t('AdminModule.base', 'Administration'));
+        $this->appendPageTitle(Yii::t('AdminModule.base', 'Administration'));
+        
         return parent::init();
     }
 

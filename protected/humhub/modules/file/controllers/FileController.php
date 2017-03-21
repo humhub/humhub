@@ -12,7 +12,6 @@ use Yii;
 use yii\web\HttpException;
 use yii\web\UploadedFile;
 use yii\helpers\FileHelper;
-
 use humhub\modules\file\models\File;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;

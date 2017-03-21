@@ -8,4 +8,4 @@ echo Yii::t('ActivityModule.views_activities_ActivitySpaceCreated', "%displayNam
     '%spaceName%' => '<strong>' . Html::encode(Helpers::truncateText($source->name, 25)) . '</strong>'
 ));
 ?>
-<br/>
+<br>

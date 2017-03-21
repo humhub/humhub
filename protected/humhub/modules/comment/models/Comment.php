@@ -59,6 +59,7 @@ class Comment extends ContentAddonActiveRecord
     public function beforeDelete()
     {
         $this->flushCache();
+        
         return parent::beforeDelete();
     }
 
@@ -73,6 +74,7 @@ class Comment extends ContentAddonActiveRecord
         } catch (\yii\base\Exception $ex) {
             ;
         }
+        
         parent::afterDelete();
     }
 

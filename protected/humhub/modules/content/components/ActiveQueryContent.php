@@ -72,8 +72,6 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
             $this->andWhere('space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1');
         }
 
-
-
         return $this;
     }
 
@@ -88,6 +86,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
     {
         $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
         $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => $container->className()]);
+        
         return $this;
     }
 

@@ -29,16 +29,14 @@ class NotificationSwitchLink extends \yii\base\Widget
      */
     public function run()
     {
-        if (\Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return;
         }
 
         return $this->render('notificationSwitchLink', array(
                     'content' => $this->content->content,
-                    'state' => $this->content->isFollowedByUser(\Yii::$app->user->id, true)
+                    'state' => $this->content->isFollowedByUser(Yii::$app->user->id, true)
         ));
     }
 
 }
-
-?>

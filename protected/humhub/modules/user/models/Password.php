@@ -51,6 +51,7 @@ class Password extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         $this->created_at = new \yii\db\Expression("NOW()");
+        
         return parent::beforeSave($insert);
     }
 
@@ -106,6 +107,7 @@ class Password extends \yii\db\ActiveRecord
         }
 
         $scenarios['registration'] = ['newPassword', 'newPasswordConfirm'];
+        
         return $scenarios;
     }
 

@@ -42,7 +42,7 @@ class CreatePrivateSpace extends \humhub\libs\BasePermission
     public function __construct($config = array()) {
         parent::__construct($config);
         
-        $this->title = \Yii::t('SpaceModule.permissions', 'Create private space');
-        $this->description = \Yii::t('SpaceModule.permissions', 'Can create hidden (private) spaces.');
+        $this->title = Yii::t('SpaceModule.permissions', 'Create private space');
+        $this->description = Yii::t('SpaceModule.permissions', 'Can create hidden (private) spaces.');
     }    
 }

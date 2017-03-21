@@ -49,7 +49,6 @@ class OverviewController extends Controller
         $query = Notification::findGrouped();
         $query->andWhere(['user_id' => Yii::$app->user->id]);
 
-
         if ($filterForm->isExcludeFilter()) {
             $query->andFilterWhere(['not in', 'class', $filterForm->getExcludeClassFilter()]);
         } else if ($filterForm->isActive()) {

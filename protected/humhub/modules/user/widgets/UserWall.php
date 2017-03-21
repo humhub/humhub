@@ -13,5 +13,3 @@ class UserWall extends \yii\base\Widget
     }
 
 }
-
-?>

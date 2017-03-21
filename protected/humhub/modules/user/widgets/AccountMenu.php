@@ -9,8 +9,8 @@
 namespace humhub\modules\user\widgets;
 
 use Yii;
-use \humhub\widgets\BaseMenu;
-use \yii\helpers\Url;
+use yii\helpers\Url;
+use humhub\widgets\BaseMenu;
 
 /**
  * AccountMenuWidget as (usally left) navigation on users account options.
@@ -27,7 +27,6 @@ class AccountMenu extends BaseMenu
 
     public function init()
     {
-        
         $controllerAction = Yii::$app->controller->action->id;
         $this->addItemGroup(array(
             'id' => 'account',
@@ -78,5 +77,3 @@ class AccountMenu extends BaseMenu
     }
 
 }
-
-?>

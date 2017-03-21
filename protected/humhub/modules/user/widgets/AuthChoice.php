@@ -87,6 +87,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
                 $result[] = $client;
             }
         }
+        
         return $result;
     }
 
@@ -198,6 +199,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         echo parent::clientLink($client, $icon . $client->getTitle(), $htmlOptions);
 
         return;
+        
         parent::clientLink($client, $text, $htmlOptions);
     }
 

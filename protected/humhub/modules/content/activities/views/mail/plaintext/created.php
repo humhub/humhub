@@ -8,4 +8,4 @@ echo strip_tags(Yii::t('ContentModule.activities_views_created', '{displayName} 
 )));
 ?>
 
-"<?php echo strip_tags(\humhub\widgets\RichText::widget(['text' => $source->getContentDescription(), 'minimal' => true])); ?>"
+"<?= strip_tags(\humhub\widgets\RichText::widget(['text' => $source->getContentDescription(), 'minimal' => true])); ?>"

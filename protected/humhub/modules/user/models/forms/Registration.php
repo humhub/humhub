@@ -80,7 +80,8 @@ class Registration extends HForm
     public function render($form)
     {
         $this->setFormDefinition();
-        return parent::render($form);
+        
+		return parent::render($form);
     }
 
     /**

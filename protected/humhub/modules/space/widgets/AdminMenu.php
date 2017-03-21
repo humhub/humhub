@@ -14,7 +14,4 @@ namespace humhub\modules\space\widgets;
  */
 class AdminMenu extends \humhub\widgets\BaseMenu
 {
-    
 }
-
-?>

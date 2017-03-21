@@ -87,10 +87,10 @@ class Birthday extends Date
      */
     public function getFieldRules($rules = array())
     {
-
         $rules[] = [$this->profileField->internal_name . "_hide_year", 'in', 'range' => [0, 1]];
         $rules[] = [$this->profileField->internal_name, \humhub\components\validators\PastDateValidator::className()];
-        return parent::getFieldRules($rules);
+        
+		return parent::getFieldRules($rules);
     }
 
     /**
@@ -117,7 +117,8 @@ class Birthday extends Date
         $labels = array();
         $labels[$this->profileField->internal_name] = Yii::t($this->profileField->getTranslationCategory(), $this->profileField->title);
         $labels[$this->profileField->internal_name . "_hide_year"] = Yii::t($this->profileField->getTranslationCategory(), "Hide year in profile");
-        return $labels;
+        
+		return $labels;
     }
 
     /**
@@ -157,5 +158,3 @@ class Birthday extends Date
     }
 
 }
-
-?>

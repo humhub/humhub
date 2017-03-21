@@ -17,6 +17,5 @@ namespace humhub\modules\user\authclient\interfaces;
  */
 interface AutoSyncUsers
 {
-
     public function syncUsers();
 }

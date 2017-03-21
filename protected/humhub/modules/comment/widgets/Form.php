@@ -51,5 +51,3 @@ class Form extends \yii\base\Widget
     }
 
 }
-
-?>

@@ -8,7 +8,6 @@
 
 namespace humhub\modules\user\models;
 
-
 use humhub\modules\activity\models\Activity;
 
 /**
@@ -72,8 +71,6 @@ class Follow extends \yii\db\ActiveRecord
             $activity->create();
         }
 
-
-
         return parent::afterSave($insert, $changedAttributes);
     }
 
@@ -105,6 +102,7 @@ class Follow extends \yii\db\ActiveRecord
         if ($targetClass != "") {
             return $targetClass::findOne(['id' => $this->object_id]);
         }
+        
         return null;
     }
 

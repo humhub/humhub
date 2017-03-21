@@ -58,5 +58,3 @@ class FileUploadButton extends \yii\base\Widget
     }
 
 }
-
-?>

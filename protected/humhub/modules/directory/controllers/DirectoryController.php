@@ -30,6 +30,7 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
             'spaces' => Yii::t('AdminModule.base', 'Spaces'),
             'user-posts' => Yii::t('AdminModule.base', 'User posts'),
         ]);
+        
         return parent::init();
     }
 

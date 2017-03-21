@@ -15,13 +15,13 @@ foreach ($spaces as $space) {
 }
 ?>
 
-<script type="text/javascript">
+<script>
     $(function () {
-        $('#<?php echo $inputId; ?>').spacepicker({
-            inputId: '#<?php echo $inputId; ?>',
-            maxSpaces: '<?php echo $maxSpaces; ?>',
-            searchUrl: '<?php echo $spaceSearchUrl; ?>',
-            currentValue: '<?php echo str_replace("\n", " \\", $selectedSpaces); ?>',
+        $('#<?= $inputId; ?>').spacepicker({
+            inputId: '#<?= $inputId; ?>',
+            maxSpaces: '<?= $maxSpaces; ?>',
+            searchUrl: '<?= $spaceSearchUrl; ?>',
+            currentValue: '<?= str_replace("\n", " \\", $selectedSpaces); ?>',
             placeholder: '<?= Html::encode($placeholder); ?>'
         });
     });

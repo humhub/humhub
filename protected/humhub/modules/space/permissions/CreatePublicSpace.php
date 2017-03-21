@@ -42,8 +42,8 @@ class CreatePublicSpace extends \humhub\libs\BasePermission
     public function __construct($config = array()) {
         parent::__construct($config);
         
-        $this->title = \Yii::t('SpaceModule.permissions', 'Create public space');
-        $this->description = \Yii::t('SpaceModule.permissions', 'Can create public visible spaces. (Listed in directory)');
+        $this->title = Yii::t('SpaceModule.permissions', 'Create public space');
+        $this->description = Yii::t('SpaceModule.permissions', 'Can create public visible spaces. (Listed in directory)');
     }
 
 }

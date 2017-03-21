@@ -84,6 +84,7 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
             }
             return $content;
         }
+        
         return parent::__get($name);
     }
 
@@ -123,6 +124,7 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
             Yii::configure($wallEntryWidget, $params);
             return $wallEntryWidget->renderWallEntry();
         }
+        
         return "";
     }
 
@@ -219,5 +221,3 @@ class ContentActiveRecord extends ActiveRecord implements \humhub\modules\conten
     }
 
 }
-
-?>

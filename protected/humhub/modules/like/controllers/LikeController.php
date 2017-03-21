@@ -102,7 +102,6 @@ class LikeController extends \humhub\modules\content\components\ContentAddonCont
      */
     public function actionUserList()
     {
-
         $query = \humhub\modules\user\models\User::find();
         $query->leftJoin('like', 'like.created_by=user.id');
         $query->where([

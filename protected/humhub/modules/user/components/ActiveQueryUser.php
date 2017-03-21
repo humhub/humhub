@@ -26,6 +26,7 @@ class ActiveQueryUser extends ActiveQuery
     public function active()
     {
         $this->andWhere(['user.status' => \humhub\modules\user\models\User::STATUS_ENABLED]);
+        
         return $this;
     }
 
@@ -38,6 +39,7 @@ class ActiveQueryUser extends ActiveQuery
     {
         $this->joinWith('profile');
         $this->addOrderBy(['profile.lastname' => SORT_ASC]);
+        
         return $this;
     }
 

@@ -16,7 +16,8 @@ class DashboardController extends Controller
 
     public function init()
     {
-        $this->appendPageTitle(\Yii::t('DashboardModule.base', 'Dashboard'));
+        $this->appendPageTitle(Yii::t('DashboardModule.base', 'Dashboard'));
+        
         return parent::init();
     }
 

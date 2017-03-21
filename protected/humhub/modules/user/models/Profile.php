@@ -156,6 +156,7 @@ class Profile extends \yii\db\ActiveRecord
         foreach (ProfileField::find()->all() as $profileField) {
             $labels = array_merge($labels, $profileField->fieldType->getLabels());
         }
+        
         return $labels;
     }
 
@@ -239,6 +240,7 @@ class Profile extends \yii\db\ActiveRecord
     {
         $table = Yii::$app->getDb()->getSchema()->getTableSchema(self::tableName(), true);
         $columnNames = $table->getColumnNames();
+        
         return (in_array($name, $columnNames));
     }
 

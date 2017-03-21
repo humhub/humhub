@@ -34,5 +34,3 @@ class Overview extends \yii\base\Widget
     }
 
 }
-
-?>

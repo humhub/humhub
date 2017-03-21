@@ -99,7 +99,6 @@ abstract class Search extends \yii\base\Component
      */
     public function optimize()
     {
-        
     }
 
     protected function getMetaInfoArray(Searchable $obj)

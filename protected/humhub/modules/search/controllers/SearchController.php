@@ -12,7 +12,6 @@ use Yii;
 use humhub\components\Controller;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-
 use humhub\modules\space\widgets\Image;
 
 /**
@@ -31,7 +30,7 @@ class SearchController extends Controller
 
     public function init()
     {
-        $this->appendPageTitle(\Yii::t('SearchModule.base', 'Search'));
+        $this->appendPageTitle(Yii::t('SearchModule.base', 'Search'));
         return parent::init();
     }
 
@@ -105,7 +104,7 @@ class SearchController extends Controller
      */
     public function actionMentioning()
     {
-        \Yii::$app->response->format = 'json';
+        Yii::$app->response->format = 'json';
 
         $results = array();
         $keyword = Yii::$app->request->get('keyword', "");

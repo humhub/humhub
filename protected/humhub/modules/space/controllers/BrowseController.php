@@ -9,8 +9,8 @@
 namespace humhub\modules\space\controllers;
 
 use Yii;
-use humhub\components\Controller;
 use yii\helpers\Html;
+use humhub\components\Controller;
 use humhub\modules\space\widgets\Image;
 
 /**
@@ -43,7 +43,7 @@ class BrowseController extends Controller
      */
     public function actionSearchJson()
     {
-        \Yii::$app->response->format = 'json';
+        Yii::$app->response->format = 'json';
 
         $keyword = Yii::$app->request->get('keyword', "");
         $page = (int) Yii::$app->request->get('page', 1);
@@ -71,5 +71,3 @@ class BrowseController extends Controller
     }
 
 }
-
-?>

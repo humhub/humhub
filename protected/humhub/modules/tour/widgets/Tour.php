@@ -4,7 +4,6 @@ namespace humhub\modules\tour\widgets;
 
 use Yii;
 
-
 /**
  * Will show the introduction tour
  *
@@ -20,7 +19,6 @@ class Tour extends \humhub\components\Widget
      */
     public function run()
     {
-
         if (Yii::$app->user->isGuest)
             return;
 
@@ -28,7 +26,6 @@ class Tour extends \humhub\components\Widget
         if (!isset($_GET['tour'])) {
             return;
         }
-
 
         // Tour only possible when we are in a module
         if (Yii::$app->controller->module === null) {
@@ -66,5 +63,3 @@ class Tour extends \humhub\components\Widget
     }
 
 }
-
-?>

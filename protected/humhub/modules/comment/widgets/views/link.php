@@ -6,10 +6,10 @@ use yii\helpers\Url;
 
 
 <?php if ($mode == \humhub\modules\comment\widgets\CommentLink::MODE_POPUP): ?>
-    <a href="<?php echo Url::to(['/comment/comment/show', 'contentModel' => $objectModel, 'contentId' => $objectId, 'mode' => 'popup']); ?>"
+    <a href="<?= Url::to(['/comment/comment/show', 'contentModel' => $objectModel, 'contentId' => $objectId, 'mode' => 'popup']); ?>"
        class=""
        title="" data-target="#globalModal"
-       data-original-title="Comments">Comments (<?php echo $this->context->getCommentsCount(); ?>)</a>
+       data-original-title="Comments">Comments (<?= $this->context->getCommentsCount(); ?>)</a>
 <?php else: ?>
     <?php
     if (Yii::$app->user->isGuest) {

@@ -39,5 +39,3 @@ class DeleteLink extends \yii\base\Widget
     }
 
 }
-
-?>

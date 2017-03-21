@@ -45,5 +45,3 @@ class ShowFiles extends \yii\base\Widget
     }
 
 }
-
-?>

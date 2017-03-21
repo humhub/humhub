@@ -1,21 +1,20 @@
 <?php
 
 use yii\widgets\ActiveForm;
-use humhub\compat\CHtml;
 use yii\helpers\Url;
 use yii\helpers\Html;
+use humhub\compat\CHtml;
 ?>
 
-<?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
+<?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]); ?>
 <div class="panel-body">
-     <?php $form = ActiveForm::begin(); ?>
-    <?php echo $form->field($group, 'name'); ?>
-    <?php echo $form->field($group, 'description')->textarea(['rows' => 5]); ?>
+    <?php $form = ActiveForm::begin(); ?>
+    <?= $form->field($group, 'name'); ?>
+    <?= $form->field($group, 'description')->textarea(['rows' => 5]); ?>
 
     <?php if (!$group->is_admin_group): ?>
-        <?php echo $form->field($group, 'defaultSpaceGuid')->textInput(['id' => 'space_select']); ?>
-        <?php
-        echo \humhub\modules\space\widgets\Picker::widget([
+        <?= $form->field($group, 'defaultSpaceGuid')->textInput(['id' => 'space_select']); ?>
+        <?= \humhub\modules\space\widgets\Picker::widget([
             'inputId' => 'space_select',
             'maxSpaces' => 1,
             'model' => $group,
@@ -25,7 +24,7 @@ use yii\helpers\Html;
     <?php endif; ?>
 
     <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
-        <?php echo $form->field($group, 'managerGuids', ['inputOptions' => ['id' => 'user_select']]); ?>
+        <?= $form->field($group, 'managerGuids', ['inputOptions' => ['id' => 'user_select']]); ?>
         <?php
         $url = ($group->isNewRecord) ? null : Url::toRoute('/admin/group/admin-user-search');
         echo \humhub\modules\user\widgets\UserPicker::widget([
@@ -39,15 +38,15 @@ use yii\helpers\Html;
         ?>
     <?php endif; ?>
 
-    <strong><?php echo Yii::t('AdminModule.views_group_edit', 'Visibility'); ?></strong>
+    <strong><?= Yii::t('AdminModule.views_group_edit', 'Visibility'); ?></strong>
     <br>
     <br>
     <?php if (!$group->is_admin_group): ?>
-        <?php echo $form->field($group, 'show_at_registration')->checkbox(); ?>
+        <?= $form->field($group, 'show_at_registration')->checkbox(); ?>
     <?php endif; ?>
-    <?php echo $form->field($group, 'show_at_directory')->checkbox(); ?>
+    <?= $form->field($group, 'show_at_directory')->checkbox(); ?>
 
-    <?php echo CHtml::submitButton(Yii::t('AdminModule.views_group_edit', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => "")); ?>  
+    <?= CHtml::submitButton(Yii::t('AdminModule.views_group_edit', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => "")); ?>  
 
     <?php
     if ($showDeleteButton) {

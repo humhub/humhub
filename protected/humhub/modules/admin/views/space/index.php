@@ -5,15 +5,15 @@ use humhub\modules\space\models\Space;
 use humhub\modules\admin\widgets\SpaceGridView;
 ?>
 
-<h4><?php echo Yii::t('AdminModule.views_space_index', 'Overview'); ?></h4>
+<h4><?= Yii::t('AdminModule.views_space_index', 'Overview'); ?></h4>
+
 <div class="help-block">
-    <?php echo Yii::t('AdminModule.views_space_index', 'This overview contains a list of each space with actions to view, edit and delete spaces.'); ?>
+    <?= Yii::t('AdminModule.views_space_index', 'This overview contains a list of each space with actions to view, edit and delete spaces.'); ?>
 </div>
 
 <div class="table-responsive">
     <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.space', 'Add new space'), ['/space/create'], ['class' => 'btn btn-success pull-right', 'data-target' => '#globalModal']); ?>
-    <?php
-    $visibilities = array(
+    <?php $visibilities = array(
         Space::VISIBILITY_NONE => Yii::t('SpaceModule.base', 'Private (Invisible)'),
         Space::VISIBILITY_REGISTERED_ONLY => Yii::t('SpaceModule.base', 'Public (Visible)'),
         Space::VISIBILITY_ALL => 'All',
@@ -24,7 +24,6 @@ use humhub\modules\admin\widgets\SpaceGridView;
         Space::JOIN_POLICY_APPLICATION => Yii::t('SpaceModule.base', 'Invite and request'),
         Space::JOIN_POLICY_FREE => Yii::t('SpaceModule.base', 'Everyone can enter'),
     );
-
 
     echo SpaceGridView::widget([
         'dataProvider' => $dataProvider,

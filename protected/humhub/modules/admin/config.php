@@ -15,4 +15,3 @@ return [
         ['class' => Application::className(), 'event' => Application::EVENT_ON_INIT, 'callback' => array(Events::className(), 'onConsoleApplicationInit')],
     ),
 ];
-?>

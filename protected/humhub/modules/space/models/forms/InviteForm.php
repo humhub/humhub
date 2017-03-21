@@ -80,7 +80,6 @@ class InviteForm extends Model
      */
     public function checkInvite($attribute, $params)
     {
-
         // Check if email field is not empty
         if ($this->$attribute != "") {
 
@@ -100,7 +99,7 @@ class InviteForm extends Model
                     if ($membership != null && $membership->status == Membership::STATUS_MEMBER) {
                         $this->addError($attribute, Yii::t('SpaceModule.forms_SpaceInviteForm', "User '{username}' is already a member of this space!", ['username' => $user->getDisplayName()]));
                         continue;
-                    } else if($membership != null && $membership->status == Membership::STATUS_APPLICANT) {
+                    } else if ($membership != null && $membership->status == Membership::STATUS_APPLICANT) {
                         $this->addError($attribute, Yii::t('SpaceModule.forms_SpaceInviteForm', "User '{username}' is already an applicant of this space!", ['username' => $user->getDisplayName()]));
                         continue;
                     }
@@ -122,7 +121,6 @@ class InviteForm extends Model
      */
     public function checkInviteExternal($attribute, $params)
     {
-
         // Check if email field is not empty
         if ($this->$attribute != "") {
             $emails = explode(",", $this->$attribute);
@@ -175,6 +173,7 @@ class InviteForm extends Model
         foreach (explode(',', $this->inviteExternal) as $email) {
             $emails[] = trim($email);
         }
+        
         return $emails;
     }
 

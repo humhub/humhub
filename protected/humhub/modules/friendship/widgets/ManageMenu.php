@@ -57,8 +57,6 @@ class ManageMenu extends \humhub\widgets\BaseMenu
             'isActive' => (Yii::$app->controller->id == 'manage' && Yii::$app->controller->action->id == 'sent-requests'),
         ));
 
-
-
         parent::init();
     }
 

@@ -43,5 +43,3 @@ class Followed extends BaseNotification
     }
 
 }
-
-?>

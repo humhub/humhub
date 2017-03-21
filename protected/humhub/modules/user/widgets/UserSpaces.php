@@ -49,5 +49,3 @@ class UserSpaces extends \yii\base\Widget
     }
 
 }
-
-?>

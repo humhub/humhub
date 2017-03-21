@@ -30,6 +30,7 @@ class AuthenticationController extends Controller
         ]);
         
         $this->subLayout = '@admin/views/layouts/user';
+        
         return parent::init();
     }
 
@@ -97,5 +98,3 @@ class AuthenticationController extends Controller
         return $this->render('authentication_ldap', array('model' => $form, 'enabled' => $enabled, 'userCount' => $userCount, 'errorMessage' => $errorMessage));
     }
 }
-
-?>

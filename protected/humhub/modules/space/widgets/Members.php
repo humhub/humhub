@@ -41,5 +41,3 @@ class Members extends Widget
     }
 
 }
-
-?>

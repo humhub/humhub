@@ -108,5 +108,3 @@ class Number extends BaseType
     }
 
 }
-
-?>

@@ -83,9 +83,11 @@ class PermissionManager extends \yii\base\Component
                     return $state;
                 }
             }
-            return $state;
+            
+			return $state;
         }
-        return $this->getSingleGroupState($groups, $permission, $returnDefaultState);
+        
+		return $this->getSingleGroupState($groups, $permission, $returnDefaultState);
     }
 
     /**
@@ -229,7 +231,8 @@ class PermissionManager extends \yii\base\Component
                 'state' => $this->getGroupState($groupId, $permission, false),
             ];
         }
-        return $permissions;
+        
+		return $permissions;
     }
 
 }

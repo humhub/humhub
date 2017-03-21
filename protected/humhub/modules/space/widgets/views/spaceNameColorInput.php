@@ -1,17 +1,17 @@
 <?php
-    use yii\helpers\Html;
+use yii\helpers\Html;
     
-    $this->registerJsFile('@web/resources/space/colorpicker/js/bootstrap-colorpicker-modified.js', ['position'=>  yii\web\View::POS_BEGIN, 'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]]);
-    $this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpicker.min.css', ['position'=>  yii\web\View::POS_BEGIN, 'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]]);
+$this->registerJsFile('@web/resources/space/colorpicker/js/bootstrap-colorpicker-modified.js', ['position'=>  yii\web\View::POS_BEGIN, 'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]]);
+$this->registerCssFile('@web/resources/space/colorpicker/css/bootstrap-colorpicker.min.css', ['position'=>  yii\web\View::POS_BEGIN, 'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]]);
     
-    $ts = time();
-    $inputId = $ts.'space-color-picker-edit';
-    $containerId = $ts.'space-color-chooser-edit';
-    $addonClass = $ts.'input-group-addon';
+$ts = time();
+$inputId = $ts.'space-color-picker-edit';
+$containerId = $ts.'space-color-chooser-edit';
+$addonClass = $ts.'input-group-addon';
     
-    if($model->color == null) {
-        $model->color = '#d1d1d1';
-    }
+if ($model->color == null) {
+    $model->color = '#d1d1d1';
+}
 ?>
 
 <div id="<?= $containerId ?>" class="form-group space-color-chooser-edit" style="margin-top: 5px;">
@@ -27,7 +27,7 @@
         {error}{hint}'
         ])->textInput(['placeholder' => Yii::t('SpaceModule.views_create_create', 'Space name'), 'maxlength' => 45 ]) ?>
 </div>
-<script type="text/javascript">
+<script>
     // prevent enter key and simulate ajax button submit click
     $(document).ready(function () {
         $container = $('#<?= $containerId ?>');
@@ -45,7 +45,7 @@
             
             var picker = $(this).data('colorpicker');
             picker.picker.css('z-index', '3000');
-            if(!picker.picker.find('.hexInput').length) {
+            if (!picker.picker.find('.hexInput').length) {
 
                 var $colorPickerHexInput = $('<input type="text" class="hexInput" style="border:0px;outline: none;width:120px;" value="'+picker.color.toHex()+'"></input>');
                 picker.picker.append($colorPickerHexInput);

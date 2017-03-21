@@ -8,7 +8,6 @@
 
 namespace humhub\modules\admin\models;
 
-
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use humhub\modules\user\models\Group;

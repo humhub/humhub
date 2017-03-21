@@ -84,7 +84,11 @@ class CreateController extends Controller
             Space::JOIN_POLICY_FREE => Yii::t('SpaceModule.base', 'Everyone can enter')
         ];
 
-        return $this->renderAjax('create', ['model' => $model, 'visibilityOptions' => $visibilityOptions, 'joinPolicyOptions' => $joinPolicyOptions]);
+        return $this->renderAjax('create', [
+                'model' => $model,
+                'visibilityOptions' => $visibilityOptions,
+                'joinPolicyOptions' => $joinPolicyOptions
+        ]);
     }
 
     /**
@@ -151,5 +155,3 @@ class CreateController extends Controller
     }
 
 }
-
-?>

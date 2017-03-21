@@ -4,18 +4,18 @@
 use yii\helpers\Url;
 ?>
 
-<script type="text/javascript">
+<script>
 
     $(document).ready(function () {
         //The original form input element will be hidden
-        var $formInput = $('#<?php echo $id; ?>').hide();
+        var $formInput = $('#<?= $id; ?>').hide();
         var placeholder = $formInput.attr('placeholder');
 
-        var $editableContent = $('#<?php echo $id; ?>_contenteditable');
+        var $editableContent = $('#<?= $id; ?>_contenteditable');
 
         if (!$editableContent.length) {
-            $formInput.after('<div id="<?php echo $id; ?>_contenteditable" class="atwho-input form-control atwho-placeholder" data-query="0" contenteditable="true">' + placeholder + '</div>');
-            $editableContent = $('#<?php echo $id; ?>_contenteditable');
+            $formInput.after('<div id="<?= $id; ?>_contenteditable" class="atwho-input form-control atwho-placeholder" data-query="0" contenteditable="true">' + placeholder + '</div>');
+            $editableContent = $('#<?= $id; ?>_contenteditable');
         }
 
         var emojis = [
@@ -38,8 +38,8 @@ use yii\helpers\Url;
         // init at plugin
         $editableContent.atwho({
             at: "@",
-            data: ["<?php echo Yii::t('base', 'Please type at least 3 characters') ?>"],
-            insert_tpl: "<a href='<?php echo Url::to(['/user/profile']); ?>/&uguid=${guid}' target='_blank' class='atwho-user' data-user-guid='@-${type}${guid}'>${atwho-data-value}</a>",
+            data: ["<?= Yii::t('base', 'Please type at least 3 characters') ?>"],
+            insert_tpl: "<a href='<?= Url::to(['/user/profile']); ?>/&uguid=${guid}' target='_blank' class='atwho-user' data-user-guid='@-${type}${guid}'>${atwho-data-value}</a>",
             tpl: "<li class='hint' data-value=''>${name}</li>",
             search_key: "name",
             limit: 10,
@@ -60,17 +60,17 @@ use yii\helpers\Url;
 
                     // set plugin settings for showing hint
                     this.setting.highlight_first = false;
-                    this.setting.tpl = "<li data-value=''><?php echo Yii::t('base', 'Please type at least 3 characters') ?></li>";
+                    this.setting.tpl = "<li data-value=''><?= Yii::t('base', 'Please type at least 3 characters') ?></li>";
                     //this.setting.tpl = "<li class='hint' data-value=''>${name}</li>";
 
                     // check the char length and data-query attribute for changing plugin settings for showing results
-                    if (query.length >= 3 && $('#<?php echo $id; ?>_contenteditable').attr('data-query') == '1') {
+                    if (query.length >= 3 && $('#<?= $id; ?>_contenteditable').attr('data-query') == '1') {
 
                         // set plugin settings for showing results
                         this.setting.highlight_first = true;
                         this.setting.tpl = "<li data-value='@${name}'>${image} ${name}</li>",
                                 // load data
-                                $.getJSON("<?php echo Url::to([$userSearchUrl]); ?>", {keyword: query}, function (data) {
+                                $.getJSON("<?= Url::to([$userSearchUrl]); ?>", {keyword: query}, function (data) {
                                     callback(data);
                                 });
 
@@ -82,15 +82,15 @@ use yii\helpers\Url;
             }
         }).atwho({
             at: ":",
-            insert_tpl: "<img data-emoji-name=';${name};' class='atwho-emoji' with='18' height='18' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.svg'); ?>' />",
-            tpl: "<li class='atwho-emoji-entry' data-value=';${name};'><img with='18' height='18' src='<?php echo Yii::getAlias('@web/img/emoji/${name}.svg'); ?>'/></li>",
+            insert_tpl: "<img data-emoji-name=';${name};' class='atwho-emoji' with='18' height='18' src='<?= Yii::getAlias('@web/img/emoji/${name}.svg'); ?>' />",
+            tpl: "<li class='atwho-emoji-entry' data-value=';${name};'><img with='18' height='18' src='<?= Yii::getAlias('@web/img/emoji/${name}.svg'); ?>'/></li>",
             data: emojis_list,
             highlight_first: true,
             limit: 100
         });
 
         //it seems atwho detatches the original element so we have to do a requery
-        $editableContent = $('#<?php echo $id; ?>_contenteditable');
+        $editableContent = $('#<?= $id; ?>_contenteditable');
 
         // remove placeholder text
         $editableContent.on('focus', function () {
@@ -100,7 +100,7 @@ use yii\helpers\Url;
                 $(this).focus();
             }
         }).on('focusout', function () {
-            $('#<?php echo $id; ?>').val(getPlainInput($(this).clone()));
+            $('#<?= $id; ?>').val(getPlainInput($(this).clone()));
             // add placeholder text, if input is empty
             if ($(this).html() == "" || $(this).html() == " " || $(this).html() == " <br>") {
                 $(this).attr('spellcheck', false);

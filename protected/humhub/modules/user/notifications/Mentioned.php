@@ -58,5 +58,3 @@ class Mentioned extends BaseNotification
     }
 
 }
-
-?>

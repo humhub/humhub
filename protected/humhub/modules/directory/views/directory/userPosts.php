@@ -13,5 +13,3 @@ echo humhub\modules\content\widgets\Stream::widget(array(
             'placeholder-empty-stream' :
             '',
 ));
-?>
-

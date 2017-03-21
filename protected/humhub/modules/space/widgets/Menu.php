@@ -3,7 +3,6 @@
 namespace humhub\modules\space\widgets;
 
 use Yii;
-
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 
@@ -86,6 +85,7 @@ class Menu extends \humhub\widgets\BaseMenu
                 $settings->contentContainer($space)->delete('indexUrl');
             }
         }
+        
         return null;
     }
 
@@ -108,9 +108,8 @@ class Menu extends \humhub\widgets\BaseMenu
                 $settings->contentContainer($space)->delete('indexGuestUrl');
             }
         }
+        
         return null;
     }
 
 }
-
-?>

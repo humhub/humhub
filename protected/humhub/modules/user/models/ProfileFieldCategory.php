@@ -8,8 +8,6 @@
 
 namespace humhub\modules\user\models;
 
-
-
 /**
  * This is the model class for table "profile_field_category".
  *
@@ -101,6 +99,7 @@ class ProfileFieldCategory extends \yii\db\ActiveRecord
     {
         $query = $this->hasMany(ProfileField::className(), ['profile_field_category_id' => 'id']);
         $query->orderBy('sort_order');
+        
         return $query;
     }
 

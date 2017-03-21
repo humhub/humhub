@@ -15,7 +15,6 @@ use humhub\compat\HForm;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\User;
-
 use humhub\modules\admin\models\forms\UserEditForm;
 
 /**
@@ -151,9 +150,11 @@ class UserController extends Controller
         $registration = new Registration();
         $registration->enableEmailField = true;
         $registration->enableUserApproval = false;
+        
         if ($registration->submitted('save') && $registration->validate() && $registration->register()) {
             return $this->redirect(['edit', 'id' => $registration->getUser()->id]);
         }
+        
         return $this->render('add', array('hForm' => $registration));
     }
 
@@ -165,7 +166,6 @@ class UserController extends Controller
 
         $id = (int) Yii::$app->request->get('id');
         $doit = (int) Yii::$app->request->get('doit');
-
 
         $user = User::findOne(['id' => $id]);
 
@@ -186,6 +186,7 @@ class UserController extends Controller
                 }
             }
             $user->delete();
+            
             return $this->redirect(['/admin/user']);
         }
 

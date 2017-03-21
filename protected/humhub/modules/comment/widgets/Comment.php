@@ -37,10 +37,8 @@ class Comment extends \yii\base\Widget
                     'comment' => $this->comment,
                     'user' => $user,
                     'justEdited' => $this->justEdited,
-                        )
+                )
         );
     }
 
 }
-
-?>

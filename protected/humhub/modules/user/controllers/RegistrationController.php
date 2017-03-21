@@ -9,7 +9,6 @@
 namespace humhub\modules\user\controllers;
 
 use Yii;
-
 use yii\web\HttpException;
 use yii\authclient\ClientInterface;
 use humhub\components\Controller;
@@ -131,5 +130,3 @@ class RegistrationController extends Controller
     }
 
 }
-
-?>

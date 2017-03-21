@@ -38,7 +38,6 @@ class ProxySettingsForm extends \yii\base\Model
      */
     public function rules()
     {
-
         return array(
             array(['enabled', 'server', 'user', 'password', 'noproxy'], 'string', 'max' => 255),
             array(['port'], 'integer', 'max' => 65535, 'min' => 1),

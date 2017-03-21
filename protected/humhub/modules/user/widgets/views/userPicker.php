@@ -32,17 +32,17 @@ foreach (explode(",", $currentValue) as $guid) {
 }
 ?>
 
-<script type="text/javascript">
+<script>
     $(document).ready(function () {
-        $('#<?php echo $inputId; ?>').userpicker({
-            inputId: '#<?php echo $inputId; ?>',
-            maxUsers: '<?php echo $maxUsers; ?>',
-            searchUrl: '<?php echo $userSearchUrl; ?>',
-            currentValue: '<?php echo $newValue; ?>',
-            focus: '<?php echo $focus; ?>',
-            userGuid: '<?php echo $userGuid; ?>',
-            data: <?php echo $data ?>,
-            placeholderText: '<?php echo $placeholderText; ?>'
+        $('#<?= $inputId; ?>').userpicker({
+            inputId: '#<?= $inputId; ?>',
+            maxUsers: '<?= $maxUsers; ?>',
+            searchUrl: '<?= $userSearchUrl; ?>',
+            currentValue: '<?= $newValue; ?>',
+            focus: '<?= $focus; ?>',
+            userGuid: '<?= $userGuid; ?>',
+            data: <?= $data ?>,
+            placeholderText: '<?= $placeholderText; ?>'
         });
     });
 </script>

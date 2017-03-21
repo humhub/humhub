@@ -84,6 +84,7 @@ class BaseType extends \yii\base\Model
             CountrySelect::className() => Yii::t('UserModule.models_ProfileFieldType', 'Country'),
             MarkdownEditor::className() => Yii::t('UserModule.models_ProfileFieldType', 'Markdown'),
                 ), $this->fieldTypes);
+        
         return $fieldTypes;
     }
 
@@ -94,7 +95,6 @@ class BaseType extends \yii\base\Model
      */
     public function getTypeInstances($profileField = null)
     {
-
         $types = array();
         foreach ($this->getFieldTypes() as $className => $title) {
             if (\humhub\libs\Helpers::CheckClassType($className, self::className())) {
@@ -254,7 +254,6 @@ class BaseType extends \yii\base\Model
         if ($this->profileField->required)
             $rules[] = array($this->profileField->internal_name, 'required');
 
-
         return $rules;
     }
 
@@ -280,6 +279,7 @@ class BaseType extends \yii\base\Model
     {
         $labels = array();
         $labels[$this->profileField->internal_name] = Yii::t($this->profileField->getTranslationCategory(), $this->profileField->title);
+        
         return $labels;
     }
 

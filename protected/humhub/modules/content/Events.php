@@ -30,6 +30,7 @@ class Events extends \yii\base\Object
         foreach (Content::findAll(['created_by' => $user->id]) as $content) {
             $content->delete();
         }
+        
         return true;
     }
 

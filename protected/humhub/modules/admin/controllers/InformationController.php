@@ -66,7 +66,6 @@ class InformationController extends Controller
      */
     public function actionCronjobs()
     {
-
         $currentUser = '';
         if (function_exists('get_current_user')) {
             $currentUser = get_current_user();

@@ -25,6 +25,7 @@ class LayoutAddons extends BaseStack
         $this->addWidget(GlobalModal::className());
         $this->addWidget(\humhub\modules\tour\widgets\Tour::className());
         $this->addWidget(\humhub\modules\admin\widgets\TrackingWidget::className());
+        
         parent::init();
     }
 

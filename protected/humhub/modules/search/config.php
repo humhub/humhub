@@ -18,4 +18,3 @@ return [
         'search' => 'search/search/index',
     ]    
 ];
-?>

@@ -20,4 +20,3 @@ return [
         array('class' => ActiveRecord::className(), 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::className(), 'onActiveRecordDelete'])
     ),
 ];
-?>

@@ -18,13 +18,11 @@ class BrowseMenu extends MenuWidget
 
     public function init()
     {
-
         $this->addItemGroup(array(
             'id' => 'browse',
             'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'Spaces'),
             'sortOrder' => 100,
         ));
-
 
         $this->addItem(array(
             'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'My Space List'),
@@ -40,14 +38,12 @@ class BrowseMenu extends MenuWidget
             'isActive' => (Yii::app()->controller->id == "spacebrowse" && Yii::app()->controller->action->id == "index"),
         ));
 
-
         $this->addItem(array(
             'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'Space directory'),
             'url' => Yii::app()->createUrl('//community/workspaces', array()),
             'sortOrder' => 200,
             'isActive' => (Yii::app()->controller->id == "spacebrowse" && Yii::app()->controller->action->id == "index"),
         ));
-
 
 #        $this->addItem(array(
 #            'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'Members'),
@@ -62,10 +58,7 @@ class BrowseMenu extends MenuWidget
 #            'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "index"),
 #        ));
 
-
         parent::init();
     }
 
 }
-
-?>

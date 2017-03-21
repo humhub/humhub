@@ -23,7 +23,7 @@
 
             <?php foreach ($items as $item) : ?>
                 <li>
-                    <?php echo \yii\helpers\Html::a($item['icon'] . " <span>" . $item['label'] . "</span>", $item['url'], $item['htmlOptions']); ?>
+                    <?= \yii\helpers\Html::a($item['icon'] . " <span>" . $item['label'] . "</span>", $item['url'], $item['htmlOptions']); ?>
                 </li>
             <?php endforeach; ?>
 

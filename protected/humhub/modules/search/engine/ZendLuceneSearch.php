@@ -62,7 +62,7 @@ class ZendLuceneSearch extends Search
             $doc->addField(\ZendSearch\Lucene\Document\Field::Text('comments', $comments, 'UTF-8'));
         }
 
-        if (\Yii::$app->request->isConsoleRequest) {
+        if (Yii::$app->request->isConsoleRequest) {
             print ".";
         }
 
@@ -251,6 +251,7 @@ class ZendLuceneSearch extends Search
                 $privateSpaceContentQuery->addSubquery($privateSpacesListQuery, true);
                 $permissionQuery->addSubquery($privateSpaceContentQuery);
             }
+            
             $query->addSubquery($permissionQuery, true);
         }
 
@@ -277,7 +278,6 @@ class ZendLuceneSearch extends Search
 
     protected function getIndex()
     {
-
         if ($this->index != null)
             return $this->index;
 
@@ -292,6 +292,7 @@ class ZendLuceneSearch extends Search
         }
 
         $this->index = $index;
+        
         return $index;
     }
 

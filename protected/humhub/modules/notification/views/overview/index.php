@@ -35,7 +35,7 @@ use yii\widgets\ActiveForm;
                 <div class="panel-body">
                     <?php $form = ActiveForm::begin(['id' => 'notification_overview_filter', 'method' => 'GET']); ?>
                     <div style="padding-left: 5px;">
-                        <?php echo $form->field($filterForm, 'moduleFilter')->checkboxList($filterForm->getModuleFilterSelection())->label(false); ?>
+                        <?= $form->field($filterForm, 'moduleFilter')->checkboxList($filterForm->getModuleFilterSelection())->label(false); ?>
                     </div>
                     <button class="btn btn-primary btn-xm" type="submit"><?= Yii::t('NotificationModule.views_overview_index', 'Filter'); ?></button>
                     <?php ActiveForm::end(); ?>
@@ -45,7 +45,7 @@ use yii\widgets\ActiveForm;
     </div>
 </div>
 
-<script type='text/javascript'>
+<script>
     if (!$('#notification_overview_list li.new').length) {
         $('#notification_overview_markseen').hide();
     } else {
@@ -53,7 +53,7 @@ use yii\widgets\ActiveForm;
             evt.preventDefault();
             $.ajax({
                 'type': 'GET',
-                'url': '<?php echo yii\helpers\Url::to(['/notification/list/mark-as-seen', 'ajax' => 1]); ?>',
+                'url': '<?= yii\helpers\Url::to(['/notification/list/mark-as-seen', 'ajax' => 1]); ?>',
                 'success': function () {
                     location.reload();
                 }

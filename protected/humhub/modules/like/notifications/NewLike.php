@@ -39,6 +39,7 @@ class NewLike extends BaseNotification
     public function getGroupKey()
     {
         $model = $this->getLikedRecord();
+        
         return $model->className() . '-' . $model->getPrimaryKey();
     }
 
@@ -55,6 +56,7 @@ class NewLike extends BaseNotification
                         'contentTitle' => $contentInfo
             ));
         }
+        
         return Yii::t('LikeModule.notification', "{displayName} likes {contentTitle}.", array(
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
                     'contentTitle' => $contentInfo

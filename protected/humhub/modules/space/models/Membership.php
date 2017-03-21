@@ -91,12 +91,14 @@ class Membership extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         Yii::$app->cache->delete('userSpaces_' . $this->user_id);
+        
         return parent::beforeSave($insert);
     }
 
     public function beforeDelete()
     {
         Yii::$app->cache->delete('userSpaces_' . $this->user_id);
+        
         return parent::beforeDelete();
     }
 
@@ -119,6 +121,7 @@ class Membership extends \yii\db\ActiveRecord
         $query->andWhere(['wall_entry.wall_id' => $this->space->wall_id]);
         $query->andWhere(['>', 'wall_entry.created_at', $this->last_visit]);
         $count = $query->count();
+        
         return $count;
     }
 
@@ -150,6 +153,7 @@ class Membership extends \yii\db\ActiveRecord
             }
             Yii::$app->cache->set($cacheId, $spaces);
         }
+        
         return $spaces;
     }
 
@@ -192,6 +196,7 @@ class Membership extends \yii\db\ActiveRecord
         }
         $query->andWhere(['space_id' => $space->id]);
         $query->defaultOrder();
+        
         return $query;
     }
 

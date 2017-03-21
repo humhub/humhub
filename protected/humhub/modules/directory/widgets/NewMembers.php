@@ -61,5 +61,3 @@ class NewMembers extends \yii\base\Widget
     }
 
 }
-
-?>

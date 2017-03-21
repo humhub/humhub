@@ -1,12 +1,10 @@
 <?php
 
 use yii\helpers\Url;
-
 ?>
 
 <li class="dropdown">
-    <a href="<?php echo Url::to(['/search/search/index']); ?>" id="search-menu" class="dropdown-toggle" >
-        <i class="fa fa-search"></i></a>
+    <a href="<?= Url::to(['/search/search/index']); ?>" id="search-menu" class="dropdown-toggle" ><i class="fa fa-search"></i></a>
 </li>
 <!--<li class="dropdown">
     <a href="#" id="search-menu" class="dropdown-toggle" data-toggle="dropdown">
@@ -19,7 +17,7 @@ use yii\helpers\Url;
                 <input type="text" id="search-menu-search"
                        class="form-control"
                        autocomplete="off"
-                       placeholder="<?php echo Yii::t('base', 'Search for users and spaces'); ?>">
+                       placeholder="<?= Yii::t('base', 'Search for users and spaces'); ?>">
 
                 <div class="search-reset" id="search-search-reset"><i
                         class="fa fa-times-circle"></i></div>
@@ -29,7 +27,7 @@ use yii\helpers\Url;
 </li>
 -->
 
-<script type="text/javascript">
+<script>
     /**
      * Open search menu
      */

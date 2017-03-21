@@ -68,7 +68,6 @@ class ContentAddonController extends \humhub\components\Controller
      */
     public function beforeAction($action)
     {
-
         $modelClass = Yii::$app->request->get('contentModel');
         $pk = (int) Yii::$app->request->get('contentId');
 
@@ -77,7 +76,6 @@ class ContentAddonController extends \humhub\components\Controller
             $modelClass = Yii::$app->request->post('contentModel');
             $pk = (int) Yii::$app->request->post('contentId');
         }
-
 
         if ($modelClass == "" || $pk == "") {
             throw new HttpException(500, 'Model & ID parameter required!');

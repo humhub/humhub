@@ -7,4 +7,3 @@ echo strip_tags(Yii::t('ActivityModule.views_activities_ActivitySpaceMemberRemov
     '%displayName%' => Html::encode($originator->displayName),
     '%spaceName%' => '"' . Html::encode(Helpers::truncateText($source->name, 40)) . '"'
 )));
-?>

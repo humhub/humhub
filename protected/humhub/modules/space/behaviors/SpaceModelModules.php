@@ -56,7 +56,6 @@ class SpaceModelModules extends Behavior
      */
     public function getEnabledModules()
     {
-
         if ($this->_enabledModules !== null) {
             return $this->_enabledModules;
         }
@@ -105,7 +104,6 @@ class SpaceModelModules extends Behavior
      */
     public function enableModule($moduleId)
     {
-
         // Not enabled globally
         if (!array_key_exists($moduleId, $this->getAvailableModules())) {
             return false;

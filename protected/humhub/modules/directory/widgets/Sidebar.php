@@ -18,5 +18,4 @@ use humhub\widgets\BaseSidebar;
  */
 class Sidebar extends BaseSidebar
 {
-    
 }

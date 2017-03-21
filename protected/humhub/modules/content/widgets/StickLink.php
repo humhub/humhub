@@ -48,5 +48,3 @@ class StickLink extends \yii\base\Widget
     }
 
 }
-
-?>

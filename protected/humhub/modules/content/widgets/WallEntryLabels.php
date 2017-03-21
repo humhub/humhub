@@ -22,5 +22,3 @@ class WallEntryLabels extends \yii\base\Widget
     }
 
 }
-
-?>

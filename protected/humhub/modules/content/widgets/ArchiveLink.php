@@ -43,5 +43,3 @@ class ArchiveLink extends \yii\base\Widget
     }
 
 }
-
-?>

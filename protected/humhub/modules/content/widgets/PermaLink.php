@@ -41,5 +41,3 @@ class PermaLink extends \yii\base\Widget
     }
 
 }
-
-?>

@@ -3,9 +3,9 @@
 namespace humhub\modules\like\widgets;
 
 use Yii;
-use humhub\modules\like\models\Like;
 use yii\helpers\Url;
 use yii\helpers\Html;
+use humhub\modules\like\models\Like;
 
 /**
  * This widget is used to show a like link inside the wall entry controls.
@@ -97,5 +97,3 @@ class LikeLink extends \yii\base\Widget
     }
 
 }
-
-?>

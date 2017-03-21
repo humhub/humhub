@@ -209,6 +209,7 @@ class MailUpdateSender extends \yii\base\Component
         if ($this->user->email === "") {
             return false;
         }
+        
         return true;
     }
 

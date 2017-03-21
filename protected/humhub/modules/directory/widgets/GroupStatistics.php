@@ -20,7 +20,6 @@ class GroupStatistics extends \yii\base\Widget
      */
     public function run()
     {
-
         $groups = Group::find()->count();
         $users = User::find()->count();
 
@@ -37,5 +36,3 @@ class GroupStatistics extends \yii\base\Widget
     }
 
 }
-
-?>

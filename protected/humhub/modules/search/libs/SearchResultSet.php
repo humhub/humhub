@@ -8,8 +8,8 @@
 
 namespace humhub\modules\search\libs;
 
-use humhub\components\ActiveRecord;
 use Yii;
+use humhub\components\ActiveRecord;
 
 /**
  * SearchResultSet
@@ -38,7 +38,6 @@ class SearchResultSet
      * @var int page size
      */
     public $pageSize;
-
 
     /**
      * Returns active record instances of the search results

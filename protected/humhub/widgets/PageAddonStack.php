@@ -29,5 +29,4 @@ namespace humhub\widgets;
  */
 class PageAddonStack extends Stack
 {
-
 }

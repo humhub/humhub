@@ -44,6 +44,7 @@ class ContentContainerPermissionManager extends PermissionManager
         if ($module instanceof \humhub\components\Module) {
             return $module->getPermissions($this->contentContainer);
         }
+        
         return [];
     }
 
@@ -54,6 +55,7 @@ class ContentContainerPermissionManager extends PermissionManager
     {
         $permission = new ContentContainerPermission;
         $permission->contentcontainer_id = $this->contentContainer->contentcontainer_id;
+        
         return $permission;
     }
 

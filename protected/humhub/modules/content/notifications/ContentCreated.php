@@ -35,5 +35,3 @@ class ContentCreated extends \humhub\modules\notification\components\BaseNotific
     }
 
 }
-
-?>

@@ -8,7 +8,7 @@
 
 ?>
 <li class="<?php if ($isNew) : ?>new<?php endif; ?>">
-    <a href="<?php echo $url; ?>">
+    <a href="<?= $url; ?>">
         <div class="media">
 
             <!-- show user image -->
@@ -16,7 +16,7 @@
                 <img class="media-object img-rounded pull-left"
                      data-src="holder.js/32x32" alt="32x32"
                      style="width: 32px; height: 32px;"
-                     src="<?php echo $originator->getProfileImage()->getUrl(); ?>" />
+                     src="<?= $originator->getProfileImage()->getUrl(); ?>" />
                  <?php endif; ?>
 
             <!-- show space image -->
@@ -24,16 +24,17 @@
                 <img class="media-object img-rounded img-space pull-left"
                      data-src="holder.js/20x20" alt="20x20"
                      style="width: 20px; height: 20px;"
-                     src="<?php echo $space->getProfileImage()->getUrl(); ?>">
-                 <?php endif; ?>
+                     src="<?= $space->getProfileImage()->getUrl(); ?>">
+            <?php endif; ?>
 
             <!-- show content -->
             <div class="media-body">
 
-                <?php echo $content; ?>
+                <?= $content; ?>
 
-                <br> <?php echo humhub\widgets\TimeAgo::widget(['timestamp' => $record->created_at]); ?> 
-                <?php if ($isNew) : ?> <span class="label label-danger"><?php echo Yii::t('NotificationModule.views_notificationLayout', 'New'); ?></span><?php endif; ?>
+                <br>
+                <?= \humhub\widgets\TimeAgo::widget(['timestamp' => $record->created_at]); ?> 
+                <?php if ($isNew) : ?> <span class="label label-danger"><?= Yii::t('NotificationModule.views_notificationLayout', 'New'); ?></span><?php endif; ?>
             </div>
 
         </div>

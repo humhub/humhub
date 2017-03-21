@@ -1,19 +1,19 @@
 <?php
-use yii\helpers\Html;
 
+use yii\helpers\Html;
 ?>
 
 <div class="panel panel-default spaces" id="new-spaces-panel">
 
     <!-- Display panel menu widget -->
-    <?php echo humhub\widgets\PanelMenu::widget(array('id' => 'new-spaces-panel')); ?>
+    <?= \humhub\widgets\PanelMenu::widget(array('id' => 'new-spaces-panel')); ?>
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.widgets_views_spaceStats', '<strong>New</strong> spaces'); ?>
+        <?= Yii::t('DirectoryModule.widgets_views_spaceStats', '<strong>New</strong> spaces'); ?>
     </div>
     <div class="panel-body">
         <?php foreach ($newSpaces as $space) : ?>
-            <?php echo \humhub\modules\space\widgets\Image::widget([
+            <?= \humhub\modules\space\widgets\Image::widget([
                 'space' => $space,
                 'width' => 40,
                 'link' => true,
@@ -30,9 +30,9 @@ use yii\helpers\Html;
         <?php endforeach; ?>
 
         <?php if ($showMoreButton): ?>
-            <br/>
-            <br/>
-            <?php echo Html::a(Yii::t('DirectoryModule.widgets_views_newSpaces', 'See all'), array('/directory/directory/spaces'), array('class' => 'btn btn-xl btn-primary')); ?>
+            <br>
+            <br>
+            <?= Html::a(Yii::t('DirectoryModule.widgets_views_newSpaces', 'See all'), array('/directory/directory/spaces'), array('class' => 'btn btn-xl btn-primary')); ?>
         <?php endif; ?>
     </div>
 </div>

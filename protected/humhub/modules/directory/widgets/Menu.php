@@ -70,5 +70,3 @@ class Menu extends \humhub\widgets\BaseMenu
     }
 
 }
-
-?>

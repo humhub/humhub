@@ -6,6 +6,6 @@ echo Yii::t('CommentModule.views_activities_CommentCreated', "%displayName% wrot
     '%displayName%' => '<strong>' . Html::encode($originator->displayName) . '</strong>'
 ));
 ?>
-<br />
+<br>
 
 <em>"<?= \humhub\widgets\RichText::widget(['text' => $source->message, 'minimal' => true]); ?>"</em>

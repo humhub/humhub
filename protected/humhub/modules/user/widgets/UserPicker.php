@@ -4,7 +4,7 @@ namespace humhub\modules\user\widgets;
 
 use Yii;
 use yii\helpers\Html;
-use \yii\helpers\Url;
+use yii\helpers\Url;
 use humhub\modules\user\models\UserFilter;
 
 /**
@@ -222,6 +222,7 @@ class UserPicker extends \yii\base\Widget
         foreach($users as $user) {
             $result[] = $user->id;
         }
+        
         return $result;
     }
     
@@ -276,8 +277,7 @@ class UserPicker extends \yii\base\Widget
         $userInfo['image'] = $user->getProfileImage()->getUrl();
         $userInfo['priority'] = $priority;
         $userInfo['link'] = $user->getUrl();
+        
         return $userInfo;
     }
 }
-
-?>

@@ -9,7 +9,6 @@
 namespace humhub\modules\like\models;
 
 use Yii;
-
 use humhub\modules\content\components\ContentAddonActiveRecord;
 
 /**

@@ -113,7 +113,8 @@ class ProfileController extends ContentContainerController
         $query->active();
 
         $title = Yii::t('UserModule.widgets_views_userFollower', '<strong>User</strong> followers');
-        return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
+        
+		return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
     public function actionFollowedUsersList()
@@ -125,7 +126,8 @@ class ProfileController extends ContentContainerController
         $query->active();
 
         $title = Yii::t('UserModule.widgets_views_userFollower', '<strong>Following</strong> user');
-        return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
+        
+		return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
     public function actionSpaceMembershipList()
@@ -137,9 +139,8 @@ class ProfileController extends ContentContainerController
         }
 
         $title = Yii::t('UserModule.widgets_views_userSpaces', '<strong>Member</strong> in these spaces');
-        return $this->renderAjaxContent(\humhub\modules\space\widgets\ListBox::widget(['query' => $query, 'title' => $title]));
+        
+		return $this->renderAjaxContent(\humhub\modules\space\widgets\ListBox::widget(['query' => $query, 'title' => $title]));
     }
 
 }
-
-?>

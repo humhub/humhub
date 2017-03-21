@@ -52,6 +52,7 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
     public function getGroupKey()
     {
         $model = $this->getCommentedRecord();
+        
         return $model->className() . '-' . $model->getPrimaryKey();
     }
 
@@ -68,6 +69,7 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
                         'contentTitle' => $contentInfo
             ));
         }
+        
         return Yii::t('CommentModule.notification', "{displayName} commented {contentTitle}.", array(
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
                     'contentTitle' => $contentInfo
@@ -82,9 +84,7 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
     protected function getCommentedRecord()
     {
         return $this->source->content->getPolymorphicRelation();
-        ;
+
     }
 
 }
-
-?>

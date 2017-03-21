@@ -21,10 +21,8 @@ namespace humhub\modules\space\behaviors;
 
 use Yii;
 use yii\base\Behavior;
-
-
-use humhub\modules\space\models\Space;
 use yii\web\HttpException;
+use humhub\modules\space\models\Space;
 use humhub\components\Controller;
 
 /**
@@ -72,6 +70,7 @@ class SpaceController extends Behavior
             throw new HttpException(404, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'Space not found!'));
 
         $this->checkAccess();
+        
         return $this->space;
     }
 
@@ -103,5 +102,3 @@ class SpaceController extends Behavior
         $this->owner->prependPageTitle($this->space->name);
     }
 }
-
-?>

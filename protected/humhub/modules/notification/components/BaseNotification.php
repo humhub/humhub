@@ -106,7 +106,6 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     public function send(User $user)
     {
-
         if ($this->moduleId == "") {
             throw new \yii\base\InvalidConfigException("No moduleId given!");
         }

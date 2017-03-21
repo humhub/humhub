@@ -17,5 +17,4 @@ namespace humhub\modules\user\authclient\interfaces;
  */
 interface ApprovalBypass
 {
-    
 }

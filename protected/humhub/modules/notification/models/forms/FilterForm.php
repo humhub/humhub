@@ -52,7 +52,7 @@ class FilterForm extends \yii\base\Model
     {
         $this->moduleFilter = [];
         
-        foreach($this->getModuleFilterSelection() as $moduleName => $title) {
+        foreach ($this->getModuleFilterSelection() as $moduleName => $title) {
             $this->moduleFilter[] = $moduleName;
         }
     }
@@ -67,11 +67,12 @@ class FilterForm extends \yii\base\Model
         $result = [];
         $moduleNotifications = $this->getModuleNotifications();
         
-        foreach($this->moduleFilterSelection as $moduleName => $title) {
-            if($moduleName != self::FILTER_OTHER && !in_array($moduleName, $this->moduleFilter)) {
+        foreach ($this->moduleFilterSelection as $moduleName => $title) {
+            if ($moduleName != self::FILTER_OTHER && !in_array($moduleName, $this->moduleFilter)) {
                 $result = array_merge($result, $moduleNotifications[$moduleName]);
             }
         }
+        
         return $result;
     }
     
@@ -84,31 +85,33 @@ class FilterForm extends \yii\base\Model
         $result = [];
         $moduleNotifications = $this->getModuleNotifications();
         
-        foreach($this->moduleFilter as $moduleName) {
-            if($moduleName != self::FILTER_OTHER) {
+        foreach ($this->moduleFilter as $moduleName) {
+            if ($moduleName != self::FILTER_OTHER) {
                 $result = array_merge($result, $moduleNotifications[$moduleName]);
             }
         }
+        
         return $result;
     }
     
     public function getModuleFilterSelection()
     {
-        if($this->moduleFilterSelection == null) {
+        if ($this->moduleFilterSelection == null) {
             $this->moduleFilterSelection = [];
             
-            foreach(array_keys($this->getModuleNotifications()) as $moduleName) {
+            foreach (array_keys($this->getModuleNotifications()) as $moduleName) {
                 $this->moduleFilterSelection[$moduleName] = $moduleName;
             }
             
             $this->moduleFilterSelection[self::FILTER_OTHER] = Yii::t('NotificationModule.models_forms_FilterForm', 'Other');
         }
+        
         return $this->moduleFilterSelection;
     }
     
     public function getModuleNotifications()
     {
-        if($this->moduleNotifications == null) {
+        if ($this->moduleNotifications == null) {
             $this->moduleNotifications = Notification::getModuleNotifications();
         }
         

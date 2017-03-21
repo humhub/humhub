@@ -61,5 +61,3 @@ class PanelMenu extends \yii\base\Widget
     }
 
 }
-
-?>

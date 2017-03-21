@@ -20,7 +20,6 @@ class MemberStatistics extends \yii\base\Widget
      */
     public function run()
     {
-
         // Some member stats
         $statsTotalUsers = User::find()->active()->count();
 
@@ -36,5 +35,3 @@ class MemberStatistics extends \yii\base\Widget
     }
 
 }
-
-?>

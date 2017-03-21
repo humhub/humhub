@@ -34,7 +34,7 @@ class FriendshipButton extends \yii\base\Widget
         }
         
         // Do not display a buttton if user is it self or guest
-        if ($this->user->isCurrentUser() || \Yii::$app->user->isGuest) {
+        if ($this->user->isCurrentUser() || Yii::$app->user->isGuest) {
             return;
         }
 

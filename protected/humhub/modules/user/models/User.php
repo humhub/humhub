@@ -11,7 +11,6 @@ namespace humhub\modules\user\models;
 use Yii;
 use yii\base\Exception;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\friendship\models\Friendship;
 
@@ -151,6 +150,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             }
             return $profile;
         }
+        
         return parent::__get($name);
     }
 
@@ -303,6 +303,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         if (Yii::$app->getModule('friendship')->getIsEnabled()) {
             return \humhub\modules\friendship\models\Friendship::getFriendsQuery($this);
         }
+        
         return null;
     }
 
@@ -317,7 +318,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function beforeDelete()
     {
-
         // We don't allow deletion of users who owns a space - validate that
         foreach (\humhub\modules\space\models\Membership::GetUserSpaces($this->id) as $space) {
             if ($space->isSpaceOwner($this->id)) {
@@ -414,6 +414,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         if (Yii::$app->user->id == $this->id) {
             Yii::$app->user->setIdentity($user);
         }
+        
         return parent::afterSave($insert, $changedAttributes);
     }
 

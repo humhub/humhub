@@ -48,6 +48,7 @@ class ContentContainerActiveRecord extends ActiveRecord
         if ($this instanceof \humhub\modules\space\models\Space) {
             return new ProfileImage($this->guid, 'default_space');
         }
+        
         return new ProfileImage($this->guid);
     }
 

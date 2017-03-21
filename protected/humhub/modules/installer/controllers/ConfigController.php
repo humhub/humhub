@@ -69,6 +69,7 @@ class ConfigController extends Controller
 
             return true;
         }
+        
         return false;
     }
 
@@ -352,7 +353,6 @@ class ConfigController extends Controller
      */
     public function actionAdmin()
     {
-
         // Admin account already created
         if (User::find()->count() > 0) {
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
@@ -510,6 +510,7 @@ class ConfigController extends Controller
         } catch (Exception $e) {
             ;
         }
+        
         return $this->render('finished');
     }
 

@@ -2,7 +2,6 @@
 
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-
 ?>
 
 <div class="modal-dialog modal-dialog-small animated fadeIn">
@@ -10,8 +9,9 @@ use yii\widgets\ActiveForm;
         <?php $form = ActiveForm::begin(); ?>
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('SpaceModule.views_space_invite', '<strong>Invite</strong> members'); ?></h4>
+            <h4 class="modal-title" id="myModalLabel">
+                <?= Yii::t('SpaceModule.views_space_invite', '<strong>Invite</strong> members'); ?>
+            </h4>
         </div>
         <div class="modal-body">
 
@@ -20,30 +20,28 @@ use yii\widgets\ActiveForm;
             <?php if ($canInviteExternal) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                        <li class="active tab-internal"><a href="#internal"
-                                                           data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Pick users'); ?></a>
+                        <li class="active tab-internal">
+                            <a href="#internal" data-toggle="tab"><?= Yii::t('SpaceModule.views_space_invite', 'Pick users'); ?></a>
                         </li>
-                        <li class="tab-external"><a href="#external"
-                                                    data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Invite by email'); ?></a>
+                        <li class="tab-external">
+                            <a href="#external" data-toggle="tab"><?= Yii::t('SpaceModule.views_space_invite', 'Invite by email'); ?></a>
                         </li>
                     </ul>
                 </div>
-                <br/>
+                <br>
             <?php endif; ?>
-
 
             <div class="tab-content">
                 <div class="tab-pane active" id="internal">
 
+                    <?= Yii::t('SpaceModule.views_space_invite', 'To invite users to this space, please type their names below to find and pick them.'); ?>
 
-                    <?php echo Yii::t('SpaceModule.views_space_invite', 'To invite users to this space, please type their names below to find and pick them.'); ?>
+                    <br><br>
+                    <?= $form->field($model, 'invite')->textInput(['id' => 'invite']); ?>
 
-                    <br/><br/>
-                    <?php echo $form->field($model, 'invite')->textInput(['id' => 'invite']); ?>
-
-                    <?php
+                    <?=
                     // attach mention widget to it
-                    echo humhub\modules\user\widgets\UserPicker::widget(array(
+                    \humhub\modules\user\widgets\UserPicker::widget(array(
                         'inputId' => 'invite',
                         'model' => $model, // CForm Instanz
                         'attribute' => 'invite',
@@ -55,9 +53,9 @@ use yii\widgets\ActiveForm;
                 </div>
                 <?php if (Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite')) : ?>
                     <div class="tab-pane" id="external">
-                        <?php echo Yii::t('SpaceModule.views_space_invite', 'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.'); ?>
+                        <?= Yii::t('SpaceModule.views_space_invite', 'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.'); ?>
                         <br><br>
-                        <?php echo $form->field($model, 'inviteExternal')->textarea(['rows' => '3', 'placeholder' => Yii::t('SpaceModule.views_space_invite', 'Email addresses')]); ?>
+                        <?= $form->field($model, 'inviteExternal')->textarea(['rows' => '3', 'placeholder' => Yii::t('SpaceModule.views_space_invite', 'Email addresses')]); ?>
 
                     </div>
                 <?php endif; ?>
@@ -69,8 +67,7 @@ use yii\widgets\ActiveForm;
             <hr>
             <br>
 
-            <?php
-            echo \humhub\widgets\AjaxButton::widget([
+            <?= \humhub\widgets\AjaxButton::widget([
                 'label' => Yii::t('SpaceModule.views_space_invite', 'Done'),
                 'ajaxOptions' => [
                     'type' => 'POST',
@@ -84,7 +81,7 @@ use yii\widgets\ActiveForm;
             ]);
             ?>
 
-            <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'invite-loader', 'cssClass' => 'loader-modal hidden']); ?>
+            <?= \humhub\widgets\LoaderWidget::widget(['id' => 'invite-loader', 'cssClass' => 'loader-modal hidden']); ?>
         </div>
 
         <?php ActiveForm::end(); ?>
@@ -93,7 +90,7 @@ use yii\widgets\ActiveForm;
 </div>
 
 
-<script type="text/javascript">
+<script>
 
     // Shake modal after wrong validation
 <?php if ($model->hasErrors()) : ?>

@@ -5,4 +5,3 @@ return [
     'class' => \humhub\modules\post\Module::className(),
     'isCoreModule' => true,
 ];
-?>

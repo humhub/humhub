@@ -20,5 +20,3 @@ class UserFollower extends \yii\base\Widget
     }
 
 }
-
-?>

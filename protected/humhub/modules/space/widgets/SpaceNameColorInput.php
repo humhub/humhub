@@ -2,7 +2,6 @@
 
 namespace humhub\modules\space\widgets;
 
-
 use humhub\components\Widget;
 
 /**
@@ -23,10 +22,8 @@ class SpaceNameColorInput extends Widget
     public function run()
     {
         return $this->render('spaceNameColorInput', [
-                    'model' => $this->model,
-                    'form' => $this->form
+                'model' => $this->model,
+                'form' => $this->form
         ]);
     }
 }
-
-?>

@@ -9,14 +9,13 @@
 namespace humhub\modules\space\models;
 
 use Yii;
-
+use yii\helpers\Url;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
-use yii\helpers\Url;
 
 /**
  * This is the model class for table "space".
@@ -91,6 +90,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         if (Yii::$app->getModule('space')->useUniqueSpaceNames) {
             $rules[] = [['name'], 'unique', 'targetClass' => self::className()];
         }
+        
         return $rules;
     }
 
@@ -244,8 +244,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
 
         // No one can join
         if ($this->join_policy == self::JOIN_POLICY_NONE)
-            return
-                    false;
+            return false;
 
         return true;
     }
@@ -340,7 +339,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      */
     public function getTags()
     {
-
         // split tags string into individual tags
         return preg_split("/[;,# ]+/", $this->tags);
     }
@@ -450,6 +448,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         $query = $this->hasMany(Membership::className(), ['space_id' => 'id']);
         $query->andWhere(['space_membership.status' => Membership::STATUS_MEMBER]);
         $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
+        
         return $query;
     }
 
@@ -460,6 +459,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id AND space_membership.status=:member', ['space_id' => $this->id, 'member' => $status]);
         $query->andWhere('space_membership.space_id IS NOT NULL');
         $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
+        
         return $query;
     }
 
@@ -470,6 +470,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         $query->andWhere('space_membership.space_id IS NULL');
         $query->orWhere(['!=', 'space_membership.status', Membership::STATUS_MEMBER]);
         $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
+        
         return $query;
     }
 
@@ -477,6 +478,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $query = $this->hasMany(Membership::className(), ['space_id' => 'id']);
         $query->andWhere(['space_membership.status' => Membership::STATUS_APPLICANT]);
+        
         return $query;
     }
 

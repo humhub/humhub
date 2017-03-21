@@ -205,7 +205,6 @@ class InitialData
             $field->fieldType->save();
         }
 
-
         $field = new ProfileField();
         $field->internal_name = "state";
         $field->title = 'State';
@@ -240,7 +239,6 @@ class InitialData
             #$field->fieldType->maxLength = 100;
             $field->fieldType->save();
         }
-
 
         $field = new ProfileField();
         $field->internal_name = "phone_private";
@@ -313,7 +311,6 @@ class InitialData
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
         }
-
 
         $field = new ProfileField();
         $field->internal_name = "im_xmpp";

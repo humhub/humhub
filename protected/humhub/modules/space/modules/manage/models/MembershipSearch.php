@@ -8,7 +8,6 @@
 
 namespace humhub\modules\space\modules\manage\models;
 
-
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use humhub\modules\space\models\Membership;
@@ -71,7 +70,6 @@ class MembershipSearch extends Membership
             'query' => $query,
             'pagination' => ['pageSize' => 50],
         ]);
-
 
         $dataProvider->setSort([
             'attributes' => [

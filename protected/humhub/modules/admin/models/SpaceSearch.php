@@ -8,7 +8,6 @@
 
 namespace humhub\modules\admin\models;
 
-
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use humhub\modules\space\models\Space;
@@ -75,6 +74,7 @@ class SpaceSearch extends Space
         $query->andFilterWhere(['join_policy' => $this->join_policy]);
         $query->andFilterWhere(['visibility' => $this->visibility]);
         $query->andFilterWhere(['like', 'name', $this->name]);
+        
         return $dataProvider;
     }
 

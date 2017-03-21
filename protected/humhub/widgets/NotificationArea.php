@@ -29,7 +29,4 @@ namespace humhub\widgets;
  */
 class NotificationArea extends BaseStack
 {
-    
 }
-
-?>

@@ -6,15 +6,15 @@ use yii\helpers\Url;
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
         <?php $form = CActiveForm::begin([]); ?>
-        <?php echo $form->hiddenField($model, 'cropX', ['id' => 'cropX']); ?>
-        <?php echo $form->hiddenField($model, 'cropY', ['id' => 'cropY']); ?>
-        <?php echo $form->hiddenField($model, 'cropW', ['id' => 'cropW']); ?>
-        <?php echo $form->hiddenField($model, 'cropH', ['id' => 'cropH']); ?>
+        <?= $form->hiddenField($model, 'cropX', ['id' => 'cropX']); ?>
+        <?= $form->hiddenField($model, 'cropY', ['id' => 'cropY']); ?>
+        <?= $form->hiddenField($model, 'cropW', ['id' => 'cropW']); ?>
+        <?= $form->hiddenField($model, 'cropH', ['id' => 'cropH']); ?>
 
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('UserModule.views_profile_cropBannerImage', '<strong>Modify</strong> your title image'); ?></h4>
+                id="myModalLabel"><?= Yii::t('UserModule.views_profile_cropBannerImage', '<strong>Modify</strong> your title image'); ?></h4>
         </div>
         <div class="modal-body">
 
@@ -30,8 +30,7 @@ use yii\helpers\Url;
             </style>
 
             <div id="cropimage">
-                <?php
-                echo \yii\helpers\Html::img($profileImage->getUrl('_org'), ['id' => 'foobar']);
+                <?= \yii\helpers\Html::img($profileImage->getUrl('_org'), ['id' => 'foobar']);
 
                 echo raoul2000\jcrop\JCropWidget::widget([
                     'selector' => '#foobar',
@@ -52,8 +51,7 @@ use yii\helpers\Url;
 
         </div>
         <div class="modal-footer">
-            <?php
-            echo \humhub\widgets\AjaxButton::widget([
+            <?= \humhub\widgets\AjaxButton::widget([
                 'label' => Yii::t('UserModule.views_profile_cropBannerImage', 'Save'),
                 'ajaxOptions' => [
                     'type' => 'POST',
@@ -66,13 +64,14 @@ use yii\helpers\Url;
                 ]
             ]);
             ?>
-            <button type="button" class="btn btn-primary"
-                    data-dismiss="modal"><?php echo Yii::t('UserModule.views_profile_cropBannerImage', 'Close'); ?></button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">
+                <?= Yii::t('UserModule.views_profile_cropBannerImage', 'Close'); ?>
+            </button>
 
-            <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'crop-loader', 'cssClass' => 'loader-modal hidden']); ?>
+            <?= \humhub\widgets\LoaderWidget::widget(['id' => 'crop-loader', 'cssClass' => 'loader-modal hidden']); ?>
         </div>
 
-        <?php echo \humhub\widgets\DataSaved::widget(); ?>
+        <?= \humhub\widgets\DataSaved::widget(); ?>
         <?php CActiveForm::end(); ?>
     </div>
 

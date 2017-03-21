@@ -9,13 +9,12 @@ $space = $this->context->contentContainer;
 <div class="container space-layout-container">
     <div class="row">
         <div class="col-md-12">
-            <?php echo humhub\modules\space\widgets\Header::widget(['space' => $space]); ?>
-
+            <?= \humhub\modules\space\widgets\Header::widget(['space' => $space]); ?>
         </div>
     </div>
     <div class="row">
         <div class="col-md-2 layout-nav-container">
-            <?php echo \humhub\modules\space\widgets\Menu::widget(['space' => $space]); ?>
+            <?= \humhub\modules\space\widgets\Menu::widget(['space' => $space]); ?>
             <br>
         </div>
 
@@ -34,8 +33,7 @@ $space = $this->context->contentContainer;
                 ]) ?>
             </div>
             <div class="col-md-3 layout-sidebar-container">
-                <?php
-                echo \humhub\modules\space\widgets\Sidebar::widget(['space' => $space, 'widgets' => [
+                <?= \humhub\modules\space\widgets\Sidebar::widget(['space' => $space, 'widgets' => [
                         [\humhub\modules\activity\widgets\Stream::className(), ['streamAction' => '/space/space/stream', 'contentContainer' => $space], ['sortOrder' => 10]],
                         [\humhub\modules\space\modules\manage\widgets\PendingApprovals::className(), ['space' => $space], ['sortOrder' => 20]],
                         [\humhub\modules\space\widgets\Members::className(), ['space' => $space], ['sortOrder' => 30]]

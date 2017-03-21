@@ -22,4 +22,3 @@ return [
         ['class' => CronController::className(), 'event' => CronController::EVENT_ON_HOURLY_RUN, 'callback' => [Events::className(), 'onHourlyCron']],
     ]
 ];
-?>

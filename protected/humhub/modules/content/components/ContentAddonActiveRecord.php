@@ -58,7 +58,6 @@ class ContentAddonActiveRecord extends ActiveRecord implements \humhub\modules\c
      */
     public function getContent()
     {
-
         if ($this->_content != null) {
             return $this->_content;
         }
@@ -100,6 +99,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements \humhub\modules\c
         }
 
         $this->_source = $className::findOne(['id' => $pk]);
+        
         return $this->_source;
     }
 

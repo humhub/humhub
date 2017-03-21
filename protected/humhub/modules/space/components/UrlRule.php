@@ -76,6 +76,7 @@ class UrlRule extends Object implements UrlRuleInterface
                 }
             }
         }
+        
         return false;
     }
 

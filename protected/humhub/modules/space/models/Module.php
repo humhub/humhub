@@ -4,7 +4,6 @@ namespace humhub\modules\space\models;
 
 use Yii;
 
-
 /**
  * This is the model class for table "space_module".
  *

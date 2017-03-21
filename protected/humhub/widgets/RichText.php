@@ -69,10 +69,10 @@ class RichText extends \humhub\components\Widget
 
             $pattern= <<<REGEXP
                     /(?(R) # in case of recursion match parentheses
-				 \(((?>[^\s()]+)|(?R))*\)
-			|      # else match a link with title
-				(https?|ftp):\/\/(([^\s()]+)|(?R))+(?<![\.,:;\'"!\?\s])
-			)/x
+                 \(((?>[^\s()]+)|(?R))*\)
+            |      # else match a link with title
+                (https?|ftp):\/\/(([^\s()]+)|(?R))+(?<![\.,:;\'"!\?\s])
+            )/x
 REGEXP;
             $this->text = preg_replace_callback($pattern, function ($match) use (&$oembedCount, &$maxOembedCount, &$that) {
 
@@ -147,9 +147,12 @@ REGEXP;
                 if ($show) {
                     return Html::img(Yii::getAlias("@web/img/emoji/" . $hit[1] . ".svg"), array('data-emoji-name' => $hit[0], 'class' => 'atwho-emoji', 'width' => '18', 'height' => '18', 'alt' => $hit[1]));
                 }
+                
                 return '';
             }
+            
             return $hit[0];
+        
         }, $text);
     }
 
@@ -180,7 +183,9 @@ REGEXP;
                     return " @" . Html::encode($space->name) . $hit[3];
                 }
             }
+            
             return $hit[0];
+        
         }, $text);
     }
 

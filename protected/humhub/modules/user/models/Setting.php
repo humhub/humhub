@@ -10,7 +10,6 @@ namespace humhub\modules\user\models;
 
 use Yii;
 
-
 /**
  * User settings compatiblity layer class
  * 
@@ -52,6 +51,7 @@ class Setting
         if ($value === null) {
             return $defaultValue;
         }
+        
         return $value;
     }
 
@@ -69,6 +69,7 @@ class Setting
         } else {
             $app = Yii::$app->getModule($moduleId);
         }
+        
         return $app;
     }
 

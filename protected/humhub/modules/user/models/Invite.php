@@ -68,6 +68,7 @@ class Invite extends \yii\db\ActiveRecord
     {
         $scenarios = parent::scenarios();
         $scenarios['invite'] = ['email'];
+        
         return $scenarios;
     }
 

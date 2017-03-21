@@ -39,5 +39,3 @@ class InviteAccepted extends BaseNotification
     }
 
 }
-
-?>

@@ -20,5 +20,3 @@ class SpaceChangeImageWidget extends HWidget
     }
 
 }
-
-?>

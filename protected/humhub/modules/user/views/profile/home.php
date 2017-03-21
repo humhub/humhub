@@ -1,7 +1,5 @@
-<?php echo \humhub\modules\post\widgets\Form::widget(['contentContainer' => $user]); ?>
-<?php
-
-echo \humhub\modules\content\widgets\Stream::widget(array(
+<?= \humhub\modules\post\widgets\Form::widget(['contentContainer' => $user]); ?>
+<?= \humhub\modules\content\widgets\Stream::widget(array(
     'contentContainer' => $user,
     'streamAction' => '//user/profile/stream',
     'messageStreamEmpty' => ($user->permissionManager->can(new \humhub\modules\post\permissions\CreatePost())) ?
@@ -11,4 +9,3 @@ echo \humhub\modules\content\widgets\Stream::widget(array(
             'placeholder-empty-stream' :
             '',
 ));
-?>

@@ -19,4 +19,3 @@ return [
         array('class' => User::className(), 'event' => User::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onUserDelete')),
     ),
 ];
-?>

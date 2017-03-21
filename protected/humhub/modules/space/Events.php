@@ -9,9 +9,9 @@
 namespace humhub\modules\space;
 
 use Yii;
+use yii\web\HttpException;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
-use yii\web\HttpException;
 
 /**
  * Events provides callbacks for all defined module events.

@@ -23,5 +23,3 @@ class DashboardApproval extends \humhub\components\Widget
     }
 
 }
-
-?>

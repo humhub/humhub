@@ -76,7 +76,7 @@ class SettingController extends Controller
             $image->delete();
         }
 
-        \Yii::$app->response->format = 'json';
+        Yii::$app->response->format = 'json';
         return [];
     }
 
@@ -196,7 +196,6 @@ class SettingController extends Controller
     {
         $form = new \humhub\modules\admin\models\forms\ProxySettingsForm;
 
-
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_ProxyController', 'Saved'));
             return $this->redirect(['/admin/setting/proxy']);
@@ -255,6 +254,7 @@ class SettingController extends Controller
             unset($providers[$prefix]);
             UrlOembed::setProviders($providers);
         }
+        
         return $this->redirect(['/admin/setting/oembed']);
     }
 

@@ -9,7 +9,7 @@
 namespace humhub\modules\user\models;
 
 use Yii;
-use \humhub\modules\user\widgets\UserPicker;
+use humhub\modules\user\widgets\UserPicker;
 
 /**
  * Special user model class for the purpose of searching users.
@@ -33,6 +33,7 @@ class UserFilter extends User
         }
 
         $userId = ($user instanceof User) ? $user->id : $user;
+        
         return self::findIdentity($userId);
     }
 
@@ -82,6 +83,7 @@ class UserFilter extends User
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -127,6 +129,7 @@ class UserFilter extends User
     public static function filter($query, $keywords = null, $maxResults = null, $permission = null, $active = null)
     {
         $user = self::addQueryFilter($query, $keywords, $maxResults, $active)->all();
+        
         return self::filterByPermission($user, $permission);
     }
 
@@ -161,6 +164,7 @@ class UserFilter extends User
                     ]
             );
         }
+        
         return $query;
     }
 

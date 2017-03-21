@@ -56,9 +56,7 @@ class ModuleController extends \yii\console\Controller
         printf($mask, 'ID', 'INSTALLED', 'LATEST VERSION', 'LATEST COMPAT VERSION', 'TITLE');
 
         foreach ($modules as $module) {
-
-            printf($mask, $module['id'], (Yii::$app->moduleManager->hasModule($module['id']) ? 'Yes' : 'No'), $module['latestVersion'], (isset($module['latestCompatibleVersion']) && $module['latestCompatibleVersion']) ? $module['latestCompatibleVersion'] : "-", $module['name']
-            );
+            printf($mask, $module['id'], (Yii::$app->moduleManager->hasModule($module['id']) ? 'Yes' : 'No'), $module['latestVersion'], (isset($module['latestCompatibleVersion']) && $module['latestCompatibleVersion']) ? $module['latestCompatibleVersion'] : "-", $module['name']);
         }
     }
 
@@ -83,7 +81,6 @@ class ModuleController extends \yii\console\Controller
      */
     public function actionRemove($moduleId)
     {
-
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
@@ -105,7 +102,6 @@ class ModuleController extends \yii\console\Controller
      */
     public function actionUpdate($moduleId)
     {
-
         if (!Yii::$app->moduleManager->hasModule($moduleId)) {
             print "\nModule " . $moduleId . " is not installed!\n";
             exit;
@@ -139,7 +135,6 @@ class ModuleController extends \yii\console\Controller
      */
     public function actionUpdateAll()
     {
-
         // Also install modules which are seems to be installed 
         $installedModules = Yii::$app->moduleManager->getModules(['returnClass' => true]);
 
@@ -152,7 +147,6 @@ class ModuleController extends \yii\console\Controller
                 print "Module " . $moduleId . " - Error: " . $ex->getMessage() . "\n";
             }
         }
-
 
         /**
          * Looking up modules which are marked as installed but not loaded.

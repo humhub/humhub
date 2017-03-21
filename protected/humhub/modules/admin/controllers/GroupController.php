@@ -27,6 +27,7 @@ class GroupController extends Controller
     {
         $this->subLayout = '@admin/views/layouts/user';
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Groups'));
+
         return parent::init();
     }
 
@@ -49,7 +50,6 @@ class GroupController extends Controller
      */
     public function actionEdit()
     {
-
         // Create Group Edit Form
         $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
         if ($group === null) {
@@ -99,6 +99,7 @@ class GroupController extends Controller
         $searchModel = new \humhub\modules\admin\models\UserSearch();
         $searchModel->query = $group->getUsers();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('members', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
@@ -113,6 +114,7 @@ class GroupController extends Controller
         $this->forcePostRequest();
         $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
         $group->removeUser(Yii::$app->request->get('userId'));
+        
         return $this->redirect(['/admin/group/manage-group-users', 'id' => $group->id]);
     }
 
@@ -171,6 +173,7 @@ class GroupController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $form->save();
         }
+        
         return $this->redirect(['/admin/group/manage-group-users', 'id' => $form->groupId]);
     }
 
@@ -193,6 +196,7 @@ class GroupController extends Controller
             }
             $i++;
         }
+        
         return $result;
     }
 

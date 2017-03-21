@@ -68,5 +68,3 @@ class Stream extends \yii\base\Widget
     }
 
 }
-
-?>

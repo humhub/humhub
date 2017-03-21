@@ -79,7 +79,7 @@ class Module extends \humhub\components\Module
                 $activity = $wallEntry->content->getPolymorphicRelation();
                 $activities[] = $activity->getActivityBaseClass();
             } catch (\yii\base\Exception $ex) {
-                \Yii::error($ex->getMessage());
+                Yii::error($ex->getMessage());
                 return [];
             }
         }

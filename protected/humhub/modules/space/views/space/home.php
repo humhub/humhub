@@ -1,5 +1,4 @@
-<?php echo \humhub\modules\post\widgets\Form::widget(['contentContainer' => $space]); ?>
-<?php
+<?= \humhub\modules\post\widgets\Form::widget(['contentContainer' => $space]);
 
 $emptyMessage = '';
 if ($canCreatePosts) {
@@ -16,4 +15,3 @@ echo \humhub\modules\content\widgets\Stream::widget([
     'messageStreamEmpty' => $emptyMessage,
     'messageStreamEmptyCss' => ($canCreatePosts) ? 'placeholder-empty-stream' : '',
 ]);
-?>

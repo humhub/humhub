@@ -87,5 +87,3 @@ class InviteController extends Controller
     }
 
 }
-
-?>

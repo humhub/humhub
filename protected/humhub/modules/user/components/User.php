@@ -69,6 +69,7 @@ class User extends \yii\web\User
         }
 
         $this->permissionManager = new PermissionManager;
+        
         return $this->permissionManager;
     }
 
@@ -99,6 +100,7 @@ class User extends \yii\web\User
                 return false;
             }
         }
+        
         return true;
     }
 
@@ -123,6 +125,7 @@ class User extends \yii\web\User
                 return $authClient;
             }
         }
+        
         return null;
     }
 

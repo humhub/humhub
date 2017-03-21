@@ -120,6 +120,7 @@ class ProfileField extends \yii\db\ActiveRecord
         }
 
         $this->fieldType->delete();
+        
         return parent::beforeDelete();
     }
 
@@ -233,6 +234,7 @@ class ProfileField extends \yii\db\ActiveRecord
             $definition['ProfileField']['elements']['field_type_class']['disabled'] = true;
             $definition['ProfileField']['elements']['internal_name']['readonly'] = true;
         }
+        
         return $definition;
     }
 
@@ -270,7 +272,6 @@ class ProfileField extends \yii\db\ActiveRecord
      */
     public function checkType()
     {
-
         if (!$this->isNewRecord) {
 
             // Dont allow changes of internal_name - Maybe not the best way to check it.

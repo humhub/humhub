@@ -9,8 +9,8 @@
 namespace humhub\modules\admin\notifications;
 
 use Yii;
-use humhub\modules\notification\components\BaseNotification;
 use yii\bootstrap\Html;
+use humhub\modules\notification\components\BaseNotification;
 
 /**
  * HumHubUpdateNotification
@@ -52,5 +52,3 @@ class NewVersionAvailable extends BaseNotification
     }
 
 }
-
-?>

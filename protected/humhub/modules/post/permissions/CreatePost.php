@@ -55,8 +55,8 @@ class CreatePost extends \humhub\libs\BasePermission
     public function __construct($config = array())
     {
         parent::__construct($config);
-        $this->title = \Yii::t('CommentModule.permissions', 'Create post');
-        $this->description = \Yii::t('CommentModule.permissions', 'Allows the user to create posts');
+        $this->title = Yii::t('CommentModule.permissions', 'Create post');
+        $this->description = Yii::t('CommentModule.permissions', 'Allows the user to create posts');
     }
 
 }

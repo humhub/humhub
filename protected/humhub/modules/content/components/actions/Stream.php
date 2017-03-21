@@ -101,14 +101,12 @@ class Stream extends \yii\base\Action
 
     public function init()
     {
-
         $this->activeQuery = WallEntry::find();
 
         // If no user is set, take current if logged in
         if ($this->user === null && !Yii::$app->user->isGuest) {
             $this->user = Yii::$app->user->getIdentity();
         }
-
 
         // Read parameters
         if (!Yii::$app->request->isConsoleRequest) {
@@ -210,23 +208,28 @@ class Stream extends \yii\base\Action
                 $this->activeQuery->andWhere("(content.archived != 1 OR content.archived IS NULL)");
             }
         }
+        
         // Show only mine items
         if (in_array('entry_mine', $this->filters) && $this->user !== null) {
             $this->activeQuery->andWhere(['content.created_by' => $this->user->id]);
         }
+        
         // Show only items where the current user is involed
         if (in_array('entry_userinvoled', $this->filters) && $this->user !== null) {
 
             $this->activeQuery->leftJoin('user_follow', 'content.object_model=user_follow.object_model AND content.object_id=user_follow.object_id AND user_follow.user_id = :userId', ['userId' => $this->user->id]);
             $this->activeQuery->andWhere("user_follow.id IS NOT NULL");
         }
+        
         if (in_array('model_posts', $this->filters)) {
             $this->activeQuery->andWhere(["content.object_model" => \humhub\modules\post\models\Post::className()]);
         }
+        
         // Visibility filters
         if (in_array('visibility_private', $this->filters)) {
             $this->activeQuery->andWhere(['content.visibility' => Content::VISIBILITY_PRIVATE]);
         }
+        
         if (in_array('visibility_public', $this->filters)) {
             $this->activeQuery->andWhere(['content.visibility' => Content::VISIBILITY_PUBLIC]);
         }
@@ -287,6 +290,7 @@ class Stream extends \yii\base\Action
     {
         $event = new ActionEvent($this);
         $this->trigger(self::EVENT_BEFORE_RUN, $event);
+        
         return $event->isValid;
     }
 

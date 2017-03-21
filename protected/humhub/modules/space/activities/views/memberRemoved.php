@@ -14,4 +14,3 @@ if (!Yii::$app->controller instanceof ContentContainerController) {
         '%displayName%' => '<strong>' . Html::encode($originator->displayName) . '</strong>'
     ));
 }
-?>

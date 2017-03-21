@@ -33,6 +33,7 @@ class DefaultController extends Controller
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
             return $this->redirect($space->createUrl('index'));
         }
+        
         return $this->render('index', ['model' => $space]);
     }
 
@@ -51,7 +52,7 @@ class DefaultController extends Controller
         $indexModuleSelection = \humhub\modules\space\widgets\Menu::getAvailablePages();
 
         //To avoid infinit redirects of actionIndex we remove the stream value and set an empty selection instead
-        array_shift($indexModuleSelection);
+        array_shift ($indexModuleSelection);
         $indexModuleSelection = ["" => Yii::t('SpaceModule.controllers_AdminController', 'Stream (Default)')] + $indexModuleSelection;
 
         return $this->render('advanced', ['model' => $space, 'indexModuleSelection' => $indexModuleSelection]);
@@ -95,5 +96,3 @@ class DefaultController extends Controller
     }
 
 }
-
-?>

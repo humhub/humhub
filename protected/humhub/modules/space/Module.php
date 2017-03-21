@@ -8,8 +8,8 @@
 
 namespace humhub\modules\space;
 
-use humhub\modules\user\models\User;
 use Yii;
+use humhub\modules\user\models\User;
 
 /**
  * SpaceModule provides all space related classes & functions.

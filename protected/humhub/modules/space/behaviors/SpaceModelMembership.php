@@ -33,7 +33,6 @@ class SpaceModelMembership extends Behavior
      */
     public function isMember($userId = "")
     {
-
         // Take current userid if none is given
         if ($userId == "")
             $userId = Yii::$app->user->id;
@@ -55,7 +54,6 @@ class SpaceModelMembership extends Behavior
      */
     public function canLeave($userId = "")
     {
-    
         // Take current userid if none is given
         if ($userId == "")
             $userId = Yii::$app->user->id;
@@ -79,7 +77,6 @@ class SpaceModelMembership extends Behavior
      */
     public function isAdmin($userId = "")
     {
-
         if ($userId == 0)
             $userId = Yii::$app->user->id;
 
@@ -105,7 +102,6 @@ class SpaceModelMembership extends Behavior
      */
     public function setSpaceOwner($userId = "")
     {
-
         if ($userId == 0)
             $userId = Yii::$app->user->id;
 
@@ -115,6 +111,7 @@ class SpaceModelMembership extends Behavior
         $this->owner->update(false, ['created_by']);
 
         $this->_spaceOwner = null;
+        
         return true;
     }
 
@@ -125,7 +122,6 @@ class SpaceModelMembership extends Behavior
      */
     public function getSpaceOwner()
     {
-
         if ($this->_spaceOwner != null) {
             return $this->_spaceOwner;
         }
@@ -157,7 +153,6 @@ class SpaceModelMembership extends Behavior
      */
     public function setAdmin($userId = "")
     {
-
         if ($userId == 0)
             $userId = Yii::$app->user->id;
 
@@ -167,6 +162,7 @@ class SpaceModelMembership extends Behavior
             $membership->save();
             return true;
         }
+        
         return false;
     }
 
@@ -191,7 +187,6 @@ class SpaceModelMembership extends Behavior
      */
     public function inviteMemberByEMail($email, $originatorUserId)
     {
-
         // Invalid E-Mail
         $validator = new \yii\validators\EmailValidator;
         if (!$validator->validate($email))
@@ -204,7 +199,7 @@ class SpaceModelMembership extends Behavior
 
         $userInvite = Invite::findOne(['email' => $email]);
         // No invite yet
-         if ($userInvite == null) {
+        if ($userInvite == null) {
             // Invite EXTERNAL user
             $userInvite = new Invite();
             $userInvite->email = $email;
@@ -220,7 +215,7 @@ class SpaceModelMembership extends Behavior
             $userInvite->space_invite_id = $this->owner->id;
         }
         
-        if($userInvite->validate() && $userInvite->save()) {
+        if ($userInvite->validate() && $userInvite->save()) {
             $userInvite->sendInviteMail();
             return true;
         } 

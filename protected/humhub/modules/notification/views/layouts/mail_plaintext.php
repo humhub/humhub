@@ -1,13 +1,10 @@
 <?php
 
 use yii\helpers\Html;
-
 ?>
 
-<?php echo $content; ?>
+<?= $content; ?>
 
-<?php if (isset($space) && $space !== null): ?>(<?php echo strip_tags(Yii::t('NotificationModule.views_notificationLayoutMail', 'via')); ?> <?php echo Html::encode($space->name); ?>)
+<?php if (isset($space) && $space !== null): ?>(<?= strip_tags(Yii::t('NotificationModule.views_notificationLayoutMail', 'via')); ?> <?= Html::encode($space->name); ?>)
 
-<?php endif; ?><?php echo strip_tags(Yii::t('NotificationModule.views_notificationLayoutMail', 'see online')); ?>: <?php echo urldecode($url); ?>
-
-
+<?php endif; ?><?= strip_tags(Yii::t('NotificationModule.views_notificationLayoutMail', 'see online')); ?>: <?= urldecode($url); ?>

@@ -16,5 +16,3 @@ class SiteLogo extends \yii\base\Widget
     }
 
 }
-
-?>

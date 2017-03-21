@@ -73,6 +73,7 @@ class Notification extends \humhub\components\ActiveRecord
             Yii::configure($object, $params);
             return $object;
         }
+        
         return null;
     }
 
@@ -114,6 +115,7 @@ class Notification extends \humhub\components\ActiveRecord
         if (class_exists($sourceClass) && $sourceClass != "") {
             return $sourceClass::findOne(['id' => $this->source_pk]);
         }
+        
         return null;
     }
 

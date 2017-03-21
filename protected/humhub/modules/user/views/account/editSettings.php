@@ -8,13 +8,13 @@ use \humhub\compat\CHtml;
 
     <?php $form = ActiveForm::begin(['id' => 'basic-settings-form']); ?>
 
-    <?php echo $form->field($model, 'tags'); ?>
+    <?= $form->field($model, 'tags'); ?>
 
     <?php if(count($languages) > 1) : ?>
-        <?php echo $form->field($model, 'language')->dropdownList($languages); ?>
+        <?= $form->field($model, 'language')->dropdownList($languages); ?>
     <?php endif; ?>
 
-    <?php echo $form->field($model, 'timeZone')->dropdownList(\humhub\libs\TimezoneHelper::generateList()); ?>
+    <?= $form->field($model, 'timeZone')->dropdownList(\humhub\libs\TimezoneHelper::generateList()); ?>
 
     <?php if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')): ?>
 
@@ -29,12 +29,12 @@ use \humhub\compat\CHtml;
     <?php endif; ?>
 
     <?php if (Yii::$app->getModule('tour')->settings->get('enable') == 1) : ?>
-        <?php echo $form->field($model, 'show_introduction_tour')->checkbox(); ?>
+        <?= $form->field($model, 'show_introduction_tour')->checkbox(); ?>
     <?php endif; ?>
 
     <hr>
 
-    <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_editSettings', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
+    <?= CHtml::submitButton(Yii::t('UserModule.views_account_editSettings', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
 
     <?php ActiveForm::end(); ?>
 <?php $this->endContent(); ?>

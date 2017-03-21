@@ -66,5 +66,3 @@ class Chooser extends Widget
     }
 
 }
-
-?>

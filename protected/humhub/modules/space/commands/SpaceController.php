@@ -21,9 +21,9 @@
 namespace humhub\modules\space\commands;
 
 use Yii;
+use yii\helpers\Console;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
-use yii\helpers\Console;
 
 /**
  * Console tools for manage spaces

@@ -88,5 +88,3 @@ class ProfileHeader extends \yii\base\Widget
     }
 
 }
-
-?>

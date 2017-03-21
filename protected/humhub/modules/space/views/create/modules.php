@@ -1,13 +1,13 @@
 <?php
 
 use yii\helpers\Url;
-
 ?>
 <div class="modal-dialog modal-dialog-medium animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('SpaceModule.views_create_modules', 'Add <strong>Modules</strong>') ?></h4>
+            <h4 class="modal-title" id="myModalLabel">
+                <?= Yii::t('SpaceModule.views_create_modules', 'Add <strong>Modules</strong>') ?>
+            </h4>
         </div>
         <div class="modal-body">
             <br><br>
@@ -19,13 +19,12 @@ use yii\helpers\Url;
                         <div class="media well well-small ">
                             <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
                                  style="width: 64px; height: 64px;"
-                                 src="<?php echo $module->getContentContainerImage($space); ?>">
+                                 src="<?= $module->getContentContainerImage($space); ?>">
 
                             <div class="media-body">
-                                <h4 class="media-heading"><?php echo $module->getContentContainerName($space); ?>
-                                </h4>
+                                <h4 class="media-heading"><?= $module->getContentContainerName($space); ?></h4>
 
-                                <p style="height: 35px;"><?php echo \humhub\libs\Helpers::truncateText($module->getContentContainerDescription($space), 75); ?></p>
+                                <p style="height: 35px;"><?= \humhub\libs\Helpers::truncateText($module->getContentContainerDescription($space), 75); ?></p>
 
                                 <?php
                                 $enable = "";
@@ -44,8 +43,7 @@ use yii\helpers\Url;
                                 ?>
 
 
-                                <?php
-                                echo \humhub\widgets\AjaxButton::widget([
+                                <?= \humhub\widgets\AjaxButton::widget([
                                     'label' => Yii::t('SpaceModule.views_admin_modules', 'Enable'),
                                     'ajaxOptions' => [
                                         'type' => 'POST',
@@ -63,9 +61,7 @@ use yii\helpers\Url;
                                 ?>
 
 
-                                <?php
-
-                                echo \humhub\widgets\AjaxButton::widget([
+                                <?= \humhub\widgets\AjaxButton::widget([
                                     'label' => Yii::t('SpaceModule.views_admin_modules', 'Disable'),
                                     'ajaxOptions' => [
                                         'type' => 'POST',
@@ -96,8 +92,7 @@ use yii\helpers\Url;
         <div class="modal-footer">
             <hr>
             <br>
-            <?php
-            echo \humhub\widgets\AjaxButton::widget([
+            <?= \humhub\widgets\AjaxButton::widget([
                 'label' => Yii::t('SpaceModule.views_create_modules', 'Next'),
                 'ajaxOptions' => [
                     'type' => 'POST',
@@ -111,7 +106,7 @@ use yii\helpers\Url;
             ]);
             ?>
 
-            <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'invite-loader', 'cssClass' => 'loader-modal hidden']); ?>
+            <?= \humhub\widgets\LoaderWidget::widget(['id' => 'invite-loader', 'cssClass' => 'loader-modal hidden']); ?>
         </div>
 
     </div>

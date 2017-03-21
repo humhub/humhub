@@ -40,10 +40,7 @@ class TopMenu extends BaseMenu
      */
     public function init()
     {
-
         parent::init();
     }
 
 }
-
-?>

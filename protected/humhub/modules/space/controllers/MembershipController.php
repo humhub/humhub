@@ -9,12 +9,9 @@
 namespace humhub\modules\space\controllers;
 
 use Yii;
-
 use yii\web\HttpException;
-
 use humhub\modules\user\widgets\UserPicker;
 use humhub\modules\space\models\Space;
-
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\user\widgets\UserListBox;
@@ -163,7 +160,6 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
         $canInviteExternal = Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
 
-
         $model = new \humhub\modules\space\models\forms\InviteForm();
         $model->space = $space;
 
@@ -190,7 +186,11 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
             ]);
         }
 
-        return $this->renderAjax('invite', array('model' => $model, 'space' => $space, 'canInviteExternal' => $canInviteExternal));
+        return $this->renderAjax('invite', array(
+            'model' => $model,
+            'space' => $space,
+            'canInviteExternal' => $canInviteExternal)
+        );
     }
 
     /**
@@ -257,5 +257,3 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
     }
 
 }
-
-?>

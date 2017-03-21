@@ -1,6 +1,6 @@
 <?php
-    use yii\helpers\Url;
 
+use yii\helpers\Url;
 ?>
 <li>
     <?php
@@ -12,7 +12,7 @@
         'label' => '<i class="fa fa-bell-slash-o"></i> ' . Yii::t('ContentModule.widgets_views_notificationSwitchLink', 'Turn off notifications'),
         'ajaxOptions' => [
             'type' => 'POST',
-            'success' => "function(res){ if (res.success) { $('#" . $offLinkId . "').hide(); $('#" . $onLinkId . "').show(); } }",
+            'success' => "function(res) { if (res.success) { $('#" . $offLinkId . "').hide(); $('#" . $onLinkId . "').show(); } }",
             'url' => Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 0]),
         ],
         'htmlOptions' => [
@@ -27,7 +27,7 @@
         'label' => '<i class="fa fa-bell-o"></i> ' . Yii::t('ContentModule.widgets_views_notificationSwitchLink', 'Turn on notifications'),
         'ajaxOptions' => [
             'type' => 'POST',
-            'success' => "function(res){ if (res.success) { $('#" . $onLinkId . "').hide(); $('#" . $offLinkId . "').show(); } }",
+            'success' => "function(res) { if (res.success) { $('#" . $onLinkId . "').hide(); $('#" . $offLinkId . "').show(); } }",
             'url' => Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 1]),
         ],
         'htmlOptions' => [

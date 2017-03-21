@@ -92,7 +92,8 @@ class AuthController extends Controller
         if (Yii::$app->request->getIsAjax()) {
             return $this->renderAjax('login_modal', array('model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()));
         }
-        return $this->render('login', array('model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()));
+        
+		return $this->render('login', array('model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()));
     }
 
     /**
@@ -236,9 +237,8 @@ class AuthController extends Controller
             $output['email'] = $httpSession->user->email;
             $output['superadmin'] = $httpSession->user->isSystemAdmin();
         }
-        return $output;
+        
+		return $output;
     }
 
 }
-
-?>

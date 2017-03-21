@@ -56,5 +56,3 @@ class LoaderWidget extends \yii\base\Widget
     }
 
 }
-
-?>

@@ -9,10 +9,10 @@
 namespace humhub\modules\content\controllers;
 
 use Yii;
+use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\modules\content\models\WallEntry;
 use humhub\modules\content\models\Content;
-use yii\web\HttpException;
 
 /**
  * PermaController is used to create permanent links to content.
@@ -76,5 +76,3 @@ class PermaController extends Controller
     }
 
 }
-
-?>

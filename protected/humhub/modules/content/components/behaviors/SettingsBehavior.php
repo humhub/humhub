@@ -36,6 +36,7 @@ class SettingsBehavior extends Behavior
         if ($value === null) {
             return $default;
         }
+        
         return $value;
     }
 

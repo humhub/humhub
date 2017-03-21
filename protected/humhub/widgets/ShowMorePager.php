@@ -102,6 +102,7 @@ class ShowMorePager extends \humhub\widgets\LinkPager
         }
 
         $moreButton = AjaxButton::widget($this->ajaxButtonOptions);
+        
         return Html::tag('div', Html::tag('br') . $moreButton . LoaderWidget::widget(['id' => $this->id . '_loader', 'cssClass' => 'hidden']), ['id' => $this->id, 'class' => 'pagination-container']);
     }
 

@@ -27,7 +27,6 @@ class AccountSettingsMenu extends \humhub\widgets\BaseMenu
      */
     public function init()
     {
-
         $this->addItem(array(
             'label' => Yii::t('UserModule.base', 'Basic Settings'),
             'url' => Url::toRoute(['/user/account/edit-settings']),

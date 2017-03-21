@@ -8,10 +8,8 @@ $this->registerJsVar('wallUnarchiveLinkUrl', Url::to(['/content/content/unarchiv
 ?>
 <li>
     <?php if ($object->content->isArchived()): ?>
-        <a href="#" onClick="wallUnarchive('<?php echo $id; ?>');
-                return false;"><i class="fa fa-archive"></i> <?php echo Yii::t('ContentModule.widgets_views_archiveLink', 'Unarchive'); ?></a>
+        <a href="#" onClick="wallUnarchive('<?= $id; ?>'); return false;"><i class="fa fa-archive"></i> <?= Yii::t('ContentModule.widgets_views_archiveLink', 'Unarchive'); ?></a>
        <?php else: ?>
-        <a href="#" onClick="wallArchive('<?php echo $id; ?>');
-                return false;"><i class="fa fa-archive"></i> <?php echo Yii::t('ContentModule.widgets_views_archiveLink', 'Move to archive'); ?></a>
+        <a href="#" onClick="wallArchive('<?= $id; ?>'); return false;"><i class="fa fa-archive"></i> <?= Yii::t('ContentModule.widgets_views_archiveLink', 'Move to archive'); ?></a>
     <?php endif; ?>
 </li>

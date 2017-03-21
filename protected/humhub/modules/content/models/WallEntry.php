@@ -2,7 +2,6 @@
 
 namespace humhub\modules\content\models;
 
-
 use humhub\components\ActiveRecord;
 
 /**

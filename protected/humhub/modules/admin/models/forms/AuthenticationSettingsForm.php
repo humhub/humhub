@@ -93,6 +93,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
         if ($settingsManager->get('auth.allowGuestAccess')) {
             $settingsManager->set('auth.defaultUserProfileVisibility', $this->defaultUserProfileVisibility);
         }
+        
         return true;
     }
 

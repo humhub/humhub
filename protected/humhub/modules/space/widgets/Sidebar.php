@@ -25,5 +25,3 @@ class Sidebar extends BaseSidebar
     public $space;
 
 }
-
-?>

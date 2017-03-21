@@ -25,5 +25,3 @@ class ProfileSidebar extends BaseSidebar
     public $user;
 
 }
-
-?>

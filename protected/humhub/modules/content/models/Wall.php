@@ -2,8 +2,6 @@
 
 namespace humhub\modules\content\models;
 
-
-
 /**
  * This is the model class for table "wall".
  *

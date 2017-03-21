@@ -44,6 +44,7 @@ class Date extends BaseType
             'format' => Yii::$app->formatter->dateInputFormat,
             'convertToFormat' => 'Y-m-d',
         ];
+        
         return parent::getFieldRules($rules);
     }
     
@@ -86,5 +87,3 @@ class Date extends BaseType
     }
 
 }
-
-?>

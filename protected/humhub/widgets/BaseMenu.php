@@ -202,6 +202,7 @@ class BaseMenu extends \yii\base\Widget
     public function getItemGroups()
     {
         $this->sortItemGroups();
+        
         return $this->itemGroups;
     }
 
@@ -211,6 +212,7 @@ class BaseMenu extends \yii\base\Widget
     public function run()
     {
         $this->trigger(self::EVENT_RUN);
+        
         return $this->render($this->template, array());
     }
     
@@ -290,5 +292,3 @@ class BaseMenu extends \yii\base\Widget
     }
 
 }
-
-?>

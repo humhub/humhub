@@ -15,7 +15,6 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\forms\AccountRecoverPassword;
 
-
 /**
  * Password Recovery
  *
@@ -58,13 +57,15 @@ class PasswordRecoveryController extends Controller
             if (Yii::$app->request->isAjax) {
                 return $this->renderAjax('success_modal', array('model' => $model));
             }
-            return $this->render('success', array('model' => $model));
+            
+			return $this->render('success', array('model' => $model));
         }
 
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax('index_modal', array('model' => $model));
         }
-        return $this->render('index', array('model' => $model));
+        
+		return $this->render('index', array('model' => $model));
     }
 
     /**
@@ -86,7 +87,8 @@ class PasswordRecoveryController extends Controller
             $model->user_id = $user->id;
             $model->setPassword($model->newPassword);
             $model->save();
-            return $this->render('reset_success');
+            
+			return $this->render('reset_success');
         }
 
         return $this->render('reset', array('model' => $model));
@@ -111,5 +113,3 @@ class PasswordRecoveryController extends Controller
     }
 
 }
-
-?>

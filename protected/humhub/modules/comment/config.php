@@ -19,4 +19,3 @@ return [
         array('class' => WallEntryAddons::className(), 'event' => WallEntryAddons::EVENT_INIT, 'callback' => array(Events::className(), 'onWallEntryAddonInit')),
     ),
 ];
-?>

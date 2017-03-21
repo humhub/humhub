@@ -47,5 +47,3 @@ class EditLink extends \yii\base\Widget
     }
 
 }
-
-?>

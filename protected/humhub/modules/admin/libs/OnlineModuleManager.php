@@ -12,7 +12,6 @@ use ZipArchive;
 use Yii;
 use yii\web\HttpException;
 use yii\base\Exception;
-
 use humhub\libs\CURLHelper;
 
 
@@ -44,7 +43,6 @@ class OnlineModuleManager
         if (!isset($moduleInfo['latestCompatibleVersion'])) {
             throw new Exception(Yii::t('AdminModule.libs_OnlineModuleManager', "No compatible module version found!"));
         }
-
 
         $moduleDir = $modulePath . DIRECTORY_SEPARATOR . $moduleId;
         if (is_dir($moduleDir)) {

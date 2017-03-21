@@ -5,16 +5,16 @@ use yii\helpers\Html;
 use humhub\widgets\GridView;
 use yii\widgets\ActiveForm;
 ?>
-<?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
+
+<?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]); ?>
 <div class="panel-body">
 <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members']]); ?>
 <div style="display:flex;flex-wrap:wrap;">
     <div style="flex-grow:100;margin-right:5px;">
         <div>
-            <?php echo $form->field($addGroupMemberForm, 'userGuids', ['inputOptions' => ['id' => 'user_select']])->label(false); ?>
-            <?php echo Html::activeHiddenInput($addGroupMemberForm, 'groupId', ['value' => $group->id]) ?>
-            <?php
-            echo \humhub\modules\user\widgets\UserPicker::widget([
+            <?= $form->field($addGroupMemberForm, 'userGuids', ['inputOptions' => ['id' => 'user_select']])->label(false); ?>
+            <?= Html::activeHiddenInput($addGroupMemberForm, 'groupId', ['value' => $group->id]); ?>
+            <?= \humhub\modules\user\widgets\UserPicker::widget([
                 'inputId' => 'user_select',
                 'model' => $addGroupMemberForm,
                 'attribute' => 'userGuids',
@@ -26,14 +26,13 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
     <div style="flex-grow:1;padding-top:1px;">   
-        <?php echo Html::submitButton(Yii::t('AdminModule.views_group_manageGroupUser', 'Add'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>   
+        <?= Html::submitButton(Yii::t('AdminModule.views_group_manageGroupUser', 'Add'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>   
     </div>
 </div>
 <?php ActiveForm::end(); ?>
 
 <div class="table-responsive">
-    <?php
-    echo GridView::widget([
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -87,12 +86,12 @@ use yii\widgets\ActiveForm;
             ]);
             ?>
         </div>
-        <script type="text/javascript">
+        <script>
             $('.managerDropDown').on('change', function () {
                 var $this = $(this);
                 var userId = $this.data('userid');
                 var groupId = $this.data('groupid');
-                $.ajax("<?= Url::toRoute(['edit-manager-role']) ?>", {
+                $.ajax("<?= Url::toRoute(['edit-manager-role']); ?>", {
             method: 'POST',
             data: {
                 'id': groupId,

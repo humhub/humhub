@@ -8,9 +8,6 @@
 
 namespace humhub\modules\user\permissions;
 
-
-
-
 /**
  * ViewAboutPage Permission
  */

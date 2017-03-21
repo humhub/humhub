@@ -29,5 +29,4 @@ namespace humhub\widgets;
  */
 class TopMenuRightStack extends BaseStack
 {
-
 }

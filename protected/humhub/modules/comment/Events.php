@@ -25,7 +25,6 @@ class Events extends \yii\base\Object
      */
     public static function onContentDelete($event)
     {
-
         foreach (models\Comment::find()->where(['object_model' => $event->sender->className(), 'object_id' => $event->sender->id])->all() as $comment) {
             $comment->delete();
         }
@@ -38,10 +37,10 @@ class Events extends \yii\base\Object
      */
     public static function onUserDelete($event)
     {
-
         foreach (Comment::findAll(array('created_by' => $event->sender->id)) as $comment) {
             $comment->delete();
         }
+        
         return true;
     }
 
@@ -85,7 +84,7 @@ class Events extends \yii\base\Object
             return;
         }
         
-        if (\Yii::$app->getModule('comment')->canComment($event->sender->object->content)) {
+        if (Yii::$app->getModule('comment')->canComment($event->sender->object->content)) {
             $event->sender->addWidget(widgets\CommentLink::className(), array('object' => $event->sender->object), array('sortOrder' => 10));
         }
     }

@@ -69,5 +69,3 @@ class CommentLink extends \yii\base\Widget
     }
 
 }
-
-?>

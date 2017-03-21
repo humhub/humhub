@@ -11,19 +11,19 @@ use yii\helpers\Url;
     <!-- container for ajax response -->
     <ul id="dropdown-notifications" class="dropdown-menu">
         <li class="dropdown-header">
-            <div class="arrow"></div><?php echo Yii::t('NotificationModule.widgets_views_list', 'Notifications'); ?>
-            <div class="dropdown-header-link"><a id="mark-seen-link"
-                                                 href="javascript:markNotificationsAsSeen();"><?php echo Yii::t('NotificationModule.widgets_views_list', 'Mark all as seen'); ?></a>
+            <div class="arrow"></div><?= Yii::t('NotificationModule.widgets_views_list', 'Notifications'); ?>
+            <div class="dropdown-header-link">
+                <a id="mark-seen-link" href="javascript:markNotificationsAsSeen();"><?= Yii::t('NotificationModule.widgets_views_list', 'Mark all as seen'); ?></a>
             </div>
         </li>
         <ul class="media-list"></ul>
         <li id="loader_notifications">
-            <?php echo \humhub\widgets\LoaderWidget::widget(); ?>
+            <?= \humhub\widgets\LoaderWidget::widget(); ?>
         </li>
         <li>
             <div class="dropdown-footer">
                 <a class="btn btn-default col-md-12" href="<?= Url::to(['/notification/overview']); ?>">
-                    <?php echo Yii::t('NotificationModule.widgets_views_list', 'Show all notifications'); ?>
+                    <?= Yii::t('NotificationModule.widgets_views_list', 'Show all notifications'); ?>
                 </a>
             </div>
         </li>
@@ -31,7 +31,7 @@ use yii\helpers\Url;
 </div>
 
 
-<script type="text/javascript">
+<script>
 
     // set niceScroll to notification list
     $("#dropdown-notifications ul.media-list").niceScroll({
@@ -47,7 +47,7 @@ use yii\helpers\Url;
         // call ajax request to mark all notifications as seen
         jQuery.ajax({
             'type': 'GET',
-            'url': '<?php echo Url::to(['/notification/list/mark-as-seen', 'ajax' => 1]); ?>',
+            'url': '<?= Url::to(['/notification/list/mark-as-seen', 'ajax' => 1]); ?>',
             'cache': false,
             'data': jQuery(this).parents("form").serialize(),
             'success': function (html) {
@@ -75,7 +75,7 @@ use yii\helpers\Url;
         var notificationLastEntryReached = false;
 
         // safe action url
-        var _notificationUrl = '<?php echo Url::to(['/notification/list/index', 'from' => 'lastEntryId', 'ajax' => 1]); ?>';
+        var _notificationUrl = '<?= Url::to(['/notification/list/index', 'from' => 'lastEntryId', 'ajax' => 1]); ?>';
 
         // Open the notification menu
         $('#icon-notifications').click(function () {
@@ -120,7 +120,7 @@ use yii\helpers\Url;
 
         });
 
-        var notification_placeholder = "<?php echo Yii::t('NotificationModule.widgets_views_list', 'There are no notifications yet.') ?>"
+        var notification_placeholder = "<?= Yii::t('NotificationModule.widgets_views_list', 'There are no notifications yet.') ?>"
 
 
         function loadNotificationEntries() {
@@ -164,12 +164,12 @@ use yii\helpers\Url;
          */
         reloadNotificationInterval = <?= $updateInterval * 1000; ?>;
         setInterval(function () {
-            jQuery.getJSON("<?php echo Url::to(['/notification/list/get-update-json']); ?>", function (json) {
+            jQuery.getJSON("<?= Url::to(['/notification/list/get-update-json']); ?>", function (json) {
                 handleJsonUpdate(json);
             });
         }, reloadNotificationInterval);
 
-        handleJsonUpdate(<?php echo \yii\helpers\Json::encode($update); ?>);
+        handleJsonUpdate(<?= \yii\helpers\Json::encode($update); ?>);
 
     });
 

@@ -11,7 +11,6 @@ namespace humhub\modules\user\models;
 use Yii;
 use humhub\modules\space\models\Space;
 
-
 /**
  * This is the model class for table "group".
  *
@@ -58,6 +57,7 @@ class Group extends \yii\db\ActiveRecord
     {
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_EDIT] = ['name', 'description', 'managerGuids', 'defaultSpaceGuid', 'show_at_registration', 'show_at_directory'];
+        
         return $scenarios;
     }
 
@@ -217,6 +217,7 @@ class Group extends \yii\db\ActiveRecord
         ]);
         $query->andWhere(['IS NOT', 'group_user.id', new \yii\db\Expression('NULL')]);
         $query->multiple = true;
+        
         return $query;
     }
 
@@ -232,6 +233,7 @@ class Group extends \yii\db\ActiveRecord
     public function isManager($user)
     {
         $userId = ($user instanceof User) ? $user->id : $user;
+        
         return $this->getGroupUsers()->where(['user_id' => $userId, 'is_group_manager' => true])->count() > 0;
     }
 
@@ -315,6 +317,7 @@ class Group extends \yii\db\ActiveRecord
             $mail->setSubject(Yii::t('UserModule.models_User', "New user needs approval"));
             $mail->send();
         }
+        
         return true;
     }
 

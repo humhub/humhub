@@ -2,32 +2,31 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-
 ?>
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.views_directory_spaces', '<strong>Space</strong> directory'); ?>
+        <?= Yii::t('DirectoryModule.views_directory_spaces', '<strong>Space</strong> directory'); ?>
     </div>
 
     <div class="panel-body">
 
-        <?php echo Html::beginForm(Url::to(['/directory/directory/spaces']), 'get', array('class' => 'form-search')); ?>
+        <?= Html::beginForm(Url::to(['/directory/directory/spaces']), 'get', array('class' => 'form-search')); ?>
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <div class="form-group form-group-search">
-                    <?php echo Html::textInput("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('DirectoryModule.views_directory_spaces', 'search for spaces'))); ?>
-                    <?php echo Html::submitButton(Yii::t('DirectoryModule.views_directory_spaces', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
+                    <?= Html::textInput("keyword", $keyword, array("class" => "form-control form-search", "placeholder" => Yii::t('DirectoryModule.views_directory_spaces', 'search for spaces'))); ?>
+                    <?= Html::submitButton(Yii::t('DirectoryModule.views_directory_spaces', 'Search'), array('class' => 'btn btn-default btn-sm form-button-search')); ?>
                 </div>
             </div>
             <div class="col-md-3"></div>
         </div>
-        <?php echo Html::endForm(); ?>
+        <?= Html::endForm(); ?>
 
 
         <?php if (count($spaces) == 0): ?>
-            <p><?php echo Yii::t('DirectoryModule.views_directory_spaces', 'No spaces found!'); ?></p>
+            <p><?= Yii::t('DirectoryModule.views_directory_spaces', 'No spaces found!'); ?></p>
         <?php endif; ?>
 
     </div>
@@ -51,7 +50,7 @@ use yii\helpers\Url;
                         ?>
                     </div>
 
-                    <?php echo \humhub\modules\space\widgets\Image::widget([
+                    <?= \humhub\modules\space\widgets\Image::widget([
                         'space' => $space,
                         'width' => 50,
                         'htmlOptions' => [
@@ -66,20 +65,20 @@ use yii\helpers\Url;
                     <?php if ($space->isMember()) { ?>
                         <i class="fa fa-user space-member-sign tt" data-toggle="tooltip" data-placement="top"
                            title=""
-                           data-original-title="<?php echo Yii::t('DirectoryModule.views_directory_spaces', 'You are a member of this space'); ?>"></i>
+                           data-original-title="<?= Yii::t('DirectoryModule.views_directory_spaces', 'You are a member of this space'); ?>"></i>
                     <?php } ?>
 
                     <div class="media-body">
-                        <h4 class="media-heading"><a
-                                href="<?php echo $space->getUrl(); ?>"><?php echo Html::encode($space->name); ?></a>
+                        <h4 class="media-heading">
+                            <a href="<?= $space->getUrl(); ?>"><?= Html::encode($space->name); ?></a>
                         </h4>
-                        <h5><?php echo Html::encode(humhub\libs\Helpers::truncateText($space->description, 100)); ?></h5>
+                        <h5><?= Html::encode(humhub\libs\Helpers::truncateText($space->description, 100)); ?></h5>
 
                         <?php $tag_count = 0; ?>
                         <?php if ($space->hasTags()) : ?>
                             <?php foreach ($space->getTags() as $tag): ?>
                                 <?php if ($tag_count <= 5) { ?>
-                                    <?php echo Html::a(Html::encode($tag), ['/directory/directory/spaces', 'keyword' => $tag], array('class' => 'label label-default')); ?>
+                                    <?= Html::a(Html::encode($tag), ['/directory/directory/spaces', 'keyword' => $tag], array('class' => 'label label-default')); ?>
                                     <?php
                                     $tag_count++;
                                 }
@@ -97,5 +96,5 @@ use yii\helpers\Url;
 </div>
 
 <div class="pagination-container">
-    <?php echo \humhub\widgets\LinkPager::widget(array('pagination' => $pagination)); ?>
+    <?= \humhub\widgets\LinkPager::widget(array('pagination' => $pagination)); ?>
 </div>

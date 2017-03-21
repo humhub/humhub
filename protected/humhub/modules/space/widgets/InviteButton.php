@@ -20,8 +20,7 @@
 
 namespace humhub\modules\space\widgets;
 
-
-use \yii\base\Widget;
+use yii\base\Widget;
 
 /**
  * SpaceInviteButtonWidget

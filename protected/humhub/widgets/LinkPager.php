@@ -8,8 +8,6 @@
 
 namespace humhub\widgets;
 
-
-
 /**
  * @inheritdoc
  */

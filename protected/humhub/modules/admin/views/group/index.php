@@ -5,10 +5,10 @@ use yii\helpers\Html;
 use humhub\widgets\GridView;
 ?>
 <div class="panel-body">
-    <h4><?php echo Yii::t('AdminModule.views_group_index', 'Manage groups'); ?></h4>
+    <h4><?= Yii::t('AdminModule.views_group_index', 'Manage groups'); ?></h4>
 
     <div class="help-block">
-        <?php echo Yii::t('AdminModule.views_groups_index', 'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.'); ?>
+        <?= Yii::t('AdminModule.views_groups_index', 'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.'); ?>
     </div>
 </div>
 
@@ -16,7 +16,7 @@ use humhub\widgets\GridView;
 
 <div class="panel-body">
     <div class="pull-right">
-        <?php echo Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.views_groups_index', "Create new group"), Url::to(['edit']), array('class' => 'btn btn-success')); ?>
+        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.views_groups_index', "Create new group"), Url::to(['edit']), array('class' => 'btn btn-success')); ?>
     </div>
 
     <?php

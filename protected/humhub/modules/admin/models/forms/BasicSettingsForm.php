@@ -91,9 +91,7 @@ class BasicSettingsForm extends \yii\base\Model
      */
     public function checkSpaceGuid($attribute, $params)
     {
-
         if ($this->defaultSpaceGuid != "") {
-
             foreach (explode(',', $this->defaultSpaceGuid) as $spaceGuid) {
                 if ($spaceGuid != "") {
                     $space = \humhub\modules\space\models\Space::findOne(array('guid' => $spaceGuid));

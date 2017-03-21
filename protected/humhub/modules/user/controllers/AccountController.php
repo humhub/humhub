@@ -37,7 +37,8 @@ class AccountController extends BaseAccountController
             'change-email-validate' => Yii::t('UserModule.base', 'Email'),
             'change-password' => Yii::t('UserModule.base', 'Password'),
         ]);
-        return parent::init();
+        
+		return parent::init();
     }
 
     /**
@@ -232,7 +233,6 @@ class AccountController extends BaseAccountController
      */
     public function actionDelete()
     {
-
         $isSpaceOwner = false;
         $user = Yii::$app->user->getIdentity();
 
@@ -372,7 +372,7 @@ class AccountController extends BaseAccountController
      */
     public function actionBannerImageUpload()
     {
-        \Yii::$app->response->format = 'json';
+        Yii::$app->response->format = 'json';
 
         $model = new \humhub\models\forms\UploadProfileImage();
         $json = array();
@@ -404,7 +404,7 @@ class AccountController extends BaseAccountController
      */
     public function actionProfileImageUpload()
     {
-        \Yii::$app->response->format = 'json';
+        Yii::$app->response->format = 'json';
 
         $model = new \humhub\models\forms\UploadProfileImage();
 
@@ -455,7 +455,7 @@ class AccountController extends BaseAccountController
      */
     public function actionDeleteProfileImage()
     {
-        \Yii::$app->response->format = 'json';
+        Yii::$app->response->format = 'json';
 
         $this->forcePostRequest();
 
@@ -500,5 +500,3 @@ class AccountController extends BaseAccountController
     }
 
 }
-
-?>

@@ -8,7 +8,7 @@
 
 namespace humhub\modules\space\widgets;
 
-use \yii\base\Widget;
+use yii\base\Widget;
 use yii\bootstrap\Html;
 
 /**
@@ -58,8 +58,6 @@ class Image extends Widget
 
         $acronymHtmlOptions = $this->htmlOptions;
         $imageHtmlOptions = $this->htmlOptions;
-
-
 
         $acronymHtmlOptions['class'] .= " space-profile-acronym-" . $this->space->id . " space-acronym";
         $acronymHtmlOptions['style'] .= " background-color: " . $color . "; width: " . $this->width . "px; height: " . $this->height . "px;";
@@ -119,5 +117,3 @@ class Image extends Widget
     }
 
 }
-
-?>

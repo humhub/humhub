@@ -17,5 +17,4 @@ namespace humhub\modules\space\modules\manage\widgets;
  */
 class Menu extends \humhub\modules\space\widgets\HeaderControlsMenu
 {
-    
 }

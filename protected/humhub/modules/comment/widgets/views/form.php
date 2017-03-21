@@ -7,21 +7,21 @@ use humhub\widgets\AjaxButton;
 ?>
 
 <?php /* BEGIN: Comment Create Form */ ?>
-<div id="comment_create_form_<?php echo $id; ?>" class="comment_create">
+<div id="comment_create_form_<?= $id; ?>" class="comment_create">
 
-    <?php echo Html::beginForm("#"); ?>
-    <?php echo Html::hiddenInput('contentModel', $modelName); ?>
-    <?php echo Html::hiddenInput('contentId', $modelId); ?>
+    <?= Html::beginForm("#"); ?>
+    <?= Html::hiddenInput('contentModel', $modelName); ?>
+    <?= Html::hiddenInput('contentId', $modelId); ?>
 
-    <?php echo Html::textArea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'))); ?>
+    <?= Html::textArea("message", "", array('id' => 'newCommentForm_' . $id, 'rows' => '1', 'class' => 'form-control autosize commentForm', 'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'))); ?>
 
-    <?php echo humhub\widgets\RichTextEditor::widget(['id' => 'newCommentForm_' . $id]); ?>
+    <?= \humhub\widgets\RichTextEditor::widget(['id' => 'newCommentForm_' . $id]); ?>
 
     <div class="comment-buttons">
 
-    <?php
+    <?=
     // Creates Uploading Button
-    echo humhub\modules\file\widgets\FileUploadButton::widget(array(
+    humhub\modules\file\widgets\FileUploadButton::widget(array(
         'uploaderId' => 'comment_upload_' . $id,
         'fileListFieldName' => 'fileList',
     ));
@@ -44,7 +44,7 @@ use humhub\widgets\AjaxButton;
         'label' => Yii::t('CommentModule.widgets_views_form', 'Send'),
         'ajaxOptions' => [
             'type' => 'POST',
-            'beforeSend' => new yii\web\JsExpression("function(html){  $('#newCommentForm_" . $id . "_contenteditable').hide(); $('.comment-buttons').hide(); showLoader('" . $id . "'); }"),
+            'beforeSend' => new yii\web\JsExpression("function(html) { $('#newCommentForm_" . $id . "_contenteditable').hide(); $('.comment-buttons').hide(); showLoader('" . $id . "'); }"),
             'success' => new yii\web\JsExpression($jsSuccess),
             'url' => Url::to(['/comment/comment/post']),
         ],
@@ -58,12 +58,10 @@ use humhub\widgets\AjaxButton;
 
     </div>
 
-    <?php echo Html::endForm(); ?>
+    <?= Html::endForm(); ?>
 
-
-    <?php
-    // Creates a list of already uploaded Files
-    echo \humhub\modules\file\widgets\FileUploadList::widget(array(
+    <!-- Creates a list of already uploaded Files -->
+    <?= \humhub\modules\file\widgets\FileUploadList::widget(array(
         'uploaderId' => 'comment_upload_' . $id,
     ));
     ?>
@@ -74,7 +72,7 @@ use humhub\widgets\AjaxButton;
     $(document).ready(function () {
 
         // set the size for one row (Firefox)
-        $('#newCommentForm_<?php echo $id; ?>').css({height: '36px'});
+        $('#newCommentForm_<?= $id; ?>').css({height: '36px'});
 
         // add autosize function to input
         $('.autosize').autosize();

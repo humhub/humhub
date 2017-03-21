@@ -8,8 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
-
-use \yii\base\Widget;
+use yii\base\Widget;
 
 /**
  * PendingApprovals show open member approvals to admin in sidebar
@@ -47,9 +46,10 @@ class PendingApprovals extends Widget
             return;
         }
 
-        return $this->render('pendingApprovals', ['applicants' => $applicants, 'space' => $this->space]);
+        return $this->render('pendingApprovals', [
+            'applicants' => $applicants,
+            'space' => $this->space
+        ]);
     }
 
 }
-
-?>

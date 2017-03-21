@@ -43,5 +43,3 @@ class Header extends Widget
     }
 
 }
-
-?>

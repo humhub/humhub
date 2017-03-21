@@ -12,6 +12,5 @@ namespace humhub\modules\admin\widgets;
  * @inheritdoc
  */
 class SpaceGridView extends \humhub\widgets\GridView
-{
-    
+{  
 }

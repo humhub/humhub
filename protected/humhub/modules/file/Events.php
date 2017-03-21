@@ -37,7 +37,6 @@ class Events extends \yii\base\Object
      */
     public static function onCronDailyRun($event)
     {
-
         $controller = $event->sender;
         $controller->stdout("Deleting old unassigned files... ");
 
@@ -76,7 +75,6 @@ class Events extends \yii\base\Object
      */
     public static function onBeforeActiveRecordDelete($event)
     {
-
         $model = $event->sender->className();
         $pk = $event->sender->getPrimaryKey();
 
@@ -93,6 +91,7 @@ class Events extends \yii\base\Object
         foreach (File::findAll(array('created_by' => $event->sender->id)) as $file) {
             $file->delete();
         }
+        
         return true;
     }
 

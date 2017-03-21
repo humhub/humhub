@@ -61,7 +61,7 @@ class ManageContent extends \humhub\libs\BasePermission
     public function __construct($config = array())
     {
         parent::__construct($config);
-        $this->title = \Yii::t('CommentModule.permissions', 'Manage content');
-        $this->description = \Yii::t('CommentModule.permissions', 'Can manage (e.g. archive, stick or delete) arbitrary content');
+        $this->title = Yii::t('CommentModule.permissions', 'Manage content');
+        $this->description = Yii::t('CommentModule.permissions', 'Can manage (e.g. archive, stick or delete) arbitrary content');
     }
 }

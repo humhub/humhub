@@ -1,6 +1,7 @@
 <?php
 
 namespace humhub\modules\file\widgets;
+
 use humhub\components\ActiveRecord;
 use humhub\modules\file\models\File;
 
@@ -35,7 +36,6 @@ class FileUploadList extends \yii\base\Widget
      */
     public function run()
     {
-
         $files = array();
         if ($this->object !== null) {
             if ($this->object->isNewRecord && $this->object->getRelation('content', false) !== null) {

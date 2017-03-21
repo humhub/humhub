@@ -81,8 +81,8 @@ class UserGroupForm extends \yii\base\Model
     public function save()
     {
         //Check old group selection and remove non selected groups
-        foreach($this->currentGroups as $userGroup) {
-            if(!$this->isInGroupSelection($userGroup)) {
+        foreach ($this->currentGroups as $userGroup) {
+            if (!$this->isInGroupSelection($userGroup)) {
                 $this->user->getGroupUsers()->where(['group_id' => $userGroup->id])->one()->delete();
             }
         }
@@ -93,6 +93,7 @@ class UserGroupForm extends \yii\base\Model
                 Group::findOne($groupId)->addUser($this->user);
             }
         }
+        
         return true;
     }
     
@@ -105,6 +106,7 @@ class UserGroupForm extends \yii\base\Model
     {
         $groupId = ($groupId instanceof Group) ? $groupId->id : $groupId;
         $this->groupSelection = (is_array($this->groupSelection)) ? $this->groupSelection : [];
+        
         return is_array($this->groupSelection) && in_array($groupId, $this->groupSelection);
     }
 
@@ -121,6 +123,7 @@ class UserGroupForm extends \yii\base\Model
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -135,6 +138,7 @@ class UserGroupForm extends \yii\base\Model
         foreach ($groups as $group) {
             $result[$group->id] = $group->name;
         }
+        
         return $result;
     }
 

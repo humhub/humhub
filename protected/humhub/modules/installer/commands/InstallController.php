@@ -11,10 +11,8 @@ namespace humhub\modules\installer\commands;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
-
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
-
 use humhub\modules\user\models\Group;
 
 /**
@@ -59,7 +57,6 @@ class InstallController extends Controller
 
         // Assign to system admin group
         Group::getAdminGroup()->addUser($user);
-
 
         return self::EXIT_CODE_NORMAL;
     }

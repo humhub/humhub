@@ -5,4 +5,3 @@ return [
     'class' => humhub\modules\installer\Module::className(),
     'isCoreModule' => true,
 ];
-?>

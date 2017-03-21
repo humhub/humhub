@@ -50,8 +50,8 @@ class CreateComment extends \humhub\libs\BasePermission
     public function __construct($config = array()) {
         parent::__construct($config);
         
-        $this->title = \Yii::t('CommentModule.permissions', 'Create comment');
-        $this->description = \Yii::t('CommentModule.permissions', 'Allows the user to add comments');
+        $this->title = Yii::t('CommentModule.permissions', 'Create comment');
+        $this->description = Yii::t('CommentModule.permissions', 'Allows the user to add comments');
     }  
 
 }

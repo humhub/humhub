@@ -9,7 +9,6 @@
 namespace humhub\modules\admin\controllers;
 
 use Yii;
-
 use yii\web\HttpException;
 use humhub\compat\HForm;
 use humhub\modules\admin\components\Controller;
@@ -148,7 +147,6 @@ class UserProfileController extends Controller
             $field->delete();
             return $this->redirect(['/admin/user-profile']);
         }
-
 
         return $this->render('editField', array('hForm' => $form, 'field' => $field));
     }

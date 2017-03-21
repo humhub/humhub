@@ -7,4 +7,3 @@ echo Yii::t('CommentModule.views_activities_CommentCreated', "%displayName% wrot
 ));
 
 echo ' "' . \humhub\widgets\RichText::widget(['text' => $source->message, 'minimal' => true, 'maxLength' => 100]) . '"';
-?>

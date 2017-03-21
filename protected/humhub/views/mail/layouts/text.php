@@ -1,9 +1,8 @@
 <?php
 
 use yii\helpers\Url;
-?>
-<?= $content; ?>
 
+echo $content;
 
 ---
 

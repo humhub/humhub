@@ -39,5 +39,3 @@ class InviteDeclined extends BaseNotification
     }
 
 }
-
-?>

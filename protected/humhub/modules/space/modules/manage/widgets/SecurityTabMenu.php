@@ -39,6 +39,7 @@ class SecurityTabMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->id == 'security' && Yii::$app->controller->action->id == 'permissions'),
         ));
+        
         parent::init();
     }
 

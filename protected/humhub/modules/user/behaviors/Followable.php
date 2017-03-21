@@ -22,7 +22,6 @@ namespace humhub\modules\user\behaviors;
 
 use Yii;
 use yii\base\Behavior;
-
 use humhub\modules\user\models\Follow;
 
 /**
@@ -38,6 +37,7 @@ class Followable extends Behavior
     public function beforeDelete($event)
     {
         UserFollow::model()->deleteAllByAttributes(array('object_model' => get_class($this->getOwner()), 'object_id' => $this->getOwner()->getPrimaryKey()));
+        
         return parent::beforeValidate($event);
     }
 
@@ -157,7 +157,6 @@ class Followable extends Behavior
      */
     public function getFollowers($query = null, $withNotification = false, $returnQuery = false)
     {
-
         if ($query === null) {
             $query = \humhub\modules\user\models\User::find();
         }
@@ -189,9 +188,9 @@ class Followable extends Behavior
      */
     public function getFollowingCount($objectModel)
     {
-        #if (!class_exists($objectModel)) {
-        #    throw new CException("Invalid objectModel parameter given!");
-        #}
+        //if (!class_exists($objectModel)) {
+        //    throw new CException("Invalid objectModel parameter given!");
+        //}
 
         return Follow::find()->where(['user_id' => $this->owner->getPrimaryKey(), 'object_model' => $objectModel])->count();
     }
@@ -208,8 +207,6 @@ class Followable extends Behavior
      */
     public function getFollowingObjects($query)
     {
-
-
         $query->leftJoin('user_follow', 'user.id=user_follow.object_id AND user_follow.object_model=:object_model', ['object_model' => $this->owner->className()]);
         $query->andWhere(['user_follow.user_id' => $this->owner->id]);
 

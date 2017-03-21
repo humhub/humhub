@@ -43,5 +43,3 @@ class Form extends \humhub\modules\content\widgets\WallCreateContentForm
     }
 
 }
-
-?>

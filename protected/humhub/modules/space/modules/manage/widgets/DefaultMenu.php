@@ -40,6 +40,7 @@ class DefaultMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->id == 'default' && Yii::$app->controller->action->id == 'advanced'),
         ));
+        
         parent::init();
     }
 

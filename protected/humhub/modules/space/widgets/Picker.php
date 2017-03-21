@@ -9,8 +9,8 @@
 namespace humhub\modules\space\widgets;
 
 use Yii;
-use \yii\base\Widget;
-use \humhub\modules\space\models\Space;
+use yii\base\Widget;
+use humhub\modules\space\models\Space;
 
 /**
  * Picker displays a space picker instead of an input field.
@@ -109,5 +109,3 @@ class Picker extends Widget
     }
 
 }
-
-?>

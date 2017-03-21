@@ -11,4 +11,3 @@ return [
         array('class' => AccountMenu::className(), 'event' => AccountMenu::EVENT_INIT, 'callback' => array(Events::className(), 'onAccountMenuInit')),
     ]
 ];
-?>

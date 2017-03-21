@@ -7,8 +7,8 @@
  */
 namespace humhub\modules\user\models\fieldtype;
 
-use humhub\modules\user\models\User;
 use Yii;
+use humhub\modules\user\models\User;
 use humhub\libs\ISO3166Codes;
 
 /**

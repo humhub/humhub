@@ -95,7 +95,6 @@ class AccountEmailing extends \yii\base\Model
      */
     private function getSettingValue($module, $settingKey)
     {
-        
         $result = $module->settings->contentContainer($this->user)->get($settingKey);
         if ($result === null) {
             // Use site default value
@@ -116,7 +115,8 @@ class AccountEmailing extends \yii\base\Model
         $activityModule->settings->contentContainer($this->user)->set('receive_email_activities', $this->receive_email_activities);
         $notificationModule->settings->contentContainer($this->user)->set('receive_email_notifications', $this->receive_email_notifications);
         $notificationModule->settings->contentContainer($this->user)->set('enable_html5_desktop_notifications', $this->enable_html5_desktop_notifications);
-        return true;
+        
+		return true;
     }
 
 }

@@ -58,6 +58,7 @@ class Password extends BaseFormAuth implements interfaces\PrimaryClient
 
         if ($user !== null && $user->currentPassword !== null && $user->currentPassword->validatePassword($this->login->password)) {
             $this->setUserAttributes(['id' => $user->id]);
+            
             return true;
         }
 

@@ -64,12 +64,14 @@ class Module extends \yii\db\ActiveRecord
         }
 
         Yii::$app->cache->delete(self::STATES_CACHE_ID_PREFIX . $this->user_id);
+        
         return parent::beforeSave($insert);
     }
 
     public function beforeDelete()
     {
         Yii::$app->cache->delete(self::STATES_CACHE_ID_PREFIX . $this->user_id);
+        
         return parent::beforeDelete();
     }
 

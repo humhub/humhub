@@ -11,7 +11,6 @@ namespace humhub\modules\file\libs;
 use Yii;
 use yii\base\Exception;
 
-
 /**
  * ImageConverter provides a simple interface for converting or resizing images.
  *
@@ -127,12 +126,13 @@ class ImageConverter
         
         $allocatedMemory = $result == $failure ? $memoryLimit : $newMemoryLimit;
         
-        if($neededMemory + $buffer < $allocatedMemory) {
+        if ($neededMemory + $buffer < $allocatedMemory) {
             return true;
         }
-        if(!$test) {
+        if (!$test) {
             throw new Exception("Image $sourceFile too large to be resized. Increase MAX_MEMORY_USAGE");
         }
+        
         return false;
     }
 
@@ -145,7 +145,6 @@ class ImageConverter
      */
     private static function ResizeGD($sourceFile, $targetFile, $options = array())
     {
-
         $width = $options['width'];
         $height = $options['height'];
 
@@ -281,7 +280,7 @@ class ImageConverter
                 imagepng($newGdImage, $targetFile);
                 break;
             case IMAGETYPE_GIF:
-                imagegif($newGdImage, $targetFile);
+                imagegif ($newGdImage, $targetFile);
                 break;
             case IMAGETYPE_JPEG:
                 imagejpeg($newGdImage, $targetFile, 100);
@@ -337,7 +336,7 @@ class ImageConverter
                 $gdImage = imagecreatefrompng($fileName);
                 break;
             case IMAGETYPE_GIF:
-                $gdImage = imagecreatefromgif($fileName);
+                $gdImage = imagecreatefromgif ($fileName);
                 break;
             case IMAGETYPE_JPEG:
                 $gdImage = imagecreatefromjpeg($fileName);
@@ -367,6 +366,7 @@ class ImageConverter
             }
         }
         ini_set('memory_limit', $memoryLimit);
+        
         return $image;
     }
 

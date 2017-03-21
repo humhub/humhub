@@ -36,7 +36,7 @@ class GroupMenu extends \humhub\widgets\BaseMenu
     
     public function run()
     {
-        if(count($this->getItemGroups()) > 1) {
+        if (count($this->getItemGroups()) > 1) {
             return parent::run();
         }
         return '';

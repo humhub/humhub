@@ -1,8 +1,8 @@
 <?php
 
+use yii\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
-use yii\helpers\Html;
 
 if ($membership === null) {
     if ($space->canJoin()) {
@@ -15,13 +15,13 @@ if ($membership === null) {
 } elseif ($membership->status == Membership::STATUS_INVITED) {
     ?>
     <div class="btn-group">
-        <?php echo Html::a(Yii::t('SpaceModule.widgets_views_membershipButton', 'Accept Invite'), $space->createUrl('/space/membership/invite-accept'), array('class' => 'btn btn-info', 'data-method' => 'POST')); ?>
+        <?= Html::a(Yii::t('SpaceModule.widgets_views_membershipButton', 'Accept Invite'), $space->createUrl('/space/membership/invite-accept'), array('class' => 'btn btn-info', 'data-method' => 'POST')); ?>
         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
-            <li><?php echo Html::a(Yii::t('SpaceModule.widgets_views_membershipButton', 'Deny Invite'), $space->createUrl('/space/membership/revoke-membership'), array('data-method' => 'POST')); ?></li>
+            <li><?= Html::a(Yii::t('SpaceModule.widgets_views_membershipButton', 'Deny Invite'), $space->createUrl('/space/membership/revoke-membership'), array('data-method' => 'POST')); ?></li>
         </ul>
     </div>
     <?php

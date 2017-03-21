@@ -24,7 +24,8 @@ class BaseAccountController extends \humhub\components\Controller
 
     public function init() {
         $this->appendPageTitle(\Yii::t('UserModule.base', 'My Account'));
-        return parent::init();
+        
+		return parent::init();
     }
     
     /**

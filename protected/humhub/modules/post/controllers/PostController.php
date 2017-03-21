@@ -9,8 +9,8 @@
 namespace humhub\modules\post\controllers;
 
 use Yii;
-use \humhub\modules\post\models\Post;
 use yii\web\HttpException;
+use humhub\modules\post\models\Post;
 
 /**
  * @package humhub.modules_core.post.controllers
@@ -27,7 +27,7 @@ class PostController extends \humhub\modules\content\components\ContentContainer
         }
 
         $post = new Post();
-        $post->message = \Yii::$app->request->post('message');
+        $post->message = Yii::$app->request->post('message');
 
         /*
           // Experimental: Auto attach found images urls in message as files
@@ -54,7 +54,7 @@ class PostController extends \humhub\modules\content\components\ContentContainer
 
         if ($model->load(Yii::$app->request->post())) {
             // Reload record to get populated updated_at field
-            if($model->validate() && $model->save()) {
+            if ($model->validate() && $model->save()) {
                 $model = Post::findOne(['id' => $id]);
                 return $this->renderAjaxContent($model->getWallOut(['justEdited' => true]));
             } else {

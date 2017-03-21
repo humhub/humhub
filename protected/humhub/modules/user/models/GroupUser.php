@@ -8,9 +8,6 @@
 
 namespace humhub\modules\user\models;
 
-
-
-
 /**
  * This is the model class for table "group_admin".
  *
@@ -56,6 +53,7 @@ class GroupUser extends \humhub\components\ActiveRecord
     {
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_REGISTRATION] = ['group_id'];
+        
         return $scenarios;
     }
 

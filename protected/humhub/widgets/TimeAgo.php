@@ -34,6 +34,7 @@ class TimeAgo extends \yii\base\Widget
         if (is_numeric($this->timestamp)) {
             $this->timestamp = date('Y-m-d H:i:s', $this->timestamp);
         }
+        
         $this->timestamp = strtotime($this->timestamp);
     }
 
@@ -67,6 +68,7 @@ class TimeAgo extends \yii\base\Widget
         $this->timestamp = date("c", $this->timestamp);
 
         $this->getView()->registerJs('$(".time").timeago();', \yii\web\View::POS_END, 'timeago');
+        
         return '<span class="time" title="' . $this->timestamp . '">' . $this->getFullDateTime() . '</span>';
     }
 

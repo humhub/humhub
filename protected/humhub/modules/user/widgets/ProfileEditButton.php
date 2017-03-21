@@ -40,7 +40,9 @@ class ProfileEditButton extends \yii\base\Widget
             return;
         }
 
-        return $this->render('profileEditButton', array('user' => $this->user));
+        return $this->render('profileEditButton', array('
+            user' => $this->user)
+        );
     }
 
 }

@@ -141,6 +141,7 @@ class Content extends \humhub\components\ActiveRecord
         if ($content != null) {
             return $className::findOne(['id' => $id]);
         }
+        
         return null;
     }
 
@@ -353,6 +354,7 @@ class Content extends \humhub\components\ActiveRecord
     public function countStickedItems()
     {
         $wallId = $this->container->wall_id;
+        
         return WallEntry::find()->joinWith('content')->where(['wall_entry.wall_id' => $wallId, 'content.sticked' => 1])->count();
     }
 
@@ -444,6 +446,7 @@ class Content extends \humhub\components\ActiveRecord
     public function getWallEntries()
     {
         $entries = WallEntry::findAll(['content_id' => $this->id]);
+        
         return $entries;
     }
 
@@ -456,6 +459,7 @@ class Content extends \humhub\components\ActiveRecord
         if (isset($wallEntries[0])) {
             return $wallEntries[0]->id;
         }
+        
         return 0;
     }
 
@@ -471,6 +475,7 @@ class Content extends \humhub\components\ActiveRecord
         foreach ($this->getWallEntries() as $entry) {
             $ids[] = $entry->id;
         }
+        
         return $ids;
     }
 
@@ -554,7 +559,7 @@ class Content extends \humhub\components\ActiveRecord
      */
     public function canEdit($user = null)
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return false;
         }
         

@@ -10,7 +10,6 @@ namespace humhub\modules\space\widgets;
 
 use Yii;
 
-
 /**
  * The Admin Navigation for spaces
  *
@@ -85,7 +84,6 @@ class HeaderControlsMenu extends \humhub\widgets\BaseMenu
             ));
         }
 
-
         if (!Yii::$app->user->isGuest || $this->space->isMember()) {
 
             $membership = $this->space->getMembership();
@@ -128,10 +126,7 @@ class HeaderControlsMenu extends \humhub\widgets\BaseMenu
             }
         }
 
-
         return parent::init();
     }
 
 }
-
-?>

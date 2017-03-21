@@ -8,8 +8,6 @@
 
 namespace humhub\modules\search\widgets;
 
-
-
 /**
  * SearchMenu Widget for TopMenu
  */

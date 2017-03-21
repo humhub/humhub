@@ -22,5 +22,3 @@ class WallEntryLinks extends \humhub\widgets\BaseStack
     public $object = null;
 
 }
-
-?>

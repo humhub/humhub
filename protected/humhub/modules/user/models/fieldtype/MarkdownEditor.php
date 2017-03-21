@@ -52,6 +52,7 @@ class MarkdownEditor extends BaseType
     public function getFieldRules($rules = array())
     {
         $rules[] = array($this->profileField->internal_name, 'safe');
+        
         return parent::getFieldRules($rules);
     }
 
@@ -68,4 +69,3 @@ class MarkdownEditor extends BaseType
     }
 
 }
-?>

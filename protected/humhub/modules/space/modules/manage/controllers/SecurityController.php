@@ -9,9 +9,9 @@
 namespace humhub\modules\space\modules\manage\controllers;
 
 use Yii;
+use yii\web\HttpException;
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\models\Space;
-use yii\web\HttpException;
 
 /**
  * SecurityController
@@ -31,6 +31,7 @@ class SecurityController extends Controller
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('SpaceModule.controllers_AdminController', 'Saved'));
             return $this->redirect($space->createUrl('index'));
         }
+        
         return $this->render('index', ['model' => $space]);
     }
 
@@ -66,5 +67,3 @@ class SecurityController extends Controller
     }
 
 }
-
-?>

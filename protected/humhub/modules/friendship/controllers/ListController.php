@@ -36,6 +36,7 @@ class ListController extends Controller
         $query = Friendship::getFriendsQuery($user);
 
         $title = '<strong>' . Yii::t('FriendshipModule.base', "Friends") . '</strong>';
+        
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 

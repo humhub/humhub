@@ -53,5 +53,3 @@ class ShowMore extends \yii\base\Widget
     }
 
 }
-
-?>

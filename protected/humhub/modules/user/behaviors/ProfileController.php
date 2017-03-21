@@ -79,5 +79,3 @@ class ProfileController extends Behavior
     }
 
 }
-
-?>

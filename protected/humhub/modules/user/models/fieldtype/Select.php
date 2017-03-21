@@ -147,5 +147,3 @@ class Select extends BaseType
     }
 
 }
-
-?>

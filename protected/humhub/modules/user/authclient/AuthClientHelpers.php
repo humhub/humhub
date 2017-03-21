@@ -246,6 +246,7 @@ class AuthClientHelpers
                 $attributes = array_merge($attributes, $authClient->getSyncAttributes());
             }
         }
+        
         return $attributes;
     }
 

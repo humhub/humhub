@@ -15,5 +15,3 @@ class WallEntryControls extends \humhub\widgets\BaseStack
      */
     public $wallEntryWidget;
 }
-
-?>

@@ -27,5 +27,3 @@ class WallEntryLabelWidget extends HWidget {
     }
 
 }
-
-?>

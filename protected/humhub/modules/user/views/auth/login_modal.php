@@ -12,43 +12,39 @@ use humhub\modules\user\widgets\AuthChoice;
             <h4 class="modal-title" id="myModalLabel"><strong>Join</strong> the network</h4>
         </div>
         <div class="modal-body">
-            <br/>
-
+            <br>
+    
             <?php if ($canRegister) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                        <li class="<?php echo (!isset($_POST['Invite'])) ? "active" : ""; ?> tab-login"><a
-                                href="#login"
-                                data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Login'); ?></a>
+                        <li class="<?= (!isset($_POST['Invite'])) ? "active" : ""; ?> tab-login">
+                            <a href="#login" data-toggle="tab"><?= Yii::t('SpaceModule.views_space_invite', 'Login'); ?></a>
                         </li>
-                        <li class="<?php echo (isset($_POST['Invite'])) ? "active" : ""; ?> tab-register"><a
-                                href="#register"
-                                data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'New user?'); ?></a>
+                        <li class="<?= (isset($_POST['Invite'])) ? "active" : ""; ?> tab-register">
+                            <a href="#register" data-toggle="tab"><?= Yii::t('SpaceModule.views_space_invite', 'New user?'); ?></a>
                         </li>
                     </ul>
                 </div>
-                <br/>
+                <br>
             <?php endif; ?>
 
-
             <div class="tab-content">
-                <div class="tab-pane <?php echo (!isset($_POST['Invite'])) ? "active" : ""; ?>" id="login">
+                <div class="tab-pane <?= (!isset($_POST['Invite'])) ? "active" : ""; ?>" id="login">
 
                     <?php if(AuthChoice::hasClients()): ?>
                         <?= AuthChoice::widget([]) ?>
                     <?php else: ?>
-                        <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
+                        <p><?= Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
                     <?php endif; ?>
 
                     <?php $form = ActiveForm::begin(); ?>
-                    <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.views_auth_login', 'username or email')]); ?>
-                    <?php echo $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => Yii::t('UserModule.views_auth_login', 'password')]); ?>
-                    <?php echo $form->field($model, 'rememberMe')->checkbox(); ?>
+                    <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.views_auth_login', 'username or email')]); ?>
+                    <?= $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => Yii::t('UserModule.views_auth_login', 'password')]); ?>
+                    <?= $form->field($model, 'rememberMe')->checkbox(); ?>
                     <hr>
                     <div class="row">
                         <div class="col-md-4">
-                            <?php
-                            echo \humhub\widgets\AjaxButton::widget([
+                            <?= \humhub\widgets\AjaxButton::widget([
                                 'label' => Yii::t('UserModule.views_auth_login', 'Sign in'),
                                 'ajaxOptions' => [
                                     'type' => 'POST',
@@ -65,10 +61,9 @@ use humhub\modules\user\widgets\AuthChoice;
                         </div>
                         <div class="col-md-8 text-right">
                             <small>
-                                <?php echo Yii::t('UserModule.views_auth_login', 'Forgot your password?'); ?>
-                                <br/>
-                                <?php
-                                echo \humhub\widgets\AjaxButton::widget([
+                                <?= Yii::t('UserModule.views_auth_login', 'Forgot your password?'); ?>
+                                <br>
+                                <?= \humhub\widgets\AjaxButton::widget([
                                     'label' => Yii::t('UserModule.views_auth_login', 'Create a new one.'),
                                     'tag' => 'a',
                                     'ajaxOptions' => [
@@ -90,17 +85,16 @@ use humhub\modules\user\widgets\AuthChoice;
                 </div>
 
                 <?php if ($canRegister) : ?>
-                    <div class="tab-pane <?php echo (isset($_POST['Invite'])) ? "active" : ""; ?>"
+                    <div class="tab-pane <?= (isset($_POST['Invite'])) ? "active" : ""; ?>"
                          id="register">
 
-                        <p><?php echo Yii::t('UserModule.views_auth_login', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
+                        <p><?= Yii::t('UserModule.views_auth_login', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
                         <?php $form = ActiveForm::begin(); ?>
 
-                        <?php echo $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email')]); ?>
+                        <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email')]); ?>
                         <hr>
 
-                        <?php
-                        echo \humhub\widgets\AjaxButton::widget([
+                        <?= \humhub\widgets\AjaxButton::widget([
                             'label' => Yii::t('UserModule.views_auth_login', 'Register'),
                             'ajaxOptions' => [
                                 'type' => 'POST',

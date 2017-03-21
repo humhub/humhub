@@ -14,15 +14,14 @@ $user = $this->context->getUser();
 
         <?php if (isset($this->context->hideSidebar) && $this->context->hideSidebar) : ?>
             <div class="col-md-10 layout-content-container">
-                <?php echo $content; ?>
+                <?= $content; ?>
             </div>
         <?php else: ?>
             <div class="col-md-7 layout-content-container">
-                <?php echo $content; ?>
+                <?= $content; ?>
             </div>
             <div class="col-md-3 layout-sidebar-container">
-                <?php
-                echo \humhub\modules\user\widgets\ProfileSidebar::widget([
+                <?= \humhub\modules\user\widgets\ProfileSidebar::widget([
                     'user' => $this->context->user,
                     'widgets' => [
                         [\humhub\modules\user\widgets\UserTags::className(), ['user' => $this->context->user], ['sortOrder' => 10]],

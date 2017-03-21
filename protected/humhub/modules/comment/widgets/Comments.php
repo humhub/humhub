@@ -46,5 +46,3 @@ class Comments extends \yii\base\Widget
     }
 
 }
-
-?>

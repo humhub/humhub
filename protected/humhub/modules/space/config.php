@@ -25,4 +25,3 @@ return [
         array('class' => IntegrityController::className(), 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => array(Events::className(), 'onIntegrityCheck')),
     ),
 ];
-?>

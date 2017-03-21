@@ -57,5 +57,3 @@ class Request extends BaseNotification
     }
 
 }
-
-?>

@@ -8,9 +8,7 @@
 
 namespace humhub\modules\installer\controllers;
 
-
 use humhub\components\Controller;
-
 
 /**
  * Index Controller shows a simple welcome page.
