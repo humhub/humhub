@@ -19,4 +19,4 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="<?= $this->theme->getBaseUrl(); ?>/ico/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
-<!-- start: Favicon and Touch Icons -->
+<!-- end: Favicon and Touch Icons -->
