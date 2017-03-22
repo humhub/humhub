@@ -100,6 +100,7 @@ HumHub Change Log
 - Enh: Added console email test command
 - Enh: Added stream module defaultStreamSuppressQueryIgnore to ease overwrites
 - Enh: Added 'archived' badge to archived spaces in directory
+- Fix #2389: calculate max upload file size on PHP 7.1 (githubjeka)
 
 
 1.2.0-beta.2 (February 24, 2017)
