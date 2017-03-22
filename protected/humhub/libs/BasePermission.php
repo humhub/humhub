@@ -140,8 +140,8 @@ class BasePermission extends \yii\base\Object
     public function getDefaultState($groupId)
     {
         $configuredState = $this->getConfiguredState($groupId);
-
-        if ($configuredState != null) {
+        
+        if ($configuredState !== null) {
             return $configuredState;
         } else if ($this->defaultState == self::STATE_ALLOW) {
             return self::STATE_ALLOW;
