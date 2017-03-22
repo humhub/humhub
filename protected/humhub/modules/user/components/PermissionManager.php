@@ -51,6 +51,7 @@ class PermissionManager extends \yii\base\Component
      */
     public function can($permission, $params = [], $allowCaching = true)
     {
+        
         if (is_array($permission)) {
             $verifyAll = isset($params['all']) ? $params['all'] : false;
             foreach ($permission as $current) {
@@ -64,10 +65,12 @@ class PermissionManager extends \yii\base\Component
             return false;
         } else if ($allowCaching) {
             $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
-            $key = $permission::className();
+            $key = $permission->getId();
+            
             if (!isset($this->_access[$key])) {
                 $this->_access[$key] = $this->verify($permission);
             }
+            
             return $this->_access[$key];
         } else {
             $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
@@ -134,7 +137,7 @@ class PermissionManager extends \yii\base\Component
             $record = $this->createPermissionRecord();
         }
 
-        $record->permission_id = $permission->id;
+        $record->permission_id = $permission->getId();
         $record->module_id = $permission->moduleId;
         $record->class = $permission->className();
         $record->group_id = $groupId;
@@ -220,7 +223,7 @@ class PermissionManager extends \yii\base\Component
         return $this->getQuery()->andWhere([
                     'group_id' => $groupId,
                     'module_id' => $permission->moduleId,
-                    'permission_id' => $permission->id
+                    'permission_id' => $permission->getId()
                 ])->one();
     }
 

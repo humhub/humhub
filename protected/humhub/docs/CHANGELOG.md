@@ -2,7 +2,9 @@ HumHub Change Log
 =================
 1.2.0-beta.3 in developement
 --------------------------------
-- Fix: Notification count '0' visible after click on notification link.
+- Fix: Notification count '0' visible after click on notification link
+- Fix: Default space permissions not adopted
+- Fix: Use of $permission->getId() instead of $permission->id in PermissionManager (allow dynamic permission ids)
 
 1.2.0-beta.3 (March 20, 2017)
 --------------------------------
