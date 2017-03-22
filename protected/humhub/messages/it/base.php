@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Confirm</strong> Action' => '',
+  '<strong>Confirm</strong> Action' => '<strong>Conferma</strong> azione',
   '<strong>Latest</strong> updates' => '<strong>Ultimi</strong> aggiornamenti',
   '<strong>Mail</strong> summary' => '',
   'Account settings' => 'Impostazioni account',

@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Your password' => 'Je wachtwoord',
+  'Your password' => 'Uw wachtwoord',
 );
