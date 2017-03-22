@@ -337,18 +337,24 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
                 $userTableIdAttribute = $authClient->getUserTableIdAttribute();
             }
 
-            // Disable not longer existing users
             foreach (AuthClientHelpers::getUsersByAuthClient($this)->each() as $user) {
-                if ($user->status !== User::STATUS_DISABLED && !in_array($user->getAttribute($userTableIdAttribute), $ids)) {
+                $foundInLdap = in_array($user->getAttribute($userTableIdAttribute), $ids);
+                // Enable disabled users that have been found in ldap
+                if ($foundInLdap && $user->status === User::STATUS_DISABLED) {
+                    $user->status = User::STATUS_ENABLED;
+                    $user->save();
+                    Yii::info('Enabled user' . $user->username . ' (' . $user->id . ') - found in LDAP!');
+                // Disable users that were not found in ldap
+                } elseif (!$foundInLdap && $user->status !== User::STATUS_DISABLED) {
                     $user->status = User::STATUS_DISABLED;
                     $user->save();
-                    Yii::warning('Disabled user ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!');
+                    Yii::warning('Disabled user' . $user->username . ' (' . $user->id . ') - not found in LDAP!');
                 }
             }
         } catch (\Zend\Ldap\Exception\LdapException $ex) {
-            Yii::warning('Could not connect to LDAP instance: ' . $ex->getMessage());
+            Yii::error('Could not connect to LDAP instance: ' . $ex->getMessage());
         } catch (\Exception $ex) {
-            Yii::warning('An error occurred while user sync: ' . $ex->getMessage());
+            Yii::error('An error occurred while user sync: ' . $ex->getMessage());
         }
     }
 
