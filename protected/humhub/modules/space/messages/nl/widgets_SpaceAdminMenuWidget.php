@@ -9,6 +9,6 @@ return array (
   'Receive Notifications for new content' => 'Ontvang meldingen voor nieuwe inhoud.',
   'Security' => 'Veiligheid',
   'Show posts on dashboard' => 'Berichten weergeven op het dashboard',
-  'This option will hide new content from this space at your dashboard' => 'Deze optie zal nieuwe content van deze ruimte verbergen in uw dashboard',
-  'This option will show new content from this space at your dashboard' => 'Deze optie zal nieuwe content van deze ruimte weergeven in uw dashboard',
+  'This option will hide new content from this space at your dashboard' => 'Deze optie zal nieuwe inhoud van deze ruimte verbergen in uw dashboard',
+  'This option will show new content from this space at your dashboard' => 'Deze optie zal nieuwe inhoud van deze ruimte weergeven in uw dashboard',
 );
