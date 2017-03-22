@@ -18,8 +18,8 @@ The access settings consists of:
     - **Invite and request**: Users can request a space membership beside beeing invited.
     - **Everyone can enter**: All members can join a space
 - **Visibility**: Who can view the space content.
-    - **Public**: All Users (Members and Guests)
-    - **Members only**: Only members (no guests)
+    - **Public**: All Users (Registered and Guests users). Available when allow limited access for non-authenticated users (guests) by admin settings.
+    - **Public (registered only)**: All registered users in Humbub (no guests)
     - **Private**: This space is invisible for non-space-members
 
 ## Invite User
