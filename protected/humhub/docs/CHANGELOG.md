@@ -1,8 +1,9 @@
 HumHub Change Log
 =================
-1.2.0-beta.3 in developement
+1.2.0-beta.4 in developement
 --------------------------------
 - Fix: Notification count '0' visible after click on notification link.
+- Fix #2389: calculate max upload file size on PHP 7.1 (githubjeka)
 
 1.2.0-beta.3 (March 20, 2017)
 --------------------------------
@@ -100,8 +101,6 @@ HumHub Change Log
 - Enh: Added console email test command
 - Enh: Added stream module defaultStreamSuppressQueryIgnore to ease overwrites
 - Enh: Added 'archived' badge to archived spaces in directory
-- Fix #2389: calculate max upload file size on PHP 7.1 (githubjeka)
-
 
 1.2.0-beta.2 (February 24, 2017)
 --------------------------------
