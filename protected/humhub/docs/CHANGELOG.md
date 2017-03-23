@@ -5,6 +5,7 @@ HumHub Change Log
 - Fix: Notification count '0' visible after click on notification link
 - Fix: Default space permissions not adopted
 - Fix: Use of $permission->getId() instead of $permission->id in PermissionManager (allow dynamic permission ids)
+- Fix: #2393 Markdown h4,h5,h6 broken
 
 1.2.0-beta.3 (March 20, 2017)
 --------------------------------
