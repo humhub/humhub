@@ -2,22 +2,19 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\space\modules\manage\controllers;
 
 use Yii;
-
-
 use yii\web\HttpException;
-
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Membership;
-
+use humhub\modules\space\modules\manage\models\ChangeOwnerForm;
 
 /**
  * Member Controller
@@ -163,18 +160,21 @@ class MemberController extends Controller
         $this->ownerOnly();
         $space = $this->getSpace();
 
-        $model = new \humhub\modules\space\modules\manage\models\ChangeOwnerForm();
-        $model->ownerId = $space->getSpaceOwner()->id;
+        $model = new ChangeOwnerForm([
+            'space' => $space,
+            'ownerId' => $space->getSpaceOwner()->id
+        ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $space->setSpaceOwner($model->ownerId);
+
             return $this->redirect($space->getUrl());
         }
 
-        return $this->render('change-owner', array(
+        return $this->render('change-owner', [
                     'space' => $space,
                     'model' => $model
-        ));
+        ]);
     }
 
 }

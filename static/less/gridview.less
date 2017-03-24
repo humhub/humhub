@@ -1,61 +1,71 @@
 // CGridView
 .grid-view {
-  img {
-    width: 24px;
-    height: 24px;
-  }
+    img {
+        width: 24px;
+        height: 24px;
+    }
 }
 
 .grid-view .filters input,
 .grid-view .filters select {
-   @import (reference, multiple) "form.less";
-  .form-control;
-  border-radius: 4px;
-  font-size: 12px;
-  padding: 4px;
+    @import (reference, multiple) "form.less";
+    .form-control;
+    border-radius: 4px;
+    font-size: 12px;
+    padding: 4px;
 }
 
 .grid-view {
-  padding: 15px 0 0;
-  img {
-    border-radius: 3px;
-  }
-  table {
-    th {
-      font-size: 13px !important;
-      font-weight: bold !important;
+    padding: 15px 0 0;
+    img {
+        border-radius: 3px;
     }
-    td {
-        vertical-align:middle !important;
-    }
-    tr {
-      font-size: 13px !important;
-    }
-    thead {
+    table {
+        th {
+            font-size: 13px !important;
+            font-weight: bold !important;
+        }
+        td {
+            vertical-align:middle !important;
+        }
         tr {
-            th:first-of-type {
-                padding-left:5px;
+            font-size: 13px !important;
+        }
+        thead {
+            tr {
+                th:first-of-type {
+                    padding-left:5px;
+                }
             }
         }
+        tbody {
+            tr {
+                height: 50px;
+                td:first-of-type {
+                    padding-left:5px;
+                }
+            }        
+        }
     }
-    tbody {
-        tr {
-            height: 50px;
-            td:first-of-type {
-                padding-left:5px;
-            }
-        }        
+    .summary {
+        font-size: 12px;
+        color: @text-color-soft3;
     }
-  }
-  .summary {
-    font-size: 12px;
-    color: @text-color-soft3;
-  }
 }
 
 .permission-grid-editor > .table > tbody > tr:first-child > td {
-     border: none;
- }
- .permission-grid-editor {
-     padding-top:0px;
- }
+    border: none;
+}
+.permission-grid-editor {
+    padding-top:0px;
+}
+
+
+// Detail View
+.detail-view td, .detail-view th {
+    padding:8px !important;
+}
+
+.detail-view th {
+    font-size: 13px;
+}

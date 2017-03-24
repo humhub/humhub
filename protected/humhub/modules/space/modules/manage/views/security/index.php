@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\space\models\Space;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
@@ -23,12 +24,12 @@ use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
         <br>
 
         <?php
-        $visibilities = array(
-            0 => Yii::t('SpaceModule.base', 'Private (Invisible)'),
-            1 => Yii::t('SpaceModule.base', 'Public (Registered users only)')
-        );
+        $visibilities = [
+            Space::VISIBILITY_NONE => Yii::t('SpaceModule.base', 'Private (Invisible)'),
+            Space::VISIBILITY_REGISTERED_ONLY => Yii::t('SpaceModule.base', 'Public (Registered users only)')
+        ];
         if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') == 1) {
-            $visibilities[2] = Yii::t('SpaceModule.base', 'Visible for all (members and guests)');
+            $visibilities[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Visible for all (members and guests)');
         }
         ?>
         <?php echo $form->field($model, 'visibility')->dropDownList($visibilities); ?>

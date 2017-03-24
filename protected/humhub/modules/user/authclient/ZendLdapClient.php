@@ -312,7 +312,8 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
             $authClient = null;
             $ids = [];
             foreach ($userCollection as $attributes) {
-                $authClient = new static;
+                $authClient = clone $this;
+                $authClient->init();
                 $authClient->setUserAttributes($attributes);
                 $attributes = $authClient->getUserAttributes();
 
@@ -327,7 +328,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
 
                 $ids[] = $attributes['id'];
             }
-
+            
             /**
              * Since userTableAttribute can be automatically set on user attributes
              * try to take it from initialized authclient instance.
