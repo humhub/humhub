@@ -6,6 +6,8 @@ HumHub Change Log
 - Fix: Default space permissions not adopted
 - Fix: Use of $permission->getId() instead of $permission->id in PermissionManager (allow dynamic permission ids)
 - Fix: #2393 Markdown h4,h5,h6 broken
+- Fix: Enable user approval without available registration groups or default group
+- Fix: Activate 'User' navigation in Admin Menu "Administration -> User -> Settings"
 
 1.2.0-beta.3 (March 20, 2017)
 --------------------------------

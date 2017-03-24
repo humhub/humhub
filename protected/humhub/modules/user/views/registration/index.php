@@ -13,7 +13,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_createAccount', 'Create Account
             <div class="panel-heading"><?php echo Yii::t('UserModule.views_auth_createAccount', '<strong>Account</strong> registration'); ?></div>
             <div class="panel-body">
                 <?php $form = \yii\widgets\ActiveForm::begin(['enableClientValidation' => false]); ?>
-                <?php echo $hForm->render($form); ?>
+                <?= $hForm->render($form); ?>
                 <?php \yii\widgets\ActiveForm::end(); ?>
             </div>
         </div>

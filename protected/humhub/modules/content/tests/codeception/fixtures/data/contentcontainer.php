@@ -28,4 +28,5 @@ return [
     ['id' => 8, 'guid' => '01e50e0d-82cd-41fc-8b0c-552392f5839f', 'class' => 'humhub\modules\user\models\User', 'pk' => '4', 'owner_user_id' => 4],
     ['id' => 9, 'guid' => '01e50e0d-82cd-41fc-8b0c-552392f5839g', 'class' => 'humhub\modules\user\models\User', 'pk' => '5', 'owner_user_id' => 5],
     ['id' => 10, 'guid' => '01e50e0d-82cd-41fc-8b0c-552392f5839h', 'class' => 'humhub\modules\user\models\User', 'pk' => '6', 'owner_user_id' => 6],
+    ['id' => 11, 'guid' => '01e50e0d-82cd-41fc-8b0c-552392f5839i', 'class' => 'humhub\modules\user\models\User', 'pk' => '7', 'owner_user_id' => 7],
 ];

@@ -10,7 +10,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_register_success', 'Registratio
             <div class="panel-body">
                 <p><?php echo Yii::t('UserModule.views_auth_register_success', 'Please check your email and follow the instructions!'); ?></p>
                 <br/>
-                <a href="<?php echo \yii\helpers\Url::to(["/"]) ?>" data-pjax-prevent class="btn btn-primary"><?php echo Yii::t('UserModule.views_auth_register_success', 'back to home') ?></a>
+                <a href="<?php echo \yii\helpers\Url::to(["/"]) ?>" data-pjax-prevent data-ui-loader class="btn btn-primary"><?php echo Yii::t('UserModule.views_auth_register_success', 'back to home') ?></a>
             </div>
         </div>
     </div>

@@ -169,7 +169,11 @@ class Registration extends HForm
             $groupFieldType = "hidden";
             $defaultUserGroup = $groupModels[0]->id;
         }
-
+        
+        if(!$defaultUserGroup && empty($groupModels)) {
+            $groupFieldType = "hidden";
+        }
+        
         return [
             'type' => 'form',
             'elements' => [

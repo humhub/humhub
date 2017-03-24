@@ -87,7 +87,17 @@ class UserApprovalSearch extends User
         foreach ($groups as $group) {
             $groupIds[] = $group->id;
         }
-        $query->andWhere(['IN', 'group.id', $groupIds]);
+        
+        if(Yii::$app->user->isAdmin()) {
+            $query->andWhere([
+                'or', 
+                ['IN', 'group.id', $groupIds],
+                'group.id IS NULL'
+            ]);
+        } else {
+            $query->andWhere(['IN', 'group.id', $groupIds]);
+        }
+        
         $query->andWhere(['status' => User::STATUS_NEED_APPROVAL]);
         $query->andFilterWhere(['id' => $this->id]);
         $query->andFilterWhere(['like', 'id', $this->id]);
@@ -110,7 +120,7 @@ class UserApprovalSearch extends User
     public function getGroups()
     {
         if (Yii::$app->user->isAdmin()) {
-            return \humhub\modules\user\models\Group::find()->all();
+            return \humhub\modules\user\models\Group::findAll(['is_admin_group' => '0']);
         } else {
             return Yii::$app->user->getIdentity()->managerGroups;
         }
