@@ -5,8 +5,9 @@ HumHub Change Log
 - Fix: Notification count '0' visible after click on notification link
 - Fix: Default space permissions not adopted
 - Fix: Use of $permission->getId() instead of $permission->id in PermissionManager (allow dynamic permission ids)
-- Fix: #2393 Markdown h4,h5,h6 broken
+- Fix #2393: Markdown h4,h5,h6 broken
 - Fix #2389: calculate max upload file size on PHP 7.1 (githubjeka)
+- Fix: LDAP - Lost authclient ldap class configuration on user update
 
 1.2.0-beta.3 (March 20, 2017)
 --------------------------------
