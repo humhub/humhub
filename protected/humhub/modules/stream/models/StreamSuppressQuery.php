@@ -3,7 +3,6 @@
 namespace humhub\modules\stream\models;
 
 use Yii;
-use humhub\modules\stream\models\StreamQuery;
 
 /**
  * StreamSuppressQuery detects same content types in a row and trims the output.
