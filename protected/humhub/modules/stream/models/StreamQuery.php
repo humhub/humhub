@@ -4,7 +4,6 @@ namespace humhub\modules\stream\models;
 
 use Yii;
 use humhub\modules\content\models\Content;
-use humhub\modules\stream\models\StreamQuery;
 use humhub\modules\user\models\User;
 
 /**

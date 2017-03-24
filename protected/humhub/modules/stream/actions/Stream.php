@@ -136,7 +136,7 @@ abstract class Stream extends Action
 
     /**
      * Stream query model instance
-     * @var type 
+     * @var \humhub\modules\stream\models\StreamSuppressQuery
      * @since 1.2
      */
     protected $streamQuery;
