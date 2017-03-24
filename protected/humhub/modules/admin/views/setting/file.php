@@ -1,4 +1,11 @@
 <?php
+/**
+ * @var $this \humhub\components\View
+ * @var \humhub\modules\admin\models\forms\FileSettingsForm $model
+ * @var float $maxUploadSize
+ * @var string $maxUploadSizeText
+ * @var string $currentImageLibrary
+ */
 
 use humhub\compat\CActiveForm;
 use humhub\compat\CHtml;
@@ -16,7 +23,7 @@ use humhub\models\Setting;
 <div class="form-group">
     <?php echo $form->labelEx($model, 'imageMagickPath'); ?>
     <?php echo $form->textField($model, 'imageMagickPath', array('class' => 'form-control', 'readonly' => Setting::IsFixed('imageMagickPath', 'file'))); ?>
-    <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'Current Image Libary: {currentImageLibary}', array('{currentImageLibary}' => $currentImageLibary)); ?></p>
+    <p class="help-block"><?php echo Yii::t('AdminModule.views_setting_file', 'Current Image Library: {currentImageLibrary}', array('{currentImageLibrary}' => $currentImageLibrary)); ?></p>
 </div>
 
 <div class="form-group">
