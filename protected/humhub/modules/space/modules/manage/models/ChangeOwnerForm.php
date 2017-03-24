@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -35,10 +35,10 @@ class ChangeOwnerForm extends Model
      */
     public function rules()
     {
-        return array(
-            array('ownerId', 'required'),
-            array('ownerId', 'in', 'range' => array_keys($this->getNewOwnerArray()))
-        );
+        return [
+            ['ownerId', 'required'],
+            ['ownerId', 'in', 'range' => array_keys($this->getNewOwnerArray())]
+        ];
     }
 
     /**
@@ -46,19 +46,21 @@ class ChangeOwnerForm extends Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'ownerId' => Yii::t('SpaceModule.manage', 'Space owner'),
-        );
+        ];
     }
 
     /**
      * Returns an array of all possible space owners
+     * 
+     * @return array containing the user id as key and display name as value
      */
     public function getNewOwnerArray()
     {
         $possibleOwners = [];
 
-        $query = Membership::find()->joinWith(['user', 'user.profile'])->andWhere(['space_membership.group_id' => 'admin']);
+        $query = Membership::find()->joinWith(['user', 'user.profile'])->andWhere(['space_membership.group_id' => 'admin', 'space_membership.space_id' => $this->space->id]);
         foreach ($query->all() as $membership) {
             $possibleOwners[$membership->user->id] = $membership->user->displayName;
         }

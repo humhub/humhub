@@ -8,6 +8,7 @@ HumHub Change Log
 - Fix #2393: Markdown h4,h5,h6 broken
 - Fix #2389: calculate max upload file size on PHP 7.1 (githubjeka)
 - Fix: LDAP - Lost authclient ldap class configuration on user update
+- Fix #2400: Space ownership transfer form shows wrong users
 
 1.2.0-beta.3 (March 20, 2017)
 --------------------------------
