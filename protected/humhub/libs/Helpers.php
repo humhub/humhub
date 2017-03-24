@@ -8,6 +8,8 @@
 
 namespace humhub\libs;
 
+use yii\base\InvalidParamException;
+
 /**
  * This class contains a lot of html helpers for the views
  *
@@ -140,9 +142,18 @@ class Helpers
      *
      * @param string $valueString
      * @return int bytes
+     * @throws InvalidParamException
      */
     public static function getBytesOfIniValue($valueString)
     {
+        if ($valueString === null || $valueString === "") {
+            return 0;
+        }
+
+        if ($valueString === false) {
+           throw new InvalidParamException('Your configuration option of ini_get function does not exist.');
+        }
+
         switch (substr($valueString, -1))
         {
             case 'M': case 'm': return (int)$valueString * 1048576;
