@@ -16,20 +16,20 @@ use humhub\modules\content\interfaces\ContentOwner;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
- * 
+ *
  * Each instance automatically belongs to a [[\humhub\modules\content\models\Content]] record which is accessible via the content attribute.
  * This relations will be automatically added/updated and is also available before this record is inserted.
- * 
+ *
  * The Content record/model holds all neccessary informations/methods like:
  * - Related ContentContainer (must be set before save!)
  * - Visibility
- * - Meta informations (created_at, created_by, ...)
+ * - Meta information (created_at, created_by, ...)
  * - Wall handling, archiving, pinning, ...
- * 
+ *
  * Before adding a new ContentActiveRecord instance, you need at least assign an ContentContainer.
- * 
+ *
  * Example:
- * 
+ *
  * ```php
  * $post = new Post();
  * $post->content->container = $space;
@@ -37,9 +37,10 @@ use humhub\modules\content\interfaces\ContentOwner;
  * $post->message = "Hello world!";
  * $post->save();
  * ```
- * 
+ *
  * Note: If the underlying Content record cannot be saved or validated an Exception will thrown.
- * 
+ *
+ * @property Content content
  * @author Luke
  */
 class ContentActiveRecord extends ActiveRecord implements ContentOwner
@@ -58,8 +59,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
     /**
      * The stream channel where this content should displayed.
-     * Set to null when this content should not appear on streams. 
-     * 
+     * Set to null when this content should not appear on streams.
+     *
      * @since 1.2
      * @var string|null the stream channel
      */
@@ -98,7 +99,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     /**
      * Returns the name of this type of content.
      * You need to override this method in your content implementation.
-     * 
+     *
      * @return string the name of the content
      */
     public function getContentName()
@@ -108,7 +109,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
     /**
      * Returns a description of this particular content.
-     * 
+     *
      * This will be used to create a text preview of the content record. (e.g. in Activities or Notifications)
      * You need to override this method in your content implementation.
      *
@@ -121,7 +122,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
     /**
      * Returns the wall output widget of this content.
-     * 
+     *
      * @param array $params optional parameters for WallEntryWidget
      * @return string
      */
@@ -137,7 +138,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
     /**
      * Returns the assigned wall entry widget instance
-     * 
+     *
      * @return \humhub\modules\content\widgets\WallEntry
      */
     public function getWallEntryWidget()
@@ -172,10 +173,12 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     public function beforeSave($insert)
     {
         if (!$this->content->validate()) {
-            throw new Exception("Could not validate associated Content record! (" . $this->content->getErrorMessage() . ")");
+            throw new Exception(
+                'Could not validate associated Content record! (' . $this->content->getErrorMessage() . ')'
+            );
         }
 
-        $this->content->setAttribute('stream_channel', $this->streamChannel, false);
+        $this->content->setAttribute('stream_channel', $this->streamChannel);
         return parent::beforeSave($insert);
     }
 
@@ -200,7 +203,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
         parent::afterSave($insert, $changedAttributes);
     }
-    
+
     /**
      * @return \humhub\modules\user\models\User the owner of this content record
      */
@@ -211,24 +214,24 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
     /**
      * Related Content model
-     * 
-     * @return Content
+     *
+     * @return \yii\db\ActiveQuery|ActiveQueryContent
      */
     public function getContent()
     {
-        return $this->hasOne(Content::className(), ['object_id' => 'id'])->andWhere(['content.object_model' => self::className()]);
+        return $this->hasOne(Content::className(), ['object_id' => 'id'])
+            ->andWhere(['content.object_model' => self::className()]);
     }
 
     /**
      * Returns an ActiveQueryContent to find content.
-     * 
+     *
      * @inheritdoc
-     * 
      * @return ActiveQueryContent
      */
     public static function find()
     {
-        return Yii::createObject(ActiveQueryContent::className(), [get_called_class()]);
+        return new ActiveQueryContent(get_called_class());
     }
 }
 
