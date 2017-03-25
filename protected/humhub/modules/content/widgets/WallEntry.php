@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -11,7 +11,7 @@ namespace humhub\modules\content\widgets;
 use Yii;
 use humhub\components\Widget;
 use humhub\modules\space\models\Space;
-use humhub\modules\post\models\Post;
+use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentContainerController;
 
 /**
@@ -171,22 +171,20 @@ class WallEntry extends Widget
     public function getWallEntryViewParams()
     {
         $showContentContainer = false;
+        $content = $this->contentObject->content;
+        $user = $content->createdBy;
+        $container = $content->container;
 
-        //  && $this->contentObject->content->container instanceof Space
-        if (!Yii::$app->controller instanceof ContentContainerController) {
+        // In case of e.g. dashboard, show contentContainer of this content
+        if (!Yii::$app->controller instanceof ContentContainerController && !($container instanceof User && $container->id == $user->id)) {
             $showContentContainer = true;
         }
 
-        $user = $this->contentObject->content->createdBy;
-        $container = $this->contentObject->content->container;
-
-        $createdAt = $this->contentObject->content->created_at;
+        $createdAt = $content->created_at;
         $updatedAt = null;
-
-        if ($createdAt !== $this->contentObject->content->updated_at && $this->contentObject->content->updated_at != '') {
-            $updatedAt = $this->contentObject->content->updated_at;
+        if ($createdAt !== $content->updated_at && $content->updated_at != '') {
+            $updatedAt = $content->updated_at;
         }
-
 
         return [
             'content' => $this->run(),
