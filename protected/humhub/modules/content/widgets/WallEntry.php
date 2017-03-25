@@ -11,6 +11,8 @@ namespace humhub\modules\content\widgets;
 use Yii;
 use humhub\components\Widget;
 use humhub\modules\space\models\Space;
+use humhub\modules\post\models\Post;
+use humhub\modules\content\components\ContentContainerController;
 
 /**
  * WallEntry is responsible to show a content inside a stream/wall.
@@ -89,7 +91,7 @@ class WallEntry extends Widget
             /* @var $widget Widget */
             $config['class'] = get_called_class();
             $widget = Yii::createObject($config);
-            $out = $widget->render($widget->wallEntryLayout, ['content' => $widget->run(), 'object' => $widget->contentObject, 'wallEntryWidget' => $widget]);
+            $out = $widget->render($widget->wallEntryLayout, $widget->getWallEntryViewParams());
         } catch (\Exception $e) {
             ob_end_clean();
             throw $e;
@@ -152,17 +154,50 @@ class WallEntry extends Widget
         ob_start();
         ob_implicit_flush(false);
         try {
-            $out = $this->render($this->wallEntryLayout, [
-                'content' => $this->run(),
-                'object' => $this->contentObject,
-                'wallEntryWidget' => $this
-            ]);
+            $out = $this->render($this->wallEntryLayout, $this->getWallEntryViewParams());
         } catch (\Exception $e) {
             ob_end_clean();
             throw $e;
         }
 
         return ob_get_clean() . $out;
+    }
+
+    /**
+     * Returns the view paramters for the wall entry layout
+     * 
+     * @return array the view parameter array
+     */
+    public function getWallEntryViewParams()
+    {
+        $showContentContainer = false;
+
+        //  && $this->contentObject->content->container instanceof Space
+        if (!Yii::$app->controller instanceof ContentContainerController) {
+            $showContentContainer = true;
+        }
+
+        $user = $this->contentObject->content->createdBy;
+        $container = $this->contentObject->content->container;
+
+        $createdAt = $this->contentObject->content->created_at;
+        $updatedAt = null;
+
+        if ($createdAt !== $this->contentObject->content->updated_at && $this->contentObject->content->updated_at != '') {
+            $updatedAt = $this->contentObject->content->updated_at;
+        }
+
+
+        return [
+            'content' => $this->run(),
+            'object' => $this->contentObject,
+            'wallEntryWidget' => $this,
+            'showContentContainer' => $showContentContainer,
+            'user' => $user,
+            'container' => $container,
+            'createdAt' => $createdAt,
+            'updatedAt' => $updatedAt
+        ];
     }
 
 }

@@ -13,6 +13,8 @@ HumHub Change Log
 - Fix: Activate 'User' navigation in Admin Menu "Administration -> User -> Settings"
 - Enh: Improved administration user deletion view
 - Enh: Added 'containerLink' HTML Helper method
+- Enh: WallEntry layout layout improvements
+
 
 1.2.0-beta.3 (March 20, 2017)
 --------------------------------

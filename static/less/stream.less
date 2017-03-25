@@ -2,7 +2,7 @@
 .contentForm_options {
     margin-top: 10px;
     min-height: 29px;
-    
+
     .btn_container {
         position: relative;
         .label-public {
@@ -14,9 +14,9 @@
 }
 
 #contentFormError {
-  color: @danger;
-  padding-left: 0;
-  list-style: none;
+    color: @danger;
+    padding-left: 0;
+    list-style: none;
 }
 
 // Empty stream info
@@ -30,6 +30,7 @@
 // Wall-Entries
 .wall-entry {
     position: relative;
+
     .media {
         overflow: visible;
     }
@@ -42,6 +43,38 @@
             }
         }
     }
+
+    .media-heading, .media-subheading {
+        padding-left:2px;
+    }
+
+    .media-heading {
+        font-size:14px;
+        padding-top:1px;
+        margin-bottom:3px;
+        .labels {
+            padding-right:32px;
+        }
+
+        .viaLink {
+            font-size:13px;
+            i {
+                color: @text-color-soft;
+                padding-left:4px;
+                padding-right:4px;
+            }
+    }
+
+    }
+
+    .media-subheading {
+        color: @text-color-soft;
+        font-size:12px;
+
+        .time {
+            font-size:12px;
+        }
+    }
 }
 
 .wall-entry-controls,
@@ -52,25 +85,28 @@
     margin-bottom: 0;
 }
 
+
+
+
 .wallFilterPanel {
-  li {
-    font-size: 11px;
-    font-weight: 600;
-    a {
-      color: @text-color-highlight;
-    }
-  }
-  .dropdown-menu {
     li {
-      margin-bottom: 0;
-      a {
-        font-size: 12px;
-      }
-      a:hover {
-        color: @text-color-contrast !important;
-      }
+        font-size: 11px;
+        font-weight: 600;
+        a {
+            color: @text-color-highlight;
+        }
     }
-  }
+    .dropdown-menu {
+        li {
+            margin-bottom: 0;
+            a {
+                font-size: 12px;
+            }
+            a:hover {
+                color: @text-color-contrast !important;
+            }
+        }
+    }
 }
 
 .stream-entry-loader {
@@ -82,7 +118,7 @@
     margin-top:-10px;
     margin-bottom:15px;
     text-align:center;
-    
+
     a {
         display:inline-block;
         background-color: white;
