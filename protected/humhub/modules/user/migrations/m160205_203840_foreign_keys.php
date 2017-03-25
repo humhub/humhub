@@ -9,7 +9,7 @@ class m160205_203840_foreign_keys extends Migration
     public function up()
     {
         // Cleanup orphaned records
-        $this->db->createCommand('DELETE user_module FROM user_module LEFT JOIN user u ON u.id=user_module.user_id WHERE u.id IS NULL')->execute();
+        $this->db->createCommand('DELETE user_module FROM user_module LEFT JOIN user u ON u.id=user_module.user_id WHERE u.id IS NULL AND user_module.user_id != 0')->execute();
 
         try {
             $this->addForeignKey('fk_user_follow-user_id', 'user_follow', 'user_id', 'user', 'id', 'CASCADE', 'CASCADE');
@@ -36,6 +36,8 @@ class m160205_203840_foreign_keys extends Migration
         }
 
         try {
+            $this->alterColumn('user_module', 'user_id', $this->integer()->null());
+            $this->update('user_module', ['user_id' => new yii\db\Expression('NULL')], ['user_id' => 0]);
             $this->addForeignKey('fk_user_module-user_id', 'user_module', 'user_id', 'user', 'id', 'CASCADE', 'CASCADE');
         } catch (Exception $ex) {
             Yii::error($ex->getMessage());

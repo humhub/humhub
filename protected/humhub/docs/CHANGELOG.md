@@ -14,6 +14,7 @@ HumHub Change Log
 - Enh: Improved administration user deletion view
 - Enh: Added 'containerLink' HTML Helper method
 - Enh: WallEntry layout layout improvements
+- Fix: Default user & space module configuration lost after foreign key migration
 
 
 1.2.0-beta.3 (March 20, 2017)

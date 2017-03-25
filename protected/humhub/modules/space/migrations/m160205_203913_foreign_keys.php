@@ -9,7 +9,7 @@ class m160205_203913_foreign_keys extends Migration
     public function up()
     {
         // Cleanup orphaned records
-        $this->db->createCommand('DELETE space_module FROM space_module LEFT JOIN space s ON s.id=space_module.space_id WHERE s.id IS NULL')->execute();
+        $this->db->createCommand('DELETE space_module FROM space_module LEFT JOIN space s ON s.id=space_module.space_id WHERE s.id IS NULL and space_module.space_id != 0')->execute();
 
         try {
             $this->addForeignKey('fk_space_membership-user_id', 'space_membership', 'user_id', 'user', 'id', 'CASCADE', 'CASCADE');
@@ -24,6 +24,8 @@ class m160205_203913_foreign_keys extends Migration
         }
 
         try {
+            $this->alterColumn('space_module', 'space_id', $this->integer()->null());
+            $this->update('space_module', ['space_id' => new yii\db\Expression('NULL')], ['space_id' => 0]);
             $this->addForeignKey('fk_space_module-space_id', 'space_module', 'space_id', 'space', 'id', 'CASCADE', 'CASCADE');
         } catch (Exception $ex) {
             Yii::error($ex->getMessage());
