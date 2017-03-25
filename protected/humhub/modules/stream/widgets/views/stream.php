@@ -5,57 +5,53 @@ use yii\helpers\Url;
 \humhub\modules\stream\assets\StreamAsset::register($this);
 
 $this->registerJsConfig([
-   'stream' => [
-       'horizontalImageScrollOnMobile' => Yii::$app->settings->get('horImageScrollOnMobile'),
-       'text' => [
-           'success.archive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been archived.'),
-           'success.unarchive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unarchived.'),
-           'success.pin' => Yii::t('ContentModule.widgets_views_stream', 'The content has been pinned.'),
-           'success.unpin' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unpinned.'),
-           'success.delete' => Yii::t('ContentModule.widgets_views_stream', 'The content has been deleted.'),
-           'info.editCancel' => Yii::t('ContentModule.widgets_views_stream', 'Your last edit state has been saved!'),
-       ]
-   ] 
+    'stream' => [
+        'horizontalImageScrollOnMobile' => Yii::$app->settings->get('horImageScrollOnMobile'),
+        'text' => [
+            'success.archive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been archived.'),
+            'success.unarchive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unarchived.'),
+            'success.pin' => Yii::t('ContentModule.widgets_views_stream', 'The content has been pinned.'),
+            'success.unpin' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unpinned.'),
+            'success.delete' => Yii::t('ContentModule.widgets_views_stream', 'The content has been deleted.'),
+            'info.editCancel' => Yii::t('ContentModule.widgets_views_stream', 'Your last edit state has been saved!'),
+        ]
+    ]
 ]);
 
-$contentId = (int) Yii::$app->request->getQueryParam('contentId');
 $contentIdData = ($contentId != "") ? 'data-stream-contentid="' . $contentId . '"' : '';
-
-$defaultStreamSort = Yii::$app->getModule('content')->settings->get('stream.defaultSort');
-$this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultStreamSort : 'c');
 ?>
 
 <!-- Stream filter section -->
-<?php if($contentContainer && $contentContainer->isArchived()) : ?>
-    <span class="label label-warning pull-right" style="margin-top:10px;"><?php echo Yii::t('ContentModule.widgets_views_label', 'Archived'); ?></span>
+<?php if ($contentContainer && $contentContainer->isArchived()) : ?>
+    <span class="label label-warning pull-right" style="margin-top:10px;"><?= Yii::t('ContentModule.widgets_views_label', 'Archived'); ?></span>
 <?php endif; ?>
 <?php if ($this->context->showFilters) { ?>
     <ul class="nav nav-tabs wallFilterPanel" id="filter" style="display: none;">
         <li class=" dropdown">
-            <a class="stream-filter dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('ContentModule.widgets_views_stream', 'Filter'); ?> <b
+            <a class="stream-filter dropdown-toggle" data-toggle="dropdown" href="#"><?= Yii::t('ContentModule.widgets_views_stream', 'Filter'); ?> <b
                     class="caret"></b></a>
             <ul class="dropdown-menu">
                 <?php foreach ($filters as $filterId => $filterTitle): ?>
                     <li>
-                        <a href="#" class="wallFilter" id="<?php echo $filterId; ?>">
-                            <i class="fa fa-square-o"></i> <?php echo $filterTitle; ?>
+                        <a href="#" class="wallFilter" id="<?= $filterId; ?>">
+                            <i class="fa fa-square-o"></i> <?= $filterTitle; ?>
                         </a>
                     </li>
                 <?php endforeach; ?>
             </ul>
         </li>
         <li class="dropdown">
-            <a class="stream-sorting dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('ContentModule.widgets_views_stream', 'Sorting'); ?>
+            <a class="stream-sorting dropdown-toggle" data-toggle="dropdown" href="#"><?= Yii::t('ContentModule.widgets_views_stream', 'Sorting'); ?>
                 <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li>
                     <a href="#" class="wallSorting" id="sorting_c">
-                        <i class="fa fa-square-o"></i> <?php echo Yii::t('ContentModule.widgets_views_stream', 'Creation time'); ?>
+                        <i class="fa fa-square-o"></i> <?= Yii::t('ContentModule.widgets_views_stream', 'Creation time'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="#" class="wallSorting" id="sorting_u">
-                        <i class="fa fa-square-o"></i> <?php echo Yii::t('ContentModule.widgets_views_stream', 'Last update'); ?>
+                        <i class="fa fa-square-o"></i> <?= Yii::t('ContentModule.widgets_views_stream', 'Last update'); ?>
                     </a>
                 </li>
             </ul>
@@ -71,7 +67,7 @@ $this->registerJsVar('defaultStreamSort', ($defaultStreamSort != '') ? $defaultS
     <!-- DIV for a normal wall stream -->
     <div class="s2_stream">
         <div class="back_button_holder" style="display:none">
-            <a href="#" class="singleBackLink btn btn-primary"><?php echo Yii::t('ContentModule.widgets_views_stream', 'Back to stream'); ?></a><br><br>
+            <a href="#" class="singleBackLink btn btn-primary"><?= Yii::t('ContentModule.widgets_views_stream', 'Back to stream'); ?></a><br><br>
         </div>
         <div class="s2_streamContent" data-stream-content></div>
 

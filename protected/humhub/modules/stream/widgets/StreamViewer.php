@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\stream\widgets;
 
 use Yii;
@@ -17,24 +23,18 @@ class StreamViewer extends Widget
 {
 
     /**
-     * Optional content container if this stream belongs to one
-     *
-     * @var ContentContainerActiveRecord
+     * @var ContentContainerActiveRecord the content container if this stream belongs to one (optional)
      */
     public $contentContainer;
 
     /**
-     * Path to Stream Action to use
-     *
-     * @var string
+     * @var string the path to Stream Action to use
      */
     public $streamAction = "";
 
     /**
-     * Additional Params to add to Stream Action URL
-     *
-     * @var array
      * @since 1.1
+     * @var array additional Params to add to Stream Action URL
      */
     public $streamActionParams = [];
 
@@ -51,35 +51,28 @@ class StreamViewer extends Widget
     public $filters = [];
 
     /**
-     * Message when stream is empty and filters are active
-     *
-     * @var string
+     * @var string the message when stream is empty and filters are active
      */
     public $messageStreamEmptyWithFilters = "";
 
     /**
-     * CSS Class(es) for empty stream error with enabled filters
-     *
-     * @var string
+     * 
+     * @var string the CSS Class(es) for empty stream error with enabled filters
      */
     public $messageStreamEmptyWithFiltersCss = "";
 
     /**
-     * Message when stream is empty
-     *
-     * @var string
+     * @var string the message when stream is empty
      */
     public $messageStreamEmpty = "";
 
     /**
-     * CSS Class(es) for message when stream is empty
-     *
-     * @var string
+     * @var string the CSS Class(es) for message when stream is empty
      */
     public $messageStreamEmptyCss = "";
 
     /**
-     * Inits the Wall Stream Widget
+     * @inheritdoc
      */
     public function init()
     {
@@ -131,11 +124,25 @@ class StreamViewer extends Widget
     }
 
     /**
-     * Creates the Wall Widget
+     * @inheritdoc
      */
     public function run()
     {
-        return $this->render('stream', ['streamUrl' => $this->getStreamUrl(), 'showFilters' => $this->showFilters, 'filters' => $this->filters, '', 'contentContainer' => $this->contentContainer]);
+        $defaultStreamSort = Yii::$app->getModule('content')->settings->get('stream.defaultSort');
+        if (empty($defaultStreamSort) || !in_array($defaultStreamSort, ['c', 'u'])) {
+            $defaultStreamSort = 'c';
+        }
+
+        $contentId = (int) Yii::$app->request->getQueryParam('contentId');
+
+        return $this->render('stream', [
+                    'streamUrl' => $this->getStreamUrl(),
+                    'showFilters' => $this->showFilters,
+                    'filters' => $this->filters,
+                    'contentContainer' => $this->contentContainer,
+                    'defaultStreamSort' => $defaultStreamSort,
+                    'contentId' => $contentId,
+        ]);
     }
 
 }
