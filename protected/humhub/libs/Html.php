@@ -2,13 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\libs;
 
 use Yii;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use yii\base\InvalidParamException;
 
 /**
  * HTML Helpers
@@ -79,6 +81,26 @@ class Html extends \yii\bootstrap\Html
         $options['class'] .= ' btn btn-default';
 
         return parent::a($label, $url, $options);
+    }
+
+    /**
+     * Generates an link tag to a content container
+     * 
+     * @since 1.2
+     * @todo More flexible implemenation using interfaces
+     * @param ContentContainerActiveRecord $container the content container
+     * @param array $options the html options
+     * @return string the generated html a tag
+     */
+    public static function containerLink(ContentContainerActiveRecord $container, $options = [])
+    {
+        if ($container instanceof \humhub\modules\space\models\Space) {
+            return static::a(static::encode($container->name), $container->getUrl(), $options);
+        } elseif ($container instanceof \humhub\modules\user\models\User) {
+            return static::a(static::encode($container->displayName), $container->getUrl(), $options);
+        } else {
+            throw new InvalidParamException('Content container type not supported!');
+        }
     }
 
 }

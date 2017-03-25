@@ -11,6 +11,8 @@ HumHub Change Log
 - Fix #2400: Space ownership transfer form shows wrong users
 - Fix: Enable user approval without available registration groups or default group
 - Fix: Activate 'User' navigation in Admin Menu "Administration -> User -> Settings"
+- Enh: Improved administration user deletion view
+- Enh: Added 'containerLink' HTML Helper method
 
 1.2.0-beta.3 (March 20, 2017)
 --------------------------------
