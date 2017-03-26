@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 use humhub\commands\CronController;
 use humhub\modules\activity\Events;
 use humhub\components\ActiveRecord;
@@ -16,4 +22,3 @@ return [
         ['class' => CronController::className(), 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::className(), 'onCronRun']],
     ],
 ];
-?>

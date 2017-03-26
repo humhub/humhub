@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\activity\widgets;
 
 use yii\web\HttpException;
@@ -47,8 +53,8 @@ class Stream extends \yii\base\Widget
         $infoUrl = \yii\helpers\Url::to(['/activity/link/info', 'id' => '-id-']);
 
         return $this->render('activityStream', array(
-                    'streamUrl' => $streamUrl,
-                    'infoUrl' => $infoUrl
+            'streamUrl' => $streamUrl,
+            'infoUrl' => $infoUrl
         ));
     }
 
@@ -66,5 +72,3 @@ class Stream extends \yii\base\Widget
     }
 
 }
-
-?>

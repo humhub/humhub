@@ -1,9 +1,14 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\models;
 
 use Yii;
-
 
 /**
  * This is the model class for table "url_oembed".
@@ -54,7 +59,6 @@ class UrlOembed extends \yii\db\ActiveRecord
      */
     public static function GetOEmbed($url)
     {
-
         $url = trim($url);
 
         // Check if the given URL has OEmbed Support
@@ -68,7 +72,6 @@ class UrlOembed extends \yii\db\ActiveRecord
                 return self::loadUrl($url);
             }
         }
-
 
         return null;
     }
@@ -100,7 +103,6 @@ class UrlOembed extends \yii\db\ActiveRecord
      */
     public static function loadUrl($url)
     {
-
         $urlOembed = new UrlOembed();
         $urlOembed->url = $url;
         $html = "";
@@ -154,6 +156,7 @@ class UrlOembed extends \yii\db\ActiveRecord
                 return true;
             }
         }
+
         return false;
     }
 
@@ -189,6 +192,7 @@ class UrlOembed extends \yii\db\ActiveRecord
         }
         $return = curl_exec($curl);
         curl_close($curl);
+
         return $return;
     }
 
@@ -203,6 +207,7 @@ class UrlOembed extends \yii\db\ActiveRecord
         if ($providers != "") {
             return \yii\helpers\Json::decode($providers);
         }
+
         return array();
     }
 

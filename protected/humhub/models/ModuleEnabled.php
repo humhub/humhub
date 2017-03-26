@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\models;
 
 use Yii;
@@ -46,12 +52,14 @@ class ModuleEnabled extends \yii\db\ActiveRecord
     public function afterDelete()
     {
         Yii::$app->cache->delete(self::CACHE_ID_ALL_IDS);
+
         return parent::afterDelete();
     }
 
     public function afterSave($insert, $changedAttributes)
     {
         Yii::$app->cache->delete(self::CACHE_ID_ALL_IDS);
+
         return parent::afterSave($insert, $changedAttributes);
     }
 
@@ -65,6 +73,7 @@ class ModuleEnabled extends \yii\db\ActiveRecord
             }
             Yii::$app->cache->set(self::CACHE_ID_ALL_IDS, $enabledModules);
         }
+
         return $enabledModules;
     }
 
