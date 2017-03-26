@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -78,7 +78,8 @@ class HForm extends \yii\base\Component
         }
 
         $this->trigger(self::EVENT_AFTER_VALIDATE);
-        return !$hasErrors;
+
+		return !$hasErrors;
     }
 
     public function clearErrors()
@@ -137,12 +138,12 @@ class HForm extends \yii\base\Component
                 $output .= $this->renderField($name, $element, $forms);
             }
         }
-        return $output;
+
+		return $output;
     }
 
     public function renderForm($element)
     {
-
         $class = "";
         if (isset($element['class'])) {
             $class = $element['class'];
@@ -150,7 +151,6 @@ class HForm extends \yii\base\Component
 
         $output = "<fieldset class='" . $class . "'>";
         if (isset($element['title'])) {
-            #$output .= "<h2>" . $element['title'] . "</h2>";
             $output .= "<legend>" . $element['title'] . "</legend>";
         } else {
             #$output .= "Untitled Form";
@@ -173,7 +173,8 @@ class HForm extends \yii\base\Component
                 $output .= "&nbsp;";
             }
         }
-        return $output;
+
+		return $output;
     }
 
     public function renderField($name, $definition, $forms)
@@ -226,7 +227,7 @@ class HForm extends \yii\base\Component
                             'form' => $this->form,
                             'model' => $model,
                             'attribute' => $name,
-                            'items' => $definition['items'], 
+                            'items' => $definition['items'],
                             'options' => $definition['options']
                         ]);
                     case 'dropdownlist':
@@ -252,8 +253,15 @@ class HForm extends \yii\base\Component
 
                         return $this->form->field($model, $name)->widget(\yii\jui\DatePicker::className(), [
                                     'dateFormat' => $format,
-                                    'clientOptions' => ['changeYear' => true, 'yearRange' => $yearRange, 'changeMonth' => true, 'disabled' => (isset($options['readOnly']) && $options['readOnly'])],
-                                    'options' => ['class' => 'form-control']]);
+                                    'clientOptions' => [
+										'changeYear' => true,
+										'yearRange' => $yearRange,
+										'changeMonth' => true,
+										'disabled' => (isset($options['readOnly']) && $options['readOnly'])
+									],
+                                    'options' => [
+										'class' => 'form-control']
+									]);
                     case 'markdown':
                         $options['id'] = $name;
                         $returnField = $this->form->field($model, $name)->textarea($options);
