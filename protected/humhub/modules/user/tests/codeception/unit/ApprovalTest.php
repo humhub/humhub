@@ -8,7 +8,7 @@ use Codeception\Specify;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Follow;
 
-class FollowTest extends HumHubDbTestCase
+class ApprovalTest extends HumHubDbTestCase
 {
 
     use Specify;

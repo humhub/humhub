@@ -12,6 +12,7 @@ class PasswordRecoveryCest
         
         $I->amGoingTo('request a recovery  mail for an invalid user email and wrong captcha');
         LoginPage::openBy($I);
+        $I->wait(3);
         $I->waitForText('Create a new one.');
         $I->jsClick('#password-recovery-link');
         $I->waitForText('Password recovery');
