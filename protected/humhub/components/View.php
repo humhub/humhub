@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -22,13 +22,13 @@ class View extends \yii\web\View
     /**
      * Holds all javascript configurations, which will be appended to the view.
      * @see View::endBody
-     * @var type 
+     * @var type
      */
     private $jsConfig = [];
 
     /**
      * Sets current page title
-     * 
+     *
      * @param string $title
      */
     public function setPageTitle($title)
@@ -38,7 +38,7 @@ class View extends \yii\web\View
 
     /**
      * Returns current page title
-     * 
+     *
      * @return string the page title
      */
     public function getPageTitle()
@@ -48,7 +48,7 @@ class View extends \yii\web\View
 
     /**
      * Registers a Javascript variable
-     * 
+     *
      * @param string $name
      * @param string $value
      */
@@ -76,7 +76,7 @@ class View extends \yii\web\View
 
     /**
      * Renders a string as Ajax including assets.
-     * 
+     *
      * @param string $content
      * @return string Rendered content
      */
@@ -101,7 +101,6 @@ class View extends \yii\web\View
      */
     public function renderAjax($view, $params = array(), $context = null)
     {
-
         $viewFile = $this->findViewFile($view, $context);
 
         ob_start();
@@ -113,7 +112,6 @@ class View extends \yii\web\View
         echo $this->renderFile($viewFile, $params, $context);
         $this->unregisterAjaxAssets();
         $this->endBody();
-
 
         $this->endPage(true);
 
@@ -149,7 +147,7 @@ class View extends \yii\web\View
 
     /**
      * Adds cache bust query string to given url if no query is present
-     * 
+     *
      * @param string $url
      * @return string the URL with cache bust paramter
      */
@@ -259,7 +257,7 @@ class View extends \yii\web\View
 
     /**
      * Writes the currently registered jsConfig entries and flushes the the config array.
-     * 
+     *
      * @since v1.2
      * @param string $key see View::registerJs
      */
@@ -270,4 +268,5 @@ class View extends \yii\web\View
             $this->jsConfig = [];
         }
     }
+
 }

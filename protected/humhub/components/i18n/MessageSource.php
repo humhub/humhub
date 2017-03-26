@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -21,12 +21,14 @@ class MessageSource extends \yii\i18n\PhpMessageSource
     protected function getMessageFilePath($category, $language)
     {
         $category = str_replace($this->sourceCategory, '', $category);
+
         return parent::getMessageFilePath($category, $language);
     }
 
     protected function loadMessagesFromFile($messageFile)
     {
         $messageFile = str_replace($this->sourceCategory, '', $messageFile);
+
         return parent::loadMessagesFromFile($messageFile);
     }
 
@@ -37,12 +39,11 @@ class MessageSource extends \yii\i18n\PhpMessageSource
 
     /**
      * @inheritdoc
-     * 
+     *
      * Change: Don't show warning if message file don't exists
      */
     protected function loadMessages($category, $language)
     {
-
         $messageFile = $this->getMessageFilePath($category, $language);
         $messages = $this->loadMessagesFromFile($messageFile);
 
@@ -62,7 +63,7 @@ class MessageSource extends \yii\i18n\PhpMessageSource
             $fallbackMessages = $this->loadMessagesFromFile($fallbackMessageFile);
 
             if ($messages === null && $fallbackMessages === null && $fallbackLanguage != $this->sourceLanguage) {
-                
+
             } elseif (empty($messages)) {
                 return $fallbackMessages;
             } elseif (!empty($fallbackMessages)) {
@@ -73,6 +74,7 @@ class MessageSource extends \yii\i18n\PhpMessageSource
                 }
             }
         }
+
         return (array) $messages;
     }
 

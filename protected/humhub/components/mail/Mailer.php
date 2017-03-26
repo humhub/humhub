@@ -12,7 +12,7 @@ use Yii;
 
 /**
  * Mailer implements a mailer based on SwiftMailer.
- * 
+ *
  * @see \yii\swiftmailer\Mailer
  * @since 1.2
  * @author Luke

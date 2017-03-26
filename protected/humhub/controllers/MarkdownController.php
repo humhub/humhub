@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -35,6 +35,7 @@ class MarkdownController extends Controller
     public function actionPreview()
     {
         $this->forcePostRequest();
+
         return \humhub\widgets\MarkdownView::widget(['markdown' => Yii::$app->request->post('markdown')]);
     }
 

@@ -2,15 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\libs;
 
 use Yii;
-use humhub\components\Theme;
 use yii\helpers\ArrayHelper;
+use humhub\components\Theme;
 
 /**
  * ThemeHelper
@@ -47,7 +47,7 @@ class ThemeHelper
 
     /**
      * Returns an array of Theme instances of a given directory
-     * 
+     *
      * @param string $path the theme directory
      * @param type $additionalOptions options for Theme instance
      * @return Theme[]
@@ -64,18 +64,19 @@ class ThemeHelper
                 }
 
                 $themes[] = Yii::createObject(ArrayHelper::merge([
-                                    'class' => 'humhub\components\Theme',
-                                    'basePath' => $path . DIRECTORY_SEPARATOR . $file,
-                                    'name' => $file
-                                        ], $additionalOptions));
+                    'class' => 'humhub\components\Theme',
+                    'basePath' => $path . DIRECTORY_SEPARATOR . $file,
+                    'name' => $file
+                ], $additionalOptions));
             }
         }
+
         return $themes;
     }
 
     /**
      * Returns a Theme by given name
-     * 
+     *
      * @param string $name of the theme
      * @return Theme
      */
@@ -86,12 +87,13 @@ class ThemeHelper
                 return $theme;
             }
         }
+
         return null;
     }
 
     /**
      * Returns configuration array of given theme
-     * 
+     *
      * @param Theme|string $theme name or theme instance
      * @return array Configuration
      */

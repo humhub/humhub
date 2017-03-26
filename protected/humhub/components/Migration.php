@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -40,6 +40,7 @@ class Migration extends \yii\db\Migration
         $this->updateSilent('notification', ['source_class' => $newClass], ['source_class' => $oldClass]);
         $this->updateSilent('user_mentioning', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('user_follow', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        
         //$this->updateSilent('wall', ['object_model' => $newClass], ['object_model' => $oldClass]);
 
         /**
@@ -48,21 +49,13 @@ class Migration extends \yii\db\Migration
          * 
          * Use raw query for better performace.
          */
-        /*
-          $likes = (new \yii\db\Query())->select("activity.*, like.id as likeid")->from('activity')
-          ->leftJoin('like', 'like.object_model=activity.object_model AND like.object_id=activity.object_id')
-          ->where(['class' => 'humhub\modules\like\activities\Liked'])->andWhere('like.id IS NOT NULL')->andWhere(['!=', 'activity.object_model', \humhub\modules\like\models\Like::className()]);
-
-          foreach ($likes->each() as $like) {
-          Yii::$app->db->createCommand()->update('activity', ['object_model' => \humhub\modules\like\models\Like::className(), 'object_id' => $like['likeid']], ['id' => $like['id']])->execute();
-          }
-         */
         $updateSql = "
             UPDATE activity 
             LEFT JOIN `like` ON like.object_model=activity.object_model AND like.object_id=activity.object_id
             SET activity.object_model=:likeModelClass, activity.object_id=like.id
             WHERE activity.class=:likedActivityClass AND like.id IS NOT NULL and activity.object_model != :likeModelClass
         ";
+        
         Yii::$app->db->createCommand($updateSql, [
             ':likeModelClass' => \humhub\modules\like\models\Like::className(),
             ':likedActivityClass' => \humhub\modules\like\activities\Liked::className()

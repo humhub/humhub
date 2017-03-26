@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -57,6 +57,7 @@ class Module extends \yii\base\Module
         if ($info['name']) {
             return $info['name'];
         }
+
         return $this->id;
     }
 
@@ -140,6 +141,7 @@ class Module extends \yii\base\Module
     {
         $path = $this->getAssetPath();
         $publishedPath = Yii::$app->assetManager->getPublishedPath($path);
+
         return $publishedPath !== false && is_file($publishedPath . $relativePath);
     }
 
@@ -174,6 +176,7 @@ class Module extends \yii\base\Module
     {
         $path = $this->getAssetPath();
         $path = Yii::getAlias($path);
+
         return is_string($path) && is_dir($path);
     }
 
@@ -203,8 +206,6 @@ class Module extends \yii\base\Module
      */
     public function disable()
     {
-
-
         /**
          * Remove database tables
          */
@@ -280,6 +281,7 @@ class Module extends \yii\base\Module
         }
 
         $moduleJson = file_get_contents($this->getBasePath() . DIRECTORY_SEPARATOR . 'module.json');
+
         return Json::decode($moduleJson);
     }
 
@@ -328,7 +330,7 @@ class Module extends \yii\base\Module
 
     /**
      * Determines whether the module has notification classes or not
-     * 
+     *
      * @since 1.2
      * @return boolean has notifications
      */

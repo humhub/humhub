@@ -25,6 +25,7 @@ class LanguageSelector implements BootstrapInterface
     public function bootstrap($app)
     {
         mb_internal_encoding('UTF-8');
+
         $app->i18n->autosetLocale();
     }
 

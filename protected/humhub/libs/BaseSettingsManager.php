@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -21,7 +21,7 @@ abstract class BaseSettingsManager extends Component
 {
 
     /**
-     * @var string module id this settings manager belongs to. 
+     * @var string module id this settings manager belongs to.
      */
     public $moduleId = null;
 
@@ -51,7 +51,7 @@ abstract class BaseSettingsManager extends Component
 
     /**
      * Sets a settings value
-     * 
+     *
      * @param string $name
      * @param string $value
      */
@@ -67,11 +67,11 @@ abstract class BaseSettingsManager extends Component
             $record = $this->createRecord();
             $record->name = $name;
         }
-        
+
         if (is_bool($value)) {
             $value = (int) $value;
         }
-        
+
         $record->value = (string) $value;
         if (!$record->save()) {
             throw new \yii\base\Exception("Could not store setting! (" . print_r($record->getErrors(), 1) . ")");
@@ -82,11 +82,11 @@ abstract class BaseSettingsManager extends Component
 
         $this->invalidateCache();
     }
-    
+
     /**
      * Can be used to set object/arrays as a serialized values.
-     * 
-     * 
+     *
+     *
      * @param string $name
      * @param mixed $value array or object
      */
@@ -94,10 +94,10 @@ abstract class BaseSettingsManager extends Component
     {
         $this->set($name, \yii\helpers\Json::encode($value));
     }
-    
+
     /**
      * Receives a value which was saved as serialized value.
-     * 
+     *
      * @param string $name
      * @param mixed $default the setting value or null when not exists
      */
@@ -112,7 +112,7 @@ abstract class BaseSettingsManager extends Component
 
     /**
      * Returns value of setting
-     * 
+     *
      * @param string $name the name of setting
      * @return string the setting value or null when not exists
      */
@@ -123,7 +123,7 @@ abstract class BaseSettingsManager extends Component
 
     /**
      * Returns the value of setting without any caching
-     * 
+     *
      * @param string $name the name of setting
      * @return string the setting value or null when not exists
      */
@@ -135,7 +135,7 @@ abstract class BaseSettingsManager extends Component
 
     /**
      * Deletes setting
-     * 
+     *
      * @param string $name
      */
     public function delete($name)
@@ -148,6 +148,7 @@ abstract class BaseSettingsManager extends Component
         if (isset($this->_loaded[$name])) {
             unset($this->_loaded[$name]);
         }
+
         $this->invalidateCache();
     }
 
@@ -170,7 +171,7 @@ abstract class BaseSettingsManager extends Component
             $this->_loaded = $cached;
         }
     }
-    
+
     /**
      * Reloads all values from database
      */
@@ -190,7 +191,7 @@ abstract class BaseSettingsManager extends Component
 
     /**
      * Returns settings managers cache key
-     * 
+     *
      * @return string the cache key
      */
     protected function getCacheKey()
@@ -205,12 +206,13 @@ abstract class BaseSettingsManager extends Component
     {
         $model = new $this->modelClass;
         $model->module_id = $this->moduleId;
+
         return $model;
     }
 
     /**
      * Returns ActiveQuery to find settings
-     * 
+     *
      * @return \yii\db\ActiveQuery
      */
     protected function find()

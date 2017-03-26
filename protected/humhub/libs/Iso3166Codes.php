@@ -1,12 +1,21 @@
 <?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\libs;
+
 use Yii;
+
 /**
  * Map of codes from ISO 3166.
  * Credits: https://github.com/julien-c/iso3166/blob/master/src/Codes.php
  *
  * @author Sebastian Stumpf
- *        
+ *
  */
 class Iso3166Codes
 {

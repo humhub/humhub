@@ -8,8 +8,8 @@
 
 namespace humhub\controllers;
 
-use humhub\components\Controller;
 use yii\helpers\Url;
+use humhub\components\Controller;
 
 /**
  * HomeController redirects to the home page
@@ -22,7 +22,7 @@ class HomeController extends Controller
 
     /**
      * Redirects to the home controller/action
-     * 
+     *
      * @return \yii\web\Response
      */
     public function actionIndex()

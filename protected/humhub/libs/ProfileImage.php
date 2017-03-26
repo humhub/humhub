@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -129,12 +129,10 @@ class ProfileImage
      */
     public function cropOriginal($x, $y, $h, $w)
     {
-
         $image = imagecreatefromjpeg($this->getPath('_org'));
 
         // Create new destination Image
         $destImage = imagecreatetruecolor($this->width, $this->height);
-
 
         if (!imagecopyresampled($destImage, $image, 0, 0, $x, $y, $this->width, $this->height, $w, $h)) {
             return false;
@@ -171,5 +169,3 @@ class ProfileImage
     }
 
 }
-
-?>

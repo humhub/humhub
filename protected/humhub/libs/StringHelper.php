@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -19,7 +19,7 @@ class StringHelper extends \yii\helpers\StringHelper
 
     /**
      * Converts (LDAP) Binary to Ascii GUID
-     * 
+     *
      * @param string $object_guid a binary string containing data.
      * @return string the guid
      */

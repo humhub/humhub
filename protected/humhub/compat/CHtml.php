@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -144,7 +144,7 @@ class CHtml extends \yii\helpers\Html
 
     /**
      * Active Checkbox without Label
-     * 
+     *
      * @param type $model
      * @param type $attribute
      * @param type $options

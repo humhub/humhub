@@ -37,34 +37,34 @@ class MimeHelper
         // Word
         if ($ext == 'doc' || $ext == 'docx') {
             return "mime-word";
-            // Excel
+        // Excel
         } else if ($ext == 'xls' || $ext == 'xlsx') {
             return "mime-excel";
-            // Powerpoint
+        // Powerpoint
         } else if ($ext == 'ppt' || $ext == 'pptx') {
             return "mime-excel";
-            // PDF
+        // PDF
         } else if ($ext == 'pdf') {
             return "mime-pdf";
-            // Archive
-        } else if ($ext == 'zip' || $ext == 'rar' || $ext == 'tar' || $ext == '7z') {
+        // Archive
+        } else if ($ext == 'zip' || $ext == 'gzip' || $ext == 'rar' || $ext == 'tar' || $ext == '7z') {
             return "mime-zip";
-            // Audio
-        } else if ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif') {
+        // Audio
+        } else if ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif' || $ext == 'webp') {
             return "mime-image";
-            // Audio
+        // Audio
         } else if ($ext == 'mp3' || $ext == 'aiff' || $ext == 'wav') {
             return "mime-audio";
-            // Video
-        } else if ($ext == 'avi' || $ext == 'mp4' || $ext == 'mov' || $ext == 'mpeg' || $ext == 'wma') {
+        // Video
+        } else if ($ext == 'avi' || $ext == 'mp4' || $ext == 'mov' || $ext == 'mpeg' || $ext == 'wma' || $ext == 'webm') {
             return "mime-video";
-            // Adobe Photoshop
+        // Adobe Photoshop
         } else if ($ext == 'psd') {
             return "mime-photoshop";
-            // Adobe Illustrator
+        // Adobe Illustrator
         } else if ($ext == 'ai') {
             return "mime-illustrator";
-            // other file formats
+        // other file formats
         } else {
             return "mime-file";
         }

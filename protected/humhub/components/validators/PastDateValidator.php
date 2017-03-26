@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\components\validators;
 
 use Yii;
@@ -6,7 +13,7 @@ use yii\validators\DateValidator;
 
 /**
  * PastDateValidator ensurs the date is in the past
- * 
+ *
  * @deprecated since version 1.1.2
  * @author buddha
  */

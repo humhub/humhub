@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -107,7 +107,6 @@ class PolymorphicRelation extends Behavior
      */
     private function validateUnderlyingObjectType($object)
     {
-
         if (count($this->mustBeInstanceOf) == 0) {
             return true;
         }
@@ -119,6 +118,7 @@ class PolymorphicRelation extends Behavior
         }
 
         Yii::error('Got invalid underlying object type! (' . $object->className() . ')');
+        
         return false;
     }
 

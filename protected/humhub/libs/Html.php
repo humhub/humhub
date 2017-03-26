@@ -9,8 +9,8 @@
 namespace humhub\libs;
 
 use Yii;
-use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\base\InvalidParamException;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * HTML Helpers

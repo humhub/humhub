@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -19,7 +19,6 @@ use zhuravljov\yii\queue\Job;
  */
 abstract class ActiveJob extends Object implements Job
 {
-
     /**
      * Runs this job
      */

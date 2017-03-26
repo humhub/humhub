@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -89,7 +89,7 @@ class CActiveForm extends \yii\widgets\ActiveForm
         if ($value !== null) {
             $model->$attribute = $value;
         }
-        
+
         return CHtml::activeHiddenInput($model, $attribute, $htmlOptions);
     }
 

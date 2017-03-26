@@ -35,7 +35,7 @@ class Instant extends Driver
     public function push($job)
     {
         $this->_messages[] = $this->serialize($job);
-        
+
         while (($message = array_shift($this->_messages)) !== null) {
             $job = $this->unserialize($message);
             $this->getQueue()->run($job);
