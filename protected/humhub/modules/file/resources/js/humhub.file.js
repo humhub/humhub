@@ -344,6 +344,7 @@ humhub.module('file', function (module, require, $) {
                     animation: 'fade',
                     delay: 100,
                     placement: this.options.popoverPosition || 'right',
+                    container: 'body',
                     content: function () {
                         return string.template(Preview.template.popover, file);
                     }

@@ -27,8 +27,8 @@ class ShowMore extends \yii\base\Widget
      */
     public function run()
     {
-
-        if ($this->pagination->pageCount == $this->pagination->page + 1) {
+        
+        if (!$this->pagination->totalCount || $this->pagination->pageCount == $this->pagination->page + 1) {
             return;
         }
 

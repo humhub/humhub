@@ -10,6 +10,7 @@ namespace humhub\modules\comment\controllers;
 
 use Yii;
 use humhub\modules\comment\models\Comment;
+use \humhub\modules\comment\widgets\ShowMore;
 use yii\web\HttpException;
 
 /**
@@ -41,27 +42,28 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
     {
         $content = $this->parentContent;
 
-        $pagination = new \yii\data\Pagination([
-            'totalCount' => Comment::GetCommentCount($content->className(), $content->getPrimaryKey()),
-            'pageSize' => $this->module->commentsBlockLoadSize
-        ]);
-
         $query = Comment::find();
         $query->orderBy('created_at DESC');
         $query->where([
             'object_model' => $content->className(),
             'object_id' => $content->getPrimaryKey(),
         ]);
+        
+        $pagination = new \yii\data\Pagination([
+            'totalCount' => Comment::GetCommentCount($content->className(), $content->getPrimaryKey()),
+            'pageSize' => $this->module->commentsBlockLoadSize
+        ]);
+        
         $query->offset($pagination->offset)->limit($pagination->limit);
         $comments = array_reverse($query->all());
 
-        $output = \humhub\modules\comment\widgets\ShowMore::widget(['pagination' => $pagination, 'object' => $content]);
+        $output = ShowMore::widget(['pagination' => $pagination, 'object' => $content]);
         foreach ($comments as $comment) {
             $output .= \humhub\modules\comment\widgets\Comment::widget(['comment' => $comment]);
         }
 
         if (Yii::$app->request->get('mode') == 'popup') {
-            return $this->renderAjax('showPopup', array('object' => $content, 'output' => $output, 'id' => $content->getUniqueId()));
+            return $this->renderAjax('showPopup', ['object' => $content, 'output' => $output, 'id' => $content->getUniqueId()]);
         } else {
             return $this->renderAjaxContent($output);
         }

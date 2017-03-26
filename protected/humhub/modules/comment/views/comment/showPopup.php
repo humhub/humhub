@@ -1,31 +1,19 @@
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"
-                id="myModalLabel">
-                <?php echo Yii::t('CommentModule.views_comment_show', 'Comments'); ?>
-            </h4>
-        </div>
-
-        <div class="modal-body">
-            <div id="userlist-content">
-                <div class="well well-small" id="comment_<?php echo $id; ?>">
-                    <div class="comment" id="comments_area_<?php echo $id; ?>">
-                        <?php echo $output; ?>
-                    </div>
-                    <?php echo humhub\modules\comment\widgets\Form::widget(array('object' => $object)); ?>
+<?php \humhub\widgets\ModalDialog::begin(['header' => Yii::t('CommentModule.views_comment_show', 'Comments')]) ?>
+    <div class="modal-body comment-container comment-modal-body" style="margin-top:0px">
+        <div id="userlist-content">
+            <div class="well well-small" id="comment_<?= $id; ?>">
+                <div class="comment" id="comments_area_<?= $id; ?>">
+                    <?= $output; ?>
                 </div>
-
+                <?= humhub\modules\comment\widgets\Form::widget(['object' => $object]); ?>
             </div>
         </div>
     </div>
-</div>
-
+<?php \humhub\widgets\ModalDialog::end() ?>
 <script type="text/javascript">
 
     // scroll to top of list
-    $(".modal-body").animate({scrollTop: 0}, 200);
+    $(".comment-modal-body").animate({scrollTop: 0}, 200);
 
 </script>
 
