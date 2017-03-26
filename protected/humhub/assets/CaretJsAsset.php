@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -12,12 +12,12 @@ use yii\web\AssetBundle;
 
 /**
  * jquery-caretjs.js
- * 
+ *
  * @author buddha
  */
 class CaretjsAsset extends AssetBundle
 {
-   
+
     /**
      * @inheritdoc
      */
@@ -27,10 +27,10 @@ class CaretjsAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['dist/jquery.caret.min.js'];
-    
+
     /**
      * @inheritdoc
      */
     public $css = [];
-    
+
 }

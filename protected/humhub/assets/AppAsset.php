@@ -13,7 +13,7 @@ use yii\web\AssetBundle;
 /**
  * AppAsset includes HumHub core assets to the main layout.
  * This Assetbundle includes some core dependencies and the humhub core api.
- * 
+ *
  * Note: All CSS/JS files will be compressed and bundled. If you need dynamic
  * css/js loading e.g. based on users locale: see AppDynamicAsset
  */
