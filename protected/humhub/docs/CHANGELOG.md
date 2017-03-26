@@ -15,6 +15,7 @@ HumHub Change Log
 - Enh: Added 'containerLink' HTML Helper method
 - Enh: WallEntry layout layout improvements
 - Fix: Default user & space module configuration lost after foreign key migration
+- Fix: Respect pinned post when inserting a a new stream entry
 
 
 1.2.0-beta.3 (March 20, 2017)

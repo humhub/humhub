@@ -602,7 +602,14 @@ humhub.module('stream', function (module, require, $) {
         });
     };
 
-    Stream.prototype.prependEntry = function (html) {
+    Stream.prototype.prependEntry = function (html, respectPinnedPosts) {
+        if(respectPinnedPosts) {
+            var $pinned = this.$.find('[data-stream-pinned="1"]:last');
+            if($pinned.length) {
+                return this.after(html, $pinned);
+            }
+        }
+        
         return this._streamEntryAnimation(html, function ($html) {
             this.$content.prepend($html);
         });
@@ -885,7 +892,8 @@ humhub.module('stream', function (module, require, $) {
 
         if (!pjax) {
             event.on('humhub:modules:content:newEntry.stream', function (evt, html) {
-                getStream().prependEntry(html);
+                // Prepend entry under last pinned post
+                getStream().prependEntry(html, true);
             });
         }
     };
