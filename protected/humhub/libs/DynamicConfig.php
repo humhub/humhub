@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -83,7 +83,6 @@ class DynamicConfig extends \yii\base\Object
      */
     public static function rewrite()
     {
-
         // Get Current Configuration
         $config = self::load();
 

@@ -16,7 +16,7 @@ use yii\web\JsExpression;
 
 /**
  * DropDown Grid Column
- * 
+ *
  * @author luke
  */
 class DropDownGridColumn extends DataColumn
@@ -38,7 +38,7 @@ class DropDownGridColumn extends DataColumn
     public $dropDownOptions = [];
 
     /**
-     * @var array ajax options 
+     * @var array ajax options
      */
     public $ajaxOptions = array();
     public $readonly = false;
@@ -48,7 +48,6 @@ class DropDownGridColumn extends DataColumn
      */
     public function init()
     {
-
         if (!isset($this->ajaxOptions['type'])) {
             $this->ajaxOptions['type'] = 'POST';
         }
@@ -56,14 +55,14 @@ class DropDownGridColumn extends DataColumn
         $this->ajaxOptions['data'] = new JsExpression('data');
         $this->ajaxOptions['success'] = new JsExpression('function() { humhub.modules.ui.status.success("' . Yii::t('base', 'Saved') . '"); }');
         $this->grid->view->registerJs("$('.editableCell').change(function() {
-                data = {};
-                data[$(this).attr('name')] = $(this).val();
-                submitAttributes = $(this).data('submit-attributes').split(', ');
-                for (var i in submitAttributes) {
-                    data[submitAttributes[i]] = $(this).data('attribute'+i);
-                }
-                data['dropDownColumnSubmit'] = true;
-                $.ajax(" . \yii\helpers\Json::encode($this->ajaxOptions) . ");
+            data = {};
+            data[$(this).attr('name')] = $(this).val();
+            submitAttributes = $(this).data('submit-attributes').split(', ');
+            for (var i in submitAttributes) {
+                data[submitAttributes[i]] = $(this).data('attribute'+i);
+            }
+            data['dropDownColumnSubmit'] = true;
+            $.ajax(" . \yii\helpers\Json::encode($this->ajaxOptions) . ");
         });");
 
         return parent::init();
@@ -74,7 +73,6 @@ class DropDownGridColumn extends DataColumn
      */
     protected function renderDataCellContent($model, $key, $index)
     {
-
         if (isset($this->htmlOptions['class'])) {
             $this->htmlOptions['class'] .= 'editableCell form-control';
         } else {

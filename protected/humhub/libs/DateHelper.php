@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -18,7 +18,7 @@ class DateHelper
 {
     /**
      * Parses a date and optionally a time if timeAttribute is specified.
-     * 
+     *
      * @param string $value
      * @param string $timeValue optional time value
      * @return int timestamp in utc
@@ -27,11 +27,11 @@ class DateHelper
     {
         return DbDateValidator::parseDateTime($value, $timeValue);
     }
-    
+
     /**
      * Parses a date and optionally a time if timeAttribute is specified to
      * an given pattern or the default pattern 'Y-m-d' if no pattern is provided.
-     * 
+     *
      * @param string $value date value
      * @param string $pattern  pattern
      * @param string $timeValue optional time value
@@ -42,6 +42,7 @@ class DateHelper
         $ts = self::parseDateTimeToTimestamp($value, $timeValue);
         $dt = new \DateTime();
         $dt->setTimestamp($ts);
+
         return $dt->format($pattern);
     }
 }

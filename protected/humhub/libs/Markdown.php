@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\libs;
 
 use yii\helpers\Url;
@@ -11,8 +17,7 @@ class Markdown extends \cebe\markdown\GithubMarkdown
 
     protected function handleInternalUrls($url)
     {
-
-        // Handle urls to file 
+        // Handle urls to file
         if (substr($url, 0, 10) === "file-guid-") {
             $guid = str_replace('file-guid-', '', $url);
             $file = File::findOne(['guid' => $guid]);
@@ -34,7 +39,6 @@ class Markdown extends \cebe\markdown\GithubMarkdown
             }
         }
 
-
         $block['url'] = $this->handleInternalUrls($block['url']);
 
         $internalLink = false;
@@ -44,7 +48,7 @@ class Markdown extends \cebe\markdown\GithubMarkdown
         }
 
         return Html::a($this->renderAbsy($block['text']), Html::decode($block['url']), [
-                    'target' => ($internalLink) ? '_self' : '_blank'
+            'target' => ($internalLink) ? '_self' : '_blank'
         ]);
     }
 
@@ -77,12 +81,13 @@ class Markdown extends \cebe\markdown\GithubMarkdown
     protected function renderCode($block)
     {
         $class = isset($block['language']) ? ' class="' . $block['language'] . '"' : '';
+
         return "<pre><code$class>" . $block['content'] . "\n" . "</code></pre>\n";
     }
 
     /**
-     * "Dirty" hacked LinkTrait 
-     * 
+     * "Dirty" hacked LinkTrait
+     *
      * Try to allow also wiki urls with whitespaces etc.
      */
     protected function parseLinkOrImage($markdown)
@@ -93,11 +98,11 @@ class Markdown extends \cebe\markdown\GithubMarkdown
             $markdown = substr($markdown, $offset);
 
             $pattern = <<<REGEXP
-				/(?(R) # in case of recursion match parentheses
-					 \(((?>[^\s()]+)|(?R))*\)
-				|      # else match a link with title
-					^\(\s*(((?>[^\s()]+)|(?R))*)(\s+"(.*?)")?\s*\)
-				)/x
+                /(?(R) # in case of recursion match parentheses
+                     \(((?>[^\s()]+)|(?R))*\)
+                |      # else match a link with title
+                    ^\(\s*(((?>[^\s()]+)|(?R))*)(\s+"(.*?)")?\s*\)
+                )/x
 REGEXP;
             if (preg_match($pattern, $markdown, $refMatches)) {
                 // inline link
@@ -125,6 +130,7 @@ REGEXP;
                 ];
             }
         }
+
         return false;
     }
 

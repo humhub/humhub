@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -21,10 +21,10 @@ class TimezoneHelper
 {
 
     /**
-     * 
+     *
      * // Modified version of the timezone list function from http://stackoverflow.com/a/17355238/507629
      * // Includes current time for each timezone (would help users who don't know what their timezone is)
-     * 
+     *
      * @staticvar array $regions
      * @return type
      */
@@ -70,7 +70,7 @@ class TimezoneHelper
             #$current_time = Yii::$app->formatter->asTime($c, 'short'); #;
             $current_time = $c->format('H:i');
 
-#            $timezone_list[$timezone] = $pretty_offset." - ".$current_time."  - ".$timezone;
+            #$timezone_list[$timezone] = $pretty_offset." - ".$current_time."  - ".$timezone;
             $timezone_list[$timezone] = $pretty_offset . " - " . $timezone;
         }
 

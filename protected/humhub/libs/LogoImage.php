@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -14,7 +14,7 @@ use yii\helpers\Url;
 use humhub\modules\file\libs\ImageConverter;
 
 /**
- * LogoImage 
+ * LogoImage
  */
 class LogoImage
 {
@@ -49,6 +49,7 @@ class LogoImage
             $path .= '/uploads/' . $this->folder_images . '/logo.png';
         }
         $path .= '?cacheId=' . $cacheId;
+
         return $path;
     }
 
@@ -89,7 +90,12 @@ class LogoImage
         $this->delete();
         move_uploaded_file($file->tempName, $this->getPath());
 
-        ImageConverter::Resize($this->getPath(), $this->getPath(), array('height' => $this->height, 'width' => 0, 'mode' => 'max', 'transparent' => ($file->getExtension() == 'png' && ImageConverter::checkTransparent($this->getPath()))));
+        ImageConverter::Resize($this->getPath(), $this->getPath(), array(
+            'height' => $this->height,
+            'width' => 0,
+            'mode' => 'max',
+            'transparent' => ($file->getExtension() == 'png' && ImageConverter::checkTransparent($this->getPath())))
+        );
     }
 
     /**
@@ -101,5 +107,3 @@ class LogoImage
     }
 
 }
-
-?>

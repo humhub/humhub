@@ -1,11 +1,17 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\libs;
 
 /**
- * MarkdownPreview generates a plain text (no HTML) of markdown. 
+ * MarkdownPreview generates a plain text (no HTML) of markdown.
  * Some elements like images or links will be displayed more clearly.
- * 
+ *
  * @since 0.11.1
  */
 class MarkdownPreview extends \cebe\markdown\Parser
@@ -48,7 +54,7 @@ class MarkdownPreview extends \cebe\markdown\Parser
     }
 
     /**
-     * 
+     *
      * @param type $block
      * @marker ![
      */
@@ -88,11 +94,11 @@ class MarkdownPreview extends \cebe\markdown\Parser
             $markdown = substr($markdown, $offset);
 
             $pattern = <<<REGEXP
-				/(?(R) # in case of recursion match parentheses
-					 \(((?>[^\s()]+)|(?R))*\)
-				|      # else match a link with title
-					^\(\s*(((?>[^\s()]+)|(?R))*)(\s+"(.*?)")?\s*\)
-				)/x
+                /(?(R) # in case of recursion match parentheses
+                     \(((?>[^\s()]+)|(?R))*\)
+                |      # else match a link with title
+                    ^\(\s*(((?>[^\s()]+)|(?R))*)(\s+"(.*?)")?\s*\)
+                )/x
 REGEXP;
             if (preg_match($pattern, $markdown, $refMatches)) {
                 // inline link
@@ -119,6 +125,7 @@ REGEXP;
                 ];
             }
         }
+
         return false;
     }
 

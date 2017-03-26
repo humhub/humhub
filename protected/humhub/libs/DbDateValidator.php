@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -67,7 +67,7 @@ class DbDateValidator extends \yii\validators\DateValidator
 
     /**
      * Checks a time attribute name is given, if empty don't handle time
-     * 
+     *
      * @return boolean
      */
     protected function hasTime()
@@ -77,7 +77,7 @@ class DbDateValidator extends \yii\validators\DateValidator
 
     /**
      * Returns time value
-     * 
+     *
      * @return string time value (e.g. 12:00)
      */
     protected function getTimeValue($model)
@@ -92,7 +92,7 @@ class DbDateValidator extends \yii\validators\DateValidator
 
     /**
      * Parses a date and optionally a time if timeAttribute is specified.
-     * 
+     *
      * @param string $value
      * @return int timestamp in utc
      */
@@ -103,7 +103,7 @@ class DbDateValidator extends \yii\validators\DateValidator
 
     /**
      * Parses a date and optionally a time if timeAttribute is specified.
-     * 
+     *
      * @param string $value
      * @return int timestamp in utc
      */
@@ -126,25 +126,26 @@ class DbDateValidator extends \yii\validators\DateValidator
 
     /**
      * Converts a timestamp in user timezone to a utc timestamp
-     * 
+     *
      * @param long $ts the timestamp
      * @param String $timeZone users timezone
      * @return long the timestamp in utc
      */
     protected function fixTimestampTimeZone($ts, $timeZone)
     {
-        // Create date string 
+        // Create date string
         $fromDateTime = new \DateTime("@" . $ts);
 
         // Create date object
         $toDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', $fromDateTime->format('Y-m-d H:i:s'), new \DateTimeZone($timeZone));
         $toDateTime->setTimezone(new \DateTimeZone('UTC'));
+
         return $toDateTime->getTimestamp();
     }
 
     /**
      * Parses given time value (hh:mm) to seconds
-     * 
+     *
      * @todo Allow more time formats
      * @param string $value
      * @return int time converted to seconds
@@ -156,7 +157,7 @@ class DbDateValidator extends \yii\validators\DateValidator
 
     /**
      * Checks whether the given value is a db date format or not.
-     * 
+     *
      * @param string $value the date value
      * @return boolean
      */
