@@ -13,7 +13,7 @@ use yii\helpers\Console;
 
 /**
  * TestController provides some console tests
- * 
+ *
  * @inheritdoc
  */
 class TestController extends \yii\console\Controller
@@ -21,7 +21,7 @@ class TestController extends \yii\console\Controller
 
     /**
      * Sends a test e-mail to the given e-mail address
-     * 
+     *
      * @param string $address the e-mail address
      */
     public function actionEmail($address)

@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -14,7 +14,7 @@ use yii\helpers\FileHelper;
 
 /**
  * Extracts messages to be translated from source files.
- * 
+ *
  * @inheritdoc
  */
 class MessageController extends \yii\console\controllers\MessageController
@@ -22,7 +22,7 @@ class MessageController extends \yii\console\controllers\MessageController
 
     /**
      * Extracts messages for a given module from source code.
-     * 
+     *
      * @param string $moduleId
      */
     public function actionExtractModule($moduleId)
@@ -38,7 +38,7 @@ class MessageController extends \yii\console\controllers\MessageController
             'sort' => true,
             'format' => 'php',
             'ignoreCategories' => [],
-                ], require($configFile));
+        ], require($configFile));
 
         $config['sourcePath'] = $module->getBasePath();
 
@@ -99,7 +99,6 @@ class MessageController extends \yii\console\controllers\MessageController
             FileHelper::createDirectory($path);
             $msgs = array_values(array_unique($msgs));
 
-
             $coloredFileName = Console::ansiFormat($file, [Console::FG_CYAN]);
             $this->stdout("Saving messages to $coloredFileName...\n");
 
@@ -109,7 +108,7 @@ class MessageController extends \yii\console\controllers\MessageController
 
     /**
      * Returns module instance by given message category.
-     * 
+     *
      * @param string $category
      * @return \yii\base\Module
      */
