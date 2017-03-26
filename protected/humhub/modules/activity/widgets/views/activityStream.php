@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+ 
 /* @var $this humhub\components\View */
 
 \humhub\modules\activity\assets\ActivityAsset::register($this);
@@ -20,5 +27,3 @@ $this->registerJsConfig([
         </ul>
     </div>
 </div>
-
-

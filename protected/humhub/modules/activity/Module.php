@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -27,7 +27,7 @@ class Module extends \humhub\components\Module
 
     /**
      * Returns all configurable Activitiess
-     * 
+     *
      * @since 1.2
      * @return ConfigurableActivityInterface[] a list of configurable activities
      */

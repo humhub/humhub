@@ -1,7 +1,14 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+ 
 use yii\helpers\Html;
 ?>
+
 <!-- START NOTIFICATION/ACTIVITY -->
 <tr>
     <td align="center" valign="top" class="fix-box">
@@ -39,9 +46,9 @@ use yii\helpers\Html;
 
                                                     <td valign="top" align="left" style="padding-right:20px;">
                                                         <!-- START: USER IMAGE -->
-                                                        <a href="<?php echo $originator->createUrl('/user/profile', [], true); ?>">
+                                                        <a href="<?= $originator->createUrl('/user/profile', [], true); ?>">
                                                             <img
-                                                                src="<?php echo $originator->getProfileImage()->getUrl("", true); ?>"
+                                                                src="<?= $originator->getProfileImage()->getUrl("", true); ?>"
                                                                 width="50"
                                                                 alt=""
                                                                 style="max-width:50px; display:block !important; border-radius: 4px;"
@@ -60,22 +67,22 @@ use yii\helpers\Html;
                                                                 <td style="font-size: 13px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:left; ">
 
                                                                     <!-- content output-->
-                                                                    <?php echo $content; ?>
+                                                                    <?= $content; ?>
 
                                                                     <!-- check if activity object has a space -->
                                                                     <?php if ($record->content->space !== null): ?>
-                                                                        (<?php echo Yii::t('ActivityModule.views_activityLayoutMail', 'via'); ?>
-                                                                        <a href="<?php echo $record->content->space->createUrl('/space/space', [], true); ?>"
+                                                                        (<?= Yii::t('ActivityModule.views_activityLayoutMail', 'via'); ?>
+                                                                        <a href="<?= $record->content->space->createUrl('/space/space', [], true); ?>"
                                                                            style="text-decoration: none; color: #555555;">
-                                                                               <?php echo Html::encode($record->content->space->name); ?></a>)
+                                                                               <?= Html::encode($record->content->space->name); ?></a>)
                                                                     <?php endif; ?>
 
                                                                     <?php if ($url != "") : ?>
                                                                         <!-- START: CONTENT LINK -->
                                                                         <span
                                                                             style="text-decoration: none; color: #7191a8;"> - <a
-                                                                                href="<?php echo $url; ?>"
-                                                                                style="text-decoration: none; color: #7191a8; "><?php echo Yii::t('ActivityModule.views_activityLayoutMail', 'see online'); ?></a></span>
+                                                                                href="<?= $url; ?>"
+                                                                                style="text-decoration: none; color: #7191a8; "><?= Yii::t('ActivityModule.views_activityLayoutMail', 'see online'); ?></a></span>
                                                                         <!-- END: CONTENT LINK -->
                                                                     <?php endif; ?>
 

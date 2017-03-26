@@ -40,7 +40,9 @@ class AdminController extends Controller
             $this->view->saved();
         }
 
-        return $this->render('defaults', ['model' => $model]);
+        return $this->render('defaults', [
+            'model' => $model
+        ]);
     }
 
 }

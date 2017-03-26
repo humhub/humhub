@@ -50,18 +50,19 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
     }
 
     /**
-     * @inheritdoc		
+     * @inheritdoc
      */
     public function getViewParams($params = [])
     {
         $params['clickable'] = $this->clickable;
+
         return parent::getViewParams($params);
     }
 
     /**
      * Stores the activity in database
-     * 
-     * @return boolean 
+     *
+     * @return boolean
      */
     public function save()
     {
@@ -93,6 +94,7 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
     {
         parent::from($originator);
         $this->record->content->created_by = $originator->id;
+
         return $this;
     }
 
@@ -106,6 +108,7 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
         if (!$this->record->content->container && $this->getContentContainer()) {
             $this->container($this->getContentContainer());
         }
+
         return $this;
     }
 
@@ -116,12 +119,13 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
     public function container($container)
     {
         $this->record->content->container = $container;
+
         return $this;
     }
 
     /**
      * Saves the underlying Activity model record.
-     * 
+     *
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\base\Exception
      */
@@ -147,7 +151,7 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
 
     /**
      * Returns the visibility of the content
-     * 
+     *
      * @return int the visibility
      */
     protected function getContentVisibility()
@@ -157,7 +161,7 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
 
     /**
      * Returns the user id of the originator of this activity
-     * 
+     *
      * @return int user id
      */
     protected function getOriginatorId()

@@ -25,12 +25,14 @@ class MailSummaryProcessor
 
     /**
      * Processes mail summary for given interval
-     * 
+     *
      * @param int $interval
      */
     public static function process($interval)
     {
-        $users = User::find()->distinct()->joinWith(['httpSessions', 'profile'])->where(['user.status' => User::STATUS_ENABLED]);
+        $users = User::find()->distinct()->joinWith(['httpSessions', 'profile'])->where([
+            'user.status' => User::STATUS_ENABLED
+        ]);
 
         $interactive = false;
         $totalUsers = $users->count();
@@ -54,11 +56,10 @@ class MailSummaryProcessor
             // Check if user wants summary in the given interval
             try {
                 if (self::checkUser($user, $interval)) {
-
                     $mailSummary = Yii::createObject([
-                                'class' => MailSummary::className(),
-                                'user' => $user,
-                                'interval' => $interval
+                        'class' => MailSummary::className(),
+                        'user' => $user,
+                        'interval' => $interval
                     ]);
                     if ($mailSummary->send()) {
                         $mailsSent++;
@@ -80,7 +81,7 @@ class MailSummaryProcessor
 
     /**
      * Checks if a e-mail summary should be send to the user
-     * 
+     *
      * @param User $user
      * @param int $interval
      */

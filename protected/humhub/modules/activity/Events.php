@@ -15,7 +15,7 @@ use humhub\modules\activity\models\Activity;
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @author luke
  */
 class Events extends \yii\base\Object
@@ -23,7 +23,7 @@ class Events extends \yii\base\Object
 
     /**
      * Handles cron run event to send mail summaries to the users
-     * 
+     *
      * @param \yii\base\ActionEvent $event
      */
     public static function onCronRun($event)

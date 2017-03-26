@@ -83,7 +83,11 @@ class MailSummary extends Component
         try {
             Yii::$app->view->params['showUnsubscribe'] = true;
             Yii::$app->view->params['unsubscribeUrl'] = \yii\helpers\Url::to(['/activity/user'], true);
-            $mail = Yii::$app->mailer->compose(['html' => $this->layout, 'text' => $this->layoutPlaintext], [
+            $mail = Yii::$app->mailer->compose([
+                'html' => $this->layout,
+                'text' => $this->layoutPlaintext
+            ],
+            [
                 'activities' => $outputHtml,
                 'activitiesPlaintext' => $outputPlaintext,
             ]);
@@ -174,7 +178,7 @@ class MailSummary extends Component
 
     /**
      * Returns the last summary date
-     * 
+     *
      * @return string|\yii\db\Expression of the last summary mail
      */
     protected function getLastSummaryDate()
@@ -185,12 +189,13 @@ class MailSummary extends Component
         } else {
             $lastSent = date('Y-m-d G:i:s', $lastSent);
         }
+
         return $lastSent;
     }
 
     /**
      * Returns the mode (exclude, include) of given content containers
-     * 
+     *
      * @see MailSummaryForm
      * @return int mode
      */
@@ -198,12 +203,13 @@ class MailSummary extends Component
     {
         $activityModule = Yii::$app->getModule('activity');
         $default = $activityModule->settings->get('mailSummaryLimitSpacesMode', '');
+
         return $activityModule->settings->user($this->user)->get('mailSummaryLimitSpacesMode', $default);
     }
 
     /**
      * Returns a list of content containers which should be included or excluded.
-     * 
+     *
      * @return array list of contentcontainer ids
      */
     protected function getLimitContentContainers()
@@ -218,12 +224,13 @@ class MailSummary extends Component
                 $spaces[] = $contentContainer->id;
             }
         }
+
         return $spaces;
     }
 
     /**
      * Returns a list of suppressed activity classes
-     * 
+     *
      * @return array suppressed activity class names
      */
     protected function getSuppressedActivities()
@@ -231,7 +238,6 @@ class MailSummary extends Component
         $activityModule = Yii::$app->getModule('activity');
         $defaultActivitySuppress = $activityModule->settings->get('mailSummaryActivitySuppress', '');
         $activitySuppress = $activityModule->settings->user($this->user)->get('mailSummaryActivitySuppress', $defaultActivitySuppress);
-
         if (empty($activitySuppress)) {
             return [];
         }

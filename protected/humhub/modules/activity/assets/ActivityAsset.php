@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -14,10 +14,13 @@ class ActivityAsset extends AssetBundle
 {
 
     public $sourcePath = '@activity/resources';
+
     public $css = [];
+
     public $js = [
         'js/humhub.activity.js'
     ];
+
     public $depends = [
         'humhub\assets\CoreApiAsset'
     ];

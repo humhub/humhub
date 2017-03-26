@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -76,16 +76,16 @@ class Activity extends ContentActiveRecord
 
     /**
      * Returns the related BaseActivity object of this Activity record.
-     * 
+     *
      * @return \humhub\modules\activity\components\BaseActivity
      */
     public function getActivityBaseClass()
     {
         if (class_exists($this->class)) {
             $result = Yii::createObject([
-                        'class' => $this->class,
-                        'originator' => $this->content->createdBy,
-                        'source' => $this->getSource(),
+                'class' => $this->class,
+                'originator' => $this->content->createdBy,
+                'source' => $this->getSource(),
             ]);
             $result->record = $this; // If we include the record in createObject, it somehow loses activerecord data (id etc...)
             return $result;
@@ -111,14 +111,15 @@ class Activity extends ContentActiveRecord
                 return $output;
             }
         }
+
         return $output;
     }
 
     /**
      * Returns the source object which belongs to this Activity.
-     * 
+     *
      * @see \humhub\modules\activity\components\BaseActivity::$source
-     * @return mixed 
+     * @return mixed
      */
     public function getSource()
     {
