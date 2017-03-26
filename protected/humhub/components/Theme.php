@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -54,6 +54,7 @@ class Theme extends \yii\base\Theme
         $this->pathMap = [
             '@humhub/views' => $this->getBasePath() . '/views',
         ];
+
         parent::init();
     }
 
@@ -169,7 +170,7 @@ class Theme extends \yii\base\Theme
     {
         $this->loadVariables();
 
-        // @deprecated since version 1.2 color settings 
+        // @deprecated since version 1.2 color settings
         Yii::$app->settings->set('colorDefault', $this->variable('default'));
         Yii::$app->settings->set('colorPrimary', $this->variable('default'));
         Yii::$app->settings->set('colorInfo', $this->variable('default'));
@@ -180,9 +181,9 @@ class Theme extends \yii\base\Theme
 
     /**
      * Reloads the less variables within the variable.less file and caches the result.
-     * 
+     *
      * Note: this function merges the default less variables with the actual theme variables.
-     * 
+     *
      * @since 1.2
      */
     public function loadVariables()
@@ -202,7 +203,7 @@ class Theme extends \yii\base\Theme
 
     /**
      * Searches for a theme varaible with the given $key.
-     * 
+     *
      * @since 1.2
      * @param string $key
      * @return string
@@ -215,23 +216,23 @@ class Theme extends \yii\base\Theme
 
         if (empty($this->_variables)) {
             $this->loadVariables();
-        }        
-        
+        }
+
         $result = isset($this->_variables[$key]) ? $this->_variables[$key] : null;
 
         // Compatibility with old themes prior v1.2
         if(!$result && in_array($key, ['default', 'primary', 'info', 'success', 'warning', 'danger'])) {
             $result = Yii::$app->settings->get('color'.ucfirst($key));
         }
-        
+
         return $result === null ? $default : $result;
     }
 
     /**
      * Parses the varaibles of the given less fileName.
-     * This will merge the values of the default `@webroot/less/fileName.less` and 
+     * This will merge the values of the default `@webroot/less/fileName.less` and
      * the actual theme values in `themeBasePath/less/fileName.less`.
-     * 
+     *
      * @since 1.2
      * @param type $lessFile the less file to parse
      */
@@ -239,7 +240,7 @@ class Theme extends \yii\base\Theme
     {
         // Parse default values
         $variables = $this->parseLessVariables(Yii::getAlias('@webroot-static/less/'.$lessFileName));
-        
+
         // Overwrite theme values
         return \yii\helpers\ArrayHelper::merge($variables, $this->parseLessVariables($this->getBasePath() . '/less/'.$lessFileName));
     }
@@ -261,7 +262,7 @@ class Theme extends \yii\base\Theme
             }
             return $variables;
         }
-        
+
         return [];
     }
 

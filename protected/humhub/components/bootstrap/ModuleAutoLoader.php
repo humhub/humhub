@@ -2,14 +2,14 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\components\bootstrap;
 
-use yii\base\BootstrapInterface;
 use Yii;
+use yii\base\BootstrapInterface;
 
 /**
  * ModuleAutoLoader automatically searches for autostart.php files in module folder an executes them.
@@ -23,7 +23,6 @@ class ModuleAutoLoader implements BootstrapInterface
 
     public function bootstrap($app)
     {
-
         $modules = Yii::$app->cache->get(self::CACHE_ID);
 
         if ($modules === false) {

@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -26,7 +26,7 @@ class ModuleManager extends \yii\base\Component
 
     /**
      * Create a backup on module folder deletion
-     * 
+     *
      * @var boolean
      */
     public $createBackup = true;
@@ -34,7 +34,7 @@ class ModuleManager extends \yii\base\Component
     /**
      * List of all modules
      * This also contains installed but not enabled modules.
-     * 
+     *
      * @param array $config moduleId-class pairs
      */
     protected $modules;
@@ -48,14 +48,14 @@ class ModuleManager extends \yii\base\Component
 
     /**
      * List of core module classes.
-     * 
+     *
      * @var array the core module class names
      */
     protected $coreModules = [];
 
     /**
      * Module Manager init
-     * 
+     *
      * Loads all enabled moduleId's from database
      */
     public function init()
@@ -77,7 +77,7 @@ class ModuleManager extends \yii\base\Component
     /**
      * Registers a module to the manager
      * This is usally done by autostart.php in modules root folder.
-     * 
+     *
      * @param array $
 
      * @throws Exception
@@ -90,15 +90,14 @@ class ModuleManager extends \yii\base\Component
     }
 
     /**
-     * Registers a module 
-     * 
+     * Registers a module
+     *
      * @param string $basePath the modules base path
      * @param array $config the module configuration (config.php)
      * @throws InvalidConfigException
      */
     public function register($basePath, $config = null)
     {
-
         if ($config === null && is_file($basePath . '/config.php')) {
             $config = require($basePath . '/config.php');
         }
@@ -169,15 +168,15 @@ class ModuleManager extends \yii\base\Component
 
     /**
      * Returns all modules (also disabled modules).
-     * 
+     *
      * Note: Only modules which extends \humhub\components\Module will be returned.
-     * 
+     *
      * @param array $options options (name => config)
      * The following options are available:
-     * 
+     *
      * - includeCoreModules: boolean, return also core modules (default: false)
      * - returnClass: boolean, return classname instead of module object (default: false)
-     * 
+     *
      * @return array
      */
     public function getModules($options = [])
@@ -249,7 +248,7 @@ class ModuleManager extends \yii\base\Component
 
     /**
      * Checks the module can removed
-     * 
+     *
      * @param type $moduleId
      */
     public function canRemoveModule($moduleId)
@@ -270,7 +269,7 @@ class ModuleManager extends \yii\base\Component
 
     /**
      * Removes a module
-     * 
+     *
      * @param strng $id the module id
      */
     public function removeModule($moduleId, $disableBeforeRemove = true)
@@ -312,7 +311,7 @@ class ModuleManager extends \yii\base\Component
 
     /**
      * Enables a module
-     * 
+     *
      * @since 1.1
      * @param \humhub\components\Module $module
      */
@@ -328,12 +327,12 @@ class ModuleManager extends \yii\base\Component
         $this->enabledModules[] = $module->id;
         $this->register($module->getBasePath());
     }
-    
+
     public function enableModules($modules = [])
     {
         foreach ($modules as $module) {
             $module = ($module instanceof Module) ? $module : $this->getModule($module);
-            if($module != null) {
+            if ($module != null) {
                 $module->enable();
             }
         }
@@ -341,8 +340,8 @@ class ModuleManager extends \yii\base\Component
 
     /**
      * Disables a module
-     * 
-     * @since 1.1 
+     *
+     * @since 1.1
      * @param \humhub\components\Module $module
      */
     public function disable(Module $module)
@@ -358,7 +357,7 @@ class ModuleManager extends \yii\base\Component
 
         Yii::$app->setModule($module->id, 'null');
     }
-    
+
     public function disableModules($modules = [])
     {
         foreach ($modules as $module) {

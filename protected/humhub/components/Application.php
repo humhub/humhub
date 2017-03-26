@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -73,7 +73,6 @@ class Application extends \yii\web\Application
      */
     public function beforeAction($action)
     {
-
         /**
          * Check if it's already installed - if not force controller module
          */

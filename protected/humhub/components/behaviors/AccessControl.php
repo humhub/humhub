@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -16,9 +16,9 @@ use yii\web\ForbiddenHttpException;
  * AccessControl provides basic controller access protection
  *
  * Here are some examples access control settings:
- * 
+ *
  * Allow guest access for action 'info'
- * 
+ *
  * ```
  * [
  *      'acl' => [
@@ -27,9 +27,9 @@ use yii\web\ForbiddenHttpException;
  *      ]
  * ]
  * ```
- * 
+ *
  * Allow access by pemission rule:
- * 
+ *
  * ```
  * [
  *      'acl' => [
@@ -44,7 +44,7 @@ use yii\web\ForbiddenHttpException;
  *      ]
  * ]
  * ```
- * 
+ *
  * @author luke
  */
 class AccessControl extends \yii\base\ActionFilter
@@ -96,8 +96,8 @@ class AccessControl extends \yii\base\ActionFilter
             return $this->handleGuestAccess($action);
         }
 
-        if($this->adminOnly && !Yii::$app->user->isAdmin()) {
-            if($this->getControllerSpace() == null || !$this->getControllerSpace()->isAdmin()) {
+        if ($this->adminOnly && !Yii::$app->user->isAdmin()) {
+            if ($this->getControllerSpace() == null || !$this->getControllerSpace()->isAdmin()) {
                 $this->forbidden();
             }
         }
@@ -117,15 +117,16 @@ class AccessControl extends \yii\base\ActionFilter
     {
         Yii::$app->user->logout();
         Yii::$app->response->redirect(['/user/auth/login']);
+
         return false;
     }
 
     /**
      * Checks access for guest users.
-     * 
+     *
      * Guests users are allowed to access an action if either the $loggedInOnly and $adminOnly flags are
      * set to false or the given controller action is contained in $guestAllowedActions.
-     * 
+     *
      * @return boolean
      */
     protected function handleGuestAccess($action)
@@ -139,6 +140,7 @@ class AccessControl extends \yii\base\ActionFilter
         }
 
         Yii::$app->user->loginRequired();
+
         return false;
     }
 
@@ -156,12 +158,13 @@ class AccessControl extends \yii\base\ActionFilter
             }
             $this->forbidden();
         }
+
         return true;
     }
 
     /**
      * Checks permission rules.
-     * 
+     *
      * @param type $rule
      * @return boolean
      */
@@ -181,6 +184,7 @@ class AccessControl extends \yii\base\ActionFilter
 
             return Yii::$app->user->can($permissionArr, $params);
         }
+
         return false;
     }
 
@@ -194,13 +198,14 @@ class AccessControl extends \yii\base\ActionFilter
         if ($this->isContentContainerController()) {
             return $this->owner->getSpace();
         }
+
         return null;
     }
 
     /**
      * Checks the current controller action against the allowed rule action.
      * If the rule does not contain any action settings, the rule is allowed for all controller actions.
-     * 
+     *
      * @param array $rule
      * @return boolean true if current action is allowed
      */
@@ -210,12 +215,13 @@ class AccessControl extends \yii\base\ActionFilter
             $action = Yii::$app->controller->action->id;
             return in_array($action, $rule['actions']);
         }
+
         return true;
     }
 
     /**
      * Checks specific group access by group names.
-     * 
+     *
      * @param type $rule
      * @return boolean
      */
@@ -231,12 +237,13 @@ class AccessControl extends \yii\base\ActionFilter
                 }
             }
         }
+
         return false;
     }
 
     /**
      * Returns an array of strings with all user groups of the current user.
-     * 
+     *
      * @return type
      */
     private function getUserGroupNames()

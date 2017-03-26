@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -29,7 +29,7 @@ class GUID extends Behavior
             ActiveRecord::EVENT_BEFORE_UPDATE => 'setGuid',
         ];
     }
-    
+
     public function setGuid($event) {
         if ($this->owner->isNewRecord) {
             if ($this->owner->guid == "") {
@@ -39,5 +39,3 @@ class GUID extends Behavior
     }
 
 }
-
-?>

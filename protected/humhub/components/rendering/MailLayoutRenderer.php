@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\components\rendering;
 
 /**
@@ -21,7 +27,7 @@ class MailLayoutRenderer extends LayoutRenderer
     /**
      * Used for rendering text mail content, by embedding the rendered view into
      * a $textLayout and removing all html elemtns.
-     * 
+     *
      * @param \humhub\components\rendering\Viewable $viewable
      * @return type
      */
@@ -41,7 +47,7 @@ class MailLayoutRenderer extends LayoutRenderer
 
     /**
      * Returns the $textLayout for the given $viewable.
-     * 
+     *
      * @param \humhub\components\rendering\Viewable $viewable
      * @return type
      */

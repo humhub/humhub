@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -28,10 +28,10 @@ class SettingsManager extends BaseSettingsManager
     protected $contentContainers = [];
 
     /**
-     * Returns content container 
-     * 
+     * Returns content container
+     *
      * @param ContentContainerActiveRecord $container
-     * @return ContentContainerSettingsManager 
+     * @return ContentContainerSettingsManager
      */
     public function contentContainer(ContentContainerActiveRecord $container)
     {
@@ -49,24 +49,24 @@ class SettingsManager extends BaseSettingsManager
 
     /**
      * Returns ContentContainerSettingsManager for the given $user or current logged in user
-     * @return ContentContainerSettingsManager 
+     * @return ContentContainerSettingsManager
      */
     public function user($user = null)
     {
         if(!$user) {
             $user = Yii::$app->user->getIdentity();
         }
-        
+
         return $this->contentContainer($user);
     }
 
     /**
      * Returns ContentContainerSettingsManager for the given $space or current controller space
-     * @return ContentContainerSettingsManager 
+     * @return ContentContainerSettingsManager
      */
     public function space($space = null)
     {
-        if($space != null) {
+        if ($space != null) {
             return $this->contentContainer($space);
         } elseif (Yii::$app->controller instanceof \humhub\modules\content\components\ContentContainerController) {
             if (Yii::$app->controller->contentContainer instanceof \humhub\modules\space\models\Space) {
@@ -78,7 +78,7 @@ class SettingsManager extends BaseSettingsManager
     /**
      * Indicates this setting is fixed in configuration file and cannot be
      * changed at runtime.
-     * 
+     *
      * @param string $name
      * @return boolean
      */

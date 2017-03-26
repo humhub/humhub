@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -13,7 +13,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 
 /**
- * Base Controller 
+ * Base Controller
  *
  * @inheritdoc
  * @author luke
@@ -33,7 +33,7 @@ class Controller extends \yii\web\Controller
     public $subLayout = null;
 
     /**
-     * @var string title of the rendered page 
+     * @var string title of the rendered page
      */
     public $pageTitle;
 
@@ -43,7 +43,7 @@ class Controller extends \yii\web\Controller
     public $actionTitlesMap = [];
 
     /**
-     * @var boolean append page title 
+     * @var boolean append page title
      */
     public $prependActionTitles = true;
 
@@ -66,16 +66,15 @@ class Controller extends \yii\web\Controller
 
     /**
      * Renders a static string by applying the layouts (sublayout + layout.
-     * 
+     *
      * @param string $content the static string being rendered
      * @return string the rendering result of the layout with the given static string as the `$content` variable.
      * If the layout is disabled, the string will be returned back.
-     * 
+     *
      * @since 1.2
      */
     public function renderContent($content)
     {
-
         // Apply Sublayout if provided
         if ($this->subLayout !== null) {
             $content = $this->getView()->render($this->subLayout . '.php', ['content' => $content], $this);
@@ -97,13 +96,13 @@ class Controller extends \yii\web\Controller
 
     /**
      * Throws HttpException in case the request is not an post request, otherwise returns true.
-     * 
+     *
      * @throws \yii\web\HttpException
      * @return boolean returns true in case the current request is a POST
      */
     public function forcePostRequest()
     {
-        if (\Yii::$app->request->method != 'POST') {
+        if (Yii::$app->request->method != 'POST') {
             throw new \yii\web\HttpException(405, Yii::t('ContentModule.controllers_ContentController', 'Invalid request method!'));
         }
 
@@ -117,7 +116,7 @@ class Controller extends \yii\web\Controller
     public function htmlRedirect($url = "")
     {
         return $this->renderPartial('@humhub/views/htmlRedirect.php', array(
-                    'url' => Url::to($url)
+            'url' => Url::to($url)
         ));
     }
 
@@ -163,6 +162,7 @@ class Controller extends \yii\web\Controller
 
             return true;
         }
+
         return false;
     }
 
@@ -226,9 +226,9 @@ class Controller extends \yii\web\Controller
 
     /**
      * Sets some ui state as current controller/module and active topmenu.
-     * 
+     *
      * This is required for some modules in pjax mode.
-     * 
+     *
      * @since 1.2
      * @param type $url
      */
