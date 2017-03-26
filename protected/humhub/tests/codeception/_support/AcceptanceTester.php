@@ -67,8 +67,9 @@ class AcceptanceTester extends \Codeception\Actor
         $this->jsClick('#contentForm_message');
         $this->wait(1);
         $this->fillField('#contentForm_message', $text);
+        $this->executeJS("$('#contentForm_message').trigger('focusout');");
         $this->wait(1);
-        $this->click('#post_submit_button');
+        $this->jsClick('#post_submit_button');
         $this->waitForText($text, 30, '.wall-entry');
     }
     

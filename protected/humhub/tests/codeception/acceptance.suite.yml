@@ -23,7 +23,7 @@ modules:
         WebDriver:
             url: http://localhost/codebase/humhub/v1.1-dev/index.php
             browser: firefox
-            window_size: maximize
+            window_size: 1280x1024
             restart: true
         #PhpBrowser:
 # PLEASE ADJUST IT TO THE ACTUAL ENTRY POINT WITHOUT PATH INFO
