@@ -2,17 +2,16 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\controllers;
 
 use Yii;
-use humhub\components\Controller;
-
 use yii\web\HttpException;
 use yii\base\UserException;
+use humhub\components\Controller;
 
 /**
  * ErrorController
@@ -54,7 +53,7 @@ class ErrorController extends Controller
         }
 
         return $this->render('@humhub/views/error/index', [
-                    'message' => $message
+            'message' => $message
         ]);
     }
 
