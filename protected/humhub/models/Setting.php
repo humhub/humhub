@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\models;
 
 use Yii;
@@ -176,6 +182,7 @@ class Setting extends \yii\db\ActiveRecord
         if ($module === null) {
             throw new \yii\base\Exception("Could not find module: " . $moduleId);
         }
+
         return $module;
     }
 

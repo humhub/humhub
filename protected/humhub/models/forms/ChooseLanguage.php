@@ -12,7 +12,7 @@ use Yii;
 use yii\base\Model;
 
 /**
- * ChooseLanguage is the model of the language select box to change language for 
+ * ChooseLanguage is the model of the language select box to change language for
  * guests.
  */
 class ChooseLanguage extends Model
@@ -45,7 +45,7 @@ class ChooseLanguage extends Model
 
     /**
      * Stores language as cookie
-     * 
+     *
      * @since 1.2
      * @return boolean
      */
@@ -67,7 +67,7 @@ class ChooseLanguage extends Model
 
     /**
      * Returns the saved language in the cookie
-     * 
+     *
      * @return string the stored language
      */
     public function getSavedLanguage()
@@ -92,5 +92,3 @@ class ChooseLanguage extends Model
     }
 
 }
-
-?>
