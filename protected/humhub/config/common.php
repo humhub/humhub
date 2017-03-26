@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 Yii::setAlias('@webroot', realpath(__DIR__ . '/../../../'));
 Yii::setAlias('@app', '@webroot/protected');
 Yii::setAlias('@humhub', '@app/humhub');
@@ -210,7 +216,7 @@ $config = [
             'zendLucenceDataDir' => '@runtime/searchdb',
         ],
         'curl' => [
-            // Check SSL certificates on CURL requests
+            // Check SSL certificates on cURL requests
             'validateSsl' => true,
         ],
         // Allowed languages limitation (optional)
