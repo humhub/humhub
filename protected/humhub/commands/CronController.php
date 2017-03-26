@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -40,7 +40,8 @@ class CronController extends Controller
         $this->trigger(self::EVENT_ON_HOURLY_RUN);
 
         Yii::$app->settings->set('cronLastHourlyRun', time());
-        return self::EXIT_CODE_NORMAL;
+
+		return self::EXIT_CODE_NORMAL;
     }
 
     /**
@@ -53,7 +54,8 @@ class CronController extends Controller
         $this->trigger(self::EVENT_ON_DAILY_RUN);
 
         Yii::$app->settings->set('cronLastDailyRun', time());
-        return self::EXIT_CODE_NORMAL;
+
+		return self::EXIT_CODE_NORMAL;
     }
 
 }

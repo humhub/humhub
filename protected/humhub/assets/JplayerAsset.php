@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -12,12 +12,12 @@ use yii\web\AssetBundle;
 
 /**
  * jquery-At.js
- * 
+ *
  * @author buddha
  */
 class JplayerAsset extends AssetBundle
 {
-   
+
     /**
      * @inheritdoc
      */
@@ -30,9 +30,10 @@ class JplayerAsset extends AssetBundle
         'jplayer/jquery.jplayer.js',
         'add-on/jplayer.playlist.js',
     ];
-    
+
     /**
      * @inheritdoc
      */
     public $css = ['skin/blue.monday/css/jplayer.blue.monday.min.css'];
+
 }

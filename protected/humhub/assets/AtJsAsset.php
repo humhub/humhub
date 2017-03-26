@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -12,12 +12,12 @@ use yii\web\AssetBundle;
 
 /**
  * jquery-At.js
- * 
+ *
  * @author buddha
  */
 class AtJsAsset extends AssetBundle
 {
-   
+
     /**
      * @inheritdoc
      */
@@ -27,12 +27,12 @@ class AtJsAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['dist/js/jquery.atwho.min.js'];
-    
+
     /**
      * @inheritdoc
      */
     public $css = [];
-    
+
     /**
      * @inheritdoc
      */
@@ -40,5 +40,5 @@ class AtJsAsset extends AssetBundle
         'humhub\assets\CaretJsAsset',
         'humhub\assets\AtJsStyleAsset'
     ];
-    
+
 }

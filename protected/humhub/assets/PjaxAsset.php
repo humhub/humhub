@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -13,18 +13,19 @@ use yii\web\View;
 
 /**
  * select2
- * 
+ *
  * @author buddha
  */
 class PjaxAsset extends AssetBundle
-{   
+{
+
     public $jsOptions = ['position' => View::POS_HEAD];
-    
+
     /**
      * @inheritdoc
      */
     public $basePath = '@webroot-static';
-    
+
     /**
      * @inheritdoc
      */
@@ -34,9 +35,9 @@ class PjaxAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['js/jquery.pjax.modified.js'];
-    
+
     public $depends = [
         //'yii\web\YiiAsset',
     ];
-  
+
 }

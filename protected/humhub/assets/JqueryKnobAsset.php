@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -13,11 +13,12 @@ use yii\web\View;
 
 /**
  * jquery-knob
- * 
+ *
  * @author luke
  */
 class JqueryKnobAsset extends AssetBundle
 {
+
     public $jsOptions = ['position' => View::POS_BEGIN];
 
     /**
@@ -29,7 +30,7 @@ class JqueryKnobAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['dist/jquery.knob.min.js'];
-    
+
     public $depends = ['humhub\assets\AppAsset'];
 
 }

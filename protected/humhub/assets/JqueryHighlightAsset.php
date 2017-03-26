@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -12,7 +12,7 @@ use yii\web\AssetBundle;
 
 /**
  * jquery-highlight
- * 
+ *
  * @author buddha
  */
 class JqueryHighlightAsset extends AssetBundle
@@ -22,7 +22,7 @@ class JqueryHighlightAsset extends AssetBundle
      * @inheritdoc
      */
     public $basePath = '@webroot-static';
-    
+
     /**
      * @inheritdoc
      */
@@ -32,4 +32,5 @@ class JqueryHighlightAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['js/jquery.highlight.min.js'];
+
 }

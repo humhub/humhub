@@ -2,14 +2,13 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\commands;
 
 use Yii;
-
 
 /**
  * Manages application migrations.
@@ -65,7 +64,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
     /**
      * When includeModuleMigrations is enabled, this maps migrations to the
      * corresponding module.
-     * 
+     *
      * @var array
      */
     protected $migrationPathMap = [];
@@ -101,7 +100,8 @@ class MigrateController extends \yii\console\controllers\MigrateController
         }
 
         sort($migrations);
-        return $migrations;
+
+		return $migrations;
     }
 
     /**
@@ -114,13 +114,14 @@ class MigrateController extends \yii\console\controllers\MigrateController
         if ($this->includeModuleMigrations) {
             $this->migrationPath = $this->getMigrationPath($class);
         }
-        return parent::createMigration($class);
+
+		return parent::createMigration($class);
     }
 
     /**
      * Returns the migration path of a given migration.
      * A map containing the path=>migration will be created by getNewMigrations method.
-     * 
+     *
      * @param type $migration
      * @return type
      * @throws \yii\console\Exception
@@ -132,18 +133,19 @@ class MigrateController extends \yii\console\controllers\MigrateController
                 return $path;
             }
         }
-        throw new \yii\console\Exception("Could not find path for: " . $migration);
+
+		throw new \yii\console\Exception("Could not find path for: " . $migration);
     }
 
     /**
      * Returns the migration paths of all enabled modules
-     * 
+     *
      * @return array
      */
     protected function getMigrationPaths()
     {
         $migrationPaths = ['base' => $this->migrationPath];
-        foreach (\Yii::$app->getModules() as $id => $config) {
+        foreach (Yii::$app->getModules() as $id => $config) {
             if (is_array($config) && isset($config['class'])) {
                 $reflector = new \ReflectionClass($config['class']);
                 $path = dirname($reflector->getFileName()) . '/migrations';
@@ -152,12 +154,13 @@ class MigrateController extends \yii\console\controllers\MigrateController
                 }
             }
         }
-        return $migrationPaths;
+
+		return $migrationPaths;
     }
 
     /**
-     * Executes all pending migrations 
-     * 
+     * Executes all pending migrations
+     *
      * @return string output
      */
     public static function webMigrateAll()
@@ -169,12 +172,13 @@ class MigrateController extends \yii\console\controllers\MigrateController
         $controller->includeModuleMigrations = true;
         $controller->color = false;
         $controller->runAction('up');
-        return ob_get_clean();
+
+		return ob_get_clean();
     }
 
     /**
      * Executes migrations in a specific folder
-     * 
+     *
      * @param string $migrationPath
      * @return string output
      */

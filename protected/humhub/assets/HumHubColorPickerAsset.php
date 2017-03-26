@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -12,19 +12,19 @@ use yii\web\AssetBundle;
 
 /**
  * Color Picker js utility
- * 
+ *
  * @author buddha
  */
 class HumHubColorPickerAsset extends AssetBundle
 {
 
     public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
-    
+
     /**
      * @inheritdoc
      */
     public $basePath = '@webroot-static';
-    
+
     /**
      * @inheritdoc
      */
@@ -34,8 +34,8 @@ class HumHubColorPickerAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['js/humhub/humhub.ui.colorpicker.js'];
-    
-    
+
+
     public $depends = ['humhub\assets\BootstrapColorPickerAsset'];
-    
+
 }

@@ -14,7 +14,7 @@ use yii\web\AssetBundle;
  * AppDynamicAsset provides assets which are included in the core layout.
  * It similar to AppAsset but won't be compressed and combined.
  * So it can handle dynamic assets (e.g. javascript locales)
- * 
+ *
  * @since 1.2
  */
 class AppDynamicAsset extends AssetBundle

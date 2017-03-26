@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -11,8 +11,8 @@ namespace humhub\assets;
 use yii\web\AssetBundle;
 
 /**
- * jQery Blueimp File Upload 
- * 
+ * jQery Blueimp File Upload
+ *
  * @author luke
  */
 class BlueimpFileUploadAsset extends AssetBundle

@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -12,12 +12,12 @@ use yii\web\AssetBundle;
 
 /**
  * jquery-knob
- * 
+ *
  * @author luke
  */
 class BluebirdAsset extends AssetBundle
 {
-    
+
     /**
      * @inheritdoc
      */
@@ -27,10 +27,10 @@ class BluebirdAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['js/browser/bluebird.min.js'];
-    
+
     /**
      * @inheritdoc
      */
     public $css = [];
-    
+
 }

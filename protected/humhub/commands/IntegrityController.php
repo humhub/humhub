@@ -2,19 +2,18 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\commands;
-
 
 use yii\console\Controller;
 use yii\helpers\Console;
 
 /**
  * Performs data integrity checks.
- * 
+ *
  * @author Luke
  */
 class IntegrityController extends Controller
@@ -36,16 +35,17 @@ class IntegrityController extends Controller
     public function actionRun()
     {
         $this->stdout("\n*** Performing database integrity checks\n\n", Console::FG_YELLOW);
-        $this->trigger(self::EVENT_ON_RUN);
 
+		$this->trigger(self::EVENT_ON_RUN);
 
         $this->stdout("\n*** All integrity checks done\n\n", Console::FG_YELLOW);
-        return self::EXIT_CODE_NORMAL;
+
+		return self::EXIT_CODE_NORMAL;
     }
 
     /**
-     * Shows a test headline 
-     * 
+     * Shows a test headline
+     *
      * @param string $headline
      */
     public function showTestHeadline($headline)
@@ -56,9 +56,9 @@ class IntegrityController extends Controller
 
     /**
      * Shows a fix
-     * 
+     *
      * If not in interactive mode, it returns true otherwise a confirm dialog will be shown.
-     * 
+     *
      * @param string $headline
      * @return boolean
      */
@@ -74,7 +74,7 @@ class IntegrityController extends Controller
 
     /**
      * Shows a warning
-     * 
+     *
      * @param string $message
      */
     public function showWarning($message)
