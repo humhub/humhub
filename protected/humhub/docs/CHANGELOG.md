@@ -16,6 +16,7 @@ HumHub Change Log
 - Enh: WallEntry layout layout improvements
 - Fix: Default user & space module configuration lost after foreign key migration
 - Fix: Respect pinned post when inserting a a new stream entry
+- Fix: Show comments in modal not working
 
 
 1.2.0-beta.3 (March 20, 2017)
