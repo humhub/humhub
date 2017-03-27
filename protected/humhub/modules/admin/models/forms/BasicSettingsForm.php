@@ -43,7 +43,7 @@ class BasicSettingsForm extends \yii\base\Model
 
         $this->defaultSpaces = \humhub\modules\space\models\Space::findAll(['auto_add_new_members' => 1]);
 
-        $this->defaultStreamSort = Yii::$app->getModule('content')->settings->get('stream.defaultSort');
+        $this->defaultStreamSort = Yii::$app->getModule('stream')->settings->get('defaultSort');
     }
 
     /**
@@ -114,7 +114,7 @@ class BasicSettingsForm extends \yii\base\Model
         Yii::$app->getModule('dashboard')->settings->set('showProfilePostForm', $this->dashboardShowProfilePostForm);
         Yii::$app->getModule('tour')->settings->set('enable', $this->tour);
         Yii::$app->getModule('friendship')->settings->set('enable', $this->enableFriendshipModule);
-        Yii::$app->getModule('content')->settings->set('stream.defaultSort', $this->defaultStreamSort);
+        Yii::$app->getModule('stream')->settings->set('defaultSort', $this->defaultStreamSort);
 
         // Remove Old Default Spaces
         if (empty($this->defaultSpaceGuid)) {

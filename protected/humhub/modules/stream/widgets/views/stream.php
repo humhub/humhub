@@ -4,9 +4,12 @@ use yii\helpers\Url;
 
 \humhub\modules\stream\assets\StreamAsset::register($this);
 
+$sorting = Yii::$app->getModule('stream')->settings->get('defaultSort', 'c');
+
 $this->registerJsConfig([
     'stream' => [
         'horizontalImageScrollOnMobile' => Yii::$app->settings->get('horImageScrollOnMobile'),
+        'defaultSort' => $sorting,
         'text' => [
             'success.archive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been archived.'),
             'success.unarchive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unarchived.'),
@@ -25,7 +28,7 @@ $contentIdData = ($contentId != "") ? 'data-stream-contentid="' . $contentId . '
 <?php if ($contentContainer && $contentContainer->isArchived()) : ?>
     <span class="label label-warning pull-right" style="margin-top:10px;"><?= Yii::t('ContentModule.widgets_views_label', 'Archived'); ?></span>
 <?php endif; ?>
-<?php if ($this->context->showFilters) { ?>
+<?php if ($this->context->showFilters) : ?>
     <ul class="nav nav-tabs wallFilterPanel" id="filter" style="display: none;">
         <li class=" dropdown">
             <a class="stream-filter dropdown-toggle" data-toggle="dropdown" href="#"><?= Yii::t('ContentModule.widgets_views_stream', 'Filter'); ?> <b
@@ -46,18 +49,18 @@ $contentIdData = ($contentId != "") ? 'data-stream-contentid="' . $contentId . '
             <ul class="dropdown-menu">
                 <li>
                     <a href="#" class="wallSorting" id="sorting_c">
-                        <i class="fa fa-square-o"></i> <?= Yii::t('ContentModule.widgets_views_stream', 'Creation time'); ?>
+                        <i class="fa <?= ($sorting === 'c') ? 'fa-check-square-o' : 'fa-square-o'?>"></i> <?= Yii::t('ContentModule.widgets_views_stream', 'Creation time'); ?>
                     </a>
                 </li>
                 <li>
                     <a href="#" class="wallSorting" id="sorting_u">
-                        <i class="fa fa-square-o"></i> <?= Yii::t('ContentModule.widgets_views_stream', 'Last update'); ?>
+                        <i class="fa <?= ($sorting === 'u') ? 'fa-check-square-o' : 'fa-square-o'?>"></i> <?= Yii::t('ContentModule.widgets_views_stream', 'Last update'); ?>
                     </a>
                 </li>
             </ul>
         </li>
     </ul>
-<?php } ?>
+<?php endif; ?>
 
 <!-- Stream content -->
 <div id="wallStream" data-stream="<?= $streamUrl ?>" <?= $contentIdData ?> 
@@ -90,7 +93,6 @@ $contentIdData = ($contentId != "") ? 'data-stream-contentid="' . $contentId . '
             </div>
 
         </div>
-
     </div>
 </div>
 

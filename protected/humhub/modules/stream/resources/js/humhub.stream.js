@@ -364,7 +364,7 @@ humhub.module('stream', function (module, require, $) {
         this.$filter = this.cfg['filterPanel'];
 
         //TODO: make this configurable
-        this.sort = "c";
+        this.sort = module.config.defaultSort || 'c';
     };
 
     object.inherits(Stream, Component);
