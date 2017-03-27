@@ -6,9 +6,9 @@ use humhub\widgets\GridView;
 ?>
 
 <div class="panel-body">
-    <h4><?php echo Yii::t('AdminModule.user', 'Overview'); ?></h4>
+    <h4><?= Yii::t('AdminModule.user', 'Overview'); ?></h4>
     <div class="help-block">
-        <?php echo Yii::t('AdminModule.views_user_index', 'This overview contains a list of each registered user with actions to view, edit and delete users.'); ?>
+        <?= Yii::t('AdminModule.views_user_index', 'This overview contains a list of each registered user with actions to view, edit and delete users.'); ?>
     </div>
     <div class="table-responsive">
         <div class="pull-right">
@@ -26,8 +26,8 @@ use humhub\widgets\GridView;
                     'options' => ['style' => 'width:40px;'],
                     'format' => 'raw',
                     'value' => function($data) {
-                return $data->id;
-            },
+                        return $data->id;
+                    },
                 ],
                 'username',
                 'email',
@@ -42,8 +42,8 @@ use humhub\widgets\GridView;
                         'options' => ['style' => 'width:86px;', 'class' => 'form-control'],
                     ]),
                     'value' => function ($data) {
-                return ($data->last_login == NULL) ? Yii::t('AdminModule.views_user_index', 'never') : Yii::$app->formatter->asDate($data->last_login);
-            }
+                        return ($data->last_login == NULL) ? Yii::t('AdminModule.views_user_index', 'never') : Yii::$app->formatter->asDate($data->last_login);
+                    }
                 ],
                 [
                     'header' => Yii::t('AdminModule.views_user_index', 'Actions'),
@@ -53,16 +53,16 @@ use humhub\widgets\GridView;
                         'view' => function($url, $model) {
                             return Html::a('<i class="fa fa-eye"></i>', $model->getUrl(), ['class' => 'btn btn-primary btn-xs tt']);
                         },
-                                'update' => function($url, $model) {
+                        'update' => function($url, $model) {
                             return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(['edit', 'id' => $model->id]), ['class' => 'btn btn-primary btn-xs tt']);
                         },
-                                'delete' => function($url, $model) {
+                        'delete' => function($url, $model) {
                             return Html::a('<i class="fa fa-times"></i>', Url::toRoute(['delete', 'id' => $model->id]), ['class' => 'btn btn-danger btn-xs tt']);
                         }
-                            ],
-                        ],
                     ],
-                ]);
-                ?>
+                ],
+            ],
+        ]);
+        ?>
     </div>
 </div>

@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -46,12 +46,12 @@ class CreateComment extends \humhub\libs\BasePermission
      * @inheritdoc
      */
     protected $moduleId = 'comment';
-    
+
     public function __construct($config = array()) {
         parent::__construct($config);
-        
+
         $this->title = \Yii::t('CommentModule.permissions', 'Create comment');
         $this->description = \Yii::t('CommentModule.permissions', 'Allows the user to add comments');
-    }  
+    }
 
 }

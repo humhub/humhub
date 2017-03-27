@@ -18,19 +18,16 @@ use yii\widgets\ActiveForm;
     <div class="help-block">
         <?= Yii::t('AdminModule.views_setting_authentication_ldap', 'Specify your LDAP-backend used to fetch user accounts.') ?>
     </div>
-    <br />
+    <br>
     <?php if ($enabled): ?>
         <?php if ($errorMessage != ""): ?>
-            <div
-                class="alert alert-danger"><?= Yii::t('AdminModule.views_setting_authentication_ldap', 'Status: Error! (Message: {message})', array('{message}' => $errorMessage)); ?></div>
+            <div class="alert alert-danger"><?= Yii::t('AdminModule.views_setting_authentication_ldap', 'Status: Error! (Message: {message})', ['{message}' => $errorMessage]); ?></div>
             <?php else: ?>
-            <div
-                class="alert alert-success"><?= Yii::t('AdminModule.views_setting_authentication_ldap', 'Status: OK! ({userCount} Users)', array('{userCount}' => $userCount)); ?></div>
+            <div class="alert alert-success"><?= Yii::t('AdminModule.views_setting_authentication_ldap', 'Status: OK! ({userCount} Users)', ['{userCount}' => $userCount]); ?></div>
             <?php endif; ?>
         <?php endif; ?>
 
     <?php $form = ActiveForm::begin(['id' => 'authentication-settings-form']); ?>
-
 
     <?= $form->field($model, 'enabled')->checkbox(['readonly' => Setting::IsFixed('auth.ldap.enabled', 'user')]); ?>
     <hr>
@@ -63,13 +60,11 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'emailAttribute')->textInput(['readonly' => Setting::IsFixed('auth.ldap.emailAttribute', 'user')]); ?>
     <p class="help-block"><?= Yii::t('AdminModule.views_setting_authentication_ldap', 'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;'); ?></p>
 
-
     <?= $form->field($model, 'refreshUsers')->checkbox(['readonly' => Setting::IsFixed('auth.ldap.refreshUsers', 'user')]); ?>
 
     <hr>
 
-        <?= Html::submitButton(Yii::t('AdminModule.views_setting_authentication_ldap', 'Save'),
-            ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= Html::submitButton(Yii::t('AdminModule.views_setting_authentication_ldap', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
     <?= \humhub\widgets\DataSaved::widget(); ?>
     <?php ActiveForm::end(); ?>

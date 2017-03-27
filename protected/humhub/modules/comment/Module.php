@@ -41,11 +41,11 @@ class Module extends \humhub\components\Module
     {
         return Yii::t('CommentModule.views_comment_show', 'Comments');
     }
-    
+
     /**
      * @inheritdoc
      */
-    public function getNotifications() 
+    public function getNotifications()
     {
        return [
            'humhub\modules\comment\notifications\NewComment'
@@ -54,7 +54,7 @@ class Module extends \humhub\components\Module
 
     /**
      * Checks if given content object can be commented
-     * 
+     *
      * @param \humhub\modules\content\models\Content $content
      * @return boolean can comment
      */

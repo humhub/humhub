@@ -1,9 +1,9 @@
 <?php
+
 namespace humhub\modules\admin\models\forms;
 
 use Yii;
 use humhub\modules\user\models\Group;
-
 
 /**
  * Description of UserEditForm
@@ -14,14 +14,14 @@ class UserEditForm extends \humhub\modules\user\models\User
 {
     /**
      * GroupId selection array of the form.
-     * @var type 
+     * @var type
      */
     public $groupSelection;
 
     /**
      * Current member groups (models) of the given $user
-     * @var type 
-     * 
+     * @var type
+     *
      */
     public $currentGroups;
 
@@ -31,20 +31,21 @@ class UserEditForm extends \humhub\modules\user\models\User
     public function initGroupSelection()
     {
         $this->currentGroups = $this->groups;
-        
+
         //Set the current group selection
         $this->groupSelection = [];
         foreach ($this->currentGroups as $group) {
             $this->groupSelection[] = $group->id;
         }
-        
+
         parent::init();
     }
-        
+
     public function scenarios()
     {
         $scenarios = parent::scenarios();
         $scenarios['editAdmin'][] = 'groupSelection';
+
         return $scenarios;
     }
 
@@ -79,9 +80,10 @@ class UserEditForm extends \humhub\modules\user\models\User
                 }
             }
         }
+
         return parent::afterSave($insert, $changedAttributes);
     }
-    
+
     /**
      * Checks if the given group (id or model object) is contained in the form selection
      * @param type $groupId groupId or Group model object
@@ -91,6 +93,7 @@ class UserEditForm extends \humhub\modules\user\models\User
     {
         $groupId = ($groupId instanceof Group) ? $groupId->id : $groupId;
         $this->groupSelection = (is_array($this->groupSelection)) ? $this->groupSelection : [];
+
         return is_array($this->groupSelection) && in_array($groupId, $this->groupSelection);
     }
 
@@ -107,6 +110,7 @@ class UserEditForm extends \humhub\modules\user\models\User
                 return true;
             }
         }
+
         return false;
     }
 
@@ -120,11 +124,12 @@ class UserEditForm extends \humhub\modules\user\models\User
         if($groups == null) {
             $groups = \humhub\modules\user\models\Group::find()->all();
         }
-        
+
         $result = [];
         foreach ($groups as $group) {
             $result[$group->id] = $group->name;
         }
+
         return $result;
     }
 }

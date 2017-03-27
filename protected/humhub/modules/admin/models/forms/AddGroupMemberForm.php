@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -20,13 +20,13 @@ class AddGroupMemberForm extends \yii\base\Model
 
     /**
      * GroupId selection array of the form.
-     * @var type 
+     * @var type
      */
     public $userGuids;
 
     /**
      * User model object
-     * @var type 
+     * @var type
      */
     public $groupId;
 
@@ -67,20 +67,21 @@ class AddGroupMemberForm extends \yii\base\Model
     public function save()
     {
         $group = $this->getGroup();
-        
+
         if($group == null) {
             throw new \yii\web\HttpException(404, Yii::t('AdminModule.models_form_AddGroupMemberForm', 'Group not found!'));
         }
-        
+
         foreach ($this->userGuids as $userGuid) {
             $user = User::findIdentityByAccessToken($userGuid);
             if($user != null) {
-               $group->addUser($user); 
+               $group->addUser($user);
             }
         }
+
         return true;
     }
-    
+
     public function getGroup()
     {
         return \humhub\modules\user\models\Group::findOne($this->groupId);

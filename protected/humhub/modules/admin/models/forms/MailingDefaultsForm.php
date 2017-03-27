@@ -30,9 +30,9 @@ class MailingDefaultsForm extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array(['receive_email_notifications', 'receive_email_activities'], 'integer'),
-        );
+        return [
+            [['receive_email_notifications', 'receive_email_activities'], 'integer'],
+        ];
     }
 
     /**
@@ -40,13 +40,12 @@ class MailingDefaultsForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
-        );
+        return [];
     }
 
     /**
      * Saves the form
-     * 
+     *
      * @return boolean
      */
     public function save()

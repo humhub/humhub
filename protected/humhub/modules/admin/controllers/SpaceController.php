@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -33,6 +33,7 @@ class SpaceController extends Controller
     {
         $this->subLayout = '@admin/views/layouts/space';
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Spaces'));
+
         return parent::init();
     }
 
@@ -43,9 +44,9 @@ class SpaceController extends Controller
     {
         return [
             ['permissions' => [
-                    ManageSpaces::className(),
-                    ManageSettings::className()
-                ]],
+                ManageSpaces::className(),
+                ManageSettings::className()
+            ]],
         ];
     }
 
@@ -58,12 +59,14 @@ class SpaceController extends Controller
             $searchModel = new \humhub\modules\admin\models\SpaceSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-            return $this->render('index', array(
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel
-            ));
+            return $this->render('index', [
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel
+            ]);
         } else if (Yii::$app->user->can(new ManageSettings())) {
-            $this->redirect(['settings']);
+            $this->redirect([
+                'settings'
+            ]);
         }
     }
 
@@ -84,10 +87,14 @@ class SpaceController extends Controller
 
             // set flash message
             $this->view->saved();
-            return $this->redirect(['settings']);
+            return $this->redirect([
+                'settings'
+            ]);
         }
 
-        return $this->render('settings', array('model' => $form));
+        return $this->render('settings', [
+            'model' => $form]
+        );
     }
 
 }

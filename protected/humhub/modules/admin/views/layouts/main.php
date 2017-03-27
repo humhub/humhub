@@ -4,7 +4,7 @@
             <?= \humhub\modules\admin\widgets\AdminMenu::widget(); ?>
         </div>
         <div class="col-md-9">
-            <?php echo $content; ?>
+            <?= $content; ?>
         </div>
     </div>
 </div>

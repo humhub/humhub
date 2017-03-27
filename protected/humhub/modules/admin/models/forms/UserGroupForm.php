@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -20,20 +20,20 @@ class UserGroupForm extends \yii\base\Model
 
     /**
      * GroupId selection array of the form.
-     * @var type 
+     * @var type
      */
     public $groupSelection;
 
     /**
      * Current member groups (models) of the given $user
-     * @var type 
-     * 
+     * @var type
+     *
      */
     public $currentGroups;
 
     /**
      * User model object
-     * @var type 
+     * @var type
      */
     public $user;
 
@@ -86,16 +86,17 @@ class UserGroupForm extends \yii\base\Model
                 $this->user->getGroupUsers()->where(['group_id' => $userGroup->id])->one()->delete();
             }
         }
-        
+
         //Add all selectedGroups to the given user
         foreach ($this->groupSelection as $groupId) {
             if (!$this->isCurrentlyMemberOf($groupId)) {
                 Group::findOne($groupId)->addUser($this->user);
             }
         }
+
         return true;
     }
-    
+
     /**
      * Checks if the given group (id or model object) is contained in the form selection
      * @param type $groupId groupId or Group model object
@@ -105,6 +106,7 @@ class UserGroupForm extends \yii\base\Model
     {
         $groupId = ($groupId instanceof Group) ? $groupId->id : $groupId;
         $this->groupSelection = (is_array($this->groupSelection)) ? $this->groupSelection : [];
+
         return is_array($this->groupSelection) && in_array($groupId, $this->groupSelection);
     }
 
@@ -121,6 +123,7 @@ class UserGroupForm extends \yii\base\Model
                 return true;
             }
         }
+
         return false;
     }
 
@@ -135,6 +138,7 @@ class UserGroupForm extends \yii\base\Model
         foreach ($groups as $group) {
             $result[$group->id] = $group->name;
         }
+
         return $result;
     }
 
