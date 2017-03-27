@@ -48,11 +48,9 @@ class Followed extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function getTitle(\humhub\modules\user\models\User $user)
+    public function getMailSubject()
     {
-        return Yii::t('UserModule.notification', '{displayName} is now following you', [
-                    'displayName' => Html::encode($this->originator->displayName),
-        ]);
+        return strip_tags($this->html());
     }
 
     /**

@@ -91,29 +91,6 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     }
 
     /**
-     * @param User $user the recipient
-     * @return string title text for this notification
-     */
-    public function getTitle(User $user)
-    {
-        $category = $this->getCategory();
-        if ($category) {
-            return Yii::t('NotificationModule.base', 'There are new updates available at {baseUrl} - ({category})', ['baseUrl' => Url::base(true), 'category' => $category->getTitle()]);
-        } else {
-            return Yii::t('NotificationModule.base', 'There are new updates available at {baseUrl}', ['baseUrl' => Url::base(true)]);
-        }
-    }
-
-    /**
-     * @param User $user the recipient
-     * @return string the headline for this notification, can be used for example in mails.
-     */
-    public function getHeadline(User $user)
-    {
-        return null;
-    }
-
-    /**
      * @inheritdoc
      */
     public function getViewParams($params = [])
@@ -182,6 +159,17 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
         } catch (\Exception $e) {
             Yii::error($e);
         }
+    }
+
+    /**
+     * Returns the mail subject which will be used in the notification e-mail
+     * 
+     * @see \humhub\modules\notification\targets\MailTarget
+     * @return string the subject
+     */
+    public function getMailSubject()
+    {
+        return "New notification";
     }
 
     /**
@@ -394,8 +382,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     public function asArray(User $user)
     {
         $result = parent::asArray($user);
-        $result['title'] = $this->getTitle($user);
-        $result['headline'] = $this->getHeadline($user);
+        $result['mailSubject'] = $this->getMailSubject($user);
         return $result;
     }
 
@@ -426,5 +413,5 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     {
         return null;
     }
-
+    
 }

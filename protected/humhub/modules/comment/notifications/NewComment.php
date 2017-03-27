@@ -77,12 +77,13 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
     /**
      * @inheritdoc
      */
-    public function getTitle(User $user)
+    public function getMailSubject()
     {
         if ($this->groupCount > 1) {
-            return $this->getGroupTitle($user);
+            return $this->getGroupTitle();
         }
 
+        $user = $this->record->user;
         $contentRecord = $this->getCommentedRecord();
         $contentInfo = $this->getContentInfo($this->getCommentedRecord());
         $space = $this->getSpace();
@@ -113,8 +114,10 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
         }
     }
 
-    private function getGroupTitle(User $user)
+    private function getGroupTitle()
     {
+        
+        $user = $this->record->user;
         $contentRecord = $this->getCommentedRecord();
         $contentInfo = $this->getContentInfo($this->getCommentedRecord());
         $space = $this->getSpace();

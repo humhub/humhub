@@ -41,7 +41,7 @@ class ApprovalRequestAccepted extends BaseNotification
     /**
      *  @inheritdoc
      */
-    public function getTitle(\humhub\modules\user\models\User $user)
+    public function getMailSubject()
     {
         return strip_tags($this->html());
     }

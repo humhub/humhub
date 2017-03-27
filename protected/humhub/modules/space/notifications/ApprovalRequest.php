@@ -61,7 +61,7 @@ class ApprovalRequest extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function getTitle(\humhub\modules\user\models\User $user)
+    public function getMailSubject()
     {
         return Yii::t('SpaceModule.notification', '{displayName} requests membership for the space {spaceName}', [
                     '{displayName}' => Html::encode($this->originator->displayName),

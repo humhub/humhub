@@ -50,7 +50,7 @@ class NewLike extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function getTitle(\humhub\modules\user\models\User $user)
+    public function getMailSubject()
     {
         $contentInfo = $this->getContentInfo($this->getLikedRecord());
 
