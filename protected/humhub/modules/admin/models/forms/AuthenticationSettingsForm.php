@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -13,7 +13,7 @@ use humhub\libs\DynamicConfig;
 
 /**
  * AuthenticationSettingsForm
- * 
+ *
  * @since 0.5
  */
 class AuthenticationSettingsForm extends \yii\base\Model
@@ -50,12 +50,12 @@ class AuthenticationSettingsForm extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array(['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess'], 'boolean'),
-            array('defaultUserGroup', 'exist', 'targetAttribute' => 'id', 'targetClass' => \humhub\modules\user\models\Group::className()),
-            array('defaultUserProfileVisibility', 'in', 'range' => [1, 2]),
-            array('defaultUserIdleTimeoutSec', 'integer', 'min' => 20),
-        );
+        return [
+            [['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess'], 'boolean'],
+            ['defaultUserGroup', 'exist', 'targetAttribute' => 'id', 'targetClass' => \humhub\modules\user\models\Group::className()],
+            ['defaultUserProfileVisibility', 'in', 'range' => [1, 2]],
+            ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
+        ];
     }
 
     /**
@@ -63,7 +63,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Require group admin approval after registration'),
             'internalAllowAnonymousRegistration' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Anonymous users can register'),
             'internalUsersCanInvite' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Members can invite external users by email'),
@@ -71,12 +71,12 @@ class AuthenticationSettingsForm extends \yii\base\Model
             'defaultUserIdleTimeoutSec' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default user idle timeout, auto-logout (in seconds, optional)'),
             'allowGuestAccess' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Allow limited access for non-authenticated users (guests)'),
             'defaultUserProfileVisibility' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default user profile visibility'),
-        );
+        ];
     }
 
     /**
      * Saves the form
-     * 
+     *
      * @return boolean
      */
     public function save()

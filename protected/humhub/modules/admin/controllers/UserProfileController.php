@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -37,6 +37,7 @@ class UserProfileController extends Controller
     {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Userprofiles'));
         $this->subLayout = '@admin/views/layouts/user';
+
         return parent::init();
     }
 
@@ -46,7 +47,7 @@ class UserProfileController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' =>  \humhub\modules\admin\permissions\ManageUsers::className()]
+            ['permissions' => \humhub\modules\admin\permissions\ManageUsers::className()]
         ];
     }
 
@@ -56,7 +57,7 @@ class UserProfileController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index', array());
+        return $this->render('index', []);
     }
 
     /**
@@ -77,7 +78,7 @@ class UserProfileController extends Controller
             return $this->redirect(['/admin/user-profile']);
         }
 
-        return $this->render('editCategory', array('category' => $category));
+        return $this->render('editCategory', ['category' => $category]);
     }
 
     /**
@@ -113,8 +114,8 @@ class UserProfileController extends Controller
         $fieldTypes = $profileFieldTypes->getTypeInstances($field);
 
         // Build Form Definition
-        $definition = array();
-        $definition['elements'] = array();
+        $definition = [];
+        $definition['elements'] = [];
 
         // Add all sub forms
         $definition['elements'] = array_merge($definition['elements'], $field->getFormDefinition());
@@ -123,20 +124,20 @@ class UserProfileController extends Controller
         }
 
         // Add Form Buttons
-        $definition['buttons'] = array(
-            'save' => array(
+        $definition['buttons'] = [
+            'save' => [
                 'type' => 'submit',
                 'label' => Yii::t('AdminModule.controllers_UserprofileController', 'Save'),
                 'class' => 'btn btn-primary'
-            ),
-        );
+            ],
+        ];
 
         if (!$field->isNewRecord && !$field->is_system) {
-            $definition['buttons']['delete'] = array(
+            $definition['buttons']['delete'] = [
                 'type' => 'submit',
                 'label' => Yii::t('AdminModule.controllers_UserprofileController', 'Delete'),
                 'class' => 'btn btn-danger pull-right'
-            );
+            ];
         }
 
         // Create Form Instance
@@ -164,8 +165,7 @@ class UserProfileController extends Controller
             return $this->redirect(['/admin/user-profile']);
         }
 
-
-        return $this->render('editField', array('hForm' => $form, 'field' => $field));
+        return $this->render('editField', ['hForm' => $form, 'field' => $field]);
     }
 
     /**

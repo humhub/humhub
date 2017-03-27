@@ -21,9 +21,9 @@ class ApproveUserForm extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array(['subject', 'message'], 'required'),
-        );
+        return [
+            [['subject', 'message'], 'required'],
+        ];
     }
 
     /**
@@ -31,10 +31,10 @@ class ApproveUserForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'subject' => Yii::t('AdminModule.forms_ApproveUserForm', 'Subject'),
             'message' => Yii::t('AdminModule.forms_ApproveUserForm', 'Message'),
-        );
+        ];
     }
 
     public function send($email)

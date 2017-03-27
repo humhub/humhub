@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -57,8 +57,7 @@ class ModuleController extends \yii\console\Controller
 
         foreach ($modules as $module) {
 
-            printf($mask, $module['id'], (Yii::$app->moduleManager->hasModule($module['id']) ? 'Yes' : 'No'), $module['latestVersion'], (isset($module['latestCompatibleVersion']) && $module['latestCompatibleVersion']) ? $module['latestCompatibleVersion'] : "-", $module['name']
-            );
+            printf($mask, $module['id'], (Yii::$app->moduleManager->hasModule($module['id']) ? 'Yes' : 'No'), $module['latestVersion'], (isset($module['latestCompatibleVersion']) && $module['latestCompatibleVersion']) ? $module['latestCompatibleVersion'] : "-", $module['name']);
         }
     }
 
@@ -100,7 +99,7 @@ class ModuleController extends \yii\console\Controller
      * Updates a module
      *
      * @todo Handle no marketplace modules
-     * 
+     *
      * @param string $moduleId
      */
     public function actionUpdate($moduleId)
@@ -139,8 +138,7 @@ class ModuleController extends \yii\console\Controller
      */
     public function actionUpdateAll()
     {
-
-        // Also install modules which are seems to be installed 
+        // Also install modules which are seems to be installed
         $installedModules = Yii::$app->moduleManager->getModules(['returnClass' => true]);
 
         foreach ($installedModules as $moduleId => $className) {
@@ -152,7 +150,6 @@ class ModuleController extends \yii\console\Controller
                 print "Module " . $moduleId . " - Error: " . $ex->getMessage() . "\n";
             }
         }
-
 
         /**
          * Looking up modules which are marked as installed but not loaded.
@@ -167,7 +164,7 @@ class ModuleController extends \yii\console\Controller
                     $onlineModules->install($moduleId);
                     print "Reinstalled: " . $moduleId . "\n";
                 } catch (Exception $ex) {
-                    
+
                 }
             }
         }

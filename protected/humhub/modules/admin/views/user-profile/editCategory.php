@@ -10,45 +10,44 @@ use humhub\libs\Html;
     </div>   
 
     <?php if (!$category->isNewRecord) : ?>
-        <h4><?php echo Yii::t('AdminModule.views_userprofile_editCategory', 'Edit profile category'); ?></h4>
+        <h4><?= Yii::t('AdminModule.views_userprofile_editCategory', 'Edit profile category'); ?></h4>
     <?php else: ?>
-        <h4><?php echo Yii::t('AdminModule.views_userprofile_editCategory', 'Create new profile category'); ?></h4>
+        <h4><?= Yii::t('AdminModule.views_userprofile_editCategory', 'Create new profile category'); ?></h4>
     <?php endif; ?>
-    <br />
-
+    <br>
 
     <?php $form = CActiveForm::begin(); ?>
 
     <div class="form-group">
-        <?php echo $form->labelEx($category, 'title') ?>
-        <?php echo $form->textField($category, 'title', array('class' => 'form-control')); ?>
-        <?php echo $form->error($category, 'title'); ?>
+        <?= $form->labelEx($category, 'title') ?>
+        <?= $form->textField($category, 'title', ['class' => 'form-control']); ?>
+        <?= $form->error($category, 'title'); ?>
     </div>
 
     <div class="form-group">
-        <?php echo $form->labelEx($category, 'description') ?>
-        <?php echo $form->textArea($category, 'description', array('class' => 'form-control', 'rows' => '5')); ?>
-        <?php echo $form->error($category, 'description'); ?>
+        <?= $form->labelEx($category, 'description') ?>
+        <?= $form->textArea($category, 'description', ['class' => 'form-control', 'rows' => '5']); ?>
+        <?= $form->error($category, 'description'); ?>
     </div>
 
     <div class="form-group">
-        <?php echo $form->labelEx($category, 'sort_order') ?>
-        <?php echo $form->textField($category, 'sort_order', array('class' => 'form-control')); ?>
-        <?php echo $form->error($category, 'sort_order'); ?>
+        <?= $form->labelEx($category, 'sort_order') ?>
+        <?= $form->textField($category, 'sort_order', ['class' => 'form-control']); ?>
+        <?= $form->error($category, 'sort_order'); ?>
     </div>
 
     <div class="form-group">
-        <?php echo $form->labelEx($category, 'translation_category') ?>
-        <?php echo $form->textField($category, 'translation_category', array('class' => 'form-control')); ?>
-        <?php echo $form->error($category, 'translation_category'); ?>
+        <?= $form->labelEx($category, 'translation_category') ?>
+        <?= $form->textField($category, 'translation_category', ['class' => 'form-control']); ?>
+        <?= $form->error($category, 'translation_category'); ?>
     </div>
 
     <hr>
 
-    <?php echo Html::submitButton(Yii::t('AdminModule.views_userprofile_editCategory', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => "")); ?>
+    <?= Html::submitButton(Yii::t('AdminModule.views_userprofile_editCategory', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
     <?php if (!$category->isNewRecord && !$category->is_system) : ?>
-        <?php echo Html::a(Yii::t('AdminModule.views_userprofile_editCategory', 'Delete'), Url::to(['delete-category', 'id' => $category->id]), array('class' => 'btn btn-danger')); ?>
+        <?= Html::a(Yii::t('AdminModule.views_userprofile_editCategory', 'Delete'), Url::to(['delete-category', 'id' => $category->id]), ['class' => 'btn btn-danger']); ?>
     <?php endif; ?>
 
     <?php CActiveForm::end(); ?>

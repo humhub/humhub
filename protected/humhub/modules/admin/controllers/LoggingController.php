@@ -9,7 +9,6 @@
 namespace humhub\modules\admin\controllers;
 
 use Yii;
-
 use humhub\modules\admin\components\Controller;
 
 /**
@@ -29,7 +28,8 @@ class LoggingController extends Controller
     {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Logging'));
         $this->subLayout = '@admin/views/layouts/information';
-        return parent::init();
+        
+		return parent::init();
     }
 
     /**
@@ -53,17 +53,18 @@ class LoggingController extends Controller
         $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize]);
         $query->offset($pagination->offset)->limit($pagination->limit);
 
-        return $this->render('index', array(
-                    'logEntries' => $query->all(),
-                    'pagination' => $pagination,
-        ));
+        return $this->render('index', [
+            'logEntries' => $query->all(),
+            'pagination' => $pagination,
+        ]);
     }
 
     public function actionFlush()
     {
         $this->forcePostRequest();
         \humhub\modules\admin\models\Log::deleteAll();
-        return $this->redirect(['index']);
+        
+		return $this->redirect(['index']);
     }
 
 }

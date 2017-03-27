@@ -12,10 +12,10 @@
                         <i class="fa fa-minus-circle check-error animated wobble"></i>
                     <?php endif; ?>
 
-                    <strong><?php echo $check['title']; ?></strong>
+                    <strong><?= $check['title']; ?></strong>
 
                     <?php if (isset($check['hint'])): ?>
-                        <span>(Hint: <?php echo $check['hint']; ?>)</span>
+                        <span>(Hint: <?= $check['hint']; ?>)</span>
                     <?php endif; ?>
 
                 </li>

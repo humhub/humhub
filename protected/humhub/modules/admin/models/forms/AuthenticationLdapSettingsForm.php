@@ -67,11 +67,11 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array(['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'password', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter'], 'string', 'max' => 255),
-            array(['usernameAttribute', 'username', 'password', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter'], 'required'),
-            array('encryption', 'in', 'range' => array('', 'ssl', 'tls')),
-        );
+        return [
+            [['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'password', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter'], 'string', 'max' => 255],
+            [['usernameAttribute', 'username', 'password', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter'], 'required'],
+            ['encryption', 'in', 'range' => ['', 'ssl', 'tls']],
+        ];
     }
 
     /**
@@ -79,7 +79,7 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'enabled' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Enable LDAP Support'),
             'refreshUsers' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Fetch/Update Users Automatically'),
             'username' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Username'),
@@ -92,12 +92,12 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
             'userFilter' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'User Filer'),
             'usernameAttribute' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Username Attribute'),
             'emailAttribute' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'E-Mail Address Attribute'),
-        );
+        ];
     }
 
     /**
      * Saves the form
-     * 
+     *
      * @return boolean
      */
     public function save()

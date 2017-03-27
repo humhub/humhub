@@ -18,10 +18,8 @@ class DashboardApproval extends \humhub\components\Widget
     {
         $users = new UserApprovalSearch();
         if ($users->search()->getCount() !== 0) {
-            return $this->render('dashboardApproval', array());
+            return $this->render('dashboardApproval', []);
         }
     }
 
 }
-
-?>

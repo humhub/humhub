@@ -87,6 +87,7 @@ class Module extends \humhub\components\Module
                 'humhub\modules\admin\notifications\NewVersionAvailable'
             ];
         }
+
         return [];
     }
 

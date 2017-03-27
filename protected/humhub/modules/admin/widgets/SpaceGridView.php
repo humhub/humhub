@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -13,5 +13,5 @@ namespace humhub\modules\admin\widgets;
  */
 class SpaceGridView extends \humhub\widgets\GridView
 {
-    
+
 }

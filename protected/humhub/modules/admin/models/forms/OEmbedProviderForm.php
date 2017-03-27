@@ -19,11 +19,11 @@ class OEmbedProviderForm extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array('prefix', 'safe'),
-            array(['prefix', 'endpoint'], 'required'),
-            array('endpoint', 'url'),
-        );
+        return [
+            ['prefix', 'safe'],
+            [['prefix', 'endpoint'], 'required'],
+            ['endpoint', 'url'],
+        ];
     }
 
     /**
@@ -33,10 +33,10 @@ class OEmbedProviderForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'prefix' => Yii::t('AdminModule.forms_OEmbedProviderForm', 'Url Prefix'),
             'endpoint' => Yii::t('AdminModule.forms_OEmbedProviderForm', 'Endpoint Url'),
-        );
+        ];
     }
 
 }

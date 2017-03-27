@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -36,6 +36,7 @@ class ModuleController extends Controller
     public function init()
     {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Modules'));
+
         return parent::init();
     }
 
@@ -52,13 +53,15 @@ class ModuleController extends Controller
     public function actionIndex()
     {
         Yii::$app->moduleManager->flushCache();
+
         return $this->redirect(['/admin/module/list']);
     }
 
     public function actionList()
     {
         $installedModules = Yii::$app->moduleManager->getModules();
-        return $this->render('list', array('installedModules' => $installedModules));
+
+        return $this->render('list', ['installedModules' => $installedModules]);
     }
 
     /**
@@ -144,7 +147,7 @@ class ModuleController extends Controller
             }
 
             if (!is_writable($module->getBasePath())) {
-                throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Module path %path% is not writeable!', array('%path%' => $module->getPath())));
+                throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Module path %path% is not writeable!', ['%path%' => $module->getPath()]));
             }
 
             Yii::$app->moduleManager->removeModule($module->id);
@@ -186,7 +189,7 @@ class ModuleController extends Controller
         $modules = $onlineModules->getModules();
 
         if ($keyword != "") {
-            $results = array();
+            $results = [];
             foreach ($modules as $module) {
                 if (stripos($module['name'], $keyword) !== false || stripos($module['description'], $keyword) !== false) {
                     $results[] = $module;
@@ -195,7 +198,7 @@ class ModuleController extends Controller
             $modules = $results;
         }
 
-        return $this->render('listOnline', array('modules' => $modules, 'keyword' => $keyword));
+        return $this->render('listOnline', ['modules' => $modules, 'keyword' => $keyword]);
     }
 
     /**
@@ -206,7 +209,7 @@ class ModuleController extends Controller
         $onlineModules = $this->getOnlineModuleManager();
         $modules = $onlineModules->getModuleUpdates();
 
-        return $this->render('listUpdates', array('modules' => $modules));
+        return $this->render('listUpdates', ['modules' => $modules]);
     }
 
     /**
@@ -243,7 +246,7 @@ class ModuleController extends Controller
             }
         }
 
-        return $this->render('listPurchases', array('modules' => $modules, 'licenceKey' => $licenceKey, 'hasError' => $hasError, 'message' => $message));
+        return $this->render('listPurchases', ['modules' => $modules, 'licenceKey' => $licenceKey, 'hasError' => $hasError, 'message' => $message]);
     }
 
     /**
@@ -267,7 +270,7 @@ class ModuleController extends Controller
             $readmeMd = file_get_contents($readmeMdFile);
         }
 
-        return $this->renderAjax('info', array('name' => $module->getName(), 'description' => $module->getDescription(), 'content' => $readmeMd));
+        return $this->renderAjax('info', ['name' => $module->getName(), 'description' => $module->getDescription(), 'content' => $readmeMd]);
     }
 
     /**
@@ -277,7 +280,7 @@ class ModuleController extends Controller
      */
     public function actionThirdpartyDisclaimer()
     {
-        return $this->renderAjax('thirdpartyDisclaimer', array());
+        return $this->renderAjax('thirdpartyDisclaimer', []);
     }
 
     /**
@@ -296,8 +299,6 @@ class ModuleController extends Controller
         if (!$module instanceof ContentContainerModule) {
             throw new HttpException(500, 'Invalid module type!');
         }
-
-
 
         $model = new \humhub\modules\admin\models\forms\ModuleSetAsDefaultForm();
 
@@ -323,7 +324,6 @@ class ModuleController extends Controller
             $model->userDefaultState = $userDefaultModule->state;
         }
 
-
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($module->hasContentContainerType(Space::className())) {
                 $spaceDefaultModule->state = $model->spaceDefaultState;
@@ -342,7 +342,7 @@ class ModuleController extends Controller
             return $this->renderModalClose();
         }
 
-        return $this->renderAjax('setAsDefault', array('module' => $module, 'model' => $model));
+        return $this->renderAjax('setAsDefault', ['module' => $module, 'model' => $model]);
     }
 
     public function getOnlineModuleManager()

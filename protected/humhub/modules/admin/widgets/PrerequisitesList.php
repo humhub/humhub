@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -29,7 +29,7 @@ class PrerequisitesList extends \yii\base\Widget
 
     /**
      * Check there is an error
-     * 
+     *
      * @return boolean
      */
     public static function hasError()

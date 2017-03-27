@@ -2,8 +2,8 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
-use humhub\widgets\GridView;
 use yii\widgets\ActiveForm;
+use humhub\widgets\GridView;
 
 \humhub\modules\admin\assets\AdminGroupAsset::register($this);
 
