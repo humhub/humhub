@@ -9,8 +9,9 @@
 namespace humhub\modules\notification\targets;
 
 use Yii;
-use humhub\modules\user\models\User;
 use yii\helpers\Html;
+use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\user\models\User;
 
 /**
  *

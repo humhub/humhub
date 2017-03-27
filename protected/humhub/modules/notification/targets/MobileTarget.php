@@ -9,6 +9,7 @@
 namespace humhub\modules\notification\targets;
 
 use humhub\modules\user\models\User;
+use humhub\modules\notification\components\BaseNotification;
 
 /**
  * Mobile Target

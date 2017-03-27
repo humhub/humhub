@@ -11,6 +11,7 @@ namespace humhub\modules\notification\targets;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\components\rendering\Renderer;
+use humhub\modules\notification\components\BaseNotification;
 
 /**
  * A BaseTarget is used to handle new Basenotifications. A BaseTarget

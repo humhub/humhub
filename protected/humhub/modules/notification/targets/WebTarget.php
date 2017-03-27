@@ -10,6 +10,7 @@ namespace humhub\modules\notification\targets;
 
 use Yii;
 use humhub\modules\user\models\User;
+use humhub\modules\notification\components\BaseNotification;
 
 /**
  * Web Target
