@@ -12,7 +12,7 @@ use humhub\modules\live\components\LiveEvent;
 
 /**
  * Live event for new comments
- * 
+ *
  * @since 1.2
  */
 class NewComment extends LiveEvent

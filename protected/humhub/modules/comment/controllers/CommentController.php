@@ -2,15 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\comment\controllers;
 
 use Yii;
-use humhub\modules\comment\models\Comment;
 use yii\web\HttpException;
+use humhub\modules\comment\models\Comment;
 
 /**
  * CommentController provides all comment related actions.
@@ -61,7 +61,7 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
         }
 
         if (Yii::$app->request->get('mode') == 'popup') {
-            return $this->renderAjax('showPopup', array('object' => $content, 'output' => $output, 'id' => $content->getUniqueId()));
+            return $this->renderAjax('showPopup', ['object' => $content, 'output' => $output, 'id' => $content->getUniqueId()]);
         } else {
             return $this->renderAjaxContent($output);
         }
@@ -116,8 +116,8 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
             $this->contentAddon = Comment::findOne(['id' => $this->contentAddon->id]);
 
             return $this->renderAjaxContent(\humhub\modules\comment\widgets\Comment::widget([
-                                'comment' => $this->contentAddon,
-                                'justEdited' => true
+                'comment' => $this->contentAddon,
+                'justEdited' => true
             ]));
         }
 

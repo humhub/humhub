@@ -22,13 +22,11 @@ use yii\helpers\Url;
 </div>
 <?php /* END: Comment Create Form */ ?>
 
-<script type="text/javascript">
+<script>
 
 <?php if (count($comments) != 0) { ?>
-        // make comments visible at this point to fixing autoresizing issue for textareas in Firefox
-        $('#comment_<?php echo $id; ?>').show();
+    // make comments visible at this point to fixing autoresizing issue for textareas in Firefox
+    $('#comment_<?php echo $id; ?>').show();
 <?php } ?>
-
-
 
 </script>

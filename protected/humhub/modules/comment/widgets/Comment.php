@@ -33,14 +33,11 @@ class Comment extends \yii\base\Widget
 
         $user = $this->comment->user;
 
-        return $this->render('showComment', array(
-                    'comment' => $this->comment,
-                    'user' => $user,
-                    'justEdited' => $this->justEdited,
-                        )
-        );
+        return $this->render('showComment', [
+            'comment' => $this->comment,
+            'user' => $user,
+            'justEdited' => $this->justEdited,
+        ]);
     }
 
 }
-
-?>
