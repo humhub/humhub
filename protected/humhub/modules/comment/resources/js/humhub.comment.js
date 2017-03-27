@@ -32,14 +32,29 @@ humhub.module('comment', function (module, require, $) {
         var $html = $(html).hide();
         additions.applyTo($html);
         this.getCommentsContainer().append($html);
+        this.incrementCommentCount(1);
         $html.fadeIn();
     };
+    
+    Form.prototype.incrementCommentCount = function (count) {
+        try {
+            var $controls = this.$.closest('.comment-container').siblings('.wall-entry-controls');
+            var $commentCount = $controls.find('.comment-count');
+            if($commentCount.length) {
+                var $count = parseInt($commentCount.data('count'));
+                $count += count;
+                $commentCount.text(' ('+$count+')').show();
+            }
+        } catch(e) {
+            module.log.error(e);
+        }
+    };
 
-    Form.prototype.getUpload = function (html) {
+    Form.prototype.getUpload = function () {
         return Widget.instance(this.$.find('[name="files[]"]'));
     };
 
-    Form.prototype.getCommentsContainer = function (html) {
+    Form.prototype.getCommentsContainer = function () {
         return this.$.siblings('.comment');
     };
 
