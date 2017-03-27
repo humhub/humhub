@@ -47,6 +47,10 @@ class MailSummaryProcessor
             if ($interactive) {
                 Console::startProgress($processed, $totalUsers, 'Sending hourly e-mail summary to users... ', false);
             }
+        } elseif ($interval === MailSummary::INTERVAL_WEEKLY) {
+            if ($interactive) {
+                Console::startProgress($processed, $totalUsers, 'Sending weekly e-mail summary to users... ', false);
+            }
         } else {
             return;
         }
@@ -57,9 +61,9 @@ class MailSummaryProcessor
             try {
                 if (self::checkUser($user, $interval)) {
                     $mailSummary = Yii::createObject([
-                        'class' => MailSummary::className(),
-                        'user' => $user,
-                        'interval' => $interval
+                                'class' => MailSummary::className(),
+                                'user' => $user,
+                                'interval' => $interval
                     ]);
                     if ($mailSummary->send()) {
                         $mailsSent++;
@@ -69,7 +73,7 @@ class MailSummaryProcessor
                 Yii::error('Could not send activity mail to: ' . $user->displayName . ' (' . $ex->getMessage() . ')', 'activity');
             }
             if ($interactive) {
-                Console::updateProgress(++$processed, $totalUsers);
+                Console::updateProgress( ++$processed, $totalUsers);
             }
         }
 

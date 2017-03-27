@@ -32,7 +32,7 @@ class SendMailSummary extends ActiveJob
      */
     public function run()
     {
-        if ($this->interval === MailSummary::INTERVAL_DAILY || $this->interval === MailSummary::INTERVAL_HOURY) {
+        if ($this->interval === MailSummary::INTERVAL_DAILY || $this->interval === MailSummary::INTERVAL_HOURY || $this->interval === MailSummary::INTERVAL_WEEKLY) {
             MailSummaryProcessor::process($this->interval);
         } else {
             Yii::error('Invalid summary interval given'. $this->interval, 'activity.job');

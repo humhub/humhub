@@ -32,6 +32,9 @@ class Events extends \yii\base\Object
             Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_HOURY]));
         } elseif (Yii::$app->controller->action->id == 'daily') {
             Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_DAILY]));
+            if (date('N') == Yii::$app->getModule('activity')->weeklySummaryDay) {
+                Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_WEEKLY]));
+            }
         }
     }
 

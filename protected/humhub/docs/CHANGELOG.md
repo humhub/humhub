@@ -20,6 +20,7 @@ HumHub Change Log
 - Fix: #2374 Comment input not focused on comment link click 
 - Enh: Toggle comment box
 - Enh: Added global copyToClipboard
+- Enh: Added "weekly" mail summary interval
 
 1.2.0-beta.3 (March 20, 2017)
 --------------------------------

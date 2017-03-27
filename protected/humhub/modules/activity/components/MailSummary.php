@@ -30,6 +30,7 @@ class MailSummary extends Component
     const INTERVAL_NONE = 0;
     const INTERVAL_HOURY = 1;
     const INTERVAL_DAILY = 2;
+    const INTERVAL_WEEKLY = 3;
 
     /**
      * @var \humhub\modules\user\models\User the user
@@ -86,8 +87,7 @@ class MailSummary extends Component
             $mail = Yii::$app->mailer->compose([
                 'html' => $this->layout,
                 'text' => $this->layoutPlaintext
-            ],
-            [
+                    ], [
                 'activities' => $outputHtml,
                 'activitiesPlaintext' => $outputPlaintext,
             ]);
@@ -116,6 +116,8 @@ class MailSummary extends Component
             return Yii::t('ActivityModule.base', "Your daily summary");
         } elseif ($this->interval === self::INTERVAL_HOURY) {
             return Yii::t('ActivityModule.base', "Latest news");
+        } elseif ($this->interval === self::INTERVAL_WEEKLY) {
+            return Yii::t('ActivityModule.base', "Your weekly summary");
         }
 
         return "";
