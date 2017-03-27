@@ -93,6 +93,10 @@ humhub.module('ui.additions', function (module, require, $) {
         event.on('humhub:ready', function (evt) {
             module.applyTo($('body'));
         });
+        
+        require('action').registerHandler('copyToClipboard', function(evt) {
+            clipboard.copy(evt.$target.text());
+        });
 
         // workaround for jp-player since it sets display to inline which results in a broken view...
         $(document).on('click.humhub-jp-play', '.jp-play', function () {
@@ -200,8 +204,6 @@ humhub.module('ui.additions', function (module, require, $) {
             module.register(id, options.selector, handler, options);
         }
     };
-
-    //TODO: additions.extend('id', handler); for extending existing additions.
 
     /**
      * Cleanup some nodes required to prevent memoryleaks in pjax mode.

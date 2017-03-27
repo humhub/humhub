@@ -17,9 +17,9 @@ HumHub Change Log
 - Fix: Default user & space module configuration lost after foreign key migration
 - Fix: Respect pinned post when inserting a a new stream entry
 - Fix: Show comments in modal not working
-- Fix: #2381 Comment input not focused on comment link click 
+- Fix: #2374 Comment input not focused on comment link click 
 - Enh: Toggle comment box
-
+- Enh: Added global copyToClipboard
 
 1.2.0-beta.3 (March 20, 2017)
 --------------------------------
