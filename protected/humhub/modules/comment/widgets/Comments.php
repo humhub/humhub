@@ -33,18 +33,15 @@ class Comments extends \yii\base\Widget
 
         $isLimited = ($commentCount > 2);
 
-        return $this->render('comments', array(
-                    'object' => $this->object,
-                    'comments' => $comments,
-                    'modelName' => $modelName,
-                    'modelId' => $modelId,
-                    'id' => $this->object->getUniqueId(),
-                    'isLimited' => $isLimited,
-                    'total' => $commentCount
-                        )
-        );
+        return $this->render('comments', [
+            'object' => $this->object,
+            'comments' => $comments,
+            'modelName' => $modelName,
+            'modelId' => $modelId,
+            'id' => $this->object->getUniqueId(),
+            'isLimited' => $isLimited,
+            'total' => $commentCount
+        ]);
     }
 
 }
-
-?>

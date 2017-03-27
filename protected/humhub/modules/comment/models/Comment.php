@@ -2,17 +2,17 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\comment\models;
 
+use Yii;
 use humhub\modules\post\models\Post;
-use \humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\comment\activities\NewComment;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use Yii;
 
 /**
  * This is the model class for table "comment".
@@ -76,7 +76,8 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     public function beforeDelete()
     {
         $this->flushCache();
-        return parent::beforeDelete();
+
+		return parent::beforeDelete();
     }
 
     /**
@@ -89,7 +90,8 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         } catch (\yii\base\Exception $ex) {
             ;
         }
-        parent::afterDelete();
+
+		parent::afterDelete();
     }
 
     /**
@@ -116,7 +118,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         // Handle mentioned users
         // Execute before NewCommentNotification to avoid double notification when mentioned.
         $mentionedUsers = \humhub\modules\user\models\Mentioning::parse($this, $this->message);
-        
+
         if ($insert) {
             $followers = $this->getCommentedRecord()->getFollowers(null, true);
             $this->filterMentionings($followers, $mentionedUsers);
@@ -140,19 +142,19 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
         return parent::afterSave($insert, $changedAttributes);
     }
-    
+
     /**
      * Filters out all users contained in $mentionedUsers from $followers
-     *  
-     * @param User[] $followers 
-     * @param User[] $mentionedUsers 
+     *
+     * @param User[] $followers
+     * @param User[] $mentionedUsers
      */
     private function filterMentionings(&$followers, $mentionedUsers)
     {
         if(empty($mentionedUsers)) {
             return;
         }
-        
+
         foreach($followers as $i => $follower) {
             foreach($mentionedUsers as $mentioned) {
                 if($follower->is($mentioned)) {
@@ -176,7 +178,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
     /**
      * Returns the commented record e.g. a Post
-     * 
+     *
      * @return \humhub\modules\content\components\ContentActiveRecord
      */
     public function getCommentedRecord()

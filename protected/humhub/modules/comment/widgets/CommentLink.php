@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -50,12 +50,12 @@ class CommentLink extends \yii\base\Widget
             return;
         }
 
-        return $this->render('link', array(
-                    'id' => $this->object->getUniqueId(),
-                    'mode' => $this->mode,
-                    'objectModel' => $this->object->content->object_model,
-                    'objectId' => $this->object->content->object_id,
-        ));
+        return $this->render('link', [
+            'id' => $this->object->getUniqueId(),
+            'mode' => $this->mode,
+            'objectModel' => $this->object->content->object_model,
+            'objectId' => $this->object->content->object_id,
+        ]);
     }
 
     /**
@@ -69,5 +69,3 @@ class CommentLink extends \yii\base\Widget
     }
 
 }
-
-?>

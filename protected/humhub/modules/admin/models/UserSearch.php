@@ -2,12 +2,11 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\admin\models;
-
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -20,7 +19,7 @@ use humhub\modules\user\models\User;
  */
 class UserSearch extends User
 {
-    
+
     public $query;
 
     public function attributes()
@@ -67,7 +66,7 @@ class UserSearch extends User
                 'id',
                 'username',
                 'email',
-        	'last_login',
+            'last_login',
                 'profile.firstname',
                 'profile.lastname',
                 'created_at',
@@ -87,11 +86,11 @@ class UserSearch extends User
         $query->andFilterWhere(['like', 'user.email', $this->email]);
         $query->andFilterWhere(['like', 'profile.firstname', $this->getAttribute('profile.firstname')]);
         $query->andFilterWhere(['like', 'profile.lastname', $this->getAttribute('profile.lastname')]);
-        
+
         if ($this->getAttribute('last_login') != "") {
             try {
                 $last_login = \humhub\libs\DateHelper::parseDateTime($this->getAttribute('last_login'));
-                
+
                 $query->andWhere([
                     '=',
                     new \yii\db\Expression("DATE(last_login)"),

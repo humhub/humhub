@@ -2,7 +2,7 @@
 
 <div class="well">
     <pre>
-        <?php echo $migrate; ?>
+        <?= $migrate; ?>
     </pre>
 </div>
 

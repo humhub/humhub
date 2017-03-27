@@ -2,8 +2,6 @@
 
 namespace humhub\modules\admin\models;
 
-
-
 /**
  * This is the model class for table "log".
  *

@@ -1,9 +1,9 @@
 <?php
 
 use yii\widgets\ActiveForm;
-use humhub\compat\CHtml;
 use yii\helpers\Url;
 use yii\helpers\Html;
+use humhub\compat\CHtml;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\modules\space\widgets\SpacePickerField;
 ?>
@@ -11,8 +11,8 @@ use humhub\modules\space\widgets\SpacePickerField;
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
 <div class="panel-body">
     <?php $form = ActiveForm::begin(); ?>
-    <?php echo $form->field($group, 'name'); ?>
-    <?php echo $form->field($group, 'description')->textarea(['rows' => 5]); ?>
+    <?= $form->field($group, 'name'); ?>
+    <?= $form->field($group, 'description')->textarea(['rows' => 5]); ?>
 
     <?php if (!$group->is_admin_group): ?>
         <?= SpacePickerField::widget([
@@ -37,19 +37,19 @@ use humhub\modules\space\widgets\SpacePickerField;
         ?>
     <?php endif; ?>
 
-    <strong><?php echo Yii::t('AdminModule.views_group_edit', 'Visibility'); ?></strong>
+    <strong><?= Yii::t('AdminModule.views_group_edit', 'Visibility'); ?></strong>
     <br>
     <br>
     <?php if (!$group->is_admin_group): ?>
-        <?php echo $form->field($group, 'show_at_registration')->checkbox(); ?>
+        <?= $form->field($group, 'show_at_registration')->checkbox(); ?>
     <?php endif; ?>
-    <?php echo $form->field($group, 'show_at_directory')->checkbox(); ?>
+    <?= $form->field($group, 'show_at_directory')->checkbox(); ?>
 
-    <?php echo CHtml::submitButton(Yii::t('AdminModule.views_group_edit', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => "")); ?>  
+    <?= CHtml::submitButton(Yii::t('AdminModule.views_group_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
     <?php
     if ($showDeleteButton) {
-        echo Html::a(Yii::t('AdminModule.views_group_edit', 'Delete'), Url::toRoute(['/admin/group/delete', 'id' => $group->id]), array('class' => 'btn btn-danger', 'data-method' => 'POST'));
+        echo Html::a(Yii::t('AdminModule.views_group_edit', 'Delete'), Url::toRoute(['/admin/group/delete', 'id' => $group->id]), ['class' => 'btn btn-danger', 'data-method' => 'POST']);
     }
     ?>
 <?php ActiveForm::end(); ?>

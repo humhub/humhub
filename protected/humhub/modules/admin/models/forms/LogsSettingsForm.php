@@ -6,7 +6,7 @@ use Yii;
 
 /**
  * LogsSettingsForm
- * 
+ *
  * @since 1.2
  */
 class LogsSettingsForm extends \yii\base\Model
@@ -46,9 +46,9 @@ class LogsSettingsForm extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array('logsDateLimit', 'in', 'range' => array_keys($this->options)),
-        );
+        return [
+            ['logsDateLimit', 'in', 'range' => array_keys($this->options)],
+        ];
     }
 
     /**
@@ -56,14 +56,14 @@ class LogsSettingsForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'logsDateLimit' => Yii::t('AdminModule.forms_StatisticSettingsForm', 'Maximum allowed age for logs.'),
-        );
+        ];
     }
 
     /**
      * Saves the form
-     * 
+     *
      * @return boolean
      */
     public function save()

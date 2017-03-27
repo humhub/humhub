@@ -2,8 +2,6 @@
 
 namespace humhub\modules\admin\models\forms;
 
-
-
 /**
  * GroupForm is used to modify group settings
  *
@@ -23,9 +21,9 @@ class ModuleSetAsDefaultForm extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array(['userDefaultState', 'spaceDefaultState'], 'integer'),
-        );
+        return [
+            [['userDefaultState', 'spaceDefaultState'], 'integer'],
+        ];
     }
 
 }

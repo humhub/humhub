@@ -42,11 +42,11 @@ class FileSettingsForm extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array('imageMagickPath', 'checkImageMagick'),
-            array(['allowedExtensions'], 'match', 'pattern' => '/^[A-Za-z0-9_,]+$/u'),
-            array(['maxFileSize', 'useXSendfile', 'maxPreviewImageWidth', 'maxPreviewImageHeight', 'hideImageFileInfo'], 'integer'),
-        );
+        return [
+            ['imageMagickPath', 'checkImageMagick'],
+            [['allowedExtensions'], 'match', 'pattern' => '/^[A-Za-z0-9_,]+$/u'],
+            [['maxFileSize', 'useXSendfile', 'maxPreviewImageWidth', 'maxPreviewImageHeight', 'hideImageFileInfo'], 'integer'],
+        ];
     }
 
     /**
@@ -54,7 +54,7 @@ class FileSettingsForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'imageMagickPath' => Yii::t('AdminModule.forms_FileSettingsForm', 'Image Magick convert command (optional)'),
             'maxFileSize' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum upload file size (in MB)'),
             'useXSendfile' => Yii::t('AdminModule.forms_FileSettingsForm', 'Use X-Sendfile for File Downloads'),
@@ -62,12 +62,12 @@ class FileSettingsForm extends \yii\base\Model
             'maxPreviewImageHeight' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum preview image height (in pixels, optional)'),
             'hideImageFileInfo' => Yii::t('AdminModule.forms_FileSettingsForm', 'Hide file info (name, size) for images on wall'),
             'allowedExtensions' => Yii::t('AdminModule.forms_FileSettingsForm', 'Allowed file extensions'),
-        );
+        ];
     }
 
     /**
      * Check ImageMagick Attribute
-     * 
+     *
      * @param type $attribute
      * @param type $params
      */
@@ -91,7 +91,7 @@ class FileSettingsForm extends \yii\base\Model
 
     /**
      * Saves the form
-     * 
+     *
      * @return boolean
      */
     public function save()

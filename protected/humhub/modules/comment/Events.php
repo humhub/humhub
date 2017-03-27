@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -39,10 +39,11 @@ class Events extends \yii\base\Object
     public static function onUserDelete($event)
     {
 
-        foreach (Comment::findAll(array('created_by' => $event->sender->id)) as $comment) {
+        foreach (Comment::findAll(['created_by' => $event->sender->id]) as $comment) {
             $comment->delete();
         }
-        return true;
+        
+		return true;
     }
 
     /**
@@ -86,7 +87,7 @@ class Events extends \yii\base\Object
         }
         
         if (\Yii::$app->getModule('comment')->canComment($event->sender->object->content)) {
-            $event->sender->addWidget(widgets\CommentLink::className(), array('object' => $event->sender->object), array('sortOrder' => 10));
+            $event->sender->addWidget(widgets\CommentLink::className(), ['object' => $event->sender->object], ['sortOrder' => 10]);
         }
     }
 
@@ -97,7 +98,7 @@ class Events extends \yii\base\Object
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget(widgets\Comments::className(), array('object' => $event->sender->object), array('sortOrder' => 20));
+        $event->sender->addWidget(widgets\Comments::className(), ['object' => $event->sender->object], ['sortOrder' => 20]);
     }
 
 }
