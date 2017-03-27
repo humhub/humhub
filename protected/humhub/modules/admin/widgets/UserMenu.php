@@ -56,7 +56,7 @@ class UserMenu extends \humhub\widgets\BaseMenu
                     new \humhub\modules\admin\permissions\ManageUsers(),
                     new \humhub\modules\admin\permissions\ManageGroups()
                 ])
-           ]));
+            ]);
         }
 
         $this->addItem([
@@ -75,7 +75,7 @@ class UserMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 500,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group'),
             'isVisible' => Yii::$app->user->can(
-                new \humhub\modules\admin\permissions\ManageGroups()
+                    new \humhub\modules\admin\permissions\ManageGroups()
             )
         ]);
 

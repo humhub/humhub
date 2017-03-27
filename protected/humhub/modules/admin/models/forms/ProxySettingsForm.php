@@ -41,7 +41,7 @@ class ProxySettingsForm extends \yii\base\Model
         return [
             [['enabled', 'server', 'user', 'password', 'noproxy'], 'string', 'max' => 255],
             [['port'], 'integer', 'max' => 65535, 'min' => 1],
-        );
+        ];
     }
 
     /**
