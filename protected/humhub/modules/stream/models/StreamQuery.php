@@ -286,9 +286,8 @@ class StreamQuery extends \yii\base\Model
 
     protected function checkSort()
     {
-        $this->sort = (empty($this->sort)) ? Yii::$app->getModule('content')->settings->get('stream.defaultSort') : $this->sort;
-        if (!in_array($this->sort, [static::SORT_CREATED_AT, static::SORT_UPDATED_AT])) {
-            $this->sort = static::SORT_CREATED_AT;
+        if(empty($this->sort) || !in_array($this->sort, [static::SORT_CREATED_AT, static::SORT_UPDATED_AT])) {
+           $this->sort = Yii::$app->getModule('stream')->settings->get('defaultSort', static::SORT_CREATED_AT);
         }
     }
 

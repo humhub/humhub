@@ -21,7 +21,7 @@ use yii\base\ActionEvent;
  *
  * JSON output structure:
  *      content             - array, content id is key
- *           id             - int, id of content 
+ *           id             - int, id of content
  *           guid           - string, guid of content
  *           pinned         - boolean, is content pinned
  *           archived       - boolean, i scontent is archived
@@ -29,8 +29,8 @@ use yii\base\ActionEvent;
  *      total               - int, total of content records
  *      isLast              - boolean, is last content
  *      contentOrder        - array, list of content ids
- * 
- * 
+ *
+ *
  * @author luke
  * @since 0.11
  */
@@ -107,7 +107,7 @@ abstract class Stream extends Action
 
     /**
      * @var \yii\db\ActiveQuery
-     * 
+     *
      * @deprecated since version 1.2 use $streamQuery->query() instead
      */
     public $activeQuery;
@@ -122,14 +122,14 @@ abstract class Stream extends Action
 
     /**
      * Used to filter the stream content entrie classes against a given array.
-     * @var type 
+     * @var array
      * @since 1.2
      */
     public $includes = [];
 
     /**
      * Used to filter our specific types
-     * @var type 
+     * @var array
      * @since 1.2
      */
     public $excludes = [];
@@ -142,7 +142,7 @@ abstract class Stream extends Action
     protected $streamQuery;
 
     /**
-     * @var string suppress similar content types in a row 
+     * @var string suppress similar content types in a row
      */
     public $streamQueryClass = 'humhub\modules\stream\models\StreamSuppressQuery';
 
@@ -257,7 +257,7 @@ abstract class Stream extends Action
 
     /**
      * Is inital stream requests (show first stream content)
-     * 
+     *
      * @return boolean Is initial request
      */
     protected function isInitialRequest()
@@ -267,11 +267,11 @@ abstract class Stream extends Action
 
     /**
      * Renders the wallEntry of the given ContentActiveRecord.
-     * 
+     *
      * If setting $partial to false this function will use the renderAjax function instead of renderPartial, which
      * will directly append all dependencies to the result and if not used in a real ajax request will also append
      * the Layoutadditions.
-     * 
+     *
      * @param \humhub\modules\content\components\ContentActiveRecord $record content record instance
      * @param boolean $partial whether or not to use renderPartial over renderAjax
      * @return string rendered wallentry
@@ -294,9 +294,11 @@ abstract class Stream extends Action
     /**
      * Returns an array contains all informations required to display a content
      * in stream.
-     * 
+     *
      * @param Content $content the content
+     *
      * @return array
+     * @throws Exception
      */
     public static function getContentResultEntry(Content $content)
     {
