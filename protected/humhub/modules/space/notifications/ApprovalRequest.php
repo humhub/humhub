@@ -43,10 +43,10 @@ class ApprovalRequest extends BaseNotification
      */
     public function withMessage($message)
     {
-        if($message) {
+        if ($message) {
             $this->message = $message;
         }
-       
+
         return $this;
     }
 
@@ -96,7 +96,7 @@ class ApprovalRequest extends BaseNotification
         return serialize(['source' => $this->source, 'originator' => $this->originator, 'message' => $this->message]);
     }
 
-     /**
+    /**
      * @inheritdoc
      */
     public function unserialize($serialized)

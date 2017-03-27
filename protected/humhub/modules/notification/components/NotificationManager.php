@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\notification\components;
 
 use Yii;
@@ -10,12 +16,13 @@ use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainerSetting;
+use humhub\modules\notification\targets\BaseTarget;
 
 /**
  * The NotificationManager component is responsible for sending BaseNotifications to Users over different
- * NotificationTargets by using the send and sendBulk function.
+ * notification targets by using the send and sendBulk function.
  * 
- * A NotificationTarget may be disabled for a specific user and will be skipped.
+ * A aotification target may be disabled for a specific user and will be skipped.
  * 
  * @author buddha
  */
@@ -35,7 +42,7 @@ class NotificationManager
     protected $_notifications;
 
     /**
-     * @var NotificationTarget[] Cached target instances.
+     * @var BaseTarget[] Cached target instances.
      */
     protected $_targets;
 
@@ -267,9 +274,7 @@ class NotificationManager
             return array_merge($memberSpaces, $followSpaces);
         } else {
             $defaultSpaces = Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces');
-            return (empty($defaultSpaces)) 
-                ? Space::find()->limit($limit)->all() 
-                : Space::find()->where(['not in', 'guid', $defaultSpaces])->limit($limit)->all();
+            return (empty($defaultSpaces)) ? Space::find()->limit($limit)->all() : Space::find()->where(['not in', 'guid', $defaultSpaces])->limit($limit)->all();
         }
     }
 

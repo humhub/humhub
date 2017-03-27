@@ -24,7 +24,7 @@ class Request extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = "friendship";
-    
+
     /**
      * @inheritdoc
      */
@@ -42,7 +42,7 @@ class Request extends BaseNotification
     {
         return $this->originator->getUrl();
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -50,7 +50,7 @@ class Request extends BaseNotification
     {
         return new FriendshipNotificationCategory;
     }
-    
+
     /**
      * @inheritdoc
      */

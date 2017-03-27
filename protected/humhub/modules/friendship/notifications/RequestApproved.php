@@ -24,12 +24,11 @@ class RequestApproved extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = "friendship";
-    
+
     /**
      * @inheritdoc
      */
     public $viewName = "friendshipApproved";
-    
 
     /**
      * @inheritdoc
@@ -59,7 +58,7 @@ class RequestApproved extends BaseNotification
     {
         return strip_tags($this->html());
     }
-    
+
     /**
      * @inheritdoc
      */

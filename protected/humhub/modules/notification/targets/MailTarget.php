@@ -1,6 +1,12 @@
 <?php
 
-namespace humhub\modules\notification\components;
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\modules\notification\targets;
 
 use Yii;
 use humhub\modules\user\models\User;
@@ -10,7 +16,7 @@ use yii\helpers\Html;
  *
  * @author buddha
  */
-class MailNotificationTarget extends NotificationTarget
+class MailTarget extends BaseTarget
 {
 
     /**
@@ -37,7 +43,7 @@ class MailNotificationTarget extends NotificationTarget
      */
     public function getTitle()
     {
-        return Yii::t('NotificationModule.components_WebNotificationTarget', 'E-Mail');
+        return Yii::t('NotificationModule.targets', 'E-Mail');
     }
 
     /**
@@ -50,7 +56,7 @@ class MailNotificationTarget extends NotificationTarget
         Yii::$app->view->params['showUnsubscribe'] = true;
         Yii::$app->view->params['unsubscribeUrl'] = \yii\helpers\Url::to(['/notification/user'], true);
 
-        // Note: the renderer is configured in common.php by default its an instance of MailNotificationTarget
+        // Note: the renderer is configured in common.php by default its an instance of MailTarget
         $renderer = $this->getRenderer();
 
         $viewParams = \yii\helpers\ArrayHelper::merge([
@@ -71,12 +77,14 @@ class MailNotificationTarget extends NotificationTarget
 
         Yii::$app->i18n->autosetLocale();
     }
-    
+
     /**
      * @inheritdoc
      */
     public function isActive(User $user = null)
     {
+        // Do not send mail notifications for example content during installlation.
         return Yii::$app->params['installed'];
     }
+
 }

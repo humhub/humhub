@@ -15,6 +15,8 @@ use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\jobs\SendNotification;
 use humhub\modules\notification\jobs\SendBulkNotification;
 use humhub\modules\user\models\User;
+use humhub\modules\notification\targets\BaseTarget;
+use humhub\modules\notification\targets\WebTarget;
 
 /**
  * A BaseNotification class describes the behaviour and the type of a Notification.
@@ -24,7 +26,7 @@ use humhub\modules\user\models\User;
  * 
  * MyNotification::instance()->from($originator)->about($source)->sendBulk($userList);
  * 
- * This will send Notifications to different NotificationTargets by using a queue.
+ * This will send Notifications to different notification targets by using a queue.
  *
  * @author luke
  */
@@ -229,7 +231,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     public function about($source)
     {
-        if(!$source) {
+        if (!$source) {
             return;
         }
         parent::about($source);
@@ -242,7 +244,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     public function from($originator)
     {
-        if(!$originator) {
+        if (!$originator) {
             return;
         }
         $this->originator = $originator;
@@ -317,16 +319,16 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     }
 
     /**
-     * Renders the Notificaiton for the given NotificationTarget.
+     * Renders the Notificaiton for the given notification target.
      * Subclasses are able to use custom renderer for different targets by overwriting this function.
      * 
      * @param NotificationTarger $target
      * @return string render result
      */
-    public function render(NotificationTarget $target = null)
+    public function render(BaseTarget $target = null)
     {
         if (!$target) {
-            $target = Yii::$app->notification->getTarget(WebNotificationTarget::class);
+            $target = Yii::$app->notification->getTarget(WebTarget::class);
         }
 
         return $target->getRenderer()->render($this);

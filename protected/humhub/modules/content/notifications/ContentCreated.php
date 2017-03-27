@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -54,28 +54,24 @@ class ContentCreated extends \humhub\modules\notification\components\BaseNotific
      */
     public function getTitle(User $user)
     {
-         $contentInfo = $this->getContentInfo();
+        $contentInfo = $this->getContentInfo();
         $space = $this->getSpace();
         if ($space) {
             if ($this->isExplicitNotifyUser($user)) {
-                return Yii::t('ContentModule.notifications_ContentCreated', '{originator} notifies you about {contentInfo} in {space}', 
-                        ['originator' => Html::encode($this->originator->displayName),
+                return Yii::t('ContentModule.notifications_ContentCreated', '{originator} notifies you about {contentInfo} in {space}', ['originator' => Html::encode($this->originator->displayName),
                             'space' => Html::encode($space->displayName),
                             'contentInfo' => $contentInfo]);
             }
-            return Yii::t('ContentModule.notifications_ContentCreated', '{originator} just wrote {contentInfo} in space {space}', 
-                    ['originator' => Html::encode($this->originator->displayName),
-                            'space' => Html::encode($space->displayName),
-                            'contentInfo' => $contentInfo]);
+            return Yii::t('ContentModule.notifications_ContentCreated', '{originator} just wrote {contentInfo} in space {space}', ['originator' => Html::encode($this->originator->displayName),
+                        'space' => Html::encode($space->displayName),
+                        'contentInfo' => $contentInfo]);
         } else {
             if ($this->isExplicitNotifyUser($user)) {
-                return Yii::t('ContentModule.notifications_ContentCreated', '{originator} notifies you about {contentInfo}', 
-                        ['originator' => Html::encode($this->originator->displayName),
+                return Yii::t('ContentModule.notifications_ContentCreated', '{originator} notifies you about {contentInfo}', ['originator' => Html::encode($this->originator->displayName),
                             'contentInfo' => $contentInfo]);
             }
-            return Yii::t('ContentModule.notifications_ContentCreated', '{originator} just wrote {contentInfo}', 
-                        ['originator' => Html::encode($this->originator->displayName),
-                            'contentInfo' => $contentInfo]);
+            return Yii::t('ContentModule.notifications_ContentCreated', '{originator} just wrote {contentInfo}', ['originator' => Html::encode($this->originator->displayName),
+                        'contentInfo' => $contentInfo]);
         }
     }
 
@@ -89,6 +85,7 @@ class ContentCreated extends \humhub\modules\notification\components\BaseNotific
         }
         return false;
     }
+
 }
 
 ?>

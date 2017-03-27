@@ -1,15 +1,23 @@
 <?php
 
-namespace humhub\modules\notification\components;
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\modules\notification\targets;
 
 use Yii;
 use humhub\modules\user\models\User;
 
 /**
- *
+ * Web Target
+ * 
+ * @since 1.2
  * @author buddha
  */
-class WebNotificationTarget extends NotificationTarget
+class WebTarget extends BaseTarget
 {
 
     /**
@@ -42,9 +50,12 @@ class WebNotificationTarget extends NotificationTarget
         ]));
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getTitle()
     {
-        return Yii::t('NotificationModule.components_WebNotificationTarget', 'Web');
+        return Yii::t('NotificationModule.targets', 'Web');
     }
 
 }

@@ -24,7 +24,7 @@ class RequestDeclined extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = "friendship";
-    
+
     /**
      * @inheritdoc
      */
@@ -42,7 +42,7 @@ class RequestDeclined extends BaseNotification
     {
         return new FriendshipNotificationCategory;
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -50,7 +50,7 @@ class RequestDeclined extends BaseNotification
     {
         return $this->originator->getUrl();
     }
-    
+
     public function getTitle(\humhub\modules\user\models\User $user)
     {
         return strip_tags($this->html());

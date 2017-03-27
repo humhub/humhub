@@ -1,20 +1,30 @@
 <?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\space\notifications;
 
 use Yii;
 use humhub\modules\notification\components\NotificationCategory;
-use humhub\modules\notification\components\NotificationTarget;
+use humhub\modules\notification\targets\BaseTarget;
+use humhub\modules\notification\targets\MailTarget;
+use humhub\modules\notification\targets\WebTarget;
+use humhub\modules\notification\targets\MobileTarget;
 
 /**
- * Description of SpaceJoinNotificationCategory
+ * SpaceMemberNotificationCategory
  *
  * @author buddha
  */
 class SpaceMemberNotificationCategory extends NotificationCategory
 {
+
     /**
-     * Category Id
-     * @var string 
+     * @inheritdoc
      */
     public $id = 'space_member';
 
@@ -33,20 +43,21 @@ class SpaceMemberNotificationCategory extends NotificationCategory
     {
         return Yii::t('SpaceModule.notifications_SpaceMemberNotificationCategory', 'Receive Notifications for Space Approval and Invite events.');
     }
-    
+
     /**
      * @inheritdoc
      */
-    public function getDefaultSetting(NotificationTarget $target)
+    public function getDefaultSetting(BaseTarget $target)
     {
-        if ($target->id === \humhub\modules\notification\components\MailNotificationTarget::getId()) {
+        if ($target->id === MailTarget::getId()) {
             return true;
-        } else if ($target->id === \humhub\modules\notification\components\WebNotificationTarget::getId()) {
+        } else if ($target->id === WebTarget::getId()) {
             return true;
-        } else if ($target->id === \humhub\modules\notification\components\MobileNotificationTarget::getId()) {
+        } else if ($target->id === MobileTarget::getId()) {
             return true;
         }
 
         return $target->defaultSetting;
     }
+
 }

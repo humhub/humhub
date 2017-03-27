@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -36,16 +36,16 @@ class Mentioned extends BaseNotification
     {
         return new MentionedNotificationCategory;
     }
-    
+
     /**
      * @inheritdoc
      */
     public function getViewName()
     {
-        if($this->source instanceof \humhub\modules\comment\models\Comment) {
+        if ($this->source instanceof \humhub\modules\comment\models\Comment) {
             return 'mentionedComment';
         }
-        
+
         return 'mentioned';
     }
 

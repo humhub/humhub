@@ -1,9 +1,15 @@
 <?php
 
-namespace humhub\modules\notification\components;
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\modules\notification\renderer;
 
 /**
- * The MailTargetRenderer is used to render Notifications for the MailNotificationTarget.
+ * The MailTargetRenderer is used to render Notifications for the MailTarget.
  * 
  * A BaseNotification can overwrite the default view and layout by setting a specific $viewName and
  * defining the following files:
@@ -17,10 +23,12 @@ namespace humhub\modules\notification\components;
  * Overwrite default mail text layout for this notification:
  * @module/views/layouts/notification/mail/plaintext/viewname.php
  *
+ * @see \humhub\modules\notification\targets\MailTarget
  * @author buddha
  */
-class MailTargetRenderer extends \humhub\components\rendering\MailRenderer
+class MailRenderer extends \humhub\components\rendering\MailRenderer
 {
+
     /**
      * @inheritdoc
      */
@@ -40,4 +48,5 @@ class MailTargetRenderer extends \humhub\components\rendering\MailRenderer
      * @inheritdoc
      */
     public $defaultTextViewPath = '@notification/views/mails/plaintext';
+
 }
