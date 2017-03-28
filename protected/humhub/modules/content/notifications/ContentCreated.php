@@ -52,8 +52,9 @@ class ContentCreated extends \humhub\modules\notification\components\BaseNotific
     /**
      * @inheritdoc
      */
-    public function getTitle(User $user)
+    public function getMailSubject()
     {
+        $user = $this->record->user;
         $contentInfo = $this->getContentInfo();
         $space = $this->getSpace();
         if ($space) {

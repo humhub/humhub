@@ -113,6 +113,10 @@ class I18N extends \yii\i18n\I18N
             $language = 'zh-TW';
         }
 
+        if ($language == 'nb_no' && $category == 'yii') {
+            $language = 'nb-NO';
+        }
+
         return parent::translate($category, $message, $params, $language);
     }
 

@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -26,12 +26,12 @@ class InviteAccepted extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = "space";
-    
+
     /**
      * @inheritdoc
      */
     public $viewName = "inviteAccepted";
-    
+
     /**
      *  @inheritdoc
      */
@@ -39,16 +39,13 @@ class InviteAccepted extends BaseNotification
     {
         return new SpaceMemberNotificationCategory;
     }
-    
+
     /**
      *  @inheritdoc
      */
-    public function getTitle(\humhub\modules\user\models\User $user)
+    public function getMailSubject()
     {
-        return Yii::t('SpaceModule.notification', '{displayName} accepted your invite for the space {spaceName}', [
-                    '{displayName}' => Html::encode($this->originator->displayName),
-                    '{spaceName}' => Html::encode($this->source->name)
-        ]);
+        return strip_tags($this->html());
     }
 
     /**

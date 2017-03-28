@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -34,7 +34,8 @@ class AuthenticationController extends Controller
         ]);
 
         $this->subLayout = '@admin/views/layouts/user';
-        return parent::init();
+        
+		return parent::init();
     }
 
     /**
@@ -66,7 +67,10 @@ class AuthenticationController extends Controller
             }
         }
 
-        return $this->render('authentication', array('model' => $form, 'groups' => $groups));
+        return $this->render('authentication', [
+			'model' => $form,
+			'groups' => $groups
+		]);
     }
 
     public function actionAuthenticationLdap()
@@ -87,7 +91,9 @@ class AuthenticationController extends Controller
                 $ldapAuthClient = new \humhub\modules\user\authclient\ZendLdapClient();
                 $ldap = $ldapAuthClient->getLdap();
                 $userCount = $ldap->count(
-                        Yii::$app->getModule('user')->settings->get('auth.ldap.userFilter'), Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn'), \Zend\Ldap\Ldap::SEARCH_SCOPE_SUB
+                    Yii::$app->getModule('user')->settings->get('auth.ldap.userFilter'),
+					Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn'),
+					\Zend\Ldap\Ldap::SEARCH_SCOPE_SUB
                 );
             } catch (\Zend\Ldap\Exception\LdapException $ex) {
                 $errorMessage = $ex->getMessage();
@@ -96,9 +102,12 @@ class AuthenticationController extends Controller
             }
         }
 
-        return $this->render('authentication_ldap', array('model' => $form, 'enabled' => $enabled, 'userCount' => $userCount, 'errorMessage' => $errorMessage));
+        return $this->render('authentication_ldap', [
+			'model' => $form,
+			'enabled' => $enabled,
+			'userCount' => $userCount,
+			'errorMessage' => $errorMessage
+		]);
     }
 
 }
-
-?>

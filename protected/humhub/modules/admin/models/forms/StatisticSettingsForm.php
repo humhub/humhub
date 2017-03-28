@@ -6,7 +6,7 @@ use Yii;
 
 /**
  * SettingsForm
- * 
+ *
  * @since 0.5
  */
 class StatisticSettingsForm extends \yii\base\Model
@@ -30,9 +30,9 @@ class StatisticSettingsForm extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array('trackingHtmlCode', 'safe'),
-        );
+        return [
+            ['trackingHtmlCode', 'safe'],
+        ];
     }
 
     /**
@@ -40,14 +40,14 @@ class StatisticSettingsForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'trackingHtmlCode' => Yii::t('AdminModule.forms_StatisticSettingsForm', 'HTML tracking code'),
-        );
+        ];
     }
 
     /**
      * Saves the form
-     * 
+     *
      * @return boolean
      */
     public function save()

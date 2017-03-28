@@ -10,11 +10,11 @@ return array (
   'Information' => 'Informatie',
   'Logs' => 'Logs',
   'Modules' => 'Modules',
-  'Notifications' => 'Notificaties',
+  'Notifications' => 'Meldingen',
   'OEmbed' => 'OEmbed',
   'Proxy' => 'Proxy',
   'Settings' => 'Instellingen',
   'Spaces' => 'Ruimtes',
-  'Statistics' => 'Statestieken',
+  'Statistics' => 'Statistieken',
   'Users' => 'Gebruikers',
 );

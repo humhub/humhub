@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -24,7 +24,7 @@ class UserMenu extends \humhub\widgets\BaseMenu
 
     public function init()
     {
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('AdminModule.views_user_index', 'Users'),
             'url' => Url::to(['/admin/user/index']),
             'sortOrder' => 100,
@@ -33,9 +33,9 @@ class UserMenu extends \humhub\widgets\BaseMenu
                 new \humhub\modules\admin\permissions\ManageUsers(),
                 new \humhub\modules\admin\permissions\ManageGroups(),
             ])
-        ));
+        ]);
 
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('AdminModule.views_user_index', 'Settings'),
             'url' => Url::to(['/admin/authentication']),
             'sortOrder' => 200,
@@ -43,11 +43,11 @@ class UserMenu extends \humhub\widgets\BaseMenu
             'isVisible' => Yii::$app->user->can([
                 new \humhub\modules\admin\permissions\ManageSettings()
             ])
-        ));
+        ]);
 
         $approvalCount = \humhub\modules\admin\models\UserApprovalSearch::getUserApprovalCount();
         if ($approvalCount > 0) {
-            $this->addItem(array(
+            $this->addItem([
                 'label' => Yii::t('AdminModule.user', 'Pending approvals') . ' <span class="label label-danger">' . $approvalCount . '</span>',
                 'url' => Url::to(['/admin/approval']),
                 'sortOrder' => 300,
@@ -56,10 +56,10 @@ class UserMenu extends \humhub\widgets\BaseMenu
                     new \humhub\modules\admin\permissions\ManageUsers(),
                     new \humhub\modules\admin\permissions\ManageGroups()
                 ])
-            ));
+            ]);
         }
 
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('AdminModule.user', 'Profiles'),
             'url' => Url::to(['/admin/user-profile']),
             'sortOrder' => 400,
@@ -67,17 +67,17 @@ class UserMenu extends \humhub\widgets\BaseMenu
             'isVisible' => Yii::$app->user->can([
                 new \humhub\modules\admin\permissions\ManageUsers()
             ])
-        ));
-        
-        $this->addItem(array(
+        ]);
+
+        $this->addItem([
             'label' => Yii::t('AdminModule.user', 'Groups'),
             'url' => Url::to(['/admin/group']),
             'sortOrder' => 500,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group'),
             'isVisible' => Yii::$app->user->can(
-                new \humhub\modules\admin\permissions\ManageGroups()
+                    new \humhub\modules\admin\permissions\ManageGroups()
             )
-        ));
+        ]);
 
         parent::init();
     }

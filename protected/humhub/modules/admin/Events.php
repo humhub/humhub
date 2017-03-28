@@ -12,7 +12,7 @@ use Yii;
 
 /**
  * Admin Module provides the administrative backend for HumHub installations.
- * 
+ *
  * @since 0.5
  */
 class Events extends \yii\base\Object
@@ -31,7 +31,9 @@ class Events extends \yii\base\Object
 
         if (Yii::$app->getModule('user')->settings->get('auth.needApproval')) {
             if (Yii::$app->user->getIdentity()->canApproveUsers()) {
-                $event->sender->addWidget(widgets\DashboardApproval::className(), array(), array('sortOrder' => 99));
+                $event->sender->addWidget(widgets\DashboardApproval::className(), [], [
+                    'sortOrder' => 99
+                ]);
             }
         }
     }
@@ -49,7 +51,7 @@ class Events extends \yii\base\Object
 
     /**
      * On console application initialization
-     * 
+     *
      * @param \yii\base\Event $event
      */
     public static function onConsoleApplicationInit($event)

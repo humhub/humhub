@@ -27,12 +27,12 @@ class MailTarget extends BaseTarget
 
     /**
      * Enable this target by default.
-     * @var type 
+     * @var type
      */
     public $defaultSetting = true;
 
     /**
-     * @var array Notification mail layout. 
+     * @var array Notification mail layout.
      */
     public $view = [
         'html' => '@notification/views/mails/wrapper',
@@ -61,7 +61,7 @@ class MailTarget extends BaseTarget
         $renderer = $this->getRenderer();
 
         $viewParams = \yii\helpers\ArrayHelper::merge([
-                    'headline' => $notification->getHeadline($recipient),
+                    'headline' => '',
                     'notification' => $notification,
                     'space' => $notification->getSpace(),
                     'content' => $renderer->render($notification),
@@ -74,7 +74,7 @@ class MailTarget extends BaseTarget
         Yii::$app->mailer->compose($this->view, $viewParams)
                 ->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => $from])
                 ->setTo($recipient->email)
-                ->setSubject($notification->getTitle($recipient))->send();
+                ->setSubject($notification->getMailSubject())->send();
 
         Yii::$app->i18n->autosetLocale();
     }

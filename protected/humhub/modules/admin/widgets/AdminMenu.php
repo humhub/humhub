@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -122,7 +122,8 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             $canSeeAdminSection = Yii::$app->user->isAdmin() ? true : self::checkNonAdminAccess();
             Yii::$app->session->set('user.canSeeAdminSection', $canSeeAdminSection);
         }
-        return $canSeeAdminSection;
+
+		return $canSeeAdminSection;
     }
 
     private static function checkNonAdminAccess()
@@ -132,9 +133,9 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             if(isset($item['isVisible']) && $item['isVisible']) {
                 return true;
             }
-            ;
         }
-        return false;
+
+		return false;
     }
 
 }

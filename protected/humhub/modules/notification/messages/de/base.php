@@ -7,7 +7,7 @@ return array (
   'Reset to defaults' => 'Auf Standardeinstellungen zurücksetzen',
   'There are new updates available at {baseUrl}' => 'Auf {baseUrl} sind Aktualisierungen verfügbar',
   'There are new updates available at {baseUrl} - ({category})' => 'Auf {baseUrl} - ({category}) sind Aktualisierungen verfügbar',
-  'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.' => 'In dieser Ansicht kannst du durch die Auswahl der gewünschten Ziele der einzelnen Benachrichtigungskategorien kannst die Benachrichtungseinstellungen konfigurieren.',
+  'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.' => 'In dieser Ansicht kannst du durch die Auswahl der gewünschten Ziele der einzelnen Benachrichtigungskategorien die Benachrichtungseinstellungen konfigurieren.',
   '{displayName} and {displayName2}' => '{displayName} und {displayName2}',
   '{displayName} and {number} others' => '{displayName} und {number} weitere',
 );

@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -48,12 +48,9 @@ class InviteDeclined extends BaseNotification
         return $this->source;
     }
 
-    public function getTitle(\humhub\modules\user\models\User $user)
+    public function getMailSubject()
     {
-        return Yii::t('SpaceModule.notification', '{displayName} declined your invite for the space {spaceName}', [
-                    '{displayName}' => Html::encode($this->originator->displayName),
-                    '{spaceName}' => Html::encode($this->getSpace()->name)
-        ]);
+        return strip_tags($this->html());
     }
 
     /**

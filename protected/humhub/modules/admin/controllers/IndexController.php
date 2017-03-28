@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -40,7 +40,8 @@ class IndexController extends Controller
     public function actionIndex()
     {
         $adminMenu = new \humhub\modules\admin\widgets\AdminMenu();
-        return $this->redirect($adminMenu->items[0]['url']);
+
+		return $this->redirect($adminMenu->items[0]['url']);
     }
 
 }

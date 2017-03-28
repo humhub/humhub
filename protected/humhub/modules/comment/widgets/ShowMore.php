@@ -32,10 +32,11 @@ class ShowMore extends \yii\base\Widget
             return;
         }
 
-        $showMoreUrl = \yii\helpers\Url::to(['/comment/comment/show',
-                    'contentModel' => get_class($this->object),
-                    'contentId' => $this->object->getPrimaryKey(),
-                    'page' => $this->pagination->page + 2
+        $showMoreUrl = \yii\helpers\Url::to([
+            '/comment/comment/show',
+            'contentModel' => get_class($this->object),
+            'contentId' => $this->object->getPrimaryKey(),
+            'page' => $this->pagination->page + 2
         ]);
 
         $moreCount = $this->pagination->pageSize;
@@ -43,15 +44,13 @@ class ShowMore extends \yii\base\Widget
             $moreCount = $this->pagination->totalCount - $this->pagination->pageSize - $this->pagination->offset;
         }
 
-        return $this->render('showMore', array(
-                    'object' => $this->object,
-                    'pagination' => $this->pagination,
-                    'id' => $this->object->getUniqueId(),
-                    'showMoreUrl' => $showMoreUrl,
-                    'moreCount' => $moreCount
-        ));
+        return $this->render('showMore', [
+            'object' => $this->object,
+            'pagination' => $this->pagination,
+            'id' => $this->object->getUniqueId(),
+            'showMoreUrl' => $showMoreUrl,
+            'moreCount' => $moreCount
+        ]);
     }
 
 }
-
-?>

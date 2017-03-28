@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -13,7 +13,7 @@ use humhub\libs\ThemeHelper;
 
 /**
  * DesignSettingsForm
- * 
+ *
  * @since 0.5
  */
 class DesignSettingsForm extends \yii\base\Model
@@ -54,15 +54,15 @@ class DesignSettingsForm extends \yii\base\Model
             $themes[] = $theme->name;
         }
 
-        return array(
-            array('paginationSize', 'integer', 'max' => 200, 'min' => 1),
-            array('theme', 'in', 'range' => $themes),
-            array(['displayName', 'spaceOrder'], 'safe'),
-            array(['horImageScrollOnMobile'], 'boolean'),
-            array('logo', 'file', 'extensions' => ['jpg', 'png', 'jpeg'], 'maxSize' => 3 * 1024 * 1024),
-            array('logo', 'dimensionValidation', 'skipOnError' => true),
-            array('dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']),
-        );
+        return [
+            ['paginationSize', 'integer', 'max' => 200, 'min' => 1],
+            ['theme', 'in', 'range' => $themes],
+            [['displayName', 'spaceOrder'], 'safe'],
+            [['horImageScrollOnMobile'], 'boolean'],
+            ['logo', 'file', 'extensions' => ['jpg', 'png', 'jpeg'], 'maxSize' => 3 * 1024 * 1024],
+            ['logo', 'dimensionValidation', 'skipOnError' => true],
+            ['dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']],
+        ];
     }
 
     /**
@@ -70,7 +70,7 @@ class DesignSettingsForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'theme' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Theme'),
             'paginationSize' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Default pagination size (Entries per page)'),
             'displayName' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Display Name (Format)'),
@@ -78,7 +78,7 @@ class DesignSettingsForm extends \yii\base\Model
             'logo' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Logo upload'),
             'dateInputDisplayFormat' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Date input format'),
             'horImageScrollOnMobile' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Horizontal scrolling images on a mobile device'),
-        );
+        ];
     }
 
     /**
@@ -109,7 +109,7 @@ class DesignSettingsForm extends \yii\base\Model
 
     /**
      * Saves the form
-     * 
+     *
      * @return boolean
      */
     public function save()
@@ -130,6 +130,7 @@ class DesignSettingsForm extends \yii\base\Model
         }
 
         \humhub\libs\DynamicConfig::rewrite();
+
         return true;
     }
 

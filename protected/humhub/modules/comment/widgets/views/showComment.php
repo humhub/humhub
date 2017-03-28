@@ -1,17 +1,17 @@
 <?php
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
-
 
 <?php
 $canWrite = $comment->canWrite();
 $canDelete = $comment->canDelete();
 ?>
 
-<div class="media" id="comment_<?= $comment->id; ?>" 
-     data-action-component="comment.Comment" 
-     data-content-delete-url="<?= Url::to(["/comment/comment/delete", 'contentModel' => $comment->object_model, 'contentId' => $comment->object_id, 'id' => $comment->id]) ?>">
+<div class="media" id="comment_<?= $comment->id; ?>"
+     data-action-component="comment.Comment"
+     data-content-delete-url="<?= Url::to(['/comment/comment/delete', 'contentModel' => $comment->object_model, 'contentId' => $comment->object_id, 'id' => $comment->id]) ?>">
     <?php if ($canWrite || $canDelete) : ?>
         <div class="comment-entry-loader pull-right"></div>
         <ul class="nav nav-pills preferences">
@@ -43,10 +43,7 @@ $canDelete = $comment->canDelete();
     <?php endif; ?>
 
     <a href="<?= $user->getUrl(); ?>" class="pull-left">
-        <img class="media-object img-rounded user-image user-<?= $user->guid; ?>" 
-             src="<?= $user->getProfileImage()->getUrl(); ?>"
-             width="40"
-             height="40" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"/>
+        <img class="media-object img-rounded user-image user-<?= $user->guid; ?>"  src="<?= $user->getProfileImage()->getUrl(); ?>" width="40" height="40" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"/>
     </a>
     <div>
         <div class="media-body">

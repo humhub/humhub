@@ -2,19 +2,17 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\admin\libs;
 
-use ZipArchive;
 use Yii;
 use yii\web\HttpException;
 use yii\base\Exception;
-
 use humhub\libs\CURLHelper;
-
+use ZipArchive;
 
 /**
  * Handles remote module installation, updates and module listing
@@ -36,7 +34,7 @@ class OnlineModuleManager
         $modulePath = Yii::getAlias(Yii::$app->params['moduleMarketplacePath']);
 
         if (!is_writable($modulePath)) {
-            throw new HttpException(500, Yii::t('AdminModule.libs_OnlineModuleManager', 'Module directory %modulePath% is not writeable!', array('%modulePath%' => $modulePath)));
+            throw new HttpException(500, Yii::t('AdminModule.libs_OnlineModuleManager', 'Module directory %modulePath% is not writeable!', ['%modulePath%' => $modulePath]));
         }
 
         $moduleInfo = $this->getModuleInfo($moduleId);
@@ -75,17 +73,17 @@ class OnlineModuleManager
         $downloadUrl = $version['downloadUrl'];
         $downloadTargetFileName = $moduleDownloadFolder . DIRECTORY_SEPARATOR . basename($downloadUrl);
         try {
-            $http = new \Zend\Http\Client($downloadUrl, array(
+            $http = new \Zend\Http\Client($downloadUrl, [
                 'adapter' => '\Zend\Http\Client\Adapter\Curl',
                 'curloptions' => CURLHelper::getOptions(),
                 'timeout' => 30
-            ));
+            ]);
 
             $response = $http->send();
 
             file_put_contents($downloadTargetFileName, $response->getBody());
         } catch (Exception $ex) {
-            throw new HttpException('500', Yii::t('AdminModule.libs_OnlineModuleManager', 'Module download failed! (%error%)', array('%error%' => $ex->getMessage())));
+            throw new HttpException('500', Yii::t('AdminModule.libs_OnlineModuleManager', 'Module download failed! (%error%)', ['%error%' => $ex->getMessage()]));
         }
 
         // Extract Package
@@ -160,7 +158,7 @@ class OnlineModuleManager
 
     public function getModuleUpdates()
     {
-        $updates = array();
+        $updates = [];
 
         foreach ($this->getModules() as $moduleId => $moduleInfo) {
 

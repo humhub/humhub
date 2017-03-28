@@ -6,20 +6,20 @@ use humhub\compat\CActiveForm;
 ?>
 
 <div class="panel-body">
-    <h4><?php echo Yii::t('AdminModule.views_approval_approveUserDecline', 'Decline & delete user: <strong>{displayName}</strong>', array('{displayName}' => Html::encode($model->displayName))); ?></h4>
+    <h4><?= Yii::t('AdminModule.views_approval_approveUserDecline', 'Decline & delete user: <strong>{displayName}</strong>', ['{displayName}' => Html::encode($model->displayName)]); ?></h4>
 
     <?php $form = CActiveForm::begin(); ?>
 
     <div class="form-group">
-        <?php echo $form->labelEx($approveFormModel, 'subject'); ?>
-        <?php echo $form->textField($approveFormModel, 'subject', array('class' => 'form-control')); ?>
-        <?php echo $form->error($approveFormModel, 'subject'); ?>
+        <?= $form->labelEx($approveFormModel, 'subject'); ?>
+        <?= $form->textField($approveFormModel, 'subject', ['class' => 'form-control']); ?>
+        <?= $form->error($approveFormModel, 'subject'); ?>
     </div>
 
     <div class="form-group">
-        <?php echo $form->labelEx($approveFormModel, 'message'); ?>
-        <?php echo $form->textArea($approveFormModel, 'message', array('rows' => 6, 'cols' => 50, 'class' => 'form-control wysihtml5')); ?>
-        <?php echo $form->error($approveFormModel, 'message'); ?>
+        <?= $form->labelEx($approveFormModel, 'message'); ?>
+        <?= $form->textArea($approveFormModel, 'message', ['rows' => 6, 'cols' => 50, 'class' => 'form-control wysihtml5']); ?>
+        <?= $form->error($approveFormModel, 'message'); ?>
     </div>
     <script>
         $('.wysihtml5').wysihtml5({
@@ -33,9 +33,9 @@ use humhub\compat\CActiveForm;
             "size": 'sm' //Button size like sm, xs etc.
         });
     </script>
-    <hr/>
-    <?php echo Html::submitButton(Yii::t('SpaceModule.approval_approveUserDecline', 'Send & decline'), array('class' => 'btn btn-danger', 'data-ui-loader' => "")); ?>
-    <a href="<?php echo Url::to(['index']); ?>" class="btn btn-primary"><?php echo Yii::t('AdminModule.views_approval_approveUserDecline', 'Cancel'); ?></a>
+    <hr>
+    <?= Html::submitButton(Yii::t('SpaceModule.approval_approveUserDecline', 'Send & decline'), ['class' => 'btn btn-danger', 'data-ui-loader' => ""]); ?>
+    <a href="<?= Url::to(['index']); ?>" class="btn btn-primary"><?= Yii::t('AdminModule.views_approval_approveUserDecline', 'Cancel'); ?></a>
 
     <?php CActiveForm::end(); ?>
 </div>

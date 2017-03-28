@@ -24,16 +24,16 @@ class GroupMenu extends \humhub\widgets\BaseMenu
 
     public function init()
     {
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('AdminModule.views_user_index', 'Overview'),
             'url' => Url::toRoute(['/admin/group/index']),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group' && Yii::$app->controller->action->id == 'index'),
-        ));
+        ]);
 
         parent::init();
     }
-    
+
     public function run()
     {
         if(count($this->getItemGroups()) > 1) {

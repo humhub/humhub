@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -15,7 +15,6 @@ use humhub\compat\HForm;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\user\models\User;
-
 use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\ManageGroups;
@@ -38,6 +37,7 @@ class UserController extends Controller
     {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Users'));
         $this->subLayout = '@admin/views/layouts/user';
+
         return parent::init();
     }
 
@@ -50,8 +50,12 @@ class UserController extends Controller
             ['permissions' => [
                     ManageUsers::className(),
                     ManageGroups::className()
-                ]],
-            ['permissions' => ManageSettings::className(), 'actions' => ['index']]
+                ]
+            ],
+            [
+                'permissions' => ManageSettings::className(),
+                'actions' => ['index']
+            ]
         ];
     }
 
@@ -63,10 +67,10 @@ class UserController extends Controller
         if (Yii::$app->user->can([new ManageUsers(), new ManageGroups()])) {
             $searchModel = new \humhub\modules\admin\models\UserSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-            return $this->render('index', array(
+            return $this->render('index', [
                         'dataProvider' => $dataProvider,
                         'searchModel' => $searchModel
-            ));
+            ]);
         } else if (Yii::$app->user->can(new ManageSettings())) {
             $this->redirect(['/admin/authentication']);
         } else {
@@ -81,7 +85,9 @@ class UserController extends Controller
      */
     public function actionEdit()
     {
-        $user = UserEditForm::findOne(['id' => Yii::$app->request->get('id')]);
+        $user = UserEditForm::findOne([
+                    'id' => Yii::$app->request->get('id')
+        ]);
         $user->initGroupSelection();
 
         if ($user == null) {
@@ -117,7 +123,7 @@ class UserController extends Controller
                     'options' => [
                         'data-placeholder' => Yii::t('AdminModule.controllers_UserController', 'Select Groups'),
                         'data-placeholder-more' => Yii::t('AdminModule.controllers_UserController', 'Add Groups...')
-                        ],
+                    ],
                     'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageGroups())
                 ],
                 'status' => [
@@ -133,27 +139,27 @@ class UserController extends Controller
         ];
 
         // Add Profile Form
-        $definition['elements']['Profile'] = array_merge(array('type' => 'form'), $profile->getFormDefinition());
+        $definition['elements']['Profile'] = array_merge(['type' => 'form'], $profile->getFormDefinition());
 
         // Get Form Definition
-        $definition['buttons'] = array(
-            'save' => array(
+        $definition['buttons'] = [
+            'save' => [
                 'type' => 'submit',
                 'label' => Yii::t('AdminModule.controllers_UserController', 'Save'),
                 'class' => 'btn btn-primary',
-            ),
-            'become' => array(
+            ],
+            'become' => [
                 'type' => 'submit',
                 'label' => Yii::t('AdminModule.controllers_UserController', 'Become this user'),
                 'class' => 'btn btn-danger',
                 'isVisible' => $this->canBecomeUser($user)
-            ),
-            'delete' => array(
+            ],
+            'delete' => [
                 'type' => 'submit',
                 'label' => Yii::t('AdminModule.controllers_UserController', 'Delete'),
                 'class' => 'btn btn-danger',
-            ),
-        );
+            ],
+        ];
 
         $form = new HForm($definition);
         $form->models['User'] = $user;
@@ -177,13 +183,15 @@ class UserController extends Controller
             return $this->redirect(['/admin/user/delete', 'id' => $user->id]);
         }
 
-        return $this->render('edit', array('hForm' => $form, 'user' => $user));
+        return $this->render('edit', [
+                    'hForm' => $form,
+                    'user' => $user
+        ]);
     }
 
-    public function canBecomeUser($user) {
-        return Yii::$app->user->isAdmin()
-                && $user->id != Yii::$app->user->getIdentity()->id
-                && !$user->isSystemAdmin();
+    public function canBecomeUser($user)
+    {
+        return Yii::$app->user->isAdmin() && $user->id != Yii::$app->user->getIdentity()->id && !$user->isSystemAdmin();
     }
 
     public function actionAdd()
@@ -194,7 +202,8 @@ class UserController extends Controller
         if ($registration->submitted('save') && $registration->validate() && $registration->register()) {
             return $this->redirect(['edit', 'id' => $registration->getUser()->id]);
         }
-        return $this->render('add', array('hForm' => $registration));
+
+        return $this->render('add', ['hForm' => $registration]);
     }
 
     /**
@@ -202,10 +211,8 @@ class UserController extends Controller
      */
     public function actionDelete()
     {
-
         $id = (int) Yii::$app->request->get('id');
         $doit = (int) Yii::$app->request->get('doit');
-
 
         $user = User::findOne(['id' => $id]);
 
@@ -216,7 +223,6 @@ class UserController extends Controller
         }
 
         if ($doit == 2) {
-
             $this->forcePostRequest();
 
             foreach (\humhub\modules\space\models\Membership::GetUserSpaces($user->id) as $space) {
@@ -229,7 +235,7 @@ class UserController extends Controller
             return $this->redirect(['/admin/user']);
         }
 
-        return $this->render('delete', array('model' => $user));
+        return $this->render('delete', ['model' => $user]);
     }
 
 }

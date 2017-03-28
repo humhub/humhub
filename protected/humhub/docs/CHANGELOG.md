@@ -23,6 +23,9 @@ HumHub Change Log
 - Enh: Added "weekly" mail summary interval
 - Fix: Invalid temp.css file
 - Fix: Default stream sort setting not applied
+- Enh: Show different login message, when registration is disabled
+- Fix: Norwegian translation code for Yii messages
+
 
 1.2.0-beta.3 (March 20, 2017)
 --------------------------------

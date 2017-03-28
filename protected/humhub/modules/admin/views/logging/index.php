@@ -1,12 +1,11 @@
 <?php
 
-use humhub\compat\CHtml;
 use yii\helpers\Html;
-
+use humhub\compat\CHtml;
 ?>
 <div>
-    <?php echo Yii::t('AdminModule.views_logging_index', 'Total {count} entries found.', array("{count}" => $pagination->totalCount)); ?>
-    <span class="pull-right"><?php echo Yii::t('AdminModule.views_logging_index', 'Displaying {count} entries per page.', array("{count}" => $pagination->pageSize)); ?></span>
+    <?= Yii::t('AdminModule.views_logging_index', 'Total {count} entries found.', ["{count}" => $pagination->totalCount]); ?>
+    <span class="pull-right"><?= Yii::t('AdminModule.views_logging_index', 'Displaying {count} entries per page.', ["{count}" => $pagination->pageSize]); ?></span>
 </div>
 
 <hr>
@@ -31,11 +30,11 @@ use yii\helpers\Html;
                 ?>
 
                 <h4 class="media-heading">
-                    <span class="label <?php echo $labelClass; ?>"><?php echo CHtml::encode($levelName); ?></span>&nbsp;
-                    <?php echo date('r', $entry->log_time); ?>&nbsp;
-                    <span class="pull-right"><?php echo CHtml::encode($entry->category); ?></span>
+                    <span class="label <?= $labelClass; ?>"><?= CHtml::encode($levelName); ?></span>&nbsp;
+                    <?= date('r', $entry->log_time); ?>&nbsp;
+                    <span class="pull-right"><?= CHtml::encode($entry->category); ?></span>
                 </h4>
-                <?php echo CHtml::encode($entry->message); ?>
+                <?= CHtml::encode($entry->message); ?>
             </div>
         </li>
 
@@ -43,7 +42,7 @@ use yii\helpers\Html;
 </ul>
 
 <?php if ($pagination->totalCount != 0): ?>
-    <div class="pull-right"><?php echo Html::a(Yii::t('AdminModule.views_logging_index', 'Flush entries'), array('flush'), array('class' => 'btn btn-danger', 'data-method' => 'post')); ?></div>
+    <div class="pull-right"><?= Html::a(Yii::t('AdminModule.views_logging_index', 'Flush entries'), ['flush'], ['class' => 'btn btn-danger', 'data-method' => 'post']); ?></div>
 <?php endif; ?>
 
 <center>

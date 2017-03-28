@@ -38,11 +38,10 @@ class ProxySettingsForm extends \yii\base\Model
      */
     public function rules()
     {
-
-        return array(
-            array(['enabled', 'server', 'user', 'password', 'noproxy'], 'string', 'max' => 255),
-            array(['port'], 'integer', 'max' => 65535, 'min' => 1),
-        );
+        return [
+            [['enabled', 'server', 'user', 'password', 'noproxy'], 'string', 'max' => 255],
+            [['port'], 'integer', 'max' => 65535, 'min' => 1],
+        ];
     }
 
     /**
@@ -50,19 +49,19 @@ class ProxySettingsForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'enabled' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Enabled'),
             'server' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Server'),
             'port' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Port'),
             'user' => Yii::t('AdminModule.forms_ProxySettingsForm', 'User'),
             'password' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Password'),
             'noproxy' => Yii::t('AdminModule.forms_ProxySettingsForm', 'No Proxy Hosts'),
-        );
+        ];
     }
 
     /**
      * Saves the form
-     * 
+     *
      * @return boolean
      */
     public function save()

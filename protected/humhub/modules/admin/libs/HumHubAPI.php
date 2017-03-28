@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -11,7 +11,6 @@ namespace humhub\modules\admin\libs;
 use Yii;
 use yii\helpers\Json;
 use humhub\libs\CURLHelper;
-
 
 /**
  * HumHubAPI provides access to humhub.com for fetching available modules or latest version.
@@ -43,11 +42,11 @@ class HumHubAPI
             $url .= urlencode($name) . '=' . urlencode($value)."&";
         }
         try {
-            $http = new \Zend\Http\Client($url, array(
+            $http = new \Zend\Http\Client($url, [
                 'adapter' => '\Zend\Http\Client\Adapter\Curl',
                 'curloptions' => CURLHelper::getOptions(),
                 'timeout' => 30
-            ));
+            ]);
 
             $response = $http->send();
             $json = $response->getBody();
