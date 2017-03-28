@@ -1,6 +1,11 @@
 HumHub Change Log
 =================
-1.2.0-beta.4 in developement
+
+1.2.0 (in developement)
+--------------------------------
+
+
+1.2.0-beta.4 (March 28, 2017)
 --------------------------------
 - Fix: Notification count '0' visible after click on notification link
 - Fix: Default space permissions not adopted
@@ -28,8 +33,8 @@ HumHub Change Log
 - Fix: Also allow comment editing by admins if content 'adminCanEditAllContent' is enabled
 - Enh: Added Make Private/ Make Public link to wall entry controls
 - Enh #2392: Added Latvian language
-- Fix: hide image file info setting
-- Fix: #2297 failed to open stream: No such file or directory when attaching files in UploadAction
+- Fix: Hide image file info setting
+- Fix #2297: Failed to open stream: No such file or directory when attaching files in UploadAction
 
 1.2.0-beta.3 (March 20, 2017)
 --------------------------------
