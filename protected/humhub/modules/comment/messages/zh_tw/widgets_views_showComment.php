@@ -25,5 +25,4 @@ return [
     'Do you really want to delete this comment?' => '',
     'Edit' => '',
     'Read full comment...' => '',
-    'Updated :timeago' => '',
 ];

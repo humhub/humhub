@@ -2,5 +2,5 @@
 return array (
   '<strong>Modify</strong> your title image' => '',
   'Close' => 'Zatvori',
-  'Save' => '',
+  'Save' => 'Mentés',
 );

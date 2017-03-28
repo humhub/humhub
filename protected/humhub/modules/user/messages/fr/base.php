@@ -25,6 +25,8 @@ return array (
   'Profile' => 'Profil',
   'Security' => 'Sécurité',
   'Settings' => 'Réglages',
+  'Sign in' => 'Se connecter',
+  'Sign in / up' => 'Ce connecter / s\'inscrire',
   'User' => 'Utilisateur',
   'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Un utilisateur avec le même e-mail existe déjà, mais ne vous est pas rattaché. Se connecter d\'abord en utilisant cet e-mail pour effectuer ce rattachement.',
   'You\'re not registered.' => 'Vous n\'êtes pas enregistré.',

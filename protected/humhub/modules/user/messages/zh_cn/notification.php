@@ -17,8 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayName} is now following you' => '{displayName} 现在关注了你',
-    '{displayName} just mentioned you in {contentTitle} "{preview}"' => '{displayName} 在 {contentTitle} "{preview}" 中提到了你',
     '{displayName} is now following you.' => '{displayName} 现在关注了你。',
+    '{displayName} just mentioned you in {contentTitle} "{preview}"' => '{displayName} 在 {contentTitle} "{preview}" 中提到了你',
     '{displayName} mentioned you in {contentTitle}.' => '{displayName} 在 {contentTitle} 中提到了你。',
 ];

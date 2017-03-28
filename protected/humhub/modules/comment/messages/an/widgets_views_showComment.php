@@ -25,5 +25,4 @@ return [
     'Cancel' => 'Cancelar',
     'Delete' => 'Eliminar',
     'Do you really want to delete this comment?' => 'Seguro que quiers borrar o comentario?',
-    'Updated :timeago' => 'Actualizau fa :timeago',
 ];

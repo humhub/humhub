@@ -25,5 +25,4 @@ return [
     'Delete' => 'Hapus',
     'Do you really want to delete this comment?' => 'Apakah anda yakin ingin menghapus komentar ini?',
     'Edit' => 'Ubah',
-    'Updated :timeago' => 'Diperbarui :timeago',
 ];

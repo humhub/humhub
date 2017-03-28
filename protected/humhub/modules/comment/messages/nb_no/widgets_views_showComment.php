@@ -25,5 +25,4 @@ return [
     'Delete' => 'Slett',
     'Do you really want to delete this comment?' => 'Vill du virkelig slette denne kommentaren?',
     'Edit' => 'Rediger',
-    'Updated :timeago' => 'Oppdatert :timeago',
 ];

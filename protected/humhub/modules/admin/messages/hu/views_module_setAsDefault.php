@@ -6,7 +6,7 @@ return array (
   'Close' => 'Zatvori',
   'Deactivated' => '',
   'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => '',
-  'Save' => '',
+  'Save' => 'Mentés',
   'Spaces' => '',
   'User Profiles' => '',
 );

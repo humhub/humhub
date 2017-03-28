@@ -25,5 +25,4 @@ return [
     'Delete' => 'Удалить',
     'Do you really want to delete this comment?' => 'Вы действительно хотите удалить этот комментарий?',
     'Edit' => 'Редактировать',
-    'Updated :timeago' => 'Обновлено :timeago',
 ];

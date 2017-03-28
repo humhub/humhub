@@ -25,5 +25,4 @@ return [
     'Delete' => 'Usuń ',
     'Do you really want to delete this comment?' => 'Czy naprawdę chcesz usunąć ten komentarz? ',
     'Edit' => 'Edytuj ',
-    'Updated :timeago' => 'Zaktualizowano :timeago ',
 ];

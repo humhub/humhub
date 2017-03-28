@@ -22,8 +22,6 @@ return [
     'Notifications are sent directly to your users to inform them about new activities in your network.' => '直接发送通知给你的用户告知最新动态。',
     'Notifications are sent instantly to you to inform you about new activities in your network.' => '立即发送最新动态通知给你。',
     'Reset to defaults' => '重置为默认',
-    'There are new updates available at {baseUrl}' => '在 {baseUrl} 上有新的更新',
-    'There are new updates available at {baseUrl} - ({category})' => '在 {baseUrl} - ({category}) 上有新的更新',
     'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.' => '此视图允许你通过为给定的通知类别选择所需的目标来配置通知设置。',
     '{displayName} and {displayName2}' => '{displayName} 和 {displayName2}',
     '{displayName} and {number} others' => '{displayName} 和 {number} 其它',

@@ -25,6 +25,8 @@ return array (
   'Profile' => 'Profil',
   'Security' => 'Zabezpečení',
   'Settings' => 'Nastavení',
+  'Sign in' => 'Přihlásit se',
+  'Sign in / up' => '',
   'User' => 'Uživatel',
   'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '',
   'You\'re not registered.' => '',

@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayName} is now following you' => '',
     '{displayName} just mentioned you in {contentTitle} "{preview}"' => '',
     '{displayName} is now following you.' => 'هم اكنون شما را دنبال مي كند {displayName}',
     '{displayName} mentioned you in {contentTitle}.' => 'نام برد {contentTitle} از شما در مطلب  {displayName}',

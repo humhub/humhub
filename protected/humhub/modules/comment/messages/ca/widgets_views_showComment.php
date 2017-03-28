@@ -26,5 +26,4 @@ return [
     'Delete' => 'Esborra
 ',
     'Do you really want to delete this comment?' => 'Segur que vols esborrar aquest comentari?',
-    'Updated :timeago' => 'Actualitzat :timeago',
 ];

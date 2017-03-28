@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Join</strong> the network' => '',
+    'Please login with your username/email and password.' => '',
     '<strong>Please</strong> sign in' => '<strong>Войти</strong>',
     '<strong>Sign</strong> up' => '<strong>Зарегистрироваться</strong>',
     'Create a new one.' => 'Создать новый',
@@ -30,5 +32,4 @@ return [
     'email' => 'e-mail',
     'password' => 'Пароль',
     'username or email' => 'Имя пользователя или e-mail',
-    '<strong>Join</strong> the network' => '',
 ];

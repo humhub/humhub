@@ -25,6 +25,8 @@ return array (
   'Profile' => 'Profilis',
   'Security' => '',
   'Settings' => 'Nustatymai',
+  'Sign in' => 'Prisijungti',
+  'Sign in / up' => '',
   'User' => 'Vartotojas',
   'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '',
   'You\'re not registered.' => '',

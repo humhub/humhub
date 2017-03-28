@@ -25,5 +25,4 @@ return [
     'Cancel' => 'Hủy',
     'Delete' => 'Xóa',
     'Edit' => 'Chỉnh sửa',
-    'Updated :timeago' => 'Cập nhật :timeago',
 ];

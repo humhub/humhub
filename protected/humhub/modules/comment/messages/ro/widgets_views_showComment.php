@@ -25,5 +25,4 @@ return [
     'Delete' => 'Șterge',
     'Do you really want to delete this comment?' => 'Sigur dorești să ștergi acest comentariu?',
     'Edit' => 'Editează',
-    'Updated :timeago' => 'Actualizat :timeago',
 ];

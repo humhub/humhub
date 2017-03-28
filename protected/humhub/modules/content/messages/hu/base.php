@@ -18,4 +18,5 @@
  */
 return [
     'Content' => '',
+    'Updated' => '',
 ];
