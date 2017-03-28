@@ -29,7 +29,7 @@ HumHub Change Log
 - Enh: Added Make Private/ Make Public link to wall entry controls
 - Enh #2392: Added Latvian language
 - Fix: hide image file info setting
-
+- Fix: #2297 failed to open stream: No such file or directory when attaching files in UploadAction
 
 1.2.0-beta.3 (March 20, 2017)
 --------------------------------
