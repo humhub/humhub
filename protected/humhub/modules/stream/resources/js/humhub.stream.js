@@ -208,10 +208,12 @@ humhub.module('stream', function (module, require, $) {
         var $loader = this.$.find('.stream-entry-loader');
         if ($show === false) {
             loader.reset($loader);
+            this.$.find('.wallentry-labels').show();
             this.$.find('.preferences').show();
             return;
         }
-
+        
+        this.$.find('.wallentry-labels').hide();
         this.$.find('.preferences').hide();
         loader.set($loader, {
             'position': 'left',
@@ -229,6 +231,23 @@ humhub.module('stream', function (module, require, $) {
 
     StreamEntry.prototype.highlight = function () {
         additions.highlight(this.getContent());
+    };
+
+    StreamEntry.prototype.toggleVisibility = function (evt) {
+        this.loader();
+        var that = this;
+        client.post(evt).then(function(response) {
+            if(response.success) {
+                that.reload();
+                module.log.success('saved');
+            } else {
+                module.log.error(response, true);
+                that.loader(false);
+            }
+        }).catch(function (e) {
+            that.loader(false);
+            module.log.error(e, true);
+        });
     };
 
     StreamEntry.prototype.pin = function (evt) {
@@ -603,13 +622,13 @@ humhub.module('stream', function (module, require, $) {
     };
 
     Stream.prototype.prependEntry = function (html, respectPinnedPosts) {
-        if(respectPinnedPosts) {
+        if (respectPinnedPosts) {
             var $pinned = this.$.find('[data-stream-pinned="1"]:last');
-            if($pinned.length) {
+            if ($pinned.length) {
                 return this.after(html, $pinned);
             }
         }
-        
+
         return this._streamEntryAnimation(html, function ($html) {
             this.$content.prepend($html);
         });
@@ -663,7 +682,7 @@ humhub.module('stream', function (module, require, $) {
     Stream.prototype.addEntries = function (response, cfg) {
         var that = this;
         var result = '';
-        
+
         $.each(response.contentOrder, function (i, key) {
             var $entry = that.entry(key);
             if ($entry.length) {
@@ -689,8 +708,8 @@ humhub.module('stream', function (module, require, $) {
         } else {
             promise = this.appendEntry($result);
         }
-        
-        promise.then(function() {
+
+        promise.then(function () {
             that.$.trigger('humhub:stream:afterAddEntries', [response, $result]);
         });
 

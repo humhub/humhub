@@ -12,6 +12,7 @@ use Yii;
 use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\permissions\CreatePublicContent;
 
 /**
  * ContentController is responsible for basic content objects.
@@ -110,7 +111,6 @@ class ContentController extends Controller
      */
     public function actionUnarchive()
     {
-        Yii::$app->response->format = 'json';
         $this->forcePostRequest();
 
         $json = array();
@@ -125,7 +125,39 @@ class ContentController extends Controller
             $json['success'] = true;
         }
 
-        return $json;
+        return $this->asJson($json);
+    }
+    
+    /**
+     * Switches the content visibility for the given content.
+     * 
+     * @param type $id content id
+     * @return \yii\web\Response
+     * @throws HttpException
+     */
+    public function actionToggleVisibility($id)
+    {
+        $this->forcePostRequest();
+        $content = Content::findOne(['id' => $id]);
+        
+        if(!$content) {
+            throw new HttpException(400, Yii::t('ContentController.base', 'Invalid content id given!'));
+        } elseif(!$content->canEdit()) {
+            throw new HttpException(403);
+        } elseif($content->isPrivate() && !$content->container->permissionManager->can(new CreatePublicContent())) {
+            throw new HttpException(403);
+        }
+        
+        if($content->isPrivate()) {
+            $content->visibility = Content::VISIBILITY_PUBLIC;
+        } else {
+            $content->visibility = Content::VISIBILITY_PRIVATE;
+        }
+        
+        return $this->asJson([
+            'success' => $content->save(),
+            'state' => $content->visibility
+        ]);
     }
 
     /**
@@ -135,8 +167,6 @@ class ContentController extends Controller
      */
     public function actionPin()
     {
-        Yii::$app->response->format = 'json';
-
         $this->forcePostRequest();
 
         $json = array();
@@ -156,7 +186,7 @@ class ContentController extends Controller
             $json['error'] = Yii::t('ContentModule.controllers_ContentController', "Could not load requested object!");
         }
 
-        return $json;
+        return $this->asJson($json);
     }
 
     /**
@@ -166,11 +196,9 @@ class ContentController extends Controller
      */
     public function actionUnPin()
     {
-        Yii::$app->response->format = 'json';
-
         $this->forcePostRequest();
 
-        $json = array();
+        $json = [];
         $json['success'] = false;
 
         $content = Content::findOne(['id' => Yii::$app->request->get('id', "")]);
@@ -179,13 +207,11 @@ class ContentController extends Controller
             $json['success'] = true;
         }
 
-        return $json;
+        return $this->asJson($json);
     }
 
     public function actionNotificationSwitch()
     {
-        Yii::$app->response->format = 'json';
-
         $this->forcePostRequest();
 
         $json = array();
@@ -199,7 +225,7 @@ class ContentController extends Controller
             $json['success'] = true;
         }
 
-        return $json;
+        return $this->asJson($json);
     }
 
 }

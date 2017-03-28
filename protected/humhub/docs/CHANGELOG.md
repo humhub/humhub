@@ -26,6 +26,7 @@ HumHub Change Log
 - Enh: Show different login message, when registration is disabled
 - Fix: Norwegian translation code for Yii messages
 - Fix: Also allow comment editing by admins if content 'adminCanEditAllContent' is enabled
+- Enh: Added Make Private/ Make Public link to wall entry controls
 - Enh #2392: Added Latvian language
 
 
