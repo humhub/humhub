@@ -220,18 +220,23 @@ class Content extends ContentDeprecated
     }
 
     /**
-     * Returns the public state of the contect object
+     * Checks if the content visiblity is set to public.
      *
      * @return boolean
      */
     public function isPublic()
     {
-
-        if ($this->visibility == self::VISIBILITY_PUBLIC) {
-            return true;
-        }
-
-        return false;
+        return $this->visibility === self::VISIBILITY_PUBLIC;
+    }
+    
+    /**
+     * Checks if the content visiblity is set to private.
+     *
+     * @return boolean
+     */
+    public function isPrivate()
+    {
+        return $this->visibility === self::VISIBILITY_PRIVATE;
     }
 
     /**

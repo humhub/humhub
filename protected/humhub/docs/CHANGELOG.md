@@ -25,6 +25,7 @@ HumHub Change Log
 - Fix: Default stream sort setting not applied
 - Enh: Show different login message, when registration is disabled
 - Fix: Norwegian translation code for Yii messages
+- Enh: Added Make Private/ Make Public link to wall entry controls
 
 
 1.2.0-beta.3 (March 20, 2017)
