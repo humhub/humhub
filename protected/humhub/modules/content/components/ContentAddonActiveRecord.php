@@ -140,6 +140,10 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
             return true;
         }
 
+        if (Yii::$app->getModule('content')->adminCanEditAllContent && Yii::$app->user->isAdmin()) {
+            return true;
+        }
+
         return false;
     }
 
