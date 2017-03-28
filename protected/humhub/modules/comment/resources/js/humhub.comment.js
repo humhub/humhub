@@ -41,9 +41,10 @@ humhub.module('comment', function (module, require, $) {
             var $controls = this.$.closest('.comment-container').siblings('.wall-entry-controls');
             var $commentCount = $controls.find('.comment-count');
             if($commentCount.length) {
-                var $count = parseInt($commentCount.data('count'));
-                $count += count;
-                $commentCount.text(' ('+$count+')').show();
+                var currentCount = $commentCount.data('count');
+                currentCount += count;
+                $commentCount.text(' ('+currentCount+')').show();
+                $commentCount.data('count', currentCount);
             }
         } catch(e) {
             module.log.error(e);

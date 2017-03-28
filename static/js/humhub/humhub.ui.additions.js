@@ -165,8 +165,9 @@ humhub.module('ui.additions', function (module, require, $) {
             });
         });
 
-        $(document).on('click.humhub-ui-tooltip', function () {
+        $(document).on('click.humhub-ui-additions', function () {
             $('.tooltip').remove();
+            $('.popover').remove();
         });
 
         // Show popovers on elements
@@ -217,6 +218,9 @@ humhub.module('ui.additions', function (module, require, $) {
 
         // Jquery date picker div is not removed...
         $('#ui-datepicker-div').remove();
+        
+        $('.popover').remove();
+        $('.tooltip').remove();
     };
 
     var switchButtons = function (outButton, inButton, cfg) {
