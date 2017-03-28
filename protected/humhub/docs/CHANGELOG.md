@@ -28,6 +28,7 @@ HumHub Change Log
 - Fix: Also allow comment editing by admins if content 'adminCanEditAllContent' is enabled
 - Enh: Added Make Private/ Make Public link to wall entry controls
 - Enh #2392: Added Latvian language
+- Fix: hide image file info setting
 
 
 1.2.0-beta.3 (March 20, 2017)

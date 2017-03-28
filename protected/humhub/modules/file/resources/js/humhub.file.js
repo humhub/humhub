@@ -357,11 +357,9 @@ humhub.module('file', function (module, require, $) {
             that.delete(file);
         });
         
-        if(this.isImage(file) && this.options.hideImageFileInfo) {
-            $file.find('.file-fileInfo').remove();
+        if(!(this.isImage(file) && this.options.hideImageFileInfo)) {
+            $file.fadeIn();
         }
-
-        $file.fadeIn();
     };
     
     Preview.prototype.isImage = function (file) {
