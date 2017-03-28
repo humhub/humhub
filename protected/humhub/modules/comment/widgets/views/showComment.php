@@ -44,9 +44,9 @@ use humhub\modules\like\widgets\LikeLink;
     <div>
         <div class="media-body">
             <h4 class="media-heading"><?= Html::containerLink($user); ?>
-                <small><?= TimeAgo::widget(['timestamp' => $comment->created_at]); ?>
-                    <?php if ($comment->updated_at != "" && $comment->created_at != $comment->updated_at): ?>
-                        (<?= Yii::t('CommentModule.widgets_views_showComment', 'Updated :timeago', array(':timeago' => TimeAgo::widget(['timestamp' => $comment->updated_at]))); ?>)
+                <small><?= TimeAgo::widget(['timestamp' => $createdAt]); ?>
+                    <?php if ($updatedAt !== null): ?>
+                        &middot; <span class="tt" title="<?= Yii::$app->formatter->asDateTime($updatedAt); ?>"><?= Yii::t('ContentModule.base', 'Updated'); ?></span>
                     <?php endif; ?>
                 </small>
             </h4>
