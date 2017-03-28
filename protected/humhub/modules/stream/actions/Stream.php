@@ -147,7 +147,7 @@ abstract class Stream extends Action
     public $streamQueryClass = 'humhub\modules\stream\models\StreamSuppressQuery';
 
     /**
-     * @inheritdocs
+     * @inheritdoc
      */
     public function init()
     {
@@ -223,8 +223,6 @@ abstract class Stream extends Action
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $output = [];
-
-        $this->init();
 
         $output['content'] = [];
 
