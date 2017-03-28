@@ -7,7 +7,7 @@ return array (
   'Disable' => 'Désactiver',
   'Enable' => 'Activer',
   'Enable module...' => 'Activer le module...',
-  'More info' => 'Plus d\'info',
+  'More info' => 'Plus d\'informations',
   'Set as default' => 'Définir par défaut',
   'Uninstall' => 'Désinstaller',
 );

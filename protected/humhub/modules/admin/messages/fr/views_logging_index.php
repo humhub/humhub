@@ -18,6 +18,6 @@
  */
 return [
     'Displaying {count} entries per page.' => 'Afficher {count} entrées par page.',
-    'Flush entries' => 'Supprimer le journal',
-    'Total {count} entries found.' => 'Total de {count} entrées trouvées.',
+    'Flush entries' => 'Vider le journal',
+    'Total {count} entries found.' => '{count} entrées ont été trouvées au total.',
 ];

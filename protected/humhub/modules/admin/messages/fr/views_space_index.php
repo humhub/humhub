@@ -2,7 +2,7 @@
 return array (
   '<strong>Manage</strong> spaces' => '<strong>Gérer</strong> les espaces',
   'Actions' => 'Actions',
-  'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => 'Ici vous pouvez définir vos paramètres par défaut pour les nouveaux espaces. Ces paramètres peuvent être remplacés pour chaque espace individuel.',
+  'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => 'Ici vous pouvez définir vos paramètres par défaut pour les nouveaux espaces. Ces paramètres peuvent être remplacés pour chaque espace individuellement.',
   'Overview' => 'Vue d\'ensemble',
   'Settings' => 'Réglages',
   'Spaces' => 'Espaces',

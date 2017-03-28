@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Your password has been successfully changed!' => 'Votre mot de passe a été modifié !',
+    'Your password has been successfully changed!' => 'Votre mot de passe a été correctement modifié !',
 ];

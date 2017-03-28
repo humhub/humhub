@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Text area field options' => 'Option de texte long',
+  'Text area field options' => 'Options de champ de texte long',
 );

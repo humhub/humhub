@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Sign in / up' => 'Ce connecter / s\'inscrire',
+  'Sign in / up' => 'Se connecter / s\'inscrire',
 );

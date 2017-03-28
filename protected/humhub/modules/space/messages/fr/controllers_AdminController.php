@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Stream (Default)' => 'Flux (défaut)',
+    'Stream (Default)' => 'Fil d\'actualités (par défaut)',
 ];

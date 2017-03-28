@@ -25,5 +25,5 @@ return [
     'Maximum preview image height (in pixels, optional)' => 'Hauteur maximum de l\'aperçu d\'image (en pixels, optionnel)',
     'Maximum preview image width (in pixels, optional)' => 'Largeur maximum de l\'aperçu d\'image (en pixels, optionnel)',
     'Maximum upload file size (in MB)' => 'Taille de fichier en Upload maximum (en Mo)',
-    'Use X-Sendfile for File Downloads' => 'Utiliser X-Sendfile pour le téléchargement ?',
+    'Use X-Sendfile for File Downloads' => 'Utiliser X-Sendfile pour les téléchargements',
 ];

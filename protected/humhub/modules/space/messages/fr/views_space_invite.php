@@ -21,7 +21,7 @@ return [
     'Done' => 'Terminé',
     'Email addresses' => 'Adresse e-mail',
     'Invite by email' => 'Inviter par e-mail',
-    'Login' => 'Login',
+    'Login' => 'Identification',
     'New user?' => 'Nouvel utilisateur ?',
     'Pick users' => 'Sélectionnez les utilisateurs',
     'Send' => 'Envoyer',
