@@ -4,6 +4,10 @@ HumHub Change Log
 1.2.0 (in developement)
 --------------------------------
 - Fix: SVG file uploads broken (mime type: image/svg+xml)
+- Fix: Public badge missing after create post
+- Fix: Mentioning notificaiton in user not working
+- Fix: Catch yii\db\Expression error for updated_at in wallentry
+- Enh: Added 'client.back' js action
 
 1.2.0-beta.4 (March 28, 2017)
 --------------------------------
