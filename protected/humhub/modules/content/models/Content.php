@@ -226,7 +226,7 @@ class Content extends ContentDeprecated
      */
     public function isPublic()
     {
-        return $this->visibility === self::VISIBILITY_PUBLIC;
+        return $this->visibility == self::VISIBILITY_PUBLIC;
     }
     
     /**
@@ -236,7 +236,7 @@ class Content extends ContentDeprecated
      */
     public function isPrivate()
     {
-        return $this->visibility === self::VISIBILITY_PRIVATE;
+        return $this->visibility == self::VISIBILITY_PRIVATE;
     }
 
     /**
@@ -470,7 +470,7 @@ class Content extends ContentDeprecated
 
         // Check Guest Visibility
         if ($user === null) {
-            if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') && $this->visibility === self::VISIBILITY_PUBLIC) {
+            if ($this->isPublic() && Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
                 // Check container visibility for guests
                 if (($this->container instanceof Space && $this->container->visibility == Space::VISIBILITY_ALL) ||
                         ($this->container instanceof User && $this->container->visibility == User::VISIBILITY_ALL)) {
@@ -481,7 +481,7 @@ class Content extends ContentDeprecated
         }
 
         // Public visible content
-        if ($this->visibility === self::VISIBILITY_PUBLIC) {
+        if ($this->isPublic()) {
             return true;
         }
 
@@ -490,7 +490,7 @@ class Content extends ContentDeprecated
             return true;
         }
 
-        if ($this->visibility === self::VISIBILITY_PRIVATE && $this->getContainer()->canAccessPrivateContent($user)) {
+        if ($this->isPrivate() && $this->getContainer()->canAccessPrivateContent($user)) {
             return true;
         }
 

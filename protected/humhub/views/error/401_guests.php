@@ -1,21 +1,26 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
+
 ?>
 <div class="container">
     <div class="panel panel-danger">
         <div class="panel-heading">
-            <?php echo Yii::t('error', "<strong>Login</strong> required"); ?>
+            <?= Yii::t('error', "<strong>Login</strong> required"); ?>
         </div>
         <div class="panel-body">
 
-            <strong><?php echo Html::encode($message); ?></strong>
+            <strong><?= Html::encode($message); ?></strong>
 
             <br />
             <hr>
-
-            <?php echo Html::a(Yii::t('base', 'Login'), Yii::$app->user->loginUrl, array('class' => 'btn btn-info', 'data-target' => '#globalModal')); ?>
-            <a href="javascript:history.back();" class="btn btn-primary  pull-right"><?php echo Yii::t('base', 'Back'); ?></a>
+            <button class="btn btn-info" data-action-click="ui.modal.load" data-action-url="<?= Url::to(Yii::$app->user->loginUrl) ?>" data-ui-loader>
+                <?= Yii::t('base', 'Login') ?>
+            </button>
+            <button data-action-click="client.back" class="btn btn-primary  pull-right" data-ui-loader>
+                <?= Yii::t('base', 'Back'); ?>
+            </a>
         </div>
     </div>
 </div>

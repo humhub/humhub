@@ -56,6 +56,8 @@ humhub.module('content.form', function(module, require, $) {
             } else {
                 that.handleError(response);
             }
+        }).catch(function(e) {
+            module.log.error(e, true);
         }).finally(function() {
             evt.finish();
         });
