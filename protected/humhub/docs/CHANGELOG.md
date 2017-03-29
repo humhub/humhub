@@ -3,7 +3,7 @@ HumHub Change Log
 
 1.2.0 (in developement)
 --------------------------------
-
+- Fix: SVG file uploads broken (mime type: image/svg+xml)
 
 1.2.0-beta.4 (March 28, 2017)
 --------------------------------
