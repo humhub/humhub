@@ -21,6 +21,15 @@ use humhub\models\Setting;
 
     <?= $form->field($model, 'defaultUserGroup')->dropDownList($groups, ['readonly' => Setting::IsFixed('auth.defaultUserGroup', 'user')]); ?>
 
+    <?= $form->field($model, 'MinUserNameLength')->textInput(['readonly' => Setting::IsFixed('auth.MinUserNameLength', 'user')]); ?>
+    <p class="help-block"><?= Yii::t('AdminModule.views_setting_authentication', 'Min value is 4. If not set, Minimum Username Length is 4'); ?></p>
+
+    <?= $form->field($model, 'MinPasswordLength')->textInput(['readonly' => Setting::IsFixed('auth.MinPasswordLength', 'user')]); ?>
+    <p class="help-block"><?= Yii::t('AdminModule.views_setting_authentication', 'Min value is 5. If not set, Minimum Password Length is 5'); ?></p>
+
+    <?= $form->field($model, 'activePasswordSecurity')->checkbox(); ?>
+    <p class="help-block"><?= Yii::t('AdminModule.views_setting_authentication', 'The password must contains characters from all of the following categories : Uppercase, Lowercase, Number and Special'); ?></p>
+
     <?= $form->field($model, 'defaultUserIdleTimeoutSec')->textInput(['readonly' => Setting::IsFixed('auth.defaultUserIdleTimeoutSec', 'user')]); ?>
     <p class="help-block"><?= Yii::t('AdminModule.views_setting_authentication', 'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)'); ?></p>
 
