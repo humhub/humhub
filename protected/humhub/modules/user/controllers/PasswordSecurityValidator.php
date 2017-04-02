@@ -117,7 +117,6 @@ class PasswordSecurityValidator extends Validator
     private function addErrorInternal($object, $attribute,$tested_param, array $values)
     {
         $message = "Le :attribute ne contient pas assez de caractère(s) :tested_param. Trouvé :found alors qu'il doit en contenir au moins :required."; 
-        //$message .= "  !!! RAPPEL SECURITE !!! Le :attribute doit faire au minimum 8 caractères et contenir au moins 1 caractère de chacun des types suivants : Majuscule / Minuscule / Chiffre / Caractère Spécial"; 
         $params = array(':attribute' => $attribute, ':tested_param' => $tested_param, ':found' => $values['found'], ':required' => $values['required']);
         parent::addError($object, $attribute, $message, $params);
     }
