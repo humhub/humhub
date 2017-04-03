@@ -8,9 +8,8 @@
 
 namespace humhub\modules\post\controllers;
 
+use humhub\modules\post\models\Post;
 use Yii;
-use \humhub\modules\post\models\Post;
-use yii\web\HttpException;
 
 /**
  * @package humhub.modules_core.post.controllers
@@ -22,7 +21,7 @@ class PostController extends \humhub\modules\content\components\ContentContainer
     public function actionPost()
     {
         // Check createPost Permission
-        if (!$this->contentContainer->permissionManager->can(new \humhub\modules\post\permissions\CreatePost())) {
+        if (!$this->contentContainer->getPermissionManager()->can(new \humhub\modules\post\permissions\CreatePost())) {
             return [];
         }
 
@@ -37,8 +36,8 @@ class PostController extends \humhub\modules\content\components\ContentContainer
           }
          */
 
-         return \humhub\modules\content\widgets\WallCreateContentForm::create($post, $this->contentContainer);
-        }
+        return \humhub\modules\content\widgets\WallCreateContentForm::create($post, $this->contentContainer);
+    }
 
     public function actionEdit()
     {
@@ -47,10 +46,9 @@ class PostController extends \humhub\modules\content\components\ContentContainer
         $edited = false;
         $model = Post::findOne(['id' => $id]);
 
-        if (!$model->content->canWrite()) {
-            throw new HttpException(403, Yii::t('PostModule.controllers_PostController', 'Access denied!'));
+        if (!$model->content->canEdit()) {
+            $this->forbidden();
         }
-
 
         if ($model->load(Yii::$app->request->post())) {
             // Reload record to get populated updated_at field
@@ -62,7 +60,7 @@ class PostController extends \humhub\modules\content\components\ContentContainer
             }
         }
 
-        return $this->renderAjax('edit', array('post' => $model, 'edited' => $edited));
+        return $this->renderAjax('edit', ['post' => $model, 'edited' => $edited]);
     }
 
 }

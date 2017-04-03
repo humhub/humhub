@@ -281,6 +281,10 @@ humhub.module('client', function (module, require, $) {
             originalEvent.finish();
         }
     };
+    
+    var back = function() {
+        history.back();
+    };
 
     var init = function (isPjax) {
         if (!isPjax) {
@@ -298,6 +302,7 @@ humhub.module('client', function (module, require, $) {
 
     module.export({
         ajax: ajax,
+        back: back,
         actionPost: actionPost,
         post: post,
         get: get,
