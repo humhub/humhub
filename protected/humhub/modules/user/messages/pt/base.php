@@ -39,6 +39,8 @@ return [
     'Profile' => '',
     'Security' => '',
     'Settings' => '',
+    'Sign in' => '',
+    'Sign in / up' => '',
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '',
     'You\'re not registered.' => '',
     'Your new password must not equal your current password!' => '',

@@ -13,7 +13,7 @@ Yii::setAlias('@config', '@app/config');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.2.0-beta.3',
+    'version' => '1.2.0-beta.4',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue'],
     'sourceLanguage' => 'en',
@@ -25,14 +25,13 @@ $config = [
             'class' => 'humhub\modules\notification\components\NotificationManager',
             'targets' => [
                 [
-                    'class' => 'humhub\modules\notification\components\WebNotificationTarget',
-                    'renderer' => ['class' => 'humhub\modules\notification\components\WebTargetRenderer']
+                    'class' => 'humhub\modules\notification\targets\WebTarget',
+                    'renderer' => ['class' => 'humhub\modules\notification\renderer\WebRenderer']
                 ],
                 [
-                    'class' => 'humhub\modules\notification\components\MailNotificationTarget',
-                    'renderer' => ['class' => 'humhub\modules\notification\components\MailTargetRenderer']
+                    'class' => 'humhub\modules\notification\targets\MailTarget',
+                    'renderer' => ['class' => 'humhub\modules\notification\renderer\MailRenderer']
                 ],
-            //['class' => '\humhub\modules\notification\components\MobileNotificationTarget']
             ]
         ],
         'log' => [
@@ -127,11 +126,7 @@ $config = [
             'clients' => [],
         ],
         'queue' => [
-            'class' => 'humhub\components\queue\Queue',
-            'driver' => [
-                //'class' => 'humhub\components\queue\driver\MySQL',
-                'class' => 'humhub\components\queue\driver\Sync',
-            ],
+            'class' => 'humhub\components\queue\driver\Sync',
         ],
         'live' => [
             'class' => 'humhub\modules\live\components\Sender',
@@ -183,6 +178,7 @@ $config = [
             'id' => 'Bahasa Indonesia',
             'lt' => 'lietuvių kalba',
             'ht' => 'Kreyòl ayisyen',
+            'lv' => 'Latvijas',
         ],
         'ldap' => [
             // LDAP date field formats

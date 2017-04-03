@@ -93,6 +93,10 @@ humhub.module('ui.additions', function (module, require, $) {
         event.on('humhub:ready', function (evt) {
             module.applyTo($('body'));
         });
+        
+        require('action').registerHandler('copyToClipboard', function(evt) {
+            clipboard.copy(evt.$target.text());
+        });
 
         // workaround for jp-player since it sets display to inline which results in a broken view...
         $(document).on('click.humhub-jp-play', '.jp-play', function () {
@@ -161,8 +165,9 @@ humhub.module('ui.additions', function (module, require, $) {
             });
         });
 
-        $(document).on('click.humhub-ui-tooltip', function () {
+        $(document).on('click.humhub-ui-additions', function () {
             $('.tooltip').remove();
+            $('.popover').remove();
         });
 
         // Show popovers on elements
@@ -201,8 +206,6 @@ humhub.module('ui.additions', function (module, require, $) {
         }
     };
 
-    //TODO: additions.extend('id', handler); for extending existing additions.
-
     /**
      * Cleanup some nodes required to prevent memoryleaks in pjax mode.
      * @returns {undefined}
@@ -215,6 +218,9 @@ humhub.module('ui.additions', function (module, require, $) {
 
         // Jquery date picker div is not removed...
         $('#ui-datepicker-div').remove();
+        
+        $('.popover').remove();
+        $('.tooltip').remove();
     };
 
     var switchButtons = function (outButton, inButton, cfg) {

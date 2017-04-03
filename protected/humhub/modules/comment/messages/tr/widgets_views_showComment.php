@@ -25,5 +25,4 @@ return [
     'Delete' => 'Sil',
     'Do you really want to delete this comment?' => 'Bu yorumu silmek istediğine emin misin?',
     'Edit' => 'Düzenle',
-    'Updated :timeago' => 'Güncellendi :timeago',
 ];

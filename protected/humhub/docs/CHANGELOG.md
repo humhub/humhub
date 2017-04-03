@@ -1,6 +1,15 @@
 HumHub Change Log
 =================
-1.2.0-beta.4 in developement
+
+1.2.0 (in developement)
+--------------------------------
+- Fix: SVG file uploads broken (mime type: image/svg+xml)
+- Fix: Public badge missing after create post
+- Fix: Mentioning notificaiton in user not working
+- Fix: Catch yii\db\Expression error for updated_at in wallentry
+- Enh: Added 'client.back' js action
+
+1.2.0-beta.4 (March 28, 2017)
 --------------------------------
 - Fix: Notification count '0' visible after click on notification link
 - Fix: Default space permissions not adopted
@@ -15,7 +24,21 @@ HumHub Change Log
 - Enh: Added 'containerLink' HTML Helper method
 - Enh: WallEntry layout layout improvements
 - Fix: Default user & space module configuration lost after foreign key migration
-
+- Fix: Respect pinned post when inserting a a new stream entry
+- Fix: Show comments in modal not working
+- Fix: #2374 Comment input not focused on comment link click 
+- Enh: Toggle comment box
+- Enh: Added global copyToClipboard
+- Enh: Added "weekly" mail summary interval
+- Fix: Invalid temp.css file
+- Fix: Default stream sort setting not applied
+- Enh: Show different login message, when registration is disabled
+- Fix: Norwegian translation code for Yii messages
+- Fix: Also allow comment editing by admins if content 'adminCanEditAllContent' is enabled
+- Enh: Added Make Private/ Make Public link to wall entry controls
+- Enh #2392: Added Latvian language
+- Fix: Hide image file info setting
+- Fix #2297: Failed to open stream: No such file or directory when attaching files in UploadAction
 
 1.2.0-beta.3 (March 20, 2017)
 --------------------------------

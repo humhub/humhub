@@ -69,7 +69,7 @@ class AuthenticationController extends Controller
 
         return $this->render('authentication', [
 			'model' => $form,
-			'groups' => $groups[]
+			'groups' => $groups
 		]);
     }
 

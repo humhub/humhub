@@ -43,6 +43,7 @@ return [
     'See all' => '',
     'Send invite' => '',
     'Spaces' => '',
+    'This group has no members yet.' => '',
     'Top Group' => '',
     'Total groups' => '',
     'Total spaces' => '',

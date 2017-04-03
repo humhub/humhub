@@ -128,10 +128,7 @@ class StreamViewer extends Widget
      */
     public function run()
     {
-        $defaultStreamSort = Yii::$app->getModule('content')->settings->get('stream.defaultSort');
-        if (empty($defaultStreamSort) || !in_array($defaultStreamSort, ['c', 'u'])) {
-            $defaultStreamSort = 'c';
-        }
+        $defaultStreamSort = Yii::$app->getModule('stream')->settings->get('defaultSort', 'c');
 
         $contentId = (int) Yii::$app->request->getQueryParam('contentId');
 

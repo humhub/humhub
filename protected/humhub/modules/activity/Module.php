@@ -26,6 +26,11 @@ class Module extends \humhub\components\Module
     public $resourcesPath = 'resources';
 
     /**
+     * @var int day to send weekly summaries on daily cron run (0 = Sunday, 6 = Saturday)
+     */
+    public $weeklySummaryDay = 0;
+
+    /**
      * Returns all configurable Activitiess
      *
      * @since 1.2

@@ -1,34 +1,54 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\like\notifications;
 
 use Yii;
 use humhub\modules\notification\components\NotificationCategory;
+use humhub\modules\notification\targets\BaseTarget;
+use humhub\modules\notification\targets\MailTarget;
 
 /**
- * Description of LikeNotificationCategory
+ * LikeNotificationCategory
  *
  * @author buddha
  */
 class LikeNotificationCategory extends NotificationCategory
 {
 
+    /**
+     * @inheritdoc
+     */
     public $id = 'like';
 
-    public function getDefaultSetting(\humhub\modules\notification\components\NotificationTarget $target)
+    /**
+     * @inheritdoc
+     */
+    public function getDefaultSetting(BaseTarget $target)
     {
-        if($target instanceof \humhub\modules\notification\components\MailNotificationTarget) {
+        if ($target instanceof MailTarget) {
             return false;
         }
-        
+
         return parent::getDefaultSetting($target);
     }
-    
+
+    /**
+     * @inheritdoc
+     */
     public function getTitle()
     {
         return Yii::t('LikeModule.notifications_LikeNotificationCategory', 'Likes');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getDescription()
     {
         return Yii::t('LikeModule.notifications_LikeNotificationCategory', 'Receive Notifications when someone likes your content.');

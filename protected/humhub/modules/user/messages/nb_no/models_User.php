@@ -6,10 +6,8 @@ return array (
   'Default Space' => '',
   'Description' => 'Beskrivelse',
   'Email' => 'E-mail',
-  'First name' => '',
   'Language' => 'Språk',
   'Last Login' => '',
-  'Last name' => '',
   'Manager' => '',
   'Name' => 'Navn',
   'New user needs approval' => '',
@@ -20,6 +18,6 @@ return array (
   'Tags' => 'Tags',
   'Updated at' => 'Oppdatert',
   'Updated by' => 'Oppdatert av',
-  'Username' => '',
+  'Username' => 'Brukernavn',
   'Visibility' => 'Synlighet',
 );

@@ -1,4 +1,5 @@
 <?php
+
 return array (
   '<strong>Please</strong> sign in' => 'Veuillez vous <strong>identifier</strong>',
   '<strong>Sign</strong> up' => '<strong>Inscription</strong>',

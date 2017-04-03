@@ -36,10 +36,10 @@ class FileManager extends Component
      */
     public function attach($files, $steal = false)
     {
-        if(!$files) {
+        if (!$files) {
             return;
         }
-        
+
         if (is_string($files)) {
             $files = array_map('trim', explode(',', $files));
         } elseif ($files instanceof File) {
@@ -60,9 +60,10 @@ class FileManager extends Component
                 continue;
             }
 
-            $file->object_model = $this->record->className();
-            $file->object_id = $this->record->getPrimaryKey();
-            $file->save();
+            $file->updateAttributes([
+                'object_model' => $this->record->className(),
+                'object_id' => $this->record->getPrimaryKey(),
+            ]);
         }
     }
 

@@ -67,11 +67,12 @@ class AcceptanceTester extends \Codeception\Actor
         $this->jsClick('#contentForm_message');
         $this->wait(1);
         $this->fillField('#contentForm_message', $text);
+        $this->executeJS("$('#contentForm_message').trigger('focusout');");
         $this->wait(1);
-        $this->click('#post_submit_button');
+        $this->jsClick('#post_submit_button');
         $this->waitForText($text, 30, '.wall-entry');
     }
-    
+
     public function amOnDashboard()
     {
         tests\codeception\_pages\DashboardPage::openBy($this);
@@ -81,7 +82,7 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->waitForElementVisible('#status-bar .success', 30);
         $this->waitForElementVisible('#status-bar .status-bar-close');
-        
+
         if ($text) {
             $this->see($text, '#status-bar');
         }
@@ -94,7 +95,7 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->waitForElementVisible('#status-bar .warning', 20);
         $this->waitForElementVisible('#status-bar .status-bar-close');
-        
+
         if ($text) {
             $this->see($text, '#status-bar');
         }
@@ -108,7 +109,7 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->waitForElementVisible('#status-bar .error', 20);
         $this->waitForElementVisible('#status-bar .status-bar-close');
-        
+
         if ($text) {
             $this->see($text, '#status-bar');
         }
@@ -121,7 +122,7 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->waitForElementVisible('#status-bar .info', 20);
         $this->waitForElementVisible('#status-bar .status-bar-close');
-        
+
         if ($text) {
             $this->see($text, '#status-bar');
         }
@@ -160,7 +161,7 @@ class AcceptanceTester extends \Codeception\Actor
         $this->jsClick('#account-dropdown-link');
         $this->wait(2);
     }
-    
+
     public function amOnDirectory()
     {
         return tests\codeception\_pages\DirectoryPage::openBy($this);
@@ -193,7 +194,7 @@ class AcceptanceTester extends \Codeception\Actor
         $this->waitForText($text, 5, '.notifications');
         $this->click('.notifications');
     }
-    
+
     /**
      * Selects $userName for a given userPicker. Note this implementation will
      * just take the first result found for the given username.
@@ -203,7 +204,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function selectUserFromPicker($selector, $userName)
     {
-        $select2Input = $selector.' ~ span input';
+        $select2Input = $selector . ' ~ span input';
         $this->fillField($select2Input, $userName);
         $this->waitForElementVisible('.select2-container--open');
         $this->wait(5);
@@ -218,7 +219,7 @@ class AcceptanceTester extends \Codeception\Actor
         $this->dontSee($text);
         $this->click('.notifications');
     }
-    
+
     public function scrollTop()
     {
         $this->executeJS('window.scrollTo(0,0);');
@@ -227,7 +228,7 @@ class AcceptanceTester extends \Codeception\Actor
 
     public function jsClick($selector)
     {
-        $this->executeJS("$('". $selector ."').click();");
+        $this->executeJS("$('" . $selector . "')[0].click();");
     }
 
     public function jsFillField($selector, $value)

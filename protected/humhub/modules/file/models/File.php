@@ -59,7 +59,7 @@ class File extends FileCompat
     {
         return [
             [['mime_type'], 'string', 'max' => 150],
-            [['mime_type'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-]/', 'message' => Yii::t('FileModule.base', 'Invalid Mime-Type')],
+            [['mime_type'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-\+]/', 'message' => Yii::t('FileModule.base', 'Invalid Mime-Type')],
             [['file_name', 'title'], 'string', 'max' => 255],
             [['size'], 'integer'],
         ];

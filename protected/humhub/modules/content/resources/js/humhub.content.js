@@ -135,7 +135,7 @@ humhub.module('content', function (module, require, $) {
     };
 
     var templates = {
-        permalinkBody: '<textarea rows="3" class="form-control permalink-txt" spellcheck="false" readonly>{permalink}</textarea><p class="help-block pull-right"><a href="#" onClick="clipboard.copy($(\'.permalink-txt\').text())"><i class="fa fa-clipboard" aria-hidden="true"></i> {info}</a></p>',
+        permalinkBody: '<div class="clearfix"><textarea rows="3" class="form-control permalink-txt" spellcheck="false" readonly>{permalink}</textarea><p class="help-block pull-right"><a href="#" data-action-click="copyToClipboard" data-action-target=".permalink-txt"><i class="fa fa-clipboard" aria-hidden="true"></i> {info}</a></p></div>',
         permalinkFooter: '<a href="#" data-modal-close class="btn btn-default">{buttonClose}</a><a href="{permalink}" class="btn btn-primary" data-ui-loader>{buttonOpen}</a>'
     };
 

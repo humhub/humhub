@@ -1,9 +1,19 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\notification\components;
 
+use yii\base\InvalidConfigException;
 use humhub\modules\user\models\User;
-use humhub\modules\notification\components\NotificationTarget;
+use humhub\modules\notification\targets\BaseTarget;
+use humhub\modules\notification\targets\MailTarget;
+use humhub\modules\notification\targets\WebTarget;
+use humhub\modules\notification\targets\MobileTarget;
 
 /**
  * NotificationCategories are used to group different notifications in views and
@@ -14,22 +24,24 @@ abstract class NotificationCategory extends \yii\base\Object
 {
 
     /**
-     * Category Id
-     * @var type 
+     * @var string the category id 
      */
     public $id;
-    
+
     /**
-     * Used to sort items in the frontend.
-     * @var type 
+     * @var int used to sort categories
      */
     public $sortOrder = PHP_INT_MAX;
-    
+
+    /**
+     * @inheritdoc
+     * @throws InvalidConfigException
+     */
     public function init()
     {
         parent::init();
-        if(!$this->id) {
-            throw new \yii\base\InvalidConfigException('NotificationCategories have to define an id property, which is not the case for "'.self::class.'"');
+        if (!$this->id) {
+            throw new InvalidConfigException('NotificationCategories have to define an id property, which is not the case for "' . self::class . '"');
         }
     }
 
@@ -48,43 +60,43 @@ abstract class NotificationCategory extends \yii\base\Object
      * In case the $target is unknown, subclasses can either return $target->defaultSetting
      * or another default value.
      * 
-     * @param NotificationTarget $target
+     * @param BaseTarget $target
      * @return boolean
      */
-    public function getDefaultSetting(NotificationTarget $target)
+    public function getDefaultSetting(BaseTarget $target)
     {
-        if ($target->id === \humhub\modules\notification\components\MailNotificationTarget::getId()) {
+        if ($target->id === MailTarget::getId()) {
             return true;
-        } else if ($target->id === \humhub\modules\notification\components\WebNotificationTarget::getId()) {
+        } else if ($target->id === WebTarget::getId()) {
             return true;
-        } else if ($target->id === \humhub\modules\notification\components\MobileNotificationTarget::getId()) {
+        } else if ($target->id === MobileTarget::getId()) {
             return false;
         }
 
         return $target->defaultSetting;
     }
-    
+
     /**
      * Returns an array of target ids, which are not editable.
      * 
-     * @param NotificationTarget $target
+     * @param BaseTarget $target
      */
     public function getFixedSettings()
     {
         return [];
     }
-    
+
     /**
-     * Checks if the given NotificationTarget is fixed for this category.
+     * Checks if the given notification target is fixed for this category.
      * 
      * @param type $target
      * @return type
      */
-    public function isFixedSetting(NotificationTarget $target)
+    public function isFixedSetting(BaseTarget $target)
     {
         return in_array($target->id, $this->getFixedSettings());
     }
-    
+
     /**
      * Determines if this category is visible for the given $user.
      * This can be used if a category is only visible for users with certian permissions.
@@ -99,4 +111,5 @@ abstract class NotificationCategory extends \yii\base\Object
     {
         return true;
     }
+
 }

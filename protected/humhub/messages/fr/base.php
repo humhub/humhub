@@ -2,8 +2,7 @@
 return array (
   '<strong>Confirm</strong> Action' => '<strong>Confirmer</strong> l\' action',
   '<strong>Latest</strong> updates' => '<strong>Dernières</strong> mises à jour',
-  '<strong>Mail</strong> summary' => '<strong>E-mail</strong> résumé
-',
+  '<strong>Mail</strong> summary' => '<strong>E-mail</strong> résumé',
   'Account settings' => 'Paramètres du compte',
   'Administration' => 'Administration',
   'Allow' => 'Autoriser',
@@ -11,6 +10,8 @@ return array (
   'An unexpected error occured while loading the search result.' => 'Une erreur inattendue s\'est produite lors du chargement du résultat de la recherche.',
   'An unexpected error occured. If this keeps happening, please contact a site administrator.' => 'Une erreur inattendue est survenue. Si cela se reproduis, contactez un administrateur du site.',
   'An unexpected server error occured. If this keeps happening, please contact a site administrator.' => 'Une erreur de serveur inattendue s\'est produite. Si cela continue, contactez un administrateur du site.',
+  'An unknown error occured while uploading.' => '',
+  'An unknown error occured while uploading. Hint: check your upload_max_filesize and post_max_size php settings.' => '',
   'Back' => 'Retour',
   'Back to dashboard' => 'Retour au tableau de bord',
   'Cancel' => 'Annuler',
@@ -18,8 +19,8 @@ return array (
   'Close' => 'Fermer',
   'Collapse' => 'Réduire',
   'Confirm' => 'Confirmer',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Le contenu d\'un add-on doit être une instance de HActiveRecordContent ou HActiveRecordContentAddon !',
-  'Copy to clipboard: Ctrl/Cmd+C' => 'Copier dans le Presse-papiers: Ctrl / Cmd + C',
+  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Le contenu d\'un add-on doit être une instance de HActiveRecordContent ou HActiveRecordContentAddon!',
+  'Copy to clipboard' => '',
   'Could not determine content container!' => 'Le contenu du conteneur ne peut être déterminé',
   'Could not find content of addon!' => 'Le contenu du add-on ne peut être trouvé',
   'Default' => 'Défaut',
@@ -27,7 +28,9 @@ return array (
   'Do you really want to perform this action?' => 'Voulez-vous vraiment effectuer cette action ?',
   'Error' => 'Erreur',
   'Error while running your last action (Invalid request method).' => 'Erreur lors de l\'exécution de votre dernière action (méthode de demande non valide).',
+  'Error:' => '',
   'Expand' => 'Agrandir',
+  'Info:' => '',
   'It looks like you may have taken the wrong turn.' => 'Il semble que vous n\'êtes pas au bon endroit.',
   'Language' => 'Langue',
   'Loading...' => 'Chargement...',
@@ -45,9 +48,7 @@ return array (
   'Save' => 'Enregistrer',
   'Saved' => 'Enregistré',
   'Search' => 'Rechercher',
-  'Show less' => 'Montrer moins
-
-',
+  'Show less' => 'Montrer moins',
   'Show more' => 'Montrer plus',
   'Some files could not be uploaded:' => 'Certains fichiers n\'ont pas pu être téléchargés:',
   'Space not found!' => 'Espace non trouvé !',
@@ -57,6 +58,7 @@ return array (
   'The space has been archived.' => 'L\'espace à été archivé.',
   'The space has been unarchived.' => 'L\'espace à été désarchivé.',
   'Unsubscribe' => 'désinscrition',
+  'Upload' => 'Ajouter',
   'User not found!' => 'Utilisateur non trouvé',
   'You are not allowed to run this action.' => 'Vous n\'êtes pas autorisé à exécuter cette action.',
 );

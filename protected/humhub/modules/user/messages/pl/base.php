@@ -25,6 +25,8 @@ return array (
   'Profile' => 'Profil',
   'Security' => 'Bezpieczeństwo',
   'Settings' => 'Ustawienia',
+  'Sign in' => 'Zaloguj się ',
+  'Sign in / up' => '',
   'User' => 'Użytkownik',
   'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Użytkownik o tym samym adresie e-mail już istnieje, ale nie jest powiązany z tobą. Zaloguj się za pomocą adresu e-mail, aby go najpierw połączyć.',
   'You\'re not registered.' => 'Nie jesteś zarejestrowany.',

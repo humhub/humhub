@@ -2,8 +2,10 @@
 
 namespace humhub\modules\notification\tests\codeception\unit\category\notifications;
 
-
-use humhub\modules\notification\components\NotificationTarget;
+use humhub\modules\user\models\User;
+use humhub\modules\notification\targets\BaseTarget;
+use humhub\modules\notification\targets\WebTarget;
+use humhub\modules\notification\targets\MailTarget;
 
 /**
  * Description of TestedDefaultViewNotification
@@ -15,23 +17,23 @@ class SpecialNotificationCategory extends \humhub\modules\notification\component
 
     public $id = 'test_special';
 
-    public function getDefaultSetting(NotificationTarget $target)
+    public function getDefaultSetting(BaseTarget $target)
     {
-        if ($target->id === \humhub\modules\notification\components\MailNotificationTarget::getId()) {
+        if ($target->id === MailTarget::getId()) {
             return false;
-        } else if ($target->id === \humhub\modules\notification\components\WebNotificationTarget::getId()) {
+        } else if ($target->id === WebTarget::getId()) {
             return false;
         }
 
         return $target->defaultSetting;
     }
-    
+
     public function getFixedSettings()
     {
-        return [\humhub\modules\notification\components\MailNotificationTarget::getId()];
+        return [MailTarget::getId()];
     }
-    
-    public function isVisible(\humhub\modules\user\models\User $user = null)
+
+    public function isVisible(User $user = null)
     {
         return !$user || $user->id != 2;
     }

@@ -41,10 +41,6 @@ humhub.module('content.form', function(module, require, $) {
         }
     };
 
-    CreateForm.prototype.actions = function() {
-        return ['submit', 'notifyUser', 'changeVisibility'];
-    };
-
     CreateForm.prototype.submit = function(evt) {
         this.$.find("#contentFormError, .preferences, .fileinput-button").hide();
         this.$.find("#contentFormError li").remove();

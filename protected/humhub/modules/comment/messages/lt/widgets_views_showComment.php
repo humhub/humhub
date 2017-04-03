@@ -25,5 +25,4 @@ return [
     'Delete' => 'Ištrinti',
     'Do you really want to delete this comment?' => 'Ar tikrai norite ištrinti šį komentarą?',
     'Edit' => 'Redaguoti',
-    'Updated :timeago' => 'Atnaujinta :prieš',
 ];

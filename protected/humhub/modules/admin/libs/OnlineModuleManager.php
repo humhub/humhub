@@ -34,7 +34,7 @@ class OnlineModuleManager
         $modulePath = Yii::getAlias(Yii::$app->params['moduleMarketplacePath']);
 
         if (!is_writable($modulePath)) {
-            throw new HttpException(500, Yii::t('AdminModule.libs_OnlineModuleManager', 'Module directory %modulePath% is not writeable!', ['%modulePath%' => $modulePath)]);
+            throw new HttpException(500, Yii::t('AdminModule.libs_OnlineModuleManager', 'Module directory %modulePath% is not writeable!', ['%modulePath%' => $modulePath]));
         }
 
         $moduleInfo = $this->getModuleInfo($moduleId);

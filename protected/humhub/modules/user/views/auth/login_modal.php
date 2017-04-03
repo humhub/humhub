@@ -36,8 +36,11 @@ use humhub\modules\user\widgets\AuthChoice;
                     <?php if (AuthChoice::hasClients()): ?>
                         <?= AuthChoice::widget([]) ?>
                     <?php else: ?>
-                        <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
-                    <?php endif; ?>
+                        <?php if ($canRegister) : ?>
+                            <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
+                        <?php else: ?>
+                            <p><?php echo Yii::t('UserModule.views_auth_login', "Please login with your username/email and password."); ?></p>
+                        <?php endif; ?>                    <?php endif; ?>
 
                     <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
                     <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.views_auth_login', 'username or email')]); ?>
@@ -74,11 +77,11 @@ use humhub\modules\user\widgets\AuthChoice;
 
                         <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email')]); ?>
                         <hr>
-                        
+
                         <a href="#" class="btn btn-primary" data-ui-loader data-action-click="ui.modal.submit" data-action-url="<?= Url::to(['/user/auth/login']) ?>">
                             <?= Yii::t('UserModule.views_auth_login', 'Register') ?>
                         </a>
-                        
+
                         <?php ActiveForm::end(); ?>
 
                     </div>

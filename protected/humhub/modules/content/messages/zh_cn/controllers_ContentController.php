@@ -17,8 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'This action is disabled!' => '',
     'Could not delete content!' => '不能删除内容',
     'Could not delete content: Access denied!' => '不能删除内容:访问拒绝！',
+    'Could not load requested object!' => '无法加载请求对象！',
     'Invalid request method!' => '无效的请求方法！',
     'Maximum number of pinned items reached!
 
@@ -27,5 +29,4 @@ To however pin this item, unpin another before!' => '到达的置顶的最大条
 
 你一次最多能置顶两条。
 你可以在置顶此条之前先取消一个置顶！',
-    'Could not load requested object!' => '无法加载请求对象！',
 ];

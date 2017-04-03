@@ -25,5 +25,4 @@ return [
     'Delete' => 'Smazat',
     'Do you really want to delete this comment?' => 'Opravdu chcete smazat tento komentář?',
     'Edit' => 'Upravit',
-    'Updated :timeago' => 'Upraveno :timeago',
 ];

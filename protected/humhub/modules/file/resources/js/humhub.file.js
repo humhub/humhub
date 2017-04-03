@@ -344,6 +344,7 @@ humhub.module('file', function (module, require, $) {
                     animation: 'fade',
                     delay: 100,
                     placement: this.options.popoverPosition || 'right',
+                    container: 'body',
                     content: function () {
                         return string.template(Preview.template.popover, file);
                     }
@@ -356,11 +357,9 @@ humhub.module('file', function (module, require, $) {
             that.delete(file);
         });
         
-        if(this.isImage(file) && this.options.hideImageFileInfo) {
-            $file.find('.file-fileInfo').remove();
+        if(!(this.isImage(file) && this.options.hideImageFileInfo)) {
+            $file.fadeIn();
         }
-
-        $file.fadeIn();
     };
     
     Preview.prototype.isImage = function (file) {

@@ -36,7 +36,7 @@ class AdvancedSettingMenu extends \humhub\widgets\BaseMenu
             'isVisible' => Yii::$app->user->isAdmin(),
         ]);
 
-		$this->addItem([
+        $this->addItem([
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Files'),
             'url' => Url::toRoute('/admin/setting/file'),
             'icon' => '<i class="fa fa-file"></i>',
@@ -45,7 +45,7 @@ class AdvancedSettingMenu extends \humhub\widgets\BaseMenu
             'isVisible' => Yii::$app->user->isAdmin(),
         ]);
 
-		$this->addItem([
+        $this->addItem([
             'label' => Yii::t('AdminModule.views_setting_mailing', 'E-Mail'),
             'url' => Url::toRoute(['/admin/setting/mailing-server']),
             'icon' => '<i class="fa fa-envelope"></i>',
@@ -60,7 +60,7 @@ class AdvancedSettingMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 300,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && Yii::$app->controller->action->id == 'proxy'),
             'isVisible' => Yii::$app->user->isAdmin(),
-        ));
+        ]);
         $this->addItem([
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Statistics'),
             'url' => Url::toRoute('/admin/setting/statistic'),
@@ -77,7 +77,7 @@ class AdvancedSettingMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 500,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && (Yii::$app->controller->action->id == 'oembed' || Yii::$app->controller->action->id == 'oembed-edit')),
             'isVisible' => Yii::$app->user->isAdmin(),
-        ));
+        ]);
 
         $this->addItem([
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Logs'),

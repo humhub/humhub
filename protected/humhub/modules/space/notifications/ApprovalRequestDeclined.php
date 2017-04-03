@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -24,12 +24,12 @@ class ApprovalRequestDeclined extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = "space";
-    
-     /**
+
+    /**
      * @inheritdoc
      */
     public $viewName = "approvalDeclined";
-    
+
     /**
      *  @inheritdoc
      */
@@ -37,11 +37,11 @@ class ApprovalRequestDeclined extends BaseNotification
     {
         return new SpaceMemberNotificationCategory;
     }
-    
+
     /**
      *  @inheritdoc
      */
-    public function getTitle(\humhub\modules\user\models\User $user)
+    public function getMailSubject()
     {
         return strip_tags($this->html());
     }

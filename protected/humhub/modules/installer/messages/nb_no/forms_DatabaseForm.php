@@ -3,5 +3,5 @@ return array (
   'Hostname' => '',
   'Name of Database' => '',
   'Password' => 'Passord',
-  'Username' => '',
+  'Username' => 'Brukernavn',
 );

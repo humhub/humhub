@@ -33,6 +33,8 @@ return [
     'Only include spaces below to the mail summary' => '',
     'Reset to defaults' => '',
     'Spaces' => '',
+    'Weekly' => '',
     'You will only receive an e-mail if there is something new.' => '',
     'Your daily summary' => '',
+    'Your weekly summary' => '',
 ];

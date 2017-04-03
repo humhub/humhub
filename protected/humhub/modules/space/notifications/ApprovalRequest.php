@@ -43,10 +43,10 @@ class ApprovalRequest extends BaseNotification
      */
     public function withMessage($message)
     {
-        if($message) {
+        if ($message) {
             $this->message = $message;
         }
-       
+
         return $this;
     }
 
@@ -61,7 +61,7 @@ class ApprovalRequest extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function getTitle(\humhub\modules\user\models\User $user)
+    public function getMailSubject()
     {
         return Yii::t('SpaceModule.notification', '{displayName} requests membership for the space {spaceName}', [
                     '{displayName}' => Html::encode($this->originator->displayName),
@@ -96,7 +96,7 @@ class ApprovalRequest extends BaseNotification
         return serialize(['source' => $this->source, 'originator' => $this->originator, 'message' => $this->message]);
     }
 
-     /**
+    /**
      * @inheritdoc
      */
     public function unserialize($serialized)

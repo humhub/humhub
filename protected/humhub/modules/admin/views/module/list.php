@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?= Yii::t('AdminModule.views_module_list', '<strong>Modules</strong> directory'); ?></div>
@@ -35,11 +34,11 @@ use yii\helpers\Url;
 
                         <?php if (Yii::$app->hasModule($module->id)) : ?>
                             <?php if ($module->getConfigUrl() != "") : ?>
-                                &middot; <?= Html::a(Yii::t('AdminModule.views_module_list', 'Configure'), $module->getConfigUrl(), ['style' => 'font-weight:bold')); ?>
+                                &middot; <?= Html::a(Yii::t('AdminModule.views_module_list', 'Configure'), $module->getConfigUrl(), ['style' => 'font-weight:bold']); ?>
                             <?php endif; ?>
 
                             <?php if ($module instanceof \humhub\modules\content\components\ContentContainerModule): ?>
-                                &middot; <?= Html::a(Yii::t('AdminModule.views_module_list', 'Set as default'), Url::to(['/admin/module/set-as-default', 'moduleId' => $moduleId]), ['data-target' => '#globalModal')); ?>
+                                &middot; <?= Html::a(Yii::t('AdminModule.views_module_list', 'Set as default'), Url::to(['/admin/module/set-as-default', 'moduleId' => $moduleId]), ['data-target' => '#globalModal']); ?>
                             <?php endif; ?>
 
                             &middot; <?= Html::a(Yii::t('AdminModule.views_module_list', 'Disable'), Url::to(['/admin/module/disable', 'moduleId' => $moduleId]), ['data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module data will be lost!')]); ?>

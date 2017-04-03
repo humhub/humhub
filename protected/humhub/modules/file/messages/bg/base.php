@@ -17,8 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Open</strong> file' => '',
     'Could not find requested file variant!' => '',
     'Could not find requested file!' => '',
+    'Download' => '',
     'Insufficient permissions!' => '',
     'Invalid Mime-Type' => '',
 ];

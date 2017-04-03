@@ -170,12 +170,12 @@ class SettingController extends Controller
             '' => 'None',
             'ssl' => 'SSL',
             'tls' => 'TLS'
-        );
+        ];
         $transportTypes = [
             'file' => 'File (Use for testing/development)',
             'php' => 'PHP',
             'smtp' => 'SMTP'
-        );
+        ];
 
         return $this->render('mailing_server', [
             'model' => $form,

@@ -18,6 +18,7 @@
  */
 return [
     '<strong>Join</strong> the network' => '',
+    'Please login with your username/email and password.' => '',
     '<strong>Please</strong> sign in' => '<strong>Por favor</strong> faça o login',
     '<strong>Sign</strong> up' => '<strong>Crie</strong> sua conta',
     'Create a new one.' => 'Criar uma nova',

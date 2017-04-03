@@ -38,7 +38,7 @@ class CacheSettingsForm extends Model
             ['type', 'checkCacheType'],
             ['expireTime', 'integer'],
             ['type', 'in', 'range' => array_keys($this->getTypes())],
-        );
+        ];
     }
 
     /**

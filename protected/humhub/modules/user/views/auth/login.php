@@ -25,12 +25,16 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
                 </div>
             <?php endif; ?>
 
-            <?php if(AuthChoice::hasClients()): ?>
+            <?php if (AuthChoice::hasClients()): ?>
                 <?= AuthChoice::widget([]) ?>
             <?php else: ?>
-                <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
+                <?php if ($canRegister) : ?>
+                    <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
+                <?php else: ?>
+                    <p><?php echo Yii::t('UserModule.views_auth_login', "Please login with your username/email and password."); ?></p>
+                <?php endif; ?>
             <?php endif; ?>
-            
+
             <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]); ?>
             <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username')])->label(false); ?>
             <?php echo $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password')])->label(false); ?>
@@ -44,7 +48,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
                 <div class="col-md-8 text-right">
                     <small>
                         <?php echo Yii::t('UserModule.views_auth_login', 'Forgot your password?'); ?>
-                        <a href="<?php echo Url::toRoute('/user/password-recovery'); ?>" data-pjax-prevent><br><?php echo Yii::t('UserModule.views_auth_login', 'Create a new one.') ?></a>
+                        <a id="password-recovery-link" href="<?php echo Url::toRoute('/user/password-recovery'); ?>" data-pjax-prevent><br><?php echo Yii::t('UserModule.views_auth_login', 'Create a new one.') ?></a>
                     </small>
                 </div>
             </div>

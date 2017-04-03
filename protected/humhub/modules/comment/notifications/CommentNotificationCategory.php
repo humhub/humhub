@@ -1,12 +1,18 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\comment\notifications;
 
 use Yii;
 use humhub\modules\notification\components\NotificationCategory;
 
 /**
- * Description of CommentNotificationCategory
+ * CommentNotificationCategory
  *
  * @author buddha
  */

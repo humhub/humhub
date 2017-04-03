@@ -1,4 +1,5 @@
 <?php
+
 return array (
   '<strong>Notification</strong> Settings' => 'Paramètres des <strong>notifications</strong> ',
   'In this view, you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'Sur cet affichage, vous pouvez définir le comportement par défaut de l\'application pour vos utilisateurs. Ces paramètres peuvent être modifiés par les utilisateurs sur la page des préférences de leur compte.',
@@ -11,3 +12,4 @@ return array (
   '{displayName} and {displayName2}' => '{displayName} et {displayName2}',
   '{displayName} and {number} others' => '{displayName} et {number} autres',
 );
+

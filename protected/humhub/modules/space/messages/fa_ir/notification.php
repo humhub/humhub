@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayName} just invited you to the space {spaceName}' => '',
     '{displayName} accepted your invite for the space {spaceName}' => 'پذيرفت {spaceName} براي عضويت در انجمن {displayName} كاربر',
     '{displayName} approved your membership for the space {spaceName}' => 'را تاييد كرد {spaceName} تقاضاي شما براي عضويت در انجمن {displayName} كاربر',
     '{displayName} declined your invite for the space {spaceName}' => 'را رد كرد {spaceName} تقاضاي شما براي عضويت در انجمن {displayName} كاربر',

@@ -2,15 +2,16 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\comment\controllers;
 
 use Yii;
-use yii\web\HttpException;
 use humhub\modules\comment\models\Comment;
+use \humhub\modules\comment\widgets\ShowMore;
+use yii\web\HttpException;
 
 /**
  * CommentController provides all comment related actions.
@@ -41,21 +42,22 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
     {
         $content = $this->parentContent;
 
-        $pagination = new \yii\data\Pagination([
-            'totalCount' => Comment::GetCommentCount($content->className(), $content->getPrimaryKey()),
-            'pageSize' => $this->module->commentsBlockLoadSize
-        ]);
-
         $query = Comment::find();
         $query->orderBy('created_at DESC');
         $query->where([
             'object_model' => $content->className(),
             'object_id' => $content->getPrimaryKey(),
         ]);
+        
+        $pagination = new \yii\data\Pagination([
+            'totalCount' => Comment::GetCommentCount($content->className(), $content->getPrimaryKey()),
+            'pageSize' => $this->module->commentsBlockLoadSize
+        ]);
+        
         $query->offset($pagination->offset)->limit($pagination->limit);
         $comments = array_reverse($query->all());
 
-        $output = \humhub\modules\comment\widgets\ShowMore::widget(['pagination' => $pagination, 'object' => $content]);
+        $output = ShowMore::widget(['pagination' => $pagination, 'object' => $content]);
         foreach ($comments as $comment) {
             $output .= \humhub\modules\comment\widgets\Comment::widget(['comment' => $comment]);
         }
@@ -116,8 +118,8 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
             $this->contentAddon = Comment::findOne(['id' => $this->contentAddon->id]);
 
             return $this->renderAjaxContent(\humhub\modules\comment\widgets\Comment::widget([
-                'comment' => $this->contentAddon,
-                'justEdited' => true
+                                'comment' => $this->contentAddon,
+                                'justEdited' => true
             ]));
         }
 

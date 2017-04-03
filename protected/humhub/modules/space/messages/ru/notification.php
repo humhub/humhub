@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayName} just invited you to the space {spaceName}' => '',
     '{displayName} accepted your invite for the space {spaceName}' => '{displayName} принял ваше приглашение на вступление в пространство {spaceName}',
     '{displayName} approved your membership for the space {spaceName}' => '{displayName} подтвердил ваше участие в пространстве {spaceName}',
     '{displayName} declined your invite for the space {spaceName}' => '{displayName} отменил ваше приглашение на вступление в пространство {spaceName}',

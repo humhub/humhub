@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -48,11 +48,9 @@ class Followed extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function getTitle(\humhub\modules\user\models\User $user)
+    public function getMailSubject()
     {
-        return Yii::t('UserModule.notification', '{displayName} is now following you', [
-                    'displayName' => Html::encode($this->originator->displayName),
-        ]);
+        return strip_tags($this->html());
     }
 
     /**

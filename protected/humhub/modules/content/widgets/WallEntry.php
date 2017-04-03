@@ -182,7 +182,8 @@ class WallEntry extends Widget
 
         $createdAt = $content->created_at;
         $updatedAt = null;
-        if ($createdAt !== $content->updated_at && $content->updated_at != '') {
+        // Note this won't work if updated_at is of type yii/db/Expression (NOW()) in this case the content has to be refreshed manually.
+        if ($createdAt !== $content->updated_at && !empty($content->updated_at) && is_string($content->updated_at)) {
             $updatedAt = $content->updated_at;
         }
 

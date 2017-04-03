@@ -93,7 +93,7 @@ use yii\helpers\Html;
                             <?php endif; ?>
                             &middot; <?= Html::a(Yii::t('AdminModule.views_module_listOnline', 'More info'), $module['marketplaceUrl'], ['target' => '_blank']); ?>
                             <?php if (isset($module['showDisclaimer']) && $module['showDisclaimer'] == 1): ?>
-                                &middot; <?= Html::a(Yii::t('AdminModule.views_module_listOnline', 'Disclaimer'), Url::to(['thirdparty-disclaimer']), ['data-target' => '#globalModal')); ?>
+                                &middot; <?= Html::a(Yii::t('AdminModule.views_module_listOnline', 'Disclaimer'), Url::to(['thirdparty-disclaimer']), ['data-target' => '#globalModal']); ?>
                             <?php endif; ?>
                         </div>
                     </div>

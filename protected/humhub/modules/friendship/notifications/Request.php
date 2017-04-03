@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -24,7 +24,7 @@ class Request extends BaseNotification
      * @inheritdoc
      */
     public $moduleId = "friendship";
-    
+
     /**
      * @inheritdoc
      */
@@ -42,7 +42,7 @@ class Request extends BaseNotification
     {
         return $this->originator->getUrl();
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -50,11 +50,11 @@ class Request extends BaseNotification
     {
         return new FriendshipNotificationCategory;
     }
-    
+
     /**
      * @inheritdoc
      */
-    public function getTitle(\humhub\modules\user\models\User $user)
+    public function getMailSubject()
     {
         return strip_tags($this->html());
     }

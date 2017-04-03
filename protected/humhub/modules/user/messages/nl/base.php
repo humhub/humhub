@@ -25,6 +25,8 @@ return array (
   'Profile' => 'Profiel',
   'Security' => 'Veiligheid',
   'Settings' => 'Instellingen',
+  'Sign in' => 'Aanmelden',
+  'Sign in / up' => 'Aanmelden / Registeren',
   'User' => 'Gebruiker',
   'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Er bestaat al een gebruiker met hetzelfde mailadres, maar dit account is daar niet mee verbonden. Log in met je email adres en wachtwoord en koppel je accounts.',
   'You\'re not registered.' => 'U bent niet geregistreerd.',

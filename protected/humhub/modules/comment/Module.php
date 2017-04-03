@@ -18,7 +18,7 @@ class Module extends \humhub\components\Module
      *
      * @var int
      */
-    public $commentsBlockLoadSize = 25;
+    public $commentsBlockLoadSize = 10;
 
     /**
      * @inheritdoc

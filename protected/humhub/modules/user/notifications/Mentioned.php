@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -36,16 +36,16 @@ class Mentioned extends BaseNotification
     {
         return new MentionedNotificationCategory;
     }
-    
+
     /**
      * @inheritdoc
      */
     public function getViewName()
     {
-        if($this->source instanceof \humhub\modules\comment\models\Comment) {
+        if ($this->source instanceof \humhub\modules\comment\models\Comment) {
             return 'mentionedComment';
         }
-        
+
         return 'mentioned';
     }
 
@@ -55,7 +55,7 @@ class Mentioned extends BaseNotification
     public function send(\humhub\modules\user\models\User $user)
     {
         // Do additional access check here, because the mentioned user may have no access to the content
-        if (!$this->source->content->canRead($user->id)) {
+        if (!$this->source->content->canView($user)) {
             return;
         }
 
@@ -65,7 +65,7 @@ class Mentioned extends BaseNotification
     /**
      * inheritdoc
      */
-    public function getTitle(\humhub\modules\user\models\User $user)
+    public function getMailSubject()
     {
         return Yii::t('UserModule.notification', "{displayName} just mentioned you in {contentTitle} \"{preview}\"", [
                     'displayName' => Html::encode($this->originator->displayName),

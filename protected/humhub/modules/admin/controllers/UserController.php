@@ -68,8 +68,8 @@ class UserController extends Controller
             $searchModel = new \humhub\modules\admin\models\UserSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
             return $this->render('index', [
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel
             ]);
         } else if (Yii::$app->user->can(new ManageSettings())) {
             $this->redirect(['/admin/authentication']);
@@ -86,7 +86,7 @@ class UserController extends Controller
     public function actionEdit()
     {
         $user = UserEditForm::findOne([
-            'id' => Yii::$app->request->get('id')
+                    'id' => Yii::$app->request->get('id')
         ]);
         $user->initGroupSelection();
 
@@ -123,7 +123,7 @@ class UserController extends Controller
                     'options' => [
                         'data-placeholder' => Yii::t('AdminModule.controllers_UserController', 'Select Groups'),
                         'data-placeholder-more' => Yii::t('AdminModule.controllers_UserController', 'Add Groups...')
-                        ],
+                    ],
                     'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageGroups())
                 ],
                 'status' => [
@@ -159,7 +159,7 @@ class UserController extends Controller
                 'label' => Yii::t('AdminModule.controllers_UserController', 'Delete'),
                 'class' => 'btn btn-danger',
             ],
-        );
+        ];
 
         $form = new HForm($definition);
         $form->models['User'] = $user;
@@ -184,15 +184,14 @@ class UserController extends Controller
         }
 
         return $this->render('edit', [
-            'hForm' => $form,
-            'user' => $user)
-        ];
+                    'hForm' => $form,
+                    'user' => $user
+        ]);
     }
 
-    public function canBecomeUser($user) {
-        return Yii::$app->user->isAdmin()
-                && $user->id != Yii::$app->user->getIdentity()->id
-                && !$user->isSystemAdmin();
+    public function canBecomeUser($user)
+    {
+        return Yii::$app->user->isAdmin() && $user->id != Yii::$app->user->getIdentity()->id && !$user->isSystemAdmin();
     }
 
     public function actionAdd()

@@ -25,6 +25,8 @@ return array (
   'Profile' => 'Profil',
   'Security' => 'Sikkerhed',
   'Settings' => 'Indstillinger',
+  'Sign in' => 'Log ind',
+  'Sign in / up' => '',
   'User' => 'Bruger',
   'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '',
   'You\'re not registered.' => '',

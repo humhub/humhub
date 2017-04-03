@@ -28,7 +28,7 @@
         "nqxcode/zendsearch": "^2.0",
         "xj/yii2-jplayer-widget": "*",
         "zendframework/zend-ldap": "^2.5",
-        "zhuravljov/yii2-queue": "^0.7",
+        "zhuravljov/yii2-queue": "^0.11",
         "bower-asset/jquery-timeago": "1.4.*",
         "bower-asset/jquery-nicescroll": "3.6.*",
         "bower-asset/jquery-knob": "1.2.*",

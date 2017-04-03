@@ -66,7 +66,7 @@ use humhub\modules\content\widgets\WallEntryLabels;
                     <?= TimeAgo::widget(['timestamp' => $createdAt]); ?>
                     <?php if ($updatedAt !== null) : ?>
                         &middot;
-                        <span class="tt" title="<?= Yii::$app->formatter->asDateTime($updatedAt); ?>">Updated</span>
+                        <span class="tt" title="<?= Yii::$app->formatter->asDateTime($updatedAt); ?>"><?= Yii::t('ContentModule.base', 'Updated'); ?></span>
                     <?php endif; ?>
                 </div>
             </div>

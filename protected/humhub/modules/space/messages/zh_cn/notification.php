@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayName} just invited you to the space {spaceName}' => '{displayName} 刚邀请你加入空间 {spaceName}',
     '{displayName} accepted your invite for the space {spaceName}' => '{displayName} 接收了你加入空间 {spaceName} 的邀请',
     '{displayName} approved your membership for the space {spaceName}' => '{displayName} 通过了你加入空间 {spaceName} 的请求',
     '{displayName} declined your invite for the space {spaceName}' => '{displayName} 拒绝了你加入空间 {spaceName} 的邀请',

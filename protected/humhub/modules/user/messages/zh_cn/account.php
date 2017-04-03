@@ -1,5 +1,7 @@
 <?php
 return array (
+  '<strong>Modify</strong> your profile image' => '<strong>修改</strong> 属性图片',
+  '<strong>Modify</strong> your title image' => '<strong>修改</strong> 属性图片',
   '<strong>Security</strong> settings' => '<strong>安全</strong> 设置',
   '<strong>User</strong> settings' => '<strong>用户</strong> 设置',
   '<strong>Your</strong> profile' => '<strong>你的</strong> 属性',

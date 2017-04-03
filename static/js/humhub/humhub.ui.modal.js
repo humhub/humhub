@@ -416,8 +416,8 @@ humhub.module('ui.modal', function (module, require, $) {
             }
         }
         this.$.empty().append(content);
-        this.$.find('input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
         this.applyAdditions();
+        this.$.find('input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
         return this;
     };
 

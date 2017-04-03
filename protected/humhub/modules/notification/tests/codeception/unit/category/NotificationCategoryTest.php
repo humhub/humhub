@@ -5,11 +5,11 @@ namespace humhub\modules\notification\tests\codeception\unit\category;
 use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
-use humhub\modules\notification\components\MailNotificationTarget;
-use humhub\modules\notification\components\WebNotificationTarget;
 use humhub\modules\notification\tests\codeception\unit\category\notifications\TestNotification;
 use humhub\modules\notification\tests\codeception\unit\category\notifications\SpecialNotification;
 use humhub\modules\notification\models\forms\NotificationSettings;
+use humhub\modules\notification\targets\MailTarget;
+use humhub\modules\notification\targets\WebTarget;
 
 class NotificationCategoryTest extends HumHubDbTestCase
 {
@@ -25,8 +25,8 @@ class NotificationCategoryTest extends HumHubDbTestCase
 
         $notification = new TestNotification();
         $category = $notification->getCategory();
-        $mailTarget = Yii::$app->notification->getTarget(MailNotificationTarget::class);
-        $webTarget = Yii::$app->notification->getTarget(WebNotificationTarget::class);
+        $mailTarget = Yii::$app->notification->getTarget(MailTarget::class);
+        $webTarget = Yii::$app->notification->getTarget(WebTarget::class);
 
         $this->assertFalse($mailTarget->isEnabled($notification));
         $this->assertTrue($webTarget->isEnabled($notification));
@@ -53,8 +53,8 @@ class NotificationCategoryTest extends HumHubDbTestCase
 
         $notification = new SpecialNotification();
         $category = $notification->getCategory();
-        $mailTarget = Yii::$app->notification->getTarget(MailNotificationTarget::class);
-        $webTarget = Yii::$app->notification->getTarget(WebNotificationTarget::class);
+        $mailTarget = Yii::$app->notification->getTarget(MailTarget::class);
+        $webTarget = Yii::$app->notification->getTarget(WebTarget::class);
 
         $this->assertFalse($mailTarget->isEnabled($notification));
         $this->assertFalse($webTarget->isEnabled($notification));
@@ -83,8 +83,8 @@ class NotificationCategoryTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $notification = new SpecialNotification();
         $category = $notification->getCategory();
-        $mailTarget = Yii::$app->notification->getTarget(MailNotificationTarget::class);
-        $webTarget = Yii::$app->notification->getTarget(WebNotificationTarget::class);
+        $mailTarget = Yii::$app->notification->getTarget(MailTarget::class);
+        $webTarget = Yii::$app->notification->getTarget(WebTarget::class);
 
         $this->assertFalse($mailTarget->isEnabled($notification));
         $this->assertFalse($webTarget->isEnabled($notification));
@@ -125,8 +125,8 @@ class NotificationCategoryTest extends HumHubDbTestCase
 
         $notification = new TestNotification();
         $category = $notification->getCategory();
-        $mailTarget = Yii::$app->notification->getTarget(MailNotificationTarget::class);
-        $webTarget = Yii::$app->notification->getTarget(WebNotificationTarget::class);
+        $mailTarget = Yii::$app->notification->getTarget(MailTarget::class);
+        $webTarget = Yii::$app->notification->getTarget(WebTarget::class);
 
         // Check default settings.
         $this->assertFalse($mailTarget->isEnabled($notification, $user));

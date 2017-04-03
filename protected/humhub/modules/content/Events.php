@@ -74,6 +74,7 @@ class Events extends \yii\base\Object
         $content = $event->sender->object;
 
         $stackWidget->addWidget(widgets\DeleteLink::className(), ['content' => $content], ['sortOrder' => 100]);
+        $stackWidget->addWidget(widgets\VisibilityLink::className(), ['contentRecord' => $content], ['sortOrder' => 250]);
         $stackWidget->addWidget(widgets\NotificationSwitchLink::className(), ['content' => $content], ['sortOrder' => 300]);
         $stackWidget->addWidget(widgets\PermaLink::className(), ['content' => $content], ['sortOrder' => 400] );
         $stackWidget->addWidget(widgets\PinLink::className(), ['content' => $content], ['sortOrder' => 500]);

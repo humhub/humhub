@@ -18,6 +18,8 @@
  */
 return [
     'Current Password' => '',
+    'Sign in' => '',
+    'Sign in / up' => '',
     'Basic Settings' => 'الإعدادات البسيطة',
     'Change Email' => 'تغيير البريد الإلكتروني',
     'Change Password' => 'تغيير كلمة المرور',
