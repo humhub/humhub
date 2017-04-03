@@ -8,7 +8,10 @@
 
 namespace humhub\components\queue\driver;
 
-use zhuravljov\yii\queue\sync\Driver;
+use Yii;
+use yii\base\Event;
+use zhuravljov\yii\queue\ErrorEvent;
+use humhub\components\queue\Queue;
 
 /**
  * Instant queue driver, mainly used for testing purposes
@@ -16,30 +19,29 @@ use zhuravljov\yii\queue\sync\Driver;
  * @since 1.2
  * @author buddha
  */
-class Instant extends Driver
+class Instant extends Queue
 {
 
     /**
      * @inheritdoc
      */
-    public $handle = true;
-
-    /**
-     * @var array
-     */
-    private $_messages = [];
-
-    /**
-     * Executes the jobs immediatly, serialization is done for testing purpose
-     */
-    public function push($job)
+    public function init()
     {
-        $this->_messages[] = $this->serialize($job);
+        parent::init();
 
-        while (($message = array_shift($this->_messages)) !== null) {
-            $job = $this->unserialize($message);
-            $this->getQueue()->run($job);
-        }
+        Event::on(Queue::class, Queue::EVENT_AFTER_ERROR, function(ErrorEvent $errorEvent) {
+            /* @var $exception \Expection */
+            $exception = $errorEvent->error;
+            Yii::error('Could not execute queued job! Message: ' . $exception->getMessage() . ' Trace:' . $exception->getTraceAsString(), 'queue');
+        });
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function sendMessage($message, $timeout)
+    {
+        $this->handleMessage($message);
     }
 
 }
