@@ -35,7 +35,7 @@ class UrlOembed extends \yii\db\ActiveRecord
         return [
             [['url', 'preview'], 'required'],
             [['preview'], 'string'],
-            [['url'], 'string', 'max' => 180]
+            [['url'], 'string', 'max' => 180],
         ];
     }
 
@@ -52,10 +52,11 @@ class UrlOembed extends \yii\db\ActiveRecord
 
     /**
      * Returns OEmbed Code for a given URL
-     *
      * If no oembed code is found, null is returned
      *
-     * @param type $url
+     * @param string $url
+     *
+     * @return null|string
      */
     public static function GetOEmbed($url)
     {
@@ -65,7 +66,7 @@ class UrlOembed extends \yii\db\ActiveRecord
         if (UrlOembed::HasOEmbedSupport($url)) {
 
             // Lookup Cached OEmebed Item from Datbase
-            $urlOembed = UrlOembed::findOne(['url'=>$url]);
+            $urlOembed = UrlOembed::findOne(['url' => $url]);
             if ($urlOembed !== null) {
                 return $urlOembed->preview;
             } else {
@@ -79,16 +80,16 @@ class UrlOembed extends \yii\db\ActiveRecord
     /**
      * Prebuilds oembeds for all urls in a given text
      *
-     * @param type $text
+     * @param string|array $text
      */
     public static function preload($text)
     {
-        preg_replace_callback('/http(.*?)(\s|$)/i', function($match) {
+        preg_replace_callback('/http(.*?)(\s|$)/i', function ($match) {
 
             $url = $match[0];
 
             // Already looked up?
-            if (UrlOembed::findOne(['url'=>$url]) !== null) {
+            if (UrlOembed::findOne(['url' => $url]) !== null) {
                 return;
             }
             UrlOembed::loadUrl($url);
@@ -98,7 +99,8 @@ class UrlOembed extends \yii\db\ActiveRecord
     /**
      * Loads OEmbed Data from a given URL and writes them to the database
      *
-     * @param type $url
+     * @param string $url
+     *
      * @return string
      */
     public static function loadUrl($url)
@@ -146,7 +148,8 @@ class UrlOembed extends \yii\db\ActiveRecord
     /**
      * Checks if a given URL Supports OEmbed
      *
-     * @param type $url
+     * @param string $url
+     *
      * @return boolean
      */
     public static function HasOEmbedSupport($url)
@@ -163,8 +166,9 @@ class UrlOembed extends \yii\db\ActiveRecord
     /**
      * Fetches a given URL and returns content
      *
-     * @param type $url
-     * @return type
+     * @param string $url
+     *
+     * @return mixed|boolean
      */
     public static function fetchUrl($url)
     {
@@ -208,7 +212,7 @@ class UrlOembed extends \yii\db\ActiveRecord
             return \yii\helpers\Json::decode($providers);
         }
 
-        return array();
+        return [];
     }
 
     /**
