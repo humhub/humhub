@@ -51,7 +51,7 @@ class ShowMorePager extends \humhub\widgets\LinkPager
             throw new InvalidConfigException('The "pagination" property must be set.');
         }
 
-        if (!isset($this->ajaxButtonOptions['htmlOPtions']['id'])) {
+        if (!isset($this->ajaxButtonOptions['htmlOptions']['id'])) {
             $this->ajaxButtonOptions['htmlOptions']['id'] = $this->id . '_btn';
         }
 
