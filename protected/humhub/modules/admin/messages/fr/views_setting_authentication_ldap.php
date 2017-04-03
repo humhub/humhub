@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Specify your LDAP-backend used to fetch user accounts.' => '',
+    'Specify your LDAP-backend used to fetch user accounts.' => 'Veuillez spécifier l\'utilisateur LDAP utilisé pour récupérer les utilisateurs.',
     'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'L\'utilisation du protocole TLS/SSL est fortement recommandé dans les environnements de production pour prévenir de la transmission des mots de passe en clair.',
     'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Définit le filtre à appliquer, lors d\'une tentative de connexion. %s remplace le nom d\'utilisateur lors de la connexion. Exemple : &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;',
     'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;' => 'Attribut LDAP pour l\'adresse e-mail. Par défaut : &quotmail&quot;',

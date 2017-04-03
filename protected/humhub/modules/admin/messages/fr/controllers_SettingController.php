@@ -18,6 +18,6 @@
  */
 return [
     'None - shows dropdown in user registration.' => 'Aucun - Combo déroulante lors de l\'enregistrement.',
-    'Saved' => 'Sauvegardé',
-    'Saved and flushed cache' => 'Sauvegardé et cache purgée',
+    'Saved' => 'Enregistré',
+    'Saved and flushed cache' => 'Enregistré et cache purgé',
 ];

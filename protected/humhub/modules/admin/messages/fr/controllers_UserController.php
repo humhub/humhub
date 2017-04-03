@@ -5,9 +5,9 @@ return array (
   'Delete' => 'Supprimer',
   'Disabled' => 'Désactivé',
   'Enabled' => 'Activé',
-  'Save' => 'Sauvegarder',
+  'Save' => 'Enregistrer',
   'Select Groups' => 'Sélectionner un Groupe',
   'Unapproved' => 'Non Approuvé',
-  'User not found!' => 'Utilisateur Non Trouvé !',
-  'You cannot delete yourself!' => 'Vous ne pouvez pas supprimer vous-même !',
+  'User not found!' => 'Utilisateur introuvable !',
+  'You cannot delete yourself!' => 'Vous ne pouvez pas vous supprimer vous-même !',
 );

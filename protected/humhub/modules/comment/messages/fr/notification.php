@@ -9,5 +9,5 @@ return array (
   '{displayName} commented {contentTitle} in space {space}' => '{displayName} à commenté {contentTitle} dans l\'espace {espace}',
   '{displayName} commented {contentTitle}.' => '{displayName} a commenté {contentTitle}.',
   '{displayName} just commented your {contentTitle}' => '{displayName} vient de commenter votre {contentTitle}',
-  '{displayName} just commented your {contentTitle} in space {space}' => '{displayName} vient de commenter votre {contentTitle} dans space {space}',
+  '{displayName} just commented your {contentTitle} in space {space}' => '{displayName} vient de commenter votre {contentTitle} dans l\'espace {space}',
 );

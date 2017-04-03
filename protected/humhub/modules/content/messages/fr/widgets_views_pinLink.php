@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Pin to top' => 'Épingler en haute de page',
-  'Unpin' => 'Annuler épingler',
+  'Pin to top' => 'Épingler en haut de page',
+  'Unpin' => 'Deésépingler',
 );

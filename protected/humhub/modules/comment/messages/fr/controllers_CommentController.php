@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Access denied!' => 'Accès refusé',
+    'Access denied!' => 'Accès refusé !',
     'Insufficent permissions!' => 'Droits insuffisants !',
 ];

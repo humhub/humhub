@@ -9,5 +9,5 @@ return array (
   'Spaces' => 'Espaces',
   'Specify space' => 'Préciser l\'espace',
   'Users' => 'Utilisateurs',
-  'Your search returned no matches.' => 'Votre recherche n\'a donné aucun résultat.',
+  'Your search returned no matches.' => 'Votre recherche n\'a retourné aucun résultat.',
 );

@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Could not find requested content!' => 'Impossible de trouver le contenu demandé',
+    'Could not find requested content!' => 'Impossible de trouver le contenu demandé !',
 ];

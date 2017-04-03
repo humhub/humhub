@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Modify</strong> your title image' => '<strong>Modifier</strong> votre image titre',
+    '<strong>Modify</strong> your title image' => '<strong>Modifier</strong> votre image',
     'Close' => 'Fermer',
     'Save' => 'Enregistrer',
 ];
