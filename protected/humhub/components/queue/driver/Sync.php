@@ -13,7 +13,6 @@ use yii\base\Event;
 use yii\base\Application;
 use yii\base\NotSupportedException;
 use zhuravljov\yii\queue\ErrorEvent;
-use zhuravljov\yii\queue\Job;
 use zhuravljov\yii\queue\Queue;
 
 /**
@@ -62,12 +61,8 @@ class Sync extends Queue
 
     /**
      * Runs all jobs from queue.
-     *
-     * @param Job $job
-     *
-     * @return bool|void
      */
-    public function run(Job $job)
+    public function run()
     {
         while (($message = array_shift($this->messages)) !== null) {
             $this->handleMessage($message);
