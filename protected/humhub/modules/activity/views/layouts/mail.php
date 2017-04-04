@@ -65,30 +65,29 @@ use yii\helpers\Html;
 
                                                             <tr>
                                                                 <td style="font-size: 13px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:left; ">
+                                                                    <!-- prevent content overflow -->
+                                                                    <div style="width:480px;overflow:hidden;text-overflow:ellipsis;font-size: 13px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:left;">
+                                                                        <!-- content output-->
+                                                                        <?= $content; ?>
 
-                                                                    <!-- content output-->
-                                                                    <?= $content; ?>
+                                                                        <!-- check if activity object has a space -->
+                                                                        <?php if ($record->content->space !== null): ?>
+                                                                            (<?= Yii::t('ActivityModule.views_activityLayoutMail', 'via'); ?>
+                                                                            <a href="<?= $record->content->space->createUrl('/space/space', [], true); ?>"
+                                                                               style="text-decoration: none; color: #555555;">
+                                                                                   <?= Html::encode($record->content->space->name); ?></a>)
+                                                                        <?php endif; ?>
 
-                                                                    <!-- check if activity object has a space -->
-                                                                    <?php if ($record->content->space !== null): ?>
-                                                                        (<?= Yii::t('ActivityModule.views_activityLayoutMail', 'via'); ?>
-                                                                        <a href="<?= $record->content->space->createUrl('/space/space', [], true); ?>"
-                                                                           style="text-decoration: none; color: #555555;">
-                                                                               <?= Html::encode($record->content->space->name); ?></a>)
-                                                                    <?php endif; ?>
-
-                                                                    <?php if ($url != "") : ?>
-                                                                        <!-- START: CONTENT LINK -->
-                                                                        <span
-                                                                            style="text-decoration: none; color: #7191a8;"> - <a
-                                                                                href="<?= $url; ?>"
-                                                                                style="text-decoration: none; color: #7191a8; "><?= Yii::t('ActivityModule.views_activityLayoutMail', 'see online'); ?></a></span>
-                                                                        <!-- END: CONTENT LINK -->
-                                                                    <?php endif; ?>
-
-
-
-
+                                                                        <?php if ($url != "") : ?>
+                                                                            <!-- START: CONTENT LINK -->
+                                                                            <span
+                                                                                style="text-decoration: none; color: #7191a8;"> - <a
+                                                                                    href="<?= $url; ?>"
+                                                                                    style="text-decoration: none; color: #7191a8; "><?= Yii::t('ActivityModule.views_activityLayoutMail', 'see online'); ?></a></span>
+                                                                            <!-- END: CONTENT LINK -->
+                                                                        <?php endif; ?>
+                                                                    </div>
+                                                                           
                                                                 </td>
                                                             </tr>
 
