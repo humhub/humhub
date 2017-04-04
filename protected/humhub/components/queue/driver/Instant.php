@@ -11,7 +11,7 @@ namespace humhub\components\queue\driver;
 use Yii;
 use yii\base\Event;
 use zhuravljov\yii\queue\ErrorEvent;
-use humhub\components\queue\Queue;
+use zhuravljov\yii\queue\Queue;
 
 /**
  * Instant queue driver, mainly used for testing purposes
