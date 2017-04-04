@@ -5,7 +5,7 @@ use yii\helpers\Html;
 humhub\modules\like\assets\LikeAsset::register($this);
 ?>
 
-<span class="likeLinkContainer" id="likeLinkContainer_<?= $id ?>">
+<span class="likeLinkContainer pull-left" id="likeLinkContainer_<?= $id ?>">
 
     <?php if (Yii::$app->user->isGuest): ?>
 

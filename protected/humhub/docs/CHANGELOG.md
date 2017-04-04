@@ -8,6 +8,7 @@ HumHub Change Log
 - Fix: Mentioning notificaiton in user not working
 - Fix: Catch yii\db\Expression error for updated_at in wallentry
 - Enh: Added 'client.back' js action
+- Fix: Misplacement of both Likes & Comments (Felli)
 
 1.2.0-beta.4 (March 28, 2017)
 --------------------------------
