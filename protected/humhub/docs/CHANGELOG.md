@@ -9,7 +9,8 @@ HumHub Change Log
 - Fix: Catch yii\db\Expression error for updated_at in wallentry
 - Enh: Added 'client.back' js action
 - Fix #2219: Overlapping summary mail content
-- Fix Wall entry layout link/text overflow
+- Fix: Wall entry layout link/text overflow
+- Fix: Stream - Do not surpress if only particual contents are displayed
 
 1.2.0-beta.4 (March 28, 2017)
 --------------------------------
