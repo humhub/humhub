@@ -11,6 +11,7 @@ HumHub Change Log
 - Fix #2219: Overlapping summary mail content
 - Fix: Wall entry layout link/text overflow
 - Fix: Stream - Do not surpress if only particual contents are displayed
+- Fix: GlobalModal extends base Modal widget and GlobalModal::$backdrop is false by default (githubjeka)
 
 1.2.0-beta.4 (March 28, 2017)
 --------------------------------
