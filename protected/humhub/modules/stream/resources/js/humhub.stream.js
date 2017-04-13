@@ -7,7 +7,8 @@ humhub.module('stream', function (module, require, $) {
     var util = require('util');
     var object = util.object;
     var client = require('client');
-    var Content = require('content').Content;
+    var contentModule = require('content');
+    var Content = contentModule.Content;
     var Component = require('action').Component;
     var loader = require('ui.loader');
     var event = require('event');
@@ -98,6 +99,7 @@ humhub.module('stream', function (module, require, $) {
 
         var that = this;
         var stream = this.stream();
+   
         promise.then(function ($confirm) {
             if ($confirm) {
                 that.remove(); // Make sure to remove the wallentry node.
@@ -116,7 +118,9 @@ humhub.module('stream', function (module, require, $) {
     };
 
     StreamEntry.prototype.reload = function () {
-        return this.stream().reloadEntry(this);
+        return this.stream().reloadEntry(this).catch(function(err) {
+            module.log.error(err, true);
+        });
     };
 
     StreamEntry.prototype.replaceContent = function (html) {
@@ -147,7 +151,7 @@ humhub.module('stream', function (module, require, $) {
         modal.load(evt).then(function (response) {
             modal.global.$.one('submitted', function () {
                 modal.global.close();
-                that.reload().then();
+                that.reload();
             });
         }).catch(function (e) {
             module.log.error(e, true);
@@ -212,7 +216,7 @@ humhub.module('stream', function (module, require, $) {
             this.$.find('.preferences').show();
             return;
         }
-        
+
         this.$.find('.wallentry-labels').hide();
         this.$.find('.preferences').hide();
         loader.set($loader, {
@@ -236,8 +240,8 @@ humhub.module('stream', function (module, require, $) {
     StreamEntry.prototype.toggleVisibility = function (evt) {
         this.loader();
         var that = this;
-        client.post(evt).then(function(response) {
-            if(response.success) {
+        client.post(evt).then(function (response) {
+            if (response.success) {
                 that.reload();
                 module.log.success('saved');
             } else {
@@ -893,6 +897,33 @@ humhub.module('stream', function (module, require, $) {
     };
 
     /**
+     * Simple stream component can be used for static streams without load logic (only reload single content).
+     * 
+     * @param {type} container
+     * @param {type} cfg
+     * @returns {humhub.streamL#5.SimpleStream}
+     */
+    var SimpleStream = function (container, cfg) {
+        Stream.call(this, container, cfg);
+    };
+
+    object.inherits(SimpleStream, WallStream);
+    
+    SimpleStream.prototype.reloadEntry = function (entry) {
+        entry.loader();
+        var contentId = entry.getKey();
+        return client.get(contentModule.config.reloadUrl, {data: {id: contentId}}).then(function (response) {
+            if (response.output) {
+                entry.replace(response.output);
+            } 
+            return response;
+        }).catch(function (err) {
+            module.log.error(err, true);
+        });
+    };
+
+
+    /**
      * Initializes wall stream
      * @returns {undefined}
      */
@@ -1030,6 +1061,7 @@ humhub.module('stream', function (module, require, $) {
         StreamEntry: StreamEntry,
         Stream: Stream,
         WallStream: WallStream,
+        SimpleStream: SimpleStream,
         getStream: getStream,
         getEntry: getEntry
     });

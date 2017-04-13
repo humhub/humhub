@@ -70,7 +70,7 @@ humhub.module('content', function (module, require, $) {
                 }
 
                 that.loader();
-                var deleteUrl = that.data(DATA_CONTENT_DELETE_URL);
+                var deleteUrl = that.data(DATA_CONTENT_DELETE_URL) || module.config.deleteUrl;
                 if (deleteUrl) {
                     client.post(deleteUrl, {
                         data: {id: that.getKey()}

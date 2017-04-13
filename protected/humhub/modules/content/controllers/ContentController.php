@@ -42,7 +42,7 @@ class ContentController extends Controller
         $id = (int) Yii::$app->request->get('id');
         Content::findOne($id);
     }
-    
+
     /**
      * Deletes a content object
      *
@@ -55,16 +55,16 @@ class ContentController extends Controller
         $this->forcePostRequest();
 
         $model = Yii::$app->request->get('model');
-        
+
         //Due to backward compatibility we use the old delte mechanism in case a model parameter is provided
         $id = (int) ($model != null) ? Yii::$app->request->get('id') : Yii::$app->request->post('id');
 
         $contentObj = ($model != null) ? Content::Get($model, $id) : Content::findOne($id);
 
-        if(!$contentObj->canDelete()) {
+        if (!$contentObj->canDelete()) {
             throw new HttpException(400, Yii::t('ContentModule.controllers_ContentController', 'Could not delete content: Access denied!'));
         }
-        
+
         if ($contentObj !== null && $contentObj->delete()) {
             $json = [
                 'success' => true,
@@ -128,6 +128,31 @@ class ContentController extends Controller
         return $this->asJson($json);
     }
     
+    public function actionDeleteId()
+    {
+        $this->forcePostRequest();
+        $content = Content::findOne(['id' => Yii::$app->request->post('id')]);
+        if (!$content) {
+            throw new HttpException(400, Yii::t('ContentController.base', 'Invalid content id given!'));
+        } elseif (!$content->canEdit()) {
+            throw new HttpException(403);
+        }
+        
+        return $this->asJson(['success' => $content->delete()]);
+    }
+
+    public function actionReload($id)
+    {
+        $content = Content::findOne(['id' => $id]);
+        if (!$content) {
+            throw new HttpException(400, Yii::t('ContentController.base', 'Invalid content id given!'));
+        } elseif (!$content->canView()) {
+            throw new HttpException(403);
+        }
+
+        return $this->asJson(\humhub\modules\stream\actions\Stream::getContentResultEntry($content, false));
+    }
+
     /**
      * Switches the content visibility for the given content.
      * 
@@ -139,24 +164,24 @@ class ContentController extends Controller
     {
         $this->forcePostRequest();
         $content = Content::findOne(['id' => $id]);
-        
-        if(!$content) {
+
+        if (!$content) {
             throw new HttpException(400, Yii::t('ContentController.base', 'Invalid content id given!'));
-        } elseif(!$content->canEdit()) {
+        } elseif (!$content->canEdit()) {
             throw new HttpException(403);
-        } elseif($content->isPrivate() && !$content->container->permissionManager->can(new CreatePublicContent())) {
+        } elseif ($content->isPrivate() && !$content->container->permissionManager->can(new CreatePublicContent())) {
             throw new HttpException(403);
         }
-        
-        if($content->isPrivate()) {
+
+        if ($content->isPrivate()) {
             $content->visibility = Content::VISIBILITY_PUBLIC;
         } else {
             $content->visibility = Content::VISIBILITY_PRIVATE;
         }
-        
+
         return $this->asJson([
-            'success' => $content->save(),
-            'state' => $content->visibility
+                    'success' => $content->save(),
+                    'state' => $content->visibility
         ]);
     }
 

@@ -10,7 +10,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 humhub\modules\stream\assets\StreamAsset::register($this);
 
 ?>
-<div class="container">
+<div class="container" data-action-component="stream.SimpleStream">
     <div class="row">
         <div class="col-md-12">
             <div class="panel">

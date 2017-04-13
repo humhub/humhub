@@ -6,21 +6,6 @@ use yii\helpers\Url;
 
 $sorting = Yii::$app->getModule('stream')->settings->get('defaultSort', 'c');
 
-$this->registerJsConfig([
-    'stream' => [
-        'horizontalImageScrollOnMobile' => Yii::$app->settings->get('horImageScrollOnMobile'),
-        'defaultSort' => $sorting,
-        'text' => [
-            'success.archive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been archived.'),
-            'success.unarchive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unarchived.'),
-            'success.pin' => Yii::t('ContentModule.widgets_views_stream', 'The content has been pinned.'),
-            'success.unpin' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unpinned.'),
-            'success.delete' => Yii::t('ContentModule.widgets_views_stream', 'The content has been deleted.'),
-            'info.editCancel' => Yii::t('ContentModule.widgets_views_stream', 'Your last edit state has been saved!'),
-        ]
-    ]
-]);
-
 $contentIdData = ($contentId != "") ? 'data-stream-contentid="' . $contentId . '"' : '';
 ?>
 

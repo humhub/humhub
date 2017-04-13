@@ -134,7 +134,7 @@ class Controller extends \yii\web\Controller
      */
     public function renderModalClose()
     {
-        return $this->renderPartial('@humhub/views/modalClose.php', array());
+        return $this->renderPartial('@humhub/views/modalClose.php', []);
     }
 
     /**
