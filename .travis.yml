@@ -36,7 +36,7 @@ install:
   - nohup bash -c "java -jar selenium-server-standalone.jar &" && sleep 1; cat nohup.out
   # Run Composer update
   - travis_retry composer self-update && composer --version
-  - travis_retry composer global require "fxp/composer-asset-plugin:~1.1.0"
+  - travis_retry composer global require "fxp/composer-asset-plugin:~1.3"
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - travis_retry composer install --dev --prefer-dist --no-interaction
   - travis_retry composer global require "codeception/codeception=2.1.*" "codeception/specify=*" "codeception/verify=*"
