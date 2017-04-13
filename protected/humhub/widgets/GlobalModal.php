@@ -16,15 +16,17 @@ namespace humhub\widgets;
  * @author Luke
  * @since 1.1
  */
-class GlobalModal extends \yii\base\Widget
+class GlobalModal extends Modal
 {
+    /**
+     * @var string this id need to js scripts
+     */
+    public $id = 'globalModal';
 
     /**
      * @inheritdoc
+     * It's false because it's often used for serious work, for example html forms,
+     * accidental closing of which can lead to loss of user data.
      */
-    public function run()
-    {
-        return $this->render('globalModal');
-    }
-
+    public $backdrop = false;
 }
