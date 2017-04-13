@@ -329,8 +329,7 @@ humhub.module('ui.richtext', function(module, require, $) {
         var $clone = (options.clone) ? $element.clone() : $element;
         $clone.html(html);
         return $clone.text().trim();
-        return _escapeHtml($clone.text().trim());
-    }
+    };
     
     var _entityMap = {
         '&': '&amp;',

@@ -167,7 +167,7 @@ humhub.module('ui.additions', function (module, require, $) {
 
         $(document).on('click.humhub-ui-additions', function () {
             $('.tooltip').remove();
-            $('.popover').remove();
+            $('.popover:not(.tour,.prevClose)').remove();
         });
 
         // Show popovers on elements

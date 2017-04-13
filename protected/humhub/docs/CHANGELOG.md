@@ -12,6 +12,8 @@ HumHub Change Log
 - Fix: Wall entry layout link/text overflow
 - Fix: Stream - Do not surpress if only particual contents are displayed
 - Fix: GlobalModal extends base Modal widget and GlobalModal::$backdrop is false by default (githubjeka)
+- Fix: Search StreamEntry options delete/editModal
+- Fix: Tour popover close behaviour
 
 1.2.0-beta.4 (March 28, 2017)
 --------------------------------

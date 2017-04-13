@@ -71,7 +71,7 @@ class TourController extends \humhub\components\Controller
 
         // Loop over all spaces where the user is member
         foreach (\humhub\modules\space\models\Membership::GetUserSpaces() as $space) {
-            if ($space->isAdmin()) {
+            if ($space->isAdmin() && !$space->isArchived()) {
                 // If user is admin on this space, it´s the perfect match
                 break;
             }
@@ -80,7 +80,7 @@ class TourController extends \humhub\components\Controller
         if ($space === null) {
             // If user is not member of any space, try to find a public space
             // to run tour in
-            $space = Space::findOne(['!=', 'visibility' => Space::VISIBILITY_NONE]);
+            $space = Space::findOne(['and', ['!=', 'visibility' => Space::VISIBILITY_NONE], ['status' => Space::STATUS_ENABLED]]);
         }
 
         if ($space === null) {
