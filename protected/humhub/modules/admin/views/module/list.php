@@ -20,11 +20,10 @@ use yii\helpers\Url;
                     <h4 class="media-heading"><?= $module->getName(); ?>
                         <small>
                             <?php if (Yii::$app->hasModule($module->id)) : ?>
-                                <span class="label label-success"><?= Yii::t('AdminModule.module_list', 'Activated'); ?></span>
+                                <span class="label label-info"><?= Yii::t('AdminModule.module_list', 'Activated'); ?></span>
                             <?php endif; ?>
                         </small>
                     </h4>
-
 
                     <p><?= $module->getDescription(); ?></p>
 

@@ -59,7 +59,7 @@ use yii\helpers\Html;
                         <h4 class="media-heading"><?= $module['name']; ?>
                             <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>
                                 <small><span
-                                        class="label label-success"><?= Yii::t('AdminModule.module_listOnline', 'Installed'); ?>
+                                        class="label label-info"><?= Yii::t('AdminModule.module_listOnline', 'Installed'); ?>
                                 </small></span>
                             <?php endif; ?>
                         </h4>

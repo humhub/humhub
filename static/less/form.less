@@ -99,12 +99,12 @@ textarea.placeholder {
     font-size: 12px;
 }
 
-.help-block:not(.help-block-error) {
+.hint-block, .help-block:not(.help-block-error) {
     color: @text-color-soft2 !important;
     font-size: 12px;
 }
 
-.help-block:not(.help-block-error):hover {
+.hint-block:hover, .help-block:not(.help-block-error):hover {
     color: @text-color-secondary !important;
     font-size: 12px;
 }
@@ -158,11 +158,11 @@ a.label-danger:hover {
 }
 
 .label-success {
-    background-color: @info;
+    background-color: @success;
 }
 
 a.label-success:hover {
-    background: darken(@info, 5%) !important;
+    background: darken(@success, 5%) !important;
 }
 
 .label-warning {

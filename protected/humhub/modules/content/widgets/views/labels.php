@@ -21,7 +21,7 @@ use humhub\modules\post\models\Post;
     <?php endif; ?>
 
     <?php if ($object->content->isPublic()) : ?>
-        <span class="label label-success"><?= Yii::t('ContentModule.widgets_views_label', 'Public'); ?></span>
+        <span class="label label-info"><?= Yii::t('ContentModule.widgets_views_label', 'Public'); ?></span>
     <?php endif; ?>
 
     <?php if (!$object instanceof Post) : ?>
