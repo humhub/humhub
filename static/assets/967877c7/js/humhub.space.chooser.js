@@ -39,6 +39,10 @@ humhub.module('space.chooser', function (module, require, $) {
             nativeparentscrolling: false,
             railpadding: {top: 0, right: 3, left: 0, bottom: 0}
         });
+        
+        this.$chooser.on('touchmove', function(evt) {
+           evt.preventDefault();
+        });
 
         this.initEvents();
         this.initSpaceSearch();
