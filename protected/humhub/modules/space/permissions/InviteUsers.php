@@ -30,7 +30,8 @@ class InviteUsers extends \humhub\libs\BasePermission
      * @inheritdoc
      */
     protected $fixedGroups = [
-        Space::USERGROUP_USER
+        Space::USERGROUP_USER,
+        Space::USERGROUP_GUEST,
     ];
 
     /**
@@ -47,10 +48,11 @@ class InviteUsers extends \humhub\libs\BasePermission
      * @inheritdoc
      */
     protected $moduleId = 'space';
-    
-    public function __construct($config = array()) {
+
+    public function __construct($config = array())
+    {
         parent::__construct($config);
-        
+
         $this->title = \Yii::t('SpaceModule.permissions', 'Invite users');
         $this->description = \Yii::t('SpaceModule.permissions', 'Allows the user to invite new members to the space');
     }
