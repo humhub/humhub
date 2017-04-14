@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Create new space' => '',
-  'My spaces' => '',
+  'Create new space' => 'Új témakör',
+  'My spaces' => 'Témaköreim',
   'No member or following spaces found.' => '',
   'No result found for the given filter.' => '',
   'Search' => 'Keresés',

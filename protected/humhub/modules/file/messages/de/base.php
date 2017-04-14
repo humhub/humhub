@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Open</strong> file' => '',
+  '<strong>Open</strong> file' => 'Datei <strong>öffnen</strong>',
   'Could not find requested file variant!' => 'Konnte die angeforderte Dateivariante nicht finden!',
   'Could not find requested file!' => 'Konnte Datei nicht finden!',
   'Download' => 'Herunterladen',

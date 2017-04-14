@@ -1,6 +1,6 @@
 <?php
 return array (
-  'This space is archived' => '',
-  'You are a member of this space' => 'Du er medlem av dette område',
-  'You are following this space' => '',
+  'This space is archived' => 'Gruppen er arkivért',
+  'You are a member of this space' => 'Du er medlem av denne gruppen',
+  'You are following this space' => 'Du følger denne gruppen',
 );

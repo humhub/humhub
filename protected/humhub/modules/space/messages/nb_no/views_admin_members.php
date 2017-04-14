@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Manage</strong> members' => '',
+  '<strong>Manage</strong> members' => '<strong>Vedlikehold</strong> av medlemmer',
   'Actions' => 'Handlinger',
-  'Remove' => '',
-  'Role' => '',
+  'Remove' => 'Fjern',
+  'Role' => 'Rolle',
   'never' => 'aldri',
 );

@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Edit your post...' => '',
+  'Edit your post...' => 'Bejegyzésed szerkesztése...',
   'Save' => 'Mentés',
 );

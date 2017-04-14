@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Latest</strong> activities' => '<strong>Legújabb</strong> történések',
-  'There are no activities yet.' => '',
+  '<strong>Latest</strong> activities' => '<strong>Legújabb</strong> tevékenységek',
+  'There are no activities yet.' => 'Még nem történt semmi.',
 );
