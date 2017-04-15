@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>Change</strong> your password' => '',
+  '<strong>Change</strong> your password' => '<strong>Endre</strong> passord',
   'Back' => 'Tilbake',
-  'Change password' => '',
-  'Password reset' => '',
+  'Change password' => 'Endre passord',
+  'Password reset' => 'Tilbakestill passord',
 );

@@ -1,9 +1,9 @@
 <?php
 return array (
-  '<strong>Space</strong> followers' => '<strong>Gruppe</strong> medlemmer',
-  'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Kan ikke slette en bruker som er gruppe skaper! Gruppens navn: {spaceName}',
+  '<strong>Space</strong> followers' => '<strong>Gruppens</strong> medlemmer',
+  'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Kan ikke slette brukeren som eier gruppen! Gruppens navn: {spaceName}',
   'Default' => 'Standard',
-  'Everyone can enter' => 'Alle kan entre',
+  'Everyone can enter' => 'Alle kan bli med',
   'Invite and request' => 'Invitasjon og forespørsel',
   'No spaces found.' => 'Ingen grupper funnet.',
   'Only by invite' => 'Kun etter invitasjon',

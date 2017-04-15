@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Create</strong> new space' => '',
-  'Advanced access settings' => '',
+  '<strong>Create</strong> new space' => '<strong>Opprett</strong> ny gruppe',
+  'Advanced access settings' => 'Avansert tilgangskontroll',
   'Next' => 'Neste',
-  'Space name' => '',
-  'space description' => '',
+  'Space name' => 'Gruppenavn',
+  'space description' => 'Gruppebeskrivelse',
 );

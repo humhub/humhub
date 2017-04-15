@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Accept Invite' => 'Aksepter Invitasjon',
+  'Accept Invite' => 'Aksepter invitasjon',
   'Become member' => 'Bli medlem',
-  'Cancel pending membership application' => 'Avbryt avventende medlemskap invitasjon ',
-  'Deny Invite' => 'Avvis Invitasjon',
+  'Cancel pending membership application' => 'Avbryt ventende invitasjon ',
+  'Deny Invite' => 'Avvis invitasjon',
   'Request membership' => 'Be om medlemskap',
 );

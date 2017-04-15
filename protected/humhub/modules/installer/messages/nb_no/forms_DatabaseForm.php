@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Hostname' => '',
-  'Name of Database' => '',
+  'Hostname' => 'Host',
+  'Name of Database' => 'Databasenavn',
   'Password' => 'Passord',
   'Username' => 'Brukernavn',
 );

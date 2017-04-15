@@ -14,6 +14,7 @@ HumHub Change Log
 - Fix: GlobalModal extends base Modal widget and GlobalModal::$backdrop is false by default (githubjeka)
 - Fix: Search StreamEntry options delete/editModal
 - Fix: Tour popover close behaviour
+- Fix: Incorrect permissions in space with guest mode
 
 1.2.0-beta.4 (March 28, 2017)
 --------------------------------

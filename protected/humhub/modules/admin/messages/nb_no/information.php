@@ -1,7 +1,7 @@
 <?php
 return array (
   'About HumHub' => 'Om Humhub',
-  'CronJobs' => 'CronJober',
+  'CronJobs' => 'Cronjobber',
   'Database' => 'Database',
   'Logging' => 'Logger',
   'Prerequisites' => 'Forutsetninger',

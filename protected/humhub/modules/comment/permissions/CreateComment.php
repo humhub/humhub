@@ -30,7 +30,9 @@ class CreateComment extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $fixedGroups = [];
+    protected $fixedGroups = [
+        Space::USERGROUP_GUEST,
+    ];
 
     /**
      * @inheritdoc
@@ -47,7 +49,8 @@ class CreateComment extends \humhub\libs\BasePermission
      */
     protected $moduleId = 'comment';
 
-    public function __construct($config = array()) {
+    public function __construct($config = array())
+    {
         parent::__construct($config);
 
         $this->title = \Yii::t('CommentModule.permissions', 'Create comment');

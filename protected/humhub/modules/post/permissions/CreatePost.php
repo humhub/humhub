@@ -35,6 +35,7 @@ class CreatePost extends \humhub\libs\BasePermission
      */
     protected $fixedGroups = [
         Space::USERGROUP_USER,
+        Space::USERGROUP_GUEST,
         User::USERGROUP_SELF
     ];
 

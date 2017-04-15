@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Access denied!' => 'Ingen Adgang!',
+  'Access denied!' => 'Ingen tilgang!',
   'Insufficent permissions!' => 'Manglende tillatelse!',
 );
