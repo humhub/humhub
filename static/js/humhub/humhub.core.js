@@ -386,8 +386,14 @@ var humhub = humhub || (function ($) {
         event.trigger('humhub:beforeInitModule', module);
         if (module.init) {
             try {
-                event.trigger(module.id.replace('.', ':') + ':beforeInit', module);
+                // compatibility with beta 1.2 beta release
+                event.trigger(module.id.replace('.', ':') + ':afterInit', module);
+                
+                event.trigger(module.id.replace(/\./g, ':') + ':beforeInit', module);
                 module.init();
+                event.trigger(module.id.replace(/\./g, ':') + ':afterInit', module);
+                
+                // compatibility with beta 1.2 beta release
                 event.trigger(module.id.replace('.', ':') + ':afterInit', module);
             } catch (err) {
                 log.error('Could not initialize module: ' + module.id, err);
