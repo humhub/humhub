@@ -30,7 +30,13 @@
 // Wall-Entries
 .wall-entry {
     position: relative;
-
+    
+    .content {
+        p, a {
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+    }
     .media {
         overflow: visible;
     }

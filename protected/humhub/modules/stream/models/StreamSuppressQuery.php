@@ -157,6 +157,11 @@ class StreamSuppressQuery extends StreamQuery
      */
     protected function isSuppressed(&$results, $content)
     {
+        // Do not surpress if only particual contents are displayed
+        if (!empty($this->_includes)) {
+            return false;
+        }
+
         /* @var $streamModule \humhub\modules\stream\Module */
         $streamModule = Yii::$app->getModule('stream');
 
