@@ -3,7 +3,7 @@ HumHub Change Log
 1.2.1 (in developement)
 - Fix: Invite error in french language
 
-1.2.0 (April 17. 2017)
+1.2.0 (April 16, 2017)
 --------------------------------
 - Fix: SVG file uploads broken (mime type: image/svg+xml)
 - Fix: Public badge missing after create post
