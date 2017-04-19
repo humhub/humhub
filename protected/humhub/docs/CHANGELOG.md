@@ -3,7 +3,7 @@ HumHub Change Log
 
 1.2.1 (under development)
 --------------------------------
-- Enh: The notification ContentCreated can be disabled (githubjeka)
+- Enh #2497: The notification ContentCreated can be disabled (githubjeka)
 
 1.2.0 (April 16, 2017)
 --------------------------------
