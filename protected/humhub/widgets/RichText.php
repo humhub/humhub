@@ -99,6 +99,8 @@ REGEXP;
         // create image tag for emojis
         $this->text = self::translateEmojis($this->text, ($this->minimal) ? false : true);
 
+        $this->text = self::translateDomainName($this->text);
+
         if ($this->maxLength != 0) {
             $this->text = \humhub\libs\Helpers::truncateText($this->text, $this->maxLength);
         }
@@ -184,4 +186,30 @@ REGEXP;
         }, $text);
     }
 
+    /**
+     * Replace domain names with links.
+     *
+     * @param string $text Contains the complete message
+     * @return string
+     */
+    public static function translateDomainName($text)
+    {
+        return preg_replace_callback('/[-a-z0-9]+\.+[a-z]{2,6}/i', function ($matches) {
+            $host = $matches[0];
+
+            $cacheKey = "translate_host:{$host}";
+            $ip = \Yii::$app->cache->get($cacheKey);
+            if ($ip === false) {
+                $ip = gethostbyname($host);
+                \Yii::$app->cache->set($cacheKey, $ip, Yii::$app->settings->get('cache.expireTime'));
+            }
+
+            if ($ip === $host) {
+                $replacement = $host;
+            } else {
+                $replacement = Html::a(Html::encode($host), "http://{$host}", ['target' => '_blank']);
+            }
+            return $replacement;
+        }, $text);
+    }
 }
