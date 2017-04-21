@@ -65,7 +65,7 @@ class UrlOembed extends \yii\db\ActiveRecord
         // Check if the given URL has OEmbed Support
         if (UrlOembed::HasOEmbedSupport($url)) {
 
-            // Lookup Cached OEmebed Item from Datbase
+            // Lookup Cached OEmebed Item from Database
             $urlOembed = UrlOembed::findOne(['url' => $url]);
             if ($urlOembed !== null) {
                 return $urlOembed->preview;
@@ -112,7 +112,7 @@ class UrlOembed extends \yii\db\ActiveRecord
         if ($urlOembed->getProviderUrl() != "") {
             // Build OEmbed Preview
             $jsonOut = UrlOembed::fetchUrl($urlOembed->getProviderUrl());
-            if ($jsonOut != "") {
+            if ($jsonOut != "" || $jsonOut != "Unauthorized") {
                 try {
                     $data = \yii\helpers\Json::decode($jsonOut);
                     if (isset($data['type']) && ($data['type'] === "video" || $data['type'] === 'rich' || $data['type'] === 'photo')) {
