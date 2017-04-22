@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid content id given!' => '',
+    'Invalid content id given!' => '给出的内容ID无效！',
 ];

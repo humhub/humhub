@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{n,plural,=1{# new entry} other{# new entries}} since your last visit' => '{n,plural,=1{# new entry} other{# new entries}} 自从你上次访问',
+    '{n,plural,=1{# new entry} other{# new entries}} since your last visit' => '{n,plural,=1{# 新内容} other{# 新内容}} 自从你上次访问',
 ];

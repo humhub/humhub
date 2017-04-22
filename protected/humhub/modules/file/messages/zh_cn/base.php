@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Open</strong> file' => '',
-    'Download' => '',
+    '<strong>Open</strong> file' => '<strong>打开</strong> 文件',
+    'Download' => '下载',
     'Could not find requested file variant!' => '找不到请求的文件！',
     'Could not find requested file!' => '找不到请求的文件！',
     'Insufficient permissions!' => '没有足够的权限！',

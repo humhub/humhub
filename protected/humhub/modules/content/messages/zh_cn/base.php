@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Updated' => '',
+    'Updated' => '修改',
     'Content' => '内容',
 ];
