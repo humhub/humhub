@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\widgets;
 
 /**
@@ -8,7 +15,7 @@ namespace humhub\widgets;
  */
 class ModalDialog extends Modal
 {
-    
+
     public $dialogContent;
 
     /**
@@ -31,24 +38,24 @@ class ModalDialog extends Modal
         if(!$this->body && !$this->footer) {
             $this->dialogContent = ob_get_clean();
         }
-        
+
         //The x close button is rendered by default either if forced by showClose or a headertext is given
         $showClose = ($this->showClose != null) ? $this->showClose : ($this->header != null);
-        
+
         $dialogClass = 'modal-dialog';
         $dialogClass .= ($this->size != null) ? ' modal-dialog-'.$this->size : '';
         $dialogClass .= ($this->animation != null) ? ' animated '.$this->animation : '';
-        
+
         $bodyClass = 'modal-body';
         $bodyClass .= ($this->centerText) ? ' text-center' : '';
 
         $this->initialLoader = ($this->initialLoader ==! null) ? $this->initialLoader : ($this->body === null);
-       
+
         $modalData = '';
         $modalData .= !$this->backdrop ? 'data-backdrop="static"' : '';
         $modalData .= !$this->keyboard ? 'data-keyboard="false"' : '';
         $modalData .= $this->show ? 'data-show="true"' : '';
-        
+
         return $this->render('modalDialog', [
             'header' => $this->header,
             'dialogContent' => $this->dialogContent,

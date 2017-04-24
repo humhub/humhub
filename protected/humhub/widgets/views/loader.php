@@ -1,4 +1,14 @@
-<div <?= $id ? 'id="'.$id.'"' : ''?> class="loader humhub-ui-loader <?= $cssClass; ?>" <?php if(isset($show) && !$show) : ?> style="display:none;" <?php endif; ?>>
+<?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+?>
+
+<div <?= $id ? 'id="'.$id.'"' : ''?> class="loader humhub-ui-loader <?= $cssClass; ?>"
+<?php if(isset($show) && !$show) : ?> style="display:none;" <?php endif; ?>>
     <div class="sk-spinner sk-spinner-three-bounce">
         <div class="sk-bounce1"></div>
         <div class="sk-bounce2"></div>

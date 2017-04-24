@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,12 +10,11 @@ namespace humhub\widgets;
 
 use Yii;
 use yii\helpers\Html;
-
 use yii\web\JsExpression;
 
 /**
  * ShowMore ajax pager
- * 
+ *
  * @inheritdoc
  * @since 1.1.1
  * @author luke
@@ -31,9 +30,9 @@ class ShowMorePager extends \humhub\widgets\LinkPager
 
     /**
      * AjaxButton widget options
-     * 
+     *
      * @see AjaxButton
-     * @var array 
+     * @var array
      */
     public $ajaxButtonOptions = [];
 

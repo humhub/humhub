@@ -1,13 +1,19 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 use \humhub\compat\CActiveForm;
 ?>
 <div class="text text-center animated fadeIn">
     <?php if (count($languages) > 1) : ?>
-        <?php echo Yii::t('base', "Choose language:"); ?> &nbsp;
+        <?= Yii::t('base', "Choose language:"); ?> &nbsp;
         <div class="langSwitcher inline-block">
             <?php $form = CActiveForm::begin(['id' => 'choose-language-form']); ?>
-            <?php echo $form->dropDownList($model, 'language', $languages, array('onChange' => 'this.form.submit()')); ?>
+            <?= $form->dropDownList($model, 'language', $languages, ['onChange' => 'this.form.submit()']); ?>
             <?php CActiveForm::end(); ?>
         </div>
     <?php endif; ?>

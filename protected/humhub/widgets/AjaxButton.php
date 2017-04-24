@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -23,8 +23,8 @@ class AjaxButton extends Widget
 
     public $beforeSend;
     public $success;
-    public $ajaxOptions = array();
-    public $htmlOptions = array();
+    public $ajaxOptions = [];
+    public $htmlOptions = [];
     public $label = "Unnamed";
     public $tag = 'button';
 

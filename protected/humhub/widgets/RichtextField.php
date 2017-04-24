@@ -1,10 +1,16 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\widgets;
 
 use Yii;
 use yii\helpers\Html;
-use \yii\helpers\Url;
+use yii\helpers\Url;
 use humhub\widgets\RichText;
 
 /**
@@ -17,8 +23,8 @@ class RichtextField extends JsWidget
 
     /**
      * Defines the javascript picker implementation.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $jsWidget = 'ui.richtext.Richtext';
 
@@ -39,7 +45,7 @@ class RichtextField extends JsWidget
 
     /**
      * Model instance. Requires the setting of an model $attribute.
-     * 
+     *
      * @var \yii\db\ActiveRecord
      */
     public $model;
@@ -47,22 +53,22 @@ class RichtextField extends JsWidget
     /**
      * Model attribute which holds the picker value. The referenced model attribute has to be an
      * array.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $attribute;
 
     /**
      * Input form name.
      * This can be provided if no form and model is provided for custom input field setting.
-     * 
-     * @var type 
+     *
+     * @var type
      */
     public $name;
 
     /**
      * Can be used to overwrite the default placeholder.
-     * 
+     *
      * @var string
      */
     public $placeholder;
@@ -70,59 +76,59 @@ class RichtextField extends JsWidget
     /**
      * The url used for the default @ metioning.
      * If there is no $searchUrl is given, the $searchRoute will be used instead.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $mentioningUrl;
 
     /**
      * Route used for the default @ mentioning. This will only be used if
      * not $searchUrl is given.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     protected $mentioningRoute = "/search/search/mentioning";
 
     /**
      * Richtext features supported for within this feature.
      * By default all features will be included.
-     * 
-     * @var array 
+     *
+     * @var array
      */
     public $includes = [];
 
     /**
      * Richtext features not supported in this richtext feature.
-     * 
-     * @var array 
+     *
+     * @var array
      */
     public $excludes = [];
 
     /**
      * Can be used to set the value in case no $model and $attribute is provided.
      * $model and $attribute is provided.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $value;
 
     /**
      * If set to true the picker will be focused automatically.
-     * 
-     * @var boolean 
+     *
+     * @var boolean
      */
     public $focus = false;
 
     /**
      * Disables the input field.
-     * @var boolean 
+     * @var boolean
      */
     public $disabled = false;
 
     /**
      * Will be used as userfeedback, why this richtext is disabled.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $disabledText = false;
 
@@ -174,7 +180,7 @@ class RichtextField extends JsWidget
         if(!$this->label) {
             return "";
         }
-        
+
         if ($this->label === true && $this->model != null) {
             return Html::activeLabel($this->model, $this->attribute, ['class' => 'control-label']);
         } else {

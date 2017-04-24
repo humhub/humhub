@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -69,10 +69,10 @@ class RichText extends JsWidget
 
             $pattern= <<<REGEXP
                     /(?(R) # in case of recursion match parentheses
-				 \(((?>[^\s()]+)|(?R))*\)
-			|      # else match a link with title
-				(https?|ftp):\/\/(([^\s()]+)|(?R))+(?<![\.,:;\'"!\?\s])
-			)/x
+                 \(((?>[^\s()]+)|(?R))*\)
+            |      # else match a link with title
+                (https?|ftp):\/\/(([^\s()]+)|(?R))+(?<![\.,:;\'"!\?\s])
+            )/x
 REGEXP;
             $this->text = preg_replace_callback($pattern, function ($match) use (&$oembedCount, &$maxOembedCount, &$that) {
 
@@ -84,7 +84,7 @@ REGEXP;
                         return $oembed;
                     }
                 }
-                return Html::a($match[0], Html::decode($match[0]), array('target' => '_blank'));
+                return Html::a($match[0], Html::decode($match[0]), ['target' => '_blank']);
             }, $this->text);
 
             // mark emails
@@ -129,7 +129,7 @@ REGEXP;
      */
     public static function translateEmojis($text, $show = true)
     {
-        $emojis = array(
+        $emojis = [
             "Relaxed", "Yum", "Relieved", "Hearteyes", "Cool", "Smirk",
             "KissingClosedEyes", "StuckOutTongue", "StuckOutTongueWinkingEye", "StuckOutTongueClosedEyes", "Disappointed", "Frown",
             "ColdSweat", "TiredFace", "Grin", "Sob", "Gasp", "Gasp2",
@@ -140,12 +140,20 @@ REGEXP;
             "Sleeping", "NoMouth", "Mask", "Worried", "Smile", "Muscle",
             "Facepunch", "ThumbsUp", "ThumbsDown", "Beers", "Cocktail", "Burger",
             "PoultryLeg", "Party", "Cake", "Sun", "Fire", "Heart"
-        );
+        ];
 
         return preg_replace_callback('@;(\w*?);@', function($hit) use(&$show, &$emojis) {
             if (in_array($hit[1], $emojis)) {
                 if ($show) {
-                    return Html::img(Yii::getAlias("@web-static/img/emoji/" . $hit[1] . ".svg"), array('data-emoji-name' => $hit[0], 'data-richtext-feature' => '', 'data-guid' => "@-emoji".$hit[0], 'class' => 'atwho-emoji', 'width' => '18', 'height' => '18', 'alt' => $hit[1]));
+                    return Html::img(Yii::getAlias("@web-static/img/emoji/" . $hit[1] . ".svg"), [
+                                'data-emoji-name' => $hit[0],
+                                'data-richtext-feature' => '',
+                                'data-guid' => "@-emoji".$hit[0],
+                                'class' => 'atwho-emoji',
+                                'width' => '18',
+                                'height' => '18',
+                                'alt' => $hit[1]
+                    ]);
                 }
                 return '';
             }

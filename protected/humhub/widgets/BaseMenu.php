@@ -24,13 +24,13 @@ class BaseMenu extends \yii\base\Widget
      *
      * @var array of items
      */
-    public $items = array();
+    public $items = [];
 
     /**
      *
      * @var array of item groups
      */
-    public $itemGroups = array();
+    public $itemGroups = [];
 
     /**
      *
@@ -62,15 +62,16 @@ class BaseMenu extends \yii\base\Widget
      */
     public function init()
     {
-        $this->addItemGroup(array(
+        $this->addItemGroup([
             'id' => '',
             'label' => ''
-        ));
+        ]);
 
         // Yii 2.0.11 introduced own init event
         if (version_compare(Yii::getVersion(), '2.0.11', '<')) {
             $this->trigger(self::EVENT_INIT);
         }
+
         return parent::init();
     }
 
@@ -78,7 +79,7 @@ class BaseMenu extends \yii\base\Widget
      * Adds new Item to the menu
      *
      * @param array $item
-     *            with item definitions
+     * with item definitions
      */
     public function addItem($item)
     {
@@ -100,7 +101,7 @@ class BaseMenu extends \yii\base\Widget
         }
 
         if (!isset($item['htmlOptions'])) {
-            $item['htmlOptions'] = array();
+            $item['htmlOptions'] = [];
         }
 
         if (!isset($item['pjax'])) {
@@ -150,7 +151,7 @@ class BaseMenu extends \yii\base\Widget
      * Adds new Item Group to the menu
      *
      * @param array $itemGroup
-     *            with group definition
+     * with group definition
      */
     public function addItemGroup($itemGroup)
     {
@@ -176,14 +177,14 @@ class BaseMenu extends \yii\base\Widget
      * Returns Items of this Navigation
      *
      * @param string $group
-     *            limits the items to a specified group
+     * limits the items to a specified group
      * @return array a list of items with definition
      */
     public function getItems($group = "")
     {
         $this->sortItems();
 
-        $ret = array();
+        $ret = [];
 
         foreach ($this->items as $item) {
 
@@ -250,7 +251,7 @@ class BaseMenu extends \yii\base\Widget
             return;
         }
 
-        return $this->render($this->template, array());
+        return $this->render($this->template, []);
     }
 
     /**
@@ -293,7 +294,7 @@ class BaseMenu extends \yii\base\Widget
 
     /**
      * Add the active class from a menue item.
-     * 
+     *
      * @param string $url
      *            the URL of the item to mark. You can use Url::toRoute(...) to generate it.
      */
@@ -322,7 +323,7 @@ class BaseMenu extends \yii\base\Widget
 
     /**
      * Remove the active class from a menue item.
-     * 
+     *
      * @param string $url
      *            the URL of the item to mark. You can use Url::toRoute(...) to generate it.
      */
@@ -339,7 +340,7 @@ class BaseMenu extends \yii\base\Widget
 
     /**
      * Removes Item by URL
-     * 
+     *
      * @param string $url
      */
     public function deleteItemByUrl($url)
@@ -352,5 +353,3 @@ class BaseMenu extends \yii\base\Widget
     }
 
 }
-
-?>
