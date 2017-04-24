@@ -2,13 +2,14 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\controllers;
 
 use Yii;
+use yii\web\HttpException;
 use yii\web\Controller;
 use humhub\modules\user\models\Invite;
 
@@ -41,7 +42,7 @@ class InviteController extends Controller
     public function actionIndex()
     {
         if (!$this->canInvite()) {
-            throw new \yii\web\HttpException(404, 'Invite denied!');
+            throw new HttpException(404, Yii::t('UserModule.controllers_InviteController', 'Invite denied!'));
         }
 
         $model = new \humhub\modules\user\models\forms\Invite;
@@ -56,7 +57,7 @@ class InviteController extends Controller
             ]);
         }
 
-        return $this->renderAjax('index', array('model' => $model));
+        return $this->renderAjax('index', ['model' => $model]);
     }
 
     /**
@@ -96,5 +97,3 @@ class InviteController extends Controller
     }
 
 }
-
-?>

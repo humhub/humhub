@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -50,15 +50,15 @@ class PasswordRecoveryController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->recover()) {
             if (Yii::$app->request->isAjax) {
-                return $this->renderAjax('success_modal', array('model' => $model));
+                return $this->renderAjax('success_modal', ['model' => $model]);
             }
-            return $this->render('success', array('model' => $model));
+            return $this->render('success', ['model' => $model]);
         }
 
         if (Yii::$app->request->isAjax) {
-            return $this->renderAjax('index_modal', array('model' => $model));
+            return $this->renderAjax('index_modal', ['model' => $model]);
         }
-        return $this->render('index', array('model' => $model));
+        return $this->render('index', ['model' => $model]);
     }
 
     /**
@@ -66,10 +66,10 @@ class PasswordRecoveryController extends Controller
      */
     public function actionReset()
     {
-        $user = User::findOne(array('guid' => Yii::$app->request->get('guid')));
+        $user = User::findOne(['guid' => Yii::$app->request->get('guid')]);
 
         if ($user === null || !$this->checkPasswordResetToken($user, Yii::$app->request->get('token'))) {
-            throw new HttpException('500', 'It looks like you clicked on an invalid password reset link. Please try again.');
+            throw new HttpException(500, Yii::t('UserModule.controllers_PasswordRecoveryController', 'It looks like you clicked on an invalid password reset link. Please try again.'));
         }
 
         $model = new Password();
@@ -83,7 +83,7 @@ class PasswordRecoveryController extends Controller
             return $this->render('reset_success');
         }
 
-        return $this->render('reset', array('model' => $model));
+        return $this->render('reset', ['model' => $model]);
     }
 
     private function checkPasswordResetToken($user, $token)
@@ -105,5 +105,3 @@ class PasswordRecoveryController extends Controller
     }
 
 }
-
-?>

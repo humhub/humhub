@@ -63,13 +63,13 @@ class AccountController extends BaseAccountController
 
         // Get Form Definition
         $definition = $user->profile->getFormDefinition();
-        $definition['buttons'] = array(
-            'save' => array(
+        $definition['buttons'] = [
+            'save' => [
                 'type' => 'submit',
                 'label' => Yii::t('UserModule.controllers_AccountController', 'Save profile'),
                 'class' => 'btn btn-primary'
-            ),
-        );
+            ],
+        ];
 
         $form = new \humhub\compat\HForm($definition, $user->profile);
         $form->showErrorSummary = true;
@@ -82,7 +82,7 @@ class AccountController extends BaseAccountController
             return $this->redirect(['edit']);
         }
 
-        return $this->render('edit', array('hForm' => $form));
+        return $this->render('edit', ['hForm' => $form]);
     }
 
     /**
@@ -120,7 +120,7 @@ class AccountController extends BaseAccountController
             return $this->redirect(['edit-settings']);
         }
 
-        return $this->render('editSettings', array('model' => $model, 'languages' => Yii::$app->i18n->getAllowedLanguages()));
+        return $this->render('editSettings', ['model' => $model, 'languages' => Yii::$app->i18n->getAllowedLanguages()]);
     }
 
     /**
@@ -154,7 +154,7 @@ class AccountController extends BaseAccountController
             Yii::$app->response->format = 'json';
             $permission = $this->getUser()->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
             if ($permission === null) {
-                throw new HttpException(500, 'Could not find permission!');
+                throw new HttpException(500, Yii::t('UserModule.controllers_AccountController', 'Could not find permission!'));
             }
             $this->getUser()->permissionManager->setGroupState($currentGroup, $permission, Yii::$app->request->post('state'));
             return [];
@@ -205,7 +205,7 @@ class AccountController extends BaseAccountController
         $user = Yii::$app->user->getIdentity();
         $availableModules = $user->getAvailableModules();
 
-        return $this->render('editModules', array('user' => $user, 'availableModules' => $availableModules));
+        return $this->render('editModules', ['user' => $user, 'availableModules' => $availableModules]);
     }
 
     public function actionEnableModule()
@@ -258,7 +258,7 @@ class AccountController extends BaseAccountController
         $user = Yii::$app->user->getIdentity();
 
         if (!Yii::$app->user->canDeleteAccount()) {
-            throw new HttpException(500, 'Account deletion not allowed');
+            throw new HttpException(500, Yii::t('UserModule.controllers_AccountController', 'Account deletion not allowed'));
         }
 
         foreach (\humhub\modules\space\models\Membership::GetUserSpaces() as $space) {
@@ -275,10 +275,10 @@ class AccountController extends BaseAccountController
             return $this->goHome();
         }
 
-        return $this->render('delete', array(
+        return $this->render('delete', [
                     'model' => $model,
                     'isSpaceOwner' => $isSpaceOwner
-        ));
+        ]);
     }
 
     /**
@@ -288,16 +288,16 @@ class AccountController extends BaseAccountController
     public function actionChangeEmail()
     {
         if (!Yii::$app->user->canChangeEmail()) {
-            throw new HttpException(500, 'Change E-Mail is not allowed');
+            throw new HttpException(500, Yii::t('UserModule.controllers_AccountController', 'Change E-Mail is not allowed'));
         }
 
         $model = new \humhub\modules\user\models\forms\AccountChangeEmail;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeEmail()) {
-            return $this->render('changeEmail_success', array('model' => $model));
+            return $this->render('changeEmail_success', ['model' => $model]);
         }
 
-        return $this->render('changeEmail', array('model' => $model));
+        return $this->render('changeEmail', ['model' => $model]);
     }
 
     /**
@@ -307,7 +307,7 @@ class AccountController extends BaseAccountController
     public function actionChangeEmailValidate()
     {
         if (!Yii::$app->user->canChangeEmail()) {
-            throw new HttpException(500, 'Change E-Mail is not allowed');
+            throw new HttpException(500, Yii::t('UserModule.controllers_AccountController', 'Change E-Mail is not allowed'));
         }
 
         $token = Yii::$app->request->get('token');
@@ -329,7 +329,7 @@ class AccountController extends BaseAccountController
         $user->email = $email;
         $user->save();
 
-        return $this->render('changeEmailValidate', array('newEmail' => $email));
+        return $this->render('changeEmailValidate', ['newEmail' => $email]);
     }
 
     /**
@@ -338,7 +338,7 @@ class AccountController extends BaseAccountController
     public function actionChangePassword()
     {
         if (!Yii::$app->user->canChangePassword()) {
-            throw new HttpException(500, 'Password change is not allowed');
+            throw new HttpException(500, Yii::t('UserModule.controllers_AccountController', 'Password change is not allowed'));
         }
 
         $userPassword = new \humhub\modules\user\models\Password();
@@ -352,7 +352,7 @@ class AccountController extends BaseAccountController
             return $this->render('changePassword_success');
         }
 
-        return $this->render('changePassword', array('model' => $userPassword));
+        return $this->render('changePassword', ['model' => $userPassword]);
     }
 
     /**
@@ -366,7 +366,7 @@ class AccountController extends BaseAccountController
 
     /**
      * Handle the banner image upload
-     * 
+     *
      * @deprecated since version 1.2
      */
     public function actionBannerImageUpload()
@@ -380,7 +380,7 @@ class AccountController extends BaseAccountController
 
     /**
      * Handle the profile image upload
-     * 
+     *
      * @deprecated since version 1.2
      */
     public function actionProfileImageUpload()
@@ -423,7 +423,7 @@ class AccountController extends BaseAccountController
         if (Yii::$app->request->get('userGuid') != '' && Yii::$app->user->getIdentity()->isSystemAdmin()) {
             $user = User::findOne(['guid' => Yii::$app->request->get('userGuid')]);
             if ($user === null) {
-                throw new HttpException(404, 'Could not find user!');
+                throw new HttpException(404, Yii::t('UserModule.controllers_AccountController', 'Could not find user!'));
             }
             return $user;
         }
@@ -432,5 +432,3 @@ class AccountController extends BaseAccountController
     }
 
 }
-
-?>
