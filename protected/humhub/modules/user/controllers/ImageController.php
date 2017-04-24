@@ -20,7 +20,7 @@ use humhub\modules\user\components\BaseAccountController;
 
 /**
  * ImageController handles user profile or user banner image modifications
- * 
+ *
  * @since 1.2
  * @author Luke
  */
@@ -64,7 +64,7 @@ class ImageController extends BaseAccountController
 
     /**
      * Uploads a new image
-     * 
+     *
      * @param string $type
      * @return \yii\web\Response the response
      */
@@ -98,7 +98,7 @@ class ImageController extends BaseAccountController
 
     /**
      * Crops a image
-     * 
+     *
      * @param string $type
      * @return \yii\web\Response the response
      */
@@ -131,7 +131,7 @@ class ImageController extends BaseAccountController
 
     /**
      * Delete an image
-     * 
+     *
      * @param string $type
      * @return \yii\web\Response the response
      */
@@ -152,7 +152,7 @@ class ImageController extends BaseAccountController
 
     /**
      * Returns the Profile Image
-     * 
+     *
      * @param string $type
      * @return ProfileImage|ProfileBannerImage
      * @throws HttpException
@@ -161,16 +161,16 @@ class ImageController extends BaseAccountController
     {
         if ($type == static::TYPE_PROFILE_IMAGE) {
             if (!$this->allowModifyProfileImage) {
-                throw new HttpException(403, 'Access denied!');
+                throw new HttpException(403, Yii::t('ContentModule.controllers_ImageController', 'Access denied!'));
             }
             return new ProfileImage($this->getUser()->guid);
         } elseif ($type == static::TYPE_PROFILE_BANNER_IMAGE) {
             if (!$this->allowModifyProfileBanner) {
-                throw new HttpException(403, 'Access denied!');
+                throw new HttpException(403, Yii::t('ContentModule.controllers_ImageController', 'Access denied!'));
             }
             return new ProfileBannerImage($this->getUser()->guid);
         } else {
-            throw new HttpException(400, 'Invalid image type given!');
+            throw new HttpException(400, Yii::t('ContentModule.controllers_ImageController', 'Invalid image type given!'));
         }
     }
 
@@ -187,7 +187,7 @@ class ImageController extends BaseAccountController
         if ($this->user === null && Yii::$app->request->get('userGuid') != '' && Yii::$app->user->getIdentity()->isSystemAdmin()) {
             $user = User::findOne(['guid' => Yii::$app->request->get('userGuid')]);
             if ($user === null) {
-                throw new HttpException(404, 'Could not find user!');
+                throw new HttpException(404, Yii::t('ContentModule.controllers_ImageController', 'Could not find user!'));
             }
             $this->user = $user;
         }

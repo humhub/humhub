@@ -2,13 +2,14 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\controllers;
 
 use Yii;
+use yii\web\HttpException;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\user\models\User;
@@ -43,18 +44,18 @@ class ProfileController extends ContentContainerController
      */
     public function actions()
     {
-        return array(
-            'stream' => array(
+        return [
+            'stream' => [
                 'class' => ContentContainerStream::className(),
                 'mode' => ContentContainerStream::MODE_NORMAL,
                 'contentContainer' => $this->contentContainer
-            ),
-        );
+            ],
+        ];
     }
 
     /**
      * User profile home
-     * 
+     *
      * @todo Allow change of default action
      * @return string the response
      */
@@ -75,7 +76,7 @@ class ProfileController extends ContentContainerController
     public function actionAbout()
     {
         if (!$this->contentContainer->permissionManager->can(new \humhub\modules\user\permissions\ViewAboutPage())) {
-            throw new \yii\web\HttpException(403, 'Forbidden');
+            throw new HttpException(403, Yii::t('ContentModule.controllers_ProfileController', 'Forbidden'));
         }
 
         return $this->render('about', ['user' => $this->contentContainer]);
@@ -84,9 +85,9 @@ class ProfileController extends ContentContainerController
     public function actionFollow()
     {
         if(Yii::$app->getModule('user')->disableFollow) {
-            throw new \yii\web\HttpException(403, Yii::t('ContentModule.controllers_ContentController', 'This action is disabled!'));
+            throw new HttpException(403, Yii::t('ContentModule.controllers_ProfileController', 'This action is disabled!'));
         }
-        
+
         $this->forcePostRequest();
         $this->getUser()->follow(Yii::$app->user->getIdentity(), false);
 
@@ -120,6 +121,7 @@ class ProfileController extends ContentContainerController
         $query->active();
 
         $title = Yii::t('UserModule.widgets_views_userFollower', '<strong>User</strong> followers');
+
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
@@ -132,6 +134,7 @@ class ProfileController extends ContentContainerController
         $query->active();
 
         $title = Yii::t('UserModule.widgets_views_userFollower', '<strong>Following</strong> user');
+
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
@@ -144,9 +147,8 @@ class ProfileController extends ContentContainerController
         }
 
         $title = Yii::t('UserModule.widgets_views_userSpaces', '<strong>Member</strong> in these spaces');
+
         return $this->renderAjaxContent(\humhub\modules\space\widgets\ListBox::widget(['query' => $query, 'title' => $title]));
     }
 
 }
-
-?>
