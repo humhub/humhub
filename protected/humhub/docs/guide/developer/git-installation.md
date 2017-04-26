@@ -1,7 +1,7 @@
-Installation (Developers)
+Git Installation (Developers)
 =========================
 
-> Warning: This installation method allows you to easily fetch the latest version from our 
+> Warning: This installation method allows you to fetch the latest version from our git repository. Since the master branch is not always in a stable state, this branch is not intended for production use.
 
 Preparation
 -----------
@@ -22,14 +22,14 @@ Get HumHub
 
 In order to be able to install a branch fetched by git, you'll have to run a composer update to download external dependencies.
 
- - Clone Git Repository:
+ 1. Clone Git Repository:
 
 ```
 git clone https://github.com/humhub/humhub.git
 ```
 
- - Install composer ([https://getcomposer.org/doc/00-intro.md](https://getcomposer.org/doc/00-intro.md))
- - Navigate to your HumHub webroot and fetch dependencies:
+ 2. Install composer ([https://getcomposer.org/doc/00-intro.md](https://getcomposer.org/doc/00-intro.md))
+ 3. Navigate to your HumHub webroot and fetch dependencies:
 
 ```
 php composer.phar global require "fxp/composer-asset-plugin:~1.3"
@@ -55,7 +55,7 @@ Make the following files executable:
  - /protected/yii
  - /protected/yii.bat
 
-**Make sure the following directories are not accessible through the webserver!**
+> Warning: Make sure the following directories are not accessible through the webserver!
 
 
 Start Web Installer

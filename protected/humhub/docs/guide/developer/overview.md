@@ -1,39 +1,46 @@
 Overview
 ========
 
-HumHub is a very powerful platform, and part of its power lies in the fact that it is very easy to build upon and expand through modules and overriding code.
-HumHub is written mostly in PHP based on the Yii Framework.  
+The main power of the HumHub platform lies in its flexibility and extensibility through modules and configuration of runtime behaviour.
+HumHub is written mostly in PHP and is based on the [Yii Framework](http://www.yiiframework.com/). Other languages used throughout the platform are *JavaScript*, *HTML*, *SQL* and *CSS*. 
 
-Other languages used throughout are JavaScript, HTML, SQL and CSS. 
-It uses a Model-View-Controller (MVC)-like pattern for its software architecture. Additionally, it uses technologies such as Yii2, jQuery, Bootstrap, Less, etc.
-In this guide, you will find all the necessary information to customize HumHub.
-
-As HumHub is based on Yii 2.0 PHP Framework (http://www.yiiframework.com/) make sure you're also familiar with this framework.
-[The Definitive Guide to Yii 2.0](http://www.yiiframework.com/doc-2.0/guide-index.html) 
-
-Application Overview
---------------------
-
-Humhub is based on _PHP5_ and _Yii2_ and leverages the highly modular and flexible nature of _Yii_.
-Before learning about the internals of HumHub, you should be familiar with the basic concepts of
-[Yii](http://www.yiiframework.com/doc-2.0/guide-README.html "Yii Guide").
+HumHub uses a [Model-View-Controller (MVC)](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) based software architecture and utilizes technologies such as [Yii2](http://www.yiiframework.com/), [jQuery](https://jquery.com/), [Bootstrap](http://getbootstrap.com/) and [Less](http://lesscss.org/), to name a few.
 
 ![Application Layers](images/appLayer.svg)
 
-The HumHub core contains several core modules as well as extended Yii components:
+> Note: Since HumHub v1.2 the minimum PHP version is 5.6
+
+As HumHub is based on the [Yii 2.0 PHP Framework](http://www.yiiframework.com/) make sure you're also familiar with the concepts of this framework in order to beeing able to write own modules or extend the core platform.
+
+Here are some recommendet resources for learning Yii:
+
+- [The Definitive Guide to Yii 2.0](http://www.yiiframework.com/doc-2.0/guide-index.html) 
+- [Yii 2.0 Community Cookbook](https://yii2-cookbook.readthedocs.io/)
+
+The HumHub core platform consists of several modules as well as extended Yii components:
 
 **Core Components:**
 
  - [[humhub\components\ActiveRecord]]
  - [[humhub\components\Application]]
+ - [[humhub\components\console\Application]]
+ - [[humhub\components\AssetManager]] - 
  - [[humhub\components\Controller]]
  - [[humhub\components\Migration]]
  - [[humhub\components\Module]]
  - [[humhub\components\ModuleManager]]
  - [[humhub\components\Request]]
+ - [[humhub\components\Response]]
+ - [[humhub\components\SettingsManager]]
  - [[humhub\components\Theme]]
+ - [[humhub\components\SocialActivity]]
  - [[humhub\components\View]]
  - [[humhub\components\Widget]]
+ - **humhub\components\i18n**
+ - **humhub\components\mail**
+ - **humhub\components\queue**
+ - **humhub\components\rendering**
+ - **humhub\components\validators**
 
 **Core Modules:**
 
@@ -44,11 +51,14 @@ The HumHub core contains several core modules as well as extended Yii components
  - **dashboard:**  Dashboard related functionality
  - **directory:**  Directory related functionality
  - **file:**  Basic file module for accessing the filesystem
+ - **friendship:**  Friendship system functionality
  - **installer:**  HumHub installer module
  - **like:**  Content addon for likes
- - **notification:**  User Notifications
+ - **live:**  Live frontend update functionality
+ - **notification:**  User notifications (e.g. e-mail, web)
  - **post:**  Simple user-post related functionality
  - **search:**  Luceene Search Module
  - **space:**  Space related functionality
- - **tour:**  HumHub user-guide
- - **user:**  Basic user module
+ - **stream:**  Content stream related functionality
+ - **tour:**  HumHub user-guide tour
+ - **user:**  User and authentication
