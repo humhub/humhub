@@ -2,6 +2,7 @@ HumHub Change Log
 =================
 1.2.1 (in developement)
 - Fix: Invite error in french language
+- Fix #2518: ActivityStreamWidget::EVENT_INIT is missed (githubjeka)
 
 1.2.0 (April 16, 2017)
 --------------------------------
