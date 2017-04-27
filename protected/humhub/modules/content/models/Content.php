@@ -164,7 +164,6 @@ class Content extends ContentDeprecated
         parent::afterSave($insert, $changedAttributes);
 
         if ($this->notifyUsersOfNewContent !== false) {
-
             $contentSource = $this->getPolymorphicRelation();
 
             foreach ($this->notifyUsersOfNewContent as $user) {
