@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'An unknown error occured while uploading.' => '',
-    'An unknown error occured while uploading. Hint: check your upload_max_filesize and post_max_size php settings.' => '',
-    'Copy to clipboard' => '',
-    'Error:' => '',
-    'Info:' => '',
-    'Upload' => '',
+    'An unknown error occured while uploading.' => '上传过程中出现了未知错误。',
+    'An unknown error occured while uploading. Hint: check your upload_max_filesize and post_max_size php settings.' => '上传过程中出现了未知错误。建议：检查php设置参数upload_max_filesize',
+    'Copy to clipboard' => '复制到剪贴板',
+    'Error:' => '错误：',
+    'Info:' => '信息：',
+    'Upload' => '上传',
     '<strong>Confirm</strong> Action' => '<strong>确认</strong> 操作',
     '<strong>Latest</strong> updates' => '<strong>最近</strong> 更新',
     '<strong>Mail</strong> summary' => '<strong>邮件</strong> 概要',
