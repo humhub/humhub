@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -45,13 +45,13 @@ class Pjax extends \humhub\components\Widget
     {
         $view = $this->getView();
         PjaxAsset::register($view);
-        
+
         $view->registerJsConfig('client.pjax', [
             'active' => self::isActive(),
             'options' => $this->clientOptions
         ]);
     }
-    
+
     public static function isActive()
     {
         return Yii::$app->params['enablePjax'];

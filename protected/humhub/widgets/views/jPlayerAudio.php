@@ -1,8 +1,13 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 use yii\helpers\Html;
 ?>
-
 
 <?= Html::tag('div', null, $options); ?>
 
@@ -43,7 +48,8 @@ use yii\helpers\Html;
         </div>
         <div class="jp-no-solution" style="display: none;">
             <span>Update Required</span>
-            To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+            To play the media you will need to either update your browser to a recent version or update your
+            <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
         </div>
     </div>
 </div>

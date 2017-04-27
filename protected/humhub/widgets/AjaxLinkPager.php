@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -13,7 +13,7 @@ use yii\web\JsExpression;
 
 /**
  * AjaxLinkPager
- * 
+ *
  * @inheritdoc
  * @author luke
  */
@@ -22,15 +22,15 @@ class AjaxLinkPager extends \humhub\widgets\LinkPager
 
     /**
      * Js Expression which is called before Ajax request is sent
-     * 
+     *
      * @var string
      */
     public $jsBeforeSend = 'function(){ setModalLoader(); }';
 
     /**
      * Success Javascript Expression
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $jsSuccess = 'function(html){ $("#globalModal").html(html); }';
 
@@ -60,7 +60,8 @@ class AjaxLinkPager extends \humhub\widgets\LinkPager
                                 'success' => new JsExpression($this->jsSuccess),
                                 'url' => $this->pagination->createUrl($page),
                             ],
-                            'htmlOptions' => $linkOptions]), $options);
+                            'htmlOptions' => $linkOptions
+        ]), $options);
     }
 
 }

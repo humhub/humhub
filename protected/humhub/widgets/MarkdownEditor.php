@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -59,10 +59,10 @@ class MarkdownEditor extends \yii\base\Widget
      */
     public function run()
     {
-        return $this->render('markdownEditor', array(
+        return $this->render('markdownEditor', [
                     'fieldId' => $this->fieldId,
                     'previewUrl' => $this->previewUrl
-        ));
+        ]);
     }
 
 }

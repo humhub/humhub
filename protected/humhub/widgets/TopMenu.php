@@ -44,5 +44,3 @@ class TopMenu extends BaseMenu
     }
 
 }
-
-?>

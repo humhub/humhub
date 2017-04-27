@@ -36,7 +36,7 @@ class BaseStack extends \yii\base\Widget
      *
      * @var array
      */
-    public $widgets = array();
+    public $widgets = [];
 
     /**
      * Seperator HTML Code (glue)

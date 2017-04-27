@@ -1,12 +1,18 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\widgets;
 
 /**
  * This Widget can be used to finish a modal process.
  * If the frontend requires a modal response, this widget will close the global modal
  * and show an status message.
- * 
+ *
  *
  * @author buddha
  */
@@ -17,7 +23,7 @@ class ModalClose extends \yii\base\Widget
     public $error;
     public $warn;
     public $saved;
-    
+
     /**
      * @inheritdoc
      */

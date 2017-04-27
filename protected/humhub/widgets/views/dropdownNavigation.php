@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 /**
  * Left Navigation by MenuWidget.
  *
@@ -23,7 +30,7 @@
 
             <?php foreach ($items as $item) : ?>
                 <li>
-                    <?php echo \yii\helpers\Html::a($item['icon'] . " <span>" . $item['label'] . "</span>", $item['url'], $item['htmlOptions']); ?>
+                    <?= \yii\helpers\Html::a($item['icon'] . " <span>" . $item['label'] . "</span>", $item['url'], $item['htmlOptions']); ?>
                 </li>
             <?php endforeach; ?>
 

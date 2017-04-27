@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\widgets;
 
 use humhub\components\Widget;
@@ -15,58 +21,58 @@ class JsWidget extends Widget
 
     /**
      * Defines the select input field id
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $id;
 
     /**
      * Js Widget namespace
-     * @var type 
+     * @var type
      */
     public $jsWidget;
 
     /*
      * Used to overwrite select input field attributes. This array can be used for overwriting
      * texts, or other picker settings.
-     * 
+     *
      * @var string
      */
     public $options = [];
 
     /**
      * Event action handler.
-     * @var type 
+     * @var type
      */
     public $events = [];
 
     /**
      * Auto init flag.
-     * @var mixed 
+     * @var mixed
      */
     public $init = false;
 
     /**
      * Used to hide/show the actual input element.
-     * @var type 
+     * @var type
      */
     public $visible = true;
 
     /**
-     * @var string html container element. 
+     * @var string html container element.
      */
     public $container = 'div';
 
     /**
-     * @var string html content. 
+     * @var string html content.
      */
     public $content;
-        
+
     /**
      * Default implementation of JsWidget.
      * This will render a widget html element specified by $container and $content and the given $options/$event attributes.
      * This function should be overwritten for widgets with a more complex rendering.
-     * 
+     *
      * @return type
      */
     public function run()
@@ -78,7 +84,7 @@ class JsWidget extends Widget
      * Assembles all widget attributes and data settings of this widget.
      * Those attributes/options are are normally transfered to the js client by ordinary html attributes
      * or by using data-* attributes.
-     * 
+     *
      * @return array
      */
     protected function getOptions()
@@ -123,9 +129,9 @@ class JsWidget extends Widget
     /**
      * Returns the html id of this widget, if no id is set this function will generate
      * an id if $autoGenerate is set to true (default).
-     * 
+     *
      * Note that the id is automatically included within the <code>getOptions()<code> function.
-     * 
+     *
      * @param type $autoGenerate
      * @return type
      */
@@ -139,11 +145,11 @@ class JsWidget extends Widget
     }
 
     /**
-     * Returns an array of data-* attributes to configure your clientside js widget. 
+     * Returns an array of data-* attributes to configure your clientside js widget.
      * Note that this function does not require to add the data- prefix. This will be done by Yii.
-     * 
+     *
      * The data-* attributes should be inserted to the widgets root element.
-     * 
+     *
      * @return type
      */
     protected function getData()

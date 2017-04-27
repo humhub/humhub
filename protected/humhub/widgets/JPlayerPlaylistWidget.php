@@ -1,9 +1,9 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\widgets;
@@ -18,18 +18,18 @@ use humhub\modules\file\libs\FileHelper;
  * @author buddha
  */
 class JPlayerPlaylistWidget extends JsWidget
-{    
+{
     /**
      * Contains the playlist.
-     * @var \humhub\modules\file\models\File[] 
+     * @var \humhub\modules\file\models\File[]
      */
     public $playlist = [];
-    
+
     /**
      * @inheritdoc
      */
     public $jsWidget = "media.Jplayer";
-    
+
     /**
      * @inheritdoc
      */
@@ -38,20 +38,20 @@ class JPlayerPlaylistWidget extends JsWidget
         if(empty($this->playlist)) {
             return;
         }
-        
+
         $this->init = $this->getJsonPlaylist();
-        
+
         $asset = \humhub\assets\JplayerAsset::register($this->getView());
-        
+
         $options = $this->getOptions();
         $options['data-swf-path'] = $asset->baseUrl.'/jplayer';
-        
+
         return $this->render('jPlayerAudio', [
             'containerId' => $this->getContainerId(),
             'options' => $options
         ]);
     }
-    
+
     public function getJsonPlaylist()
     {
         $result = [];
@@ -61,26 +61,27 @@ class JPlayerPlaylistWidget extends JsWidget
                 FileHelper::getExtension($track->file_name) => $track->getUrl()
             ];
         }
+        
         return $result;
     }
-    
+
     public function getData()
     {
         return [
             'container-id' => '#'.$this->getContainerId()
         ];
     }
-    
+
     public function getAttributes()
     {
         return [
             'class' => 'jp-jplayer'
         ];
     }
-    
+
     public function getContainerId()
     {
         return $this->getId(true).'-container';
     }
-    
+
 }

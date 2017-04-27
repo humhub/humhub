@@ -46,5 +46,3 @@ class NotificationArea extends BaseStack
     }
 
 }
-
-?>

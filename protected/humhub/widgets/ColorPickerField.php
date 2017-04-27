@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -24,13 +24,13 @@ class ColorPickerField extends \humhub\components\Widget
 
     /**
      * The color field of the model
-     * @var string 
+     * @var string
      */
     public $field;
-    
+
     /**
      * The container id used to append the actual color picker js widget.
-     * @var string 
+     * @var string
      */
     public $container;
 
@@ -40,10 +40,10 @@ class ColorPickerField extends \humhub\components\Widget
         $inputId = $ts . 'space-color-picker-edit' . $this->field;
 
         return $this->render('colorPickerField', [
-                    'model' => $this->model,
-                    'field' => $this->field,
-                    'container' => $this->container,
-                    'inputId' => $inputId
+            'model' => $this->model,
+            'field' => $this->field,
+            'container' => $this->container,
+            'inputId' => $inputId
         ]);
     }
 

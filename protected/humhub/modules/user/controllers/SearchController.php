@@ -1,10 +1,15 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\user\controllers;
 
 use Yii;
 use yii\web\Controller;
-
 
 /**
  * Search Controller provides action for searching users.
@@ -40,7 +45,7 @@ class SearchController extends Controller
     public function actionJson()
     {
         Yii::$app->response->format = 'json';
-        
+
         return \humhub\modules\user\widgets\UserPicker::filter([
             'keyword' => Yii::$app->request->get('keyword'),
             'fillUser' => true,
@@ -49,5 +54,3 @@ class SearchController extends Controller
     }
 
 }
-
-?>

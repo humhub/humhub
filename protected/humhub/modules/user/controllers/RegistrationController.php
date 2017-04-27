@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -18,8 +18,8 @@ use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 
 /**
- * RegistrationController handles new user registration 
- * 
+ * RegistrationController handles new user registration
+ *
  * @since 1.1
  */
 class RegistrationController extends Controller
@@ -36,7 +36,7 @@ class RegistrationController extends Controller
     public function beforeAction($action)
     {
         if (!Yii::$app->user->isGuest) {
-            throw new HttpException(401, 'Your are already logged in! - Logout first!');
+            throw new HttpException(401, Yii::t('UserModule.controllers_RegistrationController', 'Your are already logged in! - Logout first!'));
         }
 
         return parent::beforeAction($action);
@@ -44,7 +44,7 @@ class RegistrationController extends Controller
 
     /**
      * Registration Form
-     * 
+     *
      * @return type
      * @throws HttpException
      */
@@ -90,7 +90,7 @@ class RegistrationController extends Controller
     {
         $userInvite = Invite::findOne(['token' => $inviteToken]);
         if (!$userInvite) {
-            throw new HttpException(404, 'Invalid registration token!');
+            throw new HttpException(404, Yii::t('UserModule.controllers_RegistrationController', 'Invalid registration token!'));
         }
         if ($userInvite->language) {
             Yii::$app->language = $userInvite->language;
@@ -109,7 +109,7 @@ class RegistrationController extends Controller
         $attributes = $authClient->getUserAttributes();
 
         if (!isset($attributes['id'])) {
-            throw new Exception("No user id given by authclient!");
+            throw new Exception(404, Yii::t('UserModule.controllers_RegistrationController', 'No user id given by authclient!'));
         }
 
         $registration->enablePasswordForm = false;
@@ -125,5 +125,3 @@ class RegistrationController extends Controller
     }
 
 }
-
-?>

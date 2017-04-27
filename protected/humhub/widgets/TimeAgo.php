@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -12,7 +12,7 @@ use Yii;
 
 /**
  * Shows a given date & time as automatically updating fuzzy timestamps (e.g. "4 minutes ago" or "about 1 day ago").
- * 
+ *
  * @author luke
  */
 class TimeAgo extends \yii\base\Widget
@@ -53,7 +53,7 @@ class TimeAgo extends \yii\base\Widget
 
     /**
      * Render TimeAgo Javascript
-     * 
+     *
      * @return string timeago span
      */
     public function renderTimeAgo()
@@ -72,7 +72,7 @@ class TimeAgo extends \yii\base\Widget
 
     /**
      * Show full date
-     * 
+     *
      * @param int $elasped time in seconds
      * @return string output of full date and time
      */
@@ -90,7 +90,7 @@ class TimeAgo extends \yii\base\Widget
 
     /**
      * Returns full date as text
-     * 
+     *
      * @return string
      */
     protected function getFullDateTime()

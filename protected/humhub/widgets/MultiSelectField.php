@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\widgets;
 
 /**
@@ -14,10 +20,10 @@ class MultiSelectField extends BasePickerField
      * @inerhitdoc
      */
     public $minInput = 0;
-    
+
     /**
      * Possible values
-     * @var type 
+     * @var type
      */
     public $items = [];
 
@@ -48,19 +54,20 @@ class MultiSelectField extends BasePickerField
             $attribute = $this->attribute;
             $this->selection = ($this->model) ? $this->model->$attribute : [];
         }
-        
+
         if(empty($this->selection)) {
             $this->selection = [];
         }
-        
+
         $result = [];
         foreach ($this->items as $key => $value) {
             if (!$value || !$key) {
                 continue;
             }
-           
+
             $result[$key] = $this->buildItemOption([$key => $value], in_array($key, $this->selection));
         }
+
         return $result;
     }
 
@@ -68,6 +75,7 @@ class MultiSelectField extends BasePickerField
     {
         $result = parent::getData();
         unset($result['picker-url']);
+
         return $result;
     }
 
