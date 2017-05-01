@@ -149,6 +149,7 @@ class RichtextField extends JsWidget
         $inputOptions = $this->getAttributes();
         $inputOptions['id'] = $this->getId(true) . '_input';
         $inputOptions['style'] = 'display:none;color';
+        $inputOptions['title'] = $this->placeholder;
         unset($inputOptions['contenteditable']);
         $modelAttribute = $this->attribute;
 

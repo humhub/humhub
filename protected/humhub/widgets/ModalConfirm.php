@@ -99,6 +99,8 @@ class ModalConfirm extends \yii\base\Widget
      * @var String contains optional JavaScript code to execute after modal has been made visible to the user
      */
     public $modalShownJS = "";
+    
+    public $ariaLabel = "";
 
     /**
      * Displays / Run the Widgets
@@ -110,6 +112,7 @@ class ModalConfirm extends \yii\base\Widget
                     'linkOutput' => $this->linkOutput,
                     'title' => $this->title,
                     'message' => $this->message,
+                    'ariaLabel' => $this->ariaLabel,
                     'buttonTrue' => $this->buttonTrue,
                     'buttonFalse' => $this->buttonFalse,
                     'class' => $this->cssClass,

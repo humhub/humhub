@@ -11,10 +11,7 @@ class SiteLogo extends \yii\base\Widget
 
     public function run()
     {
-
-        return $this->render('logo', array('logo' => new LogoImage(), 'place' => $this->place));
+        return $this->render('logo', ['logo' => new LogoImage(), 'place' => $this->place]);
     }
 
 }
-
-?>

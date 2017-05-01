@@ -44,9 +44,19 @@ class PreviewImage extends BaseConverter
         if ($file) {
             $this->applyFile($file);
         }
-
+        
         // Provide the natural height so the browser will include a placeholder height. Todo: smooth image loading
-        return \yii\helpers\Html::img($this->getUrl(), ['class' => 'animated fadeIn', 'height' => $this->height]);
+        return \yii\helpers\Html::img($this->getUrl(), ['class' => 'animated fadeIn', 'height' => $this->height, 'alt' => $this->getAltText()]);
+    }
+    
+    protected function getAltText($file = null)
+    {
+        if ($file) {
+            return Html::encode($file->file_name);
+        } else if($this->file) {
+            return Html::encode($this->file->file_name);
+        }
+        return '';
     }
 
     /**
