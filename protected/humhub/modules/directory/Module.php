@@ -62,7 +62,7 @@ class Module extends \humhub\components\Module
      */
     public function isGroupListingEnabled()
     {
-        return (\humhub\modules\user\models\Group::find()->where(['show_at_directory' => 1])->count() >= 1);
+        return (\humhub\modules\user\models\Group::find()->where(['show_at_directory' => 1])->count() != 0);
     }
 
 }
