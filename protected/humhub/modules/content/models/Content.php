@@ -33,6 +33,7 @@ use humhub\modules\content\permissions\ManageContent;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
+ * @property ContentContainer $contentContainer
  *
  * @since 0.5
  */
@@ -42,7 +43,7 @@ class Content extends ContentDeprecated
     /**
      * A array of user objects which should informed about this new content.
      *
-     * @var Array User
+     * @var array User
      */
     public $notifyUsersOfNewContent = [];
 
@@ -228,7 +229,7 @@ class Content extends ContentDeprecated
     {
         return $this->visibility == self::VISIBILITY_PUBLIC;
     }
-    
+
     /**
      * Checks if the content visiblity is set to private.
      *
@@ -447,7 +448,7 @@ class Content extends ContentDeprecated
         }
 
         // Check if underlying content implements own canEdit method
-        // ToDo: Implement this as interface 
+        // ToDo: Implement this as interface
         if (method_exists($this->getPolymorphicRelation(), 'canEdit') && $this->getPolymorphicRelation()->canEdit($user)) {
             return true;
         }
