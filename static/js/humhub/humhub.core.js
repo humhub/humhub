@@ -387,7 +387,7 @@ var humhub = humhub || (function ($) {
         if (module.init) {
             try {
                 // compatibility with beta 1.2 beta release
-                event.trigger(module.id.replace('.', ':') + ':afterInit', module);
+                event.trigger(module.id.replace('.', ':') + ':beforeInit', module);
                 
                 event.trigger(module.id.replace(/\./g, ':') + ':beforeInit', module);
                 module.init();

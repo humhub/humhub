@@ -313,7 +313,7 @@ humhub.module('stream', function (module, require, $) {
         this.loader();
         client.post(evt.url).then(function (response) {
             if (response.success) {
-                // Either just remove entry or reload it in case the stream includes arhcived entries
+                // Either just remove entry or reload it in case the stream includes archived entries
                 if (that.stream().hasFilter(FILTER_INCLUDE_ARCHIVED)) {
                     that.reload().then(function () {
                         module.log.success('success.archive', true);
