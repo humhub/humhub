@@ -15,7 +15,9 @@ use humhub\modules\like\widgets\LikeLink;
         <div class="comment-entry-loader pull-right"></div>
         <ul class="nav nav-pills preferences">
             <li class="dropdown ">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-angle-down"></i></a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-label="<?= Yii::t('base', 'Toggle comment menu'); ?>" aria-haspopup="true">
+                    <i class="fa fa-angle-down"></i>
+                </a>
 
                 <ul class="dropdown-menu pull-right">
                     <?php if ($canWrite): ?>

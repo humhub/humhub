@@ -56,7 +56,7 @@ humhub.module('ui.modal', function (module, require, $) {
      * Template for the modal splitted into different parts. Those can be overwritten my changing or overwriting module.template.
      */
     Modal.template = {
-        container: '<div class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; background:rgba(0,0,0,0.1)"><div class="modal-dialog"><div class="modal-content"></div></div></div>',
+        container: '<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none; background:rgba(0,0,0,0.1)"><div class="modal-dialog"><div class="modal-content"></div></div></div>',
         header: '<div class="modal-header"><button type="button" class="close" data-modal-close="true" aria-hidden="true">×</button><h4 class="modal-title"></h4></div>',
         body: '<div class="modal-body"></div>',
         footer: '<div class="modal-footer"></div>',
@@ -92,8 +92,16 @@ humhub.module('ui.modal', function (module, require, $) {
         });
 
         this.set(options);
-
-        this.$.attr('aria-labelledby', this.getTitleId());
+    };
+    
+    Modal.prototype.checkAriaLabel = function () {
+        var $title = this.$.find('.modal-title');
+        if($title.length) {
+            $title.attr('id', this.getTitleId());
+            this.$.attr('aria-labelledby', this.getTitleId());
+        } else {
+            this.$.removeAttr('aria-labelledby');
+        }
     };
 
     Modal.prototype.getTitleId = function () {
@@ -418,6 +426,7 @@ humhub.module('ui.modal', function (module, require, $) {
         this.$.empty().append(content);
         this.applyAdditions();
         this.$.find('input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
+        this.checkAriaLabel();
         return this;
     };
 

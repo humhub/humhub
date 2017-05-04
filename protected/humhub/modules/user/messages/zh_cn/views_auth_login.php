@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Please login with your username/email and password.' => '',
+    'Please login with your username/email and password.' => '请用用户名/邮箱 密码登录。',
     '<strong>Join</strong> the network' => '<strong>加入</strong> 社交平台',
     '<strong>Please</strong> sign in' => '<strong>请</strong> 登录',
     '<strong>Sign</strong> up' => '注册',

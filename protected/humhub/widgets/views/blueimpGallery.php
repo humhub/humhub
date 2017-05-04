@@ -1,6 +1,6 @@
 <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">
     <div class="slides"></div>
-    <h3 class="title"></h3>
+    <h3 class="title">Hidden Gallery</h3>
     <a class="prev">‹</a>
     <a class="next">›</a>
     <a class="close">×</a>

@@ -13,7 +13,7 @@ $this->registerJsConfig('notification', [
 
 ?>
 <div id="notification_widget" data-ui-widget="notification.NotificationDropDown" data-ui-init='<?= \yii\helpers\Json::encode($update); ?>' class="btn-group">
-    <a href="#" id="icon-notifications" data-action-click='toggle' data-toggle="dropdown" >
+    <a href="#" id="icon-notifications" data-action-click='toggle' aria-label="<?= Yii::t('NotificationModule.widgets_views_list', 'Open the notification dropdown menu')?>" data-toggle="dropdown" >
         <i class="fa fa-bell"></i>
     </a>
     

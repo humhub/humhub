@@ -20,7 +20,9 @@ use humhub\modules\content\widgets\WallEntryLabels;
             <!-- start: show wall entry options -->
             <ul class="nav nav-pills preferences">
                 <li class="dropdown ">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-angle-down"></i></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-label="<?= Yii::t('base', 'Toggle stream entry menu'); ?>" aria-haspopup="true">
+                        <i class="fa fa-angle-down"></i>
+                    </a>
                     <ul class="dropdown-menu pull-right">
                         <?= WallEntryControls::widget(['object' => $object, 'wallEntryWidget' => $wallEntryWidget]); ?>
                     </ul>

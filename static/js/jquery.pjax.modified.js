@@ -486,7 +486,6 @@ if ('state' in window.history) {
 // You probably shouldn't use pjax on pages with other pushState
 // stuff yet.
 function onPjaxPopstate(event) {
-
   // Hitting back or forward should override any pending PJAX request.
   if (!initialPop) {
     abortXHR(pjax.xhr)
@@ -511,8 +510,11 @@ function onPjaxPopstate(event) {
       direction = previousState.id < state.id ? 'forward' : 'back'
     }
 
-    var cache = cacheMapping[state.id] || []
-    var container = $(cache[0] || state.container), contents = cache[1]
+    var cache = cacheMapping[state.id] || [];
+    var container = $(cache[0] || state.container);
+    
+    // HUMHUB PATCH, cached content was used even when cache is deactivated.
+    var contents = (state.cache) ? cache[1] : undefined;
 
     if (container.length) {
       var options = {

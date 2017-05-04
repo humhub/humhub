@@ -318,6 +318,9 @@ abstract class BasePickerField extends InputWidget
         return $itemClass::find()->where([$this->itemKey => $selection])->all();
     }
 
+    /*
+     * @inheritdoc
+     */
     protected function getAttributes()
     {
         return [
@@ -325,6 +328,7 @@ abstract class BasePickerField extends InputWidget
             'size' => '1',
             'class' => 'form-control',
             'style' => 'width:100%',
+            'title' => $this->placeholder
         ];
     }
 

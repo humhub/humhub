@@ -130,7 +130,8 @@ class UploadInput extends \humhub\widgets\JsWidget
     public function getAttributes()
     {
         return [
-            'multiple' => 'multiple'
+            'multiple' => 'multiple',
+            'title' => Yii::t('base', 'Upload file')
         ];
     }
 

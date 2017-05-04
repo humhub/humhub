@@ -46,7 +46,9 @@ $this->registerJsConfig('space.chooser', [
         <li>
             <form action="" class="dropdown-controls">
                 <div class="input-group">
-                    <input type="text" id="space-menu-search" class="form-control" autocomplete="off" placeholder="<?php echo Yii::t('SpaceModule.widgets_views_spaceChooser', 'Search'); ?>">
+                    <input type="text" id="space-menu-search" class="form-control" autocomplete="off" 
+                           placeholder="<?= Yii::t('SpaceModule.widgets_views_spaceChooser', 'Search'); ?>"
+                           title="<?= Yii::t('SpaceModule.widgets_views_spaceChooser', 'Search for spaces'); ?>">
                     <span id="space-directory-link" class="input-group-addon" >
                         <a href="<?= Url::to(['/directory/directory/spaces']); ?>">
                         <i class="fa fa-book"></i>

@@ -59,7 +59,7 @@ $this->registerJsConfig('content.form', [
                 <?= humhub\modules\file\widgets\FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
 
                 <!-- public checkbox -->
-                <?php echo Html::checkbox("visibility", "", array('id' => 'contentForm_visibility', 'class' => 'contentForm hidden')); ?>
+                <?= Html::checkbox("visibility", "", ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true', 'title' => Yii::t('ContentModule.widgets_views_contentForm', 'Content visibility') ]); ?>
 
                 <!-- content sharing -->
                 <div class="pull-right">
@@ -68,8 +68,8 @@ $this->registerJsConfig('content.form', [
 
                     <ul class="nav nav-pills preferences" style="right: 0; top: 5px;">
                         <li class="dropdown">
-                            <a class="dropdown-toggle" style="padding: 5px 10px;" data-toggle="dropdown" href="#"><i
-                                    class="fa fa-cogs"></i></a>
+                            <a class="dropdown-toggle" style="padding: 5px 10px;" data-toggle="dropdown" href="#" aria-label="<?= Yii::t('base', 'Toggle post menu'); ?>" aria-haspopup="true">
+                                <i class="fa fa-cogs"></i></a>
                             <ul class="dropdown-menu pull-right">
                                 <li>
                                     <a data-action-click="notifyUser">
@@ -79,7 +79,7 @@ $this->registerJsConfig('content.form', [
                                 <?php if ($canSwitchVisibility): ?>
                                     <li>
                                         <a id="contentForm_visibility_entry" data-action-click="changeVisibility">
-                                            <i class="fa fa-unlock"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Make public'); ?>
+                                            <i class="fa fa-unlock"></i> <?= Yii::t('ContentModule.widgets_views_contentForm', 'Make public'); ?>
                                         </a>
                                     </li>
                                 <?php endif; ?>

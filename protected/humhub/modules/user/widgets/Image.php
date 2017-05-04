@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\widgets;
 
+use Yii;
 use humhub\libs\Html;
 use humhub\components\Widget;
 
@@ -79,7 +80,7 @@ class Image extends Widget
     {
         Html::addCssClass($this->imageOptions, 'img-rounded');
         Html::addCssStyle($this->imageOptions, 'width: ' . $this->width . 'px; height: ' . $this->height . 'px');
-
+        
         if ($this->showTooltip) {
             $this->imageOptions['data-toggle'] = 'tooltip';
             $this->imageOptions['data-placement'] = 'top';
@@ -87,6 +88,7 @@ class Image extends Widget
             Html::addCssClass($this->imageOptions, 'tt');
         }
 
+        $this->imageOptions['alt'] = Yii::t('base', 'Profile picture of {displayName}', ['displayName' => Html::encode($this->user->displayName)]);
         $html = Html::img($this->user->getProfileImage()->getUrl(), $this->imageOptions);
 
         if ($this->link) {

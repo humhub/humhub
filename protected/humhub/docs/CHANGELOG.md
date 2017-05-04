@@ -1,5 +1,11 @@
 HumHub Change Log
 =================
+1.2.1 (in developement)
+- Fix: Invite error in french language
+- Fix #2518: ActivityStreamWidget::EVENT_INIT is missed (githubjeka)
+- Enh: Fixed accessibility issues in Dashboard/Login/Profile
+- Fix: module beforeInit and afterInit event
+- Enh: Added Registraion::EVENT_AFTER_REGISTRATION UserEvent
 
 1.2.1 (under development)
 --------------------------------

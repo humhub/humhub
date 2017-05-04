@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
     <head>
-        <title><?= $this->pageTitle; ?></title>
+        <title><?= strip_tags($this->pageTitle); ?></title>
         <meta charset="<?= Yii::$app->charset ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <?php $this->head() ?>

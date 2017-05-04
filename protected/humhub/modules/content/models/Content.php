@@ -33,6 +33,7 @@ use humhub\modules\content\permissions\ManageContent;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
+ * @property ContentContainer $contentContainer
  *
  * @since 0.5
  */
