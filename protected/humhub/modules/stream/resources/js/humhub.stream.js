@@ -99,7 +99,7 @@ humhub.module('stream', function (module, require, $) {
 
         var that = this;
         var stream = this.stream();
-   
+
         promise.then(function ($confirm) {
             if ($confirm) {
                 that.remove(); // Make sure to remove the wallentry node.
@@ -263,7 +263,6 @@ humhub.module('stream', function (module, require, $) {
                 that.remove().then(function () {
                     stream.loadEntry(that.getKey(), {'prepend': true});
                 });
-                module.log.success('success.pin');
             } else if (data.info) {
                 module.log.info(data.info, true);
             } else {
@@ -299,9 +298,8 @@ humhub.module('stream', function (module, require, $) {
     StreamEntry.prototype.unpin = function (evt) {
         var that = this;
         this.loader();
-        client.post(evt.url).then(function (data) {
+        client.post(evt.url).then(function () {
             that.stream().init();
-            module.log.success('success.unpin');
         }).catch(function (e) {
             module.log.error(e, true);
             that.loader(false);
@@ -898,7 +896,7 @@ humhub.module('stream', function (module, require, $) {
 
     /**
      * Simple stream component can be used for static streams without load logic (only reload single content).
-     * 
+     *
      * @param {type} container
      * @param {type} cfg
      * @returns {humhub.streamL#5.SimpleStream}
@@ -908,14 +906,14 @@ humhub.module('stream', function (module, require, $) {
     };
 
     object.inherits(SimpleStream, WallStream);
-    
+
     SimpleStream.prototype.reloadEntry = function (entry) {
         entry.loader();
         var contentId = entry.getKey();
         return client.get(contentModule.config.reloadUrl, {data: {id: contentId}}).then(function (response) {
             if (response.output) {
                 entry.replace(response.output);
-            } 
+            }
             return response;
         }).catch(function (err) {
             module.log.error(err, true);
@@ -978,11 +976,11 @@ humhub.module('stream', function (module, require, $) {
 
             /*
              This can be used to trace the currently visible entries
-             
+
              var lastKey;
              // Defines our base y position for changing the current entry
              var yLimit = scrollTop + (windowHeight / 2);
-             
+
              // Get id of current scroll item
              //TODO: chache the entry nodes !
              var matchingNodes = stream.$entryCache.map(function () {
@@ -991,11 +989,11 @@ humhub.module('stream', function (module, require, $) {
              return $this;
              }
              });
-             
+
              // Get the id of the current element
              var $current = matchingNodes[matchingNodes.length - 1];
              var currentKey = $current && $current.length ? $current.data('content-key') : "";
-             
+
              if (lastKey !== currentKey) {
              lastKey = currentKey;
              // Set/remove active class

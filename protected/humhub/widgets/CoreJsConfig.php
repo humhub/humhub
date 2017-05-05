@@ -142,8 +142,6 @@ class CoreJsConfig extends Widget
                         'text' => [
                             'success.archive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been archived.'),
                             'success.unarchive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unarchived.'),
-                            'success.pin' => Yii::t('ContentModule.widgets_views_stream', 'The content has been pinned.'),
-                            'success.unpin' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unpinned.'),
                             'success.delete' => Yii::t('ContentModule.widgets_views_stream', 'The content has been deleted.'),
                             'info.editCancel' => Yii::t('ContentModule.widgets_views_stream', 'Your last edit state has been saved!'),
                         ]
