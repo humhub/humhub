@@ -43,7 +43,7 @@ class ManageMenu extends \humhub\widgets\BaseMenu
 
         $receivedRequestsCount = Friendship::getReceivedRequestsQuery($this->user)->count();
         $this->addItem(array(
-            'label' => Yii::t('FriendshipModule.base', 'Requests' . ' (' . $receivedRequestsCount . ')'),
+            'label' => Yii::t('FriendshipModule.base', 'Requests') . ' (' . $receivedRequestsCount . ')',
             'url' => Url::toRoute(['/friendship/manage/requests']),
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->id == 'manage' && Yii::$app->controller->action->id == 'requests'),
@@ -51,7 +51,7 @@ class ManageMenu extends \humhub\widgets\BaseMenu
 
         $sentRequestsCount = Friendship::getSentRequestsQuery($this->user)->count();
         $this->addItem(array(
-            'label' => Yii::t('FriendshipModule.base', 'Sent requests' . ' (' . $sentRequestsCount . ')'),
+            'label' => Yii::t('FriendshipModule.base', 'Sent requests') . ' (' . $sentRequestsCount . ')',
             'url' => Url::toRoute(['/friendship/manage/sent-requests']),
             'sortOrder' => 300,
             'isActive' => (Yii::$app->controller->id == 'manage' && Yii::$app->controller->action->id == 'sent-requests'),
