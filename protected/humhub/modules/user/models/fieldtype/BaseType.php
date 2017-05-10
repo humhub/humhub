@@ -84,7 +84,8 @@ class BaseType extends \yii\base\Model
             CountrySelect::className() => Yii::t('UserModule.models_ProfileFieldType', 'Country'),
             MarkdownEditor::className() => Yii::t('UserModule.models_ProfileFieldType', 'Markdown'),
             Checkbox::className() => Yii::t('UserModule.models_ProfileFieldType', 'Checkbox'),
-                ), $this->fieldTypes);
+            CheckboxList::className() => Yii::t('UserModule.models_ProfileFieldType', 'Checkbox List'),
+        ), $this->fieldTypes);
         return $fieldTypes;
     }
 

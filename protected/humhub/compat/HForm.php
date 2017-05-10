@@ -218,10 +218,17 @@ class HForm extends \yii\base\Component
             if (isset($definition['label']) && $definition['label']) {
                 $options['label'] = $definition['label'];
             }
+
+            $showLabel = !isset($definition['label']) || $definition['label'] !== false;
+
             if (isset($definition['type'])) {
                 switch ($definition['type']) {
                     case 'text':
-                        return $this->form->field($model, $name)->textInput($options);
+                        $field = $this->form->field($model, $name)->textInput($options);
+                        if(!$showLabel) {
+                            $field->label(false);
+                        }
+                        return $field;
                     case 'multiselectdropdown':
                         return \humhub\widgets\MultiSelectField::widget([
                             'form' => $this->form,
@@ -237,8 +244,22 @@ class HForm extends \yii\base\Component
                             $options['disabled'] = 'disabled';
                         }
                         return $this->form->field($model, $name)->checkbox($options);
+                    case 'checkboxlist':
+                        if (isset($options['readOnly']) && $options['readOnly']) {
+                            $options['disabled'] = 'disabled';
+                        }
+                        $value = $model->$name;
+                        if(is_string($value)) {
+                            $model->$name = explode(',', $model->$name);
+                        }
+
+                        return $this->form->field($model, $name)->checkboxList($definition['items'], $options);
                     case 'textarea':
-                        return $this->form->field($model, $name)->textarea($options);
+                        $field = $this->form->field($model, $name)->textarea($options);
+                        if(!$showLabel) {
+                            $field->label(false);
+                        }
+                        return $field;
                     case 'hidden':
                         return $this->form->field($model, $name)->hiddenInput($options)->label(false);
                     case 'password':
