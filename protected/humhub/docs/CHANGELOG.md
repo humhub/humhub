@@ -6,7 +6,8 @@ HumHub Change Log
 - Enh: Fixed accessibility issues in Dashboard/Login/Profile
 - Fix: module beforeInit and afterInit event
 - Enh: Added Registraion::EVENT_AFTER_REGISTRATION UserEvent
-- Enh: Added grunt 'migrate-up' and 'migrate-create' task
+- Enh: Added grunt `migrate-up` and `migrate-create` task
+- Enh: Added profile field type `CheckboxList`
 
 1.2.0 (April 16, 2017)
 --------------------------------
