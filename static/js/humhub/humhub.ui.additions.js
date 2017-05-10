@@ -263,7 +263,6 @@ humhub.module('ui.additions', function (module, require, $) {
 
                 $nodes.each(function() {
                     var $this = $(this);
-                    console.log('Apply additions to ', this);
                     module.applyTo($this);
                 })
             });
