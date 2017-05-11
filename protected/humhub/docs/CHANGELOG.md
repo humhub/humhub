@@ -9,6 +9,7 @@ HumHub Change Log
 - Enh: Added grunt `migrate-up` and `migrate-create` task
 - Enh: Added profile field type `CheckboxList`
 - Fix: Fixed `ui.addition` `MutationObserver`, only apply additions to inserted nodes.
+- Enh: Changed invite mail subject text
 
 1.2.0 (April 16, 2017)
 --------------------------------
