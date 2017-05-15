@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'An unknown error occured while uploading.' => '',
-    'An unknown error occured while uploading. Hint: check your upload_max_filesize and post_max_size php settings.' => '',
+    'An unknown error occurred while uploading.' => '',
+    'An unknown error occurred while uploading. Hint: check your upload_max_filesize and post_max_size php settings.' => '',
     'Copy to clipboard' => '',
     'Error:' => '',
     'Info:' => '',
@@ -29,10 +29,10 @@ return [
     'Account settings' => 'アカウント設定',
     'Administration' => '管理',
     'Allow' => '許可',
-    'An error occured while handling your last action. (Handler not found).' => '最後の操作を処理中にエラーが発生しました。 （ハンドラが見つかりません）。',
-    'An unexpected error occured while loading the search result.' => '検索結果の読み込み中に予期しないエラーが発生しました。',
-    'An unexpected error occured. If this keeps happening, please contact a site administrator.' => '予期しないエラーが発生しました。 これが起こっている場合は、サイト管理者に連絡してください。',
-    'An unexpected server error occured. If this keeps happening, please contact a site administrator.' => '予期しないサーバーエラーが発生しました。 これが起こっている場合は、サイト管理者に連絡してください。',
+    'An error occurred while handling your last action. (Handler not found).' => '最後の操作を処理中にエラーが発生しました。 （ハンドラが見つかりません）。',
+    'An unexpected error occurred while loading the search result.' => '検索結果の読み込み中に予期しないエラーが発生しました。',
+    'An unexpected error occurred. If this keeps happening, please contact a site administrator.' => '予期しないエラーが発生しました。 これが起こっている場合は、サイト管理者に連絡してください。',
+    'An unexpected server error occurred. If this keeps happening, please contact a site administrator.' => '予期しないサーバーエラーが発生しました。 これが起こっている場合は、サイト管理者に連絡してください。',
     'Back' => '戻る',
     'Back to dashboard' => 'ダッシュボードへ戻る',
     'Cancel' => 'キャンセル',
