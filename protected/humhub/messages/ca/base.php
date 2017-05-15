@@ -23,7 +23,7 @@ return [
     'An error occurred while handling your last action. (Handler not found).' => '',
     'An unexpected error occurred while loading the search result.' => '',
     'An unexpected error occurred. If this keeps happening, please contact a site administrator.' => '',
-    'An unexpected server error occured. If this keeps happening, please contact a site administrator.' => '',
+    'An unexpected server error occurred. If this keeps happening, please contact a site administrator.' => '',
     'An unknown error occurred while uploading.' => '',
     'An unknown error occurred while uploading. Hint: check your upload_max_filesize and post_max_size php settings.' => '',
     'Confirm' => '',
