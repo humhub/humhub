@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'An unknown error occured while uploading.' => '上传过程中出现了未知错误。',
-    'An unknown error occured while uploading. Hint: check your upload_max_filesize and post_max_size php settings.' => '上传过程中出现了未知错误。建议：检查php设置参数upload_max_filesize',
+    'An unknown error occurred while uploading.' => '上传过程中出现了未知错误。',
+    'An unknown error occurred while uploading. Hint: check your upload_max_filesize and post_max_size php settings.' => '上传过程中出现了未知错误。建议：检查php设置参数upload_max_filesize',
     'Copy to clipboard' => '复制到剪贴板',
     'Error:' => '错误：',
     'Info:' => '信息：',
@@ -29,10 +29,10 @@ return [
     'Account settings' => '帐户设置',
     'Administration' => '管理',
     'Allow' => '允许',
-    'An error occured while handling your last action. (Handler not found).' => '执行最后一个操作出错。(处理器没有找到)',
-    'An unexpected error occured while loading the search result.' => '加载搜索结果时发生意外错误。',
-    'An unexpected error occured. If this keeps happening, please contact a site administrator.' => '发现了意外错误，如果一直出现该错误，请联系网站管理员',
-    'An unexpected server error occured. If this keeps happening, please contact a site administrator.' => '发生意外的服务器错误。如果这种情况不断发生，请联系网站管理员',
+    'An error occurred while handling your last action. (Handler not found).' => '执行最后一个操作出错。(处理器没有找到)',
+    'An unexpected error occurred while loading the search result.' => '加载搜索结果时发生意外错误。',
+    'An unexpected error occurred. If this keeps happening, please contact a site administrator.' => '发现了意外错误，如果一直出现该错误，请联系网站管理员',
+    'An unexpected server error occurred. If this keeps happening, please contact a site administrator.' => '发生意外的服务器错误。如果这种情况不断发生，请联系网站管理员',
     'Back' => '返回',
     'Back to dashboard' => '返回主面板',
     'Cancel' => '取消',
