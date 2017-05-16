@@ -11,6 +11,8 @@ HumHub Change Log
 - Fix: Fixed `ui.addition` `MutationObserver`, only apply additions to inserted nodes.
 - Enh: Changed invite mail subject text
 - Fix #2571: last_login not set after registration direct login 
+- Enh: Always trigger dom widget events for widget `fire` until `triggerDom` is set to false
+- Enh: Added `richtextPaste` event
 
 1.2.0 (April 16, 2017)
 --------------------------------
