@@ -4,7 +4,7 @@
 Please follow the guidelines below when creating an issue so that your issue can be more promptly resolved:
 
 * Provide information including: the version of PHP and HumHub, the type of operating system and Web server, MySQL version, browser type and version;
-* Provide the **complete** error call stack if available. A screenshot to explain the issue is very welcome.
+* Provide the complete error call stack if available, in addition, please check your browser console for any errors. A screenshot to explain the issue is also welcomed.
 * Describe the steps for reproducing the issue. 
 * If possible try to reproduce this error on our demo at http://humhub.org
 
