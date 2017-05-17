@@ -28,8 +28,10 @@ class Events extends \yii\base\Object
      */
     public static function onSearchRebuild($event)
     {
-        foreach (Space::find()->all() as $obj) {
-            Yii::$app->search->add($obj);
+        foreach (Space::find()->batch() as $spaces) {
+            foreach ($spaces as $space) {
+                Yii::$app->search->add($space);
+            }
         }
     }
 
