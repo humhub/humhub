@@ -364,7 +364,7 @@ abstract class BasePickerField extends InputWidget
             'placeholder' => $placeholder,
             'placeholder-more' => $placeholderMore,
             'no-result' => Yii::t('UserModule.widgets_BasePickerField', 'Your search returned no matches.'),
-            'format-ajax-error' => Yii::t('UserModule.widgets_BasePickerField', 'An unexpected error occured while loading the result.'),
+            'format-ajax-error' => Yii::t('UserModule.widgets_BasePickerField', 'An unexpected error occurred while loading the result.'),
             'load-more' => Yii::t('UserModule.widgets_BasePickerField', 'Load more'),
             'input-too-short' => Yii::t('UserModule.widgets_BasePickerField', 'Please enter at least {n} character', ['n' => $this->minInput]),
             'input-too-long' => Yii::t('UserModule.widgets_BasePickerField', 'You reached the maximum number of allowed charachters ({n}).', ['n' => $this->maxInput]),
