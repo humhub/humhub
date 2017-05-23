@@ -69,6 +69,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
 
             $this->andWhere("{$conditionSpace} OR {$conditionUser}");
         } else {
+            $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::className()]);
             $this->andWhere('space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1');
         }
 

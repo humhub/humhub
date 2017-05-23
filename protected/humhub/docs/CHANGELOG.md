@@ -13,6 +13,7 @@ HumHub Change Log
 - Fix #2571: last_login not set after registration direct login 
 - Enh: Always trigger dom widget events for widget `fire` until `triggerDom` is set to false
 - Enh: Added `richtextPaste` event
+- Fix: `ActiveQueryContent:readable()` for guest users missing join
 
 1.2.0 (April 16, 2017)
 --------------------------------
