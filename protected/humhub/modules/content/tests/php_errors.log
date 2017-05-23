@@ -1,0 +1,2 @@
+[19-May-2017 16:02:35 UTC] PHP Fatal error:  Trait 'tests\codeception\unit\modules\content\Specify' not found in E:\codebase\humhub\master\protected\humhub\modules\content\tests\codeception\unit\ContentPermissionTest.php on line 27
+[19-May-2017 16:02:40 UTC] PHP Fatal error:  Trait 'tests\codeception\unit\modules\content\Specify' not found in E:\codebase\humhub\master\protected\humhub\modules\content\tests\codeception\unit\ContentPermissionTest.php on line 27

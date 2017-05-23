@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\libs\BasePermission;
+
 /**
  * Edit Link for Wall Entries
  *
@@ -35,6 +37,7 @@ class EditLink extends \yii\base\Widget
      */
     public $mode;
 
+
     /**
      * Executes the widget.
      */
@@ -43,11 +46,9 @@ class EditLink extends \yii\base\Widget
         if(!$this->url) {
             return;
         }
-        
-        if ($this->model->content->canWrite()) {
+
+        if ($this->model->content->canEdit()) {
             return $this->render('editLink', [
-                        'id' => $this->model->content->object_id,
-                        'content' => $this->model,
                         'editUrl' => $this->url,
                         'mode' => $this->mode
             ]);

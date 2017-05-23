@@ -9,6 +9,8 @@
 namespace humhub\modules\content\components;
 
 use Yii;
+use humhub\libs\BasePermission;
+use humhub\modules\content\permissions\ManageContent;
 use yii\base\Exception;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
@@ -67,6 +69,19 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     protected $streamChannel = 'default';
 
     /**
+     * Holds an extra manage permission by providing one of the following
+     *
+     *  - BasePermission class string
+     *  - Array of type ['class' => '...', 'callback' => '...']
+     *  - Anonymous function
+     *  - BasePermission instance
+     *
+     * @var string permission instance
+     * @since 1.2.1
+     */
+    protected $managePermission = ManageContent::class;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -118,6 +133,42 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     public function getContentDescription()
     {
         return "";
+    }
+
+    /**
+     * Returns an instance of the assigned $managePermission class.
+     *
+     * @since 1.2.1
+     * @see ContentActiveRecord::$managePermission
+     * @return null|object
+     */
+    public function getManagePermission()
+    {
+        if(!$this->hasManagePermission()) {
+            return null;
+        } else if(is_string($this->managePermission)) {
+            return Yii::createObject($this->managePermission);
+        } else if(is_array($this->managePermission)) {
+            $handler = $this->managePermission['class'].'::'.$this->managePermission['callback'];
+            return call_user_func($handler, $this);
+        } else if(is_function($this->managePermission)) {
+            return $this->managePermission($this);
+        } else if($this->managePermission instanceof BasePermission) {
+            return $this->managePermission;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Determines weather or not this records has an additional managePermission set.
+     *
+     * @since 1.2.1
+     * @return boolean
+     */
+    public function hasManagePermission()
+    {
+        return !empty($this->managePermission);
     }
 
     /**

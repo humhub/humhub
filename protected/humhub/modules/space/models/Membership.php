@@ -91,6 +91,17 @@ class Membership extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * Determines if this membership is a full accepted membership.
+     *
+     * @since v1.2.1
+     * @return bool
+     */
+    public function isMember()
+    {
+        return $this->status == self::STATUS_MEMBER;
+    }
+
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);

@@ -3,6 +3,7 @@
 namespace tests\codeception\_support;
 
 use Codeception\Module;
+use humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture;
 use yii\test\FixtureTrait;
 use yii\test\InitDbFixture;
 
@@ -115,6 +116,7 @@ class DynamicFixtureHelper extends Module
             'content' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentFixture::className()],
             'notification' => [ 'class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::className()],
             'activity' => [ 'class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::className()],
+            'friendship' => ['class' => FriendshipFixture::class]
         ];
     }
 }
