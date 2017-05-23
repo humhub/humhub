@@ -11,7 +11,6 @@ namespace humhub\modules\content;
 use Yii;
 use humhub\modules\content\models\Content;
 
-
 /**
  * Events provides callbacks to handle events.
  *
@@ -85,12 +84,14 @@ class Events extends \yii\base\Object
      */
     public static function onSearchRebuild($event)
     {
-        foreach (Content::find()->all() as $content) {
+        foreach (Content::find()->batch() as $contents) {
+            foreach ($contents as $content) {
             $contentObject = $content->getPolymorphicRelation();
             if ($contentObject instanceof \humhub\modules\search\interfaces\Searchable) {
                 Yii::$app->search->add($contentObject);
             }
         }
+    }
     }
 
     /**

@@ -13,6 +13,7 @@ HumHub Change Log
 - Fix #2571: last_login not set after registration direct login 
 - Enh: Always trigger dom widget events for widget `fire` until `triggerDom` is set to false
 - Enh: Added `richtextPaste` event
+- Enh: On search index rebuilding - use batch queries 
 - Fix: `ActiveQueryContent:readable()` for guest users missing join
 - Enh: Added `ContentActiveRecord:managePermission` for changing the default write permission of ContentActiveRecord classes
 - Enh: Moved all default `WallEntryControls` to `WallEntry:getContextMenu()` widget.
