@@ -14,6 +14,8 @@ HumHub Change Log
 - Enh: Always trigger dom widget events for widget `fire` until `triggerDom` is set to false
 - Enh: Added `richtextPaste` event
 - Fix: `ActiveQueryContent:readable()` for guest users missing join
+- Enh: Added `ContentActiveRecord:managePermission` for changing the default write permission of ContentActiveRecord classes
+- Enh: Moved all default `WallEntryControls` to `WallEntry:getContextMenu()` widget.
 
 1.2.0 (April 16, 2017)
 --------------------------------

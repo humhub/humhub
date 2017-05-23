@@ -104,7 +104,7 @@ $config = [
         'assetManager' => [
             'class' => '\humhub\components\AssetManager',
             'appendTimestamp' => true,
-            'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD ? 'assets-prod.php' : 'assets-dev.php')),
+            'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD || YII_ENV_TEST ? 'assets-prod.php' : 'assets-dev.php')),
         ],
         'view' => [
             'class' => '\humhub\components\View',
