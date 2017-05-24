@@ -122,17 +122,17 @@ class AuthController extends Controller
         // Check if E-Mail is given
         if (!isset($attributes['email'])) {
             Yii::$app->session->setFlash('error', Yii::t(
-            'UserModule.base',
-            "Missing E-Mail Attribute from AuthClient.")
-            );
+                'UserModule.base',
+                'Missing E-Mail Attribute from AuthClient.'
+            ));
             return $this->redirect(['/user/auth/login']);
         }
 
         if (!isset($attributes['id'])) {
             Yii::$app->session->setFlash('error', Yii::t(
-            'UserModule.base',
-            "Missing ID AuthClient Attribute from AuthClient.")
-            );
+                'UserModule.base',
+                'Missing ID AuthClient Attribute from AuthClient.'
+            ));
             return $this->redirect(['/user/auth/login']);
         }
 
