@@ -565,7 +565,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         if (!$this->profile->isNewRecord) {
             foreach ($this->profile->getProfileFields() as $profileField) {
                 if ($profileField->searchable) {
-                    $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, true);
+                    $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, false);
                 }
             }
         }
