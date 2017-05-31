@@ -18,6 +18,7 @@ HumHub Change Log
 - Enh: Added `ContentActiveRecord:managePermission` for changing the default write permission of ContentActiveRecord classes
 - Enh: Moved all default `WallEntryControls` to `WallEntry:getContextMenu()` widget.
 - Fix: Connect google OAuth under `Profile Settings  -> Connected Accounts` throws invalid redirect uri.
+- Fix: Invite Users does not respect ManageUsers/ManageGroups permission
 
 1.2.0 (April 16, 2017)
 --------------------------------
