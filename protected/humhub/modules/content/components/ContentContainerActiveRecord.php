@@ -158,7 +158,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Returns the related ContentContainer model (e.g. Space or User)
      *
      * @see ContentContainer
-     * @return \yii\db\ActiveQuery
+     * @return ContentContainer
      */
     public function getContentContainerRecord()
     {

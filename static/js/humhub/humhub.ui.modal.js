@@ -294,6 +294,7 @@ humhub.module('ui.modal', function (module, require, $) {
             } else {
                 this.$.modal('show');
             }
+
         }
     };
 
@@ -501,15 +502,13 @@ humhub.module('ui.modal', function (module, require, $) {
         });
 
         module.globalConfirm = ConfirmModal.instance('#globalModalConfirm');
-        /*module.confirm = function(cfg) {
-         return module.globalConfirm.open(cfg);
-         };*/
 
         _setModalEnforceFocus();
         _setGlobalModalTargetHandler();
 
         $(document).on('show.bs.modal', '.modal', function (event) {
             $(this).appendTo($('body'));
+            $(this).attr('aria-hidden', 'false');
         });
 
         $(document).on('shown.bs.modal', '.modal.in', function (event) {
@@ -518,6 +517,7 @@ humhub.module('ui.modal', function (module, require, $) {
 
         $(document).on('hidden.bs.modal', '.modal', function (event) {
             _setModalsAndBackdropsOrder();
+            $(this).attr('aria-hidden', 'true');
         });
     };
 
