@@ -50,6 +50,8 @@ class I18N extends \yii\i18n\I18N
 
         if (!empty($user->language)) {
             Yii::$app->language = $user->language;
+        } else {
+            $this->setDefaultLocale();
         }
 
         if (!($user->time_zone)) {

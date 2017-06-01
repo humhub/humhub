@@ -14,7 +14,7 @@
  */
 return [
     'Add more...' => 'Добавить больше...',
-    'An unexpected error occured while loading the result.' => 'Возникла неожиданная ошибка при загрузке результата ',
+    'An unexpected error occurred while loading the result.' => 'Возникла неожиданная ошибка при загрузке результата ',
     'Load more' => 'Показать еще',
     'Please enter at least {n} character' => 'Пожалуйста, введите {n} символов',
     'Select {n,plural,=1{item} other{items}}' => 'Выберите {n,plural,=1{элемент} other{элементы}}',
