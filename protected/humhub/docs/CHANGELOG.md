@@ -19,6 +19,7 @@ HumHub Change Log
 - Enh: Moved all default `WallEntryControls` to `WallEntry:getContextMenu()` widget.
 - Fix: Connect google OAuth under `Profile Settings  -> Connected Accounts` throws invalid redirect uri.
 - Fix: Invite Users does not respect ManageUsers/ManageGroups permission
+- Fix: Mail summaries sent in incorrect language
 
 1.2.0 (April 16, 2017)
 --------------------------------
