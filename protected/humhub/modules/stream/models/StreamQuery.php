@@ -142,6 +142,8 @@ class StreamQuery extends \yii\base\Model
      */
     public static function find($includes = [], $excludes = [])
     {
+        $instance = new static();
+
         if (!is_int($includes)) {
             //Allow single type
             if (!is_array($includes)) {
@@ -152,10 +154,9 @@ class StreamQuery extends \yii\base\Model
                 $excludes = [$excludes];
             }
         } else {
-            $this->contentId = $includes;
+            $instance->contentId = $includes;
         }
 
-        $instance = new static();
         return $instance->includes($includes)->excludes($excludes);
     }
 
