@@ -12,6 +12,7 @@ use Yii;
 use humhub\modules\activity\components\MailSummary;
 use humhub\modules\activity\jobs\SendMailSummary;
 use humhub\modules\activity\models\Activity;
+use yii\base\Event;
 
 /**
  * Events provides callbacks to handle events.
@@ -40,15 +41,27 @@ class Events extends \yii\base\Object
 
     /**
      * On delete of some active record, check if there are related activities and delete them.
+     *
+     * @param Event $event
      */
-    public static function onActiveRecordDelete($event)
+    public static function onActiveRecordDelete(Event $event)
     {
-        $model = $event->sender->className();
-        $pk = $event->sender->getPrimaryKey();
+        if (!($event->sender instanceof \yii\db\ActiveRecord)) {
+            throw new \LogicException('The handler can be applied only to the \yii\db\ActiveRecord.');
+        }
+
+        /** @var \yii\db\ActiveRecord $activeRecordModel */
+        $activeRecordModel = $event->sender;
+        $pk = $activeRecordModel->getPrimaryKey();
 
         // Check if primary key exists and is not array (multiple pk)
         if ($pk !== null && !is_array($pk)) {
-            foreach (models\Activity::find()->where(['object_id' => $pk, 'object_model' => $model])->all() as $activity) {
+            foreach (
+                models\Activity::find()->where([
+                    'object_id' => $pk,
+                    'object_model' => $activeRecordModel::className(),
+                ])->each() as $activity
+            ) {
                 $activity->delete();
             }
         }
