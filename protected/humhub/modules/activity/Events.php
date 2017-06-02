@@ -56,12 +56,11 @@ class Events extends \yii\base\Object
 
         // Check if primary key exists and is not array (multiple pk)
         if ($pk !== null && !is_array($pk)) {
-            foreach (
-                models\Activity::find()->where([
-                    'object_id' => $pk,
-                    'object_model' => $activeRecordModel::className(),
-                ])->each() as $activity
-            ) {
+            $modelsActivity = Activity::find()->where([
+                'object_id' => $pk,
+                'object_model' => $activeRecordModel::className(),
+            ])->each();
+            foreach ($modelsActivity as $activity) {
                 $activity->delete();
             }
         }
