@@ -24,7 +24,7 @@ $this->registerJsConfig('space.chooser', [
 <li class="dropdown">
     <a href="#" id="space-menu" class="dropdown-toggle" data-toggle="dropdown">
         <!-- start: Show space image and name if chosen -->
-        <?php if ($currentSpace) { ?>
+        <?php if ($currentSpace) : ?>
             <?=
             \humhub\modules\space\widgets\Image::widget([
                 'space' => $currentSpace,
@@ -34,7 +34,7 @@ $this->registerJsConfig('space.chooser', [
             ]]);
             ?>
             <b class="caret"></b>
-        <?php } ?>
+        <?php endif; ?>
 
         <?php if (!$currentSpace) : ?>
             <?= $noSpaceView ?>
@@ -73,16 +73,15 @@ $this->registerJsConfig('space.chooser', [
         <li class="remoteSearch">
             <ul id="space-menu-remote-search" class="media-list notLoaded"></ul>
         </li>
-</li>
 
-<?php if ($canCreateSpace): ?>
-    <li>
-        <div class="dropdown-footer">
-            <a href="#" class="btn btn-info col-md-12" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/space/create/create']) ?>">
-                <?= Yii::t('SpaceModule.widgets_views_spaceChooser', 'Create new space') ?>
-            </a>
-        </div>
-    </li>
-<?php endif; ?>
-</ul>
+    <?php if ($canCreateSpace): ?>
+        <li>
+            <div class="dropdown-footer">
+                <a href="#" class="btn btn-info col-md-12" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/space/create/create']) ?>">
+                    <?= Yii::t('SpaceModule.widgets_views_spaceChooser', 'Create new space') ?>
+                </a>
+            </div>
+        </li>
+    <?php endif; ?>
+    </ul>
 </li>
