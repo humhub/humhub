@@ -121,12 +121,18 @@ class AuthController extends Controller
 
         // Check if E-Mail is given
         if (!isset($attributes['email'])) {
-            Yii::$app->session->setFlash('error', "Missing E-Mail Attribute from AuthClient.");
+            Yii::$app->session->setFlash('error', Yii::t(
+                'UserModule.base',
+                'Missing E-Mail Attribute from AuthClient.'
+            ));
             return $this->redirect(['/user/auth/login']);
         }
 
         if (!isset($attributes['id'])) {
-            Yii::$app->session->setFlash('error', "Missing ID AuthClient Attribute from AuthClient.");
+            Yii::$app->session->setFlash('error', Yii::t(
+                'UserModule.base',
+                'Missing ID AuthClient Attribute from AuthClient.'
+            ));
             return $this->redirect(['/user/auth/login']);
         }
 
@@ -177,11 +183,11 @@ class AuthController extends Controller
                 $redirectUrl = Yii::$app->user->returnUrl;
             }
         } elseif ($user->status == User::STATUS_DISABLED) {
-            Yii::$app->session->setFlash('error', 'Your account is disabled!');
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is disabled!'));
         } elseif ($user->status == User::STATUS_NEED_APPROVAL) {
-            Yii::$app->session->setFlash('error', 'Your account is not approved yet!');
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is not approved yet!'));
         } else {
-            Yii::$app->session->setFlash('error', 'Unknown user status!');
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Unknown user status!'));
         }
 
         if (Yii::$app->request->getIsAjax()) {
