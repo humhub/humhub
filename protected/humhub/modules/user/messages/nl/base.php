@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Basic Settings' => 'Basis instellingen',
-  'Change Email' => 'Verander Email',
-  'Change Password' => 'Verander Wachtwoord',
+  'Basic Settings' => 'Basisinstellingen',
+  'Change Email' => 'Verander e-mail',
+  'Change Password' => 'Verander wachtwoord',
   'Confirm new password' => 'Bevestig nieuw wachtwoord',
   'Connect account' => 'Verbind account',
   'Connected Accounts' => 'Verbonden accounts',
@@ -30,6 +30,6 @@ return array (
   'User' => 'Gebruiker',
   'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Er bestaat al een gebruiker met hetzelfde mailadres, maar dit account is daar niet mee verbonden. Log in met je email adres en wachtwoord en koppel je accounts.',
   'You\'re not registered.' => 'U bent niet geregistreerd.',
-  'Your new password must not equal your current password!' => 'Je nieuwe wachtwoord mag niet gelijk zijn aan je huidige wachtwoord',
+  'Your new password must not equal your current password!' => 'Het nieuwe wachtwoord mag niet gelijk zijn aan het huidige wachtwoord',
   'or' => 'of',
 );

@@ -3,6 +3,6 @@ return array (
   '<strong>Account</strong> settings' => '<strong>Account</strong> instellingen',
   'Modules' => 'Modules',
   'Profile' => 'Profiel',
-  'Security' => 'Veiligheid',
+  'Security' => 'Privacy',
   'Settings' => 'Instellingen',
 );

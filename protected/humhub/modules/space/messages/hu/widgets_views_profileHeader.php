@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Something</strong> went wrong' => '',
-  'Followers' => '',
-  'Members' => 'Tagok',
+  '<strong>Something</strong> went wrong' => '<strong>Hiba</strong> történt',
+  'Followers' => 'Követő',
+  'Members' => 'Tag',
   'Ok' => '',
-  'Posts' => '',
+  'Posts' => 'Hozzászólás',
 );

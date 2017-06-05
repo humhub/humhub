@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Weekly' => '周报',
-    'Your weekly summary' => '周报概览',
+    'Weekly' => '',
+    'Your weekly summary' => '',
     '<strong>E-Mail</strong> Summaries' => '<strong>邮件</strong> 概要',
     'Activities' => '启用',
     'Daily' => '日报',

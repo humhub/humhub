@@ -34,7 +34,7 @@ return array (
   'or' => 'oder',
   'You're not registered.' => 'Du bist nicht registriert.',
   'User with the same email already exists but isn't linked to you. Login using your email first to link it.' => 'Ein Benutzer mit der selben Email-Adresse existiert bereits. Dieser ist aber nicht mit dir verknüpft. Melde dich mit deiner Email-Adresse an, um die Verkn&uuml;pfung herzustellen.',
-  'Your account is disabled!' => 'Dein Accound ist deaktiviert!',
+  'Your account is disabled!' => 'Dein Account ist deaktiviert!',
   'Your account is not approved yet!' => 'Dein Account wurde noch nicht freigeschalten!',
   'Unknown user status!' => 'Unbekannter User-Status!',
 );
