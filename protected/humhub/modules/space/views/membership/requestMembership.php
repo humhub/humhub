@@ -26,7 +26,7 @@ use humhub\compat\CActiveForm;
             <hr/>
             <?php
             echo \humhub\widgets\AjaxButton::widget([
-                'label' => Yii::t('UserModule.views_profile_cropProfileImage', 'Save'),
+                'label' => Yii::t('SpaceModule.views_space_invite', 'Send'),
                 'ajaxOptions' => [
                     'type' => 'POST',
                     'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
