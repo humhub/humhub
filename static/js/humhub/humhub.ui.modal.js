@@ -662,7 +662,7 @@ humhub.module('ui.modal', function (module, require, $) {
     var _getConfirmOptionsByTrigger = function ($trigger) {
         return {
             'body': $trigger.data('action-confirm'),
-            'header': $trigger.data('action-confirm-header'),
+            'header': $trigger.data('action-confirm-header') ||  $trigger.data('action-confirm-title'),
             'confirmText': $trigger.data('action-confirm-text'),
             'cancelText': $trigger.data('action-cancel-text')
         };
