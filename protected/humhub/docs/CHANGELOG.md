@@ -20,6 +20,7 @@ HumHub Change Log
 - Fix: Connect google OAuth under `Profile Settings  -> Connected Accounts` throws invalid redirect uri.
 - Fix: Invite Users does not respect ManageUsers/ManageGroups permission
 - Fix: Mail summaries sent in incorrect language
+- Fix: Send button text on request space membership dialog
 
 1.2.0 (April 16, 2017)
 --------------------------------

@@ -18,8 +18,8 @@
  */
 return [
     'APC(u)' => '',
-    'No caching' => '没有缓存',
-    'PHP APC(u) Extension missing - Type not available!' => 'PHP APC(u) 扩展缺失 - 类型不可用！',
+    'No caching' => '',
+    'PHP APC(u) Extension missing - Type not available!' => '',
     'Cache Backend' => '缓存后台',
     'Default Expire Time (in seconds)' => '过期时间(以秒为单位)',
     'File' => '文件',

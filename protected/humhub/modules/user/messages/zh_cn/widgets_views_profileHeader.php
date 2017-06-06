@@ -21,6 +21,6 @@ return [
     '<strong>Something</strong> went wrong' => '未知错误',
     'Followers' => '被关注',
     'Following' => '关注',
-    'Ok' => '好的',
+    'Ok' => 'Ok',
     'Spaces' => '空间',
 ];

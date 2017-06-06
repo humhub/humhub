@@ -84,11 +84,7 @@ class SettingsManager extends BaseSettingsManager
      */
     public function isFixed($name)
     {
-        if (isset(Yii::$app->params['fixed-settings'][$this->moduleId][$name])) {
-            return true;
-        }
-
-        return false;
+        return isset(Yii::$app->params['fixed-settings'][$this->moduleId][$name]);
     }
 
     /**

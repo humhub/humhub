@@ -30,7 +30,7 @@ class Module extends \humhub\components\Module
     /**
      * @var string sort field (e.g. lastname) of member list (leave empty to sort by auto sort search)
      */
-    public $memberListSortField = "";
+    public $memberListSortField = '';
 
     /**
      * @var int default page size for directory pages
@@ -45,14 +45,14 @@ class Module extends \humhub\components\Module
      */
     public static function onTopMenuInit($event)
     {
-        $event->sender->addItem(array(
+        $event->sender->addItem([
             'label' => Yii::t('DirectoryModule.base', 'Directory'),
             'id' => 'directory',
             'icon' => '<i class="fa fa-book"></i>',
             'url' => \yii\helpers\Url::to(['/directory/directory']),
             'sortOrder' => 400,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'directory'),
-        ));
+        ]);
     }
 
     /**
@@ -62,7 +62,7 @@ class Module extends \humhub\components\Module
      */
     public function isGroupListingEnabled()
     {
-        return (\humhub\modules\user\models\Group::find()->where(['show_at_directory' => 1])->count() > 1);
+        return (\humhub\modules\user\models\Group::find()->where(['show_at_directory' => 1])->count() != 0);
     }
 
 }

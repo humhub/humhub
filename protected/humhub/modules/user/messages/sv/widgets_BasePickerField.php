@@ -18,7 +18,7 @@
  */
 return [
     'Add more...' => '',
-    'An unexpected error occurred while loading the result.' => '',
+    'An unexpected error occured while loading the result.' => '',
     'Load more' => '',
     'Please enter at least {n} character' => '',
     'Select {n,plural,=1{item} other{items}}' => '',
