@@ -260,6 +260,9 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
         if ($this->created_by == $userId)
             return true;
+        
+        if ($this->content->user_id == $userId)
+            return true;
 
         if (Yii::$app->user->isAdmin()) {
             return true;
