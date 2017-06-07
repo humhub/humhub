@@ -25,6 +25,7 @@ HumHub Change Log
 - Enh: Don't auto focus space chooser search on small devices
 - Fix #2612: Single list item hides markers
 - Fix #2558: No notification for user profile posts send
+- Fixed #2560: Markdown profile field editable flag not working
 
 1.2.0 (April 16, 2017)
 --------------------------------

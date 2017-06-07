@@ -21,15 +21,15 @@ class MarkdownEditor extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFormDefinition($definition = array())
+    public function getFormDefinition($definition = [])
     {
-        return parent::getFormDefinition(array(
-                    get_class($this) => array(
+        return parent::getFormDefinition([
+                    get_class($this) => [
                         'type' => 'form',
                         'title' => Yii::t('UserModule.models_ProfileFieldTypeTextArea', 'Text area field options'),
-                        'elements' => array(
-                        )
-        )));
+                        'elements' => [
+                        ]
+                    ]]);
     }
 
     /**
@@ -49,9 +49,9 @@ class MarkdownEditor extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldRules($rules = array())
+    public function getFieldRules($rules = [])
     {
-        $rules[] = array($this->profileField->internal_name, 'safe');
+        $rules[] = [$this->profileField->internal_name, 'safe'];
         return parent::getFieldRules($rules);
     }
 
@@ -60,11 +60,12 @@ class MarkdownEditor extends BaseType
      */
     public function getFieldFormDefinition()
     {
-        return array($this->profileField->internal_name => array(
+        return [$this->profileField->internal_name => [
                 'type' => 'markdown',
                 'class' => 'form-control',
+                'readonly' => (!$this->profileField->editable),
                 'rows' => '3'
-        ));
+        ]];
     }
 
 }

@@ -122,11 +122,11 @@ class BaseType extends \yii\base\Model
     public function getFieldFormDefinition()
     {
 
-        $definition = array($this->profileField->internal_name => array(
+        $definition = array($this->profileField->internal_name => [
                 'type' => 'text',
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable)
-        ));
+        ]);
 
         return $definition;
     }
