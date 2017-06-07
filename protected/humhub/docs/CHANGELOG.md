@@ -22,6 +22,7 @@ HumHub Change Log
 - Fix: Mail summaries sent in incorrect language
 - Fix: Send button text on request space membership dialog
 - Fix #2555: Friendship notification category visible even if friendship system deactivated
+- Enh: Don't auto focus space chooser search on small devices
 
 1.2.0 (April 16, 2017)
 --------------------------------
