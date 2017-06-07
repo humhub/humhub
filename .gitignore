@@ -6,8 +6,8 @@ protected/runtime/*
 
 node_modules
 
-protected/config/local/*
-!protected/config/local/.gitignore
+protected/config/*
+!protected/config/.gitignore
 
 uploads/files/*
 !uploads/files/.gitignore
