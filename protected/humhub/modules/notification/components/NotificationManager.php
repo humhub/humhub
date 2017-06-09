@@ -206,6 +206,7 @@ class NotificationManager
             // Note the notification follow logic for users is currently not implemented.
             // TODO: perhaps return only friends if public is false?
             $result = (!$public) ? [] : Follow::getFollowersQuery($container, true)->all();
+            $result[] = $container;
         }
         return $result;
     }

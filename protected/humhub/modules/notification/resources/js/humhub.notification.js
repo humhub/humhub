@@ -233,6 +233,10 @@ humhub.module('notification', function (module, require, $) {
                 nativeparentscrolling: false,
                 railpadding: {top: 0, right: 3, left: 0, bottom: 0}
             });
+
+           $("#dropdown-notifications ul.media-list").on('touchmove', function(evt) {
+                evt.preventDefault();
+           });
         }
 
         module.menu = NotificationDropDown.instance('#notification_widget');

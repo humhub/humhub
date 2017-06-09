@@ -21,8 +21,12 @@ HumHub Change Log
 - Fix: Invite Users does not respect ManageUsers/ManageGroups permission
 - Fix: Mail summaries sent in incorrect language
 - Fix: Send button text on request space membership dialog
+- Fix #2555: Friendship notification category visible even if friendship system deactivated
+- Enh: Don't auto focus space chooser search on small devices
+- Fix #2612: Single list item hides markers
+- Fix #2558: No notification for user profile posts send
+- Fixed #2560: Markdown profile field editable flag not working
 - Fix: Hide also header (space, profile) counts when following system is disabled
-
 
 1.2.0 (April 16, 2017)
 --------------------------------

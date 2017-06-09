@@ -38,6 +38,7 @@ class FixtureHelper extends Module
     {
         //Prevents [ReflectionException] Class db does not exist for included module tests
         include __DIR__.'/../functional/_bootstrap.php';
+        $this->unloadFixtures();
         $this->loadFixtures();
     }
 

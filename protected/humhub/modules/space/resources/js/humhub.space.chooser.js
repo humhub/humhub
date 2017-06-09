@@ -14,6 +14,7 @@ humhub.module('space.chooser', function (module, require, $) {
     var pjax = require('client.pjax');
     var additions = require('ui.additions');
     var user = require('user');
+    var view = require('ui.view');
 
     var SELECTOR_ITEM = '[data-space-chooser-item]';
     var SELECTOR_ITEM_REMOTE = '[data-space-none],[data-space-archived]';
@@ -39,7 +40,7 @@ humhub.module('space.chooser', function (module, require, $) {
             nativeparentscrolling: false,
             railpadding: {top: 0, right: 3, left: 0, bottom: 0}
         });
-        
+
         this.$chooser.on('touchmove', function(evt) {
            evt.preventDefault();
         });
@@ -67,7 +68,9 @@ humhub.module('space.chooser', function (module, require, $) {
 
         // Focus on search on open and clear item selection when closed
         this.$menu.parent().on('shown.bs.dropdown', function () {
-            that.$search.focus();
+            if(!view.isSmall()) {
+                that.$search.focus();
+            }
         }).on('hidden.bs.dropdown', function () {
             that.clearSelection();
         });
@@ -337,7 +340,9 @@ humhub.module('space.chooser', function (module, require, $) {
         $('#space-search-reset').fadeOut('fast');
         this.clearRemoteSearch();
 
-        this.$search.val('').focus();
+        if(!view.isSmall()) {
+            this.$search.val('').focus();
+        }
         this.$search.removeData('last-search');
         this.getItems().show().removeHighlight().removeClass('selected');
         this.$chooser.css('max-height', '400px');

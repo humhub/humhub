@@ -194,6 +194,10 @@
     ul, ol {
         margin-top: 0;
         margin-bottom: 10.5px;
+        li p {
+            // otherwise single list items p hides the marker
+            overflow:visible !important;
+        }
     }
     
     .footnote {
