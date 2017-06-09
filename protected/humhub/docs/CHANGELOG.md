@@ -21,6 +21,8 @@ HumHub Change Log
 - Fix: Invite Users does not respect ManageUsers/ManageGroups permission
 - Fix: Mail summaries sent in incorrect language
 - Fix: Send button text on request space membership dialog
+- Fix: Hide also header (space, profile) counts when following system is disabled
+
 
 1.2.0 (April 16, 2017)
 --------------------------------

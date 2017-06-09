@@ -2,7 +2,6 @@
 /* @var $this \humhub\components\View */
 /* @var $currentSpace \humhub\modules\space\models\Space */
 
-
 use yii\helpers\Html;
 
 if ($space->isAdmin()) {
@@ -99,7 +98,7 @@ if ($space->isAdmin()) {
             <?php if ($space->profileImage->hasImage()) : ?>
                 <!-- profile image output-->
                 <a data-ui-gallery="spaceHeader" href="<?= $space->profileImage->getUrl('_org'); ?>">
-                       <?php echo \humhub\modules\space\widgets\Image::widget(['space' => $space, 'width' => 140]); ?>
+                    <?php echo \humhub\modules\space\widgets\Image::widget(['space' => $space, 'width' => 140]); ?>
                 </a>
             <?php else : ?>
                 <?php echo \humhub\modules\space\widgets\Image::widget(['space' => $space, 'width' => 140]); ?>
@@ -165,35 +164,35 @@ if ($space->isAdmin()) {
                     <div class="statistics pull-left">
 
                         <div class="pull-left entry">
-                            <span class="count"><?php echo $postCount; ?></span></a>
+                            <span class="count"><?= $postCount; ?></span></a>
                             <br>
                             <span
-                                class="title"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Posts'); ?></span>
+                                class="title"><?= Yii::t('SpaceModule.widgets_views_profileHeader', 'Posts'); ?></span>
                         </div>
 
                         <a href="<?= $space->createUrl('/space/membership/members-list'); ?>" data-target="#globalModal">
                             <div class="pull-left entry">
-                                <span class="count"><?php echo $space->getMemberships()->count(); ?></span>
+                                <span class="count"><?= $space->getMemberships()->count(); ?></span>
                                 <br>
                                 <span
-                                    class="title"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Members'); ?></span>
+                                    class="title"><?= Yii::t('SpaceModule.widgets_views_profileHeader', 'Members'); ?></span>
                             </div>
                         </a>
-
-                        <a href="<?= $space->createUrl('/space/space/follower-list'); ?>" data-target="#globalModal">
-                            <div class="pull-left entry">
-                                <span class="count"><?php echo $space->getFollowerCount(); ?></span><br>
-                                <span
-                                    class="title"><?php echo Yii::t('SpaceModule.widgets_views_profileHeader', 'Followers'); ?></span>
-                            </div>
-                        </a>
-
+                        <?php if ($followingEnabled): ?>
+                            <a href="<?= $space->createUrl('/space/space/follower-list'); ?>" data-target="#globalModal">
+                                <div class="pull-left entry">
+                                    <span class="count"><?= $space->getFollowerCount(); ?></span><br>
+                                    <span
+                                        class="title"><?= Yii::t('SpaceModule.widgets_views_profileHeader', 'Followers'); ?></span>
+                                </div>
+                            </a>
+                        <?php endif; ?>
                     </div>
                     <!-- end: User statistics -->
 
                     <div class="controls controls-header pull-right">
-                        <?php
-                        echo humhub\modules\space\widgets\HeaderControls::widget(['widgets' => [
+                        <?=
+                        humhub\modules\space\widgets\HeaderControls::widget(['widgets' => [
                                 [\humhub\modules\space\widgets\InviteButton::className(), ['space' => $space], ['sortOrder' => 10]],
                                 [\humhub\modules\space\widgets\MembershipButton::className(), ['space' => $space], ['sortOrder' => 20]],
                                 [\humhub\modules\space\widgets\FollowButton::className(), [
