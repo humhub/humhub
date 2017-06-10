@@ -65,7 +65,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     {
         $space = $this->getSpace();
 
-        if (Yii::$app->request->get('tour')) {
+        if (Yii::$app->request->get('tour') || Yii::$app->request->get('contentId')) {
             return $this->actionHome();
         }
 

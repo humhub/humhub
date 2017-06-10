@@ -27,6 +27,7 @@ HumHub Change Log
 - Fix #2558: No notification for user profile posts send
 - Fixed #2560: Markdown profile field editable flag not working
 - Fix: Hide also header (space, profile) counts when following system is disabled
+- Fix: Perma link to space contents broken when space homepage was changed
 
 1.2.0 (April 16, 2017)
 --------------------------------
