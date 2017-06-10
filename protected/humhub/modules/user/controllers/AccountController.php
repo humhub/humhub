@@ -120,7 +120,12 @@ class AccountController extends BaseAccountController
             return $this->redirect(['edit-settings']);
         }
 
-        return $this->render('editSettings', array('model' => $model, 'languages' => Yii::$app->i18n->getAllowedLanguages()));
+        // Sort countries list based on user language   
+        $languages = Yii::$app->i18n->getAllowedLanguages();
+        $col = new \Collator(Yii::$app->language);
+        $col->asort($languages);
+
+        return $this->render('editSettings', array('model' => $model, 'languages' => $languages));
     }
 
     /**

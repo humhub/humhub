@@ -28,6 +28,9 @@ HumHub Change Log
 - Fixed #2560: Markdown profile field editable flag not working
 - Fix: Hide also header (space, profile) counts when following system is disabled
 - Fix: Perma link to space contents broken when space homepage was changed
+- Fix: Properly sort language and country select by users locale
+- Enh: Allow search in country profile field dropdown
+
 
 1.2.0 (April 16, 2017)
 --------------------------------

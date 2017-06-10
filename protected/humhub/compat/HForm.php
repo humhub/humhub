@@ -79,7 +79,7 @@ class HForm extends \yii\base\Component
 
         $this->trigger(self::EVENT_AFTER_VALIDATE);
 
-		return !$hasErrors;
+        return !$hasErrors;
     }
 
     public function clearErrors()
@@ -139,7 +139,7 @@ class HForm extends \yii\base\Component
             }
         }
 
-		return $output;
+        return $output;
     }
 
     public function renderForm($element)
@@ -174,12 +174,12 @@ class HForm extends \yii\base\Component
             }
         }
 
-		return $output;
+        return $output;
     }
 
     public function renderField($name, $definition, $forms)
     {
-        if (isset($definition['isVisible']) && !$definition['isVisible'] ) {
+        if (isset($definition['isVisible']) && !$definition['isVisible']) {
             return;
         }
 
@@ -219,23 +219,27 @@ class HForm extends \yii\base\Component
                 $options['label'] = $definition['label'];
             }
 
+            if (isset($definition['htmlOptions']) && is_array($definition['htmlOptions'])) {
+                $options = array_merge($options, $definition['htmlOptions']);
+            }
+
             $showLabel = !isset($definition['label']) || $definition['label'] !== false;
 
             if (isset($definition['type'])) {
                 switch ($definition['type']) {
                     case 'text':
                         $field = $this->form->field($model, $name)->textInput($options);
-                        if(!$showLabel) {
+                        if (!$showLabel) {
                             $field->label(false);
                         }
                         return $field;
                     case 'multiselectdropdown':
                         return \humhub\widgets\MultiSelectField::widget([
-                            'form' => $this->form,
-                            'model' => $model,
-                            'attribute' => $name,
-                            'items' => $definition['items'],
-                            'options' => $definition['options']
+                                    'form' => $this->form,
+                                    'model' => $model,
+                                    'attribute' => $name,
+                                    'items' => $definition['items'],
+                                    'options' => $definition['options']
                         ]);
                     case 'dropdownlist':
                         return $this->form->field($model, $name)->dropDownList($definition['items'], $options);
@@ -249,14 +253,14 @@ class HForm extends \yii\base\Component
                             $options['disabled'] = 'disabled';
                         }
                         $value = $model->$name;
-                        if(is_string($value)) {
+                        if (is_string($value)) {
                             $model->$name = explode(',', $model->$name);
                         }
 
                         return $this->form->field($model, $name)->checkboxList($definition['items'], $options);
                     case 'textarea':
                         $field = $this->form->field($model, $name)->textarea($options);
-                        if(!$showLabel) {
+                        if (!$showLabel) {
                             $field->label(false);
                         }
                         return $field;
@@ -275,14 +279,14 @@ class HForm extends \yii\base\Component
                         return $this->form->field($model, $name)->widget(\yii\jui\DatePicker::className(), [
                                     'dateFormat' => $format,
                                     'clientOptions' => [
-										'changeYear' => true,
-										'yearRange' => $yearRange,
-										'changeMonth' => true,
-										'disabled' => (isset($options['readOnly']) && $options['readOnly'])
-									],
+                                        'changeYear' => true,
+                                        'yearRange' => $yearRange,
+                                        'changeMonth' => true,
+                                        'disabled' => (isset($options['readOnly']) && $options['readOnly'])
+                                    ],
                                     'options' => [
-										'class' => 'form-control']
-									]);
+                                        'class' => 'form-control']
+                        ]);
                     case 'markdown':
                         $options['id'] = $name;
                         $returnField = $this->form->field($model, $name)->textarea($options);
