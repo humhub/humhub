@@ -706,15 +706,8 @@ else
                         return whole_match;
                     }
                 }
-            } else {
-                /**
-                 * HUMHUB PATCH 14.06.2017 - 2 for HumHub v1.2.1
-                 *
-                 * Encode link urls https://github.com/humhub/humhub/issues/2594
-                 *
-                 */
-                url = encodeURI(url);
             }
+
             url = attributeSafeUrl(url);
 
             var result = "<a href=\"" + url + "\"";
@@ -1535,7 +1528,7 @@ else
             
 
             var replacer = function (wholematch, m1) {
-                var url = encodeURI(attributeSafeUrl(m1));
+                var url = attributeSafeUrl(m1);
 
                 /**
                  * HUMHUB PATCH 14.06.2017 for HumHub v1.2.1
