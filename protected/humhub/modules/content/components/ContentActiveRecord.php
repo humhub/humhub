@@ -166,7 +166,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     }
 
     /**
-     * Returns an instance of the assigned $managePermission class.
+     * Returns the $managePermission settings interpretable by an PermissionManager instance.
      *
      * @since 1.2.1
      * @see ContentActiveRecord::$managePermission
@@ -176,12 +176,16 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     {
         if(!$this->hasManagePermission()) {
             return null;
-        } else if(is_string($this->managePermission)) {
-            return Yii::createObject($this->managePermission);
+        } else if(is_string($this->managePermission)) { // Simple Permission class specification
+            return $this->managePermission;
         } else if(is_array($this->managePermission)) {
-            $handler = $this->managePermission['class'].'::'.$this->managePermission['callback'];
-            return call_user_func($handler, $this);
-        } else if(is_function($this->managePermission)) {
+            if(isset($this->managePermission['class'])) { // ['class' => '...', 'callback' => '...']
+                $handler = $this->managePermission['class'].'::'.$this->managePermission['callback'];
+                return call_user_func($handler, $this);
+            } else { // Simple Permission array specification
+                return $this->managePermission;
+            }
+        } else if(is_callable($this->managePermission)) { // anonymous function
             return $this->managePermission($this);
         } else if($this->managePermission instanceof BasePermission) {
             return $this->managePermission;

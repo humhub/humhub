@@ -62,7 +62,7 @@ class PermissionManager extends \yii\base\Component
                     return false;
                 }
             }
-            return false;
+            return $verifyAll;
         } else if ($allowCaching) {
             $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
             $key = $permission->getId();
