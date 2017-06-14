@@ -35,6 +35,7 @@ HumHub Change Log
 - Enh: Enhanced ContentActiveRecord instantiation `$model = new MyContent($space, Content::VISIBILITY_PRIVATE)`
 - Fix #2625 Pjax problem with local links to files within stream
 - Enh: Use of `target="_blank"` for stream links
+- Fix #2594 Bug: Url with unicode in stream markdown
 
 1.2.0 (April 16, 2017)
 --------------------------------

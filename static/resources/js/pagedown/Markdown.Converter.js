@@ -1472,8 +1472,14 @@ else
             return text;
         }
 
-        var charInsideUrl = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]",
-            charEndingUrl = "[-A-Z0-9+&@#/%=~_|[\\])]",
+
+        /**
+         * HUMHUB PATCH 14.06.2017 - 2 for HumHub v1.2.1
+         *
+         * Allow unicode letters in urls
+         */
+        var charInsideUrl = "[-\\u00C0-\\u1FFF\\u2C00-\\uD7FF\\w0-9+&@#/%?=~_|[\\]()!:,.;]",
+            charEndingUrl = "[-\\u00C0-\\u1FFF\\u2C00-\\uD7FF\\w0-9+&@#/%=~_|[\\])]",
             autoLinkRegex = new RegExp("(=\"|<)?\\b(https?|ftp)(://" + charInsideUrl + "*" + charEndingUrl + ")(?=$|\\W)", "gi"),
             endCharRegex = new RegExp(charEndingUrl, "i");
 

@@ -27,8 +27,10 @@
      * HUMHUB PATCH 14.06.2017 for HumHub v1.2.1
      *
      * Allow target _blank and rel noopener for markdown stream links
+     *
+     * + allow unicode letters
      */
-    var a_white = /^(<a\shref="((https?|ftp):\/\/|\/)[-A-Za-z0-9+&@#\/%?=~_|!:,.;\(\)*[\]$]+"(\starget="_blank")?(\srel="[^"<>]*")?(\stitle="[^"<>]+")?\s?>|<\/a>)$/i;
+    var a_white = /^(<a\shref="((https?|ftp):\/\/|\/)[-\u00BF-\u1FFF\u2C00-\uD7FF\w0-9+&@#\/%?=~_|!:,.;\(\)*[\]$]+"(\starget="_blank")?(\srel="[^"<>]*")?(\stitle="[^"<>]+")?\s?>|<\/a>)$/i;
 
     // <img src="url..." optional width  optional height  optional alt  optional title
     var img_white = /^(<img\ssrc="(https?:\/\/|\/)[-A-Za-z0-9+&@#\/%?=~_|!:,.;\(\)*[\]$]+"(\swidth="\d{1,3}")?(\sheight="\d{1,3}")?(\salt="[^"<>]*")?(\stitle="[^"<>]*")?\s?\/?>)$/i;
