@@ -82,6 +82,36 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     protected $managePermission = ManageContent::class;
 
     /**
+     * ContentActiveRecord constructor accepts either an configuration array as first argument or an ContentContainerActiveRecord
+     * and visibility settings.
+     *
+     * Use as follows:
+     *
+     * `$model = new MyContent(['myField' => 'value']);`
+     *
+     * or
+     *
+     * `$model = new MyContent($space1, Content::VISIBILITY_PUBLIC, ['myField' => 'value']);`
+     *
+     *
+     * @param array|ContentContainerActiveRecord $contentContainer either the configuration or contentcontainer
+     * @param int $visibility
+     * @param array $config
+     */
+    public function __construct($contentContainer = [], $visibility = Content::VISIBILITY_PRIVATE, $config = [])
+    {
+        if(is_array($contentContainer)) {
+            parent::__construct($contentContainer);
+        } else if($contentContainer instanceof ContentContainerActiveRecord) {
+            $this->content->setContainer($contentContainer);
+            $this->content->visibility = $visibility;
+            parent::__construct($config);
+        } else {
+            parent::__construct([]);
+        }
+    }
+
+    /**
      * @inheritdoc
      */
     public function init()

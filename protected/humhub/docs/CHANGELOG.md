@@ -32,6 +32,7 @@ HumHub Change Log
 - Enh: Allow search in country profile field dropdown
 - Fix: js action api empty data attribute
 - Enh: Added button helper widgets `<?= Button::primary('myButton')->action('myJsAction')?>`
+- Enh: Enhanced ContentActiveRecord instantiation `$model = new MyContent($space, Content::VISIBILITY_PRIVATE)`
 
 1.2.0 (April 16, 2017)
 --------------------------------
