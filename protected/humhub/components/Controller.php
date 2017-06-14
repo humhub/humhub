@@ -115,9 +115,9 @@ class Controller extends \yii\web\Controller
      */
     public function htmlRedirect($url = "")
     {
-        return $this->renderPartial('@humhub/views/htmlRedirect.php', array(
+        return $this->renderPartial('@humhub/views/htmlRedirect.php', [
             'url' => Url::to($url)
-        ));
+        ]);
     }
 
     /**
