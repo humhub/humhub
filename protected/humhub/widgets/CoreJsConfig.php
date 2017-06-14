@@ -48,6 +48,9 @@ class CoreJsConfig extends Widget
                             ]
                         ]
                     ],
+                    'client' => [
+                      'baseUrl' =>  Yii::$app->settings->get('baseUrl')
+                    ],
                     'file' => [
                         'upload' => [
                             'url' => Url::to(['/file/file/upload']),

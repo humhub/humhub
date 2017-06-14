@@ -706,10 +706,28 @@ else
                         return whole_match;
                     }
                 }
+            } else {
+                /**
+                 * HUMHUB PATCH 14.06.2017 - 2 for HumHub v1.2.1
+                 *
+                 * Encode link urls https://github.com/humhub/humhub/issues/2594
+                 *
+                 */
+                url = encodeURI(url);
             }
             url = attributeSafeUrl(url);
 
             var result = "<a href=\"" + url + "\"";
+
+            /**
+             * HUMHUB PATCH 14.06.2017 for HumHub v1.2.1
+             *
+             * Add target _blank and rel noopener for markdown stream links
+             */
+            if(url.indexOf('#') !== 0) {
+                result += " target=\"_blank\"";
+                result += " rel=\"noopener noreferrer\"";
+            }
 
             if (title != "") {
                 title = attributeEncode(title);
@@ -1517,10 +1535,17 @@ else
             
 
             var replacer = function (wholematch, m1) {
-                var url = attributeSafeUrl(m1);
-                
-                return "<a href=\"" + url + "\">" + pluginHooks.plainLinkText(m1) + "</a>";
+                var url = encodeURI(attributeSafeUrl(m1));
+
+                /**
+                 * HUMHUB PATCH 14.06.2017 for HumHub v1.2.1
+                 *
+                 * Added target _blank and rel noopener for markdown stream links
+                 */
+                return "<a href=\"" + url + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + pluginHooks.plainLinkText(m1) + "</a>";
+
             };
+
             text = text.replace(/<((https?|ftp):[^'">\s]+)>/gi, replacer);
 
             // Email addresses: <address@domain.foo>

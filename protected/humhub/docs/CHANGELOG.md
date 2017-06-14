@@ -33,6 +33,9 @@ HumHub Change Log
 - Fix: js action api empty data attribute
 - Enh: Added button helper widgets `<?= Button::primary('myButton')->action('myJsAction')?>`
 - Enh: Enhanced ContentActiveRecord instantiation `$model = new MyContent($space, Content::VISIBILITY_PRIVATE)`
+- Fix #2594 Bug: Url with russian text by Markdown
+- Fix #2625 Pjax problem with local links to files within stream
+- Enh: Use of `target="_blank"` for stream links
 
 1.2.0 (April 16, 2017)
 --------------------------------

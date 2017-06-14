@@ -162,6 +162,9 @@ humhub.module('ui.additions', function (module, require, $) {
 
 
                 $this.html(result).data('markdownProcessed', true);
+
+                // Make sure to add noopener to all links
+                $this.find('a').attr('rel', 'noopener noreferrer');
             });
         });
 
