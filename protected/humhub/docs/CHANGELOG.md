@@ -30,7 +30,8 @@ HumHub Change Log
 - Fix: Perma link to space contents broken when space homepage was changed
 - Fix: Properly sort language and country select by users locale
 - Enh: Allow search in country profile field dropdown
-
+- Fix: js action api empty data attribute
+- Enh: Added button helper widgets `<?= Button::primary('myButton')->action('myJsAction')?>`
 
 1.2.0 (April 16, 2017)
 --------------------------------
