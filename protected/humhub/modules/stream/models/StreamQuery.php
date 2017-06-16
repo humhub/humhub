@@ -332,12 +332,19 @@ class StreamQuery extends \yii\base\Model
         if ($this->sort == self::SORT_UPDATED_AT) {
             $this->_query->orderBy('content.stream_sort_date DESC');
             if (!empty($this->from)) {
-                $this->_query->andWhere("content.stream_sort_date < (SELECT updated_at FROM content wd WHERE wd.id=" . $this->from . ")");
+                $this->_query->andWhere(
+                    ['or',
+                        "content.stream_sort_date < (SELECT updated_at FROM content wd WHERE wd.id=:from)",
+                        ['and',
+                            "content.stream_sort_date = (SELECT updated_at FROM content wd WHERE wd.id=:from)",
+                            "content.id > :from"
+                        ],
+                    ], [':from' => $this->from]);
             }
         } else {
             $this->_query->orderBy('content.id DESC');
             if (!empty($this->from)) {
-                $this->_query->andWhere("content.id < " . $this->from);
+                $this->_query->andWhere("content.id < :from", [':from' => $this->from]);
             }
         }
     }

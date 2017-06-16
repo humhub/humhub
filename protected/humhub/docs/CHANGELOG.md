@@ -37,6 +37,7 @@ HumHub Change Log
 - Enh: Use of `target="_blank"` for stream links
 - Fix #2594 Bug: Url with unicode in stream markdown
 - Fix: Notification grouping not working
+- Fix: Show more suppression entries with sort order update + equal update_at not working.
 
 1.2.0 (April 16, 2017)
 --------------------------------
