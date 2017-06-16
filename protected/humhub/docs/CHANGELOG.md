@@ -36,6 +36,7 @@ HumHub Change Log
 - Fix #2625 Pjax problem with local links to files within stream
 - Enh: Use of `target="_blank"` for stream links
 - Fix #2594 Bug: Url with unicode in stream markdown
+- Fix: Notification grouping not working
 
 1.2.0 (April 16, 2017)
 --------------------------------
