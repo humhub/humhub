@@ -197,6 +197,7 @@ humhub.module('file', function (module, require, $) {
         }
         
         this.fire('humhub:file:uploadStart', [data]);
+        this.fire('uploadStart', [data]);
     };
 
     Upload.prototype.updateProgress = function (e, data) {
@@ -225,6 +226,7 @@ humhub.module('file', function (module, require, $) {
         }
 
         this.fire('humhub:file:uploadEnd', [response]);
+        this.fire('uploadEnd', [response]);
     };
 
     Upload.prototype.handleFileResponse = function (file) {
@@ -257,6 +259,7 @@ humhub.module('file', function (module, require, $) {
                 that.$form.find('[value="' + file.guid + '"]').remove();
                 module.log.success('success.delete', true);
                 that.enable();
+                that.fire('fileDeleted', [file]);
                 resolve();
             }).catch(function (err) {
                 module.log.error(err, true);
@@ -288,6 +291,8 @@ humhub.module('file', function (module, require, $) {
         if (!this.canUploadMore()) {
             this.disable(this.$.data('max-number-of-files-message'));
         }
+
+        this.fire('uploadFinish', [this]);
     };
 
     Upload.prototype.canUploadMore = function () {
