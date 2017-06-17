@@ -19,6 +19,7 @@
 return [
     'Birthday' => '',
     'Checkbox' => '',
+    'Checkbox List' => '',
     'Country' => '',
     'Date' => '',
     'Datetime' => '',

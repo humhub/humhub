@@ -29,7 +29,6 @@ return [
     'Email' => 'E-posta',
     'Language' => 'Dil',
     'Name' => 'İsim',
-    'New user needs approval' => 'Yeni kullanıcı onay bekliyor',
     'Space ID' => 'Alan İD',
     'Status' => 'Durum',
     'Tags' => 'Etiketler',

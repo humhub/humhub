@@ -17,9 +17,19 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Crop profile background' => '',
+    'Crop profile image' => '',
     'Current Password' => '',
+    'Delete profile image' => '',
+    'Missing E-Mail Attribute from AuthClient.' => '',
+    'Missing ID AuthClient Attribute from AuthClient.' => '',
     'Sign in' => '',
     'Sign in / up' => '',
+    'Unknown user status!' => '',
+    'Upload profile banner' => '',
+    'Upload profile image' => '',
+    'Your account is disabled!' => '',
+    'Your account is not approved yet!' => '',
     'Basic Settings' => 'الإعدادات البسيطة',
     'Change Email' => 'تغيير البريد الإلكتروني',
     'Change Password' => 'تغيير كلمة المرور',

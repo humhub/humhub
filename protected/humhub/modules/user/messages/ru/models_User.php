@@ -30,7 +30,6 @@ return [
     'Email' => 'e-mail',
     'Language' => 'Язык',
     'Name' => 'Имя',
-    'New user needs approval' => 'Новый пользователь ожидает подтверждение',
     'Status' => 'Статус',
     'Tags' => 'Теги',
     'Updated at' => 'Обновлено',

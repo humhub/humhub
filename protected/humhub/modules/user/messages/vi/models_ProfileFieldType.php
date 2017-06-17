@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Checkbox' => '',
+    'Checkbox List' => '',
     'Date' => '',
     'Markdown' => '',
     'Birthday' => 'Sinh nhật',
@@ -26,5 +28,4 @@ return [
     'Select List' => 'Danh sách',
     'Text' => 'Chữ',
     'Text Area' => 'Khung chữ',
-    'Checkbox' => '',
 ];

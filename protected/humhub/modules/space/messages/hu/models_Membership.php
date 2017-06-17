@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Created At' => '',
-  'Created By' => '',
+  'Created At' => 'Létrehozva',
+  'Created By' => 'Létrehozta',
   'Last Visit' => '',
   'Originator User ID' => '',
   'Request Message' => '',

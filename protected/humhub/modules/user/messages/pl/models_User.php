@@ -29,7 +29,6 @@ return [
     'Email' => 'E-mail',
     'Language' => 'Język',
     'Name' => 'Nazwa',
-    'New user needs approval' => 'Nowi użytkownicy wymagają zatwierdzenia',
     'Space ID' => 'ID Strefy',
     'Status' => 'Status',
     'Tags' => 'Tagi ',

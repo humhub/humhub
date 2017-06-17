@@ -27,7 +27,6 @@ return [
     'Last Login' => 'Laatste login',
     'Manager' => 'Manager',
     'Name' => 'Naam',
-    'New user needs approval' => 'Nieuwe gebruiker vereist goedkeuring',
     'Show At Directory' => 'Weergeven in overzicht',
     'Show At Registration' => 'Weergeven bij registratie',
     'Space ID' => 'Ruimte-ID',

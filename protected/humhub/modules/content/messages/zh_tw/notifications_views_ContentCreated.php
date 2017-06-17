@@ -18,4 +18,5 @@
  */
 return [
     '{displayName} created {contentTitle}.' => '',
+    '{displayName} posted on your profile {contentTitle}.' => '',
 ];

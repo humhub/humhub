@@ -3,7 +3,7 @@ return array (
   '<strong>Administration</strong> menu' => '<strong>Amministrazione</strong> menù',
   'Advanced' => '',
   'Appearance' => '',
-  'Caching' => '',
+  'Caching' => 'Caching',
   'E-Mail summaries' => '',
   'Files' => 'File',
   'General' => 'Generale',

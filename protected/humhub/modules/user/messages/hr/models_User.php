@@ -27,7 +27,6 @@ return [
     'Last Login' => '',
     'Manager' => '',
     'Name' => '',
-    'New user needs approval' => '',
     'Show At Directory' => '',
     'Show At Registration' => '',
     'Space ID' => '',

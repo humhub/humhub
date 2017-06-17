@@ -17,5 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '{displayName} posted on your profile {contentTitle}.' => '',
     '{displayName} created {contentTitle}.' => '{displayName} создал {contentTitle}.',
 ];

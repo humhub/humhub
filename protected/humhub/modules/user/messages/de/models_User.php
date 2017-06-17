@@ -27,7 +27,6 @@ return [
     'Last Login' => 'Zuletzt angemeldet am',
     'Manager' => 'Manager',
     'Name' => 'Name',
-    'New user needs approval' => 'Neuer Benutzer benötigt Freischaltung',
     'Show At Directory' => 'Im Verzeichnis anzeigen',
     'Show At Registration' => 'Bei Registrierung anzeigen',
     'Space ID' => 'Space Id',
