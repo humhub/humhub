@@ -80,6 +80,7 @@ class SetupController extends Controller
                 'username' => $model->username,
                 'password' => $password,
                 'charset' => 'utf8',
+                'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
             ];
 
 
