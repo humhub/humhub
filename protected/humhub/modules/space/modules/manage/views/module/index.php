@@ -40,8 +40,8 @@ use yii\helpers\Html;
                         </a>
                     <?php endif; ?>
 
-                    <?php if ($module->getContentContainerConfigUrl($space)) : ?>
-                        <a href="<?= $module->getContentContainerConfigUrl($space) ?>" class="btn btn-default moduleConfigure" style="<?= $space->isModuleEnabled($moduleId) ? 'display:none' : '' ?>">
+                    <?php if ($module->getContentContainerConfigUrl($space) && $space->isModuleEnabled($moduleId)) : ?>
+                        <a href="<?= $module->getContentContainerConfigUrl($space) ?>" class="btn btn-sm btn-default">
                             <?= Yii::t('SpaceModule.views_admin_modules', 'Configure') ?>
                         </a>
                     <?php endif; ?>

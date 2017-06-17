@@ -40,6 +40,7 @@ HumHub Change Log
 - Fix: Notification grouping not working
 - Fix: Show more suppression entries with sort order update + equal update_at not working.
 - Fix #2627: Incorrect language used in group admin user approval e-mail
+- Fix #2631: Module configuration link shown for disabled modules
 
 1.2.0 (April 16, 2017)
 --------------------------------

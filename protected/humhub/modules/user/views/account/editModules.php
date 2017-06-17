@@ -32,8 +32,8 @@ use yii\helpers\Url;
                         </a>
                     <?php endif; ?>
                 
-                    <?php if ($module->getContentContainerConfigUrl($user)) : ?>
-                        <?= Html::a(Yii::t('UserModule.views_account_editModules', 'Configure'), $module->getContentContainerConfigUrl($user), ['class' => 'btn btn-sm']); ?>
+                    <?php if ($module->getContentContainerConfigUrl($user) && $user->isModuleEnabled($module->id)) : ?>
+                        <?= Html::a(Yii::t('UserModule.views_account_editModules', 'Configure'), $module->getContentContainerConfigUrl($user), ['class' => 'btn btn-sm btn-default']); ?>
                     <?php endif; ?>
 
                     <a href="#" style="<?= $user->isModuleEnabled($module->id) ? 'display:none' : '' ?>"
