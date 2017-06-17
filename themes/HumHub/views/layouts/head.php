@@ -20,3 +20,13 @@
 <meta name="msapplication-TileImage" content="<?= $this->theme->getBaseUrl(); ?>/ico/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
 <!-- end: Favicon and Touch Icons -->
+
+<!-- start: Apple Fullscreen and Webapp Title -->
+<meta name="apple-mobile-web-app-title" content="HumHub" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<!-- end: Apple Fullscreen and Webapp Title -->
+
+<!-- start: Android Fullscreen -->
+<meta name="mobile-web-app-capable" content="yes">
+<!-- end: Android Fullscreen -->
