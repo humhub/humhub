@@ -1,6 +1,7 @@
 HumHub Change Log
 =================
-1.2.1 (in developement)
+
+1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
 - Fix #2518: ActivityStreamWidget::EVENT_INIT is missed (githubjeka)
 - Enh: Fixed accessibility issues in Dashboard/Login/Profile
@@ -38,6 +39,7 @@ HumHub Change Log
 - Fix #2594 Bug: Url with unicode in stream markdown
 - Fix: Notification grouping not working
 - Fix: Show more suppression entries with sort order update + equal update_at not working.
+- Fix #2627: Incorrect language used in group admin user approval e-mail
 
 1.2.0 (April 16, 2017)
 --------------------------------

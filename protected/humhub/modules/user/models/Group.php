@@ -12,7 +12,6 @@ use Yii;
 use humhub\components\ActiveRecord;
 use humhub\modules\space\models\Space;
 
-
 /**
  * This is the model class for table "group".
  *
@@ -27,6 +26,7 @@ use humhub\modules\space\models\Space;
  */
 class Group extends ActiveRecord
 {
+
     const SCENARIO_EDIT = 'edit';
 
     /**
@@ -87,7 +87,7 @@ class Group extends ActiveRecord
     public static function getAdminGroupId()
     {
         $adminGroupId = Yii::$app->getModule('user')->settings->get('group.adminGroupId');
-        if($adminGroupId == null) {
+        if ($adminGroupId == null) {
             $adminGroupId = self::getAdminGroup()->id;
             Yii::$app->getModule('user')->settings->set('group.adminGroupId', $adminGroupId);
         }
@@ -228,22 +228,28 @@ class Group extends ActiveRecord
         }
 
         $group = self::findOne($user->registrationGroupId);
+        $approvalUrl = \yii\helpers\Url::to(["/admin/approval"], true);
 
         foreach ($group->manager as $manager) {
-            $approvalUrl = \yii\helpers\Url::to(["/admin/approval"], true);
 
-            $html = "Hello {$manager->displayName},<br><br>\n\n" .
-                    "a new user {$user->displayName} needs approval.<br><br>\n\n" .
-                    "Click here to validate:<br>\n\n" .
+            Yii::$app->i18n->setUserLocale($manager);
+
+            $html = Yii::t('UserModule.adminUserApprovalMail', 'Hello {displayName},', ['displayName' => $manager->displayName]) . "<br><br>\n\n" .
+                    Yii::t('UserModule.adminUserApprovalMail', 'a new user {displayName} needs approval.', ['displayName' => $user->displayName]) . "<br><br>\n\n" .
+                    Yii::t('UserModule.adminUserApprovalMail', 'Please click on the link below to view request:') . "<br>\n\n" .
                     \yii\helpers\Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
 
-            $mail = Yii::$app->mailer->compose(['html' => '@humhub//views/mail/TextOnly'], [
+            $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
                 'message' => $html,
             ]);
+
             $mail->setTo($manager->email);
-            $mail->setSubject(Yii::t('UserModule.models_User', "New user needs approval"));
+            $mail->setSubject(Yii::t('UserModule.adminUserApprovalMail', "New user needs approval"));
             $mail->send();
         }
+
+        Yii::$app->i18n->autosetLocale();
+
         return true;
     }
 
