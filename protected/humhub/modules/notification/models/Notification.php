@@ -239,12 +239,6 @@ class Notification extends \humhub\components\ActiveRecord
         $query->addGroupBy([
             'COALESCE(group_key, id)',
             'class',
-            'user_id',
-            'notification.user_id',
-            'notification.source_class',
-            'notification.space_id',
-            'notification.module',
-            'notification.send_web_notifications'
         ]);
         $query->orderBy(['group_seen' => SORT_ASC, 'group_created_at' => SORT_DESC]);
 

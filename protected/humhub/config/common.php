@@ -5,7 +5,6 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
-
 Yii::setAlias('@webroot', realpath(__DIR__ . '/../../../'));
 Yii::setAlias('@app', '@webroot/protected');
 Yii::setAlias('@humhub', '@app/humhub');
@@ -120,6 +119,7 @@ $config = [
             'password' => '',
             'charset' => 'utf8',
             'enableSchemaCache' => true,
+            'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
         ],
         'authClientCollection' => [
             'class' => 'humhub\modules\user\authclient\Collection',
