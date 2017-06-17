@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Cancel Edit' => '',
+  'Cancel Edit' => 'Szerkesztés visszavonása',
   'Edit' => 'Szerkesztés',
 );

@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Open the notification dropdown menu' => '',
     'Show all notifications' => '',
     'Mark all as seen' => 'Tandai semua sudah dilihat',
     'Notifications' => 'Pemberitahuan',

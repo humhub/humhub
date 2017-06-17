@@ -18,6 +18,7 @@
  */
 return [
     'Mark all as seen' => '',
+    'Open the notification dropdown menu' => '',
     'Show all notifications' => '',
     'Notifications' => 'Ενημερώσεις',
     'There are no notifications yet.' => 'Δεν υπάρχουν ενημερώσεις ακόμα.',

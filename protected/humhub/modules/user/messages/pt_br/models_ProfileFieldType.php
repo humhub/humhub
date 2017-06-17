@@ -18,6 +18,7 @@
  */
 return [
     'Checkbox' => '',
+    'Checkbox List' => '',
     'Birthday' => 'Aniversário',
     'Country' => 'País',
     'Date' => 'Data',

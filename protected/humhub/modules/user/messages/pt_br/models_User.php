@@ -27,7 +27,6 @@ return [
     'Last Login' => 'Último login',
     'Manager' => 'Gerente',
     'Name' => 'Nome',
-    'New user needs approval' => 'Novo usuário precisa de aprovação',
     'Show At Directory' => 'Mostrar no Diretório',
     'Show At Registration' => 'Mostrar no Registo',
     'Space ID' => 'ID do Espaço',

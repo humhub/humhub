@@ -2,11 +2,11 @@
 return array (
   'Created at' => '',
   'Created by' => '',
-  'Description' => '',
+  'Description' => 'Deskripsi',
   'Editable' => '',
   'Field Type could not be changed!' => '',
   'Fieldtype' => '',
-  'ID' => '',
+  'ID' => 'ID',
   'Internal Name' => '',
   'Internal name already in use!' => '',
   'Internal name could not be changed!' => '',

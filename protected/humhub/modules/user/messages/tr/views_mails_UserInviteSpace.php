@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invitation to join: {space}' => '',
     'Register now and participate!' => '',
     'You got an invite' => '',
+    'You\'ve been invited to join {space} on {appName}' => '',
     'invited you to join {name}.' => '',
     'invited you to join {space} on {name}.' => '',
     'Sign up now' => 'Şimdi kaydolun',

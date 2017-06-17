@@ -2,6 +2,6 @@
 return array (
   'Members' => 'Členové',
   'Owner' => 'Vlastník',
-  'Pending Approvals' => '',
-  'Pending Invites' => '',
+  'Pending Approvals' => 'Čeká na schválení',
+  'Pending Invites' => 'Čekající pozvánky',
 );

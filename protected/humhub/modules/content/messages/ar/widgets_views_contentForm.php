@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Content visibility' => '',
     'This space is archived.' => '',
     'Add a member to notify' => 'إضافة عضو للتنبيه',
     'Make private' => 'إجعله خاص',

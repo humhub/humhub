@@ -30,7 +30,6 @@ return [
     'Email' => 'ايميل',
     'Language' => 'زبان',
     'Name' => 'نام',
-    'New user needs approval' => 'کاربر جدید نیاز به تایید دارد',
     'Status' => 'وضعیت',
     'Tags' => 'تگ‌ها',
     'Updated at' => 'به‌روزرسانی‌شده در',

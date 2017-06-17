@@ -5,7 +5,7 @@ return array (
   'Enable LDAP Support' => '',
   'Encryption' => '',
   'Fetch/Update Users Automatically' => '',
-  'Hostname' => '',
+  'Hostname' => 'Host',
   'Login Filter' => '',
   'Password' => 'Passord',
   'Port' => 'Port',

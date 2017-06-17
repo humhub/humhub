@@ -2,7 +2,7 @@
 return array (
   'Created at' => '',
   'Created by' => '',
-  'Description' => '',
+  'Description' => 'Leírás',
   'Editable' => '',
   'Field Type could not be changed!' => '',
   'Fieldtype' => '',

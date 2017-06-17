@@ -17,14 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Date' => '',
-    'Markdown' => '',
+    'Checkbox List' => '',
     'Birthday' => 'Datum narození',
+    'Checkbox' => 'Zatrhavací pole',
     'Country' => 'Kraj',
+    'Date' => 'Datum',
     'Datetime' => 'Datum/čas',
+    'Markdown' => 'Snížení',
     'Number' => 'Číslo',
     'Select List' => 'Seznam možností',
     'Text' => 'Text',
     'Text Area' => 'Textové pole',
-    'Checkbox' => '',
 ];
