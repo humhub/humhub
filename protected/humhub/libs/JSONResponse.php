@@ -59,8 +59,8 @@ class JSONResponse
 
     public function data($key, $value)
     {
-        if(!is_array($this->$result['data'])) {
-            $this->$result['data'] = [];
+        if(!is_array($this->result['data'])) {
+            $this->result['data'] = [];
         }
         $this->result['data'][$key] = $value;
 
