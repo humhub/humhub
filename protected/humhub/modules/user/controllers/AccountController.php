@@ -288,7 +288,6 @@ class AccountController extends BaseAccountController
 
     /**
      * Change Current Password
-     *
      */
     public function actionChangeEmail()
     {

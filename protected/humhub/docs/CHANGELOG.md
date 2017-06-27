@@ -1,5 +1,8 @@
 HumHub Change Log
 =================
+1.2.2 in developement
+- Enh: Allow returning class names beside BasePermission instances in `Module::getPermissions()`
+- Enh: Increase profile image size to 800px.
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language

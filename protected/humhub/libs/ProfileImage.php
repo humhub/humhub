@@ -155,8 +155,8 @@ class ProfileImage
 
         $this->delete();
         ImageConverter::TransformToJpeg($file, $this->getPath('_org'));
-        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), array('width' => 400, 'mode' => 'max'));
-        ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), array('width' => $this->width, 'height' => $this->height));
+        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), ['width' => 800, 'mode' => 'max']);
+        ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), ['width' => $this->width, 'height' => $this->height]);
     }
 
     /**

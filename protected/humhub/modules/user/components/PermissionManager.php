@@ -259,11 +259,15 @@ class PermissionManager extends \yii\base\Component
      */
     protected function getModulePermissions(\yii\base\Module $module)
     {
+        $result = [];
         if ($module instanceof \humhub\components\Module) {
-            return $module->getPermissions();
+            $permisisons = $module->getPermissions();
+            foreach($permisisons as $permission) {
+                $result[] = is_string($permission) ? Yii::createObject($permission) : $permission;
+            }
         }
 
-        return [];
+        return $result;
     }
 
     /**
