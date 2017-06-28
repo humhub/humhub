@@ -4,6 +4,7 @@ namespace humhub\modules\file\widgets;
 
 use Yii;
 use yii\helpers\Html;
+use humhub\widgets\JsWidget;
 
 /**
  * The file input will upload files either to the given $url or to the default
@@ -18,7 +19,7 @@ use yii\helpers\Html;
  * @package humhub.modules_core.file.widgets
  * @since 1.2
  */
-class UploadInput extends \humhub\widgets\JsWidget
+class UploadInput extends JsWidget
 {
 
     const DEFAULT_FORM_NAME = 'fileList';
@@ -81,7 +82,7 @@ class UploadInput extends \humhub\widgets\JsWidget
     public $url;
 
     /**
-     * Maximum amount of allowed uploads.
+     * Total number of maximum amount of allowed file uploads.
      * @var type 
      */
     public $max;
@@ -162,6 +163,9 @@ class UploadInput extends \humhub\widgets\JsWidget
             $result['upload-model'] = $this->model->className();
             $result['upload-model-id'] = $this->model->getPrimaryKey();
         }
+
+        $result['php-max-file-uploads'] = ini_get('max_file_uploads');
+        $result['php-max-file-uploads-message'] = Yii::t('FileModule.widgets_UploadInput', 'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.', ['n' => $result['php-max-file-uploads']]);
 
         if ($this->max) {
             $result['max-number-of-files'] = $this->max;

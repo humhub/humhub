@@ -60,7 +60,9 @@ humhub.module('file', function (module, require, $) {
             singleFileUploads: false,
             add: function (e, data) {
                 if (that.options.maxNumberOfFiles && (that.getFileCount() + data.files.length > that.options.maxNumberOfFiles)) {
-                    that.handleMaxFileReached();
+                    that.handleMaxFileReached(that.options.maxNumberOfFilesMessage);
+                } else if(that.options.phpMaxFileUploads && data.files.length > that.options.phpMaxFileUploads) {
+                    that.handleMaxFileReached(that.options.phpMaxFileUploadsMessage);
                 } else {
                     data.process().done(function () {
                         data.submit();
@@ -71,8 +73,8 @@ humhub.module('file', function (module, require, $) {
         };
     };
 
-    Upload.prototype.handleMaxFileReached = function () {
-        module.log.warn(this.$.data('max-number-of-files-message'), true);
+    Upload.prototype.handleMaxFileReached = function (message) {
+        module.log.warn(message, true);
         this.$ = $(this.getIdSelector());
         if (!this.canUploadMore()) {
             this.disable(this.$.data('max-number-of-files-message'));
