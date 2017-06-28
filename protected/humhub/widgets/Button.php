@@ -52,7 +52,7 @@ class Button extends Widget
 
     public static function instance($text = null)
     {
-        return new self(['text' => $text]);
+        return new static(['text' => $text]);
     }
 
     public static function back($url, $text = null)
@@ -67,37 +67,37 @@ class Button extends Widget
 
     public static function none($text = null)
     {
-        return new self(['type' => self::TYPE_NONE, 'text' => $text]);
+        return new static(['type' => self::TYPE_NONE, 'text' => $text]);
     }
 
     public static function primary($text = null)
     {
-        return new self(['type' => self::TYPE_PRIMARY, 'text' => $text]);
+        return new static(['type' => self::TYPE_PRIMARY, 'text' => $text]);
     }
 
     public static function defaultType($text = null)
     {
-        return new self(['type' => self::TYPE_DEFAULT, 'text' => $text]);
+        return new static(['type' => self::TYPE_DEFAULT, 'text' => $text]);
     }
 
     public static function info($text = null)
     {
-        return new self(['type' => self::TYPE_INFO, 'text' => $text]);
+        return new static(['type' => self::TYPE_INFO, 'text' => $text]);
     }
 
     public static function warning($text = null)
     {
-        return new self(['type' => self::TYPE_WARNING, 'text' => $text]);
+        return new static(['type' => self::TYPE_WARNING, 'text' => $text]);
     }
 
     public static function success($text = null)
     {
-        return new self(['type' => self::TYPE_SUCCESS, 'text' => $text]);
+        return new static(['type' => self::TYPE_SUCCESS, 'text' => $text]);
     }
 
     public static function danger($text = null)
     {
-        return new self(['type' => self::TYPE_DANGER, 'text' => $text]);
+        return new static(['type' => self::TYPE_DANGER, 'text' => $text]);
     }
 
     public function loader($active = true)

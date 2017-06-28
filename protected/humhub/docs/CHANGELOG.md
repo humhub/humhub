@@ -3,6 +3,9 @@ HumHub Change Log
 1.2.2 in developement
 - Enh: Allow returning class names beside BasePermission instances in `Module::getPermissions()`
 - Enh: Increase profile image size to 800px.
+- Fix #2644 overlapping popup preview image after increasing preview image size (hagalaz)
+- Fix: Button widget child class static instantiation not working 
+- Fix: ModalButton instatiation and added ModalButton::close()
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
