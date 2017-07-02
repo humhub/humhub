@@ -2,13 +2,13 @@
     "name": "humhub/humhub",
     "description": "HumHub - The flexible Open Source Social Network Kit for Collaboration",
     "keywords": ["humhub", "yii2", "framework"],
-    "homepage": "http://www.humhub.com/",
+    "homepage": "https://www.humhub.com/",
     "type": "project",
     "license": "AGPL-3.0",
     "support": {
         "issues": "https://github.com/humhub/humhub/issues?state=open",
-        "forum": "http://community.humhub.com",
-        "wiki": "http://community.humhub.com",
+        "forum": "https://community.humhub.com",
+        "wiki": "https://community.humhub.com",
         "irc": "irc://irc.freenode.net/humhub",
         "source": "https://github.com/humhub/humhub"
     },
@@ -18,10 +18,10 @@
         "yiisoft/yii2": "~2.0.11",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "yiisoft/yii2-authclient": "~2.0.0",
+        "yiisoft/yii2-authclient": "~2.1.0",
         "yiisoft/yii2-imagine": "~2.0.0",
         "raoul2000/yii2-jcrop-widget": "*",
-        "cebe/markdown": "1.0.2",
+        "cebe/markdown": "~1.0.2",
         "yiisoft/yii2-jui": "~2.0.0",
         "zendframework/zend-http": "*",
         "jbroadway/urlify": "^1.0",
@@ -29,16 +29,16 @@
         "xj/yii2-jplayer-widget": "*",
         "zendframework/zend-ldap": "^2.5",
         "zhuravljov/yii2-queue": "^0.11",
-        "bower-asset/jquery-timeago": "1.4.*",
+        "bower-asset/jquery-timeago": "1.5.*",
         "bower-asset/jquery-nicescroll": "3.6.*",
         "bower-asset/jquery-knob": "1.2.*",
         "bower-asset/jquery-placeholder": "^2.3.0",
-        "bower-asset/blueimp-file-upload": "9.11.*",
+        "bower-asset/blueimp-file-upload": "9.18.*",
         "bower-asset/fontawesome": "^4.7.0",
         "bower-asset/bootstrap-markdown": "2.10.*",
-        "bower-asset/select2": "^4.0.2",
-        "bower-asset/bluebird": "^3.3.5",
-        "bower-asset/select2-bootstrap-theme": "0.1.0-beta.4",
+        "bower-asset/select2": "^4.0.3",
+        "bower-asset/bluebird": "^3.5.0",
+        "bower-asset/select2-bootstrap-theme": "0.1.0-beta.10",
         "bower-asset/jquery.cookie": "^1.4.1",
         "bower-asset/jquery-color": "^2.1.2",
         "bower-asset/autosize": "1.*",
@@ -47,18 +47,24 @@
         "bower-asset/animate.css": "*",
         "bower-asset/html5shiv": "^3.7",
         "bower-asset/clipboard.js": "*",
-        "bower-asset/jPlayer": "2.9.2"
+        "bower-asset/jPlayer": "2.9.*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "~2.0.0",
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0",
-        "yiisoft/yii2-apidoc": "~2.0.0"
+        "yiisoft/yii2-apidoc": "~2.1.0"
     },
     "config": {
         "process-timeout": 1800,
-        "vendor-dir": "protected/vendor"
+        "vendor-dir": "protected/vendor",
+        "fxp-asset": {
+            "installer-paths": {
+                "npm-asset-library": "protected/vendor/npm",
+                "bower-asset-library": "protected/vendor/bower"
+            }
+        }
     },
     "scripts": {
         "post-create-project-cmd": [
@@ -78,10 +84,6 @@
             "generateCookieValidationKey": [
                 "protected/config/web.php"
             ]
-        },
-        "asset-installer-paths": {
-            "npm-asset-library": "protected/vendor/npm",
-            "bower-asset-library": "protected/vendor/bower"
         }
     }
 }
