@@ -29,7 +29,8 @@ use yii\helpers\Url;
 class Link extends Button
 {
 
-    public $link = true;
+    public $_link = true;
+
 
     public function to($url)
     {

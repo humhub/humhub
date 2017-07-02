@@ -114,17 +114,15 @@ humhub.module('ui.loader', function (module, require, $) {
             }
         }
 
+        $skBounce = $result.find('.sk-bounce1, .sk-bounce2, .sk-bounce3');
+
         if (cfg['itemCss']) {
-            $result.find('.sk-bounce1').css(cfg['itemCss']);
-            $result.find('.sk-bounce2').css(cfg['itemCss']);
-            $result.find('.sk-bounce3').css(cfg['itemCss']);
+            $skBounce.css(cfg['itemCss']);
         }
 
         if (cfg['size']) {
             var size = cfg['size'];
-            $result.find('.sk-bounce1').css({'width': size, 'height': size});
-            $result.find('.sk-bounce2').css({'width': size, 'height': size});
-            $result.find('.sk-bounce3').css({'width': size, 'height': size});
+            $skBounce.css({'width': size, 'height': size});
         }
 
         if (cfg['wrapper']) {

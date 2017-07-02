@@ -52,7 +52,7 @@ class Button extends Widget
 
     public static function instance($text = null)
     {
-        return new static(['text' => $text]);
+        return new static(['type' => self::TYPE_NONE, 'text' => $text]);
     }
 
     public static function back($url, $text = null)
@@ -70,9 +70,23 @@ class Button extends Widget
         return new static(['type' => self::TYPE_NONE, 'text' => $text]);
     }
 
+    public static function asLink($text = null, $href = '#')
+    {
+        return self::none($text)->link($href);
+    }
+
     public static function primary($text = null)
     {
         return new static(['type' => self::TYPE_PRIMARY, 'text' => $text]);
+    }
+
+    public static function save($text = null)
+    {
+        if(!$text) {
+            $text = Yii::t('base', 'Save');
+        }
+
+        return self::primary($text);
     }
 
     public static function defaultType($text = null)
@@ -111,6 +125,11 @@ class Button extends Widget
         $this->_link = true;
         $this->htmlOptions['href'] = Url::to($url);
         return $this;
+    }
+
+    public function setText($text)
+    {
+        $this->text = $text;
     }
 
     public function right($right = true)
@@ -181,6 +200,10 @@ class Button extends Widget
 
     public function options($options)
     {
+        if(isset($options['class'])) {
+            Html::addCssClass($this->htmlOptions, $options['class']);
+            unset($options['class']);
+        }
         $this->htmlOptions = ArrayHelper::merge($this->htmlOptions, $options);
         return $this;
     }

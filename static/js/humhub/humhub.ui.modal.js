@@ -600,16 +600,27 @@ humhub.module('ui.modal', function (module, require, $) {
             evt.$form = evt.$target;
         }
 
+        var id = evt.$trigger.data('modal-id');
+        if (!id) {
+            // try to autodetect modal id if we're currently in a modal
+            var $parent = evt.$trigger.closest('.modal');
+            if ($parent.length) {
+                id = $parent.attr('id');
+            }
+        }
+
+        var modal = (id) ? module.get(id) : module.global;
         return client.submit(evt, _defaultRequestOptions(evt, options)).then(function (response) {
-            module.global.setDialog(response);
-            if (!module.global.$.is(':visible')) {
-                module.global.show();
+            modal.setDialog(response);
+            if (!modal.$.is(':visible')) {
+                modal.show();
             }
 
-            module.global.$.trigger('submitted');
+            modal.$.trigger('submitted');
             return response;
         }).catch(function (error) {
             module.log.error(error, true);
+            modal.close();
         });
     };
 
@@ -626,12 +637,24 @@ humhub.module('ui.modal', function (module, require, $) {
         var modal = (id) ? module.get(id) : module.global;
         return modal.load(evt, _defaultRequestOptions(evt, options)).catch(function (err) {
             module.log.error(err, true);
+            modal.close();
         });
     };
 
     var post = function (evt, options) {
-        return module.global.post(evt, _defaultRequestOptions(evt, options)).catch(function (err) {
+        var id = evt.$trigger.data('modal-id');
+        if (!id) {
+            // try to autodetect modal id if we're currently in a modal
+            var $parent = evt.$trigger.closest('.modal');
+            if ($parent.length) {
+                id = $parent.attr('id');
+            }
+        }
+
+        var modal = (id) ? module.get(id) : module.global;
+        return modal.post(evt, _defaultRequestOptions(evt, options)).catch(function (err) {
             module.log.error(err, true);
+            modal.close();
         });
     };
 

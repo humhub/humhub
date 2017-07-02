@@ -6,6 +6,7 @@ HumHub Change Log
 - Fix #2644 overlapping popup preview image after increasing preview image size (hagalaz)
 - Fix: Button widget child class static instantiation not working 
 - Fix: ModalButton instatiation and added ModalButton::close()
+- Fix: Respect `max_file_uploads` setting in UploadInput widget
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
