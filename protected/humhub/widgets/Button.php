@@ -50,11 +50,21 @@ class Button extends Widget
 
     public $_link = false;
 
+    public $_visible = true;
+
+    /**
+     * @param string $text Button text
+     * @return static
+     */
     public static function instance($text = null)
     {
         return new static(['type' => self::TYPE_NONE, 'text' => $text]);
     }
 
+    /**
+     * @param string $text Button text
+     * @return static
+     */
     public static function back($url, $text = null)
     {
         if(!$text) {
@@ -65,21 +75,38 @@ class Button extends Widget
         return $instance->link($url)->icon('fa-arrow-left')->right();
     }
 
+    /**
+     * @param string $text Button text
+     * @return static
+     */
     public static function none($text = null)
     {
         return new static(['type' => self::TYPE_NONE, 'text' => $text]);
     }
 
+    /**
+     * @param string $text Button text
+     * @param string $href
+     * @return static
+     */
     public static function asLink($text = null, $href = '#')
     {
         return self::none($text)->link($href);
     }
 
+    /**
+     * @param string $text Button text
+     * @return static
+     */
     public static function primary($text = null)
     {
         return new static(['type' => self::TYPE_PRIMARY, 'text' => $text]);
     }
 
+    /**
+     * @param string $text Button text
+     * @return static
+     */
     public static function save($text = null)
     {
         if(!$text) {
@@ -89,49 +116,98 @@ class Button extends Widget
         return self::primary($text);
     }
 
+    /**
+     * @param string $text Button text
+     * @return static
+     */
     public static function defaultType($text = null)
     {
         return new static(['type' => self::TYPE_DEFAULT, 'text' => $text]);
     }
 
+    /**
+     * @param string $text Button text
+     * @return static
+     */
     public static function info($text = null)
     {
         return new static(['type' => self::TYPE_INFO, 'text' => $text]);
     }
 
+    /**
+     * @param string $text Button text
+     * @return static
+     */
     public static function warning($text = null)
     {
         return new static(['type' => self::TYPE_WARNING, 'text' => $text]);
     }
 
+    /**
+     * @param string $text Button text
+     * @return static
+     */
     public static function success($text = null)
     {
         return new static(['type' => self::TYPE_SUCCESS, 'text' => $text]);
     }
 
+    /**
+     * @param string $text Button text
+     * @return static
+     */
     public static function danger($text = null)
     {
         return new static(['type' => self::TYPE_DANGER, 'text' => $text]);
     }
 
+    /**
+     * @param bool $active
+     * @return $this
+     */
     public function loader($active = true)
     {
         $this->_loader = $active;
         return $this;
     }
 
-    public function link($url = null)
+    /**
+     * @param null $url
+     * @return $this
+     */
+    public function link($url = null, $pjax = true)
     {
         $this->_link = true;
+        $this->loader(false);
         $this->htmlOptions['href'] = Url::to($url);
+
+        $this->pjax($pjax);
+
         return $this;
     }
 
+    public function pjax($pjax = true)
+    {
+        if(!$pjax) {
+            $this->options(['data-pjax-prevent' => true]);
+        }
+        return $this;
+    }
+
+    /**
+     * @param $text
+     * @return $this
+     */
     public function setText($text)
     {
         $this->text = $text;
+        return $this;
     }
 
+    /**
+     * @param bool $right
+     * @return $this
+     */
     public function right($right = true)
     {
         if($right) {
@@ -144,6 +220,10 @@ class Button extends Widget
         return $this;
     }
 
+    /**
+     * @param bool $left
+     * @return $this
+     */
     public function left($left = true)
     {
         if($left) {
@@ -156,58 +236,98 @@ class Button extends Widget
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function sm()
     {
         Html::addCssClass($this->htmlOptions, 'btn-sm');
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function lg()
     {
         Html::addCssClass($this->htmlOptions, 'btn-lg');
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function xs()
     {
         Html::addCssClass($this->htmlOptions, 'btn-xs');
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function submit()
     {
         $this->htmlOptions['type'] = 'submit';
         return $this;
     }
 
+    /**
+     * @param $style
+     * @return $this
+     */
     public function style($style)
     {
         Html::addCssStyle($this->htmlOptions, $style);
         return $this;
     }
 
+    /**
+     * @param $id
+     * @return $this
+     */
     public function id($id)
     {
         $this->id = $id;
         return $this;
     }
 
+    /**
+     * @param $cssClass
+     * @return $this
+     */
     public function cssClass($cssClass)
     {
         Html::addCssClass($this->htmlOptions, $cssClass);
         return $this;
     }
 
+    /**
+     * @param $options
+     * @return $this
+     */
     public function options($options)
     {
         if(isset($options['class'])) {
-            Html::addCssClass($this->htmlOptions, $options['class']);
+            $this->cssClass($options['class']);
             unset($options['class']);
         }
+
+        if(isset($options['style'])) {
+            $this->style($options['style']);
+            unset($options['style']);
+        }
+
         $this->htmlOptions = ArrayHelper::merge($this->htmlOptions, $options);
         return $this;
     }
 
+    /**
+     * @param $handler
+     * @param null $url
+     * @param null $target
+     * @return Button
+     */
     public function action($handler, $url = null, $target = null)
     {
         return $this->onAction('click', $handler, $url, $target);
@@ -300,9 +420,14 @@ class Button extends Widget
         return $this->text;
     }
 
+    public function visible($isVisible = true) {
+        $this->_visible = $isVisible;
+        return $this;
+    }
+
     public function __toString()
     {
-        return $this::widget([
+        $result = $this::widget([
             'id' => $this->id,
             'type' => $this->type,
             'text' => $this->text,
@@ -310,7 +435,10 @@ class Button extends Widget
             '_icon' => $this->_icon,
             '_link' => $this->_link,
             '_loader' => $this->_loader,
+            'render' => $this->_visible
         ]);
+
+        return $result ? $result : '';
     }
 
 }
