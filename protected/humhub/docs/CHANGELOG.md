@@ -11,7 +11,8 @@ HumHub Change Log
 - Enh: Added `getAccessRules()` to `humhub/components/Controller`
 - Fix: AccessControl action restriction bug
 - Fix: `ModuleAutoLoader` exceptions not logged
--
+- Fix: `I18N` formatter user timezone not set
+- Enh: Automatically set space default visibility in `Content::setContainer()`
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language

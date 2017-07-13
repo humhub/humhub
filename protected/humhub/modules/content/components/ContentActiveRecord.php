@@ -98,13 +98,15 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      * @param int $visibility
      * @param array $config
      */
-    public function __construct($contentContainer = [], $visibility = Content::VISIBILITY_PRIVATE, $config = [])
+    public function __construct($contentContainer = [], $visibility = null, $config = [])
     {
         if(is_array($contentContainer)) {
             parent::__construct($contentContainer);
         } else if($contentContainer instanceof ContentContainerActiveRecord) {
             $this->content->setContainer($contentContainer);
-            $this->content->visibility = $visibility;
+            if($visibility !== null) {
+                $this->content->visibility = $visibility;
+            }
             parent::__construct($config);
         } else {
             parent::__construct([]);

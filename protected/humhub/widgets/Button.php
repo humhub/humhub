@@ -71,8 +71,7 @@ class Button extends Widget
             $text = Yii::t('base', 'Back');
         }
 
-        $instance = self::defaultType($text);
-        return $instance->link($url)->icon('fa-arrow-left')->right();
+        return self::defaultType($text)->link($url)->icon('fa-arrow-left')->right()->loader(true);
     }
 
     /**

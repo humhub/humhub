@@ -383,6 +383,9 @@ class Content extends ContentDeprecated
     {
         $this->contentcontainer_id = $container->contentContainerRecord->id;
         $this->_container = $container;
+        if($container instanceof Space && $this->visibility === null) {
+            $this->visibility = $container->getDefaultContentVisibility();
+        }
     }
 
     /**
