@@ -9,6 +9,9 @@ HumHub Change Log
 - Fix: Respect `max_file_uploads` setting in UploadInput widget
 - Enh: Include `kartik-v/yii2-widgets`
 - Enh: Added `getAccessRules()` to `humhub/components/Controller`
+- Fix: AccessControl action restriction bug
+- Fix: `ModuleAutoLoader` exceptions not logged
+-
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
@@ -24,7 +27,7 @@ HumHub Change Log
 - Enh: Always trigger dom widget events for widget `fire` until `triggerDom` is set to false
 - Enh: Added `richtextPaste` event
 - Enh: On search index rebuilding - use batch queries 
-- Fix: `ActiveQueryContent:readable()` for guest users missing join
+- Fix: `ActiveQueryContent:readable()` for guNest users missing join
 - Enh: Added `ContentActiveRecord:managePermission` for changing the default write permission of ContentActiveRecord classes
 - Enh: Moved all default `WallEntryControls` to `WallEntry:getContextMenu()` widget.
 - Fix: Connect google OAuth under `Profile Settings  -> Connected Accounts` throws invalid redirect uri.

@@ -171,8 +171,9 @@ class AccessControl extends \yii\base\ActionFilter
     protected function checkPermissionRule($rule)
     {
         if (!empty($rule['permissions'])) {
+            // If the rule contains an action restriction we ignore the permission setting if the current action is not contained in the 'action' rule setting.
             if (!$this->checkRuleAction($rule)) {
-                return false;
+                return true;
             }
 
             $permissionArr = (!is_array($rule['permissions'])) ? [$rule['permissions']] : $rule['permissions'];
