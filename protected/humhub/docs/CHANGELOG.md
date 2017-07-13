@@ -8,6 +8,7 @@ HumHub Change Log
 - Fix: ModalButton instatiation and added ModalButton::close()
 - Fix: Respect `max_file_uploads` setting in UploadInput widget
 - Enh: Include `kartik-v/yii2-widgets`
+- Enh: Added `getAccessRules()` to `humhub/components/Controller`
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language

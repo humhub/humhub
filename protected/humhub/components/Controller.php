@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use humhub\components\behaviors\AccessControl;
 use Yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -46,6 +47,43 @@ class Controller extends \yii\web\Controller
      * @var boolean append page title
      */
     public $prependActionTitles = true;
+
+    /**
+     * @var string[] defines the allowed actions for guests if $strictGuestMode is set to true.
+     */
+    public $guestActions = [];
+
+    /**
+     * @var bool if set to true will only allow actions defined in $guestActions, otherwise the controller has to handle its own guest handling
+     */
+    public $strictGuestMode = false;
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+
+        return [
+            'acl' => [
+                'class' => AccessControl::className(),
+                'guestAllowedActions' => $this->guestActions,
+                'loggedInOnly' => $this->strictGuestMode,
+                'rules' => $this->getAccessRules()
+            ]
+        ];
+    }
+
+    /**
+     * Returns access rules for the standard access control behavior.
+     *
+     * @see AccessControl
+     * @return array the access permissions
+     */
+    protected function getAccessRules()
+    {
+        return [];
+    }
 
     /**
      * @inheritdoc
