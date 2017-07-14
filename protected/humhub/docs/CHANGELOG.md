@@ -13,6 +13,7 @@ HumHub Change Log
 - Fix: `ModuleAutoLoader` exceptions not logged
 - Fix: `I18N` formatter user timezone not set
 - Enh: Automatically set space default visibility in `Content::setContainer()`
+- Fix: Fixed ContentContainerSettingManager caching issue if space/user id are equal
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
