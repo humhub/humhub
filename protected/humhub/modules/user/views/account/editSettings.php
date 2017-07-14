@@ -1,5 +1,6 @@
 <?php
 
+use humhub\libs\TimezoneHelper;
 use yii\widgets\ActiveForm;
 use \humhub\compat\CHtml;
 ?>
@@ -8,13 +9,13 @@ use \humhub\compat\CHtml;
 
 <?php $form = ActiveForm::begin(['id' => 'basic-settings-form']); ?>
 
-<?php echo $form->field($model, 'tags'); ?>
+<?= $form->field($model, 'tags'); ?>
 
 <?php if (count($languages) > 1) : ?>
-    <?php echo $form->field($model, 'language')->dropDownList($languages, ['data-ui-select2' => '']); ?>
+    <?= $form->field($model, 'language')->dropDownList($languages, ['data-ui-select2' => '']); ?>
 <?php endif; ?>
 
-<?php echo $form->field($model, 'timeZone')->dropDownList(\humhub\libs\TimezoneHelper::generateList()); ?>
+<?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(), ['data-ui-select2' => '']); ?>
 
 <?php if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')): ?>
 
@@ -29,7 +30,7 @@ use \humhub\compat\CHtml;
 <?php endif; ?>
 
 <?php if (Yii::$app->getModule('tour')->settings->get('enable') == 1) : ?>
-    <?php echo $form->field($model, 'show_introduction_tour')->checkbox(); ?>
+    <?= $form->field($model, 'show_introduction_tour')->checkbox(); ?>
 <?php endif; ?>
 
 <button class="btn btn-primary" type="submit" data-ui-loader><?= Yii::t('UserModule.views_account_editSettings', 'Save') ?></button>

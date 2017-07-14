@@ -1,5 +1,6 @@
 <?php
 
+use humhub\libs\TimezoneHelper;
 use yii\widgets\ActiveForm;
 use humhub\compat\CHtml;
 ?>
@@ -24,7 +25,7 @@ use humhub\compat\CHtml;
         <?= $languageDropDown = $form->field($model, 'defaultLanguage')->dropDownList($allowedLanguages, ['data-ui-select2' => '']); ?>
     <?php endif; ?>
 
-    <?= $form->field($model, 'timeZone')->dropDownList(\humhub\libs\TimezoneHelper::generateList()); ?>
+    <?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(), ['data-ui-select2' => '']); ?>
 
     <?= humhub\modules\space\widgets\SpacePickerField::widget([
         'form' => $form,

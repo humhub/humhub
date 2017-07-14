@@ -14,6 +14,7 @@ HumHub Change Log
 - Fix: `I18N` formatter user timezone not set
 - Enh: Automatically set space default visibility in `Content::setContainer()`
 - Fix: Fixed ContentContainerSettingManager caching issue if space/user id are equal
+- Enh: Use of select2 dropdown for time zone selections
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
