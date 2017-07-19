@@ -15,6 +15,7 @@ HumHub Change Log
 - Enh: Automatically set space default visibility in `Content::setContainer()`
 - Fix: Fixed ContentContainerSettingManager caching issue if space/user id are equal
 - Enh: Use of select2 dropdown for time zone selections
+- Fix: Bypass AccessControl behavior in installer
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language

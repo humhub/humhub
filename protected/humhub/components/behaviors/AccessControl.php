@@ -86,6 +86,11 @@ class AccessControl extends \yii\base\ActionFilter
      */
     public function beforeAction($action)
     {
+        // Bypass when not installed for installer
+        if (empty(Yii::$app->params['installed']) && Yii::$app->controller->module != null && Yii::$app->controller->module->id == 'installer') {
+            return true;
+        }
+
         $identity = Yii::$app->user->getIdentity();
 
         if ($identity != null && !$identity->isActive()) {
