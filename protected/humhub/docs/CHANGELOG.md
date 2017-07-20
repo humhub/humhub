@@ -17,6 +17,8 @@ HumHub Change Log
 - Enh: Use of select2 dropdown for time zone selections
 - Fix: Bypass AccessControl behavior in installer
 - Fix: Use of JS-Widget internal event object instead of node
+- Enh: Added `Formatter::getDateTimePattern()` and `Formatter::isShowMeridiem()`
+- Fix: Set formatter locale in I18N when changing locale
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
