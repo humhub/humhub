@@ -16,6 +16,7 @@ HumHub Change Log
 - Fix: Fixed ContentContainerSettingManager caching issue if space/user id are equal
 - Enh: Use of select2 dropdown for time zone selections
 - Fix: Bypass AccessControl behavior in installer
+- Fix: Use of JS-Widget internal event object instead of node
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language

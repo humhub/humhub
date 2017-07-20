@@ -123,18 +123,6 @@ humhub.module('ui.widget', function(module, require, $) {
         return $.extend(this.getDefaultOptions(options), this.$.data(), options);
     };
 
-    Widget.prototype.on = function(event, handler) {
-        this.$.on(event, handler);
-    };
-
-    Widget.prototype.one = function(event, handler) {
-        this.$.one(event, handler);
-    };
-
-    Widget.prototype.off = function(event) {
-        this.$.off(event);
-    };
-
     Widget.prototype.statusError = function(title) {
         var msg = title || module.text('error.title');;
         msg += '<br /><br /><ul style="list-style:none;">';
