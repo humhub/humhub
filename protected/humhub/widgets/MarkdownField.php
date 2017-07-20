@@ -75,6 +75,16 @@ class MarkdownField extends InputWidget
     public $fileAttribute;
 
     /**
+     * @var boolean if set to true the markdown field will be disabled
+     */
+    public $disabled = false;
+
+    /**
+     * @var boolean if set to true the markdown field will set to readonly
+     */
+    public $readonly = false;
+
+    /**
      * @inheritdoc
      */
     public $init = true;
@@ -105,7 +115,9 @@ class MarkdownField extends InputWidget
     public function getAttributes()
     {
         return [
-            'rows' => $this->rows
+            'rows' => $this->rows,
+            'disabled' => $this->disabled,
+            'readonly' => $this->readonly,
         ];
     }
 
@@ -124,5 +136,4 @@ class MarkdownField extends InputWidget
             'files-input-name' => !empty($this->filesInputName) ? $this->filesInputName : null
         ];
     }
-
 }
