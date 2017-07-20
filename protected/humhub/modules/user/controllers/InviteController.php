@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\controllers;
 
+use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\admin\permissions\ManageUsers;
 use Yii;
 use yii\web\Controller;
 use humhub\modules\user\models\Invite;
@@ -41,7 +43,7 @@ class InviteController extends Controller
     public function actionIndex()
     {
         if (!$this->canInvite()) {
-            throw new \yii\web\HttpException(404, 'Invite denied!');
+            throw new \yii\web\HttpException(403, 'Invite denied!');
         }
 
         $model = new \humhub\modules\user\models\forms\Invite;
@@ -88,11 +90,7 @@ class InviteController extends Controller
      */
     protected function canInvite()
     {
-        if (Yii::$app->user->isAdmin() || Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite')) {
-            return true;
-        }
-
-        return false;
+        return Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite') || Yii::$app->user->can([new ManageUsers(), new ManageGroups()]);
     }
 
 }

@@ -24,6 +24,11 @@ class Widget extends \yii\base\Widget
     const EVENT_CREATE = 'create';
 
     /**
+     * @var bool if set to false this widget won't be rendered
+     */
+    public $render = true;
+
+    /**
      * Creates a widget instance and runs it.
      *
      * The widget rendering result is returned by this method.
@@ -35,6 +40,10 @@ class Widget extends \yii\base\Widget
     {
         if (!isset($config['class'])) {
             $config['class'] = get_called_class();
+        }
+
+        if(isset($config['render']) && $config['render'] === false) {
+           return;
         }
 
         Event::trigger(self::className(), self::EVENT_CREATE, new WidgetCreateEvent($config));
@@ -67,5 +76,4 @@ class Widget extends \yii\base\Widget
     {
         return $this->run();
     }
-
 }

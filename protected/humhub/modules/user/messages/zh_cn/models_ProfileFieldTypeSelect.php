@@ -17,10 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Allow other selection' => '',
+    'This will add an additional input element for custom values' => '',
     'Comma separated country codes, e.g. DE,EN,AU' => '逗号分隔国家代码，例如 DE,EN,AU',
-    'Possible values' => '可能的值',
-    'Supported ISO3166 country codes' => '支付 ISO3166 国家代码',
     'One option per line. Key=>Value Format (e.g. yes=>Yes)' => '每行一个选项。关键词＝>值格式（例如 是= >是）',
     'Please select:' => '请选择：',
+    'Possible values' => '可能的值',
     'Select field options' => '选择区域选项',
+    'Supported ISO3166 country codes' => '支付 ISO3166 国家代码',
 ];

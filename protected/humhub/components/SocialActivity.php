@@ -301,7 +301,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
      * @param Content $content
      * @return string
      */
-    public function getContentInfo(ContentOwner $content = null)
+    public function getContentInfo(ContentOwner $content = null, $withContentName = true)
     {
         if (!$this->hasContent() && !$content) {
             return;
@@ -317,7 +317,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
 
         $trimmed = \humhub\libs\Helpers::trimText($truncatedDescription, 60);
 
-        return Html::encode($content->getContentName()) . ' "' . $trimmed . '"';
+        return ($withContentName) ? Html::encode($content->getContentName()). ' "' . $trimmed . '"' : $trimmed;
 
     }
 

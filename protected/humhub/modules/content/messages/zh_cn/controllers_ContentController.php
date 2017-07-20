@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'This action is disabled!' => '此动作已被禁用！',
+    'This action is disabled!' => '',
     'Could not delete content!' => '不能删除内容',
     'Could not delete content: Access denied!' => '不能删除内容:访问拒绝！',
     'Could not load requested object!' => '无法加载请求对象！',

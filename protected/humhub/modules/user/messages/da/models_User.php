@@ -30,7 +30,6 @@ return [
     'Email' => 'E-mail',
     'Language' => 'Sprog',
     'Name' => 'Navn',
-    'New user needs approval' => 'Ny bruger skal bruge godkendelse',
     'Status' => 'Status',
     'Tags' => 'Tags',
     'Updated at' => 'Opdateret den',

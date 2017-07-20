@@ -50,6 +50,7 @@ humhub.module('ui.richtext', function(module, require, $) {
             }
 
             that.insertTextAtCursor(text);
+            that.fire('richtextPaste');
         }).on('keydown', function(e) {
             that.checkForEmptySpans();
         }).on('keypress', function(e) {

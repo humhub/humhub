@@ -17,5 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayName} created {contentTitle}.' => '',
+    '{displayName} posted on your profile {contentTitle}.' => '',
+    '{displayName} created {contentTitle}.' => '
+{displayName} ha creat {contentTitle}.
+',
 ];

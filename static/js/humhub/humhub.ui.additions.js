@@ -162,6 +162,9 @@ humhub.module('ui.additions', function (module, require, $) {
 
 
                 $this.html(result).data('markdownProcessed', true);
+
+                // Make sure to add noopener to all links
+                $this.find('a').attr('rel', 'noopener noreferrer');
             });
         });
 
@@ -253,10 +256,19 @@ humhub.module('ui.additions', function (module, require, $) {
             options = {};
         }
 
-        node = (node instanceof $) ? node[0] : node;
-
+        var $node = $(node);
+        node = $node[0];
         var observer = new MutationObserver(function (mutations) {
-            module.applyTo(node);
+            mutations.forEach(function(mutation) {
+                var $nodes = $(mutation.addedNodes).filter(function () {
+                    return this.nodeType === 1; // filter out text nodes
+                });
+
+                $nodes.each(function() {
+                    var $this = $(this);
+                    module.applyTo($this);
+                })
+            });
         });
 
         observer.observe(node, {childList: true, subtree: true});

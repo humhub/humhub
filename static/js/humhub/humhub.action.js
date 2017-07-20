@@ -218,7 +218,6 @@ humhub.module('action', function(module, require, $) {
             Component._buildSelector();
             //Binding default action types
             this.bindAction(document, 'click', '[data-action-click]');
-            this.bindAction(document, 'dblclick', '[data-action-dblclick]');
             this.bindAction(document, 'change', '[data-action-change]');
         }
 
@@ -333,8 +332,8 @@ humhub.module('action', function(module, require, $) {
         module.log.debug('Handle Action', this);
 
         var event = this.createActionEvent(options);
-        
-        if(this.data($trigger, 'confirm') && !options.confirmed) {
+
+        if(object.isDefined(this.data($trigger, 'confirm')) && !options.confirmed) {
             var that = this;
             modal.confirm($trigger).then(function(confirmed) {
                 if(confirmed) {
@@ -444,16 +443,16 @@ humhub.module('action', function(module, require, $) {
      * @param {type} $trigger
      * @param {type} name
      * @param {type} def
-     * @returns {unresolved}
+     * @returns {mixed}
      */
     ActionBinding.prototype.data = function($trigger, name, def) {
         var result = $trigger.data('action-' + this.eventType + '-' + name);
 
-        if(!result) {
+        if(!object.isDefined(result)) {
             result = $trigger.data('action-' + name);
         }
 
-        return result || def;
+        return object.isDefined(result) ? result : def;
     };
 
     ActionBinding.prototype.getUrl = function($trigger) {

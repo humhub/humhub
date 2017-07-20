@@ -8,6 +8,7 @@
 
 namespace humhub\modules\friendship\notifications;
 
+use humhub\modules\user\models\User;
 use Yii;
 use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\targets\BaseTarget;
@@ -59,6 +60,14 @@ class FriendshipNotificationCategory extends NotificationCategory
         }
 
         return $target->defaultSetting;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isVisible(User $user = null)
+    {
+        return Yii::$app->getModule('friendship')->getIsEnabled();
     }
 
 }

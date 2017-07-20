@@ -142,6 +142,8 @@ class StreamQuery extends \yii\base\Model
      */
     public static function find($includes = [], $excludes = [])
     {
+        $instance = new static();
+
         if (!is_int($includes)) {
             //Allow single type
             if (!is_array($includes)) {
@@ -152,10 +154,9 @@ class StreamQuery extends \yii\base\Model
                 $excludes = [$excludes];
             }
         } else {
-            $this->contentId = $includes;
+            $instance->contentId = $includes;
         }
 
-        $instance = new static();
         return $instance->includes($includes)->excludes($excludes);
     }
 
@@ -331,12 +332,19 @@ class StreamQuery extends \yii\base\Model
         if ($this->sort == self::SORT_UPDATED_AT) {
             $this->_query->orderBy('content.stream_sort_date DESC');
             if (!empty($this->from)) {
-                $this->_query->andWhere("content.stream_sort_date < (SELECT updated_at FROM content wd WHERE wd.id=" . $this->from . ")");
+                $this->_query->andWhere(
+                    ['or',
+                        "content.stream_sort_date < (SELECT updated_at FROM content wd WHERE wd.id=:from)",
+                        ['and',
+                            "content.stream_sort_date = (SELECT updated_at FROM content wd WHERE wd.id=:from)",
+                            "content.id > :from"
+                        ],
+                    ], [':from' => $this->from]);
             }
         } else {
             $this->_query->orderBy('content.id DESC');
             if (!empty($this->from)) {
-                $this->_query->andWhere("content.id < " . $this->from);
+                $this->_query->andWhere("content.id < :from", [':from' => $this->from]);
             }
         }
     }

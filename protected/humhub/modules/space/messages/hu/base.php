@@ -9,7 +9,7 @@ return array (
   'Only by invite' => '',
   'Private' => '',
   'Private (Invisible)' => '',
-  'Public' => '',
+  'Public' => 'Nyilvános',
   'Public (Members & Guests)' => '',
   'Public (Members only)' => '',
   'Public (Registered users only)' => '',

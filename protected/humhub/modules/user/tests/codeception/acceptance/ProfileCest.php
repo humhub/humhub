@@ -30,7 +30,7 @@ class ProfileCest
         $I->amGoingTo('fill all required fields plus birthday and hide year field');
         $I->fillField('#profile-lastname', 'MyLastName');
         $I->fillField('#profile-birthday', '4/16/87');
-        $I->click('.field-profile-birthday_hide_year div'); // Hide year in profile
+        $I->click('label[for="profile-birthday_hide_year"]'); // Hide year in profile
         
         $I->scrollToTop();
         

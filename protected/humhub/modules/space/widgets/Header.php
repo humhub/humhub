@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\widgets;
 
+use Yii;
 use yii\base\Widget;
 use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;
@@ -36,10 +37,11 @@ class Header extends Widget
                     'contentcontainer_id' => $this->space->contentContainerRecord->id
                 ])->count();
 
-        return $this->render('header', array(
+        return $this->render('header', [
                     'space' => $this->space,
+                    'followingEnabled' => !Yii::$app->getModule('space')->disableFollow,
                     'postCount' => $postCount
-        ));
+        ]);
     }
 
 }

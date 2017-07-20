@@ -57,16 +57,17 @@ return [
 Google
 ------
 
-In order to use Google OAuth you must create a project at <https://console.developers.google.com/project>
+In order to use Google OAuth you must create a **project** at <https://console.developers.google.com/project>
 and setup its credentials at <https://console.developers.google.com/project/[yourProjectId]/apiui/credential>.
 
-In order to enable using scopes for retrieving user attributes, you should also enable Google+ API at
+In order to enable using scopes for retrieving user attributes, you have to enable Google+ API at
 <https://console.developers.google.com/project/[yourProjectId]/apiui/api/plus>.
 
-Authorization callback URLs:
-- http://domain/path-to-humhub/user/auth/external?authclient=google (With clean urls enabled)
-- http://domain/path-to-humhub/index.php?r=user%2Fauth%2Fexternal&authclient=google (Without clean urls)
+Add one of the following **authorization callback URLs** to your  googles **Credentials** configuration:
+- http://<domain>/<path-to-humhub>/user/auth/external?authclient=google (With clean urls enabled)
+- http://<domain>/<path-to-humhub>/index.php?r=user%2Fauth%2Fexternal&authclient=google (Without clean urls)
 
+>Note: Replace **domain** and **path-to-humhub** in the mentioned redirect urls.
 
 Add following block to your configuration (protected/config/common.php):
 

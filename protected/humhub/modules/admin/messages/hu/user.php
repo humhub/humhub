@@ -6,7 +6,7 @@ return array (
   'Add new group' => '',
   'Groups' => 'Csoportok',
   'Manage group: {groupName}' => '',
-  'Overview' => '',
+  'Overview' => 'Tartalomjegyzék',
   'Pending approvals' => '',
   'Profiles' => '',
 );

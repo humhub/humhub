@@ -187,6 +187,16 @@ class AcceptanceTester extends \Codeception\Actor
         $this->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839a');
     }
 
+    public function uploadFileTo($path = '\'index-test.php?r=file/file/upload', $files, $data = [])
+    {
+        $this->wantTo('Upload file');
+        $this->getModule('WebDriver')->webDriver->
+        $this->haveHttpHeader('Content-Type', 'multipart/form-data');
+        $this->sendPOST('/attachments/', $data, $files);
+        $this->deleteHeader('Content-Type');
+        //$this->
+    }
+
     public function seeInNotifications($text)
     {
         $this->click('.notifications .fa-bell');

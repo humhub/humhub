@@ -9,6 +9,8 @@
 namespace humhub\modules\content\components;
 
 use Yii;
+use humhub\libs\BasePermission;
+use humhub\modules\content\permissions\ManageContent;
 use yii\base\Exception;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
@@ -67,6 +69,51 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     protected $streamChannel = 'default';
 
     /**
+     * Holds an extra manage permission by providing one of the following
+     *
+     *  - BasePermission class string
+     *  - Array of type ['class' => '...', 'callback' => '...']
+     *  - Anonymous function
+     *  - BasePermission instance
+     *
+     * @var string permission instance
+     * @since 1.2.1
+     */
+    protected $managePermission = ManageContent::class;
+
+    /**
+     * ContentActiveRecord constructor accepts either an configuration array as first argument or an ContentContainerActiveRecord
+     * and visibility settings.
+     *
+     * Use as follows:
+     *
+     * `$model = new MyContent(['myField' => 'value']);`
+     *
+     * or
+     *
+     * `$model = new MyContent($space1, Content::VISIBILITY_PUBLIC, ['myField' => 'value']);`
+     *
+     *
+     * @param array|ContentContainerActiveRecord $contentContainer either the configuration or contentcontainer
+     * @param int $visibility
+     * @param array $config
+     */
+    public function __construct($contentContainer = [], $visibility = null, $config = [])
+    {
+        if(is_array($contentContainer)) {
+            parent::__construct($contentContainer);
+        } else if($contentContainer instanceof ContentContainerActiveRecord) {
+            $this->content->setContainer($contentContainer);
+            if($visibility !== null) {
+                $this->content->visibility = $visibility;
+            }
+            parent::__construct($config);
+        } else {
+            parent::__construct([]);
+        }
+    }
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -118,6 +165,46 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     public function getContentDescription()
     {
         return "";
+    }
+
+    /**
+     * Returns the $managePermission settings interpretable by an PermissionManager instance.
+     *
+     * @since 1.2.1
+     * @see ContentActiveRecord::$managePermission
+     * @return null|object
+     */
+    public function getManagePermission()
+    {
+        if(!$this->hasManagePermission()) {
+            return null;
+        } else if(is_string($this->managePermission)) { // Simple Permission class specification
+            return $this->managePermission;
+        } else if(is_array($this->managePermission)) {
+            if(isset($this->managePermission['class'])) { // ['class' => '...', 'callback' => '...']
+                $handler = $this->managePermission['class'].'::'.$this->managePermission['callback'];
+                return call_user_func($handler, $this);
+            } else { // Simple Permission array specification
+                return $this->managePermission;
+            }
+        } else if(is_callable($this->managePermission)) { // anonymous function
+            return $this->managePermission($this);
+        } else if($this->managePermission instanceof BasePermission) {
+            return $this->managePermission;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Determines weather or not this records has an additional managePermission set.
+     *
+     * @since 1.2.1
+     * @return boolean
+     */
+    public function hasManagePermission()
+    {
+        return !empty($this->managePermission);
     }
 
     /**

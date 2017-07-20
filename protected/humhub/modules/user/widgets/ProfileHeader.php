@@ -74,6 +74,7 @@ class ProfileHeader extends \yii\base\Widget
                     'user' => $this->user,
                     'isProfileOwner' => $this->isProfileOwner,
                     'friendshipsEnabled' => $friendshipsEnabled,
+                    'followingEnabled' => !Yii::$app->getModule('user')->disableFollow,
                     'countFriends' => $countFriends,
                     'countFollowers' => $this->user->getFollowerCount(),
                     'countFollowing' => $countFollowing,

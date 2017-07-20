@@ -491,18 +491,21 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function canAccessPrivateContent(User $user = null)
     {
-        if ($this->isCurrentUser()) {
+        $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
+
+        // Guest
+        if(!$user) {
+            return false;
+        }
+
+        // Self
+        if ($user->is($this)) {
             return true;
         }
 
-        if ($user === null) {
-            $user = Yii::$app->user->getIdentity();
-        }
-
-        if ($user !== null && Yii::$app->getModule('friendship')->getIsEnabled()) {
-            if (Friendship::getStateForUser($this, $user) == Friendship::STATE_FRIENDS) {
-                return true;
-            }
+        // Friend
+        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+            return (Friendship::getStateForUser($this, $user) == Friendship::STATE_FRIENDS);
         }
 
         return false;
@@ -632,16 +635,18 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      * TODO: deprecated
      * @inheritdoc
      */
-    public function getUserGroup()
+    public function getUserGroup(User $user = null)
     {
-        if (Yii::$app->user->isGuest) {
+        $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
+
+        if (!$user) {
             return self::USERGROUP_GUEST;
-        } elseif (Yii::$app->user->getIdentity()->id === $this->id) {
+        } elseif ($this->is($user)) {
             return self::USERGROUP_SELF;
         }
 
         if (Yii::$app->getModule('friendship')->getIsEnabled()) {
-            if (Friendship::getStateForUser($this, Yii::$app->user->getIdentity()) === Friendship::STATE_FRIENDS) {
+            if (Friendship::getStateForUser($this, $user) === Friendship::STATE_FRIENDS) {
                 return self::USERGROUP_FRIEND;
             }
         }

@@ -12,7 +12,7 @@ humhub\assets\TabbedFormAsset::register($this);
     </div>
 </div>
 <div class="panel-body">
-    <?php $form = \yii\widgets\ActiveForm::begin(['options' => ['data-ui-widget' => 'ui.form.TabbedForm', 'data-ui-init' => '']]); ?>
+    <?php $form = \yii\bootstrap\ActiveForm::begin(['options' => ['data-ui-widget' => 'ui.form.TabbedForm', 'data-ui-init' => '']]); ?>
     <?= $hForm->render($form); ?>
-    <?php \yii\widgets\ActiveForm::end(); ?>
+    <?php \yii\bootstrap\ActiveForm::end(); ?>
 </div>

@@ -10,6 +10,7 @@ namespace humhub\components\i18n;
 
 use Yii;
 use humhub\models\forms\ChooseLanguage;
+use yii\base\Exception;
 
 /**
  * I18N provides features related with internationalization (I18N) and localization (L10N).
@@ -45,16 +46,19 @@ class I18N extends \yii\i18n\I18N
     public function setUserLocale($user)
     {
         if ($user === null) {
-            throw \yii\base\InvalidParamException("User cannot be null!");
+            throw new \yii\base\InvalidParamException('User cannot be null!');
         }
 
         if (!empty($user->language)) {
             Yii::$app->language = $user->language;
+        } else {
+            $this->setDefaultLocale();
         }
 
-        if (!($user->time_zone)) {
+        if (!empty($user->time_zone)) {
             Yii::$app->formatter->timeZone = $user->time_zone;
         }
+
         Yii::$app->formatter->defaultTimeZone = Yii::$app->timeZone;
 
         $this->fixLocaleCodes();

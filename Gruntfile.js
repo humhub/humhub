@@ -22,8 +22,20 @@ module.exports = function (grunt) {
             },
             buildTheme: {
                 command: function(name) {
-                    theme = name || grunt.option('name') || "HumHub";
+                    var theme = name || grunt.option('name') || "HumHub";
                     return "cd themes/"+theme+"/less ; lessc -x build.less ../css/theme.css";
+                }
+            },
+            migrateCreate: {
+                command: function(name) {
+                    var migrationName = name || grunt.option('name');
+                    return "cd protected; php yii migrate/create "+migrationName;
+                }
+            },
+            migrateUp: {
+                command: function(modules) {
+                    var includeModuleMigrations = modules || grunt.option('modules') || "1";
+                    return "cd protected; php yii migrate/up --includeModuleMigrations="+includeModuleMigrations;
                 }
             }
             
@@ -66,6 +78,15 @@ module.exports = function (grunt) {
     //grunt.registerTask('default', ['watch']);
     grunt.registerTask('build-assets', ['shell:buildAssets']);
     grunt.registerTask('build-search', ['shell:buildSearch']);
+
+    grunt.registerTask('migrate-up', ['shell:migrateUp']);
+
+    /**
+     * Will create a new migration into the protected/humhub/migrations directory
+     *
+     * > grunt migrate-create --name=MyMigration
+     */
+    grunt.registerTask('migrate-create', ['shell:migrateCreate']);
     
     /**
      * Build default HumHub theme:

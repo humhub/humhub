@@ -22,7 +22,6 @@ return [
     'Default Space' => '',
     'Last Login' => '',
     'Manager' => '',
-    'New user needs approval' => '',
     'Show At Directory' => '',
     'Show At Registration' => '',
     'Space ID' => '',

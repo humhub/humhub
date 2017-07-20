@@ -118,7 +118,8 @@ class DbDateValidator extends \yii\validators\DateValidator
 
         if ($this->hasTime() && $timeValue != "") {
             $timestamp += $this->parseTimeValue($timeValue);
-            $timestamp = $this->fixTimestampTimeZone($timestamp, \Yii::$app->formatter->timeZone);
+            $timeZone = (!\Yii::$app->formatter->timeZone) ? \Yii::$app->timeZone : \Yii::$app->formatter->timeZone;
+            $timestamp = $this->fixTimestampTimeZone($timestamp, $timeZone);
         }
 
         return $timestamp;

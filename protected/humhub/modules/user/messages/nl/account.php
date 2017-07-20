@@ -1,10 +1,10 @@
 <?php
 return array (
-  '<strong>Modify</strong> your profile image' => '<strong>Wijzig</strong> uw profiel-afbeelding',
-  '<strong>Modify</strong> your title image' => '<strong>Wijzig</strong> uw titel afbeelding',
-  '<strong>Security</strong> settings' => '<strong>Veiligheids</strong> instellingen',
+  '<strong>Modify</strong> your profile image' => '<strong>Wijzig</strong> mijn profiel-afbeelding',
+  '<strong>Modify</strong> your title image' => '<strong>Wijzig</strong> mijn titel afbeelding',
+  '<strong>Security</strong> settings' => '<strong>Privacy</strong> instellingen',
   '<strong>User</strong> settings' => '<strong>Gebruiker</strong> instellingen',
-  '<strong>Your</strong> profile' => '<strong>Je</strong> profiel',
+  '<strong>Your</strong> profile' => '<strong>Mijn</strong> profiel',
   'E-Mail Summaries' => 'E-mail samenvattingen',
   'Not registered users' => 'Niet-geregistreerde gebruikers',
   'Notifications' => 'Notificaties',

@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Checkbox' => '',
+    'Checkbox List' => '',
     'Markdown' => '',
     'Birthday' => 'Compleanno',
     'Country' => 'Paese',
@@ -26,5 +28,4 @@ return [
     'Select List' => 'Seleziona lista',
     'Text' => 'Testo',
     'Text Area' => 'Area di testo',
-    'Checkbox' => '',
 ];

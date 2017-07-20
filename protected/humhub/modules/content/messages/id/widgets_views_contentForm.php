@@ -17,10 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add a member to notify' => '',
-    'Make private' => '',
-    'Make public' => '',
-    'Notify members' => '',
-    'Public' => '',
-    'This space is archived.' => '',
+    'Content visibility' => '',
+    'Add a member to notify' => 'Tambah pemberitahuan anggota',
+    'Make private' => 'Buat privat',
+    'Make public' => 'Buat publik',
+    'Notify members' => 'Beritahu anggota',
+    'Public' => 'Publik',
+    'This space is archived.' => 'Ruang ini di arsipkan',
 ];

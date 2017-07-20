@@ -5,7 +5,6 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
-
 Yii::setAlias('@webroot', realpath(__DIR__ . '/../../../'));
 Yii::setAlias('@app', '@webroot/protected');
 Yii::setAlias('@humhub', '@app/humhub');
@@ -13,7 +12,7 @@ Yii::setAlias('@config', '@app/config');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.2.0',
+    'version' => '1.2.1',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue'],
     'sourceLanguage' => 'en',
@@ -104,7 +103,7 @@ $config = [
         'assetManager' => [
             'class' => '\humhub\components\AssetManager',
             'appendTimestamp' => true,
-            'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD ? 'assets-prod.php' : 'assets-dev.php')),
+            'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD || YII_ENV_TEST ? 'assets-prod.php' : 'assets-dev.php')),
         ],
         'view' => [
             'class' => '\humhub\components\View',
@@ -120,6 +119,7 @@ $config = [
             'password' => '',
             'charset' => 'utf8',
             'enableSchemaCache' => true,
+            'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
         ],
         'authClientCollection' => [
             'class' => 'humhub\modules\user\authclient\Collection',

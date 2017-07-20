@@ -1,11 +1,62 @@
 HumHub Change Log
 =================
-1.2.1 (in developement)
+1.2.2 in developement
+- Enh: Allow returning class names beside BasePermission instances in `Module::getPermissions()`
+- Enh: Increase profile image size to 800px.
+- Fix #2644 overlapping popup preview image after increasing preview image size (hagalaz)
+- Fix: Button widget child class static instantiation not working 
+- Fix: ModalButton instatiation and added ModalButton::close()
+- Fix: Respect `max_file_uploads` setting in UploadInput widget
+- Enh: Include `kartik-v/yii2-widgets`
+- Enh: Added `getAccessRules()` to `humhub/components/Controller`
+- Fix: AccessControl action restriction bug
+- Fix: `ModuleAutoLoader` exceptions not logged
+- Fix: `I18N` formatter user timezone not set
+- Enh: Automatically set space default visibility in `Content::setContainer()`
+- Fix: Fixed ContentContainerSettingManager caching issue if space/user id are equal
+- Enh: Use of select2 dropdown for time zone selections
+- Fix: Bypass AccessControl behavior in installer
+
+1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
 - Fix #2518: ActivityStreamWidget::EVENT_INIT is missed (githubjeka)
 - Enh: Fixed accessibility issues in Dashboard/Login/Profile
 - Fix: module beforeInit and afterInit event
 - Enh: Added Registraion::EVENT_AFTER_REGISTRATION UserEvent
+- Enh: Added grunt `migrate-up` and `migrate-create` task
+- Enh: Added profile field type `CheckboxList`
+- Fix: Fixed `ui.addition` `MutationObserver`, only apply additions to inserted nodes.
+- Enh: Changed invite mail subject text
+- Fix #2571: last_login not set after registration direct login 
+- Enh: Always trigger dom widget events for widget `fire` until `triggerDom` is set to false
+- Enh: Added `richtextPaste` event
+- Enh: On search index rebuilding - use batch queries 
+- Fix: `ActiveQueryContent:readable()` for guNest users missing join
+- Enh: Added `ContentActiveRecord:managePermission` for changing the default write permission of ContentActiveRecord classes
+- Enh: Moved all default `WallEntryControls` to `WallEntry:getContextMenu()` widget.
+- Fix: Connect google OAuth under `Profile Settings  -> Connected Accounts` throws invalid redirect uri.
+- Fix: Invite Users does not respect ManageUsers/ManageGroups permission
+- Fix: Mail summaries sent in incorrect language
+- Fix: Send button text on request space membership dialog
+- Fix #2555: Friendship notification category visible even if friendship system deactivated
+- Enh: Don't auto focus space chooser search on small devices
+- Fix #2612: Single list item hides markers
+- Fix #2558: No notification for user profile posts send
+- Fixed #2560: Markdown profile field editable flag not working
+- Fix: Hide also header (space, profile) counts when following system is disabled
+- Fix: Perma link to space contents broken when space homepage was changed
+- Fix: Properly sort language and country select by users locale
+- Enh: Allow search in country profile field dropdown
+- Fix: js action api empty data attribute
+- Enh: Added button helper widgets `<?= Button::primary('myButton')->action('myJsAction')?>`
+- Enh: Enhanced ContentActiveRecord instantiation `$model = new MyContent($space, Content::VISIBILITY_PRIVATE)`
+- Fix #2625 Pjax problem with local links to files within stream
+- Enh: Use of `target="_blank"` for stream links
+- Fix #2594 Bug: Url with unicode in stream markdown
+- Fix: Notification grouping not working
+- Fix: Show more suppression entries with sort order update + equal update_at not working.
+- Fix #2627: Incorrect language used in group admin user approval e-mail
+- Fix #2631: Module configuration link shown for disabled modules
 
 1.2.0 (April 16, 2017)
 --------------------------------

@@ -27,7 +27,6 @@ return [
     'Last Login' => '最后登录时间',
     'Manager' => '管理',
     'Name' => '名字',
-    'New user needs approval' => '新用户需要审核',
     'Show At Directory' => '在目录展示',
     'Show At Registration' => '在注册展示',
     'Space ID' => '空间ID',

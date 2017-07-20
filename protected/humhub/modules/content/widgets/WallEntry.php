@@ -140,6 +140,14 @@ class WallEntry extends Widget
         if (!empty($this->getEditUrl())) {
             $result[] = [EditLink::class, ['model' => $this->contentObject, 'mode' => $this->editMode, 'url' => $this->getEditUrl()], ['sortOrder' => 200]];
         }
+
+        $result[] = [DeleteLink::className(), ['content' => $this->contentObject], ['sortOrder' => 100]];
+        $result[] = [VisibilityLink::className(), ['contentRecord' => $this->contentObject], ['sortOrder' => 250]];
+        $result[] = [NotificationSwitchLink::className(), ['content' => $this->contentObject], ['sortOrder' => 300]];
+        $result[] = [PermaLink::className(), ['content' => $this->contentObject], ['sortOrder' => 400]];
+        $result[] = [PinLink::className(), ['content' => $this->contentObject], ['sortOrder' => 500]];
+        $result[] = [ArchiveLink::className(), ['content' => $this->contentObject], ['sortOrder' => 600]];
+
         return $result;
     }
 

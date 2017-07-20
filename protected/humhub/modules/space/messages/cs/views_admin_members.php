@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Manage</strong> members' => '',
-  'Actions' => '',
+  '<strong>Manage</strong> members' => '<strong>Spravovat</strong> členy',
+  'Actions' => 'Akce',
   'Remove' => 'Odstranit',
-  'Role' => '',
-  'never' => '',
+  'Role' => 'Role',
+  'never' => 'nikdy',
 );

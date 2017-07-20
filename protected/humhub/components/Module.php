@@ -202,7 +202,15 @@ class Module extends \yii\base\Module
      * Disables a module
      *
      * This should delete all data created by this module.
-     * When override this method make sure to invoke the parent implementation AFTER your implementation.
+     * When override this method make sure to invoke call `parent::disable()` **AFTER** your implementation as
+     *
+     * ```php
+     * public function disable()
+     * {
+     *     // custom disable logic
+     *     parent::disable();
+     * }
+     * ```
      */
     public function disable()
     {
@@ -222,7 +230,7 @@ class Module extends \yii\base\Module
             try {
                 $migration->up();
             } catch (\yii\db\Exception $ex) {
-                ;
+                Yii::error($ex);
             }
             ob_get_clean();
 

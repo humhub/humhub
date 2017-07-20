@@ -81,58 +81,59 @@ class Text extends BaseType
     /**
      * Returns Form Definition for edit/create this field.
      *
+     * @param array $definition
      * @return Array Form Definition
      */
     public function getFormDefinition($definition = array())
     {
-        return parent::getFormDefinition(array(
-                    get_class($this) => array(
+        return parent::getFormDefinition([
+                    get_class($this) => [
                         'type' => 'form',
                         'title' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Text Field Options'),
-                        'elements' => array(
-                            'maxLength' => array(
+                        'elements' => [
+                            'maxLength' => [
                                 'type' => 'text',
                                 'maxlength' => 32,
                                 'label' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Maximum length'),
                                 'class' => 'form-control',
-                            ),
-                            'validator' => array(
+                            ],
+                            'validator' => [
                                 'label' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Validator'),
                                 'type' => 'dropdownlist',
                                 'class' => 'form-control',
-                                'items' => array(
+                                'items' => [
                                     '' => 'None',
                                     self::VALIDATOR_EMAIL => 'E-Mail Address',
                                     self::VALIDATOR_URL => 'URL',
-                                ),
-                            ),
-                            'minLength' => array(
+                                ],
+                            ],
+                            'minLength' => [
                                 'label' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Minimum length'),
                                 'type' => 'text',
                                 'class' => 'form-control',
-                            ),
-                            'maxLength' => array(
+                            ],
+                            'maxLength' => [
                                 'label' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Maximum length'),
                                 'class' => 'form-control',
                                 'type' => 'text',
-                            ),
-                            'default' => array(
+                            ],
+                            'default' => [
                                 'label' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Default value'),
                                 'class' => 'form-control',
                                 'type' => 'text',
-                            ),
-                            'regexp' => array(
+                            ],
+                            'regexp' => [
                                 'label' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Regular Expression: Validator'),
                                 'class' => 'form-control',
                                 'type' => 'text',
-                            ),
-                            'regexpErrorMessage' => array(
+                            ],
+                            'regexpErrorMessage' => [
                                 'label' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Regular Expression: Error message'),
                                 'class' => 'form-control',
                                 'type' => 'text',
-                            ),
-                        )
-        )));
+                            ],
+                        ]
+                    ]]);
     }
 
     /**
@@ -155,23 +156,23 @@ class Text extends BaseType
      * @param type $rules
      * @return type
      */
-    public function getFieldRules($rules = array())
+    public function getFieldRules($rules = [])
     {
 
         if ($this->validator == self::VALIDATOR_EMAIL) {
-            $rules[] = array($this->profileField->internal_name, 'email');
+            $rules[] = [$this->profileField->internal_name, 'email'];
         } elseif ($this->validator == self::VALIDATOR_URL) {
-            $rules[] = array($this->profileField->internal_name, 'url');
+            $rules[] = [$this->profileField->internal_name, 'url'];
         }
 
         if ($this->maxLength == "" || $this->maxLength > 255) {
-            $rules[] = array($this->profileField->internal_name, 'string', 'max' => 255);
+            $rules[] = [$this->profileField->internal_name, 'string', 'max' => 255];
         } else {
-            $rules[] = array($this->profileField->internal_name, 'string', 'max' => $this->maxLength);
+            $rules[] = [$this->profileField->internal_name, 'string', 'max' => $this->maxLength];
         }
 
         if ($this->minLength != "") {
-            $rules[] = array($this->profileField->internal_name, 'string', 'min' => $this->minLength);
+            $rules[] = [$this->profileField->internal_name, 'string', 'min' => $this->minLength];
         }
 
         if ($this->regexp != "") {
@@ -179,7 +180,7 @@ class Text extends BaseType
             if ($errorMsg == "") {
                 $errorMsg = "Invalid!";
             }
-            $rules[] = array($this->profileField->internal_name, 'match', 'pattern' => $this->regexp, 'message' => $errorMsg);
+            $rules[] = [$this->profileField->internal_name, 'match', 'pattern' => $this->regexp, 'message' => $errorMsg];
         }
 
         return parent::getFieldRules($rules);

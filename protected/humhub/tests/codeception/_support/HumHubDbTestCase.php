@@ -2,6 +2,7 @@
 
 namespace tests\codeception\_support;
 
+use humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture;
 use Yii;
 use yii\db\ActiveRecord;
 use Codeception\TestCase\Test;
@@ -102,9 +103,11 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
             'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::className()],
             'space' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::className()],
             'space_membership' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture::className()],
+            'space_module' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceModuleFixture::className()],
             'content' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentFixture::className()],
             'notification' => ['class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::className()],
             'activity' => ['class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::className()],
+            'friendship' => ['class' => FriendshipFixture::class]
         ];
     }
 
@@ -141,6 +144,11 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
     {
         $user = User::findOne(['username' => $userName]);
         Yii::$app->user->switchIdentity($user);
+    }
+
+    public function logout()
+    {
+        Yii::$app->user->logout(true);
     }
 
 }

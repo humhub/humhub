@@ -74,7 +74,7 @@ humhub.module('ui.widget', function(module, require, $) {
         this.trigger(event, args);
         
         // If required, trigger dom event
-        if(triggerDom) {
+        if(triggerDom !== false) {
             this.$.trigger(event, args);
         }
     };

@@ -112,17 +112,13 @@ class Setting extends \yii\db\ActiveRecord
     }
 
     /**
-     * Checks if initial data like settings, groups are installed.
+     * Checks if Humhub is installed
      *
-     * @return Boolean Is Installed
+     * @return boolean
      */
     public static function isInstalled()
     {
-        if (isset(Yii::$app->params['installed']) && Yii::$app->params['installed']) {
-            return true;
-        }
-
-        return false;
+        return isset(Yii::$app->params['installed']) && Yii::$app->params['installed'] == true;
     }
 
     /**

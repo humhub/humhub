@@ -30,7 +30,6 @@ return [
     'Email' => 'Elektroninis paštas',
     'Language' => 'Kalba',
     'Name' => 'Vardas',
-    'New user needs approval' => 'Naujam vartotojui reikia patvirtinimo',
     'Status' => 'Būsena',
     'Tags' => 'Žymos',
     'Updated at' => 'Atnaujinta',

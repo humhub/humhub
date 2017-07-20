@@ -17,8 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Allow other selection' => '',
     'Comma separated country codes, e.g. DE,EN,AU' => '',
     'Supported ISO3166 country codes' => '',
+    'This will add an additional input element for custom values' => '',
     'One option per line. Key=>Value Format (e.g. yes=>Yes)' => 'Una opción por línea. Formato Clave=>Valor (p.ej. si=Sí)',
     'Please select:' => 'Por favor, elige:',
     'Possible values' => 'Valores posibles',

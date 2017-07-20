@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\modules\user\models\Profile;
 use Yii;
 
 /**
@@ -57,9 +58,9 @@ class Birthday extends Date
     public function delete()
     {
         // Try create column name
-        if (Profile::model()->columnExists($this->profileField->internal_name)) {
+        if (Profile::columnExists($this->profileField->internal_name)) {
             $sql = "ALTER TABLE profile DROP `" . $this->profileField->internal_name . "_hide_year`;";
-            $this->profileField->dbConnection->createCommand($sql)->execute();
+            Yii::$app->db->createCommand($sql)->execute();
         }
 
         return parent::delete();

@@ -1,8 +1,8 @@
 <?php
 return array (
-  'About HumHub' => '',
-  'CronJobs' => '',
+  'About HumHub' => 'O HumHubu',
+  'CronJobs' => 'Cron',
   'Database' => 'Databáze',
   'Logging' => 'Protokol',
-  'Prerequisites' => '',
+  'Prerequisites' => 'Předpoklady',
 );

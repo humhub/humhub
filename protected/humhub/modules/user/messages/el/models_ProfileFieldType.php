@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Checkbox' => '',
+    'Checkbox List' => '',
     'Date' => '',
     'Markdown' => '',
     'Birthday' => 'Γενέθλια',
@@ -26,5 +28,4 @@ return [
     'Select List' => 'Λίστα επιλογής',
     'Text' => 'Κείμενο',
     'Text Area' => 'Πεδίο κειμένου',
-    'Checkbox' => '',
 ];

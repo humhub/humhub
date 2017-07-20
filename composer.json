@@ -21,6 +21,7 @@
         "yiisoft/yii2-authclient": "~2.0.0",
         "yiisoft/yii2-imagine": "~2.0.0",
         "raoul2000/yii2-jcrop-widget": "*",
+        "kartik-v/yii2-widgets": "*",
         "cebe/markdown": "1.0.2",
         "yiisoft/yii2-jui": "~2.0.0",
         "zendframework/zend-http": "*",

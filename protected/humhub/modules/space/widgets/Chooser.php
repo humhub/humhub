@@ -11,10 +11,8 @@ use humhub\modules\user\models\Follow;
 use yii\helpers\Html;
 
 /**
- * Created by PhpStorm.
- * User: Struppi
- * Date: 17.12.13
- * Time: 12:49
+ * Class Chooser
+ * @package humhub\modules\space\widgets
  */
 class Chooser extends Widget
 {

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use Yii;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
 use humhub\modules\user\models\User;
@@ -157,7 +158,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Returns the related ContentContainer model (e.g. Space or User)
      *
      * @see ContentContainer
-     * @return \yii\db\ActiveQuery
+     * @return ContentContainer
      */
     public function getContentContainerRecord()
     {
@@ -166,12 +167,20 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
-     * Returns the permissionManager of this container
+     * Returns the permissionManager of this container by default for the current logged in user unsless another $user instance was provided.
      *
+     * @param User $user
      * @return ContentContainerPermissionManager
      */
-    public function getPermissionManager()
+    public function getPermissionManager(User $user = null)
     {
+        if($user && !$user->is(Yii::$app->user->getIdentity())) {
+            $permissionManager = new ContentContainerPermissionManager;
+            $permissionManager->contentContainer = $this;
+            $permissionManager->subject = $user;
+            return $permissionManager;
+        }
+
         if ($this->permissionManager !== null) {
             return $this->permissionManager;
         }
@@ -197,11 +206,12 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
-     * Returns current users group
+     * Returns user group for the given $user or current logged in user if no $user instance was provided.
      *
+     * @param User|null $user
      * @return string
      */
-    public function getUserGroup()
+    public function getUserGroup(User $user = null)
     {
         return "";
     }

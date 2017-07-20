@@ -27,7 +27,6 @@ return [
     'Last Login' => 'Dernière connexion',
     'Manager' => 'Manager',
     'Name' => 'Nom',
-    'New user needs approval' => 'Les nouveaux utilisateurs doivent être approuvés',
     'Show At Directory' => 'Montrer dans l\'annuaire',
     'Show At Registration' => 'Montrer lors de l\'inscription',
     'Space ID' => 'ID de l\'espace',

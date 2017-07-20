@@ -115,7 +115,7 @@ class UrlOembed extends \yii\db\ActiveRecord
             if ($jsonOut != "") {
                 try {
                     $data = \yii\helpers\Json::decode($jsonOut);
-                    if (isset($data['type']) && ($data['type'] === "video" || $data['type'] === 'rich' || $data['type'] === 'photo')) {
+                    if (isset($data['html']) && isset($data['type']) && ($data['type'] === "video" || $data['type'] === 'rich' || $data['type'] === 'photo')) {
                         $html = "<div data-guid='".uniqid('oembed-')."' data-richtext-feature class='oembed_snippet' data-url='" . \yii\helpers\Html::encode($url) . "'>" . $data['html'] . "</div>";
                     }
                 } catch (\yii\base\InvalidParamException $ex) {

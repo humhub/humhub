@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Checkbox' => '',
+    'Checkbox List' => '',
     'Date' => '',
     'Markdown' => '',
     'Birthday' => 'Gimimo data',
@@ -26,5 +28,4 @@ return [
     'Select List' => 'Pažymėtas sąrašas',
     'Text' => 'Tekstas',
     'Text Area' => 'Vieta tekstui',
-    'Checkbox' => '',
 ];

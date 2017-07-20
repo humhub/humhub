@@ -14,7 +14,7 @@ namespace humhub\modules\post\widgets;
  *
  * @since 0.5
  */
-class Form extends \humhub\modules\content\widgets\WallCreateContentForm
+class CreateForm extends \humhub\modules\content\widgets\WallCreateContentForm
 {
 
     /**
