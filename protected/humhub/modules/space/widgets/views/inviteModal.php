@@ -27,7 +27,7 @@ if ($canInviteExternal && $model->hasErrors('inviteExternal')) {
             <div class="text-center">
                 <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                     <li class="<?= $isInviteTabActiveClass ?> tab-internal">
-                        <a href="#internal"data-toggle="tab"><?= Yii::t('SpaceModule.views_space_invite', 'Pick users'); ?></a>
+                        <a href="#internal" data-toggle="tab"><?= Yii::t('SpaceModule.views_space_invite', 'Pick users'); ?></a>
                     </li>
                     <li class="<?= $isInviteExternalTabActiveClass ?> tab-external">
                         <a href="#external" data-toggle="tab"><?= Yii::t('SpaceModule.views_space_invite', 'Invite by email'); ?></a>

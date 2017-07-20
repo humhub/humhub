@@ -39,6 +39,16 @@ class CoreApiAsset extends AssetBundle
     /**
      * @inheritdoc
      */
+    public $depends = [
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset',
+        'humhub\assets\BluebirdAsset',
+    ];
+
+    /**
+     * @inheritdoc
+     */
     public $js = [
         'js/humhub/legacy/jquery.loader.js',
         'js/humhub/legacy/app.js',
@@ -60,19 +70,10 @@ class CoreApiAsset extends AssetBundle
         'js/humhub/humhub.ui.gallery.js',
         'js/humhub/humhub.ui.picker.js',
         'js/humhub/humhub.ui.richtext.js',
+        'js/humhub/humhub.ui.markdown.js',
         'js/humhub/humhub.media.Jplayer.js',
         // Note this should stay at last for other click event listeners beeing able to prevent pjax handling (e.g gallery)
         'js/humhub/humhub.client.pjax.js',
-    ];
-
-    /**
-     * @inheritdoc
-     */
-    public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
-        'yii\bootstrap\BootstrapPluginAsset',
-        'humhub\assets\BluebirdAsset',
     ];
 
 }

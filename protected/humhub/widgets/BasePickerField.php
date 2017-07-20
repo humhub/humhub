@@ -126,6 +126,11 @@ abstract class BasePickerField extends InputWidget
     public $form;
 
     /**
+     * @deprecated since 1.2.2 use $name instead
+     */
+    public $formName;
+
+    /**
      * Model instance.
      * 
      * @var \yii\db\ActiveRecord
@@ -140,13 +145,6 @@ abstract class BasePickerField extends InputWidget
      */
     public $attribute;
 
-    /**
-     * Input form name.
-     * This can be set if no form and model is provided for custom input field setting.
-     * 
-     * @var type 
-     */
-    public $formName;
 
     /**
      * Can be used to overwrite the default placeholder.
@@ -163,7 +161,7 @@ abstract class BasePickerField extends InputWidget
     /**
      * If set to true the picker will be focused automatically.
      * 
-     * @var type 
+     * @var boolean
      */
     public $focus = false;
 
@@ -196,6 +194,11 @@ abstract class BasePickerField extends InputWidget
     {
         \humhub\assets\Select2BootstrapAsset::register($this->view);
 
+        //Only for compatibility
+        if(empty($this->name)) {
+            $this->name = $this->formName;
+        }
+
         if ($this->selection != null && !is_array($this->selection)) {
             $this->selection = [$this->selection];
         }
@@ -215,8 +218,8 @@ abstract class BasePickerField extends InputWidget
         } else if ($this->model != null) {
             return Html::activeDropDownList($this->model, $this->attribute, $selection, $options);
         } else {
-            $name = (!$this->formName) ? 'pickerField' : $this->formName;
-            return Html::dropDownList($name, $selection, [], $options);
+            $name = (!$this->name) ? 'pickerField' : $this->name;
+            return Html::dropDownList($name, $this->value, $selection, $options);
         }
     }
 

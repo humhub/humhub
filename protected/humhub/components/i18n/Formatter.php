@@ -41,6 +41,15 @@ class Formatter extends \yii\i18n\Formatter
         }
     }
 
+    /**
+     * Returns the date pattern for the given $locale and $dateType, $timeType.
+     *
+     * @since 1.2.2
+     * @param int $dateType
+     * @param int $timeType
+     * @param null $locale
+     * @return null|string
+     */
     public function getDateTimePattern($dateType = IntlDateFormatter::SHORT, $timeType = IntlDateFormatter::SHORT, $locale = null) {
         if(extension_loaded('intl')) {
             $locale = empty($locale) ? $this->locale : $locale;
@@ -55,6 +64,7 @@ class Formatter extends \yii\i18n\Formatter
      * Checks if the time pattern of a given $locale contains a meridiem (AM/PM).
      * If no $locale is provided the Formatter locale will be used.
      *
+     * @since 1.2.2
      * @param null $locale
      * @return bool if the locale uses a 12 hour (AM/PM) otherwise a 24 hour time format is used.
      */

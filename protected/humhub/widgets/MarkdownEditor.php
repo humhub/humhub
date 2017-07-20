@@ -12,6 +12,7 @@ namespace humhub\widgets;
  * MarkdownEditorWidget replaces a textarea element with bootstrap-markdown editor
  *
  * @todo Allow multiple MarkdownEditorWidget instances on a page
+ * @deprecated since 1.2.2 use MarkdownField instead
  * @author luke
  * @since 0.11
  */

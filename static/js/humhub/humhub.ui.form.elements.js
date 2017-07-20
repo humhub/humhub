@@ -92,11 +92,23 @@ humhub.module('ui.form.elements', function (module, require, $) {
         }
     };
 
+    var toggleTimeZoneInput = function(evt) {
+        evt.$trigger.siblings('.timeZoneInputContainer:first').fadeToggle('fast');
+    };
+
+    var timeZoneSelected = function(evt) {
+        $toggleButton = evt.$trigger.parent().siblings('.timeZoneToggle:first');
+        $toggleButton.text(evt.$trigger.find('option:selected').text());
+        evt.$trigger.parent().hide();
+    };
+
 
 
     module.export({
         init: init,
         initCheckbox: initCheckbox,
-        initRadio: initRadio
+        initRadio: initRadio,
+        toggleTimeZoneInput: toggleTimeZoneInput,
+        timeZoneSelected: timeZoneSelected
     });
 });

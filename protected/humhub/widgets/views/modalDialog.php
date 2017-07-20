@@ -1,5 +1,9 @@
+<?php
+use humhub\libs\Html;
+?>
 <!-- Dialog -->
-<div class="<?= $dialogClass ?>">
+
+<?= Html::beginTag('div', $options) ?>
     <!-- Content -->
     <div class="modal-content">
         <!-- Header -->
@@ -34,5 +38,4 @@
                 </div>
             <?php endif; ?>
         <?php endif; ?>
-    </div>
-</div>
+<?= Html::endTag('div') ?>

@@ -12,7 +12,7 @@ use humhub\widgets\RichText;
  * @since 1.2
  * @author buddha
  */
-class RichtextField extends JsWidget
+class RichtextField extends InputWidget
 {
 
     /**
@@ -28,37 +28,6 @@ class RichtextField extends JsWidget
      * @var integer
      */
     public $minInput = 3;
-
-    /**
-     * If the ActiveForm is set, it will be used to create the picker field,
-     * otherwise it's created by Html::activeDropDownList
-     *
-     * @var \yii\widgets\ActiveForm
-     */
-    public $form;
-
-    /**
-     * Model instance. Requires the setting of an model $attribute.
-     * 
-     * @var \yii\db\ActiveRecord
-     */
-    public $model;
-
-    /**
-     * Model attribute which holds the picker value. The referenced model attribute has to be an
-     * array.
-     * 
-     * @var string 
-     */
-    public $attribute;
-
-    /**
-     * Input form name.
-     * This can be provided if no form and model is provided for custom input field setting.
-     * 
-     * @var type 
-     */
-    public $name;
 
     /**
      * Can be used to overwrite the default placeholder.
@@ -97,14 +66,6 @@ class RichtextField extends JsWidget
      * @var array 
      */
     public $excludes = [];
-
-    /**
-     * Can be used to set the value in case no $model and $attribute is provided.
-     * $model and $attribute is provided.
-     * 
-     * @var string 
-     */
-    public $value;
 
     /**
      * If set to true the picker will be focused automatically.

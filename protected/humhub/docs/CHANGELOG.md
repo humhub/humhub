@@ -29,6 +29,7 @@ HumHub Change Log
 - Enh: Added `humhub/widgts/Button::userPickerSelfSelect()` for creating self select button for userpickers.
 - Enh: Added `humhub/widgts/Link::withAction()` for creating action based links
 - Enh: Added `SelectTimeZoneDropdown` widget
+- Enh: Added `Modal::closable` in order to respect `backdrop` and `keyboard` data setting of `Modal` and `ModalDialog` widget
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
