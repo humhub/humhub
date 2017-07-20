@@ -68,6 +68,14 @@ class Modal extends JsWidget
     public $showClose;
 
     /**
+     * If set to false $backdrop and §keyboard will be set to false automaticly, so
+     * the modal is only closable by buttons.
+     *
+     * @var bool
+     */
+    public $closable = true;
+
+    /**
      * Defines if a click on the modal background should close the modal
      * @var boolean
      */
@@ -128,11 +136,11 @@ class Modal extends JsWidget
     {
         $result = [];
 
-        if(!$this->backdrop) {
+        if(!$this->closable || !$this->backdrop) {
             $result['backdrop'] = 'static';
         }
 
-        if(!$this->keyboard) {
+        if(!$this->closable || !$this->keyboard) {
             $result['keyboard'] = 'false';
         }
 

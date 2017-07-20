@@ -11,6 +11,8 @@ class ModalDialog extends Modal
     
     public $dialogContent;
 
+    private $dialogClass;
+
     /**
      * @inheritdoc
      */
@@ -34,31 +36,45 @@ class ModalDialog extends Modal
         
         //The x close button is rendered by default either if forced by showClose or a headertext is given
         $showClose = ($this->showClose != null) ? $this->showClose : ($this->header != null);
-        
-        $dialogClass = 'modal-dialog';
-        $dialogClass .= ($this->size != null) ? ' modal-dialog-'.$this->size : '';
-        $dialogClass .= ($this->animation != null) ? ' animated '.$this->animation : '';
-        
+
         $bodyClass = 'modal-body';
         $bodyClass .= ($this->centerText) ? ' text-center' : '';
 
         $this->initialLoader = ($this->initialLoader ==! null) ? $this->initialLoader : ($this->body === null);
        
         $modalData = '';
-        $modalData .= !$this->backdrop ? 'data-backdrop="static"' : '';
-        $modalData .= !$this->keyboard ? 'data-keyboard="false"' : '';
+        $modalData .= !$this->closable || !$this->backdrop ? 'data-backdrop="static"' : '';
+        $modalData .= !$this->closable || !$this->keyboard ? 'data-keyboard="false"' : '';
         $modalData .= $this->show ? 'data-show="true"' : '';
         
         return $this->render('modalDialog', [
             'header' => $this->header,
+            'options' => $this->getOptions(),
             'dialogContent' => $this->dialogContent,
             'body' => $this->body,
             'bodyClass' => $bodyClass,
             'footer' => $this->footer,
-            'dialogClass' => $dialogClass,
             'initialLoader' => $this->initialLoader,
             'showClose' => $showClose
         ]);
+    }
+
+    public function getAttributes()
+    {
+        $dialogClass = 'modal-dialog';
+        $dialogClass .= ($this->size != null) ? ' modal-dialog-'.$this->size : '';
+        $dialogClass .= ($this->animation != null) ? ' animated '.$this->animation : '';
+
+        return [
+            'class' => $dialogClass
+        ];
+    }
+    public function getData()
+    {
+        return [
+            'backdrop' => (!$this->closable || $this->backdrop === false) ? "static" : $this->backdrop,
+            'keyboard' => (!$this->closable || !$this->keyboard) ? "false" : 'true',
+        ];
     }
 
 }

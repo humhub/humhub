@@ -428,7 +428,18 @@ humhub.module('ui.modal', function (module, require, $) {
         this.applyAdditions();
         this.$.find('input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
         this.checkAriaLabel();
+        this.updateDialogOptions();
         return this;
+    };
+
+    Modal.prototype.updateDialogOptions = function() {
+        var test = this.getDialog();
+        var test2 = this.getDialog().data('backdrop');
+        var test3 = this.getDialog().data('keyboard');
+        this.set({
+            backdrop : this.getDialog().data('backdrop'),
+            keyboard : this.getDialog().data('keyboard')
+        });
     };
 
     /**
