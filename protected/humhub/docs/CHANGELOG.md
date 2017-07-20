@@ -22,6 +22,13 @@ HumHub Change Log
 - Enh: Added $hideInStream flag for upload component/action for changing `show_in_stream` file flag
 - Enh: Added $showInStream flag for `FilePreview` widget to only include files with certain `show_in_stream` flag
 - Enh: Added `FileManager::findStreamFiles()` for querying files with either given `show_in_stream = 1` or `show_in_stream = 0` flag.
+- Enh: Added `humhub\widgets\Tabs` and `humhub\widgets\SettingsTabs` with view type tab support
+- Enh: Added new `MarkdownField` input widget which as replacement of deprecated `MarkdownEditor`
+- Fix: Fixed markdown file upload pjax issue
+- Fix: Removed `display: table-cell` from markdown image css to enable inline images
+- Enh: Added `humhub/widgts/Button::userPickerSelfSelect()` for creating self select button for userpickers.
+- Enh: Added `humhub/widgts/Link::withAction()` for creating action based links
+- Enh: Added `SelectTimeZoneDropdown` widget
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
