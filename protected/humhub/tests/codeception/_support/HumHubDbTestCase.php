@@ -27,6 +27,7 @@ use humhub\modules\activity\models\Activity;
  */
 class HumHubDbTestCase extends \yii\codeception\DbTestCase
 {
+    protected $fixtureConfig;
 
     protected function setUp()
     {
@@ -78,11 +79,16 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
      */
     public function fixtures()
     {
+        $cfg = \Codeception\Configuration::config();
+
+        if(!$this->fixtureConfig && isset($cfg['fixtures'])) {
+            $this->fixtureConfig = $cfg['fixtures'];
+        }
+
         $result = [];
 
-        $cfg = \Codeception\Configuration::config();
-        if (isset($cfg['fixtures'])) {
-            foreach ($cfg['fixtures'] as $fixtureTable => $fixtureClass) {
+        if (!empty($this->fixtureConfig)) {
+            foreach ($this->fixtureConfig as $fixtureTable => $fixtureClass) {
                 if ($fixtureClass === 'default') {
                     $result = array_merge($result, $this->getDefaultFixtures());
                 } else {

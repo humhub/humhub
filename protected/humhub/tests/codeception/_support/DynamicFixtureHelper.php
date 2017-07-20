@@ -57,6 +57,8 @@ class DynamicFixtureHelper extends Module
      */
     public function _before(\Codeception\TestCase $test)
     {
+        $this->unloadFixtures();
+
         if ($this->beforeTest) {
             $this->loadFixtures();
         }
