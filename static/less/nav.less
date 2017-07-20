@@ -51,6 +51,43 @@
     }
 }
 
+ul.tab-menu {
+  padding-top:10px;
+  background-color: @background-color-main;
+
+  padding-left: 10px;
+}
+
+ul.tab-menu-settings {
+  li > a {
+    padding-top:12px;
+    border-color: #ddd;
+    border-bottom:1px solid #ddd;
+    background-color: @background-color-secondary;
+    max-height: 41px;
+    outline: none;
+  }
+
+  li > a:hover, li > a:focus {
+    padding-top:10px;
+    border-top: 3px solid #ddd !important;
+  }
+
+  li > a:hover {
+    background-color: @background-color-secondary;
+  }
+
+  li.active > a, li.active > a:hover, li.active > a:focus {
+    padding-top:10px;
+    border-top: 3px solid @info !important;
+  }
+
+  li.active > a {
+    background-color: @background-color-main;
+    border-bottom-color: transparent !important;
+  }
+}
+
 .nav-pills,
 .nav-tabs,
 .account {

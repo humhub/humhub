@@ -31,11 +31,18 @@ use yii\helpers\Html;
  *
  * For more details and usage information on InputWidget, see the [guide article on forms](guide:input-forms).
  *
- * @author Qiang Xue <qiang.xue@gmail.com>
+ * @author Luke
  * @since 2.0
  */
 class InputWidget extends JsWidget
 {
+    /**
+     * If the ActiveForm is set, it should be used to create input field.
+     * This may differ between implementations.
+     *
+     * @var \yii\widgets\ActiveForm
+     */
+    public $form;
 
     /**
      * @var Model the data model that this widget is associated with.
