@@ -111,6 +111,11 @@ class UploadInput extends JsWidget
      * @var type 
      */
     public $visible = false;
+
+    /**
+     * @var boolean defines if uploaded files should set the show_in_stream flag, this has only effect if the underlying action does support the showInStream request parameter
+     */
+    public $hideInStream = false;
     
         
     /**
@@ -119,6 +124,17 @@ class UploadInput extends JsWidget
      * @var boolean 
      */
     public $single = false;
+
+    /**
+     * Sets the multiple flag of the file input
+     * @var bool
+     */
+    public $multiple = true;
+
+    /**
+     * @var bool defines if the file should be attached to the given §model right after upload
+     */
+    public $attach = true;
 
     /**
      * Draws the Upload Button output.
@@ -131,7 +147,7 @@ class UploadInput extends JsWidget
     public function getAttributes()
     {
         return [
-            'multiple' => 'multiple',
+            'multiple' => ($this->multiple) ? 'multiple' : null,
             'title' => Yii::t('base', 'Upload file')
         ];
     }
@@ -156,10 +172,15 @@ class UploadInput extends JsWidget
             'upload-preview' => $this->preview,
             'upload-form' => $formSelector,
             'upload-single' => $this->single,
-            'upload-submit-name' => $submitName
+            'upload-submit-name' => $submitName,
+            'upload-hide-in-stream' => $this->hideInStream ? '1' : null
         ];
+
+        if($this->hideInStream) {
+            $result['upload-hide-in-stream'] = '1';
+        }
         
-        if ($this->model) {
+        if ($this->model && $this->attach) {
             $result['upload-model'] = $this->model->className();
             $result['upload-model-id'] = $this->model->getPrimaryKey();
         }
