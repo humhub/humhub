@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\widgets;
 
+use humhub\modules\file\converter\PreviewImage;
 use Yii;
 use humhub\modules\content\components\ContentActiveRecord;
 
@@ -39,8 +40,8 @@ class ShowFiles extends \yii\base\Widget
         }
 
         return $this->render('showFiles', [
-                    'files' => $this->object->fileManager->find()->andWhere(['show_in_stream' => true])->all(),
-                    'previewImage' => new \humhub\modules\file\converter\PreviewImage(),
+                    'files' => $this->object->fileManager->findStreamFiles(),
+                    'previewImage' => new PreviewImage(),
                     'hideImageFileInfo' => Yii::$app->getModule('file')->settings->get('hideImageFileInfo')
         ]);
     }

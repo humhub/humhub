@@ -1,6 +1,8 @@
 <?php
 
 use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\widgets\FilePreview;
+use humhub\widgets\JPlayerPlaylistWidget;
 use yii\helpers\Html;
 
 $object = $this->context->object;
@@ -10,7 +12,7 @@ $object = $this->context->object;
 <!-- hideOnEdit mandatory since 1.2 -->
 <div class="hideOnEdit">
     <!-- Show Images as Thumbnails -->
-    <div class="post-files" id="post-files-<?php echo $object->getUniqueId(); ?>">
+    <div class="post-files" id="post-files-<?= $object->getUniqueId(); ?>">
         <?php foreach ($files as $file): ?>
             <?php if ($previewImage->applyFile($file)): ?>
                 <a data-ui-gallery="<?= "gallery-" . $object->getUniqueId(); ?>" href="<?= $file->getUrl(); ?>#.jpeg" title="<?= Html::encode($file->file_name) ?>">
@@ -35,7 +37,7 @@ $object = $this->context->object;
             <?php endif; ?>
         <?php endforeach; ?>
         
-        <?= \humhub\widgets\JPlayerPlaylistWidget::widget([
+        <?= JPlayerPlaylistWidget::widget([
             'playlist' => $playlist
         ]); ?>
         
@@ -43,8 +45,9 @@ $object = $this->context->object;
 
     <!-- Show List of all files -->
     <hr>
-    <?= \humhub\modules\file\widgets\FilePreview::widget([
+    <?= FilePreview::widget([
         'hideImageFileInfo' => $hideImageFileInfo,
+        'items' => $files,
         'model' => $object,
     ]);?>
     

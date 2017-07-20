@@ -87,4 +87,21 @@ class FileManager extends Component
         return $this->find()->all();
     }
 
+    /**
+     * By default all files with show_in_stream set to 1.
+     *
+     * If $flag is set to false, this function will return all non stream files.
+     *
+     * @return array|\yii\db\ActiveRecord[]
+     * @since 1.2.2
+     */
+    public function findStreamFiles($showInStream = true)
+    {
+        if($showInStream) {
+            return $this->find()->andWhere(['show_in_stream' => 1])->all();
+        } else {
+            return $this->find()->andWhere(['show_in_stream' => 0])->all();
+        }
+    }
+
 }

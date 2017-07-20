@@ -61,8 +61,9 @@ class UploadAction extends Action
     public function run()
     {
         $files = array();
+        $hideInStream = $this->isHideInStreamRequest();
         foreach (UploadedFile::getInstancesByName('files') as $cFile) {
-            $files[] = $this->handleFileUpload($cFile);
+            $files[] = $this->handleFileUpload($cFile, $hideInStream);
         }
 
         return ['files' => $files];
@@ -71,7 +72,7 @@ class UploadAction extends Action
     /**
      * Handles the file upload for are particular UploadedFile
      */
-    protected function handleFileUpload(UploadedFile $uploadedFile)
+    protected function handleFileUpload(UploadedFile $uploadedFile, $hideInStream = false)
     {
         $file = Yii::createObject($this->fileClass);
 
@@ -81,6 +82,10 @@ class UploadAction extends Action
 
         $file->setUploadedFile($uploadedFile);
 
+        if($hideInStream) {
+            $file->show_in_stream = false;
+        }
+
         if ($file->validate() && $file->save()) {
             if ($this->record !== null) {
                 $this->record->fileManager->attach($file);
@@ -89,6 +94,11 @@ class UploadAction extends Action
         } else {
             return $this->getErrorResponse($file);
         }
+    }
+
+    protected function isHideInStreamRequest()
+    {
+        return (Yii::$app->request->post('hideInStream') == 1) || (Yii::$app->request->get('hideInStream') == 1);
     }
 
     /**
