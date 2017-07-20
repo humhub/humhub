@@ -3,7 +3,9 @@ var newFile = "";
 
 function initMarkdownEditor(elementId) {
 
-    $("body").append($("#markdownEditor_dialogs_"+elementId).html());
+    if(!$('#addFileModal_'+elementId).length) {
+        $("body").append($("#markdownEditor_dialogs_"+elementId).html());
+    }
 
     $("#" + elementId).markdown({
         iconlibrary: 'fa',
@@ -99,6 +101,7 @@ function initMarkdownEditor(elementId) {
     $('#addFileModal_'+elementId).find('.fileUploadButton').fileupload({
         dataType: 'json',
         done: function(e, data) {
+            debugger;
             $.each(data.result.files, function(index, file) {
                 addFileModal = $('#addFileModal_'+elementId);
                 if (!file.error) {
