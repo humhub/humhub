@@ -9,7 +9,6 @@
 use humhub\modules\dashboard\widgets\Sidebar;
 use humhub\modules\admin\Events;
 use humhub\commands\CronController;
-use humhub\components\console\Application;
 
 return [
     'id' => 'admin',
@@ -33,8 +32,8 @@ return [
             ]
         ],
         [
-            'class' => Application::className(),
-            'event' => Application::EVENT_ON_INIT,
+            'class' => 'humhub\components\console\Application',
+            'event' => 'onInit',
             'callback' => [
                 Events::className(),
                 'onConsoleApplicationInit'
