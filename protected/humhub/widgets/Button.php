@@ -74,6 +74,14 @@ class Button extends Widget
         return self::defaultType($text)->link($url)->icon('fa-arrow-left')->right()->loader(true);
     }
 
+    public static function userPickerSelfSelect($selector, $text = null) {
+        if(!$text) {
+            $text = Yii::t('base', 'Select Me');
+        }
+
+        return self::asLink($text)->action('selectSelf', null, $selector)->icon('fa-check-circle-o')->right()->cssClass('input-field-addon');
+    }
+
     /**
      * @param string $text Button text
      * @return static
@@ -325,7 +333,7 @@ class Button extends Widget
      * @param $handler
      * @param null $url
      * @param null $target
-     * @return Button
+     * @return static
      */
     public function action($handler, $url = null, $target = null)
     {

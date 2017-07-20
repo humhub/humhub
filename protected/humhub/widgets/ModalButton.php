@@ -42,8 +42,12 @@ class ModalButton extends Button
      */
     public function load($url)
     {
-        $this->action('ui.modal.load', $url);
-        return $this;
+        return $this->action('ui.modal.load', $url)->loader(false);
+    }
+
+    public function post($url)
+    {
+        return $this->action('ui.modal.post', $url)->loader(false);
     }
 
     /**
@@ -66,7 +70,7 @@ class ModalButton extends Button
             $text = Yii::t('base', 'Cancel');
         }
 
-        return static::defaultType($text)->options(['data-modal-close' => '']);
+        return static::defaultType($text)->options(['data-modal-close' => ''])->loader(false);
     }
 
     /**
@@ -77,9 +81,5 @@ class ModalButton extends Button
         return $this->options(['data-modal-close' => '']);
     }
 
-    public function post($url)
-    {
-        $this->action('ui.modal.post', $url);
-        return $this;
-    }
+
 }

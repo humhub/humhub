@@ -34,6 +34,10 @@ class Link extends Button
         return self::asLink($text, $url)->pjax($pjax);
     }
 
+    public static function withAction($text, $action, $url = null, $target = null) {
+        return self::asLink($text)->action($action,$url, $target);
+    }
+
     public function href($url = '#', $pjax = true)
     {
         $this->link($url);
