@@ -79,8 +79,8 @@ class InputWidget extends JsWidget
         if ($this->name === null && !$this->hasModel()) {
             throw new InvalidConfigException("Either 'name', or 'model' and 'attribute' properties must be specified.");
         }
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = $this->hasModel() ? Html::getInputId($this->model, $this->attribute) : $this->getId();
+        if (!$this->id && !isset($this->options['id'])) {
+            $this->id = $this->options['id'] = $this->hasModel() ? Html::getInputId($this->model, $this->attribute) : $this->getId(true);
         }
         parent::init();
     }
