@@ -23,11 +23,16 @@ use humhub\libs\Html;
 use humhub\widgets\InputWidget;
 use humhub\widgets\JsWidget;
 
-class SelectTimeZoneDropdown extends InputWidget
+class TimeZoneDropdownAddition extends InputWidget
 {
     public $toggleClass = 'input-field-addon-sm colorInfo pull-right';
 
     private $timeZoneItems;
+
+    /*
+     * @inheritdoc
+     */
+    public $attribute = 'timeZone';
 
 
     public function run()
