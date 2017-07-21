@@ -32,7 +32,7 @@ HumHub Change Log
 - Enh: Added `Modal::closable` in order to respect `backdrop` and `keyboard` data setting of `Modal` and `ModalDialog` widget
 - Enh: Avoid cutting oembed entry in stream if it's the first part of a richtext 
 - Enh: Added `humhub/widgets/TimePicker` widget
-
+- Enh: Added `DbDateValidator::timeZone` for setting input time zone
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
