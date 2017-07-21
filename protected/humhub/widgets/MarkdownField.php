@@ -85,6 +85,11 @@ class MarkdownField extends InputWidget
     public $readonly = false;
 
     /**
+     * @var string
+     */
+    public $placeholder;
+
+    /**
      * @inheritdoc
      */
     public $init = true;
@@ -100,6 +105,10 @@ class MarkdownField extends InputWidget
     {
         BootstrapMarkdownAsset::register($this->view);
         $this->view->registerCssFile('@web-static/css/bootstrap-markdown-override.css');
+
+        if($this->placeholder === null && $this->hasModel()) {
+            $this->placeholder = $this->model->getAttributeLabel($this->attribute);
+        }
 
         if ($this->form != null) {
             $textArea = $this->form->field($this->model, $this->attribute)->textarea($this->getOptions())->label($this->label);
@@ -118,6 +127,7 @@ class MarkdownField extends InputWidget
             'rows' => $this->rows,
             'disabled' => $this->disabled,
             'readonly' => $this->readonly,
+            'placeholder' => $this->placeholder
         ];
     }
 

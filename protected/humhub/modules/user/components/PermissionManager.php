@@ -150,12 +150,12 @@ class PermissionManager extends \yii\base\Component
      * If the provided $group is an array we check if one of the group states
      * is a BasePermission::STATE_ALLOW and return this state.
      *
-     * @param type $groups either an array of groups or group ids or an single group or goup id
+     * @param mixed $groups either an array of groups or group ids or an single group or goup id
      * @param BasePermission $permission
-     * @param type $returnDefaultState
-     * @return type
+     * @param int $returnDefaultState
+     * @return int
      */
-    public function getGroupState($groups, BasePermission $permission, $returnDefaultState = true)
+    public function getGroupState($groups, BasePermission $permission, $returnDefaultState = 1)
     {
         if (is_array($groups)) {
             $state = "";
@@ -167,6 +167,7 @@ class PermissionManager extends \yii\base\Component
             }
             return $state;
         }
+
         return $this->getSingleGroupState($groups, $permission, $returnDefaultState);
     }
 
@@ -262,8 +263,10 @@ class PermissionManager extends \yii\base\Component
         $result = [];
         if ($module instanceof \humhub\components\Module) {
             $permisisons = $module->getPermissions();
-            foreach($permisisons as $permission) {
-                $result[] = is_string($permission) ? Yii::createObject($permission) : $permission;
+            if(!empty($permisisons)) {
+                foreach($permisisons as $permission) {
+                    $result[] = is_string($permission) ? Yii::createObject($permission) : $permission;
+                }
             }
         }
 
@@ -273,7 +276,7 @@ class PermissionManager extends \yii\base\Component
     /**
      * Creates a Permission Database record
      *
-     * @return Permission
+     * @return \yii\db\ActiveRecord
      */
     protected function createPermissionRecord()
     {

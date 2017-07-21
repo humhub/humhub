@@ -71,7 +71,7 @@ class Formatter extends \yii\i18n\Formatter
     public function isShowMeridiem($locale = null) {
         if(extension_loaded('intl')) {
             $pattern = $this->getDateTimePattern(IntlDateFormatter::NONE, IntlDateFormatter::SHORT);
-            return strpos($pattern, 'a') > 0;
+            return strpos($pattern, 'a') !== false;
         }
         return false;
     }

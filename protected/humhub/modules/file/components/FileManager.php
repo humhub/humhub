@@ -92,7 +92,7 @@ class FileManager extends Component
      *
      * If $flag is set to false, this function will return all non stream files.
      *
-     * @return array|\yii\db\ActiveRecord[]
+     * @return File[]
      * @since 1.2.2
      */
     public function findStreamFiles($showInStream = true)

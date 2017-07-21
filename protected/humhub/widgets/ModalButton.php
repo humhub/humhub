@@ -57,6 +57,10 @@ class ModalButton extends Button
      */
     public static function submitModal($url = null, $text = null)
     {
+        if(!$text) {
+            $text = Yii::t('base', 'Save');
+        }
+
         return static::save($text)->submit()->action('ui.modal.submit', $url);
     }
 
