@@ -18,16 +18,20 @@ use humhub\modules\content\widgets\WallEntryLabels;
             <div class="stream-entry-loader"></div>
 
             <!-- start: show wall entry options -->
-            <ul class="nav nav-pills preferences">
-                <li class="dropdown ">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-label="<?= Yii::t('base', 'Toggle stream entry menu'); ?>" aria-haspopup="true">
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown-menu pull-right">
-                        <?= WallEntryControls::widget(['object' => $object, 'wallEntryWidget' => $wallEntryWidget]); ?>
-                    </ul>
-                </li>
-            </ul>
+            <?php if($renderControls) : ?>
+                <ul class="nav nav-pills preferences">
+                    <li class="dropdown ">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-label="<?= Yii::t('base', 'Toggle stream entry menu'); ?>" aria-haspopup="true">
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+
+
+                            <ul class="dropdown-menu pull-right">
+                                <?= WallEntryControls::widget(['object' => $object, 'wallEntryWidget' => $wallEntryWidget]); ?>
+                            </ul>
+                    </li>
+                </ul>
+            <?php endif; ?>
             <!-- end: show wall entry options -->
 
             <?=
@@ -60,7 +64,7 @@ use humhub\modules\content\widgets\WallEntryLabels;
                         </span>
                     <?php endif; ?>
 
-                    <div class="pull-right labels">
+                    <div class="pull-right <?= ($renderControls) ? 'labels' : ''?>">
                         <?= WallEntryLabels::widget(['object' => $object]); ?>
                     </div>
                 </div>
@@ -79,9 +83,11 @@ use humhub\modules\content\widgets\WallEntryLabels;
             </div>
 
             <!-- wall-entry-addons class required since 1.2 -->
-            <div class="stream-entry-addons clearfix">
-                <?= WallEntryAddons::widget(['object' => $object]); ?>
-            </div>
+            <?php if($renderAddons) : ?>
+                <div class="stream-entry-addons clearfix">
+                    <?= WallEntryAddons::widget($addonOptions); ?>
+                </div>
+            <?php endif; ?>
 
         </div>
     </div>

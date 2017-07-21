@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\widgets\WallEntry;
 use Yii;
 use humhub\libs\BasePermission;
 use humhub\modules\content\permissions\ManageContent;
@@ -15,6 +16,7 @@ use yii\base\Exception;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\interfaces\ContentOwner;
+use yii\base\Widget;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
@@ -230,10 +232,14 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function getWallEntryWidget()
     {
-        if ($this->wallEntryClass !== '') {
+        if (is_subclass_of($this->wallEntryClass, WallEntry::class) ) {
             $class = $this->wallEntryClass;
             $widget = new $class;
             $widget->contentObject = $this;
+            return $widget;
+        } else if(!empty($this->wallEntryClass)) {
+            $class = $this->wallEntryClass;
+            $widget = new $class;
             return $widget;
         }
 

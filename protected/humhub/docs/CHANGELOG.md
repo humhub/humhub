@@ -33,6 +33,9 @@ HumHub Change Log
 - Enh: Avoid cutting oembed entry in stream if it's the first part of a richtext 
 - Enh: Added `humhub/widgets/TimePicker` widget
 - Enh: Added `DbDateValidator::timeZone` for setting input time zone
+- Enh: Additional WallEntry settings: `$jsWidget`, `$addonOptions`, `$controlsOptions`, `$renderControls`, `$renderAddons`
+- Enh: Added possibility to overwrite WallEntry settings in `humhub/stream/actions/Stream::renderEntry()`
+- Enh: Added `ShowFiles::preview` and `ShowFiles::active` flag
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
