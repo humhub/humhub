@@ -32,6 +32,7 @@ humhub.module('ui.status', function (module, require, $) {
     var SELECTOR_CONTENT = '.status-bar-content';
 
     var AUTOCLOSE_INFO = 6000;
+    var AUTOCLOSE_SUCCESS = 2000;
     var AUTOCLOSE_WARN = 10000;
 
     var StatusBar = function () {
@@ -44,7 +45,7 @@ humhub.module('ui.status', function (module, require, $) {
     };
 
     StatusBar.prototype.success = function (msg, closeAfter) {
-        closeAfter = closeAfter || AUTOCLOSE_INFO;
+        closeAfter = closeAfter || AUTOCLOSE_SUCCESS;
         this._trigger(string.template(module.template.success, {msg: msg}), undefined, closeAfter);
     };
 
