@@ -14,17 +14,26 @@ humhub.module('ui.showMore', function (module, require, $) {
 
     CollapseContent.prototype.init = function () {
         var that = this;
+        this.$.imagesLoaded(function() {
+            that.check();
+        });
+    };
+
+    CollapseContent.prototype.check = function () {
+        var that = this;
         var height = this.$.outerHeight();
         this.$collapseButton = this.$.siblings('.showMore');
-        var diff = height - this.collapseAt;
+
 
         // If the first or second node is we add some more space to our collapseAt
         var $firstChild = this.$.children(':first');
         var $secondChild = $firstChild.next();
-        if($firstChild.is('.oembed_snippet') || $firstChild.is('.oembed_snippet')) {
+        if($firstChild.is('.oembed_snippet') || $secondChild.is('.oembed_snippet')) {
             var collapseCandidate = this.$.find('.oembed_snippet:first').outerHeight() + 40;
             this.collapseAt = (collapseCandidate > this.collapseAt) ? collapseCandidate : this.collapseAt;
         }
+
+        var diff = height - this.collapseAt;
 
         // If height expands the max height we init the collapse post logic
         if (height > this.collapseAt && diff > 70) {

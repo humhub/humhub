@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\content\permissions\CreatePublicContent;
 use Yii;
 use yii\web\HttpException;
 use humhub\components\Widget;
@@ -76,16 +77,12 @@ class WallCreateContentForm extends Widget
      */
     public function run()
     {
-        $defaultVisibility = Content::VISIBILITY_PUBLIC;
-        if ($this->contentContainer instanceof Space) {
+        if ($this->contentContainer->can(CreatePublicContent::class)) {
             $defaultVisibility = $this->contentContainer->getDefaultContentVisibility();
-        }
-
-        $canSwitchVisibility = false;
-        if ($this->contentContainer->permissionManager->can(new \humhub\modules\content\permissions\CreatePublicContent())) {
             $canSwitchVisibility = true;
         } else {
             $defaultVisibility = Content::VISIBILITY_PRIVATE;
+            $canSwitchVisibility = false;
         }
 
         $fileHandlerImport = FileHandlerCollection::getByType(FileHandlerCollection::TYPE_IMPORT);
@@ -120,7 +117,7 @@ class WallCreateContentForm extends Widget
         Yii::$app->response->format = 'json';
 
         $visibility = Yii::$app->request->post('visibility');
-        if ($visibility == Content::VISIBILITY_PUBLIC && !$contentContainer->permissionManager->can(new \humhub\modules\content\permissions\CreatePublicContent())) {
+        if ($visibility == Content::VISIBILITY_PUBLIC && !$contentContainer->permissionManager->can(new CreatePublicContent())) {
             $visibility = Content::VISIBILITY_PRIVATE;
         }
 

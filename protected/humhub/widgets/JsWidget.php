@@ -113,7 +113,9 @@ class JsWidget extends Widget
             $this->options['data']['widget-action-' . $event] = $handler;
         }
 
-        $this->options['data']['ui-widget'] = $this->jsWidget;
+        if($this->jsWidget) {
+            $this->options['data']['ui-widget'] = $this->jsWidget;
+        }
 
         if (!empty($this->init)) {
             $this->options['data']['ui-init'] = $this->init;

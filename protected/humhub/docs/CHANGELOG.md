@@ -44,6 +44,7 @@ HumHub Change Log
 - Enh: Added `Label` widget for creating sortable labels
 - Fix: Reset modal dialog size + add `size` option
 - Enh: Added `size` option `ui.modal.Modal.set()`
+- Enh: Use `ContentActiveRecord::getUrl()` for content perma links (if given)
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language

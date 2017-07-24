@@ -13,18 +13,11 @@ namespace humhub\widgets;
  *
  * @author buddha
  */
-class ColorPickerField extends \humhub\components\Widget
+class ColorPickerField extends InputWidget
 {
 
     /**
-     * The model instance
-     * @var \yii\base\Model
-     */
-    public $model;
-
-    /**
-     * The color field of the model
-     * @var string 
+     * @deprecated since v1.2.2 use $attribute instead
      */
     public $field;
     
@@ -34,16 +27,25 @@ class ColorPickerField extends \humhub\components\Widget
      */
     public $container;
 
+    /**
+     * @inheritdoc
+     */
+    public $attribute = 'color';
+
+    public function init()
+    {
+        if(!empty($this->field)) {
+            $this->attribute = $this->field;
+        }
+    }
+
     public function run()
     {
-        $ts = time();
-        $inputId = $ts . 'space-color-picker-edit' . $this->field;
-
         return $this->render('colorPickerField', [
                     'model' => $this->model,
-                    'field' => $this->field,
+                    'field' => $this->attribute,
                     'container' => $this->container,
-                    'inputId' => $inputId
+                    'inputId' => $this->getId(true)
         ]);
     }
 

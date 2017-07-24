@@ -45,9 +45,15 @@ class PermaController extends Controller
         $id = (int) Yii::$app->request->get('id', "");
 
         $content = Content::findOne(['id' => $id]);
+
+        if (method_exists($content->getPolymorphicRelation(), 'getUrl')) {
+            $url = $content->getPolymorphicRelation()->getUrl();
+        } else if($content->container !== null) {
+            $url = $content->container->createUrl(null, ['contentId' => $id]);
+        }
         
-        if ($content !== null && $content->container !== null) {
-            return $this->redirect($content->container->createUrl(null, ['contentId' => $id]));
+        if ($url) {
+            return $this->redirect($url);
         }
 
         throw new HttpException(404, Yii::t('ContentModule.controllers_PermaController', 'Could not find requested content!'));
