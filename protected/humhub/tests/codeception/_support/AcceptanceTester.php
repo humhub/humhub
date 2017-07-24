@@ -49,22 +49,22 @@ class AcceptanceTester extends \Codeception\Actor
         '5396d499-20d6-4233-800b-c6c86e5fa34d',
     ];
 
-    public function amOnSpace1($path = null)
+    public function amOnSpace1($path = 'space/space')
     {
         $this->amOnSpace(1, $path);
     }
 
-    public function amOnSpace2($path = null)
+    public function amOnSpace2($path = 'space/space')
     {
         $this->amOnSpace(2, $path);
     }
 
-    public function amOnSpace3($path = null)
+    public function amOnSpace3($path = 'space/space')
     {
         $this->amOnSpace(3, $path);
     }
 
-    public function amOnSpace4($path = null)
+    public function amOnSpace4($path = 'space/space')
     {
         $this->amOnSpace(4, $path);
     }
@@ -72,7 +72,7 @@ class AcceptanceTester extends \Codeception\Actor
     public function amOnSpace($guid, $path = 'space/space')
     {
         if(is_int($guid)) {
-            $guid = $this->spaces[++$guid];
+            $guid = $this->spaces[--$guid];
         }
 
         $this->amOnPage('index-test.php?r='.$path.'&sguid='.$guid);
