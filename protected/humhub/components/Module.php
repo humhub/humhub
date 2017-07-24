@@ -8,6 +8,8 @@
 
 namespace humhub\components;
 
+use humhub\modules\file\libs\FileHelper;
+use humhub\modules\notification\components\BaseNotification;
 use Yii;
 use yii\helpers\Json;
 
@@ -333,7 +335,25 @@ class Module extends \yii\base\Module
      */
     public function getNotifications()
     {
-        return [];
+        $class = get_class($this);
+        if (($pos = strrpos($class, '\\')) !== false) {
+            $notificationNamespace = substr($class, 0, $pos) . '\\notifications';
+        } else {
+            $notificationNamespace = '';
+        }
+
+        $notifications = [];
+        $notificationDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'notifications';
+        if (is_dir($notificationDirectory)) {
+            foreach (FileHelper::findFiles($notificationDirectory, ['recursive' => false,]) as $file) {
+                $notificationClass = $notificationNamespace . '\\' . basename($file, '.php');
+                if(is_subclass_of($notificationClass, BaseNotification::class)) {
+                    $notifications[] = $notificationClass;
+                }
+            }
+        }
+
+        return $notifications;
     }
 
     /**
@@ -358,12 +378,14 @@ class Module extends \yii\base\Module
         $class = get_class($this);
         if (($pos = strrpos($class, '\\')) !== false) {
             $activityNamespace = substr($class, 0, $pos) . '\\activities';
+        } else {
+            $activityNamespace = '';
         }
 
         $activities = [];
         $activityDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'activities';
         if (is_dir($activityDirectory)) {
-            foreach (\humhub\modules\file\libs\FileHelper::findFiles($activityDirectory, ['recursive' => false,]) as $file) {
+            foreach (FileHelper::findFiles($activityDirectory, ['recursive' => false,]) as $file) {
                 $activities[] = $activityNamespace . '\\' . basename($file, '.php');
             }
         }

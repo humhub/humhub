@@ -19,8 +19,8 @@ HumHub Change Log
 - Fix: Use of JS-Widget internal event object instead of node
 - Enh: Added `Formatter::getDateTimePattern()` and `Formatter::isShowMeridiem()`
 - Fix: Set formatter locale in I18N when changing locale
-- Enh: Added $hideInStream flag for upload component/action for changing `show_in_stream` file flag
-- Enh: Added $showInStream flag for `FilePreview` widget to only include files with certain `show_in_stream` flag
+- Enh: Added `$hideInStream` flag for upload component/action for changing `show_in_stream` file flag
+- Enh: Added `$showInStream` flag for `FilePreview` widget to only include files with certain `show_in_stream` flag
 - Enh: Added `FileManager::findStreamFiles()` for querying files with either given `show_in_stream = 1` or `show_in_stream = 0` flag.
 - Enh: Added `humhub\widgets\Tabs` and `humhub\widgets\SettingsTabs` with view type tab support
 - Enh: Added new `MarkdownField` input widget which as replacement of deprecated `MarkdownEditor`
@@ -36,6 +36,9 @@ HumHub Change Log
 - Enh: Additional WallEntry settings: `$jsWidget`, `$addonOptions`, `$controlsOptions`, `$renderControls`, `$renderAddons`
 - Enh: Added possibility to overwrite WallEntry settings in `humhub/stream/actions/Stream::renderEntry()`
 - Enh: Added `ShowFiles::preview` and `ShowFiles::active` flag
+- Enh: Allow `$adminOnly` for User base ContentContainerController Controller
+- Enh: Added `ContentContainerActiveRecord::getDefaultContentVisibility()` and `User::getDefaultContentVisibility()`
+- Enh: Added automatic Notification Class loading by convention. No need to overwrite `Module::getNotifications()`
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
