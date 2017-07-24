@@ -155,8 +155,14 @@ class AccessControl extends \yii\base\ActionFilter
      */
     protected function checkRules()
     {
+        $result = true;
         if (!empty($this->rules)) {
             foreach ($this->rules as $rule) {
+                // If the rule contains an action restriction, which does not match the current controller action we ignore the rule.
+                if(!$this->checkRuleAction($rule)) {
+                    continue;
+                }
+
                 if ($this->checkGroupRule($rule) || $this->checkPermissionRule($rule)) {
                     return true;
                 }
@@ -168,19 +174,14 @@ class AccessControl extends \yii\base\ActionFilter
     }
 
     /**
-     * Checks permission rules.
+     * Checks a given permission rules.
      *
      * @param type $rule
      * @return boolean
      */
     protected function checkPermissionRule($rule)
     {
-        if (!empty($rule['permissions'])) {
-            // If the rule contains an action restriction we ignore the permission setting if the current action is not contained in the 'action' rule setting.
-            if (!$this->checkRuleAction($rule)) {
-                return true;
-            }
-
+        if (isset($rule['permissions']) && !empty($rule['permissions'])) {
             $permissionArr = (!is_array($rule['permissions'])) ? [$rule['permissions']] : $rule['permissions'];
             $params = isset($rule['params']) ? $rule['params'] : [];
 
@@ -192,6 +193,23 @@ class AccessControl extends \yii\base\ActionFilter
         }
 
         return false;
+    }
+
+    /**
+     * Checks the current controller action against the allowed rule action.
+     * If the rule does not contain any action settings, the rule is allowed for all controller actions.
+     *
+     * @param array $rule
+     * @return boolean true if current action is allowed
+     */
+    private function checkRuleAction($rule)
+    {
+        if (!empty($rule['actions'])) {
+            $action = Yii::$app->controller->action->id;
+            return in_array($action, $rule['actions']);
+        }
+
+        return true;
     }
 
     protected function isContentContainerController()
@@ -223,23 +241,6 @@ class AccessControl extends \yii\base\ActionFilter
         }
 
         return null;
-    }
-
-    /**
-     * Checks the current controller action against the allowed rule action.
-     * If the rule does not contain any action settings, the rule is allowed for all controller actions.
-     *
-     * @param array $rule
-     * @return boolean true if current action is allowed
-     */
-    private function checkRuleAction($rule)
-    {
-        if (!empty($rule['actions'])) {
-            $action = Yii::$app->controller->action->id;
-            return in_array($action, $rule['actions']);
-        }
-
-        return true;
     }
 
     /**
