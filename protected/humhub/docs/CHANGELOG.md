@@ -39,6 +39,11 @@ HumHub Change Log
 - Enh: Allow `$adminOnly` for User base ContentContainerController Controller
 - Enh: Added `ContentContainerActiveRecord::getDefaultContentVisibility()` and `User::getDefaultContentVisibility()`
 - Enh: Added automatic Notification Class loading by convention. No need to overwrite `Module::getNotifications()`
+- Enh: Added `ContentActiveRecord::getIcon()` for adding an badge icon to WallEntry content type badge
+- Enh: Added `ContentActiveRecord::getLabels()` for managing WallEntry labels (badges)
+- Enh: Added `Label` widget for creating sortable labels
+- Fix: Reset modal dialog size + add `size` option
+- Enh: Added `size` option `ui.modal.Modal.set()`
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language

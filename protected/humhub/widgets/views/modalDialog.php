@@ -1,5 +1,7 @@
 <?php
 use humhub\libs\Html;
+use humhub\widgets\LoaderWidget;
+
 ?>
 <!-- Dialog -->
 
@@ -27,7 +29,7 @@ use humhub\libs\Html;
                     <?= $body ?>
                 <?php endif; ?>
                 <?php if ($initialLoader): ?>
-                    <?php echo \humhub\widgets\LoaderWidget::widget(); ?>
+                    <?= LoaderWidget::widget(); ?>
                 <?php endif; ?>
             </div>
 
@@ -38,4 +40,5 @@ use humhub\libs\Html;
                 </div>
             <?php endif; ?>
         <?php endif; ?>
-<?= Html::endTag('div') ?>
+    </div>
+<?=  Html::endTag('div') ?>
