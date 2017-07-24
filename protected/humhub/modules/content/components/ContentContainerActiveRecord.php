@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\models\Content;
 use Yii;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
@@ -232,6 +233,16 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function isArchived()
     {
         return false;
+    }
+
+    /**
+     * Determines the default visibility of this container type.
+     *
+     * @return int
+     */
+    public function getDefaultContentVisibility()
+    {
+        return Content::VISIBILITY_PRIVATE;
     }
 
 }

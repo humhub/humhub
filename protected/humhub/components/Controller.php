@@ -59,6 +59,11 @@ class Controller extends \yii\web\Controller
     public $strictGuestMode = false;
 
     /**
+     * @var bool if set to true only (space/profile/system) admins are allowed to access any controller action
+     */
+    protected $adminOnly = false;
+
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -67,6 +72,7 @@ class Controller extends \yii\web\Controller
         return [
             'acl' => [
                 'class' => AccessControl::className(),
+                'adminOnly' => $this->adminOnly,
                 'guestAllowedActions' => $this->guestActions,
                 'loggedInOnly' => $this->strictGuestMode,
                 'rules' => $this->getAccessRules()

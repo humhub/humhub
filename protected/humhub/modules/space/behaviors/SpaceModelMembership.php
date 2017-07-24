@@ -83,18 +83,19 @@ class SpaceModelMembership extends Behavior
      *
      * If no UserId is given, current UserId will be used
      *
-     * @param type $userId
-     * @return type
+     * @param User|integer|null $user User instance or userId
+     * @return boolean
      */
-    public function isAdmin($userId = "")
+    public function isAdmin($user = null)
     {
+        $userId = ($user instanceof User) ? $user->id : $user;
 
-        if ($userId == 0) {
-            $userId = Yii::$app->user->id;
+        if (empty($userId) && Yii::$app->user->can(new ManageSpaces())) {
+            return true;
         }
 
-        if (Yii::$app->user->can(new ManageSpaces())) {
-            return true;
+        if (!$userId) {
+            $userId = Yii::$app->user->id;
         }
 
         if ($this->isSpaceOwner($userId)) {
@@ -103,21 +104,18 @@ class SpaceModelMembership extends Behavior
 
         $membership = $this->getMembership($userId);
 
-        if ($membership !== null && $membership->group_id == Space::USERGROUP_ADMIN && $membership->status == Membership::STATUS_MEMBER) {
-            return true;
-        }
-
-        return false;
+        return ($membership && $membership->group_id == Space::USERGROUP_ADMIN && $membership->status == Membership::STATUS_MEMBER);
     }
 
     /**
      * Sets Owner for this workspace
      *
-     * @param type $userId
-     * @return type
+     * @param User|integer|null $userId
+     * @return boolean
      */
-    public function setSpaceOwner($userId = null)
+    public function setSpaceOwner($user = null)
     {
+        $userId = ($user instanceof User) ? $user->id : $user;
 
         if ($userId instanceof User) {
             $userId = $userId->id;
@@ -152,20 +150,20 @@ class SpaceModelMembership extends Behavior
 
     /**
      * Is given User owner of this Space
+     * @param User|int|null $userId
+     * @return bool
      */
     public function isSpaceOwner($userId = null)
     {
-        if ($userId instanceof User) {
+        if(empty($userId) && Yii::$app->user->isGuest) {
+            return false;
+        } else if ($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == "") {
+        }  else if (empty($userId)) {
             $userId = Yii::$app->user->id;
         }
 
-        if ($this->owner->created_by == $userId) {
-            return true;
-        }
-
-        return false;
+        return $this->owner->created_by == $userId;
     }
 
     /**
@@ -283,7 +281,7 @@ class SpaceModelMembership extends Behavior
      */
     public function getAdmins()
     {
-        $admins = array();
+        $admins = [];
         $adminMemberships = Membership::findAll(['space_id' => $this->owner->id, 'group_id' => Space::USERGROUP_ADMIN]);
 
         foreach ($adminMemberships as $admin) {

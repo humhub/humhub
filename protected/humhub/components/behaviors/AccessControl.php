@@ -8,6 +8,8 @@
 
 namespace humhub\components\behaviors;
 
+use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\space\models\Space;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
@@ -101,10 +103,8 @@ class AccessControl extends \yii\base\ActionFilter
             return $this->handleGuestAccess($action);
         }
 
-        if ($this->adminOnly && !Yii::$app->user->isAdmin()) {
-            if ($this->getControllerSpace() == null || !$this->getControllerSpace()->isAdmin()) {
-                $this->forbidden();
-            }
+        if ($this->adminOnly && !$this->isAdmin()) {
+            $this->forbidden();
         }
 
         if ($this->checkRules()) {
@@ -196,7 +196,24 @@ class AccessControl extends \yii\base\ActionFilter
 
     protected function isContentContainerController()
     {
-        return $this->owner instanceof \humhub\modules\content\components\ContentContainerController;
+        return $this->owner instanceof ContentContainerController;
+    }
+
+    protected function isAdmin()
+    {
+        if(Yii::$app->user->isGuest) {
+            return false;
+        }
+
+        if($this->isContentContainerController()) {
+            if($this->owner->contentContainer instanceof Space) {
+                return $this->owner->contentContainer->isAdmin();
+            } else {
+                return $this->owner->contentContainer->isCurrentUser();
+            }
+        }
+
+        return Yii::$app->user->isAdmin();
     }
 
     private function getControllerSpace()

@@ -14,6 +14,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Space;
+use humhub\modules\content\models\Content;
 
 /**
  * This is the model class for table "user".
@@ -294,6 +295,9 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         return null;
     }
 
+    /**
+     * @return bool true if the user status is enabled else false
+     */
     public function isActive()
     {
         return $this->status === User::STATUS_ENABLED;
@@ -461,17 +465,16 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * Checks if this records belongs to the current user
-     *
-     * @return boolean is current User
+     * Checks if this user is the current logged in user.
+     * @inheritdoc
      */
     public function isCurrentUser()
     {
-        if (Yii::$app->user->id == $this->id) {
-            return true;
+        if(Yii::$app->user->isGuest) {
+            return false;
         }
 
-        return false;
+        return $this->is(Yii::$app->user->getIdentity());
     }
 
     /**
@@ -547,14 +550,14 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function getSearchAttributes()
     {
-        $attributes = array(
+        $attributes = [
             'email' => $this->email,
             'username' => $this->username,
             'tags' => $this->tags,
             'firstname' => $this->profile->firstname,
             'lastname' => $this->profile->lastname,
             'title' => $this->profile->title,
-        );
+        ];
 
         // Add user group ids
         $groupIds = array_map(function($group) {
@@ -575,7 +578,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         return $attributes;
     }
 
-    public function createUrl($route = null, $params = array(), $scheme = false)
+    public function createUrl($route = null, $params = [], $scheme = false)
     {
         if ($route === null) {
             $route = '/user/profile';
@@ -653,5 +656,12 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
         return self::USERGROUP_USER;
     }
+
+    public function getDefaultContentVisibility()
+    {
+        // TODO: Implement same logic as for Spaces
+        return Content::VISIBILITY_PUBLIC;
+    }
+
 
 }
