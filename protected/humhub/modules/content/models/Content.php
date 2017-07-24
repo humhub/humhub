@@ -11,6 +11,7 @@ namespace humhub\modules\content\models;
 use Yii;
 use humhub\modules\user\components\PermissionManager;
 use yii\base\Exception;
+use yii\base\InvalidParamException;
 use yii\helpers\Url;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
@@ -418,6 +419,52 @@ class Content extends ContentDeprecated
     {
         return $this->hasOne(ContentContainer::className(), ['id' => 'contentcontainer_id']);
     }
+
+    /**
+     * Returns the ContentTagRelation query.
+     *
+     * @since 1.2.2
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTagRelations()
+    {
+        return $this->hasMany(ContentTagRelation::className(), ['content_id' => 'id']);
+    }
+
+    /**
+     * Returns all content related tags ContentTags related to this content.
+     *
+     * @since 1.2.2
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTags()
+    {
+        return $this->hasMany(ContentTag::class, ['id' => 'tag_id'])->via('tagRelations');
+    }
+
+    /**
+     * Adds a new ContentTagRelation for this content and the given $tag instance.
+     *
+     * @since 1.2.2
+     * @throws InvalidParamException if the provided tag is part of another ContentContainer
+     * @return boolean true if tag relation could be saved or is already assigned otherwise false
+     */
+    public function addTag(ContentTag $tag)
+    {
+        if(!empty($tag->contentcontainer_id) && $tag->contentcontainer_id != $this->contentcontainer_id) {
+            throw new InvalidParamException(Yii::t('ContentModule.base', 'Content Tag with invalid contentcontainer_id assigned.'));
+        }
+
+        if(ContentTagRelation::findBy($this, $tag)->count()) {
+            return true;
+        }
+
+        unset($this->tags);
+
+        $contentRelation = new ContentTagRelation($this, $tag);
+        return $contentRelation->save();
+    }
+
 
     /**
      * Checks if the given user can edit this content.

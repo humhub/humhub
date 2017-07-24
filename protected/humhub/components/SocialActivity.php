@@ -88,7 +88,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
      * Static initializer should be prefered over new initialization, since it makes use
      * of Yii::createObject dependency injection/configuration.
      *
-     * @return \humhub\components\SocialActivity
+     * @return static
      */
     public static function instance($options = [])
     {
@@ -110,8 +110,8 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
 
     /**
      * Builder function for the source.
-     * @param type $source
-     * @return \humhub\components\SocialActivity
+     * @param \yii\db\ActiveRecord $source
+     * @return $this
      */
     public function about($source)
     {
