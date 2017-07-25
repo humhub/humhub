@@ -93,6 +93,7 @@ class AppAsset extends AssetBundle
         'humhub\assets\IEFixesAsset',
         'humhub\assets\PagedownConverterAsset',
         'humhub\assets\ClipboardJsAsset',
+        'humhub\assets\ImagesLoadedAsset',
     ];
 
     /**
