@@ -72,6 +72,7 @@ class AppAsset extends AssetBundle
         'humhub\assets\JqueryPlaceholderAsset',
         'humhub\assets\FontAwesomeAsset',
         'humhub\assets\BlueimpFileUploadAsset',
+        'humhub\assets\UniversalVideoPlayerAsset',
         'humhub\assets\JqueryHighlightAsset',
         'humhub\assets\JqueryCookieAsset',
         'humhub\assets\JqueryAutosizeAsset',

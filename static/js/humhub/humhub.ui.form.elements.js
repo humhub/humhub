@@ -2,7 +2,7 @@ humhub.module('ui.form.elements', function (module, require, $) {
     var additions = require('ui.additions');
 
     var init = function () {
-        additions.register('form_elements', ':checkbox, :radio', function ($match) {
+        additions.register('form_elements', ':checkbox:not([data-prevent-addition]), :radio:not([data-prevent-addition])', function ($match) {
             $match.each(function () {
                 var $this = $(this);
                 if ($this.is(':checkbox')) {
