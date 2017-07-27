@@ -21,7 +21,7 @@ return [
     'An unexpected error occurred while loading the result.' => 'Возникла неожиданная ошибка при загрузке результата.',
     'Please enter at least {n} character' => 'Пожалуйста, введите {n} символов',
     'Select {n,plural,=1{item} other{items}}' => 'Выберите {n,plural,=1{элемент} other{элементы}}',
-    'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Доступно выбор максимум из {n,plural,=1{элемента} other{элементов}',
+    'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Доступно выбор максимум из {n,plural,=1{элемента} other{элементов}}',
     'You reached the maximum number of allowed charachters ({n}).' => 'Вы достигли максимального количества разрешенных символов ({n})',
     'Load more' => 'Показать еще',
     'Your search returned no matches.' => 'Ничего не найдено.',
