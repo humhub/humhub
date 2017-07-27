@@ -24,7 +24,7 @@ $.fn.userpicker = function (options) {
         focus: false,
         userGuid: "",
         data: {},
-        placeholderText: 'Add an user'
+        placeholderText: 'Add a user'
     }, options);
 
     var chosen = "";
