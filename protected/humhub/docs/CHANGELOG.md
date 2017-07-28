@@ -46,6 +46,8 @@ HumHub Change Log
 - Enh: Added `size` option `ui.modal.Modal.set()`
 - Enh: Use `ContentActiveRecord::getUrl()` for content perma links (if given)
 - Enh: Added `ContentTag` concept for creating content categories/filter on module level
+- Fix: Mentioning keeps running even if previous input result was empty
+- Enh: Darkened comment links for better readability
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
