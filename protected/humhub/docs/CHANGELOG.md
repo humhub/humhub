@@ -48,6 +48,9 @@ HumHub Change Log
 - Enh: Added `ContentTag` concept for creating content categories/filter on module level
 - Fix: Mentioning keeps running even if previous input result was empty
 - Enh: Darkened comment links for better readability
+- Fix #2582 Userfollow activity click action not working
+- Enh: Make space membership activities clickable
+
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language

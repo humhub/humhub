@@ -119,7 +119,6 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
     public function container($container)
     {
         $this->record->content->container = $container;
-
         return $this;
     }
 
