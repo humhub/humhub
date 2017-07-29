@@ -40,7 +40,7 @@ class EntryController extends Controller
         $notificationModel = Notification::findOne(['id' => Yii::$app->request->get('id'), 'user_id' => Yii::$app->user->id]);
 
         if ($notificationModel === null) {
-            throw new \yii\web\HttpException(404, 'Could not find requested notification!');
+            throw new \yii\web\HttpException(404, Yii::t('NotificationModule.error','The requested content is not valid or was removed!'));
         }
 
         $notification = $notificationModel->getClass();
