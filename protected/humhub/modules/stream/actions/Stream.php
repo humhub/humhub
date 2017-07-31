@@ -302,19 +302,15 @@ abstract class Stream extends Action
             $options = [];
         }
 
-        $jsWidget = null;
+        if(!$record->wallEntryClass) {
+            return "";
+        }
 
         if(isset($options['jsWidget'])) {
             $jsWidget = $options['jsWidget'];
             unset($options['jsWidget']);
         } else {
-            if ($record->getWallEntryWidget() !== null) {
-                $jsWidget = $record->getWallEntryWidget()->jsWidget;
-            }
-        }
-
-        if ($jsWidget===null) {
-            return '';
+            $jsWidget = $record->getWallEntryWidget()->jsWidget;
         }
 
         if ($partial) {
