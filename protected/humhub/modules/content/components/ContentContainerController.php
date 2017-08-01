@@ -103,7 +103,7 @@ class ContentContainerController extends Controller
             throw new HttpException(405, Yii::t('base', 'Module is not enabled on this content container!'));
         }
 
-        return parent::init();
+        parent::init();
     }
 
     /**
@@ -151,6 +151,14 @@ class ContentContainerController extends Controller
     {
         // Implemented by behavior
         $this->checkAccess();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAccess()
+    {
+        return new ContentContainerControllerAccess(['contentContainer' => $this->contentContainer]);
     }
 
     /**

@@ -14,7 +14,6 @@ modules:
         - WebDriver
         - tests\codeception\_support\WebHelper
         - tests\codeception\_support\DynamicFixtureHelper
-        - Yii2
     config:
         WebDriver:
             url: http://localhost:8080/
@@ -22,4 +21,3 @@ modules:
             window_size: 1024x768
             restart: true
             lang: en
-        Yii

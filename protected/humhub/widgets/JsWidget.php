@@ -3,6 +3,7 @@
 namespace humhub\widgets;
 
 use humhub\components\Widget;
+use humhub\libs\Html;
 
 /**
  * Description of JsWidget
@@ -58,6 +59,15 @@ class JsWidget extends Widget
     public $container = 'div';
 
     /**
+     * If set to true or 'fast', 'slow' or a integer duration in milliseconds the jsWidget will fade in the root element after initialization.
+     * This can be handy for widgets which need some time to initialize.
+     *
+     * @var bool|string|integer
+     * @since 1.2.2
+     */
+    public $fadeIn = false;
+
+    /**
      * @var string html content. 
      */
     public $content;
@@ -92,11 +102,7 @@ class JsWidget extends Widget
         $result = \yii\helpers\ArrayHelper::merge($attributes, $this->options);
 
         if (!$this->visible) {
-            if (isset($result['style'])) {
-                $result['style'] .= ';display:none;';
-            } else {
-                $result['style'] = 'display:none;';
-            }
+            Html::addCssStyle($result, 'display:none');
         }
 
         return $result;
@@ -115,6 +121,12 @@ class JsWidget extends Widget
 
         if($this->jsWidget) {
             $this->options['data']['ui-widget'] = $this->jsWidget;
+        }
+
+        if($this->fadeIn) {
+            $fadeIn = $this->fadeIn === true ? 'fast' : $this->fadeIn;
+            $this->options['data']['widget-fade-in'] = $fadeIn;
+            $this->visible = false;
         }
 
         if (!empty($this->init)) {

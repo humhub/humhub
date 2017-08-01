@@ -41,10 +41,10 @@ class PermissionManager extends \yii\base\Component
     /**
      * Verifies a given $permission or $permission array for a permission subject.
      *
-     * If $params['all'] is set to true and a $permission array is given all given permissions
-     * have to be verified successfully otherwise (default) only one permission test has to pass.
+     * If $params['strict'] is set to true and a $permission array is given all given permissions
+     * have to be granted otherwise (default) only one permission test has to pass.
      *
-     * @param array|BasePermission|mixed $permission
+     * @param string|string[]|BasePermission $permission
      * @param array $params
      * @param boolean $allowCaching
      * @return boolean
@@ -53,7 +53,8 @@ class PermissionManager extends \yii\base\Component
     {
         
         if (is_array($permission)) {
-            $verifyAll = isset($params['all']) ? $params['all'] : false;
+            // compatibility for old 'all' param
+            $verifyAll = $this->isVerifyAll($params);
             foreach ($permission as $current) {
                 $can = $this->can($current, $params, $allowCaching);
                 if ($can && !$verifyAll) {
@@ -76,6 +77,20 @@ class PermissionManager extends \yii\base\Component
             $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
             return $this->verify($permission);
         }
+    }
+
+    private function isVerifyAll($params = [])
+    {
+        if(isset($params['strict'])) {
+            return $params['strict'];
+        }
+
+        //deprecated
+        if(isset($params['all'])) {
+            return $params['all'];
+        }
+
+        return false;
     }
 
     /**
@@ -118,11 +133,12 @@ class PermissionManager extends \yii\base\Component
      * Sets the state for a given groupId.
      *
      * @param string $groupId
-     * @param BasePermission $permission
+     * @param string|BasePermission $permission either permission class or instance
      * @param string $state
      */
-    public function setGroupState($groupId, BasePermission $permission, $state)
+    public function setGroupState($groupId, $permission, $state)
     {
+        $permission = (is_string($permission)) ? Yii::createObject($permission) : $permission;
         $record = $this->getGroupStateRecord($groupId, $permission);
 
         // No need to store default state

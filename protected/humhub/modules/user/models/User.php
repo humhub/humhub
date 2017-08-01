@@ -424,15 +424,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             $userInvite->delete();
         }
 
-        // Auto Assign User to the Group Space
-        /* $group = Group::findOne(['id' => $this->group_id]);
-          if ($group != null && $group->space_id != "") {
-          $space = \humhub\modules\space\models\Space::findOne(['id' => $group->space_id]);
-          if ($space !== null) {
-          $space->addMember($this->id);
-          }
-          } */
-
         // Auto Add User to the default spaces
         foreach (\humhub\modules\space\models\Space::findAll(['auto_add_new_members' => 1]) as $space) {
             $space->addMember($this->id);
@@ -486,6 +477,9 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function is(User $user)
     {
+        if(!$user) {
+            return false;
+        }
         return $user->id === $this->id;
     }
 
@@ -662,6 +656,4 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         // TODO: Implement same logic as for Spaces
         return Content::VISIBILITY_PUBLIC;
     }
-
-
 }

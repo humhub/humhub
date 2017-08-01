@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\controllers;
 
+use humhub\modules\space\models\Space;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\space\modules\manage\components\Controller;
@@ -23,6 +24,17 @@ use humhub\modules\space\modules\manage\models\ChangeOwnerForm;
  */
 class MemberController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public function getAccessRules()
+    {
+        $result = parent::getAccessRules();
+        $result[] = [
+            'userGroup' => [Space::USERGROUP_OWNER], 'actions' => ['change-owner']
+        ];
+        return $result;
+    }
 
     /**
      * Members Administration Action
@@ -157,7 +169,6 @@ class MemberController extends Controller
      */
     public function actionChangeOwner()
     {
-        $this->ownerOnly();
         $space = $this->getSpace();
 
         $model = new ChangeOwnerForm([

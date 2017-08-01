@@ -26,22 +26,22 @@ class CountrySelect extends Select
      *
      * @return array Form Definition
      */
-    public function getFormDefinition($definition = array())
+    public function getFormDefinition($definition = [])
     {
-        return parent::getFormDefinition(array(
-                    get_class($this) => array(
+        return parent::getFormDefinition([
+                    get_class($this) => [
                         'type' => 'form',
                         'title' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Supported ISO3166 country codes'),
-                        'elements' => array(
-                            'options' => array(
+                        'elements' => [
+                            'options' => [
                                 'type' => 'textarea',
                                 'label' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Possible values'),
                                 'class' => 'form-control',
                                 'hint' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Comma separated country codes, e.g. DE,EN,AU')
-                            )
-                        )
-                    )
-        ));
+                            ]
+                        ]
+                    ]
+        ]);
     }
 
     /**
@@ -103,7 +103,7 @@ class CountrySelect extends Select
     public function getFieldFormDefinition()
     {
         $definition = parent::getFieldFormDefinition();
-        $definition[$this->profileField->internal_name]['htmlOptions'] = ['data-ui-select2' => true];
+        $definition[$this->profileField->internal_name]['htmlOptions'] = ['data-ui-select2' => true, 'style' => 'width:100%'];
         return $definition;
     }
 

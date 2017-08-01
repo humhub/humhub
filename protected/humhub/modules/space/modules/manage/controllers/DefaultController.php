@@ -9,6 +9,9 @@
 namespace humhub\modules\space\modules\manage\controllers;
 
 use Yii;
+use humhub\modules\space\models\Space;
+use humhub\modules\space\modules\manage\models\AdvancedSettingsSpace;
+use humhub\modules\space\widgets\Chooser;
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\DeleteForm;
 
@@ -19,6 +22,18 @@ use humhub\modules\space\modules\manage\models\DeleteForm;
  */
 class DefaultController extends Controller
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function getAccessRules()
+    {
+        $result = parent::getAccessRules();
+        $result[] = [
+            'userGroup' => [Space::USERGROUP_OWNER], 'actions' => ['archive', 'unarchive', 'delete']
+        ];
+        return $result;
+    }
 
     /**
      * General space settings
@@ -37,7 +52,7 @@ class DefaultController extends Controller
 
     public function actionAdvanced()
     {
-        $space = \humhub\modules\space\modules\manage\models\AdvancedSettingsSpace::findOne(['id' => $this->contentContainer->id]);
+        $space = AdvancedSettingsSpace::findOne(['id' => $this->contentContainer->id]);
         $space->scenario = 'edit';
         $space->indexUrl = Yii::$app->getModule('space')->settings->space()->get('indexUrl');
         $space->indexGuestUrl = Yii::$app->getModule('space')->settings->space()->get('indexGuestUrl');
@@ -61,7 +76,6 @@ class DefaultController extends Controller
      */
     public function actionArchive()
     {
-        $this->ownerOnly();
         $space = $this->getSpace();
         $space->archive();
         
@@ -69,7 +83,7 @@ class DefaultController extends Controller
             Yii::$app->response->format = 'json';
             return [
                 'success' => true,
-                'space' => \humhub\modules\space\widgets\Chooser::getSpaceResult($space, true, ['isMember' => true])
+                'space' => Chooser::getSpaceResult($space, true, ['isMember' => true])
             ];
         }
         
@@ -81,7 +95,6 @@ class DefaultController extends Controller
      */
     public function actionUnarchive()
     {
-        $this->ownerOnly();
         $space = $this->getSpace();
         $space->unarchive();
         
@@ -89,7 +102,7 @@ class DefaultController extends Controller
             Yii::$app->response->format = 'json';
             return [
                 'success' => true,
-                'space' => \humhub\modules\space\widgets\Chooser::getSpaceResult($space, true, ['isMember' => true])
+                'space' => Chooser::getSpaceResult($space, true, ['isMember' => true])
             ];
         }
         
@@ -101,14 +114,13 @@ class DefaultController extends Controller
      */
     public function actionDelete()
     {
-        $this->ownerOnly();
         $model = new DeleteForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $this->getSpace()->delete();
             return $this->goHome();
         }
 
-        return $this->render('delete', array('model' => $model, 'space' => $this->getSpace()));
+        return $this->render('delete', ['model' => $model, 'space' => $this->getSpace()]);
     }
 
 }

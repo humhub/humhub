@@ -22,6 +22,7 @@
         "yiisoft/yii2-imagine": "~2.0.0",
         "raoul2000/yii2-jcrop-widget": "*",
         "kartik-v/yii2-widgets": "*",
+        "phpoffice/phpexcel": "*",
         "cebe/markdown": "1.0.2",
         "yiisoft/yii2-jui": "~2.0.0",
         "zendframework/zend-http": "*",
@@ -52,7 +53,7 @@
         "bower-asset/imagesloaded": "*"
     },
     "require-dev": {
-        "yiisoft/yii2-codeception": "~2.0.0",
+        "codeception/codeception": "*",
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0",

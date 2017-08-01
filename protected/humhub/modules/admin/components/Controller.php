@@ -29,6 +29,8 @@ class Controller extends \humhub\components\Controller
      */
     public $adminOnly = true;
 
+    public $loggedInOnly = true;
+
     /**
      * @inheritdoc
      */

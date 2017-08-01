@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use humhub\components\access\ControllerAccess;
 use humhub\components\behaviors\AccessControl;
 use Yii;
 use yii\helpers\Url;
@@ -49,36 +50,10 @@ class Controller extends \yii\web\Controller
     public $prependActionTitles = true;
 
     /**
-     * @var string[] defines the allowed actions for guests if $strictGuestMode is set to true.
+     * @var string defines the ControllerAccess class for this controller responsible for managing access rules
+     * @see self::getAccess()
      */
-    public $guestActions = [];
-
-    /**
-     * @var bool if set to true will only allow actions defined in $guestActions, otherwise the controller has to handle its own guest handling
-     */
-    public $strictGuestMode = false;
-
-    /**
-     * @var bool if set to true only (space/profile/system) admins are allowed to access any controller action
-     */
-    protected $adminOnly = false;
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-
-        return [
-            'acl' => [
-                'class' => AccessControl::className(),
-                'adminOnly' => $this->adminOnly,
-                'guestAllowedActions' => $this->guestActions,
-                'loggedInOnly' => $this->strictGuestMode,
-                'rules' => $this->getAccessRules()
-            ]
-        ];
-    }
+    protected $access = ControllerAccess::class;
 
     /**
      * Returns access rules for the standard access control behavior.
@@ -92,12 +67,34 @@ class Controller extends \yii\web\Controller
     }
 
     /**
+     * @return null|ControllerAccess returns an ControllerAccess instance
+     */
+    public function getAccess()
+    {
+        if(!$this->access) {
+            return null;
+        }
+
+        return Yii::createObject($this->access);
+    }
+
+    /**
      * @inheritdoc
      */
     public function init()
     {
         parent::init();
         $this->trigger(self::EVENT_INIT);
+    }
+
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => AccessControl::class,
+                'rules' => $this->getAccessRules()
+            ]
+        ];
     }
 
     /**

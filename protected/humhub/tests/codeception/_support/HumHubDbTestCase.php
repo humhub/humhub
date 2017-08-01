@@ -47,6 +47,7 @@ class HumHubDbTestCase extends Test
         Yii::setAlias('@webroot', $webRoot);
         $this->initModules();
         $this->reloadSettings();
+        $this->deleteMails();
     }
 
     protected function tearDown()
@@ -62,6 +63,17 @@ class HumHubDbTestCase extends Test
         foreach (Yii::$app->modules as $module) {
             if ($module instanceof \humhub\components\Module) {
                 $module->settings->reload();
+            }
+        }
+    }
+
+    protected function deleteMails()
+    {
+        $path = Yii::getAlias('@runtime/mail');
+        $files = glob($path . '/*'); // get all file names
+        foreach ($files as $file) { // iterate files
+            if (is_file($file)) {
+                unlink($file); // delete file
             }
         }
     }

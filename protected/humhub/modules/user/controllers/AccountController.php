@@ -63,13 +63,13 @@ class AccountController extends BaseAccountController
 
         // Get Form Definition
         $definition = $user->profile->getFormDefinition();
-        $definition['buttons'] = array(
-            'save' => array(
+        $definition['buttons'] = [
+            'save' => [
                 'type' => 'submit',
                 'label' => Yii::t('UserModule.controllers_AccountController', 'Save profile'),
                 'class' => 'btn btn-primary'
-            ),
-        );
+            ],
+        ];
 
         $form = new \humhub\compat\HForm($definition, $user->profile);
         $form->showErrorSummary = true;
@@ -82,7 +82,7 @@ class AccountController extends BaseAccountController
             return $this->redirect(['edit']);
         }
 
-        return $this->render('edit', array('hForm' => $form));
+        return $this->render('edit', ['hForm' => $form]);
     }
 
     /**

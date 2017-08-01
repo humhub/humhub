@@ -34,6 +34,7 @@ abstract class BootstrapComponent extends Widget
     public $htmlOptions = [];
     public $text;
     public $_icon;
+    public $_iconRight;
 
     public $_visible = true;
 
@@ -117,6 +118,12 @@ abstract class BootstrapComponent extends Widget
     public static function asColor($color, $text = null)
     {
         return static::info($text)->color($color);
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
     }
 
     /**
@@ -238,12 +245,13 @@ abstract class BootstrapComponent extends Widget
         return $this;
     }
 
-    public function icon($content, $raw = false)
+    public function icon($content, $right = false, $raw = false)
     {
         if(!$raw) {
-            $this->icon(Html::tag('i', '', ['class' => 'fa '.$content]), true);
+            $this->icon(Html::tag('i', '', ['class' => 'fa '.$content]), $right, true);
         } else {
             $this->_icon = $content;
+            $this->_iconRight = $right;
         }
 
         return $this;
@@ -299,7 +307,7 @@ abstract class BootstrapComponent extends Widget
     protected function getText()
     {
         if($this->_icon) {
-            return $this->_icon.' '.$this->text;
+            return ($this->_iconRight) ? $this->text.' '.$this->_icon : $this->_icon.' '.$this->text;
         }
 
         return $this->text;
@@ -327,6 +335,7 @@ abstract class BootstrapComponent extends Widget
             'text' => $this->text,
             'htmlOptions' => $this->htmlOptions,
             '_icon' => $this->_icon,
+            '_iconRight' => $this->_iconRight,
             'render' => $this->_visible
         ];
     }

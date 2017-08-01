@@ -92,6 +92,11 @@ class MarkdownField extends InputWidget
     /**
      * @inheritdoc
      */
+    public $fadeIn = 'fast';
+
+    /**
+     * @inheritdoc
+     */
     public $init = true;
 
     public function init()
@@ -127,7 +132,8 @@ class MarkdownField extends InputWidget
             'rows' => $this->rows,
             'disabled' => $this->disabled,
             'readonly' => $this->readonly,
-            'placeholder' => $this->placeholder
+            'placeholder' => $this->placeholder,
+            'class' => 'form-control'
         ];
     }
 

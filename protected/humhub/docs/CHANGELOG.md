@@ -50,8 +50,10 @@ HumHub Change Log
 - Enh: Darkened comment links for better readability
 - Fix #2582 Userfollow activity click action not working
 - Enh: Make space membership activities clickable
-- Enh: Removed `yii2-codeception` dependency
-
+- Chg: Removed `yii2-codeception` dependency
+- Chg: Added `phpoffice/phpexcel` dependency
+- Enh: Added `JsWidget::fadeIn` for smooth widget initialization
+- Enh: Enhanced `AccessControl` filter with `ControllerAccess` layer for better testability and flexibility
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language
