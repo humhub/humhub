@@ -3,13 +3,7 @@
  * This is the initial test bootstrap, which will load the default test bootstrap from the humhub core
  */
 // Parse the environment arguments (Note: only simple --env ENV is supported no comma sepration merge...)
-$argv = $_SERVER['argv'];
-$env = [];
-for ($i = 0; $i < count($argv); $i++) {
-    if ($argv[$i] === '--env') {
-        $env[] = explode(',', $argv[++$i]);
-    }
-}
+$env = isset($GLOBALS['env']) ? $GLOBALS['env'] : [];
 
 // If environment was set try loading special environment config else load default
 if (count($env) > 0) {
@@ -43,7 +37,7 @@ Yii::setAlias('@env', '@tests/config/env');
 Yii::setAlias('@root', $cfg['humhub_root']);
 Yii::setAlias('@humhubTests', $cfg['humhub_root'] . '/protected/humhub/tests');
 
-// Load all supporting test classes needed for test execution 
+// Load all supporting test classes needed for test execution
 \Codeception\Util\Autoload::addNamespace('', Yii::getAlias('@humhubTests/codeception/_support'));
 \Codeception\Util\Autoload::addNamespace('tests\codeception\fixtures', Yii::getAlias('@humhubTests/codeception/fixtures'));
 \Codeception\Util\Autoload::addNamespace('', Yii::getAlias('@humhubTests/codeception/_pages'));

@@ -1,6 +1,6 @@
 <?php return array (
   'name' => 'HumHub',
-  'language' => 'de',
+  'language' => 'en-US',
   'timeZone' => 'Pacific/Niue',
   'components' => 
   array (
@@ -44,7 +44,7 @@
   ),
   'params' => 
   array (
-    'config_created_at' => 1488377334,
+    'config_created_at' => 1501606491,
     'horImageScrollOnMobile' => NULL,
   ),
 ); ?>

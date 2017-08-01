@@ -3,16 +3,10 @@
  * This is the initial test bootstrap, which will load the default test bootstrap from the humhub core
  */
 // Parse the environment arguments (Note: only simple --env ENV is supported no comma sepration merge...)
-$argv = $_SERVER['argv'];
-$env = [];
-for ($i = 0; $i < count($argv); $i++) {
-    if ($argv[$i] === '--env') {
-        $env[] = explode(',', $argv[++$i]);
-    }
-}
+$env = isset($GLOBALS['env']) ? $GLOBALS['env'] : [];
 
 // If environment was set try loading special environment config else load default
-if (count($env) > 0) {
+if (!empty($env)) {
     \Codeception\Configuration::append(['environment' => $env]);
 
     echo 'Run execution environment: ' . $env[0][0] . PHP_EOL;

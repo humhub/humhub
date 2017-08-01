@@ -50,6 +50,7 @@ HumHub Change Log
 - Enh: Darkened comment links for better readability
 - Fix #2582 Userfollow activity click action not working
 - Enh: Make space membership activities clickable
+- Enh: Removed `yii2-codeception` dependency
 
 
 1.2.1 (June 17, 2017)

@@ -4,6 +4,7 @@ namespace tests\codeception\_support;
 
 use Codeception\Module;
 use humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture;
+use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
 use yii\test\FixtureTrait;
 use yii\test\InitDbFixture;
 
@@ -108,8 +109,7 @@ class DynamicFixtureHelper extends Module
     protected function getDefaultFixtures()
     {
         return [
-            'user' => ['class' => \humhub\modules\user\tests\codeception\fixtures\UserFixture::className()],
-            'group' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupFixture::className()],
+            'user' => ['class' => UserFullFixture::class],
             'group_permission' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture::className()],
             'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::className()],
             'space' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::className()],

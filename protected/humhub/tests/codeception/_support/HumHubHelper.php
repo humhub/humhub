@@ -19,7 +19,24 @@ class HumHubHelper extends Module
     public function inviteUserByEmail($email) {
         $this->getModule('Yii2')->_loadPage('POST', '/user/invite', ['Invite[emails]' => $email]);
     }
-    
+
+    public function assertMailSent($count = 0, $msg = null)
+    {
+        return $this->getModule('Yii2')->seeEmailIsSent($count);
+    }
+
+    public function assertEqualsLastEmailSubject($subject)
+    {
+        $message = $this->getModule('Yii2')->grabLastSentEmail();
+        $this->assertEquals($subject, $message->getSubject());
+    }
+
+    /*public function assertEqualsLastEmailSubject($subject)
+    {
+        $message = $this->getModule('Yii2')->grabLastSentEmail();
+        $this->assertEquals($subject, $message->getSubject());
+    }*/
+
     public function initModules() {
         if(!empty($this->config['modules'])) {
             foreach($this->config['modules'] as $moduleId) {
