@@ -43,7 +43,7 @@ return array (
   'My profile' => 'Mein Profil',
   'My profile image' => 'Mein Profilbild',
   'New profile image' => 'Neues Profilbild',
-  'Next' => 'Nächster',
+  'Next' => 'Weiter',
   'No error information given.' => 'Keine Fehlerbeschreibung verfügbar.',
   'Oooops...' => 'Uuuups...',
   'Open' => 'Öffnen',
