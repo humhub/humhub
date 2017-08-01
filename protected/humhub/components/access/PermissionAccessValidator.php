@@ -27,6 +27,10 @@ class PermissionAccessValidator extends ActionAccessValidator
 
     protected function validate($rule)
     {
+        if(Yii::$app->user->isAdmin()) {
+            return true;
+        }
+
         if (isset($rule[$this->name]) && !empty($rule[$this->name])) {
             return $this->verifyPermission($rule[$this->name], $rule);
         }
