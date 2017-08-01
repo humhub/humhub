@@ -1,9 +1,9 @@
 <?php
 return array (
-  '{displayNames} likes your {contentTitle}.' => '{displayNames} wie dein {contentTitle}.
+  '{displayNames} likes your {contentTitle}.' => '{displayNames} gefällt dein {contentTitle}.
 ',
-  '{displayNames} likes {contentTitle}.' => '{displayNames} mögen {contentTitle}.',
-  '{displayName} likes your {contentTitle}.' => '{displayName} wie dein {contentTitle}.
+  '{displayNames} likes {contentTitle}.' => '{displayNames} gefällt {contentTitle}.',
+  '{displayName} likes your {contentTitle}.' => '{displayName} gefällt dein {contentTitle}.
 ',
-  '{displayName} likes {contentTitle}.' => '{displayName} mag {contentTitle}.',
+  '{displayName} likes {contentTitle}.' => '{displayName} gefällt {contentTitle}.',
 );

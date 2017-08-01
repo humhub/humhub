@@ -24,11 +24,11 @@ return array (
    your account request has been declined.<br><br>
 
    Kind Regards<br>
-   {AdminName}<br><br>' => '@@Hallo {displayName},<br><br>
+   {AdminName}<br><br>' => 'Hallo {displayName},<br><br>
   
    deine Zugangsanfrage wurde abgelehnt.<br><br> 
       
    mit freundlichen Grüßen<br>
-   {AdminName}<br><br>@@',
+   {AdminName}<br><br>',
   'User not found!' => 'Benutzer nicht gefunden!',
 );

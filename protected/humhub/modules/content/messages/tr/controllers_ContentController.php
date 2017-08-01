@@ -1,7 +1,7 @@
 <?php
 return array (
   'Could not delete content!' => 'İçerik silinemedi!',
-  'Could not delete content: Access denied!' => '',
+  'Could not delete content: Access denied!' => 'İçerik silinemedi: Erişim reddedildi!',
   'Could not load requested object!' => 'İstenen obje yüklenemedi',
   'Invalid request method!' => 'Geçersiz istek yöntemi!',
   'Maximum number of pinned items reached!
