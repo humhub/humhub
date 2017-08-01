@@ -9,4 +9,3 @@ modules:
      - Asserts
      - Yii2:
          configFile: 'codeception/config/unit.php'
-         part: init
