@@ -54,6 +54,7 @@ HumHub Change Log
 - Chg: Added `phpoffice/phpexcel` dependency
 - Enh: Added `JsWidget::fadeIn` for smooth widget initialization
 - Enh: Enhanced `AccessControl` filter with `ControllerAccess` layer for better testability and flexibility
+- Enh: Added `Pending Registrations` admin view with `csv`, `xlsx` support.
 
 1.2.1 (June 17, 2017)
 - Fix: Invite error in french language

@@ -69,9 +69,9 @@ Supports plain strings, `text/html`, and DOM nodes | Only supports plain strings
 1.5KB minimized + gzipped                          | 2.9KB minimized + gzipped
 Doesn't change document selection                  | Clears document selection
 Only an imperative API (`clipboard.copy()`)        | Declarative DOM-based API
-Uses `Promise`s                                    | -
-Supports paste (in IE)                             | -
--                                                  | Offers a fallback prompt (`Press Ctrl+C to copy`)
+Uses `Promise`s                                    | ---
+Supports paste (in IE)                             | ---
+---                                                | Offers a fallback prompt (`Press Ctrl+C to copy`)
 
 
 ## This is way too complicated!

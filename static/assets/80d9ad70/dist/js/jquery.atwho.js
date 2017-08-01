@@ -1,5 +1,5 @@
 /**
- * at.js - 1.5.3
+ * at.js - 1.5.4
  * Copyright (c) 2017 chord.luo <chord.luo@gmail.com>;
  * Homepage: http://ichord.github.com/At.js
  * License: MIT
@@ -809,7 +809,7 @@ EditableController = (function(superClass) {
   EditableController.prototype.rect = function() {
     var $iframe, iframeOffset, rect;
     rect = this.query.el.offset();
-    if (!rect) {
+    if (!(rect && this.query.el[0].getClientRects().length)) {
       return;
     }
     if (this.app.iframe && !this.app.iframeAsRoot) {
@@ -822,9 +822,13 @@ EditableController = (function(superClass) {
   };
 
   EditableController.prototype.insert = function(content, $li) {
-    var data, range, suffix, suffixNode;
+    var data, overrides, range, suffix, suffixNode;
     if (!this.$inputor.is(':focus')) {
       this.$inputor.focus();
+    }
+    overrides = this.getOpt('functionOverrides');
+    if (overrides.insert) {
+      return overrides.insert.call(this, content, $li);
     }
     suffix = (suffix = this.getOpt('suffix')) === "" ? suffix : suffix || "\u00A0";
     data = $li.data('item-data');
@@ -1183,6 +1187,7 @@ $.fn.atwho["default"] = {
   insertTpl: "${atwho-at}${name}",
   headerTpl: null,
   callbacks: DEFAULT_CALLBACKS,
+  functionOverrides: {},
   searchKey: "name",
   suffix: void 0,
   hideWithoutSuffix: false,

@@ -37,6 +37,7 @@ $.fn.atwho.default =
   insertTpl: "${atwho-at}${name}"
   headerTpl: null
   callbacks: DEFAULT_CALLBACKS
+  functionOverrides: {}
   searchKey: "name"
   suffix: undefined
   hideWithoutSuffix: no

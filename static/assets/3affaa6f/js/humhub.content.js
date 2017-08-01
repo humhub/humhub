@@ -123,7 +123,8 @@ humhub.module('content', function (module, require, $) {
         modal.global.set({
             header: options.head,
             body: string.template(module.templates.permalinkBody, options),
-            footer: string.template(module.templates.permalinkFooter, options)
+            footer: string.template(module.templates.permalinkFooter, options),
+            size: 'normal'
         }).show();
 
         modal.global.$.find('textarea').focus().select();

@@ -1,6 +1,6 @@
 {
   "name": "clipboard-js",
-  "version": "0.3.3",
+  "version": "0.3.5",
   "description": "A web shim to handle clipboard APIs across browsers using a simple Promise API.",
   "main": "clipboard.js",
   "dependencies": {

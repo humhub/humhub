@@ -1,0 +1,3 @@
+[29-Jul-2017 17:45:13 UTC] PHP Fatal error:  Cannot declare class FunctionalTester, because the name is already in use in E:\codebase\humhub\master\protected\humhub\tests\codeception\_support\FunctionalTester.php on line 20
+[29-Jul-2017 17:45:34 UTC] PHP Fatal error:  Cannot declare class FunctionalTester, because the name is already in use in E:\codebase\humhub\master\protected\humhub\tests\codeception\_support\FunctionalTester.php on line 20
+[29-Jul-2017 17:46:12 UTC] PHP Fatal error:  Cannot redeclare user\functional\UserAccessCest::testSeeAdminInformation() in E:\codebase\humhub\master\protected\humhub\modules\user\tests\codeception\functional\UserAccessCest.php on line 32

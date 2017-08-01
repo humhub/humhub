@@ -12,6 +12,7 @@ humhub.module('file', function (module, require, $) {
     var string = util.string;
     var action = require('action');
     var event = require('event');
+
     
     var view = require('ui.view');
 
@@ -51,6 +52,11 @@ humhub.module('file', function (module, require, $) {
             objectModel: this.$.data('upload-model'),
             objectId: this.$.data('upload-model-id')
         };
+
+        if(this.$.data('upload-hide-in-stream')) {
+            data['hideInStream'] = 1;
+        }
+
         return {
             url: this.$.data('url') || this.$.data('upload-url') || module.config.upload.url,
             dropZone: this.getDropZone(),
@@ -60,7 +66,9 @@ humhub.module('file', function (module, require, $) {
             singleFileUploads: false,
             add: function (e, data) {
                 if (that.options.maxNumberOfFiles && (that.getFileCount() + data.files.length > that.options.maxNumberOfFiles)) {
-                    that.handleMaxFileReached();
+                    that.handleMaxFileReached(that.options.maxNumberOfFilesMessage);
+                } else if(that.options.phpMaxFileUploads && data.files.length > that.options.phpMaxFileUploads) {
+                    that.handleMaxFileReached(that.options.phpMaxFileUploadsMessage);
                 } else {
                     data.process().done(function () {
                         data.submit();
@@ -71,8 +79,8 @@ humhub.module('file', function (module, require, $) {
         };
     };
 
-    Upload.prototype.handleMaxFileReached = function () {
-        module.log.warn(this.$.data('max-number-of-files-message'), true);
+    Upload.prototype.handleMaxFileReached = function (message) {
+        module.log.warn(message, true);
         this.$ = $(this.getIdSelector());
         if (!this.canUploadMore()) {
             this.disable(this.$.data('max-number-of-files-message'));
@@ -225,7 +233,8 @@ humhub.module('file', function (module, require, $) {
             this.callbacks.done(e, response);
         }
 
-        this.fire('humhub:file:uploadEnd', [response]);
+        //deprecated event use uploadEnd
+        this.fire('humhub:file:uploadEnd', [response]);;
         this.fire('uploadEnd', [response]);
     };
 
