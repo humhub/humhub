@@ -164,7 +164,7 @@ if ($space->isAdmin()) {
                     <div class="statistics pull-left">
 
                         <div class="pull-left entry">
-                            <span class="count"><?= $postCount; ?></span></a>
+                            <span class="count"><?= $postCount; ?></span>
                             <br>
                             <span
                                 class="title"><?= Yii::t('SpaceModule.widgets_views_profileHeader', 'Posts'); ?></span>
