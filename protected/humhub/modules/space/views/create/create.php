@@ -34,8 +34,8 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
 
         <div class="modal-footer">
             <?= ModalButton::submitModal(Url::to(['/space/create/create']), Yii::t('SpaceModule.views_create_create', 'Next')) ?>
-            <?= ModalButton::submitModal(Url::to(['/space/create/create', 'skip' => 1]), Yii::t('SpaceModule.views_create_create', 'Skip'))
-                ->setType('info')->icon('fa-forward', true)->cssClass('tt')->options(['title' => Yii::t('SpaceModule.views_create_create', 'Skip other steps')]) ?>
+            <?php /** ModalButton::submitModal(Url::to(['/space/create/create', 'skip' => 1]), Yii::t('SpaceModule.views_create_create', 'Skip'))
+                ->setType('default')->icon('fa-forward', true)->cssClass('tt')->options(['title' => Yii::t('SpaceModule.views_create_create', 'Skip other steps')]) */?>
         </div>
     <?php ActiveForm::end(); ?>
 <?php ModalDialog::end(); ?>
