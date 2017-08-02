@@ -1,6 +1,9 @@
 HumHub Change Log
 =================
-1.2.2 in developement
+
+
+1.2.2  (August 2, 2017)
+--------------------------------
 - Enh: Allow returning class names beside BasePermission instances in `Module::getPermissions()`
 - Enh: Increase profile image size to 800px.
 - Fix #2644 overlapping popup preview image after increasing preview image size (hagalaz)
@@ -57,6 +60,7 @@ HumHub Change Log
 - Enh: Added `Pending Registrations` admin view with `csv`, `xlsx` support.
 
 1.2.1 (June 17, 2017)
+--------------------------------
 - Fix: Invite error in french language
 - Fix #2518: ActivityStreamWidget::EVENT_INIT is missed (githubjeka)
 - Enh: Fixed accessibility issues in Dashboard/Login/Profile
