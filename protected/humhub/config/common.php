@@ -119,7 +119,9 @@ $config = [
             'password' => '',
             'charset' => 'utf8',
             'enableSchemaCache' => true,
-            'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
+            'on afterOpen' => function ($event) {
+                humhub\libs\Helpers::SqlMode($event);
+            },
         ],
         'authClientCollection' => [
             'class' => 'humhub\modules\user\authclient\Collection',
