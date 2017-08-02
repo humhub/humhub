@@ -148,7 +148,7 @@ class PendingRegistrationsController extends Controller
             header('Cache-Control: max-age=0');
         } else {
             $writer = PHPExcel_IOFactory::createWriter($file, 'Excel2007');
-            header('Content-type: application/vnd.ms-excel');
+            header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment; filename="'.$filePrefix.'.xlsx"');
             header('Cache-Control: max-age=0');
         }
