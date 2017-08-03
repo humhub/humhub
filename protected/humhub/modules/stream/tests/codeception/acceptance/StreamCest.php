@@ -182,7 +182,7 @@ class StreamCest
         
         $I->createPost('This is my first stream test post!');
 
-        $I->wait(1);    
+        $I->wait(1);
         
         $I->amGoingTo('Delete my new post again.');
         $I->dontSee('This space is still empty!');

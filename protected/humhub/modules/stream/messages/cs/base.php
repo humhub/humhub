@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Show {i} more.' => 'Zobrazit {i} více.',
-);
+];

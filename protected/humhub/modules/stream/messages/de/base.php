@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Show {i} more.' => 'Zeige {i} weitere.
 ',
-);
+];
