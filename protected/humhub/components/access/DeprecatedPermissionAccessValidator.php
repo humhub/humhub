@@ -15,7 +15,6 @@
 
 namespace humhub\components\access;
 
-
 use Yii;
 use yii\base\InvalidParamException;
 

@@ -15,7 +15,6 @@
 
 namespace humhub\components\access;
 
-
 class DelegateAccessValidator extends ActionAccessValidator
 {
     public $owner;

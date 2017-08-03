@@ -15,7 +15,6 @@
 
 namespace humhub\components\access;
 
-
 use Yii;
 use yii\base\InvalidParamException;
 use yii\base\Object;
@@ -82,11 +81,11 @@ abstract class AccessValidator extends Object
 
     public function init()
     {
-        if(!$this->name) {
+        if (!$this->name) {
             $this->name = static::class;
         }
 
-        if(empty($this->reason)) {
+        if (empty($this->reason)) {
             $this->reason = Yii::t('error', 'You are not permitted to access this section.');
         }
     }
@@ -109,7 +108,7 @@ abstract class AccessValidator extends Object
      */
     protected function filterRelatedRules($rules = null)
     {
-        if($rules === null) {
+        if ($rules === null) {
             $rules = $this->access->getRules();
         }
 
@@ -117,10 +116,9 @@ abstract class AccessValidator extends Object
         foreach ($rules as $rule) {
             $ruleName = $this->getRuleName($rule);
 
-            if($this->name === $ruleName) {
+            if ($this->name === $ruleName) {
                 $result[] = $rule;
             }
-
         }
         return $result;
     }
@@ -187,12 +185,12 @@ abstract class AccessValidator extends Object
      */
     protected function getRuleName($rule)
     {
-        if(empty($rule)) {
+        if (empty($rule)) {
             return null;
         }
 
         $firstKey = current(array_keys($rule));
-        if(is_string($firstKey)) {
+        if (is_string($firstKey)) {
             return $firstKey;
         } else {
             return $rule[$firstKey];

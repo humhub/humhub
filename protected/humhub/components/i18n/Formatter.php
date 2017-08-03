@@ -50,8 +50,9 @@ class Formatter extends \yii\i18n\Formatter
      * @param null $locale
      * @return null|string
      */
-    public function getDateTimePattern($dateType = IntlDateFormatter::SHORT, $timeType = IntlDateFormatter::SHORT, $locale = null) {
-        if(extension_loaded('intl')) {
+    public function getDateTimePattern($dateType = IntlDateFormatter::SHORT, $timeType = IntlDateFormatter::SHORT, $locale = null)
+    {
+        if (extension_loaded('intl')) {
             $locale = empty($locale) ? $this->locale : $locale;
             $formatter = new IntlDateFormatter($locale, $dateType, $timeType, $this->timeZone, $this->calendar);
             return $formatter->getPattern();
@@ -68,12 +69,12 @@ class Formatter extends \yii\i18n\Formatter
      * @param null $locale
      * @return bool if the locale uses a 12 hour (AM/PM) otherwise a 24 hour time format is used.
      */
-    public function isShowMeridiem($locale = null) {
-        if(extension_loaded('intl')) {
+    public function isShowMeridiem($locale = null)
+    {
+        if (extension_loaded('intl')) {
             $pattern = $this->getDateTimePattern(IntlDateFormatter::NONE, IntlDateFormatter::SHORT);
             return strpos($pattern, 'a') !== false;
         }
         return false;
     }
-
 }

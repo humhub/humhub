@@ -32,7 +32,7 @@ class PolymorphicRelation extends Behavior
     /**
      * @var array the related object needs to be a "instanceof" at least one of these given classnames
      */
-    public $mustBeInstanceOf = array();
+    public $mustBeInstanceOf = [];
 
     /**
      * @var mixed the cached object
@@ -54,12 +54,12 @@ class PolymorphicRelation extends Behavior
 
         $className = $this->owner->getAttribute($this->classAttribute);
 
-        if ($className == "") {
+        if ($className == '') {
             return null;
         }
 
         if (!class_exists($className)) {
-            Yii::error("Underlying object class " . $className . " not found!");
+            Yii::error('Underlying object class ' . $className . ' not found!');
             return null;
         }
 
@@ -121,5 +121,4 @@ class PolymorphicRelation extends Behavior
         
         return false;
     }
-
 }

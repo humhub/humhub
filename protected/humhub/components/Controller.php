@@ -71,7 +71,7 @@ class Controller extends \yii\web\Controller
      */
     public function getAccess()
     {
-        if(!$this->access) {
+        if (!$this->access) {
             return null;
         }
 
@@ -154,7 +154,7 @@ class Controller extends \yii\web\Controller
      * Create Redirect for AJAX Requests which output goes into HTML content.
      * Is an alternative method to redirect, for ajax responses.
      */
-    public function htmlRedirect($url = "")
+    public function htmlRedirect($url = '')
     {
         return $this->renderPartial('@humhub/views/htmlRedirect.php', [
             'url' => Url::to($url)
@@ -282,5 +282,4 @@ class Controller extends \yii\web\Controller
             \humhub\widgets\TopMenu::setViewState();
         }
     }
-
 }

@@ -32,11 +32,11 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
     public function beforeSave($insert)
     {
         if ($insert) {
-            if ($this->hasAttribute('created_at') && $this->created_at == "") {
+            if ($this->hasAttribute('created_at') && $this->created_at == '') {
                 $this->created_at = new \yii\db\Expression('NOW()');
             }
 
-            if (isset(Yii::$app->user) && $this->hasAttribute('created_by') && $this->created_by == "") {
+            if (isset(Yii::$app->user) && $this->hasAttribute('created_by') && $this->created_by == '') {
                 $this->created_by = Yii::$app->user->id;
             }
         }
@@ -58,7 +58,7 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
      */
     public function getUniqueId()
     {
-        return str_replace('\\', '', get_class($this)) . "_" . $this->primaryKey;
+        return str_replace('\\', '', get_class($this)) . '_' . $this->primaryKey;
     }
 
     /**
@@ -148,8 +148,7 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
     {
         $this->init();
         $unserializedArr = unserialize($serialized);
-        $this->setAttributes($unserializedArr['attributes'],false);
-        $this->setOldAttributes($unserializedArr['oldAttributes'],false);
+        $this->setAttributes($unserializedArr['attributes'], false);
+        $this->setOldAttributes($unserializedArr['oldAttributes'], false);
     }
-
 }

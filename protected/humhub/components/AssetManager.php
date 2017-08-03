@@ -35,5 +35,4 @@ class AssetManager extends \yii\web\AssetManager
             FileHelper::removeDirectory($this->basePath . DIRECTORY_SEPARATOR . $file);
         }
     }
-
 }

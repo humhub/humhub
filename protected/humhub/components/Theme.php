@@ -95,7 +95,7 @@ class Theme extends \yii\base\Theme
         }
 
         // Web Resource e.g. image
-         if (substr($path, 0, 5) === '@web/' || substr($path, 0, 12) === '@web-static/') {
+        if (substr($path, 0, 5) === '@web/' || substr($path, 0, 12) === '@web-static/') {
             $themedFile = str_replace(['@web/', '@web-static/'], [$this->getBasePath(), $this->getBasePath() . DIRECTORY_SEPARATOR . 'static'], $path);
             // Check if file exists in theme base dir
             if (file_exists($themedFile)) {
@@ -120,7 +120,8 @@ class Theme extends \yii\base\Theme
         }
 
         $published = Yii::$app->assetManager->publish(
-                $this->getBasePath(), ['forceCopy' => $force, 'except' => ['views/']]
+            $this->getBasePath(),
+            ['forceCopy' => $force, 'except' => ['views/']]
         );
 
         return $published[1];
@@ -221,8 +222,8 @@ class Theme extends \yii\base\Theme
         $result = isset($this->_variables[$key]) ? $this->_variables[$key] : null;
 
         // Compatibility with old themes prior v1.2
-        if(!$result && in_array($key, ['default', 'primary', 'info', 'success', 'warning', 'danger'])) {
-            $result = Yii::$app->settings->get('color'.ucfirst($key));
+        if (!$result && in_array($key, ['default', 'primary', 'info', 'success', 'warning', 'danger'])) {
+            $result = Yii::$app->settings->get('color' . ucfirst($key));
         }
 
         return $result === null ? $default : $result;
@@ -239,10 +240,10 @@ class Theme extends \yii\base\Theme
     public function parseThemeVariables($lessFileName)
     {
         // Parse default values
-        $variables = $this->parseLessVariables(Yii::getAlias('@webroot-static/less/'.$lessFileName));
+        $variables = $this->parseLessVariables(Yii::getAlias('@webroot-static/less/' . $lessFileName));
 
         // Overwrite theme values
-        return \yii\helpers\ArrayHelper::merge($variables, $this->parseLessVariables($this->getBasePath() . '/less/'.$lessFileName));
+        return \yii\helpers\ArrayHelper::merge($variables, $this->parseLessVariables($this->getBasePath() . '/less/' . $lessFileName));
     }
 
     /**
@@ -280,5 +281,4 @@ class Theme extends \yii\base\Theme
             $theme->storeColorsToConfig();
         }
     }
-
 }

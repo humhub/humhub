@@ -34,11 +34,10 @@ class MySQL extends Queue
     {
         parent::init();
 
-        Event::on(Queue::class, Queue::EVENT_AFTER_ERROR, function(ErrorEvent $errorEvent) {
+        Event::on(Queue::class, Queue::EVENT_AFTER_ERROR, function (ErrorEvent $errorEvent) {
             /* @var $exception \Expection */
             $exception = $errorEvent->error;
             Yii::error('Could not execute queued job! Message: ' . $exception->getMessage() . ' Trace:' . $exception->getTraceAsString(), 'queue');
         });
     }
-
 }

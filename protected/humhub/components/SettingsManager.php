@@ -53,7 +53,7 @@ class SettingsManager extends BaseSettingsManager
      */
     public function user($user = null)
     {
-        if(!$user) {
+        if (!$user) {
             $user = Yii::$app->user->getIdentity();
         }
 
@@ -98,5 +98,4 @@ class SettingsManager extends BaseSettingsManager
 
         return parent::get($name, $default);
     }
-
 }

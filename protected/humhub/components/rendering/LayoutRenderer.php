@@ -49,7 +49,7 @@ class LayoutRenderer extends ViewPathRenderer
         $viewParams = $viewable->getViewParams($params);
 
         // Render the viewFile
-        if(!isset($viewParams['content'])) {
+        if (!isset($viewParams['content'])) {
             $viewParams['content'] = parent::renderView($viewable, $viewParams);
         }
 
@@ -74,5 +74,4 @@ class LayoutRenderer extends ViewPathRenderer
     {
         return $this->layout;
     }
-
 }

@@ -55,5 +55,4 @@ class MailLayoutRenderer extends LayoutRenderer
     {
         return $this->textLayout;
     }
-
 }

@@ -175,7 +175,7 @@ class ControllerAccess extends Object
      */
     protected function registerValidator($options)
     {
-        if(is_string($options)) {
+        if (is_string($options)) {
             $options = [
                 'class' => $options,
             ];
@@ -185,9 +185,9 @@ class ControllerAccess extends Object
 
         $name = $this->getName($options);
 
-        if($name == 'class') {
+        if ($name == 'class') {
             $validator = Yii::createObject($options);
-        } else if(class_exists($name)) {
+        } elseif (class_exists($name)) {
             unset($options[0]);
             $options['class'] = $name;
             $validator = Yii::createObject($options);
@@ -211,11 +211,11 @@ class ControllerAccess extends Object
     {
         $finished = [];
 
-        foreach($this->rules as $rule) {
+        foreach ($this->rules as $rule) {
             $ruleName = $this->getName($rule);
 
             // A validator validates all rules of the given $name, so we don't have to rerun the validation here if already handled
-            if(in_array($ruleName, $finished)) {
+            if (in_array($ruleName, $finished)) {
                 continue;
             }
 
@@ -223,7 +223,7 @@ class ControllerAccess extends Object
 
             $validator = $this->findValidator($ruleName);
 
-            if(!$validator->run()) {
+            if (!$validator->run()) {
                 $this->reason = (!$this->reason) ? $validator->getReason() : $this->reason;
                 $this->code = (!$this->code) ? $validator->getCode(): $this->code;
                 return false;
@@ -235,7 +235,7 @@ class ControllerAccess extends Object
 
     protected function findValidator($ruleName)
     {
-        if(isset($this->validators[$ruleName])) {
+        if (isset($this->validators[$ruleName])) {
             return $this->validators[$ruleName];
         }
 
@@ -244,7 +244,7 @@ class ControllerAccess extends Object
 
     protected function getCustomValidator($ruleName)
     {
-        if($this->owner && method_exists($this->owner, $ruleName)) {
+        if ($this->owner && method_exists($this->owner, $ruleName)) {
             return new DelegateAccessValidator([
                 'access' => $this,
                 'owner' => $this->owner,
@@ -260,7 +260,7 @@ class ControllerAccess extends Object
             ]);
         }
 
-        throw new InvalidParamException('Invalid validator settings given for rule '.$ruleName);
+        throw new InvalidParamException('Invalid validator settings given for rule ' . $ruleName);
     }
 
     /**
@@ -271,12 +271,12 @@ class ControllerAccess extends Object
      */
     protected function getName($arr)
     {
-        if(empty($arr)) {
+        if (empty($arr)) {
             return null;
         }
 
         $firstKey = current(array_keys($arr));
-        if(is_string($firstKey)) {
+        if (is_string($firstKey)) {
             return $firstKey;
         } else {
             return $arr[$firstKey];

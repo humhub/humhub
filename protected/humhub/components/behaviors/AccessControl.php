@@ -98,8 +98,8 @@ class AccessControl extends \yii\base\ActionFilter
         $this->handleDeprecatedSettings();
         $this->_controllerAccess = $this->getControllerAccess($this->rules);
 
-        if(!$this->_controllerAccess->run()) {
-            if($this->_controllerAccess->code == 401) {
+        if (!$this->_controllerAccess->run()) {
+            if ($this->_controllerAccess->code == 401) {
                 return $this->loginRequired();
             } else {
                 $this->forbidden();
@@ -114,15 +114,15 @@ class AccessControl extends \yii\base\ActionFilter
      */
     protected function handleDeprecatedSettings()
     {
-        if($this->adminOnly) {
+        if ($this->adminOnly) {
             $this->rules[] = [ControllerAccess::RULE_ADMIN_ONLY];
         }
 
-        if($this->loggedInOnly) {
+        if ($this->loggedInOnly) {
             $this->rules[] = [ControllerAccess::RULE_LOGGED_IN_ONLY];
         }
 
-        if(!empty($this->guestAllowedActions)) {
+        if (!empty($this->guestAllowedActions)) {
             $this->rules[] = ['guestAccess' => $this->guestAllowedActions];
         }
     }
@@ -136,11 +136,11 @@ class AccessControl extends \yii\base\ActionFilter
     protected function getControllerAccess($rules = [])
     {
         $instance = null;
-        if(method_exists($this->owner, 'getAccess')) {
+        if (method_exists($this->owner, 'getAccess')) {
             $instance = $this->owner->getAccess();
         }
 
-        if(!$instance) {
+        if (!$instance) {
             $instance = new ControllerAccess();
         }
 

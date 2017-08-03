@@ -145,5 +145,4 @@ class ViewPathRenderer extends \yii\base\Object implements Renderer
 
         return $dir;
     }
-
 }

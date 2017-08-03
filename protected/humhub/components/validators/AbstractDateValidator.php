@@ -28,7 +28,7 @@ abstract class AbstractDateValidator extends Validator
         $date = $model->$attribute;
         if (is_string($model->$attribute)) {
             $date = strtotime($model->$attribute);
-        } else if ($model->$attribute instanceof DateTime) {
+        } elseif ($model->$attribute instanceof DateTime) {
             $date = $model->$attribute->getTimestamp();
         }
 
@@ -36,5 +36,4 @@ abstract class AbstractDateValidator extends Validator
             $this->addError($model, $attribute, $this->message);
         }
     }
-
 }
