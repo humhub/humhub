@@ -38,5 +38,4 @@ class MarkdownController extends Controller
 
         return \humhub\widgets\MarkdownView::widget(['markdown' => Yii::$app->request->post('markdown')]);
     }
-
 }
