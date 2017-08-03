@@ -87,14 +87,14 @@ class UserSearch extends User
         $query->andFilterWhere(['like', 'profile.firstname', $this->getAttribute('profile.firstname')]);
         $query->andFilterWhere(['like', 'profile.lastname', $this->getAttribute('profile.lastname')]);
 
-        if ($this->getAttribute('last_login') != "") {
+        if ($this->getAttribute('last_login') != '') {
             try {
                 $last_login = \humhub\libs\DateHelper::parseDateTime($this->getAttribute('last_login'));
 
                 $query->andWhere([
                     '=',
-                    new \yii\db\Expression("DATE(last_login)"),
-                    new \yii\db\Expression("DATE(:last_login)", [':last_login'=>$last_login])
+                    new \yii\db\Expression('DATE(last_login)'),
+                    new \yii\db\Expression('DATE(:last_login)', [':last_login'=>$last_login])
                     ]);
             } catch (InvalidParamException $e) {
                 // do not change the query if the date is wrong formatted
@@ -103,5 +103,4 @@ class UserSearch extends User
 
         return $dataProvider;
     }
-
 }

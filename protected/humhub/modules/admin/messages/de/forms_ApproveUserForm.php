@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Message' => 'Nachricht',
   'Subject' => 'Betreff',
-);
+];

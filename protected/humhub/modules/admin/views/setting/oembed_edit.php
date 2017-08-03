@@ -12,7 +12,7 @@ use humhub\compat\CHtml;
     <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.views_setting_oembed_edit', 'Back to overview'), Url::to(['setting/oembed']), ['class' => 'btn btn-default pull-right']); ?>
     <h4 class="pull-left">
         <?php
-        if ($prefix == "") {
+        if ($prefix == '') {
             echo Yii::t('AdminModule.views_setting_oembed_edit', 'Add OEmbed provider');
         } else {
             echo Yii::t('AdminModule.views_setting_oembed_edit', 'Edit OEmbed provider');
@@ -41,10 +41,10 @@ use humhub\compat\CHtml;
 </div>
 
 
-<?= CHtml::submitButton(Yii::t('AdminModule.views_setting_oembed_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+<?= CHtml::submitButton(Yii::t('AdminModule.views_setting_oembed_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 <?php CActiveForm::end(); ?>
 
-<?php if ($prefix != ""): ?>
+<?php if ($prefix != '') : ?>
     <?= Html::a(Yii::t('AdminModule.views_setting_oembed_edit', 'Delete'), Url::to(['oembed-delete', 'prefix' => $prefix]), ['class' => 'btn btn-danger pull-right', 'data-method' => 'POST']); ?>
 <?php endif; ?>
 

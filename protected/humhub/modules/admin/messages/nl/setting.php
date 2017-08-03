@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Advanced Settings' => 'Geavanceerde Instellingen',
   'Appearance Settings' => 'Weergave instellingen',
   'General' => 'Algemeen',
@@ -11,4 +11,4 @@ return array (
   'These settings refer to advanced topics of your social network.' => 'Deze instellingen verwijzen naar geavanceerde topics van uw site.',
   'These settings refer to the appearance of your social network.' => 'Deze instellingen verwijzen naar het uiterlijk van uw site.',
   'User Settings' => 'Gebruikers-instellingen.',
-);
+];

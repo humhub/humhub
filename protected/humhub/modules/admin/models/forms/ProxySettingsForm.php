@@ -76,5 +76,4 @@ class ProxySettingsForm extends \yii\base\Model
 
         return true;
     }
-
 }

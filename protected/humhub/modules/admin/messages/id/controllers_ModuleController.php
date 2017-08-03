@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Could not find requested module!' => 'Tidak dapat menemukan modul yang diminta!',
   'Module path %path% is not writeable!' => '',
-);
+];

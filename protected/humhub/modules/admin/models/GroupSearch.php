@@ -71,5 +71,4 @@ class GroupSearch extends Group
 
         return $dataProvider;
     }
-
 }

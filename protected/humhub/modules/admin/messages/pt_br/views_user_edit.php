@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Edit user: {name}' => 'Editar usuário: {name}',
-);
+];

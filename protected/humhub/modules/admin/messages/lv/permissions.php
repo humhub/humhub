@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Access Admin Information' => 'Piekļuve administrācijas informācijai',
   'Can access the \'Administration -> Information\' section.' => 'Var piekļūt sadaļai \'Administrēšana -> Informācija\'.',
   'Can manage modules within the \'Administration ->  Modules\' section.' => 'Var pārvaldīt moduļus caur sadaļu \'Administrēšana -> Moduļi\'.',
@@ -12,4 +12,4 @@ return array (
   'Manage Settings' => 'Pārvaldīt iestatījumus',
   'Manage Spaces' => 'Pārvaldīt vietas',
   'Manage Users' => 'Pārvaldīt lietotājus',
-);
+];

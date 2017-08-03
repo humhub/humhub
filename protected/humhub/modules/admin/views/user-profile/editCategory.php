@@ -11,7 +11,7 @@ use humhub\libs\Html;
 
     <?php if (!$category->isNewRecord) : ?>
         <h4><?= Yii::t('AdminModule.views_userprofile_editCategory', 'Edit profile category'); ?></h4>
-    <?php else: ?>
+    <?php else : ?>
         <h4><?= Yii::t('AdminModule.views_userprofile_editCategory', 'Create new profile category'); ?></h4>
     <?php endif; ?>
     <br>
@@ -44,7 +44,7 @@ use humhub\libs\Html;
 
     <hr>
 
-    <?= Html::submitButton(Yii::t('AdminModule.views_userprofile_editCategory', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= Html::submitButton(Yii::t('AdminModule.views_userprofile_editCategory', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
     <?php if (!$category->isNewRecord && !$category->is_system) : ?>
         <?= Html::a(Yii::t('AdminModule.views_userprofile_editCategory', 'Delete'), Url::to(['delete-category', 'id' => $category->id]), ['class' => 'btn btn-danger']); ?>

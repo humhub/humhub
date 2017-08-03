@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Base URL' => 'Pamata URL',
   'Date input format' => 'Datuma ievades formāts',
   'Default language' => 'Noklusētā valoda',
@@ -15,4 +15,4 @@ return array (
   'Show user profile post form on dashboard' => 'Rādīt lietotāja profila ierakstu kontrolpanelī',
   'Sort by creation date' => 'Kārtot pēc izveidošanas datuma',
   'Sort by update date' => 'Kārtot pēc atjaunināšanas datuma',
-);
+];

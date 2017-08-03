@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add OEmbed provider' => 'OEmbed sağlayıcı ekle',
   'Back to overview' => 'Geri dön',
   'Delete' => 'Sil',
@@ -7,4 +7,4 @@ return array (
   'Save' => 'Kaydet',
   'Url Prefix without http:// or https:// (e.g. youtube.com)' => 'Url Önek http:// ve  https:// (Örnek: youtube.com)',
   'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Url için %url% yer tutucusunu kullanın.  Url biçimi JSON olmalıdır. (Örnek: http://www.youtube.com/oembed?url=%url%&format=json)',
-);
+];

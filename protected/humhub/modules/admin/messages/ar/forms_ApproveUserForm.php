@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Message' => 'النص',
   'Subject' => 'الموضوع',
-);
+];

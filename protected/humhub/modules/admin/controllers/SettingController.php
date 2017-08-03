@@ -228,7 +228,7 @@ class SettingController extends Controller
         }
 
         $maxUploadSize = floor($maxUploadSize / 1024 / 1024);
-        $maxUploadSizeText = "(" . $fileSizeKey . "): " . $maxUploadSize;
+        $maxUploadSizeText = '(' . $fileSizeKey . '): ' . $maxUploadSize;
 
         // Determine currently used ImageLibary
         $currentImageLibrary = 'GD';
@@ -269,10 +269,12 @@ class SettingController extends Controller
     public function actionOembed()
     {
         $providers = UrlOembed::getProviders();
-        return $this->render('oembed',
-        [
+        return $this->render(
+            'oembed',
+            [
             'providers' => $providers
-        ]);
+            ]
+        );
     }
 
     public function actionLogs()
@@ -287,13 +289,12 @@ class SettingController extends Controller
         if ($dating) {
             $dating = date('Y-m-d H:i:s', $dating->log_time);
         } else {
-            $dating = "the begining of time";
+            $dating = 'the begining of time';
         }
 
         $form = new \humhub\modules\admin\models\forms\LogsSettingsForm;
         $limitAgeOptions = $form->options;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-
             $timeAgo = strtotime($form->logsDateLimit);
             Log::deleteAll(['<', 'log_time', $timeAgo]);
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
@@ -333,16 +334,19 @@ class SettingController extends Controller
             UrlOembed::setProviders($providers);
 
             return $this->redirect(
-            [
+                [
                 '/admin/setting/oembed'
-            ]);
+                ]
+            );
         }
 
-        return $this->render('oembed_edit',
-        [
+        return $this->render(
+            'oembed_edit',
+            [
             'model' => $form,
             'prefix' => $prefix
-        ]);
+            ]
+        );
     }
 
     /**
@@ -366,9 +370,9 @@ class SettingController extends Controller
     public function actionAdvanced()
     {
         return $this->redirect(
-        [
+            [
             'caching'
-        ]);
+            ]
+        );
     }
-
 }

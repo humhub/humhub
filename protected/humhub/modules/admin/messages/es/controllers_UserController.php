@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add Groups...' => 'Agregar grupos...',
   'Become this user' => 'Convertirse en este usuario',
   'Delete' => 'Borrar',
@@ -10,4 +10,4 @@ return array (
   'Unapproved' => 'Desaprobado',
   'User not found!' => '¡Usuario no encontrado!',
   'You cannot delete yourself!' => '¡No te puedes borrar a tí mismo!',
-);
+];

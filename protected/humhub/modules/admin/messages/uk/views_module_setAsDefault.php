@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '%moduleName% - Set as default module' => '',
   'Activated' => '',
   'Always activated' => '',
@@ -26,4 +26,4 @@ return array (
   'Save' => '',
   'Spaces' => '',
   'User Profiles' => '',
-);
+];

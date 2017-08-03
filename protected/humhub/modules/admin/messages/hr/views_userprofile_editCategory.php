@@ -1,7 +1,7 @@
 <?php
-return array (
+return  [
   'Create new profile category' => '',
   'Delete' => '',
   'Edit profile category' => '',
   'Save' => 'Spremi',
-);
+];

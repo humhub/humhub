@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add Groups...' => 'Přidat skupiny...',
   'Become this user' => 'Stát se uživatelem',
   'Delete' => 'Smazat',
@@ -10,4 +10,4 @@ return array (
   'Unapproved' => 'Neschválený',
   'User not found!' => 'Uživatel nebyl nalezen!',
   'You cannot delete yourself!' => 'Nemůžete smazat vlastní účet!',
-);
+];

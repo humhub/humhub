@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Saved' => '저장됨',
-);
+];

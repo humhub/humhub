@@ -12,13 +12,13 @@ use yii\helpers\Url;
 
 <h4><?= Yii::t('AdminModule.views_setting_oembed', 'Enabled OEmbed providers'); ?></h4>
 
-<?php if (count($providers) != 0): ?>
+<?php if (count($providers) != 0) : ?>
     <ul>
         <?php foreach ($providers as $providerUrl => $providerOEmbedAPI) : ?>
             <li><?= Html::a($providerUrl, Url::to(['oembed-edit', 'prefix' => $providerUrl]), ['data-method' => 'POST']); ?></li>
         <?php endforeach; ?>
     </ul>
-<?php else: ?>
+<?php else : ?>
     <p><strong><?= Yii::t('AdminModule.views_setting_oembed', 'Currently no provider active!'); ?></strong></p>
 <?php endif; ?>
 

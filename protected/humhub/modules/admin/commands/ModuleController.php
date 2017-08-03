@@ -56,8 +56,7 @@ class ModuleController extends \yii\console\Controller
         printf($mask, 'ID', 'INSTALLED', 'LATEST VERSION', 'LATEST COMPAT VERSION', 'TITLE');
 
         foreach ($modules as $module) {
-
-            printf($mask, $module['id'], (Yii::$app->moduleManager->hasModule($module['id']) ? 'Yes' : 'No'), $module['latestVersion'], (isset($module['latestCompatibleVersion']) && $module['latestCompatibleVersion']) ? $module['latestCompatibleVersion'] : "-", $module['name']);
+            printf($mask, $module['id'], (Yii::$app->moduleManager->hasModule($module['id']) ? 'Yes' : 'No'), $module['latestVersion'], (isset($module['latestCompatibleVersion']) && $module['latestCompatibleVersion']) ? $module['latestCompatibleVersion'] : '-', $module['name']);
         }
     }
 
@@ -115,20 +114,20 @@ class ModuleController extends \yii\console\Controller
         $moduleInfo = $onlineModules->getModuleInfo($moduleId);
 
         if (!isset($moduleInfo['latestCompatibleVersion'])) {
-            print "No compatible version for " . $moduleId . " found online!\n";
+            print 'No compatible version for ' . $moduleId . " found online!\n";
             return;
         }
 
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($moduleInfo['latestCompatibleVersion']['version'] == $module->getVersion()) {
-            print "Module " . $moduleId . " already up to date!\n";
+            print 'Module ' . $moduleId . " already up to date!\n";
             return;
         }
 
         $onlineModules->update($moduleId);
 
-        print "Module " . $moduleId . " successfully updated!\n";
+        print 'Module ' . $moduleId . " successfully updated!\n";
     }
 
     /**
@@ -145,9 +144,9 @@ class ModuleController extends \yii\console\Controller
             try {
                 $this->actionUpdate($moduleId);
             } catch (\yii\base\InvalidParamException $ex) {
-                print "Module " . $moduleId . " - Error: " . $ex->getMessage() . "\n";
+                print 'Module ' . $moduleId . ' - Error: ' . $ex->getMessage() . "\n";
             } catch (Exception $ex) {
-                print "Module " . $moduleId . " - Error: " . $ex->getMessage() . "\n";
+                print 'Module ' . $moduleId . ' - Error: ' . $ex->getMessage() . "\n";
             }
         }
 
@@ -162,12 +161,10 @@ class ModuleController extends \yii\console\Controller
                 try {
                     $onlineModules = new OnlineModuleManager();
                     $onlineModules->install($moduleId);
-                    print "Reinstalled: " . $moduleId . "\n";
+                    print 'Reinstalled: ' . $moduleId . "\n";
                 } catch (Exception $ex) {
-
                 }
             }
         }
     }
-
 }

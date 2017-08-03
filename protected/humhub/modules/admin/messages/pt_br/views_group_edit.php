@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Delete' => 'Apagar',
   'Save' => 'Salvar',
   'Visibility' => 'Visibilidade',
-);
+];

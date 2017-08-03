@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Allow Self-Signed Certificates?' => '',
   'E-Mail sender address' => 'E-Mail do remetente',
   'E-Mail sender name' => 'Nome do remetente',
@@ -25,4 +25,4 @@ return array (
   'Password' => 'Palavra-passe',
   'Port number' => 'Número da Porta',
   'Username' => 'Nome de utilizador',
-);
+];

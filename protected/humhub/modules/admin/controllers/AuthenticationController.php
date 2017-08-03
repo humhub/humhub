@@ -35,7 +35,7 @@ class AuthenticationController extends Controller
 
         $this->subLayout = '@admin/views/layouts/user';
         
-		return parent::init();
+        return parent::init();
     }
 
     /**
@@ -68,9 +68,9 @@ class AuthenticationController extends Controller
         }
 
         return $this->render('authentication', [
-			'model' => $form,
-			'groups' => $groups
-		]);
+            'model' => $form,
+            'groups' => $groups
+        ]);
     }
 
     public function actionAuthenticationLdap()
@@ -83,7 +83,7 @@ class AuthenticationController extends Controller
 
         $enabled = false;
         $userCount = 0;
-        $errorMessage = "";
+        $errorMessage = '';
 
         if (Yii::$app->getModule('user')->settings->get('auth.ldap.enabled')) {
             $enabled = true;
@@ -92,8 +92,8 @@ class AuthenticationController extends Controller
                 $ldap = $ldapAuthClient->getLdap();
                 $userCount = $ldap->count(
                     Yii::$app->getModule('user')->settings->get('auth.ldap.userFilter'),
-					Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn'),
-					\Zend\Ldap\Ldap::SEARCH_SCOPE_SUB
+                    Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn'),
+                    \Zend\Ldap\Ldap::SEARCH_SCOPE_SUB
                 );
             } catch (\Zend\Ldap\Exception\LdapException $ex) {
                 $errorMessage = $ex->getMessage();
@@ -103,11 +103,10 @@ class AuthenticationController extends Controller
         }
 
         return $this->render('authentication_ldap', [
-			'model' => $form,
-			'enabled' => $enabled,
-			'userCount' => $userCount,
-			'errorMessage' => $errorMessage
-		]);
+            'model' => $form,
+            'enabled' => $enabled,
+            'userCount' => $userCount,
+            'errorMessage' => $errorMessage
+        ]);
     }
-
 }

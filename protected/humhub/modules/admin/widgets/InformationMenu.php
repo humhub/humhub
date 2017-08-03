@@ -20,7 +20,7 @@ class InformationMenu extends \humhub\widgets\BaseMenu
     /**
      * @inheritdoc
      */
-    public $template = "@humhub/widgets/views/tabMenu";
+    public $template = '@humhub/widgets/views/tabMenu';
 
     public function init()
     {
@@ -61,5 +61,4 @@ class InformationMenu extends \humhub\widgets\BaseMenu
 
         parent::init();
     }
-
 }

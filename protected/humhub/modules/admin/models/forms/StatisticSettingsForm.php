@@ -57,5 +57,4 @@ class StatisticSettingsForm extends \yii\base\Model
 
         return true;
     }
-
 }

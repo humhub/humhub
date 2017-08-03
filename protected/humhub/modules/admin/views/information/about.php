@@ -7,14 +7,14 @@ use yii\helpers\Html;
     <div class="alert alert-danger">
         <p>
             <strong><?= Yii::t('AdminModule.views_about_index', 'There is a new update available! (Latest version: %version%)', ['%version%' => $latestVersion]); ?></strong><br>
-            <?= Html::a("https://www.humhub.org", "https://www.humhub.org"); ?>
+            <?= Html::a('https://www.humhub.org', 'https://www.humhub.org'); ?>
         </p>
     </div>
-<?php elseif ($isUpToDate): ?>
+<?php elseif ($isUpToDate) : ?>
     <div class="alert alert-info">
         <p>
             <strong><?= Yii::t('AdminModule.views_about_index', 'This HumHub installation is up to date!'); ?></strong><br />
-            <?= Html::a("https://www.humhub.org", "https://www.humhub.org"); ?>
+            <?= Html::a('https://www.humhub.org', 'https://www.humhub.org'); ?>
         </p>
     </div>
 <?php endif; ?>
@@ -35,6 +35,6 @@ use yii\helpers\Html;
 <span class="pull-right">
     <?= Yii::powered(); ?>
 </span>
-© <?= date("Y") ?> HumHub GmbH & Co. KG
+© <?= date('Y') ?> HumHub GmbH & Co. KG
 &middot;
-<?= Html::a(Yii::t('AdminModule.views_about_index', 'Licences'), "https://www.humhub.org/licences", ['target' => '_blank']); ?>
+<?= Html::a(Yii::t('AdminModule.views_about_index', 'Licences'), 'https://www.humhub.org/licences', ['target' => '_blank']); ?>

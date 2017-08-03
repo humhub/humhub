@@ -42,7 +42,7 @@ use humhub\widgets\GridView;
                         'attribute' => 'id',
                         'options' => ['style' => 'width:40px;'],
                         'format' => 'raw',
-                        'value' => function($data) {
+                        'value' => function ($data) {
                             return $data->id;
                         },
                     ],
@@ -59,7 +59,7 @@ use humhub\widgets\GridView;
                             $isManager = $group->isManager($data);
                             $yesSelected = ($isManager) ? 'selected' : '';
                             $noSelected = ($isManager) ? '' : 'selected';
-                            $result = '<select class="editableCell form-control" data-action-change="admin.group.setManagerRole" data-action-url="'.$actionUrl.'" data-userid="' . $data->id . '"  data-groupid="' . $group->id . '">';
+                            $result = '<select class="editableCell form-control" data-action-change="admin.group.setManagerRole" data-action-url="' . $actionUrl . '" data-userid="' . $data->id . '"  data-groupid="' . $group->id . '">';
                             $result .= '<option value="0" ' . $noSelected . '>' . Yii::t('AdminModule.views_group_manageGroupUser', 'No') . '</option>';
                             $result .= '<option value="1" ' . $yesSelected . '>' . Yii::t('AdminModule.views_group_manageGroupUser', 'Yes') . '</option>';
                             return $result;
@@ -70,13 +70,13 @@ use humhub\widgets\GridView;
                         'class' => 'yii\grid\ActionColumn',
                         'options' => ['style' => 'width:80px; min-width:80px;'],
                         'buttons' => [
-                            'view' => function($url, $model) {
+                            'view' => function ($url, $model) {
                                 return false;
                             },
-                            'update' => function($url, $model) use ($group) {
+                            'update' => function ($url, $model) use ($group) {
                                 return false;
                             },
-                            'delete' => function($url, $model) use ($group) {
+                            'delete' => function ($url, $model) use ($group) {
                                 return Html::a('<i class="fa fa-times"></i>', '#', [
                                             'data-action-click' => 'admin.group.removeMember',
                                             'data-action-url' => Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]),
@@ -86,8 +86,7 @@ use humhub\widgets\GridView;
                         ],
                     ],
                 ],
-            ]
-        );?>
+            ]);?>
     </div>
 </div>
 <?php $this->endContent(); ?>

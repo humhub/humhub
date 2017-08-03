@@ -21,8 +21,8 @@ use yii\helpers\Url;
 class UserMenu extends \humhub\widgets\BaseMenu
 {
 
-    public $template = "@humhub/widgets/views/tabMenu";
-    public $type = "adminUserSubNavigation";
+    public $template = '@humhub/widgets/views/tabMenu';
+    public $type = 'adminUserSubNavigation';
 
     public function init()
     {
@@ -91,11 +91,10 @@ class UserMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 500,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group'),
             'isVisible' => Yii::$app->user->can(
-                    new \humhub\modules\admin\permissions\ManageGroups()
+                new \humhub\modules\admin\permissions\ManageGroups()
             )
         ]);
 
         parent::init();
     }
-
 }

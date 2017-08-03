@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Account Request for \'{displayName}\' has been approved.' => 'درخواست حساب کاربری برای \'{displayname}\' تاییدشده‌است.',
   'Account Request for \'{displayName}\' has been declined.' => 'درخواست حساب کاربری برای \'{displayname}\' ردشده‌است.',
   'Hello {displayName},<br><br>
@@ -31,4 +31,4 @@ return array (
    با احترام<br>
    {AdminName}<br><br>',
   'User not found!' => 'کاربر پیدا نشد! ',
-);
+];

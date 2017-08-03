@@ -134,7 +134,7 @@ class GroupController extends Controller
         $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
         $group->removeUser(Yii::$app->request->get('userId'));
 
-        if(Yii::$app->request->isAjax) {
+        if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = 'json';
             return ['success' => true];
         }
@@ -176,7 +176,7 @@ class GroupController extends Controller
 
         if ($group == null) {
             throw new \yii\web\HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
-        } else if ($value == null) {
+        } elseif ($value == null) {
             throw new \yii\web\HttpException(400, Yii::t('AdminModule.controllers_GroupController', 'No value found!'));
         }
 
@@ -214,7 +214,7 @@ class GroupController extends Controller
         $keyword = Yii::$app->request->get('keyword');
         $group = Group::findOne(Yii::$app->request->get('id'));
 
-        $subQuery = (new \yii\db\Query())->select('*')->from(GroupUser::tableName(). ' g')->where([
+        $subQuery = (new \yii\db\Query())->select('*')->from(GroupUser::tableName() . ' g')->where([
                     'and', 'g.user_id=user.id', ['g.group_id' => $group->id]]);
 
         $query = User::find()->where(['not exists', $subQuery]);
@@ -244,5 +244,4 @@ class GroupController extends Controller
             'disableFillUser' => false
         ]);
     }
-
 }

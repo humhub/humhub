@@ -21,8 +21,8 @@ use humhub\modules\admin\permissions\ManageSettings;
 class SpaceMenu extends \humhub\widgets\BaseMenu
 {
 
-    public $template = "@humhub/widgets/views/tabMenu";
-    public $type = "adminUserSubNavigation";
+    public $template = '@humhub/widgets/views/tabMenu';
+    public $type = 'adminUserSubNavigation';
 
     public function init()
     {
@@ -43,5 +43,4 @@ class SpaceMenu extends \humhub\widgets\BaseMenu
 
         parent::init();
     }
-
 }

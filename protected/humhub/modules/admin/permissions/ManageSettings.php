@@ -29,5 +29,4 @@ class ManageSettings extends BaseAdminPermission
         $this->title = \Yii::t('AdminModule.permissions', 'Manage Settings');
         $this->description = \Yii::t('AdminModule.permissions', 'Can manage user- space- and general-settings.');
     }
-
 }

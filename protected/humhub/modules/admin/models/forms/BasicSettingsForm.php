@@ -74,8 +74,10 @@ class BasicSettingsForm extends \yii\base\Model
             'timeZone' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Server Timezone'),
             'defaultSpaceGuid' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default space'),
             'tour' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show introduction tour for new users'),
-            'dashboardShowProfilePostForm' => Yii::t('AdminModule.forms_BasicSettingsForm',
-                'Show user profile post form on dashboard'),
+            'dashboardShowProfilePostForm' => Yii::t(
+                'AdminModule.forms_BasicSettingsForm',
+                'Show user profile post form on dashboard'
+            ),
             'enableFriendshipModule' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Enable user friendship system'),
             'defaultStreamSort' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default stream content order'),
         ];
@@ -90,10 +92,10 @@ class BasicSettingsForm extends \yii\base\Model
     {
         if (!empty($this->defaultSpaceGuid)) {
             foreach ($this->defaultSpaceGuid as $spaceGuid) {
-                if ($spaceGuid != "") {
+                if ($spaceGuid != '') {
                     $space = \humhub\modules\space\models\Space::findOne(['guid' => $spaceGuid]);
                     if ($space == null) {
-                        $this->addError($attribute, Yii::t('AdminModule.forms_BasicSettingsForm', "Invalid space"));
+                        $this->addError($attribute, Yii::t('AdminModule.forms_BasicSettingsForm', 'Invalid space'));
                     }
                 }
             }
@@ -152,5 +154,4 @@ class BasicSettingsForm extends \yii\base\Model
             Stream::SORT_UPDATED_AT => Yii::t('AdminModule.forms_BasicSettingsForm', 'Sort by update date'),
         ];
     }
-
 }

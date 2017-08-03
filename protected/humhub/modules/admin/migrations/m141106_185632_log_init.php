@@ -76,10 +76,9 @@ class m141106_185632_log_init extends Migration
                 $this->createIndex('idx_log_level', $target->logTable, 'level');
                 $this->createIndex('idx_log_category', $target->logTable, 'category');
             } catch (\yii\db\Exception $ex) {
-                
             }
         }
-        $this->dropTable("logging");
+        $this->dropTable('logging');
     }
 
     public function down()
@@ -91,5 +90,4 @@ class m141106_185632_log_init extends Migration
             $this->dropTable($target->logTable);
         }
     }
-
 }

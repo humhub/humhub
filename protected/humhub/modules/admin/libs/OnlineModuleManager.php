@@ -40,14 +40,15 @@ class OnlineModuleManager
         $moduleInfo = $this->getModuleInfo($moduleId);
 
         if (!isset($moduleInfo['latestCompatibleVersion'])) {
-            throw new Exception(Yii::t('AdminModule.libs_OnlineModuleManager', "No compatible module version found!"));
+            throw new Exception(Yii::t('AdminModule.libs_OnlineModuleManager', 'No compatible module version found!'));
         }
 
 
         $moduleDir = $modulePath . DIRECTORY_SEPARATOR . $moduleId;
         if (is_dir($moduleDir)) {
             $files = new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator($moduleDir, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
+                new \RecursiveDirectoryIterator($moduleDir, \RecursiveDirectoryIterator::SKIP_DOTS),
+                \RecursiveIteratorIterator::CHILD_FIRST
             );
 
             foreach ($files as $fileinfo) {
@@ -60,10 +61,10 @@ class OnlineModuleManager
         }
 
         // Check Module Folder exists
-        $moduleDownloadFolder = Yii::getAlias("@runtime/module_downloads");
+        $moduleDownloadFolder = Yii::getAlias('@runtime/module_downloads');
         if (!is_dir($moduleDownloadFolder)) {
             if (!@mkdir($moduleDownloadFolder)) {
-                throw new Exception("Could not create module download folder!");
+                throw new Exception('Could not create module download folder!');
             }
         }
 
@@ -90,7 +91,7 @@ class OnlineModuleManager
         if (file_exists($downloadTargetFileName)) {
             $zip = new ZipArchive;
             $res = $zip->open($downloadTargetFileName);
-            if ($res === TRUE) {
+            if ($res === true) {
                 $zip->extractTo($modulePath);
                 $zip->close();
             } else {
@@ -148,7 +149,6 @@ class OnlineModuleManager
 
         $this->_modules = Yii::$app->cache->get('onlineModuleManager_modules');
         if ($this->_modules === null || !is_array($this->_modules)) {
-
             $this->_modules = HumHubAPI::request('v1/modules/list');
             Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Yii::$app->settings->get('cache.expireTime'));
         }
@@ -161,9 +161,7 @@ class OnlineModuleManager
         $updates = [];
 
         foreach ($this->getModules() as $moduleId => $moduleInfo) {
-
             if (isset($moduleInfo['latestCompatibleVersion']) && Yii::$app->moduleManager->hasModule($moduleId)) {
-
                 $module = Yii::$app->moduleManager->getModule($moduleId);
 
                 if ($module !== null) {
@@ -171,7 +169,7 @@ class OnlineModuleManager
                         $updates[$moduleId] = $moduleInfo;
                     }
                 } else {
-                    Yii::error("Could not load module: " . $moduleId . " to get updates");
+                    Yii::error('Could not load module: ' . $moduleId . ' to get updates');
                 }
             }
         }
@@ -186,5 +184,4 @@ class OnlineModuleManager
     {
         return HumHubAPI::request('v1/modules/info', ['id' => $moduleId]);
     }
-
 }

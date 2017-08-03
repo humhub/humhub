@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Installed' => 'Installert',
   'No modules found!' => 'Ingen moduler funnet',
   'No purchased modules found!' => 'Ingen kjøpte moduler funnet!',
@@ -7,4 +7,4 @@ return array (
   'Search' => 'Søk',
   'Third-party' => 'Tredjepart',
   'search for available modules online' => 'søk etter tilgjengelige moduler',
-);
+];

@@ -1,7 +1,7 @@
 <?php
-return array (
+return  [
   'Advanced' => 'Rozšířené',
   'Basic' => 'Základní',
   'General' => 'Obecné',
   'Permissions' => 'Práva',
-);
+];

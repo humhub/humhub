@@ -1,7 +1,7 @@
 <?php
-return array (
+return  [
   'Advanced' => '',
   'Basic' => 'Pagrindinis',
   'General' => 'Pagrindinis',
   'Permissions' => '',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'About' => 'Par',
   'Add purchased module by licence key' => 'Pievieno nopirkto moduli ar licences atslēgu',
   'Admin' => 'Administrācija',
@@ -25,4 +25,4 @@ return array (
   'User posts' => 'Lietotāju ieraksti',
   'Userprofiles' => 'Lietotāju profili',
   'Users' => 'Lietotāji',
-);
+];

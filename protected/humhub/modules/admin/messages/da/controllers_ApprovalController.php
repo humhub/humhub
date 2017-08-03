@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Account Request for \'{displayName}\' has been approved.' => 'Kontooprettelse for \'{displayName}\' er blevet godkendt.',
   'Account Request for \'{displayName}\' has been declined.' => 'Kontooprettelse for \'{displayName}\' er blevet afslået.',
   'Hello {displayName},<br><br>
@@ -31,4 +31,4 @@ return array (
    Venligste hilsener<br>
    {AdminName}<br><br>',
   'User not found!' => 'Bruger ikke fundet!',
-);
+];

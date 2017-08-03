@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Base URL' => 'URL de base',
   'Date input format' => 'Format de saisie de date',
   'Default language' => 'Langue par défaut',
@@ -15,4 +15,4 @@ return array (
   'Show user profile post form on dashboard' => 'Montrer les contenus du profil utilisateur sur le fil d\'actualité',
   'Sort by creation date' => 'Trier par date de création',
   'Sort by update date' => 'Trier par date de mise à jour',
-);
+];

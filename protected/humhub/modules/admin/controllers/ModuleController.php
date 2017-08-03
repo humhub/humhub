@@ -139,7 +139,6 @@ class ModuleController extends Controller
         $moduleId = Yii::$app->request->get('moduleId');
 
         if (Yii::$app->moduleManager->hasModule($moduleId) && Yii::$app->moduleManager->canRemoveModule($moduleId)) {
-
             $module = Yii::$app->moduleManager->getModule($moduleId);
 
             if ($module == null) {
@@ -183,12 +182,12 @@ class ModuleController extends Controller
      */
     public function actionListOnline()
     {
-        $keyword = Yii::$app->request->post('keyword', "");
+        $keyword = Yii::$app->request->post('keyword', '');
 
         $onlineModules = $this->getOnlineModuleManager();
         $modules = $onlineModules->getModules();
 
-        if ($keyword != "") {
+        if ($keyword != '') {
             $results = [];
             foreach ($modules as $module) {
                 if (stripos($module['name'], $keyword) !== false || stripos($module['description'], $keyword) !== false) {
@@ -218,17 +217,17 @@ class ModuleController extends Controller
     public function actionListPurchases()
     {
         $hasError = false;
-        $message = "";
+        $message = '';
 
-        $licenceKey = Yii::$app->request->post('licenceKey', "");
-        if ($licenceKey != "") {
+        $licenceKey = Yii::$app->request->post('licenceKey', '');
+        if ($licenceKey != '') {
             $result = \humhub\modules\admin\libs\HumHubAPI::request('v1/modules/registerPaid', ['licenceKey' => $licenceKey]);
             if (!isset($result['status'])) {
                 $hasError = true;
                 $message = 'Could not connect to HumHub API!';
             } elseif ($result['status'] == 'ok' || $result['status'] == 'created') {
                 $message = 'Module licence added!';
-                $licenceKey = "";
+                $licenceKey = '';
             } else {
                 $hasError = true;
                 $message = 'Invalid module licence key!';
@@ -264,7 +263,7 @@ class ModuleController extends Controller
             throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
         }
 
-        $readmeMd = "";
+        $readmeMd = '';
         $readmeMdFile = $module->getBasePath() . DIRECTORY_SEPARATOR . 'README.md';
         if (file_exists($readmeMdFile)) {
             $readmeMd = file_get_contents($readmeMdFile);
@@ -354,5 +353,4 @@ class ModuleController extends Controller
 
         return $this->_onlineModuleManager;
     }
-
 }

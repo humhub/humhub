@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '%moduleName% - Set as default module' => '%moduleName% - به عنوان ماژول پیش‌فرض قرار بده',
   'Activated' => 'فعال شد',
   'Always activated' => 'فعال‌سازی دائمی',
@@ -9,4 +9,4 @@ return array (
   'Save' => 'ذخیره',
   'Spaces' => 'انجمن‌ها',
   'User Profiles' => 'پروفایل‌های کاربران',
-);
+];

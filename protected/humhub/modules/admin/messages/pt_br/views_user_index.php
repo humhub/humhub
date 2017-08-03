@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Actions' => 'Ações',
   'Add new user' => 'Adicionar novo usuário',
   'Group Manager' => 'Gerenciar Grupo',
@@ -10,4 +10,4 @@ return array (
   'This overview contains a list of each registered user with actions to view, edit and delete users.' => 'Esta Visão Global contém uma lista de ações para cada usuário registado como visualizar, editar e excluir usuários.',
   'Users' => 'Usuários',
   'never' => 'nunca',
-);
+];

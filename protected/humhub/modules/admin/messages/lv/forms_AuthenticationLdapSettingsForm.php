@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Base DN' => 'Bāzes DN',
   'E-Mail Address Attribute' => 'E-pasta Address Attribute',
   'Enable LDAP Support' => 'Aktivizēt LDAP atbalstu',
@@ -12,4 +12,4 @@ return array (
   'User Filer' => 'Lietotāja datnes',
   'Username' => 'Lietotāja vārds',
   'Username Attribute' => 'Lietotāja vārda atribūts',
-);
+];

@@ -1,7 +1,7 @@
 <?php
-return array (
+return  [
   'Could not load category.' => '',
   'Delete' => '',
   'Save' => '',
   'You can only delete empty categories!' => '',
-);
+];

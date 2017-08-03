@@ -16,9 +16,9 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Dropdown space order' => '',
   'Default pagination size (Entries per page)' => 'デフォルトのページネーション数（ページあたりのエントリ数）',
   'Display Name (Format)' => '表示名（フォーマット）',
   'Theme' => 'テーマ',
-);
+];

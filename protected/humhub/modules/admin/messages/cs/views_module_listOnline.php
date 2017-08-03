@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Modules</strong> directory' => '<strong>Seznam</strong> modulů',
   'Buy (%price%)' => 'Koupit (%price%)',
   'Disclaimer' => 'Odmítnutí odpovědnosti',
@@ -10,4 +10,4 @@ return array (
   'Licence Key:' => 'Licenční klíč:',
   'More info' => 'Více informací',
   'No compatible module version found!' => 'Nebyl nalezen žádný kompatibilní modul!',
-);
+];

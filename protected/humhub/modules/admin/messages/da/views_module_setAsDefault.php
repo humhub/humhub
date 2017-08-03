@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '%moduleName% - Set as default module' => '%moduleName% - Set som standard modul',
   'Activated' => 'Aktiveret',
   'Always activated' => 'Altid aktiveret',
@@ -9,4 +9,4 @@ return array (
   'Save' => 'Gem',
   'Spaces' => 'Sider',
   'User Profiles' => 'Bruger profiler',
-);
+];

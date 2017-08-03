@@ -1,7 +1,7 @@
 <?php
-return array (
+return  [
   'Add new members...' => '',
   'No' => 'Nej',
   'Remove from group' => '',
   'Yes' => 'Ja',
-);
+];

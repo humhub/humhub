@@ -24,11 +24,19 @@ if (Yii::$app->controller->id == 'module') {
 </div>
 <div class="tab-menu">
     <ul class="nav nav-tabs" id="moduleTabs">
-        <li <?php if ($this->context->action->id == 'list') echo 'class="active"'; ?>><?= Html::a(Yii::t('AdminModule.views_module_header', 'Installed'), Url::to(['list'])); ?></li>
+        <li <?php if ($this->context->action->id == 'list') {
+            echo 'class="active"';
+            } ?>><?= Html::a(Yii::t('AdminModule.views_module_header', 'Installed'), Url::to(['list'])); ?></li>
         <?php if (Yii::$app->getModule('admin')->marketplaceEnabled) : ?>
-            <li <?php if ($this->context->action->id == 'list-online') echo 'class="active"'; ?>><?= Html::a(Yii::t('AdminModule.views_module_header', 'Browse online'), Url::to(['list-online'])); ?></li>
-            <li <?php if ($this->context->action->id == 'list-purchases') echo 'class="active"'; ?>><?= Html::a(Yii::t('AdminModule.views_module_header', 'Purchases'), Url::to(['list-purchases'])); ?></li>
-            <li <?php if ($this->context->action->id == 'list-updates') echo 'class="active"'; ?>><?= Html::a(Yii::t('AdminModule.views_module_header', 'Available updates') . $updatesBadge, Url::to(['list-updates'])); ?></li>
+            <li <?php if ($this->context->action->id == 'list-online') {
+                echo 'class="active"';
+                } ?>><?= Html::a(Yii::t('AdminModule.views_module_header', 'Browse online'), Url::to(['list-online'])); ?></li>
+            <li <?php if ($this->context->action->id == 'list-purchases') {
+                echo 'class="active"';
+                } ?>><?= Html::a(Yii::t('AdminModule.views_module_header', 'Purchases'), Url::to(['list-purchases'])); ?></li>
+            <li <?php if ($this->context->action->id == 'list-updates') {
+                echo 'class="active"';
+                } ?>><?= Html::a(Yii::t('AdminModule.views_module_header', 'Available updates') . $updatesBadge, Url::to(['list-updates'])); ?></li>
         <?php endif; ?>
     </ul>
 </div>

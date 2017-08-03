@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Allow limited access for non-authenticated users (guests)' => 'Leisti ribotą prieigą neidentifikuotiems vartotojams (svečiams)',
   'Anonymous users can register' => 'Gali registruotis anoniminiai vartotojai',
   'Default user group for new users' => 'Numatytoji grupė naujiems vartotojams',
@@ -7,4 +7,4 @@ return array (
   'Default user profile visibility' => 'Numatytasis vartotojo profilio matymas',
   'Members can invite external users by email' => 'Nariai elektroniniu paštu gali kviesti išorinius vartotojus',
   'Require group admin approval after registration' => 'Reikalingas grupės administratoriaus patvirtinimas po registracijos',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '%moduleName% - Set as default module' => '%moduleName% - Varsayılan modül olarak ayarla',
   'Activated' => 'Aktif',
   'Always activated' => 'Daima aktif',
@@ -9,4 +9,4 @@ return array (
   'Save' => 'Kaydet',
   'Spaces' => 'Alanlar',
   'User Profiles' => 'Kullanıcı profilleri',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Base URL' => 'Temel URL',
   'Date input format' => 'Tarih giriş formatı',
   'Default language' => 'Varsayılan dil',
@@ -15,4 +15,4 @@ return array (
   'Show user profile post form on dashboard' => 'Panoda kullanıcı profil paylaşım alanı',
   'Sort by creation date' => 'Oluşturma tarihine göre sırala',
   'Sort by update date' => 'Güncelleme tarihine göre sırala',
-);
+];

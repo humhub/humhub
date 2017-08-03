@@ -1,8 +1,8 @@
 <?php
-return array (
+return  [
   'About HumHub' => '',
   'CronJobs' => '',
   'Database' => 'Baza danych ',
   'Logging' => 'Logowanie',
   'Prerequisites' => '',
-);
+];

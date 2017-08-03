@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '%moduleName% - Set as default module' => '%moduleName% - Definir como módulo padrão',
   'Activated' => 'Ativado',
   'Always activated' => 'Sempre ativado',
@@ -9,4 +9,4 @@ return array (
   'Save' => 'Salvar',
   'Spaces' => 'Espaços',
   'User Profiles' => 'Perfis de Usuário',
-);
+];

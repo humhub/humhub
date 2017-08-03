@@ -58,9 +58,6 @@ class NewVersionAvailable extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('AdminModule.notification', "There is a new HumHub Version ({version}) available.", ['version' => Html::tag('strong', $this->getLatestHumHubVersion())]);
+        return Yii::t('AdminModule.notification', 'There is a new HumHub Version ({version}) available.', ['version' => Html::tag('strong', $this->getLatestHumHubVersion())]);
     }
-
 }
-
-?>

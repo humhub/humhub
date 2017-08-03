@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Confirm</strong> image deletion' => '<strong>Potvrzení </strong> smazání obrázku',
   'Dashboard' => 'Nástěnka',
   'Delete' => 'Smazat',
@@ -9,4 +9,4 @@ return array (
   'Save' => 'Uložit',
   'Wall entry layout' => 'Rozložení nástěnky',
   'You\'re using no logo at the moment. Upload your logo now.' => 'V tuto chvíli se nezobrazuje žádné logo. Můžete nějaké nahrát.',
-);
+];

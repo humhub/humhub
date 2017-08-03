@@ -14,11 +14,11 @@ use yii\helpers\Html;
         <div class="modal-body">
 
             <div class="markdown-render">
-                <?php if ($content != ""): ?>
+                <?php if ($content != '') : ?>
 
                     <?= \yii\helpers\Markdown::process($content); ?>
 
-                <?php else: ?>
+                <?php else : ?>
                     <?= $description; ?>
                     <br>
                     <br>

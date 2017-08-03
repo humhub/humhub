@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'About' => '关于',
   'Add purchased module by licence key' => '通过许可证密钥添加所购买的模块',
   'Admin' => '管理',
@@ -25,4 +25,4 @@ return array (
   'User posts' => '用户文章',
   'Userprofiles' => '用户属性',
   'Users' => '用户管理',
-);
+];

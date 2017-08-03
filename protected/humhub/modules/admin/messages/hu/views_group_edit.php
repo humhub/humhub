@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Delete' => 'Törlés',
   'Save' => 'Mentés',
   'Visibility' => '',
-);
+];

@@ -16,6 +16,6 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'All modules are up to date!' => '所有模块都是最新的!',
-);
+];

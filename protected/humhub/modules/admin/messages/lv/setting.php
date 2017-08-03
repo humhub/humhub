@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Advanced Settings' => 'Paplašinātie iestatījumi',
   'Appearance Settings' => 'Atspoguļošanas iestatījumi',
   'General' => 'Galvenais',
@@ -11,4 +11,4 @@ return array (
   'These settings refer to advanced topics of your social network.' => 'Šie iestatījumi attiecās uz tava sociālā tīkla palašinātajām tēmatiem.',
   'These settings refer to the appearance of your social network.' => 'Šie iestatījumi attiecās uz tava sociālā tīkla izskatu.',
   'User Settings' => 'Lietotāja uzstādījumi',
-);
+];

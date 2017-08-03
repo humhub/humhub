@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '%moduleName% - Set as default module' => '%moduleName% – Nastavit jako výchozí modul',
   'Activated' => 'Zapnuto',
   'Always activated' => 'Vždy zapnuto',
@@ -9,4 +9,4 @@ return array (
   'Save' => 'Uložit',
   'Spaces' => 'Místa',
   'User Profiles' => 'Profily uživatelů',
-);
+];

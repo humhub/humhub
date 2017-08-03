@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Allow Self-Signed Certificates?' => 'Leisti savarankiško pasirašymo sertifikatus?',
   'E-Mail sender address' => 'Elektroninio laiško siuntėjo adresas',
   'E-Mail sender name' => 'Elektroninio laiško siuntėjo vardas',
@@ -8,4 +8,4 @@ return array (
   'Password' => 'Slaptažodis',
   'Port number' => 'Lango numeris',
   'Username' => 'Vartotojo vardas',
-);
+];

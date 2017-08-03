@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Modules</strong> directory' => '',
   'Buy (%price%)' => '',
   'Disclaimer' => '',
@@ -10,4 +10,4 @@ return array (
   'Licence Key:' => '',
   'More info' => '',
   'No compatible module version found!' => 'Nav atrasta moduļa saderīga versija!',
-);
+];

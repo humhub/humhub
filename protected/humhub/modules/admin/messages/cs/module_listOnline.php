@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Installed' => 'Nainstalováno',
   'No modules found!' => 'Žádné moduly nenalezeny!',
   'No purchased modules found!' => 'Nebyly nalezeny žádné zakoupené moduly.',
@@ -7,4 +7,4 @@ return array (
   'Search' => 'Hledat',
   'Third-party' => 'Třetích stran',
   'search for available modules online' => 'vyhledat dostupné moduly online',
-);
+];

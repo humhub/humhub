@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '%moduleName% - Set as default module' => '%moduleName% - Nustatyti kaip numatytąjį modulį',
   'Activated' => 'Aktyvuota',
   'Always activated' => 'Visada aktyvuota',
@@ -9,4 +9,4 @@ return array (
   'Save' => 'Išsaugoti',
   'Spaces' => 'Erdvės',
   'User Profiles' => 'Vartotojų profiliai',
-);
+];

@@ -29,7 +29,7 @@ use humhub\models\Setting;
 
     <hr>
 
-    <?= CHtml::submitButton(Yii::t('AdminModule.views_setting_authentication', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= CHtml::submitButton(Yii::t('AdminModule.views_setting_authentication', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
     <?= \humhub\widgets\DataSaved::widget(); ?>
     <?php ActiveForm::end(); ?>

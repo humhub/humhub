@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add OEmbed provider' => '',
   'Back to overview' => 'Tilbake til oversikt',
   'Delete' => 'Slett',
@@ -7,4 +7,4 @@ return array (
   'Save' => 'Lagre',
   'Url Prefix without http:// or https:// (e.g. youtube.com)' => '',
   'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => '',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Base DN' => 'Bazowy DN',
   'E-Mail Address Attribute' => 'Atrybut adresu email',
   'Enable LDAP Support' => 'Włącz wsparcie LDAP',
@@ -12,4 +12,4 @@ return array (
   'User Filer' => 'Filtr użytkowników',
   'Username' => 'Nazwa użytkownika',
   'Username Attribute' => 'Atrybut nazwy użytkownika ',
-);
+];

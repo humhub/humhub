@@ -73,5 +73,4 @@ class LogsSettingsForm extends \yii\base\Model
 
         return true;
     }
-
 }

@@ -97,5 +97,4 @@ class AuthenticationSettingsForm extends \yii\base\Model
         DynamicConfig::rewrite();
         return true;
     }
-
 }

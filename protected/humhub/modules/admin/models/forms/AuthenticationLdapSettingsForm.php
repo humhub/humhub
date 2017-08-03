@@ -58,8 +58,9 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
         $this->usernameAttribute = $settingsManager->get('auth.ldap.usernameAttribute');
         $this->emailAttribute = $settingsManager->get('auth.ldap.emailAttribute');
 
-        if ($this->password != '')
+        if ($this->password != '') {
             $this->password = '---hidden---';
+        }
     }
 
     /**
@@ -110,8 +111,9 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
         $settingsManager->set('auth.ldap.port', $this->port);
         $settingsManager->set('auth.ldap.encryption', $this->encryption);
         $settingsManager->set('auth.ldap.username', $this->username);
-        if ($this->password != '---hidden---')
+        if ($this->password != '---hidden---') {
             $settingsManager->set('auth.ldap.password', $this->password);
+        }
         $settingsManager->set('auth.ldap.baseDn', $this->baseDn);
         $settingsManager->set('auth.ldap.loginFilter', $this->loginFilter);
         $settingsManager->set('auth.ldap.userFilter', $this->userFilter);
@@ -120,5 +122,4 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
 
         return true;
     }
-
 }

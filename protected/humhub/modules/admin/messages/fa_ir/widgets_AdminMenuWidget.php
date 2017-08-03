@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Administration</strong> menu' => 'منوی <strong>مدیریت</strong>',
   'Advanced' => 'پیشرفته',
   'Appearance' => 'ظاهر',
@@ -18,4 +18,4 @@ return array (
   'Spaces' => 'انجمن‌ها',
   'Statistics' => 'آمار',
   'Users' => 'کاربران',
-);
+];

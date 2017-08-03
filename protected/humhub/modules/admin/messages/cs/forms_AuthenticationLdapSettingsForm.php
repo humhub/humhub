@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Base DN' => 'Base DN',
   'E-Mail Address Attribute' => 'Atributy emailu',
   'Enable LDAP Support' => 'Povolit podporu LDAP',
@@ -12,4 +12,4 @@ return array (
   'User Filer' => 'Uživatelský filtr',
   'Username' => 'Uživatelské jméno',
   'Username Attribute' => ' Atributy uživatelského jména',
-);
+];

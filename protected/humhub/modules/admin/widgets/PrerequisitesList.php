@@ -42,5 +42,4 @@ class PrerequisitesList extends \yii\base\Widget
 
         return false;
     }
-
 }

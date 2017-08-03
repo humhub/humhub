@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Account Request for \'{displayName}\' has been approved.' => 'Konta \'{displayName}\' pieprasījums ir apstiprināts.',
   'Account Request for \'{displayName}\' has been declined.' => 'Konta \'{displayName}\' pieprasījums ir noraidīts.',
   'Hello {displayName},<br><br>
@@ -18,4 +18,4 @@ return array (
    Kind Regards<br>
    {AdminName}<br><br>' => 'Sveiki, {displayName},<br><br> tavs konta pieprasījums ir noraidīts.<br><br> Ar sveicieniem<br> {AdminName}<br><br>',
   'User not found!' => 'Lietotājs nav atrasts!',
-);
+];

@@ -63,7 +63,7 @@ class SpaceController extends Controller
                 'dataProvider' => $dataProvider,
                 'searchModel' => $searchModel
             ]);
-        } else if (Yii::$app->user->can(new ManageSettings())) {
+        } elseif (Yii::$app->user->can(new ManageSettings())) {
             $this->redirect([
                 'settings'
             ]);
@@ -93,8 +93,6 @@ class SpaceController extends Controller
         }
 
         return $this->render('settings', [
-            'model' => $form]
-        );
+            'model' => $form]);
     }
-
 }

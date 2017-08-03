@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Access Admin Information' => 'Accéder aux informations d\'administration',
   'Can access the \'Administration -> Information\' section.' => 'Vous pouvez accéder à la section \'Administration -> Informations\'',
   'Can manage spaces within the \'Administration -> Spaces\' section (create/edit/delete).' => 'Vous pouvez gérer les espaces dans la section \'administration -> espaces (créé, éditer, supprimer). ',
@@ -12,4 +12,4 @@ return array (
   'Manage Settings' => 'Gérer les paramètres',
   'Manage Spaces' => 'Gérer les espaces',
   'Manage Users' => 'Gérer les utilisateurs',
-);
+];
