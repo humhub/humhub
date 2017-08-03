@@ -24,13 +24,13 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
         <?php echo $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
 
 
-        <?php echo Html::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
+        <?php echo Html::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
         <?php echo \humhub\widgets\DataSaved::widget(); ?>
 
         <div class="pull-right">
             <?php if ($model->isSpaceOwner()) : ?>
-                <?php echo Html::a(Yii::t('SpaceModule.views_admin_edit', 'Delete'), $model->createUrl('delete'), array('class' => 'btn btn-danger', 'data-post' => 'POST')); ?>
+                <?php echo Html::a(Yii::t('SpaceModule.views_admin_edit', 'Delete'), $model->createUrl('delete'), ['class' => 'btn btn-danger', 'data-post' => 'POST']); ?>
             <?php endif; ?>
         </div>
 

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Follow' => 'Sledovat',
   'Unfollow' => 'Přestat sledovat',
-);
+];

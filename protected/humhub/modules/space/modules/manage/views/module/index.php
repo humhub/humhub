@@ -7,14 +7,14 @@ use yii\helpers\Html;
     </div>
     <div class="panel-body">
 
-        <?php if (count($availableModules) == 0): ?>
+        <?php if (count($availableModules) == 0) : ?>
             <p><?= Yii::t('SpaceModule.views_admin_modules', 'Currently there are no modules available for this space!'); ?></p>
-        <?php else: ?>
+        <?php else : ?>
             <?= Yii::t('SpaceModule.views_admin_modules', 'Enhance this space with modules.'); ?><br>
         <?php endif; ?>
 
 
-        <?php foreach ($availableModules as $moduleId => $module): ?>
+        <?php foreach ($availableModules as $moduleId => $module) : ?>
             <hr>
             <div class="media">
                 <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
@@ -30,13 +30,13 @@ use yii\helpers\Html;
 
                     <p><?= $module->getContentContainerDescription($space); ?></p>
 
-                    <?php if ($space->canDisableModule($moduleId)): ?>
+                    <?php if ($space->canDisableModule($moduleId)) : ?>
                         <a href="#" style="<?= $space->isModuleEnabled($moduleId) ? '' : 'display:none' ?>"
                            data-action-click="content.container.disableModule" 
                            data-action-url="<?= $space->createUrl('/space/manage/module/disable', ['moduleId' => $moduleId]) ?>" data-reload="1"
                            data-action-confirm="<?= Yii::t('SpaceModule.views_admin_modules', 'Are you sure? *ALL* module data for this space will be deleted!') ?>"
                            class="btn btn-sm btn-primary disable disable-module-<?= $moduleId ?>" data-ui-loader>
-                               <?= Yii::t('SpaceModule.views_admin_modules', 'Disable') ?>
+                                <?= Yii::t('SpaceModule.views_admin_modules', 'Disable') ?>
                         </a>
                     <?php endif; ?>
 

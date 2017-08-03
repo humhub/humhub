@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Administrators' => 'Beheerders',
   'Color' => 'Kleur',
   'Created At' => 'Gemaakt op',
@@ -21,4 +21,4 @@ return array (
   'Visibility' => 'Zichtbaarheid',
   'You cannot create private visible spaces!' => 'U kunt geen privaat zichtbare ruimtes aanmaken!',
   'You cannot create public visible spaces!' => 'U kunt geen publiek zichtbare ruimtes aanmaken!',
-);
+];

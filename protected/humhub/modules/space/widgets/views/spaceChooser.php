@@ -31,7 +31,7 @@ $this->registerJsConfig('space.chooser', [
                 'width' => 32,
                 'htmlOptions' => [
                     'class' => 'current-space-image',
-            ]]);
+                ]]);
             ?>
             <b class="caret"></b>
         <?php endif; ?>
@@ -62,10 +62,10 @@ $this->registerJsConfig('space.chooser', [
         <li class="divider"></li>
         <li>
             <ul class="media-list notLoaded" id="space-menu-spaces">
-                <?php foreach ($memberships as $membership): ?>
+                <?php foreach ($memberships as $membership) : ?>
                     <?= SpaceChooserItem::widget(['space' => $membership->space, 'updateCount' => $membership->countNewItems(), 'isMember' => true]); ?>
                 <?php endforeach; ?>
-                <?php foreach ($followSpaces as $followSpace): ?>
+                <?php foreach ($followSpaces as $followSpace) : ?>
                     <?= SpaceChooserItem::widget(['space' => $followSpace, 'isFollowing' => true]); ?>
                 <?php endforeach; ?>
             </ul>
@@ -74,7 +74,7 @@ $this->registerJsConfig('space.chooser', [
             <ul id="space-menu-remote-search" class="media-list notLoaded"></ul>
         </li>
 
-    <?php if ($canCreateSpace): ?>
+    <?php if ($canCreateSpace) : ?>
         <li>
             <div class="dropdown-footer">
                 <a href="#" class="btn btn-info col-md-12" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/space/create/create']) ?>">

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Archive' => 'Archiwizuj',
   'Choose if new content should be public or private by default' => 'Wybierz czy nowe treści mają być domyślnie publiczne czy prywatne',
   'Choose the kind of membership you want to provide for this workspace.' => 'Wybierz rodzaj członkostwa który chcesz zapewnić tej grupie roboczej.',
@@ -7,4 +7,4 @@ return array (
   'Delete' => 'Usuń',
   'Save' => 'Zapisz',
   'Unarchive' => 'Przywróć z archiwum',
-);
+];

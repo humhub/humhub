@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Your password' => 'Ditt lösenord',
-);
+];

@@ -16,6 +16,6 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Send & decline' => '发送并拒绝',
-);
+];

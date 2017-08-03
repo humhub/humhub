@@ -16,7 +16,7 @@ class m160509_214811_spaceurl extends Migration
         $this->createIndex('url-unique', 'space', 'url', true);
 
         $rows = (new Query())
-                ->select("*")
+                ->select('*')
                 ->from('space')
                 ->all();
         foreach ($rows as $row) {

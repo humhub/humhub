@@ -14,7 +14,7 @@ use yii\helpers\Html;
             <br/>
         </div>
 
-        <?php if (count($spaces) === 0): ?>
+        <?php if (count($spaces) === 0) : ?>
             <div class="modal-body">
                 <p><?php echo Yii::t('SpaceModule.base', 'No spaces found.'); ?></p>
             </div>

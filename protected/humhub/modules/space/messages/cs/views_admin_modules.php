@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Space</strong> Modules' => '<strong>Moduly</strong> prostoru',
   'Activated' => 'Aktivováno',
   'Are you sure? *ALL* module data for this space will be deleted!' => 'Jste si opravdu jistí? *VŠECHNA* data modulu k tomuto prostoru budou smazána!',
@@ -8,4 +8,4 @@ return array (
   'Disable' => 'Zakázat',
   'Enable' => 'Povolit',
   'Enhance this space with modules.' => 'Zde můžete rozšířit tento prostor moduly.',
-);
+];

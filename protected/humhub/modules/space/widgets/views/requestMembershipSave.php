@@ -9,7 +9,7 @@
                 <?php echo Yii::t('SpaceModule.widgets_views_requestMembershipSave', 'Your request was successfully submitted to the workspace administrators.'); ?><br/>
             </p>
             <br/>
-            <?php echo CHtml::link(Yii::t('SpaceModule.widgets_views_requestMembershipSave', 'Close'), '#', array('onclick'=>'redirect();//RequestWorkspacebox.close()', 'class' => 'button', 'style' => 'color: #fff;')); ?>
+            <?php echo CHtml::link(Yii::t('SpaceModule.widgets_views_requestMembershipSave', 'Close'), '#', ['onclick'=>'redirect();//RequestWorkspacebox.close()', 'class' => 'button', 'style' => 'color: #fff;']); ?>
             <div class="clearFloats"></div>
 
         </div>
@@ -25,7 +25,7 @@
      * Refresh the current page
      */
     function redirect() {
-        window.location.href = "<?php Yii::app()->createUrl('workspace/publicShow', array('guid' => $workspace->guid)); ?>"  ;
+        window.location.href = "<?php Yii::app()->createUrl('workspace/publicShow', ['guid' => $workspace->guid]); ?>"  ;
     }
 
 </script>   

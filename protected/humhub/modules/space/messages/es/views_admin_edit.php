@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Archive' => 'Archivo',
   'Choose if new content should be public or private by default' => 'Selecciona si el nuevo contenido debe ser público o privado por defecto',
   'Choose the kind of membership you want to provide for this workspace.' => 'Elige el tipo de suscripción que quieres dar a este espacio.',
@@ -7,4 +7,4 @@ return array (
   'Delete' => 'Borrar',
   'Save' => 'Guardar',
   'Unarchive' => 'Desarchivar',
-);
+];

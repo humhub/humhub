@@ -16,9 +16,9 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Cancel' => '取 消',
   'Please shortly introduce yourself, to become a approved member of this workspace.' => '请简单介绍自己，以便成为成员',
   'Request workspace membership' => '请求成为成员',
   'Send' => '发 送',
-);
+];

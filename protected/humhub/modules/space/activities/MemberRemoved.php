@@ -23,12 +23,12 @@ class MemberRemoved extends BaseActivity implements ConfigurableActivityInterfac
     /**
      * @inheritdoc
      */
-    public $viewName = "memberRemoved";
+    public $viewName = 'memberRemoved';
 
     /**
      * @inheritdoc
      */
-    public $moduleId = "space";
+    public $moduleId = 'space';
 
     /**
      * @inheritdoc
@@ -54,5 +54,4 @@ class MemberRemoved extends BaseActivity implements ConfigurableActivityInterfac
     {
         return Yii::t('SpaceModule.activities', 'Whenever a member leaves one of your spaces.');
     }
-
 }

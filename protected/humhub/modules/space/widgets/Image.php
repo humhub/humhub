@@ -80,11 +80,11 @@ class Image extends Widget
         }
 
         if (!isset($this->htmlOptions['class'])) {
-            $this->htmlOptions['class'] = "";
+            $this->htmlOptions['class'] = '';
         }
 
         if (!isset($this->htmlOptions['style'])) {
-            $this->htmlOptions['style'] = "";
+            $this->htmlOptions['style'] = '';
         }
 
         $acronymHtmlOptions = $this->htmlOptions;
@@ -92,20 +92,20 @@ class Image extends Widget
 
 
 
-        $acronymHtmlOptions['class'] .= " space-profile-acronym-" . $this->space->id . " space-acronym";
-        $acronymHtmlOptions['style'] .= " background-color: " . $color . "; width: " . $this->width . "px; height: " . $this->height . "px;";
-        $acronymHtmlOptions['style'] .= " " . $this->getDynamicStyles($this->width);
+        $acronymHtmlOptions['class'] .= ' space-profile-acronym-' . $this->space->id . ' space-acronym';
+        $acronymHtmlOptions['style'] .= ' background-color: ' . $color . '; width: ' . $this->width . 'px; height: ' . $this->height . 'px;';
+        $acronymHtmlOptions['style'] .= ' ' . $this->getDynamicStyles($this->width);
 
-        $imageHtmlOptions['class'] .= " space-profile-image-" . $this->space->id . " img-rounded profile-user-photo";
-        $imageHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px";
+        $imageHtmlOptions['class'] .= ' space-profile-image-' . $this->space->id . ' img-rounded profile-user-photo';
+        $imageHtmlOptions['style'] .= ' width: ' . $this->width . 'px; height: ' . $this->height . 'px';
         $imageHtmlOptions['alt'] = Html::encode($this->space->name);
 
         $defaultImage = (basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg' || basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg?cacheId=0') ? true : false;
 
         if (!$defaultImage) {
-            $acronymHtmlOptions['class'] .= " hidden";
+            $acronymHtmlOptions['class'] .= ' hidden';
         } else {
-            $imageHtmlOptions['class'] .= " hidden";
+            $imageHtmlOptions['class'] .= ' hidden';
         }
 
         return $this->render('image', [
@@ -120,9 +120,9 @@ class Image extends Widget
 
     protected function getAcronym()
     {
-        $acronym = "";
+        $acronym = '';
 
-        foreach (explode(" ", $this->space->name) as $w) {
+        foreach (explode(' ', $this->space->name) as $w) {
             if (mb_strlen($w) >= 1) {
                 $acronym .= mb_substr($w, 0, 1);
             }
@@ -146,9 +146,6 @@ class Image extends Widget
             $borderRadius = 2;
         }
 
-        return "font-size: " . $fontSize . "px; padding: " . $padding . "px 0; border-radius: " . $borderRadius . "px;";
+        return 'font-size: ' . $fontSize . 'px; padding: ' . $padding . 'px 0; border-radius: ' . $borderRadius . 'px;';
     }
-
 }
-
-?>

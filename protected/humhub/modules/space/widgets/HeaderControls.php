@@ -2,9 +2,6 @@
 
 namespace humhub\modules\space\widgets;
 
-
-
-
 /**
  * SpaceHeaderControlsWidget
  *
@@ -15,9 +12,6 @@ namespace humhub\modules\space\widgets;
 class HeaderControls extends \humhub\widgets\BaseStack
 {
 
-    public $seperator = "&nbsp;";
+    public $seperator = '&nbsp;';
     public $space;
-
 }
-
-?>

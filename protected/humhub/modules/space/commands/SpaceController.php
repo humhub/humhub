@@ -61,7 +61,6 @@ class SpaceController extends \yii\console\Controller
             }
         }
 
-        $this->stdout("\nAdded " . $countAssigns . " new members to space " . $space->name . "\n", Console::FG_GREEN);
+        $this->stdout("\nAdded " . $countAssigns . ' new members to space ' . $space->name . "\n", Console::FG_GREEN);
     }
-
 }

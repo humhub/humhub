@@ -16,5 +16,4 @@ class SpaceModuleFixture extends ActiveFixture
 
     public $modelClass = 'humhub\modules\space\models\Module';
     public $dataFile = '@modules/space/tests/codeception/fixtures/data/space_module.php';
-
 }

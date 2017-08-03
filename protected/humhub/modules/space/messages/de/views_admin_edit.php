@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Archive' => 'Archivieren',
   'Choose if new content should be public or private by default' => 'Wählen, ob neue Inhalte standardmäßig als öffentlich oder privat gekennzeichnet werden',
   'Choose the kind of membership you want to provide for this workspace.' => 'Wähle den Typ der Mitgliedschaft, den du für diesen Space zur Verfügung stellen möchtest.',
@@ -7,4 +7,4 @@ return array (
   'Delete' => 'Löschen',
   'Save' => 'Speichern',
   'Unarchive' => 'Aus dem Archiv',
-);
+];

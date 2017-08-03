@@ -8,7 +8,6 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
-
 use \yii\base\Widget;
 
 /**
@@ -49,7 +48,4 @@ class PendingApprovals extends Widget
 
         return $this->render('pendingApprovals', ['applicants' => $applicants, 'space' => $this->space]);
     }
-
 }
-
-?>

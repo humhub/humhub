@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Invites' => 'Einladungen',
   'New user by e-mail (comma separated)' => 'Neue Benutzer per E-Mail (getrennt durch Kommas)',
   'User \'{username}\' is already a member of this space!' => 'Der Benutzer \'{username}\' ist bereits Mitglied des Spaces!',
@@ -7,4 +7,4 @@ return array (
   'User not found!' => 'Benutzer nicht gefunden!',
   '{email} is already registered!' => '{email} ist bereits registriert!',
   '{email} is not valid!' => '{email} ist ungültig!',
-);
+];

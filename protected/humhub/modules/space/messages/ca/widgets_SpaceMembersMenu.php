@@ -1,7 +1,7 @@
 <?php
-return array (
+return  [
   'Members' => 'Membres',
   'Owner' => 'Propietari',
   'Pending Approvals' => '',
   'Pending Invites' => '',
-);
+];

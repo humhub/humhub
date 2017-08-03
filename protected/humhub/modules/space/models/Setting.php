@@ -10,10 +10,9 @@ namespace humhub\modules\space\models;
 
 use Yii;
 
-
 /**
  * Space settings compatiblity layer class
- * 
+ *
  * @deprecated since version 1.1
  * @see \humhub\modules\content\components\ContentContainerSettingsManager
  */
@@ -22,14 +21,14 @@ class Setting
 
     /**
      * Sets a space setting
-     * 
+     *
      * @see \humhub\modules\content\components\ContentContainerSettingsManager::set
      * @param type $spaceId
      * @param type $name
      * @param type $value
      * @param type $moduleId
      */
-    public static function Set($spaceId, $name, $value, $moduleId = "")
+    public static function Set($spaceId, $name, $value, $moduleId = '')
     {
         $user = Space::findOne(['id' => $spaceId]);
         self::getModule($moduleId)->settings->contentContainer($user)->set($name, $value);
@@ -37,7 +36,7 @@ class Setting
 
     /**
      * Gets a space setting
-     * 
+     *
      * @see \humhub\modules\content\components\ContentContainerSettingsManager::get
      * @param int $spaceId
      * @param string $name
@@ -45,7 +44,7 @@ class Setting
      * @param string $defaultValue
      * @return string
      */
-    public static function Get($space, $name, $moduleId = "", $defaultValue = "")
+    public static function Get($space, $name, $moduleId = '', $defaultValue = '')
     {
         $user = Space::findOne(['id' => $space]);
         $value = self::getModule($moduleId)->settings->contentContainer($user)->get($name);
@@ -57,7 +56,7 @@ class Setting
 
     /**
      * Gets correct SettingsManager by module id
-     * 
+     *
      * @param string $moduleId
      * @return \yii\base\Module
      */
@@ -71,5 +70,4 @@ class Setting
         }
         return $app;
     }
-
 }

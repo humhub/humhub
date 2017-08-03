@@ -83,7 +83,7 @@ class Chooser extends Widget
 
     /**
      * Returns the membership query
-     * 
+     *
      * @deprecated since version 1.2
      * @return type
      */
@@ -102,7 +102,4 @@ class Chooser extends Widget
 
         return $query;
     }
-
 }
-
-?>

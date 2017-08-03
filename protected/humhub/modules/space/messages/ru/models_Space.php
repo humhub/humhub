@@ -16,7 +16,7 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Administrators' => 'Администраторы',
   'Color' => 'Цвет',
   'Created At' => 'Создано в',
@@ -38,4 +38,4 @@ return array (
   'Visibility' => 'Отображение',
   'You cannot create private visible spaces!' => 'Вы не можете создавать приватные пространства!',
   'You cannot create public visible spaces!' => 'Вы не можете создавать публичные пространства!',
-);
+];

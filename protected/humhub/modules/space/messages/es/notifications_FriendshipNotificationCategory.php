@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Friendship' => 'Amistad',
   'Receive Notifications for Friendship Request and Approval events.' => '',
-);
+];

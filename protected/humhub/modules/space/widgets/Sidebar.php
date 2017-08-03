@@ -12,7 +12,7 @@ use humhub\widgets\BaseSidebar;
 
 /**
  * Sidebar implements the default space sidebar.
- * 
+ *
  * @author Luke
  * @since 0.5
  */
@@ -23,7 +23,4 @@ class Sidebar extends BaseSidebar
      * @var \humhub\modules\space\models\Space the space this sidebar is in
      */
     public $space;
-
 }
-
-?>

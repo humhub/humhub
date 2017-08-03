@@ -8,7 +8,7 @@ use humhub\compat\CActiveForm;
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('SpaceModule.views_space_requestMembership', "<strong>Request</strong> space membership"); ?></h4>
+                id="myModalLabel"><?php echo Yii::t('SpaceModule.views_space_requestMembership', '<strong>Request</strong> space membership'); ?></h4>
         </div>
         <div class="modal-body">
 
@@ -18,7 +18,7 @@ use humhub\compat\CActiveForm;
             <br/>
 
             <?php //echo $form->labelEx($model, 'message');  ?>
-            <?php echo $form->textArea($model, 'message', array('rows' => '8', 'class' => 'form-control', 'id' => 'request-message')); ?>
+            <?php echo $form->textArea($model, 'message', ['rows' => '8', 'class' => 'form-control', 'id' => 'request-message']); ?>
             <?php echo $form->error($model, 'message'); ?>
 
         </div>

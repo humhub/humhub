@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'As owner you cannot revoke your membership!' => 'Als eigenaar kunt u uw lidmaatschap niet intrekken!',
   'Could not request membership!' => 'Kon lidmaatschap niet aanvragen!',
   'Sorry, you are not allowed to leave this space!' => 'Sorry,  u kunt deze ruimte niet verlaten!',
@@ -8,4 +8,4 @@ return array (
   'This user is already a member of this space.' => 'De gebruiker is al lid van deze ruimte.',
   'This user is not a member of this space.' => 'De gebruiker is niet een lid van deze ruimte.',
   'You are not allowed to join this space!' => 'U mag geen lid worden van deze ruimte!',
-);
+];

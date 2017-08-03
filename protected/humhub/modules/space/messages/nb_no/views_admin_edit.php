@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Archive' => 'Arkivér',
   'Choose if new content should be public or private by default' => 'Velg om nytt innhold skal være offentlig eller privat som standard',
   'Choose the kind of membership you want to provide for this workspace.' => 'Velg type medlemskap du vil tildele i denne gruppen.',
@@ -7,4 +7,4 @@ return array (
   'Delete' => 'Slett',
   'Save' => 'Lagre',
   'Unarchive' => 'Ta ut fra arkiv',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Space</strong> followers' => '<strong>Ruimte</strong> volgers',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'De eigenaar van ruimte {spaceName} kan niet verwijderd worden!',
   'Default' => 'Standaard',
@@ -17,4 +17,4 @@ return array (
   'Settings' => 'Instellingen',
   'Space' => 'Ruimte',
   'Visible for all (members and guests)' => 'Zichtbaar voor iedereen (leden en gasten)',
-);
+];

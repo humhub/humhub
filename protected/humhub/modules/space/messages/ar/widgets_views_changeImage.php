@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Change image' => '',
   'Current space image' => '',
-);
+];

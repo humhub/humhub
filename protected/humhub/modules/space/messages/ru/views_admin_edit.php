@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Archive' => 'Архив',
   'Choose if new content should be public or private by default' => 'Права доступа (по умолчанию)',
   'Choose the kind of membership you want to provide for this workspace.' => 'Политика вступления',
@@ -7,4 +7,4 @@ return array (
   'Delete' => 'Удалить',
   'Save' => 'Сохранить',
   'Unarchive' => 'Разархивировать',
-);
+];

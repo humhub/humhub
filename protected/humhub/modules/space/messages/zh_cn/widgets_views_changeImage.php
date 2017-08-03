@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Change image' => '换图片',
   'Current space image' => '当前空间图片',
-);
+];

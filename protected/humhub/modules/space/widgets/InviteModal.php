@@ -18,7 +18,7 @@ class InviteModal extends \yii\base\Widget
     
     public function run()
     {
-        if(!$this->attribute) {
+        if (!$this->attribute) {
             $this->attribute = 'invite';
         }
         

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Invites' => '',
   'New user by e-mail (comma separated)' => '',
   'User \'{username}\' is already a member of this space!' => '',
@@ -9,4 +9,4 @@ return array (
 ',
   '{email} is not valid!' => '{email} غير صحيح!
 ',
-);
+];

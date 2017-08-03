@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Allows the user to create public content' => 'Umožňuje uživateli vytvořit veřejný obsah',
   'Allows the user to invite new members to the space' => 'Umožňuje uživateli pozvat nové členy do prostoru',
   'Can create hidden (private) spaces.' => 'Může vytvářet skryté (soukromé) prostory.',
@@ -8,4 +8,4 @@ return array (
   'Create public content' => 'Vytvořte veřejný obsah',
   'Create public space' => 'Vytvořte veřejný prostor',
   'Invite users' => 'Pozvat uživatele',
-);
+];

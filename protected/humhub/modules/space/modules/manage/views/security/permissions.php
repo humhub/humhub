@@ -18,7 +18,7 @@ use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
     </div>
 
     <ul id="tabs" class="nav nav-tabs tab-sub-menu">
-        <?php foreach ($groups as $currentGroupId => $groupLabel): ?>
+        <?php foreach ($groups as $currentGroupId => $groupLabel) : ?>
             <li class="<?= ($groupId === $currentGroupId) ? 'active' : '' ?>">
                 <a href='<?= $space->createUrl('permissions', ['groupId' => $currentGroupId]) ?>'><?= $groupLabel ?></a>
             </li>

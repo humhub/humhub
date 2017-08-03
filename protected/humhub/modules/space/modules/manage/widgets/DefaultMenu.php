@@ -10,7 +10,6 @@ namespace humhub\modules\space\modules\manage\widgets;
 
 use Yii;
 
-
 /**
  * Space Administration Menu
  *
@@ -19,7 +18,7 @@ use Yii;
 class DefaultMenu extends \humhub\widgets\BaseMenu
 {
 
-    public $template = "@humhub/widgets/views/tabMenu";
+    public $template = '@humhub/widgets/views/tabMenu';
 
     /**
      * @var \humhub\modules\space\models\Space
@@ -28,19 +27,18 @@ class DefaultMenu extends \humhub\widgets\BaseMenu
 
     public function init()
     {
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('AdminModule.manage', 'Basic'),
             'url' => $this->space->createUrl('/space/manage/default/index'),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->id == 'default' && Yii::$app->controller->action->id == 'index'),
-        ));
-        $this->addItem(array(
+        ]);
+        $this->addItem([
             'label' => Yii::t('AdminModule.manage', 'Advanced'),
             'url' => $this->space->createUrl('/space/manage/default/advanced'),
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->id == 'default' && Yii::$app->controller->action->id == 'advanced'),
-        ));
+        ]);
         parent::init();
     }
-
 }

@@ -43,7 +43,4 @@ class Header extends Widget
                     'postCount' => $postCount
         ]);
     }
-
 }
-
-?>

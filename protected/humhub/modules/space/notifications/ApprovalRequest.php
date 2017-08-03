@@ -23,12 +23,12 @@ class ApprovalRequest extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $moduleId = "space";
+    public $moduleId = 'space';
 
     /**
      * @inheritdoc
      */
-    public $viewName = "approval";
+    public $viewName = 'approval';
     public $message;
 
     /**
@@ -38,7 +38,7 @@ class ApprovalRequest extends BaseNotification
 
     /**
      * Sets the approval request message for this notification.
-     * 
+     *
      * @param string $message
      */
     public function withMessage($message)
@@ -53,7 +53,7 @@ class ApprovalRequest extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function getViewParams($params = array())
+    public function getViewParams($params = [])
     {
         return \yii\helpers\ArrayHelper::merge(parent::getViewParams(['message' => $this->message]), $params);
     }
@@ -107,7 +107,4 @@ class ApprovalRequest extends BaseNotification
         $this->about($unserializedArr['source']);
         $this->withMessage($unserializedArr['message']);
     }
-
 }
-
-?>

@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>Space</strong> Modules' => '<strong>Moduły</strong> strefy',
   'Activated' => 'Aktywowane',
   'Are you sure? *ALL* module data for this space will be deleted!' => 'Czy jesteś pewien? *WSZYSTKIE* dane modułu tej strefy zostaną usunięte! ',
@@ -25,4 +25,4 @@ return array (
   'Disable' => 'Zablokuj',
   'Enable' => 'Włącz',
   'Enhance this space with modules.' => 'Rozszerz możliwości tej strefy za pomocą modułów ',
-);
+];

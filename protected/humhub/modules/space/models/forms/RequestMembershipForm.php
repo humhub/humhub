@@ -21,9 +21,9 @@ class RequestMembershipForm extends Model
      */
     public function rules()
     {
-        return array(
-            array('message', 'required'),
-        );
+        return [
+            ['message', 'required'],
+        ];
     }
 
     /**
@@ -33,9 +33,8 @@ class RequestMembershipForm extends Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'message' => Yii::t('SpaceModule.forms_SpaceMembershipForm', 'Application message'),
-        );
+        ];
     }
-
 }

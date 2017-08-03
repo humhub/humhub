@@ -39,7 +39,4 @@ class Members extends Widget
 
         return $this->render('members', ['space' => $this->space, 'maxMembers' => $this->maxMembers, 'users' => $query->all()]);
     }
-
 }
-
-?>

@@ -23,7 +23,7 @@ class MemberMenu extends \humhub\widgets\BaseMenu
     /**
      * @inheritdoc
      */
-    public $template = "@humhub/widgets/views/tabMenu";
+    public $template = '@humhub/widgets/views/tabMenu';
 
     /**
      * @var \humhub\modules\space\models\Space
@@ -36,37 +36,37 @@ class MemberMenu extends \humhub\widgets\BaseMenu
     public function init()
     {
 
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Members'),
             'url' => $this->space->createUrl('/space/manage/member/index'),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->action->id == 'index' && Yii::$app->controller->id === 'member'),
-        ));
+        ]);
 
         if ($this->countPendingInvites() != 0) {
-            $this->addItem(array(
-                'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Pending Invites') . '&nbsp;&nbsp;<span class="label label-danger">'.$this->countPendingInvites().'</span>',
+            $this->addItem([
+                'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Pending Invites') . '&nbsp;&nbsp;<span class="label label-danger">' . $this->countPendingInvites() . '</span>',
                 'url' => $this->space->createUrl('/space/manage/member/pending-invitations'),
                 'sortOrder' => 200,
                 'isActive' => (Yii::$app->controller->action->id == 'pending-invitations'),
-            ));
+            ]);
         }
         if ($this->countPendingApprovals() != 0) {
-            $this->addItem(array(
-                'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Pending Approvals'). '&nbsp;&nbsp;<span class="label label-danger">'.$this->countPendingApprovals().'</span>',
+            $this->addItem([
+                'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Pending Approvals') . '&nbsp;&nbsp;<span class="label label-danger">' . $this->countPendingApprovals() . '</span>',
                 'url' => $this->space->createUrl('/space/manage/member/pending-approvals'),
                 'sortOrder' => 300,
                 'isActive' => (Yii::$app->controller->action->id == 'pending-approvals'),
-            ));
+            ]);
         }
 
         if ($this->space->isSpaceOwner()) {
-            $this->addItem(array(
+            $this->addItem([
                 'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Owner'),
                 'url' => $this->space->createUrl('/space/manage/member/change-owner'),
                 'sortOrder' => 500,
                 'isActive' => (Yii::$app->controller->action->id == 'change-owner'),
-            ));
+            ]);
         }
 
 
@@ -75,7 +75,7 @@ class MemberMenu extends \humhub\widgets\BaseMenu
 
     /**
      * Returns the number of currently invited users
-     * 
+     *
      * @return int currently invited members
      */
     protected function countPendingInvites()
@@ -88,7 +88,7 @@ class MemberMenu extends \humhub\widgets\BaseMenu
 
     /**
      * Returns the number of currently pending approvals
-     * 
+     *
      * @return int currently pending approvals
      */
     protected function countPendingApprovals()
@@ -98,5 +98,4 @@ class MemberMenu extends \humhub\widgets\BaseMenu
         $searchModel->status = Membership::STATUS_APPLICANT;
         return $searchModel->search([])->getCount();
     }
-
 }

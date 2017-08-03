@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<i class="fa fa-cog"></i>' => '<i class="fa fa-cog"></i>',
   'Cancel Membership' => 'Mitgliedschaft beenden',
   'Don\'t receive notifications for new content' => 'Keine Benachrichtugen über neue Inhalte empfangen',
@@ -11,4 +11,4 @@ return array (
   'Show posts on dashboard' => 'Beiträge in der Übersicht anzeigen',
   'This option will hide new content from this space at your dashboard' => 'Mit dieser Option werden neue Inhalte in der Übersicht dieses Space nicht angezeigt',
   'This option will show new content from this space at your dashboard' => 'Mit dieser Option werden neue Inhalte in der Übersicht dieses Space angezeigt',
-);
+];

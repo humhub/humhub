@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Archive' => 'Archiveren',
   'Choose if new content should be public or private by default' => 'Kies of nieuwe content standaard openbaar of privé is',
   'Choose the kind of membership you want to provide for this workspace.' => 'Kies het soort lidmaatschap dat je wilt voorzien voor deze ruimte.',
@@ -7,4 +7,4 @@ return array (
   'Delete' => 'Verwijder',
   'Save' => 'Bewaar',
   'Unarchive' => 'Dearchiveer',
-);
+];

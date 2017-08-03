@@ -25,7 +25,8 @@ class Controller extends \humhub\modules\content\components\ContentContainerCont
     public $hideSidebar = true;
 
     
-    protected function getAccessRules() {
+    protected function getAccessRules()
+    {
         return [
             ['login'],
             ['permission' => [

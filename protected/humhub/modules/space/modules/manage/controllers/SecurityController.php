@@ -15,7 +15,7 @@ use yii\web\HttpException;
 
 /**
  * SecurityController
- * 
+ *
  * @since 1.1
  * @author Luke
  */
@@ -58,13 +58,10 @@ class SecurityController extends Controller
             return [];
         }
 
-        return $this->render('permissions', array(
+        return $this->render('permissions', [
                     'space' => $space,
                     'groups' => $groups,
                     'groupId' => $groupId
-        ));
+        ]);
     }
-
 }
-
-?>

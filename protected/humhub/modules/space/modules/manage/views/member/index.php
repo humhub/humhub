@@ -31,17 +31,17 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                         'attribute' => 'group_id',
                         'submitAttributes' => ['user_id'],
                         'readonly' => function ($data) use ($space) {
-                    if ($space->isSpaceOwner($data->user->id)) {
-                        return true;
-                    }
-                    return false;
-                },
+                            if ($space->isSpaceOwner($data->user->id)) {
+                                return true;
+                            }
+                            return false;
+                        },
                         'filter' => $groups,
                         'dropDownOptions' => $groups,
                         'value' =>
                         function ($data) use (&$groups, $space) {
-                    return $groups[$data->group_id];
-                }
+                            return $groups[$data->group_id];
+                        }
                     ],
                     [
                         'attribute' => 'last_visit',
@@ -69,8 +69,8 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                                         return Html::a(Yii::t('SpaceModule.views_admin_members', 'Remove'), $space->createUrl('remove', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST', 'data-confirm' => 'Are you sure?']);
                                     },
                                             'update' => function () {
-                                        return;
-                                    },
+                                                return;
+                                            },
                                         ],
                                     ],
                                 ],

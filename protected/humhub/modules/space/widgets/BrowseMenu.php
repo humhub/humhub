@@ -14,39 +14,39 @@ use Yii;
 class BrowseMenu extends MenuWidget
 {
 
-    public $template = "application.widgets.views.leftNavigation";
+    public $template = 'application.widgets.views.leftNavigation';
 
     public function init()
     {
 
-        $this->addItemGroup(array(
+        $this->addItemGroup([
             'id' => 'browse',
             'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'Spaces'),
             'sortOrder' => 100,
-        ));
+        ]);
 
 
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'My Space List'),
-            'url' => Yii::app()->createUrl('//space/browse', array()),
+            'url' => Yii::app()->createUrl('//space/browse', []),
             'sortOrder' => 100,
-            'isActive' => (Yii::app()->controller->id == "spacebrowse" && Yii::app()->controller->action->id == "index"),
-        ));
+            'isActive' => (Yii::app()->controller->id == 'spacebrowse' && Yii::app()->controller->action->id == 'index'),
+        ]);
 
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'My space summary'),
-            'url' => Yii::app()->createUrl('//dashboard', array()),
+            'url' => Yii::app()->createUrl('//dashboard', []),
             'sortOrder' => 100,
-            'isActive' => (Yii::app()->controller->id == "spacebrowse" && Yii::app()->controller->action->id == "index"),
-        ));
+            'isActive' => (Yii::app()->controller->id == 'spacebrowse' && Yii::app()->controller->action->id == 'index'),
+        ]);
 
 
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'Space directory'),
-            'url' => Yii::app()->createUrl('//community/workspaces', array()),
+            'url' => Yii::app()->createUrl('//community/workspaces', []),
             'sortOrder' => 200,
-            'isActive' => (Yii::app()->controller->id == "spacebrowse" && Yii::app()->controller->action->id == "index"),
-        ));
+            'isActive' => (Yii::app()->controller->id == 'spacebrowse' && Yii::app()->controller->action->id == 'index'),
+        ]);
 
 
 #        $this->addItem(array(
@@ -65,7 +65,4 @@ class BrowseMenu extends MenuWidget
 
         parent::init();
     }
-
 }
-
-?>

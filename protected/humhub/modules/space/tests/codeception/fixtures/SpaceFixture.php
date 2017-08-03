@@ -17,5 +17,4 @@ class SpaceFixture extends ActiveFixture
     public $depends = [
         'humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture'
     ];
-
 }

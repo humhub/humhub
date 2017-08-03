@@ -51,13 +51,12 @@ class SpaceMemberNotificationCategory extends NotificationCategory
     {
         if ($target->id === MailTarget::getId()) {
             return true;
-        } else if ($target->id === WebTarget::getId()) {
+        } elseif ($target->id === WebTarget::getId()) {
             return true;
-        } else if ($target->id === MobileTarget::getId()) {
+        } elseif ($target->id === MobileTarget::getId()) {
             return true;
         }
 
         return $target->defaultSetting;
     }
-
 }

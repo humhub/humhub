@@ -3,10 +3,12 @@
 
 use yii\db\Migration;
 
-class m131023_165411_initial extends Migration {
+class m131023_165411_initial extends Migration
+{
 
-    public function up() {
-        $this->createTable('space', array(
+    public function up()
+    {
+        $this->createTable('space', [
             'id' => 'pk',
             'guid' => 'varchar(45) DEFAULT NULL',
             'wall_id' => 'int(11) DEFAULT NULL',
@@ -21,20 +23,20 @@ class m131023_165411_initial extends Migration {
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+                ], '');
 
-        $this->createTable('space_follow', array(
+        $this->createTable('space_follow', [
             'user_id' => 'int(11) NOT NULL',
             'space_id' => 'int(11) NOT NULL',
             'created_at' => 'datetime DEFAULT NULL',
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+                ], '');
 
         $this->addPrimaryKey('pk_space_follow', 'space_follow', 'user_id,space_id');
 
-        $this->createTable('space_module', array(
+        $this->createTable('space_module', [
             'id' => 'pk',
             'module_id' => 'varchar(255) NOT NULL',
             'space_id' => 'int(11) NOT NULL',
@@ -42,10 +44,11 @@ class m131023_165411_initial extends Migration {
             'created_by' => 'int(11) NOT NULL',
             'updated_at' => 'datetime NOT NULL',
             'updated_by' => 'int(11) NOT NULL',
-                ), '');
+                ], '');
     }
 
-    public function down() {
+    public function down()
+    {
         echo "m131023_165411_initial does not support migration down.\n";
         return false;
     }

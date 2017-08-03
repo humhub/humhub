@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Created At' => '创建于',
   'Created By' => '创建人',
   'Last Visit' => '最后一次访问',
@@ -8,4 +8,4 @@ return array (
   'Status' => '状态',
   'Updated At' => '修改于',
   'Updated By' => '修改人',
-);
+];

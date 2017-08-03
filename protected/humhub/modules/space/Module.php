@@ -32,13 +32,13 @@ class Module extends \humhub\components\Module
     
     /**
      *
-     * @var boolean Do not allow multiple spaces with the same name 
+     * @var boolean Do not allow multiple spaces with the same name
      */
     public $useUniqueSpaceNames = true;
     
     /**
      * @var boolean defines if the space following is disabled or not.
-     * @since 1.2 
+     * @since 1.2
      */
     public $disableFollow = false;
     
@@ -69,16 +69,15 @@ class Module extends \humhub\components\Module
     /**
      * @inheritdoc
      */
-    public function getNotifications() 
+    public function getNotifications()
     {
-       return [
+        return [
            'humhub\modules\space\notifications\ApprovalRequest',
            'humhub\modules\space\notifications\ApprovalRequestAccepted',
            'humhub\modules\space\notifications\ApprovalRequestDeclined',
            'humhub\modules\space\notifications\Invite',
            'humhub\modules\space\notifications\InviteAccepted',
            'humhub\modules\space\notifications\InviteDeclined'
-       ];
+        ];
     }
-
 }

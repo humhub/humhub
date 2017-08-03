@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Space</strong> followers' => '',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Nie można usunąć użytkownika który jest właścicielem strefy! Nazwa strefy: {spaceName} ',
   'Default' => 'Domyślna',
@@ -17,4 +17,4 @@ return array (
   'Settings' => 'Ustawienia',
   'Space' => '',
   'Visible for all (members and guests)' => 'Widoczne dla wszystkich (użytkownicy i goście)',
-);
+];

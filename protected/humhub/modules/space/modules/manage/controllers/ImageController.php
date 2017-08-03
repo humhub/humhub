@@ -28,31 +28,30 @@ class ImageController extends Controller
 
         $model = new \humhub\models\forms\UploadProfileImage();
 
-        $json = array();
+        $json = [];
 
         $files = \yii\web\UploadedFile::getInstancesByName('spacefiles');
         $file = $files[0];
         $model->image = $file;
 
         if ($model->validate()) {
-
             $json['error'] = false;
 
             $profileImage = new \humhub\libs\ProfileImage($this->getSpace()->guid);
             $profileImage->setNew($model->image);
 
-            $json['name'] = "";
+            $json['name'] = '';
             $json['space_id'] = $this->getSpace()->id;
             $json['url'] = $profileImage->getUrl();
             $json['size'] = $model->image->size;
-            $json['deleteUrl'] = "";
-            $json['deleteType'] = "";
+            $json['deleteUrl'] = '';
+            $json['deleteType'] = '';
         } else {
             $json['error'] = true;
             $json['errors'] = $model->getErrors();
         }
 
-        return array('files' => $json);
+        return ['files' => $json];
     }
 
     /**
@@ -70,7 +69,7 @@ class ImageController extends Controller
         }
 
 
-        return $this->renderAjax('crop', array('model' => $model, 'profileImage' => $profileImage, 'space' => $space));
+        return $this->renderAjax('crop', ['model' => $model, 'profileImage' => $profileImage, 'space' => $space]);
     }
 
     /**
@@ -81,7 +80,7 @@ class ImageController extends Controller
         \Yii::$app->response->format = 'json';
 
         $model = new \humhub\models\forms\UploadProfileImage();
-        $json = array();
+        $json = [];
 
         $files = \yii\web\UploadedFile::getInstancesByName('bannerfiles');
         $file = $files[0];
@@ -92,11 +91,11 @@ class ImageController extends Controller
             $profileImage->setNew($model->image);
 
             $json['error'] = false;
-            $json['name'] = "";
+            $json['name'] = '';
             $json['url'] = $profileImage->getUrl();
             $json['size'] = $model->image->size;
-            $json['deleteUrl'] = "";
-            $json['deleteType'] = "";
+            $json['deleteUrl'] = '';
+            $json['deleteType'] = '';
         } else {
             $json['error'] = true;
             $json['errors'] = $model->getErrors();
@@ -119,7 +118,7 @@ class ImageController extends Controller
             return $this->htmlRedirect($space->getUrl());
         }
 
-        return $this->renderAjax('cropBanner', array('model' => $model, 'profileImage' => $profileImage, 'space' => $space));
+        return $this->renderAjax('cropBanner', ['model' => $model, 'profileImage' => $profileImage, 'space' => $space]);
     }
 
     /**
@@ -133,9 +132,9 @@ class ImageController extends Controller
         $space = $this->getSpace();
 
         $type = Yii::$app->request->get('type', 'profile');
-        $json = array('type' => $type);
+        $json = ['type' => $type];
 
-        $image = NULL;
+        $image = null;
         if ($type == 'profile') {
             $image = new \humhub\libs\ProfileImage($space->guid, 'default_space');
         } elseif ($type == 'banner') {
@@ -150,7 +149,4 @@ class ImageController extends Controller
 
         return $json;
     }
-
 }
-
-?>

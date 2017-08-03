@@ -1,9 +1,9 @@
 <?php
-    $containerId = time().'space-color-chooser-edit';
+    $containerId = time() . 'space-color-chooser-edit';
     
-    if($model->color == null) {
-        $model->color = '#d1d1d1';
-    }
+if ($model->color == null) {
+    $model->color = '#d1d1d1';
+}
 ?>
 
 <div id="<?= $containerId ?>" class="form-group space-color-chooser-edit" style="margin-top: 5px;">

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Administrators' => '',
   'Color' => 'Colore',
   'Created At' => 'Creato il',
@@ -21,4 +21,4 @@ return array (
   'Visibility' => 'Visibilità',
   'You cannot create private visible spaces!' => 'Non puoi creare space privati invisibili!',
   'You cannot create public visible spaces!' => 'Non puoi creare space pubblici visibili!',
-);
+];

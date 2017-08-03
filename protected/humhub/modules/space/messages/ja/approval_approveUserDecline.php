@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Send & decline' => '送信 & 辞退',
-);
+];

@@ -7,7 +7,7 @@ class m151013_223814_include_dashboard extends Migration
 {
     public function up()
     {
-        $this->addColumn('space_membership', 'show_at_dashboard', Schema::TYPE_BOOLEAN. ' DEFAULT 1');
+        $this->addColumn('space_membership', 'show_at_dashboard', Schema::TYPE_BOOLEAN . ' DEFAULT 1');
     }
 
     public function down()
