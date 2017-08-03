@@ -7,5 +7,5 @@ echo Yii::t('ContentModule.activities_views_created', '{displayName} created a n
     '{contentTitle}' => '<strong>' . Html::encode($source->getContentName()) . '</strong>'
 ]);
 ?>
-<br />
-<em>"<?php echo \humhub\widgets\RichText::widget(['text' => $source->getContentDescription(), 'minimal' => true]); ?>"</em>
+<br>
+<em>"<?= \humhub\widgets\RichText::widget(['text' => $source->getContentDescription(), 'minimal' => true]); ?>"</em>
