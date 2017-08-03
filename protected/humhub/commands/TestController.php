@@ -26,14 +26,13 @@ class TestController extends \yii\console\Controller
      */
     public function actionEmail($address)
     {
-        $message = "Console test message<br /><br />";
+        $message = 'Console test message<br /><br />';
 
         $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], ['message' => $message]);
         $mail->setTo($address);
         $mail->setSubject('Test message');
         $mail->send();
 
-        Console::output("Message successfully sent!");
+        Console::output('Message successfully sent!');
     }
-
 }

@@ -22,7 +22,7 @@ class IntegrityController extends Controller
     /**
      * @event Event an event that is triggered when the integritychecker is started.
      */
-    const EVENT_ON_RUN = "run";
+    const EVENT_ON_RUN = 'run';
 
     /**
      * @inheritdoc
@@ -36,11 +36,11 @@ class IntegrityController extends Controller
     {
         $this->stdout("\n*** Performing database integrity checks\n\n", Console::FG_YELLOW);
 
-		$this->trigger(self::EVENT_ON_RUN);
+        $this->trigger(self::EVENT_ON_RUN);
 
         $this->stdout("\n*** All integrity checks done\n\n", Console::FG_YELLOW);
 
-		return self::EXIT_CODE_NORMAL;
+        return self::EXIT_CODE_NORMAL;
     }
 
     /**
@@ -50,7 +50,7 @@ class IntegrityController extends Controller
      */
     public function showTestHeadline($headline)
     {
-        $this->stdout("Validating: ", Console::FG_GREEN);
+        $this->stdout('Validating: ', Console::FG_GREEN);
         $this->stdout($headline . "\n", Console::FG_GREY);
     }
 
@@ -82,5 +82,4 @@ class IntegrityController extends Controller
         $this->stdout("\tWarning: ", Console::FG_RED);
         $this->stdout($message . "\n", Console::FG_GREY);
     }
-
 }

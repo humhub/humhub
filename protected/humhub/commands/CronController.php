@@ -23,12 +23,12 @@ class CronController extends Controller
     /**
      * @event Event an event that is triggered when the hourly cron is started.
      */
-    const EVENT_ON_HOURLY_RUN = "hourly";
+    const EVENT_ON_HOURLY_RUN = 'hourly';
 
     /**
      * @event Event an event that is triggered when the daily cron is started.
      */
-    const EVENT_ON_DAILY_RUN = "daily";
+    const EVENT_ON_DAILY_RUN = 'daily';
 
     /**
      * Executes hourly cron tasks.
@@ -41,7 +41,7 @@ class CronController extends Controller
 
         Yii::$app->settings->set('cronLastHourlyRun', time());
 
-		return self::EXIT_CODE_NORMAL;
+        return self::EXIT_CODE_NORMAL;
     }
 
     /**
@@ -55,7 +55,6 @@ class CronController extends Controller
 
         Yii::$app->settings->set('cronLastDailyRun', time());
 
-		return self::EXIT_CODE_NORMAL;
+        return self::EXIT_CODE_NORMAL;
     }
-
 }
