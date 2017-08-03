@@ -89,7 +89,7 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
                                class="btn btn-info btn-sm" data-target="#globalModal"><i
                                     class="fa fa-edit"></i></a>-->
                             <?php
-                            echo \humhub\widgets\ModalConfirm::widget(array(
+                            echo \humhub\widgets\ModalConfirm::widget([
                                 'uniqueID' => 'modal_profileimagedelete',
                                 'linkOutput' => 'a',
                                 'title' => Yii::t('UserModule.widgets_views_deleteImage', '<strong>Confirm</strong> image deleting'),
@@ -99,9 +99,9 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
                                 'linkContent' => '<i class="fa fa-times"></i>',
                                 'cssClass' => 'btn btn-danger btn-sm',
                                 'style' => $user->getProfileImage()->hasImage() ? '' : 'display: none;',
-                                'linkHref' => Url::toRoute(["/user/account/delete-profile-image", 'type' => 'profile']),
+                                'linkHref' => Url::toRoute(['/user/account/delete-profile-image', 'type' => 'profile']),
                                 'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
-                            ));
+                            ]);
                             ?>
                         </div>
 

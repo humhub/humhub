@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Most recent</strong> activities' => '<strong>Meest recente</strong> activiteiten',
   '<strong>Posts</strong>' => '<strong>Berichten</strong>',
   '<strong>Profile Guide</strong>' => '<strong>Profiel Gids</strong>',
@@ -18,4 +18,4 @@ Alle gebruikers die lid zijn van deze ruimte worden hier getoond. <br /> <br /> 
   'This menu is only visible for space admins. Here you can manage your space settings, add/block members and activate/deactivate tools for this space.' => 'Dit menu is alleen toegankelijk voor ruimtebeheerders. Hier kunt u uw ruimte beheren, toevoegen, leden blokkeren en activeren plus gereedschappen in- en uitschakelen voor deze ruimte.',
   'To keep you up to date, other users\' most recent activities in this space will be displayed here.' => 'Om u up-to-date te houden, zullen hier de meeste recente activiteiten van andere gebruikers in deze ruimte worden weergegeven.',
   'Yours, and other users\' posts will appear here.<br><br>These can then be liked or commented on.' => 'Berichten van u en andere gebruikers worden hier weergegeven. <br><br> U kunt deze dan leuk vinden of er commentaar op geven.',
-);
+];

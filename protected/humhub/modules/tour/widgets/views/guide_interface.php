@@ -28,7 +28,7 @@ $this->context->loadResources($this);
                 orphan: true,
                 backdrop: true,
                 title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_interface', '<strong>Dashboard</strong>')); ?>,
-                content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_interface', "This is your dashboard.<br><br>Any new activities or posts that might interest you will be displayed here.")); ?>
+                content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_interface', 'This is your dashboard.<br><br>Any new activities or posts that might interest you will be displayed here.')); ?>
             },
             {
                 element: "#icon-notifications",
@@ -45,7 +45,7 @@ $this->context->loadResources($this);
             {
                 element: "#space-menu",
                 title: <?php echo json_encode(Yii::t('TourModule.widgets_views_index', '<strong>Space</strong> Menu')); ?>,
-                content: <?php echo json_encode(Yii::t('TourModule.widgets_views_index', 'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:')); ?> + "<br><br><a href='javascript:gotoSpace = true; tourCompleted();'><?php echo Yii::t("TourModule.widgets_views_index", "<strong>Start</strong> space guide"); ?></a><br><br>",
+                content: <?php echo json_encode(Yii::t('TourModule.widgets_views_index', 'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:')); ?> + "<br><br><a href='javascript:gotoSpace = true; tourCompleted();'><?php echo Yii::t('TourModule.widgets_views_index', '<strong>Start</strong> space guide'); ?></a><br><br>",
                 placement: "bottom"
             }
         ]);

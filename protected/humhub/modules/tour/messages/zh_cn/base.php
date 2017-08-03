@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'End guide' => '结束向导',
   'Next »' => '下一步',
   '« Prev' => '上一步',
-);
+];

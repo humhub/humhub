@@ -5,7 +5,6 @@ namespace humhub\modules\tour;
 use Yii;
 use humhub\modules\tour\widgets\Dashboard;
 
-
 /**
  * This module shows an introduction tour for new users
  *
@@ -19,13 +18,13 @@ class Module extends \humhub\components\Module
 
     public static function onDashboardSidebarInit($event)
     {
-        if (Yii::$app->user->isGuest)
+        if (Yii::$app->user->isGuest) {
             return;
+        }
 
         $settings = Yii::$app->getModule('tour')->settings;
-        if ($settings->get('enable') == 1 && $settings->user()->get("hideTourPanel") != 1) {
-            $event->sender->addWidget(Dashboard::className(), array(), array('sortOrder' => 100));
+        if ($settings->get('enable') == 1 && $settings->user()->get('hideTourPanel') != 1) {
+            $event->sender->addWidget(Dashboard::className(), [], ['sortOrder' => 100]);
         }
     }
-
 }

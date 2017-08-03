@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   ' Remove panel' => '移除空间',
   '<strong>Getting</strong> Started' => '<strong>马上</strong>开始',
   '<strong>Guide:</strong> Administration (Modules)' => '<strong>指南：</strong>管理（模块）',
@@ -29,4 +29,4 @@ return array (
   '此操作将会从你的主面板上移出用户指南. 你可以在<br>账户设置 <i class="fa fa-caret-right"></i> 设置 里重新打开。',
   'Ok' => '确认',
   'Cancel' => '取消',
-);
+];

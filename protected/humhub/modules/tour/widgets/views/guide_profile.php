@@ -25,7 +25,7 @@ $this->context->loadResources($this);
         orphan: true,
                 backdrop: true,
                 title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_profile', '<strong>User profile</strong>')); ?>,
-                content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_profile', "This is your public user profile, which can be seen by any registered user.")); ?>
+                content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_profile', 'This is your public user profile, which can be seen by any registered user.')); ?>
         },
         {
         element: "#user-profile-image",
@@ -56,7 +56,7 @@ $this->context->loadResources($this);
             orphan: true,
                     backdrop: true,
                     title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_profile', '<strong>Hurray!</strong> You\'re done!')); ?>,
-                    content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_profile', 'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />')); ?> + "<a href='javascript:gotoAdministration = true; tourCompleted();'><?php echo Yii::t("TourModule.widgets_views_guide_profile", "<strong>Administration (Modules)</strong>"); ?></a><br><br>"
+                    content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_profile', 'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />')); ?> + "<a href='javascript:gotoAdministration = true; tourCompleted();'><?php echo Yii::t('TourModule.widgets_views_guide_profile', '<strong>Administration (Modules)</strong>'); ?></a><br><br>"
             }
 <?php else : ?>
             {

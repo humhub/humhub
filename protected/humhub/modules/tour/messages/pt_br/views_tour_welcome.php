@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Drag a photo here or click to browse your files' => 'Arraste uma foto aqui ou clique para procurar seus arquivos',
   'Hide my year of birth' => 'Esconder meu ano de nascimento',
   'Howdy <strong>%firstname%</strong>, thank you for using HumHub.' => 'Olá <strong>%firstname%</strong>, obrigado por usar o HumHub.',
@@ -11,4 +11,4 @@ return array (
   'Your phone number at work' => 'Seu número de telefone no trabalho',
   'Your skills, knowledge and experience (comma seperated)' => 'Suas habilidades, conhecimentos e experiência (separados por vírgula)',
   'Your title or position' => 'Seu título ou posição',
-);
+];

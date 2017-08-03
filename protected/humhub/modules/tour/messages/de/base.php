@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'End guide' => 'Tour beenden',
   'Next »' => 'Weiter »',
   '« Prev' => '« Zurück',
-);
+];

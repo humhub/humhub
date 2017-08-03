@@ -7,8 +7,7 @@ return [
     'id' => 'tour',
     'class' => Module::className(),
     'isCoreModule' => true,
-    'events' => array(
-        array('class' => Sidebar::className(), 'event' => Sidebar::EVENT_INIT, 'callback' => array(Module::className(), 'onDashboardSidebarInit')),
-    ),
+    'events' => [
+        ['class' => Sidebar::className(), 'event' => Sidebar::EVENT_INIT, 'callback' => [Module::className(), 'onDashboardSidebarInit']],
+    ],
 ];
-?>

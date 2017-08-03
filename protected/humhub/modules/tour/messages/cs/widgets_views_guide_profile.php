@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Administration (Modules)</strong>' => '<strong>Administrace (Moduly)</strong>',
   '<strong>Edit</strong> account' => '<strong>Upravit</strong> účet',
   '<strong>Hurray!</strong> The End.' => '<strong>A je to!</strong>',
@@ -15,4 +15,4 @@ return array (
   'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'Nahrát novou profilovou fotografii můžete jednoduše kliknutím zde nebo pomocí drag & drop. Stejným způsobem můžete přidat také úvodní fotku.',
   'You\'ve completed the user profile guide!' => 'Dokončili jste průvodce uživatelským profilem!',
   'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />' => 'Dokončili jste průvodce uživatelským profilem!<br><br>Pokud chcete, můžete pokračovat průvodcem administrace kliknutím zde:',
-);
+];

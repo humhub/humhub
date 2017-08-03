@@ -33,12 +33,11 @@ class Dashboard extends \yii\base\Widget
         $settingsManager = Yii::$app->getModule('tour')->settings->user();
 
         return $this->render('tourPanel', [
-                    'interface' => $settingsManager->get("interface"),
-                    'spaces' => $settingsManager->get("spaces"),
-                    'profile' => $settingsManager->get("profile"),
-                    'administration' => $settingsManager->get("administration"),
+                    'interface' => $settingsManager->get('interface'),
+                    'spaces' => $settingsManager->get('spaces'),
+                    'profile' => $settingsManager->get('profile'),
+                    'administration' => $settingsManager->get('administration'),
                     'showWelcome' => (Yii::$app->user->id == 1 && Yii::$app->getModule('installer')->settings->get('sampleData') != 1 && $settingsManager->get('welcome') != 1)
         ]);
     }
-
 }

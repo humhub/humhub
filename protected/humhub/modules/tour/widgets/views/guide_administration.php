@@ -24,7 +24,7 @@ $this->context->loadResources($this);
                 orphan: true,
                 backdrop: true,
                 title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_administration', '<strong>Administration</strong>')); ?>,
-                content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_administration', "As an admin, you can manage the whole platform from here.<br><br>Apart from the modules, we are not going to go into each point in detail here, as each has its own short description elsewhere.")); ?>
+                content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_administration', 'As an admin, you can manage the whole platform from here.<br><br>Apart from the modules, we are not going to go into each point in detail here, as each has its own short description elsewhere.')); ?>
             },
             {
                 element: ".list-group-item.modules",

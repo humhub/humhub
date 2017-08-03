@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Administration (Modules)</strong>' => '<strong>Administration (Module)</strong>',
   '<strong>Edit</strong> account' => '<strong>Einstellungen</strong>  bearbeiten',
   '<strong>Hurray!</strong> The End.' => '<strong>Hurra!</strong> Fertig.',
@@ -15,4 +15,4 @@ return array (
   'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'Lade ein neues Profilfoto hoch, indem du hier klickst oder es per Drag&Drop hier hin ziehst. Genauso kannst du dein Titelfoto ändern.',
   'You\'ve completed the user profile guide!' => 'Du hast die Einführung zur Profilbearbeitung abgeschlossen!',
   'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />' => 'Du hast die Einführung zur Profilbearbeitung abgeschlossen!<br><br>Um mit dem der Beschreibung der Administrationsoberfläche fortzufahren klicke hier:<br><br>',
-);
+];

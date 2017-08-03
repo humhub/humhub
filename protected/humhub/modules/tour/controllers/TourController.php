@@ -12,7 +12,6 @@ use Yii;
 use yii\web\HttpException;
 use humhub\modules\space\models\Space;
 
-
 /**
  * TourController
  *
@@ -44,8 +43,9 @@ class TourController extends \humhub\components\Controller
         // get section parameter from completed tour
         $section = Yii::$app->request->get('section');
 
-        if (!in_array($section, Yii::$app->params['tour']['acceptableNames']))
+        if (!in_array($section, Yii::$app->params['tour']['acceptableNames'])) {
             return;
+        }
 
         // set tour status to seen for current user
         Yii::$app->getModule('tour')->settings->user()->set($section, 1);
@@ -100,7 +100,7 @@ class TourController extends \humhub\components\Controller
 
         if ($user->id == 1 && $user->load(Yii::$app->request->post()) && $user->validate() && $user->save()) {
             if ($profile->load(Yii::$app->request->post()) && $profile->validate() && $profile->save()) {
-                Yii::$app->getModule('tour')->settings->contentContainer($user)->set("welcome", 1);
+                Yii::$app->getModule('tour')->settings->contentContainer($user)->set('welcome', 1);
                 return $this->redirect(['/dashboard/dashboard']);
             }
         }
@@ -109,5 +109,4 @@ class TourController extends \humhub\components\Controller
                     'user' => $user
         ]);
     }
-
 }

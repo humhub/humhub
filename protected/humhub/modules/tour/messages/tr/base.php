@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'End guide' => 'Klavuz sonu',
   'Next »' => 'İleri »',
   '« Prev' => '« Geri',
-);
+];

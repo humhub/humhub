@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Administration (Modules)</strong>' => '<strong>Administravimas (Moduliai)</strong>',
   '<strong>Edit</strong> account' => '<strong>Redaguoti</strong> paskyrą',
   '<strong>Hurray!</strong> The End.' => '<strong>Valio!</strong> Pabaiga.',
@@ -15,4 +15,4 @@ return array (
   'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'Įkelkite profilio nuotrauką paspausdami čia arba drag&drop. Lygiai taip pat atnaujinkite ir viršelio nuotrauką.',
   'You\'ve completed the user profile guide!' => 'Jūs perskaitėte vartotojo profilio vadovą!',
   'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />' => 'Jūs perskaitėte vartotojo profilio vadovą!<br><br>Norint pereiti prie administravimo vadovo, spauskite čia:<br /><br />',
-);
+];
