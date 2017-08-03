@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Downloading & Installing Modules...' => 'Laster ned og installerer moduler...',
-);
+];

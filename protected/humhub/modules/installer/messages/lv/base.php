@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Downloading & Installing Modules...' => 'Lejupielādē un instalē moduļus...',
-);
+];

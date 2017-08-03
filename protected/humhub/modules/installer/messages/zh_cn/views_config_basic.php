@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Next' => '下一步',
   'Of course, your new social network needs a name. Please change the default name with one you like. (For example the name of your company, organization or club)' => '当然，你的新的社交平台需要一个名字。请将默认名称更改为您喜欢的。（例如，你的公司，组织或俱乐部的名称）',
   'Social Network <strong>Name</strong>' => '社交网络 <strong>名字</strong>',
-);
+];

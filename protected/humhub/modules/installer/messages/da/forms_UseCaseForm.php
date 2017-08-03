@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'I want to use HumHub for:' => 'Jeg vil bruge Humhub til:',
-);
+];

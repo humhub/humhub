@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Calvin Klein – Between love and madness lies obsession.' => 'Calvin Klein - Zwischen Liebe und Wahnsinn liegt Obsession.',
   'Create Admin Account' => 'Erstelle Administrator-Konto',
   'Nike – Just buy it. ;Wink;' => 'Nike - Einfach kaufen ;Wink;',
@@ -7,4 +7,4 @@ return array (
   'Welcome Space' => 'Willkommens-Space',
   'Yay! I\'ve just installed HumHub ;Cool;' => 'Yay! Ich habe gerade HumHub installiert ;Cool;',
   'Your first sample space to discover the platform.' => 'Dein erstes Beispiel, um die Plattform zu entdecken',
-);
+];

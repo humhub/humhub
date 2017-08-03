@@ -49,29 +49,34 @@ class SetupController extends Controller
      */
     public function actionDatabase()
     {
-        $errorMessage = "";
+        $errorMessage = '';
 
         $config = DynamicConfig::load();
 
         $model = new DatabaseForm();
-        if (isset($config['params']['installer']['db']['installer_hostname']))
+        if (isset($config['params']['installer']['db']['installer_hostname'])) {
             $model->hostname = $config['params']['installer']['db']['installer_hostname'];
+        }
 
-        if (isset($config['params']['installer']['db']['installer_database']))
+        if (isset($config['params']['installer']['db']['installer_database'])) {
             $model->database = $config['params']['installer']['db']['installer_database'];
+        }
 
-        if (isset($config['components']['db']['username']))
+        if (isset($config['components']['db']['username'])) {
             $model->username = $config['components']['db']['username'];
+        }
 
-        if (isset($config['components']['db']['password']))
+        if (isset($config['components']['db']['password'])) {
             $model->password = self::PASSWORD_PLACEHOLDER;
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $connectionString = "mysql:host=" . $model->hostname . ";dbname=" . $model->database;
+            $connectionString = 'mysql:host=' . $model->hostname . ';dbname=' . $model->database;
 
             $password = $model->password;
-            if ($password == self::PASSWORD_PLACEHOLDER)
+            if ($password == self::PASSWORD_PLACEHOLDER) {
                 $password = $config['components']['db']['password'];
+            }
 
             // Create Test DB Connection
             $dbConfig = [
@@ -103,7 +108,7 @@ class SetupController extends Controller
         }
 
         // Render Template
-        return $this->render('database', array('model' => $model, 'errorMessage' => $errorMessage));
+        return $this->render('database', ['model' => $model, 'errorMessage' => $errorMessage]);
     }
 
     /**
@@ -131,5 +136,4 @@ class SetupController extends Controller
 
         return $this->redirect(['/installer/config/index']);
     }
-
 }

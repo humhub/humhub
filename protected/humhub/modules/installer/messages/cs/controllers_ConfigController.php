@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Calvin Klein – Between love and madness lies obsession.' => 'Mně se hodně líbilo to přirovnání, že je Bůh jako náš otec. Myslím, že kdo má děti, dokáže si dobře představit, co to znamená.',
   'Create Admin Account' => 'Vytvořit účet administrátora',
   'Nike – Just buy it. ;Wink;' => 'Asi nejvíc vývojová psychologie dítěte. Měl dobré postřehy.',
@@ -7,4 +7,4 @@ return array (
   'Welcome Space' => 'Uvítací prostor',
   'Yay! I\'ve just installed HumHub ;Cool;' => 'Jupí, právě jsme nainstalovali HumHub ;Cool;',
   'Your first sample space to discover the platform.' => 'Toto je první prostor, ve kterém vítáme nové uživatele.',
-);
+];

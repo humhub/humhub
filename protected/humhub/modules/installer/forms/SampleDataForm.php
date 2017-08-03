@@ -28,9 +28,9 @@ class SampleDataForm extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array(['sampleData'], 'boolean'),
-        );
+        return [
+            [['sampleData'], 'boolean'],
+        ];
     }
 
     /**
@@ -38,9 +38,8 @@ class SampleDataForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'sampleData' => Yii::t('InstallerModule.forms_SampleDataForm', 'Set up example content (recommended)'),
-        );
+        ];
     }
-
 }

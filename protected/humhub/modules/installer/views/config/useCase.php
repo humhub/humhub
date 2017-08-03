@@ -29,7 +29,7 @@ use yii\bootstrap\Html;
 
         <hr>
 
-        <?php echo Html::submitButton(Yii::t('base', 'Next'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
+        <?php echo Html::submitButton(Yii::t('base', 'Next'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
         <?php ActiveForm::end(); ?>
     </div>

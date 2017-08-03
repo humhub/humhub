@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Name of your network' => 'Nom de votre réseau',
-);
+];
