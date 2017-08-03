@@ -11,7 +11,6 @@ namespace humhub\libs;
 use DateTime;
 use DateTimeZone;
 
-
 /**
  * TimezoneHelpers
  *
@@ -30,7 +29,7 @@ class TimezoneHelper
      */
     public static function generateList()
     {
-        static $regions = array(
+        static $regions = [
             DateTimeZone::AFRICA,
             DateTimeZone::AMERICA,
             DateTimeZone::ANTARCTICA,
@@ -40,14 +39,14 @@ class TimezoneHelper
             DateTimeZone::EUROPE,
             DateTimeZone::INDIAN,
             DateTimeZone::PACIFIC,
-        );
+        ];
 
-        $timezones = array();
+        $timezones = [];
         foreach ($regions as $region) {
             $timezones = array_merge($timezones, DateTimeZone::listIdentifiers($region));
         }
 
-        $timezone_offsets = array();
+        $timezone_offsets = [];
         foreach ($timezones as $timezone) {
             $tz = new DateTimeZone($timezone);
             $timezone_offsets[$timezone] = $tz->getOffset(new DateTime);
@@ -57,7 +56,7 @@ class TimezoneHelper
         #ksort($timezone_offsets);
         asort($timezone_offsets);
 
-        $timezone_list = array();
+        $timezone_list = [];
 
         foreach ($timezone_offsets as $timezone => $offset) {
             $offset_prefix = $offset < 0 ? '-' : '+';
@@ -71,10 +70,9 @@ class TimezoneHelper
             $current_time = $c->format('H:i');
 
             #$timezone_list[$timezone] = $pretty_offset." - ".$current_time."  - ".$timezone;
-            $timezone_list[$timezone] = $pretty_offset . " - " . $timezone;
+            $timezone_list[$timezone] = $pretty_offset . ' - ' . $timezone;
         }
 
         return $timezone_list;
     }
-
 }

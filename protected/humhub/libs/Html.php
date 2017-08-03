@@ -22,8 +22,8 @@ class Html extends \yii\bootstrap\Html
 {
 
     /**
-     * Save button is a shortcut for the default submit button 
-     * 
+     * Save button is a shortcut for the default submit button
+     *
      * @since 1.2
      * @see submitButton
      * @param string $label
@@ -46,7 +46,7 @@ class Html extends \yii\bootstrap\Html
 
     /**
      * Renders a back button
-     * 
+     *
      * @since 1.2
      * @see Html::a
      * @param string $text
@@ -85,7 +85,7 @@ class Html extends \yii\bootstrap\Html
 
     /**
      * Generates an link tag to a content container
-     * 
+     *
      * @since 1.2
      * @todo More flexible implemenation using interfaces
      * @param ContentContainerActiveRecord $container the content container
@@ -102,5 +102,4 @@ class Html extends \yii\bootstrap\Html
             throw new InvalidParamException('Content container type not supported!');
         }
     }
-
 }

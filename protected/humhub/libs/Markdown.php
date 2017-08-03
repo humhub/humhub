@@ -18,7 +18,7 @@ class Markdown extends \cebe\markdown\GithubMarkdown
     protected function handleInternalUrls($url)
     {
         // Handle urls to file
-        if (substr($url, 0, 10) === "file-guid-") {
+        if (substr($url, 0, 10) === 'file-guid-') {
             $guid = str_replace('file-guid-', '', $url);
             $file = File::findOne(['guid' => $guid]);
             if ($file !== null) {
@@ -114,7 +114,6 @@ REGEXP;
                     null, // reference key
                 ];
             } elseif (preg_match('/\((.*?)\)/', $markdown, $refMatches)) {
-
                 // reference style link
                 if (empty($refMatches[1])) {
                     $key = strtolower($text);
@@ -133,5 +132,4 @@ REGEXP;
 
         return false;
     }
-
 }

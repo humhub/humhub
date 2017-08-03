@@ -30,5 +30,4 @@ class ParameterEvent extends \yii\base\Event
         $this->parameters = $parameters;
         $this->init();
     }
-
 }

@@ -32,5 +32,4 @@ class WidgetCreateEvent extends Event
         $this->config = &$attributes;
         $this->init();
     }
-
 }

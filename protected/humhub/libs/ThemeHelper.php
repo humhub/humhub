@@ -57,9 +57,8 @@ class ThemeHelper
         $themes = [];
         if (is_dir($path)) {
             foreach (scandir($path) as $file) {
-
                 // Skip dots and non directories
-                if ($file == "." || $file == ".." || !is_dir($path . DIRECTORY_SEPARATOR . $file)) {
+                if ($file == '.' || $file == '..' || !is_dir($path . DIRECTORY_SEPARATOR . $file)) {
                     continue;
                 }
 
@@ -130,5 +129,4 @@ class ThemeHelper
             ]
         ];
     }
-
 }

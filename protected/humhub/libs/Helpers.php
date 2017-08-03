@@ -30,7 +30,7 @@ class Helpers
         if (strlen($text) > $length) {
             $text = preg_replace("/^(.{1,$length})(\s.*|$)/s", '\\1...', $text);
         }
-        $text = str_replace("<br />", "", $text);
+        $text = str_replace('<br />', '', $text);
 
         return($text);
     }
@@ -44,7 +44,7 @@ class Helpers
             $text = self::substru($text, 0, $textlength - ($textlength - $length));
             $text .= '...';
         }
-        $text = str_replace("<br />", "", $text);
+        $text = str_replace('<br />', '', $text);
 
         return($text);
     }
@@ -60,8 +60,9 @@ class Helpers
 
     public static function arrayCompVal($a, $b)
     {
-        if (!is_array($a) || !is_array($b))
+        if (!is_array($a) || !is_array($b)) {
             return false;
+        }
         sort($a);
         sort($b);
         return $a == $b;
@@ -145,7 +146,7 @@ class Helpers
      */
     public static function getBytesOfIniValue($valueString)
     {
-        if ($valueString === null || $valueString === "") {
+        if ($valueString === null || $valueString === '') {
             return 0;
         }
 
@@ -154,10 +155,14 @@ class Helpers
         }
 
         switch (substr($valueString, -1)) {
-            case 'M': case 'm': return (int) $valueString * 1048576;
-            case 'K': case 'k': return (int) $valueString * 1024;
-            case 'G': case 'g': return (int) $valueString * 1073741824;
-            default: return (int) $valueString;
+            case 'M': case 'm':
+return (int) $valueString * 1048576;
+            case 'K': case 'k':
+return (int) $valueString * 1024;
+            case 'G': case 'g':
+return (int) $valueString * 1073741824;
+            default:
+return (int) $valueString;
         }
     }
 
@@ -178,9 +183,9 @@ class Helpers
      * @param string $type
      * @return boolean
      */
-    public static function CheckClassType($className, $type = "")
+    public static function CheckClassType($className, $type = '')
     {
-        $className = preg_replace('/[^a-z0-9_\-\\\]/i', "", $className);
+        $className = preg_replace('/[^a-z0-9_\-\\\]/i', '', $className);
 
         if (is_array($type)) {
             foreach ($type as $t) {
@@ -194,7 +199,7 @@ class Helpers
             }
         }
 
-        throw new \yii\base\Exception("Invalid class type! (" . $className . ")");
+        throw new \yii\base\Exception('Invalid class type! (' . $className . ')');
     }
 
     /**
@@ -220,15 +225,18 @@ class Helpers
      */
     public static function same($a, $b)
     {
-        if (!is_string($a) || !is_string($b))
+        if (!is_string($a) || !is_string($b)) {
             return false;
+        }
         $mb = function_exists('mb_strlen');
         $length = $mb ? mb_strlen($a, '8bit') : strlen($a);
-        if ($length !== ($mb ? mb_strlen($b, '8bit') : strlen($b)))
+        if ($length !== ($mb ? mb_strlen($b, '8bit') : strlen($b))) {
             return false;
+        }
         $check = 0;
-        for ($i = 0; $i < $length; $i += 1)
+        for ($i = 0; $i < $length; $i += 1) {
             $check |= (ord($a[$i]) ^ ord($b[$i]));
+        }
         return $check === 0;
     }
 
@@ -239,7 +247,7 @@ class Helpers
      * should be configured in dynamic.php like this: 'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
      *
      * This is mainly required for grouped notifications.
-     * 
+     *
      * @since 1.2.1
      * @param $event
      */
@@ -250,9 +258,8 @@ class Helpers
             try {
                 $event->sender->createCommand('SET SESSION sql_mode=""; SET SESSION sql_mode="NO_ENGINE_SUBSTITUTION"')->execute();
             } catch (\Exception $ex) {
-                Yii::error('Could not switch SQL mode: '. $ex->getMessage());
+                Yii::error('Could not switch SQL mode: ' . $ex->getMessage());
             }
         }
     }
-
 }

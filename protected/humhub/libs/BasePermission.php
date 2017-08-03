@@ -34,17 +34,17 @@ class BasePermission extends \yii\base\Object
     /**
      * @var string title of the permission
      */
-    protected $title = "";
+    protected $title = '';
 
     /**
      * @var string description of the permission
      */
-    protected $description = "";
+    protected $description = '';
 
     /**
      * @var string module id which belongs to the permission
      */
-    protected $moduleId = "";
+    protected $moduleId = '';
 
     /**
      * A list of groupIds which allowed per default.
@@ -90,7 +90,7 @@ class BasePermission extends \yii\base\Object
      */
     public function getId()
     {
-        if ($this->id != "") {
+        if ($this->id != '') {
             return $this->id;
         }
 
@@ -143,7 +143,7 @@ class BasePermission extends \yii\base\Object
 
         if ($configuredState !== null) {
             return $configuredState;
-        } else if ($this->defaultState == self::STATE_ALLOW) {
+        } elseif ($this->defaultState == self::STATE_ALLOW) {
             return self::STATE_ALLOW;
         } else {
             return (int) (in_array($groupId, $this->defaultAllowedGroups));
@@ -205,5 +205,4 @@ class BasePermission extends \yii\base\Object
 
         throw new \yii\base\Exception('Invalid permission state');
     }
-
 }

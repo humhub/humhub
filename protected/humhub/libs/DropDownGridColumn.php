@@ -40,7 +40,7 @@ class DropDownGridColumn extends DataColumn
     /**
      * @var array ajax options
      */
-    public $ajaxOptions = array();
+    public $ajaxOptions = [];
     public $readonly = false;
 
     /**
@@ -62,8 +62,8 @@ class DropDownGridColumn extends DataColumn
                 data[submitAttributes[i]] = $(this).data('attribute'+i);
             }
             data['dropDownColumnSubmit'] = true;
-            $.ajax(" . \yii\helpers\Json::encode($this->ajaxOptions) . ");
-        });");
+            $.ajax(" . \yii\helpers\Json::encode($this->ajaxOptions) . ');
+        });');
 
         return parent::init();
     }
@@ -109,5 +109,4 @@ class DropDownGridColumn extends DataColumn
 
         return Html::dropDownList($inputName, $model[$this->attribute], $options, $this->htmlOptions);
     }
-
 }
