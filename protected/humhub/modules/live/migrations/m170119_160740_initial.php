@@ -28,5 +28,4 @@ class m170119_160740_initial extends Migration
 
         return false;
     }
-
 }

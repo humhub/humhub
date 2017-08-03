@@ -31,7 +31,7 @@ abstract class LiveEvent extends \yii\base\Object
 
     /**
      * Returns the data of this event as array
-     * 
+     *
      * @return array the live event data
      */
     public function getData()
@@ -47,5 +47,4 @@ abstract class LiveEvent extends \yii\base\Object
             'data' => $data
         ];
     }
-
 }

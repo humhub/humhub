@@ -36,12 +36,11 @@ class Sender extends Component
 
     /**
      * Sends a live event
-     * 
+     *
      * @param LiveEvent $event the live event
      */
     public function send($event)
     {
         return $this->driver->send($event);
     }
-
 }

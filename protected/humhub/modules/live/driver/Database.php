@@ -34,5 +34,4 @@ class Database extends BaseDriver
         $model->created_at = time();
         return $model->save();
     }
-
 }
