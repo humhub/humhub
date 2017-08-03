@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'We’ve sent you an email containing a link that will allow you to reset your password.' => '我们已经给你发了一封电子邮件，包含一个链接，将允许你重新设置你的密码。',
   '<strong>Password</strong> recovery!' => '<strong>找回</strong> 密码!',
   'back to home' => '返回首页',
-);
+];

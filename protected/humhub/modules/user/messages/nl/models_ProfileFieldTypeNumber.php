@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Maximum value' => 'Maximum waarde',
   'Minimum value' => 'Minimun waarde',
   'Number field options' => 'Getalveld opties',
-);
+];

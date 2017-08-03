@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   '<strong>Profile</strong> menu' => '',
   'About' => 'Par',
   'Stream' => '',
-);
+];

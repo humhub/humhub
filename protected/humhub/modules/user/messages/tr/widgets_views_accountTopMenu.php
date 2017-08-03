@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Sign in / up' => 'Oturum aç/kapa',
-);
+];

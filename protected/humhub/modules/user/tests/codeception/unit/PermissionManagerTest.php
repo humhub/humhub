@@ -47,6 +47,4 @@ class PermissionManagerTest extends HumHubDbTestCase
         $this->assertFalse($permissionManager->can([ManageSettings::class, ManageUsers::class], ['all' => true]));
         $this->assertTrue($permissionManager->can([ManageUsers::class, ManageGroups::class], ['all' => true]));
     }
-
-
 }

@@ -16,7 +16,7 @@ use yii\helpers\Url;
             <p><?php echo Yii::t('UserModule.views_auth_recoverPassword', 'Just enter your e-mail address. We´ll send you recovery instructions!'); ?></p>
 
             <div class="form-group">
-                <?php echo $form->textField($model, 'email', array('class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'your email'))); ?>
+                <?php echo $form->textField($model, 'email', ['class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'your email')]); ?>
                 <?php echo $form->error($model, 'email'); ?>
             </div>
 
@@ -26,7 +26,7 @@ use yii\helpers\Url;
                     'model' => $model,
                     'attribute' => 'verifyCode',
                     'captchaAction' => '/user/auth/captcha',
-                    'options' => array('class' => 'form-control', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'enter security code above'))
+                    'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'enter security code above')]
                 ]);
                 ?>
                 <?php echo $form->error($model, 'verifyCode'); ?>

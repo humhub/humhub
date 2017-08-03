@@ -21,5 +21,4 @@ class GroupFixture extends ActiveFixture
         UserFixture::class,
         SpaceFixture::class
     ];
-
 }

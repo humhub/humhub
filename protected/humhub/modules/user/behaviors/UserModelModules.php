@@ -39,7 +39,7 @@ class UserModelModules extends Behavior
             return $this->_availableModules;
         }
 
-        $this->_availableModules = array();
+        $this->_availableModules = [];
 
         foreach (Yii::$app->moduleManager->getModules() as $moduleId => $module) {
             if ($module instanceof ContentContainerModule && Yii::$app->hasModule($module->id) && $module->hasContentContainerType(User::className())) {
@@ -62,7 +62,7 @@ class UserModelModules extends Behavior
             return $this->_enabledModules;
         }
 
-        $this->_enabledModules = array();
+        $this->_enabledModules = [];
 
         $availableModules = $this->getAvailableModules();
         $defaultStates = \humhub\modules\user\models\Module::getStates();
@@ -70,7 +70,6 @@ class UserModelModules extends Behavior
 
         // Get a list of all enabled module ids
         foreach (array_merge(array_keys($defaultStates), array_keys($states)) as $id) {
-
             // Ensure module Id is available
             if (!array_key_exists($id, $availableModules)) {
                 continue;
@@ -114,7 +113,7 @@ class UserModelModules extends Behavior
 
         // Already enabled module
         if ($this->isModuleEnabled($moduleId)) {
-            Yii::error("User->enableModule(" . $moduleId . ") module is already enabled");
+            Yii::error('User->enableModule(' . $moduleId . ') module is already enabled');
             return false;
         }
 
@@ -157,7 +156,7 @@ class UserModelModules extends Behavior
 
         // Already enabled module
         if (!$this->isModuleEnabled($moduleId)) {
-            Yii::error("User->disableModule(" . $moduleId . ") module is not enabled");
+            Yii::error('User->disableModule(' . $moduleId . ') module is not enabled');
             return false;
         }
 
@@ -176,5 +175,4 @@ class UserModelModules extends Behavior
 
         return true;
     }
-
 }

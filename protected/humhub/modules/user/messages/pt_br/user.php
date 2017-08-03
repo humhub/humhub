@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'User has been invited.' => 'O usuário foi convidado.',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Always' => 'Herzaman',
   'Daily summary' => 'Günlük özet',
   'Get an email, for every activity of other users you follow or work together in a workspace.' => '',
@@ -8,4 +8,4 @@ return array (
   'Receive desktop notifications when you are online.' => 'Çevrimiçi olduğunuzda masaüstü bildirimlerini alın.',
   'Save' => 'Kaydet',
   'When I´m offline' => 'Ben çevrimdışıyken',
-);
+];

@@ -16,10 +16,10 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>Your account</strong> has been successfully created!' => '<strong>你的帐户</strong> 已被成功创建!',
   'After activating your account by the administrator, you will receive a notification by email.' => '为了激活你的帐户，你将出到一个邮件通知！',
   'Go to login page' => '去登录页',
   'To log in with your new account, click the button below.' => '登录您的新帐户，请单击下面的按钮',
   'back to home' => '返回主页',
-);
+];

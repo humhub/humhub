@@ -15,11 +15,10 @@ return [
         ['class' => 'humhub\modules\user\components\UrlRule']
     ],
     'events' => [
-        ['class' => Search::className(), 'event' => Search::EVENT_ON_REBUILD, 'callback' => array(Events::className(), 'onSearchRebuild')],
-        ['class' => ContentActiveRecord::className(), 'event' => ContentActiveRecord::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onContentDelete')],
-        ['class' => ContentAddonActiveRecord::className(), 'event' => ContentAddonActiveRecord::EVENT_BEFORE_DELETE, 'callback' => array(Events::className(), 'onContentDelete')],
-        ['class' => IntegrityController::className(), 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => array(Events::className(), 'onIntegrityCheck')],
+        ['class' => Search::className(), 'event' => Search::EVENT_ON_REBUILD, 'callback' => [Events::className(), 'onSearchRebuild']],
+        ['class' => ContentActiveRecord::className(), 'event' => ContentActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::className(), 'onContentDelete']],
+        ['class' => ContentAddonActiveRecord::className(), 'event' => ContentAddonActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::className(), 'onContentDelete']],
+        ['class' => IntegrityController::className(), 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::className(), 'onIntegrityCheck']],
         ['class' => CronController::className(), 'event' => CronController::EVENT_ON_HOURLY_RUN, 'callback' => [Events::className(), 'onHourlyCron']],
     ]
 ];
-?>

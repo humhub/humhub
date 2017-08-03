@@ -15,15 +15,15 @@
 use \humhub\modules\user\models\User;
 use \yii\helpers\Html;
 
-$this->registerJsFile("@web-static/js/jquery.highlight.min.js");
-$this->registerJsFile("@web-static/resources/user/userpicker.js");
+$this->registerJsFile('@web-static/js/jquery.highlight.min.js');
+$this->registerJsFile('@web-static/resources/user/userpicker.js');
 ?>
 
 <?php
 // Resolve guids to user tags
-$newValue = "";
+$newValue = '';
 
-foreach (explode(",", $currentValue) as $guid) {
+foreach (explode(',', $currentValue) as $guid) {
     $user = User::findOne(['guid' => trim($guid)]);
     if ($user != null) {
         $imageUrl = $user->getProfileImage()->getUrl();

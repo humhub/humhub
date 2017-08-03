@@ -6,7 +6,7 @@ class m160229_162959_multiusergroups extends \humhub\components\Migration
 {
     public function up()
     {
-        $this->createTable('group_user', array(
+        $this->createTable('group_user', [
             'id' => 'pk',
             'user_id' => 'int(11) NOT NULL',
             'group_id' => 'int(11) NOT NULL',
@@ -15,7 +15,7 @@ class m160229_162959_multiusergroups extends \humhub\components\Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-        ), '');
+        ], '');
         
         //Add indexes and foreign keys
         $this->createIndex('idx-group_user', 'group_user', ['user_id', 'group_id'], true);
@@ -27,9 +27,9 @@ class m160229_162959_multiusergroups extends \humhub\components\Migration
         $this->execute('UPDATE group_user u SET is_group_admin = :value WHERE EXISTS (Select 1 FROM group_admin a WHERE u.user_id = a.user_id);', [':value' => 1]);
        
         //Add group columns
-        $this->addColumn('group', 'is_admin_group', Schema::TYPE_BOOLEAN. ' NOT NULL DEFAULT 0');
-        $this->addColumn('group', 'show_at_registration', Schema::TYPE_BOOLEAN. ' NOT NULL DEFAULT 1');
-        $this->addColumn('group', 'show_at_directory', Schema::TYPE_BOOLEAN. ' NOT NULL DEFAULT 1');
+        $this->addColumn('group', 'is_admin_group', Schema::TYPE_BOOLEAN . ' NOT NULL DEFAULT 0');
+        $this->addColumn('group', 'show_at_registration', Schema::TYPE_BOOLEAN . ' NOT NULL DEFAULT 1');
+        $this->addColumn('group', 'show_at_directory', Schema::TYPE_BOOLEAN . ' NOT NULL DEFAULT 1');
         
         //Create initial administration group
         $this->insertSilent('group', [
@@ -50,13 +50,13 @@ class m160229_162959_multiusergroups extends \humhub\components\Migration
         
         //Load current super_admin user
         $rows = (new \yii\db\Query())
-                ->select("id")
+                ->select('id')
                 ->from('user')
                 ->where(['super_admin' => '1'])
                 ->all();
         
         //Insert group_user for administartion groups for all current super_admins
-        foreach($rows as $adminUserRow) {
+        foreach ($rows as $adminUserRow) {
             $this->insertSilent('group_user', ['user_id' => $adminUserRow['id'], 'group_id' => $adminGroupId, 'is_group_admin' => '1']);
         }
         

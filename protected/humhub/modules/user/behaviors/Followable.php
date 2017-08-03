@@ -39,7 +39,7 @@ class Followable extends Behavior
 
     public function beforeDelete($event)
     {
-        UserFollow::model()->deleteAllByAttributes(array('object_model' => get_class($this->getOwner()), 'object_id' => $this->getOwner()->getPrimaryKey()));
+        UserFollow::model()->deleteAllByAttributes(['object_model' => get_class($this->getOwner()), 'object_id' => $this->getOwner()->getPrimaryKey()]);
         return parent::beforeValidate($event);
     }
 
@@ -64,9 +64,9 @@ class Followable extends Behavior
      */
     public function follow($userId = null, $withNotifications = true)
     {
-        if($userId instanceof User) {
+        if ($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == "") {
+        } elseif (!$userId || $userId == '') {
             $userId = Yii::$app->user->id;
         }
 
@@ -98,9 +98,9 @@ class Followable extends Behavior
      */
     public function unfollow($userId = null)
     {
-        if($userId instanceof User) {
+        if ($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == "") {
+        } elseif (!$userId || $userId == '') {
             $userId = Yii::$app->user->id;
         }
 
@@ -119,7 +119,7 @@ class Followable extends Behavior
 
     /**
      * Checks if the given user follows this owner record.
-     * 
+     *
      * Note that the followers for this owner will be cached.
      *
      * @param int $userId
@@ -128,13 +128,13 @@ class Followable extends Behavior
      */
     public function isFollowedByUser($userId = null, $withNotifications = false)
     {
-        if($userId instanceof User) {
+        if ($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == "") {
+        } elseif (!$userId || $userId == '') {
             $userId = \Yii::$app->user->id;
         }
 
-        if(!isset($this->_followerCache[$userId])) {
+        if (!isset($this->_followerCache[$userId])) {
             $this->_followerCache[$userId] = $this->getFollowRecord($userId);
         }
         
@@ -226,5 +226,4 @@ class Followable extends Behavior
 
         return $query->all();
     }
-
 }

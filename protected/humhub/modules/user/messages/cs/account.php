@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Modify</strong> your profile image' => '<strong>Úprava</strong> profilového obrázku',
   '<strong>Modify</strong> your title image' => '<strong>Úprava</strong> úvodní fotky',
   '<strong>Security</strong> settings' => '<strong>Bezpečnostní</strong> nastavení',
@@ -11,4 +11,4 @@ return array (
   'Other users' => 'Ostatní uživatelé',
   'Users' => 'Uživatelé',
   'Your friends' => 'Vaši přátelé',
-);
+];

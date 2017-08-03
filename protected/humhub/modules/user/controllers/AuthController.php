@@ -28,7 +28,7 @@ class AuthController extends Controller
     /**
      * @inheritdoc
      */
-    public $layout = "@humhub/modules/user/views/layouts/main";
+    public $layout = '@humhub/modules/user/views/layouts/main';
 
     /**
      * @inheritdoc
@@ -74,7 +74,7 @@ class AuthController extends Controller
             return $this->onAuthSuccess($login->authClient);
         }
 
-        // Self Invite 
+        // Self Invite
         $invite = new Invite();
         $invite->scenario = 'invite';
         if ($invite->load(Yii::$app->request->post()) && $invite->selfInvite()) {
@@ -86,14 +86,14 @@ class AuthController extends Controller
         }
 
         if (Yii::$app->request->isAjax) {
-            return $this->renderAjax('login_modal', array('model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()));
+            return $this->renderAjax('login_modal', ['model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
         }
-        return $this->render('login', array('model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()));
+        return $this->render('login', ['model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
     }
 
     /**
      * Handle successful authentication
-     * 
+     *
      * @param \yii\authclient\BaseClient $authClient
      * @return Response
      */
@@ -107,7 +107,7 @@ class AuthController extends Controller
             return $this->redirect(['/user/account/connected-accounts']);
         }
 
-        // Login existing user 
+        // Login existing user
         $user = AuthClientHelpers::getUserByAuthClient($authClient);
         
         if ($user !== null) {
@@ -160,7 +160,7 @@ class AuthController extends Controller
 
     /**
      * Login user
-     * 
+     *
      * @param User $user
      * @param \yii\authclient\BaseClient $authClient
      * @return Response the current response object
@@ -207,7 +207,7 @@ class AuthController extends Controller
         Yii::$app->user->logout();
 
         // Store users language in session
-        if ($language != "") {
+        if ($language != '') {
             $cookie = new \yii\web\Cookie([
                 'name' => 'language',
                 'value' => $language,
@@ -229,7 +229,7 @@ class AuthController extends Controller
 
         $sessionId = Yii::$app->request->get('sessionId');
 
-        $output = array();
+        $output = [];
         $output['valid'] = false;
         $httpSession = \humhub\modules\user\models\Session::findOne(['id' => $sessionId]);
         if ($httpSession != null && $httpSession->user != null) {
@@ -241,7 +241,4 @@ class AuthController extends Controller
         }
         return $output;
     }
-
 }
-
-?>

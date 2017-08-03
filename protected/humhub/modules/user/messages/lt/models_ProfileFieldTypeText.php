@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Default value' => 'Numatytoji reikšmė',
   'Maximum length' => 'Maksimali trukmė',
   'Minimum length' => 'Minimali trukmė',
@@ -7,4 +7,4 @@ return array (
   'Regular Expression: Validator' => 'Įprastoji išraiška : vertintojas',
   'Text Field Options' => 'Teksto lauko pasirinkimas',
   'Validator' => 'Vertintojas',
-);
+];

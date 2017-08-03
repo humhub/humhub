@@ -16,9 +16,9 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>Confirm</strong> image deleting' => '',
   'Cancel' => '',
   'Delete' => '',
   'Do you really want to delete your profile image?' => '',
-);
+];

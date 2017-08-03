@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Account' => 'Conta',
   'Create account' => 'Criar conta',
-);
+];

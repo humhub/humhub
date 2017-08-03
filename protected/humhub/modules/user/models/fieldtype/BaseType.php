@@ -28,7 +28,7 @@ class BaseType extends \yii\base\Model
      *
      * @var Array
      */
-    public $fieldTypes = array();
+    public $fieldTypes = [];
 
     /**
      * Corresponding ProfileField Model
@@ -73,7 +73,7 @@ class BaseType extends \yii\base\Model
      */
     public function getFieldTypes()
     {
-        $fieldTypes = array_merge(array(
+        $fieldTypes = array_merge([
             Number::className() => Yii::t('UserModule.models_ProfileFieldType', 'Number'),
             Text::className() => Yii::t('UserModule.models_ProfileFieldType', 'Text'),
             TextArea::className() => Yii::t('UserModule.models_ProfileFieldType', 'Text Area'),
@@ -85,7 +85,7 @@ class BaseType extends \yii\base\Model
             MarkdownEditor::className() => Yii::t('UserModule.models_ProfileFieldType', 'Markdown'),
             Checkbox::className() => Yii::t('UserModule.models_ProfileFieldType', 'Checkbox'),
             CheckboxList::className() => Yii::t('UserModule.models_ProfileFieldType', 'Checkbox List'),
-        ), $this->fieldTypes);
+        ], $this->fieldTypes);
         return $fieldTypes;
     }
 
@@ -97,7 +97,7 @@ class BaseType extends \yii\base\Model
     public function getTypeInstances($profileField = null)
     {
 
-        $types = array();
+        $types = [];
         foreach ($this->getFieldTypes() as $className => $title) {
             if (\humhub\libs\Helpers::CheckClassType($className, self::className())) {
                 $instance = new $className;
@@ -122,11 +122,11 @@ class BaseType extends \yii\base\Model
     public function getFieldFormDefinition()
     {
 
-        $definition = array($this->profileField->internal_name => [
+        $definition = [$this->profileField->internal_name => [
                 'type' => 'text',
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable)
-        ]);
+        ]];
 
         return $definition;
     }
@@ -139,10 +139,10 @@ class BaseType extends \yii\base\Model
      * @param type $definition
      * @return Array of Form Definition
      */
-    public function getFormDefinition($definition = array())
+    public function getFormDefinition($definition = [])
     {
 
-        $definition[get_class($this)]['class'] = "fieldTypeSettings " . str_replace("\\", "_", get_class($this));
+        $definition[get_class($this)]['class'] = 'fieldTypeSettings ' . str_replace('\\', '_', get_class($this));
         return $definition;
     }
 
@@ -179,19 +179,20 @@ class BaseType extends \yii\base\Model
     public function save()
     {
 
-        $data = array();
+        $data = [];
 
         foreach ($this->attributes as $attributeName => $value) {
             // Dont save profile field attribute
-            if ($attributeName == 'profileField')
+            if ($attributeName == 'profileField') {
                 continue;
+            }
 
             $data[$attributeName] = $this->$attributeName;
         }
         $this->profileField->field_type_config = \yii\helpers\Json::encode($data);
 
         if (!$this->profileField->save()) {
-            throw new \yii\base\Exception("Could not save profile field!");
+            throw new \yii\base\Exception('Could not save profile field!');
         }
         // Clear Database Schema
         Yii::$app->getDb()->getSchema()->getTableSchema(\humhub\modules\user\models\Profile::tableName(), true);
@@ -213,8 +214,9 @@ class BaseType extends \yii\base\Model
         $config = \yii\helpers\Json::decode($this->profileField->field_type_config);
         if (is_array($config)) {
             foreach ($config as $key => $value) {
-                if (property_exists($this, $key))
+                if (property_exists($this, $key)) {
                     $this->$key = $value;
+                }
             }
         }
     }
@@ -250,11 +252,12 @@ class BaseType extends \yii\base\Model
      * @param type $rules
      * @return Array rules
      */
-    public function getFieldRules($rules = array())
+    public function getFieldRules($rules = [])
     {
 
-        if ($this->profileField->required)
-            $rules[] = array($this->profileField->internal_name, 'required');
+        if ($this->profileField->required) {
+            $rules[] = [$this->profileField->internal_name, 'required'];
+        }
 
 
         return $rules;
@@ -280,7 +283,7 @@ class BaseType extends \yii\base\Model
 
     public function getLabels()
     {
-        $labels = array();
+        $labels = [];
         $labels[$this->profileField->internal_name] = Yii::t($this->profileField->getTranslationCategory(), $this->profileField->title);
         return $labels;
     }
@@ -292,13 +295,13 @@ class BaseType extends \yii\base\Model
 
     /**
      * This method is called before the field value is stored in Profile table.
-     * 
+     *
      * @param string $value
      * @return string modified value
      */
     public function beforeProfileSave($value)
     {
-        if ($value == "") {
+        if ($value == '') {
             return null;
         }
 
@@ -307,12 +310,10 @@ class BaseType extends \yii\base\Model
 
     /**
      * Load field type default settings to the profile
-     * 
+     *
      * @param Profile $profile
      */
     public function loadDefaults(Profile $profile)
     {
-        
     }
-
 }

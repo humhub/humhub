@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Date(-time) field options' => 'Date(-time) opções de campo',
   'Show date/time picker' => 'Mostrar data/hora',
-);
+];

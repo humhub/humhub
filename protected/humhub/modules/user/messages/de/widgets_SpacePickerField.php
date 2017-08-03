@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Add user' => 'Füge Empfänger hinzu',
-);
+];

@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Text area field options' => 'Opções do campo text area',
-);
+];

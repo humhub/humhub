@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Save' => 'Salvează',
   'Your current password can be changed here.' => '',
-);
+];

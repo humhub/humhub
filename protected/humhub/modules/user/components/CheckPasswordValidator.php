@@ -28,13 +28,13 @@ class CheckPasswordValidator extends Validator
 
         $user = Yii::$app->user->getIdentity();
         if ($user->currentPassword !== null && !$user->currentPassword->validatePassword($value)) {
-            $object->addError($attribute, Yii::t('UserModule.components_CheckPasswordValidator', "Your password is incorrect!"));
+            $object->addError($attribute, Yii::t('UserModule.components_CheckPasswordValidator', 'Your password is incorrect!'));
         }
     }
 
     /**
      * Checks if current user has a password set.
-     * 
+     *
      * @return boolean
      */
     public static function hasPassword()
@@ -47,5 +47,4 @@ class CheckPasswordValidator extends Validator
         
         return ($user->currentPassword !== null);
     }
-
 }

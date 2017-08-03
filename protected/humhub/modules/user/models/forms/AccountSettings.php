@@ -29,13 +29,13 @@ class AccountSettings extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
+        return [
             ['tags', 'string', 'max' => 100],
             [['show_introduction_tour'], 'boolean'],
             [['timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             ['visibility', 'in', 'range' => [1, 2]],
-        );
+        ];
     }
 
     /**
@@ -43,13 +43,12 @@ class AccountSettings extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'tags' => Yii::t('UserModule.forms_AccountSettingsForm', 'Tags'),
             'language' => Yii::t('UserModule.forms_AccountSettingsForm', 'Language'),
             'show_introduction_tour' => Yii::t('UserModule.forms_AccountSettingsForm', 'Hide introduction tour panel on dashboard'),
             'timeZone' => Yii::t('UserModule.forms_AccountSettingsForm', 'TimeZone'),
             'visibility' => Yii::t('UserModule.forms_AccountSettingsForm', 'Profile visibility'),
-        );
+        ];
     }
-
 }

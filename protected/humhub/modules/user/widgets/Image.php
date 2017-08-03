@@ -99,5 +99,4 @@ class Image extends Widget
 
         return $html;
     }
-
 }

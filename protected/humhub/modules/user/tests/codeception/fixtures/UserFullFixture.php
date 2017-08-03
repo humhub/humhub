@@ -24,5 +24,4 @@ class UserFullFixture extends ActiveFixture
         'humhub\modules\user\tests\codeception\fixtures\UserModuleFixture',
         'humhub\modules\user\tests\codeception\fixtures\GroupFixture'
     ];
-
 }

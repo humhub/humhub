@@ -16,10 +16,10 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>Your account</strong> has been successfully created!' => '<strong>Hesabın</strong> başarı ile oluşturuldu!',
   'After activating your account by the administrator, you will receive a notification by email.' => 'Hesabın yöneticiler tarafından aktif edildikten sonra, bir mail ile bilgilendirileceksin.',
   'Go to login page' => 'Giriş sayfasına git',
   'To log in with your new account, click the button below.' => 'Yeni hesabınla giriş yapmak için, aşağıdaki butona tıkla.',
   'back to home' => 'anasayfaya dön',
-);
+];

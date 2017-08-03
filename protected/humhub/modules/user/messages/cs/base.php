@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Basic Settings' => 'Základní nastavení',
   'Change Email' => 'Změnit e-mailovou adresu',
   'Change Password' => 'Změnit heslo',
@@ -42,4 +42,4 @@ return array (
   'Your account is not approved yet!' => 'Váš účet ještě nebyl schválen.',
   'Your new password must not equal your current password!' => 'Vaše nové heslo musí býut jiné, než Vaše heslo současné!',
   'or' => 'nebo',
-);
+];

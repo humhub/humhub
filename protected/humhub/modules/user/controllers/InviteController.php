@@ -16,7 +16,7 @@ use humhub\modules\user\models\Invite;
 
 /**
  * InviteController for new user invites
- * 
+ *
  * @since 1.1
  */
 class InviteController extends Controller
@@ -36,7 +36,7 @@ class InviteController extends Controller
 
     /**
      * Invite form and processing action
-     * 
+     *
      * @return string the action result
      * @throws \yii\web\HttpException
      */
@@ -58,12 +58,12 @@ class InviteController extends Controller
             ]);
         }
 
-        return $this->renderAjax('index', array('model' => $model));
+        return $this->renderAjax('index', ['model' => $model]);
     }
 
     /**
      * Creates and sends an e-mail invite
-     * 
+     *
      * @param email $email
      */
     protected function createInvite($email)
@@ -85,14 +85,11 @@ class InviteController extends Controller
 
     /**
      * Checks if current user can invite new members
-     * 
+     *
      * @return boolean can invite new members
      */
     protected function canInvite()
     {
         return Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite') || Yii::$app->user->can([new ManageUsers(), new ManageGroups()]);
     }
-
 }
-
-?>

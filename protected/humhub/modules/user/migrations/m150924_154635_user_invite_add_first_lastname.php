@@ -9,7 +9,6 @@ class m150924_154635_user_invite_add_first_lastname extends Migration
     {
         $this->addColumn('user_invite', 'firstname', 'varchar(255)');
         $this->addColumn('user_invite', 'lastname', 'varchar(255)');
-        
     }
 
     public function down()

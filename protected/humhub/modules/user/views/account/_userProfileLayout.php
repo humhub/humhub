@@ -1,4 +1,4 @@
-<?php 
+<?php
  humhub\assets\TabbedFormAsset::register($this);
 ?>
 

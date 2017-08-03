@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Default value' => '默认值',
   'Maximum length' => '最大长度',
   'Minimum length' => '最小长度',
@@ -24,4 +24,4 @@ return array (
   'Regular Expression: Validator' => '正则表达式：验证器',
   'Validator' => '验证器',
   'Text Field Options' => '文本类型选项',
-);
+];

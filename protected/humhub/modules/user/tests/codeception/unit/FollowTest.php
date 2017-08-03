@@ -26,5 +26,4 @@ class FollowTest extends HumHubDbTestCase
         $this->assertMailSent(1, 'User follow notification Mail.');
         $this->assertHasNotification(\humhub\modules\user\notifications\Followed::class, $follow, Yii::$app->user->id, 'Approval Request Notification');
     }
-
 }

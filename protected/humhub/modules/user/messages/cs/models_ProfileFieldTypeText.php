@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Default value' => 'Výchozí text',
   'Maximum length' => 'Maximální délka',
   'Minimum length' => 'Minimální délka',
@@ -7,4 +7,4 @@ return array (
   'Regular Expression: Validator' => 'Regulární výraz: šablona formátu',
   'Validator' => 'Formát má odpovídat šabloně',
   'Text Field Options' => 'Nastavení pole Text',
-);
+];

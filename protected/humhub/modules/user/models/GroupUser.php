@@ -116,5 +116,4 @@ class GroupUser extends ActiveRecord
             }
         }
     }
-
 }

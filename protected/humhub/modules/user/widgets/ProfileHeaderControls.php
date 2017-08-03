@@ -12,9 +12,6 @@ namespace humhub\modules\user\widgets;
 class ProfileHeaderControls extends \humhub\widgets\BaseStack
 {
 
-    public $seperator = "&nbsp;";
+    public $seperator = '&nbsp;';
     public $user;
-
 }
-
-?>

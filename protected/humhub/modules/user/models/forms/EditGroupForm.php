@@ -72,7 +72,7 @@ class EditGroupForm extends \humhub\modules\user\models\Group
     }
 
     protected function removeOldManagers()
-    {        
+    {
         //Remove admins not contained in the selection
         foreach ($this->getManager()->all() as $manager) {
             if (!in_array($manager->guid, $this->managerGuids)) {

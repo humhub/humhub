@@ -51,5 +51,4 @@ class ApprovalTest extends HumHubDbTestCase
         
         $this->assertEquals(0, count($users));
     }
-
 }

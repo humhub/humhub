@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return  [
   'Checkbox field options' => 'Checkbox field options',
   'Default value' => 'Default value'
-);
+];

@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   '<strong>Member</strong> in these spaces' => '<strong>Mitglied</strong> in diesen Spaces',
-);
+];

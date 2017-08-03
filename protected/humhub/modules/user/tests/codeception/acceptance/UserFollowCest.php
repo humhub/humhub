@@ -36,6 +36,5 @@ class UserFollowCest
         $I->waitForElementVisible('.wall-entry');
 
         $I->see('New User1 profile post', '.wall-entry');
-                
     }
 }

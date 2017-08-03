@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'View Online' => 'Skatīties tiešsaistē',
-);
+];

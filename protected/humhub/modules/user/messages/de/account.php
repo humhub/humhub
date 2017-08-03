@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Modify</strong> your profile image' => '<strong>Profilbild</strong> bearbeiten',
   '<strong>Modify</strong> your title image' => '<strong>Titelbild</strong> bearbeiten',
   '<strong>Security</strong> settings' => '<strong>Sicherheits</strong>-Einstellungen',
@@ -11,4 +11,4 @@ return array (
   'Other users' => 'Andere Benutzer',
   'Users' => 'Benutzer',
   'Your friends' => 'Deine Freunde',
-);
+];

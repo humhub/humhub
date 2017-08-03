@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Auth Mode' => '',
   'Created at' => '',
   'Created by' => '',
@@ -19,4 +19,4 @@ return array (
   'Updated by' => '',
   'Username' => '',
   'Visibility' => '',
-);
+];

@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Send activities?' => 'Aktiviteleri gönder?',
   'Send notifications?' => 'Bildirimleri gönder?',
-);
+];

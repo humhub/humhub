@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Communication' => 'Communicatie',
   'General' => 'Algemeen',
   'Social bookmarks' => 'Sociale bladwijzer',
-);
+];

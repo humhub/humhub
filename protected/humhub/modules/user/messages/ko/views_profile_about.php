@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   '<strong>About</strong> this user' => '',
-);
+];

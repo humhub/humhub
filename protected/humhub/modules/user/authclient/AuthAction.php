@@ -22,7 +22,7 @@ class AuthAction extends \yii\authclient\AuthAction
 
     /**
      * @inheritdoc
-     * 
+     *
      * @param StandaloneAuthClient $client
      * @return response
      */
@@ -42,5 +42,4 @@ class AuthAction extends \yii\authclient\AuthAction
     {
         return parent::authSuccess($client);
     }
-
 }

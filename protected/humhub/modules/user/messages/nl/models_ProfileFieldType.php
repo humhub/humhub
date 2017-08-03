@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Birthday' => 'Geboortedatum',
   'Checkbox' => 'Keuzevak',
   'Checkbox List' => 'Selectievak keuzelijst',
@@ -11,4 +11,4 @@ return array (
   'Select List' => 'Keuzelijst',
   'Text' => 'Tekst',
   'Text Area' => 'Tekstvlak',
-);
+];

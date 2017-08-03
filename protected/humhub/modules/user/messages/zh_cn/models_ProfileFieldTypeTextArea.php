@@ -16,6 +16,6 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Text area field options' => '文本域区域选项',
-);
+];

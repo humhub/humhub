@@ -17,7 +17,7 @@ use humhub\modules\user\controllers\ImageController;
 
 /**
  * Displays the profile header of a user
- * 
+ *
  * @since 0.5
  * @author Luke
  */
@@ -30,7 +30,7 @@ class ProfileHeader extends \yii\base\Widget
     public $user;
 
     /**
-     * @var boolean is owner of the current profile 
+     * @var boolean is owner of the current profile
      */
     protected $isProfileOwner = false;
 
@@ -70,7 +70,7 @@ class ProfileHeader extends \yii\base\Widget
         /* @var $imageController ImageController  */
         $imageController = new ImageController('image-controller', null, ['user' => $this->user]);
 
-        return $this->render('profileHeader', array(
+        return $this->render('profileHeader', [
                     'user' => $this->user,
                     'isProfileOwner' => $this->isProfileOwner,
                     'friendshipsEnabled' => $friendshipsEnabled,
@@ -81,12 +81,12 @@ class ProfileHeader extends \yii\base\Widget
                     'countSpaces' => $this->getFollowingSpaceCount(),
                     'allowModifyProfileImage' => $imageController->allowModifyProfileImage,
                     'allowModifyProfileBanner' => $imageController->allowModifyProfileBanner,
-        ));
+        ]);
     }
 
     /**
      * Returns the number of followed public space
-     * 
+     *
      * @return int the follow count
      */
     protected function getFollowingSpaceCount()
@@ -96,7 +96,4 @@ class ProfileHeader extends \yii\base\Widget
                         ->andWhere(['space.status' => Space::STATUS_ENABLED])
                         ->count();
     }
-
 }
-
-?>

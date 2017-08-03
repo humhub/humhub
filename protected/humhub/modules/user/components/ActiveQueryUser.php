@@ -20,7 +20,7 @@ class ActiveQueryUser extends ActiveQuery
 
     /**
      * Limit to active users
-     * 
+     *
      * @return \humhub\modules\user\components\ActiveQueryUser
      */
     public function active()
@@ -31,7 +31,7 @@ class ActiveQueryUser extends ActiveQuery
 
     /**
      * Adds default user order (e.g. by lastname)
-     * 
+     *
      * @return \humhub\modules\user\components\ActiveQueryUser
      */
     public function defaultOrder()
@@ -40,5 +40,4 @@ class ActiveQueryUser extends ActiveQuery
         $this->addOrderBy(['profile.lastname' => SORT_ASC]);
         return $this;
     }
-
 }

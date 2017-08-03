@@ -22,13 +22,13 @@ class AccountRecoverPassword extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array('email', 'required'),
-            array('email', 'email'),
-            array('email', 'canRecoverPassword'),
-            array('verifyCode', 'captcha', 'captchaAction' => '/user/auth/captcha'),
-            array('email', 'exist', 'targetClass' => User::className(), 'targetAttribute' => 'email', 'message' => Yii::t('UserModule.forms_AccountRecoverPasswordForm', '{attribute} "{value}" was not found!')),
-        );
+        return [
+            ['email', 'required'],
+            ['email', 'email'],
+            ['email', 'canRecoverPassword'],
+            ['verifyCode', 'captcha', 'captchaAction' => '/user/auth/captcha'],
+            ['email', 'exist', 'targetClass' => User::className(), 'targetAttribute' => 'email', 'message' => Yii::t('UserModule.forms_AccountRecoverPasswordForm', '{attribute} "{value}" was not found!')],
+        ];
     }
 
     /**
@@ -38,9 +38,9 @@ class AccountRecoverPassword extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'email' => Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'E-Mail'),
-        );
+        ];
     }
 
     /**
@@ -50,12 +50,12 @@ class AccountRecoverPassword extends \yii\base\Model
     public function canRecoverPassword($attribute, $params)
     {
 
-        if ($this->email != "") {
-            $user = User::findOne(array('email' => $this->email));
+        if ($this->email != '') {
+            $user = User::findOne(['email' => $this->email]);
             $passwordAuth = new \humhub\modules\user\authclient\Password();
 
             if ($user != null && $user->auth_mode !== $passwordAuth->getId()) {
-                $this->addError($attribute, Yii::t('UserModule.forms_AccountRecoverPasswordForm', Yii::t('UserModule.forms_AccountRecoverPasswordForm', "Password recovery is not possible on your account type!")));
+                $this->addError($attribute, Yii::t('UserModule.forms_AccountRecoverPasswordForm', Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'Password recovery is not possible on your account type!')));
             }
         }
     }
@@ -67,10 +67,10 @@ class AccountRecoverPassword extends \yii\base\Model
     public function recover()
     {
 
-        $user = User::findOne(array('email' => $this->email));
+        $user = User::findOne(['email' => $this->email]);
 
         // Switch to users language - if specified
-        if ($user->language !== "") {
+        if ($user->language !== '') {
             Yii::$app->language = $user->language;
         }
 
@@ -78,11 +78,11 @@ class AccountRecoverPassword extends \yii\base\Model
         Yii::$app->getModule('user')->settings->contentContainer($user)->set('passwordRecoveryToken', $token . '.' . time());
 
         $mail = Yii::$app->mailer->compose([
-			'html' => '@humhub/modules/user/views/mails/RecoverPassword',
-			'text' => '@humhub/modules/user/views/mails/plaintext/RecoverPassword'
-		], [
+            'html' => '@humhub/modules/user/views/mails/RecoverPassword',
+            'text' => '@humhub/modules/user/views/mails/plaintext/RecoverPassword'
+        ], [
             'user' => $user,
-            'linkPasswordReset' => Url::to(["/user/password-recovery/reset", 'token' => $token, 'guid' => $user->guid], true)
+            'linkPasswordReset' => Url::to(['/user/password-recovery/reset', 'token' => $token, 'guid' => $user->guid], true)
         ]);
         $mail->setTo($user->email);
         $mail->setSubject(Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'Password Recovery'));
@@ -90,5 +90,4 @@ class AccountRecoverPassword extends \yii\base\Model
 
         return true;
     }
-
 }

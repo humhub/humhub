@@ -39,5 +39,4 @@ class FollowedNotificationCategory extends NotificationCategory
     {
         return Yii::t('UserModule.notifications_FollowingNotificationCategory', 'Receive Notifications when someone is following you.');
     }
-
 }

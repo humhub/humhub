@@ -99,10 +99,10 @@ class CheckboxList extends BaseType
     {
         // Try create column name
         if (Profile::columnExists($this->profileField->internal_name)) {
-            $sql = "ALTER TABLE profile DROP `" . $this->profileField->internal_name . "_other_selection`;";
+            $sql = 'ALTER TABLE profile DROP `' . $this->profileField->internal_name . '_other_selection`;';
             Yii::$app->db->createCommand($sql)->execute();
 
-            $sql = "ALTER TABLE profile DROP `" . $this->profileField->internal_name . "`;";
+            $sql = 'ALTER TABLE profile DROP `' . $this->profileField->internal_name . '`;';
             Yii::$app->db->createCommand($sql)->execute();
         }
 
@@ -123,8 +123,8 @@ class CheckboxList extends BaseType
             ]
         ];
 
-        if($this->allowOther) {
-            $result[$this->profileField->internal_name. '_other_selection'] = [
+        if ($this->allowOther) {
+            $result[$this->profileField->internal_name . '_other_selection'] = [
                 'type' => 'text',
                 'class' => 'form-control',
                 'label' => false,
@@ -135,8 +135,9 @@ class CheckboxList extends BaseType
         return $result;
     }
 
-    public function beforeProfileSave($values) {
-        if(is_array($values)) {
+    public function beforeProfileSave($values)
+    {
+        if (is_array($values)) {
             return implode(',', $values);
         }
         return $values;
@@ -155,7 +156,7 @@ class CheckboxList extends BaseType
             $items[trim($option)] = trim($option);
         }
 
-        if($this->allowOther) {
+        if ($this->allowOther) {
             $items['other'] = Yii::t($this->profileField->getTranslationCategory(), 'Other:');
         }
 

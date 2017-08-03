@@ -22,7 +22,7 @@ use Yii;
 class Module extends \yii\db\ActiveRecord
 {
 
-    private static $_states = array();
+    private static $_states = [];
 
     const STATE_DISABLED = 0;
     const STATE_ENABLED = 1;
@@ -118,12 +118,11 @@ class Module extends \yii\db\ActiveRecord
 
     /**
      * Related user
-     * 
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
-
 }

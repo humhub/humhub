@@ -1,9 +1,9 @@
 <?php
-return array (
+return  [
   '<strong>Something</strong> went wrong' => '',
   'Followers' => '',
   'Following' => '',
   'Friends' => '',
   'Ok' => 'Labi',
   'Spaces' => 'Vietas',
-);
+];

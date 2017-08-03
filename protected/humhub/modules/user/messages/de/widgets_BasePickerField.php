@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add more...' => 'Weitere hinzufügen...',
   'An unexpected error occurred while loading the result.' => 'Beim Laden der Ergebnisse ist ein unerwarteter Fehler aufgetreten.',
   'Load more' => 'Mehr laden',
@@ -11,4 +11,4 @@ return array (
   'You reached the maximum number of allowed charachters ({n}).' => 'Du hast das Maximum der erlaubten Zeichen erreicht ({n}).
 ',
   'Your search returned no matches.' => 'Deine Suche ergab keine Treffer.',
-);
+];

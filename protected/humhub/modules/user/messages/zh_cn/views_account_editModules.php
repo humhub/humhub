@@ -16,11 +16,11 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>User</strong> modules' => '<strong>用户</strong> 模块',
   'Are you really sure? *ALL* module data for your profile will be deleted!' => '你肯定？*所有*模块配置数据将被删除！',
   'Configure' => '配置',
   'Disable' => '失效',
   'Enable' => '生效',
   'Enhance your profile with modules.' => '用模块增强你的属性',
-);
+];

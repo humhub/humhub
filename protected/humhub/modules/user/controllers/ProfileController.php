@@ -43,18 +43,18 @@ class ProfileController extends ContentContainerController
      */
     public function actions()
     {
-        return array(
-            'stream' => array(
+        return [
+            'stream' => [
                 'class' => ContentContainerStream::className(),
                 'mode' => ContentContainerStream::MODE_NORMAL,
                 'contentContainer' => $this->contentContainer
-            ),
-        );
+            ],
+        ];
     }
 
     /**
      * User profile home
-     * 
+     *
      * @todo Allow change of default action
      * @return string the response
      */
@@ -83,7 +83,7 @@ class ProfileController extends ContentContainerController
 
     public function actionFollow()
     {
-        if(Yii::$app->getModule('user')->disableFollow) {
+        if (Yii::$app->getModule('user')->disableFollow) {
             throw new \yii\web\HttpException(403, Yii::t('ContentModule.controllers_ContentController', 'This action is disabled!'));
         }
         
@@ -146,7 +146,4 @@ class ProfileController extends ContentContainerController
         $title = Yii::t('UserModule.widgets_views_userSpaces', '<strong>Member</strong> in these spaces');
         return $this->renderAjaxContent(\humhub\modules\space\widgets\ListBox::widget(['query' => $query, 'title' => $title]));
     }
-
 }
-
-?>

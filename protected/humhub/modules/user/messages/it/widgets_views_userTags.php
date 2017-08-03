@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   '<strong>User</strong> tags' => 'Tag dell\'<strong>utente</strong>',
-);
+];

@@ -23,5 +23,4 @@ class UserEvent extends Event
      * @var \humhub\modules\user\models\User the user
      */
     public $user;
-
 }

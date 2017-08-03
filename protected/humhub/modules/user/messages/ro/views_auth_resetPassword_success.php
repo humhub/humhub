@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   '<strong>Password</strong> changed!' => '',
   'Login' => 'Autentificare',
   'Your password has been successfully changed!' => '',
-);
+];

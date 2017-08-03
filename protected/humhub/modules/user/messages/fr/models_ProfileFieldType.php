@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Birthday' => 'Date de naissance',
   'Checkbox' => 'cocher la case corespondante',
   'Checkbox List' => 'Liste de cases à cocher',
@@ -11,4 +11,4 @@ return array (
   'Select List' => 'Liste de choix',
   'Text' => 'Texte',
   'Text Area' => 'Texte long',
-);
+];

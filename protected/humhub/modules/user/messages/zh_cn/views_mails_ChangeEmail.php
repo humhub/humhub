@@ -16,9 +16,9 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>Confirm</strong></strong> your new email address' => '确认新邮箱',
   'Confirm' => '确认',
   'Hello' => '你好',
   'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => '您已经请求更改您的电子邮件地址。<BR>您的新电子邮件地址是{newemail}。<br> <br>确认你的新的电子邮件地址，请单击下面的按钮。',
-);
+];

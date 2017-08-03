@@ -4,7 +4,6 @@
 use humhub\components\Migration;
 use humhub\modules\user\models\User;
 
-
 class m150704_005504_namespace extends Migration
 {
 

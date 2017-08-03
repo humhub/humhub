@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Your e-mail address has been successfully changed to {email}.' => 'Din e-post adresse er nå endret til {email}.',
-);
+];

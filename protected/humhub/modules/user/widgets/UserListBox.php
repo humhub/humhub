@@ -12,16 +12,16 @@ use Yii;
 
 /**
  * UserListBox returns the content of the user list modal
- * 
+ *
  * Example Action:
- * 
+ *
  * ```php
  * public actionUserList() {
  *       $query = User::find();
  *       $query->where(...);
- *        
+ *
  *       $title = "Some Users";
- *  
+ *
  *       return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
  * }
  * ```
@@ -67,11 +67,10 @@ class UserListBox extends \yii\base\Widget
         $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->pageSize]);
         $this->query->offset($pagination->offset)->limit($pagination->limit);
 
-        return $this->render("userListBox", [
+        return $this->render('userListBox', [
                     'title' => $this->title,
                     'users' => $this->query->all(),
                     'pagination' => $pagination
         ]);
     }
-
 }

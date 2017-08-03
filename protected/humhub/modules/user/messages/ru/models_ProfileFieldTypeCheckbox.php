@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return  [
     'Checkbox field options' => 'Настройки чекбокса',
     'Default value' => 'Значение по умолчанию',
-);
+];

@@ -175,8 +175,8 @@ class Profile extends \yii\db\ActiveRecord
      */
     public function getFormDefinition()
     {
-        $definition = array();
-        $definition['elements'] = array();
+        $definition = [];
+        $definition['elements'] = [];
 
         $syncAttributes = [];
         if ($this->user !== null) {
@@ -186,12 +186,11 @@ class Profile extends \yii\db\ActiveRecord
         $safeAttributes = $this->safeAttributes();
 
         foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $profileFieldCategory) {
-
-            $category = array(
+            $category = [
                 'type' => 'form',
                 'title' => Yii::t($profileFieldCategory->getTranslationCategory(), $profileFieldCategory->title),
-                'elements' => array(),
-            );
+                'elements' => [],
+            ];
 
             foreach (ProfileField::find()->orderBy('sort_order')->where(['profile_field_category_id' => $profileFieldCategory->id])->all() as $profileField) {
                 /** @var ProfileField $profileField */
@@ -257,10 +256,9 @@ class Profile extends \yii\db\ActiveRecord
     public function getProfileFieldCategories()
     {
 
-        $categories = array();
+        $categories = [];
 
         foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $category) {
-
             if (count($this->getProfileFields($category)) != 0) {
                 $categories[] = $category;
             }
@@ -291,12 +289,11 @@ class Profile extends \yii\db\ActiveRecord
             $query->andWhere(['profile_field_category_id' => $category->id]);
         }
         foreach ($query->all() as $field) {
-            if ($field->getUserValue($this->user) != "") {
+            if ($field->getUserValue($this->user) != '') {
                 $fields[] = $field;
             }
         }
 
         return $fields;
     }
-
 }
