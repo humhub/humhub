@@ -55,7 +55,7 @@ abstract class Search extends \yii\base\Component
      * @param array $options
      * @return SearchResultSet
      */
-    abstract public function find($query, Array $options);
+    abstract public function find($query, array $options);
 
     /**
      * Stores an object in search index.
@@ -99,12 +99,11 @@ abstract class Search extends \yii\base\Component
      */
     public function optimize()
     {
-        
     }
 
     protected function getMetaInfoArray(Searchable $obj)
     {
-        $meta = array();
+        $meta = [];
         $meta['type'] = $this->getDocumentType($obj);
         $meta['pk'] = $obj->getPrimaryKey();
         $meta['model'] = $obj->className();
@@ -149,21 +148,22 @@ abstract class Search extends \yii\base\Component
 
     protected function setDefaultFindOptions($options)
     {
-        if (!isset($options['page']) || $options['page'] == "")
+        if (!isset($options['page']) || $options['page'] == '') {
             $options['page'] = 1;
+        }
 
-        if (!isset($options['pageSize']) || $options['pageSize'] == "")
+        if (!isset($options['pageSize']) || $options['pageSize'] == '') {
             $options['pageSize'] = Yii::$app->settings->get('paginationSize');
+        }
 
         if (!isset($options['checkPermissions'])) {
             $options['checkPermissions'] = true;
         }
 
         if (!isset($options['limitSpaces'])) {
-            $options['limitSpaces'] = array();
+            $options['limitSpaces'] = [];
         }
 
         return $options;
     }
-
 }

@@ -24,7 +24,7 @@ class SearchController extends \yii\console\Controller
      */
     public function actionOptimize()
     {
-        print "Optimizing search index: ";
+        print 'Optimizing search index: ';
         Yii::$app->search->optimize();
         print "OK!\n\n";
     }
@@ -34,7 +34,7 @@ class SearchController extends \yii\console\Controller
      */
     public function actionRebuild()
     {
-        print "Rebuild search index: ";
+        print 'Rebuild search index: ';
         Yii::$app->search->rebuild();
         print "OK!\n\n";
     }
@@ -48,18 +48,17 @@ class SearchController extends \yii\console\Controller
     public function actionFind($keyword)
     {
         $pageSize = 10;
-        $model = "";
+        $model = '';
         $page = 1;
 
-        print "Searching for: " . $keyword . " \n";
+        print 'Searching for: ' . $keyword . " \n";
 
         $results = Yii::$app->search->find($keyword, [
             'pageSize' => $pageSize,
             'page' => $page,
-            'model' => ($model != "") ? explode(",", $model) : null
+            'model' => ($model != '') ? explode(',', $model) : null
         ]);
 
         print_r($results);
     }
-
 }

@@ -36,5 +36,4 @@ class SearchResult
      * @var string
      */
     public $pk;
-
 }

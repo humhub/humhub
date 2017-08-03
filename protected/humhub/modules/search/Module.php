@@ -12,5 +12,4 @@ class Module extends \humhub\components\Module
 {
 
     public $controllerNamespace = 'humhub\modules\search\controllers';
-
 }

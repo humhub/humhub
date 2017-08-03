@@ -21,7 +21,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                         <div class="col-md-6">
                             <?php $form = ActiveForm::begin(['action' => Url::to(['index']), 'method' => 'GET']); ?>
                                 <div class="form-group form-group-search">
-                                    <?= $form->field($model, 'keyword')->textInput(['placeholder' => Yii::t('SearchModule.views_search_index', 'Search for user, spaces and content'), 
+                                    <?= $form->field($model, 'keyword')->textInput(['placeholder' => Yii::t('SearchModule.views_search_index', 'Search for user, spaces and content'),
                                         'title' => Yii::t('SearchModule.views_search_index', 'Search for user, spaces and content'), 'class' => 'form-control form-search', 'id' => 'search-input-field'])->label(false); ?>
                                     <?php echo Html::submitButton(Yii::t('base', 'Search'), ['class' => 'btn btn-default btn-sm form-button-search', 'data-ui-loader' => '']); ?>
                                 </div>
@@ -54,7 +54,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
         </div>
     </div>
     
-    <?php if ($model->keyword != ""): ?>
+    <?php if ($model->keyword != '') : ?>
         <div class="row">
             <div class="col-md-2">
                 <div class="panel panel-default">
@@ -62,7 +62,9 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                         class="panel-heading"><?php echo Yii::t('SearchModule.views_search_index', '<strong>Search </strong> results'); ?></div>
                     <div class="list-group">
                         <a data-pjax-prevent href='<?php echo Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_ALL]); ?>'
-                           class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_ALL): ?>active<?php endif; ?>">
+                           class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_ALL) :
+?>active<?php
+                                                  endif; ?>">
                             <div>
                                 <div class="edit_group "><?php echo Yii::t('SearchModule.views_search_index', 'All'); ?>
                                     (<?php echo $totals[SearchForm::SCOPE_ALL]; ?>)
@@ -71,7 +73,9 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                         </a>
                         <br/>
                         <a data-pjax-prevent href='<?php echo Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_CONTENT]); ?>'
-                           class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_CONTENT): ?>active<?php endif; ?>">
+                           class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_CONTENT) :
+?>active<?php
+                                                  endif; ?>">
                             <div>
                                 <div
                                     class="edit_group "><?php echo Yii::t('SearchModule.views_search_index', 'Content'); ?>
@@ -80,7 +84,9 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                             </div>
                         </a>
                         <a data-pjax-prevent href='<?php echo Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_USER]); ?>'
-                           class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_USER): ?>active<?php endif; ?>">
+                           class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_USER) :
+?>active<?php
+                                                  endif; ?>">
                             <div>
                                 <div
                                     class="edit_group "><?php echo Yii::t('SearchModule.views_search_index', 'Users'); ?>
@@ -89,7 +95,9 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                             </div>
                         </a>
                         <a data-pjax-prevent href='<?php echo Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_SPACE]); ?>'
-                           class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_SPACE): ?>active<?php endif; ?>">
+                           class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_SPACE) :
+?>active<?php
+                                                  endif; ?>">
                             <div>
                                 <div
                                     class="edit_group "><?php echo Yii::t('SearchModule.views_search_index', 'Spaces'); ?>
@@ -105,17 +113,17 @@ humhub\modules\stream\assets\StreamAsset::register($this);
 
                 <div class="searchResults">
 
-                    <?php if (count($results) > 0): ?>
-                        <?php foreach ($results as $result): ?>
+                    <?php if (count($results) > 0) : ?>
+                        <?php foreach ($results as $result) : ?>
                             <?php if ($result instanceof ContentActiveRecord) : ?>
                                 <?= humhub\modules\stream\actions\Stream::renderEntry($result) ?>
                             <?php elseif ($result instanceof ContentContainerActiveRecord) : ?>
-                                 <?= $result->getWallOut(); ?>
-                            <?php else: ?>
+                                    <?= $result->getWallOut(); ?>
+                            <?php else : ?>
                                 No Output for Class <?php echo get_class($result); ?>
                             <?php endif; ?>
                         <?php endforeach; ?>
-                    <?php else: ?>
+                    <?php else : ?>
 
 
                         <div class="panel panel-default">
@@ -161,7 +169,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
     });
 
 
-<?php foreach (explode(" ", $model->keyword) as $k) : ?>
+<?php foreach (explode(' ', $model->keyword) as $k) : ?>
         $(".searchResults").highlight("<?php echo Html::encode($k); ?>");
         $(document).ajaxComplete(function (event, xhr, settings) {
             $(".searchResults").highlight("<?php echo Html::encode($k); ?>");

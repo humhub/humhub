@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Search </strong> results' => '<strong>Suchergebnisse</strong>',
   'Advanced search settings' => 'Erweiterte Sucheinstellungen',
   'All' => 'Global',
@@ -10,4 +10,4 @@ return array (
   'Specify space' => 'Space wählen',
   'Users' => 'Benutzer',
   'Your search returned no matches.' => 'Deine Suche ergab keine Treffer.',
-);
+];

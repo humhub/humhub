@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Search </strong> results' => '<strong>Søkeresultat</strong>',
   'Advanced search settings' => 'Avanserte søkeinnstillinger',
   'All' => 'Alt',
@@ -10,4 +10,4 @@ return array (
   'Specify space' => 'Spesifisér område',
   'Users' => 'Brukere',
   'Your search returned no matches.' => 'Dit søk ga ingen treff.',
-);
+];

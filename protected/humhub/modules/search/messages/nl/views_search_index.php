@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Search </strong> results' => '<strong>Zoek</strong> resultaten',
   'Advanced search settings' => 'Geavanceerde zoekopties',
   'All' => 'Alle',
@@ -10,4 +10,4 @@ return array (
   'Specify space' => 'Geef de Ruimte op.',
   'Users' => 'Gebruikers',
   'Your search returned no matches.' => 'Je zoekopdracht heeft geen overeenkomsten opgeleverd.',
-);
+];

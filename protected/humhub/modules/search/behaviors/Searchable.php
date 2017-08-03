@@ -38,7 +38,7 @@ class Searchable extends Behavior
         if ($this->owner instanceof \humhub\modules\search\interfaces\Searchable) {
             Yii::$app->search->update($this->owner);
         } else {
-            throw new Exception("Owner of HSearchableBehavior must be implement interface ISearchable");
+            throw new Exception('Owner of HSearchableBehavior must be implement interface ISearchable');
         }
     }
 
@@ -47,8 +47,7 @@ class Searchable extends Behavior
         if ($this->owner instanceof \humhub\modules\search\interfaces\Searchable) {
             Yii::$app->search->delete($this->owner);
         } else {
-            throw new Exception("Owner of HSearchableBehavior must be implement interface ISearchable");
+            throw new Exception('Owner of HSearchableBehavior must be implement interface ISearchable');
         }
     }
-
 }

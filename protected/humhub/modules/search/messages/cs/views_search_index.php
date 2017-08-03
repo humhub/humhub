@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Search </strong> results' => '<strong>Výsledky</strong> hledání',
   'Advanced search settings' => 'Rozšířené nastavení hledání',
   'All' => 'Vše',
@@ -10,4 +10,4 @@ return array (
   'Specify space' => 'Specifický prostor',
   'Users' => 'Uživatelé',
   'Your search returned no matches.' => 'Vašemu vyhledávání neodpovídají žádné výsledky.',
-);
+];
