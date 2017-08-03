@@ -16,7 +16,7 @@ namespace humhub\compat;
 class CHtml extends \yii\helpers\Html
 {
 
-    public static function form($action, $method = "POST")
+    public static function form($action, $method = 'POST')
     {
         return self::beginForm($action, $method);
     }
@@ -28,7 +28,7 @@ class CHtml extends \yii\helpers\Html
 
     public function ajaxButton()
     {
-        return "";
+        return '';
     }
 
     /**
@@ -45,7 +45,7 @@ class CHtml extends \yii\helpers\Html
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated label tag
      */
-    public static function activeLabelEx($model, $attribute, $htmlOptions = array())
+    public static function activeLabelEx($model, $attribute, $htmlOptions = [])
     {
         $realAttribute = $attribute;
         self::resolveName($model, $attribute); // strip off square brackets if any
@@ -65,7 +65,7 @@ class CHtml extends \yii\helpers\Html
      * @see clientChange
      * @see activeInputField
      */
-    public static function activeTextField($model, $attribute, $htmlOptions = array())
+    public static function activeTextField($model, $attribute, $htmlOptions = [])
     {
         self::resolveNameID($model, $attribute, $htmlOptions);
         #self::clientChange('change', $htmlOptions);
@@ -85,15 +85,16 @@ class CHtml extends \yii\helpers\Html
         $modelName = self::modelName($model);
 
         if (($pos = strpos($attribute, '[')) !== false) {
-            if ($pos !== 0)  // e.g. name[a][b]
+            if ($pos !== 0) {  // e.g. name[a][b]
                 return $modelName . '[' . substr($attribute, 0, $pos) . ']' . substr($attribute, $pos);
+            }
             if (($pos = strrpos($attribute, ']')) !== false && $pos !== strlen($attribute) - 1) {  // e.g. [a][b]name
                 $sub = substr($attribute, 0, $pos + 1);
                 $attribute = substr($attribute, $pos + 1);
                 return $modelName . $sub . '[' . $attribute . ']';
             }
             if (preg_match('/\](\w+\[.*)$/', $attribute, $matches)) {
-                $name = $modelName . '[' . str_replace(']', '][', trim(strtr($attribute, array('][' => ']', '[' => ']')), ']')) . ']';
+                $name = $modelName . '[' . str_replace(']', '][', trim(strtr($attribute, ['][' => ']', '[' => ']']), ']')) . ']';
                 $attribute = $matches[1];
                 return $name;
             }
@@ -112,12 +113,14 @@ class CHtml extends \yii\helpers\Html
      */
     public static function resolveNameID($model, &$attribute, &$htmlOptions)
     {
-        if (!isset($htmlOptions['name']))
+        if (!isset($htmlOptions['name'])) {
             $htmlOptions['name'] = self::resolveName($model, $attribute);
-        if (!isset($htmlOptions['id']))
+        }
+        if (!isset($htmlOptions['id'])) {
             $htmlOptions['id'] = self::getIdByName($htmlOptions['name']);
-        elseif ($htmlOptions['id'] === false)
+        } elseif ($htmlOptions['id'] === false) {
             unset($htmlOptions['id']);
+        }
     }
 
     /**
@@ -127,7 +130,7 @@ class CHtml extends \yii\helpers\Html
      */
     public static function getIdByName($name)
     {
-        return str_replace(array('[]', '][', '[', ']', ' '), array('', '_', '_', '', '_'), $name);
+        return str_replace(['[]', '][', '[', ']', ' '], ['', '_', '_', '', '_'], $name);
     }
 
     /**
@@ -170,5 +173,4 @@ class CHtml extends \yii\helpers\Html
 
         return static::checkbox($name, $checked, $options);
     }
-
 }
