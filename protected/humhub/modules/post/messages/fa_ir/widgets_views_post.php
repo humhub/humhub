@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Collapse' => 'جمع کردن',
   'Read full post...' => 'مطالعه‌ی همه‌ی پست. . .',
-);
+];

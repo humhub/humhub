@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Collapse' => 'ย่อ',
   'Read full post...' => '',
-);
+];

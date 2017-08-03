@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Edit your post...' => 'پست خود را ویرایش کنید . . .',
   'Save' => 'ذخیره',
-);
+];

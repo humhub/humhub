@@ -62,5 +62,4 @@ class CreatePost extends \humhub\libs\BasePermission
         }
         return Yii::t('PostModule.permissions', 'Allows the user to create posts');
     }
-
 }

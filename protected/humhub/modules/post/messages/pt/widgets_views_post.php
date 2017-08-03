@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Collapse' => 'Recolher',
   'Read full post...' => '',
-);
+];

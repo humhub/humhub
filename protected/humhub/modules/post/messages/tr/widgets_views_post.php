@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Collapse' => 'Başarısız',
   'Read full post...' => 'Gönderinin tamamını oku...',
-);
+];

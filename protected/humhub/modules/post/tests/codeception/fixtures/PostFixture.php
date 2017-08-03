@@ -15,5 +15,4 @@ class PostFixture extends ActiveFixture
 
     public $modelClass = 'humhub\modules\post\models\Post';
     public $dataFile = '@modules/post/tests/codeception/fixtures/data/post.php';
-
 }

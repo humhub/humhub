@@ -17,14 +17,13 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
     /**
      * @inheritdoc
      */
-    public $editRoute = "/post/post/edit";
+    public $editRoute = '/post/post/edit';
 
     /**
      * @inheritdoc
      */
     public function run()
     {
-        return $this->render('wallEntry', array('post' => $this->contentObject, 'justEdited' => $this->justEdited));
+        return $this->render('wallEntry', ['post' => $this->contentObject, 'justEdited' => $this->justEdited]);
     }
-
 }

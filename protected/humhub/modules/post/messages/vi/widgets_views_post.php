@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Collapse' => 'Thu hẹp',
   'Read full post...' => '',
-);
+];
