@@ -12,7 +12,7 @@ $this->registerJsConfig('content.form', [
         'makePrivate' => Yii::t('ContentModule.widgets_views_contentForm', 'Make private'),
         'makePublic' => Yii::t('ContentModule.widgets_views_contentForm', 'Make public'),
         'info.archived' => Yii::t('ContentModule.widgets_views_contentForm', 'This space is archived.')
-]]);
+    ]]);
 
 ?>
 
@@ -35,8 +35,8 @@ $this->registerJsConfig('content.form', [
             ?>
         </div>
 
-        <?= Html::hiddenInput("containerGuid", $contentContainer->guid); ?>
-        <?= Html::hiddenInput("containerClass", get_class($contentContainer)); ?>
+        <?= Html::hiddenInput('containerGuid', $contentContainer->guid); ?>
+        <?= Html::hiddenInput('containerClass', get_class($contentContainer)); ?>
 
         <ul id="contentFormError"></ul>
 
@@ -59,7 +59,7 @@ $this->registerJsConfig('content.form', [
                 <?= humhub\modules\file\widgets\FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
 
                 <!-- public checkbox -->
-                <?= Html::checkbox("visibility", "", ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true', 'title' => Yii::t('ContentModule.widgets_views_contentForm', 'Content visibility') ]); ?>
+                <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true', 'title' => Yii::t('ContentModule.widgets_views_contentForm', 'Content visibility') ]); ?>
 
                 <!-- content sharing -->
                 <div class="pull-right">
@@ -76,7 +76,7 @@ $this->registerJsConfig('content.form', [
                                         <i class="fa fa-bell"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Notify members'); ?>
                                     </a>
                                 </li>
-                                <?php if ($canSwitchVisibility): ?>
+                                <?php if ($canSwitchVisibility) : ?>
                                     <li>
                                         <a id="contentForm_visibility_entry" data-action-click="changeVisibility">
                                             <i class="fa fa-unlock"></i> <?= Yii::t('ContentModule.widgets_views_contentForm', 'Make public'); ?>

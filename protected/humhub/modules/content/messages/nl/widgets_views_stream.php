@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Back to stream' => 'Terug naar berichten',
   'Content with attached files' => 'Berichten met bestanden',
   'Created by me' => 'Aangemaakt door mij',
@@ -22,4 +22,4 @@ return array (
   'The content has been unpinned.' => 'De inhoud is losgemaakt.',
   'Where I´m involved' => 'Waar ik bij betrokken ben',
   'Your last edit state has been saved!' => 'Uw laatste bewerking is bewaard!',
-);
+];

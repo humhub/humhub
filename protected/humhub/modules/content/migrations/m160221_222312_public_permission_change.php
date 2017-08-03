@@ -17,7 +17,7 @@ class m160221_222312_public_permission_change extends Migration
             'permission_id' => 'humhub\modules\space\permissions\CreatePublicContent',
             'class' => 'humhub\modules\space\permissions\CreatePublicContent',
             'module_id' => 'space',
-        ]);
+                ]);
     }
 
     public function down()

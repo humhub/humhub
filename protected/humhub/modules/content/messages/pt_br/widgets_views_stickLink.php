@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Stick' => 'Fixar',
   'Unstick' => 'Desafixar',
-);
+];

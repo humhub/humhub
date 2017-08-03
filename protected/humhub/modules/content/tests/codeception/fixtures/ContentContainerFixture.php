@@ -19,5 +19,4 @@ class ContentContainerFixture extends ActiveFixture
         'humhub\modules\content\tests\codeception\fixtures\ContentContainerPermissionFixture',
         'humhub\modules\content\tests\codeception\fixtures\ContentContainerSettingFixture'
     ];
-
 }

@@ -15,7 +15,6 @@
 
 namespace humhub\modules\content\components;
 
-
 use humhub\components\access\ActionAccessValidator;
 use humhub\libs\BasePermission;
 use humhub\modules\space\models\Space;
@@ -56,12 +55,12 @@ class UserGroupAccessValidator extends ActionAccessValidator
             $allowedGroups = is_string($rule[$this->name]) ? [$rule[$this->name]] : $rule[$this->name];
             $userGroup = $this->contentContainer->getUserGroup($this->access->user);
 
-            if(isset($rule['strict']) && $rule['strict'] == true) {
+            if (isset($rule['strict']) && $rule['strict'] == true) {
                 return in_array($userGroup, $allowedGroups);
             }
 
             foreach ($allowedGroups as $allowedUserGroup) {
-                if($this->getUserGroupLevel($userGroup) >= $this->getUserGroupLevel($allowedUserGroup)) {
+                if ($this->getUserGroupLevel($userGroup) >= $this->getUserGroupLevel($allowedUserGroup)) {
                     return true;
                 }
             }
@@ -76,7 +75,7 @@ class UserGroupAccessValidator extends ActionAccessValidator
     {
         $userGroupLevelArr = ($this->contentContainer instanceof Space) ? $this->spaceGroupLevel : $this->profileGroupLevel;
 
-        if(!in_array($userGroup, $userGroupLevelArr)) {
+        if (!in_array($userGroup, $userGroupLevelArr)) {
             return PHP_INT_MAX;
         }
 

@@ -13,7 +13,7 @@ use humhub\modules\space\models\Space;
 
 /**
  * Manage content permission for a content container
- * 
+ *
  * @since 1.1
  * @author Luke
  */
@@ -58,7 +58,7 @@ class ManageContent extends \humhub\libs\BasePermission
      */
     protected $moduleId = 'content';
 
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         parent::__construct($config);
         $this->title = \Yii::t('CommentModule.permissions', 'Manage content');

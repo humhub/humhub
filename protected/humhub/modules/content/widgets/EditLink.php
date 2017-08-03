@@ -43,7 +43,7 @@ class EditLink extends \yii\base\Widget
      */
     public function run()
     {
-        if(!$this->url) {
+        if (!$this->url) {
             return;
         }
 
@@ -54,7 +54,4 @@ class EditLink extends \yii\base\Widget
             ]);
         }
     }
-
 }
-
-?>

@@ -20,7 +20,4 @@ class WallEntryLabels extends \yii\base\Widget
             'object' => $this->object,
         ]);
     }
-
 }
-
-?>

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Back to stream' => 'Torna a l\'activitat',
   'Content with attached files' => 'Continguts amb arxius adjunts',
   'Created by me' => 'Creat per mi',
@@ -22,4 +22,4 @@ return array (
   'The content has been unpinned.' => 'El contingut s\'ha desancorat.',
   'Where I´m involved' => 'On estic involucrat',
   'Your last edit state has been saved!' => 'La seua última  edició de l\'estat s\'ha gravat!',
-);
+];

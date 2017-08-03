@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Pin to top' => 'Piespraust augšpusē',
   'Unpin' => 'Atspraust',
-);
+];

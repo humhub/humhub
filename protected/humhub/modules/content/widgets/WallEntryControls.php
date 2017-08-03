@@ -4,7 +4,7 @@ namespace humhub\modules\content\widgets;
 
 /**
  * This widget is responsible for rendering the context menu for wallentries.
- * 
+ *
  * The default context menu can be extended by overwriting the getContextMenu function of
  * the WallEntryWidget.
  */
@@ -41,13 +41,13 @@ class WallEntryControls extends \humhub\widgets\BaseStack
     /**
      * Returns the widget definition for the given $menuItem.
      * The $menuItem can either be given as single array:
-     * 
+     *
      * ['label' => 'mylabel', icon => 'fa-myicon', 'data-action-click' => 'myaction', ...]
-     * 
+     *
      *  or as widget type definition:
-     * 
+     *
      * [MyWidget::class, [...], [...]]
-     * 
+     *
      * @param type $menuItem
      * @return type
      */
@@ -69,16 +69,15 @@ class WallEntryControls extends \humhub\widgets\BaseStack
 
     /**
      * Checks if the given $array is an associative array or not.
-     * 
+     *
      * @param array $arr
      * @return boolean
      */
     function isAssoc($arr)
     {
-        if (array() === $arr) {
+        if ([] === $arr) {
             return false;
         }
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
-
 }

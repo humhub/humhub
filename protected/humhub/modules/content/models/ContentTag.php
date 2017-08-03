@@ -15,7 +15,6 @@
 
 namespace humhub\modules\content\models;
 
-
 use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -88,14 +87,14 @@ class ContentTag extends ActiveRecord
     {
         if (is_array($contentContainer)) {
             parent::__construct($contentContainer);
-        } else if ($contentContainer instanceof ContentContainerActiveRecord) {
+        } elseif ($contentContainer instanceof ContentContainerActiveRecord) {
             $this->contentcontainer_id = $contentContainer->contentcontainer_id;
             parent::__construct($config);
         } else {
             parent::__construct([]);
         }
 
-        if(!empty($name)) {
+        if (!empty($name)) {
             $this->name = $name;
         }
     }
@@ -184,9 +183,9 @@ class ContentTag extends ActiveRecord
     public function validate($attributeNames = null, $clearErrors = true)
     {
         $result = parent::validate($attributeNames, $clearErrors);
-        if($attributeNames === null || in_array('addition', $attributeNames)) {
+        if ($attributeNames === null || in_array('addition', $attributeNames)) {
             // the addition will only be validated if $tag->addition has been called
-            if($this->hasAddition() && !$this->addition->validate()) {
+            if ($this->hasAddition() && !$this->addition->validate()) {
                 return false;
             }
         }
@@ -303,7 +302,7 @@ class ContentTag extends ActiveRecord
     protected static function typeQuery($query)
     {
         $instance = new static;
-        if($instance->includeTypeQuery && static::class != ContentTag::class) {
+        if ($instance->includeTypeQuery && static::class != ContentTag::class) {
             $query->andWhere(['content_tag.type' => static::class]);
         }
 

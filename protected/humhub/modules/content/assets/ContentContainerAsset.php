@@ -12,7 +12,7 @@ use yii\web\AssetBundle;
 
 /**
  * Content container asset for shared user/space js functionality.
- * 
+ *
  * @since 1.2
  * @author buddha
  */
@@ -30,5 +30,4 @@ class ContentContainerAsset extends AssetBundle
     public $js = [
         'js/humhub.content.container.js'
     ];
-
 }

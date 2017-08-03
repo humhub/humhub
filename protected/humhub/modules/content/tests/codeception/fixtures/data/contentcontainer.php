@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  */
-return [   
+return [
     ['id' => 1, 'guid' => '01e50e0d-82cd-41fc-8b0c-552392f5839c', 'class' => 'humhub\modules\user\models\User', 'pk' => '1', 'owner_user_id' => 1],
     ['id' => 2, 'guid' => '01e50e0d-82cd-41fc-8b0c-552392f5839d', 'class' => 'humhub\modules\user\models\User', 'pk' => '2', 'owner_user_id' => 2],
     ['id' => 3, 'guid' => '01e50e0d-82cd-41fc-8b0c-552392f5839e', 'class' => 'humhub\modules\user\models\User', 'pk' => '3', 'owner_user_id' => 3],

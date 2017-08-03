@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add a member to notify' => 'Benachrichtige Benutzer',
   'Content visibility' => 'Sichtbarkeit',
   'Make private' => 'Ändern in geschlossene Gruppe',
@@ -7,4 +7,4 @@ return array (
   'Notify members' => 'Informiere Mitglieder',
   'Public' => 'Öffentlich',
   'This space is archived.' => 'Dieser Space ist archiviert.',
-);
+];

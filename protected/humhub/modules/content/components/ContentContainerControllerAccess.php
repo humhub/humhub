@@ -15,7 +15,6 @@
 
 namespace humhub\modules\content\components;
 
-
 use Yii;
 use humhub\components\access\StrictAccess;
 use humhub\modules\space\models\Membership;
@@ -71,7 +70,7 @@ class ContentContainerControllerAccess extends StrictAccess
     {
         $userGroup = $this->contentContainer->getUserGroup($this->user);
 
-        if(!in_array($userGroup, $rule[self::RULE_USER_GROUP_ONLY])) {
+        if (!in_array($userGroup, $rule[self::RULE_USER_GROUP_ONLY])) {
             return false;
         }
 
@@ -99,7 +98,7 @@ class ContentContainerControllerAccess extends StrictAccess
      */
     public function validateContainerAccess()
     {
-        if($this->isSpaceController()) {
+        if ($this->isSpaceController()) {
             return $this->canAccessSpace();
         } else {
             return $this->canAccessUser();
@@ -111,17 +110,17 @@ class ContentContainerControllerAccess extends StrictAccess
      */
     private function canAccessSpace()
     {
-        if($this->contentContainer->isVisibleFor(Space::VISIBILITY_ALL)) {
+        if ($this->contentContainer->isVisibleFor(Space::VISIBILITY_ALL)) {
             return true;
         }
 
         // don't allow guests since visibility != VISIBILITY_ALL
-        if($this->isGuest()) {
+        if ($this->isGuest()) {
             $this->code = 401;
             return false;
         }
 
-        if($this->user->isSystemAdmin()) {
+        if ($this->user->isSystemAdmin()) {
             return true;
         }
 
@@ -132,7 +131,7 @@ class ContentContainerControllerAccess extends StrictAccess
             return true;
         }
 
-        if($this->isVisibleFor(Space::VISIBILITY_NONE)) {
+        if ($this->isVisibleFor(Space::VISIBILITY_NONE)) {
             $this->code = 404;
             $this->reason = Yii::t('ContentModule.base', 'This space is not visible!');
             return false;
@@ -146,11 +145,11 @@ class ContentContainerControllerAccess extends StrictAccess
      */
     private function getSpaceMembership()
     {
-        if(!$this->isSpaceController() || $this->isGuest()) {
+        if (!$this->isSpaceController() || $this->isGuest()) {
             return null;
         }
 
-        if($this->_membership === false) {
+        if ($this->_membership === false) {
             $this->_membership = $this->contentContainer->getMembership($this->user->id);
         }
 
@@ -162,13 +161,13 @@ class ContentContainerControllerAccess extends StrictAccess
      */
     private function canAccessUser()
     {
-        if($this->contentContainer->status == User::STATUS_NEED_APPROVAL) {
+        if ($this->contentContainer->status == User::STATUS_NEED_APPROVAL) {
             $this->reason = Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'This user account is not approved yet!');
             $this->code = 404;
             return false;
         }
 
-        if($this->isGuest() && $this->contentContainer->isVisibleFor(User::VISIBILITY_ALL)) {
+        if ($this->isGuest() && $this->contentContainer->isVisibleFor(User::VISIBILITY_ALL)) {
             $this->code = 401;
             $this->reason = Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'You need to login to view this user profile!');
             return false;
@@ -182,13 +181,13 @@ class ContentContainerControllerAccess extends StrictAccess
      */
     public function isAdmin()
     {
-        if(parent::isAdmin()) {
+        if (parent::isAdmin()) {
             return true;
         }
 
         if ($this->contentContainer instanceof Space) {
             return $this->contentContainer->isAdmin($this->user);
-        } else if($this->contentContainer instanceof Space) {
+        } elseif ($this->contentContainer instanceof Space) {
             return $this->user && $this->user->is($this->contentContainer);
         }
 
@@ -204,5 +203,4 @@ class ContentContainerControllerAccess extends StrictAccess
     {
         return $this->contentContainer instanceof User;
     }
-
 }

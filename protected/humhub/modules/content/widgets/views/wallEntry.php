@@ -18,7 +18,7 @@ use humhub\modules\content\widgets\WallEntryLabels;
             <div class="stream-entry-loader"></div>
 
             <!-- start: show wall entry options -->
-            <?php if($renderControls) : ?>
+            <?php if ($renderControls) : ?>
                 <ul class="nav nav-pills preferences">
                     <li class="dropdown ">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-label="<?= Yii::t('base', 'Toggle stream entry menu'); ?>" aria-haspopup="true">
@@ -42,7 +42,7 @@ use humhub\modules\content\widgets\WallEntryLabels;
             ]);
             ?>
 
-            <?php if ($showContentContainer && $container instanceof Space): ?>
+            <?php if ($showContentContainer && $container instanceof Space) : ?>
                 <?=
                 SpaceImage::widget([
                     'space' => $container,
@@ -57,7 +57,7 @@ use humhub\modules\content\widgets\WallEntryLabels;
             <div class="media-body">
                 <div class="media-heading">
                     <?= Html::containerLink($user); ?>
-                    <?php if ($showContentContainer): ?>
+                    <?php if ($showContentContainer) : ?>
                         <span class="viaLink">
                             <i class="fa fa-caret-right" aria-hidden="true"></i>
                             <?= Html::containerLink($container); ?>
@@ -83,7 +83,7 @@ use humhub\modules\content\widgets\WallEntryLabels;
             </div>
 
             <!-- wall-entry-addons class required since 1.2 -->
-            <?php if($renderAddons) : ?>
+            <?php if ($renderAddons) : ?>
                 <div class="stream-entry-addons clearfix">
                     <?= WallEntryAddons::widget($addonOptions); ?>
                 </div>

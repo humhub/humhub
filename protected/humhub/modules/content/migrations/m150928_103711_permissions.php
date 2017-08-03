@@ -9,14 +9,14 @@ class m150928_103711_permissions extends Migration
     public function up()
     {
 
-        $this->createTable('contentcontainer_permission', array(
+        $this->createTable('contentcontainer_permission', [
             'permission_id' =>  $this->string(150)->notNull(),
             'contentcontainer_id' => Schema::TYPE_INTEGER,
             'group_id' =>  $this->string(50)->notNull(),
             'module_id' => $this->string(50)->notNull(),
             'class' => Schema::TYPE_STRING,
             'state' => Schema::TYPE_BOOLEAN,
-        ));
+        ]);
         $this->addPrimaryKey('contentcontainer_permission_pk', 'contentcontainer_permission', ['permission_id', 'group_id', 'module_id', 'contentcontainer_id']);
     }
 

@@ -13,7 +13,7 @@ use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 
 /**
- * Activity for created content 
+ * Activity for created content
  *
  * @see \humhub\modules\content\components\ContentActiveRecord
  * @author luke
@@ -46,5 +46,4 @@ class ContentCreated extends BaseActivity implements ConfigurableActivityInterfa
     {
         return Yii::t('ContentModule.activities', 'Whenever a new content (e.g. post) has been created.');
     }
-
 }

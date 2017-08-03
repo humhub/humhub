@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Pin to top' => 'Ancorar al principi',
   'Unpin' => 'Desancorar',
-);
+];

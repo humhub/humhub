@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Archived' => 'Archivováno',
   'Public' => 'Veřejné',
   'Pinned' => 'Připnuto',
-);
+];

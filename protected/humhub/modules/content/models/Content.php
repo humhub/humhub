@@ -78,7 +78,7 @@ class Content extends ContentDeprecated
         return [
             [
                 'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
-                'mustBeInstanceOf' => array(ContentActiveRecord::className()),
+                'mustBeInstanceOf' => [ContentActiveRecord::className()],
             ],
             [
                 'class' => \humhub\components\behaviors\GUID::className(),
@@ -129,8 +129,8 @@ class Content extends ContentDeprecated
      */
     public function beforeSave($insert)
     {
-        if ($this->object_model == "" || $this->object_id == "") {
-            throw new Exception("Could not save content with object_model or object_id!");
+        if ($this->object_model == '' || $this->object_id == '') {
+            throw new Exception('Could not save content with object_model or object_id!');
         }
 
 
@@ -146,15 +146,15 @@ class Content extends ContentDeprecated
         }
 
         if ($insert) {
-            if ($this->created_by == "") {
+            if ($this->created_by == '') {
                 $this->created_by = Yii::$app->user->id;
             }
         }
 
         $this->stream_sort_date = new \yii\db\Expression('NOW()');
 
-        if ($this->created_by == "") {
-            throw new Exception("Could not save content without created_by!");
+        if ($this->created_by == '') {
+            throw new Exception('Could not save content without created_by!');
         }
 
         return parent::beforeSave($insert);
@@ -172,7 +172,6 @@ class Content extends ContentDeprecated
         }
 
         if ($insert && !$contentSource instanceof \humhub\modules\activity\models\Activity) {
-
             if ($this->container !== null) {
                 $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
 
@@ -330,14 +329,13 @@ class Content extends ContentDeprecated
     public function archive()
     {
         if ($this->canArchive()) {
-
             if ($this->isPinned()) {
                 $this->unpin();
             }
 
             $this->archived = 1;
             if (!$this->save()) {
-                throw new Exception("Could not archive content!" . print_r($this->getErrors(), 1));
+                throw new Exception('Could not archive content!' . print_r($this->getErrors(), 1));
             }
         }
     }
@@ -348,7 +346,6 @@ class Content extends ContentDeprecated
     public function unarchive()
     {
         if ($this->canArchive()) {
-
             $this->archived = 0;
             $this->save();
         }
@@ -384,7 +381,7 @@ class Content extends ContentDeprecated
     {
         $this->contentcontainer_id = $container->contentContainerRecord->id;
         $this->_container = $container;
-        if($container instanceof Space && $this->visibility === null) {
+        if ($container instanceof Space && $this->visibility === null) {
             $this->visibility = $container->getDefaultContentVisibility();
         }
     }
@@ -451,11 +448,11 @@ class Content extends ContentDeprecated
      */
     public function addTag(ContentTag $tag)
     {
-        if(!empty($tag->contentcontainer_id) && $tag->contentcontainer_id != $this->contentcontainer_id) {
+        if (!empty($tag->contentcontainer_id) && $tag->contentcontainer_id != $this->contentcontainer_id) {
             throw new InvalidParamException(Yii::t('ContentModule.base', 'Content Tag with invalid contentcontainer_id assigned.'));
         }
 
-        if(ContentTagRelation::findBy($this, $tag)->count()) {
+        if (ContentTagRelation::findBy($this, $tag)->count()) {
             return true;
         }
 
@@ -580,7 +577,7 @@ class Content extends ContentDeprecated
      */
     public function checkGuestAccess()
     {
-        if(!$this->isPublic() || !Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
+        if (!$this->isPublic() || !Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
             return false;
         }
 
@@ -596,5 +593,4 @@ class Content extends ContentDeprecated
     {
         $this->updateAttributes(['stream_sort_date' => new \yii\db\Expression('NOW()')]);
     }
-
 }

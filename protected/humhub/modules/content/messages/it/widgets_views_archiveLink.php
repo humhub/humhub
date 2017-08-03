@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Move to archive' => 'Archivia',
   'Unarchive' => 'Disarchivia',
-);
+];

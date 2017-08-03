@@ -43,13 +43,10 @@ class WallEntryAddons extends BaseStack
      */
     public function addWidget($className, $params = [], $options = [])
     {
-        if(isset($this->widgetOptions[$className])) {
+        if (isset($this->widgetOptions[$className])) {
             $params = ArrayHelper::merge($params, $this->widgetOptions[$className]);
         }
 
         parent::addWidget($className, $params, $options);
     }
-
 }
-
-?>

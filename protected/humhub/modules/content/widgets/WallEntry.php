@@ -16,7 +16,7 @@ use humhub\modules\content\components\ContentContainerController;
 
 /**
  * WallEntry is responsible to show a content inside a stream/wall.
- * 
+ *
  * @see \humhub\modules\content\components\ContentActiveRecord
  * @since 0.20
  * @author luke
@@ -55,29 +55,29 @@ class WallEntry extends Widget
 
     /**
      * Route to edit the content
-     * 
+     *
      * @var string
      */
-    public $editRoute = "";
+    public $editRoute = '';
 
     /**
      * Defines the way the edit of this wallentry is displayed.
-     * 
-     * @var type 
+     *
+     * @var type
      */
     public $editMode = self::EDIT_MODE_INLINE;
 
     /**
      * The wall entry layout to use
-     * 
+     *
      * @var string
      */
-    public $wallEntryLayout = "@humhub/modules/content/widgets/views/wallEntry.php";
+    public $wallEntryLayout = '@humhub/modules/content/widgets/views/wallEntry.php';
 
     /**
      * @var string Defines the wallEntry Javascript implementation.
      */
-    public $jsWidget = "stream.StreamEntry";
+    public $jsWidget = 'stream.StreamEntry';
 
     /**
      * Can be used to overwrite default options of WallEntryAddon Widgets as for example ShowFiles etc.
@@ -148,7 +148,7 @@ class WallEntry extends Widget
 
     /**
      * Returns the edit url to edit the content (if supported)
-     * 
+     *
      * @return string url
      */
     public function getEditUrl()
@@ -159,7 +159,7 @@ class WallEntry extends Widget
 
         // Don't show edit link, when content container is space and archived
         if ($this->contentObject->content->container instanceof Space && $this->contentObject->content->container->status == Space::STATUS_ARCHIVED) {
-            return "";
+            return '';
         }
 
         return $this->contentObject->content->container->createUrl($this->editRoute, ['id' => $this->contentObject->id]);
@@ -167,16 +167,16 @@ class WallEntry extends Widget
 
     /**
      * Returns an array of contextmenu items either in form of a single array:
-     * 
+     *
      * ['label' => 'mylabel', icon => 'fa-myicon', 'data-action-click' => 'myaction', ...]
-     * 
+     *
      * or as widget type definition:
-     * 
+     *
      * [MyWidget::class, [...], [...]]
-     * 
+     *
      * If an $editRoute is set this function will include an edit button.
      * The edit logic can be changed by changing the $editMode.
-     * 
+     *
      * @return array
      * @since 1.2
      */
@@ -194,7 +194,7 @@ class WallEntry extends Widget
         $this->addControl($result, [PinLink::class, ['content' => $this->contentObject], ['sortOrder' => 500]]);
         $this->addControl($result, [ArchiveLink::class, ['content' => $this->contentObject], ['sortOrder' => 600]]);
 
-        if(isset($this->controlsOptions['add'])) {
+        if (isset($this->controlsOptions['add'])) {
             foreach ($this->controlsOptions['add'] as $linkOptions) {
                 $this->addControl($result, $linkOptions);
             }
@@ -203,8 +203,9 @@ class WallEntry extends Widget
         return $result;
     }
 
-    protected function addControl(&$result, $options) {
-        if(isset($this->controlsOptions['prevent']) && in_array($options[0], $this->controlsOptions['prevent'])) {
+    protected function addControl(&$result, $options)
+    {
+        if (isset($this->controlsOptions['prevent']) && in_array($options[0], $this->controlsOptions['prevent'])) {
             return;
         }
 
@@ -212,8 +213,8 @@ class WallEntry extends Widget
     }
 
     /**
-     * Renders the wall entry output 
-     * 
+     * Renders the wall entry output
+     *
      * @return string the output
      * @throws \Exception
      */
@@ -233,7 +234,7 @@ class WallEntry extends Widget
 
     /**
      * Returns the view paramters for the wall entry layout
-     * 
+     *
      * @return array the view parameter array
      */
     public function getWallEntryViewParams()
@@ -271,5 +272,4 @@ class WallEntry extends Widget
             'updatedAt' => $updatedAt
         ];
     }
-
 }

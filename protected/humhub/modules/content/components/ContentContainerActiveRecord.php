@@ -77,9 +77,9 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @param array $params
      * @param boolean|string $scheme
      */
-    public function createUrl($route = null, $params = array(), $scheme = false)
+    public function createUrl($route = null, $params = [], $scheme = false)
     {
-        return "";
+        return '';
     }
 
     /**
@@ -90,7 +90,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getDisplayName()
     {
-        return "Container: " . get_class($this) . " - " . $this->getPrimaryKey();
+        return 'Container: ' . get_class($this) . ' - ' . $this->getPrimaryKey();
     }
 
     /**
@@ -112,7 +112,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getWallOut()
     {
-        return "Default Wall Output for Class " . get_class($this);
+        return 'Default Wall Output for Class ' . get_class($this);
     }
     
     public static function findByGuid($token)
@@ -179,9 +179,9 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * ```php
      * $contentContainer->can(MyPermisison::class);
      * ```
-     * 
+     *
      * Note: This method is used to verify ContentContainerPermissions and not GroupPermissions.
-     * 
+     *
      * @param string|string[]|BasePermission $permission
      * @see PermissionManager::can()
      * @return boolean
@@ -201,7 +201,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getPermissionManager(User $user = null)
     {
-        if($user && !$user->is(Yii::$app->user->getIdentity())) {
+        if ($user && !$user->is(Yii::$app->user->getIdentity())) {
             return new ContentContainerPermissionManager([
                 'contentContainer' => $this,
                 'subject' => $user
@@ -225,7 +225,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getUserGroup(User $user = null)
     {
-        return "";
+        return '';
     }
 
     /**
@@ -238,7 +238,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     
     /**
      * Returns weather or not the contentcontainer is archived. (Default false).
-     * @return boolean 
+     * @return boolean
      * @since 1.2
      */
     public function isArchived()
@@ -265,5 +265,4 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     {
         return $this->visibility == $visibility;
     }
-
 }

@@ -15,7 +15,7 @@ use humhub\components\ActiveRecord;
 /**
  * ContentDeprecated is a compatiblity layer for the Content model
  * which ensures support for older HumHub versions.
- * 
+ *
  * Note the methods in this class will be removed in future releases!
  *
  * @since 1.2
@@ -59,7 +59,7 @@ class ContentDeprecated extends ActiveRecord
      * @deprecated since version 1.1
      * @param int $userId optional user id (if empty current user id will be used)
      */
-    public function canDelete($userId = "")
+    public function canDelete($userId = '')
     {
         return $this->canEdit(($userId !== '') ? User::findOne(['id' => $userId]) : null);
     }
@@ -72,7 +72,7 @@ class ContentDeprecated extends ActiveRecord
      * @param int $userId
      * @return boolean
      */
-    public function canRead($userId = "")
+    public function canRead($userId = '')
     {
         return $this->canView(($userId !== '') ? User::findOne(['id' => $userId]) : null);
     }
@@ -85,9 +85,8 @@ class ContentDeprecated extends ActiveRecord
      * @param int $userId
      * @return boolean
      */
-    public function canWrite($userId = "")
+    public function canWrite($userId = '')
     {
         return $this->canEdit(($userId !== '') ? User::findOne(['id' => $userId]) : null);
     }
-
 }

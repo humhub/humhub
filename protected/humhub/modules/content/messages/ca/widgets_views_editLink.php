@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Cancel Edit' => 'Cancel·lar edició',
   'Edit' => 'Editar',
-);
+];

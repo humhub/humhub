@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Back to stream' => 'Zurück zum Stream',
   'Content with attached files' => 'Inhalt mit angehängten Dateien',
   'Created by me' => 'Von mir erstellt',
@@ -22,4 +22,4 @@ return array (
   'The content has been unpinned.' => 'Die Anheftung des Inhalts wurde aufgehoben.',
   'Where I´m involved' => 'Wo ich involviert bin',
   'Your last edit state has been saved!' => 'Dein letzter Bearbeitungsstand wurde gespeichert.',
-);
+];

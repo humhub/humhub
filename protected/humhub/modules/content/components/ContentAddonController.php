@@ -11,7 +11,6 @@ namespace humhub\modules\content\components;
 use Yii;
 use yii\web\HttpException;
 
-
 /**
  * ContentAddonController is a base controller for ContentAddons.
  *
@@ -79,11 +78,11 @@ class ContentAddonController extends \humhub\components\Controller
         }
 
 
-        if ($modelClass == "" || $pk == "") {
+        if ($modelClass == '' || $pk == '') {
             throw new HttpException(500, 'Model & ID parameter required!');
         }
 
-        \humhub\libs\Helpers::CheckClassType($modelClass, array(ContentAddonActiveRecord::className(), ContentActiveRecord::className()));
+        \humhub\libs\Helpers::CheckClassType($modelClass, [ContentAddonActiveRecord::className(), ContentActiveRecord::className()]);
         $target = $modelClass::findOne(['id' => $pk]);
 
         if ($target === null) {
@@ -117,7 +116,7 @@ class ContentAddonController extends \humhub\components\Controller
     public function loadContentAddon($className, $pk)
     {
         if (!\humhub\libs\Helpers::CheckClassType($className, ContentAddonActiveRecord::className())) {
-            throw new \yii\base\Exception("Given className is not a content addon model!");
+            throw new \yii\base\Exception('Given className is not a content addon model!');
         }
 
         $target = $className::findOne(['id' => $pk]);
@@ -132,5 +131,4 @@ class ContentAddonController extends \humhub\components\Controller
 
         $this->contentAddon = $target;
     }
-
 }

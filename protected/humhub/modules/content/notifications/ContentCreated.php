@@ -43,7 +43,7 @@ class ContentCreated extends \humhub\modules\notification\components\BaseNotific
      */
     public function html()
     {
-        if($this->source->content->container instanceof User && $this->record->user->is($this->source->content->container)) {
+        if ($this->source->content->container instanceof User && $this->record->user->is($this->source->content->container)) {
             return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} posted on your profile {contentTitle}.', [
                 'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
                 'contentTitle' => $this->getContentInfo($this->source, false)
@@ -54,7 +54,6 @@ class ContentCreated extends \humhub\modules\notification\components\BaseNotific
                 'contentTitle' => $this->getContentInfo($this->source)
             ]);
         }
-
     }
 
     /**
@@ -94,7 +93,4 @@ class ContentCreated extends \humhub\modules\notification\components\BaseNotific
         }
         return false;
     }
-
 }
-
-?>

@@ -12,7 +12,7 @@ use Yii;
 
 /**
  * Content Module
- * 
+ *
  * @author Luke
  */
 class Module extends \humhub\components\Module
@@ -49,7 +49,7 @@ class Module extends \humhub\components\Module
     
     /**
      * @since 1.2
-     * @var integer Maximum allowed file uploads for posts/comments 
+     * @var integer Maximum allowed file uploads for posts/comments
      */
     public $maxAttachedFiles = 50;
 
@@ -85,5 +85,4 @@ class Module extends \humhub\components\Module
             'humhub\modules\content\notifications\ContentCreated'
         ];
     }
-
 }

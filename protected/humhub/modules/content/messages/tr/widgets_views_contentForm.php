@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add a member to notify' => 'Bilgilendirme için bir kullanıcı ekle',
   'Content visibility' => 'İçerik görünürlüğü',
   'Make private' => 'Gizli yap',
@@ -7,4 +7,4 @@ return array (
   'Notify members' => 'Üyeleri bilgilendir',
   'Public' => 'Açık',
   'This space is archived.' => 'Bu alan arşivlenmektedir.',
-);
+];

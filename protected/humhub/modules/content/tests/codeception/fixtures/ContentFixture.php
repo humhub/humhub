@@ -24,5 +24,4 @@ class ContentFixture extends ActiveFixture
         'humhub\modules\comment\tests\codeception\fixtures\CommentFixture',
         'humhub\modules\like\tests\codeception\fixtures\LikeFixture'
     ];
-
 }

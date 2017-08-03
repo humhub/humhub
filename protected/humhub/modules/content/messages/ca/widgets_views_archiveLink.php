@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Move to archive' => 'Arxiva-la',
   'Unarchive' => 'Treu-la de l\'arxiu',
-);
+];

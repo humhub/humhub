@@ -43,13 +43,13 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
         $this->space->save();
 
         $this->privatePost = new Post;
-        $this->privatePost->message = "Private Space1 Post";
+        $this->privatePost->message = 'Private Space1 Post';
         $this->privatePost->content->setContainer($this->space);
         $this->privatePost->content->visibility = Content::VISIBILITY_PRIVATE;
         $this->privatePost->save();
 
         $this->publicPost = new Post;
-        $this->publicPost->message = "Public Space1 Post";
+        $this->publicPost->message = 'Public Space1 Post';
         $this->publicPost->content->setContainer($this->space);
         $this->publicPost->content->visibility = Content::VISIBILITY_PUBLIC;
         $this->publicPost->save();
@@ -144,7 +144,6 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
         $this->assertTrue($this->publicPost->content->canView());
         $this->assertFalse($this->publicPost->content->canEdit());
         $this->assertFalse($this->privatePost->content->canEdit());
-
     }
 
     public function testGuestPermission()
@@ -183,7 +182,8 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
         $this->assertFalse($this->privatePost->content->canEdit());
     }
 
-    protected function setSpaceVisibility($visibility) {
+    protected function setSpaceVisibility($visibility)
+    {
         $this->space->visibility = $visibility;
         $this->space->save();
     }
@@ -191,7 +191,8 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
     /**
      * Used for resetting the permissionmanager cache etc.
      */
-    protected function reloadPosts() {
+    protected function reloadPosts()
+    {
         $this->privatePost = Post::findOne(['id' => $this->privatePost->id]);
         $this->publicPost = Post::findOne(['id' => $this->publicPost->id]);
     }

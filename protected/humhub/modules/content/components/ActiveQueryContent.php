@@ -14,7 +14,7 @@ use humhub\modules\space\models\Space;
 
 /**
  * ActiveQueryContent is an enhanced ActiveQuery with additional selectors for especially content.
- * 
+ *
  * @inheritdoc
  *
  * @author luke
@@ -23,7 +23,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
 {
 
     /**
-     * Own content scope for userRelated 
+     * Own content scope for userRelated
      * @see ActiveQueryContent::userRelated
      */
     const USER_RELATED_SCOPE_OWN = 1;
@@ -34,7 +34,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
 
     /**
      * Only returns user readable records
-     * 
+     *
      * @param \humhub\modules\user\models\User $user
      * @return \humhub\modules\content\components\ActiveQueryContent
      */
@@ -80,7 +80,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
 
     /**
      * Limits the returned records to the given ContentContainer.
-     * 
+     *
      * @param ContentContainerActiveRecord $container|null or null for global content
      * @return \humhub\modules\content\components\ActiveQueryContent
      * @throws \yii\base\Exception
@@ -100,14 +100,14 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
 
     /**
      * Adds an additional WHERE condition to the existing one.
-     * 
+     *
      * @inheritdoc
-     * 
+     *
      * @param array|string $condition
      * @param array $params
      * @return $this
      */
-    public function where($condition, $params = array())
+    public function where($condition, $params = [])
     {
         return parent::andWhere($condition, $params);
     }
@@ -115,12 +115,12 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
     /**
      * Finds user related content.
      * All available scopes: ActiveQueryContent::USER_RELATED_SCOPE_*
-     * 
-     * @param array $scopes 
+     *
+     * @param array $scopes
      * @param User $user
      * @return \humhub\modules\content\components\ActiveQueryContent
      */
-    public function userRelated($scopes = array(), $user = null)
+    public function userRelated($scopes = [], $user = null)
     {
         if ($user === null) {
             $user = Yii::$app->user->getIdentity();
@@ -139,7 +139,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
 
         if (in_array(self::USER_RELATED_SCOPE_SPACES, $scopes)) {
             $spaceMemberships = (new \yii\db\Query())
-                    ->select("sm.id")
+                    ->select('sm.id')
                     ->from('space_membership')
                     ->leftJoin('space sm', 'sm.id=space_membership.space_id')
                     ->where('space_membership.user_id=:userId AND space_membership.status=' . \humhub\modules\space\models\Membership::STATUS_MEMBER);
@@ -155,7 +155,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
 
         if (in_array(self::USER_RELATED_SCOPE_FOLLOWED_SPACES, $scopes)) {
             $spaceFollow = (new \yii\db\Query())
-                    ->select("sf.id")
+                    ->select('sf.id')
                     ->from('user_follow')
                     ->leftJoin('space sf', 'sf.id=user_follow.object_id AND user_follow.object_model=:spaceClass')
                     ->where('user_follow.user_id=:userId AND sf.id IS NOT NULL');
@@ -166,7 +166,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
 
         if (in_array(self::USER_RELATED_SCOPE_FOLLOWED_USERS, $scopes)) {
             $userFollow = (new \yii\db\Query())
-                    ->select(["uf.id"])
+                    ->select(['uf.id'])
                     ->from('user_follow')
                     ->leftJoin('user uf', 'uf.id=user_follow.object_id AND user_follow.object_model=:userClass')
                     ->where('user_follow.user_id=:userId AND uf.id IS NOT NULL');
@@ -176,7 +176,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
         }
 
         if (count($conditions) != 0) {
-            $this->andWhere("(" . join(') OR (', $conditions) . ")", $params);
+            $this->andWhere('(' . join(') OR (', $conditions) . ')', $params);
         } else {
             // No results, when no selector given
             $this->andWhere('1=2');
@@ -184,5 +184,4 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
 
         return $this;
     }
-
 }

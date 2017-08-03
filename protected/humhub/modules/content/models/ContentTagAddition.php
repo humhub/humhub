@@ -15,7 +15,6 @@
 
 namespace humhub\modules\content\models;
 
-
 use yii\db\ActiveRecord;
 
 /**
@@ -34,6 +33,4 @@ class ContentTagAddition extends ActiveRecord
     {
         $this->tag_id = $tag->id;
     }
-
-
 }

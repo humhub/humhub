@@ -55,7 +55,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      * @see \humhub\modules\content\widgets\WallEntry
      * @var string the WallEntry widget class
      */
-    public $wallEntryClass = "";
+    public $wallEntryClass = '';
 
     /**
      * @var boolean should the originator automatically follows this content when saved.
@@ -103,11 +103,11 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function __construct($contentContainer = [], $visibility = null, $config = [])
     {
-        if(is_array($contentContainer)) {
+        if (is_array($contentContainer)) {
             parent::__construct($contentContainer);
-        } else if($contentContainer instanceof ContentContainerActiveRecord) {
+        } elseif ($contentContainer instanceof ContentContainerActiveRecord) {
             $this->content->setContainer($contentContainer);
-            if($visibility !== null) {
+            if ($visibility !== null) {
                 $this->content->visibility = $visibility;
             }
             parent::__construct($config);
@@ -188,7 +188,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
             $labels[] = Label::danger(Yii::t('ContentModule.widgets_views_label', 'Pinned'))->sortOrder(100);
         }
 
-        if($this->content->isArchived()) {
+        if ($this->content->isArchived()) {
             $labels[] = Label::warning(Yii::t('ContentModule.widgets_views_label', 'Archived'))->sortOrder(200);
         }
 
@@ -213,7 +213,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function getContentDescription()
     {
-        return "";
+        return '';
     }
 
     /**
@@ -225,20 +225,20 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function getManagePermission()
     {
-        if(!$this->hasManagePermission()) {
+        if (!$this->hasManagePermission()) {
             return null;
-        } else if(is_string($this->managePermission)) { // Simple Permission class specification
+        } elseif (is_string($this->managePermission)) { // Simple Permission class specification
             return $this->managePermission;
-        } else if(is_array($this->managePermission)) {
-            if(isset($this->managePermission['class'])) { // ['class' => '...', 'callback' => '...']
-                $handler = $this->managePermission['class'].'::'.$this->managePermission['callback'];
+        } elseif (is_array($this->managePermission)) {
+            if (isset($this->managePermission['class'])) { // ['class' => '...', 'callback' => '...']
+                $handler = $this->managePermission['class'] . '::' . $this->managePermission['callback'];
                 return call_user_func($handler, $this);
             } else { // Simple Permission array specification
                 return $this->managePermission;
             }
-        } else if(is_callable($this->managePermission)) { // anonymous function
+        } elseif (is_callable($this->managePermission)) { // anonymous function
             return $this->managePermission($this);
-        } else if($this->managePermission instanceof BasePermission) {
+        } elseif ($this->managePermission instanceof BasePermission) {
             return $this->managePermission;
         } else {
             return null;
@@ -269,7 +269,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
             Yii::configure($wallEntryWidget, $params);
             return $wallEntryWidget->renderWallEntry();
         }
-        return "";
+        return '';
     }
 
     /**
@@ -279,12 +279,12 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function getWallEntryWidget()
     {
-        if (is_subclass_of($this->wallEntryClass, WallEntry::class) ) {
+        if (is_subclass_of($this->wallEntryClass, WallEntry::class)) {
             $class = $this->wallEntryClass;
             $widget = new $class;
             $widget->contentObject = $this;
             return $widget;
-        } else if(!empty($this->wallEntryClass)) {
+        } elseif (!empty($this->wallEntryClass)) {
             $class = $this->wallEntryClass;
             $widget = new $class;
             return $widget;
@@ -374,5 +374,3 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
         return new ActiveQueryContent(get_called_class());
     }
 }
-
-?>

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Pin to top' => 'Kleef vast ',
   'Unpin' => 'Maak los',
-);
+];

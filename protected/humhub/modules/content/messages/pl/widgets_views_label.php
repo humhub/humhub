@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Archived' => 'Zarchiwizowany',
   'Public' => 'Publiczny',
   'Pinned' => 'Przypięty ',
-);
+];
