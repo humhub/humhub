@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Confirm</strong> comment deleting' => '<strong>Confirma</strong> que vols esborrar el comentari',
   'Cancel' => 'Cancel·la',
   'Cancel Edit' => 'Cancel·lar edició',
@@ -9,4 +9,4 @@ return array (
   'Do you really want to delete this comment?' => 'Segur que vols esborrar aquest comentari?',
   'Edit' => 'Editar',
   'Read full comment...' => 'Llegir el comentari sencer',
-);
+];

@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Show %count% more comments' => 'Vore els següents %count% comentaris',
-);
+];

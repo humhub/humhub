@@ -60,7 +60,7 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
             'source_class' => $this->source->className(),
             'source_pk' => $this->source->getPrimaryKey()])->count() > 0) {
                 return;
-            }
+        }
 
         return parent::send($user);
     }
@@ -72,7 +72,7 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
     {
         $model = $this->getCommentedRecord();
 
-		return $model->className() . '-' . $model->getPrimaryKey();
+        return $model->className() . '-' . $model->getPrimaryKey();
     }
 
     /**
@@ -91,24 +91,24 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
 
         if ($user->is($contentRecord->owner)) {
             if ($space) {
-                return Yii::t('CommentModule.notification', "{displayName} just commented your {contentTitle} in space {space}", [
+                return Yii::t('CommentModule.notification', '{displayName} just commented your {contentTitle} in space {space}', [
                     'displayName' => Html::encode($this->originator->displayName),
                     'contentTitle' => $contentInfo,
                     'space' => Html::encode($space->displayName)
                 ]);
             }
-            return Yii::t('CommentModule.notification', "{displayName} just commented your {contentTitle}", [
+            return Yii::t('CommentModule.notification', '{displayName} just commented your {contentTitle}', [
                 'displayName' => Html::encode($this->originator->displayName),
                 'contentTitle' => Helpers::truncateText($contentRecord->getContentDescription(), 25),
             ]);
-        } else if ($space) {
-            return Yii::t('CommentModule.notification', "{displayName} commented {contentTitle} in space {space}", [
+        } elseif ($space) {
+            return Yii::t('CommentModule.notification', '{displayName} commented {contentTitle} in space {space}', [
                 'displayName' => Html::encode($this->originator->displayName),
                 'contentTitle' => $contentInfo,
                 'space' => Html::encode($space->displayName)
             ]);
         } else {
-            return Yii::t('CommentModule.notification', "{displayName} commented {contentTitle}", [
+            return Yii::t('CommentModule.notification', '{displayName} commented {contentTitle}', [
                 'displayName' => Html::encode($this->originator->displayName),
                 'contentTitle' => $contentInfo,
             ]);
@@ -125,24 +125,24 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
 
         if ($user->is($contentRecord->owner)) {
             if ($space) {
-                return Yii::t('CommentModule.notification', "{displayNames} just commented your {contentTitle} in space {space}", [
+                return Yii::t('CommentModule.notification', '{displayNames} just commented your {contentTitle} in space {space}', [
                     'displayNames' => $this->getGroupUserDisplayNames(),
                     'contentTitle' => $contentInfo,
                     'space' => Html::encode($space->displayName)
                 ]);
             }
-            return Yii::t('CommentModule.notification', "{displayNames} just commented your {contentTitle}", [
+            return Yii::t('CommentModule.notification', '{displayNames} just commented your {contentTitle}', [
                 'displayNames' => $this->getGroupUserDisplayNames(),
                 'contentTitle' => $contentInfo,
             ]);
-        } else if ($space) {
-            return Yii::t('CommentModule.notification', "{displayNames} commented {contentTitle} in space {space}", [
+        } elseif ($space) {
+            return Yii::t('CommentModule.notification', '{displayNames} commented {contentTitle} in space {space}', [
                 'displayNames' => $this->getGroupUserDisplayNames(),
                 'contentTitle' => $contentInfo,
                 'space' => Html::encode($space->displayName)
             ]);
         } else {
-            return Yii::t('CommentModule.notification', "{displayNames} commented {contentTitle}", [
+            return Yii::t('CommentModule.notification', '{displayNames} commented {contentTitle}', [
                 'displayNames' => $this->getGroupUserDisplayNames(),
                 'contentTitle' => $contentInfo,
             ]);
@@ -157,12 +157,12 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
         $contentInfo = $this->getContentInfo($this->getCommentedRecord());
 
         if ($this->groupCount > 1) {
-            return Yii::t('CommentModule.notification', "{displayNames} commented {contentTitle}.", [
+            return Yii::t('CommentModule.notification', '{displayNames} commented {contentTitle}.', [
                 'displayNames' => $this->getGroupUserDisplayNames(),
                 'contentTitle' => $contentInfo
             ]);
         }
-        return Yii::t('CommentModule.notification', "{displayName} commented {contentTitle}.", [
+        return Yii::t('CommentModule.notification', '{displayName} commented {contentTitle}.', [
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
             'contentTitle' => $contentInfo
         ]);
@@ -177,5 +177,4 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
     {
         return $this->source->getCommentedRecord();
     }
-
 }

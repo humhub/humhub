@@ -39,7 +39,7 @@
             <?=
             humhub\widgets\mails\MailHeadline::widget([
                 'level' => 3,
-                'text' => $contentRecord->getContentName().':',
+                'text' => $contentRecord->getContentName() . ':',
                 'style' => 'text-transform:capitalize;'
             ])
             ?>

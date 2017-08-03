@@ -41,11 +41,10 @@ Yii::setAlias('@humhubTests', $cfg['humhub_root'] . '/protected/humhub/tests');
 \Codeception\Util\Autoload::addNamespace('', Yii::getAlias('@humhubTests/codeception/_support'));
 \Codeception\Util\Autoload::addNamespace('tests\codeception\fixtures', Yii::getAlias('@humhubTests/codeception/fixtures'));
 \Codeception\Util\Autoload::addNamespace('', Yii::getAlias('@humhubTests/codeception/_pages'));
-if(isset($cfg['modules'])) {
+if (isset($cfg['modules'])) {
     \Codeception\Configuration::append(['humhub_modules' => $cfg['modules']]);
 }
 
-if(isset($cfg['fixtures'])) {
+if (isset($cfg['fixtures'])) {
     \Codeception\Configuration::append(['fixtures' => $cfg['fixtures']]);
 }
-?>

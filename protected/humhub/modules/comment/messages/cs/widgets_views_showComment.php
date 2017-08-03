@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Confirm</strong> comment deleting' => '<strong>Potvrďte</strong> smazání komentáře',
   'Cancel' => 'Zrušit',
   'Cancel Edit' => 'Zrušit úpravy',
@@ -8,4 +8,4 @@ return array (
   'Do you really want to delete this comment?' => 'Opravdu chcete smazat tento komentář?',
   'Edit' => 'Upravit',
   'Read full comment...' => 'Přečíst celý komentář',
-);
+];

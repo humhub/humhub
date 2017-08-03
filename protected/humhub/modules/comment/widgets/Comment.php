@@ -55,5 +55,4 @@ class Comment extends Widget
                     'canDelete' => $this->comment->canDelete(),
         ]);
     }
-
 }

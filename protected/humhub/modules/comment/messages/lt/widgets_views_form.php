@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Send' => 'Išsiųsti',
   'Write a new comment...' => 'Parašykite naują komentarą...',
-);
+];

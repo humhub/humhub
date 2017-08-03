@@ -52,5 +52,4 @@ class ShowMore extends \yii\base\Widget
             'moreCount' => $moreCount
         ]);
     }
-
 }

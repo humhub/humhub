@@ -16,6 +16,6 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Show all {total} comments.' => '显示所有 {total} 条评论',
-);
+];

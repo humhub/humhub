@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Send' => 'Senden',
   'Write a new comment...' => 'Schreibe einen neuen Kommentar...',
-);
+];
