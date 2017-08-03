@@ -40,5 +40,4 @@ class LanguageChooser extends \yii\base\Widget
         $model->language = Yii::$app->language;
         return $this->render('languageChooser', ['model' => $model, 'languages' => Yii::$app->i18n->getAllowedLanguages()]);
     }
-
 }

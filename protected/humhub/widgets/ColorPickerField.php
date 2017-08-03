@@ -23,7 +23,7 @@ class ColorPickerField extends InputWidget
     
     /**
      * The container id used to append the actual color picker js widget.
-     * @var string 
+     * @var string
      */
     public $container;
 
@@ -34,7 +34,7 @@ class ColorPickerField extends InputWidget
 
     public function init()
     {
-        if(!empty($this->field)) {
+        if (!empty($this->field)) {
             $this->attribute = $this->field;
         }
     }
@@ -48,5 +48,4 @@ class ColorPickerField extends InputWidget
                     'inputId' => $this->getId(true)
         ]);
     }
-
 }

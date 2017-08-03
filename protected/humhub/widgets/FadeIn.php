@@ -15,7 +15,6 @@
 
 namespace humhub\widgets;
 
-
 /**
  * Simple FadeIn JsWidget
  * @since 1.2.2
@@ -53,5 +52,4 @@ class FadeIn extends JsWidget
         $this->content = ob_get_clean();
         return parent::run();
     }
-
 }

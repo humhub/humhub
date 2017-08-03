@@ -15,13 +15,12 @@
 
 namespace humhub\widgets;
 
-
 use humhub\components\Widget;
 
 class MarkdownFieldModals extends Widget
 {
-    public function run() {
+    public function run()
+    {
         return $this->render('markdownFieldModals');
     }
-
 }

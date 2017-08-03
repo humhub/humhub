@@ -8,28 +8,28 @@ use \yii\helpers\Url;
 
 /**
  * Abstract class for picker form fields.
- * 
+ *
  * Subclasses should at least overwrite the following fields:
- * 
+ *
  * - $defaultRoute for defining a default search query route
  * - $itemClass defines the type of item e.g. User/Space/...
  * - $itemKey defines the key attribute used as option values e.g. id/guid
- * 
+ *
  * And the following methods:
- * 
+ *
  * - getItemText for retrieving the option text for an item
  * - getItemImage for retrieving the option image (if required)
- * 
- * 
+ *
+ *
  * The json result of a picker search query should return an array of items with the following key/values:
- * 
+ *
  *  - id: option value (itemKey) (required)
  *  - text: option text (required)
  *  - image: option image (optional)
  *  - priority: used to sort results (optional)
  *  - disabled: can be used to disable certain items (optional)
  *  - disabbledText: text describing the reason why the item is disabled (optional)
- * 
+ *
  * @package humhub.modules_core.user.widgets
  * @since 1.2
  * @author buddha
@@ -39,8 +39,8 @@ abstract class BasePickerField extends InputWidget
 
     /**
      * Defines the javascript picker implementation.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $jsWidget = 'ui.picker.Picker';
 
@@ -52,8 +52,8 @@ abstract class BasePickerField extends InputWidget
     /**
      * Default route used for search queries.
      * This can be overwritten by defining the $url.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $defaultRoute;
 
@@ -88,32 +88,32 @@ abstract class BasePickerField extends InputWidget
     /**
      * Array of item instances. If this array is set the picker will ignore the
      * actual model attribute and instead use this array as selection.
-     * 
+     *
      * It this array is not set, the picker will try to load the items by means of the
-     * model attribute 
-     * 
+     * model attribute
+     *
      * @see BasePickerField::loadItems
-     * @var array 
+     * @var array
      */
     public $selection;
 
     /**
-     * @var array Array of item instances used as long the minInput is not exceed. 
+     * @var array Array of item instances used as long the minInput is not exceed.
      */
     public $defaultResults = [];
 
     /**
      * The item class used to load items by means of the model attribute value.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $itemClass;
 
     /**
      * The item key used as option value and loading items by attribute value.
      * e.g. id or guid
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $itemKey;
 
@@ -132,7 +132,7 @@ abstract class BasePickerField extends InputWidget
 
     /**
      * Model instance.
-     * 
+     *
      * @var \yii\db\ActiveRecord
      */
     public $model;
@@ -140,8 +140,8 @@ abstract class BasePickerField extends InputWidget
     /**
      * Model attribute which holds the picker value. The referenced model attribute has to be an
      * array.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $attribute;
 
@@ -154,38 +154,38 @@ abstract class BasePickerField extends InputWidget
 
     /**
      * Can be used to overwrite the default add more placeholder.
-     * @var string 
+     * @var string
      */
     public $placeholderMore;
 
     /**
      * If set to true the picker will be focused automatically.
-     * 
+     *
      * @var boolean
      */
     public $focus = false;
 
     /**
      * @inheritdoc
-     * @var boolean 
+     * @var boolean
      */
     public $init = true;
 
     /**
      * Used to retrieve the option text of a given $item.
-     * 
+     *
      * @param \yii\db\ActiveRecord $item selected item
      * @return string item option text
      */
-    protected abstract function getItemText($item);
+    abstract protected function getItemText($item);
 
     /**
      * Used to retrieve the option image url of a given $item.
-     * 
+     *
      * @param \yii\db\ActiveRecord $item selected item
      * @return string image url or null if no selection image required.
      */
-    protected abstract function getItemImage($item);
+    abstract protected function getItemImage($item);
 
     /**
      * @inhertidoc
@@ -195,7 +195,7 @@ abstract class BasePickerField extends InputWidget
         \humhub\assets\Select2BootstrapAsset::register($this->view);
 
         //Only for compatibility
-        if(empty($this->name)) {
+        if (empty($this->name)) {
             $this->name = $this->formName;
         }
 
@@ -215,7 +215,7 @@ abstract class BasePickerField extends InputWidget
 
         if ($this->form != null) {
             return $this->form->field($this->model, $this->attribute)->dropDownList($selection, $options);
-        } else if ($this->model != null) {
+        } elseif ($this->model != null) {
             return Html::activeDropDownList($this->model, $this->attribute, $selection, $options);
         } else {
             $name = (!$this->name) ? 'pickerField' : $this->name;
@@ -226,18 +226,18 @@ abstract class BasePickerField extends InputWidget
     /**
      * Prepares the selected options either by using the $selection array or by loading the items
      * by means of the model attribute value.
-     * 
+     *
      * The resulting array has the following format:
-     * 
+     *
      * [itemKey] => [
      *      'data-text' => itemText
      *      'data-image' => itemImage
      *      'selected' => selected
      * ]
-     * 
+     *
      * Subclasses should overwrite the getItemText and getItemImage function for this purpose.
-     * 
-     * @return array 
+     *
+     * @return array
      */
     protected function getSelectedOptions()
     {
@@ -264,7 +264,7 @@ abstract class BasePickerField extends InputWidget
 
     /**
      * Responsible for building the option data for an item.
-     * 
+     *
      * @param type $item
      * @param type $selected
      * @return string
@@ -285,11 +285,11 @@ abstract class BasePickerField extends InputWidget
     }
 
     /**
-     * Returns the item key which is used as option value. By default we use 
+     * Returns the item key which is used as option value. By default we use
      * the $itemKey attribibute of $item.
-     * 
+     *
      * e.g. $itemKey = 'id'
-     * 
+     *
      * @param type $item
      * @return type
      */
@@ -302,7 +302,7 @@ abstract class BasePickerField extends InputWidget
     /**
      * Loads all items of the given $selection array.
      * The $selection array contains all selected itemKeys.
-     * 
+     *
      * @param array $selection array of itemKeys
      * @return type array of items of type $itemClass or empty array for an empty selection
      */
@@ -312,7 +312,7 @@ abstract class BasePickerField extends InputWidget
             return [];
         }
 
-        // For older version (prior 1.2) - try to convert comma separated list to array 
+        // For older version (prior 1.2) - try to convert comma separated list to array
         if (!is_array($selection)) {
             $selection = explode(',', $selection);
         }
@@ -338,7 +338,7 @@ abstract class BasePickerField extends InputWidget
     /**
      * Returns an array of data attributes for this picker isntance.
      * Following data attributes can be configured by default:
-     * 
+     *
      *  - data-placeholder: Placeholder text if no value is set.
      *  - data-placeholder-more: Placeholder text displayed if at least one item is set.
      *  - data-maximum-selected: Info message displayed if $maxSelection is exceed.
@@ -347,7 +347,7 @@ abstract class BasePickerField extends InputWidget
      *  - data-load-more: Load more items text.
      *  - data-input-too-short: Info message displayed if $minInput characters is not exceed.
      *  - data-input-too-long: Info message displayed if $maxInput characters is exceed.
-     * 
+     *
      * @return array
      */
     protected function getData()
@@ -391,12 +391,11 @@ abstract class BasePickerField extends InputWidget
 
     /**
      * Returns the url for this picker instance. If no $url is set we use the $defaultRoute for creating the url.
-     * 
+     *
      * @return strings
      */
     protected function getUrl()
     {
         return ($this->url) ? $this->url : Url::to([$this->defaultRoute]);
     }
-
 }

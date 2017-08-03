@@ -15,7 +15,6 @@
 
 namespace humhub\widgets;
 
-
 use humhub\libs\Html;
 use humhub\modules\content\models\ContentTag;
 
@@ -34,16 +33,17 @@ class ContentTagDropDown extends InputWidget
     public $items;
     private $_itemOptions = [];
 
-    public function int() {
-        if(!$this->tagClass) {
+    public function int()
+    {
+        if (!$this->tagClass) {
             $this->tagClass = ContentTag::class;
             // Reset default behavior inf no specific tagClass is given
-            if($this->type === true) {
+            if ($this->type === true) {
                 $this->type = null;
             }
         }
 
-        if(!$this->none && !$this->noneLabel) {
+        if (!$this->none && !$this->noneLabel) {
             $this->noneLabel = Yii::t('ContentModule.widgets_ContentTagDropDown', 'None');
         }
     }
@@ -52,16 +52,16 @@ class ContentTagDropDown extends InputWidget
     {
         $items = $this->getItems();
 
-        if(empty($items)) {
+        if (empty($items)) {
             return;
         }
 
         $options = $this->getOptions();
         unset($options['id']);
 
-        if($this->form && $this->hasModel()) {
+        if ($this->form && $this->hasModel()) {
             return $this->form->field($this->model, $this->attribute)->dropDownList($items, $options);
-        } else if($this->hasModel()) {
+        } elseif ($this->hasModel()) {
             return Html::activeDropDownList($this->model, $this->attribute, $items, $options);
         } else {
             return Html::dropDownList($this->name, $this->value, $items, $options);
@@ -75,7 +75,7 @@ class ContentTagDropDown extends InputWidget
             'options' => $this->_itemOptions
         ];
 
-        if($this->prompt) {
+        if ($this->prompt) {
             $result['prompt'] = $this->prompt;
         }
 
@@ -84,18 +84,18 @@ class ContentTagDropDown extends InputWidget
 
     public function getItems()
     {
-        if($this->items) {
+        if ($this->items) {
             return $this->items;
         }
 
-        if(!$this->query) {
-            if($this->contentContainer) {
-                $this->query = call_user_func($this->tagClass .'::findByContainer', $this->contentContainer);
-            } elseif(!empty($this->type)){
+        if (!$this->query) {
+            if ($this->contentContainer) {
+                $this->query = call_user_func($this->tagClass . '::findByContainer', $this->contentContainer);
+            } elseif (!empty($this->type)) {
                 $type = ($this->type === true) ? $this->tagClass : $this->type;
-                $this->query = call_user_func($this->tagClass .'::findByType', [$type]);
+                $this->query = call_user_func($this->tagClass . '::findByType', [$type]);
             } else {
-                $this->query = call_user_func($this->tagClass .'::find');
+                $this->query = call_user_func($this->tagClass . '::find');
             }
         }
 
@@ -111,5 +111,4 @@ class ContentTagDropDown extends InputWidget
 
         return $result;
     }
-
 }

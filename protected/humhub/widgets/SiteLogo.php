@@ -13,5 +13,4 @@ class SiteLogo extends \yii\base\Widget
     {
         return $this->render('logo', ['logo' => new LogoImage(), 'place' => $this->place]);
     }
-
 }

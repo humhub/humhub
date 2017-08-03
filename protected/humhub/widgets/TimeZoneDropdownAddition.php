@@ -15,7 +15,6 @@
 
 namespace humhub\widgets;
 
-
 use Yii;
 use humhub\libs\TimezoneHelper;
 use humhub\components\Widget;
@@ -50,12 +49,12 @@ class TimeZoneDropdownAddition extends InputWidget
 
     private function getCurrentLabel()
     {
-        if($this->model) {
+        if ($this->model) {
             $attribute = $this->attribute;
             $this->value = $this->model->$attribute;
         }
 
-        if(isset($this->getTimeZoneItems()[$this->value])) {
+        if (isset($this->getTimeZoneItems()[$this->value])) {
             return $this->getTimeZoneItems()[$this->value];
         }
 
@@ -65,11 +64,10 @@ class TimeZoneDropdownAddition extends InputWidget
 
     public function getTimeZoneItems()
     {
-        if(empty($this->timeZoneItems)) {
+        if (empty($this->timeZoneItems)) {
             $this->timeZoneItems = TimezoneHelper::generateList();
         }
 
         return $this->timeZoneItems;
     }
-
 }

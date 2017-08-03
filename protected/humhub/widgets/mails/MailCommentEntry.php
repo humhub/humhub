@@ -21,12 +21,12 @@ class MailCommentEntry extends \yii\base\Widget
 {
 
     /**
-     * @var \humhub\modules\user\models\User content originator 
+     * @var \humhub\modules\user\models\User content originator
      */
     public $originator;
     
     /**
-     * @var string|Viewable|ContentOwner content to render 
+     * @var string|Viewable|ContentOwner content to render
      */
     public $comment;
     
@@ -35,8 +35,8 @@ class MailCommentEntry extends \yii\base\Widget
      */
     public $space;
     
-    /** 
-     * @var string content date 
+    /**
+     * @var string content date
      */
     public $date;
 
@@ -53,7 +53,4 @@ class MailCommentEntry extends \yii\base\Widget
                     'date' => $this->date
         ]);
     }
-
 }
-
-?>

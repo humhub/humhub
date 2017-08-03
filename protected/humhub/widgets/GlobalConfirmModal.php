@@ -35,5 +35,4 @@ class GlobalConfirmModal extends \yii\base\Widget
             'footer' => '<button data-modal-cancel data-modal-close class="btn btn-default"></button><button data-modal-confirm data-modal-close class="btn btn-primary"></button>'
         ]);
     }
-
 }

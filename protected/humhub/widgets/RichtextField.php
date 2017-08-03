@@ -17,8 +17,8 @@ class RichtextField extends InputWidget
 
     /**
      * Defines the javascript picker implementation.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $jsWidget = 'ui.richtext.Richtext';
 
@@ -31,7 +31,7 @@ class RichtextField extends InputWidget
 
     /**
      * Can be used to overwrite the default placeholder.
-     * 
+     *
      * @var string
      */
     public $placeholder;
@@ -39,51 +39,51 @@ class RichtextField extends InputWidget
     /**
      * The url used for the default @ metioning.
      * If there is no $searchUrl is given, the $searchRoute will be used instead.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $mentioningUrl;
 
     /**
      * Route used for the default @ mentioning. This will only be used if
      * not $searchUrl is given.
-     * 
-     * @var string 
+     *
+     * @var string
      */
-    protected $mentioningRoute = "/search/search/mentioning";
+    protected $mentioningRoute = '/search/search/mentioning';
 
     /**
      * Richtext features supported for within this feature.
      * By default all features will be included.
-     * 
-     * @var array 
+     *
+     * @var array
      */
     public $includes = [];
 
     /**
      * Richtext features not supported in this richtext feature.
-     * 
-     * @var array 
+     *
+     * @var array
      */
     public $excludes = [];
 
     /**
      * If set to true the picker will be focused automatically.
-     * 
-     * @var boolean 
+     *
+     * @var boolean
      */
     public $focus = false;
 
     /**
      * Disables the input field.
-     * @var boolean 
+     * @var boolean
      */
     public $disabled = false;
 
     /**
      * Will be used as userfeedback, why this richtext is disabled.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $disabledText = false;
 
@@ -118,7 +118,7 @@ class RichtextField extends InputWidget
             $input = $this->form->field($this->model, $this->attribute)->textarea($inputOptions)->label(false);
             $richText = Html::tag('div', RichText::widget(['text' => $this->model->$modelAttribute, 'edit' => true]), $this->getOptions());
             $richText = $this->getLabel() . $richText;
-        } else if ($this->model != null) {
+        } elseif ($this->model != null) {
             $input = Html::activeTextarea($this->model, $this->attribute, $inputOptions);
             $richText = Html::tag('div', RichText::widget(['text' => $this->model->$modelAttribute, 'edit' => true]), $this->getOptions());
             $richText = $this->getLabel() . $richText;
@@ -133,8 +133,8 @@ class RichtextField extends InputWidget
 
     public function getLabel()
     {
-        if(!$this->label) {
-            return "";
+        if (!$this->label) {
+            return '';
         }
         
         if ($this->label === true && $this->model != null) {
@@ -164,8 +164,8 @@ class RichtextField extends InputWidget
     public function getAttributes()
     {
         return [
-            'class' => "atwho-input form-control humhub-ui-richtext",
-            'contenteditable' => "true",
+            'class' => 'atwho-input form-control humhub-ui-richtext',
+            'contenteditable' => 'true',
         ];
     }
 
@@ -173,5 +173,4 @@ class RichtextField extends InputWidget
     {
         return ($this->mentioningUrl) ? $this->mentioningUrl : Url::to([$this->mentioningRoute]);
     }
-
 }

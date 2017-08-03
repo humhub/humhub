@@ -12,7 +12,7 @@ use Yii;
 
 /**
  * Shows a given date & time as automatically updating fuzzy timestamps (e.g. "4 minutes ago" or "about 1 day ago").
- * 
+ *
  * @author luke
  */
 class TimeAgo extends \yii\base\Widget
@@ -53,7 +53,7 @@ class TimeAgo extends \yii\base\Widget
 
     /**
      * Render TimeAgo Javascript
-     * 
+     *
      * @return string timeago span
      */
     public function renderTimeAgo()
@@ -64,7 +64,7 @@ class TimeAgo extends \yii\base\Widget
         }
 
         // Convert timestamp to ISO 8601
-        $this->timestamp = date("c", $this->timestamp);
+        $this->timestamp = date('c', $this->timestamp);
 
         $this->getView()->registerJs('$(".time").timeago();', \yii\web\View::POS_END, 'timeago');
         return '<span class="time" title="' . $this->timestamp . '">' . $this->getFullDateTime() . '</span>';
@@ -72,7 +72,7 @@ class TimeAgo extends \yii\base\Widget
 
     /**
      * Show full date
-     * 
+     *
      * @param int $elasped time in seconds
      * @return string output of full date and time
      */
@@ -90,7 +90,7 @@ class TimeAgo extends \yii\base\Widget
 
     /**
      * Returns full date as text
-     * 
+     *
      * @return string
      */
     protected function getFullDateTime()
@@ -101,5 +101,4 @@ class TimeAgo extends \yii\base\Widget
 
         return Yii::$app->formatter->asDate($this->timestamp, 'medium') . ' - ' . Yii::$app->formatter->asTime($this->timestamp, 'short');
     }
-
 }

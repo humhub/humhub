@@ -33,5 +33,4 @@ class ActiveField extends \yii\bootstrap\ActiveField
 
         return parent::widget($class, $config);
     }
-
 }

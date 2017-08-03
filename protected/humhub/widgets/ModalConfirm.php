@@ -57,12 +57,12 @@ class ModalConfirm extends \yii\base\Widget
     /**
      * @var String button name for confirming
      */
-    public $buttonTrue = "";
+    public $buttonTrue = '';
 
     /**
      * @var String button name for canceling
      */
-    public $buttonFalse = "";
+    public $buttonFalse = '';
 
     /**
      * @var String classes for the displaying link
@@ -87,27 +87,27 @@ class ModalConfirm extends \yii\base\Widget
     /**
      * @var String Tooltip text
      */
-    public $linkTooltipText = "";
+    public $linkTooltipText = '';
 
     /**
      * @var String contains optional JavaScript code to execute, after user clicked the TrueButton
      * By default (when it remains empty), the modal content will be replaced with the content from $linkHref
      */
-    public $confirmJS = "";
+    public $confirmJS = '';
 
     /**
      * @var String contains optional JavaScript code to execute after modal has been made visible to the user
      */
-    public $modalShownJS = "";
+    public $modalShownJS = '';
     
-    public $ariaLabel = "";
+    public $ariaLabel = '';
 
     /**
      * Displays / Run the Widgets
      */
     public function run()
     {
-        return $this->render('modalConfirm', array(
+        return $this->render('modalConfirm', [
                     'uniqueID' => $this->uniqueID,
                     'linkOutput' => $this->linkOutput,
                     'title' => $this->title,
@@ -122,9 +122,6 @@ class ModalConfirm extends \yii\base\Widget
                     'linkTooltipText' => $this->linkTooltipText,
                     'confirmJS' => $this->confirmJS,
                     'modalShownJS' => $this->modalShownJS
-        ));
+        ]);
     }
-
 }
-
-?>

@@ -14,6 +14,7 @@
  */
 
 namespace humhub\widgets;
+
 use humhub\assets\BootstrapMarkdownAsset;
 use humhub\libs\Html;
 use humhub\modules\file\widgets\UploadButton;
@@ -47,7 +48,7 @@ class MarkdownField extends InputWidget
      *
      * @var string
      */
-    public $parserClass = "HMarkdown";
+    public $parserClass = 'HMarkdown';
 
     /**
      * @var bool show label
@@ -111,13 +112,13 @@ class MarkdownField extends InputWidget
         BootstrapMarkdownAsset::register($this->view);
         $this->view->registerCssFile('@web-static/css/bootstrap-markdown-override.css');
 
-        if($this->placeholder === null && $this->hasModel()) {
+        if ($this->placeholder === null && $this->hasModel()) {
             $this->placeholder = $this->model->getAttributeLabel($this->attribute);
         }
 
         if ($this->form != null) {
             $textArea = $this->form->field($this->model, $this->attribute)->textarea($this->getOptions())->label($this->label);
-        } else if ($this->model != null) {
+        } elseif ($this->model != null) {
             $textArea = Html::activeTextarea($this->model, $this->attribute, $this->getOptions());
         } else {
             $textArea = Html::textarea($this->name, $this->value, $this->getOptions());
@@ -139,12 +140,12 @@ class MarkdownField extends InputWidget
 
     public function getData()
     {
-        if(empty($this->fileModel)) {
+        if (empty($this->fileModel)) {
             $this->fileModel = $this->model;
         }
 
-        if($this->model && $this->fileAttribute) {
-            $this->filesInputName = $this->fileModel->formName().'['.$this->fileAttribute.'][]';
+        if ($this->model && $this->fileAttribute) {
+            $this->filesInputName = $this->fileModel->formName() . '[' . $this->fileAttribute . '][]';
         }
 
         return [

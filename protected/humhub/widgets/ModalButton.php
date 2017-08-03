@@ -15,7 +15,6 @@
 
 namespace humhub\widgets;
 
-
 use humhub\components\Widget;
 use humhub\libs\Html;
 use Yii;
@@ -52,7 +51,7 @@ class ModalButton extends Button
      */
     public static function submitModal($url = null, $text = null)
     {
-        if(!$text) {
+        if (!$text) {
             $text = Yii::t('base', 'Save');
         }
 
@@ -65,7 +64,7 @@ class ModalButton extends Button
      */
     public static function cancel($text = null)
     {
-        if(!$text) {
+        if (!$text) {
             $text = Yii::t('base', 'Cancel');
         }
 

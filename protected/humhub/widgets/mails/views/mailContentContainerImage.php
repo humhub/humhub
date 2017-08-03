@@ -13,7 +13,7 @@ use yii\helpers\Html;
 ?>
 
 <a href="<?= $url ?>">
-    <img src="<?= $container->getProfileImage()->getUrl("", true); ?>"
+    <img src="<?= $container->getProfileImage()->getUrl('', true); ?>"
          width="50"
          height="50"
          alt=""

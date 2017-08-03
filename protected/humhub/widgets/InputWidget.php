@@ -92,5 +92,4 @@ class InputWidget extends JsWidget
     {
         return $this->model instanceof Model && $this->attribute !== null;
     }
-
 }

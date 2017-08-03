@@ -19,7 +19,7 @@ class ModalDialog extends Modal
     public function init()
     {
         parent::init();
-        if(!$this->body && !$this->footer) {
+        if (!$this->body && !$this->footer) {
             ob_start();
             ob_implicit_flush(false);
         }
@@ -30,7 +30,7 @@ class ModalDialog extends Modal
      */
     public function run()
     {
-        if(!$this->body && !$this->footer) {
+        if (!$this->body && !$this->footer) {
             $this->dialogContent = ob_get_clean();
         }
         
@@ -62,8 +62,8 @@ class ModalDialog extends Modal
     public function getAttributes()
     {
         $dialogClass = 'modal-dialog';
-        $dialogClass .= ($this->size != null) ? ' modal-dialog-'.$this->size : '';
-        $dialogClass .= ($this->animation != null) ? ' animated '.$this->animation : '';
+        $dialogClass .= ($this->size != null) ? ' modal-dialog-' . $this->size : '';
+        $dialogClass .= ($this->animation != null) ? ' animated ' . $this->animation : '';
 
         return [
             'class' => $dialogClass
@@ -72,9 +72,8 @@ class ModalDialog extends Modal
     public function getData()
     {
         return [
-            'backdrop' => (!$this->closable || $this->backdrop === false) ? "static" : $this->backdrop,
-            'keyboard' => (!$this->closable || !$this->keyboard) ? "false" : 'true',
+            'backdrop' => (!$this->closable || $this->backdrop === false) ? 'static' : $this->backdrop,
+            'keyboard' => (!$this->closable || !$this->keyboard) ? 'false' : 'true',
         ];
     }
-
 }
