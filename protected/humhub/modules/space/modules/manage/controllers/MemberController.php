@@ -61,11 +61,11 @@ class MemberController extends Controller
             return $membership->getErrors();
         }
 
-        return $this->render('index', array(
+        return $this->render('index', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
                     'space' => $space
-        ));
+        ]);
     }
 
     /**
@@ -79,11 +79,11 @@ class MemberController extends Controller
         $searchModel->status = Membership::STATUS_INVITED;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('pending-invitations', array(
+        return $this->render('pending-invitations', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
                     'space' => $space
-        ));
+        ]);
     }
 
     /**
@@ -97,11 +97,11 @@ class MemberController extends Controller
         $searchModel->status = Membership::STATUS_APPLICANT;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('pending-approvals', array(
+        return $this->render('pending-approvals', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
                     'space' => $space
-        ));
+        ]);
     }
 
     /**
@@ -152,7 +152,7 @@ class MemberController extends Controller
 
         $space = $this->getSpace();
         $userGuid = Yii::$app->request->get('userGuid');
-        $user = User::findOne(array('guid' => $userGuid));
+        $user = User::findOne(['guid' => $userGuid]);
 
         if ($space->isSpaceOwner($user->id)) {
             throw new HttpException(500, 'Owner cannot be removed!');
@@ -187,7 +187,4 @@ class MemberController extends Controller
                     'model' => $model
         ]);
     }
-
 }
-
-?>

@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Delete' => 'Sil',
   'Save' => 'Kaydet',
   'Visibility' => 'Görünüm',
-);
+];

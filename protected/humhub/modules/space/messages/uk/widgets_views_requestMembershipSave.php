@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Close' => '',
   'Request workspace membership' => '',
   'Your request was successfully submitted to the workspace administrators.' => '',
-);
+];

@@ -1,8 +1,8 @@
 <!-- add Tooltip to link -->
 <?php
-$tooltip = "";
+$tooltip = '';
 
-if ($linkTooltipText != "") {
+if ($linkTooltipText != '') {
     $tooltip = 'data-placement="top" data-toggle="tooltip" data-original-title="' . $linkTooltipText . '"';
 }
 ?>
@@ -11,8 +11,7 @@ if ($linkTooltipText != "") {
 // replace by default the modal content by the new loaded content
 $confirm = 'function(html){ $("#confirmModal_' . $uniqueID . '").html(html);}';
 
-if ($confirmJS != "") {
-
+if ($confirmJS != '') {
     // ... or execute own JavaScript code, if exists
     $confirm = $confirmJS;
 }
@@ -22,17 +21,21 @@ if ($confirmJS != "") {
 <?php if ($linkOutput == 'button') { ?>
 
     <!-- create button element -->
-    <button class="<?php echo $class; ?> <?= ($ariaLabel) ? ' aria-label="'.$ariaLabel.'"' : '' ?> <?php if ($tooltip != "") : ?>tt<?php endif;?>" style="<?php echo $style; ?>"
+    <button class="<?php echo $class; ?> <?= ($ariaLabel) ? ' aria-label="' . $ariaLabel . '"' : '' ?> <?php if ($tooltip != '') :
+?>tt<?php
+                   endif;?>" style="<?php echo $style; ?>"
             data-toggle="modal" data-target="#confirmModal_<?php echo $uniqueID; ?>" <?php echo $tooltip; ?>>
                 <?php echo $linkContent; ?>
     </button>
 
-<?php } else if ($linkOutput == 'a') { ?>
+<?php } elseif ($linkOutput == 'a') { ?>
 
     <!-- create normal link element -->
-    <a id="deleteLinkPost_<?php echo $uniqueID; ?>" <?= ($ariaLabel) ? ' aria-label="'.$ariaLabel.'"' : '' ?> class="<?php echo $class; ?> <?php if ($tooltip != "") : ?>tt<?php endif;?>" style="<?php echo $style; ?>" href="#"
+    <a id="deleteLinkPost_<?php echo $uniqueID; ?>" <?= ($ariaLabel) ? ' aria-label="' . $ariaLabel . '"' : '' ?> class="<?php echo $class; ?> <?php if ($tooltip != '') :
+?>tt<?php
+                          endif;?>" style="<?php echo $style; ?>" href="#"
        data-toggle="modal" data-target="#confirmModal_<?php echo $uniqueID; ?>" <?php echo $tooltip; ?>>
-           <?php echo $linkContent; ?>
+            <?php echo $linkContent; ?>
     </a>
 
 <?php } ?>
@@ -50,7 +53,7 @@ if ($confirmJS != "") {
                 <?php echo $message; ?>
             </div>
             <div class="modal-footer">
-                <?php if ($buttonTrue != "") { ?>
+                <?php if ($buttonTrue != '') { ?>
 
                     <?php
                     echo \humhub\widgets\AjaxButton::widget([
@@ -68,10 +71,10 @@ if ($confirmJS != "") {
                     ]);
                     ?>
                 <?php } ?>
-                <?php if ($buttonFalse != "") { ?>
+                <?php if ($buttonFalse != '') { ?>
                     <button type="button" class="btn btn-primary"
                             data-dismiss="modal"><?php echo $buttonFalse; ?></button>
-                        <?php } ?>
+                <?php } ?>
             </div>
         </div>
     </div>
@@ -92,7 +95,7 @@ if ($confirmJS != "") {
 
         // execute optional JavaScript code, when modal is showing
 <?php
-if ($modalShownJS != "") {
+if ($modalShownJS != '') {
     echo $modalShownJS;
 }
 ?>

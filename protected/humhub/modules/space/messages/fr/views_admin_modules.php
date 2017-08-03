@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Space</strong> Modules' => 'Modules des <strong>espaces</strong>',
   'Activated' => 'Activé',
   'Are you sure? *ALL* module data for this space will be deleted!' => 'Êtes-vous certain ? *TOUTES* les données des modules de cet espace seront définitivement supprimées !',
@@ -8,4 +8,4 @@ return array (
   'Disable' => 'Désactiver',
   'Enable' => 'Activer',
   'Enhance this space with modules.' => 'Améliorez cet espace avec des modules.',
-);
+];

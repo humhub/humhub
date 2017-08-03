@@ -15,10 +15,7 @@ class SpaceChangeImageWidget extends HWidget
     public function run()
     {
 
-        $this->render('changeImage', array(
-        ));
+        $this->render('changeImage', [
+        ]);
     }
-
 }
-
-?>

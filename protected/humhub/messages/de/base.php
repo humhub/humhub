@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Confirm</strong> Action' => 'Aktion <strong>bestätigen</strong>
 ',
   '<strong>Latest</strong> updates' => '<strong>Letzte</strong> Aktualisierungen',
@@ -72,4 +72,4 @@ return array (
   'Upload file' => 'Datei hochladen',
   'User not found!' => 'Benutzer nicht gefunden!',
   'You are not allowed to run this action.' => 'Du hast keine Berechtigung, diese Aktion auszuführen.',
-);
+];

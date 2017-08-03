@@ -38,6 +38,6 @@ $default = [
 return yii\helpers\ArrayHelper::merge(
     // Default Test Config
     $default,
-     // User Overwrite
-    require(dirname(__DIR__).'/../config/common.php')
+    // User Overwrite
+    require(dirname(__DIR__) . '/../config/common.php')
 );

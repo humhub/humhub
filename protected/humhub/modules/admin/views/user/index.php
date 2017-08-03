@@ -25,7 +25,7 @@ use humhub\widgets\GridView;
                     'attribute' => 'id',
                     'options' => ['style' => 'width:40px;'],
                     'format' => 'raw',
-                    'value' => function($data) {
+                    'value' => function ($data) {
                         return $data->id;
                     },
                 ],
@@ -42,7 +42,7 @@ use humhub\widgets\GridView;
                         'options' => ['style' => 'width:86px;', 'class' => 'form-control'],
                     ]),
                     'value' => function ($data) {
-                        return ($data->last_login == NULL) ? Yii::t('AdminModule.views_user_index', 'never') : Yii::$app->formatter->asDate($data->last_login);
+                        return ($data->last_login == null) ? Yii::t('AdminModule.views_user_index', 'never') : Yii::$app->formatter->asDate($data->last_login);
                     }
                 ],
                 [
@@ -50,13 +50,13 @@ use humhub\widgets\GridView;
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['style' => 'width:80px; min-width:80px;'],
                     'buttons' => [
-                        'view' => function($url, $model) {
+                        'view' => function ($url, $model) {
                             return Html::a('<i class="fa fa-eye"></i>', $model->getUrl(), ['class' => 'btn btn-primary btn-xs tt']);
                         },
-                        'update' => function($url, $model) {
+                        'update' => function ($url, $model) {
                             return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(['edit', 'id' => $model->id]), ['class' => 'btn btn-primary btn-xs tt']);
                         },
-                        'delete' => function($url, $model) {
+                        'delete' => function ($url, $model) {
                             return Html::a('<i class="fa fa-times"></i>', Url::toRoute(['delete', 'id' => $model->id]), ['class' => 'btn btn-danger btn-xs tt']);
                         }
                     ],

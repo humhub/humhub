@@ -36,38 +36,37 @@ class MimeHelper
 
         // Word
         if ($ext == 'doc' || $ext == 'docx') {
-            return "mime-word";
+            return 'mime-word';
         // Excel
-        } else if ($ext == 'xls' || $ext == 'xlsx') {
-            return "mime-excel";
+        } elseif ($ext == 'xls' || $ext == 'xlsx') {
+            return 'mime-excel';
         // Powerpoint
-        } else if ($ext == 'ppt' || $ext == 'pptx') {
-            return "mime-excel";
+        } elseif ($ext == 'ppt' || $ext == 'pptx') {
+            return 'mime-excel';
         // PDF
-        } else if ($ext == 'pdf') {
-            return "mime-pdf";
+        } elseif ($ext == 'pdf') {
+            return 'mime-pdf';
         // Archive
-        } else if ($ext == 'zip' || $ext == 'gzip' || $ext == 'rar' || $ext == 'tar' || $ext == '7z') {
-            return "mime-zip";
+        } elseif ($ext == 'zip' || $ext == 'gzip' || $ext == 'rar' || $ext == 'tar' || $ext == '7z') {
+            return 'mime-zip';
         // Audio
-        } else if ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif' || $ext == 'webp') {
-            return "mime-image";
+        } elseif ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif' || $ext == 'webp') {
+            return 'mime-image';
         // Audio
-        } else if ($ext == 'mp3' || $ext == 'aiff' || $ext == 'wav') {
-            return "mime-audio";
+        } elseif ($ext == 'mp3' || $ext == 'aiff' || $ext == 'wav') {
+            return 'mime-audio';
         // Video
-        } else if ($ext == 'avi' || $ext == 'mp4' || $ext == 'mov' || $ext == 'mpeg' || $ext == 'wma' || $ext == 'webm') {
-            return "mime-video";
+        } elseif ($ext == 'avi' || $ext == 'mp4' || $ext == 'mov' || $ext == 'mpeg' || $ext == 'wma' || $ext == 'webm') {
+            return 'mime-video';
         // Adobe Photoshop
-        } else if ($ext == 'psd') {
-            return "mime-photoshop";
+        } elseif ($ext == 'psd') {
+            return 'mime-photoshop';
         // Adobe Illustrator
-        } else if ($ext == 'ai') {
-            return "mime-illustrator";
+        } elseif ($ext == 'ai') {
+            return 'mime-illustrator';
         // other file formats
         } else {
-            return "mime-file";
+            return 'mime-file';
         }
     }
-
 }

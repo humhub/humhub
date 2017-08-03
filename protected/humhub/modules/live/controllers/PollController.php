@@ -191,5 +191,4 @@ class PollController extends Controller
 
         return $last;
     }
-
 }

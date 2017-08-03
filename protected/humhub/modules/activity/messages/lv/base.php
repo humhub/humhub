@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>E-Mail</strong> Summaries' => '<strong>E-pasta</strong> kopsavilkumi',
   'Activities' => 'Aktivitātes',
   'Daily' => 'Ikdienas',
@@ -20,4 +20,4 @@ return array (
   'You will only receive an e-mail if there is something new.' => 'Tu saņemsi e-pastu tikai tad, ja ir parādījies kaut kas jauns.',
   'Your daily summary' => 'Tavs dienas kopsavilkums',
   'Your weekly summary' => 'Tavs nedēļas kopsavilkums',
-);
+];

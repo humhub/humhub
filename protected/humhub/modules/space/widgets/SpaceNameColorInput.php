@@ -2,7 +2,6 @@
 
 namespace humhub\modules\space\widgets;
 
-
 use humhub\components\Widget;
 
 /**
@@ -28,5 +27,3 @@ class SpaceNameColorInput extends Widget
         ]);
     }
 }
-
-?>

@@ -34,7 +34,7 @@ use yii\helpers\Url;
                 'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'source', array_merge(['' => ''], $types)),
                 'options' => ['width' => '40px'],
                 'format' => 'raw',
-                'value' => function($data) use ($types) {
+                'value' => function ($data) use ($types) {
                     if (isset($types[$data->source])) {
                         return $types[$data->source];
                     }

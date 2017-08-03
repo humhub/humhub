@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Turn off notifications' => '',
   'Turn on notifications' => '',
-);
+];

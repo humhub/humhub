@@ -38,7 +38,7 @@ class MailHeadline extends \yii\base\Widget
      */
     public function run()
     {
-        if(!$this->level) {
+        if (!$this->level) {
             $this->level = 1;
         }
         
@@ -48,5 +48,4 @@ class MailHeadline extends \yii\base\Widget
                     'style' => $this->style
         ]);
     }
-
 }

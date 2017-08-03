@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'About' => 'درباره‌ی',
   'Add purchased module by licence key' => ' اضافه كردن ماژول خريداري شده را بوسيله لايسنس',
   'Admin' => 'مدير كل',
@@ -25,4 +25,4 @@ return array (
   'User posts' => 'پست هاي كاربر',
   'Userprofiles' => 'پروفايل هاي كاربري',
   'Users' => 'کاربران',
-);
+];

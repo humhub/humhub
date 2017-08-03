@@ -34,5 +34,4 @@ class m131213_165552_user_optimize extends Migration
 
         return true;
     }
-
 }

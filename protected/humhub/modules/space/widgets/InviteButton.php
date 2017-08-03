@@ -20,7 +20,6 @@
 
 namespace humhub\modules\space\widgets;
 
-
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
@@ -45,5 +44,4 @@ class InviteButton extends Widget
         
         return $this->render('inviteButton', ['space' => $this->space]);
     }
-
 }

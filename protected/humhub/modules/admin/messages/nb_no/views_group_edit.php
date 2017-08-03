@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Delete' => 'Slett',
   'Save' => 'Lagre',
   'Visibility' => 'Synlighet',
-);
+];

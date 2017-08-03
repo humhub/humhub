@@ -18,7 +18,7 @@ class Menu extends \humhub\widgets\BaseMenu
 {
     /** @var Space */
     public $space;
-    public $template = "@humhub/widgets/views/leftNavigation";
+    public $template = '@humhub/widgets/views/leftNavigation';
 
     public function init()
     {
@@ -27,23 +27,23 @@ class Menu extends \humhub\widgets\BaseMenu
         }
 
         if ($this->space === null) {
-            throw new \yii\base\Exception("Could not instance space menu without space!");
+            throw new \yii\base\Exception('Could not instance space menu without space!');
         }
 
-        $this->addItemGroup(array(
+        $this->addItemGroup([
             'id' => 'modules',
             'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', '<strong>Space</strong> menu'),
             'sortOrder' => 100,
-        ));
+        ]);
 
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', 'Stream'),
             'group' => 'modules',
             'url' => $this->space->createUrl('/space/space/home'),
             'icon' => '<i class="fa fa-bars"></i>',
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->id == "space" && (Yii::$app->controller->action->id == "index" || Yii::$app->controller->action->id == 'home') && Yii::$app->controller->module->id == "space"),
-        ));
+            'isActive' => (Yii::$app->controller->id == 'space' && (Yii::$app->controller->action->id == 'index' || Yii::$app->controller->action->id == 'home') && Yii::$app->controller->module->id == 'space'),
+        ]);
 
         parent::init();
     }
@@ -52,8 +52,8 @@ class Menu extends \humhub\widgets\BaseMenu
      * Searches for urls of modules which are activated for the current space
      * and offer an own site over the space menu.
      * The urls are associated with a module label.
-     * 
-     * Returns an array of urls with associated module labes for modules 
+     *
+     * Returns an array of urls with associated module labes for modules
      * @param type $space
      */
     public static function getAvailablePages()
@@ -69,7 +69,7 @@ class Menu extends \humhub\widgets\BaseMenu
 
     /**
      * Returns space default / homepage
-     * 
+     *
      * @return string|null the url to redirect or null for default home
      */
     public static function getDefaultPageUrl($space)
@@ -91,7 +91,7 @@ class Menu extends \humhub\widgets\BaseMenu
 
     /**
      * Returns space default / homepage
-     * 
+     *
      * @return string|null the url to redirect or null for default home
      */
     public static function getGuestsDefaultPageUrl($space)
@@ -110,7 +110,4 @@ class Menu extends \humhub\widgets\BaseMenu
         }
         return null;
     }
-
 }
-
-?>

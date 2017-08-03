@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '%moduleName% - Set as default module' => '%moduleName% - 设置为默认模块',
   'Activated' => '启用',
   'Always activated' => '一直启用',
@@ -26,4 +26,4 @@ return array (
   'Save' => '保存',
   'Spaces' => '空间',
   'User Profiles' => '用户属性',
-);
+];

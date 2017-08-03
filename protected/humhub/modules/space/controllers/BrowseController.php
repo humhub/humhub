@@ -43,7 +43,7 @@ class BrowseController extends Controller
     {
         \Yii::$app->response->format = 'json';
 
-        $keyword = Yii::$app->request->get('keyword', "");
+        $keyword = Yii::$app->request->get('keyword', '');
         $page = (int) Yii::$app->request->get('page', 1);
         $limit = (int) Yii::$app->request->get('limit', Yii::$app->settings->get('paginationSize'));
 
@@ -68,5 +68,4 @@ class BrowseController extends Controller
 
         return $json;
     }
-
 }

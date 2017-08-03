@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Created At' => '作成',
   'Created By' => '作成者',
   'Last Visit' => '',
@@ -8,4 +8,4 @@ return array (
   'Status' => 'ステータス',
   'Updated At' => '更新',
   'Updated By' => '',
-);
+];

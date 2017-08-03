@@ -101,7 +101,7 @@ class Group extends ActiveRecord
     public function getManager()
     {
         return $this->hasMany(User::className(), ['id' => 'user_id'])
-                        ->via('groupUsers', function($query) {
+                        ->via('groupUsers', function ($query) {
                             $query->where(['is_group_manager' => '1']);
                         });
     }
@@ -228,10 +228,9 @@ class Group extends ActiveRecord
         }
 
         $group = self::findOne($user->registrationGroupId);
-        $approvalUrl = \yii\helpers\Url::to(["/admin/approval"], true);
+        $approvalUrl = \yii\helpers\Url::to(['/admin/approval'], true);
 
         foreach ($group->manager as $manager) {
-
             Yii::$app->i18n->setUserLocale($manager);
 
             $html = Yii::t('UserModule.adminUserApprovalMail', 'Hello {displayName},', ['displayName' => $manager->displayName]) . "<br><br>\n\n" .
@@ -244,7 +243,7 @@ class Group extends ActiveRecord
             ]);
 
             $mail->setTo($manager->email);
-            $mail->setSubject(Yii::t('UserModule.adminUserApprovalMail', "New user needs approval"));
+            $mail->setSubject(Yii::t('UserModule.adminUserApprovalMail', 'New user needs approval'));
             $mail->send();
         }
 
@@ -280,5 +279,4 @@ class Group extends ActiveRecord
     {
         return self::find()->where(['show_at_directory' => '1'])->orderBy('name ASC')->all();
     }
-
 }

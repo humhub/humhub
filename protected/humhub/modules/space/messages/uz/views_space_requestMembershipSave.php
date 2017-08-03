@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>Request</strong> space membership' => '',
   'Close' => '',
   'Your request was successfully submitted to the space administrators.' => '',
-);
+];

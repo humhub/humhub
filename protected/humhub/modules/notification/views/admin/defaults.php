@@ -1,5 +1,6 @@
 <?php
 use yii\widgets\ActiveForm;
+
 /* @var $model \humhub\modules\notification\models\forms\NotificationSettings */
 ?>
 

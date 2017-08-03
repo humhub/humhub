@@ -26,7 +26,7 @@ abstract class BaseConverter extends \yii\base\Object
 
     /**
      * All options used for the converted file variant
-     * 
+     *
      * @var array
      */
     public $options = [];
@@ -44,7 +44,7 @@ abstract class BaseConverter extends \yii\base\Object
     /**
      * Returns the filename of the converted file.
      * The filename is a hash of used options and converter class.
-     * 
+     *
      * @return string the filename of converted file
      */
     public function getFilename()
@@ -56,7 +56,7 @@ abstract class BaseConverter extends \yii\base\Object
 
     /**
      * Returns the url to the converted file
-     * 
+     *
      * @return string
      */
     public function getUrl()
@@ -66,7 +66,7 @@ abstract class BaseConverter extends \yii\base\Object
 
     /**
      * Sets file for the converter
-     * 
+     *
      * @param \humhub\modules\file\models\File $file
      * @return boolean returns false if file cannot be converted
      */
@@ -79,5 +79,4 @@ abstract class BaseConverter extends \yii\base\Object
 
         return false;
     }
-
 }

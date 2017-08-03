@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Sign in / up' => 'Logg inn / registrer deg',
-);
+];

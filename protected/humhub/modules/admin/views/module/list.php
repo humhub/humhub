@@ -7,7 +7,7 @@ use yii\helpers\Url;
     <div class="panel-heading"><?= Yii::t('AdminModule.views_module_list', '<strong>Modules</strong> directory'); ?></div>
     <?= $this->render('_header'); ?>
     <div class="panel-body">
-        <?php if (count($installedModules) == 0): ?>
+        <?php if (count($installedModules) == 0) : ?>
             <br>
             <div><?= Yii::t('AdminModule.module_list', 'No modules installed yet. Install some to enhance the functionality!'); ?></div>
         <?php endif; ?>
@@ -32,21 +32,21 @@ use yii\helpers\Url;
                         <?= Yii::t('AdminModule.module_list', 'Version:'); ?> <?= $module->getVersion(); ?>
 
                         <?php if (Yii::$app->hasModule($module->id)) : ?>
-                            <?php if ($module->getConfigUrl() != "") : ?>
+                            <?php if ($module->getConfigUrl() != '') : ?>
                                 &middot; <?= Html::a(Yii::t('AdminModule.views_module_list', 'Configure'), $module->getConfigUrl(), ['style' => 'font-weight:bold']); ?>
                             <?php endif; ?>
 
-                            <?php if ($module instanceof \humhub\modules\content\components\ContentContainerModule): ?>
+                            <?php if ($module instanceof \humhub\modules\content\components\ContentContainerModule) : ?>
                                 &middot; <?= Html::a(Yii::t('AdminModule.views_module_list', 'Set as default'), Url::to(['/admin/module/set-as-default', 'moduleId' => $moduleId]), ['data-target' => '#globalModal']); ?>
                             <?php endif; ?>
 
                             &middot; <?= Html::a(Yii::t('AdminModule.views_module_list', 'Disable'), Url::to(['/admin/module/disable', 'moduleId' => $moduleId]), ['data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module data will be lost!')]); ?>
 
-                        <?php else: ?>
-                            &middot; <?= Html::a(Yii::t('AdminModule.views_module_list', 'Enable'), Url::to(['/admin/module/enable', 'moduleId' => $moduleId]), ['data-method' => 'POST', 'style' => 'font-weight:bold', 'data-loader' => "modal", 'data-message' => Yii::t('AdminModule.views_module_list', 'Enable module...')]); ?>
+                        <?php else : ?>
+                            &middot; <?= Html::a(Yii::t('AdminModule.views_module_list', 'Enable'), Url::to(['/admin/module/enable', 'moduleId' => $moduleId]), ['data-method' => 'POST', 'style' => 'font-weight:bold', 'data-loader' => 'modal', 'data-message' => Yii::t('AdminModule.views_module_list', 'Enable module...')]); ?>
                         <?php endif; ?>
 
-                        <?php if (Yii::$app->moduleManager->canRemoveModule($moduleId)): ?>
+                        <?php if (Yii::$app->moduleManager->canRemoveModule($moduleId)) : ?>
                             &middot; <?= Html::a(Yii::t('AdminModule.views_module_list', 'Uninstall'), Url::to(['/admin/module/remove', 'moduleId' => $moduleId]), ['data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module related data and files will be lost!')]); ?>
                         <?php endif; ?>
 

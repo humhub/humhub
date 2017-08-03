@@ -48,5 +48,4 @@ class NProgressAsset extends AssetBundle
             '/nprogress.js',
         ],
     ];
-
 }

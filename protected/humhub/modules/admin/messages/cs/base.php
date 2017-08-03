@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'About' => 'O mně',
   'Add purchased module by licence key' => 'Vložit koupený modul pomocí licenčního klíče',
   'Admin' => 'Správce',
@@ -25,4 +25,4 @@ return array (
   'User posts' => 'Příspěvky uživatele',
   'Userprofiles' => 'Uživateleské profily',
   'Users' => 'Uživatelé',
-);
+];

@@ -44,5 +44,4 @@ class ApproveUserForm extends \yii\base\Model
         $mail->setSubject($this->subject);
         $mail->send();
     }
-
 }

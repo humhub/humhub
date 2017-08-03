@@ -33,7 +33,7 @@ class FileCompat extends \humhub\components\ActiveRecord
 
     /**
      * Returns the path of stored file
-     * 
+     *
      * @deprecated since version 1.2
      * @param string $suffix
      * @return string path to file
@@ -45,7 +45,7 @@ class FileCompat extends \humhub\components\ActiveRecord
 
     /**
      * Return the preview image url of the file
-     * 
+     *
      * @deprecated since version 1.2
      * @param int $maxWidth
      * @param int $maxHeight
@@ -81,21 +81,21 @@ class FileCompat extends \humhub\components\ActiveRecord
      * @param string $suffix
      * @return string
      */
-    public function getFilename($suffix = "")
+    public function getFilename($suffix = '')
     {
         // without prefix
-        if ($suffix == "") {
+        if ($suffix == '') {
             return $this->file_name;
         }
 
         $fileParts = pathinfo($this->file_name);
 
-        return $fileParts['filename'] . "_" . $suffix . "." . $fileParts['extension'];
+        return $fileParts['filename'] . '_' . $suffix . '.' . $fileParts['extension'];
     }
 
     /**
      * Returns an array with informations about the file
-     * 
+     *
      * @deprecated since version 1.2
      * @return type
      */
@@ -111,7 +111,7 @@ class FileCompat extends \humhub\components\ActiveRecord
         $info['mimeIcon'] = \humhub\libs\MimeHelper::getMimeIconClassByExtension($this->getExtension());
         $info['mimeBaseType'] = $this->getMimeBaseType();
         $info['mimeSubType'] = $this->getMimeSubType();
-        $info['url'] = $this->getUrl("", false);
+        $info['url'] = $this->getUrl('', false);
 
         $previewImage = new \humhub\modules\file\converter\PreviewImage();
         $previewImage->applyFile($this);
@@ -126,12 +126,12 @@ class FileCompat extends \humhub\components\ActiveRecord
      */
     public function getMimeBaseType()
     {
-        if ($this->mime_type != "") {
+        if ($this->mime_type != '') {
             list($baseType, $subType) = explode('/', $this->mime_type);
             return $baseType;
         }
 
-        return "";
+        return '';
     }
 
     /**
@@ -140,17 +140,17 @@ class FileCompat extends \humhub\components\ActiveRecord
      */
     public function getMimeSubType()
     {
-        if ($this->mime_type != "") {
+        if ($this->mime_type != '') {
             list($baseType, $subType) = explode('/', $this->mime_type);
             return $subType;
         }
 
-        return "";
+        return '';
     }
 
     /**
      * Returns the extension of the file_name
-     * 
+     *
      * @deprecated since version 1.2
      * @return string the extension
      */
@@ -158,5 +158,4 @@ class FileCompat extends \humhub\components\ActiveRecord
     {
         return FileHelper::getExtension($this->file_name);
     }
-
 }

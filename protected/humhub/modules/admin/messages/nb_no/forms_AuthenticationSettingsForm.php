@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Allow limited access for non-authenticated users (guests)' => 'Allow limited access for non-authenticated users (guests)
 ',
   'Anonymous users can register' => 'Anonyme brukere kan registrere seg
@@ -11,4 +11,4 @@ return array (
 ',
   'Members can invite external users by email' => 'Medlemmer kan invitere eksterne brukere pr email',
   'Require group admin approval after registration' => 'Require group admin approval after registration',
-);
+];

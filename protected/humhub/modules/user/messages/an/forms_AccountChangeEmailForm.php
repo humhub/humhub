@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Current password' => ' ',
   'E-Mail change' => ' ',
   'New E-Mail address' => ' ',
-);
+];

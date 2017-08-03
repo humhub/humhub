@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '{displayNames} commented {contentTitle}' => '{displayNames} han comentat {contentTitle}',
   '{displayNames} commented {contentTitle} in space {space}' => '
 {displayNames} han comentat {contentTitle} en l\'espai {space}
@@ -20,4 +20,4 @@ return array (
   '{displayName} commented {contentTitle}.' => '{displayName} ha comentat {contentTitle}.',
   '{displayName} just commented your {contentTitle}' => '{displayNames} acaba de comentar el teu {contentTitle}',
   '{displayName} just commented your {contentTitle} in space {space}' => '{displayName} acaba de comentar el teu {contentTitle} en l\'espai {space}',
-);
+];

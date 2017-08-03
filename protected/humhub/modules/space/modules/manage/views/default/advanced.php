@@ -21,13 +21,13 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 
         <?php $form = ActiveForm::begin(['options' => ['id' => 'spaceIndexForm'], 'enableClientValidation' => false]); ?>
 
-        <?php if (Yii::$app->urlManager->enablePrettyUrl): ?>
+        <?php if (Yii::$app->urlManager->enablePrettyUrl) : ?>
             <?php echo $form->field($model, 'url')->hint(Yii::t('SpaceModule.manage', 'e.g. example for {baseUrl}/s/example', ['baseUrl' => Url::base(true)])); ?>
         <?php endif; ?>
         <?php echo $form->field($model, 'indexUrl')->dropDownList($indexModuleSelection)->hint(Yii::t('SpaceModule.manage', 'the default start page of this space for members')) ?>
         <?php echo $form->field($model, 'indexGuestUrl')->dropDownList($indexModuleSelection)->hint(Yii::t('SpaceModule.manage', 'the default start page of this space for visitors')) ?>
 
-        <?php echo Html::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
+        <?php echo Html::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
         <?php echo \humhub\widgets\DataSaved::widget(); ?>
 

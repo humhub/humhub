@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>Password</strong> changed!' => '',
   'Login' => '',
   'Your password has been successfully changed!' => '',
-);
+];

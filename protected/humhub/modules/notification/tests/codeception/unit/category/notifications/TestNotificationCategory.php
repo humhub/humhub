@@ -20,7 +20,7 @@ class TestNotificationCategory extends \humhub\modules\notification\components\N
     {
         if ($target->id === MailTarget::getId()) {
             return false;
-        } else if ($target->id === webTarget::getId()) {
+        } elseif ($target->id === webTarget::getId()) {
             return true;
         }
 
@@ -36,5 +36,4 @@ class TestNotificationCategory extends \humhub\modules\notification\components\N
     {
         return 'Test Category';
     }
-
 }

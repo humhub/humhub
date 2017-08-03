@@ -21,7 +21,7 @@ use Yii;
 class Module extends \yii\db\ActiveRecord
 {
 
-    private static $_states = array();
+    private static $_states = [];
 
     const STATE_DISABLED = 0;
     const STATE_ENABLED = 1;
@@ -97,7 +97,6 @@ class Module extends \yii\db\ActiveRecord
 
         $states = Yii::$app->cache->get(self::STATES_CACHE_ID_PREFIX . $spaceId);
         if ($states === false) {
-
             $states = [];
 
             $query = self::find();
@@ -121,12 +120,11 @@ class Module extends \yii\db\ActiveRecord
 
     /**
      * Returns space relation
-     * 
+     *
      * @return ActiveQuery the relation query
      */
     public function getSpace()
     {
         return $this->hasOne(Space::className(), ['id' => 'space_id']);
     }
-
 }

@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Collapse' => '折叠',
   'Read full post...' => '阅读全文...',
-);
+];

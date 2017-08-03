@@ -30,5 +30,4 @@ class SearchAddEvent extends \yii\base\Event
         $this->attributes = &$attributes;
         $this->init();
     }
-
 }

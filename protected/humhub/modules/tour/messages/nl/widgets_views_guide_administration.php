@@ -1,9 +1,9 @@
 <?php
-return array (
+return  [
   '<strong>Administration</strong>' => '<strong>Beheer</strong>',
   '<strong>Hurray!</strong> That\'s all for now.' => '<strong>Klaar!</strong> Meer is er niet.',
   '<strong>Modules</strong>' => '<strong>Modules</strong>',
   'As an admin, you can manage the whole platform from here.<br><br>Apart from the modules, we are not going to go into each point in detail here, as each has its own short description elsewhere.' => 'Als beheerder kunt u het hele platform  vanaf hier beheren. <br> <br>Afgezien van de modules, gaan we niet op details in,  want elk veld heeft een eigen korte beschrijving.',
   'You are currently in the tools menu. From here you can access the HumHub online marketplace, where you can install an ever increasing number of tools on-the-fly.<br><br>As already mentioned, the tools increase the features available for your space.' => 'U bevindt zich nu in het menu Extra. Vanaf hier kunt u toegang krijgen tot de HumHub online marktplaats, waar u een steeds groeiend aantal modules kunt installeren.<br>Elke nieuwe modules voegt meer functionaliteit toe aan uw ruimtes.',
   'You have now learned about all the most important features and settings and are all set to start using the platform.<br><br>We hope you and all future users will enjoy using this site. We are looking forward to any suggestions or support you wish to offer for our project. Feel free to contact us via www.humhub.org.<br><br>Stay tuned. :-)' => 'U hebt nu alle belangrijke functies en instellingen  geleerd. U bent l klaar om te beginnen met het platform. <br> Wij hopen dat u en alle toekomstige gebruikers zullen genieten van het gebruik van deze site. We kijken ernaar uit om het even welke suggesties of ondersteuning die u wenst aan te bieden voor ons project. Voelt u vrij om contact met ons op te nemen via www.humhub.org waar u de laatste informatie kunt vinden. :-)',
-);
+];

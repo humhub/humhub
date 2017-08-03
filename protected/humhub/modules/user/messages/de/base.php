@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Basic Settings' => 'Grundlegende Einstellungen',
   'Change Email' => 'E-Mail ändern',
   'Change Password' => 'Passwort ändern',
@@ -42,4 +42,4 @@ return array (
   'Your account is not approved yet!' => 'Dein Account wurde noch nicht freigeschalten!',
   'Your new password must not equal your current password!' => 'Das neue Passwort muss sich vom aktuellen Passwort unterscheiden!',
   'or' => 'oder',
-);
+];

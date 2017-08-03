@@ -37,12 +37,12 @@ class UserFollowButton extends \yii\base\Widget
     public $unfollowLabel = null;
 
     /**
-     * @var string options for follow button 
+     * @var string options for follow button
      */
     public $followOptions = ['class' => 'btn btn-primary'];
 
     /**
-     * @var array options for unfollow button 
+     * @var array options for unfollow button
      */
     public $unfollowOptions = ['class' => 'btn btn-info'];
 
@@ -52,26 +52,26 @@ class UserFollowButton extends \yii\base\Widget
     public function init()
     {
         if ($this->followLabel === null) {
-            $this->followLabel = Yii::t("UserModule.widgets_views_followButton", "Follow");
+            $this->followLabel = Yii::t('UserModule.widgets_views_followButton', 'Follow');
         }
         if ($this->unfollowLabel === null) {
-            $this->unfollowLabel = Yii::t("UserModule.widgets_views_followButton", "Unfollow");
+            $this->unfollowLabel = Yii::t('UserModule.widgets_views_followButton', 'Unfollow');
         }
 
         if (!isset($this->followOptions['class'])) {
-            $this->followOptions['class'] = "";
+            $this->followOptions['class'] = '';
         }
 
         if (!isset($this->unfollowOptions['class'])) {
-            $this->unfollowOptions['class'] = "";
+            $this->unfollowOptions['class'] = '';
         }
 
         if (!isset($this->followOptions['style'])) {
-            $this->followOptions['style'] = "";
+            $this->followOptions['style'] = '';
         }
 
         if (!isset($this->unfollowOptions['style'])) {
-            $this->unfollowOptions['style'] = "";
+            $this->unfollowOptions['style'] = '';
         }
     }
 
@@ -128,5 +128,4 @@ class UserFollowButton extends \yii\base\Widget
         return Html::a($this->unfollowLabel, '#', $this->unfollowOptions) .
                 Html::a($this->followLabel, '#', $this->followOptions);
     }
-
 }

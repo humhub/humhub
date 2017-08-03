@@ -24,14 +24,14 @@ class MarkdownView extends \yii\base\Widget
      *
      * @var string
      */
-    public $markdown = "";
+    public $markdown = '';
 
     /**
      * Markdown parser class
      *
      * @var string
      */
-    public $parserClass = "humhub\libs\Markdown";
+    public $parserClass = 'humhub\libs\Markdown';
 
     /**
      * Purify output after parsing
@@ -43,7 +43,7 @@ class MarkdownView extends \yii\base\Widget
     /**
      * Stylesheet for Highlight.js
      */
-    public $highlightJsCss = "github";
+    public $highlightJsCss = 'github';
 
     /**
      * @var boolean return plain output (do not use widget template)
@@ -52,8 +52,8 @@ class MarkdownView extends \yii\base\Widget
 
     public function init()
     {
-        if (!\humhub\libs\Helpers::CheckClassType($this->parserClass, "cebe\markdown\Parser")) {
-            throw new Exception("Invalid markdown parser class given!");
+        if (!\humhub\libs\Helpers::CheckClassType($this->parserClass, 'cebe\markdown\Parser')) {
+            throw new Exception('Invalid markdown parser class given!');
         }
     }
 
@@ -71,14 +71,13 @@ class MarkdownView extends \yii\base\Widget
                         $config->set('URI.AllowedSchemes', ['http' => true, 'https' => true, 'mailto' => true, 'ftp' => true, 'file' => true]);
                         $config->getHTMLDefinition(true)
                                 ->addAttribute('a', 'target', 'Text');
-                    });
+            });
         }
 
         if ($this->returnPlain) {
             return $html;
         }
 
-        return $this->render('markdownView', array('content' => $html, 'highlightJsCss' => $this->highlightJsCss));
+        return $this->render('markdownView', ['content' => $html, 'highlightJsCss' => $this->highlightJsCss]);
     }
-
 }

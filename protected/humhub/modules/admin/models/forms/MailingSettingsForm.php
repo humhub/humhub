@@ -33,8 +33,9 @@ class MailingSettingsForm extends \yii\base\Model
         $this->transportType = $settingsManager->get('mailer.transportType');
         $this->hostname = $settingsManager->get('mailer.hostname');
         $this->username = $settingsManager->get('mailer.username');
-        if ($settingsManager->get('mailer.password') != '')
+        if ($settingsManager->get('mailer.password') != '') {
             $this->password = '---invisible---';
+        }
 
         $this->port = $settingsManager->get('mailer.port');
         $this->encryption = $settingsManager->get('mailer.encryption');
@@ -88,8 +89,9 @@ class MailingSettingsForm extends \yii\base\Model
         $settingsManager->set('mailer.transportType', $this->transportType);
         $settingsManager->set('mailer.hostname', $this->hostname);
         $settingsManager->set('mailer.username', $this->username);
-        if ($this->password != '---invisible---')
+        if ($this->password != '---invisible---') {
             $settingsManager->set('mailer.password', $this->password);
+        }
         $settingsManager->set('mailer.port', $this->port);
         $settingsManager->set('mailer.encryption', $this->encryption);
         $settingsManager->set('mailer.allowSelfSignedCerts', $this->allowSelfSignedCerts);
@@ -100,5 +102,4 @@ class MailingSettingsForm extends \yii\base\Model
 
         return true;
     }
-
 }

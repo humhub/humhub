@@ -41,13 +41,13 @@ class ProfileContentPermissionTest extends HumHubDbTestCase
         $this->admin = User::findOne(['id' => 1]);
 
         $this->privatePost = new Post;
-        $this->privatePost->message = "Private Space1 Post";
+        $this->privatePost->message = 'Private Space1 Post';
         $this->privatePost->content->setContainer($this->admin);
         $this->privatePost->content->visibility = Content::VISIBILITY_PRIVATE;
         $this->privatePost->save();
 
         $this->publicPost = new Post;
-        $this->publicPost->message = "Public Space1 Post";
+        $this->publicPost->message = 'Public Space1 Post';
         $this->publicPost->content->setContainer($this->admin);
         $this->publicPost->content->visibility = Content::VISIBILITY_PUBLIC;
         $this->publicPost->save();
@@ -139,7 +139,8 @@ class ProfileContentPermissionTest extends HumHubDbTestCase
         $this->assertFalse($this->privatePost->content->canEdit());
     }
 
-    public function reloadPosts() {
+    public function reloadPosts()
+    {
         $this->privatePost = Post::findOne(['id' => $this->privatePost->id]);
         $this->publicPost = Post::findOne(['id' => $this->publicPost->id]);
     }

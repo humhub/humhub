@@ -14,7 +14,8 @@ use humhub\models\Setting;
 <div class="form-group">
     <div class="checkbox">
         <label>
-            <?= $form->checkBox($model, 'enabled', ['readonly' => Setting::IsFixed('proxy.enabled')]); echo $model->getAttributeLabel('enabled'); ?>
+            <?= $form->checkBox($model, 'enabled', ['readonly' => Setting::IsFixed('proxy.enabled')]);
+            echo $model->getAttributeLabel('enabled'); ?>
         </label>
     </div>
 </div>
@@ -52,7 +53,7 @@ use humhub\models\Setting;
 <?php } ?>
 
 <hr>
-<?= CHtml::submitButton(Yii::t('AdminModule.views_setting_proxy', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+<?= CHtml::submitButton(Yii::t('AdminModule.views_setting_proxy', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
 <?= \humhub\widgets\DataSaved::widget(); ?>
 <?php CActiveForm::end(); ?>

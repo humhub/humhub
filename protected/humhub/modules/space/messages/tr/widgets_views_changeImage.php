@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Change image' => 'Resmi değiştir',
   'Current space image' => 'Geçerli mekan resmi',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Drag a photo here or click to browse your files' => 'تصويري به اينجا بكشيد يا بر روي بروز كليك كنيد',
   'Hide my year of birth' => 'سال تولد مرا مخفي كن',
   'Howdy <strong>%firstname%</strong>, thank you for using HumHub.' => 'عزيز براي استفاده از مهيا از شما متشكريم <strong>%firstname%</strong>',
@@ -11,4 +11,4 @@ return array (
   'Your phone number at work' => 'شماره منزل',
   'Your skills, knowledge and experience (comma seperated)' => 'توانايي ها و آموزش هاي گذرانده',
   'Your title or position' => 'عنوان شغلي',
-);
+];

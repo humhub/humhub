@@ -12,7 +12,7 @@ use humhub\modules\like\models\Like;
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @author luke
  */
 class Events extends \yii\base\Object
@@ -25,7 +25,7 @@ class Events extends \yii\base\Object
      */
     public static function onUserDelete($event)
     {
-        foreach (Like::findAll(array('created_by' => $event->sender->id)) as $like) {
+        foreach (Like::findAll(['created_by' => $event->sender->id]) as $like) {
             $like->delete();
         }
 
@@ -36,7 +36,7 @@ class Events extends \yii\base\Object
     {
         $record = $event->sender;
         if ($record->hasAttribute('id')) {
-            foreach (Like::findAll(array('object_id' => $record->id, 'object_model' => $record->className())) as $like) {
+            foreach (Like::findAll(['object_id' => $record->id, 'object_model' => $record->className()]) as $like) {
                 $like->delete();
             }
         }
@@ -50,17 +50,17 @@ class Events extends \yii\base\Object
     public static function onIntegrityCheck($event)
     {
         $integrityController = $event->sender;
-        $integrityController->showTestHeadline("Like (" . Like::find()->count() . " entries)");
+        $integrityController->showTestHeadline('Like (' . Like::find()->count() . ' entries)');
 
         foreach (Like::find()->all() as $like) {
             if ($like->source === null) {
-                if ($integrityController->showFix("Deleting like id " . $like->id . " without existing target!")) {
+                if ($integrityController->showFix('Deleting like id ' . $like->id . ' without existing target!')) {
                     $like->delete();
                 }
             }
             // User exists
             if ($like->user === null) {
-                if ($integrityController->showFix("Deleting like id " . $like->id . " without existing user!")) {
+                if ($integrityController->showFix('Deleting like id ' . $like->id . ' without existing user!')) {
                     $like->delete();
                 }
             }
@@ -74,7 +74,6 @@ class Events extends \yii\base\Object
      */
     public static function onWallEntryLinksInit($event)
     {
-        $event->sender->addWidget(widgets\LikeLink::className(), array('object' => $event->sender->object), array('sortOrder' => 10));
+        $event->sender->addWidget(widgets\LikeLink::className(), ['object' => $event->sender->object], ['sortOrder' => 10]);
     }
-
 }

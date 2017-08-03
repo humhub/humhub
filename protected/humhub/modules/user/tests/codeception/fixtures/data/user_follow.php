@@ -1,6 +1,6 @@
 <?php
 
-return [ 
+return [
     // User 1 follows User 2
     ['id' => '1', 'object_model' => 'humhub\modules\user\models\User', 'object_id' => '2', 'user_id' => '1'],
 

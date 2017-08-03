@@ -55,5 +55,4 @@ class InviteTest extends HumHubDbTestCase
         $this->assertMailSent(2, 'Approval notification admin mail');
         $this->assertHasNotification(\humhub\modules\space\notifications\InviteDeclined::class, $space, 2, 'Declined Invite Notificatoin');
     }
-
 }

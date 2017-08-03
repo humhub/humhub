@@ -35,7 +35,7 @@ class Events extends \yii\base\Object
     public static function onHourlyCron($event)
     {
         $controller = $event->sender;
-        $controller->stdout("Optimizing search index... ");
+        $controller->stdout('Optimizing search index... ');
         Yii::$app->search->optimize();
         $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
     }
@@ -46,5 +46,4 @@ class Events extends \yii\base\Object
         $application = $event->sender;
         $application->controllerMap['search'] = commands\SearchController::className();
     }
-
 }

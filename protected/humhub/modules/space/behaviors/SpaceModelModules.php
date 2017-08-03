@@ -12,6 +12,7 @@ use Yii;
 use yii\base\Behavior;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentContainerModule;
+
 /**
  * SpaceModelModuleBehavior handles all space model relating moduling methods.
  * (Install, Uninstall modules)
@@ -38,7 +39,7 @@ class SpaceModelModules extends Behavior
             return $this->_availableModules;
         }
 
-        $this->_availableModules = array();
+        $this->_availableModules = [];
 
         foreach (Yii::$app->moduleManager->getModules() as $moduleId => $module) {
             if ($module instanceof ContentContainerModule && Yii::$app->hasModule($module->id) && $module->hasContentContainerType(Space::className())) {
@@ -61,7 +62,7 @@ class SpaceModelModules extends Behavior
             return $this->_enabledModules;
         }
 
-        $this->_enabledModules = array();
+        $this->_enabledModules = [];
 
         $availableModules = $this->getAvailableModules();
         $defaultStates = \humhub\modules\space\models\Module::getStates();
@@ -69,7 +70,6 @@ class SpaceModelModules extends Behavior
 
         // Get a list of all enabled module ids
         foreach (array_merge(array_keys($defaultStates), array_keys($states)) as $id) {
-
             // Ensure module Id is available
             if (!array_key_exists($id, $availableModules)) {
                 continue;
@@ -113,7 +113,7 @@ class SpaceModelModules extends Behavior
 
         // Already enabled module
         if ($this->isModuleEnabled($moduleId)) {
-            Yii::error("Space->enableModule(" . $moduleId . ") module is already enabled");
+            Yii::error('Space->enableModule(' . $moduleId . ') module is already enabled');
             return false;
         }
 
@@ -156,7 +156,7 @@ class SpaceModelModules extends Behavior
 
         // Already enabled module
         if (!$this->isModuleEnabled($moduleId)) {
-            Yii::error("Space->disableModule(" . $moduleId . ") module is not enabled");
+            Yii::error('Space->disableModule(' . $moduleId . ') module is not enabled');
             return false;
         }
 
@@ -175,5 +175,4 @@ class SpaceModelModules extends Behavior
 
         return true;
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Content' => 'Contenu',
   'Updated' => 'Mis à jour',
-);
+];

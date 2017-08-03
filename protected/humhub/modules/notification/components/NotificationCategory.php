@@ -18,13 +18,13 @@ use humhub\modules\notification\targets\MobileTarget;
 /**
  * NotificationCategories are used to group different notifications in views and
  * configure the notifications in the notification settings.
- * 
+ *
  */
 abstract class NotificationCategory extends \yii\base\Object
 {
 
     /**
-     * @var string the category id 
+     * @var string the category id
      */
     public $id;
 
@@ -48,18 +48,18 @@ abstract class NotificationCategory extends \yii\base\Object
     /**
      * Returns a human readable title of this  category
      */
-    public abstract function getTitle();
+    abstract public function getTitle();
 
     /**
      * Returns a group description
      */
-    public abstract function getDescription();
+    abstract public function getDescription();
 
     /**
      * Returns the default enabled settings for the given $target.
      * In case the $target is unknown, subclasses can either return $target->defaultSetting
      * or another default value.
-     * 
+     *
      * @param BaseTarget $target
      * @return boolean
      */
@@ -67,9 +67,9 @@ abstract class NotificationCategory extends \yii\base\Object
     {
         if ($target->id === MailTarget::getId()) {
             return true;
-        } else if ($target->id === WebTarget::getId()) {
+        } elseif ($target->id === WebTarget::getId()) {
             return true;
-        } else if ($target->id === MobileTarget::getId()) {
+        } elseif ($target->id === MobileTarget::getId()) {
             return false;
         }
 
@@ -78,7 +78,7 @@ abstract class NotificationCategory extends \yii\base\Object
 
     /**
      * Returns an array of target ids, which are not editable.
-     * 
+     *
      * @param BaseTarget $target
      */
     public function getFixedSettings()
@@ -88,7 +88,7 @@ abstract class NotificationCategory extends \yii\base\Object
 
     /**
      * Checks if the given notification target is fixed for this category.
-     * 
+     *
      * @param type $target
      * @return type
      */
@@ -100,10 +100,10 @@ abstract class NotificationCategory extends \yii\base\Object
     /**
      * Determines if this category is visible for the given $user.
      * This can be used if a category is only visible for users with certian permissions.
-     * 
+     *
      * Note if no user is given this function should return true in most cases, otherwise this
      * category won't be visible in the global notification settings.
-     * 
+     *
      * @param User $user
      * @return boolean
      */
@@ -111,5 +111,4 @@ abstract class NotificationCategory extends \yii\base\Object
     {
         return true;
     }
-
 }

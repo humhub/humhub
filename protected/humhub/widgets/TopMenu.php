@@ -23,7 +23,7 @@ class TopMenu extends BaseMenu
     /**
      * @inheritdoc
      */
-    public $template = "topNavigation";
+    public $template = 'topNavigation';
 
     /**
      * @inheritdoc
@@ -42,7 +42,4 @@ class TopMenu extends BaseMenu
             $this->template = '';
         }
     }
-
 }
-
-?>

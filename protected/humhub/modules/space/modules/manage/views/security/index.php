@@ -18,7 +18,7 @@ use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
     <div class="panel-body">
         <?php $form = ActiveForm::begin(); ?>
 
-        <?php $joinPolicies = array(0 => Yii::t('SpaceModule.base', 'Only by invite'), 1 => Yii::t('SpaceModule.base', 'Invite and request'), 2 => Yii::t('SpaceModule.base', 'Everyone can enter')); ?>
+        <?php $joinPolicies = [0 => Yii::t('SpaceModule.base', 'Only by invite'), 1 => Yii::t('SpaceModule.base', 'Invite and request'), 2 => Yii::t('SpaceModule.base', 'Everyone can enter')]; ?>
         <?php echo $form->field($model, 'join_policy')->dropDownList($joinPolicies); ?>
         <p class="help-block"><?php echo Yii::t('SpaceModule.views_admin_edit', 'Choose the kind of membership you want to provide for this workspace.'); ?></p>
         <br>
@@ -37,11 +37,11 @@ use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
 
         <br>
         <?php $defaultVisibilityLabel = Yii::t('SpaceModule.base', 'Default') . ' (' . ((Yii::$app->getModule('space')->settings->get('defaultContentVisibility') == 1) ? Yii::t('SpaceModule.base', 'Public') : Yii::t('SpaceModule.base', 'Private')) . ')'; ?>
-        <?php $contentVisibilities = array('' => $defaultVisibilityLabel, 0 => Yii::t('SpaceModule.base', 'Private'), 1 => Yii::t('SpaceModule.base', 'Public')); ?>
+        <?php $contentVisibilities = ['' => $defaultVisibilityLabel, 0 => Yii::t('SpaceModule.base', 'Private'), 1 => Yii::t('SpaceModule.base', 'Public')]; ?>
         <?php echo $form->field($model, 'default_content_visibility')->dropDownList($contentVisibilities); ?>
         <p class="help-block"><?php echo Yii::t('SpaceModule.views_admin_edit', 'Choose if new content should be public or private by default'); ?></p>
 
-        <?php echo Html::submitButton(Yii::t('base', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
+        <?php echo Html::submitButton(Yii::t('base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
         <?php echo \humhub\widgets\DataSaved::widget(); ?>
 

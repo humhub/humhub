@@ -19,7 +19,7 @@ class Response extends \yii\web\Response
     /**
      * @inheritdoc
      */
-    public function xSendFile($filePath, $attachmentName = null, $options = array())
+    public function xSendFile($filePath, $attachmentName = null, $options = [])
     {
         if (strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') === 0) {
             // set nginx specific X-Sendfile header name
@@ -33,5 +33,4 @@ class Response extends \yii\web\Response
 
         return parent::xSendFile($filePath, $attachmentName, $options);
     }
-
 }

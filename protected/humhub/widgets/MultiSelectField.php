@@ -17,7 +17,7 @@ class MultiSelectField extends BasePickerField
     
     /**
      * Possible values
-     * @var type 
+     * @var type
      */
     public $items = [];
 
@@ -44,12 +44,12 @@ class MultiSelectField extends BasePickerField
 
     protected function getSelectedOptions()
     {
-        if(empty($this->selection)) {
+        if (empty($this->selection)) {
             $attribute = $this->attribute;
             $this->selection = ($this->model) ? $this->model->$attribute : [];
         }
         
-        if(empty($this->selection)) {
+        if (empty($this->selection)) {
             $this->selection = [];
         }
         
@@ -75,5 +75,4 @@ class MultiSelectField extends BasePickerField
     {
         return null;
     }
-
 }

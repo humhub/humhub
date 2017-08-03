@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add Groups...' => 'Groep toevoegen...',
   'Become this user' => 'Word deze gebruiker',
   'Delete' => 'Verwijder',
@@ -10,4 +10,4 @@ return array (
   'Unapproved' => 'Niet goedgekeurd',
   'User not found!' => 'Gebruiker niet gevonden!',
   'You cannot delete yourself!' => 'U kunt uzelf niet verwijderen!',
-);
+];

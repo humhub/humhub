@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '',
   'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => '',
   'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;' => '',
@@ -12,4 +12,4 @@ return array (
   'The default base DN used for searching for accounts.' => '',
   'The default credentials password (used only with username above).' => '',
   'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => '',
-);
+];

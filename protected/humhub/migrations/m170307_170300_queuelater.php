@@ -15,5 +15,4 @@ class m170307_170300_queuelater extends Migration
         echo "m170307_170300_queuelater cannot be reverted.\n";
         return false;
     }
-
 }

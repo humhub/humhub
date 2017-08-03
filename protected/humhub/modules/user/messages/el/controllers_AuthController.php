@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Account' => 'Λογαριασμός',
   'Create account' => 'Δημιουργία λογαριασμού',
-);
+];

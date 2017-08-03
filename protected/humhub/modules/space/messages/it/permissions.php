@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Allows the user to create public content' => '',
   'Allows the user to invite new members to the space' => '',
   'Can create hidden (private) spaces.' => '',
@@ -8,4 +8,4 @@ return array (
   'Create public content' => '',
   'Create public space' => '',
   'Invite users' => 'Invita utenti',
-);
+];

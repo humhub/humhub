@@ -42,7 +42,7 @@ class UrlRule extends Object implements UrlRuleInterface
 
             $urlPart = static::getUrlBySpaceGuid($params['sguid']);
             if ($urlPart !== null) {
-                $url = "s/" . urlencode($urlPart) . "/" . $route;
+                $url = 's/' . urlencode($urlPart) . '/' . $route;
                 unset($params['sguid']);
 
                 if (!empty($params) && ($query = http_build_query($params)) !== '') {
@@ -60,12 +60,12 @@ class UrlRule extends Object implements UrlRuleInterface
     public function parseRequest($manager, $request)
     {
         $pathInfo = $request->getPathInfo();
-        if (substr($pathInfo, 0, 2) == "s/") {
+        if (substr($pathInfo, 0, 2) == 's/') {
             $parts = explode('/', $pathInfo, 3);
             if (isset($parts[1])) {
                 $space = Space::find()->where(['guid' => $parts[1]])->orWhere(['url' => $parts[1]])->one();
                 if ($space !== null) {
-                    if (!isset($parts[2]) || $parts[2] == "") {
+                    if (!isset($parts[2]) || $parts[2] == '') {
                         $parts[2] = $this->defaultRoute;
                     }
 
@@ -81,7 +81,7 @@ class UrlRule extends Object implements UrlRuleInterface
 
     /**
      * Gets space url name by given guid
-     * 
+     *
      * @param string $guid
      * @return string|null the space url part
      */
@@ -99,5 +99,4 @@ class UrlRule extends Object implements UrlRuleInterface
 
         return null;
     }
-
 }

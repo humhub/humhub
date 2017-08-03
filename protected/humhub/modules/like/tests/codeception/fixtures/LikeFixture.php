@@ -15,5 +15,4 @@ class LikeFixture extends ActiveFixture
 
     public $modelClass = 'humhub\modules\like\models\Like';
     public $dataFile = '@modules/like/tests/codeception/fixtures/data/like.php';
-
 }

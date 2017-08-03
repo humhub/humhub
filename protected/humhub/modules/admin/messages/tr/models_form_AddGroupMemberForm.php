@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Group not found!' => 'Grup bulunamadı!',
-);
+];

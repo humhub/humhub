@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Content' => 'Saturs',
   'Updated' => 'Atjaunināts',
-);
+];

@@ -29,5 +29,4 @@ class ManageUsers extends BaseAdminPermission
         $this->title = \Yii::t('AdminModule.permissions', 'Manage Users');
         $this->description = \Yii::t('AdminModule.permissions', 'Can manage users and user profiles.');
     }
-
 }

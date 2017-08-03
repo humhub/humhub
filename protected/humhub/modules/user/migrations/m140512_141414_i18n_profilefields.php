@@ -12,10 +12,9 @@ class m140512_141414_i18n_profilefields extends Migration
                 $this->addColumn('profile_field', 'is_system', 'int(1) DEFAULT NULL');
                 $this->addColumn('profile_field_category', 'translation_category', 'varchar(255) DEFAULT NULL');
 
-                $this->update('profile_field', array(
+                $this->update('profile_field', [
                     'is_system' => 1
-                ), 'internal_name="firstname" OR internal_name="lastname" OR internal_name="title"');
-                
+                ], 'internal_name="firstname" OR internal_name="lastname" OR internal_name="title"');
     }
 
     public function down()

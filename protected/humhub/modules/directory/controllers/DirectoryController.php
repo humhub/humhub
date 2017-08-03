@@ -80,9 +80,9 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
      */
     public function actionMembers()
     {
-        $keyword = Yii::$app->request->get('keyword', "");
+        $keyword = Yii::$app->request->get('keyword', '');
         $page = (int) Yii::$app->request->get('page', 1);
-        $groupId = (int) Yii::$app->request->get('groupId', "");
+        $groupId = (int) Yii::$app->request->get('groupId', '');
 
         $group = null;
         if ($groupId) {
@@ -95,7 +95,7 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
             'pageSize' => $this->module->pageSize,
         ];
 
-        if ($this->module->memberListSortField != "") {
+        if ($this->module->memberListSortField != '') {
             $searchOptions['sortField'] = $this->module->memberListSortField;
         }
 
@@ -107,17 +107,17 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
 
         $pagination = new \yii\data\Pagination(['totalCount' => $searchResultSet->total, 'pageSize' => $searchResultSet->pageSize]);
 
-        \yii\base\Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function($event) {
+        \yii\base\Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function ($event) {
             $event->sender->addWidget(\humhub\modules\directory\widgets\NewMembers::className(), [], ['sortOrder' => 10]);
             $event->sender->addWidget(\humhub\modules\directory\widgets\MemberStatistics::className(), [], ['sortOrder' => 20]);
         });
 
-        return $this->render('members', array(
+        return $this->render('members', [
                     'keyword' => $keyword,
                     'group' => $group,
                     'users' => $searchResultSet->getResultInstances(),
                     'pagination' => $pagination
-        ));
+        ]);
     }
 
     /**
@@ -129,7 +129,7 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
      */
     public function actionSpaces()
     {
-        $keyword = Yii::$app->request->get('keyword', "");
+        $keyword = Yii::$app->request->get('keyword', '');
         $page = (int) Yii::$app->request->get('page', 1);
 
         $searchResultSet = Yii::$app->search->find($keyword, [
@@ -141,16 +141,16 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
 
         $pagination = new \yii\data\Pagination(['totalCount' => $searchResultSet->total, 'pageSize' => $searchResultSet->pageSize]);
 
-        \yii\base\Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function($event) {
+        \yii\base\Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function ($event) {
             $event->sender->addWidget(\humhub\modules\directory\widgets\NewSpaces::className(), [], ['sortOrder' => 10]);
             $event->sender->addWidget(\humhub\modules\directory\widgets\SpaceStatistics::className(), [], ['sortOrder' => 20]);
         });
 
-        return $this->render('spaces', array(
+        return $this->render('spaces', [
                     'keyword' => $keyword,
                     'spaces' => $searchResultSet->getResultInstances(),
                     'pagination' => $pagination,
-        ));
+        ]);
     }
 
     /**
@@ -166,13 +166,13 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
 
         $groups = \humhub\modules\user\models\Group::getDirectoryGroups();
 
-        \yii\base\Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function($event) {
+        \yii\base\Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function ($event) {
             $event->sender->addWidget(\humhub\modules\directory\widgets\GroupStatistics::className(), [], ['sortOrder' => 10]);
         });
 
-        return $this->render('groups', array(
+        return $this->render('groups', [
                     'groups' => $groups,
-        ));
+        ]);
     }
 
     /**
@@ -184,7 +184,6 @@ class DirectoryController extends \humhub\modules\directory\components\Controlle
      */
     public function actionUserPosts()
     {
-        return $this->render('userPosts', array());
+        return $this->render('userPosts', []);
     }
-
 }

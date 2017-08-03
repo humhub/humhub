@@ -15,7 +15,6 @@
 
 namespace humhub\modules\content\tests\codeception\unit;
 
-
 use humhub\modules\content\models\ContentTag;
 
 class TestTagSameModule extends ContentTag
@@ -28,5 +27,4 @@ class TestTagSameModule extends ContentTag
     {
         return 'testCategory';
     }
-
 }

@@ -24,5 +24,4 @@ class ActivityAsset extends AssetBundle
     public $depends = [
         'humhub\assets\CoreApiAsset'
     ];
-
 }

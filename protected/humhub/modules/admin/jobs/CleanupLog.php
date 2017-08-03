@@ -32,5 +32,4 @@ class CleanupLog extends ActiveJob
     {
         Log::deleteAll(['<', 'log_time', time() - $this->cleanupInterval]);
     }
-
 }

@@ -47,9 +47,9 @@ class Module extends \humhub\components\Module
      */
     public function getNotifications()
     {
-       return [
+        return [
            'humhub\modules\comment\notifications\NewComment'
-       ];
+        ];
     }
 
     /**
@@ -70,5 +70,4 @@ class Module extends \humhub\components\Module
 
         return true;
     }
-
 }

@@ -11,7 +11,7 @@ use humhub\modules\user\models\User;
 
 /**
  * Standard password authentication client
- * 
+ *
  * @since 1.1
  */
 class Password extends BaseFormAuth implements interfaces\PrimaryClient
@@ -63,5 +63,4 @@ class Password extends BaseFormAuth implements interfaces\PrimaryClient
 
         return false;
     }
-
 }

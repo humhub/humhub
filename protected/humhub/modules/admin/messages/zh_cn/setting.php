@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Advanced Settings' => '高级设置',
   'Appearance Settings' => '外观设置',
   'General' => '一般',
@@ -11,4 +11,4 @@ return array (
   'These settings refer to advanced topics of your social network.' => '设置你的社交网络的高级主题',
   'These settings refer to the appearance of your social network.' => '设置你的社交网络的外观',
   'User Settings' => '用户设置',
-);
+];

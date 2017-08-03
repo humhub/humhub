@@ -38,5 +38,4 @@ class Select2Asset extends AssetBundle
 
         'yii\bootstrap\BootstrapAsset'
     ];
-
 }

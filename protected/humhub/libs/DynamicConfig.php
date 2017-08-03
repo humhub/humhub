@@ -48,8 +48,9 @@ class DynamicConfig extends \yii\base\Object
         $configContent = str_replace(['<' . '?php', '<' . '?', '?' . '>'], '', file_get_contents($configFile));
         $config = eval($configContent);
 
-        if (!is_array($config))
-            return array();
+        if (!is_array($config)) {
+            return [];
+        }
 
         return $config;
     }
@@ -61,9 +62,9 @@ class DynamicConfig extends \yii\base\Object
      */
     public static function save($config)
     {
-        $content = "<" . "?php return ";
+        $content = '<' . '?php return ';
         $content .= var_export($config, true);
-        $content .= "; ?" . ">";
+        $content .= '; ?' . '>';
 
         $configFile = self::getConfigFilePath();
         file_put_contents($configFile, $content);
@@ -91,14 +92,14 @@ class DynamicConfig extends \yii\base\Object
 
         // Add Default language
         $defaultLanguage = Yii::$app->settings->get('defaultLanguage');
-        if ($defaultLanguage !== null && $defaultLanguage != "") {
+        if ($defaultLanguage !== null && $defaultLanguage != '') {
             $config['language'] = Yii::$app->settings->get('defaultLanguage');
         } else {
             $config['language'] = Yii::$app->language;
         }
 
         $timeZone = Yii::$app->settings->get('timeZone');
-        if ($timeZone != "") {
+        if ($timeZone != '') {
             $config['timeZone'] = $timeZone;
             $config['components']['formatter']['defaultTimeZone'] = $timeZone;
             $config['components']['formatterApp']['defaultTimeZone'] = $timeZone;
@@ -121,14 +122,14 @@ class DynamicConfig extends \yii\base\Object
         }
 
         // Add User settings
-        $config['components']['user'] = array();
+        $config['components']['user'] = [];
         if (Yii::$app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
             $config['components']['user']['authTimeout'] = Yii::$app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec');
         }
 
         // Install Mail Component
         $mail = [];
-        $mail['transport'] = array();
+        $mail['transport'] = [];
         if (Yii::$app->settings->get('mailer.transportType') == 'smtp') {
             $mail['transport']['class'] = 'Swift_SmtpTransport';
 
@@ -138,7 +139,7 @@ class DynamicConfig extends \yii\base\Object
 
             if (Yii::$app->settings->get('mailer.username')) {
                 $mail['transport']['username'] = Yii::$app->settings->get('mailer.username');
-            } else if (!Yii::$app->settings->get('mailer.password')) {
+            } elseif (!Yii::$app->settings->get('mailer.password')) {
                 $mail['transport']['authMode'] = 'null';
             }
 
@@ -178,5 +179,4 @@ class DynamicConfig extends \yii\base\Object
     {
         return Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Notification</strong> Settings' => '',
   'In this view, you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => '',
   'Notifications are sent directly to your users to inform them about new activities in your network.' => '',
@@ -9,4 +9,4 @@ return array (
   '{displayName} and {displayName2}' => '{displayName} e {displayName2}',
   '{displayName} and {number} others' => '{displayName} e {number} altri
 ',
-);
+];

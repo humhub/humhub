@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Follow' => 'دنبال‌کردن',
   'Unfollow' => 'انصراف از دنبال‌کردن',
-);
+];

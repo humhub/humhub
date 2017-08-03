@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Add new space' => 'Ajouter un nouvel espace',
-);
+];

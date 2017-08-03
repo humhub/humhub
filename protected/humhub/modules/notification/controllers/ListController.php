@@ -42,14 +42,14 @@ class ListController extends Controller
         $notifications = Notification::loadMore(Yii::$app->request->get('from', 0));
         $lastEntryId = 0;
         
-        $output = "";
+        $output = '';
         foreach ($notifications as $notification) {
             try {
                 $output .= $notification->getBaseModel()->render();
                 $lastEntryId = $notification->id;
                 $notification->desktop_notified = 1;
                 $notification->update();
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 Yii::error($e);
             }
         }
@@ -80,7 +80,7 @@ class ListController extends Controller
 
     /**
      * Returns new notifications
-     * 
+     *
      * @deprecated since version 1.2
      */
     public function actionGetUpdateJson()
@@ -105,7 +105,7 @@ class ListController extends Controller
         
         $update['notifications'] = [];
         foreach ($unnotified as $notification) {
-            if(Yii::$app->getModule('notification')->settings->user()->getInherit('enable_html5_desktop_notifications', true)) {
+            if (Yii::$app->getModule('notification')->settings->user()->getInherit('enable_html5_desktop_notifications', true)) {
                 $update['notifications'][] = $notification->getBaseModel()->text();
             }
             $notification->desktop_notified = 1;
@@ -114,5 +114,4 @@ class ListController extends Controller
 
         return $update;
     }
-
 }

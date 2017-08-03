@@ -8,7 +8,7 @@ class m131023_170253_initial extends Migration
 
     public function up()
     {
-        $this->createTable('comment', array(
+        $this->createTable('comment', [
             'id' => 'pk',
             'message' => 'text DEFAULT NULL',
             'object_model' => 'varchar(100) NOT NULL',
@@ -18,12 +18,11 @@ class m131023_170253_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-        ));
+        ]);
     }
 
     public function down()
     {
         $this->dropTable('comment');
     }
-
 }

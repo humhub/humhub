@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Space</strong> followers' => '',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Kunne ikke slette bruger som er en side-ejer! Navnet på siden: {spaceName}',
   'Default' => 'Standard',
@@ -17,4 +17,4 @@ return array (
   'Settings' => 'Indstillinger',
   'Space' => '',
   'Visible for all (members and guests)' => 'Synlig for alle (Medlemmer og gæster)',
-);
+];

@@ -38,5 +38,4 @@ class BaseSidebarItem extends \humhub\components\Widget
         }
         return;
     }
-
 }

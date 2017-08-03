@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Date(-time) field options' => 'Datos (-laiko) lauko nustatymai',
   'Show date/time picker' => 'Rodyti datos/laiko pasirinkima',
-);
+];

@@ -8,8 +8,8 @@ class m141022_094635_addDefaults extends Migration
 
     public function up()
     {
-        $this->insert('setting', array('name'=>'defaultVisibility', 'module_id'=>'space', 'value'=>'1'));
-        $this->insert('setting', array('name'=>'defaultJoinPolicy', 'module_id'=>'space', 'value'=>'1'));
+        $this->insert('setting', ['name'=>'defaultVisibility', 'module_id'=>'space', 'value'=>'1']);
+        $this->insert('setting', ['name'=>'defaultJoinPolicy', 'module_id'=>'space', 'value'=>'1']);
     }
 
     public function down()

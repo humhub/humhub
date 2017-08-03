@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Show %count% more comments' => 'Rādīt vēl %count% komentārus',
-);
+];

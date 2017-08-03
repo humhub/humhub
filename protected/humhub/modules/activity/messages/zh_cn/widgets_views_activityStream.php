@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>Latest</strong> activities' => '<strong>最近</strong> 活跃用户',
   'There are no activities yet.' => '还没有活跃用户.',
-);
+];

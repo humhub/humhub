@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   ' Remove panel' => 'Panel löschen',
   '<strong>Getting</strong> Started' => '<strong>Hilfe beim Start</strong>',
   '<strong>Guide:</strong> Administration (Modules)' => '<strong>Anleitung:</strong> Administration (Module)',
@@ -12,4 +12,4 @@ return array (
   'Ok' => 'Ok',
   'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.' => 'Hierdurch wird das Tour-Panel aus der Übersicht entfernt. Du kannst es reaktivieren über <br>Konteneinstellungen <i class="fa fa-caret-right"></i> Einstellungen.
 ',
-);
+];

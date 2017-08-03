@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => 'Pridėti nuotrauką / failą',
   'Add link' => 'įterpti nuorodą',
   'Bold' => 'Paryškinti',
@@ -31,4 +31,4 @@ return array (
   'strong text' => 'Paryškintas tekstas',
   'Unordered List' => '',
   'Ordered List' => '',
-);
+];

@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>Profile</strong> menu' => '<strong>属性</strong> 菜单',
   'About' => '关于',
   'Stream' => '动态',
-);
+];

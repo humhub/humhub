@@ -60,7 +60,7 @@ class UploadAction extends Action
      */
     public function run()
     {
-        $files = array();
+        $files = [];
         $hideInStream = $this->isHideInStreamRequest();
         foreach (UploadedFile::getInstancesByName('files') as $cFile) {
             $files[] = $this->handleFileUpload($cFile, $hideInStream);
@@ -82,7 +82,7 @@ class UploadAction extends Action
 
         $file->setUploadedFile($uploadedFile);
 
-        if($hideInStream) {
+        if ($hideInStream) {
             $file->show_in_stream = false;
         }
 
@@ -117,7 +117,6 @@ class UploadAction extends Action
 
 
         if ($model != '' && $pk != '' && Helpers::CheckClassType($model, \yii\db\ActiveRecord::className())) {
-
             $record = $model::findOne(['id' => $pk]);
             if ($record !== null && ($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord)) {
                 if ($record->content->canWrite()) {
@@ -148,5 +147,4 @@ class UploadAction extends Action
             'size' => $file->size
         ];
     }
-
 }

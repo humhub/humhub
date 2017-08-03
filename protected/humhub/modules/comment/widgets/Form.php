@@ -49,5 +49,4 @@ class Form extends \yii\base\Widget
             'id' => $this->object->getUniqueId(),
         ]);
     }
-
 }

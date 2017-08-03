@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Created at' => 'Aangemaakt op',
   'Created by' => 'Aangemaakt door',
   'Description' => 'Beschrijving',
@@ -25,4 +25,4 @@ return array (
   'Updated at' => 'Aangepast op',
   'Updated by' => 'Aangepast door',
   'Visible' => 'Zichtbaar',
-);
+];

@@ -8,10 +8,10 @@ $this->registerJsFile('@web-static/resources/space/spacepicker.js', ['position' 
 
 <?php
 // Resolve guids to space tags
-$selectedSpaces = "";
+$selectedSpaces = '';
 foreach ($spaces as $space) {
     $name = Html::encode($space->name);
-    $selectedSpaces .= '<li class="spaceInput" id="' . $space->guid . '">' . Image::widget(["space" => $space, "width" => 24]) . ' ' . addslashes($name) . '<i class="fa fa-times-circle"></i></li>';
+    $selectedSpaces .= '<li class="spaceInput" id="' . $space->guid . '">' . Image::widget(['space' => $space, 'width' => 24]) . ' ' . addslashes($name) . '<i class="fa fa-times-circle"></i></li>';
 }
 ?>
 
@@ -21,7 +21,7 @@ foreach ($spaces as $space) {
             inputId: '#<?php echo $inputId; ?>',
             maxSpaces: '<?php echo $maxSpaces; ?>',
             searchUrl: '<?php echo $spaceSearchUrl; ?>',
-            currentValue: '<?php echo str_replace("\n", " \\", $selectedSpaces); ?>',
+            currentValue: '<?php echo str_replace("\n", ' \\', $selectedSpaces); ?>',
             placeholder: '<?= Html::encode($placeholder); ?>'
         });
     });

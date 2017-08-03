@@ -11,7 +11,7 @@ use humhub\modules\like\widgets\LikeLink;
 <div class="media" id="comment_<?= $comment->id; ?>"
      data-action-component="comment.Comment"
      data-content-delete-url="<?= $deleteUrl ?>">
-         <?php if ($canWrite || $canDelete) : ?>
+            <?php if ($canWrite || $canDelete) : ?>
         <div class="comment-entry-loader pull-right"></div>
         <ul class="nav nav-pills preferences">
             <li class="dropdown ">
@@ -20,7 +20,7 @@ use humhub\modules\like\widgets\LikeLink;
                 </a>
 
                 <ul class="dropdown-menu pull-right">
-                    <?php if ($canWrite): ?>
+                    <?php if ($canWrite) : ?>
                         <li>
                             <a href="#" class="comment-edit-link" data-action-click="edit" data-action-url="<?= $editUrl ?>">
                                 <i class="fa fa-pencil"></i> <?= Yii::t('CommentModule.widgets_views_showComment', 'Edit') ?>
@@ -31,7 +31,7 @@ use humhub\modules\like\widgets\LikeLink;
                         </li>
                     <?php endif; ?>
 
-                    <?php if ($canDelete): ?>
+                    <?php if ($canDelete) : ?>
                         <li>
                             <a href="#" data-action-click="delete">
                                 <i class="fa fa-trash-o"></i>  <?= Yii::t('CommentModule.widgets_views_showComment', 'Delete') ?>
@@ -41,13 +41,13 @@ use humhub\modules\like\widgets\LikeLink;
                 </ul>
             </li>
         </ul>
-    <?php endif; ?>
+            <?php endif; ?>
     <?= UserImage::widget(['user' => $user, 'width' => 40, 'htmlOptions' => ['class' => 'pull-left']]); ?>
     <div>
         <div class="media-body">
             <h4 class="media-heading"><?= Html::containerLink($user); ?>
                 <small><?= TimeAgo::widget(['timestamp' => $createdAt]); ?>
-                    <?php if ($updatedAt !== null): ?>
+                    <?php if ($updatedAt !== null) : ?>
                         &middot; <span class="tt" title="<?= Yii::$app->formatter->asDateTime($updatedAt); ?>"><?= Yii::t('ContentModule.base', 'Updated'); ?></span>
                     <?php endif; ?>
                 </small>

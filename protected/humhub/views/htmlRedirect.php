@@ -6,7 +6,7 @@
             <?php
             //echo "window.location.reload();\n"; // Drops warning on Posts
             // Remove test.php#xy  (#xy) part
-            $temp = explode("#", $url);
+            $temp = explode('#', $url);
             $url = $temp[0];
             ?>
 

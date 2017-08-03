@@ -10,7 +10,7 @@ namespace humhub\modules\notification\renderer;
 
 /**
  * The WebTargetRenderer is used to render Notifications for the WebTarget.
- * 
+ *
  * @see \humhub\modules\notification\targets\WebTarget
  * @author buddha
  */
@@ -26,5 +26,4 @@ class WebRenderer extends \humhub\components\rendering\DefaultViewPathRenderer
      * @inheritdoc
      */
     public $defaultViewPath = '@notification/views';
-
 }

@@ -35,5 +35,4 @@ class TestViewable extends \yii\base\Object implements \humhub\components\render
     {
         return 'TestViewText';
     }
-
 }

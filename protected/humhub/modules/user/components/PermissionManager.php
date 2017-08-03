@@ -59,12 +59,12 @@ class PermissionManager extends \yii\base\Component
                 $can = $this->can($current, $params, $allowCaching);
                 if ($can && !$verifyAll) {
                     return true;
-                } else if (!$can && $verifyAll) {
+                } elseif (!$can && $verifyAll) {
                     return false;
                 }
             }
             return $verifyAll;
-        } else if ($allowCaching) {
+        } elseif ($allowCaching) {
             $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
             $key = $permission->getId();
             
@@ -81,12 +81,12 @@ class PermissionManager extends \yii\base\Component
 
     private function isVerifyAll($params = [])
     {
-        if(isset($params['strict'])) {
+        if (isset($params['strict'])) {
             return $params['strict'];
         }
 
         //deprecated
-        if(isset($params['all'])) {
+        if (isset($params['all'])) {
             return $params['all'];
         }
 
@@ -174,7 +174,7 @@ class PermissionManager extends \yii\base\Component
     public function getGroupState($groups, BasePermission $permission, $returnDefaultState = 1)
     {
         if (is_array($groups)) {
-            $state = "";
+            $state = '';
             foreach ($groups as $group) {
                 $state = $this->getSingleGroupState($group, $permission, $returnDefaultState);
                 if ($state === BasePermission::STATE_ALLOW) {
@@ -212,7 +212,7 @@ class PermissionManager extends \yii\base\Component
             return $permission->getDefaultState($groupId);
         }
 
-        return "";
+        return '';
     }
 
     /**
@@ -279,8 +279,8 @@ class PermissionManager extends \yii\base\Component
         $result = [];
         if ($module instanceof \humhub\components\Module) {
             $permisisons = $module->getPermissions();
-            if(!empty($permisisons)) {
-                foreach($permisisons as $permission) {
+            if (!empty($permisisons)) {
+                foreach ($permisisons as $permission) {
                     $result[] = is_string($permission) ? Yii::createObject($permission) : $permission;
                 }
             }
@@ -341,5 +341,4 @@ class PermissionManager extends \yii\base\Component
         }
         return $permissions;
     }
-
 }

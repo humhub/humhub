@@ -15,7 +15,6 @@
 
 namespace humhub\tests\codeception\unit\components\access;
 
-
 use humhub\commands\TestController;
 use humhub\components\access\AccessValidator;
 use humhub\components\access\ControllerAccess;
@@ -153,7 +152,7 @@ class ControllerAccessTest extends HumHubDbTestCase
         ]]);
 
         $this->assertFalse($controllerAccess->run());
-        $this->assertEquals(401, $controllerAccess->code );
+        $this->assertEquals(401, $controllerAccess->code);
         $this->assertEquals('Your user account is inactive, please login with an active account or contact a network administrator.', $controllerAccess->reason);
 
         // UnnapprovedUser
@@ -165,7 +164,7 @@ class ControllerAccessTest extends HumHubDbTestCase
         ]]);
 
         $this->assertFalse($controllerAccess->run());
-        $this->assertEquals(401, $controllerAccess->code );
+        $this->assertEquals(401, $controllerAccess->code);
         $this->assertEquals('Your user account has not been approved yet, please try again later or contact a network administrator.', $controllerAccess->reason);
     }
 
@@ -361,7 +360,7 @@ class ControllerAccessTest extends HumHubDbTestCase
         $controllerAccess = new ControllerAccess(['action' => 'testAction', 'rules' => []]);
 
         $this->assertFalse($controllerAccess->run());
-        $this->assertEquals(401, $controllerAccess->code );
+        $this->assertEquals(401, $controllerAccess->code);
         $this->assertEquals('Your user account is inactive, please login with an active account or contact a network administrator.', $controllerAccess->reason);
 
         // UnnapprovedUser
@@ -370,7 +369,7 @@ class ControllerAccessTest extends HumHubDbTestCase
         $controllerAccess = new ControllerAccess(['action' => 'testAction', 'rules' => []]);
 
         $this->assertFalse($controllerAccess->run());
-        $this->assertEquals(401, $controllerAccess->code );
+        $this->assertEquals(401, $controllerAccess->code);
         $this->assertEquals('Your user account has not been approved yet, please try again later or contact a network administrator.', $controllerAccess->reason);
     }
 
@@ -422,7 +421,7 @@ class ControllerAccessTest extends HumHubDbTestCase
     public function validateTestRule($rule, $access)
     {
         $this->assertEquals($access->owner, $this);
-        if(!$rule['return']) {
+        if (!$rule['return']) {
             $access->code = 404;
             $access->reason = 'Not you again!';
             return false;

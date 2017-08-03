@@ -16,7 +16,7 @@ use yii\helpers\Url;
 
             <div class="row">
 
-                <?php foreach ($availableModules as $moduleId => $module): ?>
+                <?php foreach ($availableModules as $moduleId => $module) : ?>
                     <div class="col-md-6">
                         <div class="media well well-small ">
                             <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
@@ -30,16 +30,16 @@ use yii\helpers\Url;
                                 <p style="height: 35px;"><?php echo \humhub\libs\Helpers::truncateText($module->getContentContainerDescription($space), 75); ?></p>
 
                                 <?php
-                                $enable = "";
-                                $disable = "hidden";
+                                $enable = '';
+                                $disable = 'hidden';
 
                                 if ($space->isModuleEnabled($moduleId)) {
-                                    $enable = "hidden";
+                                    $enable = 'hidden';
 
                                     if (!$space->canDisableModule($moduleId)) {
-                                        $disable = "disabled";
+                                        $disable = 'disabled';
                                     } else {
-                                        $disable = "";
+                                        $disable = '';
                                     }
                                 }
                                 ?>
@@ -47,7 +47,7 @@ use yii\helpers\Url;
                                     data-action-click="content.container.enableModule" 
                                     data-ui-loader
                                     data-action-url="<?= $space->createUrl('/space/manage/module/enable', ['moduleId' => $moduleId]) ?>">
-                                     <?= Yii::t('SpaceModule.views_admin_modules', 'Enable'); ?>
+                                        <?= Yii::t('SpaceModule.views_admin_modules', 'Enable'); ?>
                                  </a>
                                 
                                 <a href="#" class="btn btn-sm btn-primary disable" 
@@ -55,7 +55,7 @@ use yii\helpers\Url;
                                     data-action-click="content.container.disableModule" 
                                     data-ui-loader
                                     data-action-url="<?= $space->createUrl('/space/manage/module/disable', ['moduleId' => $moduleId]) ?>">
-                                     <?= Yii::t('SpaceModule.views_admin_modules', 'Disable'); ?>
+                                        <?= Yii::t('SpaceModule.views_admin_modules', 'Disable'); ?>
                                  </a>
                             </div>
                         </div>
@@ -70,7 +70,7 @@ use yii\helpers\Url;
                data-action-click="ui.modal.post" 
                data-ui-loader
                data-action-url="<?= Url::to(['/space/create/invite', 'spaceId' => $space->id]) ?>">
-                   <?= Yii::t('SpaceModule.views_create_create', 'Next'); ?>
+                    <?= Yii::t('SpaceModule.views_create_create', 'Next'); ?>
             </a>
         </div>
     </div>

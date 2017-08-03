@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Back to stream' => 'Zpět na příspěvky',
   'Content with attached files' => 'Příspěvky s přílohou',
   'Created by me' => 'Vytvořil(a) jsem',
@@ -22,4 +22,4 @@ return array (
   'The content has been unpinned.' => 'Příspěvek odepnut',
   'Where I´m involved' => 'Jsem zmíněn(a)',
   'Your last edit state has been saved!' => 'Poslední úpravy uloženy.',
-);
+];

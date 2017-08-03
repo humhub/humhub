@@ -6,7 +6,7 @@ namespace humhub\widgets;
  * This Widget can be used to finish a modal process.
  * If the frontend requires a modal response, this widget will close the global modal
  * and show an status message.
- * 
+ *
  *
  * @author buddha
  */

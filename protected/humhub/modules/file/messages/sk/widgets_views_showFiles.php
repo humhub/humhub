@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Close' => '닫기',
-);
+];

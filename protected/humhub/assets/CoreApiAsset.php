@@ -75,5 +75,4 @@ class CoreApiAsset extends AssetBundle
         // Note this should stay at last for other click event listeners beeing able to prevent pjax handling (e.g gallery)
         'js/humhub/humhub.client.pjax.js',
     ];
-
 }

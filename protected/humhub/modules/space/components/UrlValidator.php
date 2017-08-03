@@ -35,7 +35,7 @@ class UrlValidator extends Validator
 
     /**
      * Generate a unique space url
-     * 
+     *
      * @param string $name
      * @return string a unique space url
      */
@@ -65,7 +65,6 @@ class UrlValidator extends Validator
         }
 
         // Shouldn't never happen - failed
-        return "";
+        return '';
     }
-
 }

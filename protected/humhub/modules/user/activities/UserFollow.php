@@ -26,7 +26,7 @@ class UserFollow extends BaseActivity
     /**
      * @inheritdoc
      */
-    public $viewName = "userFollow";
+    public $viewName = 'userFollow';
 
     /**
      * @inheritdoc
@@ -35,5 +35,4 @@ class UserFollow extends BaseActivity
     {
         return $this->source->target->getUrl();
     }
-
 }

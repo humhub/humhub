@@ -24,7 +24,7 @@ class AuthClientHelpers
 
     /**
      * Returns the user object which is linked against given authClient
-     * 
+     *
      * @param ClientInterface $authClient the authClient
      * @return User the user model or null if not found
      */
@@ -50,7 +50,7 @@ class AuthClientHelpers
 
     /**
      * Stores an authClient to an user record
-     * 
+     *
      * @param \yii\authclient\BaseClient $authClient
      * @param User $user
      */
@@ -87,7 +87,7 @@ class AuthClientHelpers
 
     /**
      * Removes Authclient for a user
-     * 
+     *
      * @param \yii\authclient\BaseClient $authClient
      * @param User $user
      */
@@ -102,7 +102,7 @@ class AuthClientHelpers
     /**
      * Updates (or creates) a user in HumHub using AuthClients Attributes
      * This method will be called after login or by cron sync.
-     * 
+     *
      * @param \yii\authclient\BaseClient $authClient
      * @param User $user
      * @return boolean succeed
@@ -135,12 +135,12 @@ class AuthClientHelpers
             }
 
             if (count($user->getDirtyAttributes()) !== 0 && !$user->save()) {
-                Yii::error('Could not update user attributes by AuthClient (UserId: ' . $user->id . ") - Error: " . print_r($user->getErrors(), 1));
+                Yii::error('Could not update user attributes by AuthClient (UserId: ' . $user->id . ') - Error: ' . print_r($user->getErrors(), 1));
                 return false;
             }
 
             if (count($user->profile->getDirtyAttributes()) !== 0 && !$user->profile->save()) {
-                Yii::error('Could not update user attributes by AuthClient (UserId: ' . $user->id . ") - Error: " . print_r($user->profile->getErrors(), 1));
+                Yii::error('Could not update user attributes by AuthClient (UserId: ' . $user->id . ') - Error: ' . print_r($user->profile->getErrors(), 1));
                 return false;
             }
         }
@@ -150,7 +150,7 @@ class AuthClientHelpers
 
     /**
      * Automatically creates user by auth client attributes
-     * 
+     *
      * @param \yii\authclient\BaseClient $authClient
      * @return boolean success status
      */
@@ -184,7 +184,7 @@ class AuthClientHelpers
 
     /**
      * Returns all users which are using an given authclient
-     * 
+     *
      * @param ClientInterface $authClient
      * @return \yii\db\ActiveQuery
      */
@@ -205,7 +205,7 @@ class AuthClientHelpers
 
     /**
      * Returns AuthClients used by given User
-     * 
+     *
      * @param User $user
      * @return ClientInterface[] the users authclients
      */
@@ -234,8 +234,8 @@ class AuthClientHelpers
     }
 
     /**
-     * Returns a list of all synchornized user attributes 
-     * 
+     * Returns a list of all synchornized user attributes
+     *
      * @param User $user
      * @return array attribute names
      */
@@ -249,5 +249,4 @@ class AuthClientHelpers
         }
         return $attributes;
     }
-
 }

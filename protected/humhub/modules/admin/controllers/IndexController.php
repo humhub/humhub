@@ -41,7 +41,6 @@ class IndexController extends Controller
     {
         $adminMenu = new \humhub\modules\admin\widgets\AdminMenu();
 
-		return $this->redirect($adminMenu->items[0]['url']);
+        return $this->redirect($adminMenu->items[0]['url']);
     }
-
 }

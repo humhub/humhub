@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Advanced Settings' => 'Rozšířená nastavení',
   'Appearance Settings' => 'Nastavení vzhledu',
   'General' => 'Obecné',
@@ -11,4 +11,4 @@ return array (
   'These settings refer to advanced topics of your social network.' => 'Tato nastavení se vztahují k pokročilým tématům Vaší sítě.',
   'These settings refer to the appearance of your social network.' => 'Tato nastavení se vztahují k nastavení vzhledu Vaší sítě.',
   'User Settings' => 'Uživatelská nastavení',
-);
+];

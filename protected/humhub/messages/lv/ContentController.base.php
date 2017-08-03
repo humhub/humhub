@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Invalid content id given!' => 'Norādīts kļūdains satura id!',
-);
+];

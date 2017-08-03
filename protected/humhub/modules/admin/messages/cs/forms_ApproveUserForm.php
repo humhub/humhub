@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Message' => 'Zpráva',
   'Subject' => 'Předmět',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Collapse' => 'Sakļaut',
   'Read full post...' => '',
-);
+];

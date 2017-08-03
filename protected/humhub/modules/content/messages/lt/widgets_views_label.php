@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Archived' => 'Archyvuotas',
   'Public' => 'Višas',
   'Pinned' => 'Prisegtas',
-);
+];

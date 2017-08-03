@@ -12,7 +12,7 @@ use Yii;
 
 /**
  * Markdown Profile Field
- * 
+ *
  * @since 1.1
  */
 class MarkdownEditor extends BaseType
@@ -67,6 +67,4 @@ class MarkdownEditor extends BaseType
                 'rows' => '3'
         ]];
     }
-
 }
-?>

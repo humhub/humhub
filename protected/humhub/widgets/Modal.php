@@ -14,7 +14,8 @@ namespace humhub\widgets;
  * @author luke
  */
 class Modal extends JsWidget
-{   
+{
+
     /**
      * @inheritdoc
      */
@@ -125,10 +126,10 @@ class Modal extends JsWidget
     public function getAttributes()
     {
         return [
-            'class' => "modal",
-            'tabindex' => "-1",
-            'role' => "dialog",
-            'aria-hidden' => "true"
+            'class' => 'modal',
+            'tabindex' => '-1',
+            'role' => 'dialog',
+            'aria-hidden' => 'true'
         ];
     }
 
@@ -136,19 +137,18 @@ class Modal extends JsWidget
     {
         $result = [];
 
-        if(!$this->closable || !$this->backdrop) {
+        if (!$this->closable || !$this->backdrop) {
             $result['backdrop'] = 'static';
         }
 
-        if(!$this->closable || !$this->keyboard) {
+        if (!$this->closable || !$this->keyboard) {
             $result['keyboard'] = 'false';
         }
 
-        if($this->show) {
+        if ($this->show) {
             $result['show'] = 'true';
         }
 
         return $result;
     }
-
 }

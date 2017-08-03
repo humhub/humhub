@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Space</strong> followers' => '<strong>Gruppens</strong> medlemmer',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Kan ikke slette brukeren som eier gruppen! Gruppens navn: {spaceName}',
   'Default' => 'Standard',
@@ -17,4 +17,4 @@ return array (
   'Settings' => 'Instillinger',
   'Space' => 'Gruppe',
   'Visible for all (members and guests)' => 'Synlig for alle (Medlemmer og gjester)',
-);
+];

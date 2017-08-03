@@ -5,7 +5,6 @@ use humhub\components\Migration;
 use humhub\modules\notification\models\Notification;
 use yii\db\Expression;
 
-
 class m150703_033650_namespace extends Migration
 {
 
@@ -20,9 +19,9 @@ class m150703_033650_namespace extends Migration
         $this->update('notification', ['class' => 'humhub\modules\content\notifications\ContentCreated'], ['class' => 'ContentCreatedNotification']);
         
         // Fixes
-        $this->update('notification', ['source_class' => new Expression("NULL"), 'source_pk' => new Expression("NULL")], ['class'=>"humhub\modules\user\notifications\Followed"]);
+        $this->update('notification', ['source_class' => new Expression('NULL'), 'source_pk' => new Expression('NULL')], ['class'=>"humhub\modules\user\notifications\Followed"]);
         
-        Yii::$app->db->createCommand("UPDATE notification SET originator_user_id = created_by")->execute();
+        Yii::$app->db->createCommand('UPDATE notification SET originator_user_id = created_by')->execute();
     }
 
     public function down()

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Administration</strong> menu' => '<strong>管理</strong> 菜单',
   'Advanced' => '高级',
   'Appearance' => '外观',
@@ -17,4 +17,4 @@ return array (
   'Spaces' => '空间管理',
   'Statistics' => '静态页',
   'Users' => '用户管理',
-);
+];

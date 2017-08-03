@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Space</strong> followers' => 'Участники <strong>пространства</strong>',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Нельзя удалить владельца пространства. Пространство: {spaceName}',
   'Default' => 'По умолчанию',
@@ -17,4 +17,4 @@ return array (
   'Settings' => 'Настройки',
   'Space' => 'Пространства',
   'Visible for all (members and guests)' => 'Видимо для всех (Участники и гости)',
-);
+];

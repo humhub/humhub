@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'View online:' => 'Voir en ligne :',
-);
+];

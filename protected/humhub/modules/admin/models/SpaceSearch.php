@@ -12,7 +12,6 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use humhub\modules\space\models\Space;
 
-
 /**
  * Description of UserSearch
  *
@@ -77,5 +76,4 @@ class SpaceSearch extends Space
 
         return $dataProvider;
     }
-
 }

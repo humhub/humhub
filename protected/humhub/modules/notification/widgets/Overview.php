@@ -32,7 +32,4 @@ class Overview extends \yii\base\Widget
             'update' => \humhub\modules\notification\controllers\ListController::getUpdates(),
             'unseenCount' => \humhub\modules\notification\models\Notification::findUnseen()->count()]);
     }
-
 }
-
-?>

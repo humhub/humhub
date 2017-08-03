@@ -23,12 +23,12 @@ class RequestDeclined extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $moduleId = "friendship";
+    public $moduleId = 'friendship';
 
     /**
      * @inheritdoc
      */
-    public $viewName = "friendshipDeclined";
+    public $viewName = 'friendshipDeclined';
 
     /**
      * @inheritdoc
@@ -65,7 +65,4 @@ class RequestDeclined extends BaseNotification
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
         ]);
     }
-
 }
-
-?>

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Password</strong> recovery' => '<strong>Восстановление</strong> пароля',
   'Back' => 'Назад',
   'Just enter your e-mail address. We´ll send you recovery instructions!' => 'Dведите ваш e-mail, чтобы получить инструкции по восстановлению!',
@@ -7,4 +7,4 @@ return array (
   'Reset password' => 'Сброс пароля',
   'enter security code above' => 'введите код',
   'your email' => 'ваш e-mail',
-);
+];

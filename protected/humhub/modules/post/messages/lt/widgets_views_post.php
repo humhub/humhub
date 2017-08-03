@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Collapse' => 'Žlugimas',
   'Read full post...' => 'Perskaitykite visą skelbimą...',
-);
+];

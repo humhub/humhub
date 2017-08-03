@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Move to archive' => '移动到档案',
   'Unarchive' => '解压',
-);
+];

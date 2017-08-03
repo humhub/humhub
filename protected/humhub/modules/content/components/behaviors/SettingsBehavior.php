@@ -30,7 +30,7 @@ class SettingsBehavior extends Behavior
      * @param String $default value when no setting exists
      * @return String
      */
-    public function getSetting($name, $moduleId = "core", $default = "")
+    public function getSetting($name, $moduleId = 'core', $default = '')
     {
         $value = $this->getModule($moduleId)->settings->contentContainer($this->owner)->get($name);
         if ($value === null) {
@@ -47,14 +47,14 @@ class SettingsBehavior extends Behavior
      * @param String $value
      * @param String $moduleId
      */
-    public function setSetting($name, $value, $moduleId = "")
+    public function setSetting($name, $value, $moduleId = '')
     {
         $this->getModule($moduleId)->settings->contentContainer($this->owner)->set($name, $value);
     }
 
     /**
      * Gets correct SettingsManager by module id
-     * 
+     *
      * @param string $moduleId
      * @return \yii\base\Module
      */
@@ -73,5 +73,4 @@ class SettingsBehavior extends Behavior
 
         return $app;
     }
-
 }

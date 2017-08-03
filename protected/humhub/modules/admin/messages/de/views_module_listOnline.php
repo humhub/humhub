@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Modules</strong> directory' => '<strong>Modul</strong> Verzeichnis',
   'Buy (%price%)' => 'Kaufen (%price%)',
   'Disclaimer' => 'Disclaimer',
@@ -10,4 +10,4 @@ return array (
   'Licence Key:' => 'Lizenzschlüssel',
   'More info' => 'Weitere Informationen',
   'No compatible module version found!' => 'Keine kompatible Version gefunden!',
-);
+];

@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>Password</strong> recovery!' => '<strong>Şifre</strong> kurtar!',
   'We’ve sent you an email containing a link that will allow you to reset your password.' => 'Sana şifreni sıfırlamana yardımcı olacak bir mail gönderdik.',
   'back to home' => 'anasayfaya dön',
-);
+];

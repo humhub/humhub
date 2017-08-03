@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '1 month' => '1 Monat',
   '1 week' => '1 Woche',
   '1 year' => '1 Jahr',
@@ -7,4 +7,4 @@ return array (
   '3 months' => '3 Monate',
   '6 months' => '6 Monate',
   'never' => 'Nie',
-);
+];

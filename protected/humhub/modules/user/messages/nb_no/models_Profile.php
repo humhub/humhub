@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'About' => 'Om',
   'Birthday' => 'Bursdag',
   'City' => 'Sted',
@@ -32,4 +32,4 @@ return array (
   'Xing URL' => 'Xing URL',
   'YouTube URL' => 'YouTube URL',
   'Zip' => 'Postnummer',
-);
+];

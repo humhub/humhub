@@ -86,7 +86,7 @@ class MessageController extends \yii\console\controllers\MessageController
             $module = $this->getModuleByCategory($category);
             if ($module !== null) {
                 // Use Module Directory
-                $dirName = str_replace(Yii::getAlias("@humhub/messages"), $module->getBasePath() . '/messages', $dirNameBase);
+                $dirName = str_replace(Yii::getAlias('@humhub/messages'), $module->getBasePath() . '/messages', $dirNameBase);
                 preg_match('/.*?Module\.(.*)/', $category, $result);
                 $category = $result[1];
             } else {
@@ -94,7 +94,7 @@ class MessageController extends \yii\console\controllers\MessageController
                 $dirName = $dirNameBase;
             }
 
-            $file = str_replace("\\", '/', "$dirName/$category.php");
+            $file = str_replace('\\', '/', "$dirName/$category.php");
             $path = dirname($file);
             FileHelper::createDirectory($path);
             $msgs = array_values(array_unique($msgs));
@@ -119,12 +119,12 @@ class MessageController extends \yii\console\controllers\MessageController
                 // module id already in correct format (-,_)
                 return Yii::$app->moduleManager->getModule($result[1], true);
             } else {
-                $moduleId = strtolower(preg_replace("/([A-Z])/", '_\1', lcfirst($result[1])));
+                $moduleId = strtolower(preg_replace('/([A-Z])/', '_\1', lcfirst($result[1])));
                 try {
                     return Yii::$app->moduleManager->getModule($moduleId, true);
                 } catch (\yii\base\Exception $ex) {
                     // Module not found, try again with dash syntax
-                    $moduleId = strtolower(preg_replace("/([A-Z])/", '-\1', lcfirst($result[1])));
+                    $moduleId = strtolower(preg_replace('/([A-Z])/', '-\1', lcfirst($result[1])));
                     return Yii::$app->moduleManager->getModule($moduleId, true);
                 }
             }
@@ -145,9 +145,9 @@ class MessageController extends \yii\console\controllers\MessageController
         }
 
         foreach (Yii::$app->params['availableLanguages'] as $language => $name) {
-            print "Processing " . $language . " ...";
+            print 'Processing ' . $language . ' ...';
 
-            if (!is_dir(Yii::getAlias("@humhub/messages/" . $language))) {
+            if (!is_dir(Yii::getAlias('@humhub/messages/' . $language))) {
                 print "Skipped (No message folder)\n";
                 continue;
             }
@@ -165,14 +165,13 @@ class MessageController extends \yii\console\controllers\MessageController
                     foreach (glob($messageFolder . '/' . $language . '/*.php') as $messageFile) {
                         $messages = require($messageFile);
                         foreach ($messages as $original => $translated) {
-
                             // Removed unused marking
                             if (substr($translated, 0, 2) == '@@' && substr($translated, -2, 2) == '@@') {
                                 $translated = preg_replace('/^@@/', '', $translated);
                                 $translated = preg_replace('/@@$/', '', $translated);
                             }
 
-                            if ($translated != "") {
+                            if ($translated != '') {
                                 if (isset($archive[$original]) && !in_array($translated, $archive[$original])) {
                                     $archive[$original][] = $translated;
                                 } else {
@@ -190,5 +189,4 @@ class MessageController extends \yii\console\controllers\MessageController
             print "Saved!\n";
         }
     }
-
 }

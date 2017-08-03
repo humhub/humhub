@@ -26,7 +26,7 @@ $this->context->loadResources($this);
                 orphan: true,
                 backdrop: true,
                 title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Space</strong>')); ?>,
-                content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', "Once you have joined or created a new space you can work on projects, discuss topics or just share information with other users.<br><br>There are various tools to personalize a space, thereby making the work process more productive.")); ?>
+                content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', 'Once you have joined or created a new space you can work on projects, discuss topics or just share information with other users.<br><br>There are various tools to personalize a space, thereby making the work process more productive.')); ?>
             },
             {
                 element: ".layout-nav-container .panel",
@@ -68,7 +68,7 @@ $this->context->loadResources($this);
                 orphan: true,
                 backdrop: true,
                 title: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Yay! You\'re done.</strong>')); ?>,
-                content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', "That's it for the space guide.<br><br>To carry on with the user profile guide, click here: ")); ?> + "<a href='javascript:gotoProfile = true; tourCompleted();'><?php echo Yii::t("TourModule.widgets_views_guide_spaces", "<strong>Profile Guide</strong>"); ?></a><br><br>"
+                content: <?php echo json_encode(Yii::t('TourModule.widgets_views_guide_spaces', "That's it for the space guide.<br><br>To carry on with the user profile guide, click here: ")); ?> + "<a href='javascript:gotoProfile = true; tourCompleted();'><?php echo Yii::t('TourModule.widgets_views_guide_spaces', '<strong>Profile Guide</strong>'); ?></a><br><br>"
             }
         ]);
 

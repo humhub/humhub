@@ -27,5 +27,4 @@ class m170118_111823_queuetable extends Migration
     {
         $this->dropTable($this->tableName);
     }
-
 }

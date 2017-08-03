@@ -15,7 +15,7 @@ class MailRendererTest extends HumHubDbTestCase
     public function testExistingTextView()
     {
         $viewable = new TestViewable(['viewName' => 'testView']);
-        $renderer = new MailRenderer(['parent' => true, 
+        $renderer = new MailRenderer(['parent' => true,
             'defaultTextView' => '@tests/codeception/unit/components/rendering/lib/views',
             'defaultTextViewPath' => '@tests/codeception/unit/components/rendering/lib/views/specialView.php']);
         $this->assertEquals('TextView:TestTitle', $renderer->renderText($viewable));
@@ -24,7 +24,7 @@ class MailRendererTest extends HumHubDbTestCase
     public function testNonExistingTextView()
     {
         $viewable = new TestViewable(['viewName' => 'nonExisting']);
-        $renderer = new MailRenderer(['parent' => true, 
+        $renderer = new MailRenderer(['parent' => true,
             'defaultTextView' => '@tests/codeception/unit/components/rendering/lib/views/testView.php',
             'defaultTextViewPath' => '@tests/codeception/unit/components/rendering/lib/views']);
         $this->assertEquals('TestTitle', $renderer->renderText($viewable));
@@ -33,10 +33,9 @@ class MailRendererTest extends HumHubDbTestCase
     public function testExistingViewPathTextView()
     {
         $viewable = new TestViewable(['viewName' => 'specialView']);
-        $renderer = new MailRenderer(['parent' => true, 
+        $renderer = new MailRenderer(['parent' => true,
             'defaultTextView' => '@tests/codeception/unit/components/rendering/lib/views/testView.php',
             'defaultTextViewPath' => '@tests/codeception/unit/components/rendering/lib/views']);
         $this->assertEquals('SpecialView', $renderer->renderText($viewable));
     }
-   
 }

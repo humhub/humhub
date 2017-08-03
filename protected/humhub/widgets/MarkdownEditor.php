@@ -24,33 +24,33 @@ class MarkdownEditor extends \yii\base\Widget
      *
      * @var string
      */
-    public $fieldId = "";
+    public $fieldId = '';
 
     /**
      * HMarkdown parser class used for preview
      *
      * @var string
      */
-    public $parserClass = "HMarkdown";
+    public $parserClass = 'HMarkdown';
 
     /**
      * Stylesheet for Highlight.js for preview
      */
-    public $highlightJsCss = "github";
+    public $highlightJsCss = 'github';
 
     /**
      * Optional markdown preview url
      *
      * @var string
      */
-    public $previewUrl = "";
+    public $previewUrl = '';
 
     /**
      * @inheritdoc
      */
     public function init()
     {
-        if ($this->previewUrl == "") {
+        if ($this->previewUrl == '') {
             $this->previewUrl = \yii\helpers\Url::toRoute(['/markdown/preview', 'parser' => $this->parserClass]);
         }
     }
@@ -60,10 +60,9 @@ class MarkdownEditor extends \yii\base\Widget
      */
     public function run()
     {
-        return $this->render('markdownEditor', array(
+        return $this->render('markdownEditor', [
                     'fieldId' => $this->fieldId,
                     'previewUrl' => $this->previewUrl
-        ));
+        ]);
     }
-
 }

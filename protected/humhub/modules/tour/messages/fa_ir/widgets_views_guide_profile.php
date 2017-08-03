@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Administration (Modules)</strong>' => '<strong>مدیریت (ماژول‌ها)</strong>',
   '<strong>Edit</strong> account' => '<strong>حساب</strong> حساب کاربری',
   '<strong>Hurray!</strong> The End.' => '<strong>هورا!</strong> پایان.',
@@ -16,4 +16,4 @@ return array (
   'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'عکس پروفایل خود را به سادگی با کلیک روی این قسمت و یا کشیدن آن به این‌جا آپلود کنید. برای عکس کاور خود نیز همین عملیات را انجام دهید.',
   'You\'ve completed the user profile guide!' => 'شما راهنمای کاربر را به پایان رسانده‌اید.',
   'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />' => 'شما راهنمای کاربر را به پایان رسانده‌اید. <br><br> برای ادامه‌دادن با راهنمای مدیریت این‌جا کلیک کنید: <br /><br />',
-);
+];

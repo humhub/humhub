@@ -29,5 +29,4 @@ class HomeController extends Controller
     {
         return $this->redirect(Url::home());
     }
-
 }

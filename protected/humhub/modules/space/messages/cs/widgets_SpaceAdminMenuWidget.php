@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<i class="fa fa-cog"></i>' => '<i class="fa fa-cog"></i>',
   'Cancel Membership' => 'Zrušit členství',
   'Don\'t receive notifications for new content' => 'Nepřijímá oznámení o novém obsahu',
@@ -11,4 +11,4 @@ return array (
   'Show posts on dashboard' => 'Zobrazit na nástěnce',
   'This option will hide new content from this space at your dashboard' => 'Tato volba skryje nový obsah z tohoto prostoru na nástěnce',
   'This option will show new content from this space at your dashboard' => 'Tato volba zobrazí nový obsah z tohoto prostoru na nástěnce',
-);
+];

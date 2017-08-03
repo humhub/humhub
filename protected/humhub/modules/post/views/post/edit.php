@@ -13,7 +13,7 @@ $submitUrl = $post->content->container->createUrl('/post/post/edit', ['id' => $p
 
     <!-- create contenteditable div for HEditorWidget to place the data -->
     <?= RichtextField::widget([
-        'id' => 'post_input_'. $post->id,
+        'id' => 'post_input_' . $post->id,
         'placeholder' => Yii::t('PostModule.views_edit', 'Edit your post...'),
         'model' => $post,
         'attribute' => 'message'

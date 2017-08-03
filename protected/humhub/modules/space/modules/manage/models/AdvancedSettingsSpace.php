@@ -21,13 +21,13 @@ class AdvancedSettingsSpace extends Space
 
     /**
      * Contains the form value for indexUrl setting
-     * @var string|null 
+     * @var string|null
      */
     public $indexUrl = null;
 
     /**
      * Contains the form value for indexGuestUrl setting
-     * @var string|null 
+     * @var string|null
      */
     public $indexGuestUrl = null;
 
@@ -85,5 +85,4 @@ class AdvancedSettingsSpace extends Space
 
         return parent::afterSave($insert, $changedAttributes);
     }
-
 }

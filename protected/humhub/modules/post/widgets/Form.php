@@ -27,7 +27,7 @@ class Form extends \humhub\modules\content\widgets\WallCreateContentForm
      */
     public function renderForm()
     {
-        return $this->render('form', array());
+        return $this->render('form', []);
     }
 
     /**
@@ -41,7 +41,4 @@ class Form extends \humhub\modules\content\widgets\WallCreateContentForm
 
         return parent::run();
     }
-
 }
-
-?>

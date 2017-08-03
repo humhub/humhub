@@ -313,5 +313,4 @@ class PermissionCest
         $I->amOnPage(['/admin/information']);
         $I->see('You are not permitted to access this section.');
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Created At' => 'Sukurta (kada)',
   'Created By' => 'Sukurta (kieno)',
   'Last Visit' => '',
@@ -8,4 +8,4 @@ return array (
   'Status' => 'Būsena',
   'Updated At' => 'Atnaujinta (kada)',
   'Updated By' => '',
-);
+];

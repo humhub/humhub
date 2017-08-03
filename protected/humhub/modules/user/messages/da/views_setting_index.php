@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Do you really want to delete your logo image?' => 'Vil du virkelig slette dit logo billede?',
-);
+];

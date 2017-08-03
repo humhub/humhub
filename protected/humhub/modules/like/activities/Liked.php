@@ -33,7 +33,7 @@ class Liked extends BaseActivity implements ConfigurableActivityInterface
     /**
      * @inheritdoc
      */
-    public function getViewParams($params = array())
+    public function getViewParams($params = [])
     {
         $like = $this->source;
         $likeSource = $like->getSource();
@@ -56,5 +56,4 @@ class Liked extends BaseActivity implements ConfigurableActivityInterface
     {
         return Yii::t('LikeModule.activities', 'Whenever someone likes something (e.g. a post or comment).');
     }
-
 }

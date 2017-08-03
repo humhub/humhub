@@ -81,13 +81,13 @@ class SearchController extends Controller
         $pagination->totalCount = $searchResultSet->total;
         $pagination->pageSize = $searchResultSet->pageSize;
 
-        return $this->render('index', array(
+        return $this->render('index', [
             'model' => $model,
             'results' => $searchResultSet->getResultInstances(),
             'pagination' => $pagination,
             'totals' => $model->getTotals($model->keyword, $options),
             'limitSpaces' => $limitSpaces
-        ));
+        ]);
     }
 
     /**
@@ -97,22 +97,22 @@ class SearchController extends Controller
     {
         \Yii::$app->response->format = 'json';
 
-        $results = array();
-        $keyword = Yii::$app->request->get('keyword', "");
+        $results = [];
+        $keyword = Yii::$app->request->get('keyword', '');
 
         $searchResultSet = Yii::$app->search->find($keyword, [
-            'model' => array(User::className(), Space::className()),
+            'model' => [User::className(), Space::className()],
             'pageSize' => 10
         ]);
 
         foreach ($searchResultSet->getResultInstances() as $container) {
-            $results[] = array(
+            $results[] = [
                 'guid' => $container->guid,
-                'type' => ($container instanceof Space) ? "s" : "u",
+                'type' => ($container instanceof Space) ? 's' : 'u',
                 'name' => $container->getDisplayName(),
                 'image' => ($container instanceof Space) ? Image::widget(['space' => $container, 'width' => 20]) : "<img class='img-rounded' src='" . $container->getProfileImage()->getUrl() . "' height='20' width='20' alt=''>",
                 'link' => $container->getUrl()
-            );
+            ];
         };
 
         return $results;

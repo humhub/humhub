@@ -28,7 +28,7 @@ class NewComment extends BaseActivity implements ConfigurableActivityInterface
     /**
      * @inheritdoc
      */
-    public $viewName = "newComment";
+    public $viewName = 'newComment';
 
     /**
      * @inheritdoc
@@ -45,5 +45,4 @@ class NewComment extends BaseActivity implements ConfigurableActivityInterface
     {
         return Yii::t('CommentModule.activities', 'Whenever a new comment was written.');
     }
-
 }

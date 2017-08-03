@@ -26,5 +26,4 @@ class AdminNotificationCategory extends NotificationCategory
     {
         return Yii::t('AdminModule.notifications_AdminNotificationCategory', 'Administrative');
     }
-
 }

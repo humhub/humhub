@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'General' => 'Algemeen',
   'LDAP' => 'LDAP',
   'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => 'Minimum waarde is 20 seconden. Indien niet ingesteld, zal de sessie na 1400 seconden (24 minuten) verlopen, ongeacht activiteit.',
@@ -7,4 +7,4 @@ return array (
   'Save' => 'Bewaar',
   'Visible for members only' => 'Alleen zichtbaar voor leden',
   'Visible for members+guests' => 'Zichtbaar voor leden+bezoekers',
-);
+];

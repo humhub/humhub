@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Allow limited access for non-authenticated users (guests)' => '',
   'Anonymous users can register' => '',
   'Default user group for new users' => '',
@@ -7,4 +7,4 @@ return array (
   'Default user profile visibility' => '',
   'Members can invite external users by email' => '',
   'Require group admin approval after registration' => '',
-);
+];

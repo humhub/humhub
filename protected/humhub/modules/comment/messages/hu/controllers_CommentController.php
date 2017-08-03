@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Access denied!' => 'Nincs hozzáférésed!',
   'Insufficent permissions!' => '',
-);
+];

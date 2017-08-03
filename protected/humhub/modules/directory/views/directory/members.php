@@ -16,7 +16,7 @@ use humhub\modules\directory\widgets\UserGroupList;
     <div class="panel-heading">
         <?php if ($group === null) : ?>
             <?= Yii::t('DirectoryModule.base', '<strong>Member</strong> directory'); ?>
-        <?php else: ?>
+        <?php else : ?>
             <?= Yii::t('DirectoryModule.base', '<strong>Group</strong> members - {group}', ['{group}' => Html::encode($group->name)]); ?>
         <?php endif; ?>
     </div>
@@ -27,7 +27,7 @@ use humhub\modules\directory\widgets\UserGroupList;
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <div class="form-group form-group-search">
-                    <?= Html::textInput("keyword", $keyword, ['class' => 'form-control form-search', 'placeholder' => Yii::t('DirectoryModule.base', 'search for members')]); ?>
+                    <?= Html::textInput('keyword', $keyword, ['class' => 'form-control form-search', 'placeholder' => Yii::t('DirectoryModule.base', 'search for members')]); ?>
                     <?= Html::submitButton(Yii::t('DirectoryModule.base', 'Search'), ['class' => 'btn btn-default btn-sm form-button-search']); ?>
                 </div>
             </div>
@@ -35,7 +35,7 @@ use humhub\modules\directory\widgets\UserGroupList;
         </div>
         <?= Html::endForm(); ?>
 
-        <?php if (count($users) == 0): ?>
+        <?php if (count($users) == 0) : ?>
             <p><?= Yii::t('DirectoryModule.base', 'No members found!'); ?></p>
         <?php endif; ?>
     </div>

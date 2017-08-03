@@ -16,7 +16,8 @@ namespace humhub\modules\directory\components;
 class Controller extends \humhub\components\Controller
 {
 
-    public function init() {
+    public function init()
+    {
         $this->appendPageTitle(\Yii::t('DirectoryModule.base', 'Directory'));
         return parent::init();
     }
@@ -24,6 +25,5 @@ class Controller extends \humhub\components\Controller
     /**
      * @inheritdoc
      */
-    public $subLayout = "@humhub/modules/directory/views/directory/_layout";
-
+    public $subLayout = '@humhub/modules/directory/views/directory/_layout';
 }

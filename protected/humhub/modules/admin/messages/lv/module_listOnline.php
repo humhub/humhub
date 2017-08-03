@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Installed' => 'Instalēti',
   'No modules found!' => 'Nav atrasti moduļi!',
   'No purchased modules found!' => 'Nav atrasti pirkti moduļi!',
@@ -7,4 +7,4 @@ return array (
   'Search' => 'Meklē',
   'Third-party' => 'Trešās-puses',
   'search for available modules online' => 'meklēt pieejamos moduļus tiešsaistē',
-);
+];

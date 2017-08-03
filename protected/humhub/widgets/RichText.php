@@ -24,7 +24,7 @@ class RichText extends JsWidget
     /**
      * @var string text to display
      */
-    public $text = "";
+    public $text = '';
 
     /**
      * @var boolean
@@ -90,7 +90,7 @@ REGEXP;
                     }
                 }
 
-                $options = strpos($match[0], Yii::$app->settings->get('baseUrl')) === 0 ? [] : ['target' => '_blank', 'rel' => "noopener noreferrer"];
+                $options = strpos($match[0], Yii::$app->settings->get('baseUrl')) === 0 ? [] : ['target' => '_blank', 'rel' => 'noopener noreferrer'];
 
                 // The markdown parser will parse the links by itself
                 return ($this->markdown) ? $match[0] : Html::a($match[0], Html::decode($match[0]), $options);
@@ -121,8 +121,8 @@ REGEXP;
         }
 
         // replace leading spaces with no break spaces to keep the text format
-        $output = preg_replace_callback('/^( +)/m', function($m) {
-            return str_repeat("&nbsp;", strlen($m[1]));
+        $output = preg_replace_callback('/^( +)/m', function ($m) {
+            return str_repeat('&nbsp;', strlen($m[1]));
         }, $output);
 
         $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
@@ -138,23 +138,23 @@ REGEXP;
      */
     public static function translateEmojis($text, $show = true)
     {
-        $emojis = array(
-            "Relaxed", "Yum", "Relieved", "Hearteyes", "Cool", "Smirk",
-            "KissingClosedEyes", "StuckOutTongue", "StuckOutTongueWinkingEye", "StuckOutTongueClosedEyes", "Disappointed", "Frown",
-            "ColdSweat", "TiredFace", "Grin", "Sob", "Gasp", "Gasp2",
-            "Laughing", "Joy", "Sweet", "Satisfied", "Innocent", "Wink",
-            "Ambivalent", "Expressionless", "Sad", "Slant", "Worried", "Kissing",
-            "KissingHeart", "Angry", "Naughty", "Furious", "Cry", "OpenMouth",
-            "Fearful", "Confused", "Weary", "Scream", "Astonished", "Flushed",
-            "Sleeping", "NoMouth", "Mask", "Worried", "Smile", "Muscle",
-            "Facepunch", "ThumbsUp", "ThumbsDown", "Beers", "Cocktail", "Burger",
-            "PoultryLeg", "Party", "Cake", "Sun", "Fire", "Heart"
-        );
+        $emojis = [
+            'Relaxed', 'Yum', 'Relieved', 'Hearteyes', 'Cool', 'Smirk',
+            'KissingClosedEyes', 'StuckOutTongue', 'StuckOutTongueWinkingEye', 'StuckOutTongueClosedEyes', 'Disappointed', 'Frown',
+            'ColdSweat', 'TiredFace', 'Grin', 'Sob', 'Gasp', 'Gasp2',
+            'Laughing', 'Joy', 'Sweet', 'Satisfied', 'Innocent', 'Wink',
+            'Ambivalent', 'Expressionless', 'Sad', 'Slant', 'Worried', 'Kissing',
+            'KissingHeart', 'Angry', 'Naughty', 'Furious', 'Cry', 'OpenMouth',
+            'Fearful', 'Confused', 'Weary', 'Scream', 'Astonished', 'Flushed',
+            'Sleeping', 'NoMouth', 'Mask', 'Worried', 'Smile', 'Muscle',
+            'Facepunch', 'ThumbsUp', 'ThumbsDown', 'Beers', 'Cocktail', 'Burger',
+            'PoultryLeg', 'Party', 'Cake', 'Sun', 'Fire', 'Heart'
+        ];
 
-        return preg_replace_callback('@;(\w*?);@', function($hit) use(&$show, &$emojis) {
+        return preg_replace_callback('@;(\w*?);@', function ($hit) use (&$show, &$emojis) {
             if (in_array($hit[1], $emojis)) {
                 if ($show) {
-                    return Html::img(Yii::getAlias("@web-static/img/emoji/" . $hit[1] . ".svg"), array('data-emoji-name' => $hit[0], 'data-richtext-feature' => '', 'data-guid' => "@-emoji".$hit[0], 'class' => 'atwho-emoji', 'width' => '18', 'height' => '18', 'alt' => $hit[1]));
+                    return Html::img(Yii::getAlias('@web-static/img/emoji/' . $hit[1] . '.svg'), ['data-emoji-name' => $hit[0], 'data-richtext-feature' => '', 'data-guid' => '@-emoji' . $hit[0], 'class' => 'atwho-emoji', 'width' => '18', 'height' => '18', 'alt' => $hit[1]]);
                 }
                 return '';
             }
@@ -170,14 +170,14 @@ REGEXP;
      */
     public static function translateMentioning($text, $buildAnchors = true)
     {
-        return preg_replace_callback('@\@\-([us])([\w\-]*?)($|[\.,:;\'"!\?\s])@', function($hit) use(&$buildAnchors) {
+        return preg_replace_callback('@\@\-([us])([\w\-]*?)($|[\.,:;\'"!\?\s])@', function ($hit) use (&$buildAnchors) {
             if ($hit[1] == 'u') {
                 $user = \humhub\modules\user\models\User::findOne(['guid' => $hit[2]]);
                 if ($user !== null) {
                     if ($buildAnchors) {
                         return ' <span contenteditable="false"><a href="' . $user->getUrl() . '" target="_self" class="atwho-user" data-richtext-feature data-guid="@-u' . $user->guid . '">@' . Html::encode($user->getDisplayName()) . '&#x200b;</a></span>' . $hit[3];
                     }
-                    return " @" . Html::encode($user->getDisplayName()) . $hit[3];
+                    return ' @' . Html::encode($user->getDisplayName()) . $hit[3];
                 }
             } elseif ($hit[1] == 's') {
                 $space = \humhub\modules\space\models\Space::findOne(['guid' => $hit[2]]);
@@ -186,11 +186,10 @@ REGEXP;
                     if ($buildAnchors) {
                         return ' <span contenteditable="false"><a href="' . $space->getUrl() . '" target="_self" class="atwho-user" data-richtext-feature data-guid="@-s' . $space->guid . '">@' . Html::encode($space->name) . '&#x200b;</a></span>' . $hit[3];
                     }
-                    return " @" . Html::encode($space->name) . $hit[3];
+                    return ' @' . Html::encode($space->name) . $hit[3];
                 }
             }
             return $hit[0];
         }, $text);
     }
-
 }

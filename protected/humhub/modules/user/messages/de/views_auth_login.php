@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Join</strong> the network' => 'Netzwerk <strong>beitreten</strong>',
   '<strong>Please</strong> sign in' => '<strong>Einloggen</strong>',
   '<strong>Sign</strong> up' => '<strong>Registrieren</strong>',
@@ -15,4 +15,4 @@ return array (
   'email' => 'E-Mail',
   'password' => 'Passwort',
   'username or email' => 'Benutzername oder E-Mail',
-);
+];

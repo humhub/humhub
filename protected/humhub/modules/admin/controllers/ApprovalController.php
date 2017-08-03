@@ -60,7 +60,7 @@ class ApprovalController extends Controller
         }
 
         if (!Yii::$app->user->isAdmin()) {
-            $this->subLayout = "@humhub/modules/admin/views/approval/_layoutNoAdmin";
+            $this->subLayout = '@humhub/modules/admin/views/approval/_layoutNoAdmin';
         }
 
         return parent::beforeAction($action);
@@ -81,8 +81,9 @@ class ApprovalController extends Controller
     {
         $user = User::findOne(['id' => (int) Yii::$app->request->get('id')]);
 
-        if ($user == null)
+        if ($user == null) {
             throw new HttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
+        }
 
         $model = new ApproveUserForm;
         $model->subject = Yii::t('AdminModule.controllers_ApprovalController', "Account Request for '{displayName}' has been approved.", ['{displayName}' => Html::encode($user->displayName)]);
@@ -96,7 +97,7 @@ class ApprovalController extends Controller
    Kind Regards<br>
    {AdminName}<br><br>', [
                     '{displayName}' => Html::encode($user->displayName),
-                    '{loginURL}' => urldecode(Url::to(["/user/auth/login"], true)),
+                    '{loginURL}' => urldecode(Url::to(['/user/auth/login'], true)),
                     '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
         ]);
 
@@ -119,8 +120,9 @@ class ApprovalController extends Controller
 
         $user = User::findOne(['id' => (int) Yii::$app->request->get('id')]);
 
-        if ($user == null)
+        if ($user == null) {
             throw new HttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
+        }
 
         $model = new ApproveUserForm;
         $model->subject = Yii::t('AdminModule.controllers_ApprovalController', 'Account Request for \'{displayName}\' has been declined.', ['{displayName}' => Html::encode($user->displayName)]);
@@ -129,10 +131,10 @@ class ApprovalController extends Controller
    your account request has been declined.<br><br>
 
    Kind Regards<br>
-   {AdminName}<br><br>', array(
+   {AdminName}<br><br>', [
                     '{displayName}' => Html::encode($user->displayName),
                     '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
-        ));
+        ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->send($user->email);
@@ -145,5 +147,4 @@ class ApprovalController extends Controller
             'approveFormModel' => $model
         ]);
     }
-
 }

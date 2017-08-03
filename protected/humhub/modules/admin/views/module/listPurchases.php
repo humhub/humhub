@@ -15,10 +15,10 @@ use yii\helpers\Html;
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <div class="form-group form-group-search">
-                    <?= Html::textInput("licenceKey", $licenceKey, ["class" => "form-control form-search", "placeholder" => Yii::t('AdminModule.base', 'Add purchased module by licence key')]); ?>
-                    <?= Html::submitButton(Yii::t('AdminModule.module_listOnline', 'Register'), ['class' => 'btn btn-default btn-sm form-button-search' , 'data-ui-loader' => ""]); ?>
+                    <?= Html::textInput('licenceKey', $licenceKey, ['class' => 'form-control form-search', 'placeholder' => Yii::t('AdminModule.base', 'Add purchased module by licence key')]); ?>
+                    <?= Html::submitButton(Yii::t('AdminModule.module_listOnline', 'Register'), ['class' => 'btn btn-default btn-sm form-button-search' , 'data-ui-loader' => '']); ?>
                 </div>
-                <?php if ($message != ""): ?>
+                <?php if ($message != '') : ?>
                     <div style="color:<?= ($hasError) ? 'red' : 'green'; ?>"><?= Html::encode($message); ?></div>
                 <?php endif; ?>
             </div>
@@ -35,16 +35,16 @@ use yii\helpers\Html;
                 <br><br>
             </div>
 
-        <?php else: ?>
+        <?php else : ?>
 
 
-            <?php foreach ($modules as $module): ?>
+            <?php foreach ($modules as $module) : ?>
                 <hr>
                 <div class="media ">
 
                     <?php
                     $moduleImageUrl = Yii::getAlias('@web-static/img/default_module.jpg');
-                    if (isset($module['moduleImageUrl']) && $module['moduleImageUrl'] != "") {
+                    if (isset($module['moduleImageUrl']) && $module['moduleImageUrl'] != '') {
                         $moduleImageUrl = $module['moduleImageUrl'];
                     }
                     ?>
@@ -53,7 +53,7 @@ use yii\helpers\Html;
 
                     <div class="media-body">
                         <h4 class="media-heading"><?= $module['name']; ?>
-                            <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>
+                            <?php if (Yii::$app->moduleManager->hasModule($module['id'])) : ?>
                                 <small><span
                                         class="label label-info"><?= Yii::t('AdminModule.module_listOnline', 'Installed'); ?>
                                 </small></span>
@@ -62,8 +62,8 @@ use yii\helpers\Html;
                         <p><?= $module['description']; ?></p>
 
                         <div class="module-controls">
-                            <?php if (!Yii::$app->moduleManager->hasModule($module['id'])): ?>
-                                <?= Html::a(Yii::t('AdminModule.views_module_listOnline', 'Install'), Url::to(['install', 'moduleId' => $module['id']]), ['style' => 'font-weight:bold', 'data-loader' => "modal", 'data-message' => Yii::t('AdminModule.views_module_listOnline', 'Installing module...'), 'data-method' => 'POST']); ?>
+                            <?php if (!Yii::$app->moduleManager->hasModule($module['id'])) : ?>
+                                <?= Html::a(Yii::t('AdminModule.views_module_listOnline', 'Install'), Url::to(['install', 'moduleId' => $module['id']]), ['style' => 'font-weight:bold', 'data-loader' => 'modal', 'data-message' => Yii::t('AdminModule.views_module_listOnline', 'Installing module...'), 'data-method' => 'POST']); ?>
                                 &middot;
                             <?php endif; ?>
                             <?= Html::a(Yii::t('AdminModule.views_module_listOnline', 'More info'), $module['marketplaceUrl'], ['target' => '_blank']); ?>

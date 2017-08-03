@@ -38,9 +38,9 @@ class ChooseLanguage extends Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'language' => Yii::t('base', 'Language'),
-        );
+        ];
     }
 
     /**
@@ -90,5 +90,4 @@ class ChooseLanguage extends Model
 
         return null;
     }
-
 }

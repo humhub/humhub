@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Current password' => 'Kullandığın şifren',
   'E-Mail change' => 'Mail adresi değiştir',
   'New E-Mail address' => 'Yeni mail adresi',
-);
+];

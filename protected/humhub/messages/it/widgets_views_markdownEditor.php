@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => 'Aggiungi immagine/file',
   'Add link' => 'Aggiungi link',
   'Bold' => 'Grassetto',
@@ -31,4 +31,4 @@ return array (
   'list text here' => 'elemento lista',
   'quote here' => 'testo quotato',
   'strong text' => 'testo in grassetto',
-);
+];

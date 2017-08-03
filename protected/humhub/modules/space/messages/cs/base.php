@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Space</strong> followers' => '<strong>Sledující prostoru</strong>',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Nelze smazat uživatele, který je vlastníkem prostoru! Prostor: {spaceName}',
   'Default' => 'Výchozí',
@@ -17,4 +17,4 @@ return array (
   'Settings' => 'Nastavení',
   'Space' => 'Prostor',
   'Visible for all (members and guests)' => 'Viditelné pro všechny',
-);
+];

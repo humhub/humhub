@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Access Admin Information' => 'Přístup k administrátorským informacím',
   'Can access the \'Administration -> Information\' section.' => 'Přístup do sekce "Administrace -> Informace".',
   'Can manage modules within the \'Administration ->  Modules\' section.' => 'Přístup do sekce "Administrace -> Moduly".',
@@ -12,4 +12,4 @@ return array (
   'Manage Settings' => 'Správa Nastavení',
   'Manage Spaces' => 'Správa Prostorů',
   'Manage Users' => 'Správa Uživatelů',
-);
+];

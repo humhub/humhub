@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Archived' => '已存档',
   'Public' => '公共',
   'Pinned' => '已标记',
-);
+];

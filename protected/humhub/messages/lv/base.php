@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Confirm</strong> Action' => '<strong>Apstiprināt</strong> Darbību',
   '<strong>Latest</strong> updates' => '<strong>Jaunākie</strong> atjauninājumi',
   '<strong>Mail</strong> summary' => '<strong>Pasta</strong> kopsavilkums',
@@ -72,4 +72,4 @@ return array (
   'Upload file' => 'Augšupielādēt failu',
   'User not found!' => 'Lietotājs nav atrasts!',
   'You are not allowed to run this action.' => 'Tev nav tiesību izpildīt šo darbību.',
-);
+];

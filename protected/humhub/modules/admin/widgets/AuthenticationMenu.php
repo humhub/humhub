@@ -20,7 +20,7 @@ class AuthenticationMenu extends \humhub\widgets\BaseMenu
     /**
      * @inheritdoc
      */
-    public $template = "@humhub/widgets/views/subTabMenu";
+    public $template = '@humhub/widgets/views/subTabMenu';
 
     /**
      * @inheritdoc
@@ -34,7 +34,7 @@ class AuthenticationMenu extends \humhub\widgets\BaseMenu
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'authentication' && Yii::$app->controller->action->id == 'index'),
         ]);
         $this->addItem([
-            'label' => Yii::t('AdminModule.setting', "LDAP"),
+            'label' => Yii::t('AdminModule.setting', 'LDAP'),
             'url' => Url::toRoute(['/admin/authentication/authentication-ldap']),
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'authentication' && Yii::$app->controller->action->id == 'authentication-ldap'),
@@ -42,5 +42,4 @@ class AuthenticationMenu extends \humhub\widgets\BaseMenu
 
         parent::init();
     }
-
 }

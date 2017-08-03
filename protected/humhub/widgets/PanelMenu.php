@@ -33,7 +33,7 @@ class PanelMenu extends \yii\base\Widget
     /**
      * @var String unique id from panel element
      */
-    public $id = "";
+    public $id = '';
 
     /**
      * Workaround to inject menu items to PanelMenu
@@ -42,7 +42,7 @@ class PanelMenu extends \yii\base\Widget
      * @internal description
      * @var String
      */
-    public $extraMenus = "";
+    public $extraMenus = '';
 
     public function init()
     {
@@ -54,12 +54,9 @@ class PanelMenu extends \yii\base\Widget
      */
     public function run()
     {
-        return $this->render('panelMenu', array(
+        return $this->render('panelMenu', [
                     'id' => $this->id,
                     'extraMenus' => $this->extraMenus,
-        ));
+        ]);
     }
-
 }
-
-?>

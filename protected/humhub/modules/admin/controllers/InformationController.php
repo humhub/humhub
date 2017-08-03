@@ -54,7 +54,7 @@ class InformationController extends Controller
 
         $latestVersion = HumHubAPI::getLatestHumHubVersion();
         if ($latestVersion) {
-            $isNewVersionAvailable = version_compare($latestVersion, Yii::$app->version, ">");
+            $isNewVersionAvailable = version_compare($latestVersion, Yii::$app->version, '>');
             $isUpToDate = !$isNewVersionAvailable;
         }
 
@@ -96,5 +96,4 @@ class InformationController extends Controller
             'currentUser' => $currentUser
         ]);
     }
-
 }

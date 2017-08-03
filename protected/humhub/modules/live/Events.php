@@ -17,7 +17,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @since 1.2
  * @author luke
  */
@@ -61,5 +61,4 @@ class Events extends \yii\base\Object
             Yii::$app->cache->delete(Module::$legitimateCachePrefix . $event->user->id);
         }
     }
-
 }

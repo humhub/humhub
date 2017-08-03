@@ -160,7 +160,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
                 if ($date !== false) {
                     $normalized[$name] = $date->format('Y-m-d 00:00:00');
                 } else {
-                    $normalized[$name] = "";
+                    $normalized[$name] = '';
                 }
             }
         }
@@ -183,7 +183,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
                 $this->idAttribute = 'mail';
                 $this->userTableIdAttribute = 'email';
             } else {
-                throw new \yii\base\Exception("Could not automatically determine unique user id from ldap node!");
+                throw new \yii\base\Exception('Could not automatically determine unique user id from ldap node!');
             }
         }
 
@@ -247,7 +247,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     public function getLdap()
     {
         if ($this->_ldap === null) {
-            $options = array(
+            $options = [
                 'host' => Yii::$app->getModule('user')->settings->get('auth.ldap.hostname'),
                 'port' => Yii::$app->getModule('user')->settings->get('auth.ldap.port'),
                 'username' => Yii::$app->getModule('user')->settings->get('auth.ldap.username'),
@@ -257,7 +257,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
                 'bindRequiresDn' => true,
                 'baseDn' => Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn'),
                 'accountFilterFormat' => Yii::$app->getModule('user')->settings->get('auth.ldap.loginFilter'),
-            );
+            ];
 
             $this->_ldap = new \Zend\Ldap\Ldap($options);
             $this->_ldap->bind();
@@ -374,5 +374,4 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
 
         return true;
     }
-
 }

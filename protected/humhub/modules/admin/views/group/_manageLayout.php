@@ -9,7 +9,7 @@ use humhub\libs\Html;
 
     <?php if (!$group->isNewRecord) : ?>
         <h4><?= Yii::t('AdminModule.user', 'Manage group: {groupName}', ['groupName' => $group->name]); ?></h4>
-    <?php else: ?>
+    <?php else : ?>
         <h4><?= Yii::t('AdminModule.user', 'Add new group'); ?></h4>
     <?php endif; ?>
 </div>

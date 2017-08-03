@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Basic Settings' => 'Basisinstellingen',
   'Change Email' => 'Verander e-mail',
   'Change Password' => 'Verander wachtwoord',
@@ -42,4 +42,4 @@ return array (
   'Your account is not approved yet!' => 'Uw account is nog niet goedgekeurd!',
   'Your new password must not equal your current password!' => 'Het nieuwe wachtwoord mag niet gelijk zijn aan het huidige wachtwoord',
   'or' => 'of',
-);
+];

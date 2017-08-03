@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\models;
 
-
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 
@@ -67,11 +66,10 @@ class ContentContainer extends \yii\db\ActiveRecord
         return [
             [
                 'class' => PolymorphicRelation::className(),
-                'mustBeInstanceOf' => array(ContentContainerActiveRecord::className()),
+                'mustBeInstanceOf' => [ContentContainerActiveRecord::className()],
                 'classAttribute' => 'class',
                 'pkAttribute' => 'pk'
             ]
         ];
     }
-
 }

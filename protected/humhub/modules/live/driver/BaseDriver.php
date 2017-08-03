@@ -22,7 +22,7 @@ abstract class BaseDriver extends Object
 
     /**
      * Sends a live event
-     * 
+     *
      * @param LiveEvent $liveEvent The live event to send
      * @return boolean indicates the sent was successful
      */

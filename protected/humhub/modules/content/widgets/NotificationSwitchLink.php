@@ -33,12 +33,9 @@ class NotificationSwitchLink extends \yii\base\Widget
             return;
         }
 
-        return $this->render('notificationSwitchLink', array(
+        return $this->render('notificationSwitchLink', [
                     'content' => $this->content->content,
                     'state' => $this->content->isFollowedByUser(\Yii::$app->user->id, true)
-        ));
+        ]);
     }
-
 }
-
-?>

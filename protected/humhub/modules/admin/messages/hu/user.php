@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Information</strong>' => '',
   '<strong>Settings</strong> and Configuration' => '',
   '<strong>User</strong> administration' => '',
@@ -9,4 +9,4 @@ return array (
   'Overview' => 'Tartalomjegyzék',
   'Pending approvals' => '',
   'Profiles' => '',
-);
+];

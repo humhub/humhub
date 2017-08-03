@@ -24,7 +24,6 @@ class DataSaved extends \yii\base\Widget
      */
     public function run()
     {
-        return $this->render('dataSaved', array());
+        return $this->render('dataSaved', []);
     }
-
 }

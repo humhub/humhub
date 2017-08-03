@@ -35,5 +35,4 @@ class JplayerAsset extends AssetBundle
      * @inheritdoc
      */
     public $css = ['skin/blue.monday/css/jplayer.blue.monday.min.css'];
-
 }

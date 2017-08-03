@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'End guide' => 'Край на урока',
   'Next »' => 'Напред  »',
   '« Prev' => '« Назад',
-);
+];

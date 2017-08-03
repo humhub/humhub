@@ -44,7 +44,4 @@ class NotificationArea extends BaseStack
             $this->addWidget($notificationOverviewClass, [], ['sortOrder' => 10]);
         }
     }
-
 }
-
-?>

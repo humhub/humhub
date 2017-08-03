@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Set up example content (recommended)' => 'Wstaw przykładowe treści (rekomendowane)',
-);
+];

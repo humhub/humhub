@@ -60,7 +60,7 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
             </div>
 
             <!-- check if the current user is the profile owner and can change the images -->
-            <?php if ($allowModifyProfileBanner): ?>
+            <?php if ($allowModifyProfileBanner) : ?>
                 <div class="image-upload-buttons" id="banner-image-upload-buttons">
                     <a href="#" onclick="javascript:$('#bannerfileupload input').click();" class="btn btn-info btn-sm" aria-label="<?= Yii::t('UserModule.base', 'Upload profile banner'); ?>">
                         <i class="fa fa-cloud-upload"></i>
@@ -103,7 +103,7 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
                 <img class="img-rounded profile-user-photo" id="user-profile-image"
                      src="<?php echo $user->getProfileImage()->getUrl(); ?>"
                      data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;"/>
-                 <?php endif; ?>
+            <?php endif; ?>
 
             <!-- check if the current user is the profile owner and can change the images -->
             <?php if ($allowModifyProfileImage) : ?>
@@ -127,15 +127,15 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
                     </a>
                     <a id="profile-image-upload-edit-button"
                        style="<?php
-                       if (!$user->getProfileImage()->hasImage()) {
-                           echo 'display: none;';
-                       }
-                       ?>"
+                        if (!$user->getProfileImage()->hasImage()) {
+                            echo 'display: none;';
+                        }
+                        ?>"
                        href="<?php echo Url::to(['/user/image/crop', 'userGuid' => $user->guid, 'type' => ImageController::TYPE_PROFILE_IMAGE]); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static" aria-label="<?= Yii::t('UserModule.base', 'Crop profile image'); ?>">
                         <i class="fa fa-edit"></i></a>
                     <?php
-                    echo \humhub\widgets\ModalConfirm::widget(array(
+                    echo \humhub\widgets\ModalConfirm::widget([
                         'uniqueID' => 'modal_profileimagedelete',
                         'linkOutput' => 'a',
                         'ariaLabel' => Yii::t('UserModule.base', 'Delete profile image'),
@@ -146,9 +146,9 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
                         'linkContent' => '<i class="fa fa-times"></i>',
                         'cssClass' => 'btn btn-danger btn-sm',
                         'style' => $user->getProfileImage()->hasImage() ? '' : 'display: none;',
-                        'linkHref' => Url::to(["/user/image/delete", 'type' => ImageController::TYPE_PROFILE_IMAGE, 'userGuid' => $user->guid]),
+                        'linkHref' => Url::to(['/user/image/delete', 'type' => ImageController::TYPE_PROFILE_IMAGE, 'userGuid' => $user->guid]),
                         'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
-                    ));
+                    ]);
                     ?>
                 </div>
             <?php endif; ?>
@@ -166,7 +166,7 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
                 <div class="col-md-12">
                     <div class="statistics pull-left">
 
-                        <?php if ($friendshipsEnabled): ?>
+                        <?php if ($friendshipsEnabled) : ?>
                             <a href="<?= Url::to(['/friendship/list/popup', 'userId' => $user->id]); ?>" data-target="#globalModal">
                                 <div class="pull-left entry">
                                     <span class="count"><?= $countFriends; ?></span>
@@ -175,7 +175,7 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
                                 </div>
                             </a>
                         <?php endif; ?>
-                        <?php if ($followingEnabled): ?>
+                        <?php if ($followingEnabled) : ?>
                             <a href="<?= $user->createUrl('/user/profile/follower-list'); ?>" data-target="#globalModal">
                                 <div class="pull-left entry">
                                     <span class="count"><?= $countFollowers; ?></span>

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Default value' => 'Standardverdi',
   'Maximum length' => 'Maks lengde',
   'Minimum length' => 'Minimum lengde',
@@ -7,4 +7,4 @@ return array (
   'Regular Expression: Validator' => 'Regular Expression: Validator',
   'Text Field Options' => 'Tekstfeltvalg',
   'Validator' => 'Validering',
-);
+];

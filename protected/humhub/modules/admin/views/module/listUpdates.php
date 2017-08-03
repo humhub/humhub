@@ -7,17 +7,17 @@ use yii\helpers\Html;
     <?= $this->render('_header'); ?>
 
     <div class="panel-body">
-        <?php if (count($modules) == 0): ?>
+        <?php if (count($modules) == 0) : ?>
             <br>
             <div><?= Yii::t('AdminModule.module_listUpdates', 'All modules are up to date!'); ?></div>
 
         <?php endif; ?>
 
-        <?php foreach ($modules as $module): ?>
+        <?php foreach ($modules as $module) : ?>
 
             <?php
             $moduleImageUrl = Yii::getAlias('@web-static/img/default_module.jpg');
-            if (isset($module['moduleImageUrl']) && $module['moduleImageUrl'] != "") {
+            if (isset($module['moduleImageUrl']) && $module['moduleImageUrl'] != '') {
                 $moduleImageUrl = $module['moduleImageUrl'];
             }
             ?>
@@ -35,7 +35,7 @@ use yii\helpers\Html;
                         <?php if (isset($module['latestCompatibleVersion']) && Yii::$app->moduleManager->hasModule($module['id'])) : ?>
                             <?= Yii::t('AdminModule.views_module_listUpdates', 'Installed version:'); ?><?= Yii::$app->moduleManager->getModule($module['id'])->getVersion(); ?>
                             &middot; <?= Yii::t('AdminModule.views_module_listUpdates', 'Latest compatible Version:'); ?><?= $module['latestCompatibleVersion']; ?>
-                            &middot; <?= Html::a(Yii::t('AdminModule.views_module_listUpdates', 'Update'), ['update', 'moduleId' => $module['id']], ['style' => 'font-weight:bold', 'data-loader' => "modal", 'data-message' => Yii::t('AdminModule.views_module_listUpdates', 'Updating module...'), 'data-method' => 'POST']); ?>
+                            &middot; <?= Html::a(Yii::t('AdminModule.views_module_listUpdates', 'Update'), ['update', 'moduleId' => $module['id']], ['style' => 'font-weight:bold', 'data-loader' => 'modal', 'data-message' => Yii::t('AdminModule.views_module_listUpdates', 'Updating module...'), 'data-method' => 'POST']); ?>
                             &middot; <?= Html::a(Yii::t('AdminModule.views_module_listOnline', 'More info'), $module['marketplaceUrl'], ['target' => '_blank']); ?>
                         <?php endif; ?>
 

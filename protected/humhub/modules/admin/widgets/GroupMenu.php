@@ -20,7 +20,7 @@ class GroupMenu extends \humhub\widgets\BaseMenu
     /**
      * @inheritdoc
      */
-    public $template = "@humhub/widgets/views/subTabMenu";
+    public $template = '@humhub/widgets/views/subTabMenu';
 
     public function init()
     {
@@ -36,10 +36,9 @@ class GroupMenu extends \humhub\widgets\BaseMenu
 
     public function run()
     {
-        if(count($this->getItemGroups()) > 1) {
+        if (count($this->getItemGroups()) > 1) {
             return parent::run();
         }
         return '';
     }
-
 }

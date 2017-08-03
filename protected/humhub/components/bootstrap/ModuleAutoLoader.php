@@ -30,8 +30,9 @@ class ModuleAutoLoader implements BootstrapInterface
             foreach (Yii::$app->params['moduleAutoloadPaths'] as $modulePath) {
                 $modulePath = Yii::getAlias($modulePath);
                 foreach (scandir($modulePath) as $moduleId) {
-                    if ($moduleId == '.' || $moduleId == '..')
+                    if ($moduleId == '.' || $moduleId == '..') {
                         continue;
+                    }
 
                     $moduleDir = $modulePath . DIRECTORY_SEPARATOR . $moduleId;
                     if (is_dir($moduleDir) && is_file($moduleDir . DIRECTORY_SEPARATOR . 'config.php')) {
@@ -50,5 +51,4 @@ class ModuleAutoLoader implements BootstrapInterface
 
         Yii::$app->moduleManager->registerBulk($modules);
     }
-
 }

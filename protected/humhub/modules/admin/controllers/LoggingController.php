@@ -29,7 +29,7 @@ class LoggingController extends Controller
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Logging'));
         $this->subLayout = '@admin/views/layouts/information';
         
-		return parent::init();
+        return parent::init();
     }
 
     /**
@@ -64,7 +64,6 @@ class LoggingController extends Controller
         $this->forcePostRequest();
         \humhub\modules\admin\models\Log::deleteAll();
         
-		return $this->redirect(['index']);
+        return $this->redirect(['index']);
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Administration</strong> menu' => 'Панель <strong>Администратора</strong>',
   'Advanced' => 'Расширенные',
   'Appearance' => 'Внешний вид',
@@ -17,4 +17,4 @@ return array (
   'Spaces' => 'Пространства',
   'Statistics' => 'Статистика',
   'Users' => 'Пользователи',
-);
+];

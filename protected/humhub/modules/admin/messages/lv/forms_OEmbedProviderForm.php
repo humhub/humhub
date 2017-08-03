@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Endpoint Url' => 'Galapunkta URL',
   'Url Prefix' => 'URL prefikss',
-);
+];

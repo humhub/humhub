@@ -16,4 +16,3 @@ echo humhub\modules\stream\widgets\StreamViewer::widget([
     'messageStreamEmpty' => $emptyMessage,
     'messageStreamEmptyCss' => ($canCreatePosts) ? 'placeholder-empty-stream' : '',
 ]);
-?>

@@ -15,7 +15,7 @@ use humhub\libs\Helpers;
                 'width' => 24,
                 'htmlOptions' => [
                     'class' => 'pull-left',
-            ]]);
+                ]]);
             ?>
             <div class="media-body">
                 <strong class="space-name"><?php echo Html::encode($space->name); ?></strong>

@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Current password' => '当前密码',
   'E-Mail change' => '更改邮件地址',
   'New E-Mail address' => '新邮件地址',
-);
+];

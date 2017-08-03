@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'About' => 'Tentang',
   'Add purchased module by licence key' => 'tambahkan membeli modul kunci lisensi ',
   'Admin' => 'Admin',
@@ -26,4 +26,4 @@ return array (
   'Userprofiles' => 'Profil pengguna
 ',
   'Users' => 'Pengguna',
-);
+];

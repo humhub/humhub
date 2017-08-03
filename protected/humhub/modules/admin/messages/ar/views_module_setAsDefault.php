@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '%moduleName% - Set as default module' => '',
   'Activated' => 'تم التفعيل',
   'Always activated' => '',
@@ -9,4 +9,4 @@ return array (
   'Save' => 'حفظ',
   'Spaces' => 'الباحات',
   'User Profiles' => '',
-);
+];

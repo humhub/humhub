@@ -111,7 +111,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id' => 'ID',
             'name' => Yii::t('SpaceModule.models_Space', 'Name'),
             'color' => Yii::t('SpaceModule.models_Space', 'Color'),
@@ -126,7 +126,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             'updated_by' => Yii::t('SpaceModule.models_Space', 'Updated by'),
             'ownerUsernameSearch' => Yii::t('SpaceModule.models_Space', 'Owner'),
             'default_content_visibility' => Yii::t('SpaceModule.models_Space', 'Default content visibility'),
-        );
+        ];
     }
 
     /**
@@ -134,13 +134,13 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      */
     public function behaviors()
     {
-        return array(
+        return [
             \humhub\components\behaviors\GUID::className(),
             \humhub\modules\content\components\behaviors\SettingsBehavior::className(),
             \humhub\modules\space\behaviors\SpaceModelModules::className(),
             \humhub\modules\space\behaviors\SpaceModelMembership::className(),
             \humhub\modules\user\behaviors\Followable::className(),
-        );
+        ];
     }
 
     /**
@@ -215,7 +215,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
 
         // When this workspace is used in a group as default workspace, delete the link
         foreach (\humhub\modules\user\models\Group::findAll(['space_id' => $this->id]) as $group) {
-            $group->space_id = "";
+            $group->space_id = '';
             $group->save();
         }
 
@@ -227,14 +227,14 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      *
      * @param $userId User Id of User
      */
-    public function canJoin($userId = "")
+    public function canJoin($userId = '')
     {
         if (Yii::$app->user->isGuest) {
             return false;
         }
 
         // Take current userid if none is given
-        if ($userId == "") {
+        if ($userId == '') {
             $userId = Yii::$app->user->id;
         }
 
@@ -257,19 +257,22 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      *
      * @param $userId User Id of User
      */
-    public function canJoinFree($userId = "")
+    public function canJoinFree($userId = '')
     {
         // Take current userid if none is given
-        if ($userId == "")
+        if ($userId == '') {
             $userId = Yii::$app->user->id;
+        }
 
         // Checks if User is already member
-        if ($this->isMember($userId))
+        if ($this->isMember($userId)) {
             return false;
+        }
 
         // No one can join
-        if ($this->join_policy == self::JOIN_POLICY_FREE)
+        if ($this->join_policy == self::JOIN_POLICY_FREE) {
             return true;
+        }
 
         return false;
     }
@@ -323,7 +326,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      */
     public function getSearchResult()
     {
-        return Yii::$app->getController()->widget('application.modules_core.space.widgets.SpaceSearchResultWidget', array('space' => $this), true);
+        return Yii::$app->getController()->widget('application.modules_core.space.widgets.SpaceSearchResultWidget', ['space' => $this], true);
     }
 
     /**
@@ -343,7 +346,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
 
         // split tags string into individual tags
-        return preg_split("/[;,# ]+/", $this->tags);
+        return preg_split('/[;,# ]+/', $this->tags);
     }
 
     /**
@@ -386,7 +389,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      * @param boolean|string $scheme whether to create an absolute URL and if it is a string, the scheme (http or https) to use.
      * @return string
      */
-    public function createUrl($route = null, $params = array(), $scheme = false)
+    public function createUrl($route = null, $params = [], $scheme = false)
     {
         if ($route == null) {
             $route = '/space/space';
@@ -560,5 +563,4 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
 
         return Content::VISIBILITY_PRIVATE;
     }
-
 }

@@ -8,9 +8,7 @@
 
 namespace humhub\modules\installer\controllers;
 
-
 use humhub\components\Controller;
-
 
 /**
  * Index Controller shows a simple welcome page.
@@ -25,7 +23,7 @@ class IndexController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index', array());
+        return $this->render('index', []);
     }
 
     /**
@@ -39,5 +37,4 @@ class IndexController extends Controller
             return $this->redirect(['setup/prerequisites']);
         }
     }
-
 }

@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Show all {total} comments.' => 'Mostrar todos {total} comentários.',
-);
+];

@@ -1,5 +1,5 @@
 <!-- check if flash message exists -->
-<?php if(Yii::$app->getSession()->hasFlash('data-saved')): ?>
+<?php if (Yii::$app->getSession()->hasFlash('data-saved')) : ?>
 
     <script type="text/javascript">
         $(function() {

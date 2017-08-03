@@ -30,10 +30,10 @@ class DeleteForm extends Model
      */
     public function rules()
     {
-        return array(
-            array('currentPassword', 'required'),
-            array('currentPassword', CheckPasswordValidator::className()),
-        );
+        return [
+            ['currentPassword', 'required'],
+            ['currentPassword', CheckPasswordValidator::className()],
+        ];
     }
 
     /**
@@ -41,9 +41,8 @@ class DeleteForm extends Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'currentPassword' => Yii::t('SpaceModule.forms_SpaceDeleteForm', 'Your password'),
-        );
+        ];
     }
-
 }

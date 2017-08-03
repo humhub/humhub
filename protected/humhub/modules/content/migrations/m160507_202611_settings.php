@@ -21,7 +21,7 @@ class m160507_202611_settings extends Migration
 
         // Import old user settings
         $rows = (new Query())
-                ->select("*, contentcontainer.id as cid")
+                ->select('*, contentcontainer.id as cid')
                 ->from('user_setting')
                 ->leftJoin('contentcontainer', 'user_setting.user_id = contentcontainer.pk AND contentcontainer.class=:class', [':class' => \humhub\modules\user\models\User::className()])
                 ->andWhere('contentcontainer.id IS NOT NULL')
@@ -37,7 +37,7 @@ class m160507_202611_settings extends Migration
 
         // Import old space settings
         $rows = (new Query())
-                ->select("*, contentcontainer.id as cid")
+                ->select('*, contentcontainer.id as cid')
                 ->from('space_setting')
                 ->leftJoin('contentcontainer', 'space_setting.space_id = contentcontainer.pk AND contentcontainer.class=:class', [':class' => humhub\modules\space\models\Space::className()])
                 ->andWhere('contentcontainer.id IS NOT NULL')

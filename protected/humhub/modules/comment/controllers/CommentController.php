@@ -113,7 +113,6 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
         }
 
         if ($this->contentAddon->load(Yii::$app->request->post()) && $this->contentAddon->validate() && $this->contentAddon->save()) {
-
             // Reload comment to get populated updated_at field
             $this->contentAddon = Comment::findOne(['id' => $this->contentAddon->id]);
 
@@ -123,11 +122,11 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
             ]));
         }
 
-        return $this->renderAjax('edit', array(
+        return $this->renderAjax('edit', [
                     'comment' => $this->contentAddon,
                     'contentModel' => $this->contentAddon->object_model,
                     'contentId' => $this->contentAddon->object_id
-        ));
+        ]);
     }
 
     public function actionLoad()
@@ -158,5 +157,4 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
             throw new HttpException(500, Yii::t('CommentModule.controllers_CommentController', 'Insufficent permissions!'));
         }
     }
-
 }

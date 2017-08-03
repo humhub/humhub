@@ -36,7 +36,7 @@ class Date extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldRules($rules = array())
+    public function getFieldRules($rules = [])
     {
         $rules[] = [
             $this->profileField->internal_name,
@@ -50,25 +50,25 @@ class Date extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFormDefinition($definition = array())
+    public function getFormDefinition($definition = [])
     {
         return count($definition) > 0 ? parent::getFormDefinition($definition) : [];
-    } 
+    }
 
     /**
      * @inheritdoc
      */
     public function getFieldFormDefinition()
     {
-        return array($this->profileField->internal_name => array(
+        return [$this->profileField->internal_name => [
                 'type' => 'datetime',
                 'format' => Yii::$app->formatter->dateInputFormat,
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable),
-                'dateTimePickerOptions' => array(
+                'dateTimePickerOptions' => [
                     'pickTime' => false
-                )
-        ));
+                ]
+        ]];
     }
 
     /**
@@ -79,12 +79,10 @@ class Date extends BaseType
         $internalName = $this->profileField->internal_name;
         $date = $user->profile->$internalName;
 
-        if ($date == "" || $date == "0000-00-00")
-            return "";
+        if ($date == '' || $date == '0000-00-00') {
+            return '';
+        }
 
         return \yii\helpers\Html::encode($date);
     }
-
 }
-
-?>

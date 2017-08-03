@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Confirm</strong> image deletion' => '<strong>Confirmar</strong> borrar imagen',
   'Dashboard' => 'Inicio',
   'Delete' => 'Borrar',
@@ -9,4 +9,4 @@ return array (
   'Save' => 'Guardar',
   'Wall entry layout' => 'Diseño de la entrada del Muro',
   'You\'re using no logo at the moment. Upload your logo now.' => 'No estás usando un logo ahora. Sube tu logo ahora.',
-);
+];

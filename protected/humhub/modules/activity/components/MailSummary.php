@@ -90,7 +90,7 @@ class MailSummary extends Component
                     ], [
                 'activities' => $outputHtml,
                 'activitiesPlaintext' => $outputPlaintext,
-            ]);
+                    ]);
 
             $mail->setTo($this->user->email);
             $mail->setSubject($this->getSubject());
@@ -113,14 +113,14 @@ class MailSummary extends Component
     protected function getSubject()
     {
         if ($this->interval === self::INTERVAL_DAILY) {
-            return Yii::t('ActivityModule.base', "Your daily summary");
+            return Yii::t('ActivityModule.base', 'Your daily summary');
         } elseif ($this->interval === self::INTERVAL_HOURY) {
-            return Yii::t('ActivityModule.base', "Latest news");
+            return Yii::t('ActivityModule.base', 'Latest news');
         } elseif ($this->interval === self::INTERVAL_WEEKLY) {
-            return Yii::t('ActivityModule.base', "Your weekly summary");
+            return Yii::t('ActivityModule.base', 'Your weekly summary');
         }
 
-        return "";
+        return '';
     }
 
     /**
@@ -246,5 +246,4 @@ class MailSummary extends Component
 
         return explode(',', trim($activitySuppress));
     }
-
 }

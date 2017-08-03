@@ -55,5 +55,4 @@ class MailingDefaultsForm extends \yii\base\Model
 
         return true;
     }
-
 }

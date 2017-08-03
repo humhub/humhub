@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Click here to review' => '点击这里查看',
   'New approval requests' => '新批准请求',
   'One or more user needs your approval as group admin.' => '一个或多个用户申请你的批准',
-);
+];

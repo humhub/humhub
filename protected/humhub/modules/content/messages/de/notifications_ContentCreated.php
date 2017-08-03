@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '{originator} just wrote {contentInfo}' => '{originator} schrieb gerade {contentInfo}
 ',
   '{originator} just wrote {contentInfo} in space {space}' => '{originator} schrieb gerade {contentInfo} im Space {space}
@@ -8,4 +8,4 @@ return array (
 ',
   '{originator} notifies you about {contentInfo} in {space}' => '{originator} benachrichtigt dich über {contentInfo} im Space {space}
 ',
-);
+];

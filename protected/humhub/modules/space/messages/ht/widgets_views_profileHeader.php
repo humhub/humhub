@@ -1,8 +1,8 @@
 <?php
-return array (
+return  [
   '<strong>Something</strong> went wrong' => '',
   'Followers' => '',
   'Members' => '',
   'Ok' => 'Ok',
   'Posts' => '',
-);
+];

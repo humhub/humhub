@@ -66,5 +66,4 @@ class ContentContainerSetting extends \yii\db\ActiveRecord
     {
         return $this->hasOne(ContentContainer::className(), ['id' => 'contentcontainer_id']);
     }
-
 }

@@ -100,6 +100,4 @@ class ActivityWebRenderer extends \humhub\components\rendering\LayoutRenderer
 
         return $layout;
     }
-
 }
-

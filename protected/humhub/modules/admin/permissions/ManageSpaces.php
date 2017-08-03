@@ -29,5 +29,4 @@ class ManageSpaces extends BaseAdminPermission
         $this->title = \Yii::t('AdminModule.permissions', 'Manage Spaces');
         $this->description = \Yii::t('AdminModule.permissions', 'Can manage spaces within the \'Administration -> Spaces\' section (create/edit/delete).');
     }
-
 }

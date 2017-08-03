@@ -22,5 +22,4 @@ class Stream extends \humhub\components\Widget
         $config['class'] = \humhub\modules\stream\widgets\StreamViewer::class;
         return parent::widget($config);
     }
-
 }

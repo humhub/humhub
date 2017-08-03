@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Allow limited access for non-authenticated users (guests)' => 'Sta beperkte toegang voor niet-ingelogde gebruikers toe (gasten)',
   'Anonymous users can register' => 'Anonieme gebruikers kunnen registreren',
   'Default user group for new users' => 'Standaard gebruikersgroep voor nieuwe gebruikers',
@@ -7,4 +7,4 @@ return array (
   'Default user profile visibility' => 'Standaard zichtbaarheid gebruikersprofiel',
   'Members can invite external users by email' => 'Leden kunnen externe gebruikers uitnodigen per email',
   'Require group admin approval after registration' => 'Goedkeuring door groep admin benodigd na registratie',
-);
+];

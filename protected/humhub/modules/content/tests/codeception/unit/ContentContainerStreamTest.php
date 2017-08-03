@@ -19,14 +19,14 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         $space = Space::findOne(['id' => 2]);
 
         $post1 = new Post;
-        $post1->message = "Private Post";
+        $post1->message = 'Private Post';
         $post1->content->setContainer($space);
         $post1->content->visibility = Content::VISIBILITY_PRIVATE;
         $post1->save();
         $w1 = $post1->content->id;
 
         $post2 = new Post;
-        $post2->message = "Public Post";
+        $post2->message = 'Public Post';
         $post2->content->setContainer($space);
         $post2->content->visibility = Content::VISIBILITY_PUBLIC;
         $post2->save();
@@ -44,14 +44,14 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         $space = Space::findOne(['id' => 2]);
 
         $post1 = new Post;
-        $post1->message = "Private Post";
+        $post1->message = 'Private Post';
         $post1->content->setContainer($space);
         $post1->content->visibility = Content::VISIBILITY_PRIVATE;
         $post1->save();
         $w1 = $post1->content->id;
 
         $post2 = new Post;
-        $post2->message = "Public Post";
+        $post2->message = 'Public Post';
         $post2->content->setContainer($space);
         $post2->content->visibility = Content::VISIBILITY_PUBLIC;
         $post2->save();

@@ -50,7 +50,7 @@ class JSONResponse
 
     public function confirm($content)
     {
-        if($content != null) {
+        if ($content != null) {
             $this->content($content);
         }
         $this->result['status'] = self::STATE_CONFIRM;
@@ -60,7 +60,7 @@ class JSONResponse
 
     public function data($key, $value)
     {
-        if(!is_array($this->result['data'])) {
+        if (!is_array($this->result['data'])) {
             $this->result['data'] = [];
         }
         $this->result['data'][$key] = $value;
@@ -73,7 +73,5 @@ class JSONResponse
         Yii::$app->response->format = 'json';
 
         return $this->result;
-
     }
-
 }

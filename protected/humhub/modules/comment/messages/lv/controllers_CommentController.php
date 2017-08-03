@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Access denied!' => 'Pieeja liegta',
   'Insufficent permissions!' => 'Nepietiekamas tiesības!',
-);
+];

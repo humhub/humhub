@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Modules</strong> directory' => '<strong>Modül</strong> dizini',
   'Buy (%price%)' => 'Satın Al (%price%)',
   'Disclaimer' => 'Vazgeç',
@@ -10,4 +10,4 @@ return array (
   'Licence Key:' => 'Lisans Anahtarı:',
   'More info' => 'Daha fazla bilgi',
   'No compatible module version found!' => 'Uyumlu modül versiyonu bulunamadı!',
-);
+];

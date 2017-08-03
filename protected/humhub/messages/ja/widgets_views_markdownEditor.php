@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => '画像/ファイルを追加する',
   'Add link' => 'リンクを追加',
   'Bold' => '大胆な',
@@ -31,4 +31,4 @@ return array (
   'list text here' => 'ここにテキストをリストする',
   'quote here' => 'ここに引用',
   'strong text' => '強いテキスト',
-);
+];

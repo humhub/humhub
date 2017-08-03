@@ -75,5 +75,4 @@ class FunctionalTester extends \Codeception\Actor
     {
         \Yii::$app->user->logout(true);
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Confirm</strong> Action' => 'İşlemi <strong>Onayla</strong>',
   '<strong>Latest</strong> updates' => '<strong>Son</strong> güncellemeler',
   '<strong>Mail</strong> summary' => '<strong>Mesaj</strong> özeti',
@@ -71,4 +71,4 @@ return array (
   'Upload file' => 'Dosya yükle',
   'User not found!' => 'Kullanıcı bulunamadı!',
   'You are not allowed to run this action.' => 'Bu işlemi yapmaya izniniz yok.',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Created at' => 'Opprettet',
   'Created by' => 'Opprettet av',
   'Description' => 'Beskrivelse',
@@ -25,4 +25,4 @@ return array (
   'Updated at' => 'Oppdatert',
   'Updated by' => 'Oppdatert av',
   'Visible' => 'Synlig',
-);
+];

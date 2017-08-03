@@ -37,5 +37,4 @@ class HumHubColorPickerAsset extends AssetBundle
 
 
     public $depends = ['humhub\assets\BootstrapColorPickerAsset'];
-
 }

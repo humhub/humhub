@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<i class="fa fa-cog"></i>' => '',
   'Cancel Membership' => '',
   'Don\'t receive notifications for new content' => '',
@@ -11,4 +11,4 @@ return array (
   'Show posts on dashboard' => 'Mesajları göster',
   'This option will hide new content from this space at your dashboard' => '',
   'This option will show new content from this space at your dashboard' => '',
-);
+];

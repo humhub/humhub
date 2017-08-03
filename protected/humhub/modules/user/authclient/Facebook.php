@@ -56,5 +56,4 @@ class Facebook extends \yii\authclient\clients\Facebook
             },
         ];
     }
-
 }

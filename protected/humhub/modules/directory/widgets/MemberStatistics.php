@@ -28,13 +28,10 @@ class MemberStatistics extends \yii\base\Widget
         $statsUserFollow = Follow::find()->where(['object_model' => User::className()])->count();
 
         // Render widgets view
-        return $this->render('memberStats', array(
+        return $this->render('memberStats', [
                     'statsTotalUsers' => $statsTotalUsers,
                     'statsUserOnline' => $statsUserOnline,
                     'statsUserFollow' => $statsUserFollow
-        ));
+        ]);
     }
-
 }
-
-?>

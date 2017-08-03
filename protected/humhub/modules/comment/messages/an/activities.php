@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Comments' => 'Comentarios',
   'Whenever a new comment was written.' => '',
-);
+];

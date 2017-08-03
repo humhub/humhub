@@ -18,7 +18,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_createAccount', 'Create Account
                     <p><?php echo Yii::t('UserModule.views_auth_createAccount_success', 'After activating your account by the administrator, you will receive a notification by email.'); ?></p>
                     <br/>
                     <a href="<?php echo Url::home() ?>" class="btn btn-primary" data-ui-loader><?php echo Yii::t('UserModule.views_auth_createAccount_success', 'back to home') ?></a>
-                <?php else: ?>
+                <?php else : ?>
                     <p><?php echo Yii::t('UserModule.views_auth_createAccount_success', 'To log in with your new account, click the button below.'); ?></p>
                     <br/>
                     <a href="<?php echo Url::home() ?>"

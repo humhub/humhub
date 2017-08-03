@@ -12,5 +12,4 @@ class DirectoryMemberPage extends BasePage
 {
 
     public $route = 'directory/directory/members';
-
 }

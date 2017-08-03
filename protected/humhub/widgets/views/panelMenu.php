@@ -1,5 +1,5 @@
 <?php
-$this->registerJsFile("@web-static/js/panelMenu.js", ['position' => yii\web\View::POS_BEGIN]);
+$this->registerJsFile('@web-static/js/panelMenu.js', ['position' => yii\web\View::POS_BEGIN]);
 ?>
 <ul class="nav nav-pills preferences">
     <li class="dropdown ">

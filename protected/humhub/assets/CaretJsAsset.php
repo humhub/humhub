@@ -32,5 +32,4 @@ class CaretjsAsset extends AssetBundle
      * @inheritdoc
      */
     public $css = [];
-
 }

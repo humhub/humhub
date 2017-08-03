@@ -15,7 +15,6 @@
 
 namespace humhub\modules\content\tests\codeception\unit;
 
-
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
@@ -89,7 +88,6 @@ class ContentTagTest extends HumHubDbTestCase
 
         $otherModuleTagsS2 = TestTagOtherModule::findByContainer($space2)->all();
         $this->assertEquals(1, count($otherModuleTagsS2));
-
     }
 
     public function testTagDeletion()
@@ -103,7 +101,6 @@ class ContentTagTest extends HumHubDbTestCase
         $tag2->delete();
         $content->refresh();
         $this->assertEquals(0, count($content->tagRelations));
-
     }
 
     public function testContentDeletion()
@@ -116,7 +113,6 @@ class ContentTagTest extends HumHubDbTestCase
 
         $content->delete();
         $this->assertEquals(0, ContentTagRelation::find()->count());
-
     }
 
     public function testTagContentRelation()
@@ -128,7 +124,7 @@ class ContentTagTest extends HumHubDbTestCase
         try {
             $content->addTag($tag);
             $this->assertTrue(false);
-        } catch(InvalidParamException $e) {
+        } catch (InvalidParamException $e) {
             // Tag was not saved
             $this->assertTrue(true);
         }
@@ -138,7 +134,7 @@ class ContentTagTest extends HumHubDbTestCase
         try {
             $content->addTag($tag);
             $this->assertTrue(false);
-        } catch(InvalidParamException $e) {
+        } catch (InvalidParamException $e) {
             // Tag assigned with invalid container_id
             $this->assertTrue(true);
         }
@@ -181,7 +177,7 @@ class ContentTagTest extends HumHubDbTestCase
     {
         $container = (!$container) ? $this->space : $container;
 
-        if(!$container) {
+        if (!$container) {
             $container = $this->space = Space::findOne(['id' => 3]);
         }
 
@@ -193,7 +189,7 @@ class ContentTagTest extends HumHubDbTestCase
     {
         $container = (!$container) ? $this->space : $container;
 
-        if(!$container) {
+        if (!$container) {
             $container = $this->space = Space::findOne(['id' => 3]);
         }
 
@@ -205,13 +201,11 @@ class ContentTagTest extends HumHubDbTestCase
     {
         $container = (!$container) ? $this->space : $container;
 
-        if(!$container) {
+        if (!$container) {
             $container = $this->space = Space::findOne(['id' => 3]);
         }
 
         $tag = new TestTagOtherModule($container, $name);
         return $tag->save();
     }
-
-
 }

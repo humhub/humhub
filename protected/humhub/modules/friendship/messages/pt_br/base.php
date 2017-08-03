@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>My</strong> friends' => '<strong>Meus</strong> amigos',
   '<strong>Pending</strong> friend requests' => 'Solicitações de amizade <strong>pendentes</strong>',
   '<strong>Sent</strong> friend requests' => 'Solicitações de amizade <strong>enviadas</strong>',
@@ -13,4 +13,4 @@ return array (
   'Sent requests' => 'Enviar solicitações',
   'Show all friends' => 'Exibir amigos',
   'Unfriend' => 'Cancelar amizade',
-);
+];

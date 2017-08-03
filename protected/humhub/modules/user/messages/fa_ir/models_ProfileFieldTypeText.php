@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Default value' => 'مقدار پیش‌فرض',
   'Maximum length' => 'حداکثر طول',
   'Minimum length' => 'حداقل طول',
@@ -7,4 +7,4 @@ return array (
   'Regular Expression: Validator' => 'گزاره: معتبرساز',
   'Text Field Options' => 'انتخاب‌های فیلد متن',
   'Validator' => 'معتبرساز',
-);
+];

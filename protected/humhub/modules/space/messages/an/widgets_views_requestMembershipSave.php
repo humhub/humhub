@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Close' => 'Zavřít',
   'Request workspace membership' => '',
   'Your request was successfully submitted to the workspace administrators.' => '',
-);
+];

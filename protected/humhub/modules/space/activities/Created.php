@@ -21,7 +21,7 @@ class Created extends BaseActivity
     /**
      * @inheritdoc
      */
-    public $moduleId = "space";
+    public $moduleId = 'space';
 
     /**
      * @inheritdoc
@@ -31,7 +31,7 @@ class Created extends BaseActivity
     /**
      * @inheritdoc
      */
-    public $viewName = "created";
+    public $viewName = 'created';
 
     /**
      * @inheritdoc
@@ -41,5 +41,4 @@ class Created extends BaseActivity
         $this->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
         parent::init();
     }
-
 }

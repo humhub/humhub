@@ -45,18 +45,19 @@ class WallCreateContentForm extends Widget
     /**
      * @var string form implementation
      */
-    protected $form = "";
+    protected $form = '';
 
     /**
      * @inheritdoc
      */
     public function init()
     {
-        if ($this->submitButtonText == "")
+        if ($this->submitButtonText == '') {
             $this->submitButtonText = Yii::t('ContentModule.widgets_ContentFormWidget', 'Submit');
+        }
 
         if ($this->contentContainer == null || !$this->contentContainer instanceof ContentContainerActiveRecord) {
-            throw new HttpException(500, "No Content Container given!");
+            throw new HttpException(500, 'No Content Container given!');
         }
 
         return parent::init();
@@ -69,7 +70,7 @@ class WallCreateContentForm extends Widget
      */
     public function renderForm()
     {
-        return "";
+        return '';
     }
 
     /**
@@ -88,7 +89,7 @@ class WallCreateContentForm extends Widget
         $fileHandlerImport = FileHandlerCollection::getByType(FileHandlerCollection::TYPE_IMPORT);
         $fileHandlerCreate = FileHandlerCollection::getByType(FileHandlerCollection::TYPE_CREATE);
 
-        return $this->render('@humhub/modules/content/widgets/views/wallCreateContentForm', array(
+        return $this->render('@humhub/modules/content/widgets/views/wallCreateContentForm', [
                     'form' => $this->renderForm(),
                     'contentContainer' => $this->contentContainer,
                     'submitUrl' => $this->contentContainer->createUrl($this->submitUrl),
@@ -96,7 +97,7 @@ class WallCreateContentForm extends Widget
                     'defaultVisibility' => $defaultVisibility,
                     'canSwitchVisibility' => $canSwitchVisibility,
                     'fileHandlers' => array_merge($fileHandlerCreate, $fileHandlerImport),
-        ));
+        ]);
     }
 
     /**
@@ -141,7 +142,6 @@ class WallCreateContentForm extends Widget
             return \humhub\modules\stream\actions\Stream::getContentResultEntry($record->content);
         }
 
-        return array('errors' => $record->getErrors());
+        return ['errors' => $record->getErrors()];
     }
-
 }

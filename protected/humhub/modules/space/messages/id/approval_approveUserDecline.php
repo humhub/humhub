@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Send & decline' => 'Kirim dan batal',
-);
+];

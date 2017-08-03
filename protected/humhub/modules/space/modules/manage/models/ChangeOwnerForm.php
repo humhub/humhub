@@ -53,7 +53,7 @@ class ChangeOwnerForm extends Model
 
     /**
      * Returns an array of all possible space owners
-     * 
+     *
      * @return array containing the user id as key and display name as value
      */
     public function getNewOwnerArray()
@@ -67,5 +67,4 @@ class ChangeOwnerForm extends Model
 
         return $possibleOwners;
     }
-
 }

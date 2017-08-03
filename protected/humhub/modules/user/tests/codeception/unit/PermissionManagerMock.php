@@ -15,7 +15,6 @@
 
 namespace humhub\modules\user\tests\codeception\unit;
 
-
 use humhub\libs\BasePermission;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageModules;
@@ -45,7 +44,7 @@ class PermissionManagerMock extends PermissionManager
     protected function verify(BasePermission $permission)
     {
         $subject = $this->getSubject();
-        if($subject) {
+        if ($subject) {
             $permissions = $this->permissions[$subject->id];
             return in_array(get_class($permission), $permissions);
         }

@@ -23,7 +23,7 @@ class Request extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $moduleId = "friendship";
+    public $moduleId = 'friendship';
 
     /**
      * @inheritdoc
@@ -68,7 +68,4 @@ class Request extends BaseNotification
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
         ]);
     }
-
 }
-
-?>

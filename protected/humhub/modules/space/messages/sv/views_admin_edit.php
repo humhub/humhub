@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Archive' => 'Arikivera',
   'Choose if new content should be public or private by default' => '',
   'Choose the kind of membership you want to provide for this workspace.' => '',
@@ -7,4 +7,4 @@ return array (
   'Delete' => 'Ta bort',
   'Save' => 'Spara',
   'Unarchive' => '',
-);
+];

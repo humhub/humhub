@@ -13,7 +13,7 @@ use humhub\modules\content\models\Content;
 
 /**
  * ContentContainerStream is used to stream contentcontainers (space or users) content.
- * 
+ *
  * Used to stream contents of a specific a content container.
  *
  * @since 0.11
@@ -40,9 +40,9 @@ class ContentContainerStream extends Stream
         // Limit to public posts when no member
         if (!$this->contentContainer->canAccessPrivateContent($this->user)) {
             if (!Yii::$app->user->isGuest) {
-                $this->activeQuery->andWhere("content.visibility=" . Content::VISIBILITY_PUBLIC . " OR content.created_by = :userId", [':userId' => $this->user->id]);
+                $this->activeQuery->andWhere('content.visibility=' . Content::VISIBILITY_PUBLIC . ' OR content.created_by = :userId', [':userId' => $this->user->id]);
             } else {
-                $this->activeQuery->andWhere("content.visibility=" . Content::VISIBILITY_PUBLIC);
+                $this->activeQuery->andWhere('content.visibility=' . Content::VISIBILITY_PUBLIC);
             }
         }
 
@@ -58,13 +58,12 @@ class ContentContainerStream extends Stream
 
             // Modify order - pinned content first
             $oldOrder = $this->activeQuery->orderBy;
-            $this->activeQuery->orderBy("");
+            $this->activeQuery->orderBy('');
             $this->activeQuery->addOrderBy('content.pinned DESC');
             $this->activeQuery->addOrderBy($oldOrder);
         } else {
             // No pinned content in further queries
-            $this->activeQuery->andWhere("content.pinned = 0");
+            $this->activeQuery->andWhere('content.pinned = 0');
         }
     }
-
 }

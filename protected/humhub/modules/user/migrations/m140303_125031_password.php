@@ -11,14 +11,14 @@ class m140303_125031_password extends Migration
 
 
         // Create New User Password Table
-        $this->createTable('user_password', array(
+        $this->createTable('user_password', [
             'id' => 'pk',
             'user_id' => 'int(10) DEFAULT NULL',
             'algorithm' => 'varchar(20) DEFAULT NULL',
             'password' => 'text DEFAULT NULL',
             'salt' => 'text DEFAULT NULL',
             'created_at' => 'datetime DEFAULT NULL',
-                ), '');
+                ], '');
 
         $this->createIndex('idx_user_id', 'user_password', 'user_id', false);
 
@@ -26,7 +26,7 @@ class m140303_125031_password extends Migration
         // Fix: Migrate Passwords from User Table to UserPasswords
         $algorithm = 'sha1md5';
         $rows = (new \yii\db\Query())
-                ->select("*")
+                ->select('*')
                 ->from('user')
                 ->all();
         foreach ($rows as $row) {

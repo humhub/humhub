@@ -22,7 +22,7 @@ class CommentNotificationCategory extends NotificationCategory
     /**
      * @inheritdoc
      */
-    public $id = "comments";
+    public $id = 'comments';
 
     /**
      * @inheritdoc
@@ -39,5 +39,4 @@ class CommentNotificationCategory extends NotificationCategory
     {
         return Yii::t('CommentModule.notifications_NotificationCategory', 'Comments');
     }
-
 }

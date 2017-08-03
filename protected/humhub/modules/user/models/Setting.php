@@ -10,10 +10,9 @@ namespace humhub\modules\user\models;
 
 use Yii;
 
-
 /**
  * User settings compatiblity layer class
- * 
+ *
  * @deprecated since version 1.1
  * @see \humhub\modules\content\components\ContentContainerSettingsManager
  */
@@ -22,14 +21,14 @@ class Setting
 
     /**
      * Sets a user setting
-     * 
+     *
      * @see \humhub\modules\content\components\ContentContainerSettingsManager::set
      * @param int $userId
      * @param string $name
      * @param string $value
      * @param string $moduleId
      */
-    public static function Set($userId, $name, $value, $moduleId = "")
+    public static function Set($userId, $name, $value, $moduleId = '')
     {
         $user = User::findOne(['id' => $userId]);
         self::getModule($moduleId)->settings->contentContainer($user)->set($name, $value);
@@ -37,7 +36,7 @@ class Setting
 
     /**
      * Gets a user setting
-     * 
+     *
      * @see \humhub\modules\content\components\ContentContainerSettingsManager::get
      * @param int $userId
      * @param string $name
@@ -45,7 +44,7 @@ class Setting
      * @param string $defaultValue
      * @return string the value
      */
-    public static function Get($userId, $name, $moduleId = "", $defaultValue = "")
+    public static function Get($userId, $name, $moduleId = '', $defaultValue = '')
     {
         $user = User::findOne(['id' => $userId]);
         $value = self::getModule($moduleId)->settings->contentContainer($user)->get($name);
@@ -57,7 +56,7 @@ class Setting
 
     /**
      * Gets correct SettingsManager by module id
-     * 
+     *
      * @param string $moduleId
      * @return \yii\base\Module
      */
@@ -71,5 +70,4 @@ class Setting
         }
         return $app;
     }
-
 }

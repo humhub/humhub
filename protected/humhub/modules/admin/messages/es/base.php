@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'About' => 'Acerca de',
   'Add purchased module by licence key' => 'Agregar licencia de módulo comprado',
   'Admin' => 'Administrador',
@@ -25,4 +25,4 @@ return array (
   'User posts' => 'Publicaciones de usuario',
   'Userprofiles' => 'Perfiles de usuario',
   'Users' => 'Usuarios',
-);
+];

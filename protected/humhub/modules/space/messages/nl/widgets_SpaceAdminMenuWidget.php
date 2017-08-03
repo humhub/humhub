@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<i class="fa fa-cog"></i>' => '<i class="fa fa-cog"></i>',
   'Cancel Membership' => 'Lidmaatschap beëindigen',
   'Don\'t receive notifications for new content' => 'Ontvang geen meldingen voor nieuwe inhoud.',
@@ -11,4 +11,4 @@ return array (
   'Show posts on dashboard' => 'Berichten weergeven op het dashboard',
   'This option will hide new content from this space at your dashboard' => 'Deze optie zal nieuwe inhoud van deze ruimte verbergen in uw dashboard',
   'This option will show new content from this space at your dashboard' => 'Deze optie zal nieuwe inhoud van deze ruimte weergeven in uw dashboard',
-);
+];

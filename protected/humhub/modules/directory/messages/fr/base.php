@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Personne n\'a rien publiez pour le moment.</b><br>Soyez le premier et publiez quelque chose...',
   '<b>There are no profile posts yet!</b>' => '<b>Il n\'y a aucune publication actuellement !</b>',
   '<strong>Directory</strong> menu' => 'Menu <strong>annuaire</strong>',
@@ -36,4 +36,4 @@ return array (
   'search for members' => 'chercher des membres',
   'search for spaces' => 'chercher des espaces',
   'show all members' => 'voir tous les membres',
-);
+];

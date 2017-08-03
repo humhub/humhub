@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Account' => 'Учетная запись',
   'Create account' => 'Создать учетную запись',
-);
+];

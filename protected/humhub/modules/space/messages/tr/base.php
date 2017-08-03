@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Space</strong> followers' => '<strong>Sayfa</strong> takipçileri',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Sayfa sahibi bir kullanıcı silinemedi! Sayfanın adı: {spaceName}',
   'Default' => 'Varsayılan',
@@ -17,4 +17,4 @@ return array (
   'Settings' => 'Ayarlar',
   'Space' => 'Sayfa',
   'Visible for all (members and guests)' => 'Tümü görebilir (Üyeler ve Misafirler)',
-);
+];

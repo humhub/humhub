@@ -26,7 +26,7 @@ class Request extends \yii\web\Request
     {
         if (\humhub\models\Setting::isInstalled()) {
             $secret = Yii::$app->settings->get('secret');
-            if ($secret != "") {
+            if ($secret != '') {
                 $this->cookieValidationKey = $secret;
             }
         }
@@ -35,5 +35,4 @@ class Request extends \yii\web\Request
             $this->cookieValidationKey = 'installer';
         }
     }
-
 }

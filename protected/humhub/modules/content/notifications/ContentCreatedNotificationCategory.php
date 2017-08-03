@@ -22,7 +22,7 @@ class ContentCreatedNotificationCategory extends NotificationCategory
     /**
      * @inheritdoc
      */
-    public $id = "content_created";
+    public $id = 'content_created';
 
     /**
      * @inheritdoc
@@ -39,5 +39,4 @@ class ContentCreatedNotificationCategory extends NotificationCategory
     {
         return Yii::t('ContentModule.notifications_ContentCreatedNotificationCategory', 'New Content');
     }
-
 }

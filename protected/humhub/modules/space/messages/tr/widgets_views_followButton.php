@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Follow' => 'Takip et',
   'Unfollow' => 'Takibi Bırak',
-);
+];

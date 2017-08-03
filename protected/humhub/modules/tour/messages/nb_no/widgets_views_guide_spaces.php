@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Most recent</strong> activities' => '',
   '<strong>Posts</strong>' => '',
   '<strong>Profile Guide</strong>' => '',
@@ -17,4 +17,4 @@ return array (
   'This menu is only visible for space admins. Here you can manage your space settings, add/block members and activate/deactivate tools for this space.' => '',
   'To keep you up to date, other users\' most recent activities in this space will be displayed here.' => '',
   'Yours, and other users\' posts will appear here.<br><br>These can then be liked or commented on.' => '',
-);
+];

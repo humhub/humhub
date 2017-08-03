@@ -56,5 +56,4 @@ class Pjax extends \humhub\components\Widget
     {
         return Yii::$app->params['enablePjax'];
     }
-
 }

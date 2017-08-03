@@ -16,10 +16,10 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Hello {displayName}' => '你好 {displayName}',
   'If you don\'t use this link within 24 hours, it will expire.' => '如果你不在24小时内使用这个链接，它会自动过期',
   'Please use the following link within the next day to reset your password.' => '请在24小时内使用以下链接来重新设置您的密码。',
   'Reset Password' => '重置密码',
   '<strong>Password</strong> recovery' => '找回密码',
-);
+];

@@ -76,5 +76,4 @@ class ModuleEnabled extends \yii\db\ActiveRecord
 
         return $enabledModules;
     }
-
 }

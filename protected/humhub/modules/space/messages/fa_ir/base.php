@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Space</strong> followers' => '<strong>دنبال كنندگان</strong>',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'امکان حذف کاربری که دارنده‌ی انجمن است وجود ندارد! نام انجمن: {spaceName}',
   'Default' => 'پيش فرض',
@@ -17,4 +17,4 @@ return array (
   'Settings' => 'تنطیمات',
   'Space' => 'انجمن',
   'Visible for all (members and guests)' => 'قابل نمایش برای همه (اعضا و مهمانان)',
-);
+];

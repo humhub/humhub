@@ -8,7 +8,7 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 
 <div class="panel panel-default">
     <div class="panel-heading">
-       <?php echo Yii::t('SpaceModule.views_settings', '<strong>Space</strong> settings'); ?>
+        <?php echo Yii::t('SpaceModule.views_settings', '<strong>Space</strong> settings'); ?>
     </div>
     <?= DefaultMenu::widget(['space' => $space]); ?>
     
@@ -20,12 +20,12 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'currentPassword'); ?>
-            <?php echo $form->passwordField($model, 'currentPassword', array('class' => 'form-control', 'rows' => '6')); ?>
+            <?php echo $form->passwordField($model, 'currentPassword', ['class' => 'form-control', 'rows' => '6']); ?>
             <?php echo $form->error($model, 'currentPassword'); ?>
         </div>
 
         <hr>
-        <?php echo Html::submitButton(Yii::t('SpaceModule.views_admin_delete', 'Delete'), array('class' => 'btn btn-danger', 'data-ui-loader' => '')); ?>
+        <?php echo Html::submitButton(Yii::t('SpaceModule.views_admin_delete', 'Delete'), ['class' => 'btn btn-danger', 'data-ui-loader' => '']); ?>
 
         <?php CActiveForm::end(); ?>
     </div>

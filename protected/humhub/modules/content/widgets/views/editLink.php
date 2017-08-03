@@ -6,7 +6,7 @@ use humhub\modules\content\widgets\WallEntry;
 
 ?>
 <li>
-    <?php if($mode === WallEntry::EDIT_MODE_INLINE) : ?>
+    <?php if ($mode === WallEntry::EDIT_MODE_INLINE) : ?>
             <a href="#" class="stream-entry-edit-link" data-action-click="edit" data-action-url="<?= $editUrl ?>">
                 <i class="fa fa-pencil"></i> <?= Yii::t('ContentModule.widgets_views_editLink', 'Edit') ?>
             </a>

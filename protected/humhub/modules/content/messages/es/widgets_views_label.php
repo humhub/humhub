@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Archived' => 'Archivado',
   'Public' => 'Público',
   'Pinned' => 'Fijado',
-);
+];

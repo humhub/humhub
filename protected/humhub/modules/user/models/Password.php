@@ -30,13 +30,13 @@ class Password extends \yii\db\ActiveRecord
     public $currentPassword;
     public $newPassword;
     public $newPasswordConfirm;
-    public $defaultAlgorithm = "";
+    public $defaultAlgorithm = '';
 
     public function init()
     {
         parent::init();
 
-        $this->defaultAlgorithm = "sha1md5";
+        $this->defaultAlgorithm = 'sha1md5';
 
         if (function_exists('hash_algos')) {
             $algos = hash_algos();
@@ -50,7 +50,7 @@ class Password extends \yii\db\ActiveRecord
 
     public function beforeSave($insert)
     {
-        $this->created_at = new \yii\db\Expression("NOW()");
+        $this->created_at = new \yii\db\Expression('NOW()');
         return parent::beforeSave($insert);
     }
 
@@ -85,13 +85,13 @@ class Password extends \yii\db\ActiveRecord
     
     /**
      * The new password has to be unequal to the current password.
-     * 
+     *
      * @param type $attribute
      * @param type $params
      */
     public function unequalsCurrentPassword($attribute, $params)
     {
-        if($this->newPassword === $this->currentPassword) {
+        if ($this->newPassword === $this->currentPassword) {
             $this->addError($attribute, Yii::t('UserModule.base', 'Your new password must not equal your current password!'));
         }
     }
@@ -162,7 +162,7 @@ class Password extends \yii\db\ActiveRecord
         } elseif ($this->algorithm == 'sha512') {
             return hash('sha512', $password);
         } else {
-            throw new \yii\base\Exception("Invalid Hashing Algorithm!");
+            throw new \yii\base\Exception('Invalid Hashing Algorithm!');
         }
     }
 
@@ -182,5 +182,4 @@ class Password extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
-
 }

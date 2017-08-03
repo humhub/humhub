@@ -13,7 +13,7 @@ use humhub\widgets\GridView;
     </div>
 
     <?=
-	GridView::widget([
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -27,13 +27,13 @@ use humhub\widgets\GridView;
                 'class' => 'yii\grid\ActionColumn',
                 'options' => ['width' => '150px'],
                 'buttons' => [
-                    'view' => function() {
+                    'view' => function () {
                         return;
                     },
-                    'delete' => function($url, $model) {
+                    'delete' => function ($url, $model) {
                         return Html::a('Decline', Url::toRoute(['decline', 'id' => $model->id]), ['class' => 'btn btn-danger btn-sm']);
                     },
-                    'update' => function($url, $model) {
+                    'update' => function ($url, $model) {
                         return Html::a('Approve', Url::toRoute(['approve', 'id' => $model->id]), ['class' => 'btn btn-primary btn-sm']);
                     },
                 ],

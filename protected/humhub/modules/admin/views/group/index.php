@@ -16,7 +16,7 @@ use humhub\widgets\GridView;
 
 <div class="panel-body">
     <div class="pull-right">
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.views_groups_index', "Create new group"), Url::to(['edit']), ['class' => 'btn btn-success']); ?>
+        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.views_groups_index', 'Create new group'), Url::to(['edit']), ['class' => 'btn btn-success']); ?>
     </div>
 
     <?php
@@ -41,13 +41,13 @@ use humhub\widgets\GridView;
                 'class' => 'yii\grid\ActionColumn',
                 'options' => ['width' => '80px'],
                 'buttons' => [
-                    'view' => function() {
+                    'view' => function () {
                         return;
                     },
-                    'delete' => function() {
+                    'delete' => function () {
                         return;
                     },
-                    'update' => function($url, $model) {
+                    'update' => function ($url, $model) {
                         return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(['edit', 'id' => $model->id]), ['class' => 'btn btn-primary btn-xs tt']);
                     },
                 ],

@@ -132,13 +132,12 @@ REGEXP;
     protected function renderLink($block)
     {
 
-        return "[" . $block['url'] . "]";
+        return '[' . $block['url'] . ']';
     }
 
     protected function renderImage($block)
     {
 
-        return "[" . $block['text'] . "]";
+        return '[' . $block['text'] . ']';
     }
-
 }

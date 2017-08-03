@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Default value' => '',
   'Maximum length' => '',
   'Minimum length' => '',
@@ -24,4 +24,4 @@ return array (
   'Regular Expression: Validator' => '',
   'Text Field Options' => '',
   'Validator' => '',
-);
+];

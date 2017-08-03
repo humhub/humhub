@@ -32,5 +32,4 @@ class TopMenuRightStack extends BaseStack
 
         return parent::run();
     }
-
 }

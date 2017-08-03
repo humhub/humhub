@@ -20,11 +20,11 @@ $_SERVER['SERVER_PORT'] = parse_url(\Codeception\Configuration::config()['config
 $config = \Codeception\Configuration::config();
 
 $config['test_root'] = isset($config['test_root']) ? $config['test_root'] : dirname(__DIR__);
-$config['humhub_root'] = isset($config['humhub_root']) ? $config['humhub_root'] : realpath(dirname(__DIR__ ). '/../../../');
+$config['humhub_root'] = isset($config['humhub_root']) ? $config['humhub_root'] : realpath(dirname(__DIR__) . '/../../../');
 
 Yii::setAlias('@tests', $config['test_root']);
 Yii::setAlias('@env', '@tests/config/env');
-Yii::setAlias('@modules', dirname(dirname(__DIR__)).'/modules');
+Yii::setAlias('@modules', dirname(dirname(__DIR__)) . '/modules');
 Yii::setAlias('@root', $config['humhub_root']);
 Yii::setAlias('@humhubTests', $config['humhub_root'] . '/protected/humhub/tests');
 Yii::setAlias('@humhub', $config['humhub_root'] . '/protected/humhub');

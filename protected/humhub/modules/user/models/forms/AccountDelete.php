@@ -44,9 +44,8 @@ class AccountDelete extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'currentPassword' => Yii::t('UserModule.forms_AccountDeleteForm', 'Your password'),
-        );
+        ];
     }
-
 }

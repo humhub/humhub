@@ -33,7 +33,7 @@ use humhub\modules\admin\widgets\SpaceGridView;
                 'attribute' => 'id',
                 'options' => ['width' => '40px'],
                 'format' => 'raw',
-                'value' => function($data) {
+                'value' => function ($data) {
                     return $data->id;
                 },
             ],
@@ -43,35 +43,37 @@ use humhub\modules\admin\widgets\SpaceGridView;
                 'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'visibility', array_merge(['' => ''], $visibilities)),
                 'options' => ['width' => '40px'],
                 'format' => 'raw',
-                'value' => function($data) use ($visibilities) {
-                    if (isset($visibilities[$data->visibility]))
+                'value' => function ($data) use ($visibilities) {
+                    if (isset($visibilities[$data->visibility])) {
                         return $visibilities[$data->visibility];
+                    }
                         return Html::encode($data->visibility);
-                    },
+                },
             ],
             [
                 'attribute' => 'join_policy',
                 'options' => ['width' => '40px'],
                 'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'join_policy', array_merge(['' => ''], $joinPolicies)),
                 'format' => 'raw',
-                'value' => function($data) use ($joinPolicies) {
-                    if (isset($joinPolicies[$data->join_policy]))
+                'value' => function ($data) use ($joinPolicies) {
+                    if (isset($joinPolicies[$data->join_policy])) {
                         return $joinPolicies[$data->join_policy];
+                    }
                         return Html::encode($data->join_policy);
-                    },
+                },
             ],
             [
                 'header' => Yii::t('AdminModule.views_space_index', 'Actions'),
                 'class' => 'yii\grid\ActionColumn',
                 'options' => ['width' => '80px'],
                 'buttons' => [
-                    'view' => function($url, $model) {
+                    'view' => function ($url, $model) {
                         return Html::a('<i class="fa fa-eye"></i>', $model->getUrl(), ['class' => 'btn btn-primary btn-xs tt']);
                     },
-                    'update' => function($url, $model) {
+                    'update' => function ($url, $model) {
                         return Html::a('<i class="fa fa-pencil"></i>', $model->createUrl('/space/manage'), ['class' => 'btn btn-primary btn-xs tt']);
                     },
-                    'delete' => function($url, $model) {
+                    'delete' => function ($url, $model) {
                         return Html::a('<i class="fa fa-times"></i>', $model->createUrl('/space/manage/default/delete'), ['class' => 'btn btn-danger btn-xs tt']);
                     }
                 ],

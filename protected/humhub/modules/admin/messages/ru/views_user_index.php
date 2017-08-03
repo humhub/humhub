@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Actions' => 'Действия',
   'Add new user' => 'Добавить нового пользователя',
   'Group Manager' => 'Менеджер группы',
@@ -10,4 +10,4 @@ return array (
   'Users' => 'Пользователи',
   'never' => 'никогда',
   'Send invite' => 'Отправить приглашеине'
-);
+];

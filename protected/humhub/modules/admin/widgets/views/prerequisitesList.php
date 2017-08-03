@@ -1,7 +1,7 @@
 <div class="installer">
     <div class="prerequisites-list">
         <ul>
-            <?php foreach ($checks as $check): ?>
+            <?php foreach ($checks as $check) : ?>
                 <li>
 
                     <?php if ($check['state'] == 'OK') : ?>
@@ -14,7 +14,7 @@
 
                     <strong><?= $check['title']; ?></strong>
 
-                    <?php if (isset($check['hint'])): ?>
+                    <?php if (isset($check['hint'])) : ?>
                         <span>(Hint: <?= $check['hint']; ?>)</span>
                     <?php endif; ?>
 

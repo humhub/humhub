@@ -90,7 +90,7 @@ class UserApprovalSearch extends User
         
         if (Yii::$app->user->isAdmin()) {
             $query->andWhere([
-                'or', 
+                'or',
                 ['IN', 'group.id', $groupIds],
                 'group.id IS NULL'
             ]);

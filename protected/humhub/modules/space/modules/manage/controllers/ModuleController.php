@@ -39,7 +39,7 @@ class ModuleController extends Controller
 
         $space = $this->getSpace();
 
-        $moduleId = Yii::$app->request->get('moduleId', "");
+        $moduleId = Yii::$app->request->get('moduleId', '');
 
         if (!$space->isModuleEnabled($moduleId)) {
             $space->enableModule($moduleId);
@@ -65,7 +65,7 @@ class ModuleController extends Controller
 
         $space = $this->getSpace();
 
-        $moduleId = Yii::$app->request->get('moduleId', "");
+        $moduleId = Yii::$app->request->get('moduleId', '');
 
         if ($space->isModuleEnabled($moduleId) && $space->canDisableModule($moduleId)) {
             $space->disableModule($moduleId);
@@ -77,9 +77,5 @@ class ModuleController extends Controller
             Yii::$app->response->format = 'json';
             return ['success' => true];
         }
-
     }
-
 }
-
-?>

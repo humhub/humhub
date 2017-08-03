@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Database</strong> Configuration' => 'Configurazione <strong>Database</strong> ',
   'Below you have to enter your database connection details. If you’re not sure about these, please contact your system administrator.' => '',
   'Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)' => '',
@@ -9,4 +9,4 @@ return array (
   'The name of the database you want to run HumHub in.' => 'Il nome del database in cui vuoi installare HumHub.',
   'Your MySQL password.' => 'La tua passowrd MySQL.',
   'Your MySQL username' => 'Il tuo username MySQL',
-);
+];

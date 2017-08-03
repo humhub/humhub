@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Create new space' => '',
   'My spaces' => 'Ruang Saya',
   'No member or following spaces found.' => '',
@@ -7,4 +7,4 @@ return array (
   'Search' => 'Cari',
   'Search for spaces' => '',
   'To search for other spaces, type at least {count} characters.' => '',
-);
+];

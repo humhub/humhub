@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Space</strong> followers' => '<strong>Vietas</strong> sekotāji',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Nav iespējams dzēst lietotāju, kurš ir vietas īpašnieks! Vietas nosaukums: {spaceName}',
   'Default' => 'Noklusēts',
@@ -17,4 +17,4 @@ return array (
   'Settings' => 'Uzstādījumi',
   'Space' => 'Vieta',
   'Visible for all (members and guests)' => 'Redzama visiem (dalībniekiem un viesiem)',
-);
+];

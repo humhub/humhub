@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Back to stream' => 'Retour au fil d\'actualités',
   'Content with attached files' => 'Contenu avec pièces jointes',
   'Created by me' => 'Créé par moi',
@@ -22,4 +22,4 @@ return array (
   'The content has been unpinned.' => 'Le contenu a été desépinglé.',
   'Where I´m involved' => 'Où je suis impliqué',
   'Your last edit state has been saved!' => 'Votre dernier état d\'édition a été enregistré !',
-);
+];

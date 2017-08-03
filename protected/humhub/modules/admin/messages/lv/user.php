@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Information</strong>' => '<strong>Informācija</strong>',
   '<strong>Settings</strong> and Configuration' => '<strong>Uzstādījumi</strong> un konfigurācija',
   '<strong>User</strong> administration' => '<strong>Lietotāju</strong> administrēšana',
@@ -9,4 +9,4 @@ return array (
   'Overview' => 'Pārskats',
   'Pending approvals' => 'Gaida apstiprinājumu',
   'Profiles' => 'Profili',
-);
+];

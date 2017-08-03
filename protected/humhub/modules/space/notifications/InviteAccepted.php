@@ -25,12 +25,12 @@ class InviteAccepted extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $moduleId = "space";
+    public $moduleId = 'space';
 
     /**
      * @inheritdoc
      */
-    public $viewName = "inviteAccepted";
+    public $viewName = 'inviteAccepted';
 
     /**
      *  @inheritdoc
@@ -58,7 +58,4 @@ class InviteAccepted extends BaseNotification
                     '{spaceName}' => Html::tag('strong', Html::encode($this->source->name))
         ]);
     }
-
 }
-
-?>

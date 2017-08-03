@@ -23,7 +23,7 @@ class BaseAccountController extends \humhub\components\Controller
     /**
      * @inheritdoc
      */
-    public $subLayout = "@humhub/modules/user/views/account/_layout";
+    public $subLayout = '@humhub/modules/user/views/account/_layout';
 
     /**
      * @var \humhub\modules\user\models\User the user
@@ -53,7 +53,7 @@ class BaseAccountController extends \humhub\components\Controller
 
     /**
      * Returns the current user of this account
-     * 
+     *
      * @return \humhub\modules\user\models\User
      */
     public function getUser()
@@ -64,5 +64,4 @@ class BaseAccountController extends \humhub\components\Controller
 
         return $this->user;
     }
-
 }

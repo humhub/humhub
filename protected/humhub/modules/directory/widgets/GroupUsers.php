@@ -57,5 +57,4 @@ class GroupUsers extends Widget
                     'showMoreUrl' => $showMoreUrl
         ]);
     }
-
 }

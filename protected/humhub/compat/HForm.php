@@ -26,8 +26,8 @@ class HForm extends \yii\base\Component
     public $showErrorSummary;
     protected $form;
     public $primaryModel = null;
-    public $models = array();
-    public $definition = array();
+    public $models = [];
+    public $definition = [];
 
     /**
      * @var boolean manually mark form as submitted
@@ -42,11 +42,10 @@ class HForm extends \yii\base\Component
         $this->init();
     }
 
-    public function submitted($buttonName = "")
+    public function submitted($buttonName = '')
     {
         if (Yii::$app->request->method == 'POST') {
-
-            if ($buttonName == "" || isset($_POST[$buttonName])) {
+            if ($buttonName == '' || isset($_POST[$buttonName])) {
                 foreach ($this->models as $model) {
                     $model->load(Yii::$app->request->post());
                 }
@@ -125,9 +124,9 @@ class HForm extends \yii\base\Component
         return $out;
     }
 
-    public function renderElements($elements, $forms = array())
+    public function renderElements($elements, $forms = [])
     {
-        $output = "";
+        $output = '';
         foreach ($elements as $name => $element) {
             if (isset($element['type']) && $element['type'] == 'form') {
                 $forms[] = $name;
@@ -146,14 +145,14 @@ class HForm extends \yii\base\Component
 
     public function renderForm($element)
     {
-        $class = "";
+        $class = '';
         if (isset($element['class'])) {
             $class = $element['class'];
         }
 
         $output = "<fieldset class='" . $class . "'>";
         if (isset($element['title'])) {
-            $output .= "<legend>" . $element['title'] . "</legend>";
+            $output .= '<legend>' . $element['title'] . '</legend>';
         } else {
             #$output .= "Untitled Form";
         }
@@ -162,17 +161,17 @@ class HForm extends \yii\base\Component
 
     public function renderFormEnd($element)
     {
-        return "</fieldset>";
+        return '</fieldset>';
     }
 
     public function renderButtons($buttons)
     {
-        $output = "";
+        $output = '';
         foreach ($buttons as $buttonName => $definition) {
             $definition['isVisible'] = isset($definition['isVisible']) ? $definition['isVisible'] : true;
             if ($definition['type'] == 'submit' && $definition['isVisible']) {
                 $output .= \yii\helpers\Html::submitButton($definition['label'], ['name' => $buttonName, 'class' => $definition['class'], 'data-ui-loader' => '']);
-                $output .= "&nbsp;";
+                $output .= '&nbsp;';
             }
         }
 
@@ -185,7 +184,7 @@ class HForm extends \yii\base\Component
             return;
         }
 
-        $output = "";
+        $output = '';
 
         // Determine Model
         $model = null;
@@ -276,7 +275,7 @@ class HForm extends \yii\base\Component
                             $format = $definition['format'];
                         }
 
-                        $yearRange = isset($definition['yearRange']) ? $definition['yearRange'] : (date('Y') - 100) . ":" . (date('Y') + 100);
+                        $yearRange = isset($definition['yearRange']) ? $definition['yearRange'] : (date('Y') - 100) . ':' . (date('Y') + 100);
 
                         return $this->form->field($model, $name)->widget(\yii\jui\DatePicker::className(), [
                                     'dateFormat' => $format,
@@ -294,16 +293,15 @@ class HForm extends \yii\base\Component
                         $returnField = $this->form->field($model, $name)->widget(MarkdownField::class, $options);
                         return $returnField;
                     default:
-                        return "Field Type " . $definition['type'] . " not supported by Compat HForm";
+                        return 'Field Type ' . $definition['type'] . ' not supported by Compat HForm';
                 }
             } else {
-                return "No type found for: FieldName: " . $name . " Forms: " . print_r($forms, 1) . "<br>";
+                return 'No type found for: FieldName: ' . $name . ' Forms: ' . print_r($forms, 1) . '<br>';
             }
         } else {
-            return "No model for: FieldName: " . $name . " Forms: " . print_r($forms, 1) . "<br>";
+            return 'No model for: FieldName: ' . $name . ' Forms: ' . print_r($forms, 1) . '<br>';
         }
 
         return $output;
     }
-
 }

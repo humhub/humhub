@@ -38,5 +38,4 @@ class OEmbedProviderForm extends \yii\base\Model
             'endpoint' => Yii::t('AdminModule.forms_OEmbedProviderForm', 'Endpoint Url'),
         ];
     }
-
 }

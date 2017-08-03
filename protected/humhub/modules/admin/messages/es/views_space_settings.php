@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Save' => 'Guardar',
   'Space Settings' => 'Ajustes del espacio',
-);
+];

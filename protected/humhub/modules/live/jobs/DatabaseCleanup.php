@@ -28,5 +28,4 @@ class DatabaseCleanup extends ActiveJob
     {
         Live::deleteAll('created_at +' . Yii::$app->getModule('live')->maxLiveEventAge . ' < ' . time());
     }
-
 }

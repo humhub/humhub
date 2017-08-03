@@ -26,5 +26,4 @@ class TrackingWidget extends \humhub\components\Widget
     {
         return Yii::$app->settings->get('trackingHtmlCode');
     }
-
 }

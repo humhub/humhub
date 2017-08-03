@@ -22,5 +22,4 @@ class CommentAsset extends AssetBundle
     public $depends = [
         'humhub\assets\CoreApiAsset'
     ];
-
 }

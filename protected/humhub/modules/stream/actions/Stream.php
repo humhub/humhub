@@ -60,8 +60,8 @@ abstract class Stream extends Action
     /**
      * Modes
      */
-    const MODE_NORMAL = "normal";
-    const MODE_ACTIVITY = "activity";
+    const MODE_NORMAL = 'normal';
+    const MODE_ACTIVITY = 'activity';
 
     /**
      * Maximum wall entries per request
@@ -165,7 +165,7 @@ abstract class Stream extends Action
                 $this->mode = self::MODE_ACTIVITY;
             }
 
-            foreach (explode(',', Yii::$app->getRequest()->get('filters', "")) as $filter) {
+            foreach (explode(',', Yii::$app->getRequest()->get('filters', '')) as $filter) {
                 $this->streamQuery->addFilter(trim($filter));
             }
         }
@@ -293,15 +293,15 @@ abstract class Stream extends Action
      * @param boolean $partial whether or not to use renderPartial over renderAjax
      * @return string rendered wallentry
      */
-    public static function renderEntry(ContentActiveRecord $record, $options =  [], $partial = true)
+    public static function renderEntry(ContentActiveRecord $record, $options = [], $partial = true)
     {
         // Compatibility with pre 1.2.2
-        if(is_bool($options)) {
+        if (is_bool($options)) {
             $partial = $options;
             $options = [];
         }
 
-        if(isset($options['jsWidget'])) {
+        if (isset($options['jsWidget'])) {
             $jsWidget = $options['jsWidget'];
             unset($options['jsWidget']);
         } else {
@@ -382,5 +382,4 @@ abstract class Stream extends Action
         $event = new ActionEvent($this);
         $this->trigger(self::EVENT_AFTER_RUN, $event);
     }
-
 }

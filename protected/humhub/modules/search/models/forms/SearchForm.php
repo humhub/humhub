@@ -14,10 +14,10 @@ use \humhub\modules\search\engine\Search;
  */
 class SearchForm extends \yii\base\Model
 {
-    const SCOPE_ALL = "all";
-    const SCOPE_USER = "user";
-    const SCOPE_SPACE = "space";
-    const SCOPE_CONTENT = "content";
+    const SCOPE_ALL = 'all';
+    const SCOPE_USER = 'user';
+    const SCOPE_SPACE = 'space';
+    const SCOPE_CONTENT = 'content';
     
     public $keyword = '';
     public $scope = '';
@@ -26,7 +26,7 @@ class SearchForm extends \yii\base\Model
     
     public function init()
     {
-        if(Yii::$app->request->get('page')) {
+        if (Yii::$app->request->get('page')) {
             $this->page = Yii::$app->request->get('page');
         }
     }
@@ -35,7 +35,7 @@ class SearchForm extends \yii\base\Model
     /**
      * @inheritdoc
      */
-    public function rules() 
+    public function rules()
     {
         return [
             [['keyword','scope','page','limitSpaceGuids'], 'safe']

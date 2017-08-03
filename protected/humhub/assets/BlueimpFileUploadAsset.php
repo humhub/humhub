@@ -37,5 +37,4 @@ class BlueimpFileUploadAsset extends AssetBundle
     public $depends = [
         'humhub\assets\JqueryWidgetAsset',
     ];
-
 }

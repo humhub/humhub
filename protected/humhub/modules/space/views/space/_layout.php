@@ -26,7 +26,7 @@ $space = $this->context->contentContainer;
                     'content' => $content
                 ]) ?>
             </div>
-        <?php else: ?>
+        <?php else : ?>
             <div class="col-md-7 layout-content-container">
                 <?= \humhub\modules\space\widgets\SpaceContent::widget([
                     'contentContainer' => $space,

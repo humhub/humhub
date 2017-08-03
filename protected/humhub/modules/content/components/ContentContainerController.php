@@ -62,7 +62,6 @@ class ContentContainerController extends Controller
         $userGuid = $request->get('uguid');
 
         if ($spaceGuid !== null) {
-
             $this->contentContainer = Space::findOne(['guid' => $spaceGuid]);
             if ($this->contentContainer == null) {
                 throw new HttpException(404, Yii::t('base', 'Space not found!'));
@@ -72,10 +71,8 @@ class ContentContainerController extends Controller
                 'class' => SpaceController::className(),
                 'space' => $this->contentContainer,
             ]);
-            $this->subLayout = "@humhub/modules/space/views/space/_layout";
-
+            $this->subLayout = '@humhub/modules/space/views/space/_layout';
         } elseif ($userGuid !== null) {
-
             $this->contentContainer = User::findOne(['guid' => $userGuid]);
             if ($this->contentContainer == null) {
                 throw new HttpException(404, Yii::t('base', 'User not found!'));
@@ -86,8 +83,7 @@ class ContentContainerController extends Controller
                 'user' => $this->contentContainer,
             ]);
 
-            $this->subLayout = "@humhub/modules/user/views/profile/_layout";
-
+            $this->subLayout = '@humhub/modules/user/views/profile/_layout';
         } else {
             throw new HttpException(500, Yii::t('base', 'Could not determine content container!'));
         }
@@ -175,5 +171,4 @@ class ContentContainerController extends Controller
 
         return true;
     }
-
 }

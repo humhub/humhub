@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Administrators' => '',
   'Color' => '',
   'Created At' => 'Sukurta (kada)',
@@ -21,4 +21,4 @@ return array (
   'Visibility' => 'Matomumas',
   'You cannot create private visible spaces!' => 'Jūs negalite sukurti privačių erdvių!',
   'You cannot create public visible spaces!' => 'Jūs negalite sukurti viešai matomų erdvių!',
-);
+];

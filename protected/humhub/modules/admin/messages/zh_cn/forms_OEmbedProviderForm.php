@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Endpoint Url' => '端点 Url',
   'Url Prefix' => 'Url 前缀',
-);
+];

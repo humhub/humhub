@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Account Request for \'{displayName}\' has been approved.' => 'La solicitud de cuenta para \'{displayName}\' ha sido aprobada.',
   'Account Request for \'{displayName}\' has been declined.' => 'La solicitud de cuenta para \'{displayName}\' ha sido denegada.',
   'Hello {displayName},<br><br>
@@ -18,4 +18,4 @@ return array (
    Kind Regards<br>
    {AdminName}<br><br>' => 'Hola {displayName},<br><br> tu cuenta ha sido rechazada.<br><br> Saludos<br> {AdminName}<br><br>',
   'User not found!' => '¡Usuario no encontrado!',
-);
+];

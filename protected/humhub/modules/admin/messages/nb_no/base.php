@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'About' => 'Om',
   'Add purchased module by licence key' => 'Legg til en modul ved hjelp av kjøpt lisensnøkkel',
   'Admin' => 'Admin',
@@ -25,4 +25,4 @@ return array (
   'User posts' => 'Brukerinnlegg',
   'Userprofiles' => 'Brukerprofiler',
   'Users' => 'Brukere',
-);
+];

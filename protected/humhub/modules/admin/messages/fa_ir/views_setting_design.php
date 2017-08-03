@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Alphabetical' => 'الفبایی',
   'Auto format based on user language - Example: {example}' => 'فرمتگذاری بر اساس زبان کاربر برای مثال : {example}',
   'Firstname Lastname (e.g. John Doe)' => 'نام نام‌خانوادگی (مانند John Doe)',
@@ -7,4 +7,4 @@ return array (
   'Last visit' => 'آخرین مشاهده',
   'Save' => 'ذخیره',
   'Username (e.g. john)' => 'نام کاربری (مانند John)',
-);
+];

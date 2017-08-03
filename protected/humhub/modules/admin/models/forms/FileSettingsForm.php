@@ -73,18 +73,17 @@ class FileSettingsForm extends \yii\base\Model
      */
     public function checkImageMagick($attribute, $params)
     {
-        if ($this->$attribute != "") {
+        if ($this->$attribute != '') {
             $this->$attribute = trim($this->$attribute);
 
             if (is_file($this->$attribute)) {
+                exec($this->$attribute . ' --help', $returnIM);
 
-                exec($this->$attribute . " --help", $returnIM);
-
-                if (strpos(implode("\n", $returnIM), "ImageMagick") === false) {
-                    $this->addError($attribute, Yii::t('AdminModule.forms_FileSettingsForm', "Got invalid image magick response! - Correct command?"));
+                if (strpos(implode("\n", $returnIM), 'ImageMagick') === false) {
+                    $this->addError($attribute, Yii::t('AdminModule.forms_FileSettingsForm', 'Got invalid image magick response! - Correct command?'));
                 }
             } else {
-                $this->addError($attribute, Yii::t('AdminModule.forms_FileSettingsForm', "Convert command not found!"));
+                $this->addError($attribute, Yii::t('AdminModule.forms_FileSettingsForm', 'Convert command not found!'));
             }
         }
     }
@@ -107,5 +106,4 @@ class FileSettingsForm extends \yii\base\Model
 
         return true;
     }
-
 }

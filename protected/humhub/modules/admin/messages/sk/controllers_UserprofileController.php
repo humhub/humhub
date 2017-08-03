@@ -16,9 +16,9 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Could not load category.' => '',
   'Delete' => '',
   'Save' => '',
   'You can only delete empty categories!' => '',
-);
+];

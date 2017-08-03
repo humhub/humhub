@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Move to archive' => 'Flyt til arkiv',
   'Unarchive' => 'U-arkivér',
-);
+];

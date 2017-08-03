@@ -14,7 +14,7 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?= $form->field($group, 'name'); ?>
     <?= $form->field($group, 'description')->textarea(['rows' => 5]); ?>
 
-    <?php if (!$group->is_admin_group): ?>
+    <?php if (!$group->is_admin_group) : ?>
         <?= SpacePickerField::widget([
             'form' => $form,
             'model' => $group,
@@ -25,7 +25,7 @@ use humhub\modules\space\widgets\SpacePickerField;
         ?>
     <?php endif; ?>
 
-    <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
+    <?php if ($isManagerApprovalSetting && !$group->is_admin_group) : ?>
         <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]); ?>
         <?=  UserPickerField::widget([
             'form' => $form,
@@ -40,12 +40,12 @@ use humhub\modules\space\widgets\SpacePickerField;
     <strong><?= Yii::t('AdminModule.views_group_edit', 'Visibility'); ?></strong>
     <br>
     <br>
-    <?php if (!$group->is_admin_group): ?>
+    <?php if (!$group->is_admin_group) : ?>
         <?= $form->field($group, 'show_at_registration')->checkbox(); ?>
     <?php endif; ?>
     <?= $form->field($group, 'show_at_directory')->checkbox(); ?>
 
-    <?= CHtml::submitButton(Yii::t('AdminModule.views_group_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= CHtml::submitButton(Yii::t('AdminModule.views_group_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
     <?php
     if ($showDeleteButton) {

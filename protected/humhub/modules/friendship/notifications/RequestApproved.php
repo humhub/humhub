@@ -23,12 +23,12 @@ class RequestApproved extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $moduleId = "friendship";
+    public $moduleId = 'friendship';
 
     /**
      * @inheritdoc
      */
-    public $viewName = "friendshipApproved";
+    public $viewName = 'friendshipApproved';
 
     /**
      * @inheritdoc
@@ -68,7 +68,4 @@ class RequestApproved extends BaseNotification
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
         ]);
     }
-
 }
-
-?>

@@ -14,11 +14,11 @@ $this->registerJsFile('@web-static/js/markdownEditor.js');
 /**
  * Create a hidden field to store uploaded files guids
  */
-echo Html::hiddenInput('fileUploaderHiddenGuidField', "", array('id' => 'fileUploaderHiddenGuidField_' . $fieldId));
+echo Html::hiddenInput('fileUploaderHiddenGuidField', '', ['id' => 'fileUploaderHiddenGuidField_' . $fieldId]);
 
 $this->registerJsVar('markdownPreviewUrl', $previewUrl);
 
-$translations = array(
+$translations = [
     'Bold' => Yii::t('widgets_views_markdownEditor', 'Bold'),
     'Italic' => Yii::t('widgets_views_markdownEditor', 'Italic'),
     'Heading' => Yii::t('widgets_views_markdownEditor', 'Heading'),
@@ -42,7 +42,7 @@ $translations = array(
     'code text here' => Yii::t('widgets_views_markdownEditor', 'code text here'),
     'Unordered List' => Yii::t('widgets_views_markdownEditor', 'Unordered List'),
     'Ordered List' => Yii::t('widgets_views_markdownEditor', 'Ordered List'),
-);
+];
 
 $translationsJS = "$.fn.markdown.messages['en'] = {\n";
 foreach ($translations as $key => $value) {

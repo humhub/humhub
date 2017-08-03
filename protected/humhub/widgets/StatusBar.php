@@ -25,5 +25,4 @@ class StatusBar extends \yii\base\Widget
     {
         return $this->render('statusBar');
     }
-
 }

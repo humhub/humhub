@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Installed' => 'Yüklendi',
   'No modules found!' => 'Modül bulunamadı!',
   'No purchased modules found!' => 'Satın alınan modül bulunamadı!',
@@ -7,4 +7,4 @@ return array (
   'Search' => 'Ara',
   'Third-party' => 'Üçüncü taraf',
   'search for available modules online' => 'bulunabilir modül ara',
-);
+];

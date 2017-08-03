@@ -4,8 +4,8 @@ use yii\helpers\Html;
 use humhub\compat\CHtml;
 ?>
 <div>
-    <?= Yii::t('AdminModule.views_logging_index', 'Total {count} entries found.', ["{count}" => $pagination->totalCount]); ?>
-    <span class="pull-right"><?= Yii::t('AdminModule.views_logging_index', 'Displaying {count} entries per page.', ["{count}" => $pagination->pageSize]); ?></span>
+    <?= Yii::t('AdminModule.views_logging_index', 'Total {count} entries found.', ['{count}' => $pagination->totalCount]); ?>
+    <span class="pull-right"><?= Yii::t('AdminModule.views_logging_index', 'Displaying {count} entries per page.', ['{count}' => $pagination->pageSize]); ?></span>
 </div>
 
 <hr>
@@ -16,16 +16,16 @@ use humhub\compat\CHtml;
             <div class="media-body">
 
                 <?php
-                $labelClass = "label-primary";
+                $labelClass = 'label-primary';
                 if ($entry->level == \yii\log\Logger::LEVEL_WARNING) {
-                    $labelClass = "label-danger";
-                    $levelName = "Warning";
+                    $labelClass = 'label-danger';
+                    $levelName = 'Warning';
                 } elseif ($entry->level == \yii\log\Logger::LEVEL_ERROR) {
-                    $labelClass = "label-warning";
-                    $levelName = "Error";
+                    $labelClass = 'label-warning';
+                    $levelName = 'Error';
                 } elseif ($entry->level == \yii\log\Logger::LEVEL_INFO) {
-                    $labelClass = "label-info";
-                    $levelName = "Info";
+                    $labelClass = 'label-info';
+                    $levelName = 'Info';
                 }
                 ?>
 
@@ -41,7 +41,7 @@ use humhub\compat\CHtml;
     <?php endforeach; ?>
 </ul>
 
-<?php if ($pagination->totalCount != 0): ?>
+<?php if ($pagination->totalCount != 0) : ?>
     <div class="pull-right"><?= Html::a(Yii::t('AdminModule.views_logging_index', 'Flush entries'), ['flush'], ['class' => 'btn btn-danger', 'data-method' => 'post']); ?></div>
 <?php endif; ?>
 

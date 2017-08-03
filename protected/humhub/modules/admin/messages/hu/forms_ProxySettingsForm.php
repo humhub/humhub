@@ -1,9 +1,9 @@
 <?php
-return array (
+return  [
   'Enabled' => '',
   'No Proxy Hosts' => '',
   'Password' => '',
   'Port' => '',
   'Server' => '',
   'User' => 'Felhasználó',
-);
+];

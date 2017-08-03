@@ -16,7 +16,8 @@ class HumHubHelper extends Module
 
     protected $config = [];
     
-    public function inviteUserByEmail($email) {
+    public function inviteUserByEmail($email)
+    {
         $this->getModule('Yii2')->_loadPage('POST', '/user/invite', ['Invite[emails]' => $email]);
     }
 
@@ -37,11 +38,12 @@ class HumHubHelper extends Module
         $this->assertEquals($subject, $message->getSubject());
     }*/
 
-    public function initModules() {
-        if(!empty($this->config['modules'])) {
-            foreach($this->config['modules'] as $moduleId) {
+    public function initModules()
+    {
+        if (!empty($this->config['modules'])) {
+            foreach ($this->config['modules'] as $moduleId) {
                 $module = Yii::$app->moduleManager->getModule($moduleId);
-                if($module != null) {
+                if ($module != null) {
                     $module->enable();
                 } else {
                     //TODO: throw error ? skip ?...
@@ -49,5 +51,4 @@ class HumHubHelper extends Module
             }
         }
     }
-
 }

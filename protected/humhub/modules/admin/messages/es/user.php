@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Information</strong>' => '<strong>Información</strong>',
   '<strong>Settings</strong> and Configuration' => '<strong>Ajustes</strong> y Configuración',
   '<strong>User</strong> administration' => 'Administración de <strong>Usuarios</strong>',
@@ -9,4 +9,4 @@ return array (
   'Overview' => 'Resumen',
   'Pending approvals' => 'Aprobaciones pendientes',
   'Profiles' => 'Perfiles',
-);
+];

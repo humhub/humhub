@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Base URL' => 'URL base',
   'Date input format' => 'Formato de data',
   'Default language' => 'Idioma padrão',
@@ -15,4 +15,4 @@ return array (
   'Show user profile post form on dashboard' => 'Possibilitar ao usuário postar no painel',
   'Sort by creation date' => 'Classificar por data de criação',
   'Sort by update date' => 'Classificar por data de atualização',
-);
+];

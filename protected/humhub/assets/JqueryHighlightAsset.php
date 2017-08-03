@@ -32,5 +32,4 @@ class JqueryHighlightAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['js/jquery.highlight.min.js'];
-
 }

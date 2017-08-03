@@ -43,10 +43,10 @@ class DatabaseForm extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array(['hostname', 'username', 'database'], 'required'),
-            array('password', 'safe'),
-        );
+        return [
+            [['hostname', 'username', 'database'], 'required'],
+            ['password', 'safe'],
+        ];
     }
 
     /**
@@ -54,12 +54,11 @@ class DatabaseForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'hostname' => Yii::t('InstallerModule.forms_DatabaseForm', 'Hostname'),
             'username' => Yii::t('InstallerModule.forms_DatabaseForm', 'Username'),
             'password' => Yii::t('InstallerModule.forms_DatabaseForm', 'Password'),
             'database' => Yii::t('InstallerModule.forms_DatabaseForm', 'Name of Database'),
-        );
+        ];
     }
-
 }

@@ -1,8 +1,8 @@
 <?php
-return array (
+return  [
   '<strong>Manage</strong> members' => '',
   'Actions' => '',
   'Remove' => 'Pašalinti',
   'Role' => '',
   'never' => '',
-);
+];

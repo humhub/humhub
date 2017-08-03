@@ -74,11 +74,11 @@ class AcceptanceTester extends \Codeception\Actor
 
     public function amOnSpace($guid, $path = '/space/space', $params = [])
     {
-        if(!$path) {
+        if (!$path) {
             $path = '/space/space';
         }
 
-        if(is_int($guid)) {
+        if (is_int($guid)) {
             $guid = $this->spaces[--$guid];
         }
 
@@ -88,21 +88,24 @@ class AcceptanceTester extends \Codeception\Actor
         $this->amOnRoute($params);
     }
 
-    public function dontSeeInDropDown($selector, $text) {
+    public function dontSeeInDropDown($selector, $text)
+    {
         $this->click($selector);
         $this->wait(1);
         $this->dontSee($text, $selector);
         $this->click($selector);
     }
 
-    public function seeInDropDown($selector, $text) {
+    public function seeInDropDown($selector, $text)
+    {
         $this->click($selector);
         $this->wait(1);
         $this->see($text, $selector);
         $this->click($selector);
     }
 
-    public function allowGuestAccess() {
+    public function allowGuestAccess()
+    {
         $this->amOnRoute(['/admin/authentication']);
         $this->waitForElementVisible('.field-authenticationsettingsform-allowguestaccess');
         $this->click('.field-authenticationsettingsform-allowguestaccess label');
@@ -112,7 +115,8 @@ class AcceptanceTester extends \Codeception\Actor
         $this->guestAccessAllowed = true;
     }
 
-    public function amOnRoute($route) {
+    public function amOnRoute($route)
+    {
         $this->amOnPage(Url::to($route));
     }
 
@@ -207,7 +211,7 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->clickAccountDropDown();
         $this->click('Logout');
-        if(!$this->guestAccessAllowed) {
+        if (!$this->guestAccessAllowed) {
             $this->waitForElementVisible('#login-form');
         } else {
             $this->waitForElementVisible('.btn-enter');
@@ -217,9 +221,9 @@ class AcceptanceTester extends \Codeception\Actor
     public function enableModule($guid, $moduleId)
     {
         $this->amOnSpace($guid, '/space/manage/module');
-        $this->seeElement('.enable-module-'.$moduleId);
-        $this->click('.enable-module-'.$moduleId);
-        $this->waitForElement('.disable-module-'.$moduleId);
+        $this->seeElement('.enable-module-' . $moduleId);
+        $this->click('.enable-module-' . $moduleId);
+        $this->waitForElement('.disable-module-' . $moduleId);
         $this->amOnSpace($guid);
     }
 
@@ -265,7 +269,7 @@ class AcceptanceTester extends \Codeception\Actor
     /**
      * Selects $userName for a given userPicker. Note this implementation will
      * just take the first result found for the given username.
-     * 
+     *
      * @param type $id
      * @param type $userName
      */

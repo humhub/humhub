@@ -4,7 +4,6 @@ namespace humhub\modules\tour\widgets;
 
 use Yii;
 
-
 /**
  * Will show the introduction tour
  *
@@ -21,8 +20,9 @@ class Tour extends \humhub\components\Widget
     public function run()
     {
 
-        if (Yii::$app->user->isGuest)
+        if (Yii::$app->user->isGuest) {
             return;
+        }
 
         // Active tour flag not set
         if (!isset($_GET['tour'])) {
@@ -37,7 +37,7 @@ class Tour extends \humhub\components\Widget
 
         // Check if tour is activated by admin and users
         $settings = Yii::$app->getModule('tour')->settings;
-        if ($settings->get('enable') == 0 && $settings->user()->get("hideTourPanel") == 1) {
+        if ($settings->get('enable') == 0 && $settings->user()->get('hideTourPanel') == 1) {
             return;
         }
 
@@ -45,14 +45,14 @@ class Tour extends \humhub\components\Widget
         $currentModuleId = Yii::$app->controller->module->id;
         $currentControllerId = Yii::$app->controller->id;
 
-        if ($currentModuleId == "dashboard" && $currentControllerId == "dashboard") {
+        if ($currentModuleId == 'dashboard' && $currentControllerId == 'dashboard') {
             return $this->render('guide_interface');
-        } elseif ($currentModuleId == "space" && $currentControllerId == "space") {
-            return $this->render('guide_spaces', array());
-        } elseif ($currentModuleId == "user" && $currentControllerId == "profile") {
-            return $this->render('guide_profile', array());
-        } elseif ($currentModuleId == "admin" && $currentControllerId == "module") {
-            return $this->render('guide_administration', array());
+        } elseif ($currentModuleId == 'space' && $currentControllerId == 'space') {
+            return $this->render('guide_spaces', []);
+        } elseif ($currentModuleId == 'user' && $currentControllerId == 'profile') {
+            return $this->render('guide_profile', []);
+        } elseif ($currentModuleId == 'admin' && $currentControllerId == 'module') {
+            return $this->render('guide_administration', []);
         }
     }
 
@@ -64,7 +64,4 @@ class Tour extends \humhub\components\Widget
         $view->registerJsFile('@web-static/resources/js/tour/bootstrap-tour.min.js');
         $view->registerCssFile('@web-static/resources/js/tour/bootstrap-tour.min.css');
     }
-
 }
-
-?>

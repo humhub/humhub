@@ -53,7 +53,7 @@ class PreviewImage extends BaseConverter
     {
         if ($file) {
             return Html::encode($file->file_name);
-        } else if($this->file) {
+        } elseif ($this->file) {
             return Html::encode($this->file->file_name);
         }
         return '';
@@ -126,7 +126,7 @@ class PreviewImage extends BaseConverter
 
     /**
      * Returns the gallery link to the original file
-     * 
+     *
      * @param array $htmlOptions optional link html options
      * @return string the link
      */
@@ -134,5 +134,4 @@ class PreviewImage extends BaseConverter
     {
         return Html::a($this->render(), $this->file->getUrl(), array_merge($htmlOptions, ['data-ui-gallery' => 'gallery-' . $this->file->guid]));
     }
-
 }

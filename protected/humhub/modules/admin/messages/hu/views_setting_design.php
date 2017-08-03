@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Alphabetical' => '',
   'Auto format based on user language - Example: {example}' => '',
   'Firstname Lastname (e.g. John Doe)' => '',
@@ -7,4 +7,4 @@ return array (
   'Last visit' => '',
   'Save' => 'Mentés',
   'Username (e.g. john)' => '',
-);
+];

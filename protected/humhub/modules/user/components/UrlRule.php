@@ -41,10 +41,10 @@ class UrlRule extends Object implements UrlRuleInterface
                 unset($params['uguid']);
 
                 if ($this->defaultRoute == $route) {
-                    $route = "";
+                    $route = '';
                 }
 
-                $url = "u/" . urlencode(strtolower($username)) . "/" . $route;
+                $url = 'u/' . urlencode(strtolower($username)) . '/' . $route;
                 if (!empty($params) && ($query = http_build_query($params)) !== '') {
                     $url .= '?' . $query;
                 }
@@ -60,12 +60,12 @@ class UrlRule extends Object implements UrlRuleInterface
     public function parseRequest($manager, $request)
     {
         $pathInfo = $request->getPathInfo();
-        if (substr($pathInfo, 0, 2) == "u/") {
+        if (substr($pathInfo, 0, 2) == 'u/') {
             $parts = explode('/', $pathInfo, 3);
             if (isset($parts[1])) {
                 $user = User::find()->where(['username' => $parts[1]])->one();
                 if ($user !== null) {
-                    if (!isset($parts[2]) || $parts[2] == "") {
+                    if (!isset($parts[2]) || $parts[2] == '') {
                         $parts[2] = $this->defaultRoute;
                     }
                     $params = $request->get();
@@ -80,7 +80,7 @@ class UrlRule extends Object implements UrlRuleInterface
 
     /**
      * Gets usernameby given guid
-     * 
+     *
      * @param string $guid
      * @return string|null the username
      */
@@ -98,5 +98,4 @@ class UrlRule extends Object implements UrlRuleInterface
 
         return null;
     }
-
 }

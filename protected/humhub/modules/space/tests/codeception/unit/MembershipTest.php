@@ -41,13 +41,13 @@ class MembershipTest extends HumHubDbTestCase
         $this->assertNotEmpty($memberships, 'get all memberships of user query.');
         $match = null;
 
-        foreach($memberships as $membership) {
-            if($membership->user_id == $user1->id) {
+        foreach ($memberships as $membership) {
+            if ($membership->user_id == $user1->id) {
                 $match = $membership;
             }
         }
         
-       $this->assertNotNull($match);
+        $this->assertNotNull($match);
     }
 
     public function testJoinPolicityApprovalDecline()
@@ -71,5 +71,4 @@ class MembershipTest extends HumHubDbTestCase
         $this->assertMailSent(2, 'Rejection notification admin mail');
         $this->assertHasNotification(\humhub\modules\space\notifications\ApprovalRequestDeclined::class, $space, 1, 'Approval Accepted Notification');
     }
-
 }

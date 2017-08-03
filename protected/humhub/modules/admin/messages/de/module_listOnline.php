@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Installed' => 'Installiert',
   'No modules found!' => 'Keine Module gefunden!',
   'No purchased modules found!' => 'Keine gekauften Module gefunden!',
@@ -7,4 +7,4 @@ return array (
   'Search' => 'Suchen',
   'Third-party' => 'Third-party',
   'search for available modules online' => 'verfügbare Module online suchen',
-);
+];

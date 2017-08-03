@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   '<strong>Upload</strong> error' => '<strong>Feil under opplasting</strong>',
   'Close' => 'Lukk',
   'Could not upload File:' => 'Kunne ikke laste opp fil: ',
-);
+];

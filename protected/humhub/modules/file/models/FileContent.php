@@ -10,7 +10,7 @@ namespace humhub\modules\file\models;
 
 /**
  * FileContent model is used to set a file by string
- * 
+ *
  * @author Luke
  * @inheritdoc
  * @since 1.2
@@ -19,7 +19,7 @@ class FileContent extends File
 {
 
     /**
-     * @var string file content 
+     * @var string file content
      */
     public $newFileContent = null;
 
@@ -67,5 +67,4 @@ class FileContent extends File
             $this->size = strlen($this->newFileContent);
         }
     }
-
 }

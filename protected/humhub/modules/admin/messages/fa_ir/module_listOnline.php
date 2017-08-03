@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Installed' => 'نصب شد',
   'No modules found!' => 'ماژولی یافت نشد!',
   'No purchased modules found!' => 'هيچ ماژول خريداري شده اي يافت نشد',
@@ -7,4 +7,4 @@ return array (
   'Search' => 'جستجو',
   'Third-party' => 'چشم سوم',
   'search for available modules online' => 'به دنبال ماژول هاي آنلاين بگرد',
-);
+];

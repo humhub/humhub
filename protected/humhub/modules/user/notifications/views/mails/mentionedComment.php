@@ -9,7 +9,7 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
     <tr>
         <td>
-             <?= humhub\widgets\mails\MailCommentEntry::widget([
+                <?= humhub\widgets\mails\MailCommentEntry::widget([
                 'originator' => $originator,
                 'comment' => $comment,
                 'date' => $date,

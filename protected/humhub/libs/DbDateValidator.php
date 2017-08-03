@@ -45,7 +45,7 @@ class DbDateValidator extends \yii\validators\DateValidator
     public function validateAttribute($model, $attribute)
     {
         // If no source timeZone
-        if(empty($this->timeZone)) {
+        if (empty($this->timeZone)) {
             $this->timeZone = (!\Yii::$app->formatter->timeZone) ? \Yii::$app->timeZone : \Yii::$app->formatter->timeZone;
         }
 
@@ -83,7 +83,7 @@ class DbDateValidator extends \yii\validators\DateValidator
      */
     protected function hasTime()
     {
-        return ($this->timeAttribute != "");
+        return ($this->timeAttribute != '');
     }
 
     /**
@@ -118,7 +118,7 @@ class DbDateValidator extends \yii\validators\DateValidator
      * @param string $value
      * @return int timestamp in utc
      */
-    protected function parseDateTimeValue($value, $timeValue = "")
+    protected function parseDateTimeValue($value, $timeValue = '')
     {
         // It's already a database datetime / no conversion needed.
         if ($this->isInDbFormat($value)) {
@@ -127,7 +127,7 @@ class DbDateValidator extends \yii\validators\DateValidator
 
         $timestamp = $this->parseDateValue($value);
 
-        if ($this->hasTime() && $timeValue != "") {
+        if ($this->hasTime() && $timeValue != '') {
             $timestamp += $this->parseTimeValue($timeValue);
             $timestamp = $this->fixTimestampTimeZone($timestamp, $this->timeZone);
         }
@@ -145,7 +145,7 @@ class DbDateValidator extends \yii\validators\DateValidator
     protected function fixTimestampTimeZone($ts, $timeZone)
     {
         // Create date string
-        $fromDateTime = new \DateTime("@" . $ts);
+        $fromDateTime = new \DateTime('@' . $ts);
 
         // Create date object
         $toDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', $fromDateTime->format('Y-m-d H:i:s'), new \DateTimeZone($timeZone));
@@ -176,5 +176,4 @@ class DbDateValidator extends \yii\validators\DateValidator
     {
         return (preg_match(self::REGEX_DBFORMAT_DATE, $value) || preg_match(self::REGEX_DBFORMAT_DATETIME, $value));
     }
-
 }

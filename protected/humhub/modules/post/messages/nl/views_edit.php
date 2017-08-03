@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Edit your post...' => 'Bewerk je bericht...',
   'Save' => 'Bewaar',
-);
+];

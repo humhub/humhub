@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Modules</strong> directory' => '<strong>Modules</strong> overzicht',
   'Are you sure? *ALL* module data will be lost!' => 'Ben je zeker? *ALLE* module gegevens zal verloren gaan!',
   'Are you sure? *ALL* module related data and files will be lost!' => 'Ben je zeker? *ALLE* gegevens en bestanden gerelateerd aan de module zullen verloren gaan!',
@@ -10,4 +10,4 @@ return array (
   'More info' => 'Meer info',
   'Set as default' => 'Instellen als standaard',
   'Uninstall' => 'Deïnstalleren',
-);
+];

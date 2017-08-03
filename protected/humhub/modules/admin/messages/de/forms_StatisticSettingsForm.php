@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'HTML tracking code' => 'HTML Tracking Code',
   'Maximum allowed age for logs.' => 'Höchstalter für Protokolle',
-);
+];

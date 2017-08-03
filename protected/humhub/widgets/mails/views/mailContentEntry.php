@@ -37,7 +37,7 @@ use yii\helpers\Html;
                                     <?= \humhub\widgets\TimeAgo::widget(['timestamp' => $date]) ?>
                                 </span>
                             <?php endif; ?>
-                             <?php if ($space && !$isComment) : ?>
+                                <?php if ($space && !$isComment) : ?>
                                 <span style="font-size: 11px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-soft', '#bebebe') ?>; font-weight:300; text-align:left;">
                                     <?= Yii::t('ContentModule.views_wallLayout', 'in'); ?>
                                 </span>
@@ -46,11 +46,11 @@ use yii\helpers\Html;
                                         <?= Html::encode($space->displayName) ?>
                                     </a>
                                 </span>
-                            <?php endif; ?>
+                                <?php endif; ?>
                         </td>
                     </tr>
                     <tr>
-                        <?php if($isComment) : ?>
+                        <?php if ($isComment) : ?>
                             <td height="15" style="word-wrap:break-word;font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left;">
                                 <?= $content ?>
                             </td>
@@ -65,7 +65,7 @@ use yii\helpers\Html;
         </td>
         <!-- END: CONTENT AND ORIGINATOR DESCRIPTION -->
     </tr>
-    <?php if(!$isComment) : ?>
+    <?php if (!$isComment) : ?>
         <tr>
             <td colspan="2" height="10"></td>
         </tr>

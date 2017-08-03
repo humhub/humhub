@@ -10,7 +10,7 @@ use yii\helpers\Url;
 <div class="panel-body">
     <div class="help-block"><?php echo Yii::t('UserModule.views_account_editModules', 'Enhance your profile with modules.'); ?></div>
 
-    <?php foreach ($availableModules as $moduleId => $module): ?>
+    <?php foreach ($availableModules as $moduleId => $module) : ?>
         <hr>
         <div class="media">
             <a class="pull-left" href="#">
@@ -22,13 +22,13 @@ use yii\helpers\Url;
                 <p><?= $module->getContentContainerDescription($user); ?></p>
 
 
-                    <?php if ($user->canDisableModule($module->id)): ?>
+                    <?php if ($user->canDisableModule($module->id)) : ?>
                         <a href="#" style="<?= $user->isModuleEnabled($module->id) ? '' : 'display:none' ?>"
                            data-action-click="content.container.disableModule" 
                            data-action-url="<?= Url::to(['/user/account/disable-module', 'moduleId' => $module->id]) ?>" data-reload="1"
                            data-action-confirm="<?= Yii::t('UserModule.views_account_editModules', 'Are you really sure? *ALL* module data for your profile will be deleted!') ?>"
                            class="btn btn-sm btn-primary disable" data-ui-loader>
-                               <?= Yii::t('UserModule.views_account_editModules', 'Disable') ?>
+                                <?= Yii::t('UserModule.views_account_editModules', 'Disable') ?>
                         </a>
                     <?php endif; ?>
                 

@@ -6,10 +6,10 @@ use Yii;
 
 /**
  * StreamSuppressQuery detects same content types in a row and trims the output.
- * 
+ *
  * E.g. if there are 5 files in a row, only two files will be returned.
  * All following files are stored and can be obtained via method getSuppressed().
- * 
+ *
  * @see \humhub\modules\stream\actions\Stream
  * @author luke
  * @since 1.2
@@ -33,7 +33,7 @@ class StreamSuppressQuery extends StreamQuery
     protected $lastContentId;
 
     /**
-     * @var boolean return 
+     * @var boolean return
      */
     protected $suppressionsOnly = false;
 
@@ -112,7 +112,7 @@ class StreamSuppressQuery extends StreamQuery
 
     /**
      * This is a special case, this is used to "load more" of suppressed contents.
-     * 
+     *
      * @return Content[] the list of content objects
      */
     protected function allSuppressions()
@@ -125,7 +125,6 @@ class StreamSuppressQuery extends StreamQuery
 
         foreach ($this->_query->batch($originalLimit) as $contents) {
             foreach ($contents as $content) {
-
                 // End of suppression row
                 if (isset($results[0]) && $results[0]->object_model != $content->object_model) {
                     break 2;
@@ -149,10 +148,10 @@ class StreamSuppressQuery extends StreamQuery
 
     /**
      * Checks if this content should be suppressed
-     * 
+     *
      * @param array $results a reference of the current results
      * @param Content $content the content object to check
-     * 
+     *
      * @return boolean is suppressed item
      */
     protected function isSuppressed(&$results, $content)
@@ -182,7 +181,7 @@ class StreamSuppressQuery extends StreamQuery
 
     /**
      * Adds new suppression
-     * 
+     *
      * @param \humhub\modules\content\models\Content $parentContent
      * @param \humhub\modules\content\models\Content $content
      */
@@ -197,14 +196,14 @@ class StreamSuppressQuery extends StreamQuery
 
     /**
      * Returns suppressed content ids
-     * 
+     *
      * @return array
      * @throws \yii\base\Exception
      */
     public function getSuppressions()
     {
         if (!$this->isQueryExecuted) {
-            throw new \yii\base\Exception("Execute query first via all() method before reading suppressed items.");
+            throw new \yii\base\Exception('Execute query first via all() method before reading suppressed items.');
         }
 
         $results = [];
@@ -228,7 +227,7 @@ class StreamSuppressQuery extends StreamQuery
     /**
      * Returns the last content id of the stream query.
      * It may also contains a suppressed content id.
-     * 
+     *
      * @return int content id
      */
     public function getLastContentId()
@@ -243,5 +242,4 @@ class StreamSuppressQuery extends StreamQuery
     {
         return 'StreamQuery';
     }
-
 }

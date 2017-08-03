@@ -42,7 +42,7 @@ class CommentLink extends \yii\base\Widget
     public function run()
     {
 
-        if ($this->mode == "") {
+        if ($this->mode == '') {
             $this->mode = self::MODE_INLINE;
         }
 
@@ -67,5 +67,4 @@ class CommentLink extends \yii\base\Widget
     {
         return \humhub\modules\comment\models\Comment::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey());
     }
-
 }

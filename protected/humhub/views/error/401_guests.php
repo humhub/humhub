@@ -7,7 +7,7 @@ use yii\helpers\Url;
 <div class="container">
     <div class="panel panel-danger">
         <div class="panel-heading">
-            <?= Yii::t('error', "<strong>Login</strong> required"); ?>
+            <?= Yii::t('error', '<strong>Login</strong> required'); ?>
         </div>
         <div class="panel-body">
 

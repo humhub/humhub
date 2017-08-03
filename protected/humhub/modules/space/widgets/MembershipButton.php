@@ -11,7 +11,7 @@ namespace humhub\modules\space\widgets;
 use humhub\components\Widget;
 
 /**
- * MembershipButton shows various membership related buttons in space header. 
+ * MembershipButton shows various membership related buttons in space header.
  *
  * @author luke
  * @since 0.11
@@ -31,10 +31,9 @@ class MembershipButton extends Widget
     {
         $membership = $this->space->getMembership();
 
-        return $this->render('membershipButton', array(
+        return $this->render('membershipButton', [
                     'space' => $this->space,
                     'membership' => $membership
-        ));
+        ]);
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Save' => 'Kaydet',
   'Space Settings' => 'Mekan Ayarları',
-);
+];

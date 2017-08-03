@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Allows the user to create public content' => 'Tillat at brukeren lager offentlig innhold',
   'Allows the user to invite new members to the space' => 'Tillatt brukeren å invitere nye medlemmer til gruppenb',
   'Can create hidden (private) spaces.' => 'Kan lage private grupper.',
@@ -8,4 +8,4 @@ return array (
   'Create public content' => 'Lag offentlig innhold',
   'Create public space' => 'Lag offentlig gruppe',
   'Invite users' => 'Invitér brukere',
-);
+];

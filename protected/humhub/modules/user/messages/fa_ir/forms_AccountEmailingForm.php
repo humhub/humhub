@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Send activities?' => 'ارسال فعالیت‌ها؟',
   'Send notifications?' => 'ارسال اعلان‌ها؟',
-);
+];

@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Maximum value' => '',
   'Minimum value' => '',
   'Number field options' => '',
-);
+];

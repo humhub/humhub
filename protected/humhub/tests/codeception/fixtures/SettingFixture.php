@@ -14,5 +14,4 @@ class SettingFixture extends ActiveFixture
 {
 
     public $modelClass = 'humhub\models\Setting';
-
 }

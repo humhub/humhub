@@ -93,8 +93,9 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         $this->forcePostRequest();
         $space = $this->getSpace();
 
-        if (!$space->canJoin(Yii::$app->user->id))
+        if (!$space->canJoin(Yii::$app->user->id)) {
             throw new HttpException(500, Yii::t('SpaceModule.controllers_SpaceController', 'You are not allowed to join this space!'));
+        }
 
         if ($space->join_policy == Space::JOIN_POLICY_APPLICATION) {
             // Redirect to Membership Request Form
@@ -178,7 +179,6 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         $model->space = $space;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-
             $statusInvite = false;
 
             // Invite existing members
@@ -204,7 +204,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
             }
         }
 
-        return $this->renderAjax('invite', array('model' => $model, 'space' => $space));
+        return $this->renderAjax('invite', ['model' => $model, 'space' => $space]);
     }
 
     /**
@@ -262,14 +262,11 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
      */
     public function actionMembersList()
     {
-        $title = Yii::t('SpaceModule.controllers_MembershipController', "<strong>Members</strong>");
+        $title = Yii::t('SpaceModule.controllers_MembershipController', '<strong>Members</strong>');
 
         return $this->renderAjaxContent(UserListBox::widget([
                             'query' => Membership::getSpaceMembersQuery($this->getSpace()),
                             'title' => $title
         ]));
     }
-
 }
-
-?>

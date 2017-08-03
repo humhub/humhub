@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Application message' => 'Zpráva aplikace',
-);
+];

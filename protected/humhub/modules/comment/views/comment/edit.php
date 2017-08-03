@@ -11,8 +11,8 @@ use yii\helpers\Url;
     <?= Html::hiddenInput('contentId', $contentId); ?>
 
     <?=
-	humhub\widgets\RichtextField::widget([
-        'id' => 'comment_input_'.$comment->id,
+    humhub\widgets\RichtextField::widget([
+        'id' => 'comment_input_' . $comment->id,
         'placeholder' => Yii::t('CommentModule.views_edit', 'Edit your comment...'),
         'model' => $comment,
         'attribute' => 'message'
@@ -25,9 +25,9 @@ use yii\helpers\Url;
         \humhub\modules\file\widgets\UploadButton::widget([
             'id' => 'comment_upload_' . $comment->id,
             'model' => $comment,
-            'dropZone' => '#comment_'.$comment->id,
-            'preview' => '#comment_upload_preview_'.$comment->id,
-            'progress' => '#comment_upload_progress_'.$comment->id,
+            'dropZone' => '#comment_' . $comment->id,
+            'preview' => '#comment_upload_preview_' . $comment->id,
+            'progress' => '#comment_upload_progress_' . $comment->id,
             'max' => Yii::$app->getModule('content')->maxAttachedFiles
         ]);
         ?>
@@ -38,7 +38,7 @@ use yii\helpers\Url;
             data-action-url="<?= Url::to(['/comment/comment/edit', 'id' => $comment->id, 'contentModel' => $comment->object_model, 'contentId' => $comment->object_id]) ?>"
             data-action-submit
             data-ui-loader>
-             <?= Yii::t('CommentModule.views_edit', 'Save') ?>
+                <?= Yii::t('CommentModule.views_edit', 'Save') ?>
         </a>
 
     </div>
@@ -46,8 +46,8 @@ use yii\helpers\Url;
     <div id="comment_upload_progress_<?= $comment->id ?>" style="display:none; margin:10px 0;"></div>
 
     <?=
-	\humhub\modules\file\widgets\FilePreview::widget([
-        'id' => 'comment_upload_preview_'.$comment->id,
+    \humhub\modules\file\widgets\FilePreview::widget([
+        'id' => 'comment_upload_preview_' . $comment->id,
         'options' => ['style' => 'margin-top:10px'],
         'model' => $comment,
         'edit' => true

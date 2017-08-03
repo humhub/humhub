@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Cancel' => '取消',
   'Decline & delete user: <strong>{displayName}</strong>' => '拒绝并删除用户: <strong>{displayName}</strong>',
-);
+];

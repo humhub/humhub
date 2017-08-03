@@ -5,7 +5,6 @@ namespace humhub\modules\user\controllers;
 use Yii;
 use yii\web\Controller;
 
-
 /**
  * Search Controller provides action for searching users.
  *
@@ -47,7 +46,4 @@ class SearchController extends Controller
             'disableFillUser' => false
         ]);
     }
-
 }
-
-?>

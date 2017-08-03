@@ -110,11 +110,11 @@ class Post extends ContentActiveRecord implements Searchable
      */
     public function getSearchAttributes()
     {
-        $attributes = array(
+        $attributes = [
             'message' => $this->message,
             'url' => $this->url,
             'user' => $this->getPostAuthorName()
-        );
+        ];
 
         $this->trigger(self::EVENT_SEARCH_ADD, new \humhub\modules\search\events\SearchAddEvent($attributes));
 
@@ -134,5 +134,4 @@ class Post extends ContentActiveRecord implements Searchable
 
         return '';
     }
-
 }

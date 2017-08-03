@@ -34,5 +34,4 @@ class ActivityMailRenderer extends MailLayoutRenderer
      * @inheritdoc
      */
     public $textLayout = '@activity/views/layouts/mail_plaintext.php';
-
 }

@@ -34,12 +34,9 @@ class PermaLink extends \yii\base\Widget
     {
         $permaLink = Url::to(['/content/perma', 'id' => $this->content->content->id], true);
         
-        return $this->render('permaLink', array(
+        return $this->render('permaLink', [
                     'permaLink' => $permaLink,
                     'id' => $this->content->content->id
-        ));
+        ]);
     }
-
 }
-
-?>

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'TLS/SSL is aan te raden in productie omgevingen om te vermijden dat wachtwoorden in leesbare tekst verzonden worden.',
   'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Definieert de filter om toe te passen wanneer er ingelogd wordt. %s vervangt de gebruikersnaam in de login actie. Voorbeeld: &quot;(sAMAccountName=%s)&quot; of &quot;(uid=%s)&quot;',
   'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;' => 'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;',
@@ -12,4 +12,4 @@ return array (
   'The default base DN used for searching for accounts.' => 'De standaard Base DN die gebruikt wordt voor het zoeken naar accounts.',
   'The default credentials password (used only with username above).' => 'Het standaard wachtwoord (wordt enkel gebruikt in combinatie met bovenstaande gebruikersnaam).',
   'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'De standaards gebruikersnaam. Sommige servers eisen dat dit in DN formaat staat. Dit moet in DN formaat staan als de LDAP server een DN vereist voor de bind actie en de bind actie zou mogelijk moeten zijn met simpele gebruikersnamen.',
-);
+];

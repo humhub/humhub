@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Invalid content id given!' => 'Ungültige content id!',
-);
+];

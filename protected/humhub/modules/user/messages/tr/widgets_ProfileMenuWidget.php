@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>Profile</strong> menu' => '<strong>Profil</strong> menüsü',
   'About' => 'Hakkımda',
   'Stream' => 'Yayın',
-);
+];

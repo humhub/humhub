@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Administrators' => '',
   'Color' => 'رنگ',
   'Created At' => 'ایجادشده در',
@@ -21,4 +21,4 @@ return array (
   'Visibility' => 'قابلیت مشاهده',
   'You cannot create private visible spaces!' => 'شما نمی‌توانید انجمن‌های خصوصی قابل مشاهده ایجاد کنید!',
   'You cannot create public visible spaces!' => 'شما نمی‌توانید انجمن‌های عمومی قابل مشاهده ایجاد کنید!',
-);
+];

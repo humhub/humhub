@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Account Request for \'{displayName}\' has been approved.' => 'Zugang für \'{displayName}\' wurde genehmigt.',
   'Account Request for \'{displayName}\' has been declined.' => 'Zugang für \'{displayName}\' wurde abgelehnt.',
   'Hello {displayName},<br><br>
@@ -31,4 +31,4 @@ return array (
    mit freundlichen Grüßen<br>
    {AdminName}<br><br>',
   'User not found!' => 'Benutzer nicht gefunden!',
-);
+];

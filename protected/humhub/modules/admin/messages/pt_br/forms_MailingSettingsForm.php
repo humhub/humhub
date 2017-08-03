@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Allow Self-Signed Certificates?' => 'Permitir certificados auto assinados?',
   'E-Mail sender address' => 'Email que irá enviar',
   'E-Mail sender name' => 'Nome que irá enviar',
@@ -8,4 +8,4 @@ return array (
   'Password' => 'Senha',
   'Port number' => 'Número da porta',
   'Username' => 'Nome de usuário',
-);
+];

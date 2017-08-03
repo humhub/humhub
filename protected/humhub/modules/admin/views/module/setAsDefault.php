@@ -9,7 +9,7 @@ use humhub\modules\user\models\User;
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
-                <?= Yii::t('AdminModule.views_module_setAsDefault', '%moduleName% - Set as default module', ['%moduleName%' => "<strong>" . $module->getName() . "</strong>"]); ?>
+                <?= Yii::t('AdminModule.views_module_setAsDefault', '%moduleName% - Set as default module', ['%moduleName%' => '<strong>' . $module->getName() . '</strong>']); ?>
             </h4>
         </div>
         <?php $form = humhub\compat\CActiveForm::begin(); ?>

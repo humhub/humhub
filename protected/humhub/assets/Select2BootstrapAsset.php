@@ -42,5 +42,4 @@ class Select2BootstrapAsset extends AssetBundle
     public $depends = [
         'humhub\assets\Select2Asset'
     ];
-
 }

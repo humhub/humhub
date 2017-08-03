@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Add user' => '添加用户',
-);
+];

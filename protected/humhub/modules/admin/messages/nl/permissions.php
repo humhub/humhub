@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Access Admin Information' => 'Toegang tot beheer informatie',
   'Can access the \'Administration -> Information\' section.' => 'Toegang tot Beheer->informatie ',
   'Can manage spaces within the \'Administration -> Spaces\' section (create/edit/delete).' => 'Toegang tot beheer ruimtes  (maken, wijzigen, verwijderen).',
@@ -12,4 +12,4 @@ return array (
   'Manage Settings' => 'Beheer instellingen',
   'Manage Spaces' => 'Beheer ruimtes',
   'Manage Users' => 'Beheer gebruikers',
-);
+];

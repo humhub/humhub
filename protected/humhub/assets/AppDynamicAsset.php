@@ -31,5 +31,4 @@ class AppDynamicAsset extends AssetBundle
     public $depends = [
         'humhub\assets\JqueryTimeAgoLocaleAsset',
     ];
-
 }

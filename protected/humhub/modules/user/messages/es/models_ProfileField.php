@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Created at' => 'Creado el',
   'Created by' => 'Creado por',
   'Description' => 'Descripción',
@@ -25,4 +25,4 @@ return array (
   'Updated at' => 'Actualizado el',
   'Updated by' => 'Actualizado por',
   'Visible' => 'Visible',
-);
+];

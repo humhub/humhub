@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Calvin Klein – Between love and madness lies obsession.' => '',
   'Create Admin Account' => 'Yönetici Hesabı Oluştur',
   'Nike – Just buy it. ;Wink;' => '',
@@ -7,4 +7,4 @@ return array (
   'Welcome Space' => 'Karşılama Mekanı',
   'Yay! I\'ve just installed HumHub ;Cool;' => '',
   'Your first sample space to discover the platform.' => '',
-);
+];

@@ -101,5 +101,4 @@ class Application extends \yii\web\Application
 
         parent::preInit($config);
     }
-
 }

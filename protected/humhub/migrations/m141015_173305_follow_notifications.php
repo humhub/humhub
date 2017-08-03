@@ -15,7 +15,7 @@ class m141015_173305_follow_notifications extends Migration
 
         // Fix: Migrate user_follow table to follow table
         $rows = (new \yii\db\Query())
-                ->select("*")
+                ->select('*')
                 ->from('user_content')
                 ->all();
         foreach ($rows as $row) {

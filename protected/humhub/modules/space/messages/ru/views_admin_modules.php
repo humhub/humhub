@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Enhance this space with modules.' => 'Расширьте возможности этого пространства с помощью модулей.',
   '<strong>Space</strong> Modules' => '<strong>Модули</strong> Пространства',
   'Activated' => 'Активирован',
@@ -8,4 +8,4 @@ return array (
   'Currently there are no modules available for this space!' => 'Модули, доступные для этого пространства отсутствуют',
   'Disable' => 'Отключить',
   'Enable' => 'Включить',
-);
+];

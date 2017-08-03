@@ -19,25 +19,24 @@ use yii\helpers\Url;
 class UserSettingMenu extends \humhub\widgets\BaseMenu
 {
 
-    public $template = "@humhub/widgets/views/tabMenu";
-    public $type = "adminUserSettingNavigation";
+    public $template = '@humhub/widgets/views/tabMenu';
+    public $type = 'adminUserSettingNavigation';
 
     public function init()
     {
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('AdminModule.views_setting_authentication', 'General'),
             'url' => Url::toRoute(['/admin/setting/authentication']),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'settings' && Yii::$app->controller->action->id == 'authentication'),
-        ));
-        $this->addItem(array(
+        ]);
+        $this->addItem([
             'label' => Yii::t('AdminModule.views_setting_authentication', 'LDAP'),
             'url' => Url::toRoute(['/admin/setting/authentication-ldap']),
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'settings' && Yii::$app->controller->action->id == 'authentication-ldap'),
-        ));
+        ]);
 
         parent::init();
     }
-
 }

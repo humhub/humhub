@@ -59,7 +59,7 @@ class CreateController extends Controller
         $model = $this->createSpaceModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if($skip) {
+            if ($skip) {
                 return $this->htmlRedirect($model->getUrl());
             }
             return $this->actionModules($model->id);
@@ -109,7 +109,7 @@ class CreateController extends Controller
      */
     public function actionInvite($space = null)
     {
-        $space = ($space == null) ? Space::findOne(['id' => Yii::$app->request->get('spaceId', "")]) : $space;
+        $space = ($space == null) ? Space::findOne(['id' => Yii::$app->request->get('spaceId', '')]) : $space;
 
         $model = new \humhub\modules\space\models\forms\InviteForm();
         $model->space = $space;
@@ -117,7 +117,6 @@ class CreateController extends Controller
         $canInviteExternal = Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-
             // Invite existing members
             foreach ($model->getInvites() as $user) {
                 $space->inviteMember($user->id, Yii::$app->user->id);
@@ -152,7 +151,4 @@ class CreateController extends Controller
         $model->join_policy = Yii::$app->getModule('space')->settings->get('defaultJoinPolicy');
         return $model;
     }
-
 }
-
-?>

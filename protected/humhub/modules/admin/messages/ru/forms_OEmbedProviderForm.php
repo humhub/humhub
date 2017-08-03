@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Endpoint Url' => 'URL конечной точки',
   'Url Prefix' => 'Префикс URL',
-);
+];

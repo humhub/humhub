@@ -12,7 +12,7 @@ use humhub\modules\live\components\LiveEvent;
 
 /**
  * Live event for new contents
- * 
+ *
  * @since 1.2
  */
 class NewContent extends LiveEvent
@@ -24,18 +24,17 @@ class NewContent extends LiveEvent
     public $contentId;
     
     /**
-     * @var string space guid for space content container 
+     * @var string space guid for space content container
      */
     public $sguid;
     
     /**
-     * @var string user guid for user content container 
+     * @var string user guid for user content container
      */
     public $uguid;
     
     /**
-     * @var string originator guid 
+     * @var string originator guid
      */
     public $originator;
-
 }

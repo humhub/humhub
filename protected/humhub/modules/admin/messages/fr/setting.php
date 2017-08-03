@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Advanced Settings' => 'Paramètres avancés',
   'Appearance Settings' => 'Paramètres d\'apparence',
   'General' => 'Général',
@@ -11,4 +11,4 @@ return array (
   'These settings refer to advanced topics of your social network.' => 'Ces paramètres concernent les sujets avancés de votre réseau social.',
   'These settings refer to the appearance of your social network.' => 'Ces paramètres concernent l\'apparence de votre réseau social.',
   'User Settings' => 'Paramètres d\'utilisateur',
-);
+];

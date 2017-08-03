@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => 'اضافه کردن عکس/فایل',
   'Add link' => 'اضافه کردن لینک',
   'Bold' => 'پررنگ',
@@ -31,4 +31,4 @@ return array (
   'strong text' => 'متن پررنگ',
   'Unordered List' => '',
   'Ordered List' => '',
-);
+];

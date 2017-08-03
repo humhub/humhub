@@ -36,14 +36,14 @@ class BaseStack extends \yii\base\Widget
      *
      * @var array
      */
-    public $widgets = array();
+    public $widgets = [];
 
     /**
      * Seperator HTML Code (glue)
      *
      * @var string
      */
-    public $seperator = "";
+    public $seperator = '';
 
     /**
      * Template for output
@@ -51,7 +51,7 @@ class BaseStack extends \yii\base\Widget
      *
      * @var string
      */
-    public $template = "{content}";
+    public $template = '{content}';
 
     /**
      * Initializes the sidebar widget.
@@ -74,7 +74,7 @@ class BaseStack extends \yii\base\Widget
     {
         $this->trigger(self::EVENT_RUN);
 
-        $content = "";
+        $content = '';
 
         $i = 0;
         foreach ($this->getWidgets() as $widget) {
@@ -117,13 +117,13 @@ class BaseStack extends \yii\base\Widget
     protected function getWidgets()
     {
 
-        usort($this->widgets, function($a, $b) {
+        usort($this->widgets, function ($a, $b) {
             $sortA = (isset($a[2]['sortOrder'])) ? $a[2]['sortOrder'] : 100;
             $sortB = (isset($b[2]['sortOrder'])) ? $b[2]['sortOrder'] : 100;
 
             if ($sortA == $sortB) {
                 return 0;
-            } else if ($sortA < $sortB) {
+            } elseif ($sortA < $sortB) {
                 return -1;
             } else {
                 return 1;
@@ -152,5 +152,4 @@ class BaseStack extends \yii\base\Widget
             $options
         ];
     }
-
 }

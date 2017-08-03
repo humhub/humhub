@@ -129,7 +129,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
              * Replacement for old super_admin flag version
              */
             return $this->isSystemAdmin();
-        } else if ($name == 'profile') {
+        } elseif ($name == 'profile') {
             /**
              * Ensure there is always a related Profile Model also when it's
              * not really exists yet.
@@ -182,12 +182,12 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     public function behaviors()
     {
-        return array(
+        return [
             \humhub\components\behaviors\GUID::className(),
             \humhub\modules\content\components\behaviors\SettingsBehavior::className(),
             \humhub\modules\user\behaviors\Followable::className(),
             \humhub\modules\user\behaviors\UserModelModules::className()
-        );
+        ];
     }
 
     public static function findIdentity($id)
@@ -277,9 +277,9 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function getManagerGroups()
     {
-        return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers', function($query) {
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers', function ($query) {
                     $query->andWhere(['is_group_manager' => '1']);
-                });
+        });
     }
 
     /**
@@ -313,7 +313,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         // We don't allow deletion of users who owns a space - validate that
         foreach (\humhub\modules\space\models\Membership::GetUserSpaces($this->id) as $space) {
             if ($space->isSpaceOwner($this->id)) {
-                throw new Exception("Tried to delete a user which is owner of a space!");
+                throw new Exception('Tried to delete a user which is owner of a space!');
             }
         }
 
@@ -350,7 +350,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     public function beforeSave($insert)
     {
         if ($insert) {
-
             if ($this->auth_mode == '') {
                 $passwordAuth = new \humhub\modules\user\authclient\Password();
                 $this->auth_mode = $passwordAuth->getId();
@@ -363,12 +362,12 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
                 }
             }
 
-            if ($this->status == "") {
+            if ($this->status == '') {
                 $this->status = self::STATUS_ENABLED;
             }
         }
 
-        if ($this->time_zone == "") {
+        if ($this->time_zone == '') {
             $this->time_zone = Yii::$app->settings->get('timeZone');
         }
 
@@ -445,12 +444,14 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
         $format = Yii::$app->settings->get('displayNameFormat');
 
-        if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}')
-            $name = $this->profile->firstname . " " . $this->profile->lastname;
+        if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}') {
+            $name = $this->profile->firstname . ' ' . $this->profile->lastname;
+        }
 
         // Return always username as fallback
-        if ($name == '' || $name == ' ')
+        if ($name == '' || $name == ' ') {
             return $this->username;
+        }
 
         return $name;
     }
@@ -461,7 +462,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function isCurrentUser()
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return false;
         }
 
@@ -477,7 +478,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function is(User $user)
     {
-        if(!$user) {
+        if (!$user) {
             return false;
         }
         return $user->id === $this->id;
@@ -491,7 +492,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
 
         // Guest
-        if(!$user) {
+        if (!$user) {
             return false;
         }
 
@@ -533,7 +534,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function getTags()
     {
-        return preg_split("/[;,#]+/", $this->tags);
+        return preg_split('/[;,#]+/', $this->tags);
     }
 
     /**
@@ -554,7 +555,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         ];
 
         // Add user group ids
-        $groupIds = array_map(function($group) {
+        $groupIds = array_map(function ($group) {
             return $group->id;
         }, $this->groups);
         $attributes['groups'] = $groupIds;

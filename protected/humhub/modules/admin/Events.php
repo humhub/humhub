@@ -59,5 +59,4 @@ class Events extends \yii\base\Object
         $application = $event->sender;
         $application->controllerMap['module'] = commands\ModuleController::className();
     }
-
 }

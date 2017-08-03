@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Cancel' => 'Batal',
   'Decline & delete user: <strong>{displayName}</strong>' => '',
-);
+];

@@ -42,8 +42,8 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
      */
     public function init()
     {
-        if ($this->viewName == "") {
-            throw new \yii\base\InvalidConfigException("Missing viewName!");
+        if ($this->viewName == '') {
+            throw new \yii\base\InvalidConfigException('Missing viewName!');
         }
 
         parent::init();
@@ -76,12 +76,12 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
      */
     public function create()
     {
-        if ($this->moduleId == "") {
-            throw new \yii\base\InvalidConfigException("No moduleId given!");
+        if ($this->moduleId == '') {
+            throw new \yii\base\InvalidConfigException('No moduleId given!');
         }
 
         if (!$this->source instanceof \yii\db\ActiveRecord) {
-            throw new \yii\base\InvalidConfigException("Invalid source object given!");
+            throw new \yii\base\InvalidConfigException('Invalid source object given!');
         }
 
         $this->saveModelInstance();
@@ -140,11 +140,11 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
         $this->record->content->created_by = $this->getOriginatorId();
 
         if ($this->record->content->created_by == null) {
-            throw new \yii\base\InvalidConfigException("Could not determine originator for activity!");
+            throw new \yii\base\InvalidConfigException('Could not determine originator for activity!');
         }
 
         if (!$this->record->save()) {
-            throw new \yii\base\Exception("Could not save activity!" . $this->record->getErrors());
+            throw new \yii\base\Exception('Could not save activity!' . $this->record->getErrors());
         }
     }
 
@@ -173,5 +173,4 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
             return $this->source->created_by;
         }
     }
-
 }

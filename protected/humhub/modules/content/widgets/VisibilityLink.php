@@ -33,13 +33,13 @@ class VisibilityLink extends \yii\base\Widget
         $content = $this->contentRecord->content;
         $contentContainer = $content->container;
         
-        if(!$content->canEdit()) {
+        if (!$content->canEdit()) {
             return;
-        } else if($content->isPrivate() && !$contentContainer->permissionManager->can(new CreatePublicContent())) {
+        } elseif ($content->isPrivate() && !$contentContainer->permissionManager->can(new CreatePublicContent())) {
             return;
         }
         
-        return $this->render('visibilityLink', [ 
+        return $this->render('visibilityLink', [
                 'content' => $content,
                 'toggleLink' => Url::to(['/content/content/toggle-visibility', 'id' => $content->id])
         ]);

@@ -12,7 +12,7 @@ use yii\web\AssetBundle;
 
 /**
  * Asset for stream content create form resources.
- * 
+ *
  * @since 1.2
  * @author buddha
  */
@@ -42,5 +42,4 @@ class ContentFormAsset extends AssetBundle
     public $depends = [
         'humhub\assets\CoreApiAsset'
     ];
-
 }

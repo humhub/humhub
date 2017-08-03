@@ -35,5 +35,4 @@ class BootstrapMarkdownAsset extends AssetBundle
      * @inheritdoc
      */
     public $css = ['css/bootstrap-markdown.min.css'];
-
 }

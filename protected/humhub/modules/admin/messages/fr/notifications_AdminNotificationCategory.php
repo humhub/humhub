@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Administrative' => 'Administratif',
   'Receive Notifications for administrative events like available updates.' => 'Recevoir des notifications pour des événements administratifs comme les mises à jour disponibles.',
-);
+];

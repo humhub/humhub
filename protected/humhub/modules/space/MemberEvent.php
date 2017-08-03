@@ -28,5 +28,4 @@ class MemberEvent extends Event
      * @var \humhub\modules\user\models\User
      */
     public $user;
-
 }

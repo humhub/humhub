@@ -66,7 +66,7 @@ class DefaultController extends Controller
 
         //To avoid infinit redirects of actionIndex we remove the stream value and set an empty selection instead
         array_shift($indexModuleSelection);
-        $indexModuleSelection = ["" => Yii::t('SpaceModule.controllers_AdminController', 'Stream (Default)')] + $indexModuleSelection;
+        $indexModuleSelection = ['' => Yii::t('SpaceModule.controllers_AdminController', 'Stream (Default)')] + $indexModuleSelection;
 
         return $this->render('advanced', ['model' => $space, 'indexModuleSelection' => $indexModuleSelection]);
     }
@@ -79,7 +79,7 @@ class DefaultController extends Controller
         $space = $this->getSpace();
         $space->archive();
         
-        if(Yii::$app->request->isAjax) {
+        if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = 'json';
             return [
                 'success' => true,
@@ -98,7 +98,7 @@ class DefaultController extends Controller
         $space = $this->getSpace();
         $space->unarchive();
         
-        if(Yii::$app->request->isAjax) {
+        if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = 'json';
             return [
                 'success' => true,
@@ -122,7 +122,4 @@ class DefaultController extends Controller
 
         return $this->render('delete', ['model' => $model, 'space' => $this->getSpace()]);
     }
-
 }
-
-?>

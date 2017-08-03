@@ -8,14 +8,14 @@ use humhub\widgets\JsWidget;
 
 /**
  * The file input will upload files either to the given $url or to the default
- * file upload route '/file/file/upload'. 
- * 
+ * file upload route '/file/file/upload'.
+ *
  * The returned guids will be attached to an array input field with a default form name 'guids[]'.
  * The default form name can either be overwritten by providing a $model and $attribute or by setting the
  * $name field.
- * 
+ *
  * The resulted guids will either be appended to the surrounding form if no $form selector is given.
- * 
+ *
  * @package humhub.modules_core.file.widgets
  * @since 1.2
  */
@@ -26,14 +26,14 @@ class UploadInput extends JsWidget
 
     /**
      * javascript widget implementation.
-     * 
-     * @var type 
+     *
+     * @var type
      */
     public $jsWidget = 'file.Upload';
 
     /**
      * @inheritdoc
-     * @var type 
+     * @var type
      */
     public $init = true;
 
@@ -47,68 +47,68 @@ class UploadInput extends JsWidget
     /**
      * Can be used to overwrite the default result input name files[] with a model
      * bound attribute formName.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $attribute;
 
     /**
      * Can be used to overwrite the default result input name files[] with a model
      * bound attribute formName.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $name;
     
     /**
      * Defines the input name of the submitted array field containing the result guids.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $submitName;
 
     /**
      * Can be set if the upload button is not contained in the form itself.
-     * 
-     * @var type 
+     *
+     * @var type
      */
     public $form;
 
     /**
      * Can be set to overwrite the default file upload route.
-     * 
-     * @var type 
+     *
+     * @var type
      */
     public $url;
 
     /**
      * Total number of maximum amount of allowed file uploads.
-     * @var type 
+     * @var type
      */
     public $max;
 
     /**
      * Selector of dropzone node.
-     * @var type 
+     * @var type
      */
     public $dropZone;
 
     /**
      * File preview js widget selector.
-     * 
-     * @var type 
+     *
+     * @var type
      */
     public $preview;
 
     /**
      * Upload progress js widget selector.
-     * @var type 
+     * @var type
      */
     public $progress;
 
     /**
      * Used to hide/show the actual input element.
-     * @var type 
+     * @var type
      */
     public $visible = false;
 
@@ -121,7 +121,7 @@ class UploadInput extends JsWidget
     /**
      * This flag can be used in order to only allow a single guid to be submitted.
      * Note that already attached files have to be removed manually.
-     * @var boolean 
+     * @var boolean
      */
     public $single = false;
 
@@ -156,11 +156,11 @@ class UploadInput extends JsWidget
     {
         $formSelector = ($this->form instanceof \yii\widgets\ActiveForm) ? '#' + $this->form->getId() : $this->form;
         
-        if($this->submitName) {
+        if ($this->submitName) {
             $submitName = $this->submitName;
         } else {
             $submitName = ($this->model && $this->attribute) ? $this->model->formName() . '[' . $this->attribute . ']' : self::DEFAULT_FORM_NAME;
-            if(!$this->single) {
+            if (!$this->single) {
                 $submitName .= '[]';
             }
         }
@@ -176,7 +176,7 @@ class UploadInput extends JsWidget
             'upload-hide-in-stream' => $this->hideInStream ? '1' : null
         ];
 
-        if($this->hideInStream) {
+        if ($this->hideInStream) {
             $result['upload-hide-in-stream'] = '1';
         }
         

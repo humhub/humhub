@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Account Request for \'{displayName}\' has been approved.' => 'Hesap talebi \'{displayName}\' kabul edildi.',
   'Account Request for \'{displayName}\' has been declined.' => 'Hesap talebi \'{displayName}\' reddedildi.',
   'Hello {displayName},<br><br>
@@ -31,4 +31,4 @@ return array (
    Saygılarımızla<br>
    {AdminName}<br><br>',
   'User not found!' => 'Kullanıcı bulunamadı!',
-);
+];

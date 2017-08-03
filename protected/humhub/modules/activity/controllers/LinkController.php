@@ -45,5 +45,4 @@ class LinkController extends Controller
             $this->redirect($activity->getActivityBaseClass()->getUrl());
         }
     }
-
 }

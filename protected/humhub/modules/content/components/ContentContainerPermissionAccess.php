@@ -15,7 +15,6 @@
 
 namespace humhub\modules\content\components;
 
-
 use humhub\components\access\PermissionAccessValidator;
 
 class ContentContainerPermissionAccess extends PermissionAccessValidator

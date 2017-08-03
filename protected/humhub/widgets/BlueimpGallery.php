@@ -25,5 +25,4 @@ class BlueimpGallery extends \yii\base\Widget
     {
         return $this->render('blueimpGallery');
     }
-
 }

@@ -4,7 +4,7 @@ namespace humhub\modules\content\interfaces;
 
 /**
  * Interface for classes which are able to return content instances.
- * 
+ *
  * @see \humhub\modules\content\models\Content
  * @author buddha
  * @since 1.2

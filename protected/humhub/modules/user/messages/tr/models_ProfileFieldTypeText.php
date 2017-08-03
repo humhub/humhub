@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Default value' => 'Varsayılan değer',
   'Maximum length' => 'Maksimum uzunluk',
   'Minimum length' => 'Minimum uzunluk',
@@ -24,4 +24,4 @@ return array (
   'Regular Expression: Validator' => 'Düzenli İfade: Doğrulayıcı',
   'Text Field Options' => 'Yazı Alanı Seçenekleri',
   'Validator' => 'Doğrulayıcı',
-);
+];

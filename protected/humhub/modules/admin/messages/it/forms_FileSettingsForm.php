@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Allowed file extensions' => 'Estensioni file consentite',
   'Convert command not found!' => 'Comando Converti non trovato',
   'Got invalid image magick response! - Correct command?' => 'Risposta non valida di Image Magick! - Comando corretto?',
@@ -9,4 +9,4 @@ return array (
   'Maximum preview image width (in pixels, optional)' => 'Dimensione massima larghezza preview (in pixels, opzionale)',
   'Maximum upload file size (in MB)' => 'Misura massima del file in upload (in MB)',
   'Use X-Sendfile for File Downloads' => 'Usa X-Sendfile per scaricare i file',
-);
+];

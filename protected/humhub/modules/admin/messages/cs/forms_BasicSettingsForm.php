@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Base URL' => 'URL adresa',
   'Date input format' => 'Formát data',
   'Default language' => 'Výchozí jazyk',
@@ -15,4 +15,4 @@ return array (
   'Show user profile post form on dashboard' => 'Zobrazit na Nástěnce formulář pro odeslání nového příspěvku',
   'Sort by creation date' => 'Seřadit podle data vytvoření',
   'Sort by update date' => 'Seřadit podle data úpravy',
-);
+];

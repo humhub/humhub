@@ -12,7 +12,7 @@ use yii\web\AssetBundle;
 
 /**
  * Asset for core content resources.
- * 
+ *
  * @since 1.2
  * @author buddha
  */
@@ -36,5 +36,4 @@ class ContentAsset extends AssetBundle
     public $depends = [
         'humhub\assets\CoreApiAsset'
     ];
-
 }

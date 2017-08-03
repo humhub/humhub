@@ -15,7 +15,7 @@ use yii\web\JsExpression;
 
 /**
  * ShowMore ajax pager
- * 
+ *
  * @inheritdoc
  * @since 1.1.1
  * @author luke
@@ -31,9 +31,9 @@ class ShowMorePager extends \humhub\widgets\LinkPager
 
     /**
      * AjaxButton widget options
-     * 
+     *
      * @see AjaxButton
-     * @var array 
+     * @var array
      */
     public $ajaxButtonOptions = [];
 
@@ -104,5 +104,4 @@ class ShowMorePager extends \humhub\widgets\LinkPager
         $moreButton = AjaxButton::widget($this->ajaxButtonOptions);
         return Html::tag('div', Html::tag('br') . $moreButton . LoaderWidget::widget(['id' => $this->id . '_loader', 'cssClass' => 'hidden']), ['id' => $this->id, 'class' => 'pagination-container']);
     }
-
 }

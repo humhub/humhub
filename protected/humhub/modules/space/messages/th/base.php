@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Space</strong> followers' => '',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => '',
   'Default' => 'ค่าปกติ',
@@ -17,4 +17,4 @@ return array (
   'Settings' => '',
   'Space' => '',
   'Visible for all (members and guests)' => '',
-);
+];

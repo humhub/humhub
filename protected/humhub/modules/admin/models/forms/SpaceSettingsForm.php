@@ -38,5 +38,4 @@ class SpaceSettingsForm extends \yii\base\Model
             'defaultContentVisibility' => Yii::t('AdminModule.forms_SpaceSettingsForm', 'Default Content Visiblity'),
         ];
     }
-
 }

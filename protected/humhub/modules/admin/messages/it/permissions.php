@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Access Admin Information' => '',
   'Can access the \'Administration -> Information\' section.' => '',
   'Can manage modules within the \'Administration ->  Modules\' section.' => '',
@@ -12,4 +12,4 @@ return array (
   'Manage Settings' => 'Gestisci Impostazioni',
   'Manage Spaces' => 'Gestisci Space',
   'Manage Users' => 'Gestisci Utenti',
-);
+];

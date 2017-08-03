@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add more...' => 'Voeg meer toe...',
   'An unexpected error occurred while loading the result.' => 'Er is een onverwachte fout opgetreden tijdens het laden.',
   'Load more' => 'Meer laden',
@@ -8,4 +8,4 @@ return array (
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Het maximale aantal is {n,plural,=1{# item} other {# items}}.',
   'You reached the maximum number of allowed charachters ({n}).' => 'Het maximale aantal tekens is ({n}).',
   'Your search returned no matches.' => 'Uw zoekopdracht heeft geen overeenkomsten opgeleverd.',
-);
+];

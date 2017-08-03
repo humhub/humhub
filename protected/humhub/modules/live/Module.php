@@ -107,5 +107,4 @@ class Module extends \humhub\components\Module
 
         return $legitimation;
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Confirm</strong> comment deleting' => '',
   'Cancel' => 'poništi',
   'Cancel Edit' => '',
@@ -8,4 +8,4 @@ return array (
   'Do you really want to delete this comment?' => '',
   'Edit' => '',
   'Read full comment...' => '',
-);
+];

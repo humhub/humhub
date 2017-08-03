@@ -29,15 +29,15 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                     'header' => Yii::t('SpaceModule.views_admin_members', 'Actions'),
                     'class' => 'yii\grid\ActionColumn',
                     'buttons' => [
-                        'view' => function() {
+                        'view' => function () {
                             return;
                         },
-                        'delete' => function($url, $model) use($space) {
+                        'delete' => function ($url, $model) use ($space) {
                             return Html::a('Reject', $space->createUrl('reject-applicant', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']);
                         },
-                                'update' => function($url, $model) use($space) {
-                            return Html::a('Approve', $space->createUrl('approve-applicant', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-primary btn-sm', 'data-method' => 'POST']);
-                        },
+                                'update' => function ($url, $model) use ($space) {
+                                    return Html::a('Approve', $space->createUrl('approve-applicant', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-primary btn-sm', 'data-method' => 'POST']);
+                                },
                             ],
                         ],
                     ],

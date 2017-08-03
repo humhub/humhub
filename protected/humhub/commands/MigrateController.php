@@ -101,7 +101,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
 
         sort($migrations);
 
-		return $migrations;
+        return $migrations;
     }
 
     /**
@@ -115,7 +115,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
             $this->migrationPath = $this->getMigrationPath($class);
         }
 
-		return parent::createMigration($class);
+        return parent::createMigration($class);
     }
 
     /**
@@ -134,7 +134,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
             }
         }
 
-		throw new \yii\console\Exception("Could not find path for: " . $migration);
+        throw new \yii\console\Exception('Could not find path for: ' . $migration);
     }
 
     /**
@@ -155,7 +155,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
             }
         }
 
-		return $migrationPaths;
+        return $migrationPaths;
     }
 
     /**
@@ -173,7 +173,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
         $controller->color = false;
         $controller->runAction('up');
 
-		return ob_get_clean();
+        return ob_get_clean();
     }
 
     /**
@@ -217,5 +217,4 @@ class MigrateController extends \yii\console\controllers\MigrateController
             return parent::stderr($string);
         }
     }
-
 }

@@ -26,9 +26,9 @@ class TextArea extends BaseType
      */
     public function rules()
     {
-        return array(
+        return [
                 #array('maxLength, alphaNumOnly', 'safe'),
-        );
+        ];
     }
 
     /**
@@ -36,15 +36,15 @@ class TextArea extends BaseType
      *
      * @return Array Form Definition
      */
-    public function getFormDefinition($definition = array())
+    public function getFormDefinition($definition = [])
     {
-        return parent::getFormDefinition(array(
-                    get_class($this) => array(
+        return parent::getFormDefinition([
+                    get_class($this) => [
                         'type' => 'form',
                         'title' => Yii::t('UserModule.models_ProfileFieldTypeTextArea', 'Text area field options'),
-                        'elements' => array(
-                        )
-        )));
+                        'elements' => [
+                        ]
+                    ]]);
     }
 
     /**
@@ -67,10 +67,10 @@ class TextArea extends BaseType
      * @param type $rules
      * @return type
      */
-    public function getFieldRules($rules = array())
+    public function getFieldRules($rules = [])
     {
 
-        $rules[] = array($this->profileField->internal_name, 'safe');
+        $rules[] = [$this->profileField->internal_name, 'safe'];
 
         return parent::getFieldRules($rules);
     }
@@ -80,13 +80,10 @@ class TextArea extends BaseType
      */
     public function getFieldFormDefinition()
     {
-        return array($this->profileField->internal_name => array(
+        return [$this->profileField->internal_name => [
                 'type' => 'textarea',
                 'class' => 'form-control',
                 'rows' => '3'
-        ));
+        ]];
     }
-
 }
-
-?>

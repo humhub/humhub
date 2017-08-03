@@ -36,12 +36,9 @@ class ArchiveLink extends \yii\base\Widget
             return;
         }
 
-        return $this->render('archiveLink', array(
+        return $this->render('archiveLink', [
                     'object' => $this->content,
                     'id' => $this->content->content->id,
-        ));
+        ]);
     }
-
 }
-
-?>

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => 'Tambah image/file',
   'Add link' => 'Tambah link',
   'Bold' => '@@',
@@ -31,4 +31,4 @@ return array (
   'strong text' => '@@',
   'Unordered List' => '',
   'Ordered List' => '',
-);
+];

@@ -1,7 +1,7 @@
 <?php
-return array (
+return  [
   'Hostname' => 'Хост',
   'Name of Database' => 'Имя базы данных',
   'Password' => 'Пароль',
   'Username' => 'Имя пользователя',
-);
+];

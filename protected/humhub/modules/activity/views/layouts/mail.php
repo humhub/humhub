@@ -48,7 +48,7 @@ use yii\helpers\Html;
                                                         <!-- START: USER IMAGE -->
                                                         <a href="<?= $originator->createUrl('/user/profile', [], true); ?>">
                                                             <img
-                                                                src="<?= $originator->getProfileImage()->getUrl("", true); ?>"
+                                                                src="<?= $originator->getProfileImage()->getUrl('', true); ?>"
                                                                 width="50"
                                                                 alt=""
                                                                 style="max-width:50px; display:block !important; border-radius: 4px;"
@@ -71,14 +71,14 @@ use yii\helpers\Html;
                                                                         <?= $content; ?>
 
                                                                         <!-- check if activity object has a space -->
-                                                                        <?php if ($record->content->space !== null): ?>
+                                                                        <?php if ($record->content->space !== null) : ?>
                                                                             (<?= Yii::t('ActivityModule.views_activityLayoutMail', 'via'); ?>
                                                                             <a href="<?= $record->content->space->createUrl('/space/space', [], true); ?>"
                                                                                style="text-decoration: none; color: #555555;">
-                                                                                   <?= Html::encode($record->content->space->name); ?></a>)
+                                                                                    <?= Html::encode($record->content->space->name); ?></a>)
                                                                         <?php endif; ?>
 
-                                                                        <?php if ($url != "") : ?>
+                                                                        <?php if ($url != '') : ?>
                                                                             <!-- START: CONTENT LINK -->
                                                                             <span
                                                                                 style="text-decoration: none; color: #7191a8;"> - <a

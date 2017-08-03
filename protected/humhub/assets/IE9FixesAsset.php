@@ -43,5 +43,4 @@ class IE9FixesAsset extends AssetBundle
     public $cssOptions = [
         'condition' => 'IE 9'
     ];
-
 }

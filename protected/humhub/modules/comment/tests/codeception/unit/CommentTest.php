@@ -32,5 +32,4 @@ class CommentTest extends HumHubDbTestCase
         $this->assertNotNull(\humhub\modules\activity\models\Activity::findOne(['object_model' => Comment::class, 'object_id' => $comment->id]));
         $this->assertNotNull(\humhub\modules\notification\models\Notification::findOne(['source_class' => Comment::class, 'source_pk' => $comment->id]));
     }
-
 }

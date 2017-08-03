@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Allow limited access for non-authenticated users (guests)' => 'Kimliği doğrulanmamış kullanıcılar için sınırlı erişime izin ver (misafir)',
   'Anonymous users can register' => 'Anonim kullanıcılar kayıt olabilir',
   'Default user group for new users' => 'Yeni kullanıcılar için varsayılan kullanıcı grubu',
@@ -7,4 +7,4 @@ return array (
   'Default user profile visibility' => 'Varsayılan kullanıcı profili görünürlüğü',
   'Members can invite external users by email' => 'Kullanıcılar eposta ile davet gönderebilirler',
   'Require group admin approval after registration' => 'Kayıttan sonra grup yöneticisinin onayı gerekir',
-);
+];

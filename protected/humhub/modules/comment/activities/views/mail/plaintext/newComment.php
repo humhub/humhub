@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 
-echo strip_tags(Yii::t('CommentModule.views_activities_CommentCreated', "%displayName% wrote a new comment ", [
+echo strip_tags(Yii::t('CommentModule.views_activities_CommentCreated', '%displayName% wrote a new comment ', [
     '%displayName%' => Html::encode($originator->displayName)
 ]));
 

@@ -32,5 +32,4 @@ class JqueryAutosizeAsset extends AssetBundle
      * @inheritdoc
      */
     public $css = [];
-
 }

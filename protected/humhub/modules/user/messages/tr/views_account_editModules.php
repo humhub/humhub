@@ -16,11 +16,11 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>User</strong> modules' => '<strong>Kullanıcı</strong> modülleri',
   'Are you really sure? *ALL* module data for your profile will be deleted!' => 'Profilindeki *TÜM* modül verileri silinmiş olacak! Emin misin?',
   'Configure' => 'Kurulum',
   'Disable' => 'Deaktif',
   'Enable' => 'Aktif',
   'Enhance your profile with modules.' => 'Profilini modüllerle genişlet.',
-);
+];

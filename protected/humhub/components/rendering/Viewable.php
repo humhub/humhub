@@ -44,5 +44,4 @@ interface Viewable
      * @return string text content representation of this viewable.
      */
     public function text();
-
 }

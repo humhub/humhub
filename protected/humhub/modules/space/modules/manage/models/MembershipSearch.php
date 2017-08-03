@@ -8,7 +8,6 @@
 
 namespace humhub\modules\space\modules\manage\models;
 
-
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use humhub\modules\space\models\Membership;
@@ -57,7 +56,7 @@ class MembershipSearch extends Membership
 
     /**
      * Creates data provider instance with search query applied
-     * 
+     *
      * @param array $params
      * @return ActiveDataProvider
      */
@@ -86,7 +85,7 @@ class MembershipSearch extends Membership
                 'user.username',
                 'last_visit',
                 'group_id',
-        ]]);
+            ]]);
 
         $this->load($params);
 
@@ -104,5 +103,4 @@ class MembershipSearch extends Membership
 
         return $dataProvider;
     }
-
 }

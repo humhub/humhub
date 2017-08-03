@@ -22,7 +22,7 @@ class Module extends \humhub\components\Module
     public $controllerNamespace = 'humhub\modules\user\controllers';
 
     /**
-     * @var boolean option to translate all invite mails except self invites to the default language (true) or user language (false) 
+     * @var boolean option to translate all invite mails except self invites to the default language (true) or user language (false)
      */
     public $sendInviteMailsInGlobalLanguage = true;
 
@@ -73,7 +73,7 @@ class Module extends \humhub\components\Module
     
     /**
      * @var boolean defines if the user following is disabled or not.
-     * @since 1.2 
+     * @since 1.2
      */
     public $disableFollow = false;
 
@@ -106,5 +106,4 @@ class Module extends \humhub\components\Module
             'humhub\modules\user\notifications\Mentioned'
         ];
     }
-
 }

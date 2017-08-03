@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Could not find requested file!' => '要求されたファイルが見つかりませんでした！',
   'Insufficient permissions!' => '権限が不十分です！',
-);
+];

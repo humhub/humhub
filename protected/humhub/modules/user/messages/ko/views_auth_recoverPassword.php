@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Password</strong> recovery' => '',
   'Back' => '돌아가기',
   'Just enter your e-mail address. We´ll send you recovery instructions!' => '',
@@ -7,4 +7,4 @@ return array (
   'Reset password' => '',
   'enter security code above' => '',
   'your email' => '',
-);
+];

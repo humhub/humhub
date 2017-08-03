@@ -28,18 +28,18 @@ class FileHelper extends \yii\helpers\FileHelper
 
     /**
      * Checks if given fileName has a extension
-     * 
+     *
      * @param string $fileName the filename
      * @return boolean has extension
      */
     public static function hasExtension($fileName)
     {
-        return (strpos($fileName, ".") !== false);
+        return (strpos($fileName, '.') !== false);
     }
 
     /**
      * Returns the extension of a file
-     * 
+     *
      * @param string|File $fileName the filename or File model
      * @return string the extension
      */
@@ -58,7 +58,7 @@ class FileHelper extends \yii\helpers\FileHelper
 
     /**
      * Creates a file with options
-     * 
+     *
      * @since 1.2
      * @param \humhub\modules\file\models\File $file
      * @return string the rendered HTML link
@@ -79,7 +79,7 @@ class FileHelper extends \yii\helpers\FileHelper
 
     /**
      * Determines the content container of a File record
-     * 
+     *
      * @since 1.2
      * @param File $file
      * @return \humhub\modules\content\components\ContentContainerActiveRecord the content container or null
@@ -100,7 +100,7 @@ class FileHelper extends \yii\helpers\FileHelper
     /**
      * Returns general file infos as array
      * These information are mainly used by the frontend JavaScript application to handle files.
-     * 
+     *
      * @since 1.2
      * @param File $file the file
      * @return array the file infos
@@ -125,5 +125,4 @@ class FileHelper extends \yii\helpers\FileHelper
             'thumbnailUrl' => $thumbnailUrl,
         ];
     }
-
 }

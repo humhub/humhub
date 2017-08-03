@@ -16,9 +16,9 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Could not load category.' => '不能加载到类',
   'Delete' => '删除',
   'Save' => '保存',
   'You can only delete empty categories!' => '你只能删除空类',
-);
+];

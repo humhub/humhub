@@ -18,5 +18,4 @@ class ProfilePage extends BasePage
         $this->actor->click('About');
         $this->actor->waitForText('About this user', 30);
     }
-
 }

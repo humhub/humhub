@@ -27,7 +27,7 @@ class FileUploadList extends \yii\base\Widget
     /**
      * @var String unique id of this uploader
      */
-    public $uploaderId = "";
+    public $uploaderId = '';
 
     /**
      * If object is set, display also already uploaded files
@@ -45,10 +45,9 @@ class FileUploadList extends \yii\base\Widget
         if ($this->object !== null) {
             $files = $this->object->fileManager->find()->all();
         }
-        return $this->render('fileUploadList', array(
+        return $this->render('fileUploadList', [
                     'uploaderId' => $this->uploaderId,
                     'files' => $files
-        ));
+        ]);
     }
-
 }

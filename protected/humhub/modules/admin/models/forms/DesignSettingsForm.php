@@ -88,8 +88,9 @@ class DesignSettingsForm extends \yii\base\Model
     {
         if (is_object($this->logo)) {
             list($width, $height) = getimagesize($this->logo->tempName);
-            if ($height < 40)
+            if ($height < 40) {
                 $this->addError('logo', 'Logo size should have at least 40px of height');
+            }
         }
     }
 
@@ -133,5 +134,4 @@ class DesignSettingsForm extends \yii\base\Model
 
         return true;
     }
-
 }

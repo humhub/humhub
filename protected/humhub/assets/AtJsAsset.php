@@ -40,5 +40,4 @@ class AtJsAsset extends AssetBundle
         'humhub\assets\CaretJsAsset',
         'humhub\assets\AtJsStyleAsset'
     ];
-
 }

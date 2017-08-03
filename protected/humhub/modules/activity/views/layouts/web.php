@@ -7,7 +7,7 @@
  */
 ?>
 
-<?php if ($clickable): ?>
+<?php if ($clickable) : ?>
 <a href="<?= \yii\helpers\Url::to(['/activity/link', 'id' => $record->id])?>">
 <?php endif; ?>
     <li class="activity-entry" data-stream-entry data-action-component="activity.ActivityStreamEntry" data-content-key="<?= $record->content->id ?>">
@@ -20,8 +20,8 @@
             <?php endif; ?>
 
             <!-- Show space image, if you are outside from a space -->
-            <?php if (!Yii::$app->controller instanceof \humhub\modules\content\components\ContentContainerController): ?>
-                <?php if ($record->content->container instanceof humhub\modules\space\models\Space): ?>
+            <?php if (!Yii::$app->controller instanceof \humhub\modules\content\components\ContentContainerController) : ?>
+                <?php if ($record->content->container instanceof humhub\modules\space\models\Space) : ?>
                     <?=
                     \humhub\modules\space\widgets\Image::widget([
                         'space' => $record->content->container,
@@ -45,5 +45,6 @@
             </div>
         </div>
     </li>
-<?php if ($clickable): ?></a>
+<?php if ($clickable) :
+?></a>
 <?php endif; ?>

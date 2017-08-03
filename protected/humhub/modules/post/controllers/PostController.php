@@ -62,5 +62,4 @@ class PostController extends \humhub\modules\content\components\ContentContainer
 
         return $this->renderAjax('edit', ['post' => $model, 'edited' => $edited]);
     }
-
 }

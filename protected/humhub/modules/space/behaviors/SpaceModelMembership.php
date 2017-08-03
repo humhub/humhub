@@ -35,13 +35,13 @@ class SpaceModelMembership extends Behavior
      * @param type $userId
      * @return type
      */
-    public function isMember($userId = "")
+    public function isMember($userId = '')
     {
 
         // Take current userid if none is given
-        if ($userId == "" && !Yii::$app->user->isGuest) {
+        if ($userId == '' && !Yii::$app->user->isGuest) {
             $userId = Yii::$app->user->id;
-        } elseif ($userId == "" && Yii::$app->user->isGuest) {
+        } elseif ($userId == '' && Yii::$app->user->isGuest) {
             return false;
         }
 
@@ -57,15 +57,15 @@ class SpaceModelMembership extends Behavior
     /**
      * Checks if a given Userid is allowed to leave this space.
      * A User is allowed to leave, if the can_cancel_membership flag in the space_membership table is 1. If it is 2, the decision is delegated to the space.
-     * 
+     *
      * @param number $userId, if empty hte currently logged in user is taken.
      * @return bool
      */
-    public function canLeave($userId = "")
+    public function canLeave($userId = '')
     {
 
         // Take current userid if none is given
-        if ($userId == "") {
+        if ($userId == '') {
             $userId = Yii::$app->user->id;
         }
 
@@ -119,7 +119,7 @@ class SpaceModelMembership extends Behavior
 
         if ($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == 0) {
+        } elseif (!$userId || $userId == 0) {
             $userId = Yii::$app->user->id;
         }
 
@@ -155,11 +155,11 @@ class SpaceModelMembership extends Behavior
      */
     public function isSpaceOwner($userId = null)
     {
-        if(empty($userId) && Yii::$app->user->isGuest) {
+        if (empty($userId) && Yii::$app->user->isGuest) {
             return false;
-        } else if ($userId instanceof User) {
+        } elseif ($userId instanceof User) {
             $userId = $userId->id;
-        }  else if (empty($userId)) {
+        } elseif (empty($userId)) {
             $userId = Yii::$app->user->id;
         }
 
@@ -176,7 +176,7 @@ class SpaceModelMembership extends Behavior
     {
         if ($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == 0) {
+        } elseif (!$userId || $userId == 0) {
             $userId = Yii::$app->user->id;
         }
 
@@ -198,7 +198,7 @@ class SpaceModelMembership extends Behavior
     {
         if ($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == "") {
+        } elseif (!$userId || $userId == '') {
             $userId = Yii::$app->user->id;
         }
 
@@ -216,13 +216,15 @@ class SpaceModelMembership extends Behavior
 
         // Invalid E-Mail
         $validator = new \yii\validators\EmailValidator;
-        if (!$validator->validate($email))
+        if (!$validator->validate($email)) {
             return false;
+        }
 
         // User already registered
         $user = User::findOne(['email' => $email]);
-        if ($user != null)
+        if ($user != null) {
             return false;
+        }
 
         $userInvite = Invite::findOne(['email' => $email]);
         // No invite yet
@@ -256,7 +258,7 @@ class SpaceModelMembership extends Behavior
      * @param type $userId
      * @param type $message
      */
-    public function requestMembership($userId, $message = "")
+    public function requestMembership($userId, $message = '')
     {
 
         $user = ($userId instanceof User) ? $userId : User::findOne(['id' => $userId]);
@@ -310,7 +312,7 @@ class SpaceModelMembership extends Behavior
                     // If user is an applicant of this space add user and return.
                     $this->addMember(Yii::$app->user->id);
                 case Membership::STATUS_MEMBER:
-                    // If user is already a member just ignore the invitation. 
+                    // If user is already a member just ignore the invitation.
                     return;
                 case Membership::STATUS_INVITED:
                     // If user is already invited, remove old invite notification and retrigger
@@ -327,19 +329,19 @@ class SpaceModelMembership extends Behavior
             ]);
         }
 
-        // Update or set originator 
+        // Update or set originator
         $membership->originator_user_id = $originatorId;
 
         if ($membership->save()) {
             $this->sendInviteNotification($userId, $originatorId);
         } else {
-            throw new \yii\base\Exception("Could not save membership!" . print_r($membership->getErrors(), 1));
+            throw new \yii\base\Exception('Could not save membership!' . print_r($membership->getErrors(), 1));
         }
     }
 
     /**
      * Sends an Invite Notification to the given user.
-     * 
+     *
      * @param type $userId
      * @param type $originatorId
      */
@@ -384,7 +386,6 @@ class SpaceModelMembership extends Behavior
                         ->send(User::findOne(['id' => $userInvite->user_originator_id]));
             }
         } else {
-
             // User is already member
             if ($membership->status == Membership::STATUS_MEMBER) {
                 return true;
@@ -431,9 +432,9 @@ class SpaceModelMembership extends Behavior
      *
      * @param $userId UserId of User to Remove
      */
-    public function removeMember($userId = "")
+    public function removeMember($userId = '')
     {
-        if ($userId == "") {
+        if ($userId == '') {
             $userId = Yii::$app->user->id;
         }
 
@@ -476,5 +477,4 @@ class SpaceModelMembership extends Behavior
 
         \humhub\modules\space\notifications\Invite::instance()->from($this->owner)->delete($user);
     }
-
 }

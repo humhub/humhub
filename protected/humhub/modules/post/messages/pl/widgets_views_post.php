@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Collapse' => 'Zwiń',
   'Read full post...' => 'Przeczytaj cały post... ',
-);
+];

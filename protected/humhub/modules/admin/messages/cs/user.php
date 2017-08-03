@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Information</strong>' => '<strong>Informace</strong>',
   '<strong>Settings</strong> and Configuration' => '<strong>Nastavení</strong> a konfigurace',
   '<strong>User</strong> administration' => '<strong>Administace</strong> uživatelů',
@@ -9,4 +9,4 @@ return array (
   'Overview' => 'Přehled',
   'Pending approvals' => 'Čekající požadavky na schválení',
   'Profiles' => 'Profily',
-);
+];

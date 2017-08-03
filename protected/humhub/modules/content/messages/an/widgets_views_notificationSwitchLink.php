@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Turn off notifications' => '',
   'Turn on notifications' => '',
-);
+];

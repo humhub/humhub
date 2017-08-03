@@ -35,14 +35,14 @@ class LoaderWidget extends \yii\base\Widget
      *
      * @var string
      */
-    public $id = "";
+    public $id = '';
 
     /**
      * css classes for DOM element
      *
      * @var string
      */
-    public $cssClass = "";
+    public $cssClass = '';
     
     /**
      * defines if the loader is initially shown
@@ -60,7 +60,4 @@ class LoaderWidget extends \yii\base\Widget
             'show' => $this->show
         ]);
     }
-
 }
-
-?>

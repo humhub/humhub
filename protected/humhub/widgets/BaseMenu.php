@@ -24,19 +24,19 @@ class BaseMenu extends \yii\base\Widget
      *
      * @var array of items
      */
-    public $items = array();
+    public $items = [];
 
     /**
      *
      * @var array of item groups
      */
-    public $itemGroups = array();
+    public $itemGroups = [];
 
     /**
      *
      * @var string type of the navigation, optional for identifing.
      */
-    public $type = "";
+    public $type = '';
 
     /**
      * @var string dom element id
@@ -62,10 +62,10 @@ class BaseMenu extends \yii\base\Widget
      */
     public function init()
     {
-        $this->addItemGroup(array(
+        $this->addItemGroup([
             'id' => '',
             'label' => ''
-        ));
+        ]);
 
         // Yii 2.0.11 introduced own init event
         if (version_compare(Yii::getVersion(), '2.0.11', '<')) {
@@ -100,7 +100,7 @@ class BaseMenu extends \yii\base\Widget
         }
 
         if (!isset($item['htmlOptions'])) {
-            $item['htmlOptions'] = array();
+            $item['htmlOptions'] = [];
         }
 
         if (!isset($item['pjax'])) {
@@ -132,15 +132,15 @@ class BaseMenu extends \yii\base\Widget
 
         // Build Item CSS Class
         if (!isset($item['htmlOptions']['class'])) {
-            $item['htmlOptions']['class'] = "";
+            $item['htmlOptions']['class'] = '';
         }
 
         if ($item['isActive']) {
-            $item['htmlOptions']['class'] .= " active";
+            $item['htmlOptions']['class'] .= ' active';
         }
 
         if (isset($item['id'])) {
-            $item['htmlOptions']['class'] .= " " . $item['id'];
+            $item['htmlOptions']['class'] .= ' ' . $item['id'];
         }
 
         $this->items[] = $item;
@@ -154,20 +154,25 @@ class BaseMenu extends \yii\base\Widget
      */
     public function addItemGroup($itemGroup)
     {
-        if (!isset($itemGroup['id']))
+        if (!isset($itemGroup['id'])) {
             $itemGroup['id'] = 'default';
+        }
 
-        if (!isset($itemGroup['label']))
+        if (!isset($itemGroup['label'])) {
             $itemGroup['label'] = 'Unnamed';
+        }
 
-        if (!isset($itemGroup['icon']))
+        if (!isset($itemGroup['icon'])) {
             $itemGroup['icon'] = '';
+        }
 
-        if (!isset($itemGroup['sortOrder']))
+        if (!isset($itemGroup['sortOrder'])) {
             $itemGroup['sortOrder'] = 1000;
+        }
 
-        if (isset($itemGroup['isVisible']) && !$itemGroup['isVisible'])
+        if (isset($itemGroup['isVisible']) && !$itemGroup['isVisible']) {
             return;
+        }
 
         $this->itemGroups[] = $itemGroup;
     }
@@ -179,16 +184,16 @@ class BaseMenu extends \yii\base\Widget
      *            limits the items to a specified group
      * @return array a list of items with definition
      */
-    public function getItems($group = "")
+    public function getItems($group = '')
     {
         $this->sortItems();
 
-        $ret = array();
+        $ret = [];
 
         foreach ($this->items as $item) {
-
-            if ($group == $item['group'])
+            if ($group == $item['group']) {
                 $ret[] = $item;
+            }
         }
 
         return $ret;
@@ -202,8 +207,7 @@ class BaseMenu extends \yii\base\Widget
         usort($this->items, function ($a, $b) {
             if ($a['sortOrder'] == $b['sortOrder']) {
                 return 0;
-            } else
-            if ($a['sortOrder'] < $b['sortOrder']) {
+            } elseif ($a['sortOrder'] < $b['sortOrder']) {
                 return - 1;
             } else {
                 return 1;
@@ -219,8 +223,7 @@ class BaseMenu extends \yii\base\Widget
         usort($this->itemGroups, function ($a, $b) {
             if ($a['sortOrder'] == $b['sortOrder']) {
                 return 0;
-            } else
-            if ($a['sortOrder'] < $b['sortOrder']) {
+            } elseif ($a['sortOrder'] < $b['sortOrder']) {
                 return - 1;
             } else {
                 return 1;
@@ -250,7 +253,7 @@ class BaseMenu extends \yii\base\Widget
             return;
         }
 
-        return $this->render($this->template, array());
+        return $this->render($this->template, []);
     }
 
     /**
@@ -293,7 +296,7 @@ class BaseMenu extends \yii\base\Widget
 
     /**
      * Add the active class from a menue item.
-     * 
+     *
      * @param string $url
      *            the URL of the item to mark. You can use Url::toRoute(...) to generate it.
      */
@@ -303,7 +306,7 @@ class BaseMenu extends \yii\base\Widget
             $url = Url::to($url);
         }
 
-        \yii\base\Event::on(static::className(), static::EVENT_RUN, function($event) use($url) {
+        \yii\base\Event::on(static::className(), static::EVENT_RUN, function ($event) use ($url) {
             $event->sender->setActive($url);
         });
     }
@@ -322,7 +325,7 @@ class BaseMenu extends \yii\base\Widget
 
     /**
      * Remove the active class from a menue item.
-     * 
+     *
      * @param string $url
      *            the URL of the item to mark. You can use Url::toRoute(...) to generate it.
      */
@@ -332,14 +335,14 @@ class BaseMenu extends \yii\base\Widget
             $url = Url::to($url);
         }
 
-        \yii\base\Event::on(static::className(), static::EVENT_RUN, function($event) use($url) {
+        \yii\base\Event::on(static::className(), static::EVENT_RUN, function ($event) use ($url) {
             $event->sender->setInactive($url);
         });
     }
 
     /**
      * Removes Item by URL
-     * 
+     *
      * @param string $url
      */
     public function deleteItemByUrl($url)
@@ -350,7 +353,4 @@ class BaseMenu extends \yii\base\Widget
             }
         }
     }
-
 }
-
-?>

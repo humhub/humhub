@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Checkbox field options' => 'Markierungsfeld Optionen',
   'Default value' => 'Standardwert',
-);
+];

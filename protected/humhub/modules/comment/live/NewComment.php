@@ -27,5 +27,4 @@ class NewComment extends LiveEvent
      * @var int the id of the content
      */
     public $contentId;
-
 }

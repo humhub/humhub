@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Account Request for \'{displayName}\' has been approved.' => 'Žádost uživatele \'{displayName}\' byla přijata.',
   'Account Request for \'{displayName}\' has been declined.' => 'Žádost uživatele \'{displayName}\' byla zamítnuta.',
   'Hello {displayName},<br><br>
@@ -18,4 +18,4 @@ return array (
    Kind Regards<br>
    {AdminName}<br><br>' => 'Dobrý den {displayName},<br><br> vytvoření Vašeho účtu bylo zamítnuto.<br><br> S pozdravem<br> {AdminName}<br><br>',
   'User not found!' => 'Uživatel nebyl nalezen!',
-);
+];

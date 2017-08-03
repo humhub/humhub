@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Space</strong> followers' => '',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Negalima ištrinti vartotojo, kuriam priklauso erdvė! Erdvės pavadinimas: {spaceName}',
   'Default' => '',
@@ -17,4 +17,4 @@ return array (
   'Settings' => 'Nustatymai',
   'Space' => '',
   'Visible for all (members and guests)' => 'Matomas visiems (nariams ir svečiams)',
-);
+];

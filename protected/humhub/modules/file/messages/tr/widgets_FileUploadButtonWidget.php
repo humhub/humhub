@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>Upload</strong> error' => '<strong>Yükleme</strong> hatası',
   'Close' => 'Kapat',
   'Could not upload File:' => 'Dosya yüklenemedi:',
-);
+];

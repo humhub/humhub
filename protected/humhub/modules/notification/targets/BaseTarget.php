@@ -71,7 +71,7 @@ abstract class BaseTarget extends \yii\base\Object
     /**
      * @return string Human readable title for views.
      */
-    public abstract function getTitle();
+    abstract public function getTitle();
 
     /**
      * @return \humhub\components\rendering\Renderer default renderer for this target.
@@ -89,7 +89,7 @@ abstract class BaseTarget extends \yii\base\Object
      *
      * @param BaseNotification $notification
      */
-    public abstract function handle(BaseNotification $notification, User $user);
+    abstract public function handle(BaseNotification $notification, User $user);
 
     /**
      * Used to acknowledge the seding/processing of the given $notification.
@@ -254,5 +254,4 @@ abstract class BaseTarget extends \yii\base\Object
 
         return ($enabled === null) ? $this->defaultSetting : boolval($enabled);
     }
-
 }

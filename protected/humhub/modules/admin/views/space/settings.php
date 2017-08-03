@@ -41,7 +41,7 @@ use humhub\modules\content\models\Content;
 
 <hr>
 
-<?= CHtml::submitButton(Yii::t('AdminModule.views_space_settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+<?= CHtml::submitButton(Yii::t('AdminModule.views_space_settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
 <?php \humhub\widgets\DataSaved::widget(); ?>
 <?php CActiveForm::end(); ?>

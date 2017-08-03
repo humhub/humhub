@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Edit your post...' => 'Edita la teva publicació...',
   'Save' => 'Desa',
-);
+];

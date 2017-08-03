@@ -33,7 +33,7 @@ class CoreJsConfig extends Widget
         $liveModule = Yii::$app->getModule('live');
 
         $this->getView()->registerJsConfig(
-                [
+            [
                     'user' => $userConfig,
                     'live' => [
                         'client' => [
@@ -197,7 +197,7 @@ class CoreJsConfig extends Widget
                             'success.unarchived' => Yii::t('base', 'The space has been unarchived.'),
                         ]
                     ],
-        ]);
+                ]
+        );
     }
-
 }

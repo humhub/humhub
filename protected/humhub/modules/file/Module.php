@@ -37,5 +37,4 @@ class Module extends \humhub\components\Module
         'image/png',
         'image/jpeg'
     ];
-
 }

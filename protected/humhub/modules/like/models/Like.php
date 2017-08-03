@@ -65,10 +65,10 @@ class Like extends ContentAddonActiveRecord
      */
     public function rules()
     {
-        return array(
-            array(['object_model', 'object_id'], 'required'),
-            array(['id', 'object_id', 'target_user_id'], 'integer'),
-        );
+        return [
+            [['object_model', 'object_id'], 'required'],
+            [['id', 'object_id', 'target_user_id'], 'integer'],
+        ];
     }
 
     /**
@@ -76,11 +76,11 @@ class Like extends ContentAddonActiveRecord
      */
     public static function GetLikes($objectModel, $objectId)
     {
-        $cacheId = "likes_" . $objectModel . "_" . $objectId;
+        $cacheId = 'likes_' . $objectModel . '_' . $objectId;
         $cacheValue = Yii::$app->cache->get($cacheId);
 
         if ($cacheValue === false) {
-            $newCacheValue = Like::findAll(array('object_model' => $objectModel, 'object_id' => $objectId));
+            $newCacheValue = Like::findAll(['object_model' => $objectModel, 'object_id' => $objectId]);
             Yii::$app->cache->set($cacheId, $newCacheValue, Yii::$app->settings->get('cache.expireTime'));
             return $newCacheValue;
         } else {
@@ -93,7 +93,7 @@ class Like extends ContentAddonActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        Yii::$app->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
+        Yii::$app->cache->delete('likes_' . $this->object_model . '_' . $this->object_id);
 
         \humhub\modules\like\activities\Liked::instance()->about($this)->save();
 
@@ -111,8 +111,7 @@ class Like extends ContentAddonActiveRecord
      */
     public function beforeDelete()
     {
-        Yii::$app->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
+        Yii::$app->cache->delete('likes_' . $this->object_model . '_' . $this->object_id);
         return parent::beforeDelete();
     }
-
 }

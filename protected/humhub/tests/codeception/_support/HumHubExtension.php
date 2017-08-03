@@ -25,8 +25,8 @@ class HumHubExtension extends \Codeception\Extension
         #Events::RESULT_PRINT_AFTER => 'print',
     ];
 
-    public function moduleInit($test) {
+    public function moduleInit($test)
+    {
         $GLOBALS['env'] = $this->options['env'];
     }
-
 }

@@ -38,7 +38,6 @@ class Application extends \yii\console\Application
         if ($this->isDatabaseInstalled()) {
             $baseUrl = Yii::$app->settings->get('baseUrl');
             if (!empty($baseUrl)) {
-
                 if (Yii::getAlias('@web', false) === false) {
                     Yii::setAlias('@web', $baseUrl);
                 }
@@ -90,5 +89,4 @@ class Application extends \yii\console\Application
 
         return false;
     }
-
 }

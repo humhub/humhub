@@ -74,7 +74,7 @@ abstract class BaseSettingsManager extends Component
 
         $record->value = (string) $value;
         if (!$record->save()) {
-            throw new \yii\base\Exception("Could not store setting! (" . print_r($record->getErrors(), 1) . ")");
+            throw new \yii\base\Exception('Could not store setting! (' . print_r($record->getErrors(), 1) . ')');
         }
 
         // Store to runtime
@@ -104,7 +104,7 @@ abstract class BaseSettingsManager extends Component
     public function getSerialized($name, $default = null)
     {
         $value = $this->get($name, $default);
-        if(is_string($value)) {
+        if (is_string($value)) {
             $value = \yii\helpers\Json::decode($value);
         }
         return $value;
@@ -162,7 +162,7 @@ abstract class BaseSettingsManager extends Component
             $this->_loaded = [];
             $settings = &$this->_loaded;
 
-            array_map(function ($record) use(&$settings ) {
+            array_map(function ($record) use (&$settings) {
                 $settings[$record->name] = $record->value;
             }, $this->find()->all());
 
@@ -230,5 +230,4 @@ abstract class BaseSettingsManager extends Component
             $this->delete($setting->name);
         }
     }
-
 }

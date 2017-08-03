@@ -15,7 +15,6 @@
 
 namespace humhub\modules\admin\controllers;
 
-
 use DateTime;
 use humhub\components\ActiveRecord;
 use humhub\modules\admin\components\Controller;
@@ -61,7 +60,7 @@ class PendingRegistrationsController extends Controller
         $searchModel = new PendingRegistrationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        if($export) {
+        if ($export) {
             return $this->createCVS($dataProvider, $searchModel, $format);
         }
 
@@ -114,21 +113,21 @@ class PendingRegistrationsController extends Controller
         $row++;
 
         // Fill content header
-        foreach($dataProvider->query->all() as $record) {
+        foreach ($dataProvider->query->all() as $record) {
             for ($column = 0; $column != $lastColumn; $column++) {
                 $attribute = $columns[$column][0];
-                $value = ArrayHelper::getValue($record,$attribute);
+                $value = ArrayHelper::getValue($record, $attribute);
 
-                if(isset($columns[$column]['type']) && $columns[$column]['type'] === 'datetime') {
+                if (isset($columns[$column]['type']) && $columns[$column]['type'] === 'datetime') {
                     $value = PHPExcel_Shared_Date::PHPToExcel(new DateTime($value));
-                    if($format === 'CSV') {
+                    if ($format === 'CSV') {
                         $worksheet->getStyleByColumnAndRow($column, $row)->getNumberFormat()->setFormatCode(Yii::$app->formatter->getDateTimePattern());
                     } else {
                         $worksheet->getStyleByColumnAndRow($column, $row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_DATETIME);
                     }
                 }
 
-                if($attribute === 'source') {
+                if ($attribute === 'source') {
                     $types = $this->getTypeMapping();
                     $value = isset($types[$value]) ? $types[$value] : $value;
                 }
@@ -138,18 +137,18 @@ class PendingRegistrationsController extends Controller
             $row++;
         }
 
-        $filePrefix = 'pur_export_'.time();
-        if($format === 'CSV') {
+        $filePrefix = 'pur_export_' . time();
+        if ($format === 'CSV') {
             $writer = PHPExcel_IOFactory::createWriter($file, 'CSV');
             $writer->setDelimiter(';');
 
             header('Content-Type: application/csv');
-            header('Content-Disposition: attachment;filename="'.$filePrefix.'.csv"');
+            header('Content-Disposition: attachment;filename="' . $filePrefix . '.csv"');
             header('Cache-Control: max-age=0');
         } else {
             $writer = PHPExcel_IOFactory::createWriter($file, 'Excel2007');
             header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment; filename="'.$filePrefix.'.xlsx"');
+            header('Content-Disposition: attachment; filename="' . $filePrefix . '.xlsx"');
             header('Cache-Control: max-age=0');
         }
 

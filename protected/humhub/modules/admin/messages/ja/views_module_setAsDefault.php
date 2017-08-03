@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '%moduleName% - Set as default module' => '%moduleName% - デフォルトのモジュールとして設定',
   'Activated' => '作動',
   'Always activated' => '常に作動',
@@ -9,4 +9,4 @@ return array (
   'Save' => '保存',
   'Spaces' => 'スペース',
   'User Profiles' => 'ユーザープロファイル',
-);
+];

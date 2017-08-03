@@ -12,15 +12,15 @@
             <div class="form">
 
                 <?php
-                $form = $this->beginWidget('CActiveForm', array(
+                $form = $this->beginWidget('CActiveForm', [
                     'id' => 'workspace-apply-form',
                     'enableAjaxValidation' => true,
-                ));
+                ]);
                 ?>
 
                 <div class="row_lightbox">
                     <?php echo $form->labelEx($model, 'message'); ?>
-                    <?php echo $form->textArea($model, 'message', array('rows' => '5', 'class' => 'textinput w310')); ?>
+                    <?php echo $form->textArea($model, 'message', ['rows' => '5', 'class' => 'textinput w310']); ?>
                     <?php echo $form->error($model, 'message'); ?>
                 </div>
 
@@ -30,7 +30,7 @@
                     <?php //echo CHtml::submitButton('Send'); ?>
 
                     <?php
-                    echo CHtml::ajaxButton(Yii::t('SpaceModule.widgets_views_requestMembership', 'Send'), array('workspace/requestMembershipForm', 'guid'=> $workspace->guid), array(
+                    echo CHtml::ajaxButton(Yii::t('SpaceModule.widgets_views_requestMembership', 'Send'), ['workspace/requestMembershipForm', 'guid'=> $workspace->guid], [
                         'type' => 'POST',
                         'beforeSend' => 'function(){
 				jQuery("#loader_form_requestWorkspace").css("display", "block");
@@ -38,10 +38,10 @@
                         'success' => 'function(html){
 				jQuery("#lightbox_requestWorkspace").replaceWith(html);
 			}',
-                    ), array('class' => 'input_button', 'id' => 'requestSubmit'.uniqid()));
+                    ], ['class' => 'input_button', 'id' => 'requestSubmit' . uniqid()]);
                     ?>
 
-                    <?php echo CHtml::link(Yii::t('SpaceModule.widgets_views_requestMembership', 'Cancel'), '#', array('onclick'=>'RequestWorkspacebox.close()', 'class' => 'button', 'style' => 'color: #fff;')); ?>
+                    <?php echo CHtml::link(Yii::t('SpaceModule.widgets_views_requestMembership', 'Cancel'), '#', ['onclick'=>'RequestWorkspacebox.close()', 'class' => 'button', 'style' => 'color: #fff;']); ?>
                     <div id="loader_form_requestWorkspace" class="loader_form"></div>
                     <div class="clearFloats"></div>
                 </div>

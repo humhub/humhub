@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Base URL' => 'Basis URL',
   'Date input format' => 'Datum input formaat',
   'Default language' => 'Standaard taal',
@@ -15,4 +15,4 @@ return array (
   'Show user profile post form on dashboard' => 'Toon bericht verzenden van gebruikersprofiel op het dashboard',
   'Sort by creation date' => 'Sorteren op aanmaak datum',
   'Sort by update date' => 'Sorteren op update datum',
-);
+];

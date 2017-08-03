@@ -25,5 +25,4 @@ class ModuleSetAsDefaultForm extends \yii\base\Model
             [['userDefaultState', 'spaceDefaultState'], 'integer'],
         ];
     }
-
 }

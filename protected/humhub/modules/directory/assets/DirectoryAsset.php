@@ -13,7 +13,7 @@ use yii\web\View;
 
 /**
  * Directory related assets.
- * 
+ *
  * @author buddha
  */
 class DirectoryAsset extends AssetBundle
@@ -42,5 +42,4 @@ class DirectoryAsset extends AssetBundle
     public $depends = [
         'humhub\assets\JqueryKnobAsset'
     ];
-
 }

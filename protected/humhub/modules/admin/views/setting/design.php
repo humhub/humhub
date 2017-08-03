@@ -62,7 +62,7 @@ $this->registerJsConfig('admin', [
     </div>
 
     <hr>
-    <?= CHtml::submitButton(Yii::t('AdminModule.views_setting_design', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= CHtml::submitButton(Yii::t('AdminModule.views_setting_design', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
     <?= \humhub\widgets\DataSaved::widget(); ?>
     <?php ActiveForm::end(); ?>

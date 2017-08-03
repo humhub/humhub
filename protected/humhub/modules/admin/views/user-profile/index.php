@@ -18,7 +18,7 @@ use humhub\modules\user\models\ProfileFieldCategory;
     </div>
 
     <ul>
-        <?php foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $category): ?>
+        <?php foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $category) : ?>
             <li>
                 <a href="<?= Url::to(['edit-category', 'id' => $category->id]); ?>"><strong><?= Html::encode($category->title); ?></strong></a>
                 <ul class="admin-userprofiles-fields">

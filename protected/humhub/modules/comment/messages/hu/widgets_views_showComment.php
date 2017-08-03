@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Confirm</strong> comment deleting' => 'Biztosan <strong>törölni akarod</strong> a hozzászólást?',
   'Cancel' => 'Mégsem',
   'Cancel Edit' => 'Szerkesztés visszavonása',
@@ -8,4 +8,4 @@ return array (
   'Do you really want to delete this comment?' => 'Valóban törölni akarod ezt a hozzászólást?',
   'Edit' => 'Szerkesztés',
   'Read full comment...' => 'Az egész hozzászólás megtekintése...',
-);
+];

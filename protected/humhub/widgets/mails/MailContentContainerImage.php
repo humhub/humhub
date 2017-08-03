@@ -29,7 +29,7 @@ class MailContentContainerImage extends \yii\base\Widget
      */
     public function run()
     {
-        $url = ($this->container instanceof Space) 
+        $url = ($this->container instanceof Space)
                 ? $this->container->createUrl('/space/space', [], true)
                 : $this->container->createUrl('/user/profile', [], true);
         
@@ -38,7 +38,4 @@ class MailContentContainerImage extends \yii\base\Widget
                     'url' => $url,
         ]);
     }
-
 }
-
-?>

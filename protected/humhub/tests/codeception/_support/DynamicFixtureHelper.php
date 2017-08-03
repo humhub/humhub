@@ -44,7 +44,7 @@ class DynamicFixtureHelper extends Module
         }
     }
     
-     public function _afterSuite($settings = [])
+    public function _afterSuite($settings = [])
     {
         if (!$this->beforeTest) {
             $this->unloadFixtures();

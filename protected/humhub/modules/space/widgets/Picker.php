@@ -17,13 +17,13 @@ use \humhub\modules\space\models\Space;
  *
  * To use this widget, you may insert the following code in a view:
  * <pre>
- * 
+ *
  * echo humhub\modules\space\widgets\Picker::widget([
  *    'inputId' => 'space_filter',
  *    'value' => $spaceGuidsString,
  *    'maxSpaces' => 3
  * ]);
- *  
+ *
  * </pre>
  *
  * @since 0.5
@@ -35,7 +35,7 @@ class Picker extends Widget
     /**
      * @var string The id of input element which should replaced
      */
-    public $inputId = "";
+    public $inputId = '';
 
     /**
      * JSON Search URL - default: /space/browse/search-json
@@ -43,7 +43,7 @@ class Picker extends Widget
      *
      * @var string the search url
      */
-    public $spaceSearchUrl = "";
+    public $spaceSearchUrl = '';
 
     /**
      * @var int the maximum of spaces
@@ -64,7 +64,7 @@ class Picker extends Widget
     /**
      * @var string the initial value of comma separated space guids
      */
-    public $value = "";
+    public $value = '';
 
     /**
      * @var string placeholder message, when no space is set
@@ -82,8 +82,9 @@ class Picker extends Widget
             $this->value = $this->model->$attribute;
         }
 
-        if ($this->spaceSearchUrl == "")
+        if ($this->spaceSearchUrl == '') {
             $this->spaceSearchUrl = \yii\helpers\Url::to(['/space/browse/search-json', 'keyword' => '-keywordPlaceholder-']);
+        }
 
         if ($this->placeholder === null) {
             $this->placeholder = Yii::t('SpaceModule.picker', 'Add {n,plural,=1{space} other{spaces}}', ['n' => $this->maxSpaces]);
@@ -91,23 +92,20 @@ class Picker extends Widget
 
         // Currently populated spaces
         $spaces = [];
-        foreach (explode(",", $this->value) as $guid) {
+        foreach (explode(',', $this->value) as $guid) {
             $space = Space::findOne(['guid' => trim($guid)]);
             if ($space != null) {
                 $spaces[] = $space;
             }
         }
 
-        return $this->render('spacePicker', array(
+        return $this->render('spacePicker', [
                     'spaceSearchUrl' => $this->spaceSearchUrl,
                     'maxSpaces' => $this->maxSpaces,
                     'value' => $this->value,
                     'spaces' => $spaces,
                     'placeholder' => $this->placeholder,
                     'inputId' => $this->inputId,
-        ));
+        ]);
     }
-
 }
-
-?>

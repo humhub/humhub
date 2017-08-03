@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Confirm</strong> comment deleting' => '<strong>Apstiprini</strong> komentāra dzēšanu',
   'Cancel' => 'Atcelt',
   'Cancel Edit' => 'Atcelt rediģēšanu',
@@ -8,4 +8,4 @@ return array (
   'Do you really want to delete this comment?' => 'Vai tiešām vēlies dzēst šo komentāru?',
   'Edit' => 'Rediģēt',
   'Read full comment...' => 'Lasīt visu komentāru...',
-);
+];

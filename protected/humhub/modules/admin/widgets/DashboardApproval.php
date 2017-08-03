@@ -21,5 +21,4 @@ class DashboardApproval extends \humhub\components\Widget
             return $this->render('dashboardApproval', []);
         }
     }
-
 }

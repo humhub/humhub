@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Archived' => 'آرشیوشده',
   'Public' => 'عمومی',
   'Pinned' => 'چسبیده',
-);
+];

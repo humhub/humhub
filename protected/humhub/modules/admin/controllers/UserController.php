@@ -72,7 +72,7 @@ class UserController extends Controller
                         'dataProvider' => $dataProvider,
                         'searchModel' => $searchModel
             ]);
-        } else if (Yii::$app->user->can(ManageSettings::class)) {
+        } elseif (Yii::$app->user->can(ManageSettings::class)) {
             $this->redirect(['/admin/authentication']);
         } else {
             $this->forbidden();
@@ -173,7 +173,6 @@ class UserController extends Controller
 
         // This feature is used primary for testing, maybe remove this in future
         if ($form->submitted('become') && $this->canBecomeUser($user)) {
-
             Yii::$app->user->switchIdentity($form->models['User']);
             return $this->redirect(Url::home());
         }
@@ -236,5 +235,4 @@ class UserController extends Controller
 
         return $this->render('delete', ['model' => $user]);
     }
-
 }

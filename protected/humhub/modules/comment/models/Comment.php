@@ -77,7 +77,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         $this->flushCache();
 
-		return parent::beforeDelete();
+        return parent::beforeDelete();
     }
 
     /**
@@ -91,7 +91,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             Yii::error($ex);
         }
 
-		parent::afterDelete();
+        parent::afterDelete();
     }
 
     /**
@@ -151,13 +151,13 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      */
     private function filterMentionings(&$followers, $mentionedUsers)
     {
-        if(empty($mentionedUsers)) {
+        if (empty($mentionedUsers)) {
             return;
         }
 
-        foreach($followers as $i => $follower) {
-            foreach($mentionedUsers as $mentioned) {
-                if($follower->is($mentioned)) {
+        foreach ($followers as $i => $follower) {
+            foreach ($mentionedUsers as $mentioned) {
+                if ($follower->is($mentioned)) {
                     unset($followers[$i]);
                     continue 2;
                 }
@@ -196,7 +196,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      */
     public static function GetCommentsLimited($model, $id, $limit = 2)
     {
-        $cacheID = sprintf("commentsLimited_%s_%s", $model, $id);
+        $cacheID = sprintf('commentsLimited_%s_%s', $model, $id);
         $comments = Yii::$app->cache->get($cacheID);
 
         if ($comments === false) {
@@ -225,7 +225,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      */
     public static function GetCommentCount($model, $id)
     {
-        $cacheID = sprintf("commentCount_%s_%s", $model, $id);
+        $cacheID = sprintf('commentCount_%s_%s', $model, $id);
         $commentCount = Yii::$app->cache->get($cacheID);
 
         if ($commentCount === false) {
@@ -252,14 +252,16 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         return $this->message;
     }
 
-    public function canDelete($userId = "")
+    public function canDelete($userId = '')
     {
 
-        if ($userId == "")
+        if ($userId == '') {
             $userId = Yii::$app->user->id;
+        }
 
-        if ($this->created_by == $userId)
+        if ($this->created_by == $userId) {
             return true;
+        }
 
         if (Yii::$app->user->isAdmin()) {
             return true;
@@ -271,5 +273,4 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
         return false;
     }
-
 }

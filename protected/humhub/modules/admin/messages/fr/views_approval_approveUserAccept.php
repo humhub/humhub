@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Accept user: <strong>{displayName}</strong> ' => 'Accepter l\'utilisateur : <strong>{displayName}</strong>',
   'Cancel' => 'Annuler',
   'Send & save' => 'Enregistrer & Envoyer',
-);
+];

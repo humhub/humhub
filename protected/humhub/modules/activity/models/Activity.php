@@ -27,7 +27,7 @@ class Activity extends ContentActiveRecord
     /**
      * @inheritdoc
      */
-    public $wallEntryClass = "humhub\modules\activity\widgets\Activity";
+    public $wallEntryClass = 'humhub\modules\activity\widgets\Activity';
 
     /**
      * @inheritdoc
@@ -90,7 +90,7 @@ class Activity extends ContentActiveRecord
             $result->record = $this; // If we include the record in createObject, it somehow loses activerecord data (id etc...)
             return $result;
         } else {
-            throw new Exception("Could not find BaseActivity " . $this->class . " for Activity Record.");
+            throw new Exception('Could not find BaseActivity ' . $this->class . ' for Activity Record.');
         }
     }
 

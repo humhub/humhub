@@ -68,8 +68,9 @@ class SpaceController extends Behavior
         $this->space = Space::findOne([
             'guid' => $guid
         ]);
-        if ($this->space == null)
+        if ($this->space == null) {
             throw new HttpException(404, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'Space not found!'));
+        }
 
         $this->checkAccess();
         return $this->space;
@@ -86,7 +87,6 @@ class SpaceController extends Behavior
         if ($membership != null) {
             $membership->updateLastVisit();
         } else {
-
             // Super Admin can always enter
             if (! Yii::$app->user->isAdmin()) {
                 // Space invisible?
@@ -103,5 +103,3 @@ class SpaceController extends Behavior
         $this->owner->prependPageTitle($this->space->name);
     }
 }
-
-?>

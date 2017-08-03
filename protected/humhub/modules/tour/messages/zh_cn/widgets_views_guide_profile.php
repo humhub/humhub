@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '<strong>Administration (Modules)</strong>' => '<strong>管理 (模块)</strong>',
   '<strong>Edit</strong> account' => '<strong>编辑</strong> 帐户',
   '<strong>Hurray!</strong> The End.' => '<strong>恭喜!</strong> 完成了.',
@@ -32,4 +32,4 @@ return array (
   'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => '通过简单的点击这里或拖放图片上传更新你的封面照片。',
   'You\'ve completed the user profile guide!' => '你已经完成了用户属性设置的向导',
   'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />' => '你已经完成了用户属性设置的向导！<br> <br>继续管理指南，请点击这里：<br> <br>',
-);
+];

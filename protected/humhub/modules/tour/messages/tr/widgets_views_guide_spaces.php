@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Most recent</strong> activities' => '<strong>Son</strong> aktiviteler',
   '<strong>Posts</strong>' => '<strong>Gönderiler</strong>',
   '<strong>Profile Guide</strong>' => '<strong>Profil Rehberi</strong>',
@@ -17,4 +17,4 @@ return array (
   'This menu is only visible for space admins. Here you can manage your space settings, add/block members and activate/deactivate tools for this space.' => 'Bu menü sadece mekan yöneticileri için görünür. Buradan mekan ayarlarını yönetebilir, üye ekleme/engelleme ve modül aktifleştirme/deaktifleştirme işlemlerini yapabilirsin.',
   'To keep you up to date, other users\' most recent activities in this space will be displayed here.' => 'Kendini güncel tutman için, diğer kullanıcıların son aktiviteleri burada görünecek.',
   'Yours, and other users\' posts will appear here.<br><br>These can then be liked or commented on.' => 'Senin ve diğer kullanıcıların gönderileri burada görünecek.<br><br>Buradan beğenilebilir veya yorumda bulunulabilir. ',
-);
+];

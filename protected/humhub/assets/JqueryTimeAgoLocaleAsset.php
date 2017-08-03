@@ -61,5 +61,4 @@ class JqueryTimeAgoLocaleAsset extends AssetBundle
             $this->js[] = $localeFile;
         }
     }
-
 }

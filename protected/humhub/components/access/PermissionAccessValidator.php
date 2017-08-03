@@ -15,7 +15,6 @@
 
 namespace humhub\components\access;
 
-
 use Yii;
 use yii\base\InvalidParamException;
 
@@ -27,7 +26,7 @@ class PermissionAccessValidator extends ActionAccessValidator
 
     protected function validate($rule)
     {
-        if(Yii::$app->user->isAdmin()) {
+        if (Yii::$app->user->isAdmin()) {
             return true;
         }
 

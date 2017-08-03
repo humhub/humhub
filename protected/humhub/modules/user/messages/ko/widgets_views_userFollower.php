@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Following</strong> user' => '',
   '<strong>User</strong> followers' => '',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Back to stream' => 'Tilbake til nyhetsstrøm',
   'Content with attached files' => 'Innlegg med filer',
   'Created by me' => 'Opprettet av meg',
@@ -22,4 +22,4 @@ return array (
   'The content has been unpinned.' => 'Pin er fjernet.',
   'Where I´m involved' => 'Hvor jeg er involvert',
   'Your last edit state has been saved!' => 'Din siste redigerte versjon er lagret!',
-);
+];

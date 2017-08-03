@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add Groups...' => 'Grup Ekle...',
   'Become this user' => 'Bu kullanıcı ol',
   'Delete' => 'Sil',
@@ -10,4 +10,4 @@ return array (
   'Unapproved' => 'Onaylanmamış',
   'User not found!' => 'Kullanıcı bulunamadı!',
   'You cannot delete yourself!' => 'Kendini silemezsin!',
-);
+];

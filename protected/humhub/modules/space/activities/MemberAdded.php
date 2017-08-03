@@ -22,12 +22,12 @@ class MemberAdded extends BaseActivity implements ConfigurableActivityInterface
     /**
      * @inheritdoc
      */
-    public $viewName = "memberAdded";
+    public $viewName = 'memberAdded';
 
     /**
      * @inheritdoc
      */
-    public $moduleId = "space";
+    public $moduleId = 'space';
 
     /**
      * @inheritdoc
@@ -53,5 +53,4 @@ class MemberAdded extends BaseActivity implements ConfigurableActivityInterface
     {
         return Yii::t('SpaceModule.activities', 'Whenever a new member joined one of your spaces.');
     }
-
 }

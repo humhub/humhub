@@ -89,11 +89,13 @@ class UserProfileController extends Controller
         $id = (int) Yii::$app->request->get('id');
 
         $category = ProfileFieldCategory::findOne(['id' => $id]);
-        if ($category == null)
+        if ($category == null) {
             throw new HttpException(500, Yii::t('AdminModule.controllers_UserprofileController', 'Could not load category.'));
+        }
 
-        if (count($category->fields) != 0)
+        if (count($category->fields) != 0) {
             throw new HttpException(500, Yii::t('AdminModule.controllers_UserprofileController', 'You can only delete empty categories!'));
+        }
 
         $category->delete();
 
@@ -106,8 +108,9 @@ class UserProfileController extends Controller
 
         // Get Base Field
         $field = ProfileField::findOne(['id' => $id]);
-        if ($field == null)
+        if ($field == null) {
             $field = new ProfileField;
+        }
 
         // Get all Available Field Class Instances, also bind current profilefield to the type
         $profileFieldTypes = new BaseType();
@@ -151,7 +154,6 @@ class UserProfileController extends Controller
 
         // Form Submitted?
         if ($form->submitted('save') && $form->validate()) {
-
             // Use ProfileField Instance from Form with new Values
             $field = $form->models['ProfileField'];
             $fieldType = $form->models[$field->field_type_class];
@@ -177,5 +179,4 @@ class UserProfileController extends Controller
         // generate json response
         echo json_encode($this->reorderContent('ProfileField', 200, 'The item order was successfully changed.'));
     }
-
 }

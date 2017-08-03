@@ -8,8 +8,6 @@
 
 namespace humhub\widgets;
 
-
-
 /**
  * @inheritdoc
  */
@@ -40,5 +38,4 @@ class LinkPager extends \yii\widgets\LinkPager
      * @inheritdoc
      */
     public $lastPageLabel = '<i class="fa fa-fast-forward"></i>';
-
 }

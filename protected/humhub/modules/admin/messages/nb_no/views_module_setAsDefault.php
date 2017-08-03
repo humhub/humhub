@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '%moduleName% - Set as default module' => '%moduleName% - Angi som standard modul',
   'Activated' => 'Aktivert',
   'Always activated' => 'Altid aktiver',
@@ -9,4 +9,4 @@ return array (
   'Save' => 'Lagre',
   'Spaces' => 'Grupper',
   'User Profiles' => 'Bruker profiler',
-);
+];

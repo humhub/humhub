@@ -76,7 +76,7 @@ class Module extends \yii\base\Module
             return $info['description'];
         }
 
-        return "";
+        return '';
     }
 
     /**
@@ -92,7 +92,7 @@ class Module extends \yii\base\Module
             return $info['version'];
         }
 
-        return "1.0";
+        return '1.0';
     }
 
     /**
@@ -106,7 +106,7 @@ class Module extends \yii\base\Module
         $url = $this->getPublishedUrl('/module_image.png');
 
         if ($url == null) {
-            $url = Yii::getAlias("@web-static/img/default_module.jpg");
+            $url = Yii::getAlias('@web-static/img/default_module.jpg');
         }
 
         return $url;
@@ -311,7 +311,7 @@ class Module extends \yii\base\Module
      */
     public function getConfigUrl()
     {
-        return "";
+        return '';
     }
 
     /**
@@ -347,7 +347,7 @@ class Module extends \yii\base\Module
         if (is_dir($notificationDirectory)) {
             foreach (FileHelper::findFiles($notificationDirectory, ['recursive' => false,]) as $file) {
                 $notificationClass = $notificationNamespace . '\\' . basename($file, '.php');
-                if(is_subclass_of($notificationClass, BaseNotification::class)) {
+                if (is_subclass_of($notificationClass, BaseNotification::class)) {
                     $notifications[] = $notificationClass;
                 }
             }
@@ -392,5 +392,4 @@ class Module extends \yii\base\Module
 
         return $activities;
     }
-
 }

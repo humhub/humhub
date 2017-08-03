@@ -18,7 +18,7 @@ use yii\bootstrap\Html;
 
         <?= Html::beginForm(); ?>
 
-        <?php foreach ($modules as $module): ?>
+        <?php foreach ($modules as $module) : ?>
             <label>
                 <?php echo Html::checkbox('enableModules[' . $module['id'] . ']', true); ?><?php echo $module['name']; ?>
             </label>
@@ -26,7 +26,7 @@ use yii\bootstrap\Html;
             <hr>
         <?php endforeach; ?>
 
-        <?php echo Html::submitButton(Yii::t('base', 'Next'), array('class' => 'btn btn-primary', 'data-loader' => "modal", 'data-message' => Yii::t('InstallerModule.base', 'Downloading & Installing Modules...'))); ?>
+        <?php echo Html::submitButton(Yii::t('base', 'Next'), ['class' => 'btn btn-primary', 'data-loader' => 'modal', 'data-message' => Yii::t('InstallerModule.base', 'Downloading & Installing Modules...')]); ?>
 
         <?= Html::endForm(); ?>
 

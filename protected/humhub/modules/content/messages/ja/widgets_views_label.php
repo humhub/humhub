@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Archived' => '',
   'Public' => '公開',
   'Pinned' => '',
-);
+];

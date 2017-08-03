@@ -27,7 +27,7 @@ class LogoImage
     /**
      * @var String folder name inside the uploads directory
      */
-    protected $folder_images = "logo_image";
+    protected $folder_images = 'logo_image';
 
     /**
      * Returns the URl of Logo Image
@@ -70,10 +70,11 @@ class LogoImage
      */
     public function getPath()
     {
-        $path = \Yii::getAlias("@webroot") . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_images . DIRECTORY_SEPARATOR;
+        $path = \Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $this->folder_images . DIRECTORY_SEPARATOR;
 
-        if (!is_dir($path))
+        if (!is_dir($path)) {
             mkdir($path);
+        }
 
         $path .= 'logo.png';
 
@@ -90,12 +91,11 @@ class LogoImage
         $this->delete();
         move_uploaded_file($file->tempName, $this->getPath());
 
-        ImageConverter::Resize($this->getPath(), $this->getPath(), array(
+        ImageConverter::Resize($this->getPath(), $this->getPath(), [
             'height' => $this->height,
             'width' => 0,
             'mode' => 'max',
-            'transparent' => ($file->getExtension() == 'png' && ImageConverter::checkTransparent($this->getPath())))
-        );
+            'transparent' => ($file->getExtension() == 'png' && ImageConverter::checkTransparent($this->getPath()))]);
     }
 
     /**
@@ -105,5 +105,4 @@ class LogoImage
     {
         @unlink($this->getPath());
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Alphabetical' => 'Alfabetisch',
   'Auto format based on user language - Example: {example}' => 'Automatisch formaat gebaseerd op de taal van de gebruiker - Voorbeeld: {example}',
   'Firstname Lastname (e.g. John Doe)' => 'Voornaam Achternaam (bijvoorbeeld John Doe)',
@@ -7,4 +7,4 @@ return array (
   'Last visit' => 'Laatste bezoek',
   'Save' => 'Bewaar',
   'Username (e.g. john)' => 'Gebruikersnaam (bijvoorbeeld john)',
-);
+];

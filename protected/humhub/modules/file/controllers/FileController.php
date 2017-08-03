@@ -71,5 +71,4 @@ class FileController extends \humhub\components\Controller
         Yii::$app->response->format = 'json';
         return ['success' => true];
     }
-
 }

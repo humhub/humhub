@@ -65,5 +65,4 @@ class ContentContainerPermissionManager extends PermissionManager
     {
         return \humhub\modules\content\models\ContentContainerPermission::find()->where(['contentcontainer_id' => $this->contentContainer->contentcontainer_id]);
     }
-
 }

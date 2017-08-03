@@ -41,12 +41,11 @@ class CheckForNewVersion extends ActiveJob
         $latestVersion = HumHubAPI::getLatestHumHubVersion();
 
         if (!empty($latestVersion)) {
-
             $adminUsers = Group::getAdminGroup()->users;
 
             $latestNotifiedVersion = $adminModule->settings->get('lastVersionNotify');
-            $adminsNotified = !($latestNotifiedVersion == "" || version_compare($latestVersion, $latestNotifiedVersion, ">"));
-            $newVersionAvailable = (version_compare($latestVersion, Yii::$app->version, ">"));
+            $adminsNotified = !($latestNotifiedVersion == '' || version_compare($latestVersion, $latestNotifiedVersion, '>'));
+            $newVersionAvailable = (version_compare($latestVersion, Yii::$app->version, '>'));
 
             $updateNotification = new NewVersionAvailable();
 
@@ -64,5 +63,4 @@ class CheckForNewVersion extends ActiveJob
             }
         }
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Created At' => 'Vytvořeno',
   'Created By' => 'Vytvořil(a)',
   'Last Visit' => 'Poslední návštěva ',
@@ -8,4 +8,4 @@ return array (
   'Status' => 'Stav',
   'Updated At' => 'Aktualizováno',
   'Updated By' => 'Aktualizoval/a',
-);
+];

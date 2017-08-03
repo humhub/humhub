@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Show date/time picker' => '显示 日期/时间 选择器',
   'Date(-time) field options' => '日期区域选项',
-);
+];

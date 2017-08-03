@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Confirm</strong> image deletion' => '<strong>Bevestig</strong> de verwijdering van de afbeelding',
   'Dashboard' => 'Dashboard',
   'Delete' => 'Verwijder',
@@ -9,4 +9,4 @@ return array (
   'Save' => 'Bewaar',
   'Wall entry layout' => 'Afbeeldingenmuur indeling',
   'You\'re using no logo at the moment. Upload your logo now.' => 'U gebruikt momenteel geen logo.',
-);
+];

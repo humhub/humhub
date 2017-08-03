@@ -63,5 +63,4 @@ class GroupAdmin extends ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
-
 }

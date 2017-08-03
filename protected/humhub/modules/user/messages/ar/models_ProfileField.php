@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Created at' => 'تم النشر في',
   'Created by' => '',
   'Description' => 'توضيج',
@@ -25,4 +25,4 @@ return array (
   'Updated at' => 'تم التحديث في',
   'Updated by' => 'تم التحديث بواسطة',
   'Visible' => '',
-);
+];

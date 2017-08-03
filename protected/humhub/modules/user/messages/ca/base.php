@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Basic Settings' => '',
   'Change Email' => '',
   'Change Password' => '',
@@ -42,4 +42,4 @@ return array (
   'Your account is not approved yet!' => '',
   'Your new password must not equal your current password!' => '',
   'or' => '',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Edit your comment...' => 'Redigera din kommentar...',
   'Save' => 'Spara',
-);
+];

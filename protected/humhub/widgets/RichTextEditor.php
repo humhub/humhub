@@ -37,17 +37,17 @@ class RichTextEditor extends Widget
      *
      * @var string
      */
-    public $id = "";
+    public $id = '';
 
     /**
      * JSON Search URL
      */
-    public $searchUrl = "/search/search/mentioning";
+    public $searchUrl = '/search/search/mentioning';
 
     /**
      * @var string preset content
      */
-    public $inputContent = "";
+    public $inputContent = '';
 
     /**
      * @var \humhub\components\ActiveRecord record record this editor belongs to
@@ -65,7 +65,6 @@ class RichTextEditor extends Widget
 
     public function run()
     {
-        return $this->render('richTextEditor', array('id' => $this->id, 'userSearchUrl' => $this->searchUrl, 'inputContent' => $this->inputContent));
+        return $this->render('richTextEditor', ['id' => $this->id, 'userSearchUrl' => $this->searchUrl, 'inputContent' => $this->inputContent]);
     }
-
 }

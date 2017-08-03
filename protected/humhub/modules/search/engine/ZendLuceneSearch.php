@@ -47,7 +47,7 @@ class ZendLuceneSearch extends Search
         // Add provided search infos
         foreach ($attributes as $key => $val) {
             if (is_array($val)) {
-                $val = implode(" ", $val);
+                $val = implode(' ', $val);
             }
 
             $doc->addField(\ZendSearch\Lucene\Document\Field::Text($key, $val, 'UTF-8'));
@@ -55,7 +55,7 @@ class ZendLuceneSearch extends Search
 
         // Add comments - if record is content
         if ($obj instanceof ContentActiveRecord) {
-            $comments = "";
+            $comments = '';
             foreach (Comment::findAll(['object_id' => $obj->getPrimaryKey(), 'object_model' => $obj->className()]) as $comment) {
                 $comments .= ' ' . $comment->user->displayName . ' ' . $comment->message;
             }
@@ -63,7 +63,7 @@ class ZendLuceneSearch extends Search
         }
 
         if (\Yii::$app->request->isConsoleRequest) {
-            print ".";
+            print '.';
         }
 
         $index->addDocument($doc);
@@ -96,27 +96,28 @@ class ZendLuceneSearch extends Search
     {
         $indexPath = $this->getIndexPath();
         foreach (new \DirectoryIterator($indexPath) as $fileInfo) {
-            if ($fileInfo->isDot())
+            if ($fileInfo->isDot()) {
                 continue;
+            }
             unlink($indexPath . DIRECTORY_SEPARATOR . $fileInfo->getFilename());
         }
 
         $this->index = null;
     }
 
-    public function find($keyword, Array $options)
+    public function find($keyword, array $options)
     {
         $options = $this->setDefaultFindOptions($options);
 
         $index = $this->getIndex();
-        $keyword = str_replace(array('*', '?', '_', '$'), ' ', mb_strtolower($keyword, 'utf-8'));
+        $keyword = str_replace(['*', '?', '_', '$'], ' ', mb_strtolower($keyword, 'utf-8'));
 
         $query = $this->buildQuery($keyword, $options);
         if ($query === null) {
             return new SearchResultSet();
         }
 
-        if (!isset($options['sortField']) || $options['sortField'] == "") {
+        if (!isset($options['sortField']) || $options['sortField'] == '') {
             $hits = new \ArrayObject($index->find($query));
         } else {
             $hits = new \ArrayObject($index->find($query, $options['sortField']));
@@ -144,7 +145,7 @@ class ZendLuceneSearch extends Search
 
     /**
      * Returns the lucence search query
-     * 
+     *
      * @param string $keyword
      * @param array $options
      * @return \ZendSearch\Lucene\Search\Query\AbstractQuery
@@ -157,7 +158,7 @@ class ZendLuceneSearch extends Search
         $query = new \ZendSearch\Lucene\Search\Query\Boolean();
 
         $emptyQuery = true;
-        foreach (explode(" ", $keyword) as $k) {
+        foreach (explode(' ', $keyword) as $k) {
             // Require a minimum of non-wildcard characters
             if (mb_strlen($k, Yii::$app->charset) >= $this->minQueryTokenLength) {
                 $term = new \ZendSearch\Lucene\Index\Term("*$k*");
@@ -173,7 +174,7 @@ class ZendLuceneSearch extends Search
         }
 
         // Add model filter
-        if (isset($options['model']) && $options['model'] != "") {
+        if (isset($options['model']) && $options['model'] != '') {
             if (is_array($options['model'])) {
                 $boolQuery = new \ZendSearch\Lucene\Search\Query\MultiTerm();
                 foreach ($options['model'] as $model) {
@@ -187,7 +188,7 @@ class ZendLuceneSearch extends Search
         }
 
         // Add type filter
-        if (isset($options['type']) && $options['type'] != "") {
+        if (isset($options['type']) && $options['type'] != '') {
             if (is_array($options['type'])) {
                 $boolQuery = new \ZendSearch\Lucene\Search\Query\MultiTerm();
                 foreach ($options['type'] as $model) {
@@ -210,11 +211,9 @@ class ZendLuceneSearch extends Search
 
 
         if ($options['checkPermissions'] && !Yii::$app->request->isConsoleRequest) {
-
             $permissionQuery = new \ZendSearch\Lucene\Search\Query\Boolean();
 
             if (Yii::$app->user->isGuest) {
-
                 // Guest Content
                 $guestContentQuery = new \ZendSearch\Lucene\Search\Query\Boolean();
                 $guestContentQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(self::DOCUMENT_VISIBILITY_PUBLIC, 'visibility')), true);
@@ -255,7 +254,6 @@ class ZendLuceneSearch extends Search
         }
 
         if (count($options['limitSpaces']) > 0) {
-
             $spaceBaseQuery = new \ZendSearch\Lucene\Search\Query\Boolean();
             $spaceBaseQuery->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new \ZendSearch\Lucene\Index\Term(Space::className(), 'containerModel')), true);
             $spaceIdQuery = new \ZendSearch\Lucene\Search\Query\MultiTerm();
@@ -278,8 +276,9 @@ class ZendLuceneSearch extends Search
     protected function getIndex()
     {
 
-        if ($this->index != null)
+        if ($this->index != null) {
             return $this->index;
+        }
 
         \ZendSearch\Lucene\Search\QueryParser::setDefaultEncoding('utf-8');
         \ZendSearch\Lucene\Analysis\Analyzer\Analyzer::setDefault(new \ZendSearch\Lucene\Analysis\Analyzer\Common\Utf8Num\CaseInsensitive());
@@ -305,5 +304,4 @@ class ZendLuceneSearch extends Search
 
         return $path;
     }
-
 }

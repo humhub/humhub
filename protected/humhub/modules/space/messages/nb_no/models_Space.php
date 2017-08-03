@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Administrators' => 'Administratorer',
   'Color' => 'Farge',
   'Created At' => 'Laget',
@@ -21,4 +21,4 @@ return array (
   'Visibility' => 'Synlighet',
   'You cannot create private visible spaces!' => 'Du kan ikke lage synlige private grupper!',
   'You cannot create public visible spaces!' => 'Du kan ikke lage synlige offentlige grupper!',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Endpoint Url' => 'Endpoint Adres',
   'Url Prefix' => 'Url Önek',
-);
+];

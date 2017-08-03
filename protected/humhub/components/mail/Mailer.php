@@ -45,7 +45,7 @@ class Mailer extends \yii\swiftmailer\Mailer
      * @param array $params the parameters (name-value pairs) that will be extracted and made available in the view file.
      * @return \yii\mail\MessageInterface message instance.
      */
-    public function compose($view = null, array $params = array())
+    public function compose($view = null, array $params = [])
     {
         $message = parent::compose($view, $params);
 
@@ -56,5 +56,4 @@ class Mailer extends \yii\swiftmailer\Mailer
 
         return $message;
     }
-
 }

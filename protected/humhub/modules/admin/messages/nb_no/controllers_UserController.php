@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add Groups...' => 'Legg til grupper',
   'Become this user' => 'Logg inn som denne brukeren',
   'Delete' => 'Slett',
@@ -10,4 +10,4 @@ return array (
   'Unapproved' => 'Avvis!',
   'User not found!' => 'Fant ikke bruker.',
   'You cannot delete yourself!' => 'Du kan ikke slette deg selv!',
-);
+];

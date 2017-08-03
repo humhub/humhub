@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>belum ada yang menulis sesuatu</b><br>ayo mulai menulis sesuatu ....',
   '<b>There are no profile posts yet!</b>' => '',
   '<strong>Directory</strong> menu' => '',
@@ -36,4 +36,4 @@ return array (
   'search for members' => 'Cari anggota',
   'search for spaces' => 'Cari ruang ',
   'show all members' => 'Tunjukan semua anggota',
-);
+];

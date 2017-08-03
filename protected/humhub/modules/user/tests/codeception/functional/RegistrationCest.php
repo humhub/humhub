@@ -15,7 +15,6 @@
 
 namespace humhub\modules\user\tests\codeception\functional;
 
-
 use tests\codeception\_pages\LoginPage;
 use Yii;
 use user\FunctionalTester;
@@ -38,5 +37,4 @@ class RegistrationCest
         $I->assertMailSent(1);
         $I->assertEqualsLastEmailSubject('Welcome to HumHub Test');
     }
-
 }

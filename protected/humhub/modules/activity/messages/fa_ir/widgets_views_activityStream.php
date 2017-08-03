@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Latest</strong> activities' => '<strong> آخرین </strong> فعالیت‌ها',
   'There are no activities yet.' => 'هنوز فعالیتی وجود ندارد.',
-);
+];

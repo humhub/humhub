@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Always' => 'Siempre',
   'Daily summary' => 'Resumen diario',
   'Get an email, for every activity of other users you follow or work together in a workspace.' => 'Obtenga un correo electrónico por cada actividad de otros usuarios que siga o trabajen juntos en un espacio de trabajo.',
@@ -8,4 +8,4 @@ return array (
   'Receive desktop notifications when you are online.' => 'Reciba notificaciones de escritorio cuando esté en línea.',
   'Save' => 'Guardar',
   'When I´m offline' => 'Cuando estoy fuera de línea',
-);
+];

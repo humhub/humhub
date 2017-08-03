@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   'Default Content Visiblity' => 'حالت نمايش محتواي پيشفرض',
   'Default Join Policy' => 'سیاست پیوستن پیش‌فرض',
   'Default Visibility' => 'نمایش پیش‌فرض',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Zatím zde nejsou žádné příspěvky.</b><br>Napište první...',
   '<b>There are no profile posts yet!</b>' => '<b>Zatím zde nejsou žádné příspěvky.</b>',
   '<strong>Directory</strong> menu' => '<strong>Menu</strong> adresáře',
@@ -36,4 +36,4 @@ return array (
   'search for members' => 'Hledat členy',
   'search for spaces' => 'Hledat prostor',
   'show all members' => 'zobrazit všechny členy',
-);
+];

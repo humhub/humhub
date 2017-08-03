@@ -12,7 +12,7 @@ use yii\web\AssetBundle;
 
 /**
  * Fle related assets.
- * 
+ *
  * @since 1.2
  * @author buddha
  */
@@ -37,5 +37,4 @@ class FileAsset extends AssetBundle
     public $depends = [
         'humhub\assets\CoreApiAsset'
     ];
-
 }

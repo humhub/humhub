@@ -20,4 +20,3 @@ return [
         [CronController::class, CronController::EVENT_ON_HOURLY_RUN, [Events::class, 'onHourlyCronRun']]
     ],
 ];
-?>

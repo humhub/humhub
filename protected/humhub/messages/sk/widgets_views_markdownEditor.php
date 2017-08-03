@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => '사진/파일 추가',
   'Add link' => '링크 추가',
   'Bold' => '굵게',
@@ -31,4 +31,4 @@ return array (
   'strong text' => '굵은 텍스트',
   'Unordered List' => '',
   'Ordered List' => '',
-);
+];

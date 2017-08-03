@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Your password is incorrect!' => 'Ο κωδικός σου είναι λάθος',
-);
+];

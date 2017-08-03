@@ -52,7 +52,7 @@ use humhub\compat\CHtml;
 
     <hr>
 
-    <?= CHtml::submitButton(Yii::t('AdminModule.views_setting_index', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= CHtml::submitButton(Yii::t('AdminModule.views_setting_index', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
     <!-- show flash message after saving -->
     <?php \humhub\widgets\DataSaved::widget(); ?>

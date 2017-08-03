@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Collapse' => 'Fèmen',
   'Read full post...' => '',
-);
+];

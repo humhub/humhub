@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Collapse' => 'Verbergen',
   'Read full post...' => 'Den ganzen Beitrag lesen...',
-);
+];

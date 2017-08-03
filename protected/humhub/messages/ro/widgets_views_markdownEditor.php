@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => 'Adaugă imagine/fișier',
   'Add link' => 'Adaugă legătură',
   'Bold' => 'Îngroșat',
@@ -31,4 +31,4 @@ return array (
   'strong text' => 'text îngroșat',
   'Unordered List' => '',
   'Ordered List' => '',
-);
+];

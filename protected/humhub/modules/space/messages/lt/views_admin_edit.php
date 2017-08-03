@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Archive' => 'Archyvas',
   'Choose if new content should be public or private by default' => '',
   'Choose the kind of membership you want to provide for this workspace.' => 'Pasirinkite narystės rūšį.',
@@ -7,4 +7,4 @@ return array (
   'Delete' => 'Ištrinti',
   'Save' => 'Išsaugoti',
   'Unarchive' => 'Nearchyvuoti',
-);
+];

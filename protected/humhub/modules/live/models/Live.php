@@ -46,5 +46,4 @@ class Live extends \humhub\components\ActiveRecord
     {
         return $this->hasOne(Contentcontainer::className(), ['id' => 'contentcontainer_id']);
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Could not delete content!' => 'İçerik silinemedi!',
   'Could not delete content: Access denied!' => 'İçerik silinemedi: Erişim reddedildi!',
   'Could not load requested object!' => 'İstenen obje yüklenemedi',
@@ -9,4 +9,4 @@ return array (
 You can pin to top only two items at once.
 To however pin this item, unpin another before!' => '',
   'This action is disabled!' => 'Bu eylem devre dışı!',
-);
+];

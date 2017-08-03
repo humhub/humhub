@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Content' => 'محتوا',
   'Updated' => 'بروز رساني شده',
-);
+];

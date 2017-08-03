@@ -30,7 +30,7 @@ class StreamViewer extends Widget
     /**
      * @var string the path to Stream Action to use
      */
-    public $streamAction = "";
+    public $streamAction = '';
 
     /**
      * @since 1.1
@@ -53,30 +53,30 @@ class StreamViewer extends Widget
     /**
      * @var string the message when stream is empty and filters are active
      */
-    public $messageStreamEmptyWithFilters = "";
+    public $messageStreamEmptyWithFilters = '';
 
     /**
-     * 
+     *
      * @var string the CSS Class(es) for empty stream error with enabled filters
      */
-    public $messageStreamEmptyWithFiltersCss = "";
+    public $messageStreamEmptyWithFiltersCss = '';
 
     /**
      * @var string the message when stream is empty
      */
-    public $messageStreamEmpty = "";
+    public $messageStreamEmpty = '';
 
     /**
      * @var string the CSS Class(es) for message when stream is empty
      */
-    public $messageStreamEmptyCss = "";
+    public $messageStreamEmptyCss = '';
 
     /**
      * @inheritdoc
      */
     public function init()
     {
-        if ($this->streamAction == "") {
+        if ($this->streamAction == '') {
             throw new Exception('You need to set the streamAction attribute to use this widget!');
         }
 
@@ -93,10 +93,10 @@ class StreamViewer extends Widget
         }
 
         // Setup default messages
-        if ($this->messageStreamEmpty == "") {
+        if ($this->messageStreamEmpty == '') {
             $this->messageStreamEmpty = Yii::t('ContentModule.widgets_views_stream', 'Nothing here yet!');
         }
-        if ($this->messageStreamEmptyWithFilters == "") {
+        if ($this->messageStreamEmptyWithFilters == '') {
             $this->messageStreamEmptyWithFilters = Yii::t('ContentModule.widgets_views_stream', 'No matches with your selected filters!');
         }
     }
@@ -141,5 +141,4 @@ class StreamViewer extends Widget
                     'contentId' => $contentId,
         ]);
     }
-
 }

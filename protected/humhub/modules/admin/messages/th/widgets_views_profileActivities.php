@@ -16,8 +16,8 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Click here to review' => '',
   'New approval requests' => '',
   'One or more user needs your approval as group admin.' => '',
-);
+];

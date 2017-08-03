@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Administrators' => 'Yöneticiler',
   'Color' => 'Renk',
   'Created At' => 'Oluşturma zamanı',
@@ -21,4 +21,4 @@ return array (
   'Visibility' => 'Görünüm',
   'You cannot create private visible spaces!' => 'Özel görünür sayfalar oluşturamazsınız!',
   'You cannot create public visible spaces!' => 'Genel görünür sayfalar oluşturamazsınız!',
-);
+];

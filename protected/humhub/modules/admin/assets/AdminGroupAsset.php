@@ -21,5 +21,4 @@ class AdminGroupAsset extends AssetBundle
     public $js = [
         'js/humhub.admin.group.js'
     ];
-
 }

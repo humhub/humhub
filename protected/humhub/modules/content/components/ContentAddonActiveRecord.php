@@ -33,7 +33,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
 {
 
     /**
-     * @var boolean also update underlying contents last update stream sorting 
+     * @var boolean also update underlying contents last update stream sorting
      */
     protected $updateContentStreamSort = true;
 
@@ -91,12 +91,12 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
         $className = $this->object_model;
         $pk = $this->object_id;
 
-        if ($className == "") {
+        if ($className == '') {
             return null;
         }
 
         if (!class_exists($className)) {
-            Yii::error("Source class of content addon not found (" . $className . ") not found!");
+            Yii::error('Source class of content addon not found (' . $className . ') not found!');
             return null;
         }
 
@@ -166,7 +166,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function getContentDescription()
     {
-        return "";
+        return '';
     }
 
     /**
@@ -209,5 +209,4 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
     {
         return $this->hasOne(\humhub\modules\user\models\User::className(), ['id' => 'created_by']);
     }
-
 }

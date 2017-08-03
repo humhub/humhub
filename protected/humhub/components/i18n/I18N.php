@@ -97,7 +97,7 @@ class I18N extends \yii\i18n\I18N
      */
     public function setDefaultLocale()
     {
-        $this->setLocale( Yii::$app->settings->get('defaultLanguage'));
+        $this->setLocale(Yii::$app->settings->get('defaultLanguage'));
         $this->fixLocaleCodes();
     }
 
@@ -108,7 +108,7 @@ class I18N extends \yii\i18n\I18N
      */
     protected function setLocale($locale)
     {
-        if(!empty($locale)) {
+        if (!empty($locale)) {
             Yii::$app->language = $locale;
             Yii::$app->formatter->locale = $locale;
         }
@@ -196,23 +196,23 @@ class I18N extends \yii\i18n\I18N
 
             // Try to fix old placeholder formats
             foreach ($params as $param => $value) {
-                if (substr($param, 0, 1) === "%" && substr($param, -1, 1) === "%" && strlen($param) > 2) {
+                if (substr($param, 0, 1) === '%' && substr($param, -1, 1) === '%' && strlen($param) > 2) {
                     // Fix: %param% style params
-                    $fixedParam = str_replace("%", "", $param);
+                    $fixedParam = str_replace('%', '', $param);
                     $fixedParams[$fixedParam] = $value;
                     $message = str_replace('%' . $fixedParam . '%', '{' . $fixedParam . '}', $message);
-                } elseif (substr($param, 0, 1) == "%") {
+                } elseif (substr($param, 0, 1) == '%') {
                     // Fix: %param style params
-                    $fixedParam = str_replace("%", "", $param);
+                    $fixedParam = str_replace('%', '', $param);
                     $fixedParams[$fixedParam] = $value;
                     $message = str_replace('%' . $fixedParam, '{' . $fixedParam . '}', $message);
-                } elseif (substr($param, 0, 1) === "{" && substr($param, -1, 1) === "}") {
+                } elseif (substr($param, 0, 1) === '{' && substr($param, -1, 1) === '}') {
                     // Fix: {param} style params
-                    $fixedParam = str_replace(['{', '}'], "", $param);
+                    $fixedParam = str_replace(['{', '}'], '', $param);
                     $fixedParams[$fixedParam] = $value;
-                } elseif (substr($param, 0, 1) === ":") {
+                } elseif (substr($param, 0, 1) === ':') {
                     // Fix: :param style params
-                    $fixedParam = str_replace(':', "", $param);
+                    $fixedParam = str_replace(':', '', $param);
                     $fixedParams[$fixedParam] = $value;
                     $message = str_replace(':' . $fixedParam, '{' . $fixedParam . '}', $message);
                 } else {
@@ -237,7 +237,7 @@ class I18N extends \yii\i18n\I18N
      */
     protected function getTranslationCategory($moduleId)
     {
-        return implode('', array_map("ucfirst", preg_split("/(_|\-)/", $moduleId))) . 'Module.';
+        return implode('', array_map('ucfirst', preg_split('/(_|\-)/', $moduleId))) . 'Module.';
     }
 
     /**
@@ -250,5 +250,4 @@ class I18N extends \yii\i18n\I18N
             $this->setLocale('en-US');
         }
     }
-
 }
