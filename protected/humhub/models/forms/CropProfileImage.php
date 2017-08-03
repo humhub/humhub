@@ -58,10 +58,9 @@ class CropProfileImage extends Model
      */
     public function rules()
     {
-        return array(
-            array(['cropX', 'cropY', 'cropW', 'cropH'], 'required'),
-            array(['cropX', 'cropY', 'cropW', 'cropH'], 'number'),
-        );
+        return [
+            [['cropX', 'cropY', 'cropW', 'cropH'], 'required'],
+            [['cropX', 'cropY', 'cropW', 'cropH'], 'number'],
+        ];
     }
-
 }

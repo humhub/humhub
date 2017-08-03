@@ -64,7 +64,6 @@ class UrlOembed extends \yii\db\ActiveRecord
 
         // Check if the given URL has OEmbed Support
         if (UrlOembed::HasOEmbedSupport($url)) {
-
             // Lookup Cached OEmebed Item from Datbase
             $urlOembed = UrlOembed::findOne(['url' => $url]);
             if ($urlOembed !== null) {
@@ -107,16 +106,16 @@ class UrlOembed extends \yii\db\ActiveRecord
     {
         $urlOembed = new UrlOembed();
         $urlOembed->url = $url;
-        $html = "";
+        $html = '';
 
-        if ($urlOembed->getProviderUrl() != "") {
+        if ($urlOembed->getProviderUrl() != '') {
             // Build OEmbed Preview
             $jsonOut = UrlOembed::fetchUrl($urlOembed->getProviderUrl());
-            if ($jsonOut != "") {
+            if ($jsonOut != '') {
                 try {
                     $data = \yii\helpers\Json::decode($jsonOut);
-                    if (isset($data['html']) && isset($data['type']) && ($data['type'] === "video" || $data['type'] === 'rich' || $data['type'] === 'photo')) {
-                        $html = "<div data-guid='".uniqid('oembed-')."' data-richtext-feature class='oembed_snippet' data-url='" . \yii\helpers\Html::encode($url) . "'>" . $data['html'] . "</div>";
+                    if (isset($data['html']) && isset($data['type']) && ($data['type'] === 'video' || $data['type'] === 'rich' || $data['type'] === 'photo')) {
+                        $html = "<div data-guid='" . uniqid('oembed-') . "' data-richtext-feature class='oembed_snippet' data-url='" . \yii\helpers\Html::encode($url) . "'>" . $data['html'] . '</div>';
                     }
                 } catch (\yii\base\InvalidParamException $ex) {
                     Yii::warning($ex->getMessage());
@@ -124,7 +123,7 @@ class UrlOembed extends \yii\db\ActiveRecord
             }
         }
 
-        if ($html != "") {
+        if ($html != '') {
             $urlOembed->preview = $html;
             $urlOembed->save();
         }
@@ -139,10 +138,10 @@ class UrlOembed extends \yii\db\ActiveRecord
     {
         foreach (UrlOembed::getProviders() as $providerBaseUrl => $providerAPI) {
             if (strpos($this->url, $providerBaseUrl) !== false) {
-                return str_replace("%url%", urlencode($this->url), $providerAPI);
+                return str_replace('%url%', urlencode($this->url), $providerAPI);
             }
         }
-        return "";
+        return '';
     }
 
     /**
@@ -208,7 +207,7 @@ class UrlOembed extends \yii\db\ActiveRecord
     public static function getProviders()
     {
         $providers = Yii::$app->settings->get('oembedProviders');
-        if ($providers != "") {
+        if ($providers != '') {
             return \yii\helpers\Json::decode($providers);
         }
 
@@ -224,5 +223,4 @@ class UrlOembed extends \yii\db\ActiveRecord
     {
         Yii::$app->settings->set('oembedProviders', \yii\helpers\Json::encode($providers));
     }
-
 }
