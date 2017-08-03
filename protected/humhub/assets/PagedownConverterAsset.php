@@ -36,5 +36,4 @@ class PagedownConverterAsset extends AssetBundle
         'resources/js/pagedown/Markdown.Sanitizer.js',
         'resources/js/pagedown/Markdown.Extra.js',
     ];
-
 }

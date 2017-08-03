@@ -27,5 +27,4 @@ class JqueryCookieAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['jquery.cookie.js'];
-
 }

@@ -49,5 +49,4 @@ class IEFixesAsset extends AssetBundle
     public $depends = [
         'humhub\assets\Html5shivAsset',
     ];
-
 }

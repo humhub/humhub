@@ -106,5 +106,4 @@ class AppAsset extends AssetBundle
 
         return $instance;
     }
-
 }

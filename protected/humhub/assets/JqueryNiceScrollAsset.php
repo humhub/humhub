@@ -27,5 +27,4 @@ class JqueryNiceScrollAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['jquery.nicescroll.min.js'];
-
 }

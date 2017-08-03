@@ -39,5 +39,4 @@ class BootstrapColorPickerAsset extends AssetBundle
      * @inheritdoc
      */
     public $css = ['js/colorpicker/css/bootstrap-colorpicker.min.css'];
-
 }

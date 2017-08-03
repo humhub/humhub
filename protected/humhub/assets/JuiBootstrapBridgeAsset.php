@@ -36,5 +36,4 @@ class JuiBootstrapBridgeAsset extends AssetBundle
     public $depends = [
         'yii\jui\JuiAsset'
     ];
-
 }

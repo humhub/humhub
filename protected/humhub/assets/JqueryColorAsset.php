@@ -32,5 +32,4 @@ class JqueryColorAsset extends AssetBundle
      * @inheritdoc
      */
     public $css = [];
-
 }

@@ -32,5 +32,4 @@ class ClipboardJsAsset extends AssetBundle
      * @inheritdoc
      */
     public $css = [];
-
 }

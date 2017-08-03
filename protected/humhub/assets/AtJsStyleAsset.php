@@ -34,5 +34,4 @@ class AtJsStyleAsset extends AssetBundle
     public $css = [
         'css/jquery.atwho.modified.css',
     ];
-
 }

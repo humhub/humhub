@@ -27,5 +27,4 @@ class JqueryWidgetAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['ui/minified/widget.min.js'];
-
 }

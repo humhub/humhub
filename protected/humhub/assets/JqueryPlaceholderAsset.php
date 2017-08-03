@@ -27,5 +27,4 @@ class JqueryPlaceholderAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['jquery.placeholder.min.js'];
-
 }

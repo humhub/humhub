@@ -28,5 +28,4 @@ class JqueryTimeAgoAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['jquery.timeago.js'];
-
 }

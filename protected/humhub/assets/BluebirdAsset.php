@@ -32,5 +32,4 @@ class BluebirdAsset extends AssetBundle
      * @inheritdoc
      */
     public $css = [];
-
 }
