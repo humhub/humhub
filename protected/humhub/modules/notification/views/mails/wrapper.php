@@ -1,4 +1,4 @@
-<?php if(!empty($headline)) :?>
+<?php if (!empty($headline)) :?>
 <tr>
     <td align="center" valign="top"  class="fix-box">
         <!-- start container width 600px -->
@@ -39,7 +39,7 @@
         <!-- end  container width 600px -->
     </td>
 </tr>
- <?php endif; ?>
+<?php endif; ?>
 <!-- START NOTIFICATION CONTENT-->
 <?= $content ?>
 <!-- END NOTIFICATION CONTENT-->

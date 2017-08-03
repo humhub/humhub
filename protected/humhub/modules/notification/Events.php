@@ -13,7 +13,7 @@ use humhub\modules\notification\models\Notification;
 
 /**
  * Events provides callbacks for all defined module events.
- * 
+ *
  * @author luke
  */
 class Events extends \yii\base\Object
@@ -49,7 +49,7 @@ class Events extends \yii\base\Object
     public static function onSpaceDelete($event)
     {
 
-        foreach (Notification::findAll(array('space_id' => $event->sender->id)) as $notification) {
+        foreach (Notification::findAll(['space_id' => $event->sender->id]) as $notification) {
             $notification->delete();
         }
     }
@@ -63,41 +63,40 @@ class Events extends \yii\base\Object
     {
 
         $integrityChecker = $event->sender;
-        $integrityChecker->showTestHeadline("Notification Module (" . Notification::find()->count() . " entries)");
+        $integrityChecker->showTestHeadline('Notification Module (' . Notification::find()->count() . ' entries)');
 
         foreach (Notification::find()->joinWith(['space', 'user'])->each() as $notification) {
-
             // Check if Space still exists
-            if ($notification->space_id != "" && $notification->space == null) {
-                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " workspace seems to no longer exist!")) {
+            if ($notification->space_id != '' && $notification->space == null) {
+                if ($integrityChecker->showFix('Deleting notification id ' . $notification->id . ' workspace seems to no longer exist!')) {
                     $notification->delete();
                 }
             }
 
             // Check if source object exists when defined
-            if ($notification->source_class != "" && $notification->getSourceObject() == null) {
-                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
+            if ($notification->source_class != '' && $notification->getSourceObject() == null) {
+                if ($integrityChecker->showFix('Deleting notification id ' . $notification->id . ' source class set but seems to no longer exist!')) {
                     $notification->delete();
                 }
             }
 
             // Check if target user exists
             if ($notification->user == null) {
-                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " target user seems to no longer exist!")) {
+                if ($integrityChecker->showFix('Deleting notification id ' . $notification->id . ' target user seems to no longer exist!')) {
                     $notification->delete();
                 }
             }
 
             // Check if target user exists
             if (!class_exists($notification->class)) {
-                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid class!")) {
+                if ($integrityChecker->showFix('Deleting notification id ' . $notification->id . ' without valid class!')) {
                     $notification->delete();
                 }
             }
 
             // Check if module id is set
-            if ($notification->module == "") {
-                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid module!")) {
+            if ($notification->module == '') {
+                if ($integrityChecker->showFix('Deleting notification id ' . $notification->id . ' without valid module!')) {
                     $notification->delete();
                 }
             }
@@ -114,7 +113,7 @@ class Events extends \yii\base\Object
     {
         $controller = $event->sender;
 
-        $controller->stdout("Deleting old notifications... ");
+        $controller->stdout('Deleting old notifications... ');
         /**
          * Delete seen notifications which are older than 2 months
          */
@@ -135,9 +134,8 @@ class Events extends \yii\base\Object
     
     public static function onLayoutAddons($event)
     {
-        if(Yii::$app->request->isPjax) {
+        if (Yii::$app->request->isPjax) {
             $event->sender->addWidget(widgets\UpdateNotificationCount::className());
         }
     }
-
 }

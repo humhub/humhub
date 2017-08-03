@@ -87,5 +87,4 @@ class MailTarget extends BaseTarget
         // Do not send mail notifications for example content during installlation.
         return Yii::$app->params['installed'];
     }
-
 }

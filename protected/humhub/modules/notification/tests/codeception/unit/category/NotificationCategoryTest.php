@@ -169,5 +169,4 @@ class NotificationCategoryTest extends HumHubDbTestCase
         $this->assertTrue($mailTarget->isEnabled($notification, $user));
         $this->assertTrue($webTarget->isEnabled($notification, $user));
     }
-
 }

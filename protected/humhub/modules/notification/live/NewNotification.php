@@ -25,12 +25,12 @@ class NewNotification extends LiveEvent
     public $notificationId;
     
     /**
-     * @var string text representation used for frotnend desktop notifications 
+     * @var string text representation used for frotnend desktop notifications
      */
     public $text;
     
     /**
-     * @var int determines if desktop notification has already been sent. 
+     * @var int determines if desktop notification has already been sent.
      */
     public $ts;
 
@@ -42,5 +42,4 @@ class NewNotification extends LiveEvent
         parent::init();
         $this->visibility = Content::VISIBILITY_OWNER;
     }
-
 }

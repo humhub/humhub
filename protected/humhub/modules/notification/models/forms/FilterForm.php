@@ -21,7 +21,7 @@ class FilterForm extends \yii\base\Model
 
     /**
      * Contains all notifications by modulenames
-     * @var type 
+     * @var type
      */
     public $notifications;
 
@@ -59,7 +59,7 @@ class FilterForm extends \yii\base\Model
 
     /**
      * Returns all Notifications classes of modules not selected in the filter
-     * 
+     *
      * @return type
      */
     public function getExcludeClassFilter()
@@ -98,7 +98,7 @@ class FilterForm extends \yii\base\Model
     public function getNotifications()
     {
         if ($this->notifications == null) {
-            $this->notifications = array_filter(Yii::$app->notification->getNotifications(), function($notification) {
+            $this->notifications = array_filter(Yii::$app->notification->getNotifications(), function ($notification) {
                 return $notification->getCategory() != null;
             });
         }
@@ -114,5 +114,4 @@ class FilterForm extends \yii\base\Model
     {
         return $this->categoryFilter != null;
     }
-
 }

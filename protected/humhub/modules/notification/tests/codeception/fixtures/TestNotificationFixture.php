@@ -19,5 +19,4 @@ class TestNotificationFixture extends ActiveFixture
     public $depends = [
         'humhub\modules\user\tests\codeception\fixtures\GroupUserFixture'
     ];
-
 }

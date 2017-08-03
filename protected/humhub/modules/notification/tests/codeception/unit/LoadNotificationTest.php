@@ -37,5 +37,4 @@ class LoadNotificationTest extends HumHubDbTestCase
         $this->assertEquals(6, max($ids));
         $this->assertEquals(1, min($ids));
     }
-
 }

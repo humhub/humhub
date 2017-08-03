@@ -14,7 +14,7 @@ use humhub\modules\notification\components\BaseNotification;
 
 /**
  * Web Target
- * 
+ *
  * @since 1.2
  * @author buddha
  */
@@ -58,5 +58,4 @@ class WebTarget extends BaseTarget
     {
         return Yii::t('NotificationModule.targets', 'Web');
     }
-
 }

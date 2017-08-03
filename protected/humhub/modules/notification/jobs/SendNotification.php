@@ -34,6 +34,6 @@ class SendNotification extends ActiveJob
      */
     public function run()
     {
-        Yii::$app->notification->send($this->notification, $this->recepient); 
+        Yii::$app->notification->send($this->notification, $this->recepient);
     }
 }

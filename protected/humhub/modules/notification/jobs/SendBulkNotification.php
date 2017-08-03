@@ -32,7 +32,7 @@ class SendBulkNotification extends ActiveJob
      * @inheritdoc
      */
     public function run()
-    {   
-        Yii::$app->notification->sendBulk($this->notification, $this->recepients); 
+    {
+        Yii::$app->notification->sendBulk($this->notification, $this->recepients);
     }
 }

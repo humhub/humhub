@@ -32,5 +32,4 @@ class WebTargetRenderTest extends HumHubDbTestCase
         $this->assertContains('New', $result);
         $this->assertContains('<div>Special:<h1>TestedMailViewNotificationHTML</h1></div>', $result);
     }
-
 }

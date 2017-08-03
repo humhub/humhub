@@ -20,5 +20,4 @@ class MailTargetRenderTest extends HumHubDbTestCase
         $this->assertContains('<h1>TestedMailViewNotificationHTML</h1>', $renderer->render($notification));
         $this->assertContains('TestedMailViewNotificationText', $renderer->renderText($notification));
     }
-
 }

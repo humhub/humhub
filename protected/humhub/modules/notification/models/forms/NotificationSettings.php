@@ -16,7 +16,7 @@ class NotificationSettings extends \yii\base\Model
     /**
      * Will hold the selected notification settings. Note this will only be filled with selected settings
      * and not with deselected notification settings.
-     * 
+     *
      * @var array
      */
     public $settings = [];
@@ -32,12 +32,12 @@ class NotificationSettings extends \yii\base\Model
     public $user;
 
     /**
-     * @var boolean manage if the user/users should receive desktop notifications. 
+     * @var boolean manage if the user/users should receive desktop notifications.
      */
     public $desktopNotifications;
 
     /**
-     * @var BaseTarget[] 
+     * @var BaseTarget[]
      */
     protected $_targets;
 
@@ -123,19 +123,19 @@ class NotificationSettings extends \yii\base\Model
 
     /**
      * Returns the field name for the given category/target combination.
-     * 
-     * @param type $category 
+     *
+     * @param type $category
      * @param type $target
      * @return type
      */
     public function getSettingFormname($category, $target)
     {
-        return $this->formName() . "[settings][" . $target->getSettingKey($category) . "]";
+        return $this->formName() . '[settings][' . $target->getSettingKey($category) . ']';
     }
 
     /**
      * Saves the settings for the given user (or global if no user is given).
-     * 
+     *
      * @return boolean if the save process was successful else false
      * @throws \yii\web\HttpException
      */
@@ -184,14 +184,14 @@ class NotificationSettings extends \yii\base\Model
     /**
      * Saves the Notificaton Space settings for the given user.
      * This is skipped if no user is selected (global settings).
-     * 
+     *
      * If the user is already a member of this space this function activates the sending of notifications for
      * his membership.
-     * 
+     *
      * If the user is already following the space this function activates the sendinf of notification for his follow record.
-     * 
+     *
      * Otherwise a new follow record is created.
-     * 
+     *
      * @return type
      */
     private function saveSpaceSettings()
@@ -214,7 +214,7 @@ class NotificationSettings extends \yii\base\Model
     {
         if (Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageSettings())) {
             return true;
-        } else if (!$this->user) {
+        } elseif (!$this->user) {
             return false; // Only ManageSettings user can set global notification settings
         } else {
             return Yii::$app->user->id == $this->user->id;
@@ -236,5 +236,4 @@ class NotificationSettings extends \yii\base\Model
         Yii::$app->notification->setSpaces([], $this->user);
         return true;
     }
-
 }

@@ -23,7 +23,7 @@ use yii\helpers\Url;
     
     <br />
     <button type="submit" class="btn btn-primary" data-ui-loader><?= Yii::t('base', 'Save'); ?></button>
-    <?php if ($model->isUserSettingLoaded()): ?>
+    <?php if ($model->isUserSettingLoaded()) : ?>
         <a href="#" class="btn btn-default pull-right" data-action-click="post" data-action-url="<?= Url::to(['reset']) ?>" data-ui-loader><?= Yii::t('ActivityModule.base', 'Reset to defaults')?></a>
     <?php endif; ?>
 <?php ActiveForm::end(); ?>
