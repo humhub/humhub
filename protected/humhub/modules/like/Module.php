@@ -23,11 +23,10 @@ class Module extends \humhub\components\Module
     /**
      * @inheritdoc
      */
-    public function getNotifications() 
+    public function getNotifications()
     {
-       return [
+        return [
            'humhub\modules\like\notifications\NewLike'
-       ];
+        ];
     }
-
 }

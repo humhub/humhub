@@ -53,5 +53,4 @@ class LikeNotificationCategory extends NotificationCategory
     {
         return Yii::t('LikeModule.notifications_LikeNotificationCategory', 'Receive Notifications when someone likes your content.');
     }
-
 }

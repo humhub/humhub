@@ -12,7 +12,7 @@ use yii\web\AssetBundle;
 
 /**
  * Assets for like related resources.
- * 
+ *
  * @since 1.2
  * @author buddha
  */
@@ -35,5 +35,4 @@ class LikeAsset extends AssetBundle
     public $js = [
         'js/humhub.like.js'
     ];
-
 }

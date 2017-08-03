@@ -55,13 +55,13 @@ class NewLike extends BaseNotification
         $contentInfo = $this->getContentInfo($this->getLikedRecord());
 
         if ($this->groupCount > 1) {
-            return Yii::t('LikeModule.notification', "{displayNames} likes your {contentTitle}.", [
+            return Yii::t('LikeModule.notification', '{displayNames} likes your {contentTitle}.', [
                         'displayNames' => strip_tags($this->getGroupUserDisplayNames()),
                         'contentTitle' => $contentInfo
             ]);
         }
 
-        return Yii::t('LikeModule.notification', "{displayName} likes your {contentTitle}.", [
+        return Yii::t('LikeModule.notification', '{displayName} likes your {contentTitle}.', [
                     'displayName' => Html::encode($this->originator->displayName),
                     'contentTitle' => $contentInfo
         ]);
@@ -80,13 +80,13 @@ class NewLike extends BaseNotification
         $contentInfo = $this->getContentInfo($this->getLikedRecord());
 
         if ($this->groupCount > 1) {
-            return Yii::t('LikeModule.notification', "{displayNames} likes {contentTitle}.", [
+            return Yii::t('LikeModule.notification', '{displayNames} likes {contentTitle}.', [
                         'displayNames' => $this->getGroupUserDisplayNames(),
                         'contentTitle' => $contentInfo
             ]);
         }
 
-        return Yii::t('LikeModule.notification', "{displayName} likes {contentTitle}.", [
+        return Yii::t('LikeModule.notification', '{displayName} likes {contentTitle}.', [
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
                     'contentTitle' => $contentInfo
         ]);
@@ -94,12 +94,11 @@ class NewLike extends BaseNotification
 
     /**
      * The liked record
-     * 
+     *
      * @return \humhub\components\ActiveRecord
      */
     protected function getLikedRecord()
     {
         return $this->source->getSource();
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Likes' => 'Kedvelések',
   'Receive Notifications when someone likes your content.' => 'Értesítés, ha valaki kedveli a tevékenységedet.',
-);
+];

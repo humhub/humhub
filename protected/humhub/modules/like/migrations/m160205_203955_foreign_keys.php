@@ -12,7 +12,6 @@ class m160205_203955_foreign_keys extends Migration
             $this->addForeignKey('fk_like-created_by', 'like', 'created_by', 'user', 'id', 'CASCADE', 'CASCADE');
             $this->addForeignKey('fk_like-target_user_id', 'like', 'target_user_id', 'user', 'id', 'CASCADE', 'CASCADE');
         } catch (Exception $ex) {
-            
         }
     }
 

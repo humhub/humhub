@@ -7,10 +7,10 @@ humhub\modules\like\assets\LikeAsset::register($this);
 
 <span class="likeLinkContainer" id="likeLinkContainer_<?= $id ?>">
 
-    <?php if (Yii::$app->user->isGuest): ?>
+    <?php if (Yii::$app->user->isGuest) : ?>
 
         <?php echo Html::a(Yii::t('LikeModule.widgets_views_likeLink', 'Like'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']); ?>
-    <?php else: ?>
+    <?php else : ?>
         <a href="#" data-action-click="like.toggleLike" data-action-url="<?= $likeUrl ?>" class="like likeAnchor" style="<?= (!$currentUserLiked) ? '' : 'display:none'?>">
             <?= Yii::t('LikeModule.widgets_views_likeLink', 'Like') ?>
         </a>

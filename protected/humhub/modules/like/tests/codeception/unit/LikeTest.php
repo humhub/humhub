@@ -30,5 +30,4 @@ class LikeTest extends HumHubDbTestCase
         $this->assertHasNotification(\humhub\modules\like\notifications\NewLike::class, $like);
         $this->assertHasActivity(\humhub\modules\like\activities\Liked::class, $like);
     }
-
 }

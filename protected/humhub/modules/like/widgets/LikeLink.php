@@ -37,7 +37,7 @@ class LikeLink extends \yii\base\Widget
             }
         }
 
-        return $this->render('likeLink', array(
+        return $this->render('likeLink', [
                     'object' => $this->object,
                     'likes' => $likes,
                     'currentUserLiked' => $currentUserLiked,
@@ -46,12 +46,12 @@ class LikeLink extends \yii\base\Widget
                     'unlikeUrl' => Url::to(['/like/like/unlike', 'contentModel' => $this->object->className(), 'contentId' => $this->object->id]),
                     'userListUrl' => Url::to(['/like/like/user-list', 'contentModel' => $this->object->className(), 'contentId' => $this->object->getPrimaryKey()]),
                     'title' => $this->generateLikeTitleText($currentUserLiked, $likes)
-        ));
+        ]);
     }
 
     private function generateLikeTitleText($currentUserLiked, $likes)
     {
-        $userlist = ""; // variable for users output
+        $userlist = ''; // variable for users output
         $maxUser = 5; // limit for rendered users inside the tooltip
         // if the current user also likes
         if ($currentUserLiked == true) {
@@ -61,12 +61,11 @@ class LikeLink extends \yii\base\Widget
                 $userlist = Yii::t('LikeModule.widgets_views_likeLink', 'You like this.');
             } else {
                 // output, if more users like this
-                $userlist .= Yii::t('LikeModule.widgets_views_likeLink', 'You'). "\n";
+                $userlist .= Yii::t('LikeModule.widgets_views_likeLink', 'You') . "\n";
             }
         }
 
         for ($i = 0, $likesCount = count($likes); $i < $likesCount; $i++) {
-
             // if only one user likes
             if ($likesCount == 1) {
                 // check, if you liked
@@ -75,17 +74,16 @@ class LikeLink extends \yii\base\Widget
                     $userlist .= Html::encode($likes[$i]->user->displayName) . Yii::t('LikeModule.widgets_views_likeLink', ' likes this.');
                 }
             } else {
-
                 // check, if you liked
                 if ($likes[$i]->user->guid != Yii::$app->user->guid) {
                     // output, if an other user liked
-                    $userlist .= Html::encode($likes[$i]->user->displayName). "\n";
+                    $userlist .= Html::encode($likes[$i]->user->displayName) . "\n";
                 }
 
                 // check if exists more user as limited
                 if ($i == $maxUser) {
                     // output with the number of not rendered users
-                    $userlist .= Yii::t('LikeModule.widgets_views_likeLink', 'and {count} more like this.', array('{count}' => (int)(count($likes) - $maxUser)));
+                    $userlist .= Yii::t('LikeModule.widgets_views_likeLink', 'and {count} more like this.', ['{count}' => (int)(count($likes) - $maxUser)]);
 
                     // stop the loop
                     break;
@@ -95,7 +93,4 @@ class LikeLink extends \yii\base\Widget
 
         return $userlist;
     }
-
 }
-
-?>

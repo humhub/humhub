@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'New Like' => 'Nuevo Me gusta',
-);
+];

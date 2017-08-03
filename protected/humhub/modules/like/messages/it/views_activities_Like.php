@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   '{userDisplayName} likes {contentTitle}' => 'A {userDisplayName} piace {contentTitle}',
-);
+];

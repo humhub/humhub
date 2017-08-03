@@ -45,7 +45,6 @@ class LikeController extends \humhub\modules\content\components\ContentAddonCont
 
         $like = Like::findOne(['object_model' => $this->contentModel, 'object_id' => $this->contentId, 'created_by' => Yii::$app->user->id]);
         if ($like === null) {
-
             // Create Like Object
             $like = new Like([
                 'object_model' => $this->contentModel,
@@ -112,9 +111,8 @@ class LikeController extends \humhub\modules\content\components\ContentAddonCont
         ]);
         $query->orderBy('like.created_at DESC');
 
-        $title = Yii::t('LikeModule.controllers_LikeController', "<strong>Users</strong> who like this");
+        $title = Yii::t('LikeModule.controllers_LikeController', '<strong>Users</strong> who like this');
 
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
-
 }
