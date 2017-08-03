@@ -26,7 +26,7 @@ class ManageMenu extends \humhub\widgets\BaseMenu
     /**
      * @inheritdoc
      */
-    public $template = "@humhub/widgets/views/tabMenu";
+    public $template = '@humhub/widgets/views/tabMenu';
 
     /**
      * @inheritdoc
@@ -59,5 +59,4 @@ class ManageMenu extends \humhub\widgets\BaseMenu
 
         parent::init();
     }
-
 }

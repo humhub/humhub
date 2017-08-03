@@ -26,7 +26,7 @@ class FriendshipNotificationCategory extends NotificationCategory
 
     /**
      * Category Id
-     * @var string 
+     * @var string
      */
     public $id = 'friendship';
 
@@ -53,9 +53,9 @@ class FriendshipNotificationCategory extends NotificationCategory
     {
         if ($target->id === MailTarget::getId()) {
             return true;
-        } else if ($target->id === WebTarget::getId()) {
+        } elseif ($target->id === WebTarget::getId()) {
             return true;
-        } else if ($target->id === MobileTarget::getId()) {
+        } elseif ($target->id === MobileTarget::getId()) {
             return true;
         }
 
@@ -69,5 +69,4 @@ class FriendshipNotificationCategory extends NotificationCategory
     {
         return Yii::$app->getModule('friendship')->getIsEnabled();
     }
-
 }

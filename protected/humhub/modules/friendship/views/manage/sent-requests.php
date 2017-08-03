@@ -28,7 +28,7 @@ use humhub\widgets\GridView;
                     'view' => function () {
                         return;
                     },
-                    'delete' => function($url, $model) {
+                    'delete' => function ($url, $model) {
                         return Html::a('Cancel', ['/friendship/request/delete', 'userId' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']);
                     },
                         ],

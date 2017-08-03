@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>My</strong> friends' => '<strong>دوستان من</strong>',
   '<strong>Pending</strong> friend requests' => '<strong>در خواست هاي دوستي در صف انتظار</strong>',
   '<strong>Sent</strong> friend requests' => '<strong>درخواست هاي دوستي ارسال شده</strong>',
@@ -13,4 +13,4 @@ return array (
   'Sent requests' => 'درخواست هاي ارسال شده',
   'Show all friends' => 'نمايش تمام دوستان',
   'Unfriend' => 'دوستي را قطع كن',
-);
+];

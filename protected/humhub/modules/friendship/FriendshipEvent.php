@@ -12,7 +12,7 @@ use yii\base\Event;
 
 /**
  * FriendshipEvent
- * 
+ *
  * @since 1.2
  * @author Luke
  */
@@ -28,5 +28,4 @@ class FriendshipEvent extends Event
      * @var \humhub\modules\user\models\User second user
      */
     public $user2;
-
 }

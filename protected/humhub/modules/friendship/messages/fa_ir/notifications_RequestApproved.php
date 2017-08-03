@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Friendship Approved' => 'دوستي پذيرفته شد',
-);
+];

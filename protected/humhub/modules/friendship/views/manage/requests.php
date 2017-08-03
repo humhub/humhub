@@ -25,11 +25,11 @@ use humhub\widgets\GridView;
                         return Html::a('Accept', ['/friendship/request/add', 'userId' => $model->id], ['class' => 'btn btn-success btn-sm', 'data-method' => 'POST']);
                     },
                             'view' => function () {
-                        return;
-                    },
-                            'delete' => function($url, $model) {
-                        return Html::a('Deny', ['/friendship/request/delete', 'userId' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']);
-                    },
+                                return;
+                            },
+                            'delete' => function ($url, $model) {
+                                return Html::a('Deny', ['/friendship/request/delete', 'userId' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']);
+                            },
                         ],
                     ]],
             ]);

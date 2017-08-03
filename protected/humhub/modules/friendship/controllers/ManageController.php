@@ -8,13 +8,11 @@
 
 namespace humhub\modules\friendship\controllers;
 
-
 use yii\data\ActiveDataProvider;
 
 use humhub\modules\user\components\BaseAccountController;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\friendship\models\SettingsForm;
-
 
 /**
  * Membership Manage Controller
@@ -73,5 +71,4 @@ class ManageController extends BaseAccountController
                     'dataProvider' => $dataProvider
         ]);
     }
-
 }

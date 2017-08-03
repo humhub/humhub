@@ -126,10 +126,10 @@ class Friendship extends \humhub\components\ActiveRecord
 
     /**
      * Returns the friendship state between to users
-     * 
+     *
      * @param User $user
      * @param User $friend
-     * 
+     *
      * @return int the request state see self::STATE_*
      */
     public static function getStateForUser($user, $friend)
@@ -149,7 +149,7 @@ class Friendship extends \humhub\components\ActiveRecord
 
     /**
      * Returns a query for friends of a user
-     * 
+     *
      * @return \yii\db\ActiveQuery
      * @param type $user
      */
@@ -170,7 +170,7 @@ class Friendship extends \humhub\components\ActiveRecord
 
     /**
      * Returns a query for sent and not approved friend requests of an user
-     * 
+     *
      * @return \yii\db\ActiveQuery
      * @param type $user
      */
@@ -191,7 +191,7 @@ class Friendship extends \humhub\components\ActiveRecord
 
     /**
      * Returns a query for received and not responded friend requests of an user
-     * 
+     *
      * @param User $user
      * @return \yii\db\ActiveQuery
      */
@@ -212,7 +212,7 @@ class Friendship extends \humhub\components\ActiveRecord
 
     /**
      * Adds a friendship or sends a request
-     * 
+     *
      * @param User $user
      * @param User $friend
      */
@@ -226,7 +226,7 @@ class Friendship extends \humhub\components\ActiveRecord
 
     /**
      * Cancels a friendship or request to a friend
-     * 
+     *
      * @param User $user
      * @param User $friend
      */
@@ -254,5 +254,4 @@ class Friendship extends \humhub\components\ActiveRecord
             ]));
         }
     }
-
 }

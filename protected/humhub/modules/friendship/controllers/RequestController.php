@@ -56,5 +56,4 @@ class RequestController extends Controller
 
         return $this->redirect($friend->getUrl());
     }
-
 }

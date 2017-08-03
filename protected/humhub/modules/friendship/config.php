@@ -8,7 +8,6 @@ return [
     'class' => \humhub\modules\friendship\Module::className(),
     'isCoreModule' => true,
     'events' => [
-        array('class' => AccountMenu::className(), 'event' => AccountMenu::EVENT_INIT, 'callback' => array(Events::className(), 'onAccountMenuInit')),
+        ['class' => AccountMenu::className(), 'event' => AccountMenu::EVENT_INIT, 'callback' => [Events::className(), 'onAccountMenuInit']],
     ]
 ];
-?>

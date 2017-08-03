@@ -20,7 +20,7 @@ class FriendshipButton extends \yii\base\Widget
 {
 
     /**
-     * @var User the target user 
+     * @var User the target user
      */
     public $user;
 
@@ -38,10 +38,9 @@ class FriendshipButton extends \yii\base\Widget
             return;
         }
 
-        return $this->render('friendshipButton', array(
+        return $this->render('friendshipButton', [
                     'user' => $this->user,
                     'friendshipState' => Friendship::getStateForUser(Yii::$app->user->getIdentity(), $this->user)
-        ));
+        ]);
     }
-
 }
