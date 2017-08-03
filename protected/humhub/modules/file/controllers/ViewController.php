@@ -61,5 +61,4 @@ class ViewController extends \humhub\components\Controller
                     'viewHandler' => $viewHandler
         ]);
     }
-
 }

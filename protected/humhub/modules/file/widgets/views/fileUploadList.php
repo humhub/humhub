@@ -19,7 +19,7 @@ $this->registerJsVar('file_delete_url', Url::to(['/file/file/delete']));
 
 
 <script>
-<?php foreach ($files as $file): ?>
+<?php foreach ($files as $file) : ?>
         addToUploadList("<?php echo $uploaderId; ?>", "<?php echo $file->guid; ?>", "<?php echo Html::encode($file->file_name); ?>", "<?php echo MimeHelper::getMimeIconClassByExtension(FileHelper::getExtension($file->file_name)); ?>");
 <?php endforeach; ?>
 </script>

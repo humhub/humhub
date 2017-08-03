@@ -1,4 +1,4 @@
 <?php
-return array (
+return  [
   'Upload files' => 'Carica file',
-);
+];

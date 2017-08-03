@@ -1,6 +1,6 @@
 <?php
-return array (
+return  [
   '<strong>Upload</strong> error' => 'Erro ao <strong>Actualizar</strong>',
   'Close' => 'Fechar',
   'Could not upload File:' => '',
-);
+];

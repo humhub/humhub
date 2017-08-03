@@ -8,7 +8,6 @@ class m160125_053702_stored_filename extends Migration
     public function up()
     {
         foreach (\humhub\modules\file\models\File::find()->all() as $file) {
-            
             $oldFileName = $file->getPath() . DIRECTORY_SEPARATOR . $file->getFileName();
             $newFileName = $file->getPath() . DIRECTORY_SEPARATOR . 'file';
 

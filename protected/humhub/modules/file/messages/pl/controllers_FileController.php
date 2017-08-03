@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Could not find requested file!' => 'Nie można znaleźć żądanego pliku! ',
   'Insufficient permissions!' => 'Niedostateczne uprawnienia ',
-);
+];

@@ -10,7 +10,7 @@ namespace humhub\modules\file\handler;
 
 /**
  * BaseFileHandler
- * 
+ *
  * @since 1.2
  * @author Luke
  */
@@ -35,7 +35,7 @@ abstract class BaseFileHandler extends \yii\base\Component
 
     /**
      * The file handler link
-     * 
+     *
      * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
      * @see \humhub\modules\file\widgets\FileHandlerButtonDropdown
      * @return array the HTML attributes of the button.

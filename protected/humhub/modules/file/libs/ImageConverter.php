@@ -65,17 +65,20 @@ class ImageConverter
      * @param String $targetFile
      * @param Array $options
      */
-    public static function Resize($sourceFile, $targetFile, $options = array())
+    public static function Resize($sourceFile, $targetFile, $options = [])
     {
 
-        if (!isset($options['width']))
+        if (!isset($options['width'])) {
             $options['width'] = 0;
+        }
 
-        if (!isset($options['height']))
+        if (!isset($options['height'])) {
             $options['height'] = 0;
+        }
 
-        if (!isset($options['mode']))
+        if (!isset($options['mode'])) {
             $options['mode'] = 'force';
+        }
 
         if (Yii::$app->getModule('file')->settings->get('imageMagickPath')) {
             self::ResizeImageMagick($sourceFile, $targetFile, $options);
@@ -152,7 +155,7 @@ class ImageConverter
      * @param type $targetFile
      * @param type $options
      */
-    private static function ResizeGD($sourceFile, $targetFile, $options = array())
+    private static function ResizeGD($sourceFile, $targetFile, $options = [])
     {
 
         $width = $options['width'];
@@ -179,15 +182,15 @@ class ImageConverter
         $src_h = $sourceHeight;
 
         if ($options['mode'] == 'max') {
-
             if ($sourceHeight > $height || $sourceWidth > $width) {
-
                 // http://snipplr.com/view/53183
 
-                if ($height == 0)
+                if ($height == 0) {
                     $height = $sourceHeight;
-                if ($width == 0)
+                }
+                if ($width == 0) {
                     $width = $sourceWidth;
+                }
 
                 $w = $sourceWidth;
                 $h = $sourceHeight;
@@ -205,8 +208,8 @@ class ImageConverter
                 // Set a variable to the variable name of the output variable
                 $ssvar = ($w > $h ? 'h' : 'w');
                 $lsvar = ($w > $h ? 'w' : 'h');
-                $maxLSvar = "max_" . $lsvar;
-                $maxSSvar = "max_" . $ssvar;
+                $maxLSvar = 'max_' . $lsvar;
+                $maxSSvar = 'max_' . $ssvar;
 
                 // Do the first pass on the long side
                 $ratio = $$maxLSvar / $long_side_len;
@@ -241,12 +244,10 @@ class ImageConverter
                 $dst_h = $sourceHeight;
                 $dst_w = $sourceWidth;
             }
-        } else if ($options['mode'] == 'force') {
-
+        } elseif ($options['mode'] == 'force') {
             // When ratio not fit, crop it - requires given width & height
             if ($width != 0 && $height != 0) {
                 if (($sourceWidth / $sourceHeight) != ($width / $height)) {
-
                     $_scale = min((float) ($sourceWidth / $width), (float) ($sourceHeight / $height));
                     $cropX = (float) ($sourceWidth - ($_scale * $width));
                     $cropY = (float) ($sourceHeight - ($_scale * $height));
@@ -258,7 +259,14 @@ class ImageConverter
                     // crop the middle part of the image to fit proportions
                     $crop = imagecreatetruecolor($cropW, $cropH);
                     imagecopy(
-                            $crop, $gdImage, 0, 0, (int) ($cropX / 2), (int) ($cropY / 2), $cropW, $cropH
+                        $crop,
+                        $gdImage,
+                        0,
+                        0,
+                        (int) ($cropX / 2),
+                        (int) ($cropY / 2),
+                        $cropW,
+                        $cropH
                     );
 
                     $src_w = $cropW;
@@ -312,20 +320,20 @@ class ImageConverter
      * @param type $targetFile
      * @param type $options
      */
-    private static function ResizeImageMagick($sourceFile, $targetFile, $options = array())
+    private static function ResizeImageMagick($sourceFile, $targetFile, $options = [])
     {
         $convertCommand = Yii::$app->getModule('file')->settings->get('imageMagickPath');
         $width = (int) $options['width'];
         $height = (int) $options['height'];
 
         if ($options['mode'] == 'max') {
-
-            if ($width && $height)
+            if ($width && $height) {
                 $command = $convertCommand . "  -quality 100 -density 300 \"{$sourceFile}\" -resize '{$width}x{$height}>' \"{$targetFile}\"";
-            elseif ($width)
+            } elseif ($width) {
                 $command = $convertCommand . "  -quality 100 -density 300 \"{$sourceFile}\" -resize '{$width}x>' \"{$targetFile}\"";
-            elseif ($height)
+            } elseif ($height) {
                 $command = $convertCommand . "  -quality 100 -density 300 \"{$sourceFile}\" -resize 'x{$height}>' \"{$targetFile}\"";
+            }
 
             $ret = passthru($command);
         } elseif ($options['mode'] == 'force') {
@@ -412,5 +420,4 @@ class ImageConverter
         // If we dont find any pixel the function will return false.
         return false;
     }
-
 }

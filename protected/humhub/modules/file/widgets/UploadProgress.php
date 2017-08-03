@@ -6,14 +6,14 @@ use yii\helpers\Html;
 
 /**
  * UploadButtonWidget renders an upload button with integrated file input.
- * 
+ *
  * @package humhub.modules_core.file.widgets
  * @since 1.2
  */
 class UploadProgress extends \humhub\widgets\JsWidget
 {
     
-    public $jsWidget = "ui.progress.Progress";
+    public $jsWidget = 'ui.progress.Progress';
     
     public $visible = false;
     
@@ -23,5 +23,4 @@ class UploadProgress extends \humhub\widgets\JsWidget
             'style' => 'margin:10px 0px'
         ];
     }
-
 }

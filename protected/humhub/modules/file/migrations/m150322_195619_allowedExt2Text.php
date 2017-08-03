@@ -3,20 +3,19 @@
 
 use yii\db\Migration;
 
-
 class m150322_195619_allowedExt2Text extends Migration
 {
 
     public function up()
     {
         $allowedExtensions = Yii::$app->getModule('file')->settings->get('allowedExtensions');
-        if ($allowedExtensions != "") {
+        if ($allowedExtensions != '') {
             Yii::$app->getModule('file')->settings->set('allowedExtensions', '');
             Yii::$app->getModule('file')->settings->set('allowedExtensions', $allowedExtensions);
         }
 
         $showFilesWidgetBlacklist = Yii::$app->getModule('file')->settings->get('showFilesWidgetBlacklist');
-        if ($showFilesWidgetBlacklist != "") {
+        if ($showFilesWidgetBlacklist != '') {
             Yii::$app->getModule('file')->settings->set('showFilesWidgetBlacklist', '');
             Yii::$app->getModule('file')->settings->set('showFilesWidgetBlacklist', $showFilesWidgetBlacklist);
         }

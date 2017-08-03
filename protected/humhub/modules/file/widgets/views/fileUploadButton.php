@@ -8,7 +8,7 @@ $this->registerJsVar('fileuploader_error_modal_btn_close', Yii::t('FileModule.wi
 $this->registerJsVar('fileuploader_error_modal_errormsg', Yii::t('FileModule.widgets_FileUploadButtonWidget', 'Could not upload File:'));
 ?>
 
-<?php echo Html::hiddenInput($this->context->fileListFieldName, '', array('id' => "fileUploaderHiddenField_" . $uploaderId)); ?>
+<?php echo Html::hiddenInput($this->context->fileListFieldName, '', ['id' => 'fileUploaderHiddenField_' . $uploaderId]); ?>
 
 <style>
     .fileinput-button {

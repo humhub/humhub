@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   'Could not find requested file!' => '找不到请求的文件！',
   'Insufficient permissions!' => '没有足够的权限！',
-);
+];

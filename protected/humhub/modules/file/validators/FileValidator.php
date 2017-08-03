@@ -60,9 +60,9 @@ class FileValidator extends \yii\validators\FileValidator
 
     /**
      * Checks memory limit if GD is used for image conversions
-     * 
+     *
      * @param \yii\web\UploadedFile $file
-     * @return array|null 
+     * @return array|null
      */
     protected function checkMemoryLimit($file)
     {
@@ -79,5 +79,4 @@ class FileValidator extends \yii\validators\FileValidator
 
         return null;
     }
-
 }

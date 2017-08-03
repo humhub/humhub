@@ -41,5 +41,4 @@ class DownloadFileHandler extends BaseFileHandler
     {
         return Url::to(['/file/file/download', 'guid' => $file->guid, 'download' => $download]);
     }
-
 }

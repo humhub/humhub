@@ -21,7 +21,7 @@ class FileUploadButton extends \yii\base\Widget
     /**
      * @var String unique id of this uploader
      */
-    public $uploaderId = "";
+    public $uploaderId = '';
 
     /**
      * Hidden field which stores uploaded file guids
@@ -43,21 +43,18 @@ class FileUploadButton extends \yii\base\Widget
      */
     public function run()
     {
-        $objectModel = "";
-        $objectId = "";
+        $objectModel = '';
+        $objectId = '';
         if ($this->object !== null) {
             $objectModel = $this->object->className();
             $objectId = $this->object->getPrimaryKey();
         }
 
-        return $this->render('fileUploadButton', array(
+        return $this->render('fileUploadButton', [
                     'fileListFieldName' => $this->fileListFieldName,
                     'uploaderId' => $this->uploaderId,
                     'objectModel' => $objectModel,
                     'objectId' => $objectId
-        ));
+        ]);
     }
-
 }
-
-?>

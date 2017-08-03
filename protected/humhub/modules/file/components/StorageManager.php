@@ -33,7 +33,7 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
     protected $storagePath = '@webroot/uploads/file';
 
     /**
-     * @var integer file mode 
+     * @var integer file mode
      */
     public $fileMode = 0744;
 
@@ -105,8 +105,8 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
             $path = $this->getPath();
 
             // Make really sure, that we dont delete something else :-)
-            if ($this->file->guid != "" && is_dir($path)) {
-                $files = glob($path . DIRECTORY_SEPARATOR . "*");
+            if ($this->file->guid != '' && is_dir($path)) {
+                $files = glob($path . DIRECTORY_SEPARATOR . '*');
                 foreach ($files as $file) {
                     if (is_file($file)) {
                         unlink($file);
@@ -129,7 +129,7 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
 
     /**
      * Returns the path where the files of this file are located
-     * 
+     *
      * @return string the path
      */
     protected function getPath()
@@ -156,5 +156,4 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
 
         return $path;
     }
-
 }

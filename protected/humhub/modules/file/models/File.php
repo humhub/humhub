@@ -33,7 +33,7 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  *
  * Following properties are optional and for module depended use:
  * - title
- * 
+ *
  * @since 0.5
  */
 class File extends FileCompat
@@ -73,7 +73,7 @@ class File extends FileCompat
         return [
             [
                 'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
-                'mustBeInstanceOf' => array(\humhub\components\ActiveRecord::className()),
+                'mustBeInstanceOf' => [\humhub\components\ActiveRecord::className()],
             ],
             [
                 'class' => \humhub\components\behaviors\GUID::className(),
@@ -92,11 +92,11 @@ class File extends FileCompat
 
     /**
      * Returns the url to this file
-     * 
+     *
      * Available params (see also: DownloadAction)
-     * - variant: the requested file variant 
+     * - variant: the requested file variant
      * - download: force download option (default: false)
-     * 
+     *
      * @param array $params the params
      * @param boolean $absolute
      * @return string the url to the file download
@@ -123,7 +123,7 @@ class File extends FileCompat
      * If the file is not an instance of HActiveRecordContent or HActiveRecordContentAddon
      * the file is readable for all.
      */
-    public function canRead($userId = "")
+    public function canRead($userId = '')
     {
         $object = $this->getPolymorphicRelation();
         if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
@@ -139,14 +139,14 @@ class File extends FileCompat
      * If the file is not an instance of ContentActiveRecord or ContentAddonActiveRecord
      * the file is readable for all unless there is method canWrite or canDelete implemented.
      */
-    public function canDelete($userId = "")
+    public function canDelete($userId = '')
     {
         $object = $this->getPolymorphicRelation();
 
         if ($object != null) {
             if ($object instanceof ContentAddonActiveRecord) {
                 return $object->canWrite($userId);
-            } else if ($object instanceof ContentActiveRecord) {
+            } elseif ($object instanceof ContentActiveRecord) {
                 return $object->content->canWrite($userId);
             }
         }
@@ -165,17 +165,17 @@ class File extends FileCompat
 
     /**
      * Checks if this file record is assigned and used by record
-     * 
+     *
      * @return boolean is whether in use or not
      */
     public function isAssigned()
     {
-        return ($this->object_model != "");
+        return ($this->object_model != '');
     }
 
     /**
      * Returns the StorageManager
-     * 
+     *
      * @return \humhub\modules\file\components\StorageManager
      */
     public function getStore()
@@ -190,7 +190,7 @@ class File extends FileCompat
     
     /**
      * Returns all attached Files of the given $record.
-     * 
+     *
      * @param \yii\db\ActiveRecord $record
      * @return File[]
      */
@@ -198,5 +198,4 @@ class File extends FileCompat
     {
         return self::findAll(['object_model' => $record->className(), 'object_id' => $record->getPrimaryKey()]);
     }
-
 }

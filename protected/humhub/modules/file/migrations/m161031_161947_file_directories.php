@@ -7,7 +7,7 @@ class m161031_161947_file_directories extends Migration
 
     public function up()
     {
-        $uploadsDir = Yii::getAlias("@webroot/uploads/file");
+        $uploadsDir = Yii::getAlias('@webroot/uploads/file');
 
         if (is_dir($uploadsDir)) {
             foreach (scandir($uploadsDir) as $guid) {

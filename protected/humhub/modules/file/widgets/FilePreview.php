@@ -7,14 +7,14 @@ use humhub\widgets\JsWidget;
 use yii\helpers\Html;
 
 /**
- * 
+ *
  * @package humhub.modules_core.file.widgets
  * @since 1.2
  */
 class FilePreview extends JsWidget
 {
 
-    public $jsWidget = "file.Preview";
+    public $jsWidget = 'file.Preview';
     public $items;
     public $model;
     public $hideImageFileInfo = false;
@@ -62,7 +62,7 @@ class FilePreview extends JsWidget
         $result = [];
 
         foreach ($files as $file) {
-            if($file) {
+            if ($file) {
                 $result[] = FileHelper::getFileInfos($file);
             }
         }
@@ -76,11 +76,11 @@ class FilePreview extends JsWidget
             return [];
         }
 
-        if($this->items) {
+        if ($this->items) {
             return $this->items;
         }
 
-        if($this->showInStream === null) {
+        if ($this->showInStream === null) {
             return $this->model->fileManager->findAll();
         } else {
             return $this->model->fileManager->findStreamFiles($this->showInStream);

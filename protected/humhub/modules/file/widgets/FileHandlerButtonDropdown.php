@@ -80,7 +80,7 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
 
     /**
      * Renders the file handle link
-     * 
+     *
      * @param array $options the HTML options
      * @return string the rendered HTML tag
      */
@@ -98,5 +98,4 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
 
         return Html::tag('a', $label, $options);
     }
-
 }

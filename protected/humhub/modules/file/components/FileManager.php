@@ -30,7 +30,7 @@ class FileManager extends Component
     /**
      * Attach files to record.
      * This is required when uploaded before the related content is saved.
-     * 
+     *
      * @param string|array|File $files of File records or comma separeted list of file guids or single File record
      * @param boolean $steal steal when already assigned to other record
      */
@@ -69,7 +69,7 @@ class FileManager extends Component
 
     /**
      * File find query
-     * 
+     *
      * @return \yii\db\ActiveQuery file find query
      */
     public function find()
@@ -79,8 +79,8 @@ class FileManager extends Component
 
     /**
      * Returns a list of files assigned to the record
-     * 
-     * @return File[] array of files assigned to the record 
+     *
+     * @return File[] array of files assigned to the record
      */
     public function findAll()
     {
@@ -97,11 +97,10 @@ class FileManager extends Component
      */
     public function findStreamFiles($showInStream = true)
     {
-        if($showInStream) {
+        if ($showInStream) {
             return $this->find()->andWhere(['show_in_stream' => 1])->all();
         } else {
             return $this->find()->andWhere(['show_in_stream' => 0])->all();
         }
     }
-
 }

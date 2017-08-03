@@ -39,12 +39,12 @@ class FileHandlerCollection extends \yii\base\Component
     public $type;
 
     /**
-     * @var \humhub\modules\file\models\File 
+     * @var \humhub\modules\file\models\File
      */
     public $file = null;
 
     /**
-     * @var type 
+     * @var type
      */
     public $handlers = [];
 
@@ -76,7 +76,7 @@ class FileHandlerCollection extends \yii\base\Component
 
     /**
      * Returns registered handlers by type
-     * 
+     *
      * @param string|array $type or multiple type array
      * @param \humhub\modules\file\models\File $file the file (optional)
      * @return BaseFileHandler[] the registered handlers
@@ -104,9 +104,8 @@ class FileHandlerCollection extends \yii\base\Component
      */
     protected function sortHandler()
     {
-        usort($this->handlers, function(BaseFileHandler $a, BaseFileHandler $b) {
+        usort($this->handlers, function (BaseFileHandler $a, BaseFileHandler $b) {
             return strcmp($a->position, $b->position);
         });
     }
-
 }

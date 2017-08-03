@@ -41,7 +41,7 @@ class ShowFiles extends \yii\base\Widget
      */
     public function run()
     {
-        if(!$this->active) {
+        if (!$this->active) {
             return;
         }
 
@@ -64,7 +64,4 @@ class ShowFiles extends \yii\base\Widget
                     'hideImageFileInfo' => $hidePreviewFileInfo
         ]);
     }
-
 }
-
-?>

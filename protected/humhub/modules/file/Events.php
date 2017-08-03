@@ -12,7 +12,7 @@ use humhub\modules\file\models\File;
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @author luke
  */
 class Events extends \yii\base\Object
@@ -25,7 +25,7 @@ class Events extends \yii\base\Object
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget(widgets\ShowFiles::className(), array('object' => $event->sender->object), array('sortOrder' => 5));
+        $event->sender->addWidget(widgets\ShowFiles::className(), ['object' => $event->sender->object], ['sortOrder' => 5]);
     }
 
     /**
@@ -39,7 +39,7 @@ class Events extends \yii\base\Object
     {
 
         $controller = $event->sender;
-        $controller->stdout("Deleting old unassigned files... ");
+        $controller->stdout('Deleting old unassigned files... ');
 
         // Delete unused files
         $deleteTime = time() - (60 * 60 * 24 * 1); // Older than 1 day
@@ -58,11 +58,11 @@ class Events extends \yii\base\Object
     public static function onIntegrityCheck($event)
     {
         $integrityController = $event->sender;
-        $integrityController->showTestHeadline("File Module (" . File::find()->count() . " entries)");
+        $integrityController->showTestHeadline('File Module (' . File::find()->count() . ' entries)');
 
         foreach (File::find()->all() as $file) {
-            if ($file->object_model != "" && $file->object_id != "" && $file->getPolymorphicRelation() === null) {
-                if ($integrityController->showFix("Deleting file id " . $file->id . " without existing target!")) {
+            if ($file->object_model != '' && $file->object_id != '' && $file->getPolymorphicRelation() === null) {
+                if ($integrityController->showFix('Deleting file id ' . $file->id . ' without existing target!')) {
                     $file->delete();
                 }
             }
@@ -90,10 +90,9 @@ class Events extends \yii\base\Object
 
     public static function onUserDelete($event)
     {
-        foreach (File::findAll(array('created_by' => $event->sender->id)) as $file) {
+        foreach (File::findAll(['created_by' => $event->sender->id]) as $file) {
             $file->delete();
         }
         return true;
     }
-
 }
