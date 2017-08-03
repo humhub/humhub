@@ -18,5 +18,4 @@ class AccountSettingsPage extends BasePage
         $this->actor->click('Security');
         $this->actor->waitForText('Security settings', 30);
     }
-
 }

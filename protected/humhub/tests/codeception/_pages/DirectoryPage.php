@@ -18,5 +18,4 @@ class DirectoryPage extends BasePage
         $this->actor->click('Member');
         $this->actor->waitForText('Member directory', 30);
     }
-
 }

@@ -53,7 +53,7 @@ class HumHubDbTestCase extends Test
     protected function setUp()
     {
         parent::setUp();
-        $webRoot = dirname(dirname(__DIR__)).'/../../..';
+        $webRoot = dirname(dirname(__DIR__)) . '/../../..';
         Yii::setAlias('@webroot', realpath($webRoot));
         $this->initModules();
         $this->reloadSettings();
@@ -107,7 +107,7 @@ class HumHubDbTestCase extends Test
     {
         $cfg = \Codeception\Configuration::config();
 
-        if(!$this->fixtureConfig && isset($cfg['fixtures'])) {
+        if (!$this->fixtureConfig && isset($cfg['fixtures'])) {
             $this->fixtureConfig = $cfg['fixtures'];
         }
 
@@ -173,7 +173,7 @@ class HumHubDbTestCase extends Test
 
     public function allowGuestAccess($allow = true)
     {
-        if($allow) {
+        if ($allow) {
             Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 1);
         } else {
             Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 0);
@@ -204,5 +204,4 @@ class HumHubDbTestCase extends Test
     {
         Yii::$app->user->logout(true);
     }
-
 }

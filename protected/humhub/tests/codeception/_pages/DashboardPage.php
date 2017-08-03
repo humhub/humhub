@@ -12,5 +12,4 @@ class DashboardPage extends BasePage
 {
 
     public $route = 'dashboard/dashboard';
-
 }

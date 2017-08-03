@@ -1,3 +1,2 @@
 <?php
-echo '<div>TestLayout:'.$content.'</div>';
-
+echo '<div>TestLayout:' . $content . '</div>';

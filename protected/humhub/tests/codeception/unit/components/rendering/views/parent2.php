@@ -1,4 +1,3 @@
 <?php
 
-echo '<h1>ParentView2:'.$title.'</h1>';
-
+echo '<h1>ParentView2:' . $title . '</h1>';
