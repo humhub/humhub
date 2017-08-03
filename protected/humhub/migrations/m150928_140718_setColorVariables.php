@@ -2,7 +2,6 @@
 
 use yii\db\Migration;
 
-
 class m150928_140718_setColorVariables extends Migration
 {
     public function up()

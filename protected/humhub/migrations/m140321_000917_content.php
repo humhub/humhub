@@ -10,7 +10,7 @@ class m140321_000917_content extends Migration
     {
         // Fix: empty user_id in content table
         $rows = (new \yii\db\Query())
-                ->select("*")
+                ->select('*')
                 ->from('content')
                 ->where(['IS', 'user_id', new \yii\db\Expression('NULL')])
                 ->all();
