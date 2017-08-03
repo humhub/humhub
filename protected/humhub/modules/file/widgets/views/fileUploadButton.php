@@ -8,7 +8,7 @@ $this->registerJsVar('fileuploader_error_modal_btn_close', Yii::t('FileModule.wi
 $this->registerJsVar('fileuploader_error_modal_errormsg', Yii::t('FileModule.widgets_FileUploadButtonWidget', 'Could not upload File:'));
 ?>
 
-<?php echo Html::hiddenInput($this->context->fileListFieldName, '', ['id' => 'fileUploaderHiddenField_' . $uploaderId]); ?>
+<?= Html::hiddenInput($this->context->fileListFieldName, '', ['id' => 'fileUploaderHiddenField_' . $uploaderId]); ?>
 
 <style>
     .fileinput-button {
@@ -30,10 +30,10 @@ $this->registerJsVar('fileuploader_error_modal_errormsg', Yii::t('FileModule.wid
     }
 </style>
 <span class="btn btn-info fileinput-button tt" data-toggle="tooltip" data-placement="bottom" title=""
-      data-original-title="<?php echo Yii::t('FileModule.widgets_views_fileUploadButton', 'Upload files'); ?>">
+      data-original-title="<?= Yii::t('FileModule.widgets_views_fileUploadButton', 'Upload files'); ?>">
     <i class="fa fa-cloud-upload"></i>
 
-    <input id="fileUploaderButton_<?php echo $uploaderId; ?>" type="file" name="files[]"
+    <input id="fileUploaderButton_<?= $uploaderId; ?>" type="file" name="files[]"
            data-url="<?php echo Url::to(['/file/file/upload', 'objectModel' => $objectModel, 'objectId' => $objectId]); ?>" multiple>
 </span>
 
@@ -47,5 +47,4 @@ $this->registerJsVar('fileuploader_error_modal_errormsg', Yii::t('FileModule.wid
             $('.tt').tooltip('hide');
         })
     })
-
 </script>
