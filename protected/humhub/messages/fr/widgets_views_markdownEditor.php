@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => 'Ajouter une image/fichier',
   'Add link' => 'Ajouter un lien',
   'Bold' => 'Gras',
@@ -31,4 +31,4 @@ return array (
   'strong text' => 'texte gras',
   'Unordered List' => 'Liste désordonnée',
   'Ordered List' => 'Liste ordonnée',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => 'Pievienot attēlu/failu',
   'Add link' => 'Pievienot saiti',
   'Bold' => 'Treknraksts',
@@ -31,4 +31,4 @@ return array (
   'list text here' => 'saraksta teksts šeit',
   'quote here' => 'citāts šeit',
   'strong text' => 'trenknraksta teksts šeit',
-);
+];

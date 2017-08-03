@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => 'Resim/Dosya Ekle',
   'Add link' => 'Link Ekle',
   'Bold' => 'Kalın',
@@ -31,4 +31,4 @@ return array (
   'list text here' => 'metin listesi girin',
   'quote here' => 'alıntı girin',
   'strong text' => 'kalın metin',
-);
+];

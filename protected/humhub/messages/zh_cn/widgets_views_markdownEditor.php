@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => '添加 图片/文件',
   'Add link' => '增加链接',
   'Bold' => '加粗',
@@ -31,4 +31,4 @@ return array (
   'Title' => '标题',
   'Unordered List' => '无序列表',
   'Ordered List' => '有序列表',
-);
+];

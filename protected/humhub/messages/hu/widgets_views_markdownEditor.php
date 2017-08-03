@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => 'Új kép/fájl',
   'Add link' => 'Új link',
   'Bold' => 'Félkövér',
@@ -31,4 +31,4 @@ return array (
   'list text here' => 'felsorolás szövege',
   'quote here' => 'idézet szövege',
   'strong text' => 'félkövér szöveg',
-);
+];

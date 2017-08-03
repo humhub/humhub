@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>Confirm</strong> Action' => '',
   '<strong>Latest</strong> updates' => 'Kemaskini <strong>terkini</strong>',
   '<strong>Mail</strong> summary' => '',
@@ -61,4 +61,4 @@ return array (
   'Upload' => '',
   'User not found!' => 'Ahli tidak ditemui!',
   'You are not allowed to run this action.' => '',
-);
+];

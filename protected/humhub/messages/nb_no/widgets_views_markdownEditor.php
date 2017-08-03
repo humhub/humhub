@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => 'Legg til bilde/fil',
   'Add link' => 'Legg til link',
   'Bold' => 'Fet',
@@ -31,4 +31,4 @@ return array (
   'list text here' => 'listetekst her',
   'quote here' => 'sitat her',
   'strong text' => 'uthevet tekst',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => 'Tambah imej/fail',
   'Add link' => 'Tambah pautan',
   'Bold' => 'Tebal',
@@ -29,4 +29,4 @@ return array (
   'list text here' => 'teks bagi senarai di sini',
   'quote here' => 'ungkap di sini',
   'strong text' => 'teks tebal',
-);
+];

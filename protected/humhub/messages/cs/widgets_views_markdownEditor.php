@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   'Add image/file' => 'Přidat obrázek/soubor',
   'Add link' => 'Přidat odkaz',
   'Bold' => 'Tučně',
@@ -31,4 +31,4 @@ return array (
   'list text here' => 'odrážka',
   'quote here' => 'zde je místo pro citaci',
   'strong text' => 'tučný text',
-);
+];
