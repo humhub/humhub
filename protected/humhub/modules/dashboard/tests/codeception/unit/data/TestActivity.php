@@ -13,7 +13,6 @@ use humhub\modules\activity\components\BaseActivity;
 class TestActivity extends BaseActivity
 {
 
-    public $moduleId = "test";
-    public $viewName = "asdf";
-
+    public $moduleId = 'test';
+    public $viewName = 'asdf';
 }
