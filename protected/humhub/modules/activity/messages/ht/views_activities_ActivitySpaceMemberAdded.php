@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '%displayName% joined the space %spaceName%' => '%displayName% jwen\'n espas %spaceName%',
   '%displayName% joined this space.' => '%displayName% jwen\'n espas sa.',
-);
+];

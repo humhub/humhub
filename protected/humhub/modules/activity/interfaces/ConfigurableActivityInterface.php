@@ -33,5 +33,4 @@ interface ConfigurableActivityInterface
      * @return string the description of the activity
      */
     public function getDescription();
-
 }

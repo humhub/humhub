@@ -56,7 +56,7 @@ class Activity extends WallEntry
 
         // When element is assigned to a workspace, assign variable
         $space = null;
-        if ($this->activity->content->space_id != "") {
+        if ($this->activity->content->space_id != '') {
             $space = $this->activity->content->space;
         }
 
@@ -64,13 +64,13 @@ class Activity extends WallEntry
         $user = $this->activity->content->user;
 
         if ($user == null) {
-            Yii::warning("Skipping activity without valid user", "warning");
+            Yii::warning('Skipping activity without valid user', 'warning');
             return;
         }
 
 
         // Dertermine View
-        if ($this->activity->module == "") {
+        if ($this->activity->module == '') {
             $view = '@humhub/modules/activity/views/activities/' . $this->activity->type;
         } else {
             $module = Yii::$app->getModule($this->activity->module, true);
@@ -83,13 +83,12 @@ class Activity extends WallEntry
         // Activity Layout can access it
         $this->wallEntryId = $wallEntryId;
 
-        return $this->render($view, array(
+        return $this->render($view, [
             'activity' => $this->activity,
             'wallEntryId' => $wallEntryId,
             'user' => $user,
             'target' => $source,
             'space' => $space,
-        ));
+        ]);
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '%displayName% left the space %spaceName%' => '%displayName% paliko paskyrą %spaceName%',
   '%displayName% left this space.' => '%displayName% paliko šią paskyrą.',
-);
+];

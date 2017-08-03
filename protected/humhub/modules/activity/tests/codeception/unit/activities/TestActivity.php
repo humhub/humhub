@@ -7,6 +7,7 @@ namespace humhub\modules\activity\tests\codeception\unit\activities;
  *
  * @author buddha
  */
-class TestActivity extends \humhub\modules\activity\components\BaseActivity {
+class TestActivity extends \humhub\modules\activity\components\BaseActivity
+{
     public $moduleId = 'test';
 }

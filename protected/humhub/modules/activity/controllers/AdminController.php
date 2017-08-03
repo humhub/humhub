@@ -44,5 +44,4 @@ class AdminController extends Controller
             'model' => $model
         ]);
     }
-
 }

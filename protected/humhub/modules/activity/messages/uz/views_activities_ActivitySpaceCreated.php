@@ -16,7 +16,7 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
+return  [
   '%displayName% created the new space %spaceName%' => '',
   '%displayName% created this space.' => '',
-);
+];

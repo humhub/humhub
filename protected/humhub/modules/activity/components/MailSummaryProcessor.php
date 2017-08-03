@@ -56,7 +56,6 @@ class MailSummaryProcessor
         }
 
         foreach ($users->each() as $user) {
-
             // Check if user wants summary in the given interval
             try {
                 if (self::checkUser($user, $interval)) {
@@ -73,7 +72,7 @@ class MailSummaryProcessor
                 Yii::error('Could not send activity mail to: ' . $user->displayName . ' (' . $ex->getMessage() . ')', 'activity');
             }
             if ($interactive) {
-                Console::updateProgress( ++$processed, $totalUsers);
+                Console::updateProgress(++$processed, $totalUsers);
             }
         }
 
@@ -105,5 +104,4 @@ class MailSummaryProcessor
 
         return true;
     }
-
 }

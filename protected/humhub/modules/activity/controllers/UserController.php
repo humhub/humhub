@@ -47,5 +47,4 @@ class UserController extends BaseAccountController
 
         $this->redirect(['index']);
     }
-
 }

@@ -70,5 +70,4 @@ class Stream extends \yii\base\Widget
 
         return \yii\helpers\Url::to(array_merge([$this->streamAction], $params));
     }
-
 }

@@ -191,7 +191,7 @@ class MailSummaryForm extends Model
         }
 
         $settingsManager->set('mailSummaryInterval', $this->interval);
-        $settingsManager->set('mailSummaryLimitSpaces', implode(",", $this->limitSpaces));
+        $settingsManager->set('mailSummaryLimitSpaces', implode(',', $this->limitSpaces));
         $settingsManager->set('mailSummaryLimitSpacesMode', $this->limitSpacesMode);
 
         // We got a list of enabled activities, but we store only disabled activity class names
@@ -209,7 +209,7 @@ class MailSummaryForm extends Model
     public function resetUserSettings()
     {
         if ($this->user === null) {
-            throw new Exception("Could not reset settings when no user is set!");
+            throw new Exception('Could not reset settings when no user is set!');
         }
 
         $settingsManager = Yii::$app->getModule('activity')->settings->user($this->user);
@@ -218,5 +218,4 @@ class MailSummaryForm extends Model
         $settingsManager->delete('mailSummaryLimitSpacesMode');
         $settingsManager->delete('mailSummaryActivitySuppress');
     }
-
 }

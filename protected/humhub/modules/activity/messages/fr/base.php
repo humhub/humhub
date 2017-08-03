@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>E-Mail</strong> Summaries' => 'Résumés par <strong>e-mail</strong>',
   'Activities' => 'Activités',
   'Daily' => 'Quotidien ',
@@ -20,4 +20,4 @@ return array (
   'You will only receive an e-mail if there is something new.' => 'Vous recevrez un e-mail uniquement s\'il y a du nouveau.',
   'Your daily summary' => 'Votre résumé quotidien',
   'Your weekly summary' => 'Votre résumé hebdomadaire',
-);
+];

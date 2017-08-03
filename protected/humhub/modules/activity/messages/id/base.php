@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<strong>E-Mail</strong> Summaries' => 'Ringkasan',
   'Activities' => 'Aktivitas',
   'Daily' => 'Harian',
@@ -20,4 +20,4 @@ return array (
   'You will only receive an e-mail if there is something new.' => 'Kamu akan menerima email jika ada sesuatu yang baru',
   'Your daily summary' => 'Ringkasan harian anda',
   'Your weekly summary' => 'Ringkasan mingguan',
-);
+];
