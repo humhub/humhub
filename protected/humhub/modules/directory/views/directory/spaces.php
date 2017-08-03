@@ -32,7 +32,7 @@ use humhub\modules\directory\widgets\SpaceTagList;
         </div>
         <?= Html::endForm(); ?>
 
-        <?php if (count($spaces) == 0): ?>
+        <?php if (count($spaces) == 0) : ?>
             <p><?= Yii::t('DirectoryModule.base', 'No spaces found!'); ?></p>
         <?php endif; ?>
     </div>
@@ -54,10 +54,10 @@ use humhub\modules\directory\widgets\SpaceTagList;
 
                     <?= Image::widget(['space' => $space, 'width' => 50, 'htmlOptions' => ['class' => 'media-object'], 'link' => true, 'linkOptions' => ['class' => 'pull-left']]); ?>
 
-                    <?php if ($space->isMember()): ?>
+                    <?php if ($space->isMember()) : ?>
                         <i class="fa fa-user space-member-sign tt" data-toggle="tooltip" data-placement="top" title=""
                            data-original-title="<?= Yii::t('DirectoryModule.base', 'You are a member of this space'); ?>"></i>
-                       <?php endif; ?>
+                    <?php endif; ?>
 
                     <div class="media-body">
                         <h4 class="media-heading"><a href="<?= $space->getUrl(); ?>"><?= Html::encode($space->name); ?></a>

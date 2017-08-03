@@ -44,11 +44,10 @@ class UserGroupList extends Widget
             return;
         }
 
-        $groupList = implode(', ', array_map(function($g) {
+        $groupList = implode(', ', array_map(function ($g) {
                     return Html::encode($g->name);
-                }, $this->user->groups));
+        }, $this->user->groups));
 
         return Html::tag($this->tagName, $groupList, $this->htmlOptions);
     }
-
 }

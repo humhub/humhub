@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Ide még senki nem írt semmit.</b><br>Legyél te az első!',
   '<b>There are no profile posts yet!</b>' => '',
   '<strong>Directory</strong> menu' => '<strong>Névjegyzék</strong> menü',
@@ -36,4 +36,4 @@ return array (
   'search for members' => 'tagok keresése',
   'search for spaces' => 'témakörök keresése',
   'show all members' => 'összes tag megjelenítése',
-);
+];

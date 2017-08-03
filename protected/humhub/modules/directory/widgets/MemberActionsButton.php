@@ -12,7 +12,7 @@ use humhub\components\Widget;
 
 /**
  * MemberActionsButton shows directory options (following or friendship) for listed users
- * 
+ *
  * @since 1.2
  * @author Luke
  */
@@ -33,5 +33,4 @@ class MemberActionsButton extends Widget
                     'user' => $this->user
         ]);
     }
-
 }

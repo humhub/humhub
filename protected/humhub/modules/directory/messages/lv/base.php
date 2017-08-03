@@ -1,5 +1,5 @@
 <?php
-return array (
+return  [
   '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Neviens vēl nav neko uzrakstījis.</b><br>Sāc un uzraksti kaut ko...',
   '<b>There are no profile posts yet!</b>' => '<b>Šeit vēl nav profila ieraksti!</b>',
   '<strong>Directory</strong> menu' => '<strong>Kataloga</strong> izvēlne',
@@ -36,4 +36,4 @@ return array (
   'search for members' => 'meklēt dalībniekus',
   'search for spaces' => 'meklēt vietas',
   'show all members' => 'rādīt visus dalībniekus',
-);
+];

@@ -59,7 +59,4 @@ class NewMembers extends \yii\base\Widget
                     'showInviteButton' => $this->showInviteButton
         ]);
     }
-
 }
-
-?>

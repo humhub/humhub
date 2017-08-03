@@ -40,12 +40,9 @@ class NewSpaces extends \yii\base\Widget
         $query->limit(10);
         $query->orderBy('created_at DESC');
 
-        return $this->render('newSpaces', array(
+        return $this->render('newSpaces', [
                     'newSpaces' => $query->all(),
                     'showMoreButton' => $this->showMoreButton
-        ));
+        ]);
     }
-
 }
-
-?>

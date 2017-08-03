@@ -9,7 +9,7 @@ humhub\modules\directory\assets\DirectoryAsset::register($this);
 <div class="panel panel-default" id="groups-statistics-panel">
 
     <!-- Display panel menu widget -->
-<?php echo humhub\widgets\PanelMenu::widget(array('id' => 'groups-statistics-panel')); ?>
+<?php echo humhub\widgets\PanelMenu::widget(['id' => 'groups-statistics-panel']); ?>
 
     <div class="panel-heading">
 <?php echo Yii::t('DirectoryModule.base', '<strong>Group</strong> stats'); ?>
