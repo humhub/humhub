@@ -33,9 +33,7 @@ class AuthClientHelpers
         $attributes = $authClient->getUserAttributes();
 
         if ($authClient instanceof interfaces\PrimaryClient) {
-            /**
-             * @var interfaces\PrimaryClient $authClient
-             */
+            /* @var $authClient \humhub\modules\user\authclient\interfaces\PrimaryClient */
             return $authClient->getUser();
         }
 
@@ -209,11 +207,10 @@ class AuthClientHelpers
     public static function getAuthClientsByUser(User $user)
     {
         $authClients = [];
-
+        
         foreach (Yii::$app->authClientCollection->getClients() as $client) {
-            /**
-             * @var $client ClientInterface
-             */
+            /* @var $client ClientInterface */
+
             // Add primary authClient
             if ($user->auth_mode == $client->getId()) {
                 $authClients[] = $client;

@@ -71,6 +71,11 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     public $byPassApproval = true;
 
     /**
+     * @var array of attributes which are synced with the user table 
+     */
+    public $syncUserTableAttributes = ['username', 'email'];
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -275,7 +280,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
         }
 
         $normalized['id'] = 'unused';
-        
+
         return parent::normalizeUserAttributes($normalized);
     }
 
@@ -364,7 +369,8 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
      */
     public function getSyncAttributes()
     {
-        $attributes = ['username', 'email', 'authclient_id'];
+        $attributes = $this->syncUserTableAttributes;
+        $attributes[] = 'authclient_id';
 
         foreach (ProfileField::find()->andWhere(['!=', 'ldap_attribute', ''])->all() as $profileField) {
             $attributes[] = $profileField->internal_name;

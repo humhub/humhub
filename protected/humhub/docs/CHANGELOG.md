@@ -8,7 +8,7 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 
 - Enh: Updated primary auth client interface for more flexibility
 - Enh: Added LDAP ID attribute to improve user mapping
-
+- Enh: Option to disable e-mail address requirement in User model
 
 
 1.2.2  (August 2, 2017)
