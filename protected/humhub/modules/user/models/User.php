@@ -33,6 +33,7 @@ use humhub\modules\content\models\Content;
  * @property string $updated_at
  * @property integer $updated_by
  * @property string $last_login
+ * @property string $authclient_id
  * @property integer $visibility
  * @property integer $contentcontainer_id
  * @property Profile $profile

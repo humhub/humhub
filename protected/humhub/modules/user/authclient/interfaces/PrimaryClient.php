@@ -20,10 +20,10 @@ interface PrimaryClient
 {
 
     /**
-     * Returns the user model attribute name which should be mapped against
-     * the id attribute in the authClient user attributes.
+     * Returns the user model of this auth client
      * 
-     * @return string the user model id attribute e.g. id, guid or email
+     * @since 1.2.2
+     * @return \humhub\modules\user\models\User
      */
-    public function getUserTableIdAttribute();
+    public function getUser();
 }

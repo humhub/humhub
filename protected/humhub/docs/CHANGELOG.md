@@ -1,6 +1,15 @@
 HumHub Change Log
 =================
 
+1.2.2  (Not released yet)
+--------------------------------
+
+Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users.
+
+- Enh: Updated primary auth client interface for more flexibility
+- Enh: Added LDAP ID attribute to improve user mapping
+
+
 
 1.2.2  (August 2, 2017)
 --------------------------------
