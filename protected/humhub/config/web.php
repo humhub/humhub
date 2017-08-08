@@ -15,7 +15,7 @@ $config = [
     'components' => [
         'request' => [
             'class' => 'humhub\components\Request',
-            'csrfCookie' => ['httpOnly' => true, 'secure' => true],
+            'csrfCookie' => ['httpOnly' => true, 'secure' => (isset(Yii::$app->request->isSecureConnection) ? false : true)],
         ],
         'response' => [
             'class' => 'humhub\components\Response',
@@ -23,7 +23,7 @@ $config = [
         'user' => [
             'class' => 'humhub\modules\user\components\User',
             'identityClass' => 'humhub\modules\user\models\User',
-            'identityCookie' => ['name' => '_identity', 'httpOnly' => true, 'secure' => true],
+            'identityCookie' => ['name' => '_identity', 'httpOnly' => true, 'secure' => (isset(Yii::$app->request->isSecureConnection) ? false : true)],
             'enableAutoLogin' => true,
             'authTimeout' => 1400,
             'loginUrl' => ['/user/auth/login'],
@@ -34,7 +34,7 @@ $config = [
         'session' => [
             'class' => 'humhub\modules\user\components\Session',
             'sessionTable' => 'user_http_session',
-            'cookieParams' => ['httpOnly' => true, 'secure' => true],
+            'cookieParams' => ['httpOnly' => true, 'secure' => (isset(Yii::$app->request->isSecureConnection) ? false : true)],
         ],
     ],
     'modules' => [],
