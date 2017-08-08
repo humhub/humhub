@@ -15,7 +15,7 @@ $config = [
     'components' => [
         'request' => [
             'class' => 'humhub\components\Request',
-+           'csrfCookie' => ['httpOnly' => true, 'secure' => YII_ENV_PROD],
+            'csrfCookie' => ['httpOnly' => true, 'secure' => YII_ENV_PROD],
         ],
         'response' => [
             'class' => 'humhub\components\Response',
