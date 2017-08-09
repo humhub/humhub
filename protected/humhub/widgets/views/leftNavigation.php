@@ -8,7 +8,7 @@
 ?>
 
 <!-- start: list-group navi for large devices -->
-<div id="<?= $this->context->id; ?>" class="panel panel-default">
+<div id="<?= $this->context->id; ?>" class="panel panel-default left-navigation">
     <?php foreach ($this->context->getItemGroups() as $group) : ?>
 
         <?php $items = $this->context->getItems($group['id']); ?>
@@ -20,7 +20,7 @@
         <div class="list-group">
             <?php foreach ($items as $item) : ?>
                 <?php $item['htmlOptions']['class'] .= " list-group-item"; ?>
-                <?php echo \yii\helpers\Html::a($item['icon']."<span>".$item['label']."</span>", $item['url'], $item['htmlOptions']); ?>
+                <?php echo \yii\helpers\Html::a($item['icon'] . "<span>" . $item['label'] . "</span>", $item['url'], $item['htmlOptions']); ?>
             <?php endforeach; ?>
         </div>
     <?php endforeach; ?>
