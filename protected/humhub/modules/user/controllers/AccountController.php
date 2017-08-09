@@ -50,6 +50,10 @@ class AccountController extends BaseAccountController
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
         return $this->redirect(Yii::$app->user->getIdentity()->getUrl());
     }
 
