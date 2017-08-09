@@ -8,7 +8,7 @@
 
 <script>
     $(document).one('humhub:ready', function() {
-        if(humhub && humhub.modules.notification) {
+        if(humhub && humhub.modules.notification && humhub.modules.notification.menu) {
             humhub.modules.notification.menu.updateCount(<?= $count ?>);
         }
     });
