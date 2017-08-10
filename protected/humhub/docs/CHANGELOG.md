@@ -11,6 +11,7 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Enh: Option to disable e-mail address requirement in User model
 - Fix: Overwrite of static image in theme + added documentation section
 - Fix: Account Controller exception when user is not logged in
+- Fix: Exception on notification overview page when not logged in
 
 
 1.2.2  (August 2, 2017)
