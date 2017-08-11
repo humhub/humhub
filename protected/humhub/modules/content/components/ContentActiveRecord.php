@@ -275,7 +275,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     /**
      * Returns the assigned wall entry widget instance
      *
-     * @return \humhub\modules\content\widgets\WallEntry
+     * @return null|\humhub\modules\content\widgets\WallEntry for this class by wallEntryClass property , null will be
+     * returned if this wallEntryClass is empty
      */
     public function getWallEntryWidget()
     {

@@ -76,6 +76,12 @@ class Module extends \humhub\components\Module
      * @since 1.2 
      */
     public $disableFollow = false;
+    
+    /**
+     * @var boolean defines mark user e-mail field as required
+     * @since 1.2.2 
+     */
+    public $emailRequired = true;
 
     /**
      * @inheritdoc

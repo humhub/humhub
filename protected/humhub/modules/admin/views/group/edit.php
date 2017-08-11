@@ -44,6 +44,7 @@ use humhub\modules\space\widgets\SpacePickerField;
         <?= $form->field($group, 'show_at_registration')->checkbox(); ?>
     <?php endif; ?>
     <?= $form->field($group, 'show_at_directory')->checkbox(); ?>
+    <?= $form->field($group, 'sort_order'); ?>
 
     <?= CHtml::submitButton(Yii::t('AdminModule.views_group_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
