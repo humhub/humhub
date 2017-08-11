@@ -320,7 +320,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         // We don't allow deletion of users who owns a space - validate that
         foreach (\humhub\modules\space\models\Membership::GetUserSpaces($this->id) as $space) {
             if ($space->isSpaceOwner($this->id)) {
-                throw new Exception("Tried to delete a user which is owner of a space!");
+                throw new Exception('Tried to delete a user (' . $this->id . ') which is owner of a space!');
             }
         }
 
