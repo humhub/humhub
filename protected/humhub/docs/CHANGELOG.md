@@ -12,6 +12,8 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix: Overwrite of static image in theme + added documentation section
 - Fix: Account Controller exception when user is not logged in
 - Fix: Exception on notification overview page when not logged in
+- Enh: Added possibility to sort groups in directory
+- Enh: Removed LDAP UserFilter/LoginFilter length restriction
 
 
 1.2.2  (August 2, 2017)

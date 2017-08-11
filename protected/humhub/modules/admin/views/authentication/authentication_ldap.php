@@ -40,8 +40,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'username')->textInput(['readonly' => Setting::IsFixed('auth.ldap.username', 'user')]); ?>
     <?= $form->field($model, 'password')->passwordInput(['readonly' => Setting::IsFixed('auth.ldap.password', 'user')]); ?>
     <?= $form->field($model, 'baseDn')->textInput(['readonly' => Setting::IsFixed('auth.ldap.baseDn', 'user')]); ?>
-    <?= $form->field($model, 'loginFilter')->textInput(['readonly' => Setting::IsFixed('auth.ldap.loginFilter', 'user')]); ?>
-    <?= $form->field($model, 'userFilter')->textInput(['readonly' => Setting::IsFixed('auth.ldap.userFilter', 'user')]); ?>
+    <?= $form->field($model, 'loginFilter')->textArea(['readonly' => Setting::IsFixed('auth.ldap.loginFilter', 'user')]); ?>
+    <?= $form->field($model, 'userFilter')->textArea(['readonly' => Setting::IsFixed('auth.ldap.userFilter', 'user')]); ?>
     <?= $form->field($model, 'usernameAttribute')->textInput(['readonly' => Setting::IsFixed('auth.ldap.usernameAttribute', 'user')]); ?>
     <?= $form->field($model, 'emailAttribute')->textInput(['readonly' => Setting::IsFixed('auth.ldap.emailAttribute', 'user')]); ?>
     <?= $form->field($model, 'idAttribute')->textInput(['readonly' => Setting::IsFixed('auth.ldap.idAttribute', 'user')]); ?>

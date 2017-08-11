@@ -70,7 +70,8 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
     public function rules()
     {
         return [
-            [['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'password', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter', 'idAttribute'], 'string', 'max' => 255],
+            [['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'password', 'hostname', 'port', 'idAttribute'], 'string', 'max' => 255],
+            [['baseDn', 'loginFilter', 'userFilter'], 'string'],
             [['usernameAttribute', 'username', 'password', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter'], 'required'],
             ['encryption', 'in', 'range' => ['', 'ssl', 'tls']],
         ];
