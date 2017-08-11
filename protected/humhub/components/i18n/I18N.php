@@ -57,6 +57,8 @@ class I18N extends \yii\i18n\I18N
 
         if (!empty($user->time_zone)) {
             Yii::$app->formatter->timeZone = $user->time_zone;
+        } else {
+            Yii::$app->formatter->timeZone = Yii::$app->timeZone;
         }
 
         Yii::$app->formatter->defaultTimeZone = Yii::$app->timeZone;
