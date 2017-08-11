@@ -27,6 +27,7 @@ class ContentTagDropDown extends InputWidget
     public $tagClass;
     public $query;
     public $contentContainer;
+    public $includeGlobal = false;
     public $type = true;
     public $prompt = false;
     public $promptValue = 0;
@@ -90,7 +91,7 @@ class ContentTagDropDown extends InputWidget
 
         if(!$this->query) {
             if($this->contentContainer) {
-                $this->query = call_user_func($this->tagClass .'::findByContainer', $this->contentContainer);
+                $this->query = call_user_func($this->tagClass .'::findByContainer', $this->contentContainer, $this->includeGlobal);
             } elseif(!empty($this->type)){
                 $type = ($this->type === true) ? $this->tagClass : $this->type;
                 $this->query = call_user_func($this->tagClass .'::findByType', [$type]);

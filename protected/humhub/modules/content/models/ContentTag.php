@@ -84,6 +84,15 @@ class ContentTag extends ActiveRecord
         return 'content_tag';
     }
 
+    /**
+     * ContentTag constructor.
+     *
+     * Can be called either with an yii contfig array or with contentcontainer and name.
+     *
+     * @param array|ContentContainerActiveRecord $contentContainer
+     * @param null $name
+     * @param array $config
+     */
     public function __construct($contentContainer = [], $name = null, $config = [])
     {
         if (is_array($contentContainer)) {
@@ -349,6 +358,13 @@ class ContentTag extends ActiveRecord
         return $query;
     }
 
+    public static function findGlobal()
+    {
+        $query = self::find();
+        $query->andWhere('content_tag.contentcontainer_id IS NULL');
+        return $query;
+    }
+
     /**
      * Returns Content related tags.
      *
@@ -409,13 +425,25 @@ class ContentTag extends ActiveRecord
     /**
      * Finds instances by ContentContainerActiveRecord and optional type.
      *
-     * @param ContentContainerActiveRecord|integer $record Container instance or contentcontainer_id
-     * @param null $type
-     * @return \yii\db\ActiveQuery
+     * If $includeGlobal is set to true the query will also include global content tags of this type.
+     *
+     * @param $container
+     * @param bool $includeGlobal if true the query will include global tags as well @since 1.2.3
+     * @return ActiveQuery
+     * @internal param ContentContainerActiveRecord|int $record Container instance or contentcontainer_id
+     * @internal param null $type
      */
-    public static function findByContainer($container)
+    public static function findByContainer($container, $includeGlobal = false)
     {
         $container_id = $container instanceof ContentContainerActiveRecord ? $container->contentcontainer_id : $container;
-        return self::find()->andWhere(['content_tag.contentcontainer_id' => $container_id]);
+
+        if(!$includeGlobal) {
+            return self::find()->andWhere(['content_tag.contentcontainer_id' => $container_id]);
+        } else {
+            return self::find()->andWhere(['or',
+                ['content_tag.contentcontainer_id' => $container_id],
+                'content_tag.contentcontainer_id IS NULL',
+            ]);
+        }
     }
 }
