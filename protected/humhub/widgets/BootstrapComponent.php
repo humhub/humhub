@@ -245,6 +245,12 @@ abstract class BootstrapComponent extends Widget
         return $this;
     }
 
+    /**
+     * @param $content
+     * @param bool $right
+     * @param bool $raw
+     * @return $this
+     */
     public function icon($content, $right = false, $raw = false)
     {
         if(!$raw) {

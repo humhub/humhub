@@ -24,7 +24,9 @@ class RegistrationCest
 {
     public function testRegister(FunctionalTester $I)
     {
-        $auth = Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', 1);
+        Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', 1);
+        Yii::$app->getModule('user')->settings->set('auth.needApproval', false);
+
         LoginPage::openBy($I);
         $I->see('Sign up');
         $I->fillField('#register-email', 'wronEmail');
@@ -37,6 +39,24 @@ class RegistrationCest
 
         $I->assertMailSent(1);
         $I->assertEqualsLastEmailSubject('Welcome to HumHub Test');
+
+        $lastEmailText = $I->grapLastEmailText();
+
+        preg_match('/(index-test.php.*)/', $lastEmailText, $matches);
+
+        $I->amOnPage(trim($matches[0]));
+        $I->see('Account registration');
+
+        $I->fillField('#user-username', 'RegistrationUser');
+        $I->fillField('#password-newpassword', 'MyPassword');
+        $I->fillField('#password-newpasswordconfirm', 'MyPassword');
+
+        $I->fillField('#profile-firstname', 'Registration');
+        $I->fillField('#profile-lastname', 'User');
+
+        $I->click('.btn-primary', '#create-account-form');
+        $I->seeInCurrentUrl('dashboard');
+
     }
 
 }
