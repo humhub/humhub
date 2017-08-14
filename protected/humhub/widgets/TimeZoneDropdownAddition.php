@@ -18,10 +18,6 @@ namespace humhub\widgets;
 
 use Yii;
 use humhub\libs\TimezoneHelper;
-use humhub\components\Widget;
-use humhub\libs\Html;
-use humhub\widgets\InputWidget;
-use humhub\widgets\JsWidget;
 
 class TimeZoneDropdownAddition extends InputWidget
 {
@@ -29,7 +25,7 @@ class TimeZoneDropdownAddition extends InputWidget
 
     private $timeZoneItems;
 
-    /*
+    /**
      * @inheritdoc
      */
     public $attribute = 'timeZone';
