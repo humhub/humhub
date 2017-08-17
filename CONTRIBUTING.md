@@ -10,7 +10,7 @@ Please follow the guidelines below when creating an issue so that your issue can
 
 **Do not report an issue if**
 
-* you are asking how to use some HumHub feature. You should use [the community](https://community.humhub.com) for this purpose.
+* you are asking how to use a HumHub feature. You should use [the community](https://community.humhub.com) for this purpose.
 * your issue is about security. Please [contact us directly](mailto:info@humhub.com) to report security issues.
 
 **Avoid duplicated issues**
