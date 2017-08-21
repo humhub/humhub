@@ -52,7 +52,7 @@ humhub.module('space.chooser', function (module, require, $) {
     SpaceChooser.prototype.initEvents = function () {
         var that = this;
         
-        this.$.find('[data-message-count]').each(function() {
+        $('[data-space-guid]').find('[data-message-count]').each(function() {
             var $this = $(this);
             if($this.data('message-count') > 0) {
                 $this.show();
@@ -115,8 +115,7 @@ humhub.module('space.chooser', function (module, require, $) {
     };
     
     SpaceChooser.prototype.incrementMessageCount = function (guid, count) {
-        var $messageCount = this.findItem(guid).find('[data-message-count]');
-        
+        var $messageCount = $('[data-space-guid="'+guid+'"]').find('[data-message-count]');
         var newCount = $messageCount.data('message-count') + count;
         
         $messageCount.hide().text(newCount).data('message-count', newCount);
