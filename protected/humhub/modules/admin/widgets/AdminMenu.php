@@ -36,7 +36,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'url' => Url::toRoute(['/admin/user']),
             'icon' => '<i class="fa fa-user"></i>',
             'sortOrder' => 200,
-            'isActive' => (\Yii::$app->controller->module && \Yii::$app->controller->module->id == 'admin' && (Yii::$app->controller->id == 'user' || Yii::$app->controller->id == 'group' || Yii::$app->controller->id == 'approval' || Yii::$app->controller->id == 'authentication' || Yii::$app->controller->id == 'user-profile')),
+            'isActive' => (\Yii::$app->controller->module && \Yii::$app->controller->module->id == 'admin' && (Yii::$app->controller->id == 'user' || Yii::$app->controller->id == 'group' || Yii::$app->controller->id == 'approval' || Yii::$app->controller->id == 'authentication' || Yii::$app->controller->id == 'user-profile' || Yii::$app->controller->id == 'pending-registrations')),
             'isVisible' => Yii::$app->user->can([
                 new \humhub\modules\admin\permissions\ManageUsers(),
                 new \humhub\modules\admin\permissions\ManageSettings(),

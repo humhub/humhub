@@ -7,6 +7,7 @@ use yii\helpers\Url;
 ?>
 
 <div class="panel-body">
+    <?= humhub\libs\Html::backButton(['/admin/user/index'], ['label' => Yii::t('AdminModule.base', 'Back to user overview'), 'class' => 'pull-right']); ?>
     <h4><?= Yii::t('AdminModule.base', 'Pending user registrations'); ?></h4>
 
     <div class="help-block">
