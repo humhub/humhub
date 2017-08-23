@@ -86,15 +86,7 @@ class ApprovalController extends Controller
 
         $model = new ApproveUserForm;
         $model->subject = Yii::t('AdminModule.controllers_ApprovalController', "Account Request for '{displayName}' has been approved.", ['{displayName}' => Html::encode($user->displayName)]);
-        $model->message = Yii::t('AdminModule.controllers_ApprovalController', 'Hello {displayName},<br><br>
-
-   your account has been activated.<br><br>
-
-   Click here to login:<br>
-   <a href=\'{loginURL}\'>{loginURL}</a><br><br>
-
-   Kind Regards<br>
-   {AdminName}<br><br>', [
+        $model->message = strtr(Yii::$app->getModule('user')->settings->get('auth.registrationApprovalMailContent', Yii::t('AdminModule.controllers_ApprovalController', \humhub\modules\admin\models\forms\AuthenticationSettingsForm::defaultRegistrationApprovalMailContent)), [
                     '{displayName}' => Html::encode($user->displayName),
                     '{loginURL}' => urldecode(Url::to(["/user/auth/login"], true)),
                     '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
@@ -124,15 +116,10 @@ class ApprovalController extends Controller
 
         $model = new ApproveUserForm;
         $model->subject = Yii::t('AdminModule.controllers_ApprovalController', 'Account Request for \'{displayName}\' has been declined.', ['{displayName}' => Html::encode($user->displayName)]);
-        $model->message = Yii::t('AdminModule.controllers_ApprovalController', 'Hello {displayName},<br><br>
-
-   your account request has been declined.<br><br>
-
-   Kind Regards<br>
-   {AdminName}<br><br>', array(
+        $model->message = strtr(Yii::$app->getModule('user')->settings->get('auth.registrationDenialMailContent', Yii::t('AdminModule.controllers_ApprovalController', \humhub\modules\admin\models\forms\AuthenticationSettingsForm::defaultRegistrationDenialMailContent)), [
                     '{displayName}' => Html::encode($user->displayName),
                     '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
-        ));
+        ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->send($user->email);

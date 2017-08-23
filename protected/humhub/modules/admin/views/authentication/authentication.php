@@ -27,6 +27,12 @@ use humhub\models\Setting;
     <?= $form->field($model, 'defaultUserProfileVisibility')->dropDownList([1 => Yii::t('AdminModule.views_setting_authentication', 'Visible for members only'), 2 => Yii::t('AdminModule.views_setting_authentication', 'Visible for members+guests')], ['readonly' => (!Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess'))]); ?>
     <p class="help-block"><?= Yii::t('AdminModule.views_setting_authentication', 'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.'); ?></p>
 
+    <?php if (Yii::$app->getModule('user')->settings->get('auth.needApproval')): ?>
+        <?= $form->field($model, 'registrationApprovalMailContent')->textarea(); ?>
+        <?= $form->field($model, 'registrationDenialMailContent')->textarea(); ?>
+        <p class="help-block"><?= Yii::t('AdminModule.views_setting_authentication', 'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.'); ?></p>
+    <?php endif; ?>
+    
     <hr>
 
     <?= CHtml::submitButton(Yii::t('AdminModule.views_setting_authentication', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>

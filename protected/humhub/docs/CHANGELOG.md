@@ -6,6 +6,7 @@ HumHub Change Log
 
 Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users.
 
+- Enh: Fixed registration approval/denial mails and made their default value configurable.
 - Enh: Updated primary auth client interface for more flexibility
 - Enh: Added LDAP ID attribute to improve user mapping
 - Enh: Option to disable e-mail address requirement in User model
