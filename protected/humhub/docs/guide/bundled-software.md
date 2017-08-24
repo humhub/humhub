@@ -1,7 +1,7 @@
 Bundled Software / Libaries
 ===========================
 
-> This list may incomplete!
+> This list may be incomplete!
 
 * Yii Framework (Core Framework) http://www.yiiframework.com/ (protected/vendors/yii/LICENSE)
 * Zend Framework http://framework.zend.com/ (protected/vendors/Zend/LICENSE.txt, protected/vendors/Zend2/LICENSE.txt)
