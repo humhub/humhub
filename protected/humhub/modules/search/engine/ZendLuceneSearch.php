@@ -109,7 +109,7 @@ class ZendLuceneSearch extends Search
         $options = $this->setDefaultFindOptions($options);
 
         $index = $this->getIndex();
-        $keyword = str_replace(array('*', '?', '_', '$'), ' ', mb_strtolower($keyword, 'utf-8'));
+        $keyword = str_replace(array('*', '?', '_', '$', '-'), ' ', mb_strtolower($keyword, 'utf-8'));
 
         $query = $this->buildQuery($keyword, $options);
         if ($query === null) {
