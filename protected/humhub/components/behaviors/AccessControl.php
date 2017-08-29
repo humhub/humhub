@@ -56,7 +56,7 @@ class AccessControl extends \yii\base\ActionFilter
      *
      * @var array
      */
-    public $rules = [];
+    public $rules = null;
 
     /**
      * Action ids which are allowed when Guest Mode is enabled
@@ -133,14 +133,19 @@ class AccessControl extends \yii\base\ActionFilter
      *
      * @return ControllerAccess
      */
-    protected function getControllerAccess($rules = [])
+    protected function getControllerAccess($rules = null)
     {
+        if($rules === null) {
+            $rules = [['strict']];
+        }
+
         $instance = null;
         if(method_exists($this->owner, 'getAccess')) {
             $instance = $this->owner->getAccess();
         }
 
         if(!$instance) {
+            // fixes legacy behavior settings compatibility issue with no rules given
             $instance = new ControllerAccess();
         }
 

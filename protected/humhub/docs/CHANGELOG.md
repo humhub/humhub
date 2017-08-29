@@ -16,7 +16,7 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Enh: Added possibility to sort groups in directory
 - Enh: Removed LDAP UserFilter/LoginFilter length restriction
 - Fix: UTC timezone issue with `TimeZoneDropdownAddition` and added `$includeUTC` flag to `TimezoneHelper::generateList()`
-
+- Fix: ControllerAccess json rule
 
 1.2.2  (August 2, 2017)
 --------------------------------

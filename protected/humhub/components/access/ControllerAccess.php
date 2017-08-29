@@ -326,7 +326,7 @@ class ControllerAccess extends Object
     /**
      * @return bool makes sure the response type is json
      */
-    public function validateJson()
+    public function validateJsonResponse()
     {
         Yii::$app->response->format = 'json';
         return true;
