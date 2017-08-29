@@ -18,6 +18,7 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix: UTC timezone issue with `TimeZoneDropdownAddition` and added `$includeUTC` flag to `TimezoneHelper::generateList()`
 - Fix: ControllerAccess json rule
 - Enh: added `closable = false` as default `ModalDialog` widget setting
+- Fix: trigger richtext `clear` when submitting comment.
 
 1.2.2  (August 2, 2017)
 --------------------------------
