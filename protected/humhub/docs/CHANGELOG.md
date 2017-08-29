@@ -17,6 +17,7 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Enh: Removed LDAP UserFilter/LoginFilter length restriction
 - Fix: UTC timezone issue with `TimeZoneDropdownAddition` and added `$includeUTC` flag to `TimezoneHelper::generateList()`
 - Fix: ControllerAccess json rule
+- Enh: added `closable = false` as default `ModalDialog` widget setting
 
 1.2.2  (August 2, 2017)
 --------------------------------
