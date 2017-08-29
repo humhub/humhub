@@ -28,6 +28,7 @@ class RegistrationCest
         Yii::$app->getModule('user')->settings->set('auth.needApproval', false);
 
         LoginPage::openBy($I);
+
         $I->see('Sign up');
         $I->fillField('#register-email', 'wronEmail');
         $I->click('.btn-primary', '#invite-form');
@@ -55,7 +56,7 @@ class RegistrationCest
         $I->fillField('#profile-lastname', 'User');
 
         $I->click('.btn-primary', '#create-account-form');
-        $I->seeInCurrentUrl('dashboard');
+        $I->seeElement('#wallStream');
 
     }
 
