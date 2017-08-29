@@ -22,6 +22,7 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix: missing return in `FileContent::beforeValidate`
 - Fix: Mentioning search with `-` not working
 - Fix #2730 Mentioning search with `-` not working
+- Fix File search with suffix not working
 
 1.2.2  (August 2, 2017)
 --------------------------------
