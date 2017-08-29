@@ -19,6 +19,7 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix: ControllerAccess json rule
 - Enh: added `closable = false` as default `ModalDialog` widget setting
 - Fix: trigger richtext `clear` when submitting comment.
+- Fix: missing return in `FileContent::beforeValidate`
 
 1.2.2  (August 2, 2017)
 --------------------------------
