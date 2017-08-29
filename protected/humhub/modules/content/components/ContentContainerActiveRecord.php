@@ -26,6 +26,7 @@ use humhub\modules\content\models\ContentContainer;
  *
  * @property integer $id
  * @property integer $visibility
+ * @property ContentContainerPermissionManager $permissionManager
  *
  * @since 1.0
  * @author Luke

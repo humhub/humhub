@@ -17,6 +17,8 @@ use yii\helpers\Html;
 /**
  * Base Controller
  *
+ *
+ * @property View $view
  * @inheritdoc
  * @author luke
  */

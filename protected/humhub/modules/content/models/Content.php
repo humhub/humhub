@@ -37,6 +37,8 @@ use yii\rbac\Permission;
  * @property string $updated_at
  * @property integer $updated_by
  * @property ContentContainer $contentContainer
+ * @property integer $contentcontainer_id;
+ * @property ContentContainerActiveRecord $container
  *
  * @since 0.5
  */
@@ -129,6 +131,7 @@ class Content extends ContentDeprecated
      */
     public function beforeSave($insert)
     {
+
         if ($this->object_model == "" || $this->object_id == "") {
             throw new Exception("Could not save content with object_model or object_id!");
         }
@@ -182,6 +185,7 @@ class Content extends ContentDeprecated
                         ->sendBulk($notifyUsers);
 
                 \humhub\modules\content\activities\ContentCreated::instance()
+                        ->from($this->user)
                         ->about($contentSource)->save();
 
 
