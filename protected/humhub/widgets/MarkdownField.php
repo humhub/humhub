@@ -78,11 +78,11 @@ class MarkdownField extends InputWidget
      * @var boolean if set to true the markdown field will be disabled
      */
     public $disabled = false;
-
+   
     /**
      * @var boolean if set to true the markdown field will set to readonly
      */
-    public $readonly = false;
+    public $readOnly = false;
 
     /**
      * @var string
@@ -131,7 +131,7 @@ class MarkdownField extends InputWidget
         return [
             'rows' => $this->rows,
             'disabled' => $this->disabled,
-            'readonly' => $this->readonly,
+            'readOnly' => $this->readOnly,
             'placeholder' => $this->placeholder,
             'class' => 'form-control'
         ];

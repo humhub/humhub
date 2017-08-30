@@ -6,6 +6,7 @@ HumHub Change Log
 
 Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users.
 
+- Fix: Readonly markdown field issue.
 - Enh: Added flag to control automatically created social activities at content creation.
 - Enh: Fixed registration approval/denial mails and made their default value configurable.
 - Enh: Updated primary auth client interface for more flexibility
