@@ -24,6 +24,7 @@ uploads/profile_image/banner/*
 nbproject
 .idea/*
 .gitmodules
+.github
 /composer.lock
 
 themes/*
