@@ -6,9 +6,7 @@ return array (
   'E-Mail Summaries' => 'E-Mail Zusammenfassung',
   'E-Mail summaries are sent to inform you about recent activities in the network.' => 'Um dich über die neueste Aktivitäten im Netzwerk zu informieren, werden Zusammenfassung per E-Mail verschickt.',
   'E-Mail summaries are sent to users to inform them about recent activities in your network.' => 'Um Benutzer über die neuesten Aktivitäten im Netzwerk zu informieren, werden Zusammenfassung per E-Mail verschickt.',
-  'Exclude spaces below from the mail summary' => 'Folgende Spaces von der E-Mail-Zusammenfassungen ausnehmen
-
-',
+  'Exclude spaces below from the mail summary' => 'Folgende Spaces von der E-Mail-Zusammenfassungen ausnehmen',
   'Hourly' => 'Stündlich',
   'Interval' => 'Interval',
   'Latest news' => 'Neuigkeiten',

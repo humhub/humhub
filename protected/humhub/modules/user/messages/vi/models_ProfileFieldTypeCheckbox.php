@@ -1,6 +1,5 @@
 <?php
-
 return array (
-  'Checkbox field options' => '',
-    'Default value' => '',
+  'Checkbox field options' => 'Các lựa chọn checkbox',
+  'Default value' => 'Giá trị mặc định',
 );

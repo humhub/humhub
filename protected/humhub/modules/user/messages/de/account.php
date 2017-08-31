@@ -7,7 +7,7 @@ return array (
   '<strong>Your</strong> profile' => '<strong>Dein</strong> Profil',
   'E-Mail Summaries' => 'Email Zusammenfassung',
   'Not registered users' => 'Keine registrierten Benutzer',
-  'Notifications' => 'Mitteilungen',
+  'Notifications' => 'Benachrichtungen',
   'Other users' => 'Andere Benutzer',
   'Users' => 'Benutzer',
   'Your friends' => 'Deine Freunde',
