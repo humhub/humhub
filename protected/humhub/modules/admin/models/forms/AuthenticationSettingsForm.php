@@ -89,8 +89,8 @@ Kind Regards<br>
             'defaultUserIdleTimeoutSec' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default user idle timeout, auto-logout (in seconds, optional)'),
             'allowGuestAccess' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Allow limited access for non-authenticated users (guests)'),
             'defaultUserProfileVisibility' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default user profile visibility'),
-            'registrationApprovalMailContent' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default content of the registration approval email.'),
-            'registrationDenialMailContent' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default content of the registration denial email.'),
+            'registrationApprovalMailContent' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default content of the registration approval email'),
+            'registrationDenialMailContent' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default content of the registration denial email'),
         ];
     }
 

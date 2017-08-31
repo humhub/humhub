@@ -28,8 +28,8 @@ use humhub\models\Setting;
     <p class="help-block"><?= Yii::t('AdminModule.views_setting_authentication', 'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.'); ?></p>
 
     <?php if (Yii::$app->getModule('user')->settings->get('auth.needApproval')): ?>
-        <?= $form->field($model, 'registrationApprovalMailContent')->textarea(); ?>
-        <?= $form->field($model, 'registrationDenialMailContent')->textarea(); ?>
+        <?= $form->field($model, 'registrationApprovalMailContent')->textarea(['class' => 'form-control', 'rows' => 8, 'style' => 'resize: vertical']); ?>
+        <?= $form->field($model, 'registrationDenialMailContent')->textarea(['class' => 'form-control', 'rows' => 8,  'style' => 'resize: vertical']); ?>
         <p class="help-block"><?= Yii::t('AdminModule.views_setting_authentication', 'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.'); ?></p>
     <?php endif; ?>
     
