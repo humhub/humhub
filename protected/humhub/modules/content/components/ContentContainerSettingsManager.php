@@ -85,7 +85,7 @@ class ContentContainerSettingsManager extends BaseSettingsManager
      */
     protected function getCacheKey()
     {
-        return parent::getCacheKey() . '-' . $this->contentContainer->id;
+        return parent::getCacheKey() . '-' . $this->contentContainer->contentContainerRecord->id;
     }
 
 }
