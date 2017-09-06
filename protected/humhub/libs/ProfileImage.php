@@ -52,7 +52,7 @@ class ProfileImage
      * @var String name of the default image
      */
     protected $defaultImage;
-
+    
     /**
      * Constructor of Profile Image
      *
@@ -78,7 +78,7 @@ class ProfileImage
         if (file_exists($this->getPath($prefix))) {
             $path = '@web/uploads/' . $this->folder_images . '/';
             $path .= $this->guid . $prefix;
-            $path .= '.jpg?m=' . filemtime($this->getPath($prefix));
+            $path .= '.png?m=' . filemtime($this->getPath($prefix));
         } else {
             $path = '@web-static/img/' . $this->defaultImage;
             $path .= '.jpg';
@@ -104,20 +104,21 @@ class ProfileImage
      * @param String $prefix for the profile image
      * @return String Path to the profile image
      */
-    public function getPath($prefix = "")
+    public function getPath($prefix = "", $type = ".png")
     {
         $path = Yii::getAlias('@webroot/uploads/' . $this->folder_images . '/');
 
-        if (!is_dir($path))
+        if (!is_dir($path)) {
             mkdir($path);
+        }
 
         $path .= $this->guid;
         $path .= $prefix;
-        $path .= ".jpg";
+        $path .= $type;
 
         return $path;
     }
-
+    
     /**
      * Crops the Original Image
      *
@@ -129,19 +130,9 @@ class ProfileImage
      */
     public function cropOriginal($x, $y, $h, $w)
     {
-        $image = imagecreatefromjpeg($this->getPath('_org'));
-
-        // Create new destination Image
-        $destImage = imagecreatetruecolor($this->width, $this->height);
-
-        if (!imagecopyresampled($destImage, $image, 0, 0, $x, $y, $this->width, $this->height, $w, $h)) {
-            return false;
-        }
-
-        unlink($this->getPath(''));
-        imagejpeg($destImage, $this->getPath(''), 100);
+        return ImageConverter::crop($this->getPath(''), $this->getPath('_org'), $x, $y, $this->width, $this->height, $h, $w, IMAGETYPE_PNG);
     }
-
+    
     /**
      * Sets a new profile image by given temp file
      *
@@ -152,11 +143,16 @@ class ProfileImage
         if ($file instanceof \yii\web\UploadedFile) {
             $file = $file->tempName;
         }
-
         $this->delete();
-        ImageConverter::TransformToJpeg($file, $this->getPath('_org'));
-        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), ['width' => 800, 'mode' => 'max']);
-        ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), ['width' => $this->width, 'height' => $this->height]);
+
+        // getting the image type
+        list($width, $height, $imageType) = getimagesize($file);
+        // check transparency
+        $transparent = ($imageType === IMAGETYPE_PNG) && ImageConverter::checkTransparent($file);
+        
+        ImageConverter::TransformType($file, $this->getPath('_org'), IMAGETYPE_PNG, $transparent);
+        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), ['width' => 800, 'mode' => 'max', 'transparent' => $transparent]);
+        ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), ['width' => $this->width, 'height' => $this->height, 'transparent' => $transparent]);
     }
 
     /**

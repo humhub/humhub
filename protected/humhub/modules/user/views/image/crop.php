@@ -34,7 +34,7 @@ use yii\helpers\Url;
                         'aspectRatio' => $model->aspectRatio,
                         'minSize' => [50, 50],
                         'setSelect' => $model->cropSetSelect,
-                        'bgColor' => 'black',
+                        'bgColor' => 'none',
                         'boxWidth' => '440',
                         'bgOpacity' => '0.5',
                         'onChange' => new yii\web\JsExpression('function(c){ $("#cropX").val(c.x);$("#cropY").val(c.y);$("#cropW").val(c.w);$("#cropH").val(c.h); }')

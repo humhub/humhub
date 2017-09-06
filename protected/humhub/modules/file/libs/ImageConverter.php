@@ -33,7 +33,45 @@ class ImageConverter
      */
     public static function TransformToJpeg($sourceFile, $targetFile)
     {
-
+        return self::TransformType($sourceFile, $targetFile, '.jpg');
+    }
+    
+    /**
+     * Set transparency information of a GD image source.
+     * @param type $gdImage
+     * @param type $width
+     * @param type $height
+     * @param type $imageType
+     * @return type
+     */
+    public static function SetTransparency($gdImage, $width, $height, $imageType) 
+    {
+        switch($imageType) {
+            case IMAGETYPE_GIF:
+                $transparent = imagecolorallocatealpha($gdImage, 0, 0, 0, 127);
+                imagefill($gdImage, 0, 0, $transparent);
+                imagealphablending($gdImage, true); 
+                break;
+            case IMAGETYPE_PNG:
+                imagealphablending($gdImage, false);
+                imagesavealpha($gdImage, true);
+                $transparent = imagecolorallocatealpha($gdImage, 255, 255, 255, 127);
+                imagefilledrectangle($gdImage, 0, 0, $width, $height, $transparent);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    /**
+     * Transforms given File to an image of a given Type.
+     * supported: .png, .gif, .jpg (default)
+     * @param String $sourceFile
+     * @param String $targetFile
+     * @param String $imageType Type to convert to
+     */
+    public static function TransformType($sourceFile, $targetFile, $imageType, $transparent)
+    {
         if (Yii::$app->getModule('file')->settings->get('imageMagickPath')) {
             $convertCommand = Yii::$app->getModule('file')->settings->get('imageMagickPath');
             $command = $convertCommand . " -auto-orient \"{$sourceFile}\" \"{$targetFile}\"";
@@ -43,8 +81,20 @@ class ImageConverter
 
             if ($gdImage !== null) {
                 $gdImage = self::fixOrientation($gdImage, $sourceFile);
-                imagejpeg($gdImage, $targetFile, 100);
-                imagedestroy($gdImage);
+                
+                if ($transparent) {
+                    list($width, $height) = getimagesize($sourceFile);
+                    $newGdImage = imagecreatetruecolor($width, $height);
+                    self::SetTransparency($newGdImage, $width, $height, $imageType);
+                    imagecopy($newGdImage, $gdImage, 0, 0, 0, 0, $width, $height);
+                    imagedestroy($gdImage);
+                } else {
+                    $newGdImage = $gdImage;
+                }
+
+                self::saveGDImage($newGdImage, $targetFile, $imageType);
+                
+                imagedestroy($newGdImage);
             }
         }
 
@@ -279,28 +329,16 @@ class ImageConverter
         // Create new Image
         $newGdImage = imagecreatetruecolor($width, $height);
 
+        list($hw, $hx, $imageType) = getimagesize($sourceFile);
+        
         if (isset($options['transparent']) && $options['transparent']) {
-            imagealphablending($newGdImage, false);
-            imagesavealpha($newGdImage, true);
-            $transparent = imagecolorallocatealpha($newGdImage, 255, 255, 255, 127);
-            imagefilledrectangle($newGdImage, 0, 0, $width, $height, $transparent);
+            self::SetTransparency($newGdImage, $width, $height, $imageType);
         }
 
         imagecopyresampled($newGdImage, $gdImage, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
 
-        list($hw, $hx, $imageType) = getimagesize($sourceFile);
-
-        switch ($imageType) {
-            case IMAGETYPE_PNG:
-                imagepng($newGdImage, $targetFile);
-                break;
-            case IMAGETYPE_GIF:
-                imagegif($newGdImage, $targetFile);
-                break;
-            case IMAGETYPE_JPEG:
-                imagejpeg($newGdImage, $targetFile, 100);
-                break;
-        }
+        self::saveGDImage($newGdImage, $targetFile, $imageType);
+                
         imagedestroy($gdImage);
         imagedestroy($newGdImage);
     }
@@ -368,7 +406,49 @@ class ImageConverter
 
         return $gdImage;
     }
+    
+    /**
+     * Saves GD image source.
+     *
+     * @param $gdImage
+     * @param $dst_path
+     * 
+     * @return bool
+     */
+    public static function saveGDImage($gdImage, $dst_path, $imageType)
+    {
+        switch ($imageType) {
+            case IMAGETYPE_PNG:
+                imagepng($gdImage, $dst_path);
+                break;
+            case IMAGETYPE_GIF:
+                imagegif($gdImage, $dst_path);
+                break;
+            case IMAGETYPE_JPEG:
+                imagejpeg($gdImage, $dst_path, 100);
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
 
+    public static function crop($dst_path, $src_path, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h, $imageType)
+    {
+        $image = self::getGDImageByFile($src_path);
+        
+        
+        $destImage = imagecreatetruecolor($dst_w, $dst_h);
+        self::SetTransparency($destImage, $dst_w, $dst_h, $imageType);
+        if (!imagecopyresampled($destImage, $image, 0, 0, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h)) {
+            return false;
+        }
+        
+        self::saveGDImage($destImage, $dst_path, $imageType);
+        
+        return true;
+    }
+    
     public static function fixOrientation($image, $filename)
     {
         $exif = @exif_read_data($filename);

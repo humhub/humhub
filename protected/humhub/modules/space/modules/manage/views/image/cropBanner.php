@@ -40,7 +40,7 @@ use humhub\compat\CActiveForm;
                         'aspectRatio' => 6.3,
                         'minSize' => [50, 50],
                         'setSelect' => [0, 0, 267, 48],
-                        'bgColor' => 'black',
+                        'bgColor' => 'none',
                         'bgOpacity' => '0.5',
                         'boxWidth' => '440',
                         'onChange' => new yii\web\JsExpression('function(c){ $("#cropX").val(c.x);$("#cropY").val(c.y);$("#cropW").val(c.w);$("#cropH").val(c.h); }')
