@@ -188,37 +188,6 @@ humhub.module('ui.markdown', function (module, require, $) {
                 return "<div><div class='loader'></div></div>";
             }
         });
-
-        /*$('#addFileModal_' + elementId).find(".uploadProgress").hide();
-        $('#addFileModal_' + elementId).find('.fileUploadButton').fileupload({
-            dataType: 'json',
-            done: function (e, data) {
-                debugger;
-                $.each(data.result.files, function (index, file) {
-                    addFileModal = $('#addFileModal_' + elementId);
-                    if (!file.error) {
-                        newFile = file;
-                        hiddenValueField = $('#fileUploaderHiddenGuidField_' + elementId);
-                        hiddenValueField.val(hiddenValueField.val() + "," + file.guid);
-                        addFileModal.modal('hide');
-                    } else {
-                        alert("file upload error");
-                    }
-                });
-            },
-            progressall: function (e, data) {
-                newFile = "";
-                addFileModal = $('#addFileModal_' + elementId);
-
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                addFileModal.find(".uploadForm").hide();
-                addFileModal.find(".uploadProgress").show();
-                if (progress == 100) {
-                    addFileModal.find(".uploadProgress").hide();
-                    addFileModal.find(".uploadForm").hide();
-                }
-            }
-        }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');*/
     };
 
 

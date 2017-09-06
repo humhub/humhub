@@ -13,12 +13,12 @@
 /* @var $isNew boolean */
 /* @var $isNew boolean */
 /* @var $originator \humhub\modules\user\models\User */
-/* @var source yii\db\ActiveRecord */
-/* @var contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
-/* @var space humhub\modules\space\models\Space */
-/* @var record \humhub\modules\notification\models\Notification */
-/* @var html string */
-/* @var text string */
+/* @var $source yii\db\ActiveRecord */
+/* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
+/* @var $space humhub\modules\space\models\Space */
+/* @var $record \humhub\modules\notification\models\Notification */
+/* @var $html string */
+/* @var $text string */
 ?>
 
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>

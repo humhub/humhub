@@ -295,10 +295,15 @@ abstract class Stream extends Action
      */
     public static function renderEntry(ContentActiveRecord $record, $options =  [], $partial = true)
     {
+        // TODO should be removed in next major version
         // Compatibility with pre 1.2.2
         if(is_bool($options)) {
             $partial = $options;
             $options = [];
+        }
+
+        if(!$record->wallEntryClass) {
+            return "";
         }
 
         if(isset($options['jsWidget'])) {

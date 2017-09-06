@@ -18,7 +18,7 @@ namespace content;
 */
 class AcceptanceTester extends \AcceptanceTester
 {
-    use content\_generated\AcceptanceTesterActions;
+    use _generated\AcceptanceTesterActions;
 
    /**
     * Define custom actions here

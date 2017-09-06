@@ -22,6 +22,7 @@ humhub.module('notification', function (module, require, $) {
     object.inherits(NotificationDropDown, Widget);
 
     NotificationDropDown.prototype.init = function (update) {
+        
         this.isOpen = false;
         this.lastEntryLoaded = false;
         this.lastEntryId = 0;
@@ -219,6 +220,10 @@ humhub.module('notification', function (module, require, $) {
 
     var init = function ($pjax) {
         if (user.isGuest()) {
+            return;
+        }
+        
+        if (!$('#notification_widget').length) {
             return;
         }
         

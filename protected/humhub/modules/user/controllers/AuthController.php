@@ -109,35 +109,33 @@ class AuthController extends Controller
 
         // Login existing user 
         $user = AuthClientHelpers::getUserByAuthClient($authClient);
-        
+
         if ($user !== null) {
             return $this->login($user, $authClient);
         }
-        
+
         if (!$authClient instanceof ApprovalBypass && !Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration')) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', "You're not registered."));
             return $this->redirect(['/user/auth/login']);
         }
 
         // Check if E-Mail is given
-        if (!isset($attributes['email'])) {
+        if (!isset($attributes['email']) && Yii::$app->getModule('user')->emailRequired) {
             Yii::$app->session->setFlash('error', Yii::t(
-                'UserModule.base',
-                'Missing E-Mail Attribute from AuthClient.'
+                            'UserModule.base', 'Missing E-Mail Attribute from AuthClient.'
             ));
             return $this->redirect(['/user/auth/login']);
         }
 
         if (!isset($attributes['id'])) {
             Yii::$app->session->setFlash('error', Yii::t(
-                'UserModule.base',
-                'Missing ID AuthClient Attribute from AuthClient.'
+                            'UserModule.base', 'Missing ID AuthClient Attribute from AuthClient.'
             ));
             return $this->redirect(['/user/auth/login']);
         }
 
         // Check if e-mail is already taken
-        if (User::findOne(['email' => $attributes['email']]) !== null) {
+        if (isset($attributes['email']) && User::findOne(['email' => $attributes['email']]) !== null) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.'));
             return $this->redirect(['/user/auth/login']);
         }
@@ -175,7 +173,7 @@ class AuthController extends Controller
                     $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
                 }
             }
-            
+
             AuthClientHelpers::updateUser($authClient, $user);
 
             if (Yii::$app->user->login($user, $duration)) {

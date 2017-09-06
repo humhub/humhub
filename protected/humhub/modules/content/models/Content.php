@@ -37,6 +37,8 @@ use yii\rbac\Permission;
  * @property string $updated_at
  * @property integer $updated_by
  * @property ContentContainer $contentContainer
+ * @property integer $contentcontainer_id;
+ * @property ContentContainerActiveRecord $container
  *
  * @since 0.5
  */
@@ -69,6 +71,11 @@ class Content extends ContentDeprecated
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
      */
     protected $_container = null;
+    
+    /**
+     * @var bool flag to disable the creation of default social activities like activity and notifications in afterSave() at content creation.
+     */
+    public $muteDefaultSocialActivities = false;
 
     /**
      * @inheritdoc
@@ -129,6 +136,7 @@ class Content extends ContentDeprecated
      */
     public function beforeSave($insert)
     {
+
         if ($this->object_model == "" || $this->object_id == "") {
             throw new Exception("Could not save content with object_model or object_id!");
         }
@@ -173,15 +181,16 @@ class Content extends ContentDeprecated
 
         if ($insert && !$contentSource instanceof \humhub\modules\activity\models\Activity) {
 
-            if ($this->container !== null) {
+            if (!$this->muteDefaultSocialActivities && $this->container !== null) {
                 $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
 
                 \humhub\modules\content\notifications\ContentCreated::instance()
                         ->from($this->user)
                         ->about($contentSource)
                         ->sendBulk($notifyUsers);
-
+                
                 \humhub\modules\content\activities\ContentCreated::instance()
+                        ->from($this->user)
                         ->about($contentSource)->save();
 
 

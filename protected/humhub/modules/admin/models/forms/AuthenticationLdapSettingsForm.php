@@ -29,6 +29,7 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
     public $userFilter;
     public $usernameAttribute;
     public $emailAttribute;
+    public $idAttribute;
     public $encryptionTypes = [
         '' => 'None',
         'tls' => 'TLS (aka SSLV2)',
@@ -57,6 +58,7 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
         $this->userFilter = $settingsManager->get('auth.ldap.userFilter');
         $this->usernameAttribute = $settingsManager->get('auth.ldap.usernameAttribute');
         $this->emailAttribute = $settingsManager->get('auth.ldap.emailAttribute');
+        $this->idAttribute = $settingsManager->get('auth.ldap.idAttribute');
 
         if ($this->password != '')
             $this->password = '---hidden---';
@@ -68,7 +70,8 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
     public function rules()
     {
         return [
-            [['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'password', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter'], 'string', 'max' => 255],
+            [['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'password', 'hostname', 'port', 'idAttribute'], 'string', 'max' => 255],
+            [['baseDn', 'loginFilter', 'userFilter'], 'string'],
             [['usernameAttribute', 'username', 'password', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter'], 'required'],
             ['encryption', 'in', 'range' => ['', 'ssl', 'tls']],
         ];
@@ -92,6 +95,26 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
             'userFilter' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'User Filer'),
             'usernameAttribute' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Username Attribute'),
             'emailAttribute' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'E-Mail Address Attribute'),
+            'idAttribute' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'ID Attribute'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'encryption' => Yii::t('AdminModule.views_setting_authentication_ldap', 'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.'),
+            'username' => Yii::t('AdminModule.views_setting_authentication_ldap', 'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.'),
+            'password' => Yii::t('AdminModule.views_setting_authentication_ldap', 'The default credentials password (used only with username above).'),
+            'baseDn' => Yii::t('AdminModule.views_setting_authentication_ldap', 'The default base DN used for searching for accounts.'),
+            'loginFilter' => Yii::t('AdminModule.views_setting_authentication_ldap', 'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;'),
+            'usernameAttribute' => Yii::t('AdminModule.views_setting_authentication_ldap', 'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;'),
+            'emailAttribute' => Yii::t('AdminModule.views_setting_authentication_ldap', 'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;'),
+            'idAttribute' => Yii::t('AdminModule.forms_AuthenticationLdapSettingsForm', 'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)'),
+            'userFilter' => Yii::t('AdminModule.views_setting_authentication_ldap', 'Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;'),
+            
         ];
     }
 
@@ -117,6 +140,7 @@ class AuthenticationLdapSettingsForm extends \yii\base\Model
         $settingsManager->set('auth.ldap.userFilter', $this->userFilter);
         $settingsManager->set('auth.ldap.usernameAttribute', $this->usernameAttribute);
         $settingsManager->set('auth.ldap.emailAttribute', $this->emailAttribute);
+        $settingsManager->set('auth.ldap.idAttribute', $this->idAttribute);
 
         return true;
     }

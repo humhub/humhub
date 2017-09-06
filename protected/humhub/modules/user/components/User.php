@@ -63,22 +63,23 @@ class User extends \yii\web\User
     }
 
     /**
-     * Shortcut for getPermisisonManager()->can().
-     * 
-     * Note: This method is used to verify global GroupPermissions and not ContentContainerPermissions.
-     * 
-     * @param mixed $permission
+     * Verifies global GroupPermissions of this User component.
+     *
+     * The following example checks if this User is granted the GroupPermission
+     *
+     * ```php
+     * if(Yii::$app->user->can(MyGroupPermission::class) {
+     *   // ...
+     * }
+     * ```
+     *
+     * @param string|string[]|BasePermission $permission
      * @see PermissionManager::can()
      * @return boolean
      * @since 1.2
      */
     public function can($permission, $params = [], $allowCaching = true)
     {
-        // Compatibility with Yii2 base permission system.
-        if (is_string($permission)) {
-            return parent::can($permission, $params, $allowCaching);
-        }
-
         return $this->getPermissionManager()->can($permission, $params, $allowCaching);
     }
 

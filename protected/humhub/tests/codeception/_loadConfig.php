@@ -9,13 +9,7 @@ $testRoot = $codeceptConfig['test_root'];
 $humhubRoot = $codeceptConfig['humhub_root'];
 
 // Parse the environment arguments
-$argv = $_SERVER['argv'];
-$env = [];
-for ($i = 0; $i < count($argv); $i++) {
-    if ($argv[$i] === '--env') {
-        $env[] = $argv[++$i];
-    }
-}
+$env = isset($GLOBALS['env']) ? $GLOBALS['env'] : [];
 
 // If an environment was set try loading special environment config else load default config
 if(count($env) > 0) {

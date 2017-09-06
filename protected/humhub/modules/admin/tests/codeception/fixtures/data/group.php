@@ -17,7 +17,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  */
-return array(
-    array('id' => '1', 'space_id' => 1, 'name' => 'Administrator', 'description' => 'Administrator Group', 'created_at' => '2014-08-30 14:03:49', 'created_by' => NULL, 'updated_at' => NULL, 'updated_by' => NULL, 'ldap_dn' => NULL, 'is_admin_group' => 1),
-    array('id' => '2', 'space_id' => 1, 'name' => 'Users', 'description' => 'Example Group by Installer', 'created_at' => '2014-08-30 14:03:49', 'created_by' => NULL, 'updated_at' => NULL, 'updated_by' => NULL, 'ldap_dn' => NULL)
-);
+return [
+    ['id' => '1', 'space_id' => 1, 'name' => 'Administrator', 'description' => 'Administrator Group', 'created_at' => '2014-08-30 14:03:49', 'created_by' => NULL, 'updated_at' => NULL, 'updated_by' => NULL, 'ldap_dn' => NULL, 'is_admin_group' => 1],
+    ['id' => '2', 'space_id' => 1, 'name' => 'Users', 'description' => 'Example Group by Installer', 'created_at' => '2014-08-30 14:03:49', 'created_by' => NULL, 'updated_at' => NULL, 'updated_by' => NULL, 'ldap_dn' => NULL],
+    ['id' => '3', 'space_id' => 1, 'name' => 'Manager', 'description' => 'Manager Group', 'created_at' => '2014-08-30 14:03:49', 'created_by' => NULL, 'updated_at' => NULL, 'updated_by' => NULL, 'ldap_dn' => NULL]
+];

@@ -74,6 +74,12 @@ class ContentContainerController extends Controller
             ]);
             $this->subLayout = "@humhub/modules/space/views/space/_layout";
 
+            // Handle case, if a non-logged user tries to acccess a hidden space
+            // Redirect to Login instead of showing error
+            if ($this->contentContainer->visibility == Space::VISIBILITY_NONE && Yii::$app->user->isGuest) {
+                
+            }
+            
         } elseif ($userGuid !== null) {
 
             $this->contentContainer = User::findOne(['guid' => $userGuid]);
@@ -92,18 +98,12 @@ class ContentContainerController extends Controller
             throw new HttpException(500, Yii::t('base', 'Could not determine content container!'));
         }
 
-        /**
-         * Auto check access rights to this container
-         */
-        if ($this->contentContainer != null && $this->autoCheckContainerAccess) {
-            $this->checkContainerAccess();
-        }
 
         if (!$this->checkModuleIsEnabled()) {
             throw new HttpException(405, Yii::t('base', 'Module is not enabled on this content container!'));
         }
 
-        return parent::init();
+        parent::init();
     }
 
     /**
@@ -119,6 +119,11 @@ class ContentContainerController extends Controller
         if (Yii::$app->user->isGuest && Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') != 1) {
             Yii::$app->user->loginRequired();
             return false;
+        }
+
+        // Auto check access rights to this container
+        if ($this->contentContainer != null && $this->autoCheckContainerAccess) {
+            $this->checkContainerAccess();
         }
 
         if ($this->contentContainer instanceof Space && (Yii::$app->request->isPjax || !Yii::$app->request->isAjax)) {
@@ -151,6 +156,14 @@ class ContentContainerController extends Controller
     {
         // Implemented by behavior
         $this->checkAccess();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAccess()
+    {
+        return new ContentContainerControllerAccess(['contentContainer' => $this->contentContainer]);
     }
 
     /**

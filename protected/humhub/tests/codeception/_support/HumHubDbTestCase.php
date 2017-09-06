@@ -2,9 +2,16 @@
 
 namespace tests\codeception\_support;
 
-use humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture;
 use Yii;
+use yii\base\Event;
 use yii\db\ActiveRecord;
+use humhub\libs\BasePermission;
+use humhub\modules\content\components\ContentContainerPermissionManager;
+use humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture;
+use humhub\modules\file\tests\codeception\fixtures\FileFixture;
+use humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture;
+use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
 use Codeception\TestCase\Test;
 use humhub\modules\user\models\User;
 use humhub\modules\notification\models\Notification;
@@ -25,19 +32,29 @@ use humhub\modules\activity\models\Activity;
  *
  * @SuppressWarnings(PHPMD)
  */
-class HumHubDbTestCase extends \yii\codeception\DbTestCase
+class HumHubDbTestCase extends Test
 {
+
     protected $fixtureConfig;
+
+    public $appConfig = '@tests/codeception/config/unit.php';
+
+    public $time;
 
     protected function setUp()
     {
-        Test::setUp();
-        $this->mockApplication();
+        parent::setUp();
+        $webRoot = dirname(dirname(__DIR__)).'/../../..';
+        Yii::setAlias('@webroot', realpath($webRoot));
         $this->initModules();
-        $this->unloadFixtures();
-        $this->loadFixtures();
         $this->reloadSettings();
         $this->deleteMails();
+    }
+
+    protected function tearDown()
+    {
+        Event::offAll();
+        parent::tearDown();
     }
 
     protected function reloadSettings()
@@ -55,7 +72,7 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
     {
         $path = Yii::getAlias('@runtime/mail');
         $files = glob($path . '/*'); // get all file names
-        foreach ($files as $file) { // iterate files            
+        foreach ($files as $file) { // iterate files
             if (is_file($file)) {
                 unlink($file); // delete file
             }
@@ -77,7 +94,7 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
     /**
      * @inheritdoc
      */
-    public function fixtures()
+    public function _fixtures()
     {
         $cfg = \Codeception\Configuration::config();
 
@@ -103,15 +120,16 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
     protected function getDefaultFixtures()
     {
         return [
-            'user' => ['class' => \humhub\modules\user\tests\codeception\fixtures\UserFixture::className()],
-            'group' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupFixture::className()],
+            'user' => ['class' => UserFullFixture::class],
             'group_permission' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture::className()],
+            'contentcontainer' => ['class' => ContentContainerFixture::class],
             'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::className()],
             'space' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::className()],
             'space_membership' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture::className()],
             'space_module' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceModuleFixture::className()],
             'content' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentFixture::className()],
             'notification' => ['class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::className()],
+            'file' => ['class' => FileFixture::class],
             'activity' => ['class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::className()],
             'friendship' => ['class' => FriendshipFixture::class]
         ];
@@ -136,14 +154,36 @@ class HumHubDbTestCase extends \yii\codeception\DbTestCase
 
     public function assertMailSent($count = 0, $msg = null)
     {
-        $path = Yii::getAlias('@runtime/mail');
-        $mailCount = count(glob($path . '/*.eml'));
+        return $this->getModule('Yii2')->seeEmailIsSent($count);
+    }
 
-        if ($count === true) {
-            $this->assertTrue($mailCount > 0, $msg);
+    public function assertEqualsLastEmailSubject($subject)
+    {
+        $message = $this->getModule('Yii2')->grabLastSentEmail();
+        $this->assertEquals($subject, $message->getSubject());
+    }
+
+    public function allowGuestAccess($allow = true)
+    {
+        if($allow) {
+            Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 1);
         } else {
-            $this->assertEquals($count, $mailCount, $msg);
+            Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 0);
         }
+    }
+
+    public function setGroupPermission($groupId, $permission, $state = BasePermission::STATE_ALLOW)
+    {
+        $permissionManger = new PermissionManager();
+        $permissionManger->setGroupState($groupId, $permission, $state);
+        Yii::$app->user->permissionManager->clear();
+    }
+
+    public function setContentContainerPermission($contentContainer, $groupId, $permission, $state = BasePermission::STATE_ALLOW)
+    {
+        $permissionManger = new ContentContainerPermissionManager(['contentContainer' => $contentContainer]);
+        $permissionManger->setGroupState($groupId, $permission, $state);
+        $contentContainer->permissionManager->clear();
     }
 
     public function becomeUser($userName)

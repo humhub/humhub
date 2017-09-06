@@ -31,10 +31,10 @@ use humhub\widgets\GridView;
                         return;
                     },
                     'delete' => function($url, $model) {
-                        return Html::a('Decline', Url::toRoute(['decline', 'id' => $model->id]), ['class' => 'btn btn-danger btn-sm']);
+                        return Html::a('Decline', Url::toRoute(['decline', 'id' => $model->id]), ['class' => 'btn btn-danger btn-sm', 'data-ui-loader' => '']);
                     },
                     'update' => function($url, $model) {
-                        return Html::a('Approve', Url::toRoute(['approve', 'id' => $model->id]), ['class' => 'btn btn-primary btn-sm']);
+                        return Html::a('Approve', Url::toRoute(['approve', 'id' => $model->id]), ['class' => 'btn btn-primary btn-sm', 'data-ui-loader' => '']);
                     },
                 ],
             ],

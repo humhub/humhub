@@ -30,6 +30,11 @@ humhub.module('ui.widget', function(module, require, $) {
             var initData = this.$.data('ui-init');
             this.fire('beforeInit', [this, initData]);
             this.init(initData);
+
+            if(this.options.widgetFadeIn) {
+                this.$.fadeIn(this.options.widgetFadeIn);
+            }
+
             this.fire('afterInit', [this]);
         }
     };

@@ -32,7 +32,7 @@ class PolymorphicRelation extends Behavior
     /**
      * @var array the related object needs to be a "instanceof" at least one of these given classnames
      */
-    public $mustBeInstanceOf = array();
+    public $mustBeInstanceOf = [];
 
     /**
      * @var mixed the cached object
@@ -83,12 +83,13 @@ class PolymorphicRelation extends Behavior
     {
         if ($this->validateUnderlyingObjectType($object)) {
             $this->_cached = $object;
-
             if ($object instanceof \yii\db\ActiveRecord) {
                 $this->owner->setAttribute($this->classAttribute, $object->className());
                 $this->owner->setAttribute($this->pkAttribute, $object->getPrimaryKey());
             }
         }
+
+
     }
 
     /**

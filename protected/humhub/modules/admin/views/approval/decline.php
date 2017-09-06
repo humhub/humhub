@@ -18,11 +18,11 @@ use humhub\compat\CActiveForm;
 
     <div class="form-group">
         <?= $form->labelEx($approveFormModel, 'message'); ?>
-        <?= $form->textArea($approveFormModel, 'message', ['rows' => 6, 'cols' => 50, 'class' => 'form-control wysihtml5']); ?>
+        <?= $form->textArea($approveFormModel, 'message', ['rows' => 6, 'cols' => 50, 'class' => 'form-control autosize']); ?>
         <?= $form->error($approveFormModel, 'message'); ?>
     </div>
     <script>
-        $('.wysihtml5').wysihtml5({
+        /*$('.wysihtml5').wysihtml5({
             "font-styles": false, //Font styling, e.g. h1, h2, etc. Default true
             "emphasis": true, //Italics, bold, etc. Default true
             "lists": false, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
@@ -31,11 +31,11 @@ use humhub\compat\CActiveForm;
             "image": false, //Button to insert an image. Default true,
             "color": false, //Button to change color of font
             "size": 'sm' //Button size like sm, xs etc.
-        });
+        });*/
     </script>
     <hr>
     <?= Html::submitButton(Yii::t('SpaceModule.approval_approveUserDecline', 'Send & decline'), ['class' => 'btn btn-danger', 'data-ui-loader' => ""]); ?>
-    <a href="<?= Url::to(['index']); ?>" class="btn btn-primary"><?= Yii::t('AdminModule.views_approval_approveUserDecline', 'Cancel'); ?></a>
+    <a href="<?= Url::to(['index']); ?>" data-ui-loader  class="btn btn-primary"><?= Yii::t('AdminModule.views_approval_approveUserDecline', 'Cancel'); ?></a>
 
     <?php CActiveForm::end(); ?>
 </div>

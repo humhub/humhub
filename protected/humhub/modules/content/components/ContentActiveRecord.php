@@ -275,7 +275,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     /**
      * Returns the assigned wall entry widget instance
      *
-     * @return \humhub\modules\content\widgets\WallEntry
+     * @return null|\humhub\modules\content\widgets\WallEntry for this class by wallEntryClass property , null will be
+     * returned if this wallEntryClass is empty
      */
     public function getWallEntryWidget()
     {
@@ -296,20 +297,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     /**
      * @inheritdoc
      */
-    public function afterDelete()
-    {
-
-        $content = Content::findOne(['object_id' => $this->id, 'object_model' => $this->className()]);
-        if ($content !== null) {
-            $content->delete();
-        }
-
-        parent::afterDelete();
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function beforeSave($insert)
     {
         if (!$this->content->validate()) {
@@ -320,6 +307,20 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
         $this->content->setAttribute('stream_channel', $this->streamChannel);
         return parent::beforeSave($insert);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+
+        $content = Content::findOne(['object_id' => $this->id, 'object_model' => $this->className()]);
+        if ($content !== null) {
+            $content->delete();
+        }
+
+        parent::afterDelete();
     }
 
     /**

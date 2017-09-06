@@ -44,10 +44,14 @@ class ListController extends Controller
         
         $output = "";
         foreach ($notifications as $notification) {
-            $output .= $notification->getBaseModel()->render();
-            $lastEntryId = $notification->id;
-            $notification->desktop_notified = 1;
-            $notification->update();
+            try {
+                $output .= $notification->getBaseModel()->render();
+                $lastEntryId = $notification->id;
+                $notification->desktop_notified = 1;
+                $notification->update();
+            } catch(\Exception $e) {
+                Yii::error($e);
+            }
         }
 
         return [

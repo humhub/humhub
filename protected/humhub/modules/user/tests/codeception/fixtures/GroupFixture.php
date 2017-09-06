@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\tests\codeception\fixtures;
 
+use humhub\modules\space\tests\codeception\fixtures\SpaceFixture;
 use yii\test\ActiveFixture;
 
 class GroupFixture extends ActiveFixture
@@ -17,7 +18,8 @@ class GroupFixture extends ActiveFixture
     public $dataFile = '@modules/user/tests/codeception/fixtures/data/group.php';
     
     public $depends = [
-        'humhub\modules\user\tests\codeception\fixtures\GroupUserFixture'
+        UserFixture::class,
+        SpaceFixture::class
     ];
 
 }

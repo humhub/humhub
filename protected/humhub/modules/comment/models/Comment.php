@@ -88,7 +88,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         try {
             $this->updateContentSearch();
         } catch (\yii\base\Exception $ex) {
-            ;
+            Yii::error($ex);
         }
 
 		parent::afterDelete();

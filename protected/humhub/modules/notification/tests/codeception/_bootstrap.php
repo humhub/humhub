@@ -3,19 +3,12 @@
  * This is the initial test bootstrap, which will load the default test bootstrap from the humhub core
  */
 // Parse the environment arguments (Note: only simple --env ENV is supported no comma sepration merge...)
-$argv = $_SERVER['argv'];
-$env = [];
-for ($i = 0; $i < count($argv); $i++) {
-    if ($argv[$i] === '--env') {
-        $env[] = explode(',', $argv[++$i]);
-    }
-}
+$env = isset($GLOBALS['env']) ? $GLOBALS['env'] : [];
 
 // If environment was set try loading special environment config else load default
 if (count($env) > 0) {
     \Codeception\Configuration::append(['environment' => $env]);
 
-    echo 'Run execution environment: ' . $env[0][0] . PHP_EOL;
 
     $envCfgFile = dirname(__DIR__) . '/config/env/test.' . $env[0][0] . '.php';
 
@@ -32,7 +25,6 @@ if (!isset($cfg)) {
 // If no humhub_root is given we assume our module is in the a root to be in /protected/humhub/modules/<module>/tests/codeception directory
 $cfg['humhub_root'] = isset($cfg['humhub_root']) ? $cfg['humhub_root'] : dirname(__DIR__) . '/../../../../..';
 
-echo 'Using HumHub Root: ' . $cfg['humhub_root'] . PHP_EOL;
 
 // Load default test bootstrap
 require_once($cfg['humhub_root'] . '/protected/humhub/tests/codeception/_bootstrap.php');

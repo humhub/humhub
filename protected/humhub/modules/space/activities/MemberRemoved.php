@@ -23,11 +23,6 @@ class MemberRemoved extends BaseActivity implements ConfigurableActivityInterfac
     /**
      * @inheritdoc
      */
-    public $clickable = false;
-
-    /**
-     * @inheritdoc
-     */
     public $viewName = "memberRemoved";
 
     /**

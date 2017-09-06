@@ -2,7 +2,7 @@
 
 namespace tests\codeception\_pages;
 
-use yii\codeception\BasePage;
+use tests\codeception\_support\BasePage;
 
 /**
  * Represents admin page

@@ -36,7 +36,7 @@ class Formatter extends \yii\i18n\Formatter
     {
         parent::init();
 
-        if (Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat') != '') {
+        if (Yii::$app->params['installed'] && Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat') != '') {
             $this->dateInputFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
         }
     }

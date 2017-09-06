@@ -47,13 +47,14 @@ class UserController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => [
-                    ManageUsers::className(),
-                    ManageGroups::className()
+            [
+                'permissions' => [
+                    ManageUsers::class,
+                    ManageGroups::class,
                 ]
             ],
             [
-                'permissions' => ManageSettings::className(),
+                'permissions' => [ManageSettings::class],
                 'actions' => ['index']
             ]
         ];
@@ -71,7 +72,7 @@ class UserController extends Controller
                         'dataProvider' => $dataProvider,
                         'searchModel' => $searchModel
             ]);
-        } else if (Yii::$app->user->can(new ManageSettings())) {
+        } else if (Yii::$app->user->can(ManageSettings::class)) {
             $this->redirect(['/admin/authentication']);
         } else {
             $this->forbidden();
@@ -85,9 +86,7 @@ class UserController extends Controller
      */
     public function actionEdit()
     {
-        $user = UserEditForm::findOne([
-                    'id' => Yii::$app->request->get('id')
-        ]);
+        $user = UserEditForm::findOne(['id' => Yii::$app->request->get('id')]);
         $user->initGroupSelection();
 
         if ($user == null) {

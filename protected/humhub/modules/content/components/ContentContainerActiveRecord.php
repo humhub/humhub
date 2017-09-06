@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\libs\BasePermission;
 use humhub\modules\content\models\Content;
 use Yii;
 use humhub\libs\ProfileBannerImage;
@@ -24,6 +25,9 @@ use humhub\modules\content\models\ContentContainer;
  *      - getUrl()
  *
  * @property integer $id
+ * @property integer $visibility
+ * @property ContentContainerPermissionManager $permissionManager
+ *
  * @since 1.0
  * @author Luke
  */
@@ -166,37 +170,20 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         return $this->hasOne(ContentContainer::className(), ['pk' => 'id'])
                         ->andOnCondition(['class' => self::className()]);
     }
-
-    /**
-     * Returns the permissionManager of this container by default for the current logged in user unsless another $user instance was provided.
-     *
-     * @param User $user
-     * @return ContentContainerPermissionManager
-     */
-    public function getPermissionManager(User $user = null)
-    {
-        if($user && !$user->is(Yii::$app->user->getIdentity())) {
-            $permissionManager = new ContentContainerPermissionManager;
-            $permissionManager->contentContainer = $this;
-            $permissionManager->subject = $user;
-            return $permissionManager;
-        }
-
-        if ($this->permissionManager !== null) {
-            return $this->permissionManager;
-        }
-
-        $this->permissionManager = new ContentContainerPermissionManager;
-        $this->permissionManager->contentContainer = $this;
-        return $this->permissionManager;
-    }
     
     /**
-     * Shortcut for getPermisisonManager()->can().
+     * Checks if the current user has the given Permission on this ContentContainerActiveRecord.
+     * This is a shortcut for `$this->getPermisisonManager()->can()`.
+     *
+     * The following example will check if the current user has MyPermission on the given $contentContainer
+     *
+     * ```php
+     * $contentContainer->can(MyPermisison::class);
+     * ```
      * 
      * Note: This method is used to verify ContentContainerPermissions and not GroupPermissions.
      * 
-     * @param mixed $permission
+     * @param string|string[]|BasePermission $permission
      * @see PermissionManager::can()
      * @return boolean
      * @since 1.2
@@ -204,6 +191,31 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function can($permission, $params = [], $allowCaching = true)
     {
         return $this->getPermissionManager()->can($permission, $params, $allowCaching);
+    }
+
+    /**
+     * Returns a ContentContainerPermissionManager instance for this ContentContainerActiveRecord as permission object
+     * and the given user (or current user if not given) as permission subject.
+     *
+     * @param User $user
+     * @return ContentContainerPermissionManager
+     */
+    public function getPermissionManager(User $user = null)
+    {
+        if($user && !$user->is(Yii::$app->user->getIdentity())) {
+            return new ContentContainerPermissionManager([
+                'contentContainer' => $this,
+                'subject' => $user
+            ]);
+        }
+
+        if ($this->permissionManager !== null) {
+            return $this->permissionManager;
+        }
+
+        return $this->permissionManager = new ContentContainerPermissionManager([
+            'contentContainer' => $this
+        ]);
     }
 
     /**
@@ -243,6 +255,16 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function getDefaultContentVisibility()
     {
         return Content::VISIBILITY_PRIVATE;
+    }
+
+    /**
+     * Checks the current visibility setting of this ContentContainerActiveRecord
+     * @param $visibility
+     * @return bool
+     */
+    public function isVisibleFor($visibility)
+    {
+        return $this->visibility == $visibility;
     }
 
 }

@@ -101,7 +101,6 @@ function initMarkdownEditor(elementId) {
     $('#addFileModal_'+elementId).find('.fileUploadButton').fileupload({
         dataType: 'json',
         done: function(e, data) {
-            debugger;
             $.each(data.result.files, function(index, file) {
                 addFileModal = $('#addFileModal_'+elementId);
                 if (!file.error) {

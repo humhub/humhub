@@ -30,6 +30,7 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
+ * @property integer $show_in_stream
  *
  * Following properties are optional and for module depended use:
  * - title
@@ -73,7 +74,7 @@ class File extends FileCompat
         return [
             [
                 'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
-                'mustBeInstanceOf' => array(\humhub\components\ActiveRecord::className()),
+                'mustBeInstanceOf' => [\humhub\components\ActiveRecord::className()],
             ],
             [
                 'class' => \humhub\components\behaviors\GUID::className(),

@@ -26,11 +26,11 @@ class TimezoneHelper
      * // Includes current time for each timezone (would help users who don't know what their timezone is)
      *
      * @staticvar array $regions
-     * @return type
+     * @return array
      */
-    public static function generateList()
+    public static function generateList($includeUTC = false)
     {
-        static $regions = array(
+        $regions = [
             DateTimeZone::AFRICA,
             DateTimeZone::AMERICA,
             DateTimeZone::ANTARCTICA,
@@ -40,14 +40,18 @@ class TimezoneHelper
             DateTimeZone::EUROPE,
             DateTimeZone::INDIAN,
             DateTimeZone::PACIFIC,
-        );
+        ];
 
-        $timezones = array();
+        if($includeUTC) {
+            $regions[] = DateTimeZone::UTC;
+        }
+
+        $timezones = [];
         foreach ($regions as $region) {
             $timezones = array_merge($timezones, DateTimeZone::listIdentifiers($region));
         }
 
-        $timezone_offsets = array();
+        $timezone_offsets = [];
         foreach ($timezones as $timezone) {
             $tz = new DateTimeZone($timezone);
             $timezone_offsets[$timezone] = $tz->getOffset(new DateTime);
@@ -57,7 +61,7 @@ class TimezoneHelper
         #ksort($timezone_offsets);
         asort($timezone_offsets);
 
-        $timezone_list = array();
+        $timezone_list = [];
 
         foreach ($timezone_offsets as $timezone => $offset) {
             $offset_prefix = $offset < 0 ? '-' : '+';

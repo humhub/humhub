@@ -1,5 +1,5 @@
 <?php
-namespace content;
+namespace stream;
 
 /**
  * Inherited Methods

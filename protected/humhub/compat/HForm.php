@@ -8,6 +8,8 @@
 
 namespace humhub\compat;
 
+use humhub\widgets\MarkdownField;
+use humhub\widgets\MultiSelectField;
 use Yii;
 
 /**
@@ -234,7 +236,7 @@ class HForm extends \yii\base\Component
                         }
                         return $field;
                     case 'multiselectdropdown':
-                        return \humhub\widgets\MultiSelectField::widget([
+                        return MultiSelectField::widget([
                                     'form' => $this->form,
                                     'model' => $model,
                                     'attribute' => $name,
@@ -289,8 +291,7 @@ class HForm extends \yii\base\Component
                         ]);
                     case 'markdown':
                         $options['id'] = $name;
-                        $returnField = $this->form->field($model, $name)->textarea($options);
-                        $returnField .= \humhub\widgets\MarkdownEditor::widget(array('fieldId' => $name));
+                        $returnField = $this->form->field($model, $name)->widget(MarkdownField::class, $options);
                         return $returnField;
                     default:
                         return "Field Type " . $definition['type'] . " not supported by Compat HForm";

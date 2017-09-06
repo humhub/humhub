@@ -21,6 +21,7 @@ use humhub\modules\space\models\Space;
  * @property string $description
  * @property string $created_at
  * @property integer $created_by
+ * @property integer $sort_order
  * @property string $updated_at
  * @property integer $updated_by
  */
@@ -43,7 +44,7 @@ class Group extends ActiveRecord
     public function rules()
     {
         return [
-            [['space_id'], 'integer'],
+            [['space_id', 'sort_order'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 45]
         ];
@@ -67,12 +68,22 @@ class Group extends ActiveRecord
             'updated_by' => Yii::t('UserModule.models_User', 'Updated by'),
             'show_at_registration' => Yii::t('UserModule.models_User', 'Show At Registration'),
             'show_at_directory' => Yii::t('UserModule.models_User', 'Show At Directory'),
+            'sort_order' => Yii::t('UserModule.models_User', 'Sort order'),
         ];
     }
 
     public function getDefaultSpace()
     {
         return Space::findOne(['id' => $this->space_id]);
+    }
+
+    public function beforeSave($insert)
+    {
+        if (empty($this->sort_order)) {
+            $this->sort_order = 100;
+        }
+
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -278,7 +289,7 @@ class Group extends ActiveRecord
 
     public static function getDirectoryGroups()
     {
-        return self::find()->where(['show_at_directory' => '1'])->orderBy('name ASC')->all();
+        return self::find()->where(['show_at_directory' => '1'])->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])->all();
     }
 
 }

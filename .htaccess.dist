@@ -2,6 +2,11 @@
 <IfModule mod_rewrite.c>
 RewriteEngine on
 
+# uncomment to force https requests
+#RewriteCond %{HTTPS} !=on
+#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+
 # prevent httpd from serving dotfiles (.htaccess, .svn, .git, etc.) - except let's encrypt challenge
 RedirectMatch 403 ^/?\.(?!/well-known/acme-challenge/[\w-]{43}$)
 

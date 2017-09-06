@@ -1,8 +1,6 @@
 humhub.module('directory', function (module, require, $) {
-    var status = require('ui.status');
 
     var init = function () {
-        var viewState = status.getState();
 
         if ($('.knob-container').length) {
             $(".knob").knob();

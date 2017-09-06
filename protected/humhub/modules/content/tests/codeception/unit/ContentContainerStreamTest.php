@@ -4,7 +4,6 @@ namespace tests\codeception\unit\modules\content;
 
 use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
-use Codeception\Specify;
 use humhub\modules\post\models\Post;
 
 use humhub\modules\space\models\Space;
@@ -13,8 +12,6 @@ use humhub\modules\stream\actions\ContentContainerStream;
 
 class ContentContainerStreamTest extends HumHubDbTestCase
 {
-
-    use Specify;
 
     public function testPrivateContent()
     {

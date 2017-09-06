@@ -28,4 +28,12 @@ class UserFollow extends BaseActivity
      */
     public $viewName = "userFollow";
 
+    /**
+     * @inheritdoc
+     */
+    public function getUrl()
+    {
+        return $this->source->target->getUrl();
+    }
+
 }

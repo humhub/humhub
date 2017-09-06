@@ -18,20 +18,17 @@
  */
 return [
     'Hello {displayName},<br><br>
+Your account has been activated.<br><br>
+Click here to login:<br>
+<a href=\'{loginURL}\'>{loginURL}</a><br><br>
 
-   your account has been activated.<br><br>
-
-   Click here to login:<br>
-   <a href=\'{loginURL}\'>{loginURL}</a><br><br>
-
-   Kind Regards<br>
-   {AdminName}<br><br>' => '',
+Kind Regards<br>
+{AdminName}<br><br>' => '',
     'Hello {displayName},<br><br>
+Your account request has been declined.<br><br>
 
-   your account request has been declined.<br><br>
-
-   Kind Regards<br>
-   {AdminName}<br><br>' => '',
+Kind Regards<br>
+{AdminName}<br><br>' => '',
     'Account Request for \'{displayName}\' has been approved.' => '\'{displayName}\' paskyros prašymas patvirtintas.
 ',
     'Account Request for \'{displayName}\' has been declined.' => '\'{displayName}\' paskyros prašymas atmestas.',

@@ -3,7 +3,9 @@
 namespace tests\codeception\_support;
 
 use Codeception\Module;
+use humhub\modules\file\tests\codeception\fixtures\FileFixture;
 use humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture;
+use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
 use yii\test\FixtureTrait;
 use yii\test\InitDbFixture;
 
@@ -108,14 +110,14 @@ class DynamicFixtureHelper extends Module
     protected function getDefaultFixtures()
     {
         return [
-            'user' => ['class' => \humhub\modules\user\tests\codeception\fixtures\UserFixture::className()],
-            'group' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupFixture::className()],
+            'user' => ['class' => UserFullFixture::class],
             'group_permission' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture::className()],
             'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::className()],
             'space' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::className()],
             'space_membership' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture::className()],
             'space_module' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceModuleFixture::className()],
             'content' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentFixture::className()],
+            'file' => ['class' => FileFixture::class],
             'notification' => [ 'class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::className()],
             'activity' => [ 'class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::className()],
             'friendship' => ['class' => FriendshipFixture::class]

@@ -1,6 +1,33 @@
 HumHub Change Log
 =================
-1.2.2 in developement
+
+1.2.3  (Not released yet)
+--------------------------------
+
+Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users.
+
+- Fix: Readonly markdown field issue.
+- Enh: Added flag to control automatically created social activities at content creation.
+- Enh: Fixed registration approval/denial mails and made their default value configurable.
+- Enh: Updated primary auth client interface for more flexibility
+- Enh: Added LDAP ID attribute to improve user mapping
+- Enh: Option to disable e-mail address requirement in User model
+- Fix: Overwrite of static image in theme + added documentation section
+- Fix: Account Controller exception when user is not logged in
+- Fix: Exception on notification overview page when not logged in
+- Enh: Added possibility to sort groups in directory
+- Enh: Removed LDAP UserFilter/LoginFilter length restriction
+- Fix: UTC timezone issue with `TimeZoneDropdownAddition` and added `$includeUTC` flag to `TimezoneHelper::generateList()`
+- Fix: ControllerAccess json rule
+- Enh: added `closable = false` as default `ModalDialog` widget setting
+- Fix: trigger richtext `clear` when submitting comment.
+- Fix: missing return in `FileContent::beforeValidate`
+- Fix: Mentioning search with `-` not working
+- Fix #2730 Mentioning search with `-` not working
+- Fix File search with suffix not working
+
+1.2.2  (August 2, 2017)
+--------------------------------
 - Enh: Allow returning class names beside BasePermission instances in `Module::getPermissions()`
 - Enh: Increase profile image size to 800px.
 - Fix #2644 overlapping popup preview image after increasing preview image size (hagalaz)
@@ -46,8 +73,18 @@ HumHub Change Log
 - Enh: Added `size` option `ui.modal.Modal.set()`
 - Enh: Use `ContentActiveRecord::getUrl()` for content perma links (if given)
 - Enh: Added `ContentTag` concept for creating content categories/filter on module level
+- Fix: Mentioning keeps running even if previous input result was empty
+- Enh: Darkened comment links for better readability
+- Fix #2582 Userfollow activity click action not working
+- Enh: Make space membership activities clickable
+- Chg: Removed `yii2-codeception` dependency
+- Chg: Added `phpoffice/phpexcel` dependency
+- Enh: Added `JsWidget::fadeIn` for smooth widget initialization
+- Enh: Enhanced `AccessControl` filter with `ControllerAccess` layer for better testability and flexibility
+- Enh: Added `Pending Registrations` admin view with `csv`, `xlsx` support.
 
 1.2.1 (June 17, 2017)
+--------------------------------
 - Fix: Invite error in french language
 - Fix #2518: ActivityStreamWidget::EVENT_INIT is missed (githubjeka)
 - Enh: Fixed accessibility issues in Dashboard/Login/Profile
