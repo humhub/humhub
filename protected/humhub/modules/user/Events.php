@@ -26,10 +26,8 @@ class Events extends \yii\base\Object
      */
     public static function onSearchRebuild($event)
     {
-        foreach (models\User::find()->active()->batch() as $users) {
-            foreach ($users as $user) {
-                Yii::$app->search->add($user);
-            }
+        foreach (User::find()->active()->each() as $user) {
+            Yii::$app->search->add($user);
         }
     }
 
