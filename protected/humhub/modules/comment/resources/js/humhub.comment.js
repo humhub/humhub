@@ -18,6 +18,7 @@ humhub.module('comment', function (module, require, $) {
             that.addComment(response.html);
             that.getInput().val('').trigger('autosize.resize');
             that.getRichtext().$.addClass('atwho-placeholder').focus();
+            that.getRichtext().$.trigger('clear');
             that.getUpload().reset();
         }).catch(function (err) {
             module.log.error(err, true);

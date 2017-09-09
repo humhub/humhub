@@ -61,7 +61,7 @@ script:
   - curl http://127.0.0.1:8080/index-test.php
   - |
     cd protected/humhub/tests/
-    codecept run
+    codecept run -d
 after_failure:
   - cd ../modules/user/tests/codeception/_output/
   - ls

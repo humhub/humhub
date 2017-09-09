@@ -417,7 +417,7 @@ humhub.module('ui.richtext', function(module, require, $) {
                     // check the char length and data-query attribute for changing plugin settings for showing results
                     if(query.length >= 3) {
                         if(that.isEmptyMentioning(query)) {
-                           //return callback([]);
+                           return callback([]);
                         }
                         // Render loading user feedback.
                         this.setting.displayTpl = "<li class='hint' data-value=''>${name}</li>";
@@ -427,6 +427,7 @@ humhub.module('ui.richtext', function(module, require, $) {
                         this.setting.highlightFirst = true;
                         this.setting.displayTpl = '<li class="${cssClass}" data-value="@${name}">${image} ${name}</li>';
                         $.getJSON(that.options.mentioningUrl, {keyword: query}, function(data, test) {
+
                             if(!data.length) {
                                 that.emptyMentionings.push(query);
                             }

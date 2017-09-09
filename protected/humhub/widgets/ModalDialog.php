@@ -13,6 +13,8 @@ class ModalDialog extends Modal
 
     private $dialogClass;
 
+    public $closable = false;
+
     /**
      * @inheritdoc
      */

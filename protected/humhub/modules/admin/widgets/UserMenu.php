@@ -30,7 +30,7 @@ class UserMenu extends \humhub\widgets\BaseMenu
             'label' => Yii::t('AdminModule.views_user_index', 'Users'),
             'url' => Url::to(['/admin/user/index']),
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'user'),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && (Yii::$app->controller->id == 'user' || Yii::$app->controller->id == 'pending-registrations')),
             'isVisible' => Yii::$app->user->can([
                 new \humhub\modules\admin\permissions\ManageUsers(),
                 new \humhub\modules\admin\permissions\ManageGroups(),
@@ -46,20 +46,6 @@ class UserMenu extends \humhub\widgets\BaseMenu
                 new \humhub\modules\admin\permissions\ManageSettings()
             ])
         ]);
-
-        $inviteCount = Invite::find()->count();
-        if ($inviteCount > 0) {
-            $this->addItem([
-                'label' => Yii::t('AdminModule.user', 'Pending registrations') . ' <span class="label label-danger">' . $inviteCount . '</span>',
-                'url' => Url::to(['/admin/pending-registrations']),
-                'sortOrder' => 300,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'pending-registrations'),
-                'isVisible' => Yii::$app->user->can([
-                    new \humhub\modules\admin\permissions\ManageUsers(),
-                    new \humhub\modules\admin\permissions\ManageGroups()
-                ])
-            ]);
-        }
 
         $approvalCount = UserApprovalSearch::getUserApprovalCount();
         if ($approvalCount > 0) {

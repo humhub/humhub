@@ -18,20 +18,17 @@
  */
 return [
     'Hello {displayName},<br><br>
+Your account has been activated.<br><br>
+Click here to login:<br>
+<a href=\'{loginURL}\'>{loginURL}</a><br><br>
 
-   your account has been activated.<br><br>
-
-   Click here to login:<br>
-   <a href=\'{loginURL}\'>{loginURL}</a><br><br>
-
-   Kind Regards<br>
-   {AdminName}<br><br>' => '',
+Kind Regards<br>
+{AdminName}<br><br>' => '',
     'Hello {displayName},<br><br>
+Your account request has been declined.<br><br>
 
-   your account request has been declined.<br><br>
-
-   Kind Regards<br>
-   {AdminName}<br><br>' => '',
+Kind Regards<br>
+{AdminName}<br><br>' => '',
     'Account Request for \'{displayName}\' has been approved.' => 'تمت الموافقه على طلب العضوية للمستخدم \'{displayName}\'',
     'Account Request for \'{displayName}\' has been declined.' => 'تم رفض طلب العضوية للمستخدم \'{displayName}\'',
     'User not found!' => 'لم يتم إيجاد عضو!',

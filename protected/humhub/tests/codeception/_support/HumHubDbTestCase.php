@@ -2,29 +2,20 @@
 
 namespace tests\codeception\_support;
 
+use Yii;
+use yii\base\Event;
+use yii\db\ActiveRecord;
 use humhub\libs\BasePermission;
 use humhub\modules\content\components\ContentContainerPermissionManager;
 use humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture;
+use humhub\modules\file\tests\codeception\fixtures\FileFixture;
 use humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture;
 use humhub\modules\user\components\PermissionManager;
-use humhub\modules\user\models\GroupPermission;
-use humhub\modules\user\tests\codeception\fixtures\InviteFixture;
-use humhub\modules\user\tests\codeception\fixtures\UserFixture;
-use humhub\modules\user\tests\codeception\fixtures\UserFollowFixture;
 use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
-use humhub\modules\user\tests\codeception\fixtures\UserPasswordFixture;
-use humhub\modules\user\tests\codeception\fixtures\UserProfileFixture;
-use tests\codeception\unit\modules\content\ContentContainerStreamTest;
-use Yii;
-use yii\base\Event;
-use yii\base\InvalidConfigException;
-use yii\db\ActiveRecord;
 use Codeception\TestCase\Test;
 use humhub\modules\user\models\User;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\activity\models\Activity;
-use yii\di\Container;
-use yii\test\FixtureTrait;
 
 /**
  * Inherited Methods
@@ -138,6 +129,7 @@ class HumHubDbTestCase extends Test
             'space_module' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceModuleFixture::className()],
             'content' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentFixture::className()],
             'notification' => ['class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::className()],
+            'file' => ['class' => FileFixture::class],
             'activity' => ['class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::className()],
             'friendship' => ['class' => FriendshipFixture::class]
         ];

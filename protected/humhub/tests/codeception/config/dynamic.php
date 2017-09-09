@@ -44,7 +44,7 @@
   ),
   'params' => 
   array (
-    'config_created_at' => 1501606491,
+    'config_created_at' => 1504018611,
     'horImageScrollOnMobile' => NULL,
   ),
 ); ?>

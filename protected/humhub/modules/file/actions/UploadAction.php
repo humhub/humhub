@@ -60,7 +60,7 @@ class UploadAction extends Action
      */
     public function run()
     {
-        $files = array();
+        $files = [];
         $hideInStream = $this->isHideInStreamRequest();
         foreach (UploadedFile::getInstancesByName('files') as $cFile) {
             $files[] = $this->handleFileUpload($cFile, $hideInStream);
@@ -86,7 +86,7 @@ class UploadAction extends Action
             $file->show_in_stream = false;
         }
 
-        if ($file->validate() && $file->save()) {
+        if ($file->save()) {
             if ($this->record !== null) {
                 $this->record->fileManager->attach($file);
             }
