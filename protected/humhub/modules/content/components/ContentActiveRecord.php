@@ -45,7 +45,7 @@ use yii\base\Widget;
  *
  * Note: If the underlying Content record cannot be saved or validated an Exception will thrown.
  *
- * @property Content content
+ * @property Content $content
  * @author Luke
  */
 class ContentActiveRecord extends ActiveRecord implements ContentOwner

@@ -37,6 +37,8 @@ use yii\rbac\Permission;
  * @property string $updated_at
  * @property integer $updated_by
  * @property ContentContainer $contentContainer
+ * @property string $stream_sort_date
+ * @property string $stream_channel
  *
  * @since 0.5
  */
@@ -384,7 +386,7 @@ class Content extends ContentDeprecated
     {
         $this->contentcontainer_id = $container->contentContainerRecord->id;
         $this->_container = $container;
-        if($container instanceof Space && $this->visibility === null) {
+        if ($container instanceof Space && $this->visibility === null) {
             $this->visibility = $container->getDefaultContentVisibility();
         }
     }
@@ -451,11 +453,11 @@ class Content extends ContentDeprecated
      */
     public function addTag(ContentTag $tag)
     {
-        if(!empty($tag->contentcontainer_id) && $tag->contentcontainer_id != $this->contentcontainer_id) {
+        if (!empty($tag->contentcontainer_id) && $tag->contentcontainer_id != $this->contentcontainer_id) {
             throw new InvalidParamException(Yii::t('ContentModule.base', 'Content Tag with invalid contentcontainer_id assigned.'));
         }
 
-        if(ContentTagRelation::findBy($this, $tag)->count()) {
+        if (ContentTagRelation::findBy($this, $tag)->count()) {
             return true;
         }
 
@@ -464,7 +466,6 @@ class Content extends ContentDeprecated
         $contentRelation = new ContentTagRelation($this, $tag);
         return $contentRelation->save();
     }
-
 
     /**
      * Checks if the given user can edit this content.
@@ -546,6 +547,11 @@ class Content extends ContentDeprecated
             $user = Yii::$app->user->getIdentity();
         }
 
+        // User cann access own content
+        if ($user !== null && $this->created_by == $user->id) {
+            return true;
+        }
+
         // Check Guest Visibility
         if (!$user) {
             return $this->checkGuestAccess();
@@ -560,8 +566,8 @@ class Content extends ContentDeprecated
         if ($user->isSystemAdmin() && Yii::$app->getModule('content')->adminCanViewAllContent) {
             return true;
         }
-
-        if ($this->isPrivate() && $this->getContainer()->canAccessPrivateContent($user)) {
+        
+        if ($this->isPrivate() && $this->getContainer() !== null && $this->getContainer()->canAccessPrivateContent($user)) {
             return true;
         }
 
@@ -580,13 +586,12 @@ class Content extends ContentDeprecated
      */
     public function checkGuestAccess()
     {
-        if(!$this->isPublic() || !Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
+        if (!$this->isPublic() || !Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
             return false;
         }
 
         // Check container visibility for guests
-        return ($this->container instanceof Space && $this->container->visibility == Space::VISIBILITY_ALL)
-            || ($this->container instanceof User && $this->container->visibility == User::VISIBILITY_ALL);
+        return ($this->container instanceof Space && $this->container->visibility == Space::VISIBILITY_ALL) || ($this->container instanceof User && $this->container->visibility == User::VISIBILITY_ALL);
     }
 
     /**

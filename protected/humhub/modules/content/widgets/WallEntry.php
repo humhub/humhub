@@ -9,6 +9,8 @@
 namespace humhub\modules\content\widgets;
 
 use Yii;
+use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use humhub\components\Widget;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -89,7 +91,7 @@ class WallEntry extends Widget
      *   ShowFiles::class => [
      *      'renderPreview' => false
      *   ]
-     *];
+     * ];
      * ```
      * @var array
      */
@@ -157,6 +159,11 @@ class WallEntry extends Widget
             return;
         }
 
+        // Global content
+        if ($this->contentObject->content->container === null) {
+            return Url::to(ArrayHelper::merge([$this->editRoute], ['id' => $this->contentObject->id]));
+        }
+
         // Don't show edit link, when content container is space and archived
         if ($this->contentObject->content->container instanceof Space && $this->contentObject->content->container->status == Space::STATUS_ARCHIVED) {
             return "";
@@ -194,7 +201,7 @@ class WallEntry extends Widget
         $this->addControl($result, [PinLink::class, ['content' => $this->contentObject], ['sortOrder' => 500]]);
         $this->addControl($result, [ArchiveLink::class, ['content' => $this->contentObject], ['sortOrder' => 600]]);
 
-        if(isset($this->controlsOptions['add'])) {
+        if (isset($this->controlsOptions['add'])) {
             foreach ($this->controlsOptions['add'] as $linkOptions) {
                 $this->addControl($result, $linkOptions);
             }
@@ -203,8 +210,9 @@ class WallEntry extends Widget
         return $result;
     }
 
-    protected function addControl(&$result, $options) {
-        if(isset($this->controlsOptions['prevent']) && in_array($options[0], $this->controlsOptions['prevent'])) {
+    protected function addControl(&$result, $options)
+    {
+        if (isset($this->controlsOptions['prevent']) && in_array($options[0], $this->controlsOptions['prevent'])) {
             return;
         }
 
@@ -244,7 +252,7 @@ class WallEntry extends Widget
         $container = $content->container;
 
         // In case of e.g. dashboard, show contentContainer of this content
-        if (!Yii::$app->controller instanceof ContentContainerController && !($container instanceof User && $container->id == $user->id)) {
+        if ($container !== null && !Yii::$app->controller instanceof ContentContainerController && !($container instanceof User && $container->id == $user->id)) {
             $showContentContainer = true;
         }
 
