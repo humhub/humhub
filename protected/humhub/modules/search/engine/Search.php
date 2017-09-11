@@ -14,6 +14,7 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use humhub\modules\search\events\SearchAttributesEvent;
 
 /**
  * Description of HSearchComponent
@@ -24,6 +25,7 @@ use humhub\modules\space\models\Space;
 abstract class Search extends \yii\base\Component
 {
 
+    const EVENT_SEARCH_ATTRIBUTES = 'search_attributes';
     const EVENT_ON_REBUILD = 'onRebuild';
     const DOCUMENT_TYPE_USER = 'user';
     const DOCUMENT_TYPE_SPACE = 'space';
@@ -164,6 +166,20 @@ abstract class Search extends \yii\base\Component
         }
 
         return $options;
+    }
+
+    /**
+     * Returns additional search attributes for the given object.
+     * This contains a list of comments, files and other content addons. 
+     * 
+     * @param Searchable $object
+     * @return array the additional search attributes
+     */
+    protected function getAdditionalAttributes(Searchable $object)
+    {
+        $additionalAttributes = [];
+        $this->trigger(self::EVENT_SEARCH_ATTRIBUTES, new SearchAttributesEvent($additionalAttributes, $object));
+        return $additionalAttributes;
     }
 
 }

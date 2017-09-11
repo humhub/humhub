@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,11 +10,11 @@ namespace humhub\modules\search\engine;
 
 use Yii;
 use humhub\modules\search\interfaces\Searchable;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\libs\SearchResult;
 use humhub\modules\search\libs\SearchResultSet;
-use humhub\modules\comment\models\Comment;
 use humhub\modules\space\models\Space;
+use ZendSearch\Lucene\Document\Field;
+use yii\helpers\VarDumper;
 
 /**
  * ZendLucenceSearch Engine
@@ -30,6 +30,9 @@ class ZendLuceneSearch extends Search
      */
     public $index = null;
 
+    /**
+     * @inheritdoc
+     */
     public function add(Searchable $obj)
     {
         // Get Primary Key
@@ -41,7 +44,7 @@ class ZendLuceneSearch extends Search
 
         // Add Meta Data fields
         foreach ($this->getMetaInfoArray($obj) as $fieldName => $fieldValue) {
-            $doc->addField(\ZendSearch\Lucene\Document\Field::keyword($fieldName, $fieldValue));
+            $doc->addField(Field::keyword($fieldName, $fieldValue));
         }
 
         // Add provided search infos
@@ -50,19 +53,16 @@ class ZendLuceneSearch extends Search
                 $val = implode(" ", $val);
             }
 
-            $doc->addField(\ZendSearch\Lucene\Document\Field::Text($key, $val, 'UTF-8'));
+            $doc->addField(Field::Text($key, $val, 'UTF-8'));
         }
 
-        // Add comments - if record is content
-        if ($obj instanceof ContentActiveRecord) {
-            $comments = "";
-            foreach (Comment::findAll(['object_id' => $obj->getPrimaryKey(), 'object_model' => $obj->className()]) as $comment) {
-                $comments .= ' ' . $comment->user->displayName . ' ' . $comment->message;
+        foreach ($this->getAdditionalAttributes($obj) as $attrName => $attrValue) {
+            if (!empty($attrValue)) {
+                $doc->addField(Field::unStored($attrName, VarDumper::dumpAsString($attrValue), 'UTF-8'));
             }
-            $doc->addField(\ZendSearch\Lucene\Document\Field::unStored('comments', $comments, 'UTF-8'));
         }
 
-        if (\Yii::$app->request->isConsoleRequest) {
+        if (Yii::$app->request->isConsoleRequest) {
             print ".";
         }
 
@@ -109,7 +109,7 @@ class ZendLuceneSearch extends Search
         $options = $this->setDefaultFindOptions($options);
 
         $index = $this->getIndex();
-        $keyword = str_replace(array('*', '?', '_', '$', '-',  '.'), ' ', mb_strtolower($keyword, 'utf-8'));
+        $keyword = str_replace(array('*', '?', '_', '$', '-', '.'), ' ', mb_strtolower($keyword, 'utf-8'));
 
         $query = $this->buildQuery($keyword, $options);
         if ($query === null) {

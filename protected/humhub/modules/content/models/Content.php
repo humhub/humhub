@@ -138,11 +138,9 @@ class Content extends ContentDeprecated
      */
     public function beforeSave($insert)
     {
-
         if ($this->object_model == "" || $this->object_id == "") {
             throw new Exception("Could not save content with object_model or object_id!");
         }
-
 
         // Set some default values
         if (!$this->archived) {
