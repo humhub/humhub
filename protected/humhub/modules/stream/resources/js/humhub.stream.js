@@ -149,8 +149,7 @@ humhub.module('stream', function (module, require, $) {
     StreamEntry.prototype.editModal = function (evt) {
         var that = this;
         modal.load(evt).then(function (response) {
-            modal.global.$.one('submitted', function () {
-                modal.global.close();
+            modal.global.$.one('hidden.bs.modal', function () {
                 that.reload();
             });
         }).catch(function (e) {

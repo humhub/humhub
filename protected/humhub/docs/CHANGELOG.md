@@ -26,6 +26,7 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix #2730: Mentioning search with `-` not working
 - Fix: File search with suffix not working
 - Enh: Added SearchAttributesEvent to improve content addon indexing (comment/file)
+- Fix: Do not automatically reload on stream edit modals
 
 1.2.2  (August 2, 2017)
 --------------------------------
