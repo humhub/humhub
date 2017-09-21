@@ -12,7 +12,7 @@ return array (
   'Name' => 'Tên',
   'Show At Directory' => 'Hiện ở Thư mục chính',
   'Show At Registration' => 'Hiện lúc đăng ký',
-  'Space ID' => 'ID Phòng làm việc',
+  'Space ID' => 'Mã ID Phòng làm việc',
   'Status' => 'Trạng thái',
   'Tags' => 'Thẻ',
   'Updated at' => 'Cập nhật lúc',

@@ -40,12 +40,18 @@ class DbDateValidator extends \yii\validators\DateValidator
     public $timeZone;
 
     /**
+     * @var string attribute name to save converted value to 
+     */
+    public $targetAttribute = null;
+
+    /**
      * @inheritdoc
      */
     public function validateAttribute($model, $attribute)
     {
+
         // If no source timeZone
-        if(empty($this->timeZone)) {
+        if (empty($this->timeZone)) {
             $this->timeZone = (!\Yii::$app->formatter->timeZone) ? \Yii::$app->timeZone : \Yii::$app->formatter->timeZone;
         }
 
@@ -70,8 +76,10 @@ class DbDateValidator extends \yii\validators\DateValidator
                 $date->setTimezone(new \DateTimeZone('UTC'));
             }
 
+            $targetAttribute = ($this->targetAttribute === null) ? $attribute : $this->targetAttribute;
+            
             if ($this->convertToFormat !== null) {
-                $model->$attribute = $date->format($this->convertToFormat);
+                $model->$targetAttribute = $date->format($this->convertToFormat);
             }
         }
     }

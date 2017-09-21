@@ -190,7 +190,7 @@ class UserController extends Controller
 
     public function canBecomeUser($user)
     {
-        return Yii::$app->user->isAdmin() && $user->id != Yii::$app->user->getIdentity()->id && !$user->isSystemAdmin();
+        return Yii::$app->user->isAdmin() && $user->id != Yii::$app->user->getIdentity()->id;
     }
 
     public function actionAdd()

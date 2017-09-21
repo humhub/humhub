@@ -291,6 +291,11 @@ class HForm extends \yii\base\Component
                         ]);
                     case 'markdown':
                         $options['id'] = $name;
+                        if (isset($options['readOnly'])) {
+                            // Markdownfield's readyonly attribute is lower case
+                            $options['readonly'] = $options['readOnly'];
+                            unset($options['readOnly']);
+                        }
                         $returnField = $this->form->field($model, $name)->widget(MarkdownField::class, $options);
                         return $returnField;
                     default:

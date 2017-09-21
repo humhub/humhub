@@ -13,7 +13,7 @@ return array (
   'Design' => 'Design',
   'Files' => 'Filer',
   'Groups' => 'Grupper',
-  'Logging' => 'Logger',
+  'Logging' => 'Logg',
   'Mailing' => 'Mail',
   'Modules' => 'Moduler',
   'OEmbed providers' => 'OEmbed tilbydere',
