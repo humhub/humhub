@@ -2,6 +2,7 @@
 
 namespace humhub\modules\stream\models;
 
+use humhub\modules\content\models\Content;
 use Yii;
 
 /**
@@ -183,8 +184,8 @@ class StreamSuppressQuery extends StreamQuery
     /**
      * Adds new suppression
      * 
-     * @param \humhub\modules\content\models\Content $parentContent
-     * @param \humhub\modules\content\models\Content $content
+     * @param Content $parentContent
+     * @param Content $content
      */
     public function addSuppression($parentContent, $content)
     {
