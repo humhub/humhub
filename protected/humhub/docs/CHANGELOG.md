@@ -25,6 +25,11 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix: Mentioning search with `-` not working
 - Fix #2730 Mentioning search with `-` not working
 - Fix File search with suffix not working
+- Enh: Allow `ContentActiveRecord($contentContainer, $config)` initialization
+- Fix: `WallEntry::addControl` with simple array options
+- Enh: Added `$scheme` Argument to `DownloadFileHandler::getUrl()`
+- Fix: Clear UserModule cache after save/delete
+- Fix: Prevent Integrity check failures.
 
 1.2.2  (August 2, 2017)
 --------------------------------
