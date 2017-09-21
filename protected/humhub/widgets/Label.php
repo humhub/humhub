@@ -17,8 +17,7 @@ use Yii;
  * Labels for Wall Entries
  * This widget will attached labels like Pinned, Archived to Wall Entries
  *
- * @package humhub.modules_core.wall.widgets
- * @since 0.5
+ * @since 1.2.2
  */
 class Label extends BootstrapComponent
 {

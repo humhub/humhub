@@ -17,7 +17,7 @@ class WallEntryControls extends \humhub\widgets\BaseStack
     public $object;
 
     /**
-     * @var \humhub\modules\content\models\WallEntry
+     * @var WallEntry
      */
     public $wallEntryWidget;
 

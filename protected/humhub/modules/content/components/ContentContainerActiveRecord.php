@@ -8,9 +8,9 @@
 
 namespace humhub\modules\content\components;
 
+use Yii;
 use humhub\libs\BasePermission;
 use humhub\modules\content\models\Content;
-use Yii;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
 use humhub\modules\user\models\User;
@@ -26,7 +26,9 @@ use humhub\modules\content\models\ContentContainer;
  *
  * @property integer $id
  * @property integer $visibility
+ * @property integer $contentcontainer_id
  * @property ContentContainerPermissionManager $permissionManager
+ * @property ContentContainerSettingsManager $settings
  *
  * @since 1.0
  * @author Luke

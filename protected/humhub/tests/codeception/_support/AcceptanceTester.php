@@ -104,11 +104,9 @@ class AcceptanceTester extends \Codeception\Actor
 
     public function allowGuestAccess() {
         $this->amOnRoute(['/admin/authentication']);
-        $this->waitForElementVisible('.field-authenticationsettingsform-allowguestaccess');
-        $this->click('.field-authenticationsettingsform-allowguestaccess label');
-
-        $this->click('[type="submit"]');
-        $this->seeSuccess('Saved');
+        $this->jsClick('#authenticationsettingsform-allowguestaccess');
+        $this->click('button.btn-primary', '#authentication-settings-form');
+        $this->wait(1);
         $this->guestAccessAllowed = true;
     }
 

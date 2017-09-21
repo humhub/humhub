@@ -8,7 +8,15 @@ use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\content\widgets\WallEntryLabels;
+
+/* @var $object \humhub\modules\content\components\ContentContainerActiveRecord */
+/* @var $renderControls boolean */
+/* @var $wallEntryWidget string */
+/* @var $user \humhub\modules\user\models\User */
+/* @var $showContentContainer \humhub\modules\user\models\User */
 ?>
+
+
 
 <div class="panel panel-default wall_<?= $object->getUniqueId(); ?>">
     <div class="panel-body">

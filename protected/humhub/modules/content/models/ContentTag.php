@@ -61,6 +61,7 @@ use yii\db\ActiveQuery;
  * @property integer contentcontainer_id
  * @property string type
  * @property integer parent_id
+ * @property string color
  *
  * @package humhub\modules\content\models
  * @since 1.2.2

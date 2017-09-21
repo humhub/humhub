@@ -35,8 +35,8 @@ class ContentContainerSettingsManager extends BaseSettingsManager
      * If there is not container specific setting, this function will search for a global setting or
      * return default or null if there is also no global setting.
      * 
-     * @param type $name
-     * @param type $default
+     * @param string $name
+     * @param string $default
      * @return boolean
      * @since 1.2
      */
@@ -51,8 +51,8 @@ class ContentContainerSettingsManager extends BaseSettingsManager
      * If there is not container specific setting, this function will search for a global setting or
      * return default or null if there is also no global setting.
      * 
-     * @param type $name
-     * @param type $default
+     * @param string $name
+     * @param string $default
      * @return boolean
      * @since 1.2
      */

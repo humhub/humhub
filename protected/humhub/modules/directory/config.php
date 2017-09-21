@@ -6,9 +6,9 @@ return [
     'id' => 'directory',
     'class' => \humhub\modules\directory\Module::className(),
     'isCoreModule' => true,
-    'events' => array(
-        array('class' => TopMenu::className(), 'event' => TopMenu::EVENT_INIT, 'callback' => array(humhub\modules\directory\Module::className(), 'onTopMenuInit')),
-    ),
+    'events' => [
+        ['class' => TopMenu::className(), 'event' => TopMenu::EVENT_INIT, 'callback' => [humhub\modules\directory\Module::className(), 'onTopMenuInit']],
+    ],
     'urlManagerRules' => [
         'directory/members' => 'directory/directory/members',
         'directory/spaces' => 'directory/directory/spaces',

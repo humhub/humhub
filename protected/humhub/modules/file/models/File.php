@@ -32,6 +32,8 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @property integer $updated_by
  * @property integer $show_in_stream
  *
+ * @property \humhub\modules\user\models\User $createdBy
+ *
  * Following properties are optional and for module depended use:
  * - title
  * 
