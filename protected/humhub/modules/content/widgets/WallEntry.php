@@ -153,7 +153,7 @@ class WallEntry extends Widget
      */
     public function getEditUrl()
     {
-        if (empty($this->editRoute)) {
+        if (empty($this->editRoute) || !$this->contentObject->content || !$this->contentObject->content->container) {
             return;
         }
 
@@ -168,7 +168,7 @@ class WallEntry extends Widget
     /**
      * Returns an array of contextmenu items either in form of a single array:
      * 
-     * ['label' => 'mylabel', icon => 'fa-myicon', 'data-action-click' => 'myaction', ...]
+     * ['label' => 'mylabel', 'icon' => 'fa-myicon', 'data-action-click' => 'myaction', ...]
      * 
      * or as widget type definition:
      * 
@@ -204,7 +204,7 @@ class WallEntry extends Widget
     }
 
     protected function addControl(&$result, $options) {
-        if(isset($this->controlsOptions['prevent']) && in_array($options[0], $this->controlsOptions['prevent'])) {
+        if(isset($this->controlsOptions['prevent']) && isset($options[0]) && in_array($options[0], $this->controlsOptions['prevent'])) {
             return;
         }
 

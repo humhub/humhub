@@ -96,7 +96,9 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      *
      * `$model = new MyContent($space1, Content::VISIBILITY_PUBLIC, ['myField' => 'value']);`
      *
+     * or
      *
+     * `$model = new MyContent($space1, ['myField' => 'value']);`
      * @param array|ContentContainerActiveRecord $contentContainer either the configuration or contentcontainer
      * @param int $visibility
      * @param array $config
@@ -107,7 +109,9 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
             parent::__construct($contentContainer);
         } else if($contentContainer instanceof ContentContainerActiveRecord) {
             $this->content->setContainer($contentContainer);
-            if($visibility !== null) {
+            if(is_array($visibility)) {
+                $config = $visibility;
+            } else if($visibility !== null) {
                 $this->content->visibility = $visibility;
             }
             parent::__construct($config);

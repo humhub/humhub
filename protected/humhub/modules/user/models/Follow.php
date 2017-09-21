@@ -8,10 +8,12 @@
 
 namespace humhub\modules\user\models;
 
+use humhub\components\ActiveRecord;
 use humhub\modules\user\events\FollowEvent;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * This is the model class for table "user_follow".
@@ -110,19 +112,20 @@ class Follow extends \yii\db\ActiveRecord
      */
     public function beforeDelete()
     {
-        $this->trigger(Follow::EVENT_FOLLOWING_REMOVED, new FollowEvent(['user' => $this->user, 'target' => $this->getTarget()]));
+        if($this->getTarget()) {
+            $this->trigger(Follow::EVENT_FOLLOWING_REMOVED, new FollowEvent(['user' => $this->user, 'target' => $this->getTarget()]));
 
-        // ToDo: Handle this via event of User Module
-        if ($this->object_model == User::className()) {
-            $notification = new \humhub\modules\user\notifications\Followed();
-            $notification->originator = $this->user;
-            $notification->delete($this->getTarget());
+            // ToDo: Handle this via event of User Module
+            if ($this->object_model == User::className()) {
+                $notification = new \humhub\modules\user\notifications\Followed();
+                $notification->originator = $this->user;
+                $notification->delete($this->getTarget());
 
-            foreach (Activity::findAll(['object_model' => $this->className(), 'object_id' => $this->id]) as $activity) {
-                $activity->delete();
+                foreach (Activity::findAll(['object_model' => $this->className(), 'object_id' => $this->id]) as $activity) {
+                    $activity->delete();
+                }
             }
         }
-
         return parent::beforeDelete();
     }
 
@@ -133,9 +136,14 @@ class Follow extends \yii\db\ActiveRecord
 
     public function getTarget()
     {
-        $targetClass = $this->object_model;
-        if ($targetClass != "") {
-            return $targetClass::findOne(['id' => $this->object_id]);
+        try {
+            $targetClass = $this->object_model;
+            if ($targetClass != "" && is_subclass_of($targetClass, \yii\db\ActiveRecord::class)) {
+                return $targetClass::findOne(['id' => $this->object_id]);
+            }
+        } catch(\Exception $e) {
+            // Avoid errors in integrity check
+            Yii::error($e);
         }
         return null;
     }

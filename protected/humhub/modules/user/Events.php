@@ -116,11 +116,19 @@ class Events extends \yii\base\Object
                     $follow->delete();
                 }
             }
-            if ($follow->getTarget() == null) {
+
+            try {
+                if ($follow->getTarget() == null) {
+                    if ($integrityController->showFix("Deleting follow " . $follow->id . " of non target!")) {
+                        $follow->delete();
+                    }
+                }
+            } catch(\Exception $e) {
                 if ($integrityController->showFix("Deleting follow " . $follow->id . " of non target!")) {
                     $follow->delete();
                 }
             }
+
         }
 
         $integrityController->showTestHeadline("User Module - Modules (" . models\Module::find()->count() . " entries)");
