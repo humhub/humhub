@@ -19,6 +19,6 @@ return array (
   'Updated by' => 'Cập nhật bởi',
   'Users' => 'Users',
   'Visibility' => 'Hiển thị',
-  'You cannot create private visible spaces!' => 'Bạn không thể tạo phòng làm việc với quyền hiển thị riêng tư!',
-  'You cannot create public visible spaces!' => 'Bạn không thể tạo phòng làm việc với quyền hiển thị công cộng!',
+  'You cannot create private visible spaces!' => 'Bạn không thể tạo KGLV với quyền hiển thị riêng tư!',
+  'You cannot create public visible spaces!' => 'Bạn không thể tạo KGLV với quyền hiển thị công cộng!',
 );

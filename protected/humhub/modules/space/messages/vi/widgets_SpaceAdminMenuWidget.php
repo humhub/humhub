@@ -9,6 +9,6 @@ return array (
   'Receive Notifications for new content' => 'Nhận thông báo cho nội dung mới',
   'Security' => 'Bảo mật',
   'Show posts on dashboard' => 'Hiển thị post trên trang chính',
-  'This option will hide new content from this space at your dashboard' => 'Lựa chọn này sẽ ẩn nội dung mới từ phòng này trên trang chính của bạn',
-  'This option will show new content from this space at your dashboard' => 'Lựa chọn này sẽ hiện nội dung mới từ phòng này trên trang chính của bạn',
+  'This option will hide new content from this space at your dashboard' => 'Lựa chọn này sẽ ẩn nội dung mới từ KGLV này trên trang chính của bạn',
+  'This option will show new content from this space at your dashboard' => 'Lựa chọn này sẽ hiện nội dung mới từ KGLV này trên trang chính của bạn',
 );
