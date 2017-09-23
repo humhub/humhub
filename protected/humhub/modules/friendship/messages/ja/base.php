@@ -13,4 +13,5 @@ return array (
   'Sent requests' => '',
   'Show all friends' => '',
   'Unfriend' => '',
+    'Actions' => '',
 );
