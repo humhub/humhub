@@ -47,6 +47,13 @@ class DateTimeHelper
         return Yii::$app->formatter->isShowMeridiem() ? 'h:mm a' : 'php:H:i';
     }
 
+    /**
+     * Converts two given DateTime instances or strings into a DateInterval
+     * 
+     * @param DateTime|string|null $startDateTime the start date or null for current date time
+     * @param DateTime $endDateTime the end date time
+     * @return \DateInterval
+     */
     public static function getDateInterval($startDateTime = null, $endDateTime)
     {
         if ($startDateTime === null) {
@@ -62,6 +69,17 @@ class DateTimeHelper
         }
 
         return $startDateTime->diff($endDateTime);
+    }
+
+    /**
+     * Converts a DateInterval object into seconds
+     * 
+     * @param \DateInterval $interval
+     * @return int the seconds
+     */
+    public static function convertDateIntervalToSeconds(\DateInterval $interval)
+    {
+        return $interval->days * 86400 + $interval->h * 3600 + $interval->i * 60 + $interval->s;
     }
 
 }
