@@ -36,11 +36,25 @@ class ContentController extends Controller
         ];
     }
 
-    public function actionDeleteById()
+    public function actionViewModal($id)
     {
-        Yii::$app->response->format = 'json';
-        $id = (int) Yii::$app->request->get('id');
-        Content::findOne($id);
+        $content = Content::findOne(['id' => $id]);
+        if ($content === null) {
+            throw new HttpException(404);
+        } elseif (!$content->canView()) {
+            throw new HttpException(403);
+        }
+        
+        if (!Yii::$app->request->isAjax) {
+            return $this->redirect(['/content/perma', 'id' => $content->id]);
+        }
+
+        $entry = $content->getPolymorphicRelation();
+        if ($entry === null) {
+            throw new HttpException(500);
+        }
+        
+        return $this->renderAjax('view-modal', ['entry' => $entry]);
     }
 
     /**
@@ -127,7 +141,7 @@ class ContentController extends Controller
 
         return $this->asJson($json);
     }
-    
+
     public function actionDeleteId()
     {
         $this->forcePostRequest();
@@ -137,7 +151,7 @@ class ContentController extends Controller
         } elseif (!$content->canEdit()) {
             throw new HttpException(403);
         }
-        
+
         return $this->asJson(['success' => $content->delete()]);
     }
 

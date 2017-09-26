@@ -33,6 +33,7 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Enh: Added `$scheme` Argument to `DownloadFileHandler::getUrl()`
 - Fix: Clear UserModule cache after save/delete
 - Fix: Prevent Integrity check failures.
+- Enh: Added default open content as modal action
 
 
 1.2.2  (August 2, 2017)
