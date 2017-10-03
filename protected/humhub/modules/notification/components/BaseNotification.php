@@ -44,6 +44,13 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     public $groupCount = 0;
 
     /**
+     * @since 1.2.3
+     * @see NotificationManager
+     * @var boolean do not send this notification also to the originator
+     */
+    public $surpressSendToOriginator = true;
+
+    /**
      * @var string the group key
      */
     protected $_groupKey = null;
@@ -413,5 +420,5 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     {
         return null;
     }
-    
+
 }

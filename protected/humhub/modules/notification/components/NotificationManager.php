@@ -65,7 +65,7 @@ class NotificationManager
 
         foreach ($recepients as $recepient) {
             $notification->saveRecord($recepient);
-            foreach ($this->getTargets() as $target) {
+            foreach ($this->getTargets($recepient) as $target) {
                 $target->send($notification, $recepient);
             }
         }
@@ -82,7 +82,12 @@ class NotificationManager
         $userIds = [];
         $filteredUsers = [];
         foreach ($users as $user) {
-            if (!in_array($user->id, $userIds) && !$notification->isOriginator($user)) {
+
+            if ($notification->surpressSendToOriginator && $notification->isOriginator($user)) {
+                continue;
+            }
+
+            if (!in_array($user->id, $userIds)) {
                 $filteredUsers[] = $user;
                 $userIds[] = $user->id;
             }
@@ -98,21 +103,14 @@ class NotificationManager
      */
     public function send(BaseNotification $notification, User $user)
     {
-        if ($notification->isOriginator($user)) {
-            return;
-        }
-
-        $notification->saveRecord($user);
-        foreach ($this->getTargets($user) as $target) {
-            $target->send($notification, $user);
-        }
+        return $this->sendBulk($notification, [$user]);
     }
 
     /**
      * Returns all active targets for the given user.
      * 
-     * @param type $user
-     * @return type
+     * @param User $user
+     * @return BaseTarget[] the target
      */
     public function getTargets(User $user = null)
     {
