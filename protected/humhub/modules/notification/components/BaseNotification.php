@@ -8,6 +8,7 @@
 
 namespace humhub\modules\notification\components;
 
+use humhub\components\SocialActivity;
 use Yii;
 use yii\helpers\Url;
 use yii\bootstrap\Html;
@@ -30,7 +31,7 @@ use humhub\modules\notification\targets\WebTarget;
  *
  * @author luke
  */
-abstract class BaseNotification extends \humhub\components\SocialActivity
+abstract class BaseNotification extends SocialActivity
 {
 
     /**
@@ -227,7 +228,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     public function about($source)
     {
         if (!$source) {
-            return;
+            return $this;
         }
         parent::about($source);
         $this->record->space_id = $this->getSpaceId();
@@ -240,7 +241,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     public function from($originator)
     {
         if (!$originator) {
-            return;
+            return $this;
         }
         $this->originator = $originator;
         $this->record->originator_user_id = $originator->id;
@@ -395,7 +396,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
 
     /**
      * Should be overwritten by subclasses for a html representation of the notification.
-     * @return type
+     * @return string
      */
     public function html()
     {

@@ -64,7 +64,7 @@ abstract class ActionAccessValidator extends AccessValidator
      }
 
     /**
-     * Filters our rules not related to the current validator and action.
+     * Filters out rules not related to the current validator and action.
      *
      * @param array|null $rules
      * @return array
