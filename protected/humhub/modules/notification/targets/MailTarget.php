@@ -71,10 +71,20 @@ class MailTarget extends BaseTarget
 
         $from = $notification->originator ? Html::encode($notification->originator->displayName) . ' (' . Html::encode(Yii::$app->name) . ')' : Yii::$app->settings->get('mailer.systemEmailName');
 
-        Yii::$app->mailer->compose($this->view, $viewParams)
+        $mail = Yii::$app->mailer->compose($this->view, $viewParams)
                 ->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => $from])
                 ->setTo($recipient->email)
-                ->setSubject($notification->getMailSubject())->send();
+                ->setSubject($notification->getMailSubject());
+
+        if (isset($viewParams['mailAttachments']) && is_array($viewParams['mailAttachments'])) {
+            foreach ($viewParams['mailAttachments'] as $attachment) {
+                if (isset($attachment['content']) && isset($attachment['options'])) {
+                    $mail->attachContent($attachment['content'], $attachment['options']);
+                }
+            }
+        }
+
+        $mail->send();
 
         Yii::$app->i18n->autosetLocale();
     }

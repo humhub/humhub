@@ -44,7 +44,7 @@ class NotificationManager
     /**
      * @var BaseTarget[] Cached target instances.
      */
-    protected $_targets;
+    protected $_targets = null;
 
     /**
      * Cached array of NotificationCategories
@@ -65,7 +65,7 @@ class NotificationManager
 
         foreach ($recepients as $recepient) {
             $notification->saveRecord($recepient);
-            foreach ($this->getTargets() as $target) {
+            foreach ($this->getTargets($recepient) as $target) {
                 $target->send($notification, $recepient);
             }
         }
@@ -82,7 +82,12 @@ class NotificationManager
         $userIds = [];
         $filteredUsers = [];
         foreach ($users as $user) {
-            if (!in_array($user->id, $userIds) && !$notification->isOriginator($user)) {
+
+            if ($notification->surpressSendToOriginator && $notification->isOriginator($user)) {
+                continue;
+            }
+
+            if (!in_array($user->id, $userIds)) {
                 $filteredUsers[] = $user;
                 $userIds[] = $user->id;
             }
@@ -98,36 +103,38 @@ class NotificationManager
      */
     public function send(BaseNotification $notification, User $user)
     {
-        if ($notification->isOriginator($user)) {
-            return;
-        }
-
-        $notification->saveRecord($user);
-        foreach ($this->getTargets($user) as $target) {
-            $target->send($notification, $user);
-        }
+        return $this->sendBulk($notification, [$user]);
     }
 
     /**
      * Returns all active targets for the given user.
+     * If no user is given, all configured targets will be returned.
      * 
-     * @param type $user
-     * @return type
+     * @param User $user|null the user 
+     * @return BaseTarget[] the target
      */
     public function getTargets(User $user = null)
     {
-        if ($this->_targets) {
-            return $this->_targets;
-        }
-
-        foreach ($this->targets as $target) {
-            $instance = Yii::createObject($target);
-            if ($instance->isActive($user)) {
-                $this->_targets[] = $instance;
+        // Initialize targets
+        if ($this->_targets === null) {
+            $this->_targets = [];
+            foreach ($this->targets as $target) {
+                $this->_targets[] = Yii::createObject($target);
             }
         }
 
-        return $this->_targets;
+        if ($user === null) {
+            return $this->_targets;
+        }
+
+        $userTargets = [];
+        foreach ($this->_targets as $target) {
+            if ($target->isActive($user)) {
+                $userTargets[] = $target;
+            }
+        }
+
+        return $userTargets;
     }
 
     /**
