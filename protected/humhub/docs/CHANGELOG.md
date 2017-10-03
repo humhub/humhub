@@ -34,6 +34,7 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix: Clear UserModule cache after save/delete
 - Fix: Prevent Integrity check failures.
 - Enh: Added default open content as modal action
+- Enh: Added possibility to add attachments in Notification MailTarget
 
 
 1.2.2  (August 2, 2017)
