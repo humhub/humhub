@@ -14,6 +14,7 @@ use humhub\modules\activity\models\Activity;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "user_follow".
@@ -177,8 +178,8 @@ class Follow extends \yii\db\ActiveRecord
      * If $withNotifications is set only follower with the given send_notifications setting are returned.
      * 
      * @param \yii\db\ActiveRecord $target
-     * @param type $withNotifications
-     * @return type
+     * @param boolean $withNotifications
+     * @return ActiveQuery
      */
     public static function getFollowersQuery(\yii\db\ActiveRecord $target, $withNotifications = null)
     {

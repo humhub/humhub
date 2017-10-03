@@ -71,7 +71,7 @@ class Controller extends \humhub\components\Controller
         // Use by default ManageModule permission, if method is not overwritten by custom module
         if ($this->module->id != 'admin') {
             return [
-                ['permissions' => \humhub\modules\admin\permissions\ManageModules::className()]
+                ['permission' => \humhub\modules\admin\permissions\ManageModules::className()]
             ];
         }
 

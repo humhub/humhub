@@ -32,7 +32,7 @@ abstract class BaseTarget extends \yii\base\Object
 
     /**
      * Holds the title of this instance.
-     * @var type
+     * @var string
      */
     public $title;
 

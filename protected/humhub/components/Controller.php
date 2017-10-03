@@ -13,6 +13,7 @@ use humhub\components\behaviors\AccessControl;
 use Yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\web\ForbiddenHttpException;
 
 /**
  * Base Controller
@@ -169,7 +170,7 @@ class Controller extends \yii\web\Controller
      */
     protected function forbidden()
     {
-        throw new \yii\web\ForbiddenHttpException(Yii::t('error', 'You are not allowed to perform this action.'));
+        throw new ForbiddenHttpException(Yii::t('error', 'You are not allowed to perform this action.'));
     }
 
     /**
@@ -273,12 +274,11 @@ class Controller extends \yii\web\Controller
      * This is required for some modules in pjax mode.
      *
      * @since 1.2
-     * @param type $url
      */
     public function setJsViewStatus()
     {
-        $modluleId = (Yii::$app->controller->module) ? Yii::$app->controller->module->id : '';
-        $this->view->registerJs('humhub.modules.ui.view.setState("' . $modluleId . '", "' . Yii::$app->controller->id . '", "' . Yii::$app->controller->action->id . '");', \yii\web\View::POS_BEGIN);
+        $moduleId = (Yii::$app->controller->module) ? Yii::$app->controller->module->id : '';
+        $this->view->registerJs('humhub.modules.ui.view.setState("' . $moduleId . '", "' . Yii::$app->controller->id . '", "' . Yii::$app->controller->action->id . '");', \yii\web\View::POS_BEGIN);
 
         if (Yii::$app->request->isPjax) {
             \humhub\widgets\TopMenu::setViewState();

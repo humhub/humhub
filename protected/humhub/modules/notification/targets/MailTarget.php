@@ -27,7 +27,7 @@ class MailTarget extends BaseTarget
 
     /**
      * Enable this target by default.
-     * @var type
+     * @var boolean
      */
     public $defaultSetting = true;
 
