@@ -31,7 +31,7 @@ return array (
   'Security' => 'Sécurité',
   'Settings' => 'Réglages',
   'Sign in' => 'Se connecter',
-  'Sign in / up' => 'Ce connecter / s\'inscrire',
+  'Sign in / up' => 'Se connecter / s\'inscrire',
   'Unknown user status!' => 'Statut d\'utilisateur inconnu !',
   'Upload profile banner' => 'Charger une bannière de profil',
   'Upload profile image' => 'Charger une image de profil',
