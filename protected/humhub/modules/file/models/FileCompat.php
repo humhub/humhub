@@ -11,7 +11,7 @@ namespace humhub\modules\file\models;
 use humhub\modules\file\libs\FileHelper;
 
 /**
- * FileCompat provides an compatiblity layer for older HumHub Version (1.1 and prior).
+ * FileCompat provides an compatibility layer for older HumHub Version (1.1 and prior).
  *
  * @since 1.2
  * @author Luke
@@ -28,7 +28,7 @@ class FileCompat extends \humhub\components\ActiveRecord
      */
     public static function getFilesOfObject(\humhub\components\ActiveRecord $object)
     {
-        return $object->fileManager->getAll();
+        return $object->fileManager->findAll();
     }
 
     /**
@@ -65,11 +65,12 @@ class FileCompat extends \humhub\components\ActiveRecord
      * @deprecated since version 1.2
      * @param \yii\db\ActiveRecord $object is a HActiveRecord
      * @param string $files is a comma seperated list of newly uploaded file guids
+     * @throws \Exception
      */
     public static function attachPrecreated($object, $files)
     {
         if (!$object instanceof \humhub\components\ActiveRecord) {
-            throw new Exception('Invalid object given - require instance of \humhub\components\ActiveRecord!');
+            throw new \Exception('Invalid object given - require instance of \humhub\components\ActiveRecord!');
         }
         $object->fileManager->attach($files);
     }
