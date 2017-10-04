@@ -422,4 +422,16 @@ abstract class BaseNotification extends SocialActivity
         return null;
     }
 
+    /**
+     * This method is invoked right before a mail will be send for this notificatoin
+     * 
+     * @see \humhub\modules\notification\targets\MailTarget
+     * @param \yii\mail\MessageInterface $message
+     * @return boolean when true the mail will be send
+     */
+    public function beforeMailSend(\yii\mail\MessageInterface $message)
+    {
+        return true;
+    }
+
 }
