@@ -30,4 +30,5 @@ return [
     'Sent requests' => '',
     'Show all friends' => '',
     'Unfriend' => '',
+    'Actions' => '',
 ];
