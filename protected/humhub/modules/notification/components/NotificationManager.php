@@ -83,7 +83,7 @@ class NotificationManager
         $filteredUsers = [];
         foreach ($users as $user) {
 
-            if ($notification->surpressSendToOriginator && $notification->isOriginator($user)) {
+            if ($notification->suppressSendToOriginator && $notification->isOriginator($user)) {
                 continue;
             }
 

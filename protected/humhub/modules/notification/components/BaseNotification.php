@@ -49,7 +49,7 @@ abstract class BaseNotification extends SocialActivity
      * @see NotificationManager
      * @var boolean do not send this notification also to the originator
      */
-    public $surpressSendToOriginator = true;
+    public $suppressSendToOriginator = true;
 
     /**
      * @var string the group key
