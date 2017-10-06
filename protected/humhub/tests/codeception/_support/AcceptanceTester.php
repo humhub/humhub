@@ -316,6 +316,11 @@ class AcceptanceTester extends \Codeception\Actor
         $this->executeJS('window.scrollTo(0,0);');
     }
 
+    public function scrollToBottom()
+    {
+        $this->executeJS('window.scrollTo(0,document.body.scrollHeight);');
+    }
+
     /**
      * @return \Codeception\Scenario
      */
