@@ -31,6 +31,9 @@ $config = [
                     'class' => 'humhub\modules\notification\targets\MailTarget',
                     'renderer' => ['class' => 'humhub\modules\notification\renderer\MailRenderer']
                 ],
+                [
+                    'class' => 'humhub\modules\notification\targets\MobileTarget'
+                ],
             ]
         ],
         'log' => [
