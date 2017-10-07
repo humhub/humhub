@@ -3,7 +3,7 @@ return array (
   '<strong>Confirm</strong> Action' => 'Aktion <strong>bestätigen</strong>
 ',
   '<strong>Latest</strong> updates' => '<strong>Letzte</strong> Aktualisierungen',
-  '<strong>Mail</strong> summary' => '<strong>Nachrichten</strong> Zusammenfassung',
+  '<strong>Mail</strong> summary' => '<strong>E-Mail</strong> Zusammenfassung',
   'Account settings' => 'Kontoeinstellungen',
   'Administration' => 'Administration',
   'Allow' => 'Erlauben',
