@@ -111,6 +111,8 @@ humhub.module('notification', function (module, require, $) {
 
         $('#badge-notifications').hide();
 
+        event.trigger('humhub:notification:udpateCount', [$count]);
+
         if (!$count) {
             updateTitle(false);
             $('#badge-notifications').html('0');
