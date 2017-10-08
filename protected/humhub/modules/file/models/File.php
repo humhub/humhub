@@ -33,6 +33,7 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @property integer $show_in_stream
  *
  * @property \humhub\modules\user\models\User $createdBy
+ * @property \humhub\modules\file\components\StorageManager $store
  *
  * Following properties are optional and for module depended use:
  * - title
@@ -187,7 +188,7 @@ class File extends FileCompat
             $this->_store = Yii::createObject(Yii::$app->getModule('file')->storageManagerClass);
             $this->_store->setFile($this);
         }
-
+        
         return $this->_store;
     }
     
