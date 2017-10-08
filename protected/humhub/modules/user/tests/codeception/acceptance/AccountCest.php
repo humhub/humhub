@@ -69,8 +69,11 @@ class AccountCest
         $I->see('Mentionings');
         $I->jsClick('[name="NotificationSettings[settings][notification.followed_web]"]');
         $I->jsClick('[name="NotificationSettings[settings][notification.comments_web]"]');
-        
-        $I->click('Save');
+
+        //$I->wait(20);
+
+        $I->scrollToBottom();
+        $I->click('Save', '.panel-body');
         
         $I->seeSuccess('Saved');
         

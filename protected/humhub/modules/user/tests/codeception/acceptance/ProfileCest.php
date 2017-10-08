@@ -22,6 +22,8 @@ class ProfileCest
         $I->amGoingTo('fill only my firstname');
         $I->fillField('#profile-firstname', 'MyFirstName');
         $I->fillField('#profile-lastname', '');
+
+        $I->scrollToBottom();
         $I->click('save');
         $I->wait(5);
         $I->expectTo('see an error');
@@ -40,6 +42,7 @@ class ProfileCest
         $I->click('Social bookmarks');
         $I->wait(1);
         $I->fillField('#profile-url', 'http://www.asdf.de');
+        $I->scrollToBottom();
         $I->click('save');
         $I->wait(1);
         $I->expectTo('see no errors after saving');

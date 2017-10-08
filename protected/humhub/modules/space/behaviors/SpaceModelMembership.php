@@ -32,8 +32,8 @@ class SpaceModelMembership extends Behavior
     /**
      * Checks if given Userid is Member of this Space.
      *
-     * @param type $userId
-     * @return type
+     * @param integer $userId
+     * @return boolean
      */
     public function isMember($userId = "")
     {
@@ -135,11 +135,10 @@ class SpaceModelMembership extends Behavior
     /**
      * Gets Owner for this workspace
      *
-     * @return type
+     * @return User
      */
     public function getSpaceOwner()
     {
-
         if ($this->_spaceOwner != null) {
             return $this->_spaceOwner;
         }
@@ -169,8 +168,8 @@ class SpaceModelMembership extends Behavior
     /**
      * Sets Owner for this workspace
      *
-     * @param type $userId
-     * @return type
+     * @param integer $userId
+     * @return boolean
      */
     public function setAdmin($userId = null)
     {
@@ -208,8 +207,8 @@ class SpaceModelMembership extends Behavior
     /**
      * Invites a not registered member to this space
      *
-     * @param type $email
-     * @param type $originatorUserId
+     * @param string $email
+     * @param integer $originatorUserId
      */
     public function inviteMemberByEMail($email, $originatorUserId)
     {
@@ -253,8 +252,8 @@ class SpaceModelMembership extends Behavior
     /**
      * Requests Membership
      *
-     * @param type $userId
-     * @param type $message
+     * @param integer $userId
+     * @param string $message
      */
     public function requestMembership($userId, $message = "")
     {
@@ -297,8 +296,8 @@ class SpaceModelMembership extends Behavior
      * If user is already invited, retrigger invitation.
      * If user is applicant approve it.
      *
-     * @param type $userId
-     * @param type $originatorId
+     * @param integer $userId
+     * @param integer $originatorId
      */
     public function inviteMember($userId, $originatorId)
     {
@@ -340,8 +339,8 @@ class SpaceModelMembership extends Behavior
     /**
      * Sends an Invite Notification to the given user.
      * 
-     * @param type $userId
-     * @param type $originatorId
+     * @param integer $userId
+     * @param integer $originatorId
      */
     protected function sendInviteNotification($userId, $originatorId)
     {
@@ -359,8 +358,8 @@ class SpaceModelMembership extends Behavior
      * This can happens after an clicking "Request Membership" Link
      * after Approval or accepting an invite.
      *
-     * @param type $userId
-     * @param type $canLeave 0: user cannot cancel membership | 1: can cancel membership | 2: depending on space flag members_can_leave
+     * @param integer $userId
+     * @param integer $canLeave 0: user cannot cancel membership | 1: can cancel membership | 2: depending on space flag members_can_leave
      */
     public function addMember($userId, $canLeave = 1)
     {

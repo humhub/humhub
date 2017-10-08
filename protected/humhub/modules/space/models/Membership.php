@@ -22,7 +22,7 @@ use humhub\modules\space\models\Space;
  * @property string $request_message
  * @property string $last_visit
  * @property integer $show_at_dashboard
- * @property boolean $can_leave
+ * @property integer $can_cancel_membership
  * @property string $group_id
  * @property string $created_at
  * @property integer $created_by
