@@ -24,6 +24,7 @@ return [
     'Manager' => '',
     'Show At Directory' => '',
     'Show At Registration' => '',
+    'Sort order' => '',
     'Space ID' => '',
     'Created at' => 'で作成',
     'Description' => '説明',
