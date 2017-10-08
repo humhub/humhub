@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Actions' => '',
     '<strong>My</strong> friends' => 'Мои друзья',
     '<strong>Pending</strong> friend requests' => '<strong>Ожидание</strong> запроса на добавление в друзья',
     '<strong>Sent</strong> friend requests' => '<strong>Отправить</strong> запрос на добавление в друзья',

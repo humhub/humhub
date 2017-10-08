@@ -18,8 +18,11 @@
  */
 return [
     '<strong>Space</strong> followers' => '',
+    'Administrator:' => '',
     'Default' => '',
+    'Moderator:' => '',
     'No spaces found.' => '',
+    'Owner:' => '',
     'Private' => '',
     'Public' => '',
     'Public (Members & Guests)' => '',

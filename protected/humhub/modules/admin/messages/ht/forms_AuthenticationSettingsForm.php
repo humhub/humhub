@@ -19,6 +19,8 @@
 return [
     'Allow limited access for non-authenticated users (guests)' => '',
     'Anonymous users can register' => '',
+    'Default content of the registration approval email' => '',
+    'Default content of the registration denial email' => '',
     'Default user group for new users' => '',
     'Default user idle timeout, auto-logout (in seconds, optional)' => '',
     'Default user profile visibility' => '',

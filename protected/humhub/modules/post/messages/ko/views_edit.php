@@ -18,5 +18,4 @@
  */
 return [
     'Edit your post...' => '',
-    'Save' => '',
 ];

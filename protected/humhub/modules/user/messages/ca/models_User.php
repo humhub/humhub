@@ -25,6 +25,7 @@ return [
     'Manager' => '',
     'Show At Directory' => '',
     'Show At Registration' => '',
+    'Sort order' => '',
     'Space ID' => '',
     'Created at' => 'Creat el',
     'Description' => 'Descripció',
