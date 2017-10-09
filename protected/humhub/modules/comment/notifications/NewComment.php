@@ -175,7 +175,12 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
      */
     public function getCommentedRecord()
     {
-        return $this->source->getCommentedRecord();
+        $source = $this->source;
+        if(is_null($source)){
+            //This prevents the error, but we need to clean the database
+            return null;
+        } else {
+            return $source->getCommentedRecord();
+        }
     }
-
 }
