@@ -6,9 +6,9 @@ return array (
   '<strong>User</strong> settings' => '<strong>Impostazioni</strong> utente',
   '<strong>Your</strong> profile' => '<strong>Il tuo</strong> profilo',
   'E-Mail Summaries' => 'Sommario email',
-  'Not registered users' => '',
+  'Not registered users' => 'Utenti non registrati',
   'Notifications' => 'Notifiche',
-  'Other users' => '',
+  'Other users' => 'Altri utenti',
   'Users' => 'Persone',
-  'Your friends' => '',
+  'Your friends' => 'I tuoi amici',
 );

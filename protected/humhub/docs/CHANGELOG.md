@@ -36,7 +36,10 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Enh: Added default open content as modal action
 - Enh: Added possibility to add attachments in Notification MailTarget
 - Enh: Added surpressSendToOriginator Notification option
-
+- Chg: #2745 Removed `GroupPermission::instance()` for yii 2.0.13 compatibility
+- Enh: Added `MobileTargetProvider` abstraction for mobile push notifications
+- Enh: Added `humhub:notification:updateCount` js event
+- Enh: Show space administrators and moderators in member snippet
 
 1.2.2  (August 2, 2017)
 --------------------------------

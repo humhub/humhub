@@ -21,10 +21,13 @@ use humhub\libs\Html;
 class DatePicker extends BaseDatePicker
 {
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         if ($this->dateFormat === null) {
-            $this->dateFormat = Yii::$app->params['formatter']['defaultDateFormat'];
+            $this->dateFormat = Yii::$app->formatter->dateInputFormat;
         }
 
         Html::addCssClass($this->options, 'form-control');

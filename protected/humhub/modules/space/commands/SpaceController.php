@@ -47,7 +47,7 @@ class SpaceController extends \yii\console\Controller
 
         $this->stdout("\nAdding Members:\n\n");
 
-        foreach (User::find()->where(['status' => User::STATUS_ENABLED])->all() as $user) {
+        foreach (User::find()->active()->all() as $user) {
             if ($space->isMember($user->id)) {
                 $countMembers++;
             } else {

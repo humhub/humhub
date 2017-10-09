@@ -76,15 +76,10 @@ class MailTarget extends BaseTarget
                 ->setTo($recipient->email)
                 ->setSubject($notification->getMailSubject());
 
-        if (isset($viewParams['mailAttachments']) && is_array($viewParams['mailAttachments'])) {
-            foreach ($viewParams['mailAttachments'] as $attachment) {
-                if (isset($attachment['content']) && isset($attachment['options'])) {
-                    $mail->attachContent($attachment['content'], $attachment['options']);
-                }
-            }
+        if ($notification->beforeMailSend($mail)) {
+            $mail->send();
         }
 
-        $mail->send();
 
         Yii::$app->i18n->autosetLocale();
     }

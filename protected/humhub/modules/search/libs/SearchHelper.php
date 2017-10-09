@@ -28,7 +28,7 @@ class SearchHelper extends Object
     public static function matchQuery($query, $text)
     {
         foreach (explode(" ", $query) as $keyword) {
-            if (strpos($text, $keyword) !== false) {
+            if (!empty($keyword) && strpos($text, $keyword) !== false) {
                 return true;
             }
         }

@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Sort order' => '',
     'Auth Mode' => 'Authentifizierungs-Verfahren',
     'Created at' => 'Erstellt am',
     'Created by' => 'Erstellt durch',

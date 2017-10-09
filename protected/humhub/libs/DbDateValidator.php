@@ -8,6 +8,8 @@
 
 namespace humhub\libs;
 
+use Yii;
+
 /**
  * Validates (user date format or database format) and converts it to an database date(-time) field
  *
@@ -47,6 +49,18 @@ class DbDateValidator extends \yii\validators\DateValidator
     /**
      * @inheritdoc
      */
+    public function init()
+    {
+        if ($this->format === null) {
+            $this->format = Yii::$app->formatter->dateInputFormat;
+        }
+
+        parent::init();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function validateAttribute($model, $attribute)
     {
 
@@ -77,7 +91,7 @@ class DbDateValidator extends \yii\validators\DateValidator
             }
 
             $targetAttribute = ($this->targetAttribute === null) ? $attribute : $this->targetAttribute;
-            
+
             if ($this->convertToFormat !== null) {
                 $model->$targetAttribute = $date->format($this->convertToFormat);
             }

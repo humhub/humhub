@@ -25,6 +25,7 @@ return [
     'Name' => '',
     'Show At Directory' => '',
     'Show At Registration' => '',
+    'Sort order' => '',
     'Space ID' => '',
     'Status' => '',
     'Visibility' => '',

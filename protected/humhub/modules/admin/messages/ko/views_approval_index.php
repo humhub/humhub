@@ -19,5 +19,6 @@
 return [
     'Actions' => '',
     'Pending user approvals' => '',
+    'The following list contains all pending sign-ups and invites.' => '',
     'The following list contains all registered users awaiting an approval.' => '',
 ];

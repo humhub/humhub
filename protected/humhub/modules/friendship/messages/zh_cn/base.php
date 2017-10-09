@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Actions' => '',
     '<strong>My</strong> friends' => '<strong>我的</strong> 好友',
     '<strong>Pending</strong> friend requests' => '<strong>待处理</strong> 的好友请求',
     '<strong>Sent</strong> friend requests' => '<strong>发送</strong> 好友请求',

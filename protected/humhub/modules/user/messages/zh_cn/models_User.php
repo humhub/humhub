@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Sort order' => '',
     'Auth Mode' => '认证模式',
     'Created at' => '创建时间',
     'Created by' => '创建人',
