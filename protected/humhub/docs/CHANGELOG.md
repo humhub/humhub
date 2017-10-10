@@ -42,6 +42,7 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Enh: Show space administrators and moderators in member snippet
 - Fix: `humhub\modules\live\Module::getLegitimateContentContainerIds` behaviour with friendship module enabled
 - Enh: Added `BaseNotification:priority` to mark high priority notifications
+- Enh: Added new `User::isVisible` and `ActiveQueryUser::visible` methods
 
 1.2.2  (August 2, 2017)
 --------------------------------
