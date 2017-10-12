@@ -43,6 +43,7 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix: `humhub\modules\live\Module::getLegitimateContentContainerIds` behaviour with friendship module enabled
 - Enh: Added `BaseNotification:priority` to mark high priority notifications
 - Enh: Added new `User::isVisible` and `ActiveQueryUser::visible` methods
+- Fix: MarkdownEditor cursor position after inserting file/image
 
 1.2.2  (August 2, 2017)
 --------------------------------
