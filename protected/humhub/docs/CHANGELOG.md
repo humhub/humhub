@@ -46,7 +46,7 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix: MarkdownEditor cursor position after inserting file/
 - Fix: Make sure own profile content is always visible to user
 - Fix #2501: Do not try to embed Youtube unauthorized videos (acs-ferreira)
-
+- Fix #2613: Wrong username encoding with pretty url (githubjeka)
 
 1.2.2  (August 2, 2017)
 --------------------------------
