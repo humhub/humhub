@@ -45,6 +45,8 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Enh: Added new `User::isVisible` and `ActiveQueryUser::visible` methods
 - Fix: MarkdownEditor cursor position after inserting file/
 - Fix: Make sure own profile content is always visible to user
+- Fix #2501: Do not try to embed Youtube unauthorized videos (acs-ferreira)
+
 
 1.2.2  (August 2, 2017)
 --------------------------------
