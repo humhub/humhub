@@ -50,8 +50,10 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         Yii::$app->response->format = 'json';
 
         $space = $this->getSpace();
-
-        if (!$space->isMember()) {
+        $visibility = (int)$space->visibility;
+        if ($visibility === Space::VISIBILITY_NONE && !$space->isMember() ||
+            ($visibility === Space::VISIBILITY_REGISTERED_ONLY && Yii::$app->user->isGuest)
+        ) {
             throw new HttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'This action is only available for workspace members!'));
         }
 
