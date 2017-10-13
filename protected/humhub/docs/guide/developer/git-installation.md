@@ -32,8 +32,7 @@ git clone https://github.com/humhub/humhub.git
  3. Navigate to your HumHub webroot and fetch dependencies:
 
 ```
-php composer.phar global require "fxp/composer-asset-plugin:~1.3"
-php composer.phar update
+php composer.phar install
 ```
 
 > Note: The composer update may have to be executed again after an update of your local repository by a git pull. Read more about updating ([Update Guide](admin-updating.html#gitcomposer-based-installations))

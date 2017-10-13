@@ -5,4 +5,4 @@ HumHub Change Log - v1.3-dev Branch
 --------------------------------
 
 - Enh: Added file search indexing
-
+- Enh: Updated composer.json (acs-ferreira)
