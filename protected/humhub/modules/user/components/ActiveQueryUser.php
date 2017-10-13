@@ -9,7 +9,7 @@
 namespace humhub\modules\user\components;
 
 use yii\db\ActiveQuery;
-use humhub\modules\user\models\User;
+use humhub\modules\user\models\User as UserModel;
 use humhub\events\ActiveQueryEvent;
 
 /**
@@ -39,7 +39,7 @@ class ActiveQueryUser extends ActiveQuery
     {
         $this->trigger(self::EVENT_CHECK_ACTIVE, new ActiveQueryEvent(['query' => $this]));
 
-        $this->andWhere(['user.status' => User::STATUS_ENABLED]);
+        $this->andWhere(['user.status' => UserModel::STATUS_ENABLED]);
         return $this;
     }
 
