@@ -31,7 +31,7 @@ return array (
   'Error while running your last action (Invalid request method).' => 'Fehler bei der Ausführung der letzten Aktion (Invalid request method).',
   'Error:' => 'Fehler:',
   'Expand' => 'Erweitern',
-  'Export' => '',
+  'Export' => 'Exportieren',
   'Info:' => 'Info:',
   'Invalid request method!' => '',
   'It looks like you may have taken the wrong turn.' => 'Du hast womöglich den falschen Weg eingeschlagen.',
