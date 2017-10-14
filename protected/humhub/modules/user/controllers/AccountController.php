@@ -50,6 +50,10 @@ class AccountController extends BaseAccountController
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
         return $this->redirect(Yii::$app->user->getIdentity()->getUrl());
     }
 
@@ -63,13 +67,13 @@ class AccountController extends BaseAccountController
 
         // Get Form Definition
         $definition = $user->profile->getFormDefinition();
-        $definition['buttons'] = array(
-            'save' => array(
+        $definition['buttons'] = [
+            'save' => [
                 'type' => 'submit',
                 'label' => Yii::t('UserModule.controllers_AccountController', 'Save profile'),
                 'class' => 'btn btn-primary'
-            ),
-        );
+            ],
+        ];
 
         $form = new \humhub\compat\HForm($definition, $user->profile);
         $form->showErrorSummary = true;
@@ -82,7 +86,7 @@ class AccountController extends BaseAccountController
             return $this->redirect(['edit']);
         }
 
-        return $this->render('edit', array('hForm' => $form));
+        return $this->render('edit', ['hForm' => $form]);
     }
 
     /**
@@ -120,7 +124,12 @@ class AccountController extends BaseAccountController
             return $this->redirect(['edit-settings']);
         }
 
-        return $this->render('editSettings', array('model' => $model, 'languages' => Yii::$app->i18n->getAllowedLanguages()));
+        // Sort countries list based on user language   
+        $languages = Yii::$app->i18n->getAllowedLanguages();
+        $col = new \Collator(Yii::$app->language);
+        $col->asort($languages);
+
+        return $this->render('editSettings', array('model' => $model, 'languages' => $languages));
     }
 
     /**
@@ -283,7 +292,6 @@ class AccountController extends BaseAccountController
 
     /**
      * Change Current Password
-     *
      */
     public function actionChangeEmail()
     {

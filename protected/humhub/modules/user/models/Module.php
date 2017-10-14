@@ -69,6 +69,7 @@ class Module extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         Yii::$app->cache->delete(self::STATES_CACHE_ID_PREFIX . $this->user_id);
+        self::$_states[$this->user_id] = null;
         return parent::beforeSave($insert);
     }
 
@@ -78,6 +79,7 @@ class Module extends \yii\db\ActiveRecord
     public function beforeDelete()
     {
         Yii::$app->cache->delete(self::STATES_CACHE_ID_PREFIX . $this->user_id);
+        self::$_states[$this->user_id] = null;
         return parent::beforeDelete();
     }
 

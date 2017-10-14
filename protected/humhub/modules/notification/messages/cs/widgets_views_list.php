@@ -17,8 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Show all notifications' => '',
+    'Open the notification dropdown menu' => '',
     'Mark all as seen' => 'Označit vše jako přečtené',
     'Notifications' => 'Upozornění',
+    'Show all notifications' => 'Zobrazit všechny upozornění',
     'There are no notifications yet.' => 'Zatím zde nejsou žádná upozornění.',
 ];

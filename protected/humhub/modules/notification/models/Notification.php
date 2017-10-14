@@ -3,6 +3,7 @@
 namespace humhub\modules\notification\models;
 
 use Yii;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "notification".
@@ -226,10 +227,10 @@ class Notification extends \humhub\components\ActiveRecord
 
         $query = self::find();
         $query->addSelect(['notification.*',
-            new \yii\db\Expression('count(distinct(originator_user_id)) as group_user_count'),
-            new \yii\db\Expression('count(*) as group_count'),
-            new \yii\db\Expression('max(created_at) as group_created_at'),
-            new \yii\db\Expression('min(seen) as group_seen'),
+            new Expression('count(distinct(originator_user_id)) as group_user_count'),
+            new Expression('count(*) as group_count'),
+            new Expression('max(created_at) as group_created_at'),
+            new Expression('min(seen) as group_seen'),
         ]);
 
         $query->andWhere(['user_id' => $user->id]);
@@ -237,21 +238,7 @@ class Notification extends \humhub\components\ActiveRecord
         $query->andWhere(['send_web_notifications' => $sendWebNotifications]);
         $query->addGroupBy([
             'COALESCE(group_key, id)',
-            'id',
             'class',
-            'user_id',
-            'notification.user_id',
-            'notification.seen',
-            'notification.source_class',
-            'notification.source_pk',
-            'notification.space_id',
-            'notification.emailed',
-            'notification.created_at',
-            'notification.desktop_notified',
-            'notification.originator_user_id',
-            'notification.module',
-            'notification.group_key',
-            'notification.send_web_notifications',
         ]);
         $query->orderBy(['group_seen' => SORT_ASC, 'group_created_at' => SORT_DESC]);
 
@@ -269,7 +256,7 @@ class Notification extends \humhub\components\ActiveRecord
     {
         return Notification::findGrouped($user)
                         ->andWhere(['seen' => 0])
-                        ->orWhere(['IS', 'seen', new \yii\db\Expression('NULL')]);
+                        ->orWhere(['IS', 'seen', new Expression('NULL')]);
     }
 
     /**

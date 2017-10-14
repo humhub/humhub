@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Sort order' => '',
     'Auth Mode' => 'Auth Mode',
     'Created at' => 'Creado el',
     'Created by' => 'Creado por',
@@ -27,7 +28,6 @@ return [
     'Last Login' => 'Último registro',
     'Manager' => 'Administrador',
     'Name' => 'Nombre',
-    'New user needs approval' => 'Nuevos usuarios necesitan aprobación',
     'Show At Directory' => 'Mostrar en Directorio',
     'Show At Registration' => 'Mostrar en Registro',
     'Space ID' => 'ID del Espacio',

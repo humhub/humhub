@@ -99,7 +99,15 @@ humhub.module('client', function (module, require, $) {
 
         cfg.type = $form.attr('method') || 'post';
         cfg.data = $form.serialize();
-        var url = cfg.url || originalEvent.url || $form.attr('action');
+
+
+        var url = cfg.url;
+        if(!url && (originalEvent && originalEvent.url)) {
+            url = originalEvent.url;
+        } else if(!url && $form) {
+            url = $form.attr('action');
+        }
+
         return ajax(url, cfg, originalEvent);
     };
     

@@ -35,16 +35,16 @@ class SettingsManager extends BaseSettingsManager
      */
     public function contentContainer(ContentContainerActiveRecord $container)
     {
-        if (isset($this->contentContainers[$container->id])) {
-            return $this->contentContainers[$container->id];
+        if (isset($this->contentContainers[$container->contentcontainer_id])) {
+            return $this->contentContainers[$container->contentcontainer_id];
         }
 
-        $this->contentContainers[$container->id] = new ContentContainerSettingsManager([
+        $this->contentContainers[$container->contentcontainer_id] = new ContentContainerSettingsManager([
             'moduleId' => $this->moduleId,
             'contentContainer' => $container,
         ]);
 
-        return $this->contentContainers[$container->id];
+        return $this->contentContainers[$container->contentcontainer_id];
     }
 
     /**
@@ -84,11 +84,7 @@ class SettingsManager extends BaseSettingsManager
      */
     public function isFixed($name)
     {
-        if (isset(Yii::$app->params['fixed-settings'][$this->moduleId][$name])) {
-            return true;
-        }
-
-        return false;
+        return isset(Yii::$app->params['fixed-settings'][$this->moduleId][$name]);
     }
 
     /**

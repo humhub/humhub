@@ -65,7 +65,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     {
         $space = $this->getSpace();
 
-        if (Yii::$app->request->get('tour')) {
+        if (Yii::$app->request->get('tour') || Yii::$app->request->get('contentId')) {
             return $this->actionHome();
         }
 
@@ -86,7 +86,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
 
     /**
      * Default space homepage
-     * 
+     *
      * @return type
      */
     public function actionHome()
@@ -110,7 +110,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         if(Yii::$app->getModule('space')->disableFollow) {
             throw new \yii\web\HttpException(403, Yii::t('ContentModule.controllers_ContentController', 'This action is disabled!'));
         }
-        
+
         $this->forcePostRequest();
         $space = $this->getSpace();
 
@@ -156,12 +156,12 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         $query->leftJoin('user_follow', 'user.id=user_follow.user_id and object_model=:userClass and user_follow.object_id=:spaceId', [':userClass' => Space::className(), ':spaceId' => $this->getSpace()->id]);
         $query->orderBy(['user_follow.id' => SORT_DESC]);
         $query->andWhere(['IS NOT', 'user_follow.id', new \yii\db\Expression('NULL')]);
-        $query->active();
+        $query->visible();
 
         $title = Yii::t('SpaceModule.base', '<strong>Space</strong> followers');
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
-   
+
 }
 
 ?>

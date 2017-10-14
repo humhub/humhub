@@ -155,8 +155,8 @@ class BasePermission extends \yii\base\Object
      * This method returns null in case the default state for this permission or group is not set in
      * the configuration.
      *
-     * @param type $groupId
-     * @return type
+     * @param int $groupId
+     * @return int
      * @since 1.2
      */
     protected function getConfiguredState($groupId)

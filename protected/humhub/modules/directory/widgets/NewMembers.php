@@ -51,7 +51,7 @@ class NewMembers extends \yii\base\Widget
      */
     public function run()
     {
-        $newUsers = User::find()->orderBy('created_at DESC')->active();
+        $newUsers = User::find()->orderBy('created_at DESC')->visible();
 
         return $this->render('newMembers', [
                     'newUsers' => $newUsers,

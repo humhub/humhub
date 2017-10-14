@@ -7,6 +7,8 @@ php:
 matrix:
   fast_finish: true
 
+dist: precise
+
 # faster builds on new travis setup not using sudo
 sudo: false
 
@@ -39,7 +41,7 @@ install:
   - travis_retry composer global require "fxp/composer-asset-plugin:~1.3"
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - travis_retry composer install --dev --prefer-dist --no-interaction
-  - travis_retry composer global require "codeception/codeception=2.1.*" "codeception/specify=*" "codeception/verify=*"
+  - travis_retry composer global require "codeception/codeception=2.3.*" "codeception/specify=*" "codeception/verify=*"
   # Install test environment
   - |
     mysql -e 'CREATE DATABASE `humhub_test` CHARACTER SET utf8 COLLATE utf8_general_ci;'
@@ -59,7 +61,7 @@ script:
   - curl http://127.0.0.1:8080/index-test.php
   - |
     cd protected/humhub/tests/
-    codecept run
+    codecept run -d
 after_failure:
   - cd ../modules/user/tests/codeception/_output/
   - ls

@@ -355,7 +355,10 @@ class ImageConverter
                     $gdImage = imagecreatefromgif($fileName);
                     break;
                 case IMAGETYPE_JPEG:
-                    $gdImage = imagecreatefromjpeg($fileName);
+                    $gdImage = @imagecreatefromjpeg($fileName);
+                    if (!$gdImage) {
+                        $gdImage = imagecreatefromstring(file_get_contents($fileName));
+                    }
                     break;
             }
         } catch (\Exception $ex) {

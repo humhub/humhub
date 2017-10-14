@@ -22,6 +22,8 @@ class ProfileCest
         $I->amGoingTo('fill only my firstname');
         $I->fillField('#profile-firstname', 'MyFirstName');
         $I->fillField('#profile-lastname', '');
+
+        $I->scrollToBottom();
         $I->click('save');
         $I->wait(5);
         $I->expectTo('see an error');
@@ -30,7 +32,7 @@ class ProfileCest
         $I->amGoingTo('fill all required fields plus birthday and hide year field');
         $I->fillField('#profile-lastname', 'MyLastName');
         $I->fillField('#profile-birthday', '4/16/87');
-        $I->click('.field-profile-birthday_hide_year div'); // Hide year in profile
+        $I->click('label[for="profile-birthday_hide_year"]'); // Hide year in profile
         
         $I->scrollToTop();
         
@@ -40,6 +42,7 @@ class ProfileCest
         $I->click('Social bookmarks');
         $I->wait(1);
         $I->fillField('#profile-url', 'http://www.asdf.de');
+        $I->scrollToBottom();
         $I->click('save');
         $I->wait(1);
         $I->expectTo('see no errors after saving');

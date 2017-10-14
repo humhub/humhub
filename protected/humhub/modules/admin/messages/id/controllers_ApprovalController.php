@@ -17,22 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Account Request for \'{displayName}\' has been approved.' => '',
-    'Account Request for \'{displayName}\' has been declined.' => '',
-    'Hello {displayName},<br><br>
-
-   your account has been activated.<br><br>
-
-   Click here to login:<br>
-   <a href=\'{loginURL}\'>{loginURL}</a><br><br>
-
-   Kind Regards<br>
-   {AdminName}<br><br>' => '',
-    'Hello {displayName},<br><br>
-
-   your account request has been declined.<br><br>
-
-   Kind Regards<br>
-   {AdminName}<br><br>' => '',
+    'Account Request for \'{displayName}\' has been approved.' => 'permintaan akun untuk \'{displayName}\' telah disetujui',
+    'Account Request for \'{displayName}\' has been declined.' => 'permintaan akun untuk \'{displayName}\' telah dibatalkan',
     'User not found!' => 'Pengguna tidak ditemukan!',
 ];

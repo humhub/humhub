@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Sort order' => '',
     'Auth Mode' => 'Verificatie wijze',
     'Created at' => 'Gemaakt op',
     'Created by' => 'Gemaakt door',
@@ -27,7 +28,6 @@ return [
     'Last Login' => 'Laatste login',
     'Manager' => 'Manager',
     'Name' => 'Naam',
-    'New user needs approval' => 'Nieuwe gebruiker vereist goedkeuring',
     'Show At Directory' => 'Weergeven in overzicht',
     'Show At Registration' => 'Weergeven bij registratie',
     'Space ID' => 'Ruimte-ID',

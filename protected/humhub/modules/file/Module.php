@@ -38,4 +38,9 @@ class Module extends \humhub\components\Module
         'image/jpeg'
     ];
 
+    /**
+     * @var array of converter options
+     */
+    public $converterOptions = [];
+
 }

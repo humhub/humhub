@@ -10,6 +10,7 @@ namespace humhub\components\i18n;
 
 use Yii;
 use humhub\models\forms\ChooseLanguage;
+use yii\base\InvalidParamException;
 
 /**
  * I18N provides features related with internationalization (I18N) and localization (L10N).
@@ -25,7 +26,7 @@ class I18N extends \yii\i18n\I18N
     public $messageOverwritePath = '@config/messages';
 
     /**
-     * Automatically sets the current locale
+     * Automatically sets the current locale and time zone
      */
     public function autosetLocale()
     {
@@ -37,7 +38,7 @@ class I18N extends \yii\i18n\I18N
     }
 
     /**
-     * Sets the current locale for a given user.
+     * Sets the current locale and time zone for a given user.
      * If no user is given the currently logged in user will be used.
      *
      * @param \humhub\modules\user\models\User $user
@@ -45,16 +46,21 @@ class I18N extends \yii\i18n\I18N
     public function setUserLocale($user)
     {
         if ($user === null) {
-            throw \yii\base\InvalidParamException("User cannot be null!");
+            throw new InvalidParamException('User cannot be null!');
         }
 
         if (!empty($user->language)) {
-            Yii::$app->language = $user->language;
+            $this->setLocale($user->language);
+        } else {
+            $this->setDefaultLocale();
         }
 
-        if (!($user->time_zone)) {
+        if (!empty($user->time_zone)) {
             Yii::$app->formatter->timeZone = $user->time_zone;
+        } else {
+            Yii::$app->formatter->timeZone = Yii::$app->timeZone;
         }
+
         Yii::$app->formatter->defaultTimeZone = Yii::$app->timeZone;
 
         $this->fixLocaleCodes();
@@ -74,14 +80,15 @@ class I18N extends \yii\i18n\I18N
 
         $languageChooser = new ChooseLanguage();
         if ($languageChooser->load(Yii::$app->request->post()) && $languageChooser->save()) {
-            Yii::$app->language = $languageChooser->language;
+            $this->setLocale($languageChooser->language);
         } else {
             $language = $languageChooser->getSavedLanguage();
             if ($language === null) {
                 // Use browser preferred language
-                $language = Yii::$app->request->getPreferredLanguage(array_keys($this->getAllowedLanguages()));
+                $this->setLocale(Yii::$app->request->getPreferredLanguage(array_keys($this->getAllowedLanguages())));
+            } else {
+                $this->setLocale($language);
             }
-            Yii::$app->language = $language;
         }
 
         $this->fixLocaleCodes();
@@ -92,9 +99,21 @@ class I18N extends \yii\i18n\I18N
      */
     public function setDefaultLocale()
     {
-        Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
-
+        $this->setLocale( Yii::$app->settings->get('defaultLanguage'));
         $this->fixLocaleCodes();
+    }
+
+    /**
+     * Sets the language locale of `Yii::$app->language` and `Yii::$app->formatter`.
+     *
+     * @param $locale
+     */
+    protected function setLocale($locale)
+    {
+        if(!empty($locale)) {
+            Yii::$app->language = $locale;
+            Yii::$app->formatter->locale = $locale;
+        }
     }
 
     /**
@@ -230,7 +249,7 @@ class I18N extends \yii\i18n\I18N
     protected function fixLocaleCodes()
     {
         if (Yii::$app->language == 'en') {
-            Yii::$app->language = 'en-US';
+            $this->setLocale('en-US');
         }
     }
 

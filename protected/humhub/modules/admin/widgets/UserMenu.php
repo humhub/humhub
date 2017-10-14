@@ -8,6 +8,8 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\admin\models\UserApprovalSearch;
+use humhub\modules\user\models\Invite;
 use Yii;
 use yii\helpers\Url;
 
@@ -28,7 +30,7 @@ class UserMenu extends \humhub\widgets\BaseMenu
             'label' => Yii::t('AdminModule.views_user_index', 'Users'),
             'url' => Url::to(['/admin/user/index']),
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'user'),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && (Yii::$app->controller->id == 'user' || Yii::$app->controller->id == 'pending-registrations')),
             'isVisible' => Yii::$app->user->can([
                 new \humhub\modules\admin\permissions\ManageUsers(),
                 new \humhub\modules\admin\permissions\ManageGroups(),
@@ -45,7 +47,7 @@ class UserMenu extends \humhub\widgets\BaseMenu
             ])
         ]);
 
-        $approvalCount = \humhub\modules\admin\models\UserApprovalSearch::getUserApprovalCount();
+        $approvalCount = UserApprovalSearch::getUserApprovalCount();
         if ($approvalCount > 0) {
             $this->addItem([
                 'label' => Yii::t('AdminModule.user', 'Pending approvals') . ' <span class="label label-danger">' . $approvalCount . '</span>',

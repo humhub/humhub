@@ -8,6 +8,8 @@
 
 namespace humhub\modules\file\widgets;
 
+use humhub\components\ActiveRecord;
+use humhub\modules\file\converter\PreviewImage;
 use Yii;
 use humhub\modules\content\components\ContentActiveRecord;
 
@@ -20,15 +22,29 @@ class ShowFiles extends \yii\base\Widget
 {
 
     /**
-     * Object to show files from
+     * @var ActiveRecord Object to show files from
      */
     public $object = null;
+
+    /**
+     * @var bool if set to false this widget won't be rendered
+     */
+    public $active = true;
+
+    /**
+     * @var bool if set to false this widget won't render file previews as images/videos/audio
+     */
+    public $preview = true;
 
     /**
      * Executes the widget.
      */
     public function run()
     {
+        if(!$this->active) {
+            return;
+        }
+
         if ($this->object instanceof ContentActiveRecord) {
             $widget = $this->object->getWallEntryWidget();
 
@@ -38,10 +54,14 @@ class ShowFiles extends \yii\base\Widget
             }
         }
 
+        $hidePreviewFileInfo = ($this->preview) ? Yii::$app->getModule('file')->settings->get('hideImageFileInfo') : false;
+
         return $this->render('showFiles', [
-                    'files' => $this->object->fileManager->find()->andWhere(['show_in_stream' => true])->all(),
-                    'previewImage' => new \humhub\modules\file\converter\PreviewImage(),
-                    'hideImageFileInfo' => Yii::$app->getModule('file')->settings->get('hideImageFileInfo')
+                    'files' => $this->object->fileManager->findStreamFiles(),
+                    'object' => $this->object,
+                    'previewImage' => new PreviewImage(),
+                    'showPreview' => $this->preview,
+                    'hideImageFileInfo' => $hidePreviewFileInfo
         ]);
     }
 

@@ -707,9 +707,20 @@ else
                     }
                 }
             }
+
             url = attributeSafeUrl(url);
 
             var result = "<a href=\"" + url + "\"";
+
+            /**
+             * HUMHUB PATCH 14.06.2017 for HumHub v1.2.1
+             *
+             * Add target _blank and rel noopener for markdown stream links
+             */
+            if(url.indexOf('#') !== 0) {
+                result += " target=\"_blank\"";
+                result += " rel=\"noopener noreferrer\"";
+            }
 
             if (title != "") {
                 title = attributeEncode(title);
@@ -1461,8 +1472,14 @@ else
             return text;
         }
 
-        var charInsideUrl = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]",
-            charEndingUrl = "[-A-Z0-9+&@#/%=~_|[\\])]",
+
+        /**
+         * HUMHUB PATCH 14.06.2017 - 2 for HumHub v1.2.1
+         *
+         * Allow unicode letters in urls
+         */
+        var charInsideUrl = "[-\\u00C0-\\u1FFF\\u2C00-\\uD7FF\\w0-9+&@#/%?=~_|[\\]()!:,.;]",
+            charEndingUrl = "[-\\u00C0-\\u1FFF\\u2C00-\\uD7FF\\w0-9+&@#/%=~_|[\\])]",
             autoLinkRegex = new RegExp("(=\"|<)?\\b(https?|ftp)(://" + charInsideUrl + "*" + charEndingUrl + ")(?=$|\\W)", "gi"),
             endCharRegex = new RegExp(charEndingUrl, "i");
 
@@ -1518,9 +1535,16 @@ else
 
             var replacer = function (wholematch, m1) {
                 var url = attributeSafeUrl(m1);
-                
-                return "<a href=\"" + url + "\">" + pluginHooks.plainLinkText(m1) + "</a>";
+
+                /**
+                 * HUMHUB PATCH 14.06.2017 for HumHub v1.2.1
+                 *
+                 * Added target _blank and rel noopener for markdown stream links
+                 */
+                return "<a href=\"" + url + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + pluginHooks.plainLinkText(m1) + "</a>";
+
             };
+
             text = text.replace(/<((https?|ftp):[^'">\s]+)>/gi, replacer);
 
             // Email addresses: <address@domain.foo>

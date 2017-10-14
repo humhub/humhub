@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>Open</strong> file' => '',
-  'Could not find requested file variant!' => '',
+  '<strong>Open</strong> file' => '<strong>Otevřít</strong> soubor',
+  'Could not find requested file variant!' => 'Nelze najít požadovanou variantu souboru!',
   'Could not find requested file!' => 'Požadovaný soubor nebyl nalezen!',
   'Download' => 'Stáhnout',
   'Insufficient permissions!' => 'Nedostatečná oprávnění!',

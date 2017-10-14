@@ -30,6 +30,11 @@ humhub.module('ui.widget', function(module, require, $) {
             var initData = this.$.data('ui-init');
             this.fire('beforeInit', [this, initData]);
             this.init(initData);
+
+            if(this.options.widgetFadeIn) {
+                this.$.fadeIn(this.options.widgetFadeIn);
+            }
+
             this.fire('afterInit', [this]);
         }
     };
@@ -74,7 +79,7 @@ humhub.module('ui.widget', function(module, require, $) {
         this.trigger(event, args);
         
         // If required, trigger dom event
-        if(triggerDom) {
+        if(triggerDom !== false) {
             this.$.trigger(event, args);
         }
     };
@@ -121,18 +126,6 @@ humhub.module('ui.widget', function(module, require, $) {
 
     Widget.prototype.initOptions = function(options) {
         return $.extend(this.getDefaultOptions(options), this.$.data(), options);
-    };
-
-    Widget.prototype.on = function(event, handler) {
-        this.$.on(event, handler);
-    };
-
-    Widget.prototype.one = function(event, handler) {
-        this.$.one(event, handler);
-    };
-
-    Widget.prototype.off = function(event) {
-        this.$.off(event);
     };
 
     Widget.prototype.statusError = function(title) {

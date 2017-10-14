@@ -42,7 +42,7 @@ class ModuleManager extends \yii\base\Component
     /**
      * List of all enabled module ids
      *
-     * @var Array
+     * @var array
      */
     protected $enabledModules = [];
 
@@ -115,8 +115,13 @@ class ModuleManager extends \yii\base\Component
         if (isset($config['namespace'])) {
             Yii::setAlias('@' . str_replace('\\', '/', $config['namespace']), $basePath);
         }
-        Yii::setAlias('@' . $config['id'], $basePath);
 
+        Yii::setAlias('@' . $config['id'], $basePath);
+        if (isset($config['aliases']) && is_array($config['aliases'])) {
+            foreach ($config['aliases'] as $name => $value) {
+                Yii::setAlias($name, $value);
+            }
+        }
 
         if (!Yii::$app->params['installed'] && $isInstallerModule) {
             $this->enabledModules[] = $config['id'];

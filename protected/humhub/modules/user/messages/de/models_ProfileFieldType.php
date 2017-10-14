@@ -2,6 +2,7 @@
 return array (
   'Birthday' => 'Geburtstag',
   'Checkbox' => 'Markierungsfeld',
+  'Checkbox List' => 'Markierungsfeldliste',
   'Country' => 'Land',
   'Date' => 'Datum',
   'Datetime' => 'Datum/Uhrzeit',

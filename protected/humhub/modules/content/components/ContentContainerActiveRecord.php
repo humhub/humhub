@@ -8,6 +8,9 @@
 
 namespace humhub\modules\content\components;
 
+use Yii;
+use humhub\libs\BasePermission;
+use humhub\modules\content\models\Content;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
 use humhub\modules\user\models\User;
@@ -22,6 +25,11 @@ use humhub\modules\content\models\ContentContainer;
  *      - getUrl()
  *
  * @property integer $id
+ * @property integer $visibility
+ * @property integer $contentcontainer_id
+ * @property ContentContainerPermissionManager $permissionManager
+ * @property ContentContainerSettingsManager $settings
+ *
  * @since 1.0
  * @author Luke
  */
@@ -157,36 +165,27 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Returns the related ContentContainer model (e.g. Space or User)
      *
      * @see ContentContainer
-     * @return \yii\db\ActiveQuery
+     * @return ContentContainer
      */
     public function getContentContainerRecord()
     {
         return $this->hasOne(ContentContainer::className(), ['pk' => 'id'])
                         ->andOnCondition(['class' => self::className()]);
     }
-
-    /**
-     * Returns the permissionManager of this container
-     *
-     * @return ContentContainerPermissionManager
-     */
-    public function getPermissionManager()
-    {
-        if ($this->permissionManager !== null) {
-            return $this->permissionManager;
-        }
-
-        $this->permissionManager = new ContentContainerPermissionManager;
-        $this->permissionManager->contentContainer = $this;
-        return $this->permissionManager;
-    }
     
     /**
-     * Shortcut for getPermisisonManager()->can().
+     * Checks if the current user has the given Permission on this ContentContainerActiveRecord.
+     * This is a shortcut for `$this->getPermisisonManager()->can()`.
+     *
+     * The following example will check if the current user has MyPermission on the given $contentContainer
+     *
+     * ```php
+     * $contentContainer->can(MyPermisison::class);
+     * ```
      * 
      * Note: This method is used to verify ContentContainerPermissions and not GroupPermissions.
      * 
-     * @param mixed $permission
+     * @param string|string[]|BasePermission $permission
      * @see PermissionManager::can()
      * @return boolean
      * @since 1.2
@@ -197,11 +196,37 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
-     * Returns current users group
+     * Returns a ContentContainerPermissionManager instance for this ContentContainerActiveRecord as permission object
+     * and the given user (or current user if not given) as permission subject.
      *
+     * @param User $user
+     * @return ContentContainerPermissionManager
+     */
+    public function getPermissionManager(User $user = null)
+    {
+        if($user && !$user->is(Yii::$app->user->getIdentity())) {
+            return new ContentContainerPermissionManager([
+                'contentContainer' => $this,
+                'subject' => $user
+            ]);
+        }
+
+        if ($this->permissionManager !== null) {
+            return $this->permissionManager;
+        }
+
+        return $this->permissionManager = new ContentContainerPermissionManager([
+            'contentContainer' => $this
+        ]);
+    }
+
+    /**
+     * Returns user group for the given $user or current logged in user if no $user instance was provided.
+     *
+     * @param User|null $user
      * @return string
      */
-    public function getUserGroup()
+    public function getUserGroup(User $user = null)
     {
         return "";
     }
@@ -222,6 +247,26 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function isArchived()
     {
         return false;
+    }
+
+    /**
+     * Determines the default visibility of this container type.
+     *
+     * @return int
+     */
+    public function getDefaultContentVisibility()
+    {
+        return Content::VISIBILITY_PRIVATE;
+    }
+
+    /**
+     * Checks the current visibility setting of this ContentContainerActiveRecord
+     * @param $visibility
+     * @return bool
+     */
+    public function isVisibleFor($visibility)
+    {
+        return $this->visibility == $visibility;
     }
 
 }

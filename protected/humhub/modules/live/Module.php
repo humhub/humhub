@@ -92,8 +92,8 @@ class Module extends \humhub\components\Module
 
             // Include friends
             if (Yii::$app->getModule('friendship')->isEnabled) {
-                foreach (Friendship::getFriendsQuery($user)->all() as $user) {
-                    $legitimation[Content::VISIBILITY_PRIVATE][] = $user->contentContainerRecord->id;
+                foreach (Friendship::getFriendsQuery($user)->all() as $friend) {
+                    $legitimation[Content::VISIBILITY_PRIVATE][] = $friend->contentContainerRecord->id;
                 }
             }
 

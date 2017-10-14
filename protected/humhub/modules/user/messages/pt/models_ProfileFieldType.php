@@ -18,6 +18,8 @@
  */
 return [
     'Birthday' => '',
+    'Checkbox' => '',
+    'Checkbox List' => '',
     'Date' => '',
     'Datetime' => '',
     'Markdown' => '',
@@ -26,5 +28,4 @@ return [
     'Text' => '',
     'Text Area' => '',
     'Country' => 'País',
-    'Checkbox' => '',
 ];

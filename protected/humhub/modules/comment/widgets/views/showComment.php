@@ -56,7 +56,7 @@ use humhub\modules\like\widgets\LikeLink;
         <!-- class comment_edit_content required since v1.2 -->
         <div class="content comment_edit_content" id="comment_editarea_<?= $comment->id; ?>">
             <div id="comment-message-<?= $comment->id; ?>" class="comment-message" data-ui-markdown data-ui-show-more data-read-more-text="<?= Yii::t('CommentModule.widgets_views_showComment', 'Read full comment...') ?>">
-                <?= RichText::widget(['text' => $comment->message, 'record' => $comment]); ?>
+                <?= RichText::widget(['text' => $comment->message, 'record' => $comment, 'markdown' => true]); ?>
             </div>
             <?= ShowFiles::widget(['object' => $comment]); ?>
         </div>

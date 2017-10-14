@@ -1,5 +1,4 @@
 <?php
-
 return array (
   '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Personne n\'a rien publiez pour le moment.</b><br>Soyez le premier et publiez quelque chose...',
   '<b>There are no profile posts yet!</b>' => '<b>Il n\'y a aucune publication actuellement !</b>',
@@ -27,6 +26,7 @@ return array (
   'See all' => 'Voir tous',
   'Send invite' => 'Envoyer l\'invitation',
   'Spaces' => 'Espaces',
+  'This group has no members yet.' => 'Ce groupe n\'a pas encore de membres.',
   'Top Group' => 'Groupe le plus actif',
   'Total groups' => 'Nombre de groupes',
   'Total spaces' => 'Nombre d\'espaces',

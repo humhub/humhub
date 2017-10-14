@@ -5,6 +5,7 @@
  * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
 namespace humhub\modules\user\authclient;
 
 use humhub\modules\user\models\User;
@@ -44,14 +45,6 @@ class Password extends BaseFormAuth implements interfaces\PrimaryClient
     /**
      * @inheritdoc
      */
-    public function getUserTableIdAttribute()
-    {
-        return 'id';
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function auth()
     {
         $user = User::find()->where(['username' => $this->login->username])->orWhere(['email' => $this->login->username])->one();
@@ -62,6 +55,15 @@ class Password extends BaseFormAuth implements interfaces\PrimaryClient
         }
 
         return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getUser()
+    {
+        $attributes = $this->getUserAttributes();
+        return User::findOne(['id' => $attributes['id'], 'auth_mode' => $this->getId()]);
     }
 
 }

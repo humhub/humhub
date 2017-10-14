@@ -17,10 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Allow other selection' => '',
     'Comma separated country codes, e.g. DE,EN,AU' => '',
     'One option per line. Key=>Value Format (e.g. yes=>Yes)' => '',
     'Possible values' => '',
     'Supported ISO3166 country codes' => '',
+    'This will add an additional input element for custom values' => '',
     'Please select:' => 'Παρακαλώ επιλέξτε:',
     'Select field options' => 'Επιλογή πεδίου ρυθμίσεων',
 ];

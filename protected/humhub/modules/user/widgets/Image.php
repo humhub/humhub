@@ -62,6 +62,11 @@ class Image extends Widget
     public $showTooltip = false;
 
     /**
+     * @var string the tooltip text (default is users display name)
+     */
+    public $tooltipText = null;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -80,11 +85,11 @@ class Image extends Widget
     {
         Html::addCssClass($this->imageOptions, 'img-rounded');
         Html::addCssStyle($this->imageOptions, 'width: ' . $this->width . 'px; height: ' . $this->height . 'px');
-        
+
         if ($this->showTooltip) {
             $this->imageOptions['data-toggle'] = 'tooltip';
             $this->imageOptions['data-placement'] = 'top';
-            $this->imageOptions['data-original-title'] = Html::encode($this->user->displayName);
+            $this->imageOptions['data-original-title'] = ($this->tooltipText) ? $this->tooltipText : Html::encode($this->user->displayName);
             Html::addCssClass($this->imageOptions, 'tt');
         }
 

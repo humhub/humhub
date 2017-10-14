@@ -8,6 +8,8 @@
 
 namespace humhub\components;
 
+use humhub\modules\file\libs\FileHelper;
+use humhub\modules\notification\components\BaseNotification;
 use Yii;
 use yii\helpers\Json;
 
@@ -202,7 +204,15 @@ class Module extends \yii\base\Module
      * Disables a module
      *
      * This should delete all data created by this module.
-     * When override this method make sure to invoke the parent implementation AFTER your implementation.
+     * When override this method make sure to invoke call `parent::disable()` **AFTER** your implementation as
+     *
+     * ```php
+     * public function disable()
+     * {
+     *     // custom disable logic
+     *     parent::disable();
+     * }
+     * ```
      */
     public function disable()
     {
@@ -222,7 +232,7 @@ class Module extends \yii\base\Module
             try {
                 $migration->up();
             } catch (\yii\db\Exception $ex) {
-                ;
+                Yii::error($ex);
             }
             ob_get_clean();
 
@@ -325,7 +335,25 @@ class Module extends \yii\base\Module
      */
     public function getNotifications()
     {
-        return [];
+        $class = get_class($this);
+        if (($pos = strrpos($class, '\\')) !== false) {
+            $notificationNamespace = substr($class, 0, $pos) . '\\notifications';
+        } else {
+            $notificationNamespace = '';
+        }
+
+        $notifications = [];
+        $notificationDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'notifications';
+        if (is_dir($notificationDirectory)) {
+            foreach (FileHelper::findFiles($notificationDirectory, ['recursive' => false,]) as $file) {
+                $notificationClass = $notificationNamespace . '\\' . basename($file, '.php');
+                if(is_subclass_of($notificationClass, BaseNotification::class)) {
+                    $notifications[] = $notificationClass;
+                }
+            }
+        }
+
+        return $notifications;
     }
 
     /**
@@ -350,12 +378,14 @@ class Module extends \yii\base\Module
         $class = get_class($this);
         if (($pos = strrpos($class, '\\')) !== false) {
             $activityNamespace = substr($class, 0, $pos) . '\\activities';
+        } else {
+            $activityNamespace = '';
         }
 
         $activities = [];
         $activityDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'activities';
         if (is_dir($activityDirectory)) {
-            foreach (\humhub\modules\file\libs\FileHelper::findFiles($activityDirectory, ['recursive' => false,]) as $file) {
+            foreach (FileHelper::findFiles($activityDirectory, ['recursive' => false,]) as $file) {
                 $activities[] = $activityNamespace . '\\' . basename($file, '.php');
             }
         }

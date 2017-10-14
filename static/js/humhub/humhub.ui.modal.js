@@ -143,6 +143,8 @@ humhub.module('ui.modal', function (module, require, $) {
         loader.set(this.getBody());
         this.isFilled = false;
 
+        this.getDialog().removeClass('modal-dialog-large modal-dialog-normal modal-dialog-small modal-dialog-extra-small modal-dialog-medium');
+
         //reset listeners:
         this.resetListener();
     };
@@ -294,6 +296,7 @@ humhub.module('ui.modal', function (module, require, $) {
             } else {
                 this.$.modal('show');
             }
+
         }
     };
 
@@ -383,6 +386,10 @@ humhub.module('ui.modal', function (module, require, $) {
             this.setFooter(this.options.footer);
         }
 
+        if(this.options.size) {
+            this.getDialog().addClass('modal-dialog-'+this.options.size);
+        }
+
         this.options.backdrop = options.backdrop || true;
         this.options.keyboard = options.keyboard || true;
 
@@ -425,9 +432,21 @@ humhub.module('ui.modal', function (module, require, $) {
         }
         this.$.empty().append(content);
         this.applyAdditions();
-        this.$.find('input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
+        this.$.find('select:visible, input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
         this.checkAriaLabel();
+        this.updateDialogOptions();
+        this.$.scrollTop(0);
         return this;
+    };
+
+    Modal.prototype.updateDialogOptions = function() {
+        var test = this.getDialog();
+        var test2 = this.getDialog().data('backdrop');
+        var test3 = this.getDialog().data('keyboard');
+        this.set({
+            backdrop : this.getDialog().data('backdrop'),
+            keyboard : this.getDialog().data('keyboard')
+        });
     };
 
     /**
@@ -501,15 +520,13 @@ humhub.module('ui.modal', function (module, require, $) {
         });
 
         module.globalConfirm = ConfirmModal.instance('#globalModalConfirm');
-        /*module.confirm = function(cfg) {
-         return module.globalConfirm.open(cfg);
-         };*/
 
         _setModalEnforceFocus();
         _setGlobalModalTargetHandler();
 
         $(document).on('show.bs.modal', '.modal', function (event) {
             $(this).appendTo($('body'));
+            $(this).attr('aria-hidden', 'false');
         });
 
         $(document).on('shown.bs.modal', '.modal.in', function (event) {
@@ -518,6 +535,7 @@ humhub.module('ui.modal', function (module, require, $) {
 
         $(document).on('hidden.bs.modal', '.modal', function (event) {
             _setModalsAndBackdropsOrder();
+            $(this).attr('aria-hidden', 'true');
         });
     };
 
@@ -600,16 +618,27 @@ humhub.module('ui.modal', function (module, require, $) {
             evt.$form = evt.$target;
         }
 
+        var id = evt.$trigger.data('modal-id');
+        if (!id) {
+            // try to autodetect modal id if we're currently in a modal
+            var $parent = evt.$trigger.closest('.modal');
+            if ($parent.length) {
+                id = $parent.attr('id');
+            }
+        }
+
+        var modal = (id) ? module.get(id) : module.global;
         return client.submit(evt, _defaultRequestOptions(evt, options)).then(function (response) {
-            module.global.setDialog(response);
-            if (!module.global.$.is(':visible')) {
-                module.global.show();
+            modal.setDialog(response);
+            if (!modal.$.is(':visible')) {
+                modal.show();
             }
 
-            module.global.$.trigger('submitted');
+            modal.$.trigger('submitted');
             return response;
         }).catch(function (error) {
             module.log.error(error, true);
+            modal.close();
         });
     };
 
@@ -626,12 +655,24 @@ humhub.module('ui.modal', function (module, require, $) {
         var modal = (id) ? module.get(id) : module.global;
         return modal.load(evt, _defaultRequestOptions(evt, options)).catch(function (err) {
             module.log.error(err, true);
+            modal.close();
         });
     };
 
     var post = function (evt, options) {
-        return module.global.post(evt, _defaultRequestOptions(evt, options)).catch(function (err) {
+        var id = evt.$trigger.data('modal-id');
+        if (!id) {
+            // try to autodetect modal id if we're currently in a modal
+            var $parent = evt.$trigger.closest('.modal');
+            if ($parent.length) {
+                id = $parent.attr('id');
+            }
+        }
+
+        var modal = (id) ? module.get(id) : module.global;
+        return modal.post(evt, _defaultRequestOptions(evt, options)).catch(function (err) {
             module.log.error(err, true);
+            modal.close();
         });
     };
 
@@ -662,7 +703,7 @@ humhub.module('ui.modal', function (module, require, $) {
     var _getConfirmOptionsByTrigger = function ($trigger) {
         return {
             'body': $trigger.data('action-confirm'),
-            'header': $trigger.data('action-confirm-header'),
+            'header': $trigger.data('action-confirm-header') ||  $trigger.data('action-confirm-title'),
             'confirmText': $trigger.data('action-confirm-text'),
             'cancelText': $trigger.data('action-cancel-text')
         };

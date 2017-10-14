@@ -17,7 +17,7 @@ return array (
   'Tags' => 'Etiquetes',
   'Updated At' => 'Actualitzat el',
   'Updated by' => 'Actualitzat per',
-  'Users' => '',
+  'Users' => 'Usuaris',
   'Visibility' => 'Visibilitat',
   'You cannot create private visible spaces!' => 'No pots crear espais privats!',
   'You cannot create public visible spaces!' => 'No pots crear espais públics!',

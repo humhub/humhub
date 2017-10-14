@@ -9,13 +9,16 @@
 namespace humhub\modules\content\models;
 
 use Yii;
+use humhub\modules\user\components\PermissionManager;
 use yii\base\Exception;
+use yii\base\InvalidParamException;
 use yii\helpers\Url;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\permissions\ManageContent;
+use yii\rbac\Permission;
 
 /**
  * This is the model class for table "content".
@@ -34,6 +37,10 @@ use humhub\modules\content\permissions\ManageContent;
  * @property string $updated_at
  * @property integer $updated_by
  * @property ContentContainer $contentContainer
+ * @property string $stream_sort_date
+ * @property string $stream_channel
+ * @property integer $contentcontainer_id;
+ * @property ContentContainerActiveRecord $container
  *
  * @since 0.5
  */
@@ -66,6 +73,11 @@ class Content extends ContentDeprecated
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
      */
     protected $_container = null;
+    
+    /**
+     * @var bool flag to disable the creation of default social activities like activity and notifications in afterSave() at content creation.
+     */
+    public $muteDefaultSocialActivities = false;
 
     /**
      * @inheritdoc
@@ -130,7 +142,6 @@ class Content extends ContentDeprecated
             throw new Exception("Could not save content with object_model or object_id!");
         }
 
-
         // Set some default values
         if (!$this->archived) {
             $this->archived = 0;
@@ -172,18 +183,17 @@ class Content extends ContentDeprecated
             }
 
             if ($insert && !$contentSource instanceof \humhub\modules\activity\models\Activity) {
-                $container = $this->getContainer();
-                if ($container !== null) {
+                if (!$this->muteDefaultSocialActivities && $this->container !== null) {
                     $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
 
                     \humhub\modules\content\notifications\ContentCreated::instance()
                             ->from($this->user)
                             ->about($contentSource)
                             ->sendBulk($notifyUsers);
-
+                
                     \humhub\modules\content\activities\ContentCreated::instance()
+                            ->from($this->user)
                             ->about($contentSource)->save();
-
 
                     Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
                         'sguid' => ($container instanceof Space) ? $container->guid : null,
@@ -383,6 +393,9 @@ class Content extends ContentDeprecated
     {
         $this->contentcontainer_id = $container->contentContainerRecord->id;
         $this->_container = $container;
+        if ($container instanceof Space && $this->visibility === null) {
+            $this->visibility = $container->getDefaultContentVisibility();
+        }
     }
 
     /**
@@ -417,13 +430,63 @@ class Content extends ContentDeprecated
     }
 
     /**
-     * Checks if user can edit this content
+     * Returns the ContentTagRelation query.
      *
-     * @todo create possibility to define own canEdit in ContentActiveRecord
-     * @todo also check content containers canManage content permission
+     * @since 1.2.2
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTagRelations()
+    {
+        return $this->hasMany(ContentTagRelation::className(), ['content_id' => 'id']);
+    }
+
+    /**
+     * Returns all content related tags ContentTags related to this content.
+     *
+     * @since 1.2.2
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTags()
+    {
+        return $this->hasMany(ContentTag::class, ['id' => 'tag_id'])->via('tagRelations');
+    }
+
+    /**
+     * Adds a new ContentTagRelation for this content and the given $tag instance.
+     *
+     * @since 1.2.2
+     * @throws InvalidParamException if the provided tag is part of another ContentContainer
+     * @return boolean true if tag relation could be saved or is already assigned otherwise false
+     */
+    public function addTag(ContentTag $tag)
+    {
+        if (!empty($tag->contentcontainer_id) && $tag->contentcontainer_id != $this->contentcontainer_id) {
+            throw new InvalidParamException(Yii::t('ContentModule.base', 'Content Tag with invalid contentcontainer_id assigned.'));
+        }
+
+        if (ContentTagRelation::findBy($this, $tag)->count()) {
+            return true;
+        }
+
+        unset($this->tags);
+
+        $contentRelation = new ContentTagRelation($this, $tag);
+        return $contentRelation->save();
+    }
+
+    /**
+     * Checks if the given user can edit this content.
+     *
+     * A user can edit a content if one of the following conditions are met:
+     *
+     *  - User is the owner of the content
+     *  - User is system administrator and the content module setting `adminCanEditAllContent` is set to true (default)
+     *  - The user is granted the managePermission set by the model record class
+     *  - The user meets the additional condition implemented by the model records class own `canEdit()` function.
+     *
      * @since 1.1
      * @param User $user
-     * @return boolean can edit this content
+     * @return bool can edit this content
      */
     public function canEdit($user = null)
     {
@@ -440,18 +503,22 @@ class Content extends ContentDeprecated
             return true;
         }
 
-        if ($this->getContainer() !== null && $this->getContainer()->permissionManager->can(new ManageContent())) {
-            return true;
-        }
-
         // Global Admin can edit/delete arbitrarily content
-        if (Yii::$app->getModule('content')->adminCanEditAllContent && Yii::$app->user->getIdentity()->isSystemAdmin()) {
+        if (Yii::$app->getModule('content')->adminCanEditAllContent && $user->isSystemAdmin()) {
             return true;
         }
 
-        // Check if underlying content implements own canEdit method
+        /* @var $model ContentActiveRecord */
+        $model = $this->getPolymorphicRelation();
+
+        // Check additional manage permission for the given container
+        if ($model->hasManagePermission() && $this->getContainer() && $this->getContainer()->getPermissionManager($user)->can($model->getManagePermission())) {
+            return true;
+        }
+
+        // Check if underlying models canEdit implementation
         // ToDo: Implement this as interface
-        if (method_exists($this->getPolymorphicRelation(), 'canEdit') && $this->getPolymorphicRelation()->canEdit($user)) {
+        if (method_exists($model, 'canEdit') && $model->canEdit($user)) {
             return true;
         }
 
@@ -459,7 +526,23 @@ class Content extends ContentDeprecated
     }
 
     /**
-     * Checks if user can view this content
+     * Checks the given $permission of the current user in the contents content container.
+     * This is short for `$this->getContainer()->getPermissionManager()->can()`.
+     *
+     * @param $permission
+     * @param array $params
+     * @param bool $allowCaching
+     * @see PermissionManager::can()
+     * @since 1.2.1
+     * @return bool
+     */
+    public function can($permission, $params = [], $allowCaching = true)
+    {
+        return $this->getContainer()->getPermissionManager()->can($permission, $params, $allowCaching);
+    }
+
+    /**
+     * Checks if user can view this content.
      *
      * @since 1.1
      * @param User $user
@@ -467,20 +550,18 @@ class Content extends ContentDeprecated
      */
     public function canView($user = null)
     {
-        if ($user === null && !Yii::$app->user->isGuest) {
+        if (!$user && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
         }
 
+        // User cann access own content
+        if ($user !== null && $this->created_by == $user->id) {
+            return true;
+        }
+
         // Check Guest Visibility
-        if ($user === null) {
-            if ($this->isPublic() && Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
-                // Check container visibility for guests
-                if (($this->container instanceof Space && $this->container->visibility == Space::VISIBILITY_ALL) ||
-                        ($this->container instanceof User && $this->container->visibility == User::VISIBILITY_ALL)) {
-                    return true;
-                }
-            }
-            return false;
+        if (!$user) {
+            return $this->checkGuestAccess();
         }
 
         // Public visible content
@@ -488,16 +569,36 @@ class Content extends ContentDeprecated
             return true;
         }
 
-        // Check Superadmin can see all content option
+        // Check system admin can see all content module configuration
         if ($user->isSystemAdmin() && Yii::$app->getModule('content')->adminCanViewAllContent) {
             return true;
         }
-
-        if ($this->isPrivate() && $this->getContainer()->canAccessPrivateContent($user)) {
+        
+        if ($this->isPrivate() && $this->getContainer() !== null && $this->getContainer()->canAccessPrivateContent($user)) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Determines if a guest user is able to read this content.
+     * This is the case if all of the following conditions are met:
+     *
+     *  - The content is public
+     *  - The `auth.allowGuestAccess` module setting is enabled
+     *  - The space or profile visibility is set to VISIBILITY_ALL
+     *
+     * @return bool
+     */
+    public function checkGuestAccess()
+    {
+        if (!$this->isPublic() || !Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
+            return false;
+        }
+
+        // Check container visibility for guests
+        return ($this->container instanceof Space && $this->container->visibility == Space::VISIBILITY_ALL) || ($this->container instanceof User && $this->container->visibility == User::VISIBILITY_ALL);
     }
 
     /**

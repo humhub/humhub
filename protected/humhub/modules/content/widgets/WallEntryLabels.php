@@ -16,9 +16,9 @@ class WallEntryLabels extends \yii\base\Widget
      */
     public function run()
     {
-        return $this->render('labels', array(
+        return $this->render('labels', [
             'object' => $this->object,
-        ));
+        ]);
     }
 
 }

@@ -7,7 +7,7 @@ use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\post\models\Post;
 
-class ContentContainerStreamTest extends HumHubDbTestCase
+class ActivityTestTest extends HumHubDbTestCase
 {
 
     use Specify;

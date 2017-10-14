@@ -46,7 +46,7 @@ textarea {
     height: 1.5em;
 }
 
-select.form-control {
+select.form-control:not([multiple]) {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -111,6 +111,26 @@ textarea.placeholder {
 
 .input-group-addon {
     border: none;
+}
+
+a.input-field-addon {
+    font-size:12px;
+    float:right;
+    margin-top:-10px;
+}
+
+a.input-field-addon-sm {
+    font-size:11px;
+    float:right;
+    margin-top:-10px;
+}
+
+.timeZoneInputContainer {
+    padding-top:10px;
+}
+
+.timeZoneInputContainer ~ .help-block {
+    margin:0px;
 }
 
 //
@@ -262,4 +282,8 @@ a.label-warning:hover {
     border-color: @warning;
     -webkit-box-shadow: none;
     box-shadow: none;
+}
+
+.bootstrap-timepicker-widget .form-control {
+    padding:0px;
 }

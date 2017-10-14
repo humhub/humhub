@@ -9,7 +9,6 @@ humhub.module('ui.additions', function (module, require, $) {
 
     var event = require('event');
     var object = require('util.object');
-
     var richtext = require('ui.richtext', true);
 
     var _additions = {};
@@ -124,46 +123,7 @@ humhub.module('ui.additions', function (module, require, $) {
             });
         });
 
-        module.register('markdown', '[data-ui-markdown]', function ($match) {
-            var converter = new Markdown.getSanitizingConverter();
-            Markdown.Extra.init(converter);
-            $match.each(function () {
-                var $this = $(this);
 
-                if ($this.data('markdownProcessed')) {
-                    return;
-                }
-
-
-                // Export all richtext features
-                var features = {};
-                $this.find('[data-richtext-feature], .oembed_snippet').each(function () {
-                    var $this = $(this);
-                    
-                    var featureKey = $this.data('guid') || '@-'+$this.attr('id');
-                    
-                    // old oembeds
-                    if($this.is('.oembed_snippted') && !$this.data('guid')) {
-                        featureKey = '@-oembed-'+$this.data('url');
-                    }
-                    
-                    features[featureKey] = $this.clone();
-                    // We add a space to make sure our placeholder is not appended to any link or something.
-                    $this.replaceWith(' '+featureKey);
-                });
-
-                var text = richtext.Richtext.plainText($this.clone());
-                var result = converter.makeHtml(text);
-
-                // Rewrite richtext feature
-                $.each(features, function (featureKey, $element) {
-                    result = result.replace(new RegExp('( )?'+featureKey.trim(), 'g'), $('<div></div>').html($element).html());
-                });
-
-
-                $this.html(result).data('markdownProcessed', true);
-            });
-        });
 
         $(document).on('click.humhub-ui-additions', function () {
             $('.tooltip').remove();
@@ -253,10 +213,19 @@ humhub.module('ui.additions', function (module, require, $) {
             options = {};
         }
 
-        node = (node instanceof $) ? node[0] : node;
-
+        var $node = $(node);
+        node = $node[0];
         var observer = new MutationObserver(function (mutations) {
-            module.applyTo(node);
+            mutations.forEach(function(mutation) {
+                var $nodes = $(mutation.addedNodes).filter(function () {
+                    return this.nodeType === 1; // filter out text nodes
+                });
+
+                $nodes.each(function() {
+                    var $this = $(this);
+                    module.applyTo($this);
+                })
+            });
         });
 
         observer.observe(node, {childList: true, subtree: true});

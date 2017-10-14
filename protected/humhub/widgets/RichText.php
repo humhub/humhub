@@ -52,6 +52,11 @@ class RichText extends JsWidget
     public $maxLength = 0;
 
     /**
+     * @var boolean defines if this richtext is also used as clientside markdown text.
+     */
+    public $markdown = false;
+
+    /**
      * @event \humhub\modules\search\events\ParameterEvent with parameter 'output'
      */
     const EVENT_BEFORE_OUTPUT = 'beforeOutput';
@@ -84,7 +89,11 @@ REGEXP;
                         return $oembed;
                     }
                 }
-                return Html::a($match[0], Html::decode($match[0]), array('target' => '_blank'));
+
+                $options = strpos($match[0], Yii::$app->settings->get('baseUrl')) === 0 ? [] : ['target' => '_blank', 'rel' => "noopener noreferrer"];
+
+                // The markdown parser will parse the links by itself
+                return ($this->markdown) ? $match[0] : Html::a($match[0], Html::decode($match[0]), $options);
             }, $this->text);
 
             // mark emails

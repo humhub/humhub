@@ -11,8 +11,6 @@ namespace humhub\modules\activity\controllers;
 use Yii;
 use humhub\components\Controller;
 use humhub\modules\activity\models\Activity;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentAddonActiveRecord;
 
 /**
  * LinkController provides link informations about an Activity via JSON.
@@ -43,9 +41,8 @@ class LinkController extends Controller
         $activityId = Yii::$app->request->get('id');
         $activity = Activity::findOne(['id' => $activityId]);
 
-        if ($activity !== null && $activity->content->canRead()) {
-            $source = $activity->getSource();
-            $this->redirect($source->content->getUrl());
+        if ($activity !== null && $activity->content->canView()) {
+            $this->redirect($activity->getActivityBaseClass()->getUrl());
         }
     }
 

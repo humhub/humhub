@@ -1,5 +1,5 @@
 <?php
-namespace user;
+namespace post;
 
 /**
  * Inherited Methods

@@ -17,6 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Edit your post...' => '',
-    'Save' => '',
+    'Edit your post...' => 'Chỉnh sửa post của bạn...',
 ];

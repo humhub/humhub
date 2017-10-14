@@ -17,11 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'General' => '',
-    'LDAP' => '',
+    'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.' => '',
     'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => '',
     'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.' => '',
-    'Save' => '',
     'Visible for members only' => '',
     'Visible for members+guests' => '',
+    'General' => 'Galvenais',
+    'LDAP' => 'LDAP',
+    'Save' => 'Saglabāt',
 ];

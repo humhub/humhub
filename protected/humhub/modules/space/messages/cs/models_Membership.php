@@ -2,10 +2,10 @@
 return array (
   'Created At' => 'Vytvořeno',
   'Created By' => 'Vytvořil(a)',
-  'Last Visit' => '',
-  'Originator User ID' => '',
-  'Request Message' => '',
+  'Last Visit' => 'Poslední návštěva ',
+  'Originator User ID' => 'ID uživatele ',
+  'Request Message' => 'Žádost o zprávu',
   'Status' => 'Stav',
   'Updated At' => 'Aktualizováno',
-  'Updated By' => '',
+  'Updated By' => 'Aktualizoval/a',
 );

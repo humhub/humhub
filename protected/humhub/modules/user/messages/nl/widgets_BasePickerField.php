@@ -1,7 +1,7 @@
 <?php
 return array (
   'Add more...' => 'Voeg meer toe...',
-  'An unexpected error occured while loading the result.' => 'Een onverwachte fout trad op tijdens het laden.',
+  'An unexpected error occurred while loading the result.' => 'Er is een onverwachte fout opgetreden tijdens het laden.',
   'Load more' => 'Meer laden',
   'Please enter at least {n} character' => 'Toets tenminste {n} tekens in',
   'Select {n,plural,=1{item} other{items}}' => 'Kies {n,plural,=1{item} other {items}}',

@@ -88,7 +88,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
      * Static initializer should be prefered over new initialization, since it makes use
      * of Yii::createObject dependency injection/configuration.
      *
-     * @return \humhub\components\SocialActivity
+     * @return static
      */
     public static function instance($options = [])
     {
@@ -98,7 +98,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
     /**
      * Builder function for the originator.
      *
-     * @param type $originator
+     * @param User $originator
      * @return \humhub\components\SocialActivity
      */
     public function from($originator)
@@ -110,8 +110,8 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
 
     /**
      * Builder function for the source.
-     * @param type $source
-     * @return \humhub\components\SocialActivity
+     * @param \yii\db\ActiveRecord $source
+     * @return $this
      */
     public function about($source)
     {
@@ -301,7 +301,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
      * @param Content $content
      * @return string
      */
-    public function getContentInfo(ContentOwner $content = null)
+    public function getContentInfo(ContentOwner $content = null, $withContentName = true)
     {
         if (!$this->hasContent() && !$content) {
             return;
@@ -317,7 +317,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
 
         $trimmed = \humhub\libs\Helpers::trimText($truncatedDescription, 60);
 
-        return Html::encode($content->getContentName()) . ' "' . $trimmed . '"';
+        return ($withContentName) ? Html::encode($content->getContentName()). ' "' . $trimmed . '"' : $trimmed;
 
     }
 

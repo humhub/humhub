@@ -17,7 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Actions' => '',
-    'Pending user approvals' => '',
-    'The following list contains all registered users awaiting an approval.' => '',
+    'The following list contains all pending sign-ups and invites.' => '',
+    'Actions' => 'Akce',
+    'Pending user approvals' => 'Uživatelé čekající na schválení',
+    'The following list contains all registered users awaiting an approval.' => 'Seznam obsahující všechny registrované uživatele čekající na schválení.',
 ];

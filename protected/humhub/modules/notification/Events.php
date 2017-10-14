@@ -75,7 +75,14 @@ class Events extends \yii\base\Object
             }
 
             // Check if source object exists when defined
-            if ($notification->source_class != "" && $notification->getSourceObject() == null) {
+            try {
+                if ($notification->source_class != "" && $notification->getSourceObject() == null) {
+                    if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
+                        $notification->delete();
+                    }
+                }
+            } catch(\Exception $e) {
+                // Handles errors for getSourceObject() calls
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
                     $notification->delete();
                 }

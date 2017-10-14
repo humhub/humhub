@@ -8,6 +8,7 @@
 
 namespace humhub\modules\stream\actions;
 
+use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 use yii\base\Action;
 use yii\base\Exception;
@@ -270,21 +271,59 @@ abstract class Stream extends Action
      * will directly append all dependencies to the result and if not used in a real ajax request will also append
      * the Layoutadditions.
      *
-     * @param \humhub\modules\content\components\ContentActiveRecord $record content record instance
+     * Render options can be provided by setting the $options array. This array will be passed to the WallEntryWidget implementation
+     * of the given ContentActiveRecord. The render option array can for example be used to deactivate the rendering of the the WallEntryControls, Addons etc.
+     *
+     * The used jsWidget implementation of the WallEntry can be overwritten by $options['jsWidget'].
+     *
+     * e.g:
+     *
+     * ```php
+     * Stream::renderEntry($myModel, [
+     *      'jsWidget' => 'my.namespace.StreamEntry',
+     *      'renderControls' => false
+     * ]);
+     * ```
+     *
+     * The previous example deactivated the rendering of the WallEntryControls and set a specific property of the WallEntryWidget related
+     * to $myModel.
+     *
+     * @param ContentActiveRecord $record content record instance
+     * @param $options array render options
      * @param boolean $partial whether or not to use renderPartial over renderAjax
      * @return string rendered wallentry
      */
-    public static function renderEntry(\humhub\modules\content\components\ContentActiveRecord $record, $partial = true)
+    public static function renderEntry(ContentActiveRecord $record, $options =  [], $partial = true)
     {
+        // TODO should be removed in next major version
+        // Compatibility with pre 1.2.2
+        if (is_bool($options)) {
+            $partial = $options;
+            $options = [];
+        }
+
+        if (!$record->wallEntryClass || !$record->content) {
+            return "";
+        }
+
+        if (isset($options['jsWidget'])) {
+            $jsWidget = $options['jsWidget'];
+            unset($options['jsWidget']);
+        } else {
+            $jsWidget = $record->getWallEntryWidget()->jsWidget;
+        }
+
         if ($partial) {
             return Yii::$app->controller->renderPartial('@humhub/modules/content/views/layouts/wallEntry', [
-                        'content' => $record->getWallOut(),
-                        'entry' => $record->content
+                'content' => $record->getWallOut($options),
+                'jsWidget' => $jsWidget,
+                'entry' => $record->content
             ]);
         } else {
             return Yii::$app->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
-                        'content' => $record->getWallOut(),
-                        'entry' => $record->content
+                'content' => $record->getWallOut($options),
+                'jsWidget' => $jsWidget,
+                'entry' => $record->content
             ]);
         }
     }

@@ -22,7 +22,7 @@ class MemberStatistics extends \yii\base\Widget
     {
 
         // Some member stats
-        $statsTotalUsers = User::find()->active()->count();
+        $statsTotalUsers = User::find()->visible()->count();
 
         $statsUserOnline = \humhub\modules\user\components\Session::getOnlineUsers()->count();
         $statsUserFollow = Follow::find()->where(['object_model' => User::className()])->count();

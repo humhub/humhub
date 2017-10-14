@@ -33,13 +33,8 @@ class AuthClientHelpers
         $attributes = $authClient->getUserAttributes();
 
         if ($authClient instanceof interfaces\PrimaryClient) {
-            /**
-             * @var interfaces\PrimaryClient $authClient
-             */
-            return User::findOne([
-                        $authClient->getUserTableIdAttribute() => $attributes['id'],
-                        'auth_mode' => $authClient->getId()
-            ]);
+            /* @var $authClient \humhub\modules\user\authclient\interfaces\PrimaryClient */
+            return $authClient->getUser();
         }
 
         $auth = Auth::find()->where(['source' => $authClient->getId(), 'source_id' => $attributes['id']])->one();
@@ -122,7 +117,7 @@ class AuthClientHelpers
             $attributes = $authClient->getUserAttributes();
             foreach ($authClient->getSyncAttributes() as $attributeName) {
                 if (isset($attributes[$attributeName])) {
-                    if (in_array($attributeName, ['email', 'username'])) {
+                    if (in_array($attributeName, ['email', 'username', 'authclient_id'])) {
                         $user->setAttribute($attributeName, $attributes[$attributeName]);
                     } else {
                         $user->profile->setAttribute($attributeName, $attributes[$attributeName]);
@@ -165,7 +160,7 @@ class AuthClientHelpers
         $registration = new \humhub\modules\user\models\forms\Registration();
         $registration->enablePasswordForm = false;
         $registration->enableEmailField = true;
-        
+
         if ($authClient instanceof interfaces\ApprovalBypass) {
             $registration->enableUserApproval = false;
         }
@@ -212,11 +207,10 @@ class AuthClientHelpers
     public static function getAuthClientsByUser(User $user)
     {
         $authClients = [];
-
+        
         foreach (Yii::$app->authClientCollection->getClients() as $client) {
-            /**
-             * @var $client ClientInterface
-             */
+            /* @var $client ClientInterface */
+
             // Add primary authClient
             if ($user->auth_mode == $client->getId()) {
                 $authClients[] = $client;

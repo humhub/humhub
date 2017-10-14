@@ -150,14 +150,13 @@ class Helpers
         }
 
         if ($valueString === false) {
-           throw new InvalidParamException('Your configuration option of ini_get function does not exist.');
+            throw new InvalidParamException('Your configuration option of ini_get function does not exist.');
         }
 
-        switch (substr($valueString, -1))
-        {
-            case 'M': case 'm': return (int)$valueString * 1048576;
-            case 'K': case 'k': return (int)$valueString * 1024;
-            case 'G': case 'g': return (int)$valueString * 1073741824;
+        switch (substr($valueString, -1)) {
+            case 'M': case 'm': return (int) $valueString * 1048576;
+            case 'K': case 'k': return (int) $valueString * 1024;
+            case 'G': case 'g': return (int) $valueString * 1073741824;
             default: return (int) $valueString;
         }
     }
@@ -228,9 +227,32 @@ class Helpers
         if ($length !== ($mb ? mb_strlen($b, '8bit') : strlen($b)))
             return false;
         $check = 0;
-        for ($i = 0; $i < $length; $i+=1)
-            $check|=(ord($a[$i]) ^ ord($b[$i]));
+        for ($i = 0; $i < $length; $i += 1)
+            $check |= (ord($a[$i]) ^ ord($b[$i]));
         return $check === 0;
+    }
+
+    /**
+     * Set sql_mode=TRADITIONAL for mysql server.
+     *
+     * This static function is intended as closure for on afterOpen raised by yii\db\Connection and
+     * should be configured in dynamic.php like this: 'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
+     *
+     * This is mainly required for grouped notifications.
+     * 
+     * @since 1.2.1
+     * @param $event
+     */
+    public static function SqlMode($event)
+    {
+        /* set sql_mode only for mysql */
+        if ($event->sender->driverName == 'mysql') {
+            try {
+                $event->sender->createCommand('SET SESSION sql_mode=""; SET SESSION sql_mode="NO_ENGINE_SUBSTITUTION"')->execute();
+            } catch (\Exception $ex) {
+                Yii::error('Could not switch SQL mode: '. $ex->getMessage());
+            }
+        }
     }
 
 }

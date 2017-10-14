@@ -1,9 +1,9 @@
 <?php
 return array (
   'Add more...' => 'Weitere hinzufügen...',
-  'An unexpected error occured while loading the result.' => 'Während des Ladens der Ergebnisse ist ein unerwarteter Fehler aufgetreten.',
+  'An unexpected error occurred while loading the result.' => 'Beim Laden der Ergebnisse ist ein unerwarteter Fehler aufgetreten.',
   'Load more' => 'Mehr laden',
-  'Please enter at least {n} character' => 'Bitte gebe midestens {n} Zeichen ein',
+  'Please enter at least {n} character' => 'Bitte gebe mindestens {n} Zeichen ein.',
   'Select {n,plural,=1{item} other{items}}' => 'Wähle {n,plural,=1{item} other{items}}
 ',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Dieses Feld erlaubt nur ein Maximum von {n,plural,=1{# item} other{# items}}.

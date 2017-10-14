@@ -149,8 +149,7 @@ humhub.module('stream', function (module, require, $) {
     StreamEntry.prototype.editModal = function (evt) {
         var that = this;
         modal.load(evt).then(function (response) {
-            modal.global.$.one('submitted', function () {
-                modal.global.close();
+            modal.global.$.one('hidden.bs.modal', function () {
                 that.reload();
             });
         }).catch(function (e) {
@@ -905,11 +904,21 @@ humhub.module('stream', function (module, require, $) {
      */
     var SimpleStream = function (container, cfg) {
         Stream.call(this, container, cfg);
+        this.$content = this.$;
+        this.setFilter(FILTER_INCLUDE_ARCHIVED);
     };
 
     object.inherits(SimpleStream, WallStream);
-    
+
+    SimpleStream.prototype.init = function () {
+        this.reloadEntry();
+    };
+
     SimpleStream.prototype.reloadEntry = function (entry) {
+        if(!entry) {
+            var entry = Component.instance(this.$.find('[data-stream-entry]:first'));
+        }
+
         entry.loader();
         var contentId = entry.getKey();
         return client.get(contentModule.config.reloadUrl, {data: {id: contentId}}).then(function (response) {
@@ -922,6 +931,14 @@ humhub.module('stream', function (module, require, $) {
         });
     };
 
+    SimpleStream.prototype.loadEntry = function (contentId) {
+        var that = this;
+
+        return client.get(contentModule.config.reloadUrl, {data: {id: contentId}}).then(function (response) {
+            that.appendEntry(response.output);
+            return response;
+        });
+    };
 
     /**
      * Initializes wall stream

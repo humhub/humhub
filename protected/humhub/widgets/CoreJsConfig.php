@@ -48,6 +48,9 @@ class CoreJsConfig extends Widget
                             ]
                         ]
                     ],
+                    'client' => [
+                      'baseUrl' =>  Yii::$app->settings->get('baseUrl')
+                    ],
                     'file' => [
                         'upload' => [
                             'url' => Url::to(['/file/file/upload']),
@@ -56,13 +59,13 @@ class CoreJsConfig extends Widget
                         'text' => [
                             'error.upload' => Yii::t('base', 'Some files could not be uploaded:'),
                             'error.unknown' => Yii::$app->user->isAdmin() ?
-                                    Yii::t('base', 'An unknown error occured while uploading. Hint: check your upload_max_filesize and post_max_size php settings.') : Yii::t('base', 'An unknown error occured while uploading.'),
+                                    Yii::t('base', 'An unknown error occurred while uploading. Hint: check your upload_max_filesize and post_max_size php settings.') : Yii::t('base', 'An unknown error occurred while uploading.'),
                             'success.delete' => Yii::t('base', 'The file has been deleted.')
                         ]
                     ],
                     'action' => [
                         'text' => [
-                            'actionHandlerNotFound' => Yii::t('base', 'An error occured while handling your last action. (Handler not found).'),
+                            'actionHandlerNotFound' => Yii::t('base', 'An error occurred while handling your last action. (Handler not found).'),
                         ]
                     ],
                     'ui.modal' => [
@@ -85,18 +88,45 @@ class CoreJsConfig extends Widget
                             'info.loading' => Yii::t('base', 'Loading...'),
                         ]
                     ],
+                    'ui.markdown', [
+                        'text' => [
+                            'Bold' => Yii::t('widgets_views_markdownEditor', 'Bold'),
+                            'Italic' => Yii::t('widgets_views_markdownEditor', 'Italic'),
+                            'Heading' => Yii::t('widgets_views_markdownEditor', 'Heading'),
+                            'URL/Link' => Yii::t('widgets_views_markdownEditor', 'URL/Link'),
+                            'Image/File' => Yii::t('widgets_views_markdownEditor', 'Image/File'),
+                            'Image' => Yii::t('widgets_views_markdownEditor', 'Image'),
+                            'List' => Yii::t('widgets_views_markdownEditor', 'List'),
+                            'Preview' => Yii::t('widgets_views_markdownEditor', 'Preview'),
+                            'strong text' => Yii::t('widgets_views_markdownEditor', 'strong text'),
+                            'emphasized text' => Yii::t('widgets_views_markdownEditor', 'emphasized text'),
+                            'heading text' => Yii::t('widgets_views_markdownEditor', 'heading text'),
+                            'enter link description here' => Yii::t('widgets_views_markdownEditor', 'enter link description here'),
+                            'Insert Hyperlink' => Yii::t('widgets_views_markdownEditor', 'Insert Hyperlink'),
+                            'enter image description here' => Yii::t('widgets_views_markdownEditor', 'enter image description here'),
+                            'Insert Image Hyperlink' => Yii::t('widgets_views_markdownEditor', 'Insert Image Hyperlink'),
+                            'enter image title here' => Yii::t('widgets_views_markdownEditor', 'enter image title here'),
+                            'list text here' => Yii::t('widgets_views_markdownEditor', 'list text here'),
+                            'Quote' => Yii::t('widgets_views_markdownEditor', 'Quote'),
+                            'quote here' => Yii::t('widgets_views_markdownEditor', 'quote here'),
+                            'Code' => Yii::t('widgets_views_markdownEditor', 'Code'),
+                            'code text here' => Yii::t('widgets_views_markdownEditor', 'code text here'),
+                            'Unordered List' => Yii::t('widgets_views_markdownEditor', 'Unordered List'),
+                            'Ordered List' => Yii::t('widgets_views_markdownEditor', 'Ordered List'),
+                        ]
+                    ],
                     'log' => [
                         'traceLevel' => (YII_DEBUG) ? 'DEBUG' : 'INFO',
                         'text' => [
-                            'error.default' => Yii::t('base', 'An unexpected error occured. If this keeps happening, please contact a site administrator.'),
+                            'error.default' => Yii::t('base', 'An unexpected error occurred. If this keeps happening, please contact a site administrator.'),
                             'success.saved' => Yii::t('base', 'Saved'),
                             'saved' => Yii::t('base', 'Saved'),
                             'success.edit' => Yii::t('base', 'Saved'),
-                            0 => Yii::t('base', 'An unexpected error occured. If this keeps happening, please contact a site administrator.'),
+                            0 => Yii::t('base', 'An unexpected error occurred. If this keeps happening, please contact a site administrator.'),
                             403 => Yii::t('base', 'You are not allowed to run this action.'),
                             404 => Yii::t('base', 'The requested resource could not be found.'),
                             405 => Yii::t('base', 'Error while running your last action (Invalid request method).'),
-                            500 => Yii::t('base', 'An unexpected server error occured. If this keeps happening, please contact a site administrator.')
+                            500 => Yii::t('base', 'An unexpected server error occurred. If this keeps happening, please contact a site administrator.')
                         ]
                     ],
                     'ui.status' => [
@@ -108,7 +138,7 @@ class CoreJsConfig extends Widget
                     ],
                     'ui.picker' => [
                         'text' => [
-                            'error.loadingResult' => Yii::t('base', 'An unexpected error occured while loading the search result.'),
+                            'error.loadingResult' => Yii::t('base', 'An unexpected error occurred while loading the search result.'),
                             'showMore' => Yii::t('base', 'Show more'),
                         ]
                     ],

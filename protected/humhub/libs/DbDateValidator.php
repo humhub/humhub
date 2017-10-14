@@ -8,6 +8,8 @@
 
 namespace humhub\libs;
 
+use Yii;
+
 /**
  * Validates (user date format or database format) and converts it to an database date(-time) field
  *
@@ -34,10 +36,39 @@ class DbDateValidator extends \yii\validators\DateValidator
     public $timeAttribute = '';
 
     /**
+     * @var defines the source time zone which is by default the user time zone, this can be used if a form uses an own
+     * timestamp setting.
+     */
+    public $timeZone;
+
+    /**
+     * @var string attribute name to save converted value to 
+     */
+    public $targetAttribute = null;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        if ($this->format === null) {
+            $this->format = Yii::$app->formatter->dateInputFormat;
+        }
+
+        parent::init();
+    }
+
+    /**
      * @inheritdoc
      */
     public function validateAttribute($model, $attribute)
     {
+
+        // If no source timeZone
+        if (empty($this->timeZone)) {
+            $this->timeZone = (!\Yii::$app->formatter->timeZone) ? \Yii::$app->timeZone : \Yii::$app->formatter->timeZone;
+        }
+
         $timestamp = $this->parseDateTimeValue($model->$attribute, $this->getTimeValue($model));
 
         if ($timestamp === false) {
@@ -59,8 +90,10 @@ class DbDateValidator extends \yii\validators\DateValidator
                 $date->setTimezone(new \DateTimeZone('UTC'));
             }
 
+            $targetAttribute = ($this->targetAttribute === null) ? $attribute : $this->targetAttribute;
+
             if ($this->convertToFormat !== null) {
-                $model->$attribute = $date->format($this->convertToFormat);
+                $model->$targetAttribute = $date->format($this->convertToFormat);
             }
         }
     }
@@ -118,14 +151,14 @@ class DbDateValidator extends \yii\validators\DateValidator
 
         if ($this->hasTime() && $timeValue != "") {
             $timestamp += $this->parseTimeValue($timeValue);
-            $timestamp = $this->fixTimestampTimeZone($timestamp, \Yii::$app->formatter->timeZone);
+            $timestamp = $this->fixTimestampTimeZone($timestamp, $this->timeZone);
         }
 
         return $timestamp;
     }
 
     /**
-     * Converts a timestamp in user timezone to a utc timestamp
+     * Converts the given timestamp from user (or configured) timezone to a utc timestamp
      *
      * @param long $ts the timestamp
      * @param String $timeZone users timezone
@@ -152,7 +185,7 @@ class DbDateValidator extends \yii\validators\DateValidator
      */
     protected function parseTimeValue($value)
     {
-        return strtotime($value . ':00') - strtotime('TODAY');
+        return strtotime($value) - strtotime('TODAY');
     }
 
     /**

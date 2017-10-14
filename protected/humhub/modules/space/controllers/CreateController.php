@@ -49,7 +49,7 @@ class CreateController extends Controller
     /**
      * Creates a new Space
      */
-    public function actionCreate($visibility = null)
+    public function actionCreate($visibility = null, $skip = 0)
     {
         // User cannot create spaces (public or private)
         if (!Yii::$app->user->permissionmanager->can(new CreatePublicSpace) && !Yii::$app->user->permissionmanager->can(new CreatePrivateSpace)) {
@@ -59,6 +59,9 @@ class CreateController extends Controller
         $model = $this->createSpaceModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if($skip) {
+                return $this->htmlRedirect($model->getUrl());
+            }
             return $this->actionModules($model->id);
         }
 

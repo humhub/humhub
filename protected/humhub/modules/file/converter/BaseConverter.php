@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\converter;
 
+use Yii;
 use humhub\modules\file\models\File;
 
 /**
@@ -30,6 +31,18 @@ abstract class BaseConverter extends \yii\base\Object
      * @var array
      */
     public $options = [];
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        if (!empty(Yii::$app->getModule('file')->converterOptions[$this->className()])) {
+            Yii::configure($this, Yii::$app->getModule('file')->converterOptions[$this->className()]);
+        }
+    }
 
     /**
      * Convert file
@@ -72,8 +85,8 @@ abstract class BaseConverter extends \yii\base\Object
      */
     public function applyFile(File $file)
     {
+        $this->file = $file;
         if ($this->canConvert($file)) {
-            $this->file = $file;
             return true;
         }
 

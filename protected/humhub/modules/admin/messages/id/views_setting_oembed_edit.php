@@ -1,7 +1,7 @@
 <?php
 return array (
   'Add OEmbed provider' => '',
-  'Back to overview' => '',
+  'Back to overview' => 'Kembali ke overview',
   'Delete' => 'Hapus',
   'Edit OEmbed provider' => '',
   'Save' => 'Simpan',

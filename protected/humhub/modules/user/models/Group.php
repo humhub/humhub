@@ -12,7 +12,6 @@ use Yii;
 use humhub\components\ActiveRecord;
 use humhub\modules\space\models\Space;
 
-
 /**
  * This is the model class for table "group".
  *
@@ -22,11 +21,13 @@ use humhub\modules\space\models\Space;
  * @property string $description
  * @property string $created_at
  * @property integer $created_by
+ * @property integer $sort_order
  * @property string $updated_at
  * @property integer $updated_by
  */
 class Group extends ActiveRecord
 {
+
     const SCENARIO_EDIT = 'edit';
 
     /**
@@ -43,7 +44,7 @@ class Group extends ActiveRecord
     public function rules()
     {
         return [
-            [['space_id'], 'integer'],
+            [['space_id', 'sort_order'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 45]
         ];
@@ -67,12 +68,22 @@ class Group extends ActiveRecord
             'updated_by' => Yii::t('UserModule.models_User', 'Updated by'),
             'show_at_registration' => Yii::t('UserModule.models_User', 'Show At Registration'),
             'show_at_directory' => Yii::t('UserModule.models_User', 'Show At Directory'),
+            'sort_order' => Yii::t('UserModule.models_User', 'Sort order'),
         ];
     }
 
     public function getDefaultSpace()
     {
         return Space::findOne(['id' => $this->space_id]);
+    }
+
+    public function beforeSave($insert)
+    {
+        if (empty($this->sort_order)) {
+            $this->sort_order = 100;
+        }
+
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -87,7 +98,7 @@ class Group extends ActiveRecord
     public static function getAdminGroupId()
     {
         $adminGroupId = Yii::$app->getModule('user')->settings->get('group.adminGroupId');
-        if($adminGroupId == null) {
+        if ($adminGroupId == null) {
             $adminGroupId = self::getAdminGroup()->id;
             Yii::$app->getModule('user')->settings->set('group.adminGroupId', $adminGroupId);
         }
@@ -228,22 +239,28 @@ class Group extends ActiveRecord
         }
 
         $group = self::findOne($user->registrationGroupId);
+        $approvalUrl = \yii\helpers\Url::to(["/admin/approval"], true);
 
         foreach ($group->manager as $manager) {
-            $approvalUrl = \yii\helpers\Url::to(["/admin/approval"], true);
 
-            $html = "Hello {$manager->displayName},<br><br>\n\n" .
-                    "a new user {$user->displayName} needs approval.<br><br>\n\n" .
-                    "Click here to validate:<br>\n\n" .
+            Yii::$app->i18n->setUserLocale($manager);
+
+            $html = Yii::t('UserModule.adminUserApprovalMail', 'Hello {displayName},', ['displayName' => $manager->displayName]) . "<br><br>\n\n" .
+                    Yii::t('UserModule.adminUserApprovalMail', 'a new user {displayName} needs approval.', ['displayName' => $user->displayName]) . "<br><br>\n\n" .
+                    Yii::t('UserModule.adminUserApprovalMail', 'Please click on the link below to view request:') . "<br>\n\n" .
                     \yii\helpers\Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
 
-            $mail = Yii::$app->mailer->compose(['html' => '@humhub//views/mail/TextOnly'], [
+            $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
                 'message' => $html,
             ]);
+
             $mail->setTo($manager->email);
-            $mail->setSubject(Yii::t('UserModule.models_User', "New user needs approval"));
+            $mail->setSubject(Yii::t('UserModule.adminUserApprovalMail', "New user needs approval"));
             $mail->send();
         }
+
+        Yii::$app->i18n->autosetLocale();
+
         return true;
     }
 
@@ -272,7 +289,7 @@ class Group extends ActiveRecord
 
     public static function getDirectoryGroups()
     {
-        return self::find()->where(['show_at_directory' => '1'])->orderBy('name ASC')->all();
+        return self::find()->where(['show_at_directory' => '1'])->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])->all();
     }
 
 }

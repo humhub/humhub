@@ -12,10 +12,9 @@ use Yii;
 use yii\base\Action;
 use yii\web\UploadedFile;
 use humhub\libs\Helpers;
-use humhub\libs\MimeHelper;
+use humhub\modules\file\models\FileUpload;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
-use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 
@@ -60,9 +59,10 @@ class UploadAction extends Action
      */
     public function run()
     {
-        $files = array();
+        $files = [];
+        $hideInStream = $this->isHideInStreamRequest();
         foreach (UploadedFile::getInstancesByName('files') as $cFile) {
-            $files[] = $this->handleFileUpload($cFile);
+            $files[] = $this->handleFileUpload($cFile, $hideInStream);
         }
 
         return ['files' => $files];
@@ -71,8 +71,9 @@ class UploadAction extends Action
     /**
      * Handles the file upload for are particular UploadedFile
      */
-    protected function handleFileUpload(UploadedFile $uploadedFile)
+    protected function handleFileUpload(UploadedFile $uploadedFile, $hideInStream = false)
     {
+        /* @var $file FileUpload */
         $file = Yii::createObject($this->fileClass);
 
         if ($this->scenario !== null) {
@@ -81,7 +82,11 @@ class UploadAction extends Action
 
         $file->setUploadedFile($uploadedFile);
 
-        if ($file->validate() && $file->save()) {
+        if($hideInStream) {
+            $file->show_in_stream = false;
+        }
+
+        if ($file->save()) {
             if ($this->record !== null) {
                 $this->record->fileManager->attach($file);
             }
@@ -89,6 +94,11 @@ class UploadAction extends Action
         } else {
             return $this->getErrorResponse($file);
         }
+    }
+
+    protected function isHideInStreamRequest()
+    {
+        return (Yii::$app->request->post('hideInStream') == 1) || (Yii::$app->request->get('hideInStream') == 1);
     }
 
     /**

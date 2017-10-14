@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Can manage modules within the \'Administration ->  Modules\' section.' => '可以在 \'管理\' -> \'模块\' 处管理模块',
+    'Can manage modules within the \'Administration ->  Modules\' section.' => '',
     'Access Admin Information' => '访问管理信息',
     'Can access the \'Administration -> Information\' section.' => '可以访问 \'管理 -> 信息\'',
     'Can manage spaces within the \'Administration -> Spaces\' section (create/edit/delete).' => '可以访问 \'管理 -> 空间\'(增加/编辑/删除)',

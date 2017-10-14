@@ -19,6 +19,7 @@
 return [
     'No member or following spaces found.' => '',
     'No result found for the given filter.' => '',
+    'Search for spaces' => '',
     'To search for other spaces, type at least {count} characters.' => '',
     'Create new space' => 'Skapa nytt nätverk',
     'My spaces' => 'Mina nätverk',

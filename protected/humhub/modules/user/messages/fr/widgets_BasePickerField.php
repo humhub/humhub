@@ -1,7 +1,7 @@
 <?php
 return array (
   'Add more...' => 'Ajouter... ',
-  'An unexpected error occured while loading the result.' => 'Une erreur inattendue est survenue lors du chargement des résultats.',
+  'An unexpected error occurred while loading the result.' => 'Une erreur innatendue s\'est produite lors du chargement du résultat. ',
   'Load more' => 'Afficher plus',
   'Please enter at least {n} character' => 'Veuiller entrer au moins {n} caractères',
   'Select {n,plural,=1{item} other{items}}' => 'Sélectionner {n,plural,=1{item} other{items}}',

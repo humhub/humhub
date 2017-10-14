@@ -29,6 +29,8 @@ class Menu extends \humhub\widgets\BaseMenu
         if ($this->space === null) {
             throw new \yii\base\Exception("Could not instance space menu without space!");
         }
+        
+        $this->id = 'navigation-menu-space-' . $this->space->getUniqueId();
 
         $this->addItemGroup(array(
             'id' => 'modules',

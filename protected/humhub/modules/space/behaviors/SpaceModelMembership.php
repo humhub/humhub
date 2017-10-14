@@ -32,8 +32,8 @@ class SpaceModelMembership extends Behavior
     /**
      * Checks if given Userid is Member of this Space.
      *
-     * @param type $userId
-     * @return type
+     * @param integer $userId
+     * @return boolean
      */
     public function isMember($userId = "")
     {
@@ -83,18 +83,19 @@ class SpaceModelMembership extends Behavior
      *
      * If no UserId is given, current UserId will be used
      *
-     * @param type $userId
-     * @return type
+     * @param User|integer|null $user User instance or userId
+     * @return boolean
      */
-    public function isAdmin($userId = "")
+    public function isAdmin($user = null)
     {
+        $userId = ($user instanceof User) ? $user->id : $user;
 
-        if ($userId == 0) {
-            $userId = Yii::$app->user->id;
+        if (empty($userId) && Yii::$app->user->can(new ManageSpaces())) {
+            return true;
         }
 
-        if (Yii::$app->user->can(new ManageSpaces())) {
-            return true;
+        if (!$userId) {
+            $userId = Yii::$app->user->id;
         }
 
         if ($this->isSpaceOwner($userId)) {
@@ -103,21 +104,18 @@ class SpaceModelMembership extends Behavior
 
         $membership = $this->getMembership($userId);
 
-        if ($membership !== null && $membership->group_id == Space::USERGROUP_ADMIN && $membership->status == Membership::STATUS_MEMBER) {
-            return true;
-        }
-
-        return false;
+        return ($membership && $membership->group_id == Space::USERGROUP_ADMIN && $membership->status == Membership::STATUS_MEMBER);
     }
 
     /**
      * Sets Owner for this workspace
      *
-     * @param type $userId
-     * @return type
+     * @param User|integer|null $userId
+     * @return boolean
      */
-    public function setSpaceOwner($userId = null)
+    public function setSpaceOwner($user = null)
     {
+        $userId = ($user instanceof User) ? $user->id : $user;
 
         if ($userId instanceof User) {
             $userId = $userId->id;
@@ -137,11 +135,10 @@ class SpaceModelMembership extends Behavior
     /**
      * Gets Owner for this workspace
      *
-     * @return type
+     * @return User
      */
     public function getSpaceOwner()
     {
-
         if ($this->_spaceOwner != null) {
             return $this->_spaceOwner;
         }
@@ -152,27 +149,27 @@ class SpaceModelMembership extends Behavior
 
     /**
      * Is given User owner of this Space
+     * @param User|int|null $userId
+     * @return bool
      */
     public function isSpaceOwner($userId = null)
     {
-        if ($userId instanceof User) {
+        if(empty($userId) && Yii::$app->user->isGuest) {
+            return false;
+        } else if ($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == "") {
+        }  else if (empty($userId)) {
             $userId = Yii::$app->user->id;
         }
 
-        if ($this->owner->created_by == $userId) {
-            return true;
-        }
-
-        return false;
+        return $this->owner->created_by == $userId;
     }
 
     /**
      * Sets Owner for this workspace
      *
-     * @param type $userId
-     * @return type
+     * @param integer $userId
+     * @return boolean
      */
     public function setAdmin($userId = null)
     {
@@ -210,8 +207,8 @@ class SpaceModelMembership extends Behavior
     /**
      * Invites a not registered member to this space
      *
-     * @param type $email
-     * @param type $originatorUserId
+     * @param string $email
+     * @param integer $originatorUserId
      */
     public function inviteMemberByEMail($email, $originatorUserId)
     {
@@ -255,8 +252,8 @@ class SpaceModelMembership extends Behavior
     /**
      * Requests Membership
      *
-     * @param type $userId
-     * @param type $message
+     * @param integer $userId
+     * @param string $message
      */
     public function requestMembership($userId, $message = "")
     {
@@ -283,7 +280,7 @@ class SpaceModelMembership extends Behavior
      */
     public function getAdmins()
     {
-        $admins = array();
+        $admins = [];
         $adminMemberships = Membership::findAll(['space_id' => $this->owner->id, 'group_id' => Space::USERGROUP_ADMIN]);
 
         foreach ($adminMemberships as $admin) {
@@ -299,8 +296,8 @@ class SpaceModelMembership extends Behavior
      * If user is already invited, retrigger invitation.
      * If user is applicant approve it.
      *
-     * @param type $userId
-     * @param type $originatorId
+     * @param integer $userId
+     * @param integer $originatorId
      */
     public function inviteMember($userId, $originatorId)
     {
@@ -342,8 +339,8 @@ class SpaceModelMembership extends Behavior
     /**
      * Sends an Invite Notification to the given user.
      * 
-     * @param type $userId
-     * @param type $originatorId
+     * @param integer $userId
+     * @param integer $originatorId
      */
     protected function sendInviteNotification($userId, $originatorId)
     {
@@ -361,8 +358,8 @@ class SpaceModelMembership extends Behavior
      * This can happens after an clicking "Request Membership" Link
      * after Approval or accepting an invite.
      *
-     * @param type $userId
-     * @param type $canLeave 0: user cannot cancel membership | 1: can cancel membership | 2: depending on space flag members_can_leave
+     * @param integer $userId
+     * @param integer $canLeave 0: user cannot cancel membership | 1: can cancel membership | 2: depending on space flag members_can_leave
      */
     public function addMember($userId, $canLeave = 1)
     {

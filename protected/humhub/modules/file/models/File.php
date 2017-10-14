@@ -30,6 +30,10 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
+ * @property integer $show_in_stream
+ *
+ * @property \humhub\modules\user\models\User $createdBy
+ * @property \humhub\modules\file\components\StorageManager $store
  *
  * Following properties are optional and for module depended use:
  * - title
@@ -73,7 +77,7 @@ class File extends FileCompat
         return [
             [
                 'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
-                'mustBeInstanceOf' => array(\humhub\components\ActiveRecord::className()),
+                'mustBeInstanceOf' => [\humhub\components\ActiveRecord::className()],
             ],
             [
                 'class' => \humhub\components\behaviors\GUID::className(),
@@ -184,7 +188,7 @@ class File extends FileCompat
             $this->_store = Yii::createObject(Yii::$app->getModule('file')->storageManagerClass);
             $this->_store->setFile($this);
         }
-
+        
         return $this->_store;
     }
     

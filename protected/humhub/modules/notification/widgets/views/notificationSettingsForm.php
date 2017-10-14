@@ -1,8 +1,10 @@
 <?php
 /* @var $model \humhub\modules\notification\models\forms\NotificationSettings */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $showSpaces boolean */
+/* @var $defaultSpaces \humhub\modules\space\models\Space[] */
 
-use yii\bootstrap\Html
+use yii\bootstrap\Html;
 ?>
 
 <br />
@@ -37,6 +39,7 @@ use yii\bootstrap\Html
                         <strong><?= $category->getTitle() ?></strong><br />
                         <?= $category->getDescription() ?>
                     </td>
+
                     <?php foreach ($model->targets() as $target): ?>
                         <td class="text-center">
                             <?php $disabled = !$target->isEditable($model->user) || $category->isFixedSetting($target) ?>
@@ -44,7 +47,7 @@ use yii\bootstrap\Html
                         </td>
                     <?php endforeach; ?>
 
-                    </div>
+                </tr>
                 <?php endforeach; ?>
         </tbody>
     </table>

@@ -2,8 +2,8 @@
 
 namespace humhub\modules\user;
 
-use humhub\modules\content\models\ContentContainer;
 use Yii;
+use humhub\modules\content\models\ContentContainer;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
@@ -26,8 +26,8 @@ class Events extends \yii\base\Object
      */
     public static function onSearchRebuild($event)
     {
-        foreach (models\User::find()->active()->all() as $obj) {
-            \Yii::$app->search->add($obj);
+        foreach (models\User::find()->visible()->each() as $user) {
+            Yii::$app->search->add($user);
         }
     }
 
@@ -114,7 +114,14 @@ class Events extends \yii\base\Object
                     $follow->delete();
                 }
             }
-            if ($follow->getTarget() == null) {
+
+            try {
+                if ($follow->getTarget() == null) {
+                    if ($integrityController->showFix("Deleting follow " . $follow->id . " of non target!")) {
+                        $follow->delete();
+                    }
+                }
+            } catch (\Exception $e) {
                 if ($integrityController->showFix("Deleting follow " . $follow->id . " of non target!")) {
                     $follow->delete();
                 }

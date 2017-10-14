@@ -65,6 +65,9 @@ class FileManager extends Component
                 'object_id' => $this->record->getPrimaryKey(),
             ]);
         }
+
+        // Save record to force search index update
+        $this->record->save();
     }
 
     /**
@@ -85,6 +88,23 @@ class FileManager extends Component
     public function findAll()
     {
         return $this->find()->all();
+    }
+
+    /**
+     * By default all files with show_in_stream set to 1.
+     *
+     * If $flag is set to false, this function will return all non stream files.
+     *
+     * @return File[]
+     * @since 1.2.2
+     */
+    public function findStreamFiles($showInStream = true)
+    {
+        if ($showInStream) {
+            return $this->find()->andWhere(['show_in_stream' => 1])->all();
+        } else {
+            return $this->find()->andWhere(['show_in_stream' => 0])->all();
+        }
     }
 
 }

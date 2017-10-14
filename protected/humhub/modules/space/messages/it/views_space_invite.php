@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Invite</strong> members' => '<strong>Invita</strong> membri',
-  'Done' => '',
+  'Done' => 'Fatto',
   'Email addresses' => 'Indirizzo email',
   'Invite by email' => 'Invita via email',
   'Login' => 'Login',

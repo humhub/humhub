@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'This group has no members yet.' => '此组还没有成员。',
+    'This group has no members yet.' => '',
     '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>没有人写的东西。</b> <br>开始写点什么',
     '<b>There are no profile posts yet!</b>' => '<b>还没有个人文章！</b>',
     '<strong>Directory</strong> menu' => '目录菜单',

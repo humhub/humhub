@@ -42,10 +42,18 @@ class ContentCreated extends \humhub\modules\notification\components\BaseNotific
      */
     public function html()
     {
-        return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} created {contentTitle}.', [
-                    'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                    'contentTitle' => $this->getContentInfo($this->source)
-        ]);
+        if($this->source->content->container instanceof User && $this->record->user->is($this->source->content->container)) {
+            return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} posted on your profile {contentTitle}.', [
+                'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
+                'contentTitle' => $this->getContentInfo($this->source, false)
+            ]);
+        } else {
+            return Yii::t('ContentModule.notifications_views_ContentCreated', '{displayName} created {contentTitle}.', [
+                'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
+                'contentTitle' => $this->getContentInfo($this->source)
+            ]);
+        }
+
     }
 
     /**

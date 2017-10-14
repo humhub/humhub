@@ -17,5 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '',
+    'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
+    'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Trường upload chỉ cho phép tối đa  {n,plural,=1{# file} khác{# files}}.
+',
 ];

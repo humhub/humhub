@@ -133,7 +133,7 @@ class Invite extends ActiveRecord
                 'registrationUrl' => $registrationUrl
             ]);
             $mail->setTo($this->email);
-            $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSelf', 'Registration Link'));
+            $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSelf', 'Welcome to %appName%', ['%appName%' => Yii::$app->name]));
             $mail->send();
         } elseif ($this->source == self::SOURCE_INVITE && $this->space !== null) {
 
@@ -152,7 +152,7 @@ class Invite extends ActiveRecord
                 'registrationUrl' => $registrationUrl
             ]);
             $mail->setTo($this->email);
-            $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSpace', 'Invitation to join: {space}', ['space' => $this->space->name]));
+            $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSpace', 'You\'ve been invited to join {space} on {appName}', ['space' => $this->space->name, 'appName' => Yii::$app->name]));
             $mail->send();
 
             // Switch back to users language
@@ -176,7 +176,7 @@ class Invite extends ActiveRecord
                 'registrationUrl' => $registrationUrl
             ]);
             $mail->setTo($this->email);
-            $mail->setSubject(Yii::t('UserModule.invite', 'Invitation to join'));
+            $mail->setSubject(Yii::t('UserModule.invite', 'You\'ve been invited to join %appName%', ['%appName%' => Yii::$app->name]));
             $mail->send();
 
             // Switch back to users language

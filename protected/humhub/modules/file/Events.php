@@ -8,7 +8,10 @@
 
 namespace humhub\modules\file;
 
+use humhub\modules\search\engine\Search;
 use humhub\modules\file\models\File;
+use yii\base\Event;
+use humhub\modules\search\events\SearchAttributesEvent;
 
 /**
  * Events provides callbacks to handle events.
@@ -94,6 +97,29 @@ class Events extends \yii\base\Object
             $file->delete();
         }
         return true;
+    }
+
+    /**
+     * Handles the SearchAttributesEvent and adds related files
+     * 
+     * @since 1.2.3
+     * @param SearchAttributesEvent $event
+     */
+    public static function onSearchAttributes(SearchAttributesEvent $event)
+    {
+        if (!isset($event->attributes['files'])) {
+            $event->attributes['files'] = [];
+        }
+
+        foreach (File::findAll(['object_model' => $event->record->className(), 'object_id' => $event->record->id]) as $file) {
+            /* @var $file File */
+            $event->attributes['files'][$file->id] = [
+                'name' => $file->file_name
+            ];
+
+            // Add comment related attributes
+            Event::trigger(Search::class, Search::EVENT_SEARCH_ATTRIBUTES, new SearchAttributesEvent($event->attributes['files'][$file->id], $file));
+        }
     }
 
 }

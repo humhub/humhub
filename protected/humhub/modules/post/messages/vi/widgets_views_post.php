@@ -1,5 +1,5 @@
 <?php
 return array (
   'Collapse' => 'Thu hẹp',
-  'Read full post...' => '',
+  'Read full post...' => 'Đọc toàn nội dung post...',
 );

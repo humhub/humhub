@@ -32,7 +32,7 @@ class FileContent extends File
             $this->setFileSize();
         }
 
-        parent::beforeValidate();
+        return parent::beforeValidate();
     }
 
     /**

@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -13,7 +13,6 @@ use humhub\components\Controller;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\search\models\forms\SearchForm;
-
 use humhub\modules\space\widgets\Image;
 
 /**
@@ -24,6 +23,15 @@ use humhub\modules\space\widgets\Image;
  */
 class SearchController extends Controller
 {
+
+    /**
+     * @var string the current search keyword
+     */
+    public static $keyword = null;
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->appendPageTitle(\Yii::t('SearchModule.base', 'Search'));
@@ -64,7 +72,7 @@ class SearchController extends Controller
             'pageSize' => Yii::$app->settings->get('paginationSize'),
             'limitSpaces' => $limitSpaces
         ];
-        
+
         if ($model->scope == SearchForm::SCOPE_CONTENT) {
             $options['type'] = \humhub\modules\search\engine\Search::DOCUMENT_TYPE_CONTENT;
         } elseif ($model->scope == SearchForm::SCOPE_SPACE) {
@@ -77,16 +85,19 @@ class SearchController extends Controller
 
         $searchResultSet = Yii::$app->search->find($model->keyword, $options);
 
+        // store static for use in widgets (e.g. fileList)
+        self::$keyword = $model->keyword;
+
         $pagination = new \yii\data\Pagination;
         $pagination->totalCount = $searchResultSet->total;
         $pagination->pageSize = $searchResultSet->pageSize;
 
         return $this->render('index', array(
-            'model' => $model,
-            'results' => $searchResultSet->getResultInstances(),
-            'pagination' => $pagination,
-            'totals' => $model->getTotals($model->keyword, $options),
-            'limitSpaces' => $limitSpaces
+                    'model' => $model,
+                    'results' => $searchResultSet->getResultInstances(),
+                    'pagination' => $pagination,
+                    'totals' => $model->getTotals($model->keyword, $options),
+                    'limitSpaces' => $limitSpaces
         ));
     }
 
@@ -117,4 +128,5 @@ class SearchController extends Controller
 
         return $results;
     }
+
 }

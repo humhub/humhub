@@ -10,13 +10,21 @@ humhub.module('client.pjax', function (module, require, $) {
             module.installLoader();
         }
     };
+
+    var post = function(evt) {
+        var $options = $.extend({}, module.config.options);
+        $options.url = evt.url;
+        $options.container = PJAX_CONTAINER_SELECTOR;
+        $options.type = 'POST';
+        $.pjax($options);
+    };
     
     var redirect = function(url) {
-        $.pjax({url: url, container: PJAX_CONTAINER_SELECTOR});
+        $.pjax({url: url, container: PJAX_CONTAINER_SELECTOR, timeout : module.config.options.timeout});
     };
     
     var reload = function() {
-        $.pjax.reload({container: PJAX_CONTAINER_SELECTOR});
+        $.pjax.reload({container: PJAX_CONTAINER_SELECTOR, timeout : module.config.options.timeout});
     };
 
     var pjaxRedirectFix = function () {
@@ -95,6 +103,7 @@ humhub.module('client.pjax', function (module, require, $) {
         init: init,
         reload: reload,
         redirect: redirect,
+        post: post,
         isActive: isActive,
         installLoader: installLoader,
     });

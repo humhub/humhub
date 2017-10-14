@@ -109,29 +109,33 @@ class AuthController extends Controller
 
         // Login existing user 
         $user = AuthClientHelpers::getUserByAuthClient($authClient);
-        
+
         if ($user !== null) {
             return $this->login($user, $authClient);
         }
-        
+
         if (!$authClient instanceof ApprovalBypass && !Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration')) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', "You're not registered."));
             return $this->redirect(['/user/auth/login']);
         }
 
         // Check if E-Mail is given
-        if (!isset($attributes['email'])) {
-            Yii::$app->session->setFlash('error', "Missing E-Mail Attribute from AuthClient.");
+        if (!isset($attributes['email']) && Yii::$app->getModule('user')->emailRequired) {
+            Yii::$app->session->setFlash('error', Yii::t(
+                            'UserModule.base', 'Missing E-Mail Attribute from AuthClient.'
+            ));
             return $this->redirect(['/user/auth/login']);
         }
 
         if (!isset($attributes['id'])) {
-            Yii::$app->session->setFlash('error', "Missing ID AuthClient Attribute from AuthClient.");
+            Yii::$app->session->setFlash('error', Yii::t(
+                            'UserModule.base', 'Missing ID AuthClient Attribute from AuthClient.'
+            ));
             return $this->redirect(['/user/auth/login']);
         }
 
         // Check if e-mail is already taken
-        if (User::findOne(['email' => $attributes['email']]) !== null) {
+        if (isset($attributes['email']) && User::findOne(['email' => $attributes['email']]) !== null) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.'));
             return $this->redirect(['/user/auth/login']);
         }
@@ -169,7 +173,7 @@ class AuthController extends Controller
                     $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
                 }
             }
-            
+
             AuthClientHelpers::updateUser($authClient, $user);
 
             if (Yii::$app->user->login($user, $duration)) {
@@ -177,11 +181,11 @@ class AuthController extends Controller
                 $redirectUrl = Yii::$app->user->returnUrl;
             }
         } elseif ($user->status == User::STATUS_DISABLED) {
-            Yii::$app->session->setFlash('error', 'Your account is disabled!');
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is disabled!'));
         } elseif ($user->status == User::STATUS_NEED_APPROVAL) {
-            Yii::$app->session->setFlash('error', 'Your account is not approved yet!');
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is not approved yet!'));
         } else {
-            Yii::$app->session->setFlash('error', 'Unknown user status!');
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Unknown user status!'));
         }
 
         if (Yii::$app->request->getIsAjax()) {

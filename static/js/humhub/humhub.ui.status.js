@@ -24,7 +24,6 @@ humhub.module('ui.status', function (module, require, $) {
         errorBlock: '<div class="status-bar-details" style="display:none;"><pre>{msg}</pre><div>'
     };
 
-    var state = {};
     var title;
 
     var SELECTOR_ROOT = '#status-bar';
@@ -32,6 +31,7 @@ humhub.module('ui.status', function (module, require, $) {
     var SELECTOR_CONTENT = '.status-bar-content';
 
     var AUTOCLOSE_INFO = 6000;
+    var AUTOCLOSE_SUCCESS = 2000;
     var AUTOCLOSE_WARN = 10000;
 
     var StatusBar = function () {
@@ -44,7 +44,7 @@ humhub.module('ui.status', function (module, require, $) {
     };
 
     StatusBar.prototype.success = function (msg, closeAfter) {
-        closeAfter = closeAfter || AUTOCLOSE_INFO;
+        closeAfter = closeAfter || AUTOCLOSE_SUCCESS;
         this._trigger(string.template(module.template.success, {msg: msg}), undefined, closeAfter);
     };
 
@@ -189,9 +189,7 @@ humhub.module('ui.status', function (module, require, $) {
         if (!$pjax) {
             module.statusBar = new StatusBar();
 
-            event.on('humhub:ready', function () {
-                module.log.debug('Current ui state', state);
-            }).on('humhub:modules:log:setStatus', function (evt, msg, details, level) {
+            event.on('humhub:modules:log:setStatus', function (evt, msg, details, level) {
                 switch (level) {
                     case log.TRACE_ERROR:
                     case log.TRACE_FATAL:
@@ -219,18 +217,6 @@ humhub.module('ui.status', function (module, require, $) {
 
     module.export({
         init: init,
-        setState: function (moduleId, controlerId, action) {
-            // This function is called by controller itself
-            state = {
-                title: title || document.title,
-                moduleId: moduleId,
-                controllerId: controlerId,
-                action: action
-            };
-        },
-        getState: function () {
-            return $.extend({}, state);
-        },
         StatusBar: StatusBar,
         success: function (msg, closeAfter) {
             if (!module.statusBar) {

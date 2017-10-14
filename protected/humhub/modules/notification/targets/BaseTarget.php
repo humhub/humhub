@@ -32,13 +32,13 @@ abstract class BaseTarget extends \yii\base\Object
 
     /**
      * Holds the title of this instance.
-     * @var type
+     * @var string
      */
     public $title;
 
     /**
      * Default Renderer for this BaseTarget
-     * @var type
+     * @var Renderer
      */
     public $renderer;
 
@@ -172,8 +172,8 @@ abstract class BaseTarget extends \yii\base\Object
 
     /**
      * Returns the setting key for this target of the given $category.
-     * @param type $category
-     * @return type
+     * @param NotificationCategory $category
+     * @return string
      */
     public function getSettingKey($category)
     {

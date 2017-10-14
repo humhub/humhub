@@ -19,6 +19,7 @@
 return [
     'No member or following spaces found.' => 'Не найдены участники или подписчики пространств.',
     'No result found for the given filter.' => 'Ничего не найдено по полученному запросу',
+    'Search for spaces' => 'Поиск по пространствам',
     'To search for other spaces, type at least {count} characters.' => 'Для поиска других пространств, введите {count} символов.',
     'Create new space' => 'Создать новое пространство',
     'My spaces' => 'Мои пространства',

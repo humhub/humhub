@@ -1,11 +1,151 @@
 HumHub Change Log
 =================
-1.2.1 (in developement)
+
+1.2.3  (Not released yet)
+--------------------------------
+
+Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users.
+
+- Fix: Readonly markdown field issue.
+- Enh: Added flag to control automatically created social activities at content creation.
+- Enh: Fixed registration approval/denial mails and made their default value configurable.
+- Enh: Updated primary auth client interface for more flexibility
+- Enh: Added LDAP ID attribute to improve user mapping
+- Enh: Option to disable e-mail address requirement in User model
+- Fix: Overwrite of static image in theme + added documentation section
+- Fix: Account Controller exception when user is not logged in
+- Fix: Exception on notification overview page when not logged in
+- Enh: Added possibility to sort groups in directory
+- Enh: Removed LDAP UserFilter/LoginFilter length restriction
+- Fix: UTC timezone issue with `TimeZoneDropdownAddition` and added `$includeUTC` flag to `TimezoneHelper::generateList()`
+- Fix: ControllerAccess json rule
+- Enh: added `closable = false` as default `ModalDialog` widget setting
+- Fix: trigger richtext `clear` when submitting comment.
+- Fix: missing return in `FileContent::beforeValidate`
+- Fix: Mentioning search with `-` not working
+- Fix #2730: Mentioning search with `-` not working
+- Fix: File search with suffix not working
+- Enh: Added SearchAttributesEvent to improve content addon indexing (comment/file)
+- Fix: Do not automatically force modal close on stream edit
+- Enh: Added DurationPickerWidget
+- Enh: Allow `ContentActiveRecord($contentContainer, $config)` initialization
+- Fix: `WallEntry::addControl` with simple array options
+- Enh: Added `$scheme` Argument to `DownloadFileHandler::getUrl()`
+- Fix: Clear UserModule cache after save/delete
+- Fix: Prevent Integrity check failures.
+- Enh: Added default open content as modal action
+- Enh: Added possibility to add attachments in Notification MailTarget
+- Enh: Added surpressSendToOriginator Notification option
+- Chg: #2745 Removed `GroupPermission::instance()` for yii 2.0.13 compatibility
+- Enh: Added `MobileTargetProvider` abstraction for mobile push notifications
+- Enh: Added `humhub:notification:updateCount` js event
+- Enh: Show space administrators and moderators in member snippet
+- Fix: `humhub\modules\live\Module::getLegitimateContentContainerIds` behaviour with friendship module enabled
+- Enh: Added `BaseNotification:priority` to mark high priority notifications
+- Enh: Added new `User::isVisible` and `ActiveQueryUser::visible` methods
+- Fix: MarkdownEditor cursor position after inserting file/
+- Fix: Make sure own profile content is always visible to user
+- Fix #2501: Do not try to embed Youtube unauthorized videos (acs-ferreira)
+- Fix #2613: Wrong username encoding with pretty url (githubjeka)
+
+1.2.2  (August 2, 2017)
+--------------------------------
+- Enh: Allow returning class names beside BasePermission instances in `Module::getPermissions()`
+- Enh: Increase profile image size to 800px.
+- Fix #2644 overlapping popup preview image after increasing preview image size (hagalaz)
+- Fix: Button widget child class static instantiation not working 
+- Fix: ModalButton instantiation and added ModalButton::close()
+- Fix: Respect `max_file_uploads` setting in UploadInput widget
+- Enh: Include `kartik-v/yii2-widgets`
+- Enh: Added `getAccessRules()` to `humhub/components/Controller`
+- Fix: AccessControl action restriction bug
+- Fix: `ModuleAutoLoader` exceptions not logged
+- Fix: `I18N` formatter user timezone not set
+- Enh: Automatically set space default visibility in `Content::setContainer()`
+- Fix: Fixed ContentContainerSettingManager caching issue if space/user id are equal
+- Enh: Use of select2 dropdown for time zone selections
+- Fix: Bypass AccessControl behavior in installer
+- Fix: Use of JS-Widget internal event object instead of node
+- Enh: Added `Formatter::getDateTimePattern()` and `Formatter::isShowMeridiem()`
+- Fix: Set formatter locale in I18N when changing locale
+- Enh: Added `$hideInStream` flag for upload component/action for changing `show_in_stream` file flag
+- Enh: Added `$showInStream` flag for `FilePreview` widget to only include files with certain `show_in_stream` flag
+- Enh: Added `FileManager::findStreamFiles()` for querying files with either given `show_in_stream = 1` or `show_in_stream = 0` flag.
+- Enh: Added `humhub\widgets\Tabs` and `humhub\widgets\SettingsTabs` with view type tab support
+- Enh: Added new `MarkdownField` input widget which as replacement of deprecated `MarkdownEditor`
+- Fix: Fixed markdown file upload pjax issue
+- Fix: Removed `display: table-cell` from markdown image css to enable inline images
+- Enh: Added `humhub/widgts/Button::userPickerSelfSelect()` for creating self select button for userpickers.
+- Enh: Added `humhub/widgts/Link::withAction()` for creating action based links
+- Enh: Added `SelectTimeZoneDropdown` widget
+- Enh: Added `Modal::closable` in order to respect `backdrop` and `keyboard` data setting of `Modal` and `ModalDialog` widget
+- Enh: Avoid cutting oembed entry in stream if it's the first part of a richtext 
+- Enh: Added `humhub/widgets/TimePicker` widget
+- Enh: Added `DbDateValidator::timeZone` for setting input time zone
+- Enh: Additional WallEntry settings: `$jsWidget`, `$addonOptions`, `$controlsOptions`, `$renderControls`, `$renderAddons`
+- Enh: Added possibility to overwrite WallEntry settings in `humhub/stream/actions/Stream::renderEntry()`
+- Enh: Added `ShowFiles::preview` and `ShowFiles::active` flag
+- Enh: Allow `$adminOnly` for User base ContentContainerController Controller
+- Enh: Added `ContentContainerActiveRecord::getDefaultContentVisibility()` and `User::getDefaultContentVisibility()`
+- Enh: Added automatic Notification Class loading by convention. No need to overwrite `Module::getNotifications()`
+- Enh: Added `ContentActiveRecord::getIcon()` for adding an badge icon to WallEntry content type badge
+- Enh: Added `ContentActiveRecord::getLabels()` for managing WallEntry labels (badges)
+- Enh: Added `Label` widget for creating sortable labels
+- Fix: Reset modal dialog size + add `size` option
+- Enh: Added `size` option `ui.modal.Modal.set()`
+- Enh: Use `ContentActiveRecord::getUrl()` for content perma links (if given)
+- Enh: Added `ContentTag` concept for creating content categories/filter on module level
+- Fix: Mentioning keeps running even if previous input result was empty
+- Enh: Darkened comment links for better readability
+- Fix #2582 Userfollow activity click action not working
+- Enh: Make space membership activities clickable
+- Chg: Removed `yii2-codeception` dependency
+- Chg: Added `phpoffice/phpexcel` dependency
+- Enh: Added `JsWidget::fadeIn` for smooth widget initialization
+- Enh: Enhanced `AccessControl` filter with `ControllerAccess` layer for better testability and flexibility
+- Enh: Added `Pending Registrations` admin view with `csv`, `xlsx` support.
+
+1.2.1 (June 17, 2017)
+--------------------------------
 - Fix: Invite error in french language
 - Fix #2518: ActivityStreamWidget::EVENT_INIT is missed (githubjeka)
 - Enh: Fixed accessibility issues in Dashboard/Login/Profile
 - Fix: module beforeInit and afterInit event
 - Enh: Added Registraion::EVENT_AFTER_REGISTRATION UserEvent
+- Enh: Added grunt `migrate-up` and `migrate-create` task
+- Enh: Added profile field type `CheckboxList`
+- Fix: Fixed `ui.addition` `MutationObserver`, only apply additions to inserted nodes.
+- Enh: Changed invite mail subject text
+- Fix #2571: last_login not set after registration direct login 
+- Enh: Always trigger dom widget events for widget `fire` until `triggerDom` is set to false
+- Enh: Added `richtextPaste` event
+- Enh: On search index rebuilding - use batch queries 
+- Fix: `ActiveQueryContent:readable()` for guNest users missing join
+- Enh: Added `ContentActiveRecord:managePermission` for changing the default write permission of ContentActiveRecord classes
+- Enh: Moved all default `WallEntryControls` to `WallEntry:getContextMenu()` widget.
+- Fix: Connect google OAuth under `Profile Settings  -> Connected Accounts` throws invalid redirect uri.
+- Fix: Invite Users does not respect ManageUsers/ManageGroups permission
+- Fix: Mail summaries sent in incorrect language
+- Fix: Send button text on request space membership dialog
+- Fix #2555: Friendship notification category visible even if friendship system deactivated
+- Enh: Don't auto focus space chooser search on small devices
+- Fix #2612: Single list item hides markers
+- Fix #2558: No notification for user profile posts send
+- Fixed #2560: Markdown profile field editable flag not working
+- Fix: Hide also header (space, profile) counts when following system is disabled
+- Fix: Perma link to space contents broken when space homepage was changed
+- Fix: Properly sort language and country select by users locale
+- Enh: Allow search in country profile field dropdown
+- Fix: js action api empty data attribute
+- Enh: Added button helper widgets `<?= Button::primary('myButton')->action('myJsAction')?>`
+- Enh: Enhanced ContentActiveRecord instantiation `$model = new MyContent($space, Content::VISIBILITY_PRIVATE)`
+- Fix #2625 Pjax problem with local links to files within stream
+- Enh: Use of `target="_blank"` for stream links
+- Fix #2594 Bug: Url with unicode in stream markdown
+- Fix: Notification grouping not working
+- Fix: Show more suppression entries with sort order update + equal update_at not working.
+- Fix #2627: Incorrect language used in group admin user approval e-mail
+- Fix #2631: Module configuration link shown for disabled modules
 
 1.2.1 (under development)
 --------------------------------

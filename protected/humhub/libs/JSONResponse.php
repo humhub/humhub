@@ -13,6 +13,7 @@ use Yii;
 /**
  * Description of JSONResponse
  *
+ * @deprecated since v1.2
  * @author buddha
  */
 class JSONResponse
@@ -59,8 +60,8 @@ class JSONResponse
 
     public function data($key, $value)
     {
-        if(!is_array($this->$result['data'])) {
-            $this->$result['data'] = [];
+        if(!is_array($this->result['data'])) {
+            $this->result['data'] = [];
         }
         $this->result['data'][$key] = $value;
 

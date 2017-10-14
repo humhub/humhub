@@ -1,5 +1,11 @@
+<?php
+use humhub\libs\Html;
+use humhub\widgets\LoaderWidget;
+
+?>
 <!-- Dialog -->
-<div class="<?= $dialogClass ?>">
+
+<?= Html::beginTag('div', $options) ?>
     <!-- Content -->
     <div class="modal-content">
         <!-- Header -->
@@ -23,7 +29,7 @@
                     <?= $body ?>
                 <?php endif; ?>
                 <?php if ($initialLoader): ?>
-                    <?php echo \humhub\widgets\LoaderWidget::widget(); ?>
+                    <?= LoaderWidget::widget(); ?>
                 <?php endif; ?>
             </div>
 
@@ -35,4 +41,4 @@
             <?php endif; ?>
         <?php endif; ?>
     </div>
-</div>
+<?=  Html::endTag('div') ?>

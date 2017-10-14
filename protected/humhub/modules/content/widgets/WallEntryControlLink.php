@@ -28,6 +28,8 @@ class WallEntryControlLink extends \humhub\components\Widget
      */
     public $icon;
 
+    protected $_icon;
+
     /**
      *
      * @var type 
@@ -39,11 +41,16 @@ class WallEntryControlLink extends \humhub\components\Widget
      */
     public function init()
     {
-        $this->label = ArrayHelper::remove($this->options, 'label', 'Label');
-        $icon = ArrayHelper::remove($this->options, 'icon');
-        
-        if($icon) {
-            $this->icon = '<i class="fa '.$icon.'"></i> ';
+        if(empty($this->label)) {
+            $this->label = ArrayHelper::remove($this->options, 'label', 'Label');
+        }
+
+        if(empty($this->icon)) {
+            $this->icon = ArrayHelper::remove($this->options, 'icon');
+        }
+
+        if($this->icon) {
+            $this->_icon = '<i class="fa '.$this->icon.'"></i> ';
         }
         
         ArrayHelper::remove($this->options, 'sortOrder');
@@ -55,7 +62,7 @@ class WallEntryControlLink extends \humhub\components\Widget
      */
     public function run()
     {
-        return '<li>'.\yii\helpers\Html::a($this->icon.$this->label, '#', $this->options).'</li>';
+        return '<li>'.\yii\helpers\Html::a($this->_icon.$this->label, '#', $this->options).'</li>';
     }
 
 }

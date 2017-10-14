@@ -38,7 +38,7 @@ class ModuleAutoLoader implements BootstrapInterface
                         try {
                             $modules[$moduleDir] = require($moduleDir . DIRECTORY_SEPARATOR . 'config.php');
                         } catch (\Exception $ex) {
-
+                            Yii::error($ex);
                         }
                     }
                 }

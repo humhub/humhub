@@ -3,13 +3,15 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\modules\file\libs\FileHelper;
+use humhub\widgets\JsWidget;
+use yii\helpers\Html;
 
 /**
  * 
  * @package humhub.modules_core.file.widgets
  * @since 1.2
  */
-class FilePreview extends \humhub\widgets\JsWidget
+class FilePreview extends JsWidget
 {
 
     public $jsWidget = "file.Preview";
@@ -23,6 +25,12 @@ class FilePreview extends \humhub\widgets\JsWidget
     public $popoverPosition = 'right';
 
     /**
+     * @var bool defines if only files with show_in_stream falg should be viewed in case $model is used to load the files
+     * @since 1.2.2
+     */
+    public $showInStream;
+
+    /**
      * Draws the Upload Button output.
      */
     public function run()
@@ -34,7 +42,7 @@ class FilePreview extends \humhub\widgets\JsWidget
         // Initialize preview if data is given.
         $this->init = $this->getFileData();
 
-        return \yii\helpers\Html::tag('div', '', $this->getOptions());
+        return Html::tag('div', '', $this->getOptions());
     }
 
     public function getData()
@@ -67,7 +75,15 @@ class FilePreview extends \humhub\widgets\JsWidget
         if (!$this->items && !$this->model) {
             return [];
         }
-        return ($this->items) ? $this->items : $this->model->fileManager->findAll();
-    }
 
+        if($this->items) {
+            return $this->items;
+        }
+
+        if($this->showInStream === null) {
+            return $this->model->fileManager->findAll();
+        } else {
+            return $this->model->fileManager->findStreamFiles($this->showInStream);
+        }
+    }
 }

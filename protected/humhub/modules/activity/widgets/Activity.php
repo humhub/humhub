@@ -8,6 +8,7 @@
 
 namespace humhub\modules\activity\widgets;
 
+use humhub\modules\content\widgets\WallEntry;
 use Yii;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
@@ -19,7 +20,7 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @package humhub.modules_core.activity
  * @since 0.5
  */
-class Activity extends \yii\base\Widget
+class Activity extends WallEntry
 {
 
     protected $themePath = 'modules/activity';

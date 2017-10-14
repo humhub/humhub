@@ -5,5 +5,6 @@ return array (
   'No member or following spaces found.' => 'Ingen medlemmer ble funnet i følgende grupper:',
   'No result found for the given filter.' => 'Ingen resultater.',
   'Search' => 'Søk',
+  'Search for spaces' => 'Søk etter grupper',
   'To search for other spaces, type at least {count} characters.' => 'For å søke blant grupper, skriv inn minst {count} tegn.',
 );

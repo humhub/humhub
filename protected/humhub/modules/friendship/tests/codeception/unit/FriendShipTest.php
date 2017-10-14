@@ -18,6 +18,8 @@ class FriendshipTest extends HumHubDbTestCase
      */
     public function testAcceptFriendShip()
     {
+        Yii::$app->getModule('friendship')->settings->set('enable', 1);
+
         $this->becomeUser('User2');
         $friendUser = User::findOne(['id' => 2]);
         
@@ -40,6 +42,8 @@ class FriendshipTest extends HumHubDbTestCase
     
     public function testDeclineFriendShip()
     {
+        Yii::$app->getModule('friendship')->settings->set('enable', 1);
+        
         $this->becomeUser('User2');
         $friendUser = User::findOne(['id' => 2]);
         

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\notification\components;
 
+use humhub\modules\notification\models\Notification;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Membership;
@@ -44,11 +45,11 @@ class NotificationManager
     /**
      * @var BaseTarget[] Cached target instances.
      */
-    protected $_targets;
+    protected $_targets = null;
 
     /**
      * Cached array of NotificationCategories
-     * @var type 
+     * @var NotificationCategory[]
      */
     protected $_categories;
 
@@ -61,12 +62,12 @@ class NotificationManager
      */
     public function sendBulk(BaseNotification $notification, $users)
     {
-        $recepients = $this->filterRecepients($notification, $users);
+        $recipients = $this->filterRecipients($notification, $users);
 
-        foreach ($recepients as $recepient) {
-            $notification->saveRecord($recepient);
-            foreach ($this->getTargets() as $target) {
-                $target->send($notification, $recepient);
+        foreach ($recipients as $recipient) {
+            $notification->saveRecord($recipient);
+            foreach ($this->getTargets($recipient) as $target) {
+                $target->send($notification, $recipient);
             }
         }
     }
@@ -77,12 +78,17 @@ class NotificationManager
      * @param User[] $users
      * @return User[] array of unique user instances
      */
-    protected function filterRecepients(BaseNotification $notification, $users)
+    protected function filterRecipients(BaseNotification $notification, $users)
     {
         $userIds = [];
         $filteredUsers = [];
         foreach ($users as $user) {
-            if (!in_array($user->id, $userIds) && !$notification->isOriginator($user)) {
+
+            if ($notification->suppressSendToOriginator && $notification->isOriginator($user)) {
+                continue;
+            }
+
+            if (!in_array($user->id, $userIds)) {
                 $filteredUsers[] = $user;
                 $userIds[] = $user->id;
             }
@@ -98,43 +104,41 @@ class NotificationManager
      */
     public function send(BaseNotification $notification, User $user)
     {
-        if ($notification->isOriginator($user)) {
-            return;
-        }
-
-        $notification->saveRecord($user);
-        foreach ($this->getTargets($user) as $target) {
-            $target->send($notification, $user);
-        }
+        $this->sendBulk($notification, [$user]);
     }
 
     /**
      * Returns all active targets for the given user.
+     * If no user is given, all configured targets will be returned.
      * 
-     * @param type $user
-     * @return type
+     * @param User $user|null the user 
+     * @return BaseTarget[] the target
      */
     public function getTargets(User $user = null)
     {
-        if ($this->_targets) {
-            return $this->_targets;
-        }
-
-        foreach ($this->targets as $target) {
-            $instance = Yii::createObject($target);
-            if ($instance->isActive($user)) {
-                $this->_targets[] = $instance;
+        // Initialize targets
+        if ($this->_targets === null) {
+            $this->_targets = [];
+            foreach ($this->targets as $target) {
+                $this->_targets[] = Yii::createObject($target);
             }
         }
 
-        return $this->_targets;
+        $userTargets = [];
+        foreach ($this->_targets as $target) {
+            if ($target->isActive($user)) {
+                $userTargets[] = $target;
+            }
+        }
+
+        return $userTargets;
     }
 
     /**
      * Factory function for receiving a target instance for the given class.
      * 
-     * @param type $class
-     * @return type
+     * @param string $class
+     * @return BaseTarget
      */
     public function getTarget($class)
     {
@@ -151,7 +155,7 @@ class NotificationManager
      * 
      * @param User $user
      * @param Space $space
-     * @return type
+     * @return boolean
      */
     public function isFollowingSpace(User $user, Space $space)
     {
@@ -206,6 +210,7 @@ class NotificationManager
             // Note the notification follow logic for users is currently not implemented.
             // TODO: perhaps return only friends if public is false?
             $result = (!$public) ? [] : Follow::getFollowersQuery($container, true)->all();
+            $result[] = $container;
         }
         return $result;
     }
@@ -262,7 +267,7 @@ class NotificationManager
      * Returns all spaces this user is not following.
      * 
      * @param User $user
-     * @return type
+     * @return Space[]
      */
     public function getNonNotificationSpaces(User $user = null, $limit = 25)
     {
@@ -322,7 +327,7 @@ class NotificationManager
     /**
      * Defines the enable_html5_desktop_notifications setting for the given user or global if no user is given.
      * 
-     * @param type $value
+     * @param integer $value
      * @param User $user
      */
     public function setDesktopNoficationSettings($value = 0, User $user = null)
@@ -336,7 +341,7 @@ class NotificationManager
      * Determines the enable_html5_desktop_notifications setting either for the given user or global if no user is given.
      * By default the setting is enabled.
      * @param User $user
-     * @return type
+     * @return integer
      */
     public function getDesktopNoficationSettings(User $user = null)
     {
@@ -352,11 +357,11 @@ class NotificationManager
      * 
      * @param User $user user instance for which this settings will aplly
      * @param Space $space which notifications will be followed / unfollowed
-     * @param type $follow the setting value (true by default)
-     * @return type
+     * @param boolean $follow the setting value (true by default)
      */
     public function setSpaceSetting(User $user = null, Space $space, $follow = true)
     {
+        /* @var $membership Membership */
         $membership = $space->getMembership($user->id);
         if ($membership) {
             $membership->send_notifications = $follow;
@@ -377,7 +382,7 @@ class NotificationManager
     /**
      * Returns all available Notifications
      * 
-     * @return type
+     * @return BaseNotification[]
      */
     public function getNotifications()
     {

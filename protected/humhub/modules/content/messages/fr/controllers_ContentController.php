@@ -11,5 +11,5 @@ To however pin this item, unpin another before!' => 'Nombre maximum d\'articles 
 
 Vous pouvez épingler seulement deux articles à la fois.
 Pour épingler cet élément, désépinglez un autre avant !',
+  'This action is disabled!' => 'Cette action est désactivée !',
 );
-

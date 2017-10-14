@@ -17,8 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Open the notification dropdown menu' => '',
     'Mark all as seen' => '标记所有为已读',
+    'Notifications' => '通知消息',
     'Show all notifications' => '展示所有的通知',
     'There are no notifications yet.' => '还没有通知。',
-    'Notifications' => '通知消息',
 ];

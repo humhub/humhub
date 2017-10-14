@@ -19,12 +19,6 @@ use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
  */
 class MemberAdded extends BaseActivity implements ConfigurableActivityInterface
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $clickable = false;
-
     /**
      * @inheritdoc
      */

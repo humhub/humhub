@@ -20,6 +20,7 @@ humhub.module('ui.richtext', function(module, require, $) {
     Richtext.prototype.init = function() {
         this.$input = $('#' + this.$.attr('id') + '_input').hide();
         this.features = [];
+        this.emptyMentionings = [];
         this.checkPlaceholder();
         this.initEvents();
         if(this.options.disabled) {
@@ -50,6 +51,7 @@ humhub.module('ui.richtext', function(module, require, $) {
             }
 
             that.insertTextAtCursor(text);
+            that.fire('richtextPaste');
         }).on('keydown', function(e) {
             that.checkForEmptySpans();
         }).on('keypress', function(e) {
@@ -414,6 +416,9 @@ humhub.module('ui.richtext', function(module, require, $) {
 
                     // check the char length and data-query attribute for changing plugin settings for showing results
                     if(query.length >= 3) {
+                        if(that.isEmptyMentioning(query)) {
+                           return callback([]);
+                        }
                         // Render loading user feedback.
                         this.setting.displayTpl = "<li class='hint' data-value=''>${name}</li>";
                         this.view.render([{"type": "test", "cssClass": "hint", "name": module.text('info.loading'), "image": "", "link": ""}]);
@@ -421,7 +426,11 @@ humhub.module('ui.richtext', function(module, require, $) {
                         // set plugin settings for showing results
                         this.setting.highlightFirst = true;
                         this.setting.displayTpl = '<li class="${cssClass}" data-value="@${name}">${image} ${name}</li>';
-                        $.getJSON(that.options.mentioningUrl, {keyword: query}, function(data) {
+                        $.getJSON(that.options.mentioningUrl, {keyword: query}, function(data, test) {
+
+                            if(!data.length) {
+                                that.emptyMentionings.push(query);
+                            }
                             callback(data);
                         });
 
@@ -432,6 +441,16 @@ humhub.module('ui.richtext', function(module, require, $) {
             }
         };
     };
+
+    Richtext.prototype.isEmptyMentioning = function(query) {
+        var result = false;
+        $.each(this.emptyMentionings, function(index, val) {
+            if(string.startsWith(query, val)) {
+                result = true;
+            }
+        });
+        return result;
+    }
 
     Richtext.features.mentioning.init = function(feature, options) {
         var widget = this;

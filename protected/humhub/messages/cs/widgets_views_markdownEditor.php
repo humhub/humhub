@@ -13,6 +13,7 @@ return array (
   'Insert Image Hyperlink' => 'Vložit odkaz na obrázek',
   'Italic' => 'Kurzíva',
   'List' => 'Seznam',
+  'Ordered List' => 'Objednaný seznam',
   'Please wait while uploading...' => 'Prosím počkejte chvíli, nahrávám soubor...',
   'Preview' => 'Náhled',
   'Quote' => 'Citace',
@@ -20,6 +21,7 @@ return array (
   'Title' => 'Titulek',
   'Title of your link' => 'Napište titulek odkazu',
   'URL/Link' => 'URL adresa/odkaz',
+  'Unordered List' => 'Neřízený seznam',
   'code text here' => 'zde je místo pro kód',
   'emphasized text' => 'text kurzívou',
   'enter image description here' => 'zde je místo pro popis obrázku',
@@ -29,6 +31,4 @@ return array (
   'list text here' => 'odrážka',
   'quote here' => 'zde je místo pro citaci',
   'strong text' => 'tučný text',
-  'Unordered List' => '',
-  'Ordered List' => '',
 );

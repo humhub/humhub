@@ -18,5 +18,5 @@
  */
 return [
     'Save' => 'Сохранить',
-    'You can add an statistics HTML code snippet - which will added to all rendered pags.' => 'Вы можете вставить код для сбора статистики, который будет добавлен на все страницы. '
+    'You can add an statistics HTML code snippet - which will added to all rendered pages.' => 'Вы можете вставить код для сбора статистики, который будет добавлен на все страницы. '
 ];

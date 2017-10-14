@@ -29,7 +29,7 @@ return array(
     // User 1 is admin of space 3 and user 2 & 3 are members
     array('space_id' => '3', 'user_id' => '1', 'originator_user_id' => NULL, 'status' => '3', 'request_message' => NULL, 'last_visit' => '2014-08-08 06:49:57', 'group_id' => 'admin', 'created_at' => '2014-08-08 05:36:05', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:05', 'updated_by' => '1'),
     array('space_id' => '3', 'user_id' => '2', 'originator_user_id' => NULL, 'status' => '3', 'send_notifications' => '1', 'request_message' => NULL, 'last_visit' => NULL, 'group_id' => 'member', 'created_at' => '2014-08-10 16:55:41', 'created_by' => NULL, 'updated_at' => NULL, 'updated_by' => NULL),
-    array('space_id' => '3', 'user_id' => '3', 'originator_user_id' => NULL, 'status' => '3', 'request_message' => NULL, 'last_visit' => '2014-08-08 06:49:57', 'group_id' => 'member', 'created_at' => '2014-08-08 05:36:05', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:05', 'updated_by' => '1'),
+    array('space_id' => '3', 'user_id' => '3', 'originator_user_id' => NULL, 'status' => '3', 'request_message' => NULL, 'last_visit' => '2014-08-08 06:49:57', 'group_id' => 'moderator', 'created_at' => '2014-08-08 05:36:05', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:05', 'updated_by' => '1'),
 
     // User 1/2 is admin of space 3 and user 3 is members
     array('space_id' => '4', 'user_id' => '1', 'originator_user_id' => NULL, 'status' => '3', 'request_message' => NULL, 'last_visit' => '2014-08-08 06:49:57', 'group_id' => 'admin', 'created_at' => '2014-08-08 05:36:05', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:05', 'updated_by' => '1'),

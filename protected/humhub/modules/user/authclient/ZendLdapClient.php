@@ -14,6 +14,7 @@ use Zend\Ldap\Node;
 use Zend\Ldap\Exception\LdapException;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\ProfileField;
+use humhub\modules\user\libs\LdapHelper;
 
 /**
  * LDAP Authentication
@@ -30,7 +31,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     private $_ldap = null;
 
     /**
-     * ID attribute to uniquely identify user
+     * ID attribute to uniquely identify user.
      * If set to null, automatically a value email or objectguid will be used if available.
      *
      * @var string attribute name to identify node
@@ -38,14 +39,88 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     public $idAttribute = null;
 
     /**
-     * @var string attribute name to user record
+     * @var string the email attribute
      */
-    public $userTableIdAttribute = 'guid';
+    public $emailAttribute = null;
+
+    /**
+     * @var string the ldap username attribute
+     */
+    public $usernameAttribute = null;
+
+    /**
+     * @var string the ldap base dn
+     */
+    public $baseDn = null;
+
+    /**
+     * @var string the ldap query to find humhub users
+     */
+    public $userFilter = null;
+
+    /**
+     * Automatically refresh user profiles on cron run
+     * 
+     * @var boolean|null
+     */
+    public $autoRefreshUsers = null;
 
     /**
      * @inheritdoc
      */
     public $byPassApproval = true;
+
+    /**
+     * @var array of attributes which are synced with the user table 
+     */
+    public $syncUserTableAttributes = ['username', 'email'];
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $settings = Yii::$app->getModule('user')->settings;
+
+        if ($this->idAttribute === null) {
+            $idAttribute = $settings->get('auth.ldap.idAttribute');
+            if (!empty($idAttribute)) {
+                $this->idAttribute = strtolower($idAttribute);
+            }
+        }
+
+        if ($this->usernameAttribute === null) {
+            $usernameAttribute = $settings->get('auth.ldap.usernameAttribute');
+            if (!empty($usernameAttribute)) {
+                $this->usernameAttribute = strtolower($usernameAttribute);
+            } else {
+                $this->usernameAttribute = 'samaccountname';
+            }
+        }
+
+        if ($this->emailAttribute === null) {
+            $emailAttribute = $settings->get('auth.ldap.emailAttribute');
+            if (!empty($emailAttribute)) {
+                $this->emailAttribute = strtolower($emailAttribute);
+            } else {
+                $this->emailAttribute = 'mail';
+            }
+        }
+
+        if ($this->userFilter === null) {
+            $this->userFilter = Yii::$app->getModule('user')->settings->get('auth.ldap.userFilter');
+        }
+
+        if ($this->baseDn === null) {
+            $this->baseDn = Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn');
+        }
+
+        if ($this->autoRefreshUsers === null) {
+            $this->autoRefreshUsers = (boolean) Yii::$app->getModule('user')->settings->get('auth.ldap.refreshUsers');
+        }
+    }
 
     /**
      * @inheritdoc
@@ -80,11 +155,59 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     }
 
     /**
+     * Find user based on ldap attributes
+     * 
      * @inheritdoc
+     * @see interfaces\PrimaryClient
+     * @return User the user
      */
-    public function getUserTableIdAttribute()
+    public function getUser()
     {
-        return $this->userTableIdAttribute;
+        $attributes = $this->getUserAttributes();
+
+        // Try to load user by ldap id attribute
+        if ($this->idAttribute !== null && isset($attributes['authclient_id'])) {
+            $user = User::findOne(['authclient_id' => $attributes['authclient_id'], 'auth_mode' => $this->getId()]);
+            if ($user !== null) {
+                return $user;
+            }
+        }
+
+        return $this->getUserAuto();
+    }
+
+    /**
+     * Try to find the user if authclient_id mapping is not set yet (legency)
+     * or idAttribute is not specified.
+     * 
+     * @return type
+     */
+    protected function getUserAuto()
+    {
+        $attributes = $this->getUserAttributes();
+
+        // Try to find user user if authclient_id is null based on ldap fields objectguid and e-mail
+        $query = User::find();
+        $query->where(['auth_mode' => $this->getId()]);
+
+        if ($this->idAttribute !== null) {
+            $query->andWhere(['IS', 'authclient_id', new \yii\db\Expression('NULL')]);
+        }
+
+        $conditions = ['OR'];
+        if (isset($attributes['email']) && !empty($attributes['email'])) {
+            $conditions[] = ['email' => $attributes['email']];
+        }
+        if (isset($attributes['objectguid']) && !empty($attributes['objectguid'])) {
+            $conditions[] = ['guid' => $attributes['objectguid']];
+        }
+        if (isset($attributes['uid']) && !empty($attributes['uid'])) {
+            $conditions[] = ['username' => $attributes['uid']];
+        }
+        if ($conditions)
+            $query->andWhere($conditions);
+
+        return $query->one();
     }
 
     /**
@@ -92,7 +215,6 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
      */
     public function auth()
     {
-
         $node = $this->getUserNode();
         if ($node !== null) {
             $this->setUserAttributes($node->getAttributes());
@@ -108,20 +230,8 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     protected function defaultNormalizeUserAttributeMap()
     {
         $map = [];
-
-        // Username field
-        $usernameAttribute = Yii::$app->getModule('user')->settings->get('auth.ldap.usernameAttribute');
-        if ($usernameAttribute == '') {
-            $usernameAttribute = 'sAMAccountName';
-        }
-        $map['username'] = strtolower($usernameAttribute);
-
-        // E-Mail field
-        $emailAttribute = Yii::$app->getModule('user')->settings->get('auth.ldap.emailAttribute');
-        if ($emailAttribute == '') {
-            $emailAttribute = 'mail';
-        }
-        $map['email'] = strtolower($emailAttribute);
+        $map['username'] = $this->usernameAttribute;
+        $map['email'] = $this->emailAttribute;
 
         // Profile Field Mapping
         foreach (ProfileField::find()->andWhere(['!=', 'ldap_attribute', ''])->all() as $profileField) {
@@ -164,6 +274,13 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
                 }
             }
         }
+
+        if ($this->idAttribute !== null && isset($normalized[$this->idAttribute])) {
+            $normalized['authclient_id'] = $normalized[$this->idAttribute];
+        }
+
+        $normalized['id'] = 'unused';
+
         return parent::normalizeUserAttributes($normalized);
     }
 
@@ -174,26 +291,10 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     {
         $attributes = parent::getUserAttributes();
 
-        // Try to automatically set id and usertable id attribute by available attributes
-        if ($this->getIdAttribute() === null || $this->getUserTableIdAttribute() === null) {
-            if (isset($attributes['objectguid'])) {
-                $this->idAttribute = 'objectguid';
-                $this->userTableIdAttribute = 'guid';
-            } elseif (isset($attributes['mail'])) {
-                $this->idAttribute = 'mail';
-                $this->userTableIdAttribute = 'email';
-            } else {
-                throw new \yii\base\Exception("Could not automatically determine unique user id from ldap node!");
-            }
-        }
-
         // Make sure id attributes sits on id attribute key
         if (isset($attributes[$this->getIdAttribute()])) {
             $attributes['id'] = $attributes[$this->getIdAttribute()];
         }
-
-        // Map usertable id attribute against ldap id attribute
-        $attributes[$this->getUserTableIdAttribute()] = $attributes[$this->getIdAttribute()];
 
         return $attributes;
     }
@@ -247,20 +348,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     public function getLdap()
     {
         if ($this->_ldap === null) {
-            $options = array(
-                'host' => Yii::$app->getModule('user')->settings->get('auth.ldap.hostname'),
-                'port' => Yii::$app->getModule('user')->settings->get('auth.ldap.port'),
-                'username' => Yii::$app->getModule('user')->settings->get('auth.ldap.username'),
-                'password' => Yii::$app->getModule('user')->settings->get('auth.ldap.password'),
-                'useStartTls' => (Yii::$app->getModule('user')->settings->get('auth.ldap.encryption') == 'tls'),
-                'useSsl' => (Yii::$app->getModule('user')->settings->get('auth.ldap.encryption') == 'ssl'),
-                'bindRequiresDn' => true,
-                'baseDn' => Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn'),
-                'accountFilterFormat' => Yii::$app->getModule('user')->settings->get('auth.ldap.loginFilter'),
-            );
-
-            $this->_ldap = new \Zend\Ldap\Ldap($options);
-            $this->_ldap->bind();
+            $this->_ldap = LdapHelper::getLdapConnection();
         }
 
         return $this->_ldap;
@@ -281,7 +369,8 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
      */
     public function getSyncAttributes()
     {
-        $attributes = ['username', 'email'];
+        $attributes = $this->syncUserTableAttributes;
+        $attributes[] = 'authclient_id';
 
         foreach (ProfileField::find()->andWhere(['!=', 'ldap_attribute', ''])->all() as $profileField) {
             $attributes[] = $profileField->internal_name;
@@ -298,16 +387,14 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
      */
     public function syncUsers()
     {
-        if (!Yii::$app->getModule('user')->settings->get('auth.ldap.enabled') || !Yii::$app->getModule('user')->settings->get('auth.ldap.refreshUsers')) {
+        if (!LdapHelper::isLdapEnabled() || !$this->autoRefreshUsers) {
             return;
         }
 
-        $userFilter = Yii::$app->getModule('user')->settings->get('auth.ldap.userFilter');
-        $baseDn = Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn');
         try {
             $ldap = $this->getLdap();
 
-            $userCollection = $ldap->search($userFilter, $baseDn, Ldap::SEARCH_SCOPE_SUB);
+            $userCollection = $ldap->search($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB);
 
             $authClient = null;
             $ids = [];
@@ -326,30 +413,27 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
                     AuthClientHelpers::updateUser($authClient, $user);
                 }
 
-                $ids[] = $attributes['id'];
-            }
-            
-            /**
-             * Since userTableAttribute can be automatically set on user attributes
-             * try to take it from initialized authclient instance.
-             */
-            $userTableIdAttribute = $this->getUserTableIdAttribute();
-            if ($authClient !== null) {
-                $userTableIdAttribute = $authClient->getUserTableIdAttribute();
+                if (isset($attributes['authclient_id'])) {
+                    $ids[] = $attributes['authclient_id'];
+                }
             }
 
-            foreach (AuthClientHelpers::getUsersByAuthClient($this)->each() as $user) {
-                $foundInLdap = in_array($user->getAttribute($userTableIdAttribute), $ids);
-                // Enable disabled users that have been found in ldap
-                if ($foundInLdap && $user->status === User::STATUS_DISABLED) {
-                    $user->status = User::STATUS_ENABLED;
-                    $user->save();
-                    Yii::info('Enabled user' . $user->username . ' (' . $user->id . ') - found in LDAP!');
-                // Disable users that were not found in ldap
-                } elseif (!$foundInLdap && $user->status !== User::STATUS_DISABLED) {
-                    $user->status = User::STATUS_DISABLED;
-                    $user->save();
-                    Yii::warning('Disabled user' . $user->username . ' (' . $user->id . ') - not found in LDAP!');
+            // Disable or Reenable Users based on collected $ids Arrays
+            // This is only possible if a unique id attribute is specified.
+            if ($this->idAttribute !== null) {
+                foreach (AuthClientHelpers::getUsersByAuthClient($this)->each() as $user) {
+                    $foundInLdap = in_array($user->authclient_id, $ids);
+                    if ($foundInLdap && $user->status === User::STATUS_DISABLED) {
+                        // Enable disabled users that have been found in ldap
+                        $user->status = User::STATUS_ENABLED;
+                        $user->save();
+                        Yii::info('Enabled user' . $user->username . ' (' . $user->id . ') - found in LDAP!');
+                    } elseif (!$foundInLdap && $user->status !== User::STATUS_DISABLED) {
+                        // Disable users that were not found in ldap
+                        $user->status = User::STATUS_DISABLED;
+                        $user->save();
+                        Yii::warning('Disabled user' . $user->username . ' (' . $user->id . ') - not found in LDAP!');
+                    }
                 }
             }
         } catch (\Zend\Ldap\Exception\LdapException $ex) {
@@ -361,18 +445,13 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
 
     /**
      * Checks if LDAP is supported
+     * 
+     * @deprecated since version 1.2.3
+     * @return boolean is LDAP supported (drivers, modules)
      */
     public static function isLdapAvailable()
     {
-        if (!class_exists('Zend\Ldap\Ldap')) {
-            return false;
-        }
-
-        if (!function_exists('ldap_bind')) {
-            return false;
-        }
-
-        return true;
+        return LdapHelper::isLdapAvailable();
     }
 
 }

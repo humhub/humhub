@@ -27,7 +27,7 @@ class MailTarget extends BaseTarget
 
     /**
      * Enable this target by default.
-     * @var type
+     * @var boolean
      */
     public $defaultSetting = true;
 
@@ -71,10 +71,15 @@ class MailTarget extends BaseTarget
 
         $from = $notification->originator ? Html::encode($notification->originator->displayName) . ' (' . Html::encode(Yii::$app->name) . ')' : Yii::$app->settings->get('mailer.systemEmailName');
 
-        Yii::$app->mailer->compose($this->view, $viewParams)
+        $mail = Yii::$app->mailer->compose($this->view, $viewParams)
                 ->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => $from])
                 ->setTo($recipient->email)
-                ->setSubject($notification->getMailSubject())->send();
+                ->setSubject($notification->getMailSubject());
+
+        if ($notification->beforeMailSend($mail)) {
+            $mail->send();
+        }
+
 
         Yii::$app->i18n->autosetLocale();
     }

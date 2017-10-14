@@ -25,20 +25,21 @@ class LayoutAddons extends BaseStack
     public function init()
     {
         if(!Yii::$app->request->isPjax) {
-            $this->addWidget(GlobalModal::className());
-            $this->addWidget(GlobalConfirmModal::className());
+            $this->addWidget(GlobalModal::class);
+            $this->addWidget(GlobalConfirmModal::class);
 
             if(Yii::$app->params['installed']) {
-                $this->addWidget(\humhub\modules\tour\widgets\Tour::className());
-                $this->addWidget(\humhub\modules\admin\widgets\TrackingWidget::className());
+                $this->addWidget(\humhub\modules\tour\widgets\Tour::class);
+                $this->addWidget(\humhub\modules\admin\widgets\TrackingWidget::class);
             }
 
-            $this->addWidget(LoaderWidget::className(), ['show' => false, 'id' => "humhub-ui-loader-default"]);
-            $this->addWidget(StatusBar::className());
-            $this->addWidget(BlueimpGallery::className());
+            $this->addWidget(LoaderWidget::class, ['show' => false, 'id' => "humhub-ui-loader-default"]);
+            $this->addWidget(StatusBar::class);
+            $this->addWidget(BlueimpGallery::class);
+            $this->addWidget(MarkdownFieldModals::class);
 
             if (Yii::$app->params['enablePjax']) {
-                $this->addWidget(Pjax::className());
+                $this->addWidget(Pjax::class);
             }
         }
         parent::init();

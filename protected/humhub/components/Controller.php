@@ -8,13 +8,18 @@
 
 namespace humhub\components;
 
+use humhub\components\access\ControllerAccess;
+use humhub\components\behaviors\AccessControl;
 use Yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\web\ForbiddenHttpException;
 
 /**
  * Base Controller
  *
+ *
+ * @property View $view
  * @inheritdoc
  * @author luke
  */
@@ -48,12 +53,51 @@ class Controller extends \yii\web\Controller
     public $prependActionTitles = true;
 
     /**
+     * @var string defines the ControllerAccess class for this controller responsible for managing access rules
+     * @see self::getAccess()
+     */
+    protected $access = ControllerAccess::class;
+
+    /**
+     * Returns access rules for the standard access control behavior.
+     *
+     * @see AccessControl
+     * @return array the access permissions
+     */
+    protected function getAccessRules()
+    {
+        return [];
+    }
+
+    /**
+     * @return null|ControllerAccess returns an ControllerAccess instance
+     */
+    public function getAccess()
+    {
+        if(!$this->access) {
+            return null;
+        }
+
+        return Yii::createObject($this->access);
+    }
+
+    /**
      * @inheritdoc
      */
     public function init()
     {
         parent::init();
         $this->trigger(self::EVENT_INIT);
+    }
+
+    public function behaviors()
+    {
+        return [
+            'acl' => [
+                'class' => AccessControl::class,
+                'rules' => $this->getAccessRules()
+            ]
+        ];
     }
 
     /**
@@ -115,9 +159,9 @@ class Controller extends \yii\web\Controller
      */
     public function htmlRedirect($url = "")
     {
-        return $this->renderPartial('@humhub/views/htmlRedirect.php', array(
+        return $this->renderPartial('@humhub/views/htmlRedirect.php', [
             'url' => Url::to($url)
-        ));
+        ]);
     }
 
     /**
@@ -126,7 +170,7 @@ class Controller extends \yii\web\Controller
      */
     protected function forbidden()
     {
-        throw new \yii\web\ForbiddenHttpException(Yii::t('error', 'You are not allowed to perform this action.'));
+        throw new ForbiddenHttpException(Yii::t('error', 'You are not allowed to perform this action.'));
     }
 
     /**
@@ -230,12 +274,11 @@ class Controller extends \yii\web\Controller
      * This is required for some modules in pjax mode.
      *
      * @since 1.2
-     * @param type $url
      */
     public function setJsViewStatus()
     {
-        $modluleId = (Yii::$app->controller->module) ? Yii::$app->controller->module->id : '';
-        $this->view->registerJs('humhub.modules.ui.view.setState("' . $modluleId . '", "' . Yii::$app->controller->id . '", "' . Yii::$app->controller->action->id . '");', \yii\web\View::POS_BEGIN);
+        $moduleId = (Yii::$app->controller->module) ? Yii::$app->controller->module->id : '';
+        $this->view->registerJs('humhub.modules.ui.view.setState("' . $moduleId . '", "' . Yii::$app->controller->id . '", "' . Yii::$app->controller->action->id . '");', \yii\web\View::POS_BEGIN);
 
         if (Yii::$app->request->isPjax) {
             \humhub\widgets\TopMenu::setViewState();
