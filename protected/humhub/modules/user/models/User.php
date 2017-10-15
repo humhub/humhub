@@ -82,6 +82,11 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     /**
      * @inheritdoc
      */
+    public $controllerBehavior = \humhub\modules\user\behaviors\ProfileController::class;
+
+    /**
+     * @inheritdoc
+     */
     public static function tableName()
     {
         return 'user';

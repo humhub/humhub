@@ -2,6 +2,16 @@
 
 Here you will learn how you can adapt existing modules to working fine with actually versions.
 
+## Migrate from 1.2 to 1.3
+
+### ContentContainer Controller
+
+[[humhub\modules\content\components\ContentContainerController]] is now deprecated, use [[humhub\modules\contentcontainer\components\Controller]] instead.
+
+The base controller attributes `autoCheckContainerAccess` and `hideSidebar` are not longer available.
+
+
+
 ## Migrate from 1.1 to 1.2
 
 ### Stream / Content Changes

@@ -8,16 +8,15 @@
 
 namespace humhub\modules\space\models;
 
-use humhub\modules\space\widgets\Members;
 use Yii;
-
+use yii\helpers\Url;
+use humhub\modules\space\widgets\Members;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
-use yii\helpers\Url;
 
 /**
  * This is the model class for table "space".
@@ -61,6 +60,11 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     const USERGROUP_MEMBER = 'member';
     const USERGROUP_USER = 'user';
     const USERGROUP_GUEST = 'guest';
+
+    /**
+     * @inheritdoc
+     */
+    public $controllerBehavior = \humhub\modules\space\behaviors\SpaceController::class;
 
     /**
      * @inheritdoc

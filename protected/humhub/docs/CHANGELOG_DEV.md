@@ -8,3 +8,4 @@ HumHub Change Log - v1.3-dev Branch
 - Enh: Updated composer.json (acs-ferreira)
 - Chg: Switched from Composer FXP plugin to Asset Packagist repository
 - Enh: Committed composer.lock
+- Enh: Refactored ContentContainer Controller

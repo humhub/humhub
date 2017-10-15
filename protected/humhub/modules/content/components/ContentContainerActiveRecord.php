@@ -42,6 +42,15 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     protected $permissionManager = null;
 
     /**
+     * The behavior which will be attached to the base controller.
+     * 
+     * @since 1.3
+     * @see \humhub\modules\contentcontainer\components\Controller
+     * @var string class name of additional the controller behavior
+     */
+    public $controllerBehavior = null;
+
+    /**
      * Returns the Profile Image Object for this Content Base
      *
      * @return ProfileImage
@@ -117,7 +126,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     {
         return "Default Wall Output for Class " . get_class($this);
     }
-    
+
     public static function findByGuid($token)
     {
         return static::findOne(['guid' => $token]);
@@ -172,7 +181,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         return $this->hasOne(ContentContainer::className(), ['pk' => 'id'])
                         ->andOnCondition(['class' => self::className()]);
     }
-    
+
     /**
      * Checks if the current user has the given Permission on this ContentContainerActiveRecord.
      * This is a shortcut for `$this->getPermisisonManager()->can()`.
@@ -204,7 +213,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getPermissionManager(User $user = null)
     {
-        if($user && !$user->is(Yii::$app->user->getIdentity())) {
+        if ($user && !$user->is(Yii::$app->user->getIdentity())) {
             return new ContentContainerPermissionManager([
                 'contentContainer' => $this,
                 'subject' => $user
@@ -238,7 +247,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     {
         return [];
     }
-    
+
     /**
      * Returns weather or not the contentcontainer is archived. (Default false).
      * @return boolean 
