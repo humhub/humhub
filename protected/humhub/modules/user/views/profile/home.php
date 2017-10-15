@@ -1,6 +1,6 @@
-<?php
 
-?>
+<?php $this->beginContent('@user/views/profile/_sidebar.php', ['user' => $user]); ?>
+
 <?php echo \humhub\modules\post\widgets\Form::widget(['contentContainer' => $user]); ?>
 <?php
 
@@ -15,3 +15,4 @@ echo \humhub\modules\stream\widgets\StreamViewer::widget(array(
             '',
 ));
 ?>
+<?= $this->endContent(); ?>

@@ -225,7 +225,7 @@ class ContentContainerModuleManager extends \yii\base\Component
     {
         $moduleState = ContentContainerModuleState::findOne(['module_id' => $id, 'contentcontainer_id' => $this->contentContainer->contentcontainer_id]);
         if ($moduleState === null) {
-            $moduleState = new Module;
+            $moduleState = new ContentContainerModuleState;
             $moduleState->contentcontainer_id = $this->contentContainer->contentcontainer_id;
             $moduleState->module_id = $id;
         }
