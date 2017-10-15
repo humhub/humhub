@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,28 +10,27 @@ namespace humhub\modules\content\components;
 
 use Yii;
 use yii\helpers\Url;
+use humhub\components\ActiveRecord;
 use humhub\libs\BasePermission;
-use humhub\modules\content\models\Content;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
 use humhub\modules\user\models\User;
-use humhub\components\ActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\contentcontainer\components\ModuleManager;
+use humhub\modules\content\components\ContentContainerModuleManager;
 
 /**
  * ContentContainerActiveRecord for ContentContainer Models e.g. Space or User.
  *
  * Required Methods:
  *      - getProfileImage()
- *      - getUrl()
  *
  * @property integer $id
  * @property integer $visibility
  * @property integer $contentcontainer_id
  * @property ContentContainerPermissionManager $permissionManager
  * @property ContentContainerSettingsManager $settings
- * @property ModuleManager $moduleManager
+ * @property ContentContainerModuleManager $moduleManager
  *
  * @since 1.0
  * @author Luke
@@ -258,7 +257,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
             return $this->moduleManager;
         }
 
-        return $this->moduleManager = new ModuleManager(['contentContainer' => $this]);
+        return $this->moduleManager = new ContentContainerModuleManager(['contentContainer' => $this]);
     }
 
     /**

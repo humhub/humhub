@@ -6,12 +6,12 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\contentcontainer\components;
+namespace humhub\modules\content\components;
 
 use ReflectionClass;
 use Yii;
-use humhub\modules\contentcontainer\models\Module;
 use humhub\modules\content\components\ContentContainerModule;
+use humhub\modules\content\models\ContentContainerModuleState;
 
 /**
  * ModuleManager handles modules of a content container.
@@ -19,7 +19,7 @@ use humhub\modules\content\components\ContentContainerModule;
  * @since 1.3
  * @author Luke
  */
-class ModuleManager extends \yii\base\Component
+class ContentContainerModuleManager extends \yii\base\Component
 {
 
     /**
@@ -44,7 +44,7 @@ class ModuleManager extends \yii\base\Component
             Yii::$app->moduleManager->getModule($id)->disableContentContainer($this->contentContainer);
 
             $moduleState = $this->getModuleStateRecord($id);
-            $moduleState->module_state = Module::STATE_DISABLED;
+            $moduleState->module_state = ContentContainerModuleState::STATE_DISABLED;
             $moduleState->save();
 
             return true;
@@ -65,7 +65,7 @@ class ModuleManager extends \yii\base\Component
             Yii::$app->moduleManager->getModule($id)->enableContentContainer($this->contentContainer);
 
             $moduleState = $this->getModuleStateRecord($id);
-            $moduleState->module_state = Module::STATE_ENABLED;
+            $moduleState->module_state = ContentContainerModuleState::STATE_ENABLED;
             $moduleState->save();
 
             return true;
@@ -109,7 +109,7 @@ class ModuleManager extends \yii\base\Component
      */
     public function canDisable($id)
     {
-        if (!$this->isEnabled($id) || self::getDefaultState($this->contentContainer->className(), $id) === Module::STATE_FORCE_ENABLED) {
+        if (!$this->isEnabled($id) || self::getDefaultState($this->contentContainer->className(), $id) === ContentContainerModuleState::STATE_FORCE_ENABLED) {
             return false;
         }
 
@@ -126,7 +126,7 @@ class ModuleManager extends \yii\base\Component
         $enabled = [];
         $available = $this->getAvailable();
         foreach ($this->getStates() as $id => $state) {
-            if (array_key_exists($id, $available) && ($state === Module::STATE_ENABLED || $state === Module::STATE_FORCE_ENABLED)) {
+            if (array_key_exists($id, $available) && ($state === ContentContainerModuleState::STATE_ENABLED || $state === ContentContainerModuleState::STATE_FORCE_ENABLED)) {
                 $enabled[] = $id;
             }
         }
@@ -168,7 +168,7 @@ class ModuleManager extends \yii\base\Component
         $states = [];
 
         // Get states for this contentcontainer from database
-        foreach (Module::findAll(['contentcontainer_id' => $this->contentContainer->contentcontainer_id]) as $module) {
+        foreach (ContentContainerModuleState::findAll(['contentcontainer_id' => $this->contentContainer->contentcontainer_id]) as $module) {
             $states[$module->module_id] = $module->module_state;
         }
 
@@ -223,7 +223,7 @@ class ModuleManager extends \yii\base\Component
      */
     protected function getModuleStateRecord($id)
     {
-        $moduleState = Module::findOne(['module_id' => $id, 'contentcontainer_id' => $this->contentContainer->contentcontainer_id]);
+        $moduleState = ContentContainerModuleState::findOne(['module_id' => $id, 'contentcontainer_id' => $this->contentContainer->contentcontainer_id]);
         if ($moduleState === null) {
             $moduleState = new Module;
             $moduleState->contentcontainer_id = $this->contentContainer->contentcontainer_id;

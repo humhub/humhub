@@ -212,7 +212,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             \humhub\components\behaviors\GUID::class,
             \humhub\modules\content\components\behaviors\SettingsBehavior::class,
             \humhub\modules\user\behaviors\Followable::class,
-            \humhub\modules\contentcontainer\behaviors\CompatModuleManager::class
+            \humhub\modules\content\components\behaviors\CompatModuleManager::class
         );
     }
 

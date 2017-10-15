@@ -2,15 +2,13 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\space\models;
 
 use Yii;
-use yii\helpers\Url;
-use humhub\modules\space\widgets\Members;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\components\UrlValidator;
@@ -148,7 +146,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             \humhub\modules\content\components\behaviors\SettingsBehavior::class,
             \humhub\modules\space\behaviors\SpaceModelMembership::class,
             \humhub\modules\user\behaviors\Followable::class,
-            \humhub\modules\contentcontainer\behaviors\CompatModuleManager::class
+            \humhub\modules\content\components\behaviors\CompatModuleManager::class,
         );
     }
 
