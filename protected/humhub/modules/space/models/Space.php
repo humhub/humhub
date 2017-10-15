@@ -139,11 +139,11 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     public function behaviors()
     {
         return array(
-            \humhub\components\behaviors\GUID::className(),
-            \humhub\modules\content\components\behaviors\SettingsBehavior::className(),
-            \humhub\modules\space\behaviors\SpaceModelModules::className(),
-            \humhub\modules\space\behaviors\SpaceModelMembership::className(),
-            \humhub\modules\user\behaviors\Followable::className(),
+            \humhub\components\behaviors\GUID::class,
+            \humhub\modules\content\components\behaviors\SettingsBehavior::class,
+            \humhub\modules\space\behaviors\SpaceModelMembership::class,
+            \humhub\modules\user\behaviors\Followable::class,
+            \humhub\modules\contentcontainer\behaviors\CompatModuleManager::class
         );
     }
 

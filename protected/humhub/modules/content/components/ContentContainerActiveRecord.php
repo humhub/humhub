@@ -16,6 +16,7 @@ use humhub\libs\ProfileImage;
 use humhub\modules\user\models\User;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\contentcontainer\components\ModuleManager;
 
 /**
  * ContentContainerActiveRecord for ContentContainer Models e.g. Space or User.
@@ -29,6 +30,7 @@ use humhub\modules\content\models\ContentContainer;
  * @property integer $contentcontainer_id
  * @property ContentContainerPermissionManager $permissionManager
  * @property ContentContainerSettingsManager $settings
+ * @property ModuleManager $moduleManager
  *
  * @since 1.0
  * @author Luke
@@ -40,6 +42,11 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @var ContentContainerPermissionManager
      */
     protected $permissionManager = null;
+
+    /**
+     * @var ModuleManager
+     */
+    protected $moduleManager = null;
 
     /**
      * The behavior which will be attached to the base controller.
@@ -227,6 +234,23 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         return $this->permissionManager = new ContentContainerPermissionManager([
             'contentContainer' => $this
         ]);
+    }
+
+    /**
+     * Returns a ModuleManager
+     *
+     * @since 1.3
+     * @param User $user
+     * @return ModuleManager
+     */
+    public function getModuleManager()
+    {
+
+        if ($this->moduleManager !== null) {
+            return $this->moduleManager;
+        }
+
+        return $this->moduleManager = new ModuleManager(['contentContainer' => $this]);
     }
 
     /**

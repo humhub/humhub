@@ -198,13 +198,16 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return array(
-            \humhub\components\behaviors\GUID::className(),
-            \humhub\modules\content\components\behaviors\SettingsBehavior::className(),
-            \humhub\modules\user\behaviors\Followable::className(),
-            \humhub\modules\user\behaviors\UserModelModules::className()
+            \humhub\components\behaviors\GUID::class,
+            \humhub\modules\content\components\behaviors\SettingsBehavior::class,
+            \humhub\modules\user\behaviors\Followable::class,
+            \humhub\modules\contentcontainer\behaviors\CompatModuleManager::class
         );
     }
 
