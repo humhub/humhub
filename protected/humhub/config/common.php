@@ -135,6 +135,9 @@ $config = [
         'queue' => [
             'class' => 'humhub\components\queue\driver\Sync',
         ],
+        'urlManager' => [
+            'class' => 'humhub\components\UrlManager',
+        ],
         'live' => [
             'class' => 'humhub\modules\live\components\Sender',
             'driver' => [

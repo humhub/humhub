@@ -83,6 +83,11 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      * @inheritdoc
      */
     public $controllerBehavior = \humhub\modules\user\behaviors\ProfileController::class;
+    /**
+     *
+     * @var type 
+     */
+    public $defaultRoute = '/user/profile';
 
     /**
      * @inheritdoc
@@ -607,20 +612,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         $this->trigger(self::EVENT_SEARCH_ADD, new \humhub\modules\search\events\SearchAddEvent($attributes));
 
         return $attributes;
-    }
-
-    public function createUrl($route = null, $params = [], $scheme = false)
-    {
-        if ($route === null) {
-            $route = '/user/profile';
-        }
-
-        array_unshift($params, $route);
-        if (!isset($params['uguid'])) {
-            $params['uguid'] = $this->guid;
-        }
-
-        return \yii\helpers\Url::toRoute($params, $scheme);
     }
 
     /**

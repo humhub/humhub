@@ -69,6 +69,11 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     /**
      * @inheritdoc
      */
+    public $defaultRoute = '/space/space';
+
+    /**
+     * @inheritdoc
+     */
     public static function tableName()
     {
         return 'space';
@@ -377,31 +382,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     public function isArchived()
     {
         return $this->status === self::STATUS_ARCHIVED;
-    }
-
-    /**
-     * Creates an url in space scope.
-     * (Adding sguid parameter to identify current space.)
-     * See CController createUrl() for more details.
-     *
-     * @since 0.9
-     * @param string $route the URL route.
-     * @param array $params additional GET parameters.
-     * @param boolean|string $scheme whether to create an absolute URL and if it is a string, the scheme (http or https) to use.
-     * @return string
-     */
-    public function createUrl($route = null, $params = array(), $scheme = false)
-    {
-        if ($route == null) {
-            $route = '/space/space';
-        }
-
-        array_unshift($params, $route);
-        if (!isset($params['sguid'])) {
-            $params['sguid'] = $this->guid;
-        }
-
-        return Url::toRoute($params, $scheme);
     }
 
     /**

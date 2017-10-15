@@ -93,12 +93,8 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         $this->forcePostRequest();
         $space = $this->getSpace();
 
-        if (!$space->canJoin(Yii::$app->user->id))
+        if (!$space->canJoin(Yii::$app->user->id)) {
             throw new HttpException(500, Yii::t('SpaceModule.controllers_SpaceController', 'You are not allowed to join this space!'));
-
-        if ($space->join_policy == Space::JOIN_POLICY_APPLICATION) {
-            // Redirect to Membership Request Form
-            return $this->redirect($this->createUrl('//space/space/requestMembershipForm', ['sguid' => $this->getSpace()->guid]));
         }
 
         $space->addMember(Yii::$app->user->id);

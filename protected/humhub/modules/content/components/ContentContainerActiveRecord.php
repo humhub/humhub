@@ -9,6 +9,7 @@
 namespace humhub\modules\content\components;
 
 use Yii;
+use yii\helpers\Url;
 use humhub\libs\BasePermission;
 use humhub\modules\content\models\Content;
 use humhub\libs\ProfileBannerImage;
@@ -58,6 +59,11 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public $controllerBehavior = null;
 
     /**
+     * @var string the default route
+     */
+    public $defaultRoute = '/';
+
+    /**
      * Returns the Profile Image Object for this Content Base
      *
      * @return ProfileImage
@@ -90,15 +96,17 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * Creates url in content container scope.
-     * E.g. add uguid or sguid parameter to parameters.
      *
      * @param string $route
      * @param array $params
      * @param boolean|string $scheme
      */
-    public function createUrl($route = null, $params = array(), $scheme = false)
+    public function createUrl($route = null, $params = [], $scheme = false)
     {
-        return "";
+        array_unshift($params, ($route !== null) ? $route : $this->defaultRoute);
+        $params['contentContainer'] = $this;
+
+        return Url::to($params, $scheme);
     }
 
     /**
