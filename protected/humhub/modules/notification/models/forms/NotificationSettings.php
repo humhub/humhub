@@ -2,6 +2,7 @@
 
 namespace humhub\modules\notification\models\forms;
 
+use humhub\modules\notification\components\NotificationCategory;
 use Yii;
 use humhub\modules\notification\targets\BaseTarget;
 
@@ -124,9 +125,9 @@ class NotificationSettings extends \yii\base\Model
     /**
      * Returns the field name for the given category/target combination.
      * 
-     * @param type $category 
-     * @param type $target
-     * @return type
+     * @param NotificationCategory $category
+     * @param BaseTarget $target
+     * @return string
      */
     public function getSettingFormname($category, $target)
     {

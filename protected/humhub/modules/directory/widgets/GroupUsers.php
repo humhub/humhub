@@ -38,7 +38,7 @@ class GroupUsers extends Widget
      */
     public function run()
     {
-        $users = $this->group->getUsers()->active()->limit($this->maxUsers + 1)->joinWith('profile')->orderBy(['profile.lastname' => SORT_ASC])->all();
+        $users = $this->group->getUsers()->visible()->limit($this->maxUsers + 1)->joinWith('profile')->orderBy(['profile.lastname' => SORT_ASC])->all();
 
 
         if (count($users) === 0) {

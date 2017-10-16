@@ -12,6 +12,7 @@ use Yii;
 use yii\base\Exception;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\user\events\UserEvent;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
@@ -61,6 +62,11 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     const USERGROUP_FRIEND = 'u_friend';
     const USERGROUP_USER = 'u_user';
     const USERGROUP_GUEST = 'u_guest';
+
+    /**
+     * @event Event an event that is triggered when the user visibility is checked via [[isVisible()]].
+     */
+    const EVENT_CHECK_VISIBILITY = 'checkVisibility';
 
     /**
      * A initial group for the user assigned while registration.
@@ -311,6 +317,22 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
+     * Specifies whether the user should appear in user lists or in the search.
+     * 
+     * @since 1.2.3
+     * @return boolean is visible
+     */
+    public function isVisible()
+    {
+        $event = new UserEvent(['user' => $this, 'result' => ['isVisible' => true]]);
+        $this->trigger(self::EVENT_CHECK_VISIBILITY, $event);
+        if ($event->result['isVisible'] && $this->isActive()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Before Delete of a User
      *
      */
@@ -393,7 +415,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         // (e.g. not UserEditForm) for search rebuild
         $user = User::findOne(['id' => $this->id]);
 
-        if ($this->status == User::STATUS_ENABLED) {
+        if ($user->isVisible()) {
             Yii::$app->search->update($user);
         } else {
             Yii::$app->search->delete($user);

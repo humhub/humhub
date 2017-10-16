@@ -46,18 +46,18 @@ class Members extends Widget
                     'showListButton' => (count($users) == $this->maxMembers),
                     'urlMembersList' => $this->space->createUrl('/space/membership/members-list'),
                     'privilegedUserIds' => $this->getPrivilegedUserIds(),
-                    'totalMemberCount' => Membership::getSpaceMembersQuery($this->space)->count()
+                    'totalMemberCount' => Membership::getSpaceMembersQuery($this->space)->visible()->count()
         ]);
     }
 
     /**
      * Returns a query for members of this space
-     * 
+     *
      * @return \yii\db\ActiveQuery the query
      */
     protected function getUserQuery()
     {
-        $query = Membership::getSpaceMembersQuery($this->space);
+        $query = Membership::getSpaceMembersQuery($this->space)->visible();
         $query->limit($this->maxMembers);
         $query->orderBy(new Expression('FIELD(space_membership.group_id, "' . Space::USERGROUP_OWNER . '", "' . Space::USERGROUP_MODERATOR . '", "' . Space::USERGROUP_MEMBER . '")'));
         return $query;
@@ -65,8 +65,8 @@ class Members extends Widget
 
     /**
      * Returns an array with a list of privileged user ids.
-     * 
-     * @return array the user ids separated by priviledged group id. 
+     *
+     * @return array the user ids separated by priviledged group id.
      */
     protected function getPrivilegedUserIds()
     {

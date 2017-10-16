@@ -124,10 +124,6 @@ class NotificationManager
             }
         }
 
-        if ($user === null) {
-            return $this->_targets;
-        }
-
         $userTargets = [];
         foreach ($this->_targets as $target) {
             if ($target->isActive($user)) {

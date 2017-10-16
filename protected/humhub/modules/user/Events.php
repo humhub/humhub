@@ -26,10 +26,8 @@ class Events extends \yii\base\Object
      */
     public static function onSearchRebuild($event)
     {
-        foreach (models\User::find()->active()->batch() as $users) {
-            foreach ($users as $user) {
-                Yii::$app->search->add($user);
-            }
+        foreach (models\User::find()->visible()->each() as $user) {
+            Yii::$app->search->add($user);
         }
     }
 
@@ -123,12 +121,11 @@ class Events extends \yii\base\Object
                         $follow->delete();
                     }
                 }
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 if ($integrityController->showFix("Deleting follow " . $follow->id . " of non target!")) {
                     $follow->delete();
                 }
             }
-
         }
 
         $integrityController->showTestHeadline("User Module - Modules (" . models\Module::find()->count() . " entries)");

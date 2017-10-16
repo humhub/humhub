@@ -67,6 +67,17 @@ abstract class BaseNotification extends SocialActivity
     public $recordClass = Notification::class;
 
     /**
+     * Priority flag, if set to true, this Notification type will be marked as high priority.
+     * This can be used by a given BaseTarget while handling a Notification.
+     *
+     * A MobileTargetProvider for example could use this flag for Android devices to wake up the device out of doze mode.
+     *
+     * @var bool if set to true marks this notification type as high priority.
+     * @since 1.2.3
+     */
+    public $priority = false;
+
+    /**
      * Returns the notification category instance. If no category class is set (default) the default notification settings
      * can't be overwritten.
      * 
