@@ -14,4 +14,4 @@
 | Operating system |
 
 > Note: Please use the [community](https://community.humhub.com) site for any questions on customizing HumHub.
-> Note: Also provide the full error stacks from `Administratoin --> Information --> Logging` and errors from your browser console if possible.
+> Note: Also provide the full error stacks from `Administration --> Information --> Logging` and errors from your browser console if possible.
