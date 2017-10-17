@@ -37,6 +37,13 @@ class EntryController extends Controller
      */
     public function actionIndex()
     {
+
+		// If user is not logged-in send to login
+		if(Yii::$app->user->isGuest){
+			$this->redirect(array('/'));
+			return;
+		}
+        
         $notificationModel = Notification::findOne(['id' => Yii::$app->request->get('id'), 'user_id' => Yii::$app->user->id]);
 
         if ($notificationModel === null) {
