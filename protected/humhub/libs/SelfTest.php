@@ -170,6 +170,21 @@ class SelfTest
             );
         }
 
+        // Checks iconv Extension
+        $title = 'PHP - iconv Extension';
+        if (function_exists('iconv_strlen')) {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            );
+        } else {
+            $checks[] = array(
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Install PHP iconv Extension'
+            );
+        }
+
         // Checks cURL Extension
         $title = 'PHP - cURL Extension';
 
