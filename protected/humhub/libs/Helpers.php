@@ -234,12 +234,12 @@ class Helpers
 
     /**
      * Set sql_mode=TRADITIONAL for mysql server.
-     *
      * This static function is intended as closure for on afterOpen raised by yii\db\Connection and
-     * should be configured in dynamic.php like this: 'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
-     *
+     * should be configured in dynamic.php like this:
+     * 'on afterOpen' => function ($event) {
+     * +     humhub\libs\Helpers::SqlMode($event);
+     * + }
      * This is mainly required for grouped notifications.
-     * 
      * @since 1.2.1
      * @param $event
      */
@@ -248,9 +248,12 @@ class Helpers
         /* set sql_mode only for mysql */
         if ($event->sender->driverName == 'mysql') {
             try {
-                $event->sender->createCommand('SET SESSION sql_mode=""; SET SESSION sql_mode="NO_ENGINE_SUBSTITUTION"')->execute();
+                $event
+                    ->sender
+                    ->createCommand('SET SESSION sql_mode=""; SET SESSION sql_mode="NO_ENGINE_SUBSTITUTION"')
+                    ->execute();
             } catch (\Exception $ex) {
-                Yii::error('Could not switch SQL mode: '. $ex->getMessage());
+                \Yii::error('Could not switch SQL mode: ' . $ex->getMessage());
             }
         }
     }
