@@ -44,6 +44,7 @@ use Yii;
  * @property string $url_myspace
  * @property string $url_googleplus
  * @property string $url_twitter
+ * @property User $user
  */
 class Profile extends \yii\db\ActiveRecord
 {
@@ -251,17 +252,14 @@ class Profile extends \yii\db\ActiveRecord
     /**
      * Returns all profile field categories with some user data
      *
-     * @todo Optimize me
-     * @return Array ProfileFieldCategory
+     * @return ProfileFieldCategory[]
      */
     public function getProfileFieldCategories()
     {
-
-        $categories = array();
+        $categories = [];
 
         foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $category) {
-
-            if (count($this->getProfileFields($category)) != 0) {
+            if (count($this->getProfileFields($category)) > 0) {
                 $categories[] = $category;
             }
         }
@@ -272,27 +270,29 @@ class Profile extends \yii\db\ActiveRecord
     /**
      * Returns all profile fields with user data by given category
      *
-     * @todo Optimize me
      * @param ProfileFieldCategory $category
-     * @return Array ProfileFields
+     * @return ProfileField[]
      */
     public function getProfileFields(ProfileFieldCategory $category = null)
     {
-        if ($this->user === null) {
-            return [];
-        }
-
         $fields = [];
 
-        $query = ProfileField::find();
-        $query->where(['visible' => 1]);
-        $query->orderBy('sort_order');
-        if ($category !== null) {
-            $query->andWhere(['profile_field_category_id' => $category->id]);
-        }
-        foreach ($query->all() as $field) {
-            if ($field->getUserValue($this->user) != "") {
-                $fields[] = $field;
+        if ($this->user !== null) {
+            $query = ProfileField::find()
+                ->where(['visible' => 1])
+                ->orderBy('sort_order');
+
+            if ($category !== null) {
+                $query->andWhere(['profile_field_category_id' => $category->id]);
+            }
+
+            /** @var ProfileField $profileFieldModels */
+            $profileFieldModels = $query->all();
+
+            foreach ($profileFieldModels as $field) {
+                if (!empty($field->getUserValue($this->user))) {
+                    $fields[] = $field;
+                }
             }
         }
 
