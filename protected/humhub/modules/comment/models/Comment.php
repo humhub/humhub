@@ -28,7 +28,6 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @property integer $updated_by
  *
  * The followings are the available model relations:
- * @property PortfolioItem[] $portfolioItems
  * @property Post[] $posts
  *
  * @package humhub.modules_core.comment.models
@@ -106,7 +105,10 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     /**
      * After Saving of comments, fire an activity
      *
-     * @return type
+     * @param bool $insert
+     * @param array $changedAttributes
+     *
+     * @return bool
      */
     public function afterSave($insert, $changedAttributes)
     {
@@ -146,8 +148,8 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     /**
      * Filters out all users contained in $mentionedUsers from $followers
      *
-     * @param User[] $followers
-     * @param User[] $mentionedUsers
+     * @param \humhub\modules\user\models\User[] $followers
+     * @param \humhub\modules\user\models\User[] $mentionedUsers
      */
     private function filterMentionings(&$followers, $mentionedUsers)
     {
@@ -189,10 +191,11 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     /**
      * Returns a limited amount of comments
      *
-     * @param type $model
-     * @param type $id
-     * @param type $limit
-     * @return type
+     * @param $model
+     * @param $id
+     * @param int $limit
+     *
+     * @return array|mixed|\yii\db\ActiveRecord[]
      */
     public static function GetCommentsLimited($model, $id, $limit = 2)
     {
@@ -219,9 +222,10 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     /**
      * Count number comments for this target object
      *
-     * @param type $model
-     * @param type $id
-     * @return type
+     * @param $model
+     * @param $id
+     *
+     * @return int|mixed|string
      */
     public static function GetCommentCount($model, $id)
     {
