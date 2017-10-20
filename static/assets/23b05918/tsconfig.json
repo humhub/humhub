@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "lib": ["es6", "DOM"],
+    "target": "es5",
+    "declaration": true
+  },
+  "exclude": [
+    "experiment"
+  ]
+}
