@@ -44,7 +44,8 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
 
 <script type="text/javascript">
 
-    if($('input[type=radio][name="Space[visibility]"]:checked')[0].value == 0) {
+    var $checkedVisibility = $('input[type=radio][name="Space[visibility]"]:checked');
+    if($checkedVisibility.length && $checkedVisibility[0].value == 0) {
         $('.spaceJoinPolicy').hide();
     }
 
