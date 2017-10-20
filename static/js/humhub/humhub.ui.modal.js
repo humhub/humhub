@@ -85,7 +85,7 @@ humhub.module('ui.modal', function (module, require, $) {
         var that = this;
 
         //Set default modal manipulation event handlers
-        this.$.on('click', '[data-modal-close]', function () {
+        this.$.off('click.modal').on('click.modal', '[data-modal-close]', function () {
             that.close();
         }).on('click', '[data-modal-clear-error]', function () {
             that.clearErrorMessage();
@@ -296,8 +296,9 @@ humhub.module('ui.modal', function (module, require, $) {
             } else {
                 this.$.modal('show');
             }
-
         }
+
+        this.getDialog().show();
     };
 
     /**
