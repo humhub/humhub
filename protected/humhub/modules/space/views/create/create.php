@@ -3,17 +3,20 @@ use humhub\widgets\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use yii\helpers\Url;
+use humhub\modules\space\widgets\SpaceNameColorInput;
 
 /* @var $model \humhub\modules\space\models\Space */
+/* @var $visibilityOptions array */
+/* @var $joinPolicyOptions array */
 
 $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('SpaceModule.views_create_create', '<strong>Create</strong> new space'), 'size' => 'small']) ?>
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
         <div class="modal-body">
 
-            <?= humhub\modules\space\widgets\SpaceNameColorInput::widget(['form' => $form, 'model' => $model]) ?>
+            <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model]) ?>
 
             <?= $form->field($model, 'description')->textarea(['placeholder' => Yii::t('SpaceModule.views_create_create', 'space description'), 'rows' => '3']); ?>
 
