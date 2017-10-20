@@ -77,7 +77,7 @@ class WallCreateContentForm extends Widget
      */
     public function run()
     {
-        if ($this->contentContainer->can(CreatePublicContent::class)) {
+        if ($this->contentContainer->visibility !== Space::VISIBILITY_NONE && $this->contentContainer->can(CreatePublicContent::class)) {
             $defaultVisibility = $this->contentContainer->getDefaultContentVisibility();
             $canSwitchVisibility = true;
         } else {

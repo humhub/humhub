@@ -37,6 +37,7 @@ use yii\helpers\Url;
  * @property integer $updated_by
  * @property integer $auto_add_new_members
  * @property integer $contentcontainer_id
+ * @property integer $default_content_visibility
  * @property string $color
  */
 class Space extends ContentContainerActiveRecord implements \humhub\modules\search\interfaces\Searchable
@@ -111,7 +112,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id' => 'ID',
             'name' => Yii::t('SpaceModule.models_Space', 'Name'),
             'color' => Yii::t('SpaceModule.models_Space', 'Color'),
@@ -126,7 +127,16 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             'updated_by' => Yii::t('SpaceModule.models_Space', 'Updated by'),
             'ownerUsernameSearch' => Yii::t('SpaceModule.models_Space', 'Owner'),
             'default_content_visibility' => Yii::t('SpaceModule.models_Space', 'Default content visibility'),
-        );
+        ];
+    }
+
+    public function attributeHints()
+    {
+        return [
+            'visibility' => Yii::t('SpaceModule.views_admin_edit', 'Choose the security level for this workspace to define the visibleness.'),
+            'join_policy' => Yii::t('SpaceModule.views_admin_edit', 'Choose the kind of membership you want to provide for this workspace.'),
+            'default_content_visibility' =>  Yii::t('SpaceModule.views_admin_edit', 'Choose if new content should be public or private by default')
+        ];
     }
 
     /**
@@ -185,6 +195,11 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             $this->url = new \yii\db\Expression('NULL');
         } else {
             $this->url = mb_strtolower($this->url);
+        }
+
+        if($this->visibility == self::VISIBILITY_NONE) {
+            $this->join_policy = self::JOIN_POLICY_NONE;
+            $this->default_content_visibility = Content::VISIBILITY_PRIVATE;
         }
 
         return parent::beforeSave($insert);
