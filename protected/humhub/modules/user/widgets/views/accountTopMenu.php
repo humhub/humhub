@@ -1,10 +1,10 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
-
 use \yii\helpers\Html;
 use \yii\helpers\Url;
 
@@ -22,17 +22,17 @@ $userModel = Yii::$app->user->getIdentity();
 <?php else: ?>
     <ul class="nav">
         <li class="dropdown account">
-            <a href="#" id="account-dropdown-link" class="dropdown-toggle" data-toggle="dropdown" aria-label="<?= Yii::t('base', 'Profile dropdown')?>">
+            <a href="#" id="account-dropdown-link" class="dropdown-toggle" data-toggle="dropdown" aria-label="<?= Yii::t('base', 'Profile dropdown') ?>">
 
                 <?php if ($this->context->showUserName): ?>
                     <div class="user-title pull-left hidden-xs">
-                        <strong><?= Html::encode($userModel->displayName); ?></strong><br/><span class="truncate"><?= Html::encode(Yii::$app->user->getIdentity()->profile->title); ?></span>
+                        <strong><?= Html::encode($userModel->displayName); ?></strong><br/><span class="truncate"><?= Html::encode($userModel->profile->title); ?></span>
                     </div>
                 <?php endif; ?>
 
                 <img id="user-account-image" class="img-rounded"
                      src="<?= $userModel->getProfileImage()->getUrl(); ?>"
-                     height="32" width="32" alt="<?= Yii::t('base', 'My profile image')?>" data-src="holder.js/32x32"
+                     height="32" width="32" alt="<?= Yii::t('base', 'My profile image') ?>" data-src="holder.js/32x32"
                      style="width: 32px; height: 32px;"/>
 
                 <b class="caret"></b>
