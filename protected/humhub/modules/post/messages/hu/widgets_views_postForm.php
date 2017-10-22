@@ -1,5 +1,5 @@
 <?php
 return array (
   'This space is archived.' => 'Ez egy archivált témakör',
-  'What\'s on your mind?' => '',
+  'What\'s on your mind?' => 'Mi jár a fejedben?',
 );
