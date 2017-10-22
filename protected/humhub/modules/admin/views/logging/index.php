@@ -2,6 +2,10 @@
 
 use yii\helpers\Html;
 use humhub\compat\CHtml;
+
+/* @var $logEntries \humhub\modules\admin\models\Log[] */
+/* @var $pagination \yii\data\Pagination */
+
 ?>
 <div>
     <?= Yii::t('AdminModule.views_logging_index', 'Total {count} entries found.', ["{count}" => $pagination->totalCount]); ?>
@@ -18,10 +22,10 @@ use humhub\compat\CHtml;
                 <?php
                 $labelClass = "label-primary";
                 if ($entry->level == \yii\log\Logger::LEVEL_WARNING) {
-                    $labelClass = "label-danger";
+                    $labelClass = "label-warning";
                     $levelName = "Warning";
                 } elseif ($entry->level == \yii\log\Logger::LEVEL_ERROR) {
-                    $labelClass = "label-warning";
+                    $labelClass = "label-danger";
                     $levelName = "Error";
                 } elseif ($entry->level == \yii\log\Logger::LEVEL_INFO) {
                     $labelClass = "label-info";

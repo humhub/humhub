@@ -8,6 +8,7 @@
 
 namespace humhub\modules\comment\models;
 
+use humhub\modules\user\models\User;
 use Yii;
 use humhub\modules\post\models\Post;
 use humhub\modules\content\interfaces\ContentOwner;
@@ -105,8 +106,6 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
     /**
      * After Saving of comments, fire an activity
-     *
-     * @return type
      */
     public function afterSave($insert, $changedAttributes)
     {
@@ -122,6 +121,9 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         if ($insert) {
             $followers = $this->getCommentedRecord()->getFollowers(null, true);
             $this->filterMentionings($followers, $mentionedUsers);
+
+            // Update updated_at etc..
+            $this->refresh();
 
             \humhub\modules\comment\notifications\NewComment::instance()
                     ->from(Yii::$app->user->getIdentity())
@@ -140,7 +142,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
         $this->updateContentSearch();
 
-        return parent::afterSave($insert, $changedAttributes);
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**

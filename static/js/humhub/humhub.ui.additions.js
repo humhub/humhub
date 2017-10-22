@@ -94,7 +94,11 @@ humhub.module('ui.additions', function (module, require, $) {
         });
         
         require('action').registerHandler('copyToClipboard', function(evt) {
-            clipboard.copy(evt.$target.text());
+            clipboard.writeText(evt.$target.text()).then(function() {
+                require('ui.status').success(module.text('success.clipboard'));
+            }).catch(function(err) {
+                require('ui.status').error(module.text('error.clipboard'), true);
+            });
         });
 
         // workaround for jp-player since it sets display to inline which results in a broken view...
@@ -122,8 +126,6 @@ humhub.module('ui.additions', function (module, require, $) {
                 $('.tooltip').remove();
             });
         });
-
-
 
         $(document).on('click.humhub-ui-additions', function () {
             $('.tooltip').remove();
