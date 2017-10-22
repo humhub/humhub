@@ -18,4 +18,5 @@ return array (
 ',
   '{displayName} just commented your {contentTitle} in space {space}' => '{displayName} kommentierte gerade deinen {contentTitle} im Space {space}
 ',
+  '[Deleted]' => '[Gelöscht]'
 );
