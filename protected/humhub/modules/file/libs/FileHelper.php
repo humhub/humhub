@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\libs;
 
+use humhub\modules\file\widgets\FileDownload;
 use Yii;
 use yii\helpers\Url;
 use humhub\libs\Html;
@@ -70,6 +71,7 @@ class FileHelper extends \yii\helpers\FileHelper
         $fileHandlers = FileHandlerCollection::getByType([FileHandlerCollection::TYPE_VIEW, FileHandlerCollection::TYPE_EXPORT, FileHandlerCollection::TYPE_EDIT, FileHandlerCollection::TYPE_IMPORT], $file);
         if (count($fileHandlers) === 1 && $fileHandlers[0] instanceof DownloadFileHandler) {
             $htmlOptions['target'] = '_blank';
+            $htmlOptions = array_merge($htmlOptions,  FileDownload::getFileDataAttributes($file));
             return Html::a($label, Url::to(['/file/file/download', 'guid' => $file->guid]), $htmlOptions);
         }
 

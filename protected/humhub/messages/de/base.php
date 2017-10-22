@@ -33,7 +33,7 @@ return array (
   'Expand' => 'Erweitern',
   'Export' => 'Exportieren',
   'Info:' => 'Info:',
-  'Invalid request method!' => '',
+  'Invalid request method!' => 'Ungültige Anfragemethode!',
   'It looks like you may have taken the wrong turn.' => 'Du hast womöglich den falschen Weg eingeschlagen.',
   'Language' => 'Sprache',
   'Loading...' => 'lädt...',

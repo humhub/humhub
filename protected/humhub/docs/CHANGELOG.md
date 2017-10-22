@@ -47,6 +47,9 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix: Make sure own profile content is always visible to user
 - Fix #2501: Do not try to embed Youtube unauthorized videos (acs-ferreira)
 - Fix #2613: Wrong username encoding with pretty url (githubjeka)
+- Fix #2791, #2749: Force private join policy on private spaces + non changeable post visibility
+- Fix wrong Comment date issue in notification mails
+- Added `data-file-*` attributes to download links, for intercepting file downloads
 
 1.2.2  (August 2, 2017)
 --------------------------------

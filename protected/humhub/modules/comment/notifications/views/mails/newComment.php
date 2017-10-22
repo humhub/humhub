@@ -6,12 +6,12 @@
 /* @var $isNew boolean */
 /* @var $isNew boolean */
 /* @var $originator \humhub\modules\user\models\User */
-/* @var source yii\db\ActiveRecord */
-/* @var contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
-/* @var space humhub\modules\space\models\Space */
-/* @var record \humhub\modules\notification\models\Notification */
-/* @var html string */
-/* @var text string */
+/* @var $source yii\db\ActiveRecord */
+/* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
+/* @var $space humhub\modules\space\models\Space */
+/* @var $record \humhub\modules\notification\models\Notification */
+/* @var $html string */
+/* @var $text string */
 ?>
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
 
@@ -25,7 +25,7 @@
             humhub\widgets\mails\MailCommentEntry::widget([
                 'originator' => $originator,
                 'comment' => $comment,
-                'date' => $date,
+                'date' => $comment->updated_at,
                 'space' => $space
             ]);
             ?>
@@ -51,7 +51,7 @@
             humhub\widgets\mails\MailContentEntry::widget([
                 'originator' => $contentRecord->owner,
                 'content' => $contentRecord,
-                'date' => $date,
+                'date' => $contentRecord->content->updated_at,
                 'space' => $space
             ]);
             ?>

@@ -69,7 +69,7 @@ class ModalButton extends Button
             $text = Yii::t('base', 'Cancel');
         }
 
-        return static::defaultType($text)->options(['data-modal-close' => ''])->loader(false);
+        return static::defaultType($text)->close()->loader(false);
     }
 
     /**
