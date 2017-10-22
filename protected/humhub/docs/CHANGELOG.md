@@ -49,7 +49,8 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix #2613: Wrong username encoding with pretty url (githubjeka)
 - Fix #2791, #2749: Force private join policy on private spaces + non changeable post visibility
 - Fix wrong Comment date issue in notification mails
-- Added `data-file-*` attributes to download links, for intercepting file downloads
+- Enh: Added `data-file-*` attributes to download links, for beeing able to intercept file downloads
+- Enh: Added `apple-mobile-web-app-*` and `mobile-web-app-capable` meta tags to `head.php`
 
 1.2.2  (August 2, 2017)
 --------------------------------
