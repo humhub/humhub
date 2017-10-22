@@ -1,17 +1,17 @@
 <?php return array (
   'name' => 'HumHub',
   'language' => 'en-US',
-  'timeZone' => 'Pacific/Niue',
+  'timeZone' => 'Europe/Berlin',
   'components' => 
   array (
     'formatter' => 
     array (
-      'defaultTimeZone' => 'Pacific/Niue',
+      'defaultTimeZone' => 'Europe/Berlin',
     ),
     'formatterApp' => 
     array (
-      'defaultTimeZone' => 'Pacific/Niue',
-      'timeZone' => 'Pacific/Niue',
+      'defaultTimeZone' => 'Europe/Berlin',
+      'timeZone' => 'Europe/Berlin',
     ),
     'user' => 
     array (
@@ -41,10 +41,15 @@
         'publishResources' => false,
       ),
     ),
+    'cache' => 
+    array (
+      'class' => 'yii\\caching\\DummyCache',
+      'keyPrefix' => 'humhub',
+    ),
   ),
   'params' => 
   array (
-    'config_created_at' => 1506096506,
+    'config_created_at' => 1508527680,
     'horImageScrollOnMobile' => NULL,
   ),
 ); ?>

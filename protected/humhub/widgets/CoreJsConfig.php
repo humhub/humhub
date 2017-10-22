@@ -129,6 +129,12 @@ class CoreJsConfig extends Widget
                             500 => Yii::t('base', 'An unexpected server error occurred. If this keeps happening, please contact a site administrator.')
                         ]
                     ],
+                    'ui.additions' => [
+                        'text' => [
+                            'success.clipboard' => Yii::t('base', 'Text has been copied to clipboard'),
+                            'error.clipboard' => Yii::t('base', 'Text could not be copied to clipboard'),
+                        ]
+                    ],
                     'ui.status' => [
                         'showMore' => Yii::$app->user->isAdmin() || YII_DEBUG,
                         'text' => [

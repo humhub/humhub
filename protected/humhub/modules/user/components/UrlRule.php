@@ -44,7 +44,7 @@ class UrlRule extends Object implements UrlRuleInterface
                     $route = "";
                 }
 
-                $url = "u/" . urlencode(strtolower($username)) . "/" . $route;
+                $url = "u/" . urlencode($username) . "/" . $route;
                 if (!empty($params) && ($query = http_build_query($params)) !== '') {
                     $url .= '?' . $query;
                 }

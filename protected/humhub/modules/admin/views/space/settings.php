@@ -1,47 +1,38 @@
 <?php
 
-use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
 use humhub\modules\content\models\Content;
+use humhub\widgets\Button;
+use yii\bootstrap\ActiveForm;
+
+/* @var $model \humhub\modules\admin\models\forms\SpaceSettingsForm */
+/* @var $joinPolicyOptions array */
+/* @var $visibilityOptions array */
+/* @var $contentVisibilityOptions array */
+
 ?>
 <h4><?= Yii::t('AdminModule.views_space_settings', 'Space Settings'); ?></h4>
 <div class="help-block">
     <?= Yii::t('AdminModule.views_space_index', 'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.'); ?>
 </div>
 
-<br>
+<?php $form = ActiveForm::begin(['id' => 'space-settings-form']); ?>
 
-<?php $form = CActiveForm::begin(['id' => 'space-settings-form']); ?>
+<?= $form->field($model, 'defaultVisibility')->dropDownList($visibilityOptions) ?>
 
-<?= $form->errorSummary($model); ?>
+<?= $form->field($model, 'defaultJoinPolicy')->dropDownList($joinPolicyOptions, ['disabled' => $model->defaultVisibility == 0]) ?>
 
-<div class="form-group">
-    <?= $form->labelEx($model, 'defaultJoinPolicy'); ?>
-    <?php $joinPolicies = [0 => Yii::t('SpaceModule.base', 'Only by invite'), 1 => Yii::t('SpaceModule.base', 'Invite and request'), 2 => Yii::t('SpaceModule.base', 'Everyone can enter')]; ?>
-    <?= $form->dropDownList($model, 'defaultJoinPolicy', $joinPolicies, ['class' => 'form-control', 'id' => 'join_policy_dropdown', 'hint' => Yii::t('SpaceModule.views_admin_edit', 'Choose the kind of membership you want to provide for this workspace.')]); ?>
-</div>
+<?= $form->field($model, 'defaultContentVisibility')->dropDownList($contentVisibilityOptions, ['disabled' => $model->defaultVisibility == 0]) ?>
 
-<div class="form-group">
-    <?= $form->labelEx($model, 'defaultVisibility'); ?>
-    <?php
-    $visibilities = [
-        0 => Yii::t('SpaceModule.base', 'Private (Invisible)'),
-        1 => Yii::t('SpaceModule.base', 'Public (Visible)')
-        /* 2 => Yii::t('SpaceModule.base', 'Visible for all') */
-    ];
-    ?>
-    <?= $form->dropDownList($model, 'defaultVisibility', $visibilities, ['class' => 'form-control', 'id' => 'join_visibility_dropdown', 'hint' => Yii::t('SpaceModule.views_admin_edit', 'Choose the security level for this workspace to define the visibleness.')]); ?>
-    <?= $form->error($model, 'defaultVisibility'); ?>
-</div>
+<?= Button::primary(Yii::t('base', 'Save'))->submit(); ?>
 
-<div class="form-group">
-    <?= $form->labelEx($model, 'defaultContentVisibility'); ?>
-    <?= $form->dropDownList($model, 'defaultContentVisibility', [Content::VISIBILITY_PRIVATE => Yii::t('SpaceModule.base', 'Private'), Content::VISIBILITY_PUBLIC => Yii::t('SpaceModule.base', 'Public')], ['class' => 'form-control']); ?>
-</div>
+<?php ActiveForm::end(); ?>
 
-<hr>
-
-<?= CHtml::submitButton(Yii::t('AdminModule.views_space_settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
-
-<?php \humhub\widgets\DataSaved::widget(); ?>
-<?php CActiveForm::end(); ?>
+<script>
+    $('#spacesettingsform-defaultvisibility').on('change', function () {
+        if (this.value == 0) {
+            $('#spacesettingsform-defaultjoinpolicy, #spacesettingsform-defaultcontentvisibility').val('0').prop('disabled', true);
+        } else {
+            $('#spacesettingsform-defaultjoinpolicy, #spacesettingsform-defaultcontentvisibility').val('0').prop('disabled', false);
+        }
+    });
+</script>

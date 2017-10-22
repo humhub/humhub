@@ -3,6 +3,6 @@ return array (
   '<strong>Manage</strong> members' => '<strong>Gestione</strong> membri',
   'Actions' => 'Azioni',
   'Remove' => 'Rimuovi',
-  'Role' => '',
+  'Role' => 'Ruolo',
   'never' => 'mai',
 );

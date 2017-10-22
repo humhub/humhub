@@ -8,10 +8,16 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\modules\admin\models\forms\SpaceSettingsForm;
+use humhub\modules\admin\models\SpaceSearch;
+use humhub\modules\content\models\Content;
+use humhub\modules\space\models\Space;
+use humhub\modules\space\permissions\CreatePublicSpace;
 use Yii;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageSettings;
+use yii\web\HttpException;
 
 /**
  * SpaceController provides global space administration.
@@ -56,7 +62,7 @@ class SpaceController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->can(new ManageSpaces())) {
-            $searchModel = new \humhub\modules\admin\models\SpaceSearch();
+            $searchModel = new SpaceSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index', [
@@ -64,10 +70,12 @@ class SpaceController extends Controller
                 'searchModel' => $searchModel
             ]);
         } else if (Yii::$app->user->can(new ManageSettings())) {
-            $this->redirect([
+            return $this->redirect([
                 'settings'
             ]);
         }
+
+        throw new HttpException(403);
     }
 
     /**
@@ -75,25 +83,37 @@ class SpaceController extends Controller
      */
     public function actionSettings()
     {
-        $form = new \humhub\modules\admin\models\forms\SpaceSettingsForm;
-        $form->defaultJoinPolicy = Yii::$app->getModule('space')->settings->get('defaultJoinPolicy');
-        $form->defaultVisibility = Yii::$app->getModule('space')->settings->get('defaultVisibility');
-        $form->defaultContentVisibility = Yii::$app->getModule('space')->settings->get('defaultContentVisibility');
+        $form = new SpaceSettingsForm;
 
-        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            Yii::$app->getModule('space')->settings->set('defaultJoinPolicy', $form->defaultJoinPolicy);
-            Yii::$app->getModule('space')->settings->set('defaultVisibility', $form->defaultVisibility);
-            Yii::$app->getModule('space')->settings->set('defaultContentVisibility', $form->defaultContentVisibility);
-
-            // set flash message
+        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
-            return $this->redirect([
-                'settings'
-            ]);
         }
 
+        $visibilityOptions = [];
+
+        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
+            $visibilityOptions[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Public (Members & Guests)');
+        }
+
+        $visibilityOptions[Space::VISIBILITY_REGISTERED_ONLY] = Yii::t('SpaceModule.base', 'Public (Members only)');
+        $visibilityOptions[Space::VISIBILITY_NONE] = Yii::t('SpaceModule.base', 'Private (Invisible)');
+
+        $joinPolicyOptions = [
+            Space::JOIN_POLICY_NONE => Yii::t('SpaceModule.base', 'Only by invite'),
+            Space::JOIN_POLICY_APPLICATION => Yii::t('SpaceModule.base', 'Invite and request'),
+            Space::JOIN_POLICY_FREE => Yii::t('SpaceModule.base', 'Everyone can enter')
+        ];
+
+        $contentVisibilityOptions = [
+            Content::VISIBILITY_PRIVATE => Yii::t('SpaceModule.base', 'Private'),
+            Content::VISIBILITY_PUBLIC => Yii::t('SpaceModule.base', 'Public')];
+
         return $this->render('settings', [
-            'model' => $form]
+                'model' => $form,
+                'joinPolicyOptions' => $joinPolicyOptions,
+                'visibilityOptions' => $visibilityOptions,
+                'contentVisibilityOptions' => $contentVisibilityOptions
+            ]
         );
     }
 

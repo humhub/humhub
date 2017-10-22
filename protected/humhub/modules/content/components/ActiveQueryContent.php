@@ -58,14 +58,17 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
             $conditionSpace .= ')';
 
             // Build Access Check based on User Content Container
-            $conditionUser = 'cuser.id IS NOT NULL AND (';                                         // space content
+            $conditionUser = 'cuser.id IS NOT NULL AND (';                                         // user content
             $conditionUser .= '   (content.visibility = 1) OR';                                     // public visible content
-            $conditionUser .= '   (content.visibility = 0 AND content.created_by=' . $user->id . ')';  // private content of user
+            $conditionUser .= '   (content.visibility = 0 AND content.contentcontainer_id=' . $user->contentContainerRecord->id . ')';  // private content of user
             if (Yii::$app->getModule('friendship')->getIsEnabled()) {
                 $this->leftJoin('user_friendship cff', 'cuser.id=cff.user_id AND cff.friend_user_id=:fuid', [':fuid' => $user->id]);
                 $conditionUser .= ' OR (content.visibility = 0 AND cff.id IS NOT NULL)';  // users are friends
             }
             $conditionUser .= ')';
+            
+            // Created content of is always visible
+            $conditionUser .= 'OR content.created_by=' . $user->id;
 
             $this->andWhere("{$conditionSpace} OR {$conditionUser}");
         } else {
