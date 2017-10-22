@@ -10,8 +10,10 @@ namespace humhub\modules\content\components;
 
 use ReflectionClass;
 use Yii;
+use yii\db\ActiveQuery;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\models\ContentContainerModuleState;
+use humhub\modules\content\models\ContentContainer;
 
 /**
  * ModuleManager handles modules of a content container.
@@ -219,7 +221,7 @@ class ContentContainerModuleManager extends \yii\base\Component
      * 
      * @see Module
      * @param string $id the module id
-     * @return MOdule the Module record instance
+     * @return Module the Module record instance
      */
     protected function getModuleStateRecord($id)
     {
@@ -231,6 +233,35 @@ class ContentContainerModuleManager extends \yii\base\Component
         }
 
         return $moduleState;
+    }
+
+    /**
+     * Returns a query for \humhub\modules\content\models\ContentContainer where the given module is enabled.
+     * 
+     * @param string $id the module mid
+     * @return \yii\db\ActiveQuerythe list of content container
+     */
+    public static function getContentContainerQueryByModule($id)
+    {
+        $query = ContentContainer::find();
+
+        $query->leftJoin('contentcontainer_module', 'contentcontainer_module.contentcontainer_id=contentcontainer.id AND contentcontainer_module.module_id=:moduleId', [':moduleId' => $id]);
+        $query->andWhere(['contentcontainer_module.module_state' => ContentContainerModuleState::STATE_ENABLED]);
+        $query->orWhere(['contentcontainer_module.module_state' => ContentContainerModuleState::STATE_FORCE_ENABLED]);
+
+        $moduleSettings = Yii::$app->getModule($id)->settings;
+
+        // Add default enabled modules
+        $contentContainerClasses = [\humhub\modules\user\models\User::class, \humhub\modules\space\models\Space::class];
+        foreach ($contentContainerClasses as $class) {
+            $reflect = new ReflectionClass($class);
+            $defaultState = (int) $moduleSettings->get('moduleManager.defaultState.' . $reflect->getShortName());
+            if ($defaultState === ContentContainerModuleState::STATE_ENABLED || $defaultState === ContentContainerModuleState::STATE_FORCE_ENABLED) {
+                $query->orWhere(['contentcontainer.class' => $class]);
+            }
+        }
+
+        return $query;
     }
 
 }
