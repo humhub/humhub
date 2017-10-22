@@ -149,6 +149,8 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix: Show more suppression entries with sort order update + equal update_at not working.
 - Fix #2627: Incorrect language used in group admin user approval e-mail
 - Fix #2631: Module configuration link shown for disabled modules
+- Fix #2785 #2172: Added iconv PHP extension to the requirement check (leuprechtroman)
+
 
 1.2.0 (April 16, 2017)
 --------------------------------
