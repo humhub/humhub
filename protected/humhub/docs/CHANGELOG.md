@@ -5,6 +5,7 @@ HumHub Change Log
 --------------------------------
 
 Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users.
+Important note for Git/Composer installations: http://www.yiiframework.com/news/148/important-note-about-bower-and-the-asset-plugin/
 
 - Fix: Readonly markdown field issue.
 - Enh: Added flag to control automatically created social activities at content creation.
