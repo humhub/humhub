@@ -107,21 +107,21 @@ class StreamCest
         $newEntrySelector2 = '[data-content-key="14"]';
         $I->waitForElementVisible($newEntrySelector2);
         $I->expectTo('my new post beeing the latest entry');
-        $I->see('This is my second stream test post', '.s2_streamContent div:nth-child(1)');
+        $I->waitForText('This is my second stream test post',null, '.s2_streamContent div:nth-child(1)');
 
         $I->amGoingTo('pin my first entry');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Pin', 10);
         $I->click('Pin', $newEntrySelector);
 
-        $I->see('This is my first stream test post!', '.s2_streamContent div:nth-child(1)');
+        $I->waitForText('This is my first stream test post!',null, '.s2_streamContent div:nth-child(1)');
         $I->see('Pinned', $newEntrySelector);
 
         $I->amGoingTo('unpin my first entry');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Unpin', 10);
         $I->click('Unpin', $newEntrySelector);
-        $I->see('This is my second stream test post!', '.s2_streamContent div:nth-child(1)');
+        $I->waitForText('This is my second stream test post!',null, '.s2_streamContent div:nth-child(1)');
         $I->dontSee('Pinned', $newEntrySelector);
     }
 
@@ -209,6 +209,7 @@ class StreamCest
         $I->waitForText('No matches with your selected filters!');
 
         $I->createPost('Involved Post.');
+        $I->wait(1);
         $I->dontSee('No matches with your selected filters!');
 
         $I->amGoingTo('Reset filter');
