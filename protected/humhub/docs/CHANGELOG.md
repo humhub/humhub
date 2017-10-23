@@ -1,8 +1,8 @@
 HumHub Change Log
 =================
 
-1.2.3  (Not released yet)
---------------------------------
+1.2.3  (October 23, 2017)
+-------------------------
 
 Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users.
 Important note for Git/Composer installations: http://www.yiiframework.com/news/148/important-note-about-bower-and-the-asset-plugin/
