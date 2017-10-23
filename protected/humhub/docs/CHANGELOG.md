@@ -5,6 +5,7 @@ HumHub Change Log
 --------------------------------
 
 Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users.
+Important note for Git/Composer installations: http://www.yiiframework.com/news/148/important-note-about-bower-and-the-asset-plugin/
 
 - Fix: Readonly markdown field issue.
 - Enh: Fixed registration approval/denial mails and made their default value configurable.
@@ -50,6 +51,7 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix wrong Comment date issue in notification mails
 - Enh: Added `data-file-*` attributes to download links, for beeing able to intercept file downloads
 - Enh: Added `apple-mobile-web-app-*` and `mobile-web-app-capable` meta tags to `head.php`
+- Fix #2783: E-Mail notification link broken when guest mode is enabled (Buliwyfa)
 - Enh: Added `ContentActiveRecord::silentContentCreation` for disabling ContentCreated Activity/Notification on ContentActiveRecord level
 - Enh: Now the `NewContent` live event is always fired with `sourceClass` and `sourceId` information and a `silent` flag for silent content creations
 
