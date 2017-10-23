@@ -10,6 +10,8 @@ namespace humhub\libs;
 
 use Yii;
 use yii\base\Component;
+use yii\base\Exception;
+use yii\helpers\Json;
 
 /**
  * Description of SettingManager
@@ -41,7 +43,7 @@ abstract class BaseSettingsManager extends Component
     public function init()
     {
         if ($this->moduleId === null) {
-            throw new \Exception('Could not determine module id');
+            throw new Exception('Could not determine module id');
         }
 
         $this->loadValues();
@@ -74,7 +76,7 @@ abstract class BaseSettingsManager extends Component
 
         $record->value = (string) $value;
         if (!$record->save()) {
-            throw new \yii\base\Exception("Could not store setting! (" . print_r($record->getErrors(), 1) . ")");
+            throw new Exception("Could not store setting! (" . print_r($record->getErrors(), 1) . ")");
         }
 
         // Store to runtime
@@ -92,7 +94,7 @@ abstract class BaseSettingsManager extends Component
      */
     public function setSerialized($name, $value)
     {
-        $this->set($name, \yii\helpers\Json::encode($value));
+        $this->set($name, Json::encode($value));
     }
 
     /**
@@ -105,7 +107,7 @@ abstract class BaseSettingsManager extends Component
     {
         $value = $this->get($name, $default);
         if(is_string($value)) {
-            $value = \yii\helpers\Json::decode($value);
+            $value = Json::decode($value);
         }
         return $value;
     }

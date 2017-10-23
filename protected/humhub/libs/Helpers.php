@@ -9,6 +9,7 @@
 namespace humhub\libs;
 
 use yii\base\InvalidParamException;
+use yii\base\Exception;
 
 /**
  * This class contains a lot of html helpers for the views
@@ -30,7 +31,7 @@ class Helpers
         if (strlen($text) > $length) {
             $text = preg_replace("/^(.{1,$length})(\s.*|$)/s", '\\1...', $text);
         }
-        $text = str_replace("<br />", "", $text);
+        $text = str_replace('<br />', '', $text);
 
         return($text);
     }
@@ -44,7 +45,7 @@ class Helpers
             $text = self::substru($text, 0, $textlength - ($textlength - $length));
             $text .= '...';
         }
-        $text = str_replace("<br />", "", $text);
+        $text = str_replace('<br />', '', $text);
 
         return($text);
     }
@@ -64,6 +65,7 @@ class Helpers
             return false;
         sort($a);
         sort($b);
+
         return $a == $b;
     }
 
@@ -178,9 +180,9 @@ class Helpers
      * @param string $type
      * @return boolean
      */
-    public static function CheckClassType($className, $type = "")
+    public static function CheckClassType($className, $type = '')
     {
-        $className = preg_replace('/[^a-z0-9_\-\\\]/i', "", $className);
+        $className = preg_replace('/[^a-z0-9_\-\\\]/i', '', $className);
 
         if (is_array($type)) {
             foreach ($type as $t) {
@@ -194,7 +196,7 @@ class Helpers
             }
         }
 
-        throw new \yii\base\Exception("Invalid class type! (" . $className . ")");
+        throw new Exception("Invalid class type! (" . $className . ")");
     }
 
     /**
@@ -229,6 +231,7 @@ class Helpers
         $check = 0;
         for ($i = 0; $i < $length; $i += 1)
             $check |= (ord($a[$i]) ^ ord($b[$i]));
+
         return $check === 0;
     }
 

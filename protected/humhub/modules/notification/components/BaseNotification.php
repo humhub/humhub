@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,7 +10,12 @@ namespace humhub\modules\notification\components;
 
 use Yii;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use yii\bootstrap\Html;
+use yii\db\Expression;
+use yii\db\ActiveQuery;
+use yii\base\InvalidConfigException;
+use humhub\components\SocialActivity;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\jobs\SendNotification;
 use humhub\modules\notification\jobs\SendBulkNotification;
@@ -30,7 +35,7 @@ use humhub\modules\notification\targets\WebTarget;
  *
  * @author luke
  */
-abstract class BaseNotification extends \humhub\components\SocialActivity
+abstract class BaseNotification extends SocialActivity
 {
 
     /**
@@ -95,7 +100,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     public function getViewParams($params = [])
     {
-        if ($this->hasContent() && $this->getContent()->updated_at instanceof \yii\db\Expression) {
+        if ($this->hasContent() && $this->getContent()->updated_at instanceof Expression) {
             $this->getContent()->refresh();
             $date = $this->getContent()->updated_at;
         } else if ($this->hasContent()) {
@@ -110,7 +115,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
             'isNew' => !$this->record->seen,
         ];
 
-        return \yii\helpers\ArrayHelper::merge(parent::getViewParams($result), $params);
+        return ArrayHelper::merge(parent::getViewParams($result), $params);
     }
 
     /**
@@ -124,10 +129,10 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     public function sendBulk($users)
     {
         if (empty($this->moduleId)) {
-            throw new \yii\base\InvalidConfigException('No moduleId given for "' . $this->className() . '"');
+            throw new InvalidConfigException('No moduleId given for "' . $this->className() . '"');
         }
 
-        if ($users instanceof \yii\db\ActiveQuery) {
+        if ($users instanceof ActiveQuery) {
             $users = $users->all();
         }
 
@@ -147,7 +152,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     public function send(User $user)
     {
         if (empty($this->moduleId)) {
-            throw new \yii\base\InvalidConfigException('No moduleId given for "' . $this->className() . '"');
+            throw new InvalidConfigException('No moduleId given for "' . $this->className() . '"');
         }
 
         if ($this->isOriginator($user)) {
@@ -169,7 +174,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
      */
     public function getMailSubject()
     {
-        return "New notification";
+        return 'New notification';
     }
 
     /**
@@ -224,6 +229,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
         }
         parent::about($source);
         $this->record->space_id = $this->getSpaceId();
+
         return $this;
     }
 
@@ -237,6 +243,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
         }
         $this->originator = $originator;
         $this->record->originator_user_id = $originator->id;
+
         return $this;
     }
 
@@ -341,6 +348,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
         }
 
         list($user1, $user2) = $this->getGroupLastUsers(2);
+
         return Yii::t('NotificationModule.base', '{displayName} and {displayName2}', [
                     'displayName' => Html::tag('strong', Html::encode($user1->displayName)),
                     'displayName2' => Html::tag('strong', Html::encode($user2->displayName)),
@@ -383,6 +391,7 @@ abstract class BaseNotification extends \humhub\components\SocialActivity
     {
         $result = parent::asArray($user);
         $result['mailSubject'] = $this->getMailSubject($user);
+
         return $result;
     }
 

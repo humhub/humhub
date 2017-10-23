@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -11,6 +11,9 @@ namespace humhub\modules\installer;
 use Yii;
 use yii\helpers\Url;
 use yii\base\Exception;
+use yii\web\HttpException;
+use yii\console\Application;
+use humhub\libs\DynamicConfig;
 
 /**
  * InstallerModule provides an web installation interface for the applcation
@@ -44,7 +47,7 @@ class Module extends \humhub\components\Module
     {
         parent::init();
 
-        if (Yii::$app instanceof \yii\console\Application) {
+        if (Yii::$app instanceof Application) {
             return;
         }
 
@@ -61,10 +64,11 @@ class Module extends \humhub\components\Module
 
         // Block installer, when it's marked as installed
         if (Yii::$app->params['installed']) {
-            throw new \yii\web\HttpException(500, 'HumHub is already installed!');
+            throw new HttpException(500, 'HumHub is already installed!');
         }
 
         Yii::$app->controller->enableCsrfValidation = false;
+
         return parent::beforeAction($action);
     }
 
@@ -83,11 +87,12 @@ class Module extends \humhub\components\Module
             return Yii::$app->db->getIsActive();
         } catch (Exception $e) {
             
-        } catch (\yii\base\Exception $e) {
+        } catch (Exception $e) {
             
         } catch (\PDOException $e) {
             
         }
+
         return false;
     }
 
@@ -99,6 +104,7 @@ class Module extends \humhub\components\Module
         if (Yii::$app->settings->get('secret') != "") {
             return true;
         }
+
         return false;
     }
 
@@ -107,9 +113,9 @@ class Module extends \humhub\components\Module
      */
     public function setInstalled()
     {
-        $config = \humhub\libs\DynamicConfig::load();
+        $config = DynamicConfig::load();
         $config['params']['installed'] = true;
-        \humhub\libs\DynamicConfig::save($config);
+        DynamicConfig::save($config);
     }
 
     /**
@@ -117,9 +123,9 @@ class Module extends \humhub\components\Module
      */
     public function setDatabaseInstalled()
     {
-        $config = \humhub\libs\DynamicConfig::load();
+        $config = DynamicConfig::load();
         $config['params']['databaseInstalled'] = true;
-        \humhub\libs\DynamicConfig::save($config);
+        DynamicConfig::save($config);
     }
 
     protected function initConfigSteps()

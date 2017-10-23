@@ -8,6 +8,10 @@
 
 namespace humhub\modules\activity\components;
 
+use yii\base\InvalidConfigException;
+use yii\base\Exception;
+use yii\db\ActiveRecord;
+use humhub\components\SocialActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
@@ -18,7 +22,7 @@ use humhub\modules\content\models\Content;
  *
  * @author luke
  */
-abstract class BaseActivity extends \humhub\components\SocialActivity
+abstract class BaseActivity extends SocialActivity
 {
 
     /**
@@ -43,7 +47,7 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
     public function init()
     {
         if ($this->viewName == "") {
-            throw new \yii\base\InvalidConfigException("Missing viewName!");
+            throw new InvalidConfigException('Missing viewName!');
         }
 
         parent::init();
@@ -77,11 +81,11 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
     public function create()
     {
         if ($this->moduleId == "") {
-            throw new \yii\base\InvalidConfigException("No moduleId given!");
+            throw new InvalidConfigException('No moduleId given!');
         }
 
-        if (!$this->source instanceof \yii\db\ActiveRecord) {
-            throw new \yii\base\InvalidConfigException("Invalid source object given!");
+        if (!$this->source instanceof ActiveRecord) {
+            throw new InvalidConfigException('Invalid source object given!');
         }
 
         $this->saveModelInstance();
@@ -140,11 +144,11 @@ abstract class BaseActivity extends \humhub\components\SocialActivity
         $this->record->content->created_by = $this->getOriginatorId();
 
         if ($this->record->content->created_by == null) {
-            throw new \yii\base\InvalidConfigException("Could not determine originator for activity!");
+            throw new InvalidConfigException('Could not determine originator for activity!');
         }
 
         if (!$this->record->save()) {
-            throw new \yii\base\Exception("Could not save activity!" . $this->record->getErrors());
+            throw new Exception('Could not save activity!' . $this->record->getErrors());
         }
     }
 

@@ -2,14 +2,16 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\notification\controllers;
 
 use Yii;
+use yii\web\HttpException;
 use humhub\components\Controller;
+use humhub\components\behaviors\AccessControl;
 use humhub\modules\notification\models\Notification;
 
 /**
@@ -27,7 +29,7 @@ class EntryController extends Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::className(),
             ]
         ];
     }
@@ -40,7 +42,7 @@ class EntryController extends Controller
         $notificationModel = Notification::findOne(['id' => Yii::$app->request->get('id'), 'user_id' => Yii::$app->user->id]);
 
         if ($notificationModel === null) {
-            throw new \yii\web\HttpException(404, Yii::t('NotificationModule.error','The requested content is not valid or was removed!'));
+            throw new HttpException(404, Yii::t('NotificationModule.error','The requested content is not valid or was removed!'));
         }
 
         $notification = $notificationModel->getClass();

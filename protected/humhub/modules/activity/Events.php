@@ -9,17 +9,19 @@
 namespace humhub\modules\activity;
 
 use Yii;
+use yii\base\Object;
 use humhub\modules\activity\components\MailSummary;
 use humhub\modules\activity\jobs\SendMailSummary;
 use humhub\modules\activity\models\Activity;
 use yii\base\Event;
+use yii\db\ActiveRecord;
 
 /**
  * Events provides callbacks to handle events.
  *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends Object
 {
 
     /**
@@ -46,7 +48,7 @@ class Events extends \yii\base\Object
      */
     public static function onActiveRecordDelete(Event $event)
     {
-        if (!($event->sender instanceof \yii\db\ActiveRecord)) {
+        if (!($event->sender instanceof ActiveRecord)) {
             throw new \LogicException('The handler can be applied only to the \yii\db\ActiveRecord.');
         }
 

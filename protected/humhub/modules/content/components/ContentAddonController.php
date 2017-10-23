@@ -9,7 +9,10 @@
 namespace humhub\modules\content\components;
 
 use Yii;
+use humhub\components\Controller;
 use yii\web\HttpException;
+use yii\base\Exception;
+use humhub\libs\Helpers;
 
 
 /**
@@ -23,7 +26,7 @@ use yii\web\HttpException;
  * @author luke
  * @version 0.11
  */
-class ContentAddonController extends \humhub\components\Controller
+class ContentAddonController extends Controller
 {
 
     /**
@@ -83,7 +86,7 @@ class ContentAddonController extends \humhub\components\Controller
             throw new HttpException(500, 'Model & ID parameter required!');
         }
 
-        \humhub\libs\Helpers::CheckClassType($modelClass, array(ContentAddonActiveRecord::className(), ContentActiveRecord::className()));
+        Helpers::CheckClassType($modelClass, [ContentAddonActiveRecord::className(), ContentActiveRecord::className()]);
         $target = $modelClass::findOne(['id' => $pk]);
 
         if ($target === null) {
@@ -116,8 +119,8 @@ class ContentAddonController extends \humhub\components\Controller
      */
     public function loadContentAddon($className, $pk)
     {
-        if (!\humhub\libs\Helpers::CheckClassType($className, ContentAddonActiveRecord::className())) {
-            throw new \yii\base\Exception("Given className is not a content addon model!");
+        if (!Helpers::CheckClassType($className, ContentAddonActiveRecord::className())) {
+            throw new Exception("Given className is not a content addon model!");
         }
 
         $target = $className::findOne(['id' => $pk]);
