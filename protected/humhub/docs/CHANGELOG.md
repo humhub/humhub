@@ -7,7 +7,6 @@ HumHub Change Log
 Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users.
 
 - Fix: Readonly markdown field issue.
-- Enh: Added flag to control automatically created social activities at content creation.
 - Enh: Fixed registration approval/denial mails and made their default value configurable.
 - Enh: Updated primary auth client interface for more flexibility
 - Enh: Added LDAP ID attribute to improve user mapping
@@ -51,6 +50,8 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix wrong Comment date issue in notification mails
 - Enh: Added `data-file-*` attributes to download links, for beeing able to intercept file downloads
 - Enh: Added `apple-mobile-web-app-*` and `mobile-web-app-capable` meta tags to `head.php`
+- Enh: Added `ContentActiveRecord::silentContentCreation` for disabling ContentCreated Activity/Notification on ContentActiveRecord level
+- Enh: Now the `NewContent` live event is always fired with `sourceClass` and `sourceId` information and a `silent` flag for silent content creations
 
 1.2.2  (August 2, 2017)
 --------------------------------
