@@ -52,6 +52,7 @@ Important note for Git/Composer installations: http://www.yiiframework.com/news/
 - Fix wrong Comment date issue in notification mails
 - Enh: Added `data-file-*` attributes to download links, for beeing able to intercept file downloads
 - Enh: Added `apple-mobile-web-app-*` and `mobile-web-app-capable` meta tags to `head.php`
+- Fix #2783: E-Mail notification link broken when guest mode is enabled (Buliwyfa)
 
 1.2.2  (August 2, 2017)
 --------------------------------
