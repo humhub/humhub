@@ -23,43 +23,89 @@ use yii\base\Object;
 use yii\web\Controller;
 
 /**
- * ControllerAccess contains the actual logic to verify if a user can access a given $action.
+ * ControllerAccess contains the actual logic to verify whether or not a user can access a controller action by means of
+ * a given set of access rules.
  *
- * By default the AccessCheck will set the current logged in user permission object, if $user is null, we assume a guest
- * user.
+ * By default the AccessCheck will use the current logged in user as permission subject.
  *
- * The guest user access can be verified by calling the `reguiresLogin()` check.
+ * The actual permission rule verification is handled by the [[run()]] function.
  *
- * Inactive users are can be catched by calling `isInActiveUser()`.
+ * Subclasses can extend the set of available validators by calling [[registerValidator()]] and providing a validator setting array as:
  *
- * The actual permission rule verification is handled by the `verify()` check, subclasses may overwrite and extend this
- * function with additional checks.
- *
- * Subclasses can extend available validators by calling `registerValidator` and providing a validator setting array as:
- *
- * ```
+ * ```php
  * public function init()
  * {
  *    parent::init();
  *    $this->registerValidator([
- *      self::RULE_MY_CUSTOM_RULE => 'validateCustomRule',
- *      'reason' => Yii::t('error', 'Guest mode not active, please login first.'),
- *      'code' => 401]);
+ *      self::RULE_MY_RULE => 'validateMyRule',
+ *      'reason' => Yii::t('error', 'My validation rule could not be verified.'),
+ *      'code' => 401
+ *     ]);
  * }
  * ```
  *
- * The previous example registered an new validator repsonsible for validating $rules with name self::RULE_MY_CUSTOM_RULE and validation
- * handler function 'validateCustomRule' which defines an handler method within the subclass.
+ * The previous example registered a new validator responsible for validating rules with the name `validateMyRule` and validation
+ * handler function `validateMyRule` which defines an handler method within the subclass.
  *
- * The validator can be set the following additional settings:
+ * Custom Validators can also be added by means of a Validator class as in the following example:
  *
- *  - **reason**: Reason set if the validaiton fails
- *  - **code**: Http Code e.g. 404, 403, 401
- *  - **actionType**: Defines how to determine if a rule is action related by default an action rule allows the following action settings:
- * ['myCustomRule' => ['action1', 'action2']] and ['myCustomRule', 'actions' => ['action1', 'action2']] but can be restricted to the second definition only by setting ACTION_SETTING_TYPE_OPTION_ONLY
- * - **actionFilter**: if set to false the validations handler is always executed even if the action settings do not match with the current action (default true)
- * - **strict**: if set to false only one rule of a given validator has to pass otherwise all rules have to pass (default true)
+ * ```php
+ * $this->registerValidator(MyValidator::class);
+ * ```
  *
+ * where `MyValidator` is a subclass of [[\humhub\components\access\AccessValidator]]
+ *
+ * A single rule is provided as a array. If not specified otherwise, a rule supports the following base format:
+ *
+ * ```php
+ * ['ruleName', 'actions' => ['action1', 'action2']]
+ * ```
+ * or
+ *
+ * ```php
+ * ['ruleName' => ['action1', action2]]
+ * ```
+ *
+ * > Note: the second format is not supported by all rules e.g. permission rule
+ *
+ * If no action array is provided, the rule is considered to be controller global and will be verified for all actions.
+ *
+ * If a rule for a given name could not be found, the ControllerAccess tries to determine a custom rule validator set by the controller itself:
+ *
+ * ```php
+ * ['validateMyCustomRule', 'someParameter' => $value]
+ * ```
+ *
+ * will search for controller validator function `validateMyCustomRule`:
+ *
+ * ```php
+ * public function validateTestRule($rule, $access)
+ * {
+ *     if($rule['someParameter'] == 'valid') {
+ *          $access->code = 401;
+ *          $access->reason = 'Not authorized!';
+ *          return false;
+ *     }
+ *
+ *     return true;
+ * }
+ * ```
+ *
+ * By defining the [[fixedRules]] array property a ControllerAccess can define rules which are always applied, this property (or [[getFixedRules()]] function
+ * may be overwritten by subclasses.
+ *
+ * The following rules are available by default:
+ *
+ *  - **admin**: The user has to be system admin to access a action
+ *  - **permission** Group Permission check
+ *  - **login**: The user has to be logged in to access a action
+ *  - **strict**: Will check for guest users against the guest users allowed setting
+ *  - **post**: Will only accept post requests for the given actions
+ *  - **json**: Will handle json result requests by setting `Yii::$app->response->format = 'json'`
+ *  - **disabledUser**: Checks if the given user is a disabled user **(fixed)**
+ *  - **unapprovedUser**: Checks if the given user is a unapproved user **(fixed)**
+ *
+ * @see AccessValidator
  * @since 1.2.2
  */
 class ControllerAccess extends Object
@@ -74,14 +120,44 @@ class ControllerAccess extends Object
      */
     const ACTION_SETTING_TYPE_BOTH = 1;
 
+    /**
+     * Only admins have access to the given set of actions e.g.: ['admin' => ['action1']]
+     */
     const RULE_ADMIN_ONLY = 'admin';
+
+    /**
+     * Validate against a given set of permissions  e.g.: ['permission' => [MyPermission::class], 'actions' => ['action1']]
+     */
     const RULE_PERMISSION = 'permission';
+
+    /**
+     * Only logged in user have access  e.g.: ['login' => ['action1', 'action2']]
+     */
     const RULE_LOGGED_IN_ONLY = 'login';
-    const RULE_GUEST_CUSTOM = 'custom';
+
+    /**
+     * Check guest mode  e.g.: ['strict'] (mainly used as global)
+     */
     const RULE_STRICT = 'strict';
+
+    /**
+     * Check guest if user is disabled
+     */
     const RULE_DISABLED_USER = 'disabledUser';
+
+    /**
+     * Check guest if user is unnapproved
+     */
     const RULE_UNAPPROVED_USER = 'unapprovedUser';
+
+    /**
+     * Check guest if request method is post
+     */
     const RULE_POST = 'post';
+
+    /**
+     * Make sure response type is json
+     */
     const RULE_JSON = 'json';
 
     /**
@@ -152,11 +228,20 @@ class ControllerAccess extends Object
         $this->registerValidator([self::RULE_JSON => 'validateJsonResponse']);
     }
 
+    /**
+     * @return array set of rules
+     */
     public function getRules()
     {
         return $this->rules;
     }
 
+    /**
+     * Sets the current set of rules.
+     * > Note: This will merge the given set of rules with the fixed rules.
+     *
+     * @param array $rules sets th
+     */
     public function setRules($rules = [])
     {
         $this->rules = array_merge($this->getFixedRules(), $rules);
@@ -176,9 +261,7 @@ class ControllerAccess extends Object
     protected function registerValidator($options)
     {
         if(is_string($options)) {
-            $options = [
-                'class' => $options,
-            ];
+            $options = ['class' => $options];
         }
 
         $options['access'] = $this;
@@ -264,7 +347,7 @@ class ControllerAccess extends Object
     }
 
     /**
-     * Extracts the ruleName from the given $array.
+     * Extracts the ruleName from a given rule option array.
      *
      * @param $arr
      * @return mixed|null

@@ -14,38 +14,81 @@ use humhub\components\access\ControllerAccess;
 use yii\web\HttpException;
 
 /**
- * AccessControl provides basic controller access protection
+ * Handles the AccessControl for a Controller.
  *
- * Here are some examples access control settings:
+ * Controller level AccessRules can be provided by either setting the [[rules]] array, or by implementing a `getAccessRules()` function
+ * within the controller itself (prefered).
  *
- * Allow guest access for action 'info'
+ * **Examples:**
  *
- * ```
- * [
- *      'acl' => [
- *          'class' => \humhub\components\behaviors\AccessControl::className(),
- *          'guestAllowedActions' => ['info']
- *      ]
- * ]
- * ```
+ * Disable guest access for all controller actions:
  *
- * Allow access by pemission rule:
- *
- * ```
- * [
- *      'acl' => [
- *          'class' => \humhub\components\behaviors\AccessControl::className(),
- *          'rules' => [
- *              [
- *                  'groups' => [
- *                      'humhub\modules\xy\permissions\MyAccessPermssion'
- *                  ]
- *              ]
- *          ]
- *      ]
- * ]
+ * ```php
+ * public function getAccessRules()
+ * {
+ *     return [
+ *          ['login']
+ *     ];
+ * }
  * ```
  *
+ * Disable guest access for specific controller actions:
+ *
+ * ```php
+ * public function getAccessRules()
+ * {
+ *     return [
+ *          ['login' => ['action1', 'action2']]
+ *     ];
+ * }
+ * ```
+ *
+ * All users have to be logged in + additional permission check for 'action1' and 'action2':
+ *
+ * ```php
+ * public function getAccessRules()
+ * {
+ *     return [
+ *          ['login'],
+ *          ['permission' => MyPermission::class, 'actions' => ['action1', 'action2']]
+ *     ];
+ * }
+ * ```
+ *
+ * Custom inline validator for action 'action1':
+ *
+ * ```php
+ * public function getAccessRules()
+ * {
+ *     return [
+ *          ['validateMyCustomRule', 'someParameter' => 'someValue', 'actions' => ['action1']]
+ *     ];
+ * }
+ *
+ * public function validateMyCustomRule($rule, $access)
+ * {
+ *     if($rule['someParameter'] !== 'someValue') {
+ *          $access->code = 401;
+ *          $access->reason = 'Not authorized!';
+ *          return false;
+ *     }
+ *
+ *      return true;
+ * }
+ *
+ * ```
+ *
+ * The list of available rules is given by the [[\humhub\components\access\ControllerAccess]] class set by a controller. By
+ * default the base [[\humhub\components\access\ControllerAccess]] class will be used.
+ *
+ * The default ControllerAccess class can be overwritten by implementing the `getAccess()` function within a controller, which should return an instance
+ * of ControllerAccess.
+ *
+ * > Note: You can also use the [[\humhub\components\Controller::access]] property to define a ControllerAccess class string.
+ *
+ *
+ *
+ * @see ControllerAccess
  * @author luke
  */
 class AccessControl extends \yii\base\ActionFilter

@@ -23,7 +23,7 @@ use humhub\components\access\StrictAccess;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 
-class ControllerAccessTest extends HumHubDbTestCase
+class TestControllerAccess extends HumHubDbTestCase
 {
     public $fixtureConfig = ['default'];
 
