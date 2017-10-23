@@ -155,6 +155,10 @@ Important note for Git/Composer installations: http://www.yiiframework.com/news/
 - Fix #2785 #2172: Added iconv PHP extension to the requirement check (leuprechtroman)
 
 
+1.2.1 (under development)
+--------------------------------
+- Enh #2497: The notification ContentCreated can be disabled (githubjeka)
+
 1.2.0 (April 16, 2017)
 --------------------------------
 - Fix: SVG file uploads broken (mime type: image/svg+xml)

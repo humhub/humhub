@@ -46,11 +46,11 @@ use yii\rbac\Permission;
  */
 class Content extends ContentDeprecated
 {
-
     /**
-     * A array of user objects which should informed about this new content.
-     *
-     * @var array User
+     * An array of user objects which should informed about this new content.
+     * If it is empty array then by default will be notify followers for the $container of this content only.
+     * If it is false then users notifications of new content will be disabled for this content.
+     * @var User[]|false
      */
     public $notifyUsersOfNewContent = [];
 
@@ -173,39 +173,39 @@ class Content extends ContentDeprecated
      */
     public function afterSave($insert, $changedAttributes)
     {
-        $contentSource = $this->getPolymorphicRelation();
+        parent::afterSave($insert, $changedAttributes);
 
-        foreach ($this->notifyUsersOfNewContent as $user) {
-            $contentSource->follow($user->id);
-        }
+        if ($this->notifyUsersOfNewContent !== false) {
+            $contentSource = $this->getPolymorphicRelation();
 
-        if ($insert && !$contentSource instanceof \humhub\modules\activity\models\Activity) {
+            foreach ($this->notifyUsersOfNewContent as $user) {
+                $contentSource->follow($user->id);
+            }
 
-            if (!$this->muteDefaultSocialActivities && $this->container !== null) {
-                $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
+            if ($insert && !$contentSource instanceof \humhub\modules\activity\models\Activity) {
+                if (!$this->muteDefaultSocialActivities && $this->container !== null) {
+                    $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
 
-                \humhub\modules\content\notifications\ContentCreated::instance()
-                        ->from($this->user)
-                        ->about($contentSource)
-                        ->sendBulk($notifyUsers);
+                    \humhub\modules\content\notifications\ContentCreated::instance()
+                            ->from($this->user)
+                            ->about($contentSource)
+                            ->sendBulk($notifyUsers);
                 
-                \humhub\modules\content\activities\ContentCreated::instance()
-                        ->from($this->user)
-                        ->about($contentSource)->save();
+                    \humhub\modules\content\activities\ContentCreated::instance()
+                            ->from($this->user)
+                            ->about($contentSource)->save();
 
-
-                Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
-                    'sguid' => ($this->container instanceof Space) ? $this->container->guid : null,
-                    'uguid' => ($this->container instanceof User) ? $this->container->guid : null,
-                    'originator' => $this->user->guid,
-                    'contentContainerId' => $this->container->contentContainerRecord->id,
-                    'visibility' => $this->visibility,
-                    'contentId' => $this->id
-                ]));
+                    Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
+                        'sguid' => ($container instanceof Space) ? $container->guid : null,
+                        'uguid' => ($container instanceof User) ? $container->guid : null,
+                        'originator' => $this->user->guid,
+                        'contentContainerId' => $container->contentContainerRecord->id,
+                        'visibility' => $this->visibility,
+                        'contentId' => $this->id
+                    ]));
+                }
             }
         }
-
-        return parent::afterSave($insert, $changedAttributes);
     }
 
     /**
