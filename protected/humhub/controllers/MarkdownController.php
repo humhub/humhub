@@ -10,6 +10,8 @@ namespace humhub\controllers;
 
 use Yii;
 use humhub\components\Controller;
+use humhub\components\behaviors\AccessControl;
+use humhub\widgets\MarkdownView;
 
 /**
  * MarkdownController provides preview for MarkdownEditorWidget
@@ -27,7 +29,7 @@ class MarkdownController extends Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::className(),
             ]
         ];
     }
@@ -36,7 +38,7 @@ class MarkdownController extends Controller
     {
         $this->forcePostRequest();
 
-        return \humhub\widgets\MarkdownView::widget(['markdown' => Yii::$app->request->post('markdown')]);
+        return MarkdownView::widget(['markdown' => Yii::$app->request->post('markdown')]);
     }
 
 }

@@ -46,7 +46,7 @@ abstract class BaseActivity extends SocialActivity
      */
     public function init()
     {
-        if ($this->viewName == "") {
+        if ($this->viewName == '') {
             throw new InvalidConfigException('Missing viewName!');
         }
 
@@ -80,7 +80,7 @@ abstract class BaseActivity extends SocialActivity
      */
     public function create()
     {
-        if ($this->moduleId == "") {
+        if ($this->moduleId == '') {
             throw new InvalidConfigException('No moduleId given!');
         }
 

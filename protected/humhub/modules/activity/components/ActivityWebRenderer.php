@@ -9,6 +9,7 @@
 namespace humhub\modules\activity\components;
 
 use Yii;
+use humhub\components\rendering\LayoutRenderer;
 use humhub\components\rendering\Viewable;
 
 /**
@@ -26,7 +27,7 @@ use humhub\components\rendering\Viewable;
  * @author buddha
  * @since 1.2
  */
-class ActivityWebRenderer extends \humhub\components\rendering\LayoutRenderer
+class ActivityWebRenderer extends LayoutRenderer
 {
 
     /**

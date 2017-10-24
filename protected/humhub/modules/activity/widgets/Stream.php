@@ -8,7 +8,10 @@
 
 namespace humhub\modules\activity\widgets;
 
+use yii\base\Widget;
 use yii\web\HttpException;
+use yii\helpers\Url;
+use humhub\modules\stream\actions\Stream;
 
 /**
  * ActivityStreamWidget shows an stream/wall of activities inside a sidebar.
@@ -17,7 +20,7 @@ use yii\web\HttpException;
  * @package humhub.modules_core.activity
  * @since 0.5
  */
-class Stream extends \yii\base\Widget
+class Stream extends Widget
 {
     /**
      * Optional content container if this stream belongs to one
@@ -50,7 +53,7 @@ class Stream extends \yii\base\Widget
     public function run()
     {
         $streamUrl = $this->getStreamUrl();
-        $infoUrl = \yii\helpers\Url::to(['/activity/link/info', 'id' => '-id-']);
+        $infoUrl = Url::to(['/activity/link/info', 'id' => '-id-']);
 
         return $this->render('activityStream', [
             'streamUrl' => $streamUrl,
@@ -61,14 +64,14 @@ class Stream extends \yii\base\Widget
     protected function getStreamUrl()
     {
         $params = [
-            'mode' => \humhub\modules\stream\actions\Stream::MODE_ACTIVITY,
+            'mode' => Stream::MODE_ACTIVITY,
         ];
 
         if ($this->contentContainer) {
             return $this->contentContainer->createUrl($this->streamAction, $params);
         }
 
-        return \yii\helpers\Url::to(array_merge([$this->streamAction], $params));
+        return Url::to(array_merge([$this->streamAction], $params));
     }
 
 }

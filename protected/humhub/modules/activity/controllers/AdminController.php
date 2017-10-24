@@ -10,6 +10,7 @@ namespace humhub\modules\activity\controllers;
 
 use Yii;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\activity\models\MailSummaryForm;
 
 /**
@@ -26,7 +27,7 @@ class AdminController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => \humhub\modules\admin\permissions\ManageSettings::className()]
+            ['permissions' => ManageSettings::className()]
         ];
     }
 
