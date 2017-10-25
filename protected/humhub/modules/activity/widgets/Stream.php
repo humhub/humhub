@@ -11,7 +11,7 @@ namespace humhub\modules\activity\widgets;
 use yii\base\Widget;
 use yii\web\HttpException;
 use yii\helpers\Url;
-use humhub\modules\stream\actions\Stream;
+use humhub\modules\stream\actions\Stream as StreamAction; 
 
 /**
  * ActivityStreamWidget shows an stream/wall of activities inside a sidebar.
@@ -64,7 +64,7 @@ class Stream extends Widget
     protected function getStreamUrl()
     {
         $params = [
-            'mode' => Stream::MODE_ACTIVITY,
+            'mode' => StreamAction::MODE_ACTIVITY,
         ];
 
         if ($this->contentContainer) {
