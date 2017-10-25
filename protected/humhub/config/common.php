@@ -124,7 +124,7 @@ $config = [
             'dsn' => 'mysql:host=localhost;dbname=humhub',
             'username' => '',
             'password' => '',
-            'charset' => 'utf8',
+            'charset' => 'utf8mb4',
             'enableSchemaCache' => true,
             'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
         ],
