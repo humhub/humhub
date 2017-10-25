@@ -1,9 +1,16 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\stream\models;
 
 use humhub\modules\content\models\Content;
 use Yii;
+use yii\base\Exception;
 
 /**
  * StreamSuppressQuery detects same content types in a row and trims the output.
@@ -205,7 +212,7 @@ class StreamSuppressQuery extends StreamQuery
     public function getSuppressions()
     {
         if (!$this->isQueryExecuted) {
-            throw new \yii\base\Exception("Execute query first via all() method before reading suppressed items.");
+            throw new Exception('Execute query first via all() method before reading suppressed items.');
         }
 
         $results = [];

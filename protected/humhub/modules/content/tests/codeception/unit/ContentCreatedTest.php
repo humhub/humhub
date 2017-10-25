@@ -31,6 +31,34 @@ class ContentCreatedTest extends HumHubDbTestCase
         $this->assertMailSent(1, 'ContentCreated Notification Mail sent');
     }
 
+    public function testSilentContentCreation()
+    {
+        $this->becomeUser('User2');
+
+        $post = new Post(['message' => 'MyTestContent']);
+        $post->silentContentCreation = true;
+        $post->content->setContainer(Space::findOne(['id' => 2]));
+        $post->content->visibility = Content::VISIBILITY_PUBLIC;
+        $post->save();
+
+        // Note Admin is following Space2 so we expect one notification mail.
+        $this->assertMailSent(0, 'ContentCreated Notification Mail not sent');
+    }
+
+    public function testMuteContentNotifications()
+    {
+        $this->becomeUser('User2');
+
+        $post = new Post(['message' => 'MyTestContent']);
+        $post->content->setContainer(Space::findOne(['id' => 2]));
+        $post->content->visibility = Content::VISIBILITY_PUBLIC;
+        $post->content->muteDefaultSocialActivities = true;
+        $post->save();
+
+        // Note Admin is following Space2 so we expect one notification mail.
+        $this->assertMailSent(0, 'ContentCreated Notification Mail not sent');
+    }
+
     /**
      * Disable mail notifications for a follower.
      */

@@ -156,6 +156,10 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
     {
         $contentInfo = $this->getContentInfo($this->getCommentedRecord());
 
+        if (!$contentInfo) {
+            $contentInfo = Yii::t('CommentModule.notification', "[Deleted]");
+        }
+
         if ($this->groupCount > 1) {
             return Yii::t('CommentModule.notification', "{displayNames} commented {contentTitle}.", [
                 'displayNames' => $this->getGroupUserDisplayNames(),
@@ -175,7 +179,12 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
      */
     public function getCommentedRecord()
     {
-        return $this->source->getCommentedRecord();
+        $source = $this->source;
+        if (is_null($source)) {
+            //This prevents the error, but we need to clean the database
+            return null;
+        } else {
+            return $source->getCommentedRecord();
+        }
     }
-
 }

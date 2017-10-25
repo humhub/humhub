@@ -11,6 +11,7 @@ namespace humhub\modules\activity\controllers;
 use Yii;
 use humhub\components\Controller;
 use humhub\modules\activity\models\Activity;
+use humhub\components\behaviors\AccessControl;
 
 /**
  * LinkController provides link informations about an Activity via JSON.
@@ -27,7 +28,7 @@ class LinkController extends Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::className(),
                 'guestAllowedActions' => ['info']
             ]
         ];

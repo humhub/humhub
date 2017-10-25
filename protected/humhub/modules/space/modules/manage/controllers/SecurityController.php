@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -31,6 +31,7 @@ class SecurityController extends Controller
             $this->view->saved();
             return $this->redirect($space->createUrl('index'));
         }
+
         return $this->render('index', ['model' => $space]);
     }
 
@@ -52,19 +53,17 @@ class SecurityController extends Controller
             Yii::$app->response->format = 'json';
             $permission = $space->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
             if ($permission === null) {
-                throw new \yii\web\HttpException(500, 'Could not find permission!');
+                throw new HttpException(500, 'Could not find permission!');
             }
             $space->permissionManager->setGroupState($groupId, $permission, Yii::$app->request->post('state'));
             return [];
         }
 
-        return $this->render('permissions', array(
+        return $this->render('permissions', [
                     'space' => $space,
                     'groups' => $groups,
                     'groupId' => $groupId
-        ));
+        ]);
     }
 
 }
-
-?>

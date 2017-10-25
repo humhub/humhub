@@ -2,17 +2,24 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\controllers;
 
 use Yii;
+use yii\web\HttpException;
+use yii\db\Expression;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
+use humhub\modules\space\widgets\ListBox;
+use humhub\components\behaviors\AccessControl;
+use humhub\modules\user\permissions\ViewAboutPage;
+use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
 
 /**
  * ProfileController is responsible for all user profiles.
@@ -32,7 +39,7 @@ class ProfileController extends ContentContainerController
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::className(),
                 'guestAllowedActions' => ['index', 'stream', 'about']
             ]
         ];
@@ -43,13 +50,13 @@ class ProfileController extends ContentContainerController
      */
     public function actions()
     {
-        return array(
-            'stream' => array(
+        return [
+            'stream' => [
                 'class' => ContentContainerStream::className(),
                 'mode' => ContentContainerStream::MODE_NORMAL,
                 'contentContainer' => $this->contentContainer
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -74,8 +81,8 @@ class ProfileController extends ContentContainerController
 
     public function actionAbout()
     {
-        if (!$this->contentContainer->permissionManager->can(new \humhub\modules\user\permissions\ViewAboutPage())) {
-            throw new \yii\web\HttpException(403, 'Forbidden');
+        if (!$this->contentContainer->permissionManager->can(new ViewAboutPage())) {
+            throw new HttpException(403, 'Forbidden');
         }
 
         return $this->render('about', ['user' => $this->contentContainer]);
@@ -84,7 +91,7 @@ class ProfileController extends ContentContainerController
     public function actionFollow()
     {
         if(Yii::$app->getModule('user')->disableFollow) {
-            throw new \yii\web\HttpException(403, Yii::t('ContentModule.controllers_ContentController', 'This action is disabled!'));
+            throw new HttpException(403, Yii::t('ContentModule.controllers_ContentController', 'This action is disabled!'));
         }
         
         $this->forcePostRequest();
@@ -114,21 +121,22 @@ class ProfileController extends ContentContainerController
     public function actionFollowerList()
     {
         $query = User::find();
-        $query->leftJoin('user_follow', 'user.id=user_follow.user_id and object_model=:userClass and user_follow.object_id=:userId', [':userClass' => User::className(), ':userId' => $this->getUser()->id]);
+        $query->leftJoin('user_follow', 'user.id=user_follow.user_id AND object_model=:userClass AND user_follow.object_id=:userId', [':userClass' => User::className(), ':userId' => $this->getUser()->id]);
         $query->orderBy(['user_follow.id' => SORT_DESC]);
-        $query->andWhere(['IS NOT', 'user_follow.id', new \yii\db\Expression('NULL')]);
+        $query->andWhere(['IS NOT', 'user_follow.id', new Expression('NULL')]);
         $query->active();
 
         $title = Yii::t('UserModule.widgets_views_userFollower', '<strong>User</strong> followers');
+
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
     public function actionFollowedUsersList()
     {
         $query = User::find();
-        $query->leftJoin('user_follow', 'user.id=user_follow.object_id and object_model=:userClass and user_follow.user_id=:userId', [':userClass' => User::className(), ':userId' => $this->getUser()->id]);
+        $query->leftJoin('user_follow', 'user.id=user_follow.object_id AND object_model=:userClass AND user_follow.user_id=:userId', [':userClass' => User::className(), ':userId' => $this->getUser()->id]);
         $query->orderBy(['user_follow.id' => SORT_DESC]);
-        $query->andWhere(['IS NOT', 'user_follow.id', new \yii\db\Expression('NULL')]);
+        $query->andWhere(['IS NOT', 'user_follow.id', new Expression('NULL')]);
         $query->active();
 
         $title = Yii::t('UserModule.widgets_views_userFollower', '<strong>Following</strong> user');
@@ -137,16 +145,14 @@ class ProfileController extends ContentContainerController
 
     public function actionSpaceMembershipList()
     {
-        $query = \humhub\modules\space\models\Membership::getUserSpaceQuery($this->getUser());
+        $query = Membership::getUserSpaceQuery($this->getUser());
 
         if (!$this->getUser()->isCurrentUser()) {
-            $query->andWhere(['!=', 'space.visibility', \humhub\modules\space\models\Space::VISIBILITY_NONE]);
+            $query->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE]);
         }
 
         $title = Yii::t('UserModule.widgets_views_userSpaces', '<strong>Member</strong> in these spaces');
-        return $this->renderAjaxContent(\humhub\modules\space\widgets\ListBox::widget(['query' => $query, 'title' => $title]));
+        return $this->renderAjaxContent(ListBox::widget(['query' => $query, 'title' => $title]));
     }
 
 }
-
-?>

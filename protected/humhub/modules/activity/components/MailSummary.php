@@ -11,9 +11,12 @@ namespace humhub\modules\activity\components;
 use Yii;
 use yii\base\Exception;
 use yii\base\Component;
+use yii\helpers\Url;
+use yii\db\Expression;
 use humhub\modules\dashboard\components\actions\DashboardStream;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\activity\models\MailSummaryForm;
+use humhub\modules\activity\models\Activity;
 
 /**
  * MailSummary is send to the user with a list of new activities
@@ -83,7 +86,7 @@ class MailSummary extends Component
 
         try {
             Yii::$app->view->params['showUnsubscribe'] = true;
-            Yii::$app->view->params['unsubscribeUrl'] = \yii\helpers\Url::to(['/activity/user'], true);
+            Yii::$app->view->params['unsubscribeUrl'] = Url::to(['/activity/user'], true);
             $mail = Yii::$app->mailer->compose([
                 'html' => $this->layout,
                 'text' => $this->layoutPlaintext
@@ -113,14 +116,14 @@ class MailSummary extends Component
     protected function getSubject()
     {
         if ($this->interval === self::INTERVAL_DAILY) {
-            return Yii::t('ActivityModule.base', "Your daily summary");
+            return Yii::t('ActivityModule.base', 'Your daily summary');
         } elseif ($this->interval === self::INTERVAL_HOURY) {
-            return Yii::t('ActivityModule.base', "Latest news");
+            return Yii::t('ActivityModule.base', 'Latest news');
         } elseif ($this->interval === self::INTERVAL_WEEKLY) {
-            return Yii::t('ActivityModule.base', "Your weekly summary");
+            return Yii::t('ActivityModule.base', 'Your weekly summary');
         }
 
-        return "";
+        return '';
     }
 
     /**
@@ -155,7 +158,7 @@ class MailSummary extends Component
         foreach ($stream->activeQuery->all() as $content) {
             try {
                 $activity = $content->getPolymorphicRelation();
-                if ($activity instanceof \humhub\modules\activity\models\Activity) {
+                if ($activity instanceof Activity) {
                     /**
                      * @var $activity \humhub\modules\activity\models\Activity
                      */
@@ -187,7 +190,7 @@ class MailSummary extends Component
     {
         $lastSent = (int) Yii::$app->getModule('activity')->settings->user($this->user)->get('mailSummaryLast');
         if (empty($lastSent)) {
-            $lastSent = new \yii\db\Expression('NOW() - INTERVAL 24 HOUR');
+            $lastSent = new Expression('NOW() - INTERVAL 24 HOUR');
         } else {
             $lastSent = date('Y-m-d G:i:s', $lastSent);
         }

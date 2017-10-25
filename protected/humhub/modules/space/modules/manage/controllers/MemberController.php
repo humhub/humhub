@@ -8,9 +8,9 @@
 
 namespace humhub\modules\space\modules\manage\controllers;
 
-use humhub\modules\space\models\Space;
 use Yii;
 use yii\web\HttpException;
+use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\modules\user\models\User;
@@ -52,7 +52,7 @@ class MemberController extends Controller
             Yii::$app->response->format = 'json';
             $membership = Membership::findOne(['space_id' => $space->id, 'user_id' => Yii::$app->request->post('user_id')]);
             if ($membership === null) {
-                throw new \yii\web\HttpException(404, 'Could not find membership!');
+                throw new HttpException(404, 'Could not find membership!');
             }
 
             if ($membership->load(Yii::$app->request->post()) && $membership->validate() && $membership->save()) {
@@ -189,5 +189,3 @@ class MemberController extends Controller
     }
 
 }
-
-?>
