@@ -10,3 +10,4 @@ HumHub Change Log - v1.3-dev Branch
 - Enh: Committed composer.lock
 - Enh: Refactored ContentContainer Controller
 - Chg: Added ContentContainer ModuleManager, instead of individual handling (Space/User)
+- Fix: Rebind LDAP connection after successful login with administrative user
