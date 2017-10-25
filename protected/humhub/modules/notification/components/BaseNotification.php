@@ -8,7 +8,6 @@
 
 namespace humhub\modules\notification\components;
 
-use humhub\components\SocialActivity;
 use Yii;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
