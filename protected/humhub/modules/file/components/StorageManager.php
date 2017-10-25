@@ -2,13 +2,14 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\file\components;
 
 use Yii;
+use yii\base\Component;
 use humhub\modules\file\models\File;
 use humhub\modules\file\libs\ImageConverter;
 use humhub\modules\file\libs\FileHelper;
@@ -19,7 +20,7 @@ use humhub\modules\file\libs\FileHelper;
  * @since 1.2
  * @author Luke
  */
-class StorageManager extends \yii\base\Component implements StorageManagerInterface
+class StorageManager extends Component implements StorageManagerInterface
 {
 
     /**
@@ -65,6 +66,7 @@ class StorageManager extends \yii\base\Component implements StorageManagerInterf
                 $variants[] = $file;
             }
         }
+
         return $variants;
     }
 

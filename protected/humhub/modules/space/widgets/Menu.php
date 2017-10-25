@@ -1,9 +1,15 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\space\widgets;
 
 use Yii;
-
+use yii\base\Exception;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 
@@ -27,7 +33,7 @@ class Menu extends \humhub\widgets\BaseMenu
         }
 
         if ($this->space === null) {
-            throw new \yii\base\Exception("Could not instance space menu without space!");
+            throw new Exception("Could not instance space menu without space!");
         }
         
         $this->id = 'navigation-menu-space-' . $this->space->getUniqueId();
@@ -44,7 +50,7 @@ class Menu extends \humhub\widgets\BaseMenu
             'url' => $this->space->createUrl('/space/space/home'),
             'icon' => '<i class="fa fa-bars"></i>',
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->id == "space" && (Yii::$app->controller->action->id == "index" || Yii::$app->controller->action->id == 'home') && Yii::$app->controller->module->id == "space"),
+            'isActive' => (Yii::$app->controller->id == 'space' && (Yii::$app->controller->action->id == 'index' || Yii::$app->controller->action->id == 'home') && Yii::$app->controller->module->id == 'space'),
         ));
 
         parent::init();
@@ -66,6 +72,7 @@ class Menu extends \humhub\widgets\BaseMenu
         foreach ($moduleItems as $moduleItem) {
             $result[$moduleItem['url']] = $moduleItem['label'];
         }
+
         return $result;
     }
 
@@ -88,6 +95,7 @@ class Menu extends \humhub\widgets\BaseMenu
                 $settings->contentContainer($space)->delete('indexUrl');
             }
         }
+
         return null;
     }
 
@@ -110,9 +118,8 @@ class Menu extends \humhub\widgets\BaseMenu
                 $settings->contentContainer($space)->delete('indexGuestUrl');
             }
         }
+
         return null;
     }
 
 }
-
-?>

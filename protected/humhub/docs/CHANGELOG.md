@@ -1,14 +1,13 @@
 HumHub Change Log
 =================
 
-1.2.3  (Not released yet)
---------------------------------
+1.2.3  (October 23, 2017)
+-------------------------
 
 Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users.
 Important note for Git/Composer installations: http://www.yiiframework.com/news/148/important-note-about-bower-and-the-asset-plugin/
 
 - Fix: Readonly markdown field issue.
-- Enh: Added flag to control automatically created social activities at content creation.
 - Enh: Fixed registration approval/denial mails and made their default value configurable.
 - Enh: Updated primary auth client interface for more flexibility
 - Enh: Added LDAP ID attribute to improve user mapping
@@ -53,6 +52,8 @@ Important note for Git/Composer installations: http://www.yiiframework.com/news/
 - Enh: Added `data-file-*` attributes to download links, for beeing able to intercept file downloads
 - Enh: Added `apple-mobile-web-app-*` and `mobile-web-app-capable` meta tags to `head.php`
 - Fix #2783: E-Mail notification link broken when guest mode is enabled (Buliwyfa)
+- Enh: Added `ContentActiveRecord::silentContentCreation` for disabling ContentCreated Activity/Notification on ContentActiveRecord level
+- Enh: Now the `NewContent` live event is always fired with `sourceClass` and `sourceId` information and a `silent` flag for silent content creations
 
 1.2.2  (August 2, 2017)
 --------------------------------

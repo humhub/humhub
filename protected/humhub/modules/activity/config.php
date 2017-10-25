@@ -10,10 +10,11 @@ use humhub\commands\CronController;
 use humhub\modules\activity\Events;
 use humhub\components\ActiveRecord;
 use humhub\commands\IntegrityController;
+use humhub\modules\activity\Module;
 
 return [
     'id' => 'activity',
-    'class' => humhub\modules\activity\Module::className(),
+    'class' => Module::className(),
     'isCoreModule' => true,
     'events' => [
         ['class' => ActiveRecord::className(), 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::className(), 'onActiveRecordDelete']],

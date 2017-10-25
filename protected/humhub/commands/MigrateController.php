@@ -9,6 +9,8 @@
 namespace humhub\commands;
 
 use Yii;
+use yii\web\Application;
+use yii\console\Exception;
 
 /**
  * Manages application migrations.
@@ -134,7 +136,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
             }
         }
 
-		throw new \yii\console\Exception("Could not find path for: " . $migration);
+		throw new Exception("Could not find path for: " . $migration);
     }
 
     /**
@@ -191,6 +193,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
         $controller->migrationPath = $migrationPath;
         $controller->color = false;
         $controller->runAction('up');
+
         return ob_get_clean();
     }
 
@@ -199,7 +202,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
      */
     public function stdout($string)
     {
-        if (Yii::$app instanceof \yii\web\Application) {
+        if (Yii::$app instanceof Application) {
             print $string;
         } else {
             return parent::stdout($string);
@@ -211,7 +214,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
      */
     public function stderr($string)
     {
-        if (Yii::$app instanceof \yii\web\Application) {
+        if (Yii::$app instanceof Application) {
             print $string;
         } else {
             return parent::stderr($string);

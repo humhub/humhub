@@ -100,9 +100,11 @@ humhub.module('space.chooser', function (module, require, $) {
         var increments = {};
 
         liveEvents.forEach(function (event) {
-            if (event.data.uguid || event.data.originator === user.guid()) {
+            if (event.data.uguid || event.data.originator === user.guid() ||  event.data.silent) {
                 return;
-            } else if (increments[event.data.sguid]) {
+            }
+
+            if (increments[event.data.sguid]) {
                 increments[event.data.sguid]++;
             } else {
                 increments[event.data.sguid] = 1;
