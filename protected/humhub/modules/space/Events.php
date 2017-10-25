@@ -91,15 +91,6 @@ class Events extends \yii\base\Object
             }
         }
 
-        $integrityController->showTestHeadline("Space Module - Module (" . models\Module::find()->count() . " entries)");
-        foreach (models\Module::find()->joinWith('space')->all() as $module) {
-            if ($module->space == null) {
-                if ($integrityController->showFix("Deleting space module " . $module->id . " without existing space!")) {
-                    $module->delete();
-                }
-            }
-        }
-
         $integrityController->showTestHeadline("Space Module - Memberships (" . models\Membership::find()->count() . " entries)");
         foreach (models\Membership::find()->joinWith('space')->all() as $membership) {
             if ($membership->space == null) {

@@ -128,15 +128,6 @@ class Events extends \yii\base\Object
             }
         }
 
-        $integrityController->showTestHeadline("User Module - Modules (" . models\Module::find()->count() . " entries)");
-        foreach (models\Module::find()->joinWith(['user'])->all() as $module) {
-            if ($module->user == null) {
-                if ($integrityController->showFix("Deleting user-module " . $module->id . " of non existing user!")) {
-                    $module->delete();
-                }
-            }
-        }
-
         $userIds = User::find()->select('id')->asArray()->all();
         foreach ($userIds as $key => $id) {
             $userIds[$key] = $id['id'];
