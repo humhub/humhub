@@ -2,13 +2,17 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\base\Exception;
+use yii\db\Expression;
+use humhub\libs\UUID;
 use humhub\modules\user\components\CheckPasswordValidator;
 
 /**
@@ -21,7 +25,7 @@ use humhub\modules\user\components\CheckPasswordValidator;
  * @property string $salt
  * @property string $created_at
  */
-class Password extends \yii\db\ActiveRecord
+class Password extends ActiveRecord
 {
 
     /**
@@ -30,13 +34,13 @@ class Password extends \yii\db\ActiveRecord
     public $currentPassword;
     public $newPassword;
     public $newPasswordConfirm;
-    public $defaultAlgorithm = "";
+    public $defaultAlgorithm = '';
 
     public function init()
     {
         parent::init();
 
-        $this->defaultAlgorithm = "sha1md5";
+        $this->defaultAlgorithm = 'sha1md5';
 
         if (function_exists('hash_algos')) {
             $algos = hash_algos();
@@ -50,7 +54,8 @@ class Password extends \yii\db\ActiveRecord
 
     public function beforeSave($insert)
     {
-        $this->created_at = new \yii\db\Expression("NOW()");
+        $this->created_at = new Expression('NOW()');
+
         return parent::beforeSave($insert);
     }
 
@@ -92,7 +97,7 @@ class Password extends \yii\db\ActiveRecord
     public function unequalsCurrentPassword($attribute, $params)
     {
         if($this->newPassword === $this->currentPassword) {
-            $this->addError($attribute, Yii::t('UserModule.base', 'Your new password must not equal your current password!'));
+            $this->addError($attribute, Yii::t('UserModule.base', 'Your new password must not be equal your current password!'));
         }
     }
 
@@ -106,6 +111,7 @@ class Password extends \yii\db\ActiveRecord
         }
 
         $scenarios['registration'] = ['newPassword', 'newPasswordConfirm'];
+
         return $scenarios;
     }
 
@@ -162,7 +168,7 @@ class Password extends \yii\db\ActiveRecord
         } elseif ($this->algorithm == 'sha512') {
             return hash('sha512', $password);
         } else {
-            throw new \yii\base\Exception("Invalid Hashing Algorithm!");
+            throw new Exception('Invalid Hashing Algorithm!');
         }
     }
 
@@ -173,7 +179,7 @@ class Password extends \yii\db\ActiveRecord
      */
     public function setPassword($newPassword)
     {
-        $this->salt = \humhub\libs\UUID::v4();
+        $this->salt = UUID::v4();
         $this->algorithm = $this->defaultAlgorithm;
         $this->password = $this->hashPassword($newPassword);
     }

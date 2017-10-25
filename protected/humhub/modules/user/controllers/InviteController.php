@@ -2,17 +2,21 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\controllers;
 
-use humhub\modules\admin\permissions\ManageGroups;
-use humhub\modules\admin\permissions\ManageUsers;
 use Yii;
 use yii\web\Controller;
+use yii\web\HttpException;
+use humhub\components\behaviors\AccessControl;
+use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\Invite;
+use humhub\modules\user\models\forms\Invite as InviteForm;
+use humhub\widgets\ModalClose;
 
 /**
  * InviteController for new user invites
@@ -29,7 +33,7 @@ class InviteController extends Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::className(),
             ]
         ];
     }
@@ -43,22 +47,22 @@ class InviteController extends Controller
     public function actionIndex()
     {
         if (!$this->canInvite()) {
-            throw new \yii\web\HttpException(403, 'Invite denied!');
+            throw new HttpException(403, 'Invite denied!');
         }
 
-        $model = new \humhub\modules\user\models\forms\Invite;
+        $model = new InviteForm;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             foreach ($model->getEmails() as $email) {
                 $this->createInvite($email);
             }
             
-            return \humhub\widgets\ModalClose::widget([
+            return ModalClose::widget([
                 'success' => Yii::t('UserModule.user', 'User has been invited.')
             ]);
         }
 
-        return $this->renderAjax('index', array('model' => $model));
+        return $this->renderAjax('index', ['model' => $model]);
     }
 
     /**
@@ -94,5 +98,3 @@ class InviteController extends Controller
     }
 
 }
-
-?>

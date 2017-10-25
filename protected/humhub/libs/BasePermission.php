@@ -9,6 +9,8 @@
 namespace humhub\libs;
 
 use Yii;
+use yii\base\Object;
+use yii\base\Exception;
 use humhub\modules\space\models\Space;
 
 /**
@@ -16,7 +18,7 @@ use humhub\modules\space\models\Space;
 
  * @author luke
  */
-class BasePermission extends \yii\base\Object
+class BasePermission extends Object
 {
 
     /**
@@ -34,17 +36,17 @@ class BasePermission extends \yii\base\Object
     /**
      * @var string title of the permission
      */
-    protected $title = "";
+    protected $title ='';
 
     /**
      * @var string description of the permission
      */
-    protected $description = "";
+    protected $description = '';
 
     /**
      * @var string module id which belongs to the permission
      */
-    protected $moduleId = "";
+    protected $moduleId = '';
 
     /**
      * A list of groupIds which allowed per default.
@@ -203,7 +205,7 @@ class BasePermission extends \yii\base\Object
             return Yii::t('base', 'Default');
         }
 
-        throw new \yii\base\Exception('Invalid permission state');
+        throw new Exception('Invalid permission state');
     }
 
 }

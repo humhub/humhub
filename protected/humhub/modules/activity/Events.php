@@ -9,17 +9,19 @@
 namespace humhub\modules\activity;
 
 use Yii;
+use yii\base\Object;
 use humhub\modules\activity\components\MailSummary;
 use humhub\modules\activity\jobs\SendMailSummary;
 use humhub\modules\activity\models\Activity;
 use yii\base\Event;
+use yii\db\ActiveRecord;
 
 /**
  * Events provides callbacks to handle events.
  *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends Object
 {
 
     /**
@@ -46,7 +48,7 @@ class Events extends \yii\base\Object
      */
     public static function onActiveRecordDelete(Event $event)
     {
-        if (!($event->sender instanceof \yii\db\ActiveRecord)) {
+        if (!($event->sender instanceof ActiveRecord)) {
             throw new \LogicException('The handler can be applied only to the \yii\db\ActiveRecord.');
         }
 
@@ -74,28 +76,28 @@ class Events extends \yii\base\Object
     public static function onIntegrityCheck($event)
     {
         $integrityController = $event->sender;
-        $integrityController->showTestHeadline("Activity Module (" . Activity::find()->count() . " entries)");
+        $integrityController->showTestHeadline('Activity Module (' . Activity::find()->count() . ' entries)');
 
         // Loop over all comments
         foreach (Activity::find()->all() as $a) {
 
             // Check for object_model / object_id
-            if ($a->object_model != "" && $a->object_id != "" && $a->getSource() === null) {
-                if ($integrityController->showFix("Deleting activity id " . $a->id . " without existing target! (" . $a->object_model . ")")) {
+            if ($a->object_model != '' && $a->object_id != '' && $a->getSource() === null) {
+                if ($integrityController->showFix('Deleting activity id ' . $a->id . ' without existing target! (' . $a->object_model . ')')) {
                     $a->delete();
                 }
             }
 
             // Check for moduleId is set
-            if ($a->module == "") {
-                if ($integrityController->showFix("Deleting activity id " . $a->id . " without module_id!")) {
+            if ($a->module == '') {
+                if ($integrityController->showFix('Deleting activity id ' . $a->id . ' without module_id!')) {
                     $a->delete();
                 }
             }
 
             // Check Activity class exists
             if (!class_exists($a->class)) {
-                if ($integrityController->showFix("Deleting activity id " . $a->id . " class not exists! (" . $a->class . ")")) {
+                if ($integrityController->showFix('Deleting activity id ' . $a->id . ' class not exists! (' . $a->class . ')')) {
                     $a->delete();
                 }
             }

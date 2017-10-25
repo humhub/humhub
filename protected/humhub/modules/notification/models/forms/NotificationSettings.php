@@ -1,17 +1,26 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\notification\models\forms;
 
 use humhub\modules\notification\components\NotificationCategory;
 use Yii;
+use yii\base\Model;
+use yii\web\HttpException;
 use humhub\modules\notification\targets\BaseTarget;
+use humhub\modules\admin\permissions\ManageSettings;
 
 /**
  * Description of NotificationSettings
  *
  * @author buddha
  */
-class NotificationSettings extends \yii\base\Model
+class NotificationSettings extends Model
 {
 
     /**
@@ -60,6 +69,7 @@ class NotificationSettings extends \yii\base\Model
         $this->desktopNotifications = Yii::$app->notification->getDesktopNoficationSettings($this->user);
 
         $module = Yii::$app->getModule('notification');
+
         return ($this->user) ? $module->settings->user($this->user) : $module->settings;
     }
 
@@ -99,6 +109,7 @@ class NotificationSettings extends \yii\base\Model
         if ($this->user) {
             return $this->getSettings()->get('notification.like_email') !== null;
         }
+
         return false;
     }
 
@@ -143,7 +154,7 @@ class NotificationSettings extends \yii\base\Model
     public function save()
     {
         if (!$this->checkPermission()) {
-            throw new \yii\web\HttpException(403);
+            throw new HttpException(403);
         }
 
         if (!$this->validate()) {
@@ -208,12 +219,13 @@ class NotificationSettings extends \yii\base\Model
     public function getSettings()
     {
         $module = Yii::$app->getModule('notification');
+
         return ($this->user) ? $module->settings->user($this->user) : $module->settings;
     }
 
     public function checkPermission()
     {
-        if (Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageSettings())) {
+        if (Yii::$app->user->can(new ManageSettings())) {
             return true;
         } else if (!$this->user) {
             return false; // Only ManageSettings user can set global notification settings
@@ -235,6 +247,7 @@ class NotificationSettings extends \yii\base\Model
             }
         }
         Yii::$app->notification->setSpaces([], $this->user);
+
         return true;
     }
 

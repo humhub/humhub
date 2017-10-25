@@ -19,6 +19,7 @@ use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\space\models\Membership;
 
 /**
  * User management
@@ -90,7 +91,7 @@ class UserController extends Controller
         $user->initGroupSelection();
 
         if ($user == null) {
-            throw new \yii\web\HttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
+            throw new HttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
         }
 
         $user->scenario = 'editAdmin';
@@ -123,7 +124,7 @@ class UserController extends Controller
                         'data-placeholder' => Yii::t('AdminModule.controllers_UserController', 'Select Groups'),
                         'data-placeholder-more' => Yii::t('AdminModule.controllers_UserController', 'Add Groups...')
                     ],
-                    'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageGroups())
+                    'isVisible' => Yii::$app->user->can(new ManageGroups())
                 ],
                 'status' => [
                     'type' => 'dropdownlist',
@@ -224,7 +225,7 @@ class UserController extends Controller
         if ($doit == 2) {
             $this->forcePostRequest();
 
-            foreach (\humhub\modules\space\models\Membership::GetUserSpaces($user->id) as $space) {
+            foreach (Membership::GetUserSpaces($user->id) as $space) {
                 if ($space->isSpaceOwner($user->id)) {
                     $space->addMember(Yii::$app->user->id);
                     $space->setSpaceOwner(Yii::$app->user->id);

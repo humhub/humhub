@@ -2,17 +2,23 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\space\controllers;
 
 use Yii;
+use yii\web\HttpException;
+use yii\db\Expression;
+use humhub\modules\content\components\ContentContainerController;
+use humhub\components\behaviors\AccessControl;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\stream\actions\ContentContainerStream;
+use humhub\modules\space\widgets\Menu;
+use humhub\modules\post\permissions\CreatePost;
 
 /**
  * SpaceController is the main controller for spaces.
@@ -24,7 +30,7 @@ use humhub\modules\stream\actions\ContentContainerStream;
  * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
-class SpaceController extends \humhub\modules\content\components\ContentContainerController
+class SpaceController extends ContentContainerController
 {
 
     /**
@@ -39,7 +45,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::className(),
                 'guestAllowedActions' => ['index', 'stream'],
             ]
         ];
@@ -70,13 +76,13 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
         }
 
         if (!$space->isMember()) {
-            $defaultPageUrl = \humhub\modules\space\widgets\Menu::getGuestsDefaultPageUrl($space);
+            $defaultPageUrl = Menu::getGuestsDefaultPageUrl($space);
             if ($defaultPageUrl != null) {
                 return $this->redirect($defaultPageUrl);
             }
         }
 
-        $defaultPageUrl = \humhub\modules\space\widgets\Menu::getDefaultPageUrl($space);
+        $defaultPageUrl = Menu::getDefaultPageUrl($space);
         if ($defaultPageUrl != null) {
             return $this->redirect($defaultPageUrl);
         }
@@ -92,7 +98,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     public function actionHome()
     {
         $space = $this->contentContainer;
-        $canCreatePosts = $space->permissionManager->can(new \humhub\modules\post\permissions\CreatePost());
+        $canCreatePosts = $space->permissionManager->can(new CreatePost());
         $isMember = $space->isMember();
 
         return $this->render('home', [
@@ -108,7 +114,7 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     public function actionFollow()
     {
         if(Yii::$app->getModule('space')->disableFollow) {
-            throw new \yii\web\HttpException(403, Yii::t('ContentModule.controllers_ContentController', 'This action is disabled!'));
+            throw new HttpException(403, Yii::t('ContentModule.controllers_ContentController', 'This action is disabled!'));
         }
 
         $this->forcePostRequest();
@@ -153,15 +159,14 @@ class SpaceController extends \humhub\modules\content\components\ContentContaine
     public function actionFollowerList()
     {
         $query = User::find();
-        $query->leftJoin('user_follow', 'user.id=user_follow.user_id and object_model=:userClass and user_follow.object_id=:spaceId', [':userClass' => Space::className(), ':spaceId' => $this->getSpace()->id]);
+        $query->leftJoin('user_follow', 'user.id=user_follow.user_id AND object_model=:userClass AND user_follow.object_id=:spaceId', [':userClass' => Space::className(), ':spaceId' => $this->getSpace()->id]);
         $query->orderBy(['user_follow.id' => SORT_DESC]);
-        $query->andWhere(['IS NOT', 'user_follow.id', new \yii\db\Expression('NULL')]);
+        $query->andWhere(['IS NOT', 'user_follow.id', new Expression('NULL')]);
         $query->visible();
 
         $title = Yii::t('SpaceModule.base', '<strong>Space</strong> followers');
+
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
 }
-
-?>

@@ -9,7 +9,9 @@
 namespace humhub\modules\notification\controllers;
 
 use Yii;
+use yii\web\HttpException;
 use humhub\components\Controller;
+use humhub\components\behaviors\AccessControl;
 use humhub\modules\notification\models\Notification;
 use humhub\components\access\ControllerAccess;
 
@@ -39,7 +41,7 @@ class EntryController extends Controller
         $notificationModel = Notification::findOne(['id' => Yii::$app->request->get('id'), 'user_id' => Yii::$app->user->id]);
 
         if ($notificationModel === null) {
-            throw new \yii\web\HttpException(404, Yii::t('NotificationModule.error', 'The requested content is not valid or was removed!'));
+            throw new HttpException(404, Yii::t('NotificationModule.error','The requested content is not valid or was removed!'));
         }
 
         $notification = $notificationModel->getClass();

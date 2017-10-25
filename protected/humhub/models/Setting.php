@@ -9,6 +9,8 @@
 namespace humhub\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "setting".
@@ -18,7 +20,7 @@ use Yii;
  * @property string $value
  * @property string $module_id
  */
-class Setting extends \yii\db\ActiveRecord
+class Setting extends ActiveRecord
 {
 
     /**
@@ -176,7 +178,7 @@ class Setting extends \yii\db\ActiveRecord
             $module = Yii::$app->getModule($moduleId);
         }
         if ($module === null) {
-            throw new \yii\base\Exception("Could not find module: " . $moduleId);
+            throw new Exception("Could not find module: " . $moduleId);
         }
 
         return $module;

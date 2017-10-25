@@ -12,6 +12,8 @@ use Yii;
 use yii\base\Exception;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\activity\components\ActivityWebRenderer;
+use humhub\components\behaviors\PolymorphicRelation;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "activity".
@@ -27,7 +29,7 @@ class Activity extends ContentActiveRecord
     /**
      * @inheritdoc
      */
-    public $wallEntryClass = "humhub\modules\activity\widgets\Activity";
+    public $wallEntryClass = 'humhub\modules\activity\widgets\Activity';
 
     /**
      * @inheritdoc
@@ -51,9 +53,9 @@ class Activity extends ContentActiveRecord
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
+                'class' => PolymorphicRelation::className(),
                 'mustBeInstanceOf' => [
-                    \yii\db\ActiveRecord::className(),
+                    ActiveRecord::className(),
                 ]
             ]
         ];
@@ -95,7 +97,7 @@ class Activity extends ContentActiveRecord
             $result->record = $this; // If we include the record in createObject, it somehow loses activerecord data (id etc...)
             return $result;
         } else {
-            throw new Exception("Could not find BaseActivity " . $this->class . " for Activity Record.");
+            throw new Exception('Could not find BaseActivity ' . $this->class . ' for Activity Record.');
         }
     }
 

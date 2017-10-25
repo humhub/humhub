@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,14 +10,22 @@ namespace humhub\modules\space\behaviors;
 
 use Yii;
 use yii\base\Behavior;
+use yii\base\Exception;
+use yii\validators\EmailValidator;;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
 use humhub\modules\user\models\Invite;
+use humhub\modules\space\notifications\Invite as InviteNotification;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\notifications\ApprovalRequestAccepted;
+use humhub\modules\space\notifications\ApprovalRequestDeclined;
+use humhub\modules\space\notifications\ApprovalRequest;
 use humhub\modules\space\notifications\InviteAccepted;
+use humhub\modules\space\notifications\InviteDeclined;
 use humhub\modules\space\MemberEvent;
+use humhub\modules\space\activities\MemberAdded;
+use humhub\modules\space\activities\MemberRemoved;
 
 /**
  * SpaceModelMemberBehavior bundles all membership related methods of the Space model.
@@ -35,13 +43,13 @@ class SpaceModelMembership extends Behavior
      * @param integer $userId
      * @return boolean
      */
-    public function isMember($userId = "")
+    public function isMember($userId = '')
     {
 
         // Take current userid if none is given
-        if ($userId == "" && !Yii::$app->user->isGuest) {
+        if ($userId == '' && !Yii::$app->user->isGuest) {
             $userId = Yii::$app->user->id;
-        } elseif ($userId == "" && Yii::$app->user->isGuest) {
+        } elseif ($userId == '' && Yii::$app->user->isGuest) {
             return false;
         }
 
@@ -61,11 +69,11 @@ class SpaceModelMembership extends Behavior
      * @param number $userId, if empty hte currently logged in user is taken.
      * @return bool
      */
-    public function canLeave($userId = "")
+    public function canLeave($userId = '')
     {
 
         // Take current userid if none is given
-        if ($userId == "") {
+        if ($userId == '') {
             $userId = Yii::$app->user->id;
         }
 
@@ -129,6 +137,7 @@ class SpaceModelMembership extends Behavior
         $this->owner->update(false, ['created_by']);
 
         $this->_spaceOwner = null;
+
         return true;
     }
 
@@ -144,6 +153,7 @@ class SpaceModelMembership extends Behavior
         }
 
         $this->_spaceOwner = User::findOne(['id' => $this->owner->created_by]);
+
         return $this->_spaceOwner;
     }
 
@@ -185,6 +195,7 @@ class SpaceModelMembership extends Behavior
             $membership->save();
             return true;
         }
+
         return false;
     }
 
@@ -214,7 +225,7 @@ class SpaceModelMembership extends Behavior
     {
 
         // Invalid E-Mail
-        $validator = new \yii\validators\EmailValidator;
+        $validator = new EmailValidator;
         if (!$validator->validate($email))
             return false;
 
@@ -255,7 +266,7 @@ class SpaceModelMembership extends Behavior
      * @param integer $userId
      * @param string $message
      */
-    public function requestMembership($userId, $message = "")
+    public function requestMembership($userId, $message = '')
     {
 
         $user = ($userId instanceof User) ? $userId : User::findOne(['id' => $userId]);
@@ -271,7 +282,7 @@ class SpaceModelMembership extends Behavior
 
         $membership->save();
 
-        \humhub\modules\space\notifications\ApprovalRequest::instance()
+        ApprovalRequest::instance()
                 ->from($user)->about($this->owner)->withMessage($message)->sendBulk($this->getAdmins());
     }
 
@@ -313,7 +324,7 @@ class SpaceModelMembership extends Behavior
                     return;
                 case Membership::STATUS_INVITED:
                     // If user is already invited, remove old invite notification and retrigger
-                    $oldNotification = new \humhub\modules\space\notifications\Invite(['source' => $this->owner]);
+                    $oldNotification = new InviteNotification(['source' => $this->owner]);
                     $oldNotification->delete(User::findOne(['id' => $userId]));
                     break;
             }
@@ -332,7 +343,7 @@ class SpaceModelMembership extends Behavior
         if ($membership->save()) {
             $this->sendInviteNotification($userId, $originatorId);
         } else {
-            throw new \yii\base\Exception("Could not save membership!" . print_r($membership->getErrors(), 1));
+            throw new Exception('Could not save membership!' . print_r($membership->getErrors(), 1));
         }
     }
 
@@ -344,7 +355,7 @@ class SpaceModelMembership extends Behavior
      */
     protected function sendInviteNotification($userId, $originatorId)
     {
-        $notification = new \humhub\modules\space\notifications\Invite([
+        $notification = new InviteNotification([
             'source' => $this->owner,
             'originator' => User::findOne(['id' => $originatorId])
         ]);
@@ -413,16 +424,16 @@ class SpaceModelMembership extends Behavior
         
         
         // Create Activity
-        \humhub\modules\space\activities\MemberAdded::instance()->from($user)->about($this->owner)->save();
+        MemberAdded::instance()->from($user)->about($this->owner)->save();
 
         // Members can't also follow the space
         $this->owner->unfollow($userId);
 
         // Delete invite notification for this user
-        \humhub\modules\space\notifications\Invite::instance()->about($this->owner)->delete($user);
+        InviteNotification::instance()->about($this->owner)->delete($user);
 
         // Delete pending approval request notifications for this user
-        \humhub\modules\space\notifications\ApprovalRequest::instance()->from($user)->about($this->owner)->delete();
+        ApprovalRequest::instance()->from($user)->about($this->owner)->delete();
     }
 
     /**
@@ -450,7 +461,7 @@ class SpaceModelMembership extends Behavior
 
         // If was member, create a activity for that
         if ($membership->status == Membership::STATUS_MEMBER) {
-            $activity = new \humhub\modules\space\activities\MemberRemoved();
+            $activity = new MemberRemoved();
             $activity->source = $this->owner;
             $activity->originator = $user;
             $activity->create();
@@ -460,10 +471,10 @@ class SpaceModelMembership extends Behavior
             ]));
         } elseif ($membership->status == Membership::STATUS_INVITED && $membership->originator !== null) {
             // Was invited, but declined the request - inform originator
-            \humhub\modules\space\notifications\InviteDeclined::instance()
+            InviteDeclined::instance()
                 ->from($user)->about($this->owner)->send($membership->originator);
         } elseif ($membership->status == Membership::STATUS_APPLICANT) {
-            \humhub\modules\space\notifications\ApprovalRequestDeclined::instance()
+            ApprovalRequestDeclined::instance()
                     ->from(Yii::$app->user->getIdentity())->about($this->owner)->send($user);
         }
 
@@ -471,9 +482,9 @@ class SpaceModelMembership extends Behavior
             $membership->delete();
         }
 
-        \humhub\modules\space\notifications\ApprovalRequest::instance()->from($user)->about($this->owner)->delete();
+        ApprovalRequest::instance()->from($user)->about($this->owner)->delete();
 
-        \humhub\modules\space\notifications\Invite::instance()->from($this->owner)->delete($user);
+        InviteNotification::instance()->from($this->owner)->delete($user);
     }
 
 }

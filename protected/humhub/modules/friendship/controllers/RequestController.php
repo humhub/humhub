@@ -9,6 +9,7 @@
 namespace humhub\modules\friendship\controllers;
 
 use Yii;
+use yii\web\HttpException;
 use humhub\modules\user\models\User;
 use humhub\components\Controller;
 use humhub\modules\friendship\models\Friendship;
@@ -31,7 +32,7 @@ class RequestController extends Controller
         $friend = User::findOne(['id' => Yii::$app->request->get('userId')]);
 
         if ($friend === null) {
-            throw new \yii\web\HttpException(404, 'User not found!');
+            throw new HttpException(404, 'User not found!');
         }
 
         Friendship::add(Yii::$app->user->getIdentity(), $friend);
@@ -49,7 +50,7 @@ class RequestController extends Controller
         $friend = User::findOne(['id' => Yii::$app->request->get('userId')]);
 
         if ($friend === null) {
-            throw new \yii\web\HttpException(404, 'User not found!');
+            throw new HttpException(404, 'User not found!');
         }
 
         Friendship::cancel(Yii::$app->user->getIdentity(), $friend);

@@ -9,6 +9,7 @@
 namespace humhub\modules\friendship\controllers;
 
 use Yii;
+use yii\web\HttpException;
 use humhub\modules\user\models\User;
 use humhub\modules\friendship\models\Friendship;
 use humhub\components\Controller;
@@ -30,12 +31,13 @@ class ListController extends Controller
     {
         $user = User::findOne(['id' => Yii::$app->request->get('userId')]);
         if ($user === null) {
-            throw new \yii\web\HttpException(404, 'Could not find user!');
+            throw new HttpException(404, 'Could not find user!');
         }
 
         $query = Friendship::getFriendsQuery($user);
 
-        $title = '<strong>' . Yii::t('FriendshipModule.base', "Friends") . '</strong>';
+        $title = '<strong>' . Yii::t('FriendshipModule.base', 'Friends') . '</strong>';
+
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 

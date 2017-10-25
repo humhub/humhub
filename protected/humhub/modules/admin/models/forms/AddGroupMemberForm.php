@@ -8,14 +8,17 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use yii\base\Model;
+use yii\web\HttpException;
 use humhub\modules\user\models\User;
+use humhub\modules\user\models\Group;
 
 /**
  * Description of UserGroupForm
  *
  * @author buddha
  */
-class AddGroupMemberForm extends \yii\base\Model
+class AddGroupMemberForm extends Model
 {
 
     /**
@@ -69,7 +72,7 @@ class AddGroupMemberForm extends \yii\base\Model
         $group = $this->getGroup();
 
         if($group == null) {
-            throw new \yii\web\HttpException(404, Yii::t('AdminModule.models_form_AddGroupMemberForm', 'Group not found!'));
+            throw new HttpException(404, Yii::t('AdminModule.models_form_AddGroupMemberForm', 'Group not found!'));
         }
 
         foreach ($this->userGuids as $userGuid) {
@@ -84,6 +87,6 @@ class AddGroupMemberForm extends \yii\base\Model
 
     public function getGroup()
     {
-        return \humhub\modules\user\models\Group::findOne($this->groupId);
+        return Group::findOne($this->groupId);
     }
 }
