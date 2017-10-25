@@ -4,6 +4,7 @@ return array (
   '<strong>Pending</strong> friend requests' => '<strong>Wachtende</strong> vriendschapsverzoeken',
   '<strong>Sent</strong> friend requests' => '<strong>verstuurde</strong> vriendschapsverzoeken',
   'Accept Friend Request' => 'Vriendschapsverzoek accepteren',
+  'Actions' => 'Acties',
   'Add Friend' => 'Vriend toevoegen',
   'Cancel friend request' => 'Vriendschapsverzoek annuleren',
   'Deny friend request' => 'Vriendschapsverzoek weigeren',

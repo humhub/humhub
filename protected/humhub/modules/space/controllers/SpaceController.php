@@ -92,7 +92,7 @@ class SpaceController extends ContentContainerController
 
     /**
      * Default space homepage
-     * 
+     *
      * @return type
      */
     public function actionHome()
@@ -116,7 +116,7 @@ class SpaceController extends ContentContainerController
         if(Yii::$app->getModule('space')->disableFollow) {
             throw new HttpException(403, Yii::t('ContentModule.controllers_ContentController', 'This action is disabled!'));
         }
-        
+
         $this->forcePostRequest();
         $space = $this->getSpace();
 
@@ -162,11 +162,11 @@ class SpaceController extends ContentContainerController
         $query->leftJoin('user_follow', 'user.id=user_follow.user_id AND object_model=:userClass AND user_follow.object_id=:spaceId', [':userClass' => Space::className(), ':spaceId' => $this->getSpace()->id]);
         $query->orderBy(['user_follow.id' => SORT_DESC]);
         $query->andWhere(['IS NOT', 'user_follow.id', new Expression('NULL')]);
-        $query->active();
+        $query->visible();
 
         $title = Yii::t('SpaceModule.base', '<strong>Space</strong> followers');
 
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
-   
+
 }

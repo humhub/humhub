@@ -8,6 +8,8 @@
 
 namespace humhub\libs;
 
+use Yii;
+
 /**
  * Validates (user date format or database format) and converts it to an database date(-time) field
  *
@@ -40,12 +42,30 @@ class DbDateValidator extends \yii\validators\DateValidator
     public $timeZone;
 
     /**
+     * @var string attribute name to save converted value to 
+     */
+    public $targetAttribute = null;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        if ($this->format === null) {
+            $this->format = Yii::$app->formatter->dateInputFormat;
+        }
+
+        parent::init();
+    }
+
+    /**
      * @inheritdoc
      */
     public function validateAttribute($model, $attribute)
     {
+
         // If no source timeZone
-        if(empty($this->timeZone)) {
+        if (empty($this->timeZone)) {
             $this->timeZone = (!\Yii::$app->formatter->timeZone) ? \Yii::$app->timeZone : \Yii::$app->formatter->timeZone;
         }
 
@@ -70,8 +90,10 @@ class DbDateValidator extends \yii\validators\DateValidator
                 $date->setTimezone(new \DateTimeZone('UTC'));
             }
 
+            $targetAttribute = ($this->targetAttribute === null) ? $attribute : $this->targetAttribute;
+
             if ($this->convertToFormat !== null) {
-                $model->$attribute = $date->format($this->convertToFormat);
+                $model->$targetAttribute = $date->format($this->convertToFormat);
             }
         }
     }

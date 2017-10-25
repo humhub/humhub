@@ -1,4 +1,4 @@
 <?php
 return array (
-  'User has been invited.' => 'User đã được mời.',
+  'User has been invited.' => 'Người dùng đã được mời.',
 );

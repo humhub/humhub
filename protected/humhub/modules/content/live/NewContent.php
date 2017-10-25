@@ -38,4 +38,19 @@ class NewContent extends LiveEvent
      */
     public $originator;
 
+    /**
+     * @var string class of the ContentActiveRecord
+     */
+    public $sourceClass;
+
+    /**
+     * @var int id of the ContentActiveRecord
+     */
+    public $sourceId;
+
+    /**
+     * @var boolean if true it's meant to be a silent content creation
+     */
+    public $silent;
+
 }

@@ -41,8 +41,8 @@ humhub.module('space.chooser', function (module, require, $) {
             railpadding: {top: 0, right: 3, left: 0, bottom: 0}
         });
 
-        this.$chooser.on('touchmove', function(evt) {
-           evt.preventDefault();
+        this.$chooser.on('touchmove', function (evt) {
+            evt.preventDefault();
         });
 
         this.initEvents();
@@ -51,10 +51,10 @@ humhub.module('space.chooser', function (module, require, $) {
 
     SpaceChooser.prototype.initEvents = function () {
         var that = this;
-        
-        this.$.find('[data-message-count]').each(function() {
+
+        $('[data-space-guid]').find('[data-message-count]').each(function () {
             var $this = $(this);
-            if($this.data('message-count') > 0) {
+            if ($this.data('message-count') > 0) {
                 $this.show();
             }
         });
@@ -68,7 +68,7 @@ humhub.module('space.chooser', function (module, require, $) {
 
         // Focus on search on open and clear item selection when closed
         this.$menu.parent().on('shown.bs.dropdown', function () {
-            if(!view.isSmall()) {
+            if (!view.isSmall()) {
                 that.$search.focus();
             }
         }).on('hidden.bs.dropdown', function () {
@@ -90,7 +90,7 @@ humhub.module('space.chooser', function (module, require, $) {
             that.removeItem(space);
         }).on('humhub:space:unarchived', function (evt, space) {
             that.prependItem(space);
-        }).on('humhub:modules:content:live:NewContent', function(evt, liveEvents) {
+        }).on('humhub:modules:content:live:NewContent', function (evt, liveEvents) {
             that.handleNewContent(liveEvents);
         });
     };
@@ -98,29 +98,32 @@ humhub.module('space.chooser', function (module, require, $) {
     SpaceChooser.prototype.handleNewContent = function (liveEvents) {
         var that = this;
         var increments = {};
-        
-        liveEvents.forEach(function(event) {
-            if(event.data.uguid || event.data.originator === user.guid()) {
+
+        liveEvents.forEach(function (event) {
+            if (event.data.uguid || event.data.originator === user.guid() ||  event.data.silent) {
                 return;
-            } else if(increments[event.data.sguid]) {
+            }
+
+            if (increments[event.data.sguid]) {
                 increments[event.data.sguid]++;
             } else {
                 increments[event.data.sguid] = 1;
             }
         });
-        
-        $.each(increments, function(guid, count) {
+
+        $.each(increments, function (guid, count) {
             that.incrementMessageCount(guid, count);
         });
     };
-    
+
     SpaceChooser.prototype.incrementMessageCount = function (guid, count) {
-        var $messageCount = this.findItem(guid).find('[data-message-count]');
-        
+        var $messageCount = $('[data-space-guid="' + guid + '"]').find('[data-message-count]');
         var newCount = $messageCount.data('message-count') + count;
-        
+
         $messageCount.hide().text(newCount).data('message-count', newCount);
-        setTimeout(function() {$messageCount.show();}, 100);
+        setTimeout(function () {
+            $messageCount.show();
+        }, 100);
     };
 
     SpaceChooser.prototype.prependItem = function (space) {
@@ -249,9 +252,9 @@ humhub.module('space.chooser', function (module, require, $) {
 
     SpaceChooser.prototype.triggerRemoteSearch = function (input) {
         var that = this;
-        
+
         this.remoteSearch(input).then(function (data) {
-            if(data === true) { //Outdated result, just ignore this...
+            if (data === true) { //Outdated result, just ignore this...
                 return;
             } else if (!data) {
                 that.onChange(input);
@@ -265,7 +268,7 @@ humhub.module('space.chooser', function (module, require, $) {
             that.highlight(input, SELECTOR_ITEM_REMOTE);
             that.onChange(input);
         }).catch(function (e) {
-            if(!e.textStatus === "abort") {
+            if (!e.textStatus === "abort") {
                 module.log.error(e, true);
             }
         });
@@ -274,10 +277,10 @@ humhub.module('space.chooser', function (module, require, $) {
     SpaceChooser.prototype.remoteSearch = function (input) {
         var that = this;
         return new Promise(function (resolve, reject) {
-            if(that.currentXhr) {
+            if (that.currentXhr) {
                 that.currentXhr.abort();
             }
-            
+
             // Clear all current remote results not matching the current search
             that.clearRemoteSearch(input);
             var url = module.config.remoteSearchUrl;
@@ -291,20 +294,20 @@ humhub.module('space.chooser', function (module, require, $) {
             }
 
             var searchTs = Date.now();
-            var options = {data: {keyword: input, target: 'chooser'}, 
-                beforeSend: function(xhr) {
+            var options = {data: {keyword: input, target: 'chooser'},
+                beforeSend: function (xhr) {
                     that.currentXhr = xhr;
                 }};
 
             ui.loader.set(that.$remoteSearch, {'wrapper': '<li>', 'css': {padding: '5px'}});
-            
+
             client.get(url, options).then(function (response) {
                 that.currentXhr = undefined;
                 var lastSearchTs = that.$remoteSearch.data('last-search-ts');
                 var isOutDated = lastSearchTs && lastSearchTs > searchTs;
                 var hastData = response.data && response.data.length;
 
-                if(!isOutDated) {
+                if (!isOutDated) {
                     that.$remoteSearch.empty();
                 }
 
@@ -340,7 +343,7 @@ humhub.module('space.chooser', function (module, require, $) {
         $('#space-search-reset').fadeOut('fast');
         this.clearRemoteSearch();
 
-        if(!view.isSmall()) {
+        if (!view.isSmall()) {
             this.$search.val('').focus();
         }
         this.$search.removeData('last-search');
@@ -403,12 +406,13 @@ humhub.module('space.chooser', function (module, require, $) {
     };
 
     SpaceChooser.prototype.setSpaceMessageCount = function (space, count) {
-        var $item = this.findItem(space);
-        if ($item.length) {
-            if(count) {
-                $item.find('.messageCount').text(count);
+        var guid = object.isString(space) ? space : space.guid;
+        var $messageCount = $('[data-space-guid="' + guid + '"]').find('[data-message-count]');
+        if ($messageCount.length) {
+            if (count) {
+                $messageCount.text(count);
             } else {
-                $item.find('.messageCount').fadeOut('fast');
+                $messageCount.fadeOut('fast');
             }
         }
     };

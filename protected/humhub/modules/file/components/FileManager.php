@@ -65,6 +65,9 @@ class FileManager extends Component
                 'object_id' => $this->record->getPrimaryKey(),
             ]);
         }
+
+        // Save record to force search index update
+        $this->record->save();
     }
 
     /**
@@ -97,7 +100,7 @@ class FileManager extends Component
      */
     public function findStreamFiles($showInStream = true)
     {
-        if($showInStream) {
+        if ($showInStream) {
             return $this->find()->andWhere(['show_in_stream' => 1])->all();
         } else {
             return $this->find()->andWhere(['show_in_stream' => 0])->all();

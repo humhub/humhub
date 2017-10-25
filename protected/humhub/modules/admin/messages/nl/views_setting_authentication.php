@@ -1,5 +1,6 @@
 <?php
 return array (
+  'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.' => 'Wijzig geen plaatshouders zoals {displayName} als u wilt dat ze automatisch door het systeem worden gevuld. Als u de velden voor e-mailinhoud wilt resetten met de systeeminstelling, laat ze ze leeg.',
   'General' => 'Algemeen',
   'LDAP' => 'LDAP',
   'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => 'Minimum waarde is 20 seconden. Indien niet ingesteld, zal de sessie na 1400 seconden (24 minuten) verlopen, ongeacht activiteit.',

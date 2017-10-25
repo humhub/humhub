@@ -2,7 +2,7 @@
 return array (
   'Created At' => 'Creato il',
   'Created By' => 'Creato da',
-  'Last Visit' => '',
+  'Last Visit' => 'Ultima visita',
   'Originator User ID' => '',
   'Request Message' => '',
   'Status' => 'Stato',

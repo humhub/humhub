@@ -12,10 +12,9 @@ use Yii;
 use yii\base\Action;
 use yii\web\UploadedFile;
 use humhub\libs\Helpers;
-use humhub\libs\MimeHelper;
+use humhub\modules\file\models\FileUpload;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
-use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 
@@ -74,6 +73,7 @@ class UploadAction extends Action
      */
     protected function handleFileUpload(UploadedFile $uploadedFile, $hideInStream = false)
     {
+        /* @var $file FileUpload */
         $file = Yii::createObject($this->fileClass);
 
         if ($this->scenario !== null) {

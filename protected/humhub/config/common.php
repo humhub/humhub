@@ -12,7 +12,7 @@ Yii::setAlias('@config', '@app/config');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.2.2',
+    'version' => '1.2.3',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue'],
     'sourceLanguage' => 'en',
@@ -30,6 +30,9 @@ $config = [
                 [
                     'class' => 'humhub\modules\notification\targets\MailTarget',
                     'renderer' => ['class' => 'humhub\modules\notification\renderer\MailRenderer']
+                ],
+                [
+                    'class' => 'humhub\modules\notification\targets\MobileTarget'
                 ],
             ]
         ],

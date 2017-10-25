@@ -30,9 +30,7 @@ class MailSummaryProcessor
      */
     public static function process($interval)
     {
-        $users = User::find()->distinct()->joinWith(['httpSessions', 'profile'])->where([
-            'user.status' => User::STATUS_ENABLED
-        ]);
+        $users = User::find()->distinct()->joinWith(['httpSessions', 'profile'])->active();
 
         $interactive = false;
         $totalUsers = $users->count();

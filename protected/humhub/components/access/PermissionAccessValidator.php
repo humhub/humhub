@@ -41,7 +41,7 @@ class PermissionAccessValidator extends ActionAccessValidator
     /**
      * Checks if the user has the given $permission.
      *
-     * @param string|string[]|BasePermission $permission
+     * @param string|string[]| \humhub\libs\BasePermission $permission
      * @param array $params
      * @param array $rule
      * @return bool true if the given $permission is granted

@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\events;
 
-use yii\base\Event;
+use humhub\components\Event;
 
 /**
  * UserEvent

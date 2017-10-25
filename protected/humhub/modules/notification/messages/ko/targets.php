@@ -18,5 +18,6 @@
  */
 return [
     'E-Mail' => '',
+    'Mobile' => '',
     'Web' => '',
 ];

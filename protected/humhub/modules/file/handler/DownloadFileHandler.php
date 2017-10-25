@@ -8,6 +8,8 @@
 
 namespace humhub\modules\file\handler;
 
+use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\widgets\FileDownload;
 use Yii;
 use yii\helpers\Url;
 
@@ -30,16 +32,16 @@ class DownloadFileHandler extends BaseFileHandler
      */
     public function getLinkAttributes()
     {
-        return [
-            'label' => Yii::t('FileModule.base', 'Download') . ' <small>(' . Yii::$app->formatter->asShortSize($this->file->size, 1) . ')</small>',
+        return array_merge(FileDownload::getFileDataAttributes($this->file), [
+            'label' => Yii::t('FileModule.base', 'Download') . FileDownload::getFileSizeString($this->file),
             'href' => self::getUrl($this->file),
             'target' => '_blank',
-        ];
+        ]);
     }
 
-    public static function getUrl($file, $download = 0)
+    public static function getUrl($file, $download = 0, $scheme = false)
     {
-        return Url::to(['/file/file/download', 'guid' => $file->guid, 'download' => $download]);
+        return Url::to(['/file/file/download', 'guid' => $file->guid, 'download' => $download], $scheme);
     }
 
 }

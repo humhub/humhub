@@ -9,13 +9,16 @@
 namespace humhub\modules\comment;
 
 use humhub\modules\comment\models\Comment;
+use humhub\modules\search\events\SearchAttributesEvent;
+use humhub\modules\search\engine\Search;
+use yii\base\Event;
 
 /**
  * Events provides callbacks to handle events.
  * 
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends \yii\base\Component
 {
 
     /**
@@ -42,8 +45,8 @@ class Events extends \yii\base\Object
         foreach (Comment::findAll(['created_by' => $event->sender->id]) as $comment) {
             $comment->delete();
         }
-        
-		return true;
+
+        return true;
     }
 
     /**
@@ -85,7 +88,7 @@ class Events extends \yii\base\Object
         if ($event->sender->object->content === null) {
             return;
         }
-        
+
         if (\Yii::$app->getModule('comment')->canComment($event->sender->object->content)) {
             $event->sender->addWidget(widgets\CommentLink::className(), ['object' => $event->sender->object], ['sortOrder' => 10]);
         }
@@ -99,6 +102,30 @@ class Events extends \yii\base\Object
     public static function onWallEntryAddonInit($event)
     {
         $event->sender->addWidget(widgets\Comments::className(), ['object' => $event->sender->object], ['sortOrder' => 20]);
+    }
+
+    /**
+     * Handles the SearchAttributesEvent and adds related comments 
+     * 
+     * @since 1.2.3
+     * @param SearchAttributesEvent $event
+     */
+    public static function onSearchAttributes(SearchAttributesEvent $event)
+    {
+        if (!isset($event->attributes['comments'])) {
+            $event->attributes['comments'] = [];
+        }
+
+        foreach (Comment::findAll(['object_model' => $event->record->className(), 'object_id' => $event->record->id]) as $comment) {
+            /* @var $comment Comment */
+            $event->attributes['comments'][$comment->id] = [
+                'author' => ($comment->user !== null) ? $comment->user->displayName : '',
+                'message' => $comment->message
+            ];
+            
+            // Add comment related attributes (e.g. files)
+            Event::trigger(Search::class, Search::EVENT_SEARCH_ATTRIBUTES, new SearchAttributesEvent($event->attributes['comments'][$comment->id], $comment));
+        }
     }
 
 }

@@ -20,6 +20,7 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "yiisoft/yii2-authclient": "~2.0.0",
         "yiisoft/yii2-imagine": "~2.0.0",
+        "yiisoft/yii2-httpclient": "~2.0.0",
         "raoul2000/yii2-jcrop-widget": "*",
         "kartik-v/yii2-widgets": "*",
         "phpoffice/phpexcel": "*",
@@ -50,7 +51,8 @@
         "bower-asset/html5shiv": "^3.7",
         "bower-asset/clipboard.js": "*",
         "bower-asset/jPlayer": "2.9.2",
-        "bower-asset/imagesloaded": "*"
+        "bower-asset/imagesloaded": "*",
+        "bower-asset/jquery-timeentry": "^2.0"
     },
     "require-dev": {
         "codeception/codeception": "*",

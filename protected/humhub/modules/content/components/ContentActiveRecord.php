@@ -8,16 +8,15 @@
 
 namespace humhub\modules\content\components;
 
+use Yii;
+use yii\base\Exception;
 use humhub\modules\content\widgets\WallEntry;
 use humhub\widgets\Label;
-use Yii;
 use humhub\libs\BasePermission;
 use humhub\modules\content\permissions\ManageContent;
-use yii\base\Exception;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\interfaces\ContentOwner;
-use yii\base\Widget;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
@@ -85,6 +84,15 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     protected $managePermission = ManageContent::class;
 
     /**
+     * If set to true this flag will prevent default ContentCreated Notifications and Activities.
+     * This can be used e.g. for sub content entries, whose creation is not worth mentioning.
+     *
+     * @var bool
+     * @since 1.2.3
+     */
+    public $silentContentCreation = false;
+
+    /**
      * ContentActiveRecord constructor accepts either an configuration array as first argument or an ContentContainerActiveRecord
      * and visibility settings.
      *
@@ -96,6 +104,9 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      *
      * `$model = new MyContent($space1, Content::VISIBILITY_PUBLIC, ['myField' => 'value']);`
      *
+     * or
+     *
+     * `$model = new MyContent($space1, ['myField' => 'value']);`
      *
      * @param array|ContentContainerActiveRecord $contentContainer either the configuration or contentcontainer
      * @param int $visibility
@@ -107,7 +118,9 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
             parent::__construct($contentContainer);
         } else if($contentContainer instanceof ContentContainerActiveRecord) {
             $this->content->setContainer($contentContainer);
-            if($visibility !== null) {
+            if(is_array($visibility)) {
+                $config = $visibility;
+            } else if($visibility !== null) {
                 $this->content->visibility = $visibility;
             }
             parent::__construct($config);

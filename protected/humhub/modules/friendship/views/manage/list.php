@@ -4,7 +4,7 @@ use yii\bootstrap\Html;
 use humhub\widgets\GridView;
 ?>
 <div class="panel-heading">
-    <?php echo Yii::t('FriendshipModule.base', '<strong>My</strong> friends'); ?>
+    <?= Yii::t('FriendshipModule.base', '<strong>My</strong> friends'); ?>
 </div>
 
 
@@ -19,7 +19,7 @@ use humhub\widgets\GridView;
             'profile.firstname',
             'profile.lastname',
             [
-                'header' => 'Actions',
+                'header' => Yii::t('FriendshipModule.base', 'Actions'),
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
                     'update' => function () {
@@ -29,7 +29,7 @@ use humhub\widgets\GridView;
                         return;
                     },
                     'delete' => function($url, $model) {
-                        return Html::a('Unfriend', ['/friendship/request/delete', 'userId' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']);
+                        return Html::a(Yii::t('FriendshipModule.base', 'Unfriend'), ['/friendship/request/delete', 'userId' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']);
                     },
                         ],
                     ]],

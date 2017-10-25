@@ -2396,7 +2396,7 @@ trait AcceptanceTesterActions
      *
      * Wait for $timeout seconds.
      *
-     * @param int $timeout secs
+     * @param int|float $timeout secs
      * @throws \Codeception\Exception\TestRuntimeException
      * @see \Codeception\Module\WebDriver::wait()
      */

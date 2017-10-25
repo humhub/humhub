@@ -148,8 +148,8 @@ class CreateController extends Controller
     {
         $model = new Space();
         $model->scenario = 'create';
-        $model->visibility = Yii::$app->getModule('space')->settings->get('defaultVisibility');
-        $model->join_policy = Yii::$app->getModule('space')->settings->get('defaultJoinPolicy');
+        $model->visibility = Yii::$app->getModule('space')->settings->get('defaultVisibility', Space::VISIBILITY_REGISTERED_ONLY);
+        $model->join_policy = Yii::$app->getModule('space')->settings->get('defaultJoinPolicy', Space::JOIN_POLICY_APPLICATION);
         return $model;
     }
 

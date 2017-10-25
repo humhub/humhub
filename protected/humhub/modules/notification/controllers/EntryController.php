@@ -13,6 +13,7 @@ use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;
 use humhub\modules\notification\models\Notification;
+use humhub\components\access\ControllerAccess;
 
 /**
  * EntryController
@@ -25,12 +26,10 @@ class EntryController extends Controller
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    public function getAccessRules()
     {
         return [
-            'acl' => [
-                'class' => AccessControl::className(),
-            ]
+            [ControllerAccess::RULE_LOGGED_IN_ONLY]
         ];
     }
 
@@ -50,7 +49,7 @@ class EntryController extends Controller
         if ($notification->markAsSeenOnClick) {
             $notification->markAsSeen();
         }
-        
+
         // Redirect to notification URL
         return $this->redirect($notification->getUrl());
     }

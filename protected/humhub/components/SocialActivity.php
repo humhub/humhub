@@ -98,7 +98,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
     /**
      * Builder function for the originator.
      *
-     * @param type $originator
+     * @param User $originator
      * @return \humhub\components\SocialActivity
      */
     public function from($originator)

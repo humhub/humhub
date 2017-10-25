@@ -84,14 +84,12 @@ class Events extends \yii\base\Object
      */
     public static function onSearchRebuild($event)
     {
-        foreach (Content::find()->batch() as $contents) {
-            foreach ($contents as $content) {
+        foreach (Content::find()->each() as $content) {
             $contentObject = $content->getPolymorphicRelation();
             if ($contentObject instanceof \humhub\modules\search\interfaces\Searchable) {
                 Yii::$app->search->add($contentObject);
             }
         }
-    }
     }
 
     /**

@@ -44,6 +44,11 @@ class Activity extends ContentActiveRecord
     /**
      * @inheritdoc
      */
+    public $silentContentCreation = true;
+
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [

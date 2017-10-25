@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Content Tag with invalid contentcontainer_id assigned.' => '',
+    'This space is not visible!' => '',
     'Updated' => '',
     'Content' => 'Indhold',
 ];

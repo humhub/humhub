@@ -129,6 +129,12 @@ class CoreJsConfig extends Widget
                             500 => Yii::t('base', 'An unexpected server error occurred. If this keeps happening, please contact a site administrator.')
                         ]
                     ],
+                    'ui.additions' => [
+                        'text' => [
+                            'success.clipboard' => Yii::t('base', 'Text has been copied to clipboard'),
+                            'error.clipboard' => Yii::t('base', 'Text could not be copied to clipboard'),
+                        ]
+                    ],
                     'ui.status' => [
                         'showMore' => Yii::$app->user->isAdmin() || YII_DEBUG,
                         'text' => [
@@ -172,8 +178,6 @@ class CoreJsConfig extends Widget
                         'text' => [
                             'success.archive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been archived.'),
                             'success.unarchive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unarchived.'),
-                            'success.pin' => Yii::t('ContentModule.widgets_views_stream', 'The content has been pinned.'),
-                            'success.unpin' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unpinned.'),
                             'success.delete' => Yii::t('ContentModule.widgets_views_stream', 'The content has been deleted.'),
                             'info.editCancel' => Yii::t('ContentModule.widgets_views_stream', 'Your last edit state has been saved!'),
                         ]

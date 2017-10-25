@@ -1,13 +1,13 @@
 HumHub Change Log
 =================
 
-1.2.3  (Not released yet)
---------------------------------
+1.2.3  (October 23, 2017)
+-------------------------
 
 Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users.
+Important note for Git/Composer installations: http://www.yiiframework.com/news/148/important-note-about-bower-and-the-asset-plugin/
 
 - Fix: Readonly markdown field issue.
-- Enh: Added flag to control automatically created social activities at content creation.
 - Enh: Fixed registration approval/denial mails and made their default value configurable.
 - Enh: Updated primary auth client interface for more flexibility
 - Enh: Added LDAP ID attribute to improve user mapping
@@ -23,8 +23,37 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix: trigger richtext `clear` when submitting comment.
 - Fix: missing return in `FileContent::beforeValidate`
 - Fix: Mentioning search with `-` not working
-- Fix #2730 Mentioning search with `-` not working
-- Fix File search with suffix not working
+- Fix #2730: Mentioning search with `-` not working
+- Fix: File search with suffix not working
+- Enh: Added SearchAttributesEvent to improve content addon indexing (comment/file)
+- Fix: Do not automatically force modal close on stream edit
+- Enh: Added DurationPickerWidget
+- Enh: Allow `ContentActiveRecord($contentContainer, $config)` initialization
+- Fix: `WallEntry::addControl` with simple array options
+- Enh: Added `$scheme` Argument to `DownloadFileHandler::getUrl()`
+- Fix: Clear UserModule cache after save/delete
+- Fix: Prevent Integrity check failures.
+- Enh: Added default open content as modal action
+- Enh: Added possibility to add attachments in Notification MailTarget
+- Enh: Added surpressSendToOriginator Notification option
+- Chg: #2745 Removed `GroupPermission::instance()` for yii 2.0.13 compatibility
+- Enh: Added `MobileTargetProvider` abstraction for mobile push notifications
+- Enh: Added `humhub:notification:updateCount` js event
+- Enh: Show space administrators and moderators in member snippet
+- Fix: `humhub\modules\live\Module::getLegitimateContentContainerIds` behaviour with friendship module enabled
+- Enh: Added `BaseNotification:priority` to mark high priority notifications
+- Enh: Added new `User::isVisible` and `ActiveQueryUser::visible` methods
+- Fix: MarkdownEditor cursor position after inserting file/
+- Fix: Make sure own profile content is always visible to user
+- Fix #2501: Do not try to embed Youtube unauthorized videos (acs-ferreira)
+- Fix #2613: Wrong username encoding with pretty url (githubjeka)
+- Fix #2791, #2749: Force private join policy on private spaces + non changeable post visibility
+- Fix wrong Comment date issue in notification mails
+- Enh: Added `data-file-*` attributes to download links, for beeing able to intercept file downloads
+- Enh: Added `apple-mobile-web-app-*` and `mobile-web-app-capable` meta tags to `head.php`
+- Fix #2783: E-Mail notification link broken when guest mode is enabled (Buliwyfa)
+- Enh: Added `ContentActiveRecord::silentContentCreation` for disabling ContentCreated Activity/Notification on ContentActiveRecord level
+- Enh: Now the `NewContent` live event is always fired with `sourceClass` and `sourceId` information and a `silent` flag for silent content creations
 
 1.2.2  (August 2, 2017)
 --------------------------------
@@ -124,6 +153,8 @@ Important note for LDAP users: There is a new setting "ID Attribute" which shoul
 - Fix: Show more suppression entries with sort order update + equal update_at not working.
 - Fix #2627: Incorrect language used in group admin user approval e-mail
 - Fix #2631: Module configuration link shown for disabled modules
+- Fix #2785 #2172: Added iconv PHP extension to the requirement check (leuprechtroman)
+
 
 1.2.0 (April 16, 2017)
 --------------------------------

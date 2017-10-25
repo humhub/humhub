@@ -42,7 +42,7 @@ class ModuleManager extends \yii\base\Component
     /**
      * List of all enabled module ids
      *
-     * @var Array
+     * @var array
      */
     protected $enabledModules = [];
 

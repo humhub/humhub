@@ -1,12 +1,15 @@
 <?php
 return array (
   '<strong>Space</strong> followers' => '<strong>Ruimte</strong> volgers',
+  'Administrator:' => 'Beheerder:',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'De eigenaar van ruimte {spaceName} kan niet verwijderd worden!',
   'Default' => 'Standaard',
   'Everyone can enter' => 'Iedereen kan lid worden',
   'Invite and request' => 'Uitnodigen en aanvragen',
+  'Moderator:' => 'Moderator:',
   'No spaces found.' => 'Geen ruimtes gevonden',
   'Only by invite' => 'Alleen door uitnodiging',
+  'Owner:' => 'Eigenaar:',
   'Private' => 'Privé',
   'Private (Invisible)' => 'Privaat (Onzichtbaar)',
   'Public' => 'Publiek',

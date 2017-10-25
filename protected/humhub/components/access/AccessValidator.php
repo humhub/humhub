@@ -41,8 +41,6 @@ use yii\base\Object;
  * A Validator has an unique name which is used to detect related rules and can filter out non related rules by
  * means of the `filterRelatedRules()` function.
  *
- * Subclasses have to overwrite the `run()` function, which holds the actual validation logic.
- *
  * AccessValidators have access to a ControllerAccess instance, which holds the ruleset and validation state.
  *
  * This abstract validator class furthermore provides some helper functions as:

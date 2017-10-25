@@ -8,6 +8,7 @@
 
 namespace humhub\modules\notification\components;
 
+use humhub\components\SocialActivity;
 use Yii;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
@@ -49,6 +50,13 @@ abstract class BaseNotification extends SocialActivity
     public $groupCount = 0;
 
     /**
+     * @since 1.2.3
+     * @see NotificationManager
+     * @var boolean do not send this notification also to the originator
+     */
+    public $suppressSendToOriginator = true;
+
+    /**
      * @var string the group key
      */
     protected $_groupKey = null;
@@ -62,6 +70,17 @@ abstract class BaseNotification extends SocialActivity
      * @inheritdoc
      */
     public $recordClass = Notification::class;
+
+    /**
+     * Priority flag, if set to true, this Notification type will be marked as high priority.
+     * This can be used by a given BaseTarget while handling a Notification.
+     *
+     * A MobileTargetProvider for example could use this flag for Android devices to wake up the device out of doze mode.
+     *
+     * @var bool if set to true marks this notification type as high priority.
+     * @since 1.2.3
+     */
+    public $priority = false;
 
     /**
      * Returns the notification category instance. If no category class is set (default) the default notification settings
@@ -225,7 +244,7 @@ abstract class BaseNotification extends SocialActivity
     public function about($source)
     {
         if (!$source) {
-            return;
+            return $this;
         }
         parent::about($source);
         $this->record->space_id = $this->getSpaceId();
@@ -239,7 +258,7 @@ abstract class BaseNotification extends SocialActivity
     public function from($originator)
     {
         if (!$originator) {
-            return;
+            return $this;
         }
         $this->originator = $originator;
         $this->record->originator_user_id = $originator->id;
@@ -397,7 +416,7 @@ abstract class BaseNotification extends SocialActivity
 
     /**
      * Should be overwritten by subclasses for a html representation of the notification.
-     * @return type
+     * @return string
      */
     public function html()
     {
@@ -422,5 +441,17 @@ abstract class BaseNotification extends SocialActivity
     {
         return null;
     }
-    
+
+    /**
+     * This method is invoked right before a mail will be send for this notificatoin
+     * 
+     * @see \humhub\modules\notification\targets\MailTarget
+     * @param \yii\mail\MessageInterface $message
+     * @return boolean when true the mail will be send
+     */
+    public function beforeMailSend(\yii\mail\MessageInterface $message)
+    {
+        return true;
+    }
+
 }

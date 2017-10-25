@@ -2,16 +2,20 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\comment\controllers;
 
 use Yii;
-use humhub\modules\comment\models\Comment;
-use \humhub\modules\comment\widgets\ShowMore;
+use yii\data\Pagination;
 use yii\web\HttpException;
+use humhub\modules\content\components\ContentAddonController;
+use humhub\components\behaviors\AccessControl;
+use humhub\modules\comment\models\Comment;
+use humhub\modules\comment\widgets\Comment as CommentWidget;
+use humhub\modules\comment\widgets\ShowMore;
 
 /**
  * CommentController provides all comment related actions.
@@ -19,7 +23,7 @@ use yii\web\HttpException;
  * @package humhub.modules_core.comment.controllers
  * @since 0.5
  */
-class CommentController extends \humhub\modules\content\components\ContentAddonController
+class CommentController extends ContentAddonController
 {
 
     /**
@@ -29,7 +33,7 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::className(),
                 'guestAllowedActions' => ['show']
             ]
         ];
@@ -49,7 +53,7 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
             'object_id' => $content->getPrimaryKey(),
         ]);
         
-        $pagination = new \yii\data\Pagination([
+        $pagination = new Pagination([
             'totalCount' => Comment::GetCommentCount($content->className(), $content->getPrimaryKey()),
             'pageSize' => $this->module->commentsBlockLoadSize
         ]);
@@ -59,7 +63,7 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
 
         $output = ShowMore::widget(['pagination' => $pagination, 'object' => $content]);
         foreach ($comments as $comment) {
-            $output .= \humhub\modules\comment\widgets\Comment::widget(['comment' => $comment]);
+            $output .= CommentWidget::widget(['comment' => $comment]);
         }
 
         if (Yii::$app->request->get('mode') == 'popup') {
@@ -87,7 +91,6 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
         $message = Yii::$app->request->post('message');
         $files = Yii::$app->request->post('fileList');
 
-
         if (empty(trim($message)) && empty($files)) {
             // do not create empty comments
             return '';
@@ -101,7 +104,7 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
         // Reload comment to get populated created_at field
         $comment->refresh();
 
-        return $this->renderAjaxContent(\humhub\modules\comment\widgets\Comment::widget(['comment' => $comment]));
+        return $this->renderAjaxContent(CommentWidget::widget(['comment' => $comment]));
     }
 
     public function actionEdit()
@@ -117,17 +120,17 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
             // Reload comment to get populated updated_at field
             $this->contentAddon = Comment::findOne(['id' => $this->contentAddon->id]);
 
-            return $this->renderAjaxContent(\humhub\modules\comment\widgets\Comment::widget([
+            return $this->renderAjaxContent(CommentWidget::widget([
                                 'comment' => $this->contentAddon,
                                 'justEdited' => true
             ]));
         }
 
-        return $this->renderAjax('edit', array(
+        return $this->renderAjax('edit', [
                     'comment' => $this->contentAddon,
                     'contentModel' => $this->contentAddon->object_model,
                     'contentId' => $this->contentAddon->object_id
-        ));
+        ]);
     }
 
     public function actionLoad()
@@ -138,7 +141,7 @@ class CommentController extends \humhub\modules\content\components\ContentAddonC
             throw new HttpException(403, Yii::t('CommentModule.controllers_CommentController', 'Access denied!'));
         }
 
-        return $this->renderAjaxContent(\humhub\modules\comment\widgets\Comment::widget(['comment' => $this->contentAddon]));
+        return $this->renderAjaxContent(CommentWidget::widget(['comment' => $this->contentAddon]));
     }
 
     /**

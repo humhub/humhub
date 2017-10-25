@@ -1,6 +1,6 @@
 <?php
 return array (
   'Archived' => 'Archivált',
-  'Pinned' => 'Kiemelt',
+  'Pinned' => 'Rögzített',
   'Public' => 'Nyilvános',
 );

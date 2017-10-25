@@ -202,7 +202,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
             $this->getSource()->content->updateStreamSortTime();
         }
 
-        return parent::afterSave($insert, $changedAttributes);
+        parent::afterSave($insert, $changedAttributes);
     }
 
     public function getUser()

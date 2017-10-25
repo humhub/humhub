@@ -9,6 +9,7 @@ return array (
   'Specify your LDAP-backend used to fetch user accounts.' => 'Geef uw LDAP-backend op om gebruikersaccounts op te halen.',
   'Status: Error! (Message: {message})' => 'Status: Error! (Melding: {message})',
   'Status: OK! ({userCount} Users)' => 'Status: OK! ({userCount} gebruikers)',
+  'Status: Warning! (No users found using the ldap user filter!)' => 'Status: Waarschuwing! (Er zijn geen gebruikers gevonden die het ldap gebruikersfilter gebruiken!)',
   'The default base DN used for searching for accounts.' => 'De standaard Base DN die gebruikt wordt voor het zoeken naar accounts.',
   'The default credentials password (used only with username above).' => 'Het standaard wachtwoord (wordt enkel gebruikt in combinatie met bovenstaande gebruikersnaam).',
   'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'De standaards gebruikersnaam. Sommige servers eisen dat dit in DN formaat staat. Dit moet in DN formaat staan als de LDAP server een DN vereist voor de bind actie en de bind actie zou mogelijk moeten zijn met simpele gebruikersnamen.',

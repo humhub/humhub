@@ -98,7 +98,11 @@ class Button extends BootstrapComponent
     public function link($url = null, $pjax = true)
     {
         $this->_link = true;
-        $this->loader(false);
+
+        if(!$this->type || $this->type == self::TYPE_NONE) {
+            $this->loader(false);
+        }
+
         $this->htmlOptions['href'] = Url::to($url);
 
         $this->pjax($pjax);

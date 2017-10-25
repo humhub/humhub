@@ -32,7 +32,7 @@ git clone https://github.com/humhub/humhub.git
  3. Navigate to your HumHub webroot and fetch dependencies:
 
 ```
-php composer.phar global require "fxp/composer-asset-plugin:~1.3"
+php composer.phar global require "fxp/composer-asset-plugin:^1.4.2"
 php composer.phar update
 ```
 

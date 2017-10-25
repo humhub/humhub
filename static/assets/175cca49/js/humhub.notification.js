@@ -22,6 +22,7 @@ humhub.module('notification', function (module, require, $) {
     object.inherits(NotificationDropDown, Widget);
 
     NotificationDropDown.prototype.init = function (update) {
+        
         this.isOpen = false;
         this.lastEntryLoaded = false;
         this.lastEntryId = 0;
@@ -110,6 +111,8 @@ humhub.module('notification', function (module, require, $) {
 
         $('#badge-notifications').hide();
 
+        event.trigger('humhub:notification:updateCount', [$count]);
+
         if (!$count) {
             updateTitle(false);
             $('#badge-notifications').html('0');
@@ -159,6 +162,11 @@ humhub.module('notification', function (module, require, $) {
             });
         }
 
+    };
+
+    var getNotificationCount = function() {
+        var widget = NotificationDropDown.instance('#notification_widget');
+        return widget.$.data('notification-count');
     };
 
     var sendDesktopNotifiaction = function (body, icon) {
@@ -222,6 +230,10 @@ humhub.module('notification', function (module, require, $) {
             return;
         }
         
+        if (!$('#notification_widget').length) {
+            return;
+        }
+        
         updateTitle($('#notification_widget').data('notification-count'));
         initOverviewPage();
         if (!$pjax) {
@@ -254,6 +266,7 @@ humhub.module('notification', function (module, require, $) {
         init: init,
         markAsSeen: markAsSeen,
         sendDesktopNotifiaction: sendDesktopNotifiaction,
+        getNotificationCount: getNotificationCount,
         NotificationDropDown: NotificationDropDown
     });
 });

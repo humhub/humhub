@@ -22,6 +22,7 @@ return [
     'Manager' => '',
     'Show At Directory' => '',
     'Show At Registration' => '',
+    'Sort order' => '',
     'Created at' => 'Oluşturulma zamanı',
     'Created by' => 'Oluşturan',
     'Default Space' => 'Varsayılan Mekan',

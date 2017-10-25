@@ -76,6 +76,7 @@ class Content extends ContentDeprecated
     
     /**
      * @var bool flag to disable the creation of default social activities like activity and notifications in afterSave() at content creation.
+     * @deprecated since v1.2.3 use ContentActiveRecord::silentContentCreation instead.
      */
     public $muteDefaultSocialActivities = false;
 
@@ -138,11 +139,9 @@ class Content extends ContentDeprecated
      */
     public function beforeSave($insert)
     {
-
         if ($this->object_model == "" || $this->object_id == "") {
             throw new Exception("Could not save content with object_model or object_id!");
         }
-
 
         // Set some default values
         if (!$this->archived) {
@@ -175,39 +174,59 @@ class Content extends ContentDeprecated
      */
     public function afterSave($insert, $changedAttributes)
     {
+        /* @var $contentSource ContentActiveRecord */
         $contentSource = $this->getPolymorphicRelation();
 
         foreach ($this->notifyUsersOfNewContent as $user) {
             $contentSource->follow($user->id);
         }
 
-        if ($insert && !$contentSource instanceof \humhub\modules\activity\models\Activity) {
+        // TODO: handle ContentCreated notifications and live events for global content
+        if ($insert && !$this->isMuted()) {
+            $this->notifyContentCreated();
+        }
 
-            if (!$this->muteDefaultSocialActivities && $this->container !== null) {
-                $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
-
-                \humhub\modules\content\notifications\ContentCreated::instance()
-                        ->from($this->user)
-                        ->about($contentSource)
-                        ->sendBulk($notifyUsers);
-                
-                \humhub\modules\content\activities\ContentCreated::instance()
-                        ->from($this->user)
-                        ->about($contentSource)->save();
-
-
-                Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
-                    'sguid' => ($this->container instanceof Space) ? $this->container->guid : null,
-                    'uguid' => ($this->container instanceof User) ? $this->container->guid : null,
-                    'originator' => $this->user->guid,
-                    'contentContainerId' => $this->container->contentContainerRecord->id,
-                    'visibility' => $this->visibility,
-                    'contentId' => $this->id
-                ]));
-            }
+        if($this->container) {
+            Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
+                'sguid' => ($this->container instanceof Space) ? $this->container->guid : null,
+                'uguid' => ($this->container instanceof User) ? $this->container->guid : null,
+                'originator' => $this->user->guid,
+                'contentContainerId' => $this->container->contentContainerRecord->id,
+                'visibility' => $this->visibility,
+                'sourceClass' => $contentSource->className(),
+                'sourceId' => $contentSource->getPrimaryKey(),
+                'silent' => $this->isMuted(),
+                'contentId' => $this->id
+            ]));
         }
 
         return parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @return bool checks if the given content allows content creation notifications and activities
+     */
+    private function isMuted()
+    {
+        return $this->getPolymorphicRelation()->silentContentCreation || $this->muteDefaultSocialActivities || !$this->container;
+    }
+
+    /**
+     * Notifies all followers and manually set $notifyUsersOfNewContent of the creation of this content and creates an activity.
+     */
+    private function notifyContentCreated()
+    {
+        $contentSource = $this->getPolymorphicRelation();
+        $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
+
+        \humhub\modules\content\notifications\ContentCreated::instance()
+            ->from($this->user)
+            ->about($contentSource)
+            ->sendBulk($notifyUsers);
+
+        \humhub\modules\content\activities\ContentCreated::instance()
+            ->from($this->user)
+            ->about($contentSource)->save();
     }
 
     /**
@@ -270,7 +289,7 @@ class Content extends ContentDeprecated
     public function pin()
     {
         $this->pinned = 1;
-        //This prevents the call of beforesave, and the setting of update_at
+        //This prevents the call of beforeSave, and the setting of update_at
         $this->updateAttributes(['pinned']);
     }
 

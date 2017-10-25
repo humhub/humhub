@@ -22,6 +22,7 @@ return [
     'Manager' => '',
     'Show At Directory' => '',
     'Show At Registration' => '',
+    'Sort order' => '',
     'Created at' => 'Utworzone o',
     'Created by' => 'Utworzone przez',
     'Default Space' => 'Domyślna strefa',
