@@ -12,7 +12,7 @@ Database
 Create a MySQL Database, e.g.:
 
 ```sql
-CREATE DATABASE `test2` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE `humhub` CHARACTER SET utf8 COLLATE utf8_general_ci;
 GRANT ALL ON `humhub`.* TO `humhub_dbuser`@localhost IDENTIFIED BY 'password_changeme';
 FLUSH PRIVILEGES;
 ```
