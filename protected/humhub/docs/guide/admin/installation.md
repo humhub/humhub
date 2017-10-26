@@ -12,7 +12,7 @@ Database
 Create a MySQL Database, e.g.:
 
 ```sql
-CREATE DATABASE `humhub` CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE `test2` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 GRANT ALL ON `humhub`.* TO `humhub_dbuser`@localhost IDENTIFIED BY 'password_changeme';
 FLUSH PRIVILEGES;
 ```
@@ -25,7 +25,7 @@ FLUSH PRIVILEGES;
 Download HumHub Core Files
 ---------------------------
 
-The easiest way to get HumHub, is the direct download of the complete package under [http://www.humhub.org/downloads](http://www.humhub.org/downloads).
+The easiest way to get HumHub, is the direct download of the complete package under [https://www.humhub.org/en/download](https://www.humhub.org/en/download).
 
 After the download completed, just extract the package into the htdocs folder of your webserver.
 
