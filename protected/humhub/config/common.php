@@ -133,7 +133,7 @@ $config = [
             'clients' => [],
         ],
         'queue' => [
-            'class' => 'humhub\components\queue\driver\Sync',
+            'class' => 'humhub\modules\queue\driver\Sync',
         ],
         'urlManager' => [
             'class' => 'humhub\components\UrlManager',

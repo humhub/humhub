@@ -1,15 +1,27 @@
-# Module Migration Guide
+Module Migration Guide
+======================
 
 Here you will learn how you can adapt existing modules to working fine with actually versions.
 
-## Migrate from 1.2 to 1.3
+Migrate from 1.2 to 1.3
+-----------------------
 
 ### ContentContainer Controller
 
 The base controller attributes `autoCheckContainerAccess` and `hideSidebar` are not longer available.
 
+### Removed Deprecated 
 
-## Migrate from 1.1 to 1.2
+- formatterApp Application Component (Yii::$app->formatterApp)
+
+### Queuing 
+
+The queuing is now moved into an own module `humhub\modues\queue`.
+The existing `humhub\components\queue\ActiveJob` is declared as deprecated and will be removed in 1.4.
+
+
+Migrate from 1.1 to 1.2
+-----------------------
 
 ### Stream / Content Changes
 
@@ -60,7 +72,8 @@ within your controller for pjax topmenu support.
 TBD
 
 
-## Migrate from 1.0 to 1.1
+Migrate from 1.0 to 1.1
+-----------------------
 
 - Dropped unused space attribute "website"
 
@@ -84,8 +97,10 @@ TBD
 
 - New administration menu structure
 
-## Migrate from 0.20 to 1.0
 
+
+Migrate from 0.20 to 1.0
+------------------------
 
 ## Migrate from 0.12 to 0.20
 
@@ -94,12 +109,17 @@ TBD
 This requires an extensive migration of all custom modules/themes.
 Find more details here: [HumHub 0.20 Migration](modules-migrate-0.20.md)
 
-## Migrate from 0.11 to 0.12
+
+
+Migrate from 0.11 to 0.12
+-------------------------
 
 - Rewritten Search 
 
-## Migrate from 0.10 to 0.11
 
+
+Migrate from 0.10 to 0.11
+-------------------------
 No breaking changes.
 
 - Now handle ContentContainerController layouts, new option showSidebar

@@ -8,7 +8,7 @@
 namespace humhub\modules\notification\jobs;
 
 use Yii;
-use humhub\components\queue\ActiveJob;
+use humhub\modules\queue\ActiveJob;
 
 /**
  * Description of SendNotification
@@ -22,17 +22,17 @@ class SendBulkNotification extends ActiveJob
      * @var array Basenotification data as array.
      */
     public $notification;
-    
+
     /**
      * @var integer[] Recepient userids.
      */
     public $recepients;
-    
+
     /**
      * @inheritdoc
      */
     public function run()
-    {   
-        Yii::$app->notification->sendBulk($this->notification, $this->recepients); 
+    {
+        Yii::$app->notification->sendBulk($this->notification, $this->recepients);
     }
 }

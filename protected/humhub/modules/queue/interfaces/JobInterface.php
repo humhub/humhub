@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\components\queue;
+namespace humhub\modules\queue\interfaces;
 
 use yii\queue\Job;
 

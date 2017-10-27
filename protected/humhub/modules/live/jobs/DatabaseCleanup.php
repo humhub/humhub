@@ -10,7 +10,7 @@ namespace humhub\modules\live\jobs;
 
 use Yii;
 use humhub\modules\live\models\Live;
-use humhub\components\queue\ActiveJob;
+use humhub\modules\queue\ActiveJob;
 
 /**
  * DatabaseCleanup removes old live events

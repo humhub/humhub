@@ -12,3 +12,4 @@ HumHub Change Log - v1.3-dev Branch
 - Chg: Added ContentContainer ModuleManager, instead of individual handling (Space/User)
 - Fix: Rebind LDAP connection after successful login with administrative user
 - Enh: Make utf8_mb4 as default database charset
+- Enh: Moved queueing into own submodule and updated to yii2/queue extension
