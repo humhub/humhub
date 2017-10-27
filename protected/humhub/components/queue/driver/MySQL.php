@@ -10,8 +10,8 @@ namespace humhub\components\queue\driver;
 
 use Yii;
 use yii\base\Event;
-use zhuravljov\yii\queue\ErrorEvent;
-use zhuravljov\yii\queue\db\Queue;
+use yii\queue\db\Queue;
+use yii\queue\ErrorEvent;
 
 /**
  * MySQL queue driver

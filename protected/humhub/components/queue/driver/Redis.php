@@ -10,22 +10,17 @@ namespace humhub\components\queue\driver;
 
 use Yii;
 use yii\base\Event;
-use yii\queue\sync\Queue;
+use yii\queue\redis\Queue;
 use yii\queue\ErrorEvent;
 
 /**
- * Sync queue driver
+ * Redis queue driver
  *
  * @since 1.2
  * @author Luke
  */
-class Sync extends Queue
+class Redis extends Queue
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $handle = true;
 
     /**
      * @inheritdoc

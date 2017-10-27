@@ -9,18 +9,27 @@
 namespace humhub\components\queue;
 
 use yii\base\Object;
-use zhuravljov\yii\queue\Job;
 
 /**
  * ActiveJob
- *
+ * 
  * @since 1.2
  * @author Luke
  */
-abstract class ActiveJob extends Object implements Job
+abstract class ActiveJob extends Object implements JobInterface
 {
+
     /**
      * Runs this job
      */
     abstract public function run();
+
+    /**
+     * @inheritdoc
+     */
+    public function execute($queue)
+    {
+        return $this->run();
+    }
+
 }

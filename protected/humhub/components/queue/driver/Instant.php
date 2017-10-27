@@ -10,8 +10,8 @@ namespace humhub\components\queue\driver;
 
 use Yii;
 use yii\base\Event;
-use zhuravljov\yii\queue\ErrorEvent;
-use zhuravljov\yii\queue\Queue;
+use yii\queue\Queue as BaseQueue;
+use yii\queue\ErrorEvent;
 
 /**
  * Instant queue driver, mainly used for testing purposes
@@ -19,8 +19,13 @@ use zhuravljov\yii\queue\Queue;
  * @since 1.2
  * @author buddha
  */
-class Instant extends Queue
+class Instant extends BaseQueue
 {
+
+    /**
+     * @var int the message counter
+     */
+    protected $messageId = 1;
 
     /**
      * @inheritdoc
@@ -39,9 +44,18 @@ class Instant extends Queue
     /**
      * @inheritdoc
      */
-    protected function sendMessage($message, $timeout)
+    protected function pushMessage($message, $ttr, $delay, $priority)
     {
-        $this->handleMessage($message);
+        $this->handleMessage($this->messageId, $message, $ttr);
+        $this->messageId++;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function status($id)
+    {
+        return BaseQueue::STATUS_DONE;
     }
 
 }
