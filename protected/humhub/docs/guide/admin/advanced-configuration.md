@@ -6,10 +6,10 @@ You can overwrite the default HumHub / Yii configuration in the folder `/protect
 File Overview
 -------------
 
-- **common.php**  - Configuration used in Console & Web Application
-- **web.php** - Configuration used in Web Application only
-- **console.log** - Configuration used in Console Application only
-- **dynamic.php** - Dynamic generated configuration - do not edit manually!
+- **common.php**  - Configuration used for the Console and the Web Application
+- **web.php** - Configuration used for the Web Application only
+- **console.log** - Configuration used for the Console Application only
+- **dynamic.php** - Dynamically generated configuration - do not edit manually!
 
 
 
@@ -37,7 +37,10 @@ Configuration file loading order
 
 # Application Params
 
-Some application behaviours can be configured, by changing application parameters within your `common.php`, `web.php` or `console.php`:
+Some application behaviour can be configured by changing the application parameters within your `common.php`, `web.php` or `console.php`:
+
+
+The following configuration block will disable pjax support on your site for example:
 
 ```
 return [
@@ -47,7 +50,6 @@ return [
 ];
 ```
 
-Thre previous configuration will disable pjax support on your site.
 
 Available params:
 
@@ -59,7 +61,7 @@ Available params:
 
 Your tracking code can be managed under `Administration -> Settings -> Advanced -> Statistics`.
 
-In order to send the tracking code in case of pjax page loads as well as full page loads, you have to add the following to your statistics code by the example of google analytics:
+In order to send the tracking code in case that both, the pjax as well as the full page loads, you have to add the following to your statistics code (refers to Google Analytics):
 
 
 ```javascript

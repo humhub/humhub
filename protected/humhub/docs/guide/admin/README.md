@@ -22,6 +22,8 @@ Administration Topics
 * [Backup HumHub](backup.md)
 * [Performance Tuning](performance.md)
 * [Custom Configurations](advanced-configuration.md)
+* [Asynchronous Task Processing](asynchronous-tasks.md)
+* [Redis Integration](redis.md)
 * [Authentication and LDAP](authentication.md)
 * [Search System](search.md)
 * [Translations](translations.md)
