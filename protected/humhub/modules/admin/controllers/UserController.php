@@ -20,6 +20,7 @@ use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\space\models\Membership;
+use humhub\modules\user\models\Invite;
 
 /**
  * User management
@@ -34,12 +35,15 @@ class UserController extends Controller
      */
     public $adminOnly = false;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
+        parent::init();
+
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Users'));
         $this->subLayout = '@admin/views/layouts/user';
-
-        return parent::init();
     }
 
     /**
@@ -48,36 +52,36 @@ class UserController extends Controller
     public function getAccessRules()
     {
         return [
-            [
-                'permissions' => [
-                    ManageUsers::class,
-                    ManageGroups::class,
-                ]
-            ],
-            [
-                'permissions' => [ManageSettings::class],
-                'actions' => ['index']
-            ]
+            ['permissions' => [ManageUsers::class, ManageGroups::class]],
+            ['permissions' => [ManageSettings::class], 'actions' => ['index']]
         ];
+    }
+
+    public function actionIndex()
+    {
+        if (Yii::$app->user->can([new ManageUsers(), new ManageGroups()])) {
+            return $this->redirect(['list']);
+        } else if (Yii::$app->user->can(ManageSettings::class)) {
+            return $this->redirect(['/admin/authentication']);
+        } else {
+            return $this->forbidden();
+        }
     }
 
     /**
      * Returns a List of Users
      */
-    public function actionIndex()
+    public function actionList()
     {
-        if (Yii::$app->user->can([new ManageUsers(), new ManageGroups()])) {
-            $searchModel = new \humhub\modules\admin\models\UserSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-            return $this->render('index', [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel
-            ]);
-        } else if (Yii::$app->user->can(ManageSettings::class)) {
-            $this->redirect(['/admin/authentication']);
-        } else {
-            $this->forbidden();
-        }
+        $searchModel = new \humhub\modules\admin\models\UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $showPendingRegistrations = (Invite::find()->count() > 0 && Yii::$app->user->can([new ManageUsers(), new ManageGroups()]));
+
+        return $this->render('list', [
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'showPendingRegistrations' => $showPendingRegistrations
+        ]);
     }
 
     /**
@@ -180,7 +184,7 @@ class UserController extends Controller
         }
 
         if ($form->submitted('delete')) {
-            return $this->redirect(['/admin/user/delete', 'id' => $user->id]);
+            return $this->redirect(['delete', 'id' => $user->id]);
         }
 
         return $this->render('edit', [
@@ -232,10 +236,20 @@ class UserController extends Controller
                 }
             }
             $user->delete();
-            return $this->redirect(['/admin/user']);
+            return $this->redirect(['list']);
         }
 
         return $this->render('delete', ['model' => $user]);
+    }
+
+    public function actionViewProfile($id)
+    {
+        $user = User::findOne(['id' => $id]);
+        if ($user === null) {
+            throw new HttpException(404);
+        }
+
+        return $this->redirect($user->getUrl());
     }
 
 }

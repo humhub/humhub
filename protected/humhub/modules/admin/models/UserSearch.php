@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use humhub\modules\user\models\User;
@@ -20,19 +21,33 @@ use humhub\modules\user\models\User;
 class UserSearch extends User
 {
 
+    /**
+     * @var \humhub\modules\user\components\ActiveQueryUser
+     */
     public $query;
 
+    /**
+     * @var string a free text search
+     */
+    public $freeText;
+
+    /**
+     * @inheritdoc
+     */
     public function attributes()
     {
         // add related fields to searchable attributes
         return array_merge(parent::attributes(), ['profile.firstname', 'profile.lastname']);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['username', 'email', 'created_at', 'profile.firstname', 'profile.lastname', 'last_login'], 'safe'],
+            [['id', 'status'], 'integer'],
+            [['username', 'email', 'created_at', 'profile.firstname', 'profile.lastname', 'last_login', 'freeText'], 'safe'],
         ];
     }
 
@@ -55,23 +70,24 @@ class UserSearch extends User
     public function search($params)
     {
         $query = ($this->query == null) ? User::find()->joinWith('profile') : $this->query;
+        /* @var $query humhub\modules\user\components\ActiveQueryUser */
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => ['pageSize' => 50],
         ]);
-
         $dataProvider->setSort([
             'attributes' => [
                 'id',
                 'username',
                 'email',
-            'last_login',
+                'last_login',
                 'profile.firstname',
                 'profile.lastname',
                 'created_at',
             ]
         ]);
+        $dataProvider->sort->defaultOrder = ['id' => SORT_DESC];
 
         $this->load($params);
 
@@ -80,12 +96,35 @@ class UserSearch extends User
             return $dataProvider;
         }
 
+
+        $query->joinWith(['profile']);
+
+
+        // Freetext filters
+        if (!empty($this->freeText)) {
+            $query->andWhere([
+                'OR',
+                ['like', 'user.id', $this->freeText],
+                ['like', 'user.username', $this->freeText],
+                ['like', 'user.email', $this->freeText],
+                ['like', 'profile.firstname', $this->freeText],
+                ['like', 'profile.lastname', $this->freeText]
+            ]);
+
+            if (!empty($this->status)) {
+                $query->andFilterWhere(['user.status' => $this->status]);
+            }
+            return $dataProvider;
+        }
+
         $query->andFilterWhere(['id' => $this->id]);
+        $query->andFilterWhere(['user.status' => $this->status]);
         $query->andFilterWhere(['like', 'user.id', $this->id]);
         $query->andFilterWhere(['like', 'user.username', $this->username]);
         $query->andFilterWhere(['like', 'user.email', $this->email]);
         $query->andFilterWhere(['like', 'profile.firstname', $this->getAttribute('profile.firstname')]);
         $query->andFilterWhere(['like', 'profile.lastname', $this->getAttribute('profile.lastname')]);
+
 
         if ($this->getAttribute('last_login') != "") {
             try {
@@ -94,14 +133,27 @@ class UserSearch extends User
                 $query->andWhere([
                     '=',
                     new \yii\db\Expression("DATE(last_login)"),
-                    new \yii\db\Expression("DATE(:last_login)", [':last_login'=>$last_login])
-                    ]);
+                    new \yii\db\Expression("DATE(:last_login)", [':last_login' => $last_login])
+                ]);
             } catch (InvalidParamException $e) {
                 // do not change the query if the date is wrong formatted
             }
         }
 
         return $dataProvider;
+    }
+
+    public function getStatusAttributes()
+    {
+        $countActive = User::find()->where(['user.status' => User::STATUS_ENABLED])->count();
+        $countDisabled = User::find()->where(['user.status' => User::STATUS_DISABLED])->count();
+        $countRetired = User::find()->where(['user.status' => User::STATUS_RETIRED])->count();
+
+        return [
+            User::STATUS_ENABLED => Yii::t('AdminModule.user', 'Active users') . ' (' . $countActive . ')',
+            User::STATUS_DISABLED => Yii::t('AdminModule.user', 'Disabled users') . ' (' . $countDisabled . ')',
+            User::STATUS_RETIRED => Yii::t('AdminModule.user', 'Retired users') . ' (' . $countRetired . ')',
+        ];
     }
 
 }

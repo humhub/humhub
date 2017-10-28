@@ -11,6 +11,7 @@ namespace humhub\modules\space\models;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use humhub\components\ActiveRecord;
 
 /**
  * This is the model class for table "space_membership".
@@ -30,7 +31,7 @@ use humhub\modules\space\models\Space;
  * @property integer $updated_by
  * @property integer send_notifications
  */
-class Membership extends \yii\db\ActiveRecord
+class Membership extends ActiveRecord
 {
 
     /**

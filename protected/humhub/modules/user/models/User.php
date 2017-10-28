@@ -48,6 +48,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     const STATUS_DISABLED = 0;
     const STATUS_ENABLED = 1;
     const STATUS_NEED_APPROVAL = 2;
+    const STATUS_RETIRED = 3;
 
     /**
      * Visibility Modes
