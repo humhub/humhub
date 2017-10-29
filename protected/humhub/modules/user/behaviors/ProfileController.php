@@ -69,6 +69,11 @@ class ProfileController extends Behavior
         if ($this->user->status == User::STATUS_NEED_APPROVAL) {
             throw new HttpException(404, Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'This user account is not approved yet!'));
         }
+
+        if ($this->user->status == User::STATUS_SOFT_DELETED) {
+            throw new HttpException(404, Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'This profile is no longer available!'));
+        }
+
         if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') && $this->user->visibility != User::VISIBILITY_ALL && Yii::$app->user->isGuest) {
             throw new HttpException(401, Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'You need to login to view this user profile!'));
         }

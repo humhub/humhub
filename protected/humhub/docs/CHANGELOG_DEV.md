@@ -13,3 +13,6 @@ HumHub Change Log - v1.3-dev Branch
 - Fix: Rebind LDAP connection after successful login with administrative user
 - Enh: Make utf8_mb4 as default database charset
 - Enh: Moved queueing into own submodule and updated to yii2/queue extension
+- Enh: Added user soft deletion without contributions
+- Enh: Moved user deletion into asynchronous tasks
+- Enh: Improved user grid view design (Administration, User Approval, Space Members)
