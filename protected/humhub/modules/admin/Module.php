@@ -49,6 +49,11 @@ class Module extends \humhub\components\Module
     public $dailyCheckForNewVersion = true;
 
     /**
+     * @var boolean allow admins to impersonate other users
+     */
+    public $allowUserImpersonate = true;
+
+    /**
      * @inheritdoc
      */
     public function getName()

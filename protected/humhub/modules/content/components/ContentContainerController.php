@@ -71,7 +71,7 @@ class ContentContainerController extends Controller
         }
 
         if ($this->requireContainer && $this->contentContainer === null) {
-            throw new HttpException('Could not find content container!');
+            throw new HttpException(404, Yii::t('base', 'Could not find requested page.'));
         }
 
         if ($this->contentContainer !== null && $this->contentContainer->controllerBehavior) {

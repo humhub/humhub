@@ -15,6 +15,9 @@ use humhub\modules\space\components\UrlValidator;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
+use humhub\modules\user\models\Follow;
+use humhub\modules\user\models\Invite;
+use humhub\modules\user\models\Group;
 
 /**
  * This is the model class for table "space".
@@ -142,7 +145,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         return [
             'visibility' => Yii::t('SpaceModule.views_admin_edit', 'Choose the security level for this workspace to define the visibleness.'),
             'join_policy' => Yii::t('SpaceModule.views_admin_edit', 'Choose the kind of membership you want to provide for this workspace.'),
-            'default_content_visibility' =>  Yii::t('SpaceModule.views_admin_edit', 'Choose if new content should be public or private by default')
+            'default_content_visibility' => Yii::t('SpaceModule.views_admin_edit', 'Choose if new content should be public or private by default')
         ];
     }
 
@@ -204,7 +207,7 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             $this->url = mb_strtolower($this->url);
         }
 
-        if($this->visibility == self::VISIBILITY_NONE) {
+        if ($this->visibility == self::VISIBILITY_NONE) {
             $this->join_policy = self::JOIN_POLICY_NONE;
             $this->default_content_visibility = Content::VISIBILITY_PRIVATE;
         }
@@ -223,20 +226,25 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
             }
         }
 
+        foreach ($this->moduleManager->getEnabled() as $module) {
+            $this->moduleManager->disable($module);
+        }
+
         Yii::$app->search->delete($this);
 
         $this->getProfileImage()->delete();
+        $this->getProfileBannerImage()->delete();
 
-        \humhub\modules\user\models\Follow::deleteAll(['object_id' => $this->id, 'object_model' => 'Space']);
+        Follow::deleteAll(['object_id' => $this->id, 'object_model' => 'Space']);
 
         foreach (Membership::findAll(['space_id' => $this->id]) as $spaceMembership) {
             $spaceMembership->delete();
         }
 
-        \humhub\modules\user\models\Invite::deleteAll(['space_invite_id' => $this->id]);
+        Invite::deleteAll(['space_invite_id' => $this->id]);
 
         // When this workspace is used in a group as default workspace, delete the link
-        foreach (\humhub\modules\user\models\Group::findAll(['space_id' => $this->id]) as $group) {
+        foreach (Group::findAll(['space_id' => $this->id]) as $group) {
             $group->space_id = "";
             $group->save();
         }

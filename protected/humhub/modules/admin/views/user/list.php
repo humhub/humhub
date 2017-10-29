@@ -9,6 +9,7 @@ use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\admin\models\UserSearch;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\grid\DisplayNameColumn;
+use humhub\modules\admin\grid\UserActionColumn;
 ?>
 
 <div class="panel-body">
@@ -57,15 +58,7 @@ use humhub\modules\user\grid\DisplayNameColumn;
                         return ($data->last_login == NULL) ? Yii::t('AdminModule.user', 'never') : Yii::$app->formatter->asDate($data->last_login);
                     }
                 ],
-                [
-                    'class' => \humhub\libs\ActionColumn::class,
-                    'actions' => [
-                        Yii::t('base', 'Edit') => ['edit'],
-                        Yii::t('base', 'Delete') => ['delete'],
-                        '---',
-                        Yii::t('AdminModule.user', 'View profile') => ['view-profile'],
-                    ],
-                ]
+                ['class' => UserActionColumn::class],
             ],
         ]);
         ?>

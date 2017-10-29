@@ -51,8 +51,14 @@ class ActionColumn extends Column
             if ($url === '---') {
                 $html .= '<li class="divider"></li>';
             } else {
+                $linkOptions = null;
+                if (isset($url['linkOptions'])) {
+                    $linkOptions = $url['linkOptions'];
+                    unset($url['linkOptions']);
+                }
+
                 $html .= Html::beginTag('li');
-                $html .= Html::a($title, $this->handleUrl($url, $model));
+                $html .= Html::a($title, $this->handleUrl($url, $model), $linkOptions);
                 $html .= Html::endTag('li');
             }
         }

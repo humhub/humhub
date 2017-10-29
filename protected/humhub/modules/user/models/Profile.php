@@ -279,8 +279,8 @@ class Profile extends \yii\db\ActiveRecord
 
         if ($this->user !== null) {
             $query = ProfileField::find()
-                ->where(['visible' => 1])
-                ->orderBy('sort_order');
+                    ->where(['visible' => 1])
+                    ->orderBy('sort_order');
 
             if ($category !== null) {
                 $query->andWhere(['profile_field_category_id' => $category->id]);
@@ -297,6 +297,24 @@ class Profile extends \yii\db\ActiveRecord
         }
 
         return $fields;
+    }
+
+    /**
+     * Soft delete will empty all profile fields except these defined in the module configuration.
+     */
+    public function softDelete()
+    {
+        $module = Yii::$app->getModule('user');
+        /* @var $module \humhub\modules\user\Module */
+
+        foreach (array_keys($this->getAttributes()) as $name) {
+            if (!in_array($name, $module->softDeleteKeepProfileFields) && $name !== 'user_id') {
+                $this->setAttribute($name, '');
+            }
+        }
+        if (!$this->save()) {
+            Yii::error('Could not soft delete profile!');
+        }
     }
 
 }

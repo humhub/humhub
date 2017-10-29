@@ -154,7 +154,8 @@ class Membership extends ActiveRecord
     /**
      * Returns a list of all spaces of the given userId
      *
-     * @param type $userId
+     * @param int $userId the user id or empty for current user
+     * @return Space[] the list of spaces
      */
     public static function GetUserSpaces($userId = "")
     {
@@ -232,7 +233,7 @@ class Membership extends ActiveRecord
         if (!$user) {
             $user = Yii::$app->user->getIdentity();
         }
-        
+
         $query = Membership::find();
 
         if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
@@ -242,8 +243,8 @@ class Membership extends ActiveRecord
         }
 
         $query->joinWith('space')->where(['space_membership.user_id' => $user->id]);
-        
-        if($spaceStatus) {
+
+        if ($spaceStatus) {
             $query->andWhere(['space.status' => $spaceStatus]);
         }
 

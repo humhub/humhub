@@ -147,12 +147,12 @@ class UserSearch extends User
     {
         $countActive = User::find()->where(['user.status' => User::STATUS_ENABLED])->count();
         $countDisabled = User::find()->where(['user.status' => User::STATUS_DISABLED])->count();
-        $countRetired = User::find()->where(['user.status' => User::STATUS_RETIRED])->count();
+        $countSoftDeleted = User::find()->where(['user.status' => User::STATUS_SOFT_DELETED])->count();
 
         return [
             User::STATUS_ENABLED => Yii::t('AdminModule.user', 'Active users') . ' (' . $countActive . ')',
             User::STATUS_DISABLED => Yii::t('AdminModule.user', 'Disabled users') . ' (' . $countDisabled . ')',
-            User::STATUS_RETIRED => Yii::t('AdminModule.user', 'Retired users') . ' (' . $countRetired . ')',
+            User::STATUS_SOFT_DELETED => Yii::t('AdminModule.user', 'Deleted users') . ' (' . $countSoftDeleted . ')',
         ];
     }
 
