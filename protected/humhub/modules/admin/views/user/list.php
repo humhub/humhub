@@ -5,7 +5,6 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use humhub\widgets\GridView;
 use humhub\widgets\Button;
-use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\admin\models\UserSearch;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\grid\DisplayNameColumn;

@@ -39,6 +39,7 @@ use humhub\modules\user\models\Group;
  * @property integer $contentcontainer_id
  * @property integer $default_content_visibility
  * @property string $color
+ * @property User $ownerUser the owner of this space
  */
 class Space extends ContentContainerActiveRecord implements \humhub\modules\search\interfaces\Searchable
 {
@@ -349,14 +350,6 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     }
 
     /**
-     * Returns the Search Result Output
-     */
-    public function getSearchResult()
-    {
-        return Yii::$app->getController()->widget('application.modules_core.space.widgets.SpaceSearchResultWidget', array('space' => $this), true);
-    }
-
-    /**
      * Checks if space has tags
      *
      * @return boolean has tags set
@@ -497,6 +490,14 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
         $query = $this->hasMany(Membership::className(), ['space_id' => 'id']);
         $query->andWhere(['space_membership.status' => Membership::STATUS_APPLICANT]);
         return $query;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOwnerUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
     /**

@@ -70,8 +70,8 @@ class UserSearch extends User
     public function search($params)
     {
         $query = ($this->query == null) ? User::find()->joinWith('profile') : $this->query;
-        /* @var $query humhub\modules\user\components\ActiveQueryUser */
-
+        /* @var $query \humhub\modules\user\components\ActiveQueryUser */
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => ['pageSize' => 50],
@@ -92,7 +92,7 @@ class UserSearch extends User
         $this->load($params);
 
         if (!$this->validate()) {
-            $query->where('0=1');
+            $query->emulateExecution();
             return $dataProvider;
         }
 
