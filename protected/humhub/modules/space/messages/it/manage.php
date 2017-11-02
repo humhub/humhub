@@ -4,7 +4,7 @@ return array (
   'Space owner' => 'Proprietario dello Space',
   'The url contains illegal characters!' => 'L\'url contiene caratteri non consentiti!',
   'Transfer ownership' => 'Trasferisci proprietà',
-  'e.g. example for {baseUrl}/s/example' => '',
-  'the default start page of this space for members' => '',
-  'the default start page of this space for visitors' => '',
+  'e.g. example for {baseUrl}/s/example' => 'per esempio per {baseUrl}/s/esempio',
+  'the default start page of this space for members' => 'pagina predefinita di inizio di questo spazio per i membri',
+  'the default start page of this space for visitors' => 'pagina predefinita di inizio di questo spazio per i visitatori',
 );

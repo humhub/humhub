@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Personne n\'a rien publiez pour le moment.</b><br>Soyez le premier et publiez quelque chose...',
-  '<b>There are no profile posts yet!</b>' => '<b>Il n\'y a aucune publication actuellement !</b>',
+  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Personne n\'a rien publié pour le moment.</b><br>Soyez le premier à publier quelque chose...',
+  '<b>There are no profile posts yet!</b>' => '<b>Il n\'y a aucune publication actuellement.</b>',
   '<strong>Directory</strong> menu' => 'Menu <strong>annuaire</strong>',
   '<strong>Group</strong> members - {group}' => '<strong>Membres</strong> du groupe - {group}',
   '<strong>Group</strong> stats' => 'Statistiques du <strong>groupe</strong>',
@@ -18,8 +18,8 @@ return array (
   'Groups' => 'Groupes',
   'Members' => 'Membres',
   'Most members' => 'Plus de membres',
-  'No members found!' => 'Aucun membre trouvé !',
-  'No spaces found!' => 'Aucun espace trouvé !',
+  'No members found!' => 'Aucun membre trouvé.',
+  'No spaces found!' => 'Aucun espace trouvé.',
   'Online right now' => 'En ligne en ce moment',
   'Private spaces' => 'Espaces privés',
   'Search' => 'Rechercher',
