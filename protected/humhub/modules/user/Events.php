@@ -149,19 +149,8 @@ class Events extends \yii\base\Object
      */
     public static function onHourlyCron($event)
     {
-        foreach (Yii::$app->authClientCollection->getClients() as $authClient) {
-            if ($authClient instanceof authclient\interfaces\AutoSyncUsers) {
-                /**
-                 * @var authclient\interfaces\AutoSyncUsers $authClient 
-                 */
-                $authClient->syncUsers();
-            }
-        }
-
-        // Delete expired session
-        foreach (models\Session::find()->where(['<', 'expire', time()])->all() as $session) {
-            $session->delete();
-        }
+        Yii::$app->queue->push(new jobs\SyncUsers());
+        Yii::$app->queue->push(new jobs\DeleteExpiredSessions());
     }
 
 }

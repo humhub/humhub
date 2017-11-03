@@ -16,3 +16,4 @@ HumHub Change Log - v1.3-dev Branch
 - Enh: Added user soft deletion without contributions
 - Enh: Moved user deletion into asynchronous tasks
 - Enh: Improved user grid view design (Administration, User Approval, Space Members)
+- Enh: Moved SyncUsers (LDAP) and session table cleanup handling into ActiveJob
