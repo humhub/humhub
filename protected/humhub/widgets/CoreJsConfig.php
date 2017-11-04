@@ -143,9 +143,11 @@ class CoreJsConfig extends Widget
                         ]
                     ],
                     'ui.picker' => [
+                        'addImage' => $this->view->theme->getBaseUrl().'/img/picker_add.png',
                         'text' => [
                             'error.loadingResult' => Yii::t('base', 'An unexpected error occurred while loading the search result.'),
                             'showMore' => Yii::t('base', 'Show more'),
+                            'addOption' => Yii::t('base', 'Add:'),
                         ]
                     ],
                     'ui.showMore' => [

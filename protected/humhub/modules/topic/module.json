@@ -1,0 +1,9 @@
+{
+    "id": "topic",
+    "name": "Topic",
+    "description": "Topic Core",
+    "keywords": [
+        "topic"
+    ],
+    "version": "1.0"
+}

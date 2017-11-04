@@ -359,6 +359,18 @@ class ContentTag extends ActiveRecord
         return $query;
     }
 
+    public static function findByName($name, $contentContainer = null)
+    {
+        if($contentContainer) {
+            $query = static::findByContainer($contentContainer);
+        } else {
+            $query = static::find();
+        }
+
+        $query->andWhere(['content_tag.name' => $name]);
+        return $query;
+    }
+
     public static function findGlobal()
     {
         $query = self::find();

@@ -7,6 +7,7 @@
  */
  
 /* @var $this humhub\components\View */
+/* @var $streamUrl string */
 
 \humhub\modules\activity\assets\ActivityAsset::register($this);
 

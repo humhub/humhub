@@ -6,23 +6,18 @@
  *
  */
 
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 23.07.2017
- * Time: 17:36
- */
-
-namespace humhub\widgets;
-
+namespace humhub\modules\content\widgets;
 
 use Yii;
 use humhub\libs\Html;
 use humhub\modules\content\models\ContentTag;
+use humhub\widgets\InputWidget;
 
 /**
- * Class ContentTagDropDown
- * @deprecated since 1.3 use humhub\modules\content\widgets\ContentTagDropDown instead
+ * This InputWidget provides a generic ContentTag Dropdown
+ *
+ *
+ * @package humhub\modules\content\widgets
  */
 class ContentTagDropDown extends InputWidget
 {

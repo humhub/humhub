@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\topic\models\Topic;
 use Yii;
 use yii\base\Exception;
 use humhub\modules\content\widgets\WallEntry;
@@ -212,6 +213,11 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
         if ($includeContentName) {
             $labels[] = Label::defaultType($this->getContentName())->icon($this->getIcon())->sortOrder(400);
         }
+
+        foreach (Topic::findByContent($this->content)->all() as $topic) {
+            $labels[] = Label::defaultType($topic->name)->sortOrder(20)->color($topic->color);
+        }
+
 
         return Label::sort($labels);
     }

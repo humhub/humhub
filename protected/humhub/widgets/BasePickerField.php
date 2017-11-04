@@ -3,6 +3,7 @@
 namespace humhub\widgets;
 
 use Yii;
+use yii\db\ActiveQuery;
 use yii\helpers\Html;
 use \yii\helpers\Url;
 
@@ -13,7 +14,7 @@ use \yii\helpers\Url;
  * 
  * - $defaultRoute for defining a default search query route
  * - $itemClass defines the type of item e.g. User/Space/...
- * - $itemKey defines the key attribute used as option values e.g. id/guid
+ * - $itemKey defines the key attribute used as option values e.g. id/guid by default 'id' is used
  * 
  * And the following methods:
  * 
@@ -28,7 +29,7 @@ use \yii\helpers\Url;
  *  - image: option image (optional)
  *  - priority: used to sort results (optional)
  *  - disabled: can be used to disable certain items (optional)
- *  - disabbledText: text describing the reason why the item is disabled (optional)
+ *  - disabledText: text describing the reason why the item is disabled (optional)
  * 
  * @package humhub.modules_core.user.widgets
  * @since 1.2
@@ -111,11 +112,13 @@ abstract class BasePickerField extends InputWidget
 
     /**
      * The item key used as option value and loading items by attribute value.
-     * e.g. id or guid
+     * e.g. id or guid.
+     *
+     * @since v1.3 'id' by default
      * 
      * @var string 
      */
-    public $itemKey;
+    public $itemKey = 'id';
 
     /**
      * If the ActiveForm is set, it will be used to create the picker field,
@@ -144,6 +147,30 @@ abstract class BasePickerField extends InputWidget
      * @var string 
      */
     public $attribute;
+
+    /**
+     * If set to true, the picker will allow adding new options not included in the current search result.
+     *
+     * > Note: New values will be submitted as '_add:term' to distinguish between new and existing options. The filtering and insertion
+     * has to be handled manually within the submit/form logic.
+     *
+     * e.g.:
+     *
+     * ```php
+     * foreach($values as $value) {
+     *     if(strpos($value, '_add:') === 0) {
+     *         $newValue = substr($value, strlen('_add:'));
+     *         // Save new item with newValue
+     *     } else {
+     *         $item = MyItem::findOne((int) $value);
+     *         // ...
+     *     }
+     * }
+     * ```
+     *
+     * @var bool
+     */
+    public $addOptions = false;
 
 
     /**
@@ -183,9 +210,22 @@ abstract class BasePickerField extends InputWidget
      * Used to retrieve the option image url of a given $item.
      * 
      * @param \yii\db\ActiveRecord $item selected item
-     * @return string image url or null if no selection image required.
+     * @return string|null image url or null if no selection image required.
      */
     protected abstract function getItemImage($item);
+
+    /**
+     * @inhertidoc
+     */
+    public function beforeRun()
+    {
+        //Only for compatibility
+        if(empty($this->name)) {
+            $this->name = $this->formName;
+        }
+
+        return parent::beforeRun();
+    }
 
     /**
      * @inhertidoc
@@ -193,11 +233,6 @@ abstract class BasePickerField extends InputWidget
     public function run()
     {
         \humhub\assets\Select2BootstrapAsset::register($this->view);
-
-        //Only for compatibility
-        if(empty($this->name)) {
-            $this->name = $this->formName;
-        }
 
         if ($this->selection != null && !is_array($this->selection)) {
             $this->selection = [$this->selection];
@@ -312,7 +347,11 @@ abstract class BasePickerField extends InputWidget
             return [];
         }
 
-        // For older version (prior 1.2) - try to convert comma separated list to array 
+        if($selection instanceof ActiveQuery) {
+            return $selection->all();
+        }
+
+        // For older version (prior 1.2) - try to convert comma separated list to array
         if (!is_array($selection)) {
             $selection = explode(',', $selection);
         }
@@ -358,6 +397,7 @@ abstract class BasePickerField extends InputWidget
         $placeholderMore = ($this->placeholderMore != null) ? $this->placeholderMore : Yii::t('UserModule.widgets_BasePickerField', 'Add more...');
 
         $result = [
+            'add-options' => $this->addOptions,
             'picker-url' => $this->getUrl(),
             'picker-focus' => ($this->focus) ? 'true' : null,
             'disabled-items' => (!$this->disabledItems) ? null : $this->disabledItems,

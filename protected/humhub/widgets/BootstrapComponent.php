@@ -277,7 +277,9 @@ abstract class BootstrapComponent extends Widget
 
     public function color($color)
     {
-        $this->style('background-color:'.$color);
+        if($color) {
+            $this->style('background-color:'.$color);
+        }
         return $this;
     }
 
