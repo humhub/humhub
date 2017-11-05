@@ -44,10 +44,17 @@ class ActionColumn extends Column
      */
     protected function renderDataCellContent($model, $key, $index)
     {
+
+        $actions = $this->getActions($model, $key, $index);
+
+        if (empty($actions)) {
+            return '';
+        }
+
         $html = Html::beginTag('div', ['class' => 'btn-group dropdown-navigation']);
         $html .= Html::button('<i class="fa fa-cog"></i> <span class="caret"></span>', ['class' => 'btn btn-default dropdown-toggle', 'data-toggle' => 'dropdown']);
         $html .= Html::beginTag('ul', ['class' => 'dropdown-menu pull-right']);
-        foreach ($this->actions as $title => $url) {
+        foreach ($actions as $title => $url) {
             if ($url === '---') {
                 $html .= '<li class="divider"></li>';
             } else {
@@ -67,6 +74,17 @@ class ActionColumn extends Column
 
 
         return $html;
+    }
+
+    protected function getActions($model, $key, $index)
+    {
+        if ($this->actions === null) {
+            return [];
+        } elseif (is_callable($this->actions)) {
+            return call_user_func($this->actions, $model, $key, $index, $this);
+        }
+
+        return $this->actions;
     }
 
     /**
