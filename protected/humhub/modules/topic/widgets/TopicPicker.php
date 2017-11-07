@@ -27,9 +27,13 @@ class TopicPicker extends ContentTagPicker
      */
     public $minInput = 2;
 
+    /**
+     * @inheritdoc
+     */
+    public $showDefaults = true;
+
     public function init()
     {
-        parent::init();
         if(!$this->contentContainer) {
             $controller = Yii::$app->controller;
             if($controller instanceof ContentContainerController) {
@@ -37,11 +41,14 @@ class TopicPicker extends ContentTagPicker
             }
         }
 
+
         if(!$this->url && $this->contentContainer) {
             $this->url = $this->contentContainer->createUrl('/topic/topic/search');
         }
 
         $this->addOptions = $this->contentContainer->can(AddTopic::class);
+
+        parent::init();
     }
 
     protected function getData()

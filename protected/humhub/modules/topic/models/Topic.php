@@ -8,7 +8,6 @@
 
 namespace humhub\modules\topic\models;
 
-
 use Yii;
 use humhub\modules\content\models\Content;
 use humhub\modules\topic\permissions\AddTopic;

@@ -106,6 +106,48 @@ class ContentTagTest extends HumHubDbTestCase
 
     }
 
+    public function testTagDeletionByModule()
+    {
+        $space2 = Space::findOne(2);
+        $this->assertTrue($this->createTestTag('testTag1'));
+        $this->assertTrue($this->createTestTag('testTag2'));
+        $this->assertTrue($this->createTestTag('testTag3', $space2));
+
+        $this->assertEquals(3, TestTag::find()->count());
+
+        TestTag::deleteByModule();
+
+        $this->assertEquals(0, TestTag::find()->count());
+    }
+
+    public function testTagDeletionByModule2()
+    {
+        $space2 = Space::findOne(2);
+        $this->assertTrue($this->createTestTag('testTag1'));
+        $this->assertTrue($this->createTestTag('testTag2'));
+        $this->assertTrue($this->createTestTag('testTag3', $space2));
+
+        $this->assertEquals(3, TestTag::find()->count());
+
+        TestTag::deleteByModule($space2);
+
+        $this->assertEquals(2, TestTag::find()->count());
+    }
+
+    public function testTagDeletionByModuleAndContainer()
+    {
+        $space2 = Space::findOne(2);
+        $this->assertTrue($this->createTestTag('testTag1'));
+        $this->assertTrue($this->createTestTag('testTag2'));
+        $this->assertTrue($this->createTestTag('testTag3', $space2));
+
+        $this->assertEquals(3, TestTag::find()->count());
+
+        TestTag::deleteByModule($space2);
+
+        $this->assertEquals(2, TestTag::find()->count());
+    }
+
     public function testContentDeletion()
     {
         $content = Content::findOne(1);

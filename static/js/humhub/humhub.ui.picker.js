@@ -45,7 +45,12 @@ humhub.module('ui.picker', function (module, require, $) {
                     return that.$.data('input-too-long');
                 },
                 errorLoading: function () {
-                    return module.text('error.loadingResult');
+                    // Aborted requests currently would trigger this message, so we can't make us of it...
+                    // https://github.com/select2/select2/issues/4355
+                    module.log.error('Error Loading Picker result! The request may just has been aborted.');
+                    return loader.set($('<div></div>'), {'css': {'padding': '4px'}});
+                    return '';
+                    //return module.text('error.loadingResult');
                 },
                 loadingMore: function () {
                     return module.text('showMore');
@@ -224,7 +229,10 @@ humhub.module('ui.picker', function (module, require, $) {
             item.new = false;
         });
 
-        if(that.options.addOptions && $(data).filter(function() {return this.text.localeCompare(params.term)=== 0}).length === 0) {
+        if(params.term &&
+            params.term.length >= that.options.minimumInputLength &&
+            that.options.addOptions &&
+            $(data).filter(function() {return this.text.localeCompare(params.term)=== 0}).length === 0) {
             data.push({
                 'id': '_add:'+params.term,
                 'text': module.text('addOption')+' \''+params.term+'\'',
