@@ -5,20 +5,15 @@
  * @license https://www.humhub.com/licences
  *
  */
-
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 30.07.2017
- * Time: 04:04
- */
-
+ 
 namespace humhub\modules\content\components;
 
 
 use humhub\components\access\ActionAccessValidator;
 use humhub\libs\BasePermission;
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidParamException;
@@ -52,6 +47,10 @@ class UserGroupAccessValidator extends ActionAccessValidator
 
     protected function validate($rule)
     {
+        if($this->globalPermissionCheck()) {
+            return true;
+        }
+
         if (isset($rule[$this->name]) && !empty($rule[$this->name])) {
             $allowedGroups = is_string($rule[$this->name]) ? [$rule[$this->name]] : $rule[$this->name];
             $userGroup = $this->contentContainer->getUserGroup($this->access->user);
@@ -70,6 +69,22 @@ class UserGroupAccessValidator extends ActionAccessValidator
         }
 
         throw new InvalidParamException('Invalid userGroup rule provided for action ' . $this->action);
+    }
+
+    /**
+     * Checks if the current user has the default permission to access contentcontainer related actions.
+     *
+     * @return bool
+     */
+    protected function globalPermissionCheck()
+    {
+        if(!$this->access->user) {
+            return false;
+        }
+
+        $userPermissionManager =  new PermissionManager(['subject' => $this->access->user]);
+        return ($this->access->user->isSystemAdmin())
+            || ($this->contentContainer instanceof Space && $userPermissionManager->can(ManageSpaces::class));
     }
 
     public function getUserGroupLevel($userGroup)

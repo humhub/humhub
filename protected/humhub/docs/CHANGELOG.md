@@ -1,5 +1,8 @@
 HumHub Change Log
 =================
+1.2.4
+-------------------------
+- Fix: Added `ManageSpaces` and SystemAdmin check to `UserGroupAccessValidator`.
 
 1.2.3  (October 23, 2017)
 -------------------------
