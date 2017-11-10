@@ -141,7 +141,7 @@ $config = [
         'live' => [
             'class' => 'humhub\modules\live\components\Sender',
             'driver' => [
-                'class' => 'humhub\modules\live\driver\Database',
+                'class' => 'humhub\modules\live\driver\Poll',
             ],
         ],
     ],

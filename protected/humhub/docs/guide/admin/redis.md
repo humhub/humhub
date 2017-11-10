@@ -1,8 +1,7 @@
 Redis
 =====
 
-We recommend installing an additional Redis server which can act as a caching and job queuing service for HumHub.
-In upcoming versions Redis will be required in order to enable push communication to the browser.
+We recommend installing an additional Redis server which can act as a caching, push service and job queuing service for HumHub.
 
 
 Basic Configuration
@@ -35,8 +34,14 @@ Once Redis is configured, you can also select it as a caching service: Administr
 
 
 Queuing of Asychronous Tasks
--------------------------
+----------------------------
 
 See [Asychronous Tasks](asychornous-tasks.md) for further information.
+
+
+Push Updates
+------------
+
+See [Push Updates](push-updates.md) for further information.
 
 

@@ -23,34 +23,9 @@ class Module extends \humhub\components\Module
 {
 
     /**
-     * Defines the minimum polling interval in seconds if the default polling client is active.
-     */
-    public $minPollInterval = 15;
-
-    /**
-     * Defines the maximum polling interval in seconds if the default polling client is active.
-     */
-    public $maxPollInterval = 45;
-    
-    /**
-     * Factor used in the actual interval calculation in case of user idle.
-     */
-    public $idleFactor = 0.1;
-    
-    /**
-     * Interval for updating the update delay in case of user idle in seconds.
-     */
-    public $idleInterval = 20;
-
-    /**
      * @inheritdoc
      */
     public $isCoreModule = true;
-
-    /**
-     * @var int seconds to delete old live events
-     */
-    public $maxLiveEventAge = 600;
 
     /**
      * @var string cache prefix for legitimate content container ids by user
@@ -103,9 +78,16 @@ class Module extends \humhub\components\Module
             }
 
             Yii::$app->cache->set(self::$legitimateCachePrefix . $user->id, $legitimation);
+            Yii::$app->live->driver->onContentContainerLegitimationChanged($user, $legitimation);
         };
 
         return $legitimation;
+    }
+
+    public function refreshLegitimateContentContainerIds(User $user)
+    {
+        Yii::$app->cache->delete(self::$legitimateCachePrefix . $user->id);
+        $this->getLegitimateContentContainerIds($user);
     }
 
 }

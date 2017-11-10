@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8bf75d9d221c23783749b76cd8f22d01",
-    "content-hash": "6991a603a67433b76c5f5cd3b5a5100f",
+    "hash": "b68f91921c656fad8b732bfc1fa02f6a",
+    "content-hash": "1951bbba7564b5fb1fbf8c4fc1e0d1b8",
     "packages": [
         {
             "name": "bower-asset/animate.css",
@@ -337,7 +337,7 @@
             "version": "2.1.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jquery/jquery-color.git",
+                "url": "git@github.com:jquery/jquery-color.git",
                 "reference": "9e5e04c1c4ee66427fbe04cfce8155b76748ca64"
             },
             "dist": {
@@ -394,7 +394,7 @@
             "version": "v2.3.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mathiasbynens/jquery-placeholder.git",
+                "url": "git@github.com:mathiasbynens/jquery-placeholder.git",
                 "reference": "bd18712c2f6cc6be2dfd7310a89044b09610057e"
             },
             "dist": {
@@ -473,7 +473,7 @@
             "version": "v1.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/carhartl/jquery-cookie.git",
+                "url": "git@github.com:carhartl/jquery-cookie.git",
                 "reference": "7f88a4e631aba8a8c688fd8999ce6b9bcfd50718"
             },
             "dist": {
@@ -549,12 +549,12 @@
             "version": "4.0.4",
             "source": {
                 "type": "git",
-                "url": "git@github.com:ivaynberg/select2.git",
+                "url": "https://github.com/select2/select2.git",
                 "reference": "16f6b10628f9000918708cef9b3da615119cf6d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ivaynberg/select2/zipball/16f6b10628f9000918708cef9b3da615119cf6d6",
+                "url": "https://api.github.com/repos/select2/select2/zipball/16f6b10628f9000918708cef9b3da615119cf6d6",
                 "reference": "16f6b10628f9000918708cef9b3da615119cf6d6",
                 "shasum": null
             },
@@ -738,6 +738,52 @@
                 "html"
             ],
             "time": "2017-06-03 02:28:16"
+        },
+        {
+            "name": "firebase/php-jwt",
+            "version": "v5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/firebase/php-jwt.git",
+                "reference": "9984a4d3a32ae7673d6971ea00bae9d0a1abba0e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/9984a4d3a32ae7673d6971ea00bae9d0a1abba0e",
+                "reference": "9984a4d3a32ae7673d6971ea00bae9d0a1abba0e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": " 4.8.35"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Firebase\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Neuman Vong",
+                    "email": "neuman+pear@twilio.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anant Narayanan",
+                    "email": "anant@php.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
+            "homepage": "https://github.com/firebase/php-jwt",
+            "time": "2017-06-27 22:17:23"
         },
         {
             "name": "imagine/imagine",
@@ -2026,6 +2072,31 @@
             "time": "2014-11-09 19:54:17"
         },
         {
+            "name": "npm-asset/after",
+            "version": "0.8.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/after/-/after-0.8.2.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/arraybuffer.slice",
+            "version": "0.0.6",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/arraybuffer.slice/-/arraybuffer.slice-0.0.6.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset"
+        },
+        {
             "name": "npm-asset/at.js",
             "version": "v1.5.4",
             "source": {
@@ -2037,6 +2108,414 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/ichord/At.js/zipball/801c87dc804e37f134def2055b80cbc81ac98652",
                 "reference": "801c87dc804e37f134def2055b80cbc81ac98652",
+                "shasum": null
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/backo2",
+            "version": "1.0.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/backo2/-/backo2-1.0.2.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/base64-arraybuffer",
+            "version": "0.1.5",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/base64-arraybuffer/-/base64-arraybuffer-0.1.5.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/better-assert",
+            "version": "1.0.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/better-assert/-/better-assert-1.0.2.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "npm-asset/callsite": "1.0.0"
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/blob",
+            "version": "0.0.4",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/blob/-/blob-0.0.4.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/callsite",
+            "version": "1.0.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/callsite/-/callsite-1.0.0.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/component-bind",
+            "version": "1.0.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/component-bind/-/component-bind-1.0.0.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/component-emitter",
+            "version": "1.2.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/component-emitter/-/component-emitter-1.2.1.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/component-inherit",
+            "version": "0.0.3",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/component-inherit/-/component-inherit-0.0.3.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/debug",
+            "version": "2.6.9",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/debug/-/debug-2.6.9.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "npm-asset/ms": "2.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/engine.io-client",
+            "version": "3.1.3",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/engine.io-client/-/engine.io-client-3.1.3.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "npm-asset/component-emitter": "1.2.1",
+                "npm-asset/component-inherit": "0.0.3",
+                "npm-asset/debug": "~2.6.9",
+                "npm-asset/engine.io-parser": "~2.1.1",
+                "npm-asset/has-cors": "1.1.0",
+                "npm-asset/indexof": "0.0.1",
+                "npm-asset/parseqs": "0.0.5",
+                "npm-asset/parseuri": "0.0.5",
+                "npm-asset/ws": "~2.3.1",
+                "npm-asset/xmlhttprequest-ssl": "~1.5.4",
+                "npm-asset/yeast": "0.1.2"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/engine.io-parser",
+            "version": "2.1.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/engine.io-parser/-/engine.io-parser-2.1.1.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "npm-asset/after": "0.8.2",
+                "npm-asset/arraybuffer.slice": "0.0.6",
+                "npm-asset/base64-arraybuffer": "0.1.5",
+                "npm-asset/blob": "0.0.4",
+                "npm-asset/has-binary2": "~1.0.2"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/has-binary2",
+            "version": "1.0.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/has-binary2/-/has-binary2-1.0.2.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "npm-asset/isarray": "2.0.1"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/has-cors",
+            "version": "1.1.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/has-cors/-/has-cors-1.1.0.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/indexof",
+            "version": "0.0.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/indexof/-/indexof-0.0.1.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/isarray",
+            "version": "2.0.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/isarray/-/isarray-2.0.1.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/ms",
+            "version": "2.0.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/object-component",
+            "version": "0.0.3",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/object-component/-/object-component-0.0.3.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/parseqs",
+            "version": "0.0.5",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/parseqs/-/parseqs-0.0.5.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "npm-asset/better-assert": "~1.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/parseuri",
+            "version": "0.0.5",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/parseuri/-/parseuri-0.0.5.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "npm-asset/better-assert": "~1.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/safe-buffer",
+            "version": "5.0.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.0.1.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/socket.io-client",
+            "version": "2.0.4",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/socket.io-client/-/socket.io-client-2.0.4.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "npm-asset/backo2": "1.0.2",
+                "npm-asset/base64-arraybuffer": "0.1.5",
+                "npm-asset/component-bind": "1.0.0",
+                "npm-asset/component-emitter": "1.2.1",
+                "npm-asset/debug": "~2.6.4",
+                "npm-asset/engine.io-client": "~3.1.0",
+                "npm-asset/has-cors": "1.1.0",
+                "npm-asset/indexof": "0.0.1",
+                "npm-asset/object-component": "0.0.3",
+                "npm-asset/parseqs": "0.0.5",
+                "npm-asset/parseuri": "0.0.5",
+                "npm-asset/socket.io-parser": "~3.1.1",
+                "npm-asset/to-array": "0.1.4"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/socket.io-parser",
+            "version": "3.1.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/socket.io-parser/-/socket.io-parser-3.1.2.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "npm-asset/component-emitter": "1.2.1",
+                "npm-asset/debug": "~2.6.4",
+                "npm-asset/has-binary2": "~1.0.2",
+                "npm-asset/isarray": "2.0.1"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/to-array",
+            "version": "0.1.4",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/to-array/-/to-array-0.1.4.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/ultron",
+            "version": "1.1.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/ultron/-/ultron-1.1.0.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/ws",
+            "version": "2.3.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/ws/-/ws-2.3.1.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "npm-asset/safe-buffer": "~5.0.1",
+                "npm-asset/ultron": "~1.1.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/xmlhttprequest-ssl",
+            "version": "1.5.4",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.5.4.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/yeast",
+            "version": "0.1.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/yeast/-/yeast-0.1.2.tgz",
+                "reference": null,
                 "shasum": null
             },
             "type": "npm-asset",

@@ -17,3 +17,4 @@ HumHub Change Log - v1.3-dev Branch
 - Enh: Moved user deletion into asynchronous tasks
 - Enh: Improved user grid view design (Administration, User Approval, Space Members)
 - Enh: Moved SyncUsers (LDAP) and session table cleanup handling into ActiveJob
+- Enh: Added Push live module driver using Redis and Node.JS
