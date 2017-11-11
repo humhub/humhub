@@ -4,6 +4,8 @@ HumHub Change Log
 -------------------------
 - Fix: Added `ManageSpaces` and SystemAdmin check to `UserGroupAccessValidator`.
 - Enh: Add LinkedIn auth to login. (Felli)
+- Enh: Add Twitter auth to login. (Felli)
+- Enh: Add Twitter & LinkedIn auth to docs (Felli)
 
 1.2.3  (October 23, 2017)
 -------------------------
