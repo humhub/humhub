@@ -3,6 +3,7 @@ HumHub Change Log
 1.2.4
 -------------------------
 - Fix: Added `ManageSpaces` and SystemAdmin check to `UserGroupAccessValidator`.
+- Fix: Only include content with `stream_channel = default` into spacechooser update count.
 
 1.2.3  (October 23, 2017)
 -------------------------
