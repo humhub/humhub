@@ -3,6 +3,7 @@ HumHub Change Log
 1.2.4
 -------------------------
 - Fix: Added `ManageSpaces` and SystemAdmin check to `UserGroupAccessValidator`.
+- Fix: Only include content with `stream_channel = default` into spacechooser update count.
 - Enh: Add LinkedIn auth to login. (Felli)
 - Enh: Add Twitter auth to login. (Felli)
 - Enh: Add Twitter & LinkedIn auth to docs (Felli)
