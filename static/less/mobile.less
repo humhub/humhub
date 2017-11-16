@@ -15,7 +15,6 @@
 @mobile-color-btn-default: #51d56d;
 @mobile-background-white: #fff;
 @mobile-background-sidebar: #2d3340;
-@community-main-color: @primary; // apply only to the community theme
 
 //
 // Mobile mixins
@@ -60,88 +59,17 @@
 }
 
 //
-// Mobile Enterprise Topbar
-// --------------------------------------------------
-
-// Topbar: Enterprise topbar COLOR styling - apply only to the Enterprise theme
-.topbar-color() { 
-  	background-color: @mobile-main-color;
-  	height: 55px;
-  		a {
-  		color: @mobile-color-white;
-	}
-  	.notifications .btn-group > a {
-		padding: 19px 12px 14px 12px;
-	}
-  	.nav > li > a .caret {
-	  border-top-color: @mobile-color-white;
-	  margin-top: 17px;
-	}
-  	.account .dropdown-menu {
-	  background-color: @mobile-main-color;
-	}
-  	.nav > .account a {
-	  	color: @mobile-color-black;
-  	}
-  	.notifications .dropdown-menu {
-  		margin-left: -235px !important;
-	}
-  	.notifications .dropdown-menu .arrow {
-		margin-left: -83px !important;
-	}
-  	.nav-search #search-input-field {
-		border-bottom: 1px solid @mobile-color-white;
-		color: @mobile-color-white;
-  	}
-}
-
-// Topbar: Enterprise topbar DEFAULT styling - apply only to the Enterprise theme
-.topbar-default() { 
-  	background-color: @mobile-color-white;
-  	height: 55px;
-  		a {
-  		color: @mobile-color-black;
-	}
-  	.nav > li > a .caret {
-	  border-top-color: @mobile-color-black;
-	  margin-top: 17px;
-	}
-  	.notifications .btn-group > a {
-		padding: 19px 12px 14px 12px;
-	}
-  	.nav-search #search-input-field {
-		border-bottom: 1px solid @mobile-color-black;
-		color: @mobile-color-black;
-  	}
-  	.account .dropdown-menu {
-	  color: @mobile-color-black;
-	}
-  	.account .dropdown-menu {
-	  background-color: @mobile-color-white;
-	}
-  	.nav > .account a {
-	  	color: @mobile-color-black;
-  	}
-  	.notifications .dropdown-menu {
-  		margin-left: -235px !important;
-	}
-  	.notifications .dropdown-menu .arrow {
-		margin-left: -83px !important;
-	}
-}
-
-//
 // Mobile Community Topbar
 // --------------------------------------------------
 
 // Topbar: Community topbar DEFAULT styling - apply only to the community theme
 .topbar-community() {
-  background: @community-main-color;
+  background: @mobile-main-color;
   .notifications .btn-group > a {
 		padding: 6px 12px 14px 12px;
 	}
   	.dropdown.account > a {
-  		background-color: @community-main-color;
+  		background-color: @mobile-main-color;
 		margin-top: 10px;
 	}
   	.nav >.account a {
@@ -151,18 +79,13 @@
 	  color: @mobile-color-white;
 	}
   	.account .dropdown-menu {
-	  background-color: @community-main-color;
+	  background-color: @mobile-main-color;
 	}
 }
 
 // Topbar: Topbar material shadow box 
 .topbar-shadow() {
   box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
-}
-
-// Layout: Enterprise top layout fixes
-.enterprise-space-layout() {
-  margin-top: 80px !important;
 }
 
 // Layout: Community top layout fixes
@@ -176,7 +99,7 @@
 	margin-left: -12px;
 }
 
-// Mixins: Enterprise & Community Navbar horizontal scrolling
+// Mixins: Community Navbar horizontal scrolling
 .scroll-navbar() {
   	width: 100%;
 	display: inline !important;
@@ -185,35 +108,6 @@
 	position: relative;
 	overflow-x: scroll !important;
 }
-
-// Mixins: Enterprise DEFAULT DARK sidebar styling
-.sidebar-default() {
-  background: @mobile-background-sidebar;
-  .nav-space-chooser > li > a {
-	color: @mobile-color-white;
-  }
-  .navbar-brand {
-    	color: @mobile-color-white !important;
-  	}
-  .space-entries li > a {
-		color: @mobile-color-white;
-	}
-}
-
-// Mixins: Enterprise DEFAULT LIGHT sidebar styling
-.sidebar-white() {
-  background: @mobile-background-white;
-  .nav-space-chooser > li > a {
-	color: @mobile-color-black;
-  }
-  .navbar-brand {
-    	color: @mobile-color-black !important;
-  	}
-  .space-entries li > a {
-		color: @mobile-color-black;
-	}
-}
-
 
 //
 // Mobile Theme style.less
@@ -250,16 +144,11 @@ p, .help-block {
 
 // Topbar: Topbar styling
 #topbar-first {
-  .topbar-community;		// Topbar mixins is used - change according to the theme ex: (topbar-default)
+  .topbar-community;		// Topbar mixins is used 
   .topbar-shadow;           // Shadow mixins is used
   .border-none;
   	.menu-seperator, #user-account-image {
   		display: none;
-    }
-    
-    // Enterprise Search: Topbar search fixes on small screens
-	.nav-search {
-  		width: 50%;
     }
     
     // Topbar Icons: Removing background color from topbar icons
@@ -268,14 +157,6 @@ p, .help-block {
 	}
 	.panel-danger {
   		border: none;
-    }
-    
-    // Enterprise search: Adjust the Enterprise search on screen resize
-  	.nav-search {
-	 	#search-input-field {
-  			width: 100%;
-			max-width: 100%;
-	  	}
     }
     
     // Search: Removing border radius from the search form
@@ -422,7 +303,7 @@ p, .help-block {
     // Layout Comments: 
 	.comment-buttons {
 		.fileinput-button {
-		  background: @community-main-color !important;
+		  background: @mobile-main-color !important;
 		  padding: 8px 7px 5px 7px;
 		  margin-top: -2px;
 		  border-radius: 2px 0px 0px 2px;
@@ -430,7 +311,7 @@ p, .help-block {
 			  color: @mobile-color-white;
 			}
 			&:hover {
-			  background: darken( @community-main-color, 20% );
+			  background: darken( @mobile-main-color, 20% );
 			}
 		}
     }
@@ -464,7 +345,7 @@ p, .help-block {
     
     // layout space: Space container 
   	.space-layout-container {
-  		.community-space-layout;        // space layout mixins is used - change according to the theme ex:(.enterprise-space-layout)
+  		.community-space-layout;        // space layout mixins is used
     }
     
   	.media-list li:hover, .media-list li.selected {
@@ -574,10 +455,6 @@ a.list-group-item.active:focus {
   background: darken( @mobile-background-white, 2% );
 }
 
-// Space: Dropdown mixin according to the theme
-#space-menu-dropdown {
-    // .enterprise-space-dropdown; // Remove if not an Enterprise theme
-}
 .space-nav .nav>li>a .fa {
   display: none;
 }
@@ -587,54 +464,4 @@ a.list-group-item.active:focus {
   	height: 0px;
 }
 
-//
-// Mobile Enterprise sidebar
-// --------------------------------------------------
-
-//
-#sidebar-wrapper {
-  	.sidebar-default;		// Sidebar Mixins
-	.nav-space-chooser > li > a {
-			padding: 4px 4px 4px 30px;
-		  	border-left: none;
-			font-size: 15px;
-      }
-    
-    //
-	.nav-space-chooser>li.active a, 
-	.nav-space-chooser>li.active a:hover, 
-	.nav-space-chooser>li.active a:focus, 
-	.space-entries>li.active a, 
-	.space-entries>li.active a:hover, 
-	.space-entries>li.active a:focus {
-  			background-color: rgba( 0,0,0,0.14 );
-      }
-    //
-  	.nav-space-chooser>li>a .fa {
-  			margin-right: 28px;
-			font-size: 17px;
-    }
-
-    //
-  	#space-menu-search {
-  			background-color: transparent;
-			color: @mobile-color-black;
-			border-bottom: 1px solid @mobile-color-black;
-			border-radius: 0px;
-    }
-    
-    //
-  	.space-entries .space-acronym {
-  			margin-right: 20px;
-    }
-    
-    //
-  	.space-entries li>a {
-  			border-left: none;
-    }
-
-    //
-    .media .content {
-        padding: 0;
-    }
 }
