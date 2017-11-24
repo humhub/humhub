@@ -19,7 +19,7 @@ class Chooser extends Widget
     /**
      * Maximum number of spaces to load per request.
      */
-    const SPACE_BATCH_SIZE = 100;
+    const SPACE_BATCH_SIZE = 25;
 
 
     public static function getSpaceResult($space, $withChooserItem = true, $options = [])
