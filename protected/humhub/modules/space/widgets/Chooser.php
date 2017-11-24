@@ -16,6 +16,11 @@ use yii\helpers\Html;
  */
 class Chooser extends Widget
 {
+    /**
+     * Maximum number of spaces to load per request.
+     */
+    const SPACE_BATCH_SIZE = 100;
+
 
     public static function getSpaceResult($space, $withChooserItem = true, $options = [])
     {
@@ -61,7 +66,7 @@ class Chooser extends Widget
     protected function getMemberships()
     {
         if (!Yii::$app->user->isGuest) {
-            return Membership::findByUser(Yii::$app->user->getIdentity())->all();
+            return Membership::findByUser(Yii::$app->user->getIdentity())->limit(static::SPACE_BATCH_SIZE)->all();
         }
     }
 
@@ -104,5 +109,3 @@ class Chooser extends Widget
     }
 
 }
-
-?>
