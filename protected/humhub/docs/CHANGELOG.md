@@ -6,7 +6,8 @@ HumHub Change Log
 - Fix: Only include content with `stream_channel = default` into spacechooser update count.
 - Enh: Add LinkedIn auth to login. (Felli)
 - Enh: Add Twitter auth to login. (Felli)
-- Enh: Add Twitter & LinkedIn auth to docs (Felli)
+- Enh: Add Instagram auth to login. (Felli)
+- Enh: Add Twitter, LinkedIn & Instagram auth to docs (Felli)
 
 1.2.3  (October 23, 2017)
 -------------------------
