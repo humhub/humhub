@@ -206,6 +206,33 @@ return [
 ];
 ```
 
+Instagram
+--------
+In order to use Instagram OAuth you must register your application at <https://www.instagram.com/developer/clients/manage/>.
+
+Add the following block to your configuration (protected/config/common.php):
+
+```php
+return [
+    // ...
+    'components' => [
+        // ...
+        'authClientCollection' => [
+            'clients' => [
+                // ...
+                'instagram' => [
+                    'class' => 'humhub\modules\user\authclient\Instagram',
+                    'clientId' => 'Your Instagram App ID here',
+                    'clientSecret' => 'Your Instagram App Secret here',
+                ],
+            ],
+        ],
+        // ...
+    ],
+    // ...
+];
+```
+
 Other providers
 ---------------
 Please see [Development - Authentication](dev-authentication.md) for more information
