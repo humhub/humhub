@@ -5,6 +5,8 @@ HumHub Change Log
 - Fix: Added `ManageSpaces` and SystemAdmin check to `UserGroupAccessValidator`.
 - Fix: Only include content with `stream_channel = default` into spacechooser update count.
 - Enh: Make lucene search term limit configurable via `ZendLuceneSearch::$searchItemLimit`.
+- Fix: Empty stream message between friends
+- Enh: Improve composer-asset-plugin config (cebe)
 
 1.2.3  (October 23, 2017)
 -------------------------
