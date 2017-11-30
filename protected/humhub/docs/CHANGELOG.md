@@ -8,6 +8,9 @@ HumHub Change Log
 - Enh: Add Twitter auth to login. (Felli)
 - Enh: Add Instagram auth to login. (Felli)
 - Enh: Add Twitter, LinkedIn & Instagram auth to docs (Felli)
+- Enh: Make lucene search term limit configurable via `ZendLuceneSearch::$searchItemLimit`.
+- Fix: Empty stream message between friends
+- Enh: Improve composer-asset-plugin config (cebe)
 
 1.2.3  (October 23, 2017)
 -------------------------
