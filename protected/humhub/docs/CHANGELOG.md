@@ -1,5 +1,7 @@
 HumHub Change Log
 =================
+
+
 1.2.4
 -------------------------
 - Fix: Added `ManageSpaces` and SystemAdmin check to `UserGroupAccessValidator`.
@@ -11,6 +13,7 @@ HumHub Change Log
 - Enh: Make lucene search term limit configurable via `ZendLuceneSearch::$searchItemLimit`.
 - Fix: Empty stream message between friends
 - Enh: Improve composer-asset-plugin config (cebe)
+- Enh: Added a link to the permalink from the ago text (benklop)
 
 1.2.3  (October 23, 2017)
 -------------------------
