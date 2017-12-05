@@ -56,6 +56,12 @@ class Module extends \humhub\components\Module
                 Content::VISIBILITY_OWNER => [],
             ];
 
+            // When no content container record exists (yet)
+            // This may happen during the registration process
+            if ($user->contentContainerRecord === null) {
+                return $legitimation;
+            }
+
             // Add users own content container (user == contentcontainer)
             $legitimation[Content::VISIBILITY_OWNER][] = $user->contentContainerRecord->id;
 
