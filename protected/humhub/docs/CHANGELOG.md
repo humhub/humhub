@@ -14,6 +14,10 @@ HumHub Change Log
 - Fix: Empty stream message between friends
 - Enh: Improve composer-asset-plugin config (cebe)
 - Enh: Added a link to the permalink from the ago text (benklop)
+- Enh: Added directory group description (githubjeka)
+- Enh: Added configuration option to include user profile posts in dashboard without following
+- Fix: User profile sidebar disappered
+
 
 1.2.3  (October 23, 2017)
 -------------------------
