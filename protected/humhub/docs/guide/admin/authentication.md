@@ -53,6 +53,7 @@ Twitter
 In order to use Twitter OAuth you must register your application at <https://apps.twitter.com/>.
 
 Add the following block to your configuration (protected/config/common.php):
+
 ```php
 return [
     // ...
@@ -185,6 +186,7 @@ LinkedIn
 In order to use LinkedIn OAuth you must register your application at <https://www.linkedin.com/developer/apps/>.
 
 Add the following block to your configuration (protected/config/common.php):
+
 ```php
 return [
     // ...
