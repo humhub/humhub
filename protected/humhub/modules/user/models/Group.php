@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -22,6 +22,8 @@ use humhub\modules\space\models\Space;
  * @property string $created_at
  * @property integer $created_by
  * @property integer $sort_order
+ * @property integer $show_at_directory
+ * @property integer $show_at_registration
  * @property string $updated_at
  * @property integer $updated_by
  */

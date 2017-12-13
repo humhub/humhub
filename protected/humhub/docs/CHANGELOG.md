@@ -2,8 +2,10 @@ HumHub Change Log
 =================
 
 
-1.2.4
--------------------------
+1.2.4  (December 13, 2017)
+--------------------------
+
+- Enh: Translation updates
 - Fix: Added `ManageSpaces` and SystemAdmin check to `UserGroupAccessValidator`.
 - Fix: Only include content with `stream_channel = default` into spacechooser update count.
 - Enh: Add LinkedIn auth to login. (Felli)
@@ -18,6 +20,8 @@ HumHub Change Log
 - Enh: Added configuration option to include user profile posts in dashboard without following
 - Fix: User profile sidebar disappered
 - Fix: Like notification for comments not working
+- Fix: Add example users to default Users group
+
 
 1.2.3  (October 23, 2017)
 -------------------------
