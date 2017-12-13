@@ -17,7 +17,7 @@ HumHub Change Log
 - Enh: Added directory group description (githubjeka)
 - Enh: Added configuration option to include user profile posts in dashboard without following
 - Fix: User profile sidebar disappered
-
+- Fix: Like notification for comments not working
 
 1.2.3  (October 23, 2017)
 -------------------------
