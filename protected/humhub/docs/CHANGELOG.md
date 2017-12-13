@@ -24,7 +24,7 @@ HumHub Change Log
 - Fix #2851: getting model attribute value using Html::getAttributeValue()
 - Fix #2844: Directory member search broken on page 2
 - Fix #2702: Disable content search for guest users due to space visibility
-
+- Fix #2806: Register process broken on some environments (Felli)
 
 1.2.3  (October 23, 2017)
 -------------------------
