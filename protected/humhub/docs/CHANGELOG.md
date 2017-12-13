@@ -23,6 +23,7 @@ HumHub Change Log
 - Fix: Add example users to default Users group
 - Fix #2851: getting model attribute value using Html::getAttributeValue()
 - Fix #2844: Directory member search broken on page 2
+- Fix #2702: Disable content search for guest users due to space visibility
 
 
 1.2.3  (October 23, 2017)
