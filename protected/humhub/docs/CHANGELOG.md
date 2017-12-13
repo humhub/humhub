@@ -21,6 +21,8 @@ HumHub Change Log
 - Fix: User profile sidebar disappered
 - Fix: Like notification for comments not working
 - Fix: Add example users to default Users group
+- Fix #2851: getting model attribute value using Html::getAttributeValue()
+- Fix #2844: Directory member search broken on page 2
 
 
 1.2.3  (October 23, 2017)

@@ -27,6 +27,7 @@ use humhub\modules\directory\widgets\UserGroupList;
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <div class="form-group form-group-search">
+                    <?= Html::hiddenInput('page', '1'); ?>
                     <?= Html::textInput("keyword", $keyword, ['class' => 'form-control form-search', 'placeholder' => Yii::t('DirectoryModule.base', 'search for members')]); ?>
                     <?= Html::submitButton(Yii::t('DirectoryModule.base', 'Search'), ['class' => 'btn btn-default btn-sm form-button-search']); ?>
                 </div>
