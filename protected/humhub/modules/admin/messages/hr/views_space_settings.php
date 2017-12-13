@@ -1,5 +1,5 @@
 <?php
 return array (
   'Save' => 'Spremi',
-  'Space Settings' => '',
+  'Space Settings' => 'Postavke Prostora',
 );

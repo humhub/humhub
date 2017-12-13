@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Base URL' => 'Basis URL',
-  'Date input format' => 'Datum input formaat',
+  'Base URL' => 'Basis-URL',
+  'Date input format' => 'Datum invoerformaat',
   'Default language' => 'Standaard taal',
   'Default space' => 'Standaard ruimte',
   'Default stream content order' => 'Standaard inhoud volgorde',
