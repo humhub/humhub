@@ -1,6 +1,11 @@
 HumHub Change Log
 =================
 
+1.2.5  (Not released)
+---------------------
+
+- Enh: Added BaseURL setting protocol scheme validation
+
 
 1.2.4  (December 13, 2017)
 --------------------------
