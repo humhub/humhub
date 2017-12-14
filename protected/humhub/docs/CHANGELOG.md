@@ -5,7 +5,7 @@ HumHub Change Log
 ---------------------
 
 - Enh: Added BaseURL setting protocol scheme validation
-
+- Fix #2849: ActiveQueryContent doesn't find public profile content when guest access is enabled
 
 1.2.4  (December 13, 2017)
 --------------------------
