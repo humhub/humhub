@@ -72,10 +72,13 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
 
             // Created content of is always visible
             $conditionUser .= 'OR content.created_by=' . $user->id;
-        } else {
+        } elseif (Yii::$app->user->isGuestAccessEnabled()) {
             $conditionSpace = 'space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1';
             $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
+        } else {
+            $this->emulateExecution();
         }
+
         $this->andWhere("{$conditionSpace} OR {$conditionUser}");
 
 
