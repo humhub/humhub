@@ -1,36 +1,56 @@
 <?php
 
-use yii\helpers\Html;
 use yii\helpers\Url;
+use humhub\libs\Html;
+use humhub\modules\user\widgets\Image as UserImage;
+use humhub\modules\space\widgets\Image as SpaceImage;
+use humhub\widgets\ActiveForm;
+
+/* @var $model \yii\base\Model */
 ?>
 <div class="panel-body">
-    <h4><?= Yii::t('AdminModule.views_user_delete', 'Confirm user deletion'); ?></h4>
+    <h4><?= Yii::t('AdminModule.user', 'Confirm user deletion'); ?></h4>
     <br>
-    <p><?= Yii::t('AdminModule.views_user_delete', 'Are you sure you want to delete this user?'); ?></p>
+    <p><strong><?= Yii::t('AdminModule.user', 'Are you sure that you want to delete following user?'); ?></strong></p>
 
-    <ul>
-        <li><?= Yii::t('AdminModule.views_user_delete', 'All created contents of this user will be <b>deleted</b>.'); ?></li>
-        <li><?= Yii::t('AdminModule.views_user_delete', 'If this user is owner of some spaces, <b>you</b> will automatically become owner of these spaces.'); ?></li>
-    </ul>
+    <div class="media">
+        <div class="media-left" style="padding-right:6px">
+            <?= UserImage::widget(['user' => $model->user, 'width' => 38, 'link' => true]); ?>
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading"><?= Html::containerLink($model->user); ?></h4>
+            <?= Html::encode($model->user->email) ?>
+        </div>
+    </div>    
+    <br />
+    <p><?= Yii::t('AdminModule.account', 'All the personal data of this user will be irrevocably deleted.'); ?></p>
+    <?php if (count($model->getOwningSpaces()) !== 0): ?>
+        <br />
+        <p><?= Yii::t('AdminModule.account', 'The user is the owner of these spaces:'); ?></p>
+        <?php foreach ($model->getOwningSpaces() as $space): ?>
+            <div class="media">
+                <div class="media-left" style="padding-right:6px">
+                    <?= SpaceImage::widget(['space' => $space, 'width' => 38, 'link' => true]); ?>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading"><?= Html::containerLink($space); ?></h4>
+                    <?= Yii::t('SpaceModule.base', '{count} members', ['count' => $space->getMemberships()->count()]); ?>
+                </div>
+            </div>    
+        <?php endforeach; ?>
+        <br />
+    <?php endif; ?>
 
-    <br>
+    <br />
+    <?php $form = ActiveForm::begin(); ?>
+    <?= $form->field($model, 'deleteContributions')->checkbox(['disabled' => !$model->isAttributeSafe('deleteContributions')]); ?>
+    <?php if (count($model->getOwningSpaces()) !== 0): ?>
+        <?= $form->field($model, 'deleteSpaces')->checkbox(); ?>
+    <?php endif; ?>
 
-    <?=
-    \yii\widgets\DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'username',
-            'profile.firstname',
-            'profile.lastname',
-            'email:email',
-            'created_at:datetime',
-        ],
-    ]);
-    ?>
-
-    <br>
-    <br>
-
-    <?= Html::a(Yii::t('AdminModule.views_user_delete', 'Delete user'), Url::to(['/admin/user/delete', 'id' => $model->id, 'doit' => 2]), ['class' => 'btn btn-danger', 'data-method' => 'POST']); ?>
-    <?= Html::a(Yii::t('AdminModule.views_user_delete', 'Cancel'), Url::to(['/admin/user/edit', 'id' => $model->id]), ['class' => 'btn btn-primary pull-right']); ?>
+    <br />
+    <hr>
+    <?= Html::submitButton(Yii::t('UserModule.account', 'Delete account'), ['class' => 'btn btn-danger', 'data-ui-loader' => '']); ?>
+    <?= Html::a(Yii::t('AdminModule.user', 'Cancel'), Url::to(['/admin/user/edit', 'id' => $model->user->id]), ['class' => 'btn btn-primary pull-right']); ?>
+    <?php ActiveForm::end(); ?>
 </div>

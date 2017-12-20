@@ -4,6 +4,12 @@ use yii\helpers\Html;
 use humhub\widgets\RichText;
 use humhub\modules\user\models\fieldtype\MarkdownEditor;
 use humhub\widgets\MarkdownView;
+
+/**
+ * @var $this \humhub\components\View
+ * @var $user \humhub\modules\user\models\User
+ */
+$categories = $user->profile->getProfileFieldCategories();
 ?>
 <div class="panel panel-default">
     <div
@@ -11,7 +17,7 @@ use humhub\widgets\MarkdownView;
     <div class="panel-body">
         <?php $firstClass = "active"; ?>
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-            <?php foreach ($user->profile->getProfileFieldCategories() as $category): ?>
+            <?php foreach ($categories as $category): ?>
                 <li class="<?php echo $firstClass; ?>">
                     <a href="#profile-category-<?php echo $category->id; ?>" data-toggle="tab"><?php echo Html::encode(Yii::t($category->getTranslationCategory(), $category->title)); ?></a>
                 </li>
@@ -22,7 +28,7 @@ use humhub\widgets\MarkdownView;
         </ul>
         <?php $firstClass = "active"; ?>
         <div class="tab-content">
-            <?php foreach ($user->profile->getProfileFieldCategories() as $category): ?>
+            <?php foreach ($categories as $category): ?>
                 <div class="tab-pane <?php
                 echo $firstClass;
                 $firstClass = "";
@@ -44,7 +50,7 @@ use humhub\widgets\MarkdownView;
                                                 <?= MarkdownView::widget(['markdown' => $field->getUserValue($user, false)]); ?>
                                             </p>
                                         <?php else: ?>
-                                            <p class="form-control-static"><?php echo $field->getUserValue($user, false); ?></p>                     
+                                            <p class="form-control-static"><?php echo $field->getUserValue($user, false); ?></p>
                                         <?php endif; ?>
                                     </div>
                                 <?php endif; ?>

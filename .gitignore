@@ -25,7 +25,6 @@ nbproject
 .idea/*
 .gitmodules
 .github
-/composer.lock
 
 themes/*
 !themes/HumHub

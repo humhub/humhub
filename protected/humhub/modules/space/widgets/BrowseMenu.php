@@ -48,21 +48,6 @@ class BrowseMenu extends MenuWidget
             'isActive' => (Yii::app()->controller->id == "spacebrowse" && Yii::app()->controller->action->id == "index"),
         ));
 
-
-#        $this->addItem(array(
-#            'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'Members'),
-#            'url' => Yii::app()->createUrl('//space/space/members', array('sguid'=>$spaceGuid)),
-#            'sortOrder' => 200,
-#            'isActive' => (Yii::app()->controller->id == "space" && Yii::app()->controller->action->id == "members"),
-#        ));
-#        $this->addItem(array(
-#            'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'Admin'),
-#            'url' => Yii::app()->createUrl('//space/admin', array('sguid'=>$spaceGuid)),
-#            'sortOrder' => 9999,
-#            'isActive' => (Yii::app()->controller->id == "admin" && Yii::app()->controller->action->id == "index"),
-#        ));
-
-
         parent::init();
     }
 

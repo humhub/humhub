@@ -21,6 +21,11 @@ class Session extends DbSession
 {
 
     /**
+     * @inheritdoc
+     */
+    public $sessionTable = 'user_http_session';
+
+    /**
      * Returns all current logged in users.
      * 
      * @return ActiveQueryUser

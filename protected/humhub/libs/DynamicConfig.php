@@ -118,6 +118,11 @@ class DynamicConfig extends \yii\base\Object
                 'keyPrefix' => Yii::$app->id,
                 'useApcu' => (function_exists('apcu_add'))
             ];
+        } elseif ($cacheClass === \yii\redis\Cache::class) {
+            $config['components']['cache'] = [
+                'class' => \yii\redis\Cache::class,
+                'keyPrefix' => Yii::$app->id,
+            ];
         }
 
         // Add User settings

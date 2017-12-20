@@ -23,7 +23,8 @@ class m131213_165552_user_optimize extends Migration
 
         $this->createIndex('index_status', 'user_space_membership', 'status', false);
 
-        $this->createIndex('index_user_module', 'user_module', 'user_id, module_id', true);
+        # not longer required in 1.3 - disabled for utf8_mb4 support
+        #$this->createIndex('index_user_module', 'user_module', 'user_id, module_id', true);
 
         $this->createIndex('unique_token', 'user_invite', 'token', true);
         $this->createIndex('unique_email', 'user_invite', 'email', true);
