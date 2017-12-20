@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Add new space' => 'Nieuwe space toevoegen.',
+  'Add new space' => 'Nieuwe ruimte toevoegen.',
 );

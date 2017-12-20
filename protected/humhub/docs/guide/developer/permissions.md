@@ -205,7 +205,7 @@ In the following, we'll show some more use cases for the [[humhub\components\beh
 return [
     'acl' => [
         'class' => \humhub\components\behaviors\AccessControl::className(),
-        'adminOnly' => true
+        'adminOnly' => true,
     ]
 ];
 
@@ -213,23 +213,23 @@ return [
 return [
     'acl' => [
         'class' => \humhub\components\behaviors\AccessControl::className(),
-        'guestAllowedActions' => ['index']
+        'guestAllowedActions' => ['index'],
         'rules' => [
-            ['permissions' => SpecialPermission::className(), 'actions' => ['secret']]
-        ];
-    ]
+            ['permissions' => SpecialPermission::className(), 'actions' => ['secret']],
+        ],
+    ],
 ];
 
 // Combined rules: Every action is only granted for users with SpecialPermission except 'secret' action, which is accessible by SpecialPermission and SpecialAdminPermission users.
 return [
     'acl' => [
         'class' => \humhub\components\behaviors\AccessControl::className(),
-        'guestAllowedActions' => ['index']
+        'guestAllowedActions' => ['index'],
         'rules' => [
-            ['permissions' => SpecialPermission::className()]
-            ['permissions' => [SpecialPermission::className(), SpecialAdminPermission::className()], 'actions' => ['secret']]
-        ];
-    ]
+            ['permissions' => SpecialPermission::className()],
+            ['permissions' => [SpecialPermission::className(), SpecialAdminPermission::className()], 'actions' => ['secret']],
+        ],
+    ],
 ];
 
 ```

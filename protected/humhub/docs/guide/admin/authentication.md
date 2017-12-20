@@ -1,14 +1,11 @@
 Authentication
 ==============
-
 LDAP
 ----
-
 You can enable authentication against LDAP (e.g. against Active Directory or OpenLDAP) at: `Administration -> Users -> Settings-> LDAP`.
 The profile field attribute mapping can be defined at `Administration -> Users -> Profile -> Select profile field -> LDAP Attribute`.
 
 ### Date field synchronisation
-
 If you're using custom date formats in our ldap backend, you can specify different formats
 in the [configuration file](advanced-configuration.md).
 
@@ -24,11 +21,8 @@ in the [configuration file](advanced-configuration.md).
 
 Note: Make sure to use lower case in the field.
 
-
-
 Facebook
 --------
-
 In order to use Facebook OAuth you must register your application at <https://developers.facebook.com/apps>.
 
 Add the following block to your configuration (protected/config/common.php):
@@ -54,9 +48,38 @@ return [
 ];
 ```
 
+Twitter
+------
+In order to use Twitter OAuth you must register your application at <https://apps.twitter.com/>.
+
+Add the following block to your configuration (protected/config/common.php):
+
+```php
+return [
+    // ...
+    'components' => [
+        // ...
+        'authClientCollection' => [
+            'clients' => [
+                // ...
+                'twitter' => [
+                'class' => 'yii\authclient\clients\Twitter',
+                   'attributeParams' => [
+                       'include_email' => 'true'
+                   ],
+                    'consumerKey' => 'Your Twitter Consumer key here',
+                    'consumerSecret' => 'Your Twitter Consumer secret here',
+                ],
+            ],
+        ],
+        // ...
+    ],
+    // ...
+];
+```
+
 Google
 ------
-
 In order to use Google OAuth you must create a **project** at <https://console.developers.google.com/project>
 and setup its credentials at <https://console.developers.google.com/project/[yourProjectId]/apiui/credential>.
 
@@ -94,7 +117,6 @@ return [
 
 GitHub
 ------
-
 In order to use GitHub OAuth you must register your application at <https://github.com/settings/applications/new>.
 
 Authorization callback URLs:
@@ -127,10 +149,8 @@ return [
 ];
 ```
 
-
 Microsoft Live
 --------------
-
 In order to use Microsoft Live OAuth you must register your application at <https://account.live.com/developers/applications>.
 
 Also add a new Platform and allow following Redirect URI.
@@ -138,7 +158,7 @@ Also add a new Platform and allow following Redirect URI.
 - https://domain/path-to-humhub/user/auth/external (With clean urls enabled)
 - https://domain/path-to-humhub/index.php (Without clean urls)
 
-Add following block to your configuration (protected/config/common.php):
+Add the following block to your configuration (protected/config/common.php):
 
 ```php
 return [
@@ -161,8 +181,61 @@ return [
 ];
 ```
 
+LinkedIn
+------
+In order to use LinkedIn OAuth you must register your application at <https://www.linkedin.com/developer/apps/>.
+
+Add the following block to your configuration (protected/config/common.php):
+
+```php
+return [
+    // ...
+    'components' => [
+        // ...
+        'authClientCollection' => [
+            'clients' => [
+                // ...
+                'linkedin' => [
+                    'class' => 'humhub\modules\user\authclient\LinkedIn',
+                    'clientId' => 'Your LinkedIn Client ID here',
+                    'clientSecret' => 'Your LinkedIn Client Secret here',
+                ],
+            ],
+        ],
+        // ...
+    ],
+    // ...
+];
+```
+
+Instagram
+--------
+In order to use Instagram OAuth you must register your application at <https://www.instagram.com/developer/clients/manage/>.
+
+Add the following block to your configuration (protected/config/common.php):
+
+```php
+return [
+    // ...
+    'components' => [
+        // ...
+        'authClientCollection' => [
+            'clients' => [
+                // ...
+                'instagram' => [
+                    'class' => 'humhub\modules\user\authclient\Instagram',
+                    'clientId' => 'Your Instagram App ID here',
+                    'clientSecret' => 'Your Instagram App Secret here',
+                ],
+            ],
+        ],
+        // ...
+    ],
+    // ...
+];
+```
+
 Other providers
 ---------------
-
 Please see [Development - Authentication](dev-authentication.md) for more information
 about additional authentication providers. 

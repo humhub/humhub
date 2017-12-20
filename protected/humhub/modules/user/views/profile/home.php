@@ -1,18 +1,12 @@
+<?php
+
+use humhub\modules\post\widgets\Form;
+use humhub\modules\user\widgets\StreamViewer;
+?>
 
 <?php $this->beginContent('@user/views/profile/_sidebar.php', ['user' => $user]); ?>
 
-<?php echo \humhub\modules\post\widgets\Form::widget(['contentContainer' => $user]); ?>
-<?php
+<?= Form::widget(['contentContainer' => $user]); ?>
+<?= StreamViewer::widget(['contentContainer' => $user]); ?>
 
-echo \humhub\modules\stream\widgets\StreamViewer::widget(array(
-    'contentContainer' => $user,
-    'streamAction' => '//user/profile/stream',
-    'messageStreamEmpty' => ($user->permissionManager->can(new \humhub\modules\post\permissions\CreatePost())) ?
-            Yii::t('UserModule.views_profile_index', '<b>Your profile stream is still empty</b><br>Get started and post something...') :
-            Yii::t('UserModule.views_profile_index', '<b>This profile stream is still empty!</b>'),
-    'messageStreamEmptyCss' => ($user->permissionManager->can(new \humhub\modules\post\permissions\CreatePost())) ?
-            'placeholder-empty-stream' :
-            '',
-));
-?>
 <?= $this->endContent(); ?>

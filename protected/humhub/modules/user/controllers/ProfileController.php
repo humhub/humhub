@@ -76,6 +76,7 @@ class ProfileController extends ContentContainerController
 
     public function actionHome()
     {
+        $this->hideSidebar = false;
         return $this->render('home', ['user' => $this->contentContainer]);
     }
 
@@ -85,6 +86,7 @@ class ProfileController extends ContentContainerController
             throw new HttpException(403, 'Forbidden');
         }
 
+        $this->hideSidebar = false;
         return $this->render('about', ['user' => $this->contentContainer]);
     }
 

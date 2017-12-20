@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Delete' => '',
+  'Delete' => 'Obriši',
   'Save' => 'Spremi',
-  'Visibility' => '',
+  'Visibility' => 'Vidljivost',
 );
