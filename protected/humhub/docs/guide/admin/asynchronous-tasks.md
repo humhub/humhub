@@ -8,7 +8,7 @@ To provide a fast and responive user experience, extensive processes are handeld
 
 Some examples for such background processes are:
 
-- Notifications (informing the users via e-ails or mobile push notifications) 
+- Notifications (informing the users via e-mails or mobile push notifications) 
 - Search index rebuilds
 - File indexing
 
@@ -26,6 +26,7 @@ We recommend to switch to the MySQL or Redis driver on production environments.
 ### MySQL Database Driver
 
 If you don't have Redis or any other supported queuing software (RabbitMQ, Beanstalk or Gearman) running, this is the recommended driver.
+
 To enable this driver you need to add following block to your local configuration file (protected/config/common.php):
 
 ```
@@ -49,7 +50,6 @@ To enable this driver you need to add following block to your local configuratio
 
 If you're already using Redis (e.g. for caching or push) we recommend this queue driver.
 Please make sure you already configured Redis as described here: [Redis Configuration](redis.md).
-
 
 To enable this driver you need to add following block to your local configuration file (protected/config/common.php):
 
@@ -113,4 +113,3 @@ numprocs=4
 redirect_stderr=true
 stdout_logfile=<INSERT HUMHUB PATH HERE>/protected/runtime/logs/yii-queue-worker.log
 ```
-
