@@ -63,7 +63,7 @@ class CacheSettingsForm extends Model
             'yii\caching\ApcCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'APC(u)'),
         ];
         
-        if (Yii::$app->redis) {
+        if (isset(Yii::$app->redis)) {
             $cacheTypes['yii\redis\Cache'] = \Yii::t('AdminModule.forms_CacheSettingsForm', 'Redis');
         }
         
