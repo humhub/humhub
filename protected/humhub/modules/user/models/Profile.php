@@ -44,7 +44,6 @@ use Yii;
  * @property string $url_myspace
  * @property string $url_googleplus
  * @property string $url_twitter
- * @property User $user
  */
 class Profile extends \yii\db\ActiveRecord
 {
@@ -252,14 +251,17 @@ class Profile extends \yii\db\ActiveRecord
     /**
      * Returns all profile field categories with some user data
      *
-     * @return ProfileFieldCategory[]
+     * @todo Optimize me
+     * @return Array ProfileFieldCategory
      */
     public function getProfileFieldCategories()
     {
-        $categories = [];
+
+        $categories = array();
 
         foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $category) {
-            if (count($this->getProfileFields($category)) > 0) {
+
+            if (count($this->getProfileFields($category)) != 0) {
                 $categories[] = $category;
             }
         }
@@ -270,51 +272,31 @@ class Profile extends \yii\db\ActiveRecord
     /**
      * Returns all profile fields with user data by given category
      *
+     * @todo Optimize me
      * @param ProfileFieldCategory $category
-     * @return ProfileField[]
+     * @return Array ProfileFields
      */
     public function getProfileFields(ProfileFieldCategory $category = null)
     {
+        if ($this->user === null) {
+            return [];
+        }
+
         $fields = [];
 
-        if ($this->user !== null) {
-            $query = ProfileField::find()
-                    ->where(['visible' => 1])
-                    ->orderBy('sort_order');
-
-            if ($category !== null) {
-                $query->andWhere(['profile_field_category_id' => $category->id]);
-            }
-
-            /** @var ProfileField $profileFieldModels */
-            $profileFieldModels = $query->all();
-
-            foreach ($profileFieldModels as $field) {
-                if (!empty($field->getUserValue($this->user))) {
-                    $fields[] = $field;
-                }
+        $query = ProfileField::find();
+        $query->where(['visible' => 1]);
+        $query->orderBy('sort_order');
+        if ($category !== null) {
+            $query->andWhere(['profile_field_category_id' => $category->id]);
+        }
+        foreach ($query->all() as $field) {
+            if ($field->getUserValue($this->user) != "") {
+                $fields[] = $field;
             }
         }
 
         return $fields;
-    }
-
-    /**
-     * Soft delete will empty all profile fields except these defined in the module configuration.
-     */
-    public function softDelete()
-    {
-        $module = Yii::$app->getModule('user');
-        /* @var $module \humhub\modules\user\Module */
-
-        foreach (array_keys($this->getAttributes()) as $name) {
-            if (!in_array($name, $module->softDeleteKeepProfileFields) && $name !== 'user_id') {
-                $this->setAttribute($name, '');
-            }
-        }
-        if (!$this->save()) {
-            Yii::error('Could not soft delete profile!');
-        }
     }
 
 }

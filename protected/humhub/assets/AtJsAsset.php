@@ -21,7 +21,7 @@ class AtJsAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@npm/at.js';
+    public $sourcePath = '@bower/At.js';
 
     /**
      * @inheritdoc

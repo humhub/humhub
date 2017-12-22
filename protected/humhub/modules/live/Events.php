@@ -38,7 +38,7 @@ class Events extends \yii\base\Object
      */
     public static function onMemberEvent(MemberEvent $event)
     {
-        Yii::$app->getModule('live')->refreshLegitimateContentContainerIds($event->user);
+        Yii::$app->cache->delete(Module::$legitimateCachePrefix . $event->user->id);
     }
 
     /**
@@ -47,8 +47,8 @@ class Events extends \yii\base\Object
      */
     public static function onFriendshipEvent(FriendshipEvent $event)
     {
-        Yii::$app->getModule('live')->refreshLegitimateContentContainerIds($event->user1);
-        Yii::$app->getModule('live')->refreshLegitimateContentContainerIds($event->user2);
+        Yii::$app->cache->delete(Module::$legitimateCachePrefix . $event->user1->id);
+        Yii::$app->cache->delete(Module::$legitimateCachePrefix . $event->user2->id);
     }
 
     /**
@@ -58,7 +58,7 @@ class Events extends \yii\base\Object
     public static function onFollowEvent(FollowEvent $event)
     {
         if ($event->target instanceof ContentContainerActiveRecord) {
-            Yii::$app->getModule('live')->refreshLegitimateContentContainerIds($event->user);
+            Yii::$app->cache->delete(Module::$legitimateCachePrefix . $event->user->id);
         }
     }
 

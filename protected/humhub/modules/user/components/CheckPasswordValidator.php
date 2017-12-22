@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,7 +10,6 @@ namespace humhub\modules\user\components;
 
 use Yii;
 use yii\validators\Validator;
-use humhub\modules\user\models\User;
 
 /**
  * CheckPasswordValidator checks password of currently logged in user.
@@ -21,42 +20,31 @@ class CheckPasswordValidator extends Validator
 {
 
     /**
-     * @var User the user
-     */
-    public $user;
-
-    /**
      * @inheritdoc
      */
     public function validateAttribute($object, $attribute)
     {
         $value = $object->$attribute;
 
-        if ($this->user === null) {
-            $this->user = Yii::$app->user->getIdentity();
-        }
-
-        if ($this->user->currentPassword !== null && !$this->user->currentPassword->validatePassword($value)) {
-            $object->addError($attribute, Yii::t('UserModule.password', "Your password is incorrect!"));
+        $user = Yii::$app->user->getIdentity();
+        if ($user->currentPassword !== null && !$user->currentPassword->validatePassword($value)) {
+            $object->addError($attribute, Yii::t('UserModule.components_CheckPasswordValidator', "Your password is incorrect!"));
         }
     }
 
     /**
      * Checks if current user has a password set.
      * 
-     * @param User $user the user or null for current
      * @return boolean
      */
-    public static function hasPassword(User $user = null)
+    public static function hasPassword()
     {
-        if ($user === null) {
-            $user = Yii::$app->user->getIdentity();
-        }
-
+        $user = Yii::$app->user->getIdentity();
+        
         if ($user === null) {
             return false;
         }
-
+        
         return ($user->currentPassword !== null);
     }
 

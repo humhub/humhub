@@ -1,5 +1,3 @@
-
-<?php $this->beginContent('@space/views/space/_sidebar.php', ['space' => $space]); ?>
 <?php echo \humhub\modules\post\widgets\Form::widget(['contentContainer' => $space]); ?>
 <?php
 
@@ -19,4 +17,3 @@ echo humhub\modules\stream\widgets\StreamViewer::widget([
     'messageStreamEmptyCss' => ($canCreatePosts) ? 'placeholder-empty-stream' : '',
 ]);
 ?>
-<?= $this->endContent(); ?>
