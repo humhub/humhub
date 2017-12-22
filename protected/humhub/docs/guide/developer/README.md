@@ -13,11 +13,9 @@ Module Development
 * [Introduction](modules-index.md)
 * [Basic Structure](modules-structure.md)
 * [Migration/Updates](modules-migrate.md)
-* [Content](modules-content.md)
-* [Users](modules-users.md)
+* [Content](content.md)
 * [Events](modules-events.md)
 * [Settings and Configuration](modules-settings.md)
-* [Models / Database](modules-db.md)
 * [Models / Database](modules-db.md)
 * [Internationalization](modules-i18n.md)
 

@@ -16,11 +16,6 @@ class LiveAsset extends AssetBundle
     public $css = [];
     public $js = [
         'js/humhub.live.js',
-        'js/humhub.live.poll.js',
-        'js/humhub.live.push.js',
-    ];
-    
-    public $publishOptions = [
-        'forceCopy' => false,
+        'js/humhub.live.poll.js'
     ];
 }

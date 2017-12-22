@@ -57,17 +57,11 @@ class CacheSettingsForm extends Model
      */
     public function getTypes()
     {
-        $cacheTypes = [
+        return [
             'yii\caching\DummyCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'No caching'),
             'yii\caching\FileCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'File'),
             'yii\caching\ApcCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'APC(u)'),
         ];
-        
-        if (Yii::$app->redis) {
-            $cacheTypes['yii\redis\Cache'] = \Yii::t('AdminModule.forms_CacheSettingsForm', 'Redis');
-        }
-        
-        return $cacheTypes;
     }
 
     /**

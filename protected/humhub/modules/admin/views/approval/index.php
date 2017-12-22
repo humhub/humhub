@@ -3,8 +3,6 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\widgets\GridView;
-use humhub\modules\user\grid\ImageColumn;
-use humhub\modules\user\grid\DisplayNameColumn;
 ?>
 
 <div class="panel-body">
@@ -17,12 +15,15 @@ use humhub\modules\user\grid\DisplayNameColumn;
     <?=
 	GridView::widget([
         'dataProvider' => $dataProvider,
-#        'filterModel' => $searchModel,
+        'filterModel' => $searchModel,
         'columns' => [
-            ['class' => ImageColumn::class],
-            ['class' => DisplayNameColumn::class],
+            'username',
+            'email',
+            'profile.firstname',
+            'profile.lastname',
+            'profile.lastname',
             [
- #               'header' => Yii::t('AdminModule.views_approval_index', 'Actions'),
+                'header' => Yii::t('AdminModule.views_approval_index', 'Actions'),
                 'class' => 'yii\grid\ActionColumn',
                 'options' => ['width' => '150px'],
                 'buttons' => [

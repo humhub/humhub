@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -35,10 +35,10 @@ class UrlRule extends Object implements UrlRuleInterface
      */
     public function createUrl($manager, $route, $params)
     {
-        if (isset($params['cguid'])) {
-            $username = static::getUrlByUserGuid($params['cguid']);
+        if (isset($params['uguid'])) {
+            $username = static::getUrlByUserGuid($params['uguid']);
             if ($username !== null) {
-                unset($params['cguid']);
+                unset($params['uguid']);
 
                 if ($this->defaultRoute == $route) {
                     $route = "";
@@ -69,7 +69,7 @@ class UrlRule extends Object implements UrlRuleInterface
                         $parts[2] = $this->defaultRoute;
                     }
                     $params = $request->get();
-                    $params['cguid'] = $user->guid;
+                    $params['uguid'] = $user->guid;
 
                     return [$parts[2], $params];
                 }
@@ -91,8 +91,12 @@ class UrlRule extends Object implements UrlRuleInterface
         }
 
         $user = User::findOne(['guid' => $guid]);
-        static::$userUrlMap[$guid] = ($user !== null) ? $user->username : null;
-        return static::$userUrlMap[$guid];
+        if ($user !== null) {
+            static::$userUrlMap[$user->guid] = $user->username;
+            return static::$userUrlMap[$user->guid];
+        }
+
+        return null;
     }
 
 }

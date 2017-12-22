@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -33,19 +33,19 @@ class GroupManagerMenu extends \humhub\widgets\BaseMenu
     public function init()
     {
         $this->addItem([
-            'label' => Yii::t('AdminModule.user', 'Settings'),
+            'label' => Yii::t('AdminModule.views_user_index', 'Settings'),
             'url' => Url::toRoute(['/admin/group/edit', 'id' => $this->group->id]),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group' && Yii::$app->controller->action->id == 'edit'),
         ]);
         $this->addItem([
-            'label' => Yii::t('AdminModule.user', "Permissions"),
+            'label' => Yii::t('AdminModule.views_groups_index', "Permissions"),
             'url' => Url::toRoute(['/admin/group/manage-permissions', 'id' => $this->group->id]),
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group' && Yii::$app->controller->action->id == 'manage-permissions'),
         ]);
         $this->addItem([
-            'label' => Yii::t('AdminModule.user', "Members"),
+            'label' => Yii::t('AdminModule.views_groups_index', "Members"),
             'url' => Url::toRoute(['/admin/group/manage-group-users', 'id' => $this->group->id]),
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group' && Yii::$app->controller->action->id == 'manage-group-users'),

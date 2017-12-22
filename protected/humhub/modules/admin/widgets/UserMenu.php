@@ -8,25 +8,21 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\admin\models\UserApprovalSearch;
+use humhub\modules\user\models\Invite;
 use Yii;
 use yii\helpers\Url;
-use humhub\modules\admin\models\UserApprovalSearch;
-use humhub\modules\admin\permissions\ManageUsers;
-use humhub\modules\admin\permissions\ManageGroups;
-use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\user\models\Invite;
-use humhub\widgets\BaseMenu;
 
 /**
  * User Administration Menu
  *
  * @author Basti
  */
-class UserMenu extends BaseMenu
+class UserMenu extends \humhub\widgets\BaseMenu
 {
 
-    public $template = '@humhub/widgets/views/tabMenu';
-    public $type = 'adminUserSubNavigation';
+    public $template = "@humhub/widgets/views/tabMenu";
+    public $type = "adminUserSubNavigation";
 
     public function init()
     {
@@ -36,8 +32,8 @@ class UserMenu extends BaseMenu
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && (Yii::$app->controller->id == 'user' || Yii::$app->controller->id == 'pending-registrations')),
             'isVisible' => Yii::$app->user->can([
-                new ManageUsers(),
-                new ManageGroups(),
+                new \humhub\modules\admin\permissions\ManageUsers(),
+                new \humhub\modules\admin\permissions\ManageGroups(),
             ])
         ]);
 
@@ -47,7 +43,7 @@ class UserMenu extends BaseMenu
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'authentication'),
             'isVisible' => Yii::$app->user->can([
-                new ManageSettings()
+                new \humhub\modules\admin\permissions\ManageSettings()
             ])
         ]);
 
@@ -59,8 +55,8 @@ class UserMenu extends BaseMenu
                 'sortOrder' => 300,
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'approval'),
                 'isVisible' => Yii::$app->user->can([
-                    new ManageUsers(),
-                    new ManageGroups()
+                    new \humhub\modules\admin\permissions\ManageUsers(),
+                    new \humhub\modules\admin\permissions\ManageGroups()
                 ])
             ]);
         }
@@ -71,7 +67,7 @@ class UserMenu extends BaseMenu
             'sortOrder' => 400,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'user-profile'),
             'isVisible' => Yii::$app->user->can([
-                new ManageUsers()
+                new \humhub\modules\admin\permissions\ManageUsers()
             ])
         ]);
 
@@ -81,7 +77,7 @@ class UserMenu extends BaseMenu
             'sortOrder' => 500,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group'),
             'isVisible' => Yii::$app->user->can(
-                    new ManageGroups()
+                    new \humhub\modules\admin\permissions\ManageGroups()
             )
         ]);
 

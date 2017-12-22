@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,7 +10,6 @@ namespace humhub\modules\content;
 
 use Yii;
 use humhub\modules\content\models\Content;
-use humhub\modules\user\events\UserEvent;
 
 /**
  * Events provides callbacks to handle events.
@@ -20,43 +19,23 @@ use humhub\modules\user\events\UserEvent;
 class Events extends \yii\base\Object
 {
 
-    /**
-     * Callback when a user is soft deleted.
-     * 
-     * @param UserEvent $event
-     */
-    public static function onUserSoftDelete(UserEvent $event)
-    {
-        // Delete user profile content on soft delete
-        foreach (Content::findAll(['contentcontainer_id' => $event->user->contentcontainer_id]) as $content) {
-            $content->delete();
-        }
-    }
-
-    /**
-     * Callback when a user is completely deleted.
-     * 
-     * @param \yii\base\Event $event
-     */
     public static function onUserDelete($event)
     {
         $user = $event->sender;
         foreach (Content::findAll(['created_by' => $user->id]) as $content) {
             $content->delete();
         }
+        return true;
     }
 
-    /**
-     * Callback when a user is completely deleted.
-     * 
-     * @param \yii\base\Event $event
-     */
     public static function onSpaceDelete($event)
     {
         $space = $event->sender;
         foreach (Content::findAll(['contentcontainer_id' => $space->contentContainerRecord->id]) as $content) {
             $content->delete();
         }
+
+        return true;
     }
 
     /**
