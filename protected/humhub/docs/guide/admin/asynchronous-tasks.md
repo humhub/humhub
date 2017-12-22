@@ -35,7 +35,7 @@ To enable this driver you need to add following block to your local configuratio
         // ...
 
         'queue' => [
-            'class' => 'humhub\components\queue\driver\MySQL',
+            'class' => 'humhub\modules\queue\driver\MySQL',
         ],
         
         // ...
@@ -59,7 +59,7 @@ To enable this driver you need to add following block to your local configuratio
         // ...
 
         'queue' => [
-            'class' => 'humhub\components\queue\driver\Redis',
+            'class' => 'humhub\modules\queue\driver\Redis',
         ],
         
         // ...
@@ -81,10 +81,10 @@ You can start workers using cron by executing the queue/run command. It works as
 CronTab Example:
 
 ```
-* * * * * /usr/bin/php <INSERT HUMHUB PATH HERE>/yii queue/run
+* * * * * /usr/bin/php <INSERT HUMHUB PATH HERE>/protected/yii queue/run
 ```
 
-In this case the cron will start the command every minute and execute schedulded tasks.
+In this case, the cron will start the command every minute and execute scheduled tasks.
 
 
 ### Daemon 
