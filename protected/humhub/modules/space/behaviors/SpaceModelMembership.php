@@ -11,7 +11,7 @@ namespace humhub\modules\space\behaviors;
 use Yii;
 use yii\base\Behavior;
 use yii\base\Exception;
-use yii\validators\EmailValidator;;
+use yii\validators\EmailValidator;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
@@ -164,11 +164,11 @@ class SpaceModelMembership extends Behavior
      */
     public function isSpaceOwner($userId = null)
     {
-        if(empty($userId) && Yii::$app->user->isGuest) {
+        if (empty($userId) && Yii::$app->user->isGuest) {
             return false;
         } else if ($userId instanceof User) {
             $userId = $userId->id;
-        }  else if (empty($userId)) {
+        } else if (empty($userId)) {
             $userId = Yii::$app->user->id;
         }
 
@@ -421,8 +421,8 @@ class SpaceModelMembership extends Behavior
         MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_ADDED, new MemberEvent([
             'space' => $this->owner, 'user' => $user
         ]));
-        
-        
+
+
         // Create Activity
         MemberAdded::instance()->from($user)->about($this->owner)->save();
 
@@ -459,6 +459,11 @@ class SpaceModelMembership extends Behavior
             return true;
         }
 
+
+        foreach (Membership::findAll(['user_id' => $userId, 'space_id' => $this->owner->id]) as $membership) {
+            $membership->delete();
+        }
+
         // If was member, create a activity for that
         if ($membership->status == Membership::STATUS_MEMBER) {
             $activity = new MemberRemoved();
@@ -472,14 +477,10 @@ class SpaceModelMembership extends Behavior
         } elseif ($membership->status == Membership::STATUS_INVITED && $membership->originator !== null) {
             // Was invited, but declined the request - inform originator
             InviteDeclined::instance()
-                ->from($user)->about($this->owner)->send($membership->originator);
+                    ->from($user)->about($this->owner)->send($membership->originator);
         } elseif ($membership->status == Membership::STATUS_APPLICANT) {
             ApprovalRequestDeclined::instance()
                     ->from(Yii::$app->user->getIdentity())->about($this->owner)->send($user);
-        }
-
-        foreach (Membership::findAll(['user_id' => $userId, 'space_id' => $this->owner->id]) as $membership) {
-            $membership->delete();
         }
 
         ApprovalRequest::instance()->from($user)->about($this->owner)->delete();

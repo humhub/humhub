@@ -1,0 +1,9 @@
+{
+    "id": "queue",
+    "name": "Queue",
+    "description": "Queue Core",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

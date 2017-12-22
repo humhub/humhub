@@ -1,21 +1,9 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\behaviors;
@@ -27,55 +15,71 @@ use humhub\modules\user\models\User;
 use humhub\components\Controller;
 
 /**
- * This Behavior needs to be attached to all controllers which are provides
- * modules to the Profile System.
- *
- * @package humhub.modules_core.user
- * @since 0.5
- * @author Luke
+ * ProfileController Behavior
+ * 
+ * In User container scopes, this behavior will automatically attached to a contentcontainer controller.
+ * 
+ * @see User::controllerBehavior
+ * @see \humhub\modules\contentcontainer\components\Controller
+ * @property \humhub\modules\contentcontainer\components\Controller $owner the controller
  */
 class ProfileController extends Behavior
 {
 
+    /**
+     * @var User the user
+     */
     public $user = null;
 
-    public function events() {
-
+    /**
+     * @inheritdoc
+     */
+    public function events()
+    {
         return [
-        Controller::EVENT_BEFORE_ACTION => 'beforeAction',
+            Controller::EVENT_BEFORE_ACTION => 'beforeAction',
         ];
     }
 
-    public function getUser()
+    /**
+     * @inheritdoc
+     */
+    public function attach($owner)
     {
-        if ($this->user != null) {
-            return $this->user;
+        parent::attach($owner);
+
+        if (!$this->owner->contentContainer instanceof User) {
+            throw new \yii\base\InvalidValueException('Invalid contentcontainer type of controller.');
         }
 
-        $guid = Yii::$app->request->getQuery('uguid');
-        $this->user = User::findOne(['guid' => $guid]);
+        $this->user = $this->owner->contentContainer;
+    }
 
-        if ($this->user == null)
-            throw new HttpException(404, Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'User not found!'));
-
-        $this->checkAccess();
-
+    /**
+     * 
+     * @return type
+     */
+    public function getUser()
+    {
         return $this->user;
     }
 
-    public function checkAccess()
+    public function beforeAction($action)
     {
         if ($this->user->status == User::STATUS_NEED_APPROVAL) {
             throw new HttpException(404, Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'This user account is not approved yet!'));
         }
+
+        if ($this->user->status == User::STATUS_SOFT_DELETED) {
+            throw new HttpException(404, Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'This profile is no longer available!'));
+        }
+
         if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') && $this->user->visibility != User::VISIBILITY_ALL && Yii::$app->user->isGuest) {
             throw new HttpException(401, Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'You need to login to view this user profile!'));
         }
-    }
-
-    public function beforeAction($action) {
 
         $this->owner->prependPageTitle($this->user->displayName);
+        $this->owner->subLayout = "@humhub/modules/user/views/profile/_layout";
     }
 
 }

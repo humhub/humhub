@@ -53,6 +53,18 @@ class Image extends Widget
     public $linkOptions = [];
 
     /**
+     * @var string show tooltip with further information about the user (Only available when link is true)
+     * @since 1.3
+     */
+    public $showTooltip = false;
+
+    /**
+     * @var string the tooltip text (default is users display name)
+     * @since 1.3
+     */
+    public $tooltipText = null;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -99,6 +111,15 @@ class Image extends Widget
         $imageHtmlOptions['class'] .= " space-profile-image-" . $this->space->id . " img-rounded profile-user-photo";
         $imageHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px";
         $imageHtmlOptions['alt'] = Html::encode($this->space->name);
+
+
+        if ($this->showTooltip) {
+            $this->linkOptions['data-toggle'] = 'tooltip';
+            $this->linkOptions['data-placement'] = 'top';
+            $this->linkOptions['data-original-title'] = ($this->tooltipText) ? $this->tooltipText : Html::encode($this->space->name);
+            Html::addCssClass($this->linkOptions, 'tt');
+        }
+
 
         $defaultImage = (basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg' || basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg?cacheId=0') ? true : false;
 

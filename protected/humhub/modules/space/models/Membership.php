@@ -11,6 +11,7 @@ namespace humhub\modules\space\models;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use humhub\components\ActiveRecord;
 
 /**
  * This is the model class for table "space_membership".
@@ -32,7 +33,7 @@ use humhub\modules\space\models\Space;
  *
  * @property Space $space
  */
-class Membership extends \yii\db\ActiveRecord
+class Membership extends ActiveRecord
 {
 
     /**
@@ -155,7 +156,8 @@ class Membership extends \yii\db\ActiveRecord
     /**
      * Returns a list of all spaces of the given userId
      *
-     * @param integer $userId
+     * @param int $userId the user id or empty for current user
+     * @return Space[] the list of spaces
      */
     public static function GetUserSpaces($userId = "")
     {
@@ -233,7 +235,7 @@ class Membership extends \yii\db\ActiveRecord
         if (!$user) {
             $user = Yii::$app->user->getIdentity();
         }
-        
+
         $query = Membership::find();
 
         if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
@@ -243,8 +245,8 @@ class Membership extends \yii\db\ActiveRecord
         }
 
         $query->joinWith('space')->where(['space_membership.user_id' => $user->id]);
-        
-        if($spaceStatus) {
+
+        if ($spaceStatus) {
             $query->andWhere(['space.status' => $spaceStatus]);
         }
 
