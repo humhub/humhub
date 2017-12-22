@@ -1,36 +1,6 @@
 HumHub Change Log
 =================
 
-1.2.5  (Not released)
----------------------
-
-- Enh: Added BaseURL setting protocol scheme validation
-- Fix #2849: ActiveQueryContent doesn't find public profile content when guest access is enabled
-
-1.2.4  (December 13, 2017)
---------------------------
-
-- Enh: Translation updates
-- Fix: Added `ManageSpaces` and SystemAdmin check to `UserGroupAccessValidator`.
-- Fix: Only include content with `stream_channel = default` into spacechooser update count.
-- Enh: Add LinkedIn auth to login. (Felli)
-- Enh: Add Twitter auth to login. (Felli)
-- Enh: Add Instagram auth to login. (Felli)
-- Enh: Add Twitter, LinkedIn & Instagram auth to docs (Felli)
-- Enh: Make lucene search term limit configurable via `ZendLuceneSearch::$searchItemLimit`.
-- Fix: Empty stream message between friends
-- Enh: Improve composer-asset-plugin config (cebe)
-- Enh: Added a link to the permalink from the ago text (benklop)
-- Enh: Added directory group description (githubjeka)
-- Enh: Added configuration option to include user profile posts in dashboard without following
-- Fix: User profile sidebar disappered
-- Fix: Like notification for comments not working
-- Fix: Add example users to default Users group
-- Fix #2851: getting model attribute value using Html::getAttributeValue()
-- Fix #2844: Directory member search broken on page 2
-- Fix #2702: Disable content search for guest users due to space visibility
-- Fix #2806: Register process broken on some environments (Felli)
-
 1.2.3  (October 23, 2017)
 -------------------------
 

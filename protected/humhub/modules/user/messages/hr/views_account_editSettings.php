@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Registered users only' => 'Samo registrirani korisnici',
+  'Registered users only' => '',
   'Save' => 'Spremi',
-  'Visible for all (also unregistered users)' => 'Vidljivo za sve (i neregistrirane korisnike)',
+  'Visible for all (also unregistered users)' => '',
 );

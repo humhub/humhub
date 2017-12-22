@@ -59,11 +59,6 @@ class BasicSettingsForm extends \yii\base\Model
             ['defaultSpaceGuid', 'checkSpaceGuid'],
             [['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule'], 'in', 'range' => [0, 1]],
             [['defaultStreamSort'], 'in', 'range' => array_keys($this->getDefaultStreamSortOptions())],
-            [['baseUrl'], function ($attribute, $params, $validator) {
-                    if (substr($this->$attribute, 0, 7) !== 'http://' && substr($this->$attribute, 0, 8) !== 'https://') {
-                        $this->addError($attribute, Yii::t('AdminModule.base', 'Base URL needs to begin with http:// or https://'));
-                    }
-                }],
         ];
     }
 
@@ -79,7 +74,8 @@ class BasicSettingsForm extends \yii\base\Model
             'timeZone' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Server Timezone'),
             'defaultSpaceGuid' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default space'),
             'tour' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show introduction tour for new users'),
-            'dashboardShowProfilePostForm' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show user profile post form on dashboard'),
+            'dashboardShowProfilePostForm' => Yii::t('AdminModule.forms_BasicSettingsForm',
+                'Show user profile post form on dashboard'),
             'enableFriendshipModule' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Enable user friendship system'),
             'defaultStreamSort' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default stream content order'),
         ];

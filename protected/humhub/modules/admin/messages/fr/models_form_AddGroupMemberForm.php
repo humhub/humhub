@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Group not found!' => 'Groupe non trouvé.',
+  'Group not found!' => 'Groupe non trouvé !',
 );

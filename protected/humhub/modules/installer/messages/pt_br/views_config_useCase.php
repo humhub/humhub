@@ -2,7 +2,7 @@
 return array (
   '<strong>Configuration</strong>' => '<strong>Configuração</strong>',
   'My club' => 'Meu clube',
-  'My community' => 'Minha comunidade',
+  'My community' => 'Minha Comunidade',
   'My company (Social Intranet / Project management)' => 'Minha empresa (Intranet Social / Gerenciamento de Projetos)',
   'My educational institution (school, university)' => 'Minha instituição educacional (escola, universidade)',
   'Skip this step, I want to set up everything manually' => 'Ignorar esta etapa, eu quero configurar tudo manualmente',

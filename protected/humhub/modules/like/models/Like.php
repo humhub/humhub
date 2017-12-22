@@ -98,9 +98,8 @@ class Like extends ContentAddonActiveRecord
         \humhub\modules\like\activities\Liked::instance()->about($this)->save();
 
         if ($this->getSource() instanceof ContentOwner && $this->getSource()->content->createdBy !== null) {
-            // This is required for comments where $this->getSoruce()->createdBy contains the comment author.
-            $target = isset($this->getSource()->createdBy) ? $this->getSource()->createdBy : $this->getSource()->content->createdBy;
-            NewLike::instance()->from(Yii::$app->user->getIdentity())->about($this)->send($target);
+            // Send notification
+            NewLike::instance()->from(Yii::$app->user->getIdentity())->about($this)->send($this->getSource()->content->createdBy);
         }
 
         return parent::afterSave($insert, $changedAttributes);

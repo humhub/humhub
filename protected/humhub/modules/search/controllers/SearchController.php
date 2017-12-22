@@ -41,10 +41,13 @@ class SearchController extends Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    public function behaviors()
     {
         return [
-            ['login']
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'guestAllowedActions' => ['index']
+            ]
         ];
     }
 

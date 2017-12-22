@@ -14,9 +14,6 @@ use humhub\modules\directory\widgets\GroupUsers;
     <div class="panel-body">
         <?php foreach ($groups as $group) : ?>
             <h1><?= Html::encode($group->name); ?></h1>
-            <p class="hint-block">
-                <?= Html::encode($group->description) ?>
-            </p>
             <?= GroupUsers::widget(['group' => $group]); ?>
             <hr />
         <?php endforeach; ?>

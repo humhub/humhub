@@ -6,7 +6,7 @@ return array (
   'Country' => 'Paese',
   'Date' => 'Data',
   'Datetime' => 'Data/ora',
-  'Markdown' => 'Markdown',
+  'Markdown' => '',
   'Number' => 'Numero',
   'Select List' => 'Seleziona lista',
   'Text' => 'Testo',

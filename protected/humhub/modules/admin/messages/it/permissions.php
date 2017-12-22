@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Access Admin Information' => 'Accesso Amministrazione Informazioni',
-  'Can access the \'Administration -> Information\' section.' => 'Accesso consentito a sezione "Amministrazione -> Informazioni"',
-  'Can manage modules within the \'Administration ->  Modules\' section.' => 'Gestione consentita moduli tramite sezione "Amministrazione -> Moduli".',
+  'Access Admin Information' => '',
+  'Can access the \'Administration -> Information\' section.' => '',
+  'Can manage modules within the \'Administration ->  Modules\' section.' => '',
   'Can manage spaces within the \'Administration -> Spaces\' section (create/edit/delete).' => '',
   'Can manage user- space- and general-settings.' => '',
   'Can manage users and groups' => '',

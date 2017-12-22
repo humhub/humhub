@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Modules</strong> directory' => 'Répertoire des <strong>modules</strong>',
+  '<strong>Modules</strong> directory' => 'Répertoire des <strong>Modules</strong>',
   'Installed version:' => 'Version installée :',
   'Latest compatible Version:' => 'Dernière version compatible :',
   'Update' => 'Mettre à jour',

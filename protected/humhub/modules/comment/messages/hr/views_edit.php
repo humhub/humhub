@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Edit your comment...' => 'Uredi svoj komentar...',
+  'Edit your comment...' => '',
   'Save' => 'Spremi',
 );
