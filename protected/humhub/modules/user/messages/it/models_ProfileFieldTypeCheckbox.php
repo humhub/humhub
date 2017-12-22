@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Checkbox field options' => 'Opzioni campo di casella di controllo',
+  'Checkbox field options' => '',
   'Default value' => 'Valore predefinito',
 );

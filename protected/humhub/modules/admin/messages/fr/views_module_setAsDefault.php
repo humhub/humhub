@@ -1,6 +1,6 @@
 <?php
 return array (
-  '%moduleName% - Set as default module' => '%moduleName% est défini comme module par défaut',
+  '%moduleName% - Set as default module' => '%moduleName% est définit comme module par défaut',
   'Activated' => 'Activé',
   'Always activated' => 'Toujours activé',
   'Close' => 'Fermer',

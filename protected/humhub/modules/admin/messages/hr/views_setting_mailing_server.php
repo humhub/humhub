@@ -1,5 +1,5 @@
 <?php
 return array (
-  'SMTP Options' => 'SMTP Opcije',
+  'SMTP Options' => '',
   'Save' => 'Spremi',
 );

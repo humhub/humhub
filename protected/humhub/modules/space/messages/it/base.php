@@ -18,6 +18,6 @@ return array (
   'Public (Registered users only)' => 'Pubblico (Solo utenti registrati)',
   'Public (Visible)' => 'Pubblico (Visibile)',
   'Settings' => 'Impostazioni',
-  'Space' => 'Spazio',
+  'Space' => 'Space',
   'Visible for all (members and guests)' => 'Visibile a tutti (membri e ospiti)',
 );

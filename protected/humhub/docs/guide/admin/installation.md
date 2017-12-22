@@ -25,7 +25,7 @@ FLUSH PRIVILEGES;
 Download HumHub Core Files
 ---------------------------
 
-The easiest way to get HumHub, is the direct download of the complete package under [https://www.humhub.org/en/download](https://www.humhub.org/en/download).
+The easiest way to get HumHub, is the direct download of the complete package under [http://www.humhub.org/downloads](http://www.humhub.org/downloads).
 
 After the download completed, just extract the package into the htdocs folder of your webserver.
 

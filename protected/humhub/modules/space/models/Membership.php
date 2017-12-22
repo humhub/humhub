@@ -29,9 +29,7 @@ use humhub\components\ActiveRecord;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
- * @property integer $send_notifications
- *
- * @property Space $space
+ * @property integer send_notifications
  */
 class Membership extends ActiveRecord
 {
@@ -144,10 +142,10 @@ class Membership extends ActiveRecord
     /**
      * Counts all new Items for this membership
      */
-    public function countNewItems()
+    public function countNewItems($since = "")
     {
         $query = \humhub\modules\content\models\Content::find();
-        $query->where(['stream_channel' => 'default']);
+        $query->where(['!=', 'object_model', \humhub\modules\activity\models\Activity::class]);
         $query->andWhere(['contentcontainer_id' => $this->space->contentContainerRecord->id]);
         $query->andWhere(['>', 'created_at', $this->last_visit]);
         return $query->count();

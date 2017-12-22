@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -46,13 +46,10 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
 
         $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
 
-        $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::className()]);
-        $this->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::className()]);
-        $conditionSpace = '';
-        $conditionUser = '';
-
         if ($user !== null) {
             $this->leftJoin('space_membership', 'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId', [':userId' => $user->id, ':spaceClass' => Space::className()]);
+            $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::className()]);
+            $this->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::className()]);
 
             // Build Access Check based on Space Content Container
             $conditionSpace = 'space.id IS NOT NULL AND (';                                         // space content
@@ -69,17 +66,15 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
                 $conditionUser .= ' OR (content.visibility = 0 AND cff.id IS NOT NULL)';  // users are friends
             }
             $conditionUser .= ')';
-
+            
             // Created content of is always visible
             $conditionUser .= 'OR content.created_by=' . $user->id;
-        } elseif (Yii::$app->user->isGuestAccessEnabled()) {
-            $conditionSpace = 'space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1';
-            $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
-        } else {
-            $this->emulateExecution();
-        }
 
-        $this->andWhere("{$conditionSpace} OR {$conditionUser}");
+            $this->andWhere("{$conditionSpace} OR {$conditionUser}");
+        } else {
+            $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::className()]);
+            $this->andWhere('space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1');
+        }
 
 
 

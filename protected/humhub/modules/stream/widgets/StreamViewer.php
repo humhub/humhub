@@ -132,7 +132,7 @@ class StreamViewer extends Widget
 
         $contentId = (int) Yii::$app->request->getQueryParam('contentId');
 
-        return $this->render('@stream/widgets/views/stream', [
+        return $this->render('stream', [
                     'streamUrl' => $this->getStreamUrl(),
                     'showFilters' => $this->showFilters,
                     'filters' => $this->filters,

@@ -4,7 +4,7 @@ return array (
   'Color' => 'Kleur',
   'Created At' => 'Gemaakt op',
   'Created By' => 'Gemaakt door',
-  'Default content visibility' => 'Standaard zichtbaarheid inhoud',
+  'Default content visibility' => 'Standaard content zichtbaarheid',
   'Description' => 'Beschrijving',
   'Homepage' => 'Startpagina',
   'Homepage (Guests)' => 'Startpagina (Gasten)',

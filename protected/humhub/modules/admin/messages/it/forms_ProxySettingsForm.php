@@ -1,7 +1,7 @@
 <?php
 return array (
   'Enabled' => 'Abilitato',
-  'No Proxy Hosts' => 'Nessun Host Proxy',
+  'No Proxy Hosts' => '',
   'Password' => 'Password',
   'Port' => 'Porta',
   'Server' => 'Server',

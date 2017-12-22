@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Could not load category.' => 'Nije bilo moguće učitati kategoriju.',
-  'Delete' => 'Obriši',
+  'Could not load category.' => '',
+  'Delete' => '',
   'Save' => 'Spremi',
-  'You can only delete empty categories!' => 'Možete obrisati samo prazne kategorije!',
+  'You can only delete empty categories!' => '',
 );

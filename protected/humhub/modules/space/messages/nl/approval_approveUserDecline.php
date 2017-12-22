@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Send & decline' => 'Verzenden & afwijzen',
+  'Send & decline' => 'Verzend & afwijzen',
 );

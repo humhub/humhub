@@ -1,13 +1,13 @@
 <?php
 return array (
-  'Add Groups...' => 'Dodaj grupe...',
-  'Become this user' => 'Postani ovaj korisnik',
-  'Delete' => 'Obriši',
-  'Disabled' => 'Onemogućeno',
-  'Enabled' => 'Omogućeno',
+  'Add Groups...' => '',
+  'Become this user' => '',
+  'Delete' => '',
+  'Disabled' => '',
+  'Enabled' => '',
   'Save' => 'Spremi',
-  'Select Groups' => 'Odaberi grupe',
-  'Unapproved' => 'Neodobreno',
-  'User not found!' => 'Korisnik nije pronađen!',
-  'You cannot delete yourself!' => 'Ne možete obrisati sami sebe!',
+  'Select Groups' => '',
+  'Unapproved' => '',
+  'User not found!' => '',
+  'You cannot delete yourself!' => '',
 );
