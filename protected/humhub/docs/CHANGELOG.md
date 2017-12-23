@@ -9,6 +9,7 @@ HumHub Change Log
 - Enh: Fixed username alignment in comments (@githubjeka)
 - Enh: More readable WallEntryAddon links (@githubjeka)
 - Fix: Documentation grammar fixes (@Felli)
+- Fix: Let's Encrypt ACME Error (@Felli)
 
 1.2.4  (December 13, 2017)
 --------------------------
