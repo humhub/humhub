@@ -55,6 +55,14 @@ class ContentContainerController extends Controller
     public $contentContainer = null;
 
     /**
+     * Limit this controller only for usage on given contentcontainer types (e.g. Space).
+     * 
+     * @since 1.3
+     * @var array|null an array of valid content container classes. if null all container types (User & Space) are allowed.
+     */
+    public $validContentContainerClasses = null;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -72,6 +80,12 @@ class ContentContainerController extends Controller
 
         if ($this->requireContainer && $this->contentContainer === null) {
             throw new HttpException(404, Yii::t('base', 'Could not find requested page.'));
+        }
+
+        if ($this->validContentContainerClasses !== null) {
+            if ($this->contentContainer === null || !in_array($this->contentContainer->className(), $this->validContentContainerClasses)) {
+                throw new HttpException(400);
+            }
         }
 
         if ($this->contentContainer !== null && $this->contentContainer->controllerBehavior) {
