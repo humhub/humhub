@@ -129,7 +129,7 @@ class Image extends Widget
             $imageHtmlOptions['class'] .= " hidden";
         }
 
-        return $this->render('image', [
+        return $this->render('@space/widgets/views/image', [
                     'space' => $this->space,
                     'acronym' => $this->getAcronym(),
                     'link' => $this->link,
