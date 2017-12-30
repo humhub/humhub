@@ -87,10 +87,6 @@ class Module extends \humhub\components\Module
             return Yii::$app->db->getIsActive();
         } catch (Exception $e) {
             
-        } catch (Exception $e) {
-            
-        } catch (\PDOException $e) {
-            
         }
 
         return false;
