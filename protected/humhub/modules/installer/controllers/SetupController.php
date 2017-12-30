@@ -82,12 +82,13 @@ class SetupController extends Controller
                 'charset' => 'utf8',
             ];
 
-
-            Yii::$app->set('db', $dbConfig);
-
             try {
+
+                /** @var yii\db\Connection $temporaryConnection */
+                $temporaryConnection = Yii::createObject($dbConfig);
+
                 // Check DB Connection
-                Yii::$app->db->open();
+                $temporaryConnection->open();
 
                 // Write Config
                 $config['components']['db'] = $dbConfig;
