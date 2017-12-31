@@ -20,13 +20,13 @@ use yii\helpers\Url;
     <br>
 
     <?= Html::a(
-            Yii::t('AdminModule.views_approval_resend', 'Send invitation email'),
-            Url::to(['/admin/pending-registrations/resend', 'id' => $model->id]),
-            ['class' => 'btn btn-danger', 'data-method' => 'POST']
+        Yii::t('AdminModule.views_approval_resend', 'Send invitation email'),
+        Url::to(['/admin/pending-registrations/resend', 'id' => $model->id]),
+        ['class' => 'btn btn-danger', 'data-method' => 'POST']
     ); ?>
     <?= Html::a(
-            Yii::t('AdminModule.views_approval_resend', 'Cancel'),
-            Url::to(['/admin/pending-registrations']),
-            ['class' => 'btn btn-primary pull-right']
+        Yii::t('AdminModule.views_approval_resend', 'Cancel'),
+        Url::to(['/admin/pending-registrations']),
+        ['class' => 'btn btn-primary pull-right']
     ); ?>
 </div>
