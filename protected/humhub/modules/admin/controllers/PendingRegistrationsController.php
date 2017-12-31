@@ -6,15 +6,7 @@
  *
  */
 
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 31.07.2017
- * Time: 13:25
- */
-
 namespace humhub\modules\admin\controllers;
-
 
 use DateTime;
 use humhub\components\ActiveRecord;
@@ -28,14 +20,18 @@ use PHPExcel_Cell;
 use PHPExcel_IOFactory;
 use PHPExcel_Shared_Date;
 use PHPExcel_Style_NumberFormat;
-use PHPExcel_Writer_Excel2007;
-use function PHPSTORM_META\type;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\HttpException;
 
 class PendingRegistrationsController extends Controller
 {
+
+    /**
+     * Initializes the object.
+     * This method is invoked at the end of the constructor after the object is initialized with the
+     * given configuration.
+     */
     public function init()
     {
         $this->subLayout = '@admin/views/layouts/user';
@@ -44,7 +40,10 @@ class PendingRegistrationsController extends Controller
     }
 
     /**
-     * @inheritdoc
+     * Returns access rules for the standard access control behavior.
+     *
+     * @see AccessControl
+     * @return array the access permissions
      */
     public function getAccessRules()
     {
@@ -58,15 +57,22 @@ class PendingRegistrationsController extends Controller
         ];
     }
 
+
+    /**
+     * Render PendingRegistrations
+     *
+     * @param bool $export
+     * @param null $format
+     * @return string
+     */
     public function actionIndex($export = false, $format = null)
     {
         $searchModel = new PendingRegistrationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        if($export) {
+        if ($export) {
             return $this->createCVS($dataProvider, $searchModel, $format);
         }
-
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
@@ -78,23 +84,28 @@ class PendingRegistrationsController extends Controller
     /**
      * Resend a invite
      *
+     * @param integer $id
      * @return string
      * @throws HttpException
      */
-    public function actionResend()
+    public function actionResend($id)
     {
-        $id = (int) Yii::$app->request->get('id');
-
         $invite = Invite::findOne(['id' => $id]);
         if ($invite === null) {
-            throw new HttpException(404, Yii::t('AdminModule.controllers_PendingRegistrationsController', 'Invite not found!'));
+            throw new HttpException(404, Yii::t(
+                'AdminModule.controllers_PendingRegistrationsController',
+                'Invite not found!'
+            ));
         }
 
         if (Yii::$app->request->isPost) {
             $invite->sendInviteMail();
             $invite->save();
             $invite->refresh();
-            $this->view->success(Yii::t('AdminModule.controllers_PendingRegistrationsController', 'Resend invitation email'));
+            $this->view->success(Yii::t(
+                'AdminModule.controllers_PendingRegistrationsController',
+                'Resend invitation email'
+            ));
         }
 
         return $this->render('resend', ['model' => $invite]);
