@@ -22,6 +22,7 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\PendingRegistrationSearch;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\user\models\Invite;
 use PHPExcel;
 use PHPExcel_Cell;
 use PHPExcel_IOFactory;
@@ -31,6 +32,7 @@ use PHPExcel_Writer_Excel2007;
 use function PHPSTORM_META\type;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\web\HttpException;
 
 class PendingRegistrationsController extends Controller
 {
@@ -71,6 +73,31 @@ class PendingRegistrationsController extends Controller
             'searchModel' => $searchModel,
             'types' => $this->getTypeMapping()
         ]);
+    }
+
+    /**
+     * Resend a invite
+     *
+     * @return string
+     * @throws HttpException
+     */
+    public function actionResend()
+    {
+        $id = (int) Yii::$app->request->get('id');
+
+        $invite = Invite::findOne(['id' => $id]);
+        if ($invite === null) {
+            throw new HttpException(404, Yii::t('AdminModule.controllers_PendingRegistrationsController', 'Invite not found!'));
+        }
+
+        if (Yii::$app->request->isPost) {
+            $invite->sendInviteMail();
+            $invite->save();
+            $invite->refresh();
+            $this->view->success(Yii::t('AdminModule.controllers_PendingRegistrationsController', 'Resend invitation email'));
+        }
+
+        return $this->render('resend', ['model' => $invite]);
     }
 
     public function getTypeMapping()
