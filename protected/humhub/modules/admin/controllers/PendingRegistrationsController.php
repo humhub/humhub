@@ -19,6 +19,7 @@ use PHPExcel_Exception;
 use PHPExcel_IOFactory;
 use PHPExcel_Shared_Date;
 use PHPExcel_Style_NumberFormat;
+use PHPExcel_Worksheet;
 use Yii;
 use yii\helpers\Url;
 use yii\web\HttpException;
@@ -28,6 +29,14 @@ class PendingRegistrationsController extends Controller
 
     const EXPORT_CSV = 'csv';
     const EXPORT_XLSX = 'xsls';
+
+    const EXPORT_COLUMNS = [
+        'email',
+        'originator.username',
+        'language',
+        'source',
+        'created_at',
+    ];
 
     /**
      * Initializes the object.
@@ -104,19 +113,12 @@ class PendingRegistrationsController extends Controller
         $searchModel = new PendingRegistrationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $columns = [
-            'email',
-            'originator.username',
-            'language',
-            'source',
-            'created_at',
-        ];
-
         $title = Yii::t(
             'AdminModule.base',
             'Pending user registrations'
         );
 
+        /** @var PHPExcel $file */
         $file = new PHPExcel();
         $file->getProperties()
             ->setCreator('HumHub')
@@ -124,69 +126,33 @@ class PendingRegistrationsController extends Controller
             ->setSubject($title)
             ->setDescription($title);
 
+        /** @var PHPExcel_Worksheet $worksheet */
         $worksheet = $file->getActiveSheet();
-        $worksheet->setTitle($title);
 
         // Row counter
-        $row = 1;
+        $rowCount = 1;
 
         // Set format for Date fields
         $formatDate = $format === self::EXPORT_CSV
-            ? Yii::$app->formatter->getDateTimePattern
+            ? Yii::$app->formatter->getDateTimePattern()
             : PHPExcel_Style_NumberFormat::FORMAT_DATE_DATETIME;
 
         // Build Header
-        for ($i = 0; $i < count($columns); $i++) {
-            $worksheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($i))->setWidth(30);
-            $worksheet->setCellValueByColumnAndRow($i, $row, $searchModel->getAttributeLabel($columns[$i]));
-        }
+        $this->buildCsvHeaderRow($worksheet, $rowCount, $searchModel);
 
         // Build Rows
         foreach ($dataProvider->query->all() as $record) {
-            $row++; // Increase counter
-
-            for ($i = 0; $i < count($columns); $i++) {
-                $name = $columns[$i];
-                $value = $record->{$name};
-
-                if ($name === 'source') {
-                    $typeMapping = $this->typeMapping();
-                    $value = isset($typeMapping[$value]) ? $typeMapping[$value] : $value;
-                }
-
-                if ($name === 'created_at') {
-                    $worksheet->getStyleByColumnAndRow($i, $row)->getNumberFormat()->setFormatCode($formatDate);
-                    $value = PHPExcel_Shared_Date::PHPToExcel(new \DateTime($value));
-                }
-
-                $worksheet->setCellValueByColumnAndRow($i, $row, $value);
-            }
+            $rowCount++;
+            $this->buildCsvRow($rowCount, $record, $worksheet, $formatDate);
         }
 
         $filename = 'pur_export_' . time();
 
         if ($format === self::EXPORT_CSV) {
-
-            /** @var \PHPExcel_Writer_CSV $writer */
-            $writer = PHPExcel_IOFactory::createWriter($file, 'CSV');
-            $writer->setDelimiter(';');
-
-            header('Content-Type: application/csv');
-            header('Content-Disposition: attachment;filename="' . $filename . '.csv"');
-            header('Cache-Control: max-age=0');
-
+            $this->exportAsCsv($filename, $file);
         } else {
-
-            /** @var \PHPExcel_Writer_Excel2007 $writer */
-            $writer = PHPExcel_IOFactory::createWriter($file, 'Excel2007');
-
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
-            header('Cache-Control: max-age=0');
-
+            $this->exportAsXlsx($filename, $file);
         }
-
-        $writer->save('php://output');
     }
 
     /**
@@ -232,4 +198,85 @@ class PendingRegistrationsController extends Controller
         ];
     }
 
+    /**
+     * Export the file as Csv
+     *
+     * @param $filename
+     * @param $file
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     */
+    private function exportAsCsv($filename, $file)
+    {
+        header('Content-Type: application/csv');
+        header('Content-Disposition: attachment;filename="' . $filename . '.csv"');
+        header('Cache-Control: max-age=0');
+
+        /** @var \PHPExcel_Writer_CSV $writer */
+        $writer = PHPExcel_IOFactory::createWriter($file, 'CSV');
+        $writer->setDelimiter(';');
+        $writer->save('php://output');
+    }
+
+    /**
+     * Export the file as Xlsx
+     *
+     * @param $filename
+     * @param $file
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     */
+    private function exportAsXlsx($filename, $file)
+    {
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        /** @var \PHPExcel_Writer_Excel2007 $writer */
+        $writer = PHPExcel_IOFactory::createWriter($file, 'Excel2007');
+        $writer->save('php://output');
+    }
+
+    /**
+     * Build a row for csv document
+     *
+     * @param integer $row
+     * @param PendingRegistrationSearch $record
+     * @param PHPExcel_Worksheet $worksheet
+     * @param string $formatDate
+     */
+    private function buildCsvRow($row, $record, $worksheet, $formatDate)
+    {
+        for ($i = 0; $i < count(self::EXPORT_COLUMNS); $i++) {
+            $name = self::EXPORT_COLUMNS[$i];
+            $value = $record->{$name};
+
+            if ($name === 'source') {
+                $typeMapping = $this->typeMapping();
+                $value = isset($typeMapping[$value]) ? $typeMapping[$value] : $value;
+            }
+
+            if ($name === 'created_at') {
+                $worksheet->getStyleByColumnAndRow($i, $row)->getNumberFormat()->setFormatCode($formatDate);
+                $value = PHPExcel_Shared_Date::PHPToExcel(new \DateTime($value));
+            }
+
+            $worksheet->setCellValueByColumnAndRow($i, $row, $value);
+        }
+    }
+
+    /**
+     * Build header row for csv document
+     *
+     * @param PHPExcel_Worksheet $worksheet
+     * @param integer $row
+     * @param PendingRegistrationSearch $searchModel
+     */
+    private function buildCsvHeaderRow($worksheet, $row, $searchModel)
+    {
+        for ($i = 0; $i < count(self::EXPORT_COLUMNS); $i++) {
+            $worksheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($i))->setWidth(30);
+            $worksheet->setCellValueByColumnAndRow($i, $row, $searchModel->getAttributeLabel(self::EXPORT_COLUMNS[$i]));
+        }
+    }
 }
