@@ -29,6 +29,7 @@ class PendingRegistrationsController extends Controller
 
     const EXPORT_CSV = 'csv';
     const EXPORT_XLSX = 'xsls';
+    const EXPORT_PREFIX = 'pur_export';
 
     const EXPORT_COLUMNS = [
         'email',
@@ -113,18 +114,8 @@ class PendingRegistrationsController extends Controller
         $searchModel = new PendingRegistrationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $title = Yii::t(
-            'AdminModule.base',
-            'Pending user registrations'
-        );
-
         /** @var PHPExcel $file */
-        $file = new PHPExcel();
-        $file->getProperties()
-            ->setCreator('HumHub')
-            ->setTitle($title)
-            ->setSubject($title)
-            ->setDescription($title);
+        $file = $this->createCsvFile();
 
         /** @var PHPExcel_Worksheet $worksheet */
         $worksheet = $file->getActiveSheet();
@@ -132,13 +123,13 @@ class PendingRegistrationsController extends Controller
         // Row counter
         $rowCount = 1;
 
+        // Build Header
+        $this->buildCsvHeaderRow($worksheet, $rowCount, $searchModel);
+
         // Set format for Date fields
         $formatDate = $format === self::EXPORT_CSV
             ? Yii::$app->formatter->getDateTimePattern()
             : PHPExcel_Style_NumberFormat::FORMAT_DATE_DATETIME;
-
-        // Build Header
-        $this->buildCsvHeaderRow($worksheet, $rowCount, $searchModel);
 
         // Build Rows
         foreach ($dataProvider->query->all() as $record) {
@@ -146,12 +137,10 @@ class PendingRegistrationsController extends Controller
             $this->buildCsvRow($rowCount, $record, $worksheet, $formatDate);
         }
 
-        $filename = 'pur_export_' . time();
-
         if ($format === self::EXPORT_CSV) {
-            $this->exportAsCsv($filename, $file);
+            $this->exportAsCsv($file);
         } else {
-            $this->exportAsXlsx($filename, $file);
+            $this->exportAsXlsx($file);
         }
     }
 
@@ -201,15 +190,14 @@ class PendingRegistrationsController extends Controller
     /**
      * Export the file as Csv
      *
-     * @param $filename
-     * @param $file
+     * @param PHPExcel $file
      * @throws \PHPExcel_Reader_Exception
      * @throws \PHPExcel_Writer_Exception
      */
-    private function exportAsCsv($filename, $file)
+    private function exportAsCsv($file)
     {
         header('Content-Type: application/csv');
-        header('Content-Disposition: attachment;filename="' . $filename . '.csv"');
+        header('Content-Disposition: attachment;filename="' . self::EXPORT_PREFIX . '_' . time() . '.csv"');
         header('Cache-Control: max-age=0');
 
         /** @var \PHPExcel_Writer_CSV $writer */
@@ -221,15 +209,14 @@ class PendingRegistrationsController extends Controller
     /**
      * Export the file as Xlsx
      *
-     * @param $filename
-     * @param $file
+     * @param PHPExcel $file
      * @throws \PHPExcel_Reader_Exception
      * @throws \PHPExcel_Writer_Exception
      */
-    private function exportAsXlsx($filename, $file)
+    private function exportAsXlsx($file)
     {
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
+        header('Content-Disposition: attachment;filename="' . self::EXPORT_PREFIX . '_' . time() . '.xlsx"');
         header('Cache-Control: max-age=0');
 
         /** @var \PHPExcel_Writer_Excel2007 $writer */
@@ -278,5 +265,27 @@ class PendingRegistrationsController extends Controller
             $worksheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($i))->setWidth(30);
             $worksheet->setCellValueByColumnAndRow($i, $row, $searchModel->getAttributeLabel(self::EXPORT_COLUMNS[$i]));
         }
+    }
+
+    /**
+     * Return new PHPExcel file
+     *
+     * @return PHPExcel
+     */
+    private function createCsvFile()
+    {
+        $title = Yii::t(
+            'AdminModule.base',
+            'Pending user registrations'
+        );
+
+        /** @var PHPExcel $file */
+        $file = new PHPExcel();
+        $file->getProperties()
+            ->setCreator('HumHub')
+            ->setTitle($title)
+            ->setSubject($title)
+            ->setDescription($title);
+        return $file;
     }
 }
