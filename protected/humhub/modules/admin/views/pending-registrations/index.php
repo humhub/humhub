@@ -22,11 +22,12 @@ use yii\helpers\Url;
             </ul>
     </div>
 
-    <?=
-    GridView::widget([
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => ['email',
+        'columns' =>
+            [
+            'email',
             'originator.username',
             'language',
             'created_at',
@@ -41,8 +42,19 @@ use yii\helpers\Url;
                     }
                     return Html::encode($data->source);
                 },
-            ],]
-    ]);
-    ?>
+            ],
+            [
+                'header' => Yii::t('AdminModule.views_user_index', 'Actions'),
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{resend}',
+                'options' => ['style' => 'width:80px; min-width:80px;'],
+                'buttons' => [
+                    'resend' => function($url, $model) {
+                        return Html::a('<i class="fa fa-envelope"></i>', Url::toRoute(['resend', 'id' => $model->id]), ['class' => 'btn btn-primary btn-xs tt']);
+                    },
+                ],
+            ],
+        ]
+    ]); ?>
 
 </div>
