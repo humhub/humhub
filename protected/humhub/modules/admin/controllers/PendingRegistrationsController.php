@@ -8,8 +8,6 @@
 
 namespace humhub\modules\admin\controllers;
 
-use DateTime;
-use humhub\components\ActiveRecord;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\PendingRegistrationSearch;
 use humhub\modules\admin\permissions\ManageGroups;
@@ -17,15 +15,19 @@ use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\Invite;
 use PHPExcel;
 use PHPExcel_Cell;
+use PHPExcel_Exception;
 use PHPExcel_IOFactory;
 use PHPExcel_Shared_Date;
 use PHPExcel_Style_NumberFormat;
 use Yii;
-use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\HttpException;
 
 class PendingRegistrationsController extends Controller
 {
+
+    const EXPORT_CSV = 'csv';
+    const EXPORT_XLSX = 'xsls';
 
     /**
      * Initializes the object.
@@ -70,15 +72,121 @@ class PendingRegistrationsController extends Controller
         $searchModel = new PendingRegistrationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        if ($export) {
-            return $this->createCVS($dataProvider, $searchModel, $format);
-        }
+        $urlExportCsv = Url::to([
+            'export',
+            'format' => self::EXPORT_CSV,
+            'PendingRegistrationSearch' => Yii::$app->request->get('PendingRegistrationSearch')
+        ]);
+
+        $urlExportXlsx = Url::to([
+            'export',
+            'format' => self::EXPORT_XLSX,
+            'PendingRegistrationSearch' => Yii::$app->request->get('PendingRegistrationSearch')
+        ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
-            'types' => $this->getTypeMapping()
+            'urlExportCsv' => $urlExportCsv,
+            'urlExportXlsx' => $urlExportXlsx,
+            'types' => $this->typeMapping(),
         ]);
+    }
+
+    /**
+     * Export PendingRegistrations
+     *
+     * @param string $format
+     * @throws PHPExcel_Exception
+     */
+    public function actionExport($format)
+    {
+        $searchModel = new PendingRegistrationSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $columns = [
+            'email',
+            'originator.username',
+            'language',
+            'source',
+            'created_at',
+        ];
+
+        $title = Yii::t(
+            'AdminModule.base',
+            'Pending user registrations'
+        );
+
+        $file = new PHPExcel();
+        $file->getProperties()
+            ->setCreator('HumHub')
+            ->setTitle($title)
+            ->setSubject($title)
+            ->setDescription($title);
+
+        $worksheet = $file->getActiveSheet();
+        $worksheet->setTitle($title);
+
+        // Row counter
+        $row = 1;
+
+        // Set format for Date fields
+        $formatDate = $format === self::EXPORT_CSV
+            ? Yii::$app->formatter->getDateTimePattern
+            : PHPExcel_Style_NumberFormat::FORMAT_DATE_DATETIME;
+
+        // Build Header
+        for ($i = 0; $i < count($columns); $i++) {
+            $worksheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($i))->setWidth(30);
+            $worksheet->setCellValueByColumnAndRow($i, $row, $searchModel->getAttributeLabel($columns[$i]));
+        }
+
+        // Build Rows
+        foreach ($dataProvider->query->all() as $record) {
+            $row++; // Increase counter
+
+            for ($i = 0; $i < count($columns); $i++) {
+                $name = $columns[$i];
+                $value = $record->{$name};
+
+                if ($name === 'source') {
+                    $typeMapping = $this->typeMapping();
+                    $value = isset($typeMapping[$value]) ? $typeMapping[$value] : $value;
+                }
+
+                if ($name === 'created_at') {
+                    $worksheet->getStyleByColumnAndRow($i, $row)->getNumberFormat()->setFormatCode($formatDate);
+                    $value = PHPExcel_Shared_Date::PHPToExcel(new \DateTime($value));
+                }
+
+                $worksheet->setCellValueByColumnAndRow($i, $row, $value);
+            }
+        }
+
+        $filename = 'pur_export_' . time();
+
+        if ($format === self::EXPORT_CSV) {
+
+            /** @var \PHPExcel_Writer_CSV $writer */
+            $writer = PHPExcel_IOFactory::createWriter($file, 'CSV');
+            $writer->setDelimiter(';');
+
+            header('Content-Type: application/csv');
+            header('Content-Disposition: attachment;filename="' . $filename . '.csv"');
+            header('Cache-Control: max-age=0');
+
+        } else {
+
+            /** @var \PHPExcel_Writer_Excel2007 $writer */
+            $writer = PHPExcel_IOFactory::createWriter($file, 'Excel2007');
+
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
+            header('Cache-Control: max-age=0');
+
+        }
+
+        $writer->save('php://output');
     }
 
     /**
@@ -111,7 +219,12 @@ class PendingRegistrationsController extends Controller
         return $this->render('resend', ['model' => $invite]);
     }
 
-    public function getTypeMapping()
+    /**
+     * Return type mapping
+     *
+     * @return array
+     */
+    private function typeMapping()
     {
         return [
             PendingRegistrationSearch::SOURCE_INVITE => Yii::t('AdminModule.base', 'Invite'),
@@ -119,78 +232,4 @@ class PendingRegistrationsController extends Controller
         ];
     }
 
-    public function createCVS($dataProvider, ActiveRecord $model, $format = null)
-    {
-        $columns = [
-            ['email'],
-            ['originator.username'],
-            ['language'],
-            ['source'],
-            ['created_at', 'type' => 'datetime'],
-        ];
-
-        $file = new PHPExcel();
-        $file->getProperties()->setCreator('HumHub');
-        $file->getProperties()->setTitle(Yii::t('AdminModule.base', 'Pending user registrations'));
-        $file->getProperties()->setSubject(Yii::t('AdminModule.base', 'Pending user registrations'));
-        $file->getProperties()->setDescription(Yii::t('AdminModule.base', 'Pending user registrations'));
-
-        $file->setActiveSheetIndex(0);
-        $worksheet = $file->getActiveSheet();
-
-        $worksheet->setTitle(Yii::t('AdminModule.base', 'Pending user registrations'));
-
-        // Creat header
-        $row = 1;
-        $lastColumn = count($columns);
-        for ($column = 0; $column != $lastColumn; $column++) {
-            $columnKey = PHPExcel_Cell::stringFromColumnIndex($column);
-            $worksheet->getColumnDimension($columnKey)->setWidth(30);
-            $worksheet->setCellValueByColumnAndRow($column, $row, $model->getAttributeLabel($columns[$column][0]));
-        }
-
-        $row++;
-
-        // Fill content header
-        foreach($dataProvider->query->all() as $record) {
-            for ($column = 0; $column != $lastColumn; $column++) {
-                $attribute = $columns[$column][0];
-                $value = ArrayHelper::getValue($record,$attribute);
-
-                if(isset($columns[$column]['type']) && $columns[$column]['type'] === 'datetime') {
-                    $value = PHPExcel_Shared_Date::PHPToExcel(new DateTime($value));
-                    if($format === 'CSV') {
-                        $worksheet->getStyleByColumnAndRow($column, $row)->getNumberFormat()->setFormatCode(Yii::$app->formatter->getDateTimePattern());
-                    } else {
-                        $worksheet->getStyleByColumnAndRow($column, $row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_DATETIME);
-                    }
-                }
-
-                if($attribute === 'source') {
-                    $types = $this->getTypeMapping();
-                    $value = isset($types[$value]) ? $types[$value] : $value;
-                }
-
-                $worksheet->setCellValueByColumnAndRow($column, $row, $value);
-            }
-            $row++;
-        }
-
-        $filePrefix = 'pur_export_'.time();
-        if($format === 'CSV') {
-            $writer = PHPExcel_IOFactory::createWriter($file, 'CSV');
-            $writer->setDelimiter(';');
-
-            header('Content-Type: application/csv');
-            header('Content-Disposition: attachment;filename="'.$filePrefix.'.csv"');
-            header('Cache-Control: max-age=0');
-        } else {
-            $writer = PHPExcel_IOFactory::createWriter($file, 'Excel2007');
-            header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment; filename="'.$filePrefix.'.xlsx"');
-            header('Cache-Control: max-age=0');
-        }
-
-        $writer->save('php://output');
-    }
 }

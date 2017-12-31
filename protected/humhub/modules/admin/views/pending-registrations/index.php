@@ -25,10 +25,10 @@ use yii\helpers\Url;
             <i class="fa fa-download"></i> <?= Yii::t('base', 'Export')?> <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li><?= Button::asLink('csv', Url::current(['export' => '1', 'format' => 'CSV']))
-                    ->pjax(false)->icon('fa-file-code-o')->sm() ?></li>
-            <li><?= Button::asLink('xlsx', Url::current(['export' => '1', 'format' => 'XLSX']))
-                    ->pjax(false)->icon('fa-file-excel-o')->sm() ?></li>
+            <li><?= Button::asLink('csv', $urlExportCsv)->pjax(false)
+                    ->icon('fa-file-code-o')->sm() ?></li>
+            <li><?= Button::asLink('xlsx', $urlExportXlsx)->pjax(false)
+                    ->icon('fa-file-excel-o')->sm() ?></li>
         </ul>
     </div>
 
@@ -59,7 +59,7 @@ use yii\helpers\Url;
                         'resend' => function ($url, $model, $key) {
                             return Html::a(
                                 '<i class="fa fa-envelope"></i>',
-                                Url::toRoute(['resend', 'id' => $model->id]),
+                                Url::to(['resend', 'id' => $model->id]),
                                 ['class' => 'btn btn-primary btn-xs tt']
                             );
                         },
