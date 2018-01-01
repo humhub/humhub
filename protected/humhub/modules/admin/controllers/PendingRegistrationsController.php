@@ -40,9 +40,7 @@ class PendingRegistrationsController extends Controller
     ];
 
     /**
-     * Initializes the object.
-     * This method is invoked at the end of the constructor after the object is initialized with the
-     * given configuration.
+     * @inheritdoc
      */
     public function init()
     {
@@ -52,10 +50,7 @@ class PendingRegistrationsController extends Controller
     }
 
     /**
-     * Returns access rules for the standard access control behavior.
-     *
-     * @see AccessControl
-     * @return array the access permissions
+     * @inheritdoc
      */
     public function getAccessRules()
     {
