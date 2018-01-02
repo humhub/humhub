@@ -92,7 +92,7 @@ class Birthday extends Date
         $rules[] = [$this->profileField->internal_name . "_hide_year", 'in', 'range' => [0, 1]];
         $rules[] = [$this->profileField->internal_name,
             \humhub\libs\DbDateValidator::className(),
-            'format' => Yii::$app->formatter->dateInputFormat,
+            'format' => 'medium',
             'convertToFormat' => null,
             'max' => time(),
             'tooBig' => Yii::t('base', 'The date has to be in the past.')
@@ -107,7 +107,7 @@ class Birthday extends Date
     {
         return [$this->profileField->internal_name => [
                 'type' => 'datetime',
-                'format' => Yii::$app->formatter->dateInputFormat,
+                'format' => 'medium',
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable),
                 'yearRange' => (date('Y') - 100) . ":" . date('Y')
