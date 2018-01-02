@@ -20,5 +20,6 @@ HumHub Change Log - v1.3-dev Branch
 - Enh: Added Push live module driver using Redis and Node.JS
 - Enh: Added tooltip option to space Image widget.
 - Enh: Added option ContentContainerController to restrict container type
+- Enh: Ensure valid permalinks when URL rewriting is enabled
 
 

@@ -11,6 +11,10 @@ RewriteEngine on
 # prevent httpd from serving dotfiles (.htaccess, .svn, .git, etc.) - except let's encrypt challenge
 RedirectMatch 403 ^/?\.(?!/well-known/acme-challenge/[\w-]{43}$)
 
+# ensure permalink when url rewriting was enabled (index.php?r=content/perma&id=6 => /content/perma/?id=6
+RewriteCond %{QUERY_STRING} ^r=content(/|%2)perma&id=([0-9]*)$
+RewriteRule ^index\.php$ %{REQUEST_URI}/content/perma/?id=%2 [R=302,L]
+
 RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
 RewriteRule ^(.*) - [E=BASE:%1]
 
