@@ -123,7 +123,7 @@ class Birthday extends BaseType
         $rules[] = [
             $this->profileField->internal_name . '_hide_year',
             'in',
-            'range' => [0, 1]
+            'range' => [self::HIDE_AGE_NO, self::HIDE_AGE_YES]
         ];
 
         return parent::getFieldRules($rules);
