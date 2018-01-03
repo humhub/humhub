@@ -140,7 +140,7 @@ class Birthday extends BaseType
                 'format' => 'medium',
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable),
-                'yearRange' => (date('Y') - 100) . ":" . date('Y'),
+                'yearRange' => (date('Y') - 100) . ':' . date('Y'),
                 'dateTimePickerOptions' => array(
                     'pickTime' => false
                 )
@@ -164,7 +164,7 @@ class Birthday extends BaseType
             ),
             $this->profileField->internal_name . '_hide_year' => Yii::t(
                 $this->profileField->getTranslationCategory(),
-                "Hide year in profile"
+                'Hide year in profile'
             ),
         ];
     }
@@ -211,7 +211,7 @@ class Birthday extends BaseType
             array('%y' => $birthdayDate->diff(new \DateTime())->y)
         );
 
-        return Yii::$app->formatter->asDate($birthdayDate, 'long') . " (" . $ageInYears . ")";
+        return Yii::$app->formatter->asDate($birthdayDate, 'long') . ' (' . $ageInYears . ')';
     }
 
     /**
