@@ -42,14 +42,14 @@ class Birthday extends BaseType
     public function rules()
     {
         return [
-            [['defaultHideAge'], 'in', 'range' => array(self::DEFAULT_HIDE_AGE_NO, self::DEFAULT_HIDE_AGE_YES)]
+            [['defaultHideAge'], 'in', 'range' => [self::DEFAULT_HIDE_AGE_NO, self::DEFAULT_HIDE_AGE_YES]]
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function getFormDefinition($definition = array())
+    public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
             get_class($this) => [
@@ -107,7 +107,7 @@ class Birthday extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldRules($rules = array())
+    public function getFieldRules($rules = [])
     {
         // Add validation for birthdate
         $rules[] = [
@@ -141,9 +141,9 @@ class Birthday extends BaseType
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable),
                 'yearRange' => (date('Y') - 100) . ':' . date('Y'),
-                'dateTimePickerOptions' => array(
+                'dateTimePickerOptions' => [
                     'pickTime' => false
-                )
+                ]
             ],
             $this->profileField->internal_name . '_hide_year' => [
                 'type' => 'checkbox',
@@ -208,7 +208,7 @@ class Birthday extends BaseType
         $ageInYears = Yii::t(
             'UserModule.models_ProfileFieldTypeBirthday',
             '%y Years',
-            array('%y' => $birthdayDate->diff(new \DateTime())->y)
+            ['%y' => $birthdayDate->diff(new \DateTime())->y]
         );
 
         return Yii::$app->formatter->asDate($birthdayDate, 'long') . ' (' . $ageInYears . ')';
