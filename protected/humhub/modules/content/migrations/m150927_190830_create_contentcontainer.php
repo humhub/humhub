@@ -16,6 +16,12 @@ class m150927_190830_create_contentcontainer extends Migration
             'owner_user_id' => Schema::TYPE_INTEGER,
             'wall_id' => Schema::TYPE_INTEGER,
                 ), '');
+        
+
+        # 1.3 - prepare utf8_mb4 support
+        $this->alterColumn('contentcontainer', 'guid', 'char(36) NOT NULL');
+        $this->alterColumn('contentcontainer', 'class', 'char(60) NOT NULL');
+        
         $this->createIndex('unique_target', 'contentcontainer', ['class', 'pk'], true);
         $this->createIndex('unique_guid', 'contentcontainer', ['guid'], true);
 

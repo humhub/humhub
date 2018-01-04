@@ -19,12 +19,7 @@ use yii\web\HttpException;
  */
 class Controller extends \humhub\modules\content\components\ContentContainerController
 {
-    /**
-     * @inheritdoc
-     */
-    public $hideSidebar = true;
 
-    
     protected function getAccessRules() {
         return [
             ['login'],
