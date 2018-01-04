@@ -8,12 +8,12 @@
 
 namespace humhub\modules\installer;
 
-use Yii;
-use yii\helpers\Url;
-use yii\base\Exception;
-use yii\web\HttpException;
-use yii\console\Application;
+use Exception;
 use humhub\libs\DynamicConfig;
+use Yii;
+use yii\console\Application;
+use yii\helpers\Url;
+use yii\web\HttpException;
 
 /**
  * InstallerModule provides an web installation interface for the applcation
@@ -97,11 +97,11 @@ class Module extends \humhub\components\Module
      */
     public function isConfigured()
     {
-        if (Yii::$app->settings->get('secret') != "") {
-            return true;
+        if (Yii::$app->settings->get('secret') == '') {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     /**
