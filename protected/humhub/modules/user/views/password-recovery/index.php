@@ -17,16 +17,16 @@ $this->pageTitle = Yii::t('UserModule.views_auth_recoverPassword', 'Password rec
 
                 <?php $form = CActiveForm::begin(['enableClientValidation' => false]); ?>
 
-                <p><?= Yii::t('UserModule.views_auth_recoverPassword', 'Just enter your e-mail address. We´ll send you recovery instructions!'); ?></p>
+                <p><?= Yii::t('UserModule.views_auth_recoverPassword', 'Just enter your e-mail address. We\'ll send you recovery instructions!'); ?></p>
 
-                <?= $form->field($model, 'email')->textInput(['class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'your email')])->label(false) ?>
-               
+                <?= $form->field($model, 'email')->textInput(['class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'Your email')])->label(false) ?>
+
                 <div class="form-group">
                     <?=\yii\captcha\Captcha::widget([
                         'model' => $model,
                         'attribute' => 'verifyCode',
                         'captchaAction' => '/user/auth/captcha',
-                        'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'enter security code above')]
+                        'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'Enter security code above')]
                     ]);
                     ?>
                     <?= $form->error($model, 'verifyCode'); ?>

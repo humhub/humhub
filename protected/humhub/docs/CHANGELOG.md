@@ -10,6 +10,8 @@ HumHub Change Log
 - Enh: More readable WallEntryAddon links (@githubjeka)
 - Fix: Documentation grammar fixes (@Felli)
 - Fix: Let's Encrypt ACME Error (@Felli)
+- Fix: Typo in password recovery (@acs-ferreira)
+
 
 1.2.4  (December 13, 2017)
 --------------------------
