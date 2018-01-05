@@ -13,6 +13,7 @@ humhub.module('space.chooser', function (module, require, $) {
     var object = require('util').object;
     var pjax = require('client.pjax');
     var additions = require('ui.additions');
+    var loader = require('ui.loader');
     var user = require('user');
     var view = require('ui.view');
 
@@ -30,23 +31,13 @@ humhub.module('space.chooser', function (module, require, $) {
         this.$chooser = $('#space-menu-spaces');
         this.$search = $('#space-menu-search');
         this.$remoteSearch = $('#space-menu-remote-search');
-
-        // set niceScroll to SpaceChooser menu
-        this.$chooser.niceScroll({
-            cursorwidth: "7",
-            cursorborder: "",
-            cursorcolor: "#555",
-            cursoropacitymax: "0.2",
-            nativeparentscrolling: false,
-            railpadding: {top: 0, right: 3, left: 0, bottom: 0}
-        });
-
-        this.$chooser.on('touchmove', function (evt) {
-            evt.preventDefault();
-        });
+        this.lastEntryLoaded = false;
+        this.lastLoadedPage = 1;
+        this.loading = false;
 
         this.initEvents();
         this.initSpaceSearch();
+        this.initScrolling();
     };
 
     SpaceChooser.prototype.initEvents = function () {
@@ -93,6 +84,87 @@ humhub.module('space.chooser', function (module, require, $) {
         }).on('humhub:modules:content:live:NewContent', function (evt, liveEvents) {
             that.handleNewContent(liveEvents);
         });
+    };
+
+    SpaceChooser.prototype.initScrolling = function () {
+
+        // listen for scrolling event yes or no
+        var scrolling = true;
+        var that = this;
+        this.$chooser.scroll(function (evt) {
+            // save height of the overflow container
+            var _containerHeight = that.$chooser.height();
+            // save scroll height
+            var _scrollHeight = that.$chooser.prop("scrollHeight");
+            // save current scrollbar position
+            var _currentScrollPosition = that.$chooser.scrollTop();
+
+            // load more spaces if current scroll position is near scroll height
+            if (_currentScrollPosition >= (_scrollHeight - _containerHeight - 30)) {
+                // checking if ajax loading is necessary or the last entries are already loaded
+                if (scrolling) {
+                    scrolling = false;
+                    // load more activities
+                    that.loadEntries();
+                    scrolling = true;
+                }
+            }
+        });
+
+        // set niceScroll to SpaceChooser menu
+        this.$chooser.niceScroll({
+            cursorwidth: "7",
+            cursorborder: "",
+            cursorcolor: "#555",
+            cursoropacitymax: "0.2",
+            nativeparentscrolling: false,
+            railpadding: {top: 0, right: 3, left: 0, bottom: 0}
+        });
+
+        this.$chooser.on('touchmove', function (evt) {
+            evt.preventDefault();
+        });
+    };
+
+    SpaceChooser.prototype.loadEntries = function () {
+        if (this.loading || this.lastEntryLoaded) {
+            return;
+        }
+
+        var that = this;
+        this.showLoader();
+        that.loading = true;
+        client.get(module.config.loadEntriesUrl, {data: {page: this.lastLoadedPage + 1}})
+              .then($.proxy(this.handleLoadingResult, this))
+              .catch(function (e) {
+                  module.log.error(e, true);
+              })
+              .finally(function () {
+                  that.hideLoader();
+                  that.loading = false;
+                  that.$chooser.getNiceScroll().resize();
+              });
+    };
+
+    SpaceChooser.prototype.handleLoadingResult = function (data) {
+        var that = this;
+
+        that.lastLoadedPage = data.page;
+        that.lastEntryLoaded = data.lastPage;
+        $.each(data.items, function (index, space) {
+            var $space = $(space.output);
+            that.$chooser.append($space);
+            additions.applyTo($space);
+        });
+    };
+
+    SpaceChooser.prototype.showLoader = function () {
+        loader.remove(this.$chooser);
+        loader.append(this.$chooser);
+    };
+
+    SpaceChooser.prototype.hideLoader = function () {
+        this.$chooser.find('.humhub-ui-loader').remove();
     };
 
     SpaceChooser.prototype.handleNewContent = function (liveEvents) {

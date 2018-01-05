@@ -10,7 +10,7 @@ humhub.module('activity', function (module, require, $) {
     var loader = require('ui.loader');
 
     /**
-     * Number of initial stream enteis loaded when stream is initialized.
+     * Number of initial stream entries loaded when stream is initialized.
      * @type Number
      */
     var STREAM_INIT_COUNT = 10;

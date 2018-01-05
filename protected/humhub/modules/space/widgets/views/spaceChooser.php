@@ -12,6 +12,7 @@ $noSpaceView = '<div class="no-space"><i class="fa fa-dot-circle-o"></i><br>' . 
 
 $this->registerJsConfig('space.chooser', [
     'noSpace' => $noSpaceView,
+    'loadEntriesUrl' => Url::to(['/space/browse/chooser-json']),
     'remoteSearchUrl' =>  Url::to(['/space/browse/search-json']),
     'text' => [
         'info.remoteAtLeastInput' => Yii::t('SpaceModule.widgets_views_spaceChooser', 'To search for other spaces, type at least {count} characters.', ['count' => 2]),
