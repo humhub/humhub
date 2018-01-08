@@ -74,7 +74,7 @@ class Password extends ActiveRecord
     {
         return [
             [['newPassword', 'newPasswordConfirm'], 'required', 'on' => 'registration'],
-            [['newPassword', 'newPasswordConfirm'], 'trim'],
+            [['newPassword', 'newPasswordConfirm'], 'string', 'min' => 5, 'max' => 255],
             [['user_id'], 'integer'],
             [['password', 'salt'], 'string'],
             [['created_at'], 'safe'],
