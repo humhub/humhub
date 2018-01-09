@@ -15,14 +15,14 @@ use humhub\modules\user\grid\DisplayNameColumn;
     </div>
 
     <?=
-	GridView::widget([
+    GridView::widget([
         'dataProvider' => $dataProvider,
-#        'filterModel' => $searchModel,
         'columns' => [
             ['class' => ImageColumn::class],
             ['class' => DisplayNameColumn::class],
+            'email',
+            'created_at',
             [
- #               'header' => Yii::t('AdminModule.views_approval_index', 'Actions'),
                 'class' => 'yii\grid\ActionColumn',
                 'options' => ['width' => '150px'],
                 'buttons' => [
@@ -30,10 +30,10 @@ use humhub\modules\user\grid\DisplayNameColumn;
                         return;
                     },
                     'delete' => function($url, $model) {
-                        return Html::a('Decline', Url::toRoute(['decline', 'id' => $model->id]), ['class' => 'btn btn-danger btn-sm', 'data-ui-loader' => '']);
+                        return Html::a('Decline', Url::to(['decline', 'id' => $model->id]), ['class' => 'btn btn-danger btn-sm', 'data-ui-loader' => '']);
                     },
                     'update' => function($url, $model) {
-                        return Html::a('Approve', Url::toRoute(['approve', 'id' => $model->id]), ['class' => 'btn btn-primary btn-sm', 'data-ui-loader' => '']);
+                        return Html::a('Approve', Url::to(['approve', 'id' => $model->id]), ['class' => 'btn btn-primary btn-sm', 'data-ui-loader' => '']);
                     },
                 ],
             ],
