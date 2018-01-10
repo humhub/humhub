@@ -8,9 +8,9 @@
 
 namespace humhub\modules\user\components;
 
-use Yii;
 use humhub\libs\BasePermission;
 use humhub\modules\user\models\GroupPermission;
+use Yii;
 
 /**
  * Description of PermissionManager
@@ -36,7 +36,7 @@ class PermissionManager extends \yii\base\Component
      * Permission access cache.
      * @var array
      */
-    protected $_access = [];
+    protected $access = [];
 
     /**
      * Verifies a given $permission or $permission array for a permission subject.
@@ -44,15 +44,15 @@ class PermissionManager extends \yii\base\Component
      * If $params['strict'] is set to true and a $permission array is given all given permissions
      * have to be granted otherwise (default) only one permission test has to pass.
      *
-     * @param string|string[]|BasePermission $permission
+     * @param string|array|BasePermission $permission
      * @param array $params
      * @param boolean $allowCaching
+     * @throws
      * @return boolean
      * @throws \yii\base\InvalidConfigException
      */
     public function can($permission, $params = [], $allowCaching = true)
     {
-        
         if (is_array($permission)) {
             // compatibility for old 'all' param
             $verifyAll = $this->isVerifyAll($params);
@@ -60,34 +60,42 @@ class PermissionManager extends \yii\base\Component
                 $can = $this->can($current, $params, $allowCaching);
                 if ($can && !$verifyAll) {
                     return true;
-                } else if (!$can && $verifyAll) {
+                } elseif (!$can && $verifyAll) {
                     return false;
                 }
             }
             return $verifyAll;
-        } else if ($allowCaching) {
-            $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
-            $key = $permission->getId();
-            
-            if (!isset($this->_access[$key])) {
-                $this->_access[$key] = $this->verify($permission);
-            }
-            
-            return $this->_access[$key];
         } else {
             $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
-            return $this->verify($permission);
+
+            if ($allowCaching && isset($this->access[$permission->getId()])) {
+                return $this->access[$permission->getId()];
+            }
+
+            $result = $this->verify($permission);
+
+            if ($allowCaching) {
+                $this->access[$permission->getId()] = $result;
+            }
+
+            return $result;
         }
     }
 
+    /**
+     * Return boolean for verifyAll
+     *
+     * @param array $params
+     * @return bool
+     */
     private function isVerifyAll($params = [])
     {
-        if(isset($params['strict'])) {
+        if (isset($params['strict'])) {
             return $params['strict'];
         }
 
         //deprecated
-        if(isset($params['all'])) {
+        if (isset($params['all'])) {
             return $params['all'];
         }
 
@@ -127,7 +135,7 @@ class PermissionManager extends \yii\base\Component
      */
     public function clear()
     {
-        $this->_access = [];
+        $this->access = [];
     }
 
     /**
