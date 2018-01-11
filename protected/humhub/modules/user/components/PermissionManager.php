@@ -47,8 +47,8 @@ class PermissionManager extends \yii\base\Component
      * @param string|array|BasePermission $permission
      * @param array $params
      * @param boolean $allowCaching
-     * @throws
      * @return boolean
+     * @throws \yii\base\InvalidConfigException
      */
     public function can($permission, $params = [], $allowCaching = true)
     {
