@@ -250,9 +250,9 @@ class PermissionManager extends Component
     /**
      * Returns a BasePermission by Id
      *
-     * @param string $permissionId
-     * @param string $moduleId
-     * @return mixed|null
+     * @param $permissionId
+     * @param $moduleId
+     * @return BasePermission|null
      * @throws \yii\base\InvalidConfigException
      */
     public function getById($permissionId, $moduleId)
@@ -260,6 +260,7 @@ class PermissionManager extends Component
         $module = Yii::$app->getModule($moduleId);
 
         foreach ($this->getModulePermissions($module) as $permission) {
+            /** @var BasePermission $permission */
             if ($permission->hasId($permissionId)) {
                 return $permission;
             }
