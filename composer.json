@@ -55,7 +55,7 @@
         "bower-asset/jquery-timeentry": "^2.0"
     },
     "require-dev": {
-        "codeception/codeception": "*",
+        "codeception/codeception": "^2.3",
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0",
