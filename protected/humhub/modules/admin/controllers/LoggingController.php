@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,6 +10,9 @@ namespace humhub\modules\admin\controllers;
 
 use Yii;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\permissions\SeeAdminInformation;
+use humhub\modules\admin\models\Log;
+use yii\data\Pagination;
 
 /**
  * LoggingController provides access to the database logging.
@@ -38,7 +41,7 @@ class LoggingController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => \humhub\modules\admin\permissions\SeeAdminInformation::className()]
+            ['permissions' => SeeAdminInformation::className()]
         ];
     }
 
@@ -46,11 +49,11 @@ class LoggingController extends Controller
     {
         $pageSize = 10;
 
-        $query = \humhub\modules\admin\models\Log::find();
+        $query = Log::find();
         $query->orderBy('id DESC');
 
         $countQuery = clone $query;
-        $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize]);
+        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize]);
         $query->offset($pagination->offset)->limit($pagination->limit);
 
         return $this->render('index', [
@@ -62,7 +65,7 @@ class LoggingController extends Controller
     public function actionFlush()
     {
         $this->forcePostRequest();
-        \humhub\modules\admin\models\Log::deleteAll();
+        Log::deleteAll();
         
 		return $this->redirect(['index']);
     }
