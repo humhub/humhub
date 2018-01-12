@@ -190,7 +190,6 @@ humhub.module('ui.modal', function (module, require, $) {
     Modal.prototype.load = function (url, cfg, originalEvent) {
         var that = this;
         var cfg = cfg || {};
-        cfg.dataType = cfg.dataType || 'html';
         return new Promise(function (resolve, reject) {
             if (!that.isVisible()) {
                 that.loader();
@@ -205,7 +204,6 @@ humhub.module('ui.modal', function (module, require, $) {
     Modal.prototype.post = function (url, cfg, originalEvent) {
         var that = this;
         var cfg = cfg || {};
-        cfg.dataType = cfg.dataType || 'html';
         return new Promise(function (resolve, reject) {
             if (!that.isVisible()) {
                 that.loader();
@@ -679,7 +677,6 @@ humhub.module('ui.modal', function (module, require, $) {
 
     var _defaultRequestOptions = function (evt, options) {
         options = options || {};
-        options.dataType = options.dataType || evt.data('data-type', 'html');
         return options;
     };
 
