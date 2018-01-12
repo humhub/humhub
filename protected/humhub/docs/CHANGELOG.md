@@ -1,6 +1,17 @@
 HumHub Change Log
 =================
 
+1.2.5  (Not released)
+---------------------
+
+- Enh: Added BaseURL setting protocol scheme validation
+- Fix #2849: ActiveQueryContent doesn't find public profile content when guest access is enabled
+- Enh: Fixed username alignment in comments (@githubjeka)
+- Enh: More readable WallEntryAddon links (@githubjeka)
+- Fix: Documentation grammar fixes (@Felli)
+- Fix: Let's Encrypt ACME Error (@Felli)
+- Fix: Typo in password recovery (@acs-ferreira)
+
 
 1.2.4  (December 13, 2017)
 --------------------------
@@ -24,7 +35,7 @@ HumHub Change Log
 - Fix #2851: getting model attribute value using Html::getAttributeValue()
 - Fix #2844: Directory member search broken on page 2
 - Fix #2702: Disable content search for guest users due to space visibility
-
+- Fix #2806: Register process broken on some environments (Felli)
 
 1.2.3  (October 23, 2017)
 -------------------------

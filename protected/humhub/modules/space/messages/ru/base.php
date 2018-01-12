@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Administrator:' => '',
-    'Moderator:' => '',
-    'Owner:' => '',
-    '<strong>Space</strong> followers' => 'Участники <strong>пространства</strong>',
+    'Administrator:' => 'Администратор:',
+    'Moderator:' => 'Модератор:',
+    'Owner:' => 'Владелец:',
+    '<strong>Space</strong> followers' => 'Подписчики <strong>пространства</strong>',
     'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Нельзя удалить владельца пространства. Пространство: {spaceName}',
     'Default' => 'По умолчанию',
     'Everyone can enter' => 'Каждый может вступить',

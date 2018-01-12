@@ -17,7 +17,7 @@ return array (
   'Reset to defaults' => 'Paramètres par défaut',
   'Spaces' => 'Espaces',
   'Weekly' => 'Hebdomadaire',
-  'You will only receive an e-mail if there is something new.' => 'Vous recevrez un e-mail uniquement s\'il y a du nouveau.',
+  'You will only receive an e-mail if there is something new.' => 'Vous recevrez un e-mail uniquement s\'il y a du nouveau à communiquer.',
   'Your daily summary' => 'Votre résumé quotidien',
   'Your weekly summary' => 'Votre résumé hebdomadaire',
 );
