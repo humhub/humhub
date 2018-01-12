@@ -1,18 +1,10 @@
 <?php
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  *
  */
-
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 18.07.2017
- * Time: 09:14
- */
-
 
 namespace humhub\widgets;
 
@@ -68,15 +60,15 @@ class Tabs extends \yii\bootstrap\Tabs
      */
     public function beforeRun()
     {
-        if(!parent::beforeRun()) {
+        if (!parent::beforeRun()) {
             return false;
         }
 
         $index = 0;
         foreach ($this->items as $key => $item) {
-            if(isset($item['view'])) {
+            if (isset($item['view'])) {
                 $view = $item['view'];
-                if($this->viewPath && strpos($view, '@') === false) {
+                if ($this->viewPath && strpos($view, '@') === false) {
                     $view = $this->viewPath . '/'.$item['view'];
                 }
 
@@ -85,7 +77,7 @@ class Tabs extends \yii\bootstrap\Tabs
                 unset($item['params']);
             }
 
-            if(!isset($item['sortOrder'])) {
+            if (!isset($item['sortOrder'])) {
                 // keep stable sorting by adding counter (otherwise equal sorOrders will destroy index ordering)
                 $this->items[$key]['sortOrder'] = 1000 + ($index * 10);
             }
@@ -107,7 +99,7 @@ class Tabs extends \yii\bootstrap\Tabs
      */
     private function getParams($item)
     {
-        if(isset($item['params'])) {
+        if (isset($item['params'])) {
             return $item['params'];
         }
 
@@ -123,15 +115,15 @@ class Tabs extends \yii\bootstrap\Tabs
      */
     public function isCurrentRoute($moduleId = null, $controllerId = null, $actionId = null)
     {
-        if($moduleId && !(Yii::$app->controller->module && Yii::$app->controller->module->id == $moduleId)) {
+        if ($moduleId && !(Yii::$app->controller->module && Yii::$app->controller->module->id == $moduleId)) {
             return false;
         }
 
-        if($controllerId && !(Yii::$app->controller->id == $controllerId)) {
+        if ($controllerId && !(Yii::$app->controller->id == $controllerId)) {
             return false;
         }
 
-        if($actionId && !(Yii::$app->controller->action->id == $actionId)) {
+        if ($actionId && !(Yii::$app->controller->action->id == $actionId)) {
             return false;
         }
 
@@ -151,12 +143,11 @@ class Tabs extends \yii\bootstrap\Tabs
         usort($this->items, function ($a, $b) {
             if ($a['sortOrder'] == $b['sortOrder']) {
                 return 0;
-            } else
-                if ($a['sortOrder'] < $b['sortOrder']) {
-                    return - 1;
-                } else {
-                    return 1;
-                }
+            } elseif ($a['sortOrder'] < $b['sortOrder']) {
+                return - 1;
+            } else {
+                return 1;
+            }
         });
     }
 }
