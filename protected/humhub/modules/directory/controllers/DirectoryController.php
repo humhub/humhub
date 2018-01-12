@@ -24,7 +24,6 @@ use yii\data\Pagination;
 use yii\base\Event;
 use Yii;
 
-
 /**
  * Community/Directory Controller
  *
@@ -120,9 +119,12 @@ class DirectoryController extends Controller
 
         $searchResultSet = Yii::$app->search->find($keyword, $searchOptions);
 
-        $pagination = new Pagination(['totalCount' => $searchResultSet->total, 'pageSize' => $searchResultSet->pageSize]);
+        $pagination = new Pagination([
+                    'totalCount' => $searchResultSet->total,
+                    'pageSize' => $searchResultSet->pageSize
+        ]);
 
-        Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function($event) {
+        Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function ($event) {
             $event->sender->addWidget(NewMembers::className(), [], ['sortOrder' => 10]);
             $event->sender->addWidget(MemberStatistics::className(), [], ['sortOrder' => 20]);
         });
