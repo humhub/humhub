@@ -44,10 +44,11 @@ class PermissionManager extends \yii\base\Component
      * If $params['strict'] is set to true and a $permission array is given all given permissions
      * have to be granted otherwise (default) only one permission test has to pass.
      *
-     * @param string|string[]|BasePermission $permission
+     * @param string|array|BasePermission $permission
      * @param array $params
      * @param boolean $allowCaching
      * @return boolean
+     * @throws \yii\base\InvalidConfigException
      */
     public function can($permission, $params = [], $allowCaching = true)
     {
