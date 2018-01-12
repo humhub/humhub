@@ -52,7 +52,9 @@
         "bower-asset/clipboard.js": "*",
         "bower-asset/jPlayer": "2.9.2",
         "bower-asset/imagesloaded": "*",
-        "bower-asset/jquery-timeentry": "^2.0"
+        "bower-asset/jquery-timeentry": "^2.0",
+        "yii2tech/csv-grid": "^1.0",
+        "phpoffice/phpspreadsheet": "^1.0"
     },
     "require-dev": {
         "codeception/codeception": "*",
