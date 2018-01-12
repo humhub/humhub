@@ -2,16 +2,11 @@
 
 namespace tests\codeception\unit;
 
-use Yii;
+use humhub\modules\admin\models\UserApprovalSearch;
 use tests\codeception\_support\HumHubDbTestCase;
-use Codeception\Specify;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\Follow;
 
 class ApprovalTest extends HumHubDbTestCase
 {
-
-    use Specify;
 
     /**
      * Tests user approval for 1 user without group assignment and one user with group assignment.
@@ -20,12 +15,12 @@ class ApprovalTest extends HumHubDbTestCase
     {
         $this->becomeUser('Admin');
 
-        $approvalSearch = new \humhub\modules\admin\models\UserApprovalSearch();
+        $approvalSearch = new UserApprovalSearch();
         $users = $approvalSearch->search()->getModels();
-        
+
         $this->assertEquals(2, count($users));
     }
-    
+
     /**
      * Tests user approval group manager.
      */
@@ -33,12 +28,12 @@ class ApprovalTest extends HumHubDbTestCase
     {
         $this->becomeUser('User2');
 
-        $approvalSearch = new \humhub\modules\admin\models\UserApprovalSearch();
+        $approvalSearch = new UserApprovalSearch();
         $users = $approvalSearch->search()->getModels();
-        
+
         $this->assertEquals(1, count($users));
     }
-    
+
     /**
      * Tests user approval for non group manager.
      */
@@ -46,10 +41,9 @@ class ApprovalTest extends HumHubDbTestCase
     {
         $this->becomeUser('User1');
 
-        $approvalSearch = new \humhub\modules\admin\models\UserApprovalSearch();
+        $approvalSearch = new UserApprovalSearch();
         $users = $approvalSearch->search()->getModels();
-        
+
         $this->assertEquals(0, count($users));
     }
-
 }
