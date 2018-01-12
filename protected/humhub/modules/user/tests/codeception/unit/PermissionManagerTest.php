@@ -1,9 +1,8 @@
 <?php
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace tests\codeception\unit;
@@ -20,51 +19,34 @@ class PermissionManagerTest extends HumHubDbTestCase
 {
 
     /**
-     * Tests user approval for 1 user without group assignment and one user with group assignment.
+     *  Tests user approval for 1 user without group assignment and one user with group assignment.
      */
-    public function testPermissions()
+    public function testPermissionUser1()
     {
         $this->becomeUser('User1');
         $permissionManager = new PermissionManagerMock();
 
-        $this->assertTrue($permissionManager->can(new ManageUsers));
-        $this->assertTrue($permissionManager->can(ManageUsers::class));
-        $this->assertFalse($permissionManager->can(new ManageSettings));
+        $tests = [
+            [true, new ManageUsers],
+            [true, ManageUsers::class],
+            [false, new ManageSettings],
+            [false, ManageSettings::class],
+            [true, [new ManageSettings, new ManageUsers]],
+            [false, [new ManageSettings, new ManageUsers], ['all' => true]],
+            [true, [new ManageUsers, new ManageGroups], ['all' => true]],
+            [false, [ManageSettings::class, ManageSpaces::class, SeeAdminInformation::class]],
+            [false, [ManageSettings::class, ManageSpaces::class, SeeAdminInformation::class], ['all' => true]],
+            [true, [ManageSettings::class, ManageUsers::class]],
+            [false, [ManageSettings::class, ManageUsers::class], ['all' => true]],
+            [true, [ManageUsers::class, ManageGroups::class], ['all' => true]],
+        ];
 
-        $this->assertTrue($permissionManager->can([
-            new ManageSettings,
-            new ManageUsers
-        ]));
-        $this->assertFalse($permissionManager->can([
-            new ManageSettings,
-            new ManageUsers
-        ], ['all' => true]));
-        $this->assertTrue($permissionManager->can([
-            new ManageUsers,
-            new ManageGroups
-        ], ['all' => true]));
-        $this->assertFalse($permissionManager->can([
-            ManageSettings::class,
-            ManageSpaces::class,
-            SeeAdminInformation::class
-        ]));
-        $this->assertFalse($permissionManager->can([
-            ManageSettings::class,
-            ManageSpaces::class,
-            SeeAdminInformation::class
-        ], ['all' => true]));
-
-        $this->assertTrue($permissionManager->can([
-            ManageSettings::class,
-            ManageUsers::class
-        ]));
-        $this->assertFalse($permissionManager->can([
-            ManageSettings::class,
-            ManageUsers::class
-        ], ['all' => true]));
-        $this->assertTrue($permissionManager->can([
-            ManageUsers::class,
-            ManageGroups::class
-        ], ['all' => true]));
+        foreach ($tests as $index => $test) {
+            if (isset($test[2])) {
+                $this->assertEquals($test[0], $permissionManager->can($test[1], $test[2]));
+            } else {
+                $this->assertEquals($test[0], $permissionManager->can($test[1]));
+            }
+        }
     }
 }
