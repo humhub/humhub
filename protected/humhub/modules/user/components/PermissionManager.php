@@ -332,7 +332,7 @@ class PermissionManager extends Component
     /**
      * Returns Permission Array
      *
-     * @param int $groupId v
+     * @param int $groupId id of the group
      * @param bool $returnOnlyChangeable
      * @return array the permission array
      * @throws \yii\base\Exception
