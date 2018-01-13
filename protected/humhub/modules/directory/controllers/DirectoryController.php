@@ -156,9 +156,12 @@ class DirectoryController extends Controller
             'pageSize' => $this->module->pageSize,
         ]);
 
-        $pagination = new Pagination(['totalCount' => $searchResultSet->total, 'pageSize' => $searchResultSet->pageSize]);
+        $pagination = new Pagination([
+                'totalCount' => $searchResultSet->total,
+                'pageSize' => $searchResultSet->pageSize
+        ]);
 
-        Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function($event) {
+        Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function ($event) {
             $event->sender->addWidget(NewSpaces::className(), [], ['sortOrder' => 10]);
             $event->sender->addWidget(SpaceStatistics::className(), [], ['sortOrder' => 20]);
         });
@@ -183,7 +186,7 @@ class DirectoryController extends Controller
 
         $groups = Group::getDirectoryGroups();
 
-        Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function($event) {
+        Event::on(Sidebar::className(), Sidebar::EVENT_INIT, function ($event) {
             $event->sender->addWidget(GroupStatistics::className(), [], ['sortOrder' => 10]);
         });
 
