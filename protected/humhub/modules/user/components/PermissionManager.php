@@ -12,6 +12,7 @@ use humhub\libs\BasePermission;
 use humhub\modules\user\models\GroupPermission;
 use Yii;
 use yii\base\Component;
+use yii\base\Module as BaseModule;
 
 /**
  * Description of PermissionManager
@@ -294,7 +295,7 @@ class PermissionManager extends Component
      * @return array of BasePermissions
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getModulePermissions(Module $module)
+    protected function getModulePermissions(BaseModule $module)
     {
         $result = [];
         if ($module instanceof Module) {
