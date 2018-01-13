@@ -15,4 +15,5 @@ ratings:
 
 exclude_paths:
 - "**/messages/"
+- "**_generated/"
 - "static/assets/"
