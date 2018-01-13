@@ -23,21 +23,6 @@ class GroupPermission extends \yii\db\ActiveRecord
         return 'group_permission';
     }
 
-    public static function instance(BasePermission $basePermission, $groupId = null, $state = null) {
-        $instance = new static([
-            'permission_id' => $basePermission->getId(),
-            'module_id' => $basePermission->getModuleId(),
-            'class' => $basePermission->className()
-        ]);
-
-        if(!empty($groupId)) {
-            $instance->group_id = ($groupId instanceof Group) ? $groupId->id : $groupId;
-        }
-
-        $instance->state = $state;
-        return $instance;
-    }
-    
     public function init()
     {
         parent::init();
