@@ -229,8 +229,8 @@ class PermissionManager extends Component
     /**
      * Returns a BasePermission by Id
      *
-     * @param $permissionId
-     * @param $moduleId
+     * @param string $permissionId
+     * @param string $moduleId
      * @return BasePermission|null
      * @throws \yii\base\InvalidConfigException
      */
