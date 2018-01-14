@@ -74,5 +74,4 @@ abstract class ActionAccessValidator extends AccessValidator
     }
 
     abstract protected function validate($rule);
-
 }
