@@ -89,7 +89,7 @@ abstract class AccessValidator extends Object
      *
      * @return boolean true if validation passed otherwise true
      */
-    abstract protected function run();
+    abstract public function run();
 
     /**
      * Filters out all rules which are not related to this validator.
