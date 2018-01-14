@@ -291,7 +291,7 @@ class PermissionManager extends Component
     /**
      * Returns permissions provided by a module
      *
-     * @param Module $module
+     * @param BaseModule $module
      * @return array of BasePermissions
      * @throws \yii\base\InvalidConfigException
      */
