@@ -1,8 +1,7 @@
 <?php
-
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -41,7 +40,7 @@ class LayoutRenderer extends ViewPathRenderer
      * given $layout.
      *
      * @param \humhub\components\rendering\Viewable $viewable
-     * @param type $params
+     * @param array $params
      * @return string
      */
     public function render(Viewable $viewable, $params = [])
@@ -49,7 +48,7 @@ class LayoutRenderer extends ViewPathRenderer
         $viewParams = $viewable->getViewParams($params);
 
         // Render the viewFile
-        if(!isset($viewParams['content'])) {
+        if (!isset($viewParams['content'])) {
             $viewParams['content'] = parent::renderView($viewable, $viewParams);
         }
 
@@ -74,5 +73,4 @@ class LayoutRenderer extends ViewPathRenderer
     {
         return $this->layout;
     }
-
 }
