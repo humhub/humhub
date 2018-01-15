@@ -255,7 +255,6 @@ class UserController extends Controller
 
         $exporter = new SpreadsheetExport([
             'dataProvider' => $dataProvider,
-            'autoSize' => true,
             'columns' => [
                 'id',
                 'username',
