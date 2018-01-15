@@ -365,7 +365,7 @@ class SelfTest
             $checks[] = [
                 'title' => Yii::t('base', $title),
                 'state' => 'ERROR',
-                'hint' => 'Make ' . $path . " writable for the >ebserver/PHP!"
+                'hint' => 'Make ' . $path . " writable for the Webserver/PHP!"
             ];
         }
 
