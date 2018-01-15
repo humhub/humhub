@@ -2,22 +2,23 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\components\behaviors;
 
-use Yii;
-use yii\web\ForbiddenHttpException;
 use humhub\components\access\ControllerAccess;
+use Yii;
+use yii\base\ActionFilter;
+use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 
 /**
  * Handles the AccessControl for a Controller.
  *
- * Controller level AccessRules can be provided by either setting the [[rules]] array, or by implementing a `getAccessRules()` function
- * within the controller itself (prefered).
+ * Controller level AccessRules can be provided by either setting the [[rules]] array,
+ * or by implementing a `getAccessRules()` function within the controller itself (prefered).
  *
  * **Examples:**
  *
@@ -78,20 +79,21 @@ use yii\web\HttpException;
  *
  * ```
  *
- * The list of available rules is given by the [[\humhub\components\access\ControllerAccess]] class set by a controller. By
- * default the base [[\humhub\components\access\ControllerAccess]] class will be used.
+ * The list of available rules is given by the [[\humhub\components\access\ControllerAccess]] class set by a controller.
+ * By default the base [[\humhub\components\access\ControllerAccess]] class will be used.
  *
- * The default ControllerAccess class can be overwritten by implementing the `getAccess()` function within a controller, which should return an instance
- * of ControllerAccess.
+ * The default ControllerAccess class can be overwritten by implementing the `getAccess()` function within a controller,
+ * which should return an instance of ControllerAccess.
  *
- * > Note: You can also use the [[\humhub\components\Controller::access]] property to define a ControllerAccess class string.
+ * > Note: You can also use the [[\humhub\components\Controller::access]] property
+ * to define a ControllerAccess class string.
  *
  *
  *
  * @see ControllerAccess
  * @author luke
  */
-class AccessControl extends \yii\base\ActionFilter
+class AccessControl extends ActionFilter
 {
 
     /**
@@ -126,7 +128,7 @@ class AccessControl extends \yii\base\ActionFilter
     /**
      * @var ControllerAccess instance
      */
-    protected $_controllerAccess;
+    protected $controllerAccess;
 
     /**
      * @inheritdoc
@@ -134,15 +136,17 @@ class AccessControl extends \yii\base\ActionFilter
     public function beforeAction($action)
     {
         // Bypass when not installed for installer
-        if (empty(Yii::$app->params['installed']) && Yii::$app->controller->module != null && Yii::$app->controller->module->id == 'installer') {
-            return true;
+        if (empty(Yii::$app->params['installed']) &&
+                  Yii::$app->controller->module != null &&
+                  Yii::$app->controller->module->id == 'installer') {
+                      return true;
         }
 
         $this->handleDeprecatedSettings();
-        $this->_controllerAccess = $this->getControllerAccess($this->rules);
+        $this->controllerAccess = $this->getControllerAccess($this->rules);
 
-        if(!$this->_controllerAccess->run()) {
-            if($this->_controllerAccess->code == 401) {
+        if (!$this->controllerAccess->run()) {
+            if ($this->controllerAccess->code == 401) {
                 return $this->loginRequired();
             } else {
                 $this->forbidden();
@@ -157,15 +161,15 @@ class AccessControl extends \yii\base\ActionFilter
      */
     protected function handleDeprecatedSettings()
     {
-        if($this->adminOnly) {
+        if ($this->adminOnly) {
             $this->rules[] = [ControllerAccess::RULE_ADMIN_ONLY];
         }
 
-        if($this->loggedInOnly) {
+        if ($this->loggedInOnly) {
             $this->rules[] = [ControllerAccess::RULE_LOGGED_IN_ONLY];
         }
 
-        if(!empty($this->guestAllowedActions)) {
+        if (!empty($this->guestAllowedActions)) {
             $this->rules[] = ['guestAccess' => $this->guestAllowedActions];
         }
     }
@@ -178,16 +182,16 @@ class AccessControl extends \yii\base\ActionFilter
      */
     protected function getControllerAccess($rules = null)
     {
-        if($rules === null) {
+        if ($rules === null) {
             $rules = [['strict']];
         }
 
         $instance = null;
-        if(method_exists($this->owner, 'getAccess')) {
+        if (method_exists($this->owner, 'getAccess')) {
             $instance = $this->owner->getAccess();
         }
 
-        if(!$instance) {
+        if (!$instance) {
             // fixes legacy behavior settings compatibility issue with no rules given
             $instance = new ControllerAccess();
         }
@@ -198,13 +202,12 @@ class AccessControl extends \yii\base\ActionFilter
         return $instance;
     }
 
-
     /**
      * @throws ForbiddenHttpException
      */
     protected function forbidden()
     {
-        throw new HttpException($this->_controllerAccess->code, $this->_controllerAccess->reason);
+        throw new HttpException($this->controllerAccess->code, $this->controllerAccess->reason);
     }
 
     /**
@@ -214,6 +217,7 @@ class AccessControl extends \yii\base\ActionFilter
     {
         Yii::$app->user->logout();
         Yii::$app->user->loginRequired();
+
         return false;
     }
 }
