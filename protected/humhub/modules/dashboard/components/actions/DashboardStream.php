@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -58,7 +58,7 @@ class DashboardStream extends Stream
                     ->where('user.status=1 AND user.visibility = ' . User::VISIBILITY_ALL);
             $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($publicProfilesSql)[0];
 
-            $this->activeQuery->andWhere('content.contentcontainer_id IN (' . $union . ') OR content.contentcontainer_id IS NULL', [':spaceClass' => Space::className(), ':userClass' => User::className()]);
+            $this->activeQuery->andWhere('content.contentcontainer_id IN (' . $union . ') OR content.contentcontainer_id IS NULL', [':spaceClass' => Space::class, ':userClass' => User::class]);
             $this->activeQuery->andWhere(['content.visibility' => Content::VISIBILITY_PUBLIC]);
         } else {
 
@@ -109,7 +109,7 @@ class DashboardStream extends Stream
             $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($wallIdsSql)[0];
 
             // Manual Union (https://github.com/yiisoft/yii2/issues/7992)
-            $this->activeQuery->andWhere('contentcontainer.id IN (' . $union . ') OR contentcontainer.id IS NULL', [':spaceClass' => Space::className(), ':userClass' => User::className()]);
+            $this->activeQuery->andWhere('contentcontainer.id IN (' . $union . ') OR contentcontainer.id IS NULL', [':spaceClass' => Space::class, ':userClass' => User::class]);
 
             /**
              * Begin visibility checks regarding the content container
@@ -128,10 +128,20 @@ class DashboardStream extends Stream
                 // In case of friendship we can also display private content
                 $condition .= ' (contentcontainer.class=:userModel AND content.visibility=0 AND user_friendship.id IS NOT NULL) OR ';
             }
+
             // In case of an space entry, we need to join the space membership to verify the user can see private space content
             $condition .= ' (contentcontainer.class=:spaceModel AND content.visibility = 0 AND space_membership.status = ' . Membership::STATUS_MEMBER . ') OR ';
-            $condition .= ' (content.visibility = 1 OR content.visibility IS NULL) ';
-            $this->activeQuery->andWhere($condition, [':userId' => $this->user->id, ':spaceModel' => Space::className(), ':userModel' => User::className()]);
+            $condition .= ' (content.visibility = 1 OR content.visibility IS NULL) OR';
+
+            // User can see private and public of his own profile (also when not created by hisself)
+            $condition .= ' (content.visibility = 0 AND content.contentcontainer_id=:userContentContainerId) ';
+
+            $this->activeQuery->andWhere($condition, [
+                ':userId' => $this->user->id,
+                ':userModel' => User::class,
+                ':spaceModel' => Space::class,
+                ':userContentContainerId' => $this->user->contentcontainer_id
+            ]);
         }
     }
 
