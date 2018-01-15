@@ -2,7 +2,7 @@
 
 /**
  * @var string $csv
- * @var string $xsls
+ * @var string $xlsx
  */
 
 use humhub\widgets\Button;
@@ -19,7 +19,7 @@ use humhub\widgets\Button;
     <ul class="dropdown-menu">
         <li><?= Button::asLink('csv', $csv)->pjax(false)
                 ->icon('fa-file-code-o')->sm() ?></li>
-        <li><?= Button::asLink('xlsx', $xsls)->pjax(false)
+        <li><?= Button::asLink('xlsx', $xlsx)->pjax(false)
                 ->icon('fa-file-excel-o')->sm() ?></li>
     </ul>
 </div>
