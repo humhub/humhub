@@ -13,7 +13,7 @@ use yii\base\Object;
  * Column is the base class of all [[SpreadsheetExport]] column classes.
  *
  * This class was originally developed by Paul Klimov <klimov.paul@gmail.com> and his
- * project csv-export (https://github.com/yii2tech/csv-grid).
+ * project csv-grid (https://github.com/yii2tech/csv-grid).
  */
 class Column extends Object
 {

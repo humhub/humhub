@@ -15,7 +15,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
  * Class ExportResultTest
  *
  * This class was originally developed by Paul Klimov <klimov.paul@gmail.com> and his
- * project csv-export (https://github.com/yii2tech/csv-grid).
+ * project csv-grid (https://github.com/yii2tech/csv-grid).
  */
 class ExportResultTest extends Unit
 {

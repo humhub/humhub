@@ -20,7 +20,7 @@ use yii\i18n\Formatter;
  * It supports exporting of the [[\yii\data\DataProviderInterface]] and [[\yii\db\QueryInterface]] instances.
  *
  * This class was originally developed by Paul Klimov <klimov.paul@gmail.com> and his
- * project csv-export (https://github.com/yii2tech/csv-grid).
+ * project csv-grid (https://github.com/yii2tech/csv-grid).
  *
  * Example:
  *
@@ -28,7 +28,7 @@ use yii\i18n\Formatter;
  * use humhub\components\export\SpreadsheetExport;
  * use yii\data\ArrayDataProvider;
  *
- * $exporter = new CsvGrid([
+ * $exporter = new SpreadsheetExport([
  *     'dataProvider' => new ArrayDataProvider([
  *         'allModels' => [
  *             [
@@ -121,14 +121,6 @@ class SpreadsheetExport extends Component
      * @var int
      */
     private $row = 1;
-
-    /**
-     * @return int
-     */
-    private function nextRow()
-    {
-        return $this->row++;
-    }
 
     /**
      * Initializes the grid.
@@ -358,6 +350,14 @@ class SpreadsheetExport extends Component
         foreach ($this->columns as $columnIndex => $column) {
             $worksheet->getColumnDimensionByColumn($columnIndex + 1)->setAutoSize(true);
         }
+    }
+
+    /**
+     * @return int
+     */
+    protected function nextRow()
+    {
+        return $this->row++;
     }
 
     /**

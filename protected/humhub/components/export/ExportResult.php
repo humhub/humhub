@@ -17,7 +17,7 @@ use yii\web\Response;
  * ExportResult represents SpreadsheetExport result.
  *
  * This class was originally developed by Paul Klimov <klimov.paul@gmail.com> and his
- * project csv-export (https://github.com/yii2tech/csv-grid).
+ * project csv-grid (https://github.com/yii2tech/csv-grid).
  *
  * @see SpreadsheetExport
  */
