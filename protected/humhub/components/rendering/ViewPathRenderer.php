@@ -1,8 +1,7 @@
 <?php
-
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -11,8 +10,8 @@ namespace humhub\components\rendering;
 use Yii;
 
 /**
- * A ViewPathRenderer is a simple Renderer implementation for rendering Viewables by searching for a matching viewFile relative
- * to the Viewables class path or relative to a given $viewPath.
+ * A ViewPathRenderer is a simple Renderer implementation for rendering Viewables by searching for a matching viewFile
+ * relative to the Viewables class path or relative to a given $viewPath.
  *
  * If a $viewPath is given the renderer will search for the view within this path directly.
  *
@@ -46,7 +45,8 @@ class ViewPathRenderer extends \yii\base\Object implements Renderer
     public $parent = false;
 
     /**
-     * @var string a subpath within the view folder used for searching the view e.g mails. This will only be used if $viewPath is not given.
+     * @var string a subpath within the view folder used for searching the view e.g mails.
+     * This will only be used if $viewPath is not given.
      */
     public $subPath;
 
@@ -62,7 +62,6 @@ class ViewPathRenderer extends \yii\base\Object implements Renderer
      *
      * @param \humhub\components\rendering\Viewable $viewable
      * @return string
-     * @throws ViewNotFoundException if the view file does not exist
      */
     public function render(Viewable $viewable, $params = [])
     {
@@ -73,8 +72,8 @@ class ViewPathRenderer extends \yii\base\Object implements Renderer
      * Helper function for rendering a Viewable with the given viewParams.
      *
      * @param \humhub\components\rendering\Viewable $viewable
-     * @param type $viewParams
-     * @return type
+     * @param array $viewParams
+     * @return string
      */
     public function renderView(Viewable $viewable, $viewParams)
     {
@@ -123,7 +122,9 @@ class ViewPathRenderer extends \yii\base\Object implements Renderer
 
     /**
      * Returns the directory containing the view files for this event.
-     * The default implementation returns the 'views' subdirectory under the directory containing the notification class file.
+     *
+     * The default implementation returns the 'views' subdirectory under the directory
+     * containing the notification class file.
      *
      * @param Viewable $viewable The viewable
      * @param boolean $useSubPath use the subpath if provided
@@ -137,7 +138,9 @@ class ViewPathRenderer extends \yii\base\Object implements Renderer
 
         $class = new \ReflectionClass($viewable);
 
-        $dir = ($this->parent) ? dirname(dirname($class->getFileName())) . '/' . 'views' : dirname($class->getFileName()) . '/' . 'views';
+        $dir = ($this->parent)
+            ? dirname(dirname($class->getFileName())) . '/' . 'views'
+            : dirname($class->getFileName()) . '/' . 'views';
 
         if (!empty($this->subPath) && $useSubPath) {
             $dir .= DIRECTORY_SEPARATOR . $this->subPath;
