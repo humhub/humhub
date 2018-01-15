@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -14,11 +13,9 @@ use yii\helpers\Url;
 
 /**
  * Class ExportButton
- * @package humhub\modules\admin\widgets
  */
 class ExportButton extends Widget
 {
-
     /** @var string|null */
     public $filter = null;
 
@@ -72,9 +69,9 @@ class ExportButton extends Widget
                 'format' => 'csv',
                 $this->filter => Yii::$app->request->get($this->filter),
             ]),
-            'xsls' => Url::toRoute([
+            'xlsx' => Url::toRoute([
                 'export',
-                'format' => 'xsls',
+                'format' => 'xlsx',
                 $this->filter => Yii::$app->request->get($this->filter),
             ]),
         ];
@@ -82,4 +79,3 @@ class ExportButton extends Widget
         echo $this->render('exportButton', $params);
     }
 }
-
