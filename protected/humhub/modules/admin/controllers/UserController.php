@@ -8,18 +8,20 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\compat\HForm;
+use humhub\components\export\SpreadsheetExport;
+use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\models\forms\UserEditForm;
+use humhub\modules\admin\models\UserSearch;
+use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\space\models\Membership;
+use humhub\modules\user\models\forms\Registration;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
 use yii\web\HttpException;
-use humhub\compat\HForm;
-use humhub\modules\user\models\forms\Registration;
-use humhub\modules\admin\components\Controller;
-use humhub\modules\user\models\User;
-use humhub\modules\admin\models\forms\UserEditForm;
-use humhub\modules\admin\permissions\ManageUsers;
-use humhub\modules\admin\permissions\ManageGroups;
-use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\space\models\Membership;
 
 /**
  * User management
@@ -67,7 +69,7 @@ class UserController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->can([new ManageUsers(), new ManageGroups()])) {
-            $searchModel = new \humhub\modules\admin\models\UserSearch();
+            $searchModel = new UserSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
             return $this->render('index', [
                         'dataProvider' => $dataProvider,
@@ -238,4 +240,50 @@ class UserController extends Controller
         return $this->render('delete', ['model' => $user]);
     }
 
+    /**
+     * Export user list as csv or xlsx
+     * @param string $format supported format by phpspreadsheet
+     * @return \yii\web\Response
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionExport($format)
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $exporter = new SpreadsheetExport([
+            'dataProvider' => $dataProvider,
+            'autoSize' => true,
+            'columns' => [
+                'id',
+                'username',
+                'profile.firstname',
+                'profile.lastname',
+                'profile.title',
+                'email',
+                'tags',
+                [
+                    'value' => function ($model, $key, $index, $column) {
+                        return \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($model->created_at);
+                    },
+                    'styles' => [
+                        'numberFormat' => [
+                            'formatCode' => \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DATETIME
+                        ]
+                    ]
+                ],
+                'created_at',
+                'updated_at',
+                'last_login',
+            ],
+            'resultConfig' => [
+                'fileBaseName' => 'humhub_user',
+                'writerType' => $format,
+            ],
+        ]);
+
+        return $exporter->export()->send();
+    }
 }
