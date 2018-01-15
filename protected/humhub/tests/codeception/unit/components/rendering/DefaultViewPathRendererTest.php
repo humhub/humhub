@@ -27,7 +27,7 @@ class DefaultViewPathRendererTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws iewNotFoundException
+     * @throws ViewNotFoundException
      */
     public function testDefaultPathView()
     {
