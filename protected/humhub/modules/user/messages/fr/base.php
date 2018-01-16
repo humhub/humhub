@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Basic Settings' => 'Paramètres basiques',
+  'Basic Settings' => 'Paramètres généraux',
   'Change Email' => 'Modifier l\'e-mail',
   'Change Password' => 'Modifier le mot de passe',
   'Confirm new password' => 'Confirmez le nouveau mot de passe',
@@ -32,14 +32,14 @@ return array (
   'Settings' => 'Réglages',
   'Sign in' => 'Se connecter',
   'Sign in / up' => 'Se connecter / s\'inscrire',
-  'Unknown user status!' => 'Statut d\'utilisateur inconnu !',
-  'Upload profile banner' => 'Charger une bannière de profil',
+  'Unknown user status!' => 'Statut d\'utilisateur inconnu.',
+  'Upload profile banner' => 'Charger le bandeau de profil',
   'Upload profile image' => 'Charger une image de profil',
   'User' => 'Utilisateur',
   'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Un utilisateur avec la même adresse e-mail existe déjà, mais ne vous est pas rattaché. Se connecter d\'abord en utilisant cette adresse  e-mail pour effectuer ce rattachement.',
   'You\'re not registered.' => 'Vous n\'êtes pas enregistré.',
-  'Your account is disabled!' => 'Votre compte est désactivé !',
-  'Your account is not approved yet!' => 'Votre compte n\'est pas encore approuvé !',
-  'Your new password must not equal your current password!' => 'Votre nouveau mot de passe doit être différent de votre mot de passe actuel !',
+  'Your account is disabled!' => 'Votre compte est désactivé.',
+  'Your account is not approved yet!' => 'Votre compte n\'est pas encore approuvé.',
+  'Your new password must not equal your current password!' => 'Votre nouveau mot de passe doit être différent de votre mot de passe actuel.',
   'or' => 'ou',
 );

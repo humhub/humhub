@@ -1,7 +1,7 @@
 <?php
 return array (
   'Birthday' => 'Date de naissance',
-  'Checkbox' => 'cocher la case corespondante',
+  'Checkbox' => 'Cocher la case correspondante',
   'Checkbox List' => 'Liste de cases à cocher',
   'Country' => 'Pays',
   'Date' => 'Date',
