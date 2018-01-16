@@ -18,6 +18,7 @@
  */
 return [
     'Back to user overview' => '',
+    'Base URL needs to begin with http:// or https://' => '',
     'Invite' => '',
     'Invited by' => '',
     'Pending user registrations' => '',

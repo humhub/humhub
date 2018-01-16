@@ -34,9 +34,7 @@ return [
     'Sorting' => '',
     'The content has been archived.' => '',
     'The content has been deleted.' => '',
-    'The content has been pinned.' => '',
     'The content has been unarchived.' => '',
-    'The content has been unpinned.' => '',
     'Where I´m involved' => '',
     'Your last edit state has been saved!' => '',
 ];

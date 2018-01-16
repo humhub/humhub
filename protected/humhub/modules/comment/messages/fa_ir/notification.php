@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '[Deleted]' => '',
     '{displayNames} commented {contentTitle}' => '',
     '{displayNames} commented {contentTitle} in space {space}' => '',
     '{displayNames} just commented your {contentTitle}' => '',

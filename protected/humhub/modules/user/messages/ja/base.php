@@ -38,7 +38,7 @@ return [
     'You\'re not registered.' => '',
     'Your account is disabled!' => '',
     'Your account is not approved yet!' => '',
-    'Your new password must not equal your current password!' => '',
+    'Your new password must not be equal your current password!' => '',
     'Basic Settings' => '基本設定',
     'Change Email' => 'メールの変更',
     'Change Password' => 'パスワードを変更する',
