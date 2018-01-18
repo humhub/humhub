@@ -25,6 +25,7 @@ return [
     'Authentication' => '',
     'Back to overview' => '',
     'Back to user overview' => '',
+    'Base URL needs to begin with http:// or https://' => '',
     'Basic' => '',
     'Caching' => '',
     'Cronjobs' => '',

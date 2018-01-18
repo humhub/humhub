@@ -30,6 +30,7 @@ return [
     'Upload profile image' => '',
     'Your account is disabled!' => '',
     'Your account is not approved yet!' => '',
+    'Your new password must not be equal your current password!' => '',
     'Basic Settings' => 'الإعدادات البسيطة',
     'Change Email' => 'تغيير البريد الإلكتروني',
     'Change Password' => 'تغيير كلمة المرور',
@@ -59,6 +60,5 @@ return [
     'User' => 'المستخدم',
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'المستخدم مع نفس عنوان البريد الإلكتروني موجود مسبقاً لكن غير مرتبط لكم. تسجيل الدخول باستخدام البريد الإلكتروني الخاص بك أولاً لربطه.',
     'You\'re not registered.' => 'أنت غير مسجل',
-    'Your new password must not equal your current password!' => 'كلمة المرور الجديدة يجب أن لا تشبه كلمة المرور الحالية الخاصة بك!',
     'or' => 'أو',
 ];

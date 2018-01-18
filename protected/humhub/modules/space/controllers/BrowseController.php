@@ -2,14 +2,17 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\space\controllers;
 
-use Yii;
 use humhub\components\Controller;
+use humhub\components\behaviors\AccessControl;
+use humhub\modules\space\models\Space;
+use humhub\modules\space\widgets\Chooser;
+use Yii;
 
 /**
  * BrowseController
@@ -28,7 +31,7 @@ class BrowseController extends Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::className(),
                 'guestAllowedActions' => ['search-json']
             ]
         ];
@@ -41,14 +44,14 @@ class BrowseController extends Controller
      */
     public function actionSearchJson()
     {
-        \Yii::$app->response->format = 'json';
+        Yii::$app->response->format = 'json';
 
-        $keyword = Yii::$app->request->get('keyword', "");
+        $keyword = Yii::$app->request->get('keyword', '');
         $page = (int) Yii::$app->request->get('page', 1);
         $limit = (int) Yii::$app->request->get('limit', Yii::$app->settings->get('paginationSize'));
 
         $searchResultSet = Yii::$app->search->find($keyword, [
-            'model' => \humhub\modules\space\models\Space::className(),
+            'model' => Space::className(),
             'page' => $page,
             'pageSize' => $limit
         ]);
@@ -63,7 +66,7 @@ class BrowseController extends Controller
         $json = [];
         $withChooserItem = ($target === 'chooser');
         foreach ($searchResultSet->getResultInstances() as $space) {
-            $json[] = \humhub\modules\space\widgets\Chooser::getSpaceResult($space, $withChooserItem);
+            $json[] = Chooser::getSpaceResult($space, $withChooserItem);
         }
 
         return $json;

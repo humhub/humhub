@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Permission' => 'Permission',
+  'Permission' => 'Permissions',
 );

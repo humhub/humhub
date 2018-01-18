@@ -18,5 +18,4 @@
  */
 return [
     'Space Settings' => 'Paramètres de l\'espace',
-    'Save' => 'Enregistrer',
 ];

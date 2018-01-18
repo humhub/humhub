@@ -27,6 +27,7 @@ return [
     'Upload profile image' => '',
     'Your account is disabled!' => '',
     'Your account is not approved yet!' => '',
+    'Your new password must not be equal your current password!' => '',
     'Basic Settings' => '基础设置',
     'Change Email' => '修改邮箱',
     'Change Password' => '修改密码',
@@ -57,6 +58,5 @@ return [
     'User' => '用户',
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '用户具有相同的电子邮件已经存在，但没有链接到你。使用你的电子邮件登录链接它。',
     'You\'re not registered.' => '你没有注册。',
-    'Your new password must not equal your current password!' => '你的新密码和当前密码不匹配！',
     'or' => '或者',
 ];
