@@ -81,9 +81,10 @@ class SpaceModelModules extends Behavior
             if (isset($defaultStates[$id]) && $defaultStates[$id] == Module::STATE_FORCE_ENABLED) {
                 // Forced enabled globally
                 $this->enabledModules[] = $id;
-            } elseif (!isset($states[$id]) && isset($defaultStates[$id]) && $defaultStates[$id] == Module::STATE_ENABLED) {
-                // No local state -> global default on
-                $this->enabledModules[] = $id;
+            } elseif (!isset($states[$id]) && isset($defaultStates[$id]) &&
+                      $defaultStates[$id] == Module::STATE_ENABLED) {
+                      // No local state -> global default on
+                          $this->enabledModules[] = $id;
             } elseif (isset($states[$id]) && $states[$id] == Module::STATE_ENABLED) {
                 // Locally enabled
                 $this->enabledModules[] = $id;
