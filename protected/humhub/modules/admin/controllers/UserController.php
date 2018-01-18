@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\compat\HForm;
+use humhub\components\export\DateTimeColumn;
 use humhub\components\export\SpreadsheetExport;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\UserEditForm;
@@ -20,8 +21,6 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
-use PhpOffice\PhpSpreadsheet\Shared\Date as SpreadsheetDate;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat as SpreadsheetNumberFormat;
 use Yii;
 use yii\helpers\Url;
 use yii\web\HttpException;
@@ -75,13 +74,15 @@ class UserController extends Controller
             $searchModel = new UserSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
             return $this->render('index', [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel
             ]);
-        } else if (Yii::$app->user->can(ManageSettings::class)) {
-            $this->redirect(['/admin/authentication']);
         } else {
-            $this->forbidden();
+            if (Yii::$app->user->can(ManageSettings::class)) {
+                $this->redirect(['/admin/authentication']);
+            } else {
+                $this->forbidden();
+            }
         }
     }
 
@@ -189,8 +190,8 @@ class UserController extends Controller
         }
 
         return $this->render('edit', [
-                    'hForm' => $form,
-                    'user' => $user
+            'hForm' => $form,
+            'user' => $user
         ]);
     }
 
@@ -216,15 +217,16 @@ class UserController extends Controller
      */
     public function actionDelete()
     {
-        $id = (int) Yii::$app->request->get('id');
-        $doit = (int) Yii::$app->request->get('doit');
+        $id = (int)Yii::$app->request->get('id');
+        $doit = (int)Yii::$app->request->get('doit');
 
         $user = User::findOne(['id' => $id]);
 
         if ($user == null) {
             throw new HttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
         } elseif (Yii::$app->user->id == $id) {
-            throw new HttpException(400, Yii::t('AdminModule.controllers_UserController', 'You cannot delete yourself!'));
+            throw new HttpException(400,
+                Yii::t('AdminModule.controllers_UserController', 'You cannot delete yourself!'));
         }
 
         if ($doit == 2) {
@@ -259,12 +261,6 @@ class UserController extends Controller
         $exporter = new SpreadsheetExport([
             'dataProvider' => $dataProvider,
             'columns' => $this->collectExportColumns(),
-//            'columns' => [
-//
-//                [
-
-//                ],
-//            ],
             'resultConfig' => [
                 'fileBaseName' => 'humhub_user',
                 'writerType' => $format,
@@ -290,11 +286,20 @@ class UserController extends Controller
             'tags',
             'language',
             'time_zone',
-            $this->exportDateTimeColumn('created_at', 'Created At'),
+            [
+                'class' => DateTimeColumn::className(),
+                'attribute' => 'created_at',
+            ],
             'created_by',
-            $this->exportDateTimeColumn('updated_at', 'Updated At'),
+            [
+                'class' => DateTimeColumn::className(),
+                'attribute' => 'updated_at',
+            ],
             'updated_by',
-            $this->exportDateTimeColumn('last_login', 'Last Login'),
+            [
+                'class' => DateTimeColumn::className(),
+                'attribute' => 'last_login',
+            ],
             'authclient_id',
             'visibility',
         ];
@@ -306,26 +311,5 @@ class UserController extends Controller
             ->column();
 
         return array_merge($userColumns, $profileColumns);
-    }
-
-    /**
-     * Create export definition for datetime column
-     * @param $attribute
-     * @param $label
-     * @return array
-     */
-    private function exportDateTimeColumn($attribute, $label)
-    {
-        return [
-            'value' => function ($model) use ($attribute) {
-                return SpreadsheetDate::PHPToExcel($model->{$attribute});
-            },
-            'label' => $label,
-            'styles' => [
-                'numberFormat' => [
-                    'formatCode' => SpreadsheetNumberFormat::FORMAT_DATE_DATETIME
-                ]
-            ]
-        ];
     }
 }
