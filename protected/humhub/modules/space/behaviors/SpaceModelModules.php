@@ -70,7 +70,7 @@ class SpaceModelModules extends Behavior
         $defaultStates = Module::getStates();
         $states = Module::getStates($this->owner->id);
 
-        // Get a list of all enabled module ids
+        // Get a list of all enabled module Ids
         foreach (array_merge(array_keys($defaultStates), array_keys($states)) as $id) {
 
             // Ensure module Id is available
