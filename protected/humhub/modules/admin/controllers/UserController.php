@@ -214,6 +214,7 @@ class UserController extends Controller
 
     /**
      * Deletes a user permanently
+     * @throws HttpException
      */
     public function actionDelete()
     {
@@ -223,10 +224,15 @@ class UserController extends Controller
         $user = User::findOne(['id' => $id]);
 
         if ($user == null) {
-            throw new HttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
+            throw new HttpException(
+                404,
+                Yii::t('AdminModule.controllers_UserController', 'User not found!')
+            );
         } elseif (Yii::$app->user->id == $id) {
-            throw new HttpException(400,
-                Yii::t('AdminModule.controllers_UserController', 'You cannot delete yourself!'));
+            throw new HttpException(
+                400,
+                Yii::t('AdminModule.controllers_UserController', 'You cannot delete yourself!')
+            );
         }
 
         if ($doit == 2) {
