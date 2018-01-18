@@ -18,7 +18,10 @@ use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\space\models\Membership;
 use humhub\modules\user\models\forms\Registration;
+use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use PhpOffice\PhpSpreadsheet\Shared\Date as SpreadsheetDate;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat as SpreadsheetNumberFormat;
 use Yii;
 use yii\helpers\Url;
 use yii\web\HttpException;
@@ -255,28 +258,13 @@ class UserController extends Controller
 
         $exporter = new SpreadsheetExport([
             'dataProvider' => $dataProvider,
-            'columns' => [
-                'id',
-                'username',
-                'profile.firstname',
-                'profile.lastname',
-                'profile.title',
-                'email',
-                'tags',
-                [
-                    'value' => function ($model, $key, $index, $column) {
-                        return \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($model->created_at);
-                    },
-                    'styles' => [
-                        'numberFormat' => [
-                            'formatCode' => \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DATETIME
-                        ]
-                    ]
-                ],
-                'created_at',
-                'updated_at',
-                'last_login',
-            ],
+            'columns' => $this->collectExportColumns(),
+//            'columns' => [
+//
+//                [
+
+//                ],
+//            ],
             'resultConfig' => [
                 'fileBaseName' => 'humhub_user',
                 'writerType' => $format,
@@ -284,5 +272,60 @@ class UserController extends Controller
         ]);
 
         return $exporter->export()->send();
+    }
+
+    /**
+     * Return array with columns for data export
+     * @return array
+     */
+    private function collectExportColumns()
+    {
+        $userColumns = [
+            'id',
+            'guid',
+            'status',
+            'username',
+            'email',
+            'auth_mode',
+            'tags',
+            'language',
+            'time_zone',
+            $this->exportDateTimeColumn('created_at', 'Created At'),
+            'created_by',
+            $this->exportDateTimeColumn('updated_at', 'Updated At'),
+            'updated_by',
+            $this->exportDateTimeColumn('last_login', 'Last Login'),
+            'authclient_id',
+            'visibility',
+        ];
+
+        $profileColumns = (new \yii\db\Query())
+            ->select(['CONCAT(\'profile.\', internal_name)'])
+            ->from(ProfileField::tableName())
+            ->orderBy(['profile_field_category_id' => SORT_ASC, 'sort_order' => SORT_ASC])
+            ->column();
+
+        return array_merge($userColumns, $profileColumns);
+    }
+
+    /**
+     * Create export definition for datetime column
+     * @param $attribute
+     * @param $label
+     * @return array
+     */
+    private function exportDateTimeColumn($attribute, $label)
+    {
+        return [
+            'value' => function ($model) use ($attribute) {
+                return SpreadsheetDate::PHPToExcel($model->{$attribute});
+            },
+            'label' => $label,
+            'styles' => [
+                'numberFormat' => [
+                    'formatCode' => SpreadsheetNumberFormat::FORMAT_DATE_DATETIME
+                ]
+            ]
+        ];
     }
 }
