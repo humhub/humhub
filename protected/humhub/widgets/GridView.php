@@ -1,8 +1,7 @@
 <?php
-
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -13,18 +12,6 @@ namespace humhub\widgets;
  */
 class GridView extends \yii\grid\GridView
 {
-
-    const EVENT_INIT = 'init';
-
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        $this->trigger(self::EVENT_INIT);
-        parent::init();
-    }
-
     /**
      * @inheritdoc
      */
@@ -45,5 +32,4 @@ class GridView extends \yii\grid\GridView
 
         return parent::run();
     }
-
 }
