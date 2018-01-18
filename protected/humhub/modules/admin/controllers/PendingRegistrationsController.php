@@ -47,7 +47,12 @@ class PendingRegistrationsController extends Controller
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel
+            'searchModel' => $searchModel,
+            'types' => [
+                null => null,
+                PendingRegistrationSearch::SOURCE_INVITE => Yii::t('AdminModule.base', 'Invite'),
+                PendingRegistrationSearch::SOURCE_SELF => Yii::t('AdminModule.base', 'Sign up'),
+            ]
         ]);
     }
 

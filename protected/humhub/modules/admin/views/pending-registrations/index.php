@@ -35,9 +35,7 @@ use yii\helpers\Html;
             'created_at',
             [
                 'attribute' => 'source',
-                'filter' => \yii\helpers\Html::activeDropDownList(
-                    $searchModel, 'source', array_merge(['' => ''], $types)
-                ),
+                'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'source', $types),
                 'options' => ['width' => '40px'],
                 'format' => 'raw',
                 'value' => function ($data) use ($types) {
