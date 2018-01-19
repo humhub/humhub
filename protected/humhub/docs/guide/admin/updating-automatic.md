@@ -3,7 +3,7 @@ Automatic Updating
 
 > Warning: Please check before you run an update, that your installed modules and themes are compatible with the new version. If not, you can follow the migration guides.
 - [Theme Migration Guide](../theme/migrate.md)
-- [Module Migration Guide](../developer/modules-migrate.md)
+- [Module Migration Guide](../developer/migration-guide.md)
 
 > NOTE: Backup your data before updating! See: [Backup Chapter](backup.md)
 

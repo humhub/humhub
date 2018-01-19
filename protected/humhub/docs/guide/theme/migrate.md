@@ -11,7 +11,7 @@ All changes or additions will be automatically applied to your theme.
 
 ## View Files
 
-As mentioned in the [View Files](view.md) section, you may need to manually adjust overwritten view files if there are any changes made in the new **HumHub** version.
+As mentioned in the [View Files](views.md) section, you may need to manually adjust overwritten view files if there are any changes made in the new **HumHub** version.
 
 ### Identifing changes using Git command
 
