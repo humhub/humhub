@@ -348,7 +348,6 @@ humhub.module('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.setHeader = function (title) {
-        debugger;
         var $header = this.getHeader();
         if (!$header.length) {
             $header = $(this.getTemplate('header'));
@@ -613,9 +612,7 @@ humhub.module('ui.modal', function (module, require, $) {
         });
     };
 
-    debugger;
     var submit = function (evt, options) {
-        debugger;
         evt.$form = evt.$form || evt.$trigger.closest('form');
 
         if (!evt.$form.length) {
@@ -691,7 +688,6 @@ humhub.module('ui.modal', function (module, require, $) {
     };
 
     var get = function (id, options) {
-        debugger;
         var modal = !(modals[id]) ? new Modal(id) : modals[id];
         if (options) {
             modal.set(options);
