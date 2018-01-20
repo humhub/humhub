@@ -8,7 +8,7 @@
 
 namespace humhub\modules\search\libs;
 
-use yii\base\Object;
+use yii\base\BaseObject;
 
 /**
  * SearchHelper
@@ -16,12 +16,12 @@ use yii\base\Object;
  * @since 1.2.3
  * @author Luke
  */
-class SearchHelper extends Object
+class SearchHelper extends BaseObject
 {
 
     /**
      * Checks if given text matches a search query.
-     * 
+     *
      * @param string $query
      * @param string $text
      */

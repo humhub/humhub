@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,6 +10,7 @@ namespace humhub\components;
 
 use Yii;
 use yii\helpers\Html;
+use yii\base\BaseObject
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
@@ -29,7 +30,7 @@ use humhub\widgets\RichText;
  * @since 1.1
  * @author buddha
  */
-abstract class SocialActivity extends \yii\base\Object implements rendering\Viewable, \Serializable
+abstract class SocialActivity extends BaseObject implements rendering\Viewable, \Serializable
 {
 
     /**

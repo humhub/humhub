@@ -9,13 +9,14 @@
 namespace humhub\modules\admin;
 
 use Yii;
+use yii\base\BaseObject;
 
 /**
  * Admin Module provides the administrative backend for HumHub installations.
  *
  * @since 0.5
  */
-class Events extends \yii\base\Object
+class Events extends BaseObject
 {
 
     /**

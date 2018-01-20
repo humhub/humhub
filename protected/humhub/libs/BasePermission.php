@@ -2,14 +2,14 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\libs;
 
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\base\Exception;
 use humhub\modules\space\models\Space;
 
@@ -18,7 +18,7 @@ use humhub\modules\space\models\Space;
 
  * @author luke
  */
-class BasePermission extends Object
+class BasePermission extends BaseObject
 {
 
     /**

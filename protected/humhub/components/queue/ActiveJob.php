@@ -8,7 +8,7 @@
 
 namespace humhub\components\queue;
 
-use yii\base\Object;
+use yii\base\BaseObject;
 use zhuravljov\yii\queue\Job;
 
 /**
@@ -17,7 +17,7 @@ use zhuravljov\yii\queue\Job;
  * @since 1.2
  * @author Luke
  */
-abstract class ActiveJob extends Object implements Job
+abstract class ActiveJob extends BaseObject implements Job
 {
     /**
      * Runs this job

@@ -9,6 +9,7 @@
 namespace humhub\modules\live;
 
 use Yii;
+use yii\base\BaseObject;
 use humhub\modules\live\Module;
 use humhub\modules\friendship\FriendshipEvent;
 use humhub\modules\space\MemberEvent;
@@ -17,11 +18,11 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @since 1.2
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends BaseObject
 {
 
     /**

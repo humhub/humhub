@@ -12,13 +12,14 @@ use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
 use yii\web\HttpException;
+use yii\base\BaseObject;
 
 /**
  * Events provides callbacks for all defined module events.
- * 
+ *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends BaseObject
 {
 
     /**

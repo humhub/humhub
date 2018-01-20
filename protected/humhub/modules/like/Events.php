@@ -9,10 +9,11 @@
 namespace humhub\modules\like;
 
 use humhub\modules\like\models\Like;
+use yii\base\BaseObject;
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @author luke
  */
 class Events extends \yii\base\Object

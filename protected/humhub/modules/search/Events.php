@@ -9,13 +9,14 @@
 namespace humhub\modules\search;
 
 use Yii;
+use yii\base\BaseObject;
 
 /**
  * Description of SearchModuleEvents
  *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends BaseObject
 {
 
     public static function onTopMenuRightInit($event)

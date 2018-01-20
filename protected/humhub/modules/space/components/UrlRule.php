@@ -9,7 +9,7 @@
 namespace humhub\modules\space\components;
 
 use yii\web\UrlRuleInterface;
-use yii\base\Object;
+use yii\base\BaseObject;
 use humhub\modules\space\models\Space;
 
 /**
@@ -17,7 +17,7 @@ use humhub\modules\space\models\Space;
  *
  * @author luke
  */
-class UrlRule extends Object implements UrlRuleInterface
+class UrlRule extends BaseObject implements UrlRuleInterface
 {
 
     /**
@@ -81,7 +81,7 @@ class UrlRule extends Object implements UrlRuleInterface
 
     /**
      * Gets space url name by given guid
-     * 
+     *
      * @param string $guid
      * @return string|null the space url part
      */
