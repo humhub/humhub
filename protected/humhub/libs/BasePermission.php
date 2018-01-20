@@ -8,10 +8,10 @@
 
 namespace humhub\libs;
 
+use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\Exception;
-use humhub\modules\space\models\Space;
 
 /**
  * BasePermission
@@ -92,7 +92,7 @@ class BasePermission extends BaseObject
      */
     public function getId()
     {
-        if ($this->id != "") {
+        if ($this->id != '') {
             return $this->id;
         }
 
@@ -145,7 +145,7 @@ class BasePermission extends BaseObject
 
         if ($configuredState !== null) {
             return $configuredState;
-        } else if ($this->defaultState == self::STATE_ALLOW) {
+        } elseif ($this->defaultState == self::STATE_ALLOW) {
             return self::STATE_ALLOW;
         } else {
             return (int) (in_array($groupId, $this->defaultAllowedGroups));
@@ -163,8 +163,9 @@ class BasePermission extends BaseObject
      */
     protected function getConfiguredState($groupId)
     {
-        if (isset(Yii::$app->params['defaultPermissions'][self::className()]) && isset(Yii::$app->params['defaultPermissions'][self::className()][$groupId])) {
-            return Yii::$app->params['defaultPermissions'][self::className()][$groupId];
+        if (isset(Yii::$app->params['defaultPermissions'][self::className()]) &&
+            isset(Yii::$app->params['defaultPermissions'][self::className()][$groupId])) {
+                return Yii::$app->params['defaultPermissions'][self::className()][$groupId];
         }
 
         return null;

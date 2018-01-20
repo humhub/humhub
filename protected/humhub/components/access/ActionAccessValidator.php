@@ -6,15 +6,7 @@
  *
  */
 
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 28.07.2017
- * Time: 17:43
- */
-
 namespace humhub\components\access;
-
 
 /**
  * This Validator filters out non action related rules and supports a $strict mode, which will require all validator
@@ -43,25 +35,25 @@ abstract class ActionAccessValidator extends AccessValidator
      * @param $access ControllerAccess
      * @return boolean
      */
-     public function run()
-     {
-         $rules = $this->filterRelatedRules();
+    public function run()
+    {
+        $rules = $this->filterRelatedRules();
 
-         if(empty($rules)) {
-             return true;
-         }
+        if(empty($rules)) {
+            return true;
+        }
 
-         foreach ($rules as $rule) {
-             $can = $this->validate($rule);
-             if ($can && !$this->strict) {
-                 return true;
-             } else if (!$can && $this->strict) {
-                 return false;
-             }
-         }
+        foreach ($rules as $rule) {
+            $can = $this->validate($rule);
+            if ($can && !$this->strict) {
+                return true;
+            } elseif (!$can && $this->strict) {
+                return false;
+            }
+        }
 
-         return $this->strict;
-     }
+        return $this->strict;
+    }
 
     /**
      * Filters out rules not related to the current validator and action.
@@ -73,12 +65,13 @@ abstract class ActionAccessValidator extends AccessValidator
     {
         $result = [];
         foreach (parent::filterRelatedRules($rules) as $rule) {
-            if($this->isActionRelated($rule)) {
+            if ($this->isActionRelated($rule)) {
                 $result[] = $rule;
             }
         }
+
         return $result;
     }
 
-    protected abstract function validate($rule);
+    abstract protected function validate($rule);
 }

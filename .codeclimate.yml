@@ -7,7 +7,7 @@ engines:
  phpcodesniffer:
    enabled: true
    config:
-    standard: "PSR1,PSR2"
+    standard: "ruleset.xml"
 
 ratings:
  paths:
@@ -15,3 +15,4 @@ ratings:
 
 exclude_paths:
 - "**/messages/"
+- "static/assets/"

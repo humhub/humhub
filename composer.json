@@ -63,7 +63,18 @@
     },
     "config": {
         "process-timeout": 1800,
-        "vendor-dir": "protected/vendor"
+        "vendor-dir": "protected/vendor",
+        "fxp-asset":{
+            "installer-paths": {
+                "npm-asset-library": "protected/vendor/npm",
+                "bower-asset-library": "protected/vendor/bower"
+            },
+            "vcs-driver-options": {
+                "github-no-api": true
+            },
+            "git-skip-update": "2 days",
+            "pattern-skip-version": "(-build|-patch)"
+        }
     },
     "scripts": {
         "post-create-project-cmd": [

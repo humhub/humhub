@@ -8,6 +8,6 @@ return array (
   'Save' => 'Enregistrer',
   'Select Groups' => 'Sélectionner un Groupe',
   'Unapproved' => 'Non Approuvé',
-  'User not found!' => 'Utilisateur introuvable !',
-  'You cannot delete yourself!' => 'Vous ne pouvez pas vous supprimer vous-même !',
+  'User not found!' => 'Utilisateur introuvable.',
+  'You cannot delete yourself!' => 'Vous ne pouvez pas vous supprimer vous-même.',
 );

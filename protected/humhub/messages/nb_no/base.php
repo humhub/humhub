@@ -21,6 +21,8 @@ return [
     'Invalid request method!' => '',
     'Profile dropdown' => '',
     'Select Me' => '',
+    'Text could not be copied to clipboard' => '',
+    'Text has been copied to clipboard' => '',
     'Time Zone' => '',
     'Toggle comment menu' => '',
     'Toggle panel menu' => '',

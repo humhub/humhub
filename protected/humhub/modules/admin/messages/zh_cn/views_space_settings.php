@@ -18,5 +18,4 @@
  */
 return [
     'Space Settings' => '空间设置',
-    'Save' => '保存',
 ];

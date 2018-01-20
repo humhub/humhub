@@ -72,11 +72,11 @@ abstract class AccessValidator extends BaseObject
 
     public function init()
     {
-        if(!$this->name) {
+        if (!$this->name) {
             $this->name = static::class;
         }
 
-        if(empty($this->reason)) {
+        if (empty($this->reason)) {
             $this->reason = Yii::t('error', 'You are not permitted to access this section.');
         }
     }
@@ -89,7 +89,7 @@ abstract class AccessValidator extends BaseObject
      *
      * @return boolean true if validation passed otherwise true
      */
-    abstract function run();
+    abstract public function run();
 
     /**
      * Filters out all rules which are not related to this validator.
@@ -99,7 +99,7 @@ abstract class AccessValidator extends BaseObject
      */
     protected function filterRelatedRules($rules = null)
     {
-        if($rules === null) {
+        if ($rules === null) {
             $rules = $this->access->getRules();
         }
 
@@ -107,11 +107,11 @@ abstract class AccessValidator extends BaseObject
         foreach ($rules as $rule) {
             $ruleName = $this->getRuleName($rule);
 
-            if($this->name === $ruleName) {
+            if ($this->name === $ruleName) {
                 $result[] = $rule;
             }
-
         }
+
         return $result;
     }
 
@@ -177,12 +177,12 @@ abstract class AccessValidator extends BaseObject
      */
     protected function getRuleName($rule)
     {
-        if(empty($rule)) {
+        if (empty($rule)) {
             return null;
         }
 
         $firstKey = current(array_keys($rule));
-        if(is_string($firstKey)) {
+        if (is_string($firstKey)) {
             return $firstKey;
         } else {
             return $rule[$firstKey];

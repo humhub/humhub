@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Modules</strong> directory' => 'Annuaire des <strong>Modules</strong>',
+  '<strong>Modules</strong> directory' => 'Liste des <strong>modules</strong>',
   'Buy (%price%)' => 'Acheter (%price%)',
   'Disclaimer' => 'Avertissement',
   'Install' => 'Installer',
@@ -9,5 +9,5 @@ return array (
   'Latest version:' => 'Dernière version : ',
   'Licence Key:' => 'Clé de licence :',
   'More info' => 'Plus d\'informations',
-  'No compatible module version found!' => 'Aucun module compatible n\'a été trouvé !',
+  'No compatible module version found!' => 'Aucun module compatible n\'a été trouvé.',
 );

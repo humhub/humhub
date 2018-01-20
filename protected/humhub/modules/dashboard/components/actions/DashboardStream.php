@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -15,6 +15,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
 use humhub\modules\content\models\Content;
+use humhub\modules\dashboard\Module;
 
 /**
  * DashboardStreamAction
@@ -34,6 +35,7 @@ class DashboardStream extends Stream
     {
         parent::init();
 
+        $dashboardModule = Yii::$app->getModule('dashboard');
         $friendshipEnabled = Yii::$app->getModule('friendship')->getIsEnabled();
 
         if ($this->user == null) {
@@ -55,8 +57,8 @@ class DashboardStream extends Stream
                     ->leftJoin('contentcontainer', 'user.id=contentcontainer.pk AND contentcontainer.class=:userClass')
                     ->where('user.status=1 AND user.visibility = ' . User::VISIBILITY_ALL);
             $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($publicProfilesSql)[0];
-           
-            $this->activeQuery->andWhere('content.contentcontainer_id IN (' . $union . ') OR content.contentcontainer_id IS NULL', [':spaceClass' => Space::className(), ':userClass' => User::className()]);
+
+            $this->activeQuery->andWhere('content.contentcontainer_id IN (' . $union . ') OR content.contentcontainer_id IS NULL', [':spaceClass' => Space::class, ':userClass' => User::class]);
             $this->activeQuery->andWhere(['content.visibility' => Content::VISIBILITY_PUBLIC]);
         } else {
 
@@ -85,11 +87,18 @@ class DashboardStream extends Stream
                 $usersFriends = (new Query())
                         ->select(["ufrc.id"])
                         ->from('user ufr')
-                        ->leftJoin('user_friendship recv', 'ufr.id=recv.friend_user_id AND recv.user_id=' . (int)$this->user->id)
-                        ->leftJoin('user_friendship snd', 'ufr.id=snd.user_id AND snd.friend_user_id=' . (int)$this->user->id)
+                        ->leftJoin('user_friendship recv', 'ufr.id=recv.friend_user_id AND recv.user_id=' . (int) $this->user->id)
+                        ->leftJoin('user_friendship snd', 'ufr.id=snd.user_id AND snd.friend_user_id=' . (int) $this->user->id)
                         ->leftJoin('contentcontainer ufrc', 'ufr.id=ufrc.pk AND ufrc.class=:userClass')
                         ->where('recv.id IS NOT NULL AND snd.id IS NOT NULL AND ufrc.id IS NOT NULL');
                 $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($usersFriends)[0];
+            }
+
+            // Automatic include user profile posts without required following
+            if ($dashboardModule->autoIncludeProfilePosts == Module::STREAM_AUTO_INCLUDE_PROFILE_POSTS_ALWAYS || (
+                    $dashboardModule->autoIncludeProfilePosts == Module::STREAM_AUTO_INCLUDE_PROFILE_POSTS_ADMIN_ONLY && Yii::$app->user->isAdmin())) {
+                $allUsers = (new Query())->select(["allusers.id"])->from('user allusers');
+                $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($allUsers)[0];
             }
 
             // Glue together also with current users wall
@@ -100,8 +109,8 @@ class DashboardStream extends Stream
             $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($wallIdsSql)[0];
 
             // Manual Union (https://github.com/yiisoft/yii2/issues/7992)
-            $this->activeQuery->andWhere('contentcontainer.id IN (' . $union . ') OR contentcontainer.id IS NULL', [':spaceClass' => Space::className(), ':userClass' => User::className()]);
-            
+            $this->activeQuery->andWhere('contentcontainer.id IN (' . $union . ') OR contentcontainer.id IS NULL', [':spaceClass' => Space::class, ':userClass' => User::class]);
+
             /**
              * Begin visibility checks regarding the content container
              */
@@ -119,10 +128,20 @@ class DashboardStream extends Stream
                 // In case of friendship we can also display private content
                 $condition .= ' (contentcontainer.class=:userModel AND content.visibility=0 AND user_friendship.id IS NOT NULL) OR ';
             }
+
             // In case of an space entry, we need to join the space membership to verify the user can see private space content
             $condition .= ' (contentcontainer.class=:spaceModel AND content.visibility = 0 AND space_membership.status = ' . Membership::STATUS_MEMBER . ') OR ';
-            $condition .= ' (content.visibility = 1 OR content.visibility IS NULL) ';
-            $this->activeQuery->andWhere($condition, [':userId' => $this->user->id, ':spaceModel' => Space::className(), ':userModel' => User::className()]);
+            $condition .= ' (content.visibility = 1 OR content.visibility IS NULL) OR';
+
+            // User can see private and public of his own profile (also when not created by hisself)
+            $condition .= ' (content.visibility = 0 AND content.contentcontainer_id=:userContentContainerId) ';
+
+            $this->activeQuery->andWhere($condition, [
+                ':userId' => $this->user->id,
+                ':userModel' => User::class,
+                ':spaceModel' => Space::class,
+                ':userContentContainerId' => $this->user->contentcontainer_id
+            ]);
         }
     }
 

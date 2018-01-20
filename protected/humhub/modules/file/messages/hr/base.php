@@ -17,10 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Open</strong> file' => '',
-    'Could not find requested file variant!' => '',
-    'Could not find requested file!' => '',
-    'Download' => '',
-    'Insufficient permissions!' => '',
-    'Invalid Mime-Type' => '',
+    'Created by:' => '',
+    'Last update by:' => '',
+    'Size:' => '',
+    '<strong>Open</strong> file' => '<strong>Otvori</strong> datoteku',
+    'Could not find requested file variant!' => 'Nije moguće pronaći traženu inačicu!',
+    'Could not find requested file!' => 'Ne mogu pronaći traženu datoteku!',
+    'Download' => 'Preuzmi',
+    'Insufficient permissions!' => 'Nedovoljna dozvola!',
+    'Invalid Mime-Type' => 'Nevažeći Mime-Type',
 ];

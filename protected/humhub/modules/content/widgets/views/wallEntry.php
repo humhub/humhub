@@ -8,6 +8,7 @@ use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\content\widgets\WallEntryLabels;
+use yii\helpers\Url;
 
 /* @var $object \humhub\modules\content\components\ContentContainerActiveRecord */
 /* @var $renderControls boolean */
@@ -77,7 +78,9 @@ use humhub\modules\content\widgets\WallEntryLabels;
                     </div>
                 </div>
                 <div class="media-subheading">
-                    <?= TimeAgo::widget(['timestamp' => $createdAt]); ?>
+                    <a href="<?= Url::to(['/content/perma', 'id' => $object->content->id], true) ?>">
+                        <?= TimeAgo::widget(['timestamp' => $createdAt]); ?>
+                    </a>
                     <?php if ($updatedAt !== null) : ?>
                         &middot;
                         <span class="tt" title="<?= Yii::$app->formatter->asDateTime($updatedAt); ?>"><?= Yii::t('ContentModule.base', 'Updated'); ?></span>

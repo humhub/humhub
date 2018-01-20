@@ -3,10 +3,10 @@ Bundled Software / Libaries
 
 > This list may incomplete!
 
-* Yii Framework (Core Framework) http://www.yiiframework.com/ (protected/vendors/yii/LICENSE)
-* Zend Framework http://framework.zend.com/ (protected/vendors/Zend/LICENSE.txt, protected/vendors/Zend2/LICENSE.txt)
+* Yii Framework (Core Framework) http://www.yiiframework.com/ (protected/vendor/yiisoft/yii2/LICENSE.md)
+* Zend Framework http://framework.zend.com/ (protected/vendor/zendframework/zend-\*/LICENSE.md)
 * Code Igniter (Security Functions) http://ellislab.com/codeigniter
-* Yii Extensions (See /protected/extensions/)
+* Various Yii Extensions
 * Yii-Mail - http://www.yiiframework.com/extension/mail/
 * SwiftMailer - http://swiftmailer.org
 * jQuery - http://jquery.com

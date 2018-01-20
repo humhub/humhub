@@ -14,10 +14,10 @@ return array (
   'On this page you can configure the contents and the interval of these e-mail updates.' => 'Sur cette page vous pouvez configurer le contenu et l\'intervalle de ces mises à jour par e-mail',
   'On this page you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'Sur cette page vous pouvez définir les préférences par défaut des utilisateurs. Ces préférences peuvent êtres modifiées par les utilisateurs sur leur page de paramètres de compte.',
   'Only include spaces below to the mail summary' => 'Inclure uniquement les espaces suivants aux résumés par e-mail',
-  'Reset to defaults' => 'Réinitialiser les paramètres',
+  'Reset to defaults' => 'Paramètres par défaut',
   'Spaces' => 'Espaces',
   'Weekly' => 'Hebdomadaire',
-  'You will only receive an e-mail if there is something new.' => 'Vous recevrez un e-mail uniquement s\'il y a du nouveau.',
+  'You will only receive an e-mail if there is something new.' => 'Vous recevrez un e-mail uniquement s\'il y a du nouveau à communiquer.',
   'Your daily summary' => 'Votre résumé quotidien',
   'Your weekly summary' => 'Votre résumé hebdomadaire',
 );

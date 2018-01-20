@@ -17,12 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'The content has been archived.' => 'Содержимое заархивировано.',
-    'The content has been deleted.' => 'Содержимое удалено.',
-    'The content has been pinned.' => 'Содержимое закреплено.',
-    'The content has been unarchived.' => 'Содержимое разархивировано.',
-    'The content has been unpinned.' => 'Содержимое откреплено.',
-    'Your last edit state has been saved!' => 'Последнее состояние сохранено.',
     'Back to stream' => 'Вернуться в ленту',
     'Content with attached files' => 'Контент с прикреплёнными файлами',
     'Created by me' => 'Созданные мной',
@@ -38,5 +32,9 @@ return [
     'Posts only' => 'Только сообщения',
     'Posts with links' => 'Сообщения с ссылками',
     'Sorting' => 'Сортировка',
+    'The content has been archived.' => 'Содержимое заархивировано.',
+    'The content has been deleted.' => 'Содержимое удалено.',
+    'The content has been unarchived.' => 'Содержимое разархивировано.',
     'Where I´m involved' => 'В которых я участвую',
+    'Your last edit state has been saved!' => 'Последнее состояние сохранено.',
 ];

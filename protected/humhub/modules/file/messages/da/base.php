@@ -19,7 +19,10 @@
 return [
     '<strong>Open</strong> file' => '',
     'Could not find requested file variant!' => '',
+    'Created by:' => '',
     'Download' => '',
+    'Last update by:' => '',
+    'Size:' => '',
     'Could not find requested file!' => 'Kunne ikke finde den ønskede fil!',
     'Insufficient permissions!' => 'Utilstrækkelige tilladelser!',
     'Invalid Mime-Type' => 'Ugyldig Mime-Type',

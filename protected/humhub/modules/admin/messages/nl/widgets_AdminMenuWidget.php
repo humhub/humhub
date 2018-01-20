@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => '<strong>Administratie</strong> menu',
-  'Advanced' => 'Geadvanceerd',
+  'Advanced' => 'Geavanceerd',
   'Appearance' => 'Weergave',
   'Caching' => 'Caching',
   'E-Mail summaries' => 'E-mail samenvattingen',

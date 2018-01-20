@@ -8,13 +8,13 @@
 
 namespace humhub\modules\notification\components;
 
-use yii\base\Object;
-use yii\base\InvalidConfigException;
 use humhub\modules\user\models\User;
 use humhub\modules\notification\targets\BaseTarget;
 use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\notification\targets\WebTarget;
 use humhub\modules\notification\targets\MobileTarget;
+use yii\base\BaseObject;
+use yii\base\InvalidConfigException;
 
 /**
  * NotificationCategories are used to group different notifications in views and
@@ -49,12 +49,12 @@ abstract class NotificationCategory extends BaseObject
     /**
      * Returns a human readable title of this  category
      */
-    public abstract function getTitle();
+    abstract public function getTitle();
 
     /**
      * Returns a group description
      */
-    public abstract function getDescription();
+    abstract public function getDescription();
 
     /**
      * Returns the default enabled settings for the given $target.
@@ -68,9 +68,9 @@ abstract class NotificationCategory extends BaseObject
     {
         if ($target->id === MailTarget::getId()) {
             return true;
-        } else if ($target->id === WebTarget::getId()) {
+        } elseif ($target->id === WebTarget::getId()) {
             return true;
-        } else if ($target->id === MobileTarget::getId()) {
+        } elseif ($target->id === MobileTarget::getId()) {
             return false;
         }
 

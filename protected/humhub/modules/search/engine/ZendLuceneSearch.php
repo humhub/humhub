@@ -15,6 +15,7 @@ use humhub\modules\search\libs\SearchResultSet;
 use humhub\modules\space\models\Space;
 use ZendSearch\Lucene\Document\Field;
 use yii\helpers\VarDumper;
+use ZendSearch\Lucene\Lucene;
 
 /**
  * ZendLucenceSearch Engine
@@ -29,6 +30,24 @@ class ZendLuceneSearch extends Search
      * @var \ZendSearch\Lucene\SearchIndexInterface the lucence index
      */
     public $index = null;
+
+    /**
+     * @var integer sets the `termsPerQueryLimit` property for the lucene index.
+     * This limits the number of terms in a search query, which also results in a
+     * limitation of the number of items a search term can match.
+     *
+     * This property should be at least as high as the number of items a search can match.
+     * It needs to be configured dependent on the amount of items stored in the
+     * Humhub database.
+     *
+     * It can be set to 0 for no limitation, but that may result in search queries
+     * to fail caused by high memory usage.
+     *
+     * Defaults to 2048, which is twice as high as the default value set by Lucene.
+     *
+     * @see Lucene::getTermsPerQueryLimit()
+     */
+    public $searchItemLimit = 2048;
 
     /**
      * @inheritdoc
@@ -284,6 +303,8 @@ class ZendLuceneSearch extends Search
         \ZendSearch\Lucene\Search\QueryParser::setDefaultEncoding('utf-8');
         \ZendSearch\Lucene\Analysis\Analyzer\Analyzer::setDefault(new \ZendSearch\Lucene\Analysis\Analyzer\Common\Utf8Num\CaseInsensitive());
         \ZendSearch\Lucene\Search\QueryParser::setDefaultOperator(\ZendSearch\Lucene\Search\QueryParser::B_AND);
+
+        \ZendSearch\Lucene\Lucene::setTermsPerQueryLimit($this->searchItemLimit);
 
         try {
             $index = \ZendSearch\Lucene\Lucene::open($this->getIndexPath());
