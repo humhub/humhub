@@ -6,13 +6,6 @@
  *
  */
 
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 26.07.2017
- * Time: 13:33
- */
-
 namespace humhub\components\access;
 
 use humhub\libs\BasePermission;
@@ -30,7 +23,8 @@ use yii\web\Controller;
  *
  * The actual permission rule verification is handled by the [[run()]] function.
  *
- * Subclasses can extend the set of available validators by calling [[registerValidator()]] and providing a validator setting array as:
+ * Subclasses can extend the set of available validators by calling [[registerValidator()]]
+ * and providing a validator setting array as:
  *
  * ```php
  * public function init()
@@ -44,8 +38,8 @@ use yii\web\Controller;
  * }
  * ```
  *
- * The previous example registered a new validator responsible for validating rules with the name `validateMyRule` and validation
- * handler function `validateMyRule` which defines an handler method within the subclass.
+ * The previous example registered a new validator responsible for validating rules with the name `validateMyRule`
+ * and validation handler function `validateMyRule` which defines an handler method within the subclass.
  *
  * Custom Validators can also be added by means of a Validator class as in the following example:
  *
@@ -70,7 +64,8 @@ use yii\web\Controller;
  *
  * If no action array is provided, the rule is considered to be controller global and will be verified for all actions.
  *
- * If a rule for a given name could not be found, the ControllerAccess tries to determine a custom rule validator set by the controller itself:
+ * If a rule for a given name could not be found, the ControllerAccess tries to determine a custom rule validator
+ * set by the controller itself:
  *
  * ```php
  * ['validateMyCustomRule', 'someParameter' => $value]
@@ -91,8 +86,8 @@ use yii\web\Controller;
  * }
  * ```
  *
- * By defining the [[fixedRules]] array property a ControllerAccess can define rules which are always applied, this property (or [[getFixedRules()]] function
- * may be overwritten by subclasses.
+ * By defining the [[fixedRules]] array property a ControllerAccess can define rules which are always applied,
+ * this property (or [[getFixedRules()]] function may be overwritten by subclasses.
  *
  * The following rules are available by default:
  *
@@ -116,7 +111,8 @@ class ControllerAccess extends Object
     const ACTION_SETTING_TYPE_OPTION_ONLY = 0;
 
     /**
-     * Allows the action rule setting by extra option ['myRule', 'actions' => ['action1', 'action2']] or immediate ['myRule' => ['action1', 'action2']]
+     * Allows the action rule setting by extra option ['myRule', 'actions' => ['action1', 'action2']]
+     * or immediate ['myRule' => ['action1', 'action2']]
      */
     const ACTION_SETTING_TYPE_BOTH = 1;
 
@@ -126,7 +122,8 @@ class ControllerAccess extends Object
     const RULE_ADMIN_ONLY = 'admin';
 
     /**
-     * Validate against a given set of permissions  e.g.: ['permission' => [MyPermission::class], 'actions' => ['action1']]
+     * Validate against a given set of permissions e.g.:
+     * ['permission' => [MyPermission::class], 'actions' => ['action1']]
      */
     const RULE_PERMISSION = 'permission';
 
@@ -214,17 +211,40 @@ class ControllerAccess extends Object
             $this->action = Yii::$app->controller->action->id;
         }
 
-        $this->registerValidator([self::RULE_STRICT => 'validateStrictMode', 'reason' => Yii::t('error', 'Guest mode not active, please login first.'), 'code' => 401]);
-        $this->registerValidator([self::RULE_UNAPPROVED_USER => 'validateUnapprovedUser', 'reason' => Yii::t('error', 'Your user account has not been approved yet, please try again later or contact a network administrator.'), 'code' => 401]);
-        $this->registerValidator([self::RULE_DISABLED_USER => 'validateDisabledUser', 'reason' => Yii::t('error', 'Your user account is inactive, please login with an active account or contact a network administrator.'), 'code' => 401]);
-        $this->registerValidator([self::RULE_LOGGED_IN_ONLY => 'validateLoggedInOnly', 'reason' => Yii::t('error', 'Login required for this section.'), 'code' => 401]);
+        $this->registerValidator([
+            self::RULE_STRICT => 'validateStrictMode',
+            'reason' => Yii::t('error', 'Guest mode not active, please login first.'),
+            'code' => 401
+        ]);
+        $this->registerValidator([
+            self::RULE_UNAPPROVED_USER => 'validateUnapprovedUser',
+            'reason' => Yii::t('error', 'Your user account has not been approved yet, please try again later or contact a network administrator.'),
+            'code' => 401
+        ]);
+        $this->registerValidator([
+            self::RULE_DISABLED_USER => 'validateDisabledUser',
+            'reason' => Yii::t('error', 'Your user account is inactive, please login with an active account or contact a network administrator.'),
+            'code' => 401
+        ]);
+        $this->registerValidator([
+            self::RULE_LOGGED_IN_ONLY => 'validateLoggedInOnly',
+            'reason' => Yii::t('error', 'Login required for this section.'),
+            'code' => 401
+        ]);
 
         // We don't set code 401 since we want to show an error instead of redirecting to login
         $this->registerValidator(GuestAccessValidator::class);
-        $this->registerValidator([self::RULE_ADMIN_ONLY => 'validateAdminOnly', 'reason' => Yii::t('error', 'You need admin permissions to access this section.')]);
+        $this->registerValidator([
+            self::RULE_ADMIN_ONLY => 'validateAdminOnly',
+            'reason' => Yii::t('error', 'You need admin permissions to access this section.')
+        ]);
         $this->registerValidator(PermissionAccessValidator::class);
         $this->registerValidator(DeprecatedPermissionAccessValidator::class);
-        $this->registerValidator([self::RULE_POST => 'validatePostRequest', 'code' => 405, 'reason' => Yii::t('base', 'Invalid request method!')]);
+        $this->registerValidator([
+            self::RULE_POST => 'validatePostRequest',
+            'reason' => Yii::t('base', 'Invalid request method!'),
+            'code' => 405
+        ]);
         $this->registerValidator([self::RULE_JSON => 'validateJsonResponse']);
     }
 
@@ -260,7 +280,7 @@ class ControllerAccess extends Object
      */
     protected function registerValidator($options)
     {
-        if(is_string($options)) {
+        if (is_string($options)) {
             $options = ['class' => $options];
         }
 
@@ -268,9 +288,9 @@ class ControllerAccess extends Object
 
         $name = $this->getName($options);
 
-        if($name == 'class') {
+        if ($name == 'class') {
             $validator = Yii::createObject($options);
-        } else if(class_exists($name)) {
+        } elseif (class_exists($name)) {
             unset($options[0]);
             $options['class'] = $name;
             $validator = Yii::createObject($options);
@@ -294,11 +314,12 @@ class ControllerAccess extends Object
     {
         $finished = [];
 
-        foreach($this->rules as $rule) {
+        foreach ($this->rules as $rule) {
             $ruleName = $this->getName($rule);
 
-            // A validator validates all rules of the given $name, so we don't have to rerun the validation here if already handled
-            if(in_array($ruleName, $finished)) {
+            // A validator validates all rules of the given $name,
+            // so we don't have to rerun the validation here if already handled
+            if (in_array($ruleName, $finished)) {
                 continue;
             }
 
@@ -306,7 +327,7 @@ class ControllerAccess extends Object
 
             $validator = $this->findValidator($ruleName);
 
-            if(!$validator->run()) {
+            if (!$validator->run()) {
                 $this->reason = (!$this->reason) ? $validator->getReason() : $this->reason;
                 $this->code = (!$this->code) ? $validator->getCode(): $this->code;
                 return false;
@@ -318,7 +339,7 @@ class ControllerAccess extends Object
 
     protected function findValidator($ruleName)
     {
-        if(isset($this->validators[$ruleName])) {
+        if (isset($this->validators[$ruleName])) {
             return $this->validators[$ruleName];
         }
 
@@ -327,7 +348,7 @@ class ControllerAccess extends Object
 
     protected function getCustomValidator($ruleName)
     {
-        if($this->owner && method_exists($this->owner, $ruleName)) {
+        if ($this->owner && method_exists($this->owner, $ruleName)) {
             return new DelegateAccessValidator([
                 'access' => $this,
                 'owner' => $this->owner,
@@ -354,12 +375,12 @@ class ControllerAccess extends Object
      */
     protected function getName($arr)
     {
-        if(empty($arr)) {
+        if (empty($arr)) {
             return null;
         }
 
         $firstKey = current(array_keys($arr));
-        if(is_string($firstKey)) {
+        if (is_string($firstKey)) {
             return $firstKey;
         } else {
             return $arr[$firstKey];
@@ -412,6 +433,7 @@ class ControllerAccess extends Object
     public function validateJsonResponse()
     {
         Yii::$app->response->format = 'json';
+
         return true;
     }
 
