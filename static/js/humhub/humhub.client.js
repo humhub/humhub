@@ -16,15 +16,24 @@ humhub.module('client', function (module, require, $) {
         this.response = xhr.responseJSON || xhr.responseText;
         //Textstatus = "timeout", "error", "abort", "parsererror", "application"
         this.textStatus = textStatus;
-        this.dataType = dataType;
         this.xhr = xhr;
 
-        var responseType = this.header('content-type');
+        if (!dataType) {
+            var responseType = this.header('content-type');
+            if (responseType && responseType.indexOf('json') > -1) {
+                dataType = 'json';
+            } else if (responseType && responseType.indexOf('html') > -1) {
+                dataType = 'html';
+            } else {
+                console.error('unable to determine dataType from response, this may cause problems.');
+            }
+        }
+        this.dataType = dataType;
 
         // If we expect json and received json we merge the json result with our response object.
-        if ((!dataType || dataType === 'json') && responseType && responseType.indexOf('json') > -1) {
+        if (this.dataType === 'json') {
             $.extend(this, this.response);
-        } else if (dataType) {
+        } else if (this.dataType === 'html') {
             this[dataType] = this.response;
         }
     };
@@ -230,9 +239,6 @@ humhub.module('client', function (module, require, $) {
             cfg.success = success;
             cfg.error = error;
             cfg.url = url;
-
-            //Setting some default values
-            cfg.dataType = cfg.dataType || "json";
 
             $.ajax(cfg);
         });

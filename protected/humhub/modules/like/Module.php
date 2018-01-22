@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\like;
 
 use Yii;
@@ -13,8 +19,20 @@ use Yii;
 class Module extends \humhub\components\Module
 {
 
+    /**
+     * @inheritdoc
+     */
     public $isCoreModule = true;
-    
+
+    /**
+     * @var boolean automatic follow liked content
+     * @since 1.2.5
+     */
+    public $autoFollowLikedContent = false;
+
+    /**
+     * @inheritdoc
+     */
     public function getName()
     {
         return Yii::t('LikeModule.base', 'Like');
@@ -23,11 +41,11 @@ class Module extends \humhub\components\Module
     /**
      * @inheritdoc
      */
-    public function getNotifications() 
+    public function getNotifications()
     {
-       return [
-           'humhub\modules\like\notifications\NewLike'
-       ];
+        return [
+            'humhub\modules\like\notifications\NewLike'
+        ];
     }
 
 }

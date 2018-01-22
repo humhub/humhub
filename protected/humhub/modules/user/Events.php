@@ -52,7 +52,7 @@ class Events extends \yii\base\Object
         $integrityController = $event->sender;
 
         $integrityController->showTestHeadline("User Module - ContentContainer (" . User::find()->count() . " entries)");
-        foreach (User::find()->joinWith(['contentContainerRecord'])->all() as $user) {
+        foreach (User::find()->joinWith(['contentContainerRecord'])->each() as $user) {
             if ($user->contentContainerRecord === null) {
                 if ($integrityController->showFix("Deleting user " . $user->id . " without content container record!")) {
                     $user->delete();
@@ -61,13 +61,13 @@ class Events extends \yii\base\Object
         }
 
         $integrityController->showTestHeadline("User Module - Users (" . User::find()->count() . " entries)");
-        foreach (User::find()->joinWith(['profile'])->all() as $user) {
+        foreach (User::find()->joinWith(['profile'])->each() as $user) {
             if ($user->profile->isNewRecord) {
                 $integrityController->showWarning("User with id " . $user->id . " has no profile record!");
             }
         }
 
-        foreach (GroupUser::find()->joinWith(['user'])->all() as $groupUser) {
+        foreach (GroupUser::find()->joinWith(['user'])->each() as $groupUser) {
             if ($groupUser->user == null) {
                 if ($integrityController->showFix("Deleting group admin " . $groupUser->id . " without existing user!")) {
                     $groupUser->delete();
@@ -76,7 +76,7 @@ class Events extends \yii\base\Object
         }
 
         $integrityController->showTestHeadline("User Module - Password (" . Password::find()->count() . " entries)");
-        foreach (Password::find()->joinWith(['user'])->all() as $password) {
+        foreach (Password::find()->joinWith(['user'])->each() as $password) {
             if ($password->user == null) {
                 if ($integrityController->showFix("Deleting password " . $password->id . " without existing user!")) {
                     $password->delete();
@@ -85,7 +85,7 @@ class Events extends \yii\base\Object
         }
 
         $integrityController->showTestHeadline("User Module - Profile (" . Profile::find()->count() . " entries)");
-        foreach (Profile::find()->joinWith(['user'])->all() as $profile) {
+        foreach (Profile::find()->joinWith(['user'])->each() as $profile) {
             if ($profile->user == null) {
                 if ($integrityController->showFix("Deleting profile " . $profile->user_id . " without existing user!")) {
                     $profile->delete();
@@ -94,7 +94,7 @@ class Events extends \yii\base\Object
         }
 
         $integrityController->showTestHeadline("User Module - Mentioning (" . Mentioning::find()->count() . " entries)");
-        foreach (Mentioning::find()->joinWith(['user'])->all() as $mentioning) {
+        foreach (Mentioning::find()->joinWith(['user'])->each() as $mentioning) {
             if ($mentioning->user == null) {
                 if ($integrityController->showFix("Deleting mentioning " . $mentioning->id . " of non existing user!")) {
                     $mentioning->delete();
@@ -108,7 +108,7 @@ class Events extends \yii\base\Object
         }
 
         $integrityController->showTestHeadline("User Module - Follow (" . Follow::find()->count() . " entries)");
-        foreach (Follow::find()->joinWith(['user'])->all() as $follow) {
+        foreach (Follow::find()->joinWith(['user'])->each() as $follow) {
             if ($follow->user == null) {
                 if ($integrityController->showFix("Deleting follow " . $follow->id . " of non existing user!")) {
                     $follow->delete();
@@ -129,7 +129,7 @@ class Events extends \yii\base\Object
         }
 
         $integrityController->showTestHeadline("User Module - Modules (" . models\Module::find()->count() . " entries)");
-        foreach (models\Module::find()->joinWith(['user'])->all() as $module) {
+        foreach (models\Module::find()->joinWith(['user'])->each() as $module) {
             if ($module->user == null) {
                 if ($integrityController->showFix("Deleting user-module " . $module->id . " of non existing user!")) {
                     $module->delete();
@@ -142,7 +142,7 @@ class Events extends \yii\base\Object
             $userIds[$key] = $id['id'];
         }
         $integrityController->showTestHeadline("User Module - Content container (" . ContentContainer::find()->count() . " entries)");
-        foreach (ContentContainer::find()->where(['NOT IN', 'owner_user_id', $userIds])->all() as $contentContainer) {
+        foreach (ContentContainer::find()->where(['NOT IN', 'owner_user_id', $userIds])->each() as $contentContainer) {
             if ($contentContainer['class'] == User::className() && $contentContainer['pk'] == $contentContainer['owner_user_id']) {
                 if ($integrityController->showFix("Deleting content container " . $contentContainer->id . " without existing user!")) {
                     $contentContainer->delete();

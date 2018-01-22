@@ -48,7 +48,7 @@ class Events extends \yii\base\Object
         $integrityController = $event->sender;
 
         $integrityController->showTestHeadline("Content Objects (" . Content::find()->count() . " entries)");
-        foreach (Content::find()->all() as $content) {
+        foreach (Content::find()->each() as $content) {
             if ($content->user == null) {
                 if ($integrityController->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid user!")) {
                     $content->delete();

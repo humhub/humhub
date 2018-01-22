@@ -38,6 +38,11 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
     protected $updateContentStreamSort = true;
 
     /**
+     * @var boolean automatic following of the addon creator to the related content
+     */
+    protected $automaticContentFollowing = true;
+
+    /**
      * Content object which this addon belongs to
      *
      * @var Content
@@ -195,8 +200,9 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function afterSave($insert, $changedAttributes)
     {
-        // Auto follow the content which this addon belongs to
-        $this->content->getPolymorphicRelation()->follow($this->created_by);
+        if ($this->automaticContentFollowing) {
+            $this->content->getPolymorphicRelation()->follow($this->created_by);
+        }
 
         if ($this->updateContentStreamSort) {
             $this->getSource()->content->updateStreamSortTime();
