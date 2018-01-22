@@ -93,7 +93,6 @@ class PendingRegistrationsController extends Controller
             'space_invite_id',
             'email',
             'source',
-            'token',
             [
                 'class' => DateTimeColumn::className(),
                 'attribute' => 'created_at',
