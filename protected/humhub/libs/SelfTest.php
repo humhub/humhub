@@ -146,9 +146,9 @@ class SelfTest
             $checks[] = [
                 'title' => Yii::t('base', $title),
                 'state' => 'OK'
-            );
+            ];
         } else {
-            $checks[] = array(
+            $checks[] = [
                 'title' => Yii::t('base', $title),
                 'state' => 'ERROR',
                 'hint' => 'Install FileInfo Extension'
