@@ -16,6 +16,7 @@ HumHub Change Log
 - Enh: Allow auto detection of response dataType
 - Fix #2947: Allow json success result on modalSubmit
 - Enh: Disabled automatic content following on likes by default
+- Enh: Improved IntegrityChecker memory usage
 
 
 1.2.4  (December 13, 2017)
