@@ -57,7 +57,7 @@ use yii\widgets\ActiveForm;
             return [
                 'inputOptions' => [
                     'class' => 'form-control',
-                    'readonly' => Setting::IsFixed('auth.ldap.' . $attribute, 'user')
+                    'readonly' => Yii::$app->getModule('user')->settings->isFixed('auth.ldap.' . $attribute)
                 ],
             ];
         }
