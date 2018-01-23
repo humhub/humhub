@@ -333,12 +333,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
 
         try {
             $this->getLdap()->bind($userName, $this->login->password);
-            $dn = $this->getLdap()->getCanonicalAccountName($userName, Ldap::ACCTNAME_FORM_DN);
-            
-            // Rebind with administrative DN
-            $this->getLdap()->bind();
-
-            return $dn;
+            return $this->getLdap()->getCanonicalAccountName($userName, Ldap::ACCTNAME_FORM_DN);
         } catch (LdapException $ex) {
             // User not found in LDAP
         }

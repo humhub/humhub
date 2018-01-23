@@ -5,10 +5,6 @@ use yii\helpers\Html;
 use humhub\widgets\GridView;
 ?>
 <div class="panel-body">
-    <div class="pull-right">
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.views_groups_index', "Create new group"), Url::to(['edit']), ['class' => 'btn btn-sm btn-success']); ?>
-    </div>
-    
     <h4><?= Yii::t('AdminModule.views_group_index', 'Manage groups'); ?></h4>
 
     <div class="help-block">
@@ -19,6 +15,9 @@ use humhub\widgets\GridView;
 <?= \humhub\modules\admin\widgets\GroupMenu::widget(); ?>
 
 <div class="panel-body">
+    <div class="pull-right">
+        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.views_groups_index', "Create new group"), Url::to(['edit']), ['class' => 'btn btn-success']); ?>
+    </div>
 
     <?php
     echo GridView::widget([
@@ -38,13 +37,20 @@ use humhub\widgets\GridView;
                 }
             ],
             [
-                'class' => \humhub\libs\ActionColumn::class,
-                'actions' => [
-                    Yii::t('AdminModule.user', 'Settings') => ['edit'],
-                    '---',
-                    Yii::t('AdminModule.user', "Permissions") => ['manage-permissions'],
-                    Yii::t('AdminModule.user', "Members") => ['manage-group-users'],
-                ]
+                'header' => Yii::t('AdminModule.views_group_index', 'Actions'),
+                'class' => 'yii\grid\ActionColumn',
+                'options' => ['width' => '80px'],
+                'buttons' => [
+                    'view' => function() {
+                        return;
+                    },
+                    'delete' => function() {
+                        return;
+                    },
+                    'update' => function($url, $model) {
+                        return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(['edit', 'id' => $model->id]), ['class' => 'btn btn-primary btn-xs tt']);
+                    },
+                ],
             ],
         ],
     ]);

@@ -94,7 +94,6 @@ class AppAsset extends AssetBundle
         'humhub\assets\PagedownConverterAsset',
         'humhub\assets\ClipboardJsAsset',
         'humhub\assets\ImagesLoadedAsset',
-        'humhub\assets\SocketIoAsset',
     ];
 
     /**

@@ -10,8 +10,7 @@ namespace humhub\modules\live\jobs;
 
 use Yii;
 use humhub\modules\live\models\Live;
-use humhub\modules\queue\ActiveJob;
-use humhub\modules\live\driver\Poll;
+use humhub\components\queue\ActiveJob;
 
 /**
  * DatabaseCleanup removes old live events
@@ -27,9 +26,7 @@ class DatabaseCleanup extends ActiveJob
      */
     public function run()
     {
-        if (Yii::$app->live->driver instanceof Poll) {
-            Live::deleteAll('created_at +' . Yii::$app->live->maxLiveEventAge . ' < ' . time());
-        }
+        Live::deleteAll('created_at +' . Yii::$app->getModule('live')->maxLiveEventAge . ' < ' . time());
     }
 
 }

@@ -17,7 +17,6 @@ use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Membership;
-use humhub\modules\space\helpers\MembershipHelper;
 
 /**
  * This is the model class for table "user".
@@ -50,7 +49,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     const STATUS_DISABLED = 0;
     const STATUS_ENABLED = 1;
     const STATUS_NEED_APPROVAL = 2;
-    const STATUS_SOFT_DELETED = 3;
 
     /**
      * Visibility Modes
@@ -72,11 +70,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     const EVENT_CHECK_VISIBILITY = 'checkVisibility';
 
     /**
-     * @event UserEvent an event that is triggered when the user is soft deleted (without contents) and also before complete deletion.
-     */
-    const EVENT_BEFORE_SOFT_DELETE = 'beforeSoftDelete';
-
-    /**
      * A initial group for the user assigned while registration.
      * @var type
      */
@@ -86,17 +79,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      * @var boolean is system admin (cached)
      */
     private $_isSystemAdmin = null;
-
-    /**
-     * @inheritdoc
-     */
-    public $controllerBehavior = \humhub\modules\user\behaviors\ProfileController::class;
-
-    /**
-     *
-     * @var type 
-     */
-    public $defaultRoute = '/user/profile';
 
     /**
      * @inheritdoc
@@ -212,16 +194,13 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function behaviors()
     {
         return array(
-            \humhub\components\behaviors\GUID::class,
-            \humhub\modules\content\components\behaviors\SettingsBehavior::class,
-            \humhub\modules\user\behaviors\Followable::class,
-            \humhub\modules\content\components\behaviors\CompatModuleManager::class
+            \humhub\components\behaviors\GUID::className(),
+            \humhub\modules\content\components\behaviors\SettingsBehavior::className(),
+            \humhub\modules\user\behaviors\Followable::className(),
+            \humhub\modules\user\behaviors\UserModelModules::className()
         );
     }
 
@@ -360,38 +339,24 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function beforeDelete()
     {
-        $this->softDelete();
-
-        if ($this->profile !== null) {
-            $this->profile->delete();
+        // We don't allow deletion of users who owns a space - validate that
+        foreach (Membership::GetUserSpaces($this->id, false) as $space) {
+            if ($space->isSpaceOwner($this->id)) {
+                throw new Exception('Tried to delete a user (' . $this->id . ') which is owner of a space (' . $space->id . ')!');
+            }
         }
 
-        return parent::beforeDelete();
-    }
-
-    /**
-     * 
-     * @since 1.3
-     * @throws Exception
-     */
-    public function softDelete()
-    {
-        // Delete spaces which are owned by this user.
-        foreach (MembershipHelper::getOwnSpaces($this) as $space) {
-            $space->delete();
+        // Disable all enabled modules
+        foreach ($this->getAvailableModules() as $moduleId => $module) {
+            if ($this->isModuleEnabled($moduleId)) {
+                $this->disableModule($moduleId);
+            }
         }
 
-        $this->trigger(self::EVENT_BEFORE_SOFT_DELETE, new UserEvent(['user' => $this]));
-
-        if ($this->profile !== null) {
-            $this->profile->softDelete();
-        }
+        // Delete profile image
         $this->getProfileImage()->delete();
-        $this->getProfileBannerImage()->delete();
 
-        foreach ($this->moduleManager->getEnabled() as $module) {
-            $this->moduleManager->disable($module);
-        }
+        // Remove from search index
         Yii::$app->search->delete($this);
 
         // Cleanup related tables
@@ -399,16 +364,11 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         Follow::deleteAll(['user_id' => $this->id]);
         Follow::deleteAll(['object_model' => $this->className(), 'object_id' => $this->id]);
         Password::deleteAll(['user_id' => $this->id]);
+        Profile::deleteAll(['user_id' => $this->id]);
         GroupUser::deleteAll(['user_id' => $this->id]);
         Session::deleteAll(['user_id' => $this->id]);
 
-        $this->updateAttributes([
-            'email' => new \yii\db\Expression('NULL'),
-            'username' => 'deleted-' . $this->id,
-            'status' => User::STATUS_SOFT_DELETED
-        ]);
-
-        return true;
+        return parent::beforeDelete();
     }
 
     /**
@@ -631,7 +591,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         if (!$this->profile->isNewRecord) {
             foreach ($this->profile->getProfileFields() as $profileField) {
                 if ($profileField->searchable) {
-                    $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, false);
+                    $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, true);
                 }
             }
         }
@@ -639,6 +599,20 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         $this->trigger(self::EVENT_SEARCH_ADD, new \humhub\modules\search\events\SearchAddEvent($attributes));
 
         return $attributes;
+    }
+
+    public function createUrl($route = null, $params = [], $scheme = false)
+    {
+        if ($route === null) {
+            $route = '/user/profile';
+        }
+
+        array_unshift($params, $route);
+        if (!isset($params['uguid'])) {
+            $params['uguid'] = $this->guid;
+        }
+
+        return \yii\helpers\Url::toRoute($params, $scheme);
     }
 
     /**

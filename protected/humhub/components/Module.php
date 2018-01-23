@@ -8,12 +8,10 @@
 
 namespace humhub\components;
 
-use Yii;
-use yii\helpers\Json;
-use humhub\models\Setting;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\content\models\ContentContainerSetting;
+use Yii;
+use yii\helpers\Json;
 
 /**
  * Base Class for Modules / Extensions
@@ -250,9 +248,22 @@ class Module extends \yii\base\Module
             }
         }
 
-        ContentContainerSetting::deleteAll(['module_id' => $this->id]);
-        Setting::deleteAll(['module_id' => $this->id]);
-        
+        foreach (\humhub\modules\content\models\ContentContainerSetting::findAll(['module_id' => $this->id]) as $containerSetting) {
+            $containerSetting->delete();
+        }
+
+        foreach (\humhub\models\Setting::findAll(['module_id' => $this->id]) as $containerSetting) {
+            $containerSetting->delete();
+        }
+
+        foreach (\humhub\modules\user\models\Module::findAll(['module_id' => $this->id]) as $userModule) {
+            $userModule->delete();
+        }
+
+        foreach (\humhub\modules\space\models\Module::findAll(['module_id' => $this->id]) as $spaceModule) {
+            $spaceModule->delete();
+        }
+
         Yii::$app->moduleManager->disable($this);
     }
 
@@ -336,7 +347,7 @@ class Module extends \yii\base\Module
         if (is_dir($notificationDirectory)) {
             foreach (FileHelper::findFiles($notificationDirectory, ['recursive' => false,]) as $file) {
                 $notificationClass = $notificationNamespace . '\\' . basename($file, '.php');
-                if (is_subclass_of($notificationClass, BaseNotification::class)) {
+                if(is_subclass_of($notificationClass, BaseNotification::class)) {
                     $notifications[] = $notificationClass;
                 }
             }

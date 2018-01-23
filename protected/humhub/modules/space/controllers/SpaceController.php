@@ -36,6 +36,11 @@ class SpaceController extends ContentContainerController
     /**
      * @inheritdoc
      */
+    public $hideSidebar = false;
+
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [

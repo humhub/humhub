@@ -11,7 +11,6 @@ namespace humhub\modules\space\models;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
-use humhub\components\ActiveRecord;
 
 /**
  * This is the model class for table "space_membership".
@@ -33,7 +32,7 @@ use humhub\components\ActiveRecord;
  *
  * @property Space $space
  */
-class Membership extends ActiveRecord
+class Membership extends \yii\db\ActiveRecord
 {
 
     /**
@@ -156,7 +155,7 @@ class Membership extends ActiveRecord
     /**
      * Returns a list of all spaces of the given userId
      *
-     * @param int $userId the user id or empty for current user
+     * @param integer $userId the user id
      * @param boolean $cached use cached result if available
      * @return Space[] an array of spaces
      */

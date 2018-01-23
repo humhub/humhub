@@ -9,7 +9,6 @@
 namespace humhub\modules\search\commands;
 
 use Yii;
-use humhub\modules\search\jobs\RebuildIndex;
 
 /**
  * Search Tools
@@ -38,20 +37,6 @@ class SearchController extends \yii\console\Controller
         print "Rebuild search index: ";
         Yii::$app->search->rebuild();
         print "OK!\n\n";
-    }
-
-    /**
-     * Queue search index rebuild
-     */
-    public function actionQueueRebuild()
-    {
-        $job = new RebuildIndex();
-        if (\humhub\modules\queue\helpers\QueueHelper::isQueued($job)) {
-           print "Rebuild process is already queued or running!\n";
-           return;
-        }
-        
-        Yii::$app->queue->push($job);
     }
 
     /**

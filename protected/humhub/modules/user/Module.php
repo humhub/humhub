@@ -70,24 +70,18 @@ class Module extends \humhub\components\Module
      * @since 1.2
      */
     public $displayNameCallback = null;
-
+    
     /**
      * @var boolean defines if the user following is disabled or not.
      * @since 1.2 
      */
     public $disableFollow = false;
-
+    
     /**
      * @var boolean defines mark user e-mail field as required
      * @since 1.2.2 
      */
     public $emailRequired = true;
-
-    /**
-     * @var array profile field names to keep after user soft deletion
-     * @since 1.3
-     */
-    public $softDeleteKeepProfileFields = ['firstname', 'lastname'];
 
     /**
      * @inheritdoc
