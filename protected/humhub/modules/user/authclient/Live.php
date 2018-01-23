@@ -40,9 +40,8 @@ class Live extends \yii\authclient\clients\Live
                 } elseif (isset($attributes['emails']['account'])) {
                     return $attributes['emails']['account'];
                 }
-                return "";
+                return '';
             },
         ];
     }
-
 }

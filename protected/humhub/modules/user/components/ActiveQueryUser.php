@@ -32,7 +32,7 @@ class ActiveQueryUser extends ActiveQuery
 
     /**
      * Limit to active users
-     * 
+     *
      * @return ActiveQueryUser the query
      */
     public function active()
@@ -46,7 +46,7 @@ class ActiveQueryUser extends ActiveQuery
     /**
      * Returns only users that should appear in user lists or in the search results.
      * Also only active (enabled) users are returned.
-     * 
+     *
      * @since 1.2.3
      * @return ActiveQueryUser the query
      */
@@ -58,7 +58,7 @@ class ActiveQueryUser extends ActiveQuery
 
     /**
      * Adds default user order (e.g. by lastname)
-     * 
+     *
      * @return ActiveQueryUser the query
      */
     public function defaultOrder()
@@ -68,5 +68,4 @@ class ActiveQueryUser extends ActiveQuery
 
         return $this;
     }
-
 }

@@ -14,7 +14,7 @@ $followers = $user->getFollowers(User::find()->limit(16));
         <div class="panel-heading"><?php echo Yii::t('UserModule.widgets_views_userFollower', '<strong>User</strong> followers'); ?></div>
 
         <div class="panel-body">
-            <?php foreach ($followers as $follower): ?>
+            <?php foreach ($followers as $follower) : ?>
                 <a href="<?php echo $follower->getUrl(); ?>">
                     <img src="<?php echo $follower->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
@@ -41,7 +41,7 @@ $following = $user->getFollowingObjects(User::find()->limit(16));
         </div>
 
         <div class="panel-body">
-            <?php foreach ($following as $followingUser): ?>
+            <?php foreach ($following as $followingUser) : ?>
                 <a href="<?php echo $followingUser->getUrl(); ?>">
                     <img src="<?php echo $followingUser->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"

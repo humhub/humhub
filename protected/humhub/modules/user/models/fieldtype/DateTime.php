@@ -34,9 +34,9 @@ class DateTime extends BaseType
      */
     public function rules()
     {
-        return array(
-            array(['showTimePicker'], 'in', 'range' => array(0, 1))
-        );
+        return [
+            [['showTimePicker'], 'in', 'range' => [0, 1]]
+        ];
     }
 
     /**
@@ -44,20 +44,20 @@ class DateTime extends BaseType
      *
      * @return Array Form Definition
      */
-    public function getFormDefinition($definition = array())
+    public function getFormDefinition($definition = [])
     {
-        return parent::getFormDefinition(array(
-                    get_class($this) => array(
+        return parent::getFormDefinition([
+                    get_class($this) => [
                         'type' => 'form',
                         'title' => Yii::t('UserModule.models_ProfileFieldTypeDateTime', 'Date(-time) field options'),
-                        'elements' => array(
-                            'showTimePicker' => array(
+                        'elements' => [
+                            'showTimePicker' => [
                                 'type' => 'checkbox',
                                 'label' => Yii::t('UserModule.models_ProfileFieldTypeDateTime', 'Show date/time picker'),
                                 'class' => 'form-control',
-                            ),
-                        )
-        )));
+                            ],
+                        ]
+                    ]]);
     }
 
     /**
@@ -80,9 +80,9 @@ class DateTime extends BaseType
      * @param type $rules
      * @return type
      */
-    public function getFieldRules($rules = array())
+    public function getFieldRules($rules = [])
     {
-        $rules[] = array($this->profileField->internal_name, DbDateValidator::className(), 'format' => Yii::$app->formatter->dateInputFormat);
+        $rules[] = [$this->profileField->internal_name, DbDateValidator::className(), 'format' => Yii::$app->formatter->dateInputFormat];
         return parent::getFieldRules($rules);
     }
 
@@ -91,15 +91,15 @@ class DateTime extends BaseType
      */
     public function getFieldFormDefinition()
     {
-        return array($this->profileField->internal_name => array(
+        return [$this->profileField->internal_name => [
                 'type' => 'datetime',
                 'format' => Yii::$app->formatter->dateInputFormat,
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable),
-                'dateTimePickerOptions' => array(
+                'dateTimePickerOptions' => [
                     'pickTime' => ($this->showTimePicker)
-                )
-        ));
+                ]
+        ]];
     }
 
     /**
@@ -111,12 +111,10 @@ class DateTime extends BaseType
         $internalName = $this->profileField->internal_name;
         $date = $user->profile->$internalName;
 
-        if ($date == "" || $date == "0000-00-00 00:00:00")
-            return "";
+        if ($date == '' || $date == '0000-00-00 00:00:00') {
+            return '';
+        }
 
         return \yii\helpers\Html::encode($date);
     }
-
 }
-
-?>

@@ -46,5 +46,4 @@ class Google extends \yii\authclient\clients\GoogleOAuth
             },
         ];
     }
-
 }

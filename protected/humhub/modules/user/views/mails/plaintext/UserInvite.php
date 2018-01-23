@@ -3,4 +3,4 @@
 
 <?php echo Yii::t('UserModule.mail', 'Click here to create an account:'); ?>
 
-<?php echo $registrationUrl; ?>
+<?php echo $registrationUrl;

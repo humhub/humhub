@@ -135,5 +135,4 @@ class Collection extends Component
 
         return $clients;
     }
-
 }

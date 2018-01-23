@@ -368,5 +368,4 @@ class PermissionManager extends Component
         }
         return $permissions;
     }
-
 }

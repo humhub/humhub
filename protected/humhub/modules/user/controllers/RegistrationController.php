@@ -18,8 +18,8 @@ use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 
 /**
- * RegistrationController handles new user registration 
- * 
+ * RegistrationController handles new user registration
+ *
  * @since 1.1
  */
 class RegistrationController extends Controller
@@ -28,7 +28,7 @@ class RegistrationController extends Controller
     /**
      * @inheritdoc
      */
-    public $layout = "@humhub/modules/user/views/layouts/main";
+    public $layout = '@humhub/modules/user/views/layouts/main';
 
     /**
      * @inheritdoc
@@ -44,7 +44,7 @@ class RegistrationController extends Controller
 
     /**
      * Registration Form
-     * 
+     *
      * @return type
      * @throws HttpException
      */
@@ -110,7 +110,7 @@ class RegistrationController extends Controller
         $attributes = $authClient->getUserAttributes();
 
         if (!isset($attributes['id'])) {
-            throw new Exception("No user id given by authclient!");
+            throw new Exception('No user id given by authclient!');
         }
 
         $registration->enablePasswordForm = false;
@@ -124,7 +124,4 @@ class RegistrationController extends Controller
         $registration->getUser()->setAttributes($attributes, false);
         $registration->getProfile()->setAttributes($attributes, false);
     }
-
 }
-
-?>

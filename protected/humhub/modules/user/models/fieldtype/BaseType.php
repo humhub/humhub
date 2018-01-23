@@ -148,7 +148,7 @@ class BaseType extends Model
     public function getFormDefinition($definition = [])
     {
 
-        $definition[get_class($this)]['class'] = "fieldTypeSettings " . str_replace("\\", "_", get_class($this));
+        $definition[get_class($this)]['class'] = 'fieldTypeSettings ' . str_replace('\\', '_', get_class($this));
 
         return $definition;
     }
@@ -190,15 +190,16 @@ class BaseType extends Model
 
         foreach ($this->attributes as $attributeName => $value) {
             // Dont save profile field attribute
-            if ($attributeName == 'profileField')
+            if ($attributeName == 'profileField') {
                 continue;
+            }
 
             $data[$attributeName] = $this->$attributeName;
         }
         $this->profileField->field_type_config = Json::encode($data);
 
         if (!$this->profileField->save()) {
-            throw new Exception("Could not save profile field!");
+            throw new Exception('Could not save profile field!');
         }
         // Clear Database Schema
         Yii::$app->getDb()->getSchema()->getTableSchema(Profile::tableName(), true);
@@ -220,8 +221,9 @@ class BaseType extends Model
         $config = Json::decode($this->profileField->field_type_config);
         if (is_array($config)) {
             foreach ($config as $key => $value) {
-                if (property_exists($this, $key))
+                if (property_exists($this, $key)) {
                     $this->$key = $value;
+                }
             }
         }
     }
@@ -260,8 +262,9 @@ class BaseType extends Model
     public function getFieldRules($rules = [])
     {
 
-        if ($this->profileField->required)
+        if ($this->profileField->required) {
             $rules[] = [$this->profileField->internal_name, 'required'];
+        }
 
         return $rules;
     }
@@ -299,7 +302,7 @@ class BaseType extends Model
 
     /**
      * This method is called before the field value is stored in Profile table.
-     * 
+     *
      * @param string $value
      * @return string modified value
      */
@@ -314,11 +317,10 @@ class BaseType extends Model
 
     /**
      * Load field type default settings to the profile
-     * 
+     *
      * @param Profile $profile
      */
     public function loadDefaults(Profile $profile)
     {
     }
-
 }

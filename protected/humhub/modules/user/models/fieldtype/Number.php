@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\modules\user\models\Profile;
 use Yii;
 
 /**
@@ -40,9 +41,9 @@ class Number extends BaseType
      */
     public function rules()
     {
-        return array(
-            array(['maxValue', 'minValue'], 'integer', 'min' => 0),
-        );
+        return [
+            [['maxValue', 'minValue'], 'integer', 'min' => 0],
+        ];
     }
 
     /**
@@ -50,25 +51,26 @@ class Number extends BaseType
      *
      * @return Array Form Definition
      */
-    public function getFormDefinition($definition = array())
+    public function getFormDefinition($definition = [])
     {
-        return parent::getFormDefinition(array(
-                    get_class($this) => array(
+        return parent::getFormDefinition([
+                    get_class($this) => [
                         'type' => 'form',
                         'title' => Yii::t('UserModule.models_ProfileFieldTypeNumber', 'Number field options'),
-                        'elements' => array(
-                            'maxValue' => array(
+                        'elements' => [
+                            'maxValue' => [
                                 'label' => Yii::t('UserModule.models_ProfileFieldTypeNumber', 'Maximum value'),
                                 'type' => 'text',
                                 'class' => 'form-control',
-                            ),
-                            'minValue' => array(
+                            ],
+                            'minValue' => [
                                 'label' => Yii::t('UserModule.models_ProfileFieldTypeNumber', 'Minimum value'),
                                 'type' => 'text',
                                 'class' => 'form-control',
-                            ),
-                        )
-        )));
+                            ],
+                        ]
+                    ]
+        ]);
     }
 
     /**
@@ -77,8 +79,8 @@ class Number extends BaseType
     public function save()
     {
         $columnName = $this->profileField->internal_name;
-        if (!\humhub\modules\user\models\Profile::columnExists($columnName)) {
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'INT');
+        if (!Profile::columnExists($columnName)) {
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName, 'INT');
             Yii::$app->db->createCommand($query)->execute();
         }
 
@@ -91,22 +93,19 @@ class Number extends BaseType
      * @param type $rules
      * @return type
      */
-    public function getFieldRules($rules = array())
+    public function getFieldRules($rules = [])
     {
 
-        $rules[] = array($this->profileField->internal_name, 'integer');
+        $rules[] = [$this->profileField->internal_name, 'integer'];
 
         if ($this->maxValue) {
-            $rules[] = array($this->profileField->internal_name, 'integer', 'max' => $this->maxValue);
+            $rules[] = [$this->profileField->internal_name, 'integer', 'max' => $this->maxValue];
         }
 
         if ($this->minValue) {
-            $rules[] = array($this->profileField->internal_name, 'integer', 'min' => $this->minValue);
+            $rules[] = [$this->profileField->internal_name, 'integer', 'min' => $this->minValue];
         }
 
         return parent::getFieldRules($rules);
     }
-
 }
-
-?>

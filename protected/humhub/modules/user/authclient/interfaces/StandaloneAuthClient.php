@@ -23,7 +23,7 @@ interface StandaloneAuthClient
 
     /**
      * Custom auth action implementation
-     * 
+     *
      * @param AuthAction $authAction
      * @return Response response instance.
      */

@@ -12,7 +12,7 @@ use yii\web\AssetBundle;
 
 /**
  * Stream related assets.
- * 
+ *
  * @since 1.2
  * @author buddha
  */
@@ -37,5 +37,4 @@ class StreamAsset extends AssetBundle
     public $depends = [
         'humhub\modules\content\assets\ContentAsset'
     ];
-
 }

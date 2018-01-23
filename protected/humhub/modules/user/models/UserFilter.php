@@ -22,7 +22,7 @@ class UserFilter extends User
     /**
      * Returns a UserFilter instance for the given $user or the current user identity
      * if $user is not provided.
-     * 
+     *
      * @param type $user
      * @return type
      */
@@ -38,12 +38,12 @@ class UserFilter extends User
 
     /**
      * Default implementation for user picker filter.
-     * 
+     *
      * @param type $keywords
      * @param type $maxResults
      * @param type $friendsOnly
      * @param type $permission
-     * @deprecated since 1.2 use 
+     * @deprecated since 1.2 use
      * @return type
      */
     public function getUserPickerResult($keywords = null, $maxResults = null, $friendsOnly = false, $permission = null)
@@ -64,8 +64,8 @@ class UserFilter extends User
         if (!$friendsOnly && count($friends) < $maxResults) {
             $additionalUser = [];
             //Here we filter with permission since we don't want to have non friend user without the permission in the result
-            foreach($this->getUserByFilter($keywords, ($maxResults - count($friends)), $permission) as $user) {
-                if(!$this->containsUser($friends, $user)) {
+            foreach ($this->getUserByFilter($keywords, ($maxResults - count($friends)), $permission) as $user) {
+                if (!$this->containsUser($friends, $user)) {
                     $additionalUser[] = $user;
                 }
             }
@@ -77,8 +77,8 @@ class UserFilter extends User
     
     private function containsUser($userArr, $user)
     {
-        foreach($userArr as $currentUser) {
-            if($currentUser->id === $user->id) {
+        foreach ($userArr as $currentUser) {
+            if ($currentUser->id === $user->id) {
                 return true;
             }
         }
@@ -87,7 +87,7 @@ class UserFilter extends User
 
     /**
      * Searches for all active users by the given keyword and permission.
-     * 
+     *
      * @param type $keywords
      * @param type $maxResults
      * @param type $permission
@@ -100,7 +100,7 @@ class UserFilter extends User
 
     /**
      * Search for all active friends by the given keyword and permission
-     * 
+     *
      * @param type $keywords search keyword
      * @param type $maxResults
      * @param type $permission
@@ -116,7 +116,7 @@ class UserFilter extends User
      * are added to the provided $query. The $keyword filter can be used to filter the users
      * by email, username, firstname, lastname and title. By default this functions does not
      * consider inactive user.
-     * 
+     *
      * @param type $query
      * @param type $keywords
      * @param type $maxResults
@@ -139,7 +139,7 @@ class UserFilter extends User
         }
         
         //We filter active user by default
-        if(($active != null && $active) || $active == null) {
+        if (($active != null && $active) || $active == null) {
             $query->active();
         }
         
@@ -149,10 +149,10 @@ class UserFilter extends User
     public static function addKeywordFilter($query, $keyword)
     {
         $query->joinWith('profile');
-        $parts = explode(" ", $keyword);
+        $parts = explode(' ', $keyword);
         foreach ($parts as $part) {
             $query->andFilterWhere(
-                    ['or',
+                ['or',
                         ['like', 'user.email', $part],
                         ['like', 'user.username', $part],
                         ['like', 'profile.firstname', $part],
@@ -167,7 +167,7 @@ class UserFilter extends User
     /**
      * Returns a subset of the given array containing all users of the given set
      * which are permitted. If the permission is null this method returns the
-     * 
+     *
      * @param type $users
      * @param type $permission
      * @return type

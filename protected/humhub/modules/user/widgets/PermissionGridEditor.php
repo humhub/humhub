@@ -22,7 +22,7 @@ class PermissionGridEditor extends GridView
 {
 
     /**
-     * @var boolean hide not changeable permissions 
+     * @var boolean hide not changeable permissions
      */
     public $hideFixedPermissions = true;
 
@@ -39,7 +39,7 @@ class PermissionGridEditor extends GridView
     /**
      * @var string Group Id
      */
-    public $groupId = "";
+    public $groupId = '';
 
     /**
      * @var string used to group row headers
@@ -63,7 +63,7 @@ class PermissionGridEditor extends GridView
                 [
                     'label' => Yii::t('UserModule.widgets_PermissionGridEditor', 'Permission'),
                     'attribute' => 'title',
-                    'content' => function($data) {
+                    'content' => function ($data) {
                         $module = Yii::$app->getModule($data['moduleId']);
                         return Html::tag('strong', $data['title']) .
                                 '&nbsp;&nbsp;' .
@@ -76,7 +76,7 @@ class PermissionGridEditor extends GridView
                             'label' => '',
                             'class' => 'humhub\libs\DropDownGridColumn',
                             'attribute' => 'state',
-                            'readonly' => function($data) {
+                            'readonly' => function ($data) {
                                 return !($data['changeable']);
                             },
                             'submitAttributes' => [ 'permissionId', 'moduleId'],
@@ -99,22 +99,20 @@ class PermissionGridEditor extends GridView
                  */
 
                 parent::init();
-            }
+    }
 
             /**
              * Returns data provider
-             * 
+             *
              * @return \yii\data\DataProviderInterface
              */
-            protected function getDataProvider()
-            {
-                return new ArrayDataProvider([
-                    'allModels' => $this->permissionManager->createPermissionArray($this->groupId, $this->hideFixedPermissions),
-                    'sort' => [
-                        'attributes' => ['title', 'description', 'moduleId'],
-                    ],
-                ]);
-            }
-
-        }
-        
+    protected function getDataProvider()
+    {
+        return new ArrayDataProvider([
+        'allModels' => $this->permissionManager->createPermissionArray($this->groupId, $this->hideFixedPermissions),
+        'sort' => [
+        'attributes' => ['title', 'description', 'moduleId'],
+        ],
+        ]);
+    }
+}

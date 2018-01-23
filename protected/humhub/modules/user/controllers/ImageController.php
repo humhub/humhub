@@ -20,7 +20,7 @@ use humhub\modules\user\components\BaseAccountController;
 
 /**
  * ImageController handles user profile or user banner image modifications
- * 
+ *
  * @since 1.2
  * @author Luke
  */
@@ -64,7 +64,7 @@ class ImageController extends BaseAccountController
 
     /**
      * Uploads a new image
-     * 
+     *
      * @param string $type
      * @return \yii\web\Response the response
      */
@@ -98,7 +98,7 @@ class ImageController extends BaseAccountController
 
     /**
      * Crops a image
-     * 
+     *
      * @param string $type
      * @return \yii\web\Response the response
      */
@@ -131,7 +131,7 @@ class ImageController extends BaseAccountController
 
     /**
      * Delete an image
-     * 
+     *
      * @param string $type
      * @return \yii\web\Response the response
      */
@@ -152,7 +152,7 @@ class ImageController extends BaseAccountController
 
     /**
      * Returns the Profile Image
-     * 
+     *
      * @param string $type
      * @return ProfileImage|ProfileBannerImage
      * @throws HttpException
@@ -194,5 +194,4 @@ class ImageController extends BaseAccountController
 
         return parent::getUser();
     }
-
 }

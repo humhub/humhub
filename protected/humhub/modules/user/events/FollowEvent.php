@@ -28,5 +28,4 @@ class FollowEvent extends Event
      * @var \humhub\components\ActiveRecord the followed item
      */
     public $target;
-
 }

@@ -22,7 +22,7 @@ class Session extends DbSession
 
     /**
      * Returns all current logged in users.
-     * 
+     *
      * @return ActiveQueryUser
      */
     public static function getOnlineUsers()
@@ -78,5 +78,4 @@ class Session extends DbSession
 
         return true;
     }
-
 }

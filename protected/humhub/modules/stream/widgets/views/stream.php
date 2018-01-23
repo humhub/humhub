@@ -6,7 +6,7 @@ use yii\helpers\Url;
 
 $sorting = Yii::$app->getModule('stream')->settings->get('defaultSort', 'c');
 
-$contentIdData = ($contentId != "") ? 'data-stream-contentid="' . $contentId . '"' : '';
+$contentIdData = ($contentId != '') ? 'data-stream-contentid="' . $contentId . '"' : '';
 ?>
 
 <!-- Stream filter section -->
@@ -19,7 +19,7 @@ $contentIdData = ($contentId != "") ? 'data-stream-contentid="' . $contentId . '
             <a class="stream-filter dropdown-toggle" data-toggle="dropdown" href="#"><?= Yii::t('ContentModule.widgets_views_stream', 'Filter'); ?> <b
                     class="caret"></b></a>
             <ul class="dropdown-menu">
-                <?php foreach ($filters as $filterId => $filterTitle): ?>
+                <?php foreach ($filters as $filterId => $filterTitle) : ?>
                     <li>
                         <a href="#" class="wallFilter" id="<?= $filterId; ?>">
                             <i class="fa fa-square-o"></i> <?= $filterTitle; ?>

@@ -14,7 +14,7 @@ use humhub\modules\user\models\User;
 
 /**
  * Invite Form Model
- * 
+ *
  * @since 1.1
  */
 class Invite extends Model
@@ -45,16 +45,16 @@ class Invite extends Model
      */
     public function checkEmails($attribute, $params)
     {
-        if ($this->$attribute != "") {
+        if ($this->$attribute != '') {
             foreach ($this->getEmails() as $email) {
                 $validator = new \yii\validators\EmailValidator();
                 if (!$validator->validate($email)) {
-                    $this->addError($attribute, Yii::t('UserModule.invite', '{email} is not valid!', array("{email}" => $email)));
+                    $this->addError($attribute, Yii::t('UserModule.invite', '{email} is not valid!', ['{email}' => $email]));
                     continue;
                 }
 
                 if (User::findOne(['email' => $email]) != null) {
-                    $this->addError($attribute, Yii::t('UserModule.invite', '{email} is already registered!', array("{email}" => $email)));
+                    $this->addError($attribute, Yii::t('UserModule.invite', '{email} is already registered!', ['{email}' => $email]));
                     continue;
                 }
             }
@@ -63,7 +63,7 @@ class Invite extends Model
 
     /**
      * E-Mails entered in form
-     * 
+     *
      * @return array the emails
      */
     public function getEmails()
@@ -75,5 +75,4 @@ class Invite extends Model
 
         return $emails;
     }
-
 }

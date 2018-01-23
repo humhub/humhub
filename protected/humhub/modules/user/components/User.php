@@ -32,32 +32,36 @@ class User extends \yii\web\User
 
     public function isAdmin()
     {
-        if ($this->isGuest)
+        if ($this->isGuest) {
             return false;
+        }
 
         return $this->getIdentity()->isSystemAdmin();
     }
 
     public function getLanguage()
     {
-        if ($this->isGuest)
-            return "";
+        if ($this->isGuest) {
+            return '';
+        }
 
         return $this->getIdentity()->language;
     }
 
     public function getTimeZone()
     {
-        if ($this->isGuest)
-            return "";
+        if ($this->isGuest) {
+            return '';
+        }
 
         return $this->getIdentity()->time_zone;
     }
 
     public function getGuid()
     {
-        if ($this->isGuest)
-            return "";
+        if ($this->isGuest) {
+            return '';
+        }
 
         return $this->getIdentity()->guid;
     }
@@ -174,12 +178,11 @@ class User extends \yii\web\User
 
     /**
      * Checks if the system configuration allows access for guests
-     * 
+     *
      * @return boolean is guest access enabled and allowed
      */
     public static function isGuestAccessEnabled()
     {
         return (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess'));
     }
-
 }

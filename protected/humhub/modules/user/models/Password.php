@@ -90,13 +90,13 @@ class Password extends ActiveRecord
     
     /**
      * The new password has to be unequal to the current password.
-     * 
+     *
      * @param type $attribute
      * @param type $params
      */
     public function unequalsCurrentPassword($attribute, $params)
     {
-        if($this->newPassword === $this->currentPassword) {
+        if ($this->newPassword === $this->currentPassword) {
             $this->addError($attribute, Yii::t('UserModule.base', 'Your new password must not be equal your current password!'));
         }
     }
@@ -188,5 +188,4 @@ class Password extends ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
-
 }

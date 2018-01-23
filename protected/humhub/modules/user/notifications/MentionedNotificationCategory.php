@@ -33,5 +33,4 @@ class MentionedNotificationCategory extends NotificationCategory
     {
         return Yii::t('UserModule.notifications_FollowingNotificationCategory', 'Receive Notifications when someone mentioned you in a post.');
     }
-
 }

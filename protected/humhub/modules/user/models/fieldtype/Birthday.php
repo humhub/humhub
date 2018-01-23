@@ -31,14 +31,14 @@ class Birthday extends Date
     public function rules()
     {
         return [
-            [['defaultHideAge'], 'in', 'range' => array(0, 1)]
+            [['defaultHideAge'], 'in', 'range' => [0, 1]]
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function getFormDefinition($definition = array())
+    public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
                     get_class($this) => [
@@ -59,7 +59,7 @@ class Birthday extends Date
     {
         // Try create column name
         if (Profile::columnExists($this->profileField->internal_name)) {
-            $sql = "ALTER TABLE profile DROP `" . $this->profileField->internal_name . "_hide_year`;";
+            $sql = 'ALTER TABLE profile DROP `' . $this->profileField->internal_name . '_hide_year`;';
             Yii::$app->db->createCommand($sql)->execute();
         }
 
@@ -86,10 +86,10 @@ class Birthday extends Date
      * @param type $rules
      * @return type
      */
-    public function getFieldRules($rules = array())
+    public function getFieldRules($rules = [])
     {
 
-        $rules[] = [$this->profileField->internal_name . "_hide_year", 'in', 'range' => [0, 1]];
+        $rules[] = [$this->profileField->internal_name . '_hide_year', 'in', 'range' => [0, 1]];
         $rules[] = [$this->profileField->internal_name,
             \humhub\libs\DbDateValidator::className(),
             'format' => Yii::$app->formatter->dateInputFormat,
@@ -110,9 +110,9 @@ class Birthday extends Date
                 'format' => Yii::$app->formatter->dateInputFormat,
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable),
-                'yearRange' => (date('Y') - 100) . ":" . date('Y')
+                'yearRange' => (date('Y') - 100) . ':' . date('Y')
             ],
-            $this->profileField->internal_name . "_hide_year" => [
+            $this->profileField->internal_name . '_hide_year' => [
                 'type' => 'checkbox',
                 'readonly' => (!$this->profileField->editable)
             ],
@@ -121,9 +121,9 @@ class Birthday extends Date
 
     public function getLabels()
     {
-        $labels = array();
+        $labels = [];
         $labels[$this->profileField->internal_name] = Yii::t($this->profileField->getTranslationCategory(), $this->profileField->title);
-        $labels[$this->profileField->internal_name . "_hide_year"] = Yii::t($this->profileField->getTranslationCategory(), "Hide year in profile");
+        $labels[$this->profileField->internal_name . '_hide_year'] = Yii::t($this->profileField->getTranslationCategory(), 'Hide year in profile');
         return $labels;
     }
 
@@ -135,18 +135,19 @@ class Birthday extends Date
         $internalName = $this->profileField->internal_name;
         $birthdayDate = $user->profile->$internalName;
 
-        if ($birthdayDate == "" || $birthdayDate == "0000-00-00")
-            return "";
+        if ($birthdayDate == '' || $birthdayDate == '0000-00-00') {
+            return '';
+        }
 
-        $internalNameHideAge = $this->profileField->internal_name . "_hide_year";
+        $internalNameHideAge = $this->profileField->internal_name . '_hide_year';
 
         $hideAge = $user->profile->$internalNameHideAge;
         if (($hideAge === null && !$this->defaultHideAge) || $hideAge === 0) {
             $birthDate = new \DateTime($birthdayDate);
             $lifeSpan = $birthDate->diff(new \DateTime());
-            $age = Yii::t('UserModule.models_ProfileFieldTypeBirthday', '%y Years', array('%y' => $lifeSpan->format("%y")));
+            $age = Yii::t('UserModule.models_ProfileFieldTypeBirthday', '%y Years', ['%y' => $lifeSpan->format('%y')]);
 
-            return Yii::$app->formatter->asDate($birthdayDate, 'long') . " (" . $age . ")";
+            return Yii::$app->formatter->asDate($birthdayDate, 'long') . ' (' . $age . ')';
         } else {
             return Yii::$app->formatter->asDate($birthdayDate, 'dd. MMMM');
         }
@@ -162,7 +163,4 @@ class Birthday extends Date
             $profile->$internalNameHideAge = $this->defaultHideAge;
         }
     }
-
 }
-
-?>

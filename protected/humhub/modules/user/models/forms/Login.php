@@ -8,7 +8,6 @@ use humhub\modules\user\authclient\BaseFormAuth;
 
 use humhub\modules\user\libs\Ldap;
 
-
 /**
  * LoginForm is the model behind the login form.
  */
@@ -61,11 +60,11 @@ class Login extends Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'username' => Yii::t('UserModule.views_auth_login', 'username or email'),
             'password' => Yii::t('UserModule.views_auth_login', 'password'),
             'rememberMe' => Yii::t('UserModule.views_auth_login', 'Remember me'),
-        );
+        ];
     }
 
     /**
@@ -83,7 +82,7 @@ class Login extends Model
                     $this->authClient = $authClient;
 
                     // Delete password after successful auth
-                    $this->password = "";
+                    $this->password = '';
 
                     return;
                 }
@@ -95,9 +94,8 @@ class Login extends Model
         }
 
         // Delete current password value
-        $this->password = "";
+        $this->password = '';
 
         parent::afterValidate();
     }
-
 }

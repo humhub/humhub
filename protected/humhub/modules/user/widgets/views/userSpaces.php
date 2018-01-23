@@ -13,7 +13,7 @@ use yii\helpers\Html;
         </div>
 
         <div class="panel-body">
-            <?php foreach ($spaces as $space): ?>
+            <?php foreach ($spaces as $space) : ?>
                 <?php
                 echo \humhub\modules\space\widgets\Image::widget([
                     'space' => $space,
@@ -32,7 +32,7 @@ use yii\helpers\Html;
                 ?>
             <?php endforeach; ?>
 
-            <?php if ($showMoreLink): ?>
+            <?php if ($showMoreLink) : ?>
                 <br>
                 <br>
                 <?= Html::a('Show all', $user->createUrl('/user/profile/space-membership-list'), ['class' => 'pull-right btn btn-sm btn-default', 'data-target' => '#globalModal']); ?>

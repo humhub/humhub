@@ -24,12 +24,12 @@ class StreamQuery extends \yii\base\Model
     /**
      * Default filters
      */
-    const FILTER_FILES = "entry_files";
-    const FILTER_ARCHIVED = "entry_archived";
-    const FILTER_MINE = "entry_mine";
-    const FILTER_INVOLVED = "entry_userinvolved";
-    const FILTER_PRIVATE = "visibility_private";
-    const FILTER_PUBLIC = "visibility_public";
+    const FILTER_FILES = 'entry_files';
+    const FILTER_ARCHIVED = 'entry_archived';
+    const FILTER_MINE = 'entry_mine';
+    const FILTER_INVOLVED = 'entry_userinvolved';
+    const FILTER_PRIVATE = 'visibility_private';
+    const FILTER_PUBLIC = 'visibility_public';
 
     /**
      * Default channels
@@ -44,7 +44,7 @@ class StreamQuery extends \yii\base\Model
 
     /**
      * Can be set to filter specific content types.
-     * 
+     *
      * @var array Content type filter
      */
     protected $_includes;
@@ -56,7 +56,7 @@ class StreamQuery extends \yii\base\Model
 
     /**
      * Can be set to filter out specific content types.
-     * 
+     *
      * @var array Content type filter
      */
     protected $_excludes;
@@ -75,46 +75,46 @@ class StreamQuery extends \yii\base\Model
 
     /**
      * Can be set to request a single content instance.
-     * @var int 
+     * @var int
      */
     public $contentId;
 
     /**
      * Start contentId used for stream "pagination".
-     * @var int 
+     * @var int
      */
     public $from = 0;
 
     /**
      * Stream sorting default = SORT_CREATED_AT;
-     * @var string 
+     * @var string
      */
     public $sort;
 
     /**
      * Result count limit.
-     * @var int 
+     * @var int
      */
     public $limit;
 
     /**
      * Array of stream filters to apply to the query.
      * There are the following filter available:
-     * 
+     *
      *  - 'entry_files': Filters content with attached files
      *  - 'entry_mine': Filters only content created by the query $user
      *  - 'entry_userinvovled': Filter content the query $user is involved
      *  - 'visibility_private': Filter only private content
      *  - 'visibility_public': Filter only public content
      *
-     * @var array 
+     * @var array
      */
     public $filters = [];
 
     /**
      * The content query.
-     * 
-     * @var \yii\db\ActiveQuery 
+     *
+     * @var \yii\db\ActiveQuery
      */
     protected $_query;
 
@@ -136,7 +136,7 @@ class StreamQuery extends \yii\base\Model
 
     /**
      * Static initializer.
-     * 
+     *
      * @param array|string|int $types either an array of ContentActiveRecord classnames or single classname or single contentId or null.
      * @return StreamQuery
      */
@@ -192,7 +192,7 @@ class StreamQuery extends \yii\base\Model
     {
         if (!is_string($filters)) {
             $this->filters[] = $filters;
-        } else if (is_array($filters)) {
+        } elseif (is_array($filters)) {
             $this->filters = \yii\helpers\ArrayHelper::merge($this->filters, $filters);
         }
         return $this;
@@ -202,7 +202,7 @@ class StreamQuery extends \yii\base\Model
     {
         if (is_string($includes)) {
             $this->_includes = [$includes];
-        } else if (is_array($includes)) {
+        } elseif (is_array($includes)) {
             $this->_includes = $includes;
         }
 
@@ -213,7 +213,7 @@ class StreamQuery extends \yii\base\Model
     {
         if (is_string($types)) {
             $this->_excludes = [$types];
-        } else if (is_array($types)) {
+        } elseif (is_array($types)) {
             $this->_excludes = $types;
         }
 
@@ -287,8 +287,8 @@ class StreamQuery extends \yii\base\Model
 
     protected function checkSort()
     {
-        if(empty($this->sort) || !in_array($this->sort, [static::SORT_CREATED_AT, static::SORT_UPDATED_AT])) {
-           $this->sort = Yii::$app->getModule('stream')->settings->get('defaultSort', static::SORT_CREATED_AT);
+        if (empty($this->sort) || !in_array($this->sort, [static::SORT_CREATED_AT, static::SORT_UPDATED_AT])) {
+            $this->sort = Yii::$app->getModule('stream')->settings->get('defaultSort', static::SORT_CREATED_AT);
         }
     }
 
@@ -334,17 +334,19 @@ class StreamQuery extends \yii\base\Model
             if (!empty($this->from)) {
                 $this->_query->andWhere(
                     ['or',
-                        "content.stream_sort_date < (SELECT updated_at FROM content wd WHERE wd.id=:from)",
+                        'content.stream_sort_date < (SELECT updated_at FROM content wd WHERE wd.id=:from)',
                         ['and',
-                            "content.stream_sort_date = (SELECT updated_at FROM content wd WHERE wd.id=:from)",
-                            "content.id > :from"
+                            'content.stream_sort_date = (SELECT updated_at FROM content wd WHERE wd.id=:from)',
+                            'content.id > :from'
                         ],
-                    ], [':from' => $this->from]);
+                    ],
+                    [':from' => $this->from]
+                );
             }
         } else {
             $this->_query->orderBy('content.id DESC');
             if (!empty($this->from)) {
-                $this->_query->andWhere("content.id < :from", [':from' => $this->from]);
+                $this->_query->andWhere('content.id < :from', [':from' => $this->from]);
             }
         }
     }
@@ -392,7 +394,7 @@ class StreamQuery extends \yii\base\Model
         // Visibility filters
         if ($this->isFilter(self::FILTER_PRIVATE)) {
             $this->filterPrivate();
-        } else if ($this->isFilter(self::FILTER_PUBLIC)) {
+        } elseif ($this->isFilter(self::FILTER_PUBLIC)) {
             $this->filterPublic();
         }
     }
@@ -400,7 +402,7 @@ class StreamQuery extends \yii\base\Model
     protected function filterFile()
     {
         $fileSelector = (new \yii\db\Query())
-                ->select(["id"])
+                ->select(['id'])
                 ->from('file')
                 ->where('file.object_model=content.object_model AND file.object_id=content.object_id')
                 ->limit(1);
@@ -412,7 +414,7 @@ class StreamQuery extends \yii\base\Model
 
     protected function unFilterArchived()
     {
-        $this->_query->andWhere("(content.archived != 1 OR content.archived IS NULL)");
+        $this->_query->andWhere('(content.archived != 1 OR content.archived IS NULL)');
         return $this;
     }
 
@@ -428,7 +430,7 @@ class StreamQuery extends \yii\base\Model
     {
         if ($this->user) {
             $this->_query->leftJoin('user_follow', 'content.object_model=user_follow.object_model AND content.object_id=user_follow.object_id AND user_follow.user_id = :userId', ['userId' => $this->user->id]);
-            $this->_query->andWhere("user_follow.id IS NOT NULL");
+            $this->_query->andWhere('user_follow.id IS NOT NULL');
         }
         return $this;
     }
@@ -457,8 +459,8 @@ class StreamQuery extends \yii\base\Model
         }
 
         if (count($this->_includes) === 1) {
-            $this->_query->andWhere(["content.object_model" => $this->_includes[0]]);
-        } else if (!empty($this->_includes)) {
+            $this->_query->andWhere(['content.object_model' => $this->_includes[0]]);
+        } elseif (!empty($this->_includes)) {
             $this->_query->andWhere(['IN', 'content.object_model', $this->_includes]);
         }
 
@@ -467,15 +469,15 @@ class StreamQuery extends \yii\base\Model
         }
 
         if (count($this->_excludes) === 1) {
-            $this->_query->andWhere(['!=', "content.object_model", $this->_excludes[0]]);
-        } else if (!empty($this->_excludes)) {
+            $this->_query->andWhere(['!=', 'content.object_model', $this->_excludes[0]]);
+        } elseif (!empty($this->_excludes)) {
             $this->_query->andWhere(['NOT IN', 'content.object_model', $this->_excludes]);
         }
     }
 
     /**
      * Sets the channel for this stream query
-     * 
+     *
      * @param string $channel
      * @return StreamQuery
      */
@@ -485,5 +487,4 @@ class StreamQuery extends \yii\base\Model
         $this->_query->andWhere(['content.stream_channel' => $channel]);
         return $this;
     }
-
 }

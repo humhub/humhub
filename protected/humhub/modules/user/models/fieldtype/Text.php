@@ -19,8 +19,8 @@ use Yii;
 class Text extends BaseType
 {
 
-    const VALIDATOR_EMAIL = "email";
-    const VALIDATOR_URL = "url";
+    const VALIDATOR_EMAIL = 'email';
+    const VALIDATOR_URL = 'url';
 
     /**
      * Minimum Text Length
@@ -71,11 +71,11 @@ class Text extends BaseType
      */
     public function rules()
     {
-        return array(
-            array(['default', 'minLength', 'maxLength', 'validator', 'regexp', 'regexpErrorMessage'], 'safe'),
-            array(['maxLength', 'minLength'], 'integer', 'min' => 1, 'max' => 255),
-            array(['default'], 'string', 'max' => 255),
-        );
+        return [
+            [['default', 'minLength', 'maxLength', 'validator', 'regexp', 'regexpErrorMessage'], 'safe'],
+            [['maxLength', 'minLength'], 'integer', 'min' => 1, 'max' => 255],
+            [['default'], 'string', 'max' => 255],
+        ];
     }
 
     /**
@@ -84,7 +84,7 @@ class Text extends BaseType
      * @param array $definition
      * @return Array Form Definition
      */
-    public function getFormDefinition($definition = array())
+    public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
                     get_class($this) => [
@@ -165,20 +165,20 @@ class Text extends BaseType
             $rules[] = [$this->profileField->internal_name, 'url'];
         }
 
-        if ($this->maxLength == "" || $this->maxLength > 255) {
+        if ($this->maxLength == '' || $this->maxLength > 255) {
             $rules[] = [$this->profileField->internal_name, 'string', 'max' => 255];
         } else {
             $rules[] = [$this->profileField->internal_name, 'string', 'max' => $this->maxLength];
         }
 
-        if ($this->minLength != "") {
+        if ($this->minLength != '') {
             $rules[] = [$this->profileField->internal_name, 'string', 'min' => $this->minLength];
         }
 
-        if ($this->regexp != "") {
+        if ($this->regexp != '') {
             $errorMsg = $this->regexpErrorMessage;
-            if ($errorMsg == "") {
-                $errorMsg = "Invalid!";
+            if ($errorMsg == '') {
+                $errorMsg = 'Invalid!';
             }
             $rules[] = [$this->profileField->internal_name, 'match', 'pattern' => $this->regexp, 'message' => $errorMsg];
         }
@@ -194,12 +194,9 @@ class Text extends BaseType
         if (!$raw && $this->validator == self::VALIDATOR_EMAIL) {
             return \yii\helpers\Html::a(\yii\helpers\Html::encode($value), 'mailto:' . $value);
         } elseif (!$raw && $this->validator == self::VALIDATOR_URL) {
-            return \yii\helpers\Html::a(\yii\helpers\Html::encode($value), $value, array('target' => '_blank'));
+            return \yii\helpers\Html::a(\yii\helpers\Html::encode($value), $value, ['target' => '_blank']);
         }
 
         return \yii\helpers\Html::encode($value);
     }
-
 }
-
-?>
