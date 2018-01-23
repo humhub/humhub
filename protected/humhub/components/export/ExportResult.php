@@ -12,8 +12,8 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Yii;
 use yii\base\Object;
+use yii\helpers\FileHelper;
 use yii\web\Response;
-use humhub\modules\file\libs\FileHelper;
 
 /**
  * ExportResult represents SpreadsheetExport result.
@@ -67,14 +67,13 @@ class ExportResult extends Object
 
     /**
      * @return string files directory name
+     * @throws \yii\base\Exception
      */
     public function getTempFileName()
     {
         if ($this->tempFileName === null) {
             $basePath = Yii::getAlias($this->basePath);
-            if (!is_dir($basePath)) {
-                FileHelper::createDirectory($basePath);
-            }
+            FileHelper::createDirectory($basePath);
             $this->tempFileName = $basePath . DIRECTORY_SEPARATOR . uniqid(time(), true);
         }
         return $this->tempFileName;
@@ -132,6 +131,7 @@ class ExportResult extends Object
      * @return \yii\web\Response application response instance.
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     * @throws \yii\base\Exception
      */
     public function send($options = [])
     {
