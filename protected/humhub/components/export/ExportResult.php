@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -12,6 +13,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Yii;
 use yii\base\Object;
 use yii\web\Response;
+use humhub\modules\file\libs\FileHelper;
 
 /**
  * ExportResult represents SpreadsheetExport result.
@@ -23,31 +25,36 @@ use yii\web\Response;
  */
 class ExportResult extends Object
 {
+
     /**
      * @var string base path for the temporary directory and files.
      */
     public $basePath = '@runtime/data_export';
+
     /**
      * @var string base name, which should be used for the created files.
      */
     public $fileBaseName = 'export';
+
     /**
      * @var string
      */
     public $writerType = 'csv';
+
     /**
      * @var Spreadsheet Spreadsheet instance
      */
     private $spreadsheet;
+
     /**
      * @var string temporary files directory name
      */
     private $tempFileName;
+
     /**
      * @var string name of the result file.
      */
     private $resultFileName;
-
 
     /**
      * Destructor.
@@ -64,7 +71,11 @@ class ExportResult extends Object
     public function getTempFileName()
     {
         if ($this->tempFileName === null) {
-            $this->tempFileName = Yii::getAlias($this->basePath) . DIRECTORY_SEPARATOR . uniqid(time(), true);
+            $basePath = Yii::getAlias($this->basePath);
+            if (!is_dir($basePath)) {
+                FileHelper::createDirectory($basePath);
+            }
+            $this->tempFileName = $basePath . DIRECTORY_SEPARATOR . uniqid(time(), true);
         }
         return $this->tempFileName;
     }
@@ -114,7 +125,6 @@ class ExportResult extends Object
         $writer->save($file);
     }
 
-
     /**
      * Prepares response for sending a result file to the browser.
      * Note: this method works only while running web application.
@@ -132,4 +142,5 @@ class ExportResult extends Object
 
         return $response->sendFile($this->getTempFileName(), $this->getResultFileName(), $options);
     }
+
 }
