@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -35,15 +35,15 @@ class UrlRule extends Object implements UrlRuleInterface
      */
     public function createUrl($manager, $route, $params)
     {
-        if (isset($params['cguid'])) {
+        if (isset($params['sguid'])) {
             if ($route == $this->defaultRoute) {
                 $route = '';
             }
 
-            $urlPart = static::getUrlBySpaceGuid($params['cguid']);
+            $urlPart = static::getUrlBySpaceGuid($params['sguid']);
             if ($urlPart !== null) {
                 $url = "s/" . urlencode($urlPart) . "/" . $route;
-                unset($params['cguid']);
+                unset($params['sguid']);
 
                 if (!empty($params) && ($query = http_build_query($params)) !== '') {
                     $url .= '?' . $query;
@@ -70,7 +70,7 @@ class UrlRule extends Object implements UrlRuleInterface
                     }
 
                     $params = $request->get();
-                    $params['cguid'] = $space->guid;
+                    $params['sguid'] = $space->guid;
 
                     return [$parts[2], $params];
                 }
@@ -94,11 +94,10 @@ class UrlRule extends Object implements UrlRuleInterface
         $space = Space::findOne(['guid' => $guid]);
         if ($space !== null) {
             static::$spaceUrlMap[$space->guid] = ($space->url != '') ? $space->url : $space->guid;
-        } else {
-            static::$spaceUrlMap[$space->guid] = null;
+            return static::$spaceUrlMap[$space->guid];
         }
 
-        return static::$spaceUrlMap[$guid];
+        return null;
     }
 
 }

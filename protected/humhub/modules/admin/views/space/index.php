@@ -1,56 +1,81 @@
 <?php
 
 use yii\helpers\Html;
-use humhub\widgets\ActiveForm;
+use humhub\modules\space\models\Space;
 use humhub\modules\admin\widgets\SpaceGridView;
-use humhub\modules\admin\grid\SpaceActionColumn;
-use humhub\modules\admin\grid\SpaceTitleColumn;
-use humhub\modules\admin\grid\SpaceImageColumn;
-use humhub\modules\admin\models\SpaceSearch;
 ?>
-
-<?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.space', 'Add new space'), ['/space/create'], ['class' => 'btn btn-sm btn-success pull-right', 'data-target' => '#globalModal']); ?>
 
 <h4><?= Yii::t('AdminModule.views_space_index', 'Overview'); ?></h4>
 <div class="help-block">
     <?= Yii::t('AdminModule.views_space_index', 'This overview contains a list of each space with actions to view, edit and delete spaces.'); ?>
 </div>
 
-<br />
-<?php $form = ActiveForm::begin(['method' => 'get']); ?>
-<div class="row">
-    <div class="col-md-8">
-        <div class="input-group">
-            <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.space', 'Search by name, description, id or owner.')]); ?>
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-            </span>
-        </div>     
-    </div>
-    <div class="col-md-4">
-        <?= Html::activeDropDownList($searchModel, 'visibility', SpaceSearch::getVisibilityAttributes(), ['class' => 'form-control', 'onchange' => 'this.form.submit()']); ?>
-    </div>
-</div>
-<?php ActiveForm::end(); ?>
-
-
 <div class="table-responsive">
-    <?=
-    SpaceGridView::widget([
+    <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.space', 'Add new space'), ['/space/create'], ['class' => 'btn btn-success pull-right', 'data-target' => '#globalModal']); ?>
+    <?php
+    $visibilities = [
+        Space::VISIBILITY_NONE => Yii::t('SpaceModule.base', 'Private (Invisible)'),
+        Space::VISIBILITY_REGISTERED_ONLY => Yii::t('SpaceModule.base', 'Public (Visible)'),
+        Space::VISIBILITY_ALL => 'All',
+    ];
+
+    $joinPolicies = [
+        Space::JOIN_POLICY_NONE => Yii::t('SpaceModule.base', 'Only by invite'),
+        Space::JOIN_POLICY_APPLICATION => Yii::t('SpaceModule.base', 'Invite and request'),
+        Space::JOIN_POLICY_FREE => Yii::t('SpaceModule.base', 'Everyone can enter'),
+    ];
+
+    echo SpaceGridView::widget([
         'dataProvider' => $dataProvider,
-        'summary' => '',
+        'filterModel' => $searchModel,
         'columns' => [
-            ['class' => SpaceImageColumn::class],
-            ['class' => SpaceTitleColumn::class],
-            'memberCount',
-            ['class' => \humhub\modules\user\grid\ImageColumn::class, 'userAttribute' => 'ownerUser'],
             [
-                'attribute' => 'ownerUser.profile.lastname',
-                'class' => \humhub\modules\user\grid\DisplayNameColumn::class,
-                'userAttribute' => 'ownerUser',
-                'label' => 'Owner'
+                'attribute' => 'id',
+                'options' => ['width' => '40px'],
+                'format' => 'raw',
+                'value' => function($data) {
+                    return $data->id;
+                },
             ],
-            ['class' => SpaceActionColumn::class],
+            'name',
+            [
+                'attribute' => 'visibility',
+                'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'visibility', array_merge(['' => ''], $visibilities)),
+                'options' => ['width' => '40px'],
+                'format' => 'raw',
+                'value' => function($data) use ($visibilities) {
+                    if (isset($visibilities[$data->visibility]))
+                        return $visibilities[$data->visibility];
+                        return Html::encode($data->visibility);
+                    },
+            ],
+            [
+                'attribute' => 'join_policy',
+                'options' => ['width' => '40px'],
+                'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'join_policy', array_merge(['' => ''], $joinPolicies)),
+                'format' => 'raw',
+                'value' => function($data) use ($joinPolicies) {
+                    if (isset($joinPolicies[$data->join_policy]))
+                        return $joinPolicies[$data->join_policy];
+                        return Html::encode($data->join_policy);
+                    },
+            ],
+            [
+                'header' => Yii::t('AdminModule.views_space_index', 'Actions'),
+                'class' => 'yii\grid\ActionColumn',
+                'options' => ['width' => '80px'],
+                'buttons' => [
+                    'view' => function($url, $model) {
+                        return Html::a('<i class="fa fa-eye"></i>', $model->getUrl(), ['class' => 'btn btn-primary btn-xs tt']);
+                    },
+                    'update' => function($url, $model) {
+                        return Html::a('<i class="fa fa-pencil"></i>', $model->createUrl('/space/manage'), ['class' => 'btn btn-primary btn-xs tt']);
+                    },
+                    'delete' => function($url, $model) {
+                        return Html::a('<i class="fa fa-times"></i>', $model->createUrl('/space/manage/default/delete'), ['class' => 'btn btn-danger btn-xs tt']);
+                    }
+                ],
+            ],
         ],
     ]);
     ?>

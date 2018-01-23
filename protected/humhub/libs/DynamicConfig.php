@@ -9,7 +9,6 @@
 namespace humhub\libs;
 
 use Yii;
-use yii\base\Object;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -17,7 +16,7 @@ use yii\helpers\ArrayHelper;
  *
  * @author luke
  */
-class DynamicConfig extends Object
+class DynamicConfig extends \yii\base\Object
 {
 
     /**
@@ -27,7 +26,7 @@ class DynamicConfig extends Object
      */
     public static function merge($new)
     {
-        $config = ArrayHelper::merge(self::load(), $new);
+        $config = \yii\helpers\ArrayHelper::merge(self::load(), $new);
         self::save($config);
     }
 
@@ -50,7 +49,7 @@ class DynamicConfig extends Object
         $config = eval($configContent);
 
         if (!is_array($config))
-            return [];
+            return array();
 
         return $config;
     }
@@ -62,14 +61,15 @@ class DynamicConfig extends Object
      */
     public static function save($config)
     {
-        $content = '<' . '?php return ';
+        $content = "<" . "?php return ";
         $content .= var_export($config, true);
-        $content .= '; ?' . '>';
+        $content .= "; ?" . ">";
 
         $configFile = self::getConfigFilePath();
         file_put_contents($configFile, $content);
 
         if (function_exists('opcache_invalidate')) {
+            opcache_reset();
             opcache_invalidate($configFile);
         }
 
@@ -91,14 +91,14 @@ class DynamicConfig extends Object
 
         // Add Default language
         $defaultLanguage = Yii::$app->settings->get('defaultLanguage');
-        if ($defaultLanguage !== null && $defaultLanguage != '') {
+        if ($defaultLanguage !== null && $defaultLanguage != "") {
             $config['language'] = Yii::$app->settings->get('defaultLanguage');
         } else {
             $config['language'] = Yii::$app->language;
         }
 
         $timeZone = Yii::$app->settings->get('timeZone');
-        if ($timeZone != '') {
+        if ($timeZone != "") {
             $config['timeZone'] = $timeZone;
             $config['components']['formatter']['defaultTimeZone'] = $timeZone;
             $config['components']['formatterApp']['defaultTimeZone'] = $timeZone;
@@ -118,22 +118,17 @@ class DynamicConfig extends Object
                 'keyPrefix' => Yii::$app->id,
                 'useApcu' => (function_exists('apcu_add'))
             ];
-        } elseif ($cacheClass === \yii\redis\Cache::class) {
-            $config['components']['cache'] = [
-                'class' => \yii\redis\Cache::class,
-                'keyPrefix' => Yii::$app->id,
-            ];
         }
 
         // Add User settings
-        $config['components']['user'] = [];
+        $config['components']['user'] = array();
         if (Yii::$app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
             $config['components']['user']['authTimeout'] = Yii::$app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec');
         }
 
         // Install Mail Component
         $mail = [];
-        $mail['transport'] = [];
+        $mail['transport'] = array();
         if (Yii::$app->settings->get('mailer.transportType') == 'smtp') {
             $mail['transport']['class'] = 'Swift_SmtpTransport';
 

@@ -55,7 +55,7 @@ humhub.module('ui.additions', function (module, require, $) {
             if (options.filter && !options.filter.indexOf(id)) {
                 return;
             }
-
+            
             try {
                 module.apply($element, id);
             } catch (e) {
@@ -79,12 +79,12 @@ humhub.module('ui.additions', function (module, require, $) {
         }
 
         var $match = $element.find(addition.selector).addBack(addition.selector);
-
+        
         // only apply addition if we actually find a match
-        if (!$match.length) {
+        if(!$match.length) {
             return;
         }
-
+        
         addition.handler.apply($match, [$match, $element]);
     };
 
@@ -92,34 +92,14 @@ humhub.module('ui.additions', function (module, require, $) {
         event.on('humhub:ready', function (evt) {
             module.applyTo($('body'));
         });
-
-        require('action').registerHandler('copyToClipboard', function (evt) {
-            clipboard.writeText(evt.$target.text()).then(function () {
+        
+        require('action').registerHandler('copyToClipboard', function(evt) {
+            clipboard.writeText(evt.$target.text()).then(function() {
                 require('ui.status').success(module.text('success.clipboard'));
-            }).catch(function (err) {
+            }).catch(function(err) {
                 require('ui.status').error(module.text('error.clipboard'), true);
             });
         });
-
-        // Workaround: Bootstrap bug with dropdowns in responsive tables
-        // See: https://github.com/twbs/bootstrap/issues/11037
-        $(document).on('shown.bs.dropdown', '.table-responsive', function (e) {
-            var t = $(this),
-                    m = $(e.target).find('.dropdown-menu'),
-                    tb = t.offset().top + t.height(),
-                    mb = m.offset().top + m.outerHeight(true),
-                    d = 20; // Space for shadow + scrollbar.   
-            if (t[0].scrollWidth > t.innerWidth()) {
-                if (mb + d > tb) {
-                    t.css('padding-bottom', ((mb + d) - tb));
-                }
-            } else {
-                t.css('overflow', 'visible');
-            }
-        }).on('hidden.bs.dropdown', '.table-responsive', function () {
-            $(this).css({'padding-bottom': '', 'overflow': ''});
-        });
-
 
         // workaround for jp-player since it sets display to inline which results in a broken view...
         $(document).on('click.humhub-jp-play', '.jp-play', function () {
@@ -130,9 +110,9 @@ humhub.module('ui.additions', function (module, require, $) {
         module.register('autosize', '.autosize', function ($match) {
             $match.autosize();
         });
-
+        
         module.register('select2', '[data-ui-select2]', function ($match) {
-            $match.select2({theme: "humhub"});
+            $match.select2({theme:"humhub"});
         });
 
         // Show tooltips on elements
@@ -162,7 +142,7 @@ humhub.module('ui.additions', function (module, require, $) {
             $match.loader();
         });
     };
-
+    
     var extend = function (id, handler, options) {
         options = options || {};
 
@@ -200,7 +180,7 @@ humhub.module('ui.additions', function (module, require, $) {
 
         // Jquery date picker div is not removed...
         $('#ui-datepicker-div').remove();
-
+        
         $('.popover').remove();
         $('.tooltip').remove();
     };
@@ -238,12 +218,12 @@ humhub.module('ui.additions', function (module, require, $) {
         var $node = $(node);
         node = $node[0];
         var observer = new MutationObserver(function (mutations) {
-            mutations.forEach(function (mutation) {
+            mutations.forEach(function(mutation) {
                 var $nodes = $(mutation.addedNodes).filter(function () {
                     return this.nodeType === 1; // filter out text nodes
                 });
 
-                $nodes.each(function () {
+                $nodes.each(function() {
                     var $this = $(this);
                     module.applyTo($this);
                 })

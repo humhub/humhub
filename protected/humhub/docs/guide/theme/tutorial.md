@@ -1,8 +1,10 @@
 Tutorial
 ========
 
+
 Foreword
 --------
+
 This quick tutorial shows you all necessary steps to create a custom **HumHub** theme.
 
 - Step 1: Create a theme folder ([Theme Folder Structure](structure.md))
@@ -12,21 +14,23 @@ This quick tutorial shows you all necessary steps to create a custom **HumHub** 
 
 Step 1: Create an own theme folder
 ---------------------------------
+
 - Go to the HumHub installation directory
 - Switch to the directory `themes`
 - Copy the folder `HumHub` and rename it to `Example`
 - Enable the new `Example` theme under `Administration -> Settings -> Appearance`
+
 
 Step 2: Adjust colors and build CSS 
 -----------------------------------
 
 ### Installing prerequisites 
 
-**Install NodeJS** 
+** Install NodeJS ** 
 
 See: https://nodejs.org/en/download/
 
-**Install LESS**
+** Install LESS **
 
 Open the command console and execute:
 
@@ -35,6 +39,7 @@ npm -g install less
 ```
 
 ### Modify theme colors
+
 Add modifed color variables to the file `/themes/Example/less/variables.less`.
 
 ```
@@ -47,6 +52,7 @@ Add modifed color variables to the file `/themes/Example/less/variables.less`.
 ```
 
 ### Compile LESS file
+
 Open the command console and change to the themes `less` directory
 
 ``` 
@@ -60,11 +66,13 @@ lessc build.less ../css/theme.css
 ```
 
 ### Test the result
+
 - Flush your browsers cache
 - Flush the HumHub cache (if enabled): `Administration -> Settings -> Advanced -> Cache -> Flush`
 - Fully reload the page
 
 ![Example](images/color-example.png)
+
 
 Step 3: Modify login template
 ------------------------------
@@ -72,9 +80,11 @@ Step 3: Modify login template
 In this step we're adding some text to the login template.
 
 ### Create a themed view file
+
 Copy the view file `humhub/modules/user/views/auth/login.php` to `Example/views/user/auth/login.php`
 
 ### Modify the view file
+
 Add some additional text below the application name.
 
 ```php
@@ -90,9 +100,11 @@ Add some additional text below the application name.
 ```
 
 Text Example:
+
 ![Example Text](images/modify-template.png)
 
 ### Result
+
 ![Result](images/modify-template-result.png)
  
 

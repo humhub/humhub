@@ -8,7 +8,7 @@
 
 namespace humhub\modules\admin\jobs;
 
-use humhub\modules\queue\ActiveJob;
+use humhub\components\queue\ActiveJob;
 use humhub\modules\admin\models\Log;
 
 /**

@@ -1,23 +1,15 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\admin\controllers;
 
-use Exception;
-use humhub\modules\admin\components\Controller;
-use humhub\modules\admin\models\forms\AuthenticationLdapSettingsForm;
-use humhub\modules\admin\models\forms\AuthenticationSettingsForm;
-use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\user\authclient\ZendLdapClient;
-use humhub\modules\user\libs\LdapHelper;
-use humhub\modules\user\models\Group;
 use Yii;
-use Zend\Ldap\Exception\LdapException;
-use Zend\Ldap\Ldap;
+use humhub\modules\admin\components\Controller;
 
 /**
  * ApprovalController handels new user approvals
@@ -42,8 +34,8 @@ class AuthenticationController extends Controller
         ]);
 
         $this->subLayout = '@admin/views/layouts/user';
-
-        return parent::init();
+        
+		return parent::init();
     }
 
     /**
@@ -52,48 +44,38 @@ class AuthenticationController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => ManageSettings::className()]
+            ['permissions' => \humhub\modules\admin\permissions\ManageSettings::className()]
         ];
     }
 
     /**
      * Returns a List of Users
-     * @return string
      */
     public function actionIndex()
     {
-        $form = new AuthenticationSettingsForm;
+        $form = new \humhub\modules\admin\models\forms\AuthenticationSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
         }
 
         // Build Group Dropdown
-        $groups = [
-            '' => Yii::t(
-                'AdminModule.controllers_SettingController',
-                'None - shows dropdown in user registration.'
-            )
-        ];
-
-        foreach (Group::find()->all() as $group) {
+        $groups = [];
+        $groups[''] = Yii::t('AdminModule.controllers_SettingController', 'None - shows dropdown in user registration.');
+        foreach (\humhub\modules\user\models\Group::find()->all() as $group) {
             if (!$group->is_admin_group) {
                 $groups[$group->id] = $group->name;
             }
         }
 
         return $this->render('authentication', [
-            'model' => $form,
-            'groups' => $groups
-        ]);
+			'model' => $form,
+			'groups' => $groups
+		]);
     }
 
-    /**
-     * Configure Ldap authentication
-     * @return string
-     */
     public function actionAuthenticationLdap()
     {
-        $form = new AuthenticationLdapSettingsForm;
+        $form = new \humhub\modules\admin\models\forms\AuthenticationLdapSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect(['/admin/authentication/authentication-ldap']);
@@ -106,16 +88,16 @@ class AuthenticationController extends Controller
         if (Yii::$app->getModule('user')->settings->get('auth.ldap.enabled')) {
             $enabled = true;
             try {
-                $ldapAuthClient = new ZendLdapClient();
+                $ldapAuthClient = new \humhub\modules\user\authclient\ZendLdapClient();
                 $ldap = $ldapAuthClient->getLdap();
                 $userCount = $ldap->count(
                     Yii::$app->getModule('user')->settings->get('auth.ldap.userFilter'),
 					Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn'),
-					Ldap::SEARCH_SCOPE_SUB
+					\Zend\Ldap\Ldap::SEARCH_SCOPE_SUB
                 );
-            } catch (LdapException $ex) {
+            } catch (\Zend\Ldap\Exception\LdapException $ex) {
                 $errorMessage = $ex->getMessage();
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
                 $errorMessage = $ex->getMessage();
             }
         }

@@ -8,8 +8,8 @@
 
 namespace humhub\modules\content\components;
 
+
 use humhub\components\Module;
-use humhub\modules\content\models\ContentContainerModuleState;
 
 /**
  * Base Module with ContentContainer support.
@@ -22,25 +22,6 @@ use humhub\modules\content\models\ContentContainerModuleState;
  */
 class ContentContainerModule extends Module
 {
-
-    /**
-     * @inheritdoc
-     */
-    public function disable()
-    {
-        // disable in content containers
-        $contentContainerQuery = ContentContainerModuleManager::getContentContainerQueryByModule($this->id);
-        foreach ($contentContainerQuery->all() as $contentContainer) {
-            /* @var $contentContainer \humhub\modules\content\models\ContentContainer */
-            $this->disableContentContainer($contentContainer->getPolymorphicRelation());
-        }
-
-        foreach (ContentContainerModuleState::findAll(['module_id' => $this->id]) as $moduleState) {
-            $moduleState->delete();
-        }
-
-        parent::disable();
-    }
 
     /**
      * Returns the list of valid content container classes this module supports.
