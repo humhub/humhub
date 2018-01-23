@@ -6,11 +6,6 @@
     <rule ref="PSR1"/>
     
     <rule ref="PSR2">
-        <!-- Opening parenthesis of a multi-line function call must be the last content on the line. -->
-        <!-- Closing parenthesis of a multi-line function call must be on a line by itself. -->
-        <!-- Only one argument is allowed per line in a multi-line function call. -->
-        <exclude name="PEAR.Functions.FunctionCallSignature"/>
-
         <!-- We don't have line length (line width) limits. -->
         <exclude name="Generic.Files.LineLength"/>
 
