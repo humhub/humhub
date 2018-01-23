@@ -35,7 +35,7 @@ class ProfileMenu extends \humhub\widgets\BaseMenu
     /**
      * @inheritdoc
      */
-    public $template = "@humhub/widgets/views/leftNavigation";
+    public $template = '@humhub/widgets/views/leftNavigation';
 
     /**
      * @inheritdoc
@@ -54,7 +54,7 @@ class ProfileMenu extends \humhub\widgets\BaseMenu
             'icon' => '<i class="fa fa-bars"></i>',
             'url' => $this->user->createUrl('//user/profile/home'),
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->id == "profile" && (Yii::$app->controller->action->id == "index" || Yii::$app->controller->action->id == "home")),
+            'isActive' => (Yii::$app->controller->id == 'profile' && (Yii::$app->controller->action->id == 'index' || Yii::$app->controller->action->id == 'home')),
         ]);
 
         if ($this->user->permissionManager->can(new ViewAboutPage())) {
@@ -64,7 +64,7 @@ class ProfileMenu extends \humhub\widgets\BaseMenu
                 'icon' => '<i class="fa fa-info-circle"></i>',
                 'url' => $this->user->createUrl('//user/profile/about'),
                 'sortOrder' => 300,
-                'isActive' => (Yii::$app->controller->id == "profile" && Yii::$app->controller->action->id == "about"),
+                'isActive' => (Yii::$app->controller->id == 'profile' && Yii::$app->controller->action->id == 'about'),
             ]);
         }
         parent::init();
@@ -81,7 +81,4 @@ class ProfileMenu extends \humhub\widgets\BaseMenu
 
         return parent::run();
     }
-
 }
-
-?>

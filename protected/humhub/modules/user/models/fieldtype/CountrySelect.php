@@ -60,8 +60,7 @@ class CountrySelect extends Select
                 $items[$code] = iso3166Codes::country($code);
             }
         } else {
-            foreach (explode(",", $this->options) as $code) {
-
+            foreach (explode(',', $this->options) as $code) {
                 $key = trim($code);
                 $value = iso3166Codes::country($key, true);
                 if (!empty($key) && $key !== $value) {
@@ -70,7 +69,7 @@ class CountrySelect extends Select
             }
         }
 
-        // Sort countries list based on user language   
+        // Sort countries list based on user language
         $col = new \Collator(Yii::$app->language);
         $col->asort($items);
 
@@ -80,7 +79,7 @@ class CountrySelect extends Select
     /**
      * Returns value of option
      *
-     * @param User $user            
+     * @param User $user
      * @param Boolean $raw
      *            Output Key
      * @return String
@@ -106,5 +105,4 @@ class CountrySelect extends Select
         $definition[$this->profileField->internal_name]['htmlOptions'] = ['data-ui-select2' => true, 'style' => 'width:100%'];
         return $definition;
     }
-
 }

@@ -17,7 +17,7 @@ use \humhub\compat\CHtml;
 
 <?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(), ['data-ui-select2' => '']); ?>
 
-<?php if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')): ?>
+<?php if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) : ?>
 
     <?php
     echo $form->field($model, 'visibility')->dropDownList([

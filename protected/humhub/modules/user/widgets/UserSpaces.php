@@ -47,7 +47,4 @@ class UserSpaces extends \yii\base\Widget
                     'showMoreLink' => $showMoreLink,
         ]);
     }
-
 }
-
-?>

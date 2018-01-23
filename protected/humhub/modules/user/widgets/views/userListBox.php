@@ -8,7 +8,7 @@ use yii\helpers\Html;
 
 <?php ModalDialog::begin(['header' => $title]) ?>
 
-    <?php if (count($users) === 0): ?>
+    <?php if (count($users) === 0) : ?>
         <div class="modal-body">
             <p><?= Yii::t('UserModule.base', 'No users found.'); ?></p>
         </div>

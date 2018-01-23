@@ -8,9 +8,6 @@
 
 namespace humhub\modules\user\permissions;
 
-
-
-
 /**
  * ViewAboutPage Permission
  */
@@ -25,12 +22,12 @@ class SuperAdminPermition extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = "Create private space";
+    protected $title = 'Create private space';
 
     /**
      * @inheritdoc
      */
-    protected $description = "Can create hidden (private) spaces.";
+    protected $description = 'Can create hidden (private) spaces.';
 
     /**
      * @inheritdoc
@@ -41,5 +38,4 @@ class SuperAdminPermition extends \humhub\libs\BasePermission
      * @inheritdoc
      */
     protected $defaultState = self::STATE_DENY;
-
 }

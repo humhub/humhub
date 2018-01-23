@@ -69,7 +69,7 @@ class Mentioning extends ActiveRecord
         $originator = $this->getOriginatorBySource($mentionedSource);
 
         if (!$originator) {
-            throw new Exception("Invalid polymorphic relation for Mentioning!");
+            throw new Exception('Invalid polymorphic relation for Mentioning!');
         }
 
         // Send Notification
@@ -124,7 +124,7 @@ class Mentioning extends ActiveRecord
                 }
             }, $text);
         } else {
-            throw new Exception("Mentioning can only used in HActiveRecordContent or HActiveRecordContentAddon objects!");
+            throw new Exception('Mentioning can only used in HActiveRecordContent or HActiveRecordContentAddon objects!');
         }
         return $result;
     }
@@ -138,5 +138,4 @@ class Mentioning extends ActiveRecord
     {
         return $this->hasOne(\humhub\modules\user\models\User::className(), ['id' => 'user_id']);
     }
-
 }

@@ -89,11 +89,11 @@ class ProfileFieldCategory extends ActiveRecord
     public function getTranslationCategory()
     {
 
-        if ($this->translation_category != "") {
+        if ($this->translation_category != '') {
             return $this->translation_category;
         }
 
-        return "UserModule.models_ProfileFieldCategory";
+        return 'UserModule.models_ProfileFieldCategory';
     }
 
     public function getFields()
@@ -105,7 +105,7 @@ class ProfileFieldCategory extends ActiveRecord
 
     /**
      * Internal
-     * 
+     *
      * Just holds message labels for the Yii Message Command
      */
     private function translationOnly()
@@ -114,5 +114,4 @@ class ProfileFieldCategory extends ActiveRecord
         Yii::t('UserModule.models_ProfileFieldCategory', 'Communication');
         Yii::t('UserModule.models_ProfileFieldCategory', 'Social bookmarks');
     }
-
 }

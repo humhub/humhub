@@ -113,7 +113,7 @@ class Follow extends \yii\db\ActiveRecord
      */
     public function beforeDelete()
     {
-        if($this->getTarget()) {
+        if ($this->getTarget()) {
             $this->trigger(Follow::EVENT_FOLLOWING_REMOVED, new FollowEvent(['user' => $this->user, 'target' => $this->getTarget()]));
 
             // ToDo: Handle this via event of User Module
@@ -139,10 +139,10 @@ class Follow extends \yii\db\ActiveRecord
     {
         try {
             $targetClass = $this->object_model;
-            if ($targetClass != "" && is_subclass_of($targetClass, \yii\db\ActiveRecord::class)) {
+            if ($targetClass != '' && is_subclass_of($targetClass, \yii\db\ActiveRecord::class)) {
                 return $targetClass::findOne(['id' => $this->object_id]);
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             // Avoid errors in integrity check
             Yii::error($e);
         }
@@ -152,7 +152,7 @@ class Follow extends \yii\db\ActiveRecord
     /**
      * Returns all followed spaces of the given user as ActiveQuery.
      * If $withNotifications is set only follower with the given send_notifications setting are returned.
-     * 
+     *
      * @param \humhub\modules\user\models\User $user
      * @param boolean|null $withNotifications by notification setting (default is null without notification handling)
      * @return \yii\db\ActiveQuery Space query of all followed spaces
@@ -166,7 +166,7 @@ class Follow extends \yii\db\ActiveRecord
         
         if ($withNotifications === true) {
             $subQuery->andWhere(['user_follow.send_notifications' => 1]);
-        } else if ($withNotifications === false) {
+        } elseif ($withNotifications === false) {
             $subQuery->andWhere(['user_follow.send_notifications' => 0]);
         }
         
@@ -176,7 +176,7 @@ class Follow extends \yii\db\ActiveRecord
     /**
      * Returns all active users following the given $target record.
      * If $withNotifications is set only follower with the given send_notifications setting are returned.
-     * 
+     *
      * @param \yii\db\ActiveRecord $target
      * @param boolean $withNotifications
      * @return ActiveQuery
@@ -189,11 +189,10 @@ class Follow extends \yii\db\ActiveRecord
         
         if ($withNotifications === true) {
             $subQuery->andWhere(['user_follow.send_notifications' => 1]);
-        } else if ($withNotifications === false) {
+        } elseif ($withNotifications === false) {
             $subQuery->andWhere(['user_follow.send_notifications' => 0]);
         }
         
         return User::find()->active()->andWhere(['exists', $subQuery]);
     }
-
 }

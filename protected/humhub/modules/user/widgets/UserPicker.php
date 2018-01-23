@@ -42,7 +42,7 @@ class UserPicker extends \yii\base\Widget
      *
      * @var type
      */
-    public $inputId = "";
+    public $inputId = '';
 
     /**
      * JSON Search URL - defaults: search/json
@@ -51,7 +51,7 @@ class UserPicker extends \yii\base\Widget
      *
      * @var String Url with -keywordPlaceholder-
      */
-    public $userSearchUrl = "";
+    public $userSearchUrl = '';
 
     /**
      * Maximum users
@@ -65,7 +65,7 @@ class UserPicker extends \yii\base\Widget
      *
      * @var type string
      */
-    public $userGuid = "";
+    public $userGuid = '';
 
     /**
      * Set focus to input or not
@@ -88,17 +88,17 @@ class UserPicker extends \yii\base\Widget
     /**
      * @var string for input placeholder attribute.
      */
-    public $placeholderText = "";
+    public $placeholderText = '';
     
     /**
      * Can be used to filter user roles like friends only
-     * @var type 
+     * @var type
      */
     public $userRole = null;
     
     /**
      * Used to transfer additional data to the server
-     * @var type 
+     * @var type
      */
     public $data = null;
 
@@ -109,7 +109,7 @@ class UserPicker extends \yii\base\Widget
     public function init()
     {
         // Default user search for all users
-        if ($this->userSearchUrl == "") {
+        if ($this->userSearchUrl == '') {
             // provide the space id if the widget is calling from a space
             if (Yii::$app->controller->id == 'space') {
                 $spaceId = Yii::$app->controller->getSpace()->id;
@@ -126,7 +126,7 @@ class UserPicker extends \yii\base\Widget
     public function run()
     {
         // Try to get current field value, when model & attribute attributes are specified.
-        $currentValue = "";
+        $currentValue = '';
         if ($this->model != null && $this->attribute != null) {
             $attribute = $this->attribute;
             $currentValue = $this->model->$attribute;
@@ -148,23 +148,23 @@ class UserPicker extends \yii\base\Widget
     /**
      * Creates a json user array used in the userpicker js frontend.
      * The $cfg is used to specify the filter values the following values are available:
-     * 
+     *
      * query - (ActiveQuery) The initial query which is used to append additional filters. - default = User Friends if friendship module is enabled else User::find()
-     * 
+     *
      * active - (boolean) Specifies if only active user should be included in the result - default = true
-     * 
+     *
      * maxResults - (int) The max number of entries returned in the array - default = 10
-     * 
+     *
      * keyword - (string) A keyword which filters user by username, firstname, lastname, email and title
-     * 
+     *
      * permission - (BasePermission) An additional permission filter
-     * 
+     *
      * fillQuery - (ActiveQuery) Can be used to fill the result array if the initial query does not return the maxResults, these results will have a lower priority
-     * 
+     *
      * fillUser - (boolean) When set to true and no fillQuery is given the result is filled with User::find() results
-     * 
+     *
      * disableFillUser - Specifies if the results of the fillQuery should be disabled in the userpicker results - default = true
-     * 
+     *
      * @param type $cfg filter configuration
      * @return type json representation used by the userpicker
      */
@@ -183,8 +183,8 @@ class UserPicker extends \yii\base\Widget
         $cfg = ($cfg == null) ? $defaultCfg : array_merge($defaultCfg, $cfg);
         
         //If no initial query is given we use getFriends if friendship module is enabled otherwise all users
-        if(!isset($cfg['query'])) {
-            $cfg['query'] = (Yii::$app->getModule('friendship')->getIsEnabled()) 
+        if (!isset($cfg['query'])) {
+            $cfg['query'] = (Yii::$app->getModule('friendship')->getIsEnabled())
                     ? Yii::$app->user->getIdentity()->getFriends()
                     : UserFilter::find();
         }
@@ -194,8 +194,7 @@ class UserPicker extends \yii\base\Widget
         $jsonResult = self::asJSON($user, $cfg['permission'], 2);
         
         //Fill the result with additional users if it's allowed and the result count less than maxResult
-        if(count($user) < $cfg['maxResult'] && (isset($cfg['fillQuery']) || $cfg['fillUser']) ) {
-            
+        if (count($user) < $cfg['maxResult'] && (isset($cfg['fillQuery']) || $cfg['fillUser'])) {
             //Filter out users by means of the fillQuery or default the fillQuery
             $fillQuery = (isset($cfg['fillQuery'])) ? $cfg['fillQuery'] : UserFilter::find();
             UserFilter::addKeywordFilter($fillQuery, $cfg['keyword'], ($cfg['maxResult'] - count($user)));
@@ -205,21 +204,21 @@ class UserPicker extends \yii\base\Widget
             //Either the additional users are disabled (by default) or we disable them by permission
             $disableCondition = (isset($cfg['permission'])) ? $cfg['permission']  : $cfg['disableFillUser'];
             $jsonResult = array_merge($jsonResult, UserPicker::asJSON($fillUser, $disableCondition, 1));
-        }   
+        }
         
         return $jsonResult;
     }
     
     /**
      * Assambles all user Ids of the given $users into an array
-     * 
+     *
      * @param array $users array of user models
      * @return array user id array
      */
     private static function getUserIdArray($users)
     {
         $result = [];
-        foreach($users as $user) {
+        foreach ($users as $user) {
             $result[] = $user->id;
         }
         return $result;
@@ -228,7 +227,7 @@ class UserPicker extends \yii\base\Widget
     /**
      * Creates an json result with user information arrays. A user will be marked
      * as disabled, if the permission check fails on this user.
-     * 
+     *
      * @param type $users
      * @param type $permission
      * @return type
@@ -251,7 +250,7 @@ class UserPicker extends \yii\base\Widget
     /**
      * Creates an single user-information array for a given user. A user will be marked
      * as disabled, if the permission check fails on this user.
-     * 
+     *
      * @param type $user
      * @param type $permission
      * @return type
@@ -260,9 +259,9 @@ class UserPicker extends \yii\base\Widget
     {
         $disabled = false;
         
-        if($permission != null && $permission instanceof \humhub\libs\BasePermission) {
+        if ($permission != null && $permission instanceof \humhub\libs\BasePermission) {
             $disabled = !$user->getPermissionManager()->can($permission);
-        } else if($permission != null) {
+        } elseif ($permission != null) {
             $disabled = $permission;
         }
         
@@ -282,5 +281,3 @@ class UserPicker extends \yii\base\Widget
         return $userInfo;
     }
 }
-
-?>

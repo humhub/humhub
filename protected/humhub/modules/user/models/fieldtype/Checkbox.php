@@ -43,7 +43,7 @@ class Checkbox extends BaseType
      *
      * @return Array Form Definition
      */
-    public function getFormDefinition($definition = array())
+    public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
             get_class($this) => [
@@ -71,7 +71,7 @@ class Checkbox extends BaseType
     {
         $columnName = $this->profileField->internal_name;
         if (!\humhub\modules\user\models\Profile::columnExists($columnName)) {
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'INT(1) DEFAULT '.$this->default);
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'INT(1) DEFAULT ' . $this->default);
             Yii::$app->db->createCommand($query)->execute();
         }
 
@@ -84,7 +84,7 @@ class Checkbox extends BaseType
      * @param type $rules
      * @return type
      */
-    public function getFieldRules($rules = array())
+    public function getFieldRules($rules = [])
     {
         $rules[] = [$this->profileField->internal_name, 'in', 'range' => [0, 1]];
         return parent::getFieldRules($rules);
@@ -96,15 +96,15 @@ class Checkbox extends BaseType
      */
     public function getFieldFormDefinition()
     {
-        return array($this->profileField->internal_name => [
+        return [$this->profileField->internal_name => [
             'type' => 'checkbox',
             'class' => 'form-control',
-        ]);
+        ]];
     }
 
     public function getLabels()
     {
-        $labels = array();
+        $labels = [];
         $labels[$this->profileField->internal_name] = Yii::t($this->profileField->getTranslationCategory(), $this->profileField->title);
         return $labels;
     }
@@ -118,5 +118,3 @@ class Checkbox extends BaseType
         return $user->profile->$internalName;
     }
 }
-
-?>

@@ -62,7 +62,4 @@ class Followed extends BaseNotification
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
         ]);
     }
-
 }
-
-?>

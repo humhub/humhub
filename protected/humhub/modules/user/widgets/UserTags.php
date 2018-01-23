@@ -16,9 +16,6 @@ class UserTags extends \yii\base\Widget
 
     public function run()
     {
-        return $this->render('userTags', array('user' => $this->user));
+        return $this->render('userTags', ['user' => $this->user]);
     }
-
 }
-
-?>

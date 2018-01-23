@@ -15,7 +15,7 @@ use humhub\modules\post\permissions\CreatePost;
 
 /**
  * StreamViewer shows a users profile stream
- * 
+ *
  * @since 1.2.4
  * @author Luke
  */
@@ -54,5 +54,4 @@ class StreamViewer extends BaseStreamViewer
 
         parent::init();
     }
-
 }

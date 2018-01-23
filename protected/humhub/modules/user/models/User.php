@@ -109,9 +109,9 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 100],
-            [['email'], 'required', 'when' => function($model, $attribute) use ($userModule) {
+            [['email'], 'required', 'when' => function ($model, $attribute) use ($userModule) {
                     return $userModule->emailRequired;
-                }],
+            }],
             [['username'], 'unique'],
             [['guid'], 'unique'],
         ];
@@ -143,7 +143,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
              * Replacement for old super_admin flag version
              */
             return $this->isSystemAdmin();
-        } else if ($name == 'profile') {
+        } elseif ($name == 'profile') {
             /**
              * Ensure there is always a related Profile Model also when it's
              * not really exists yet.
@@ -196,12 +196,12 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     public function behaviors()
     {
-        return array(
+        return [
             \humhub\components\behaviors\GUID::className(),
             \humhub\modules\content\components\behaviors\SettingsBehavior::className(),
             \humhub\modules\user\behaviors\Followable::className(),
             \humhub\modules\user\behaviors\UserModelModules::className()
-        );
+        ];
     }
 
     public static function findIdentity($id)
@@ -291,9 +291,9 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function getManagerGroups()
     {
-        return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers', function($query) {
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers', function ($query) {
                     $query->andWhere(['is_group_manager' => '1']);
-                });
+        });
     }
 
     /**
@@ -319,7 +319,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * Specifies whether the user should appear in user lists or in the search.
-     * 
+     *
      * @since 1.2.3
      * @return boolean is visible
      */
@@ -379,7 +379,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     public function beforeSave($insert)
     {
         if ($insert) {
-
             if ($this->auth_mode == '') {
                 $passwordAuth = new \humhub\modules\user\authclient\Password();
                 $this->auth_mode = $passwordAuth->getId();
@@ -392,12 +391,12 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
                 }
             }
 
-            if ($this->status == "") {
+            if ($this->status == '') {
                 $this->status = self::STATUS_ENABLED;
             }
         }
 
-        if ($this->time_zone == "") {
+        if ($this->time_zone == '') {
             $this->time_zone = Yii::$app->settings->get('timeZone');
         }
 
@@ -474,12 +473,14 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
         $format = Yii::$app->settings->get('displayNameFormat');
 
-        if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}')
-            $name = $this->profile->firstname . " " . $this->profile->lastname;
+        if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}') {
+            $name = $this->profile->firstname . ' ' . $this->profile->lastname;
+        }
 
         // Return always username as fallback
-        if ($name == '' || $name == ' ')
+        if ($name == '' || $name == ' ') {
             return $this->username;
+        }
 
         return $name;
     }
@@ -562,7 +563,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function getTags()
     {
-        return preg_split("/[;,#]+/", $this->tags);
+        return preg_split('/[;,#]+/', $this->tags);
     }
 
     /**
@@ -583,7 +584,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         ];
 
         // Add user group ids
-        $groupIds = array_map(function($group) {
+        $groupIds = array_map(function ($group) {
             return $group->id;
         }, $this->groups);
         $attributes['groups'] = $groupIds;
@@ -685,5 +686,4 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         // TODO: Implement same logic as for Spaces
         return Content::VISIBILITY_PUBLIC;
     }
-
 }

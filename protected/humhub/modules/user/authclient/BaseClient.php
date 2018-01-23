@@ -34,7 +34,5 @@ class BaseClient extends \yii\authclient\BaseClient
      */
     protected function initUserAttributes()
     {
-        
     }
-
 }

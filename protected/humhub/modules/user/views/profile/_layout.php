@@ -16,7 +16,7 @@ $user = $this->context->getUser();
             <div class="col-md-10 layout-content-container">
                 <?php echo $content; ?>
             </div>
-        <?php else: ?>
+        <?php else : ?>
             <div class="col-md-7 layout-content-container">
                 <?php echo $content; ?>
             </div>

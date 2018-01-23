@@ -16,19 +16,20 @@ class UserPickerField extends BasePickerField
 {
 
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
     public $defaultRoute = '/user/search/json';
     
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
     public $jsWidget = 'user.picker.UserPicker';
 
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
-    public function init() {
+    public function init()
+    {
         $this->itemClass = \humhub\modules\user\models\User::className();
         $this->itemKey = 'guid';
     }
@@ -51,7 +52,7 @@ class UserPickerField extends BasePickerField
     }
 
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
     protected function getData()
     {
@@ -59,7 +60,7 @@ class UserPickerField extends BasePickerField
         $allowMultiple = $this->maxSelection !== 1;
         $result['placeholder'] = ($this->placeholder != null) ? $this->placeholder : Yii::t('UserModule.widgets_UserPickerField', 'Select {n,plural,=1{user} other{users}}', ['n' => ($allowMultiple) ? 2 : 1]);
         
-        if($this->placeholder && !$this->placeholderMore) {
+        if ($this->placeholder && !$this->placeholderMore) {
             $result['placeholder-more'] = $this->placeholder;
         } else {
             $result['placeholder-more'] = ($this->placeholderMore) ? $this->placeholderMore : Yii::t('UserModule.widgets_UserPickerField', 'Add more...');
@@ -74,7 +75,7 @@ class UserPickerField extends BasePickerField
     }
 
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
     protected function getItemText($item)
     {
@@ -82,7 +83,7 @@ class UserPickerField extends BasePickerField
     }
 
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
     protected function getItemImage($item)
     {

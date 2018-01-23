@@ -13,7 +13,7 @@ use humhub\modules\user\models\forms\Login;
 
 /**
  * BaseFormAuth is a base class for AuthClients using the Login Form
- * 
+ *
  * @since 1.1
  */
 class BaseFormAuth extends BaseClient
@@ -26,12 +26,11 @@ class BaseFormAuth extends BaseClient
 
     /**
      * Authenticate the user using the login form.
-     * 
+     *
      * @throws NotSupportedException
      */
     public function auth()
     {
         throw new NotSupportedException('Method "' . get_class($this) . '::' . __FUNCTION__ . '" not implemented.');
     }
-
 }

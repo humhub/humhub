@@ -39,7 +39,8 @@ class ProfileController extends Behavior
 
     public $user = null;
 
-    public function events() {
+    public function events()
+    {
 
         return [
         Controller::EVENT_BEFORE_ACTION => 'beforeAction',
@@ -55,8 +56,9 @@ class ProfileController extends Behavior
         $guid = Yii::$app->request->getQuery('uguid');
         $this->user = User::findOne(['guid' => $guid]);
 
-        if ($this->user == null)
+        if ($this->user == null) {
             throw new HttpException(404, Yii::t('UserModule.behaviors_ProfileControllerBehavior', 'User not found!'));
+        }
 
         $this->checkAccess();
 
@@ -73,11 +75,9 @@ class ProfileController extends Behavior
         }
     }
 
-    public function beforeAction($action) {
+    public function beforeAction($action)
+    {
 
         $this->owner->prependPageTitle($this->user->displayName);
     }
-
 }
-
-?>

@@ -19,19 +19,19 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
 
         <div class="panel-body">
 
-            <?php if (Yii::$app->session->hasFlash('error')): ?>
+            <?php if (Yii::$app->session->hasFlash('error')) : ?>
                 <div class="alert alert-danger" role="alert">
                     <?= Yii::$app->session->getFlash('error') ?>
                 </div>
             <?php endif; ?>
 
-            <?php if (AuthChoice::hasClients()): ?>
+            <?php if (AuthChoice::hasClients()) : ?>
                 <?= AuthChoice::widget([]) ?>
-            <?php else: ?>
+            <?php else : ?>
                 <?php if ($canRegister) : ?>
                     <p><?= Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
-                <?php else: ?>
-                    <p><?= Yii::t('UserModule.views_auth_login', "Please login with your username/email and password."); ?></p>
+                <?php else : ?>
+                    <p><?= Yii::t('UserModule.views_auth_login', 'Please login with your username/email and password.'); ?></p>
                 <?php endif; ?>
             <?php endif; ?>
 
@@ -43,7 +43,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
             <hr>
             <div class="row">
                 <div class="col-md-4">
-                    <?= CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Sign in'), array('id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary')); ?>
+                    <?= CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => '', 'class' => 'btn btn-large btn-primary']); ?>
                 </div>
                 <div class="col-md-8 text-right">
                     <small>

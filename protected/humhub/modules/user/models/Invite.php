@@ -32,8 +32,8 @@ use yii\helpers\Url;
 class Invite extends ActiveRecord
 {
 
-    const SOURCE_SELF = "self";
-    const SOURCE_INVITE = "invite";
+    const SOURCE_SELF = 'self';
+    const SOURCE_INVITE = 'invite';
     const TOKEN_LENGTH = 12;
 
     /**
@@ -124,20 +124,18 @@ class Invite extends ActiveRecord
 
         // User requested registration link by its self
         if ($this->source == self::SOURCE_SELF) {
-
             $mail = Yii::$app->mailer->compose([
                 'html' => '@humhub/modules/user/views/mails/UserInviteSelf',
                 'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSelf'
                     ], [
                 'token' => $this->token,
                 'registrationUrl' => $registrationUrl
-            ]);
+                    ]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSelf', 'Welcome to %appName%', ['%appName%' => Yii::$app->name]));
             $mail->send();
         } elseif ($this->source == self::SOURCE_INVITE && $this->space !== null) {
-
-            if($module->sendInviteMailsInGlobalLanguage) {
+            if ($module->sendInviteMailsInGlobalLanguage) {
                 Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
             }
 
@@ -150,19 +148,18 @@ class Invite extends ActiveRecord
                 'originatorName' => $this->originator->displayName,
                 'space' => $this->space,
                 'registrationUrl' => $registrationUrl
-            ]);
+                    ]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSpace', 'You\'ve been invited to join {space} on {appName}', ['space' => $this->space->name, 'appName' => Yii::$app->name]));
             $mail->send();
 
             // Switch back to users language
-            if (Yii::$app->user->language !== "") {
+            if (Yii::$app->user->language !== '') {
                 Yii::$app->language = Yii::$app->user->language;
             }
         } elseif ($this->source == self::SOURCE_INVITE) {
-
             // Switch to systems default language
-            if($module->sendInviteMailsInGlobalLanguage) {
+            if ($module->sendInviteMailsInGlobalLanguage) {
                 Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
             }
 
@@ -174,13 +171,13 @@ class Invite extends ActiveRecord
                 'originatorName' => $this->originator->displayName,
                 'token' => $this->token,
                 'registrationUrl' => $registrationUrl
-            ]);
+                    ]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.invite', 'You\'ve been invited to join %appName%', ['%appName%' => Yii::$app->name]));
             $mail->send();
 
             // Switch back to users language
-            if (Yii::$app->user->language !== "") {
+            if (Yii::$app->user->language !== '') {
                 Yii::$app->language = Yii::$app->user->language;
             }
         }
@@ -215,5 +212,4 @@ class Invite extends ActiveRecord
     {
         return (Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration'));
     }
-
 }
