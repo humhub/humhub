@@ -11,14 +11,15 @@ namespace humhub\modules\file;
 use humhub\modules\search\engine\Search;
 use humhub\modules\file\models\File;
 use yii\base\Event;
+use yii\base\BaseObject;
 use humhub\modules\search\events\SearchAttributesEvent;
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends BaseObject
 {
 
     /**
@@ -101,7 +102,7 @@ class Events extends \yii\base\Object
 
     /**
      * Handles the SearchAttributesEvent and adds related files
-     * 
+     *
      * @since 1.2.3
      * @param SearchAttributesEvent $event
      */

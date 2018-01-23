@@ -8,7 +8,7 @@
 
 namespace humhub\modules\live\driver;
 
-use yii\base\Object;
+use yii\base\BaseObject;
 use humhub\modules\live\components\LiveEvent;
 
 /**
@@ -17,12 +17,12 @@ use humhub\modules\live\components\LiveEvent;
  * @since 1.2
  * @author Luke
  */
-abstract class BaseDriver extends Object
+abstract class BaseDriver extends BaseObject
 {
 
     /**
      * Sends a live event
-     * 
+     *
      * @param LiveEvent $liveEvent The live event to send
      * @return boolean indicates the sent was successful
      */

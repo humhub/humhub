@@ -3,6 +3,7 @@
 namespace humhub\modules\user;
 
 use Yii;
+use yii\base\BaseObject;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
@@ -13,10 +14,10 @@ use humhub\modules\user\models\Follow;
 
 /**
  * Events provides callbacks for all defined module events.
- * 
+ *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends BaseObject
 {
 
     /**

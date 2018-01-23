@@ -9,12 +9,13 @@
 namespace humhub\modules\post;
 
 use Yii;
+use yii\base\BaseObject;
 use humhub\modules\post\models\Post;
 
 /**
  * Event callbacks for the post module
  */
-class Events extends \yii\base\Object
+class Events extends BaseObject
 {
 
     /**

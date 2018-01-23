@@ -9,6 +9,7 @@
 namespace humhub\modules\content;
 
 use Yii;
+use yii\base\BaseObject;
 use humhub\modules\content\models\Content;
 
 /**
@@ -16,7 +17,7 @@ use humhub\modules\content\models\Content;
  *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends BaseObject
 {
 
     public static function onUserDelete($event)

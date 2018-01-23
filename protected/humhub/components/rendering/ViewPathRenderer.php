@@ -9,6 +9,7 @@
 namespace humhub\components\rendering;
 
 use Yii;
+use yii\base\BaseObject;
 
 /**
  * A ViewPathRenderer is a simple Renderer implementation for rendering Viewables by searching for a matching viewFile relative
@@ -33,7 +34,7 @@ use Yii;
  * @author buddha
  * @since 1.2
  */
-class ViewPathRenderer extends \yii\base\Object implements Renderer
+class ViewPathRenderer extends BaseObject implements Renderer
 {
 
     /**

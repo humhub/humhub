@@ -9,14 +9,15 @@
 namespace humhub\modules\notification;
 
 use Yii;
+use yii\base\Object;
 use humhub\modules\notification\models\Notification;
 
 /**
  * Events provides callbacks for all defined module events.
- * 
+ *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends BaseObject
 {
 
     /**
@@ -139,7 +140,7 @@ class Events extends \yii\base\Object
             'source_pk' => $event->sender->getPrimaryKey(),
         ]);
     }
-    
+
     public static function onLayoutAddons($event)
     {
         if(Yii::$app->request->isPjax) {

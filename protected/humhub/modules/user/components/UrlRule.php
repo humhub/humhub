@@ -9,7 +9,7 @@
 namespace humhub\modules\user\components;
 
 use yii\web\UrlRuleInterface;
-use yii\base\Object;
+use yii\base\BaseObject;
 use humhub\modules\user\models\User;
 
 /**
@@ -17,7 +17,7 @@ use humhub\modules\user\models\User;
  *
  * @author luke
  */
-class UrlRule extends Object implements UrlRuleInterface
+class UrlRule extends BaseObject implements UrlRuleInterface
 {
 
     /**
@@ -80,7 +80,7 @@ class UrlRule extends Object implements UrlRuleInterface
 
     /**
      * Gets usernameby given guid
-     * 
+     *
      * @param string $guid
      * @return string|null the username
      */
