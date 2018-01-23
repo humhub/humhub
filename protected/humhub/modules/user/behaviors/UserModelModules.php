@@ -8,10 +8,11 @@
 
 namespace humhub\modules\user\behaviors;
 
+use humhub\modules\user\models\User;
+use humhub\modules\user\models\Module
+use humhub\modules\content\components\ContentContainerModule;
 use Yii;
 use yii\base\Behavior;
-use humhub\modules\user\models\User;
-use humhub\modules\content\components\ContentContainerModule;
 
 /**
  * Extends User model with moduling functionalities.
@@ -24,8 +25,8 @@ use humhub\modules\content\components\ContentContainerModule;
 class UserModelModules extends Behavior
 {
 
-    public $_enabledModules = null;
-    public $_availableModules = null;
+    public $enabledModules = null;
+    public $availableModules = null;
 
     /**
      * Returns a list of all available user modules
@@ -35,19 +36,21 @@ class UserModelModules extends Behavior
     public function getAvailableModules()
     {
 
-        if ($this->_availableModules !== null) {
-            return $this->_availableModules;
+        if ($this->availableModules !== null) {
+            return $this->availableModules;
         }
 
-        $this->_availableModules = array();
+        $this->availableModules = [];
 
         foreach (Yii::$app->moduleManager->getModules() as $moduleId => $module) {
-            if ($module instanceof ContentContainerModule && Yii::$app->hasModule($module->id) && $module->hasContentContainerType(User::className())) {
-                $this->_availableModules[$module->id] = $module;
+            if ($module instanceof ContentContainerModule &&
+                Yii::$app->hasModule($module->id) &&
+                $module->hasContentContainerType(User::className())) {
+                    $this->availableModules[$module->id] = $module;
             }
         }
 
-        return $this->_availableModules;
+        return $this->availableModules;
     }
 
     /**
@@ -58,15 +61,15 @@ class UserModelModules extends Behavior
     public function getEnabledModules()
     {
 
-        if ($this->_enabledModules !== null) {
-            return $this->_enabledModules;
+        if ($this->enabledModules !== null) {
+            return $this->enabledModules;
         }
 
-        $this->_enabledModules = array();
+        $this->enabledModules = [];
 
         $availableModules = $this->getAvailableModules();
-        $defaultStates = \humhub\modules\user\models\Module::getStates();
-        $states = \humhub\modules\user\models\Module::getStates($this->owner->id);
+        $defaultStates = Module::getStates();
+        $states = Module::getStates($this->owner->id);
 
         // Get a list of all enabled module ids
         foreach (array_merge(array_keys($defaultStates), array_keys($states)) as $id) {
@@ -76,19 +79,20 @@ class UserModelModules extends Behavior
                 continue;
             }
 
-            if (isset($defaultStates[$id]) && $defaultStates[$id] == \humhub\modules\user\models\Module::STATE_FORCE_ENABLED) {
+            if (isset($defaultStates[$id]) && $defaultStates[$id] == Module::STATE_FORCE_ENABLED) {
                 // Forced enabled globally
-                $this->_enabledModules[] = $id;
-            } elseif (!isset($states[$id]) && isset($defaultStates[$id]) && $defaultStates[$id] == \humhub\modules\user\models\Module::STATE_ENABLED) {
-                // No local state -> global default on
-                $this->_enabledModules[] = $id;
-            } elseif (isset($states[$id]) && $states[$id] == \humhub\modules\user\models\Module::STATE_ENABLED) {
+                $this->enabledModules[] = $id;
+            } elseif (!isset($states[$id]) && isset($defaultStates[$id]) &&
+                      $defaultStates[$id] == Module::STATE_ENABLED) {
+                          // No local state -> global default on
+                          $this->enabledModules[] = $id;
+            } elseif (isset($states[$id]) && $states[$id] == Module::STATE_ENABLED) {
                 // Locally enabled
-                $this->_enabledModules[] = $id;
+                $this->enabledModules[] = $id;
             }
         }
 
-        return $this->_enabledModules;
+        return $this->enabledModules;
     }
 
     /**
@@ -114,18 +118,18 @@ class UserModelModules extends Behavior
 
         // Already enabled module
         if ($this->isModuleEnabled($moduleId)) {
-            Yii::error("User->enableModule(" . $moduleId . ") module is already enabled");
+            Yii::error('User->enableModule(' . $moduleId . ') module is already enabled');
             return false;
         }
 
         // Add Binding
-        $userModule = \humhub\modules\user\models\Module::findOne(['user_id' => $this->owner->id, 'module_id' => $moduleId]);
+        $userModule = Module::findOne(['user_id' => $this->owner->id, 'module_id' => $moduleId]);
         if ($userModule == null) {
-            $userModule = new \humhub\modules\user\models\Module();
+            $userModule = new Module();
             $userModule->user_id = $this->owner->id;
             $userModule->module_id = $moduleId;
         }
-        $userModule->state = \humhub\modules\user\models\Module::STATE_ENABLED;
+        $userModule->state = Module::STATE_ENABLED;
         $userModule->save();
 
         $module = Yii::$app->moduleManager->getModule($moduleId);
@@ -136,8 +140,8 @@ class UserModelModules extends Behavior
 
     public function canDisableModule($id)
     {
-        $defaultStates = \humhub\modules\user\models\Module::getStates();
-        if (isset($defaultStates[$id]) && $defaultStates[$id] == \humhub\modules\user\models\Module::STATE_FORCE_ENABLED) {
+        $defaultStates = Module::getStates();
+        if (isset($defaultStates[$id]) && $defaultStates[$id] == Module::STATE_FORCE_ENABLED) {
             return false;
         }
 
@@ -157,7 +161,7 @@ class UserModelModules extends Behavior
 
         // Already enabled module
         if (!$this->isModuleEnabled($moduleId)) {
-            Yii::error("User->disableModule(" . $moduleId . ") module is not enabled");
+            Yii::error('User->disableModule(' . $moduleId . ') module is not enabled');
             return false;
         }
 
@@ -165,13 +169,13 @@ class UserModelModules extends Behavior
         $module = Yii::$app->moduleManager->getModule($moduleId);
         $module->disableContentContainer($this->owner);
 
-        $userModule = \humhub\modules\user\models\Module::findOne(['user_id' => $this->owner->id, 'module_id' => $moduleId]);
+        $userModule = Module::findOne(['user_id' => $this->owner->id, 'module_id' => $moduleId]);
         if ($userModule == null) {
-            $userModule = new \humhub\modules\user\models\Module;
+            $userModule = new Module;
             $userModule->user_id = $this->owner->id;
             $userModule->module_id = $moduleId;
         }
-        $userModule->state = \humhub\modules\user\models\Module::STATE_DISABLED;
+        $userModule->state = Module::STATE_DISABLED;
         $userModule->save();
 
         return true;
