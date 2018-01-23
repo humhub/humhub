@@ -9,6 +9,8 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\user\models\User;
+use humhub\modules\space\models\Space;
 use Yii;
 use yii\helpers\Url;
 
@@ -58,7 +60,7 @@ class Invite extends ActiveRecord
             [['email'], 'required'],
             [['email'], 'unique'],
             [['email'], 'email'],
-            [['email'], 'unique', 'targetClass' => \humhub\modules\user\models\User::className(), 'message' => Yii::t('UserModule.base', 'E-Mail is already in use! - Try forgot password.')],
+            [['email'], 'unique', 'targetClass' => User::className(), 'message' => Yii::t('UserModule.base', 'E-Mail is already in use! - Try forgot password.')],
         ];
     }
 
@@ -166,12 +168,13 @@ class Invite extends ActiveRecord
             $mail = Yii::$app->mailer->compose([
                 'html' => '@humhub/modules/user/views/mails/UserInvite',
                 'text' => '@humhub/modules/user/views/mails/plaintext/UserInvite'
-                    ], [
+            ],
+            [
                 'originator' => $this->originator,
                 'originatorName' => $this->originator->displayName,
                 'token' => $this->token,
                 'registrationUrl' => $registrationUrl
-                    ]);
+            ]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.invite', 'You\'ve been invited to join %appName%', ['%appName%' => Yii::$app->name]));
             $mail->send();
@@ -190,7 +193,7 @@ class Invite extends ActiveRecord
      */
     public function getOriginator()
     {
-        return $this->hasOne(\humhub\modules\user\models\User::className(), ['id' => 'user_originator_id']);
+        return $this->hasOne(User::className(), ['id' => 'user_originator_id']);
     }
 
     /**
@@ -200,7 +203,7 @@ class Invite extends ActiveRecord
      */
     public function getSpace()
     {
-        return $this->hasOne(\humhub\modules\space\models\Space::className(), ['id' => 'space_invite_id']);
+        return $this->hasOne(Space::className(), ['id' => 'space_invite_id']);
     }
 
     /**
