@@ -4,28 +4,27 @@ Installation
 > Note: It's also possible to install and build HumHub directly from our **Git Repository**.
 Please see [Developer Installation](../developer/git-installation.md) for more details.
 
-
-
 Database
 --------
-
 Create a MySQL Database, e.g.:
 
 ```sql
-CREATE DATABASE `humhub` CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE `humhub` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 GRANT ALL ON `humhub`.* TO `humhub_dbuser`@localhost IDENTIFIED BY 'password_changeme';
 FLUSH PRIVILEGES;
 ```
 
 > Note: Do not forget to change the `humhub_dbuser` and `password_changeme` placeholders!
 
-> Warning: Make sure to use the **utf8_general_ci** database collation!
+> Note: `utf8mb4` is prefered over `utf8` since MySQL 5.5.3 please refer to the [mysql documentation](https://dev.mysql.com/doc/refman/5.5/en/charset-unicode-utf8mb4.html) for more infos.
+
+> Warning: Make sure to use the **utf8mb4_unicode_ci** database collation!
 
 
 Download HumHub Core Files
 ---------------------------
 
-The easiest way to get HumHub, is the direct download of the complete package under [https://www.humhub.org/en/download](https://www.humhub.org/en/download).
+The easiest way to get HumHub, is the direct download of the complete package under [https://www.humhub.org/download](https://www.humhub.org/download).
 
 After the download completed, just extract the package into the htdocs folder of your webserver.
 

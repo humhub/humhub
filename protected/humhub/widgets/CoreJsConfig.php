@@ -36,17 +36,7 @@ class CoreJsConfig extends Widget
                 [
                     'user' => $userConfig,
                     'live' => [
-                        'client' => [
-                            'type' => 'humhub.modules.live.poll.PollClient',
-                            'options' => [
-                                'url' => Url::to(['/live/poll']),
-                                'initTime' => time(),
-                                'minInterval' => $liveModule->minPollInterval, // Minimal polling request interval in seconds.
-                                'maxInterval' => $liveModule->maxPollInterval, // Maximal polling request interval in seconds.
-                                'idleFactor' => $liveModule->idleFactor, // Factor used in the actual interval calculation in case of user idle.
-                                'idleInterval' => $liveModule->idleInterval //  Interval for updating the update delay in case of user idle in seconds.
-                            ]
-                        ]
+                        'client' => Yii::$app->live->driver->getJsConfig()
                     ],
                     'client' => [
                       'baseUrl' =>  Yii::$app->settings->get('baseUrl')

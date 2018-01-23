@@ -9,7 +9,7 @@
 namespace humhub\modules\admin\jobs;
 
 use Yii;
-use humhub\components\queue\ActiveJob;
+use humhub\modules\queue\ActiveJob;
 use humhub\modules\user\models\Group;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\admin\notifications\NewVersionAvailable;

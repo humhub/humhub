@@ -16,6 +16,10 @@ $config = [
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue'],
     'sourceLanguage' => 'en',
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset',
+        '@npm' => '@vendor/npm-asset',
+    ],
     'components' => [
         'moduleManager' => [
             'class' => '\humhub\components\ModuleManager'
@@ -120,7 +124,7 @@ $config = [
             'dsn' => 'mysql:host=localhost;dbname=humhub',
             'username' => '',
             'password' => '',
-            'charset' => 'utf8',
+            'charset' => 'utf8mb4',
             'enableSchemaCache' => true,
             'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
         ],
@@ -129,12 +133,15 @@ $config = [
             'clients' => [],
         ],
         'queue' => [
-            'class' => 'humhub\components\queue\driver\Sync',
+            'class' => 'humhub\modules\queue\driver\Sync',
+        ],
+        'urlManager' => [
+            'class' => 'humhub\components\UrlManager',
         ],
         'live' => [
             'class' => 'humhub\modules\live\components\Sender',
             'driver' => [
-                'class' => 'humhub\modules\live\driver\Database',
+                'class' => 'humhub\modules\live\driver\Poll',
             ],
         ],
     ],

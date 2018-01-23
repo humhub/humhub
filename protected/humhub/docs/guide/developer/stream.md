@@ -1,18 +1,136 @@
-# Streams / Walls
+Content Streams
+=================
+Streams are used to asynchronously load batches of content entries which can be filtered or sorted. 
+The stream concept is used for example in _space and profile walls_, the _dashboard_ and
+_activity stream_.
 
-TBD
+Custom modules can use own streams for example to filter content by a specific type, or other custom
+filters.
 
-- Define Streaming/Wall
+### Stream Channel
 
-You can also implement Creanown Stream/Wall output for your module content only. 
+The `stream_channel` attribute of a [[humhub\modules\content\models\Content]] entry defines the relation of this content to
+a specific type of stream. The `default` stream channel for example is used by _space/profile_ and _dashboard_
+streams and the `activity` stream channel is exclusively used in activity streams.
 
-Example Implementations:
+The stream channel of your content type can be overwritten by setting the [[humhub\modules\content\components\ContentActiveRecord::streamChannel|ContentActiveRecord::streamChannel]] attribute.
 
-- Tasks
-- Polls
+You can consider the following stream channel options for your own [[humhub\modules\content\components\ContentActiveRecord|ContentActiveRecord]]:
 
-Of course your modules Content implementation needs to provides a WallEntry widget. See Content Section for more details.
+- `default` stream channel will include your content to default _space/profile walls_ and the _dashboard_. You are still able to create a custom stream view which filters content by type.
+- `null` will exclude the content from the default streams
+- Use a custom stream channel if you exclusively want your content to be included in your own custom stream (similar to activity concept).
+> Note: A custom stream channel should be unique, so choose a meaningful name preferably with module prefix.
 
+### WallEntry Widget
+
+A [[humhub\modules\content\widgets\WallEntry|WallEntry widget]] is responsible for rendering the individual stream entries
+of a stream and is defined by [[humhub\modules\content\components\ContentActiveRecord::wallEntryClass|ContentActiveRecord::wallEntryClass]].
+
+The following example shows a very basic WallEntry widget implementation.
+
+> Note: By default your WallEntry view only have to render the actual content, the default WallEntry layout is available in `@humhub/modules/content/widgets/views/wallEntry.php`
+
+```php
+class WallEntry extends \humhub\modules\content\widgets\WallEntry
+{
+    public function run()
+    {
+        return $this->render('wallEntry', [
+                'model' => $this->contentObject
+        ]);
+    }
+}
+```
+
+wallEntry.php:
+```php
+<div>
+    <?= $model->title ?>
+    <?= $model->myContent ?>
+    ...
+</div>
+```
+
+The WallEntry widget will be provided with a [[humhub\modules\content\widgets\WallEntry::contentObject|contentObject]] which holds the
+[humhub\modules\content\components\ContentActiveRecord|ContentActiveRecord]] model to be rendered.
+
+Your [[humhub\modules\content\widgets\WallEntry|WallEntry]] class can also set the following attributes:
+
+ - [[humhub\modules\content\widgets\WallEntry::editRoute|editRoute]] defines an edit route to your edit action which will be used to render an edit link (see WallEntryControls section)
+ - [[humhub\modules\content\widgets\WallEntry::editMode|editMode]] defines the way the edit action is triggered (see WallEntryControls section)
+ - [[humhub\modules\content\widgets\WallEntry::wallEntryLayout|wallEntryLayout]] defines the layout used to embed the result of `render()`, by default you only have to care about rendering the content section of your WallEntry
+
+
+#### WallEntryControls
+
+The default WallEntry layout contains a context menu with content actions like `edit`, `delete`, `archive` etc.
+This menu can be manipulated by overwriting the [[humhub\modules\content\widgets\WallEntry::getContextMenu()|getContextMenu()]] function and 
+or use the [[humhub\modules\content\widgets\WallEntry::controlsOptions|controlsOptions]] property as in the following example.
+
+By setting the [[humhub\modules\content\widgets\WallEntry::editRoute|editRoute]] we automatically add an edit link to our WallEntryControls in
+case the current user is allowed to edit the content. The type of the edit action is defined by the [[humhub\modules\content\widgets\WallEntry::editMode|editMode]].
+
+There are the following edit modes available:
+
+ - `EDIT_MODE_MODAL` the response of `editRoute` will be loaded into a modal.
+ - `EDIT_MODE_INLINE` the response of `editRoute` will be embeded into the WallEntry content.
+ - `EDIT_MODE_NEW_WINDOW` the page response of `editRoute` will be fully loaded.
+ 
+```php
+class WallEntry extends \humhub\modules\content\widgets\WallEntry
+{
+    public $editRoute = "/my-module/entry/edit";
+    
+    public $editMode = self::EDIT_MODE_MODAL;
+    
+    // Will prevent the default DeleteLink and always add a MySpecialLink
+    $this->controlsOptions = [
+        'prevent' => [\humhub\modules\content\widgets\DeleteLink::class],
+        'add' => [MySpecialLink::class]
+    ];
+    
+    //...
+    
+    public function getContextMenu()
+    {
+      $result = parent::getContextMenu();
+      
+      // Only add a CloseLink if the user is allowed to edit the content.
+      if($this->contentObject->content->canEdit()) {
+        $this->addControl($result, [CloseLink::class, ['model' => $this->contentObject], ['sortOrder' => 200]]);
+      }
+      
+      return $result;
+    ]
+}
+```
+
+CloseLink example:
+
+```php
+class CloseLink extends humhub\modules\content\widgets\WallEntryControlLink
+{
+    public $model;
+    
+    public function init()
+    {
+        if($this->model->closed) {
+            $this->label = Yii::t('MyModule.base', 'Reopen');
+            $this->icon = 'fa-check';
+        } else {
+            $this->label = Yii::t('MyModule.base', 'Close');
+            $this->icon = 'fa-times';
+        }
+        
+        $this->options = [
+            // set some further html options
+        ];
+        
+        parent::init();
+    }
+}
+```
 
 ## Create own Module Content Stream
 
@@ -23,24 +141,14 @@ Derived from [[humhub\modules\content\components\actions\ContentContainerStream]
 Example:
 
 ```php
-<?php
-
-namespace humhub\modules\polls\components;
-
-use humhub\modules\content\components\actions\ContentContainerStream;
-use humhub\modules\polls\models\Poll;
-
-class StreamAction extends ContentContainerStream
+class StreamAction extends humhub\modules\content\components\actions\ContentContainerStream
 {
-
     public function setupFilters()
     {
 		// Limit output to specific content type
         $this->activeQuery->andWhere(['content.object_model' => Poll::className()]);
     }
-
 }
-
 ```
 
 Specify Action in Controller

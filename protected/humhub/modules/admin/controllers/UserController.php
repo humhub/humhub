@@ -12,14 +12,16 @@ use Yii;
 use yii\helpers\Url;
 use yii\web\HttpException;
 use humhub\compat\HForm;
+use humhub\modules\user\models\User;
+use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\admin\components\Controller;
-use humhub\modules\user\models\User;
 use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\space\models\Membership;
+use humhub\modules\admin\models\forms\UserDeleteForm;
+use humhub\modules\admin\models\UserSearch;
 
 /**
  * User management
@@ -34,12 +36,15 @@ class UserController extends Controller
      */
     public $adminOnly = false;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
+        parent::init();
+
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Users'));
         $this->subLayout = '@admin/views/layouts/user';
-
-        return parent::init();
     }
 
     /**
@@ -48,36 +53,37 @@ class UserController extends Controller
     public function getAccessRules()
     {
         return [
-            [
-                'permissions' => [
-                    ManageUsers::class,
-                    ManageGroups::class,
-                ]
-            ],
-            [
-                'permissions' => [ManageSettings::class],
-                'actions' => ['index']
-            ]
+            ['permissions' => [ManageUsers::class, ManageGroups::class]],
+            ['permissions' => [ManageSettings::class], 'actions' => ['index']]
         ];
+    }
+
+    public function actionIndex()
+    {
+        if (Yii::$app->user->can([new ManageUsers(), new ManageGroups()])) {
+            return $this->redirect(['list']);
+        } else if (Yii::$app->user->can(ManageSettings::class)) {
+            return $this->redirect(['/admin/authentication']);
+        } else {
+            return $this->forbidden();
+        }
     }
 
     /**
      * Returns a List of Users
      */
-    public function actionIndex()
+    public function actionList()
     {
-        if (Yii::$app->user->can([new ManageUsers(), new ManageGroups()])) {
-            $searchModel = new \humhub\modules\admin\models\UserSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-            return $this->render('index', [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel
-            ]);
-        } else if (Yii::$app->user->can(ManageSettings::class)) {
-            $this->redirect(['/admin/authentication']);
-        } else {
-            $this->forbidden();
-        }
+        $searchModel = new UserSearch();
+        $searchModel->status = User::STATUS_ENABLED;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $showPendingRegistrations = (Invite::find()->count() > 0 && Yii::$app->user->can([new ManageUsers(), new ManageGroups()]));
+
+        return $this->render('list', [
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'showPendingRegistrations' => $showPendingRegistrations
+        ]);
     }
 
     /**
@@ -148,12 +154,6 @@ class UserController extends Controller
                 'label' => Yii::t('AdminModule.controllers_UserController', 'Save'),
                 'class' => 'btn btn-primary',
             ],
-            'become' => [
-                'type' => 'submit',
-                'label' => Yii::t('AdminModule.controllers_UserController', 'Become this user'),
-                'class' => 'btn btn-danger',
-                'isVisible' => $this->canBecomeUser($user)
-            ],
             'delete' => [
                 'type' => 'submit',
                 'label' => Yii::t('AdminModule.controllers_UserController', 'Delete'),
@@ -172,26 +172,14 @@ class UserController extends Controller
             }
         }
 
-        // This feature is used primary for testing, maybe remove this in future
-        if ($form->submitted('become') && $this->canBecomeUser($user)) {
-
-            Yii::$app->user->switchIdentity($form->models['User']);
-            return $this->redirect(Url::home());
-        }
-
         if ($form->submitted('delete')) {
-            return $this->redirect(['/admin/user/delete', 'id' => $user->id]);
+            return $this->redirect(['delete', 'id' => $user->id]);
         }
 
         return $this->render('edit', [
                     'hForm' => $form,
                     'user' => $user
         ]);
-    }
-
-    public function canBecomeUser($user)
-    {
-        return Yii::$app->user->isAdmin() && $user->id != Yii::$app->user->getIdentity()->id;
     }
 
     public function actionAdd()
@@ -209,33 +197,109 @@ class UserController extends Controller
     /**
      * Deletes a user permanently
      */
-    public function actionDelete()
+    public function actionDelete($id)
     {
-        $id = (int) Yii::$app->request->get('id');
-        $doit = (int) Yii::$app->request->get('doit');
+        $user = User::findOne(['id' => $id]);
+        if ($user == null) {
+            throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
+        } elseif (Yii::$app->user->id == $id) {
+            throw new HttpException(400, Yii::t('AdminModule.user', 'You cannot delete yourself!'));
+        }
+
+        $model = new UserDeleteForm(['user' => $user]);
+        if ($model->load(Yii::$app->request->post()) && $model->performDelete()) {
+            $this->view->info(Yii::t('AdminModule.user', 'User deletion process queued.'));
+            return $this->redirect(['list']);
+        }
+
+        return $this->render('delete', ['model' => $model]);
+    }
+
+    /**
+     * Redirect to user profile
+     *  
+     * @param int $id
+     * @return \yii\base\Response the response
+     * @throws HttpException
+     */
+    public function actionViewProfile($id)
+    {
+        $user = User::findOne(['id' => $id]);
+        if ($user === null) {
+            throw new HttpException(404);
+        }
+
+        return $this->redirect($user->getUrl());
+    }
+
+    public function actionEnable($id)
+    {
+        $this->forcePostRequest();
 
         $user = User::findOne(['id' => $id]);
-
-        if ($user == null) {
-            throw new HttpException(404, Yii::t('AdminModule.controllers_UserController', 'User not found!'));
-        } elseif (Yii::$app->user->id == $id) {
-            throw new HttpException(400, Yii::t('AdminModule.controllers_UserController', 'You cannot delete yourself!'));
+        if ($user === null) {
+            throw new HttpException(404);
         }
 
-        if ($doit == 2) {
-            $this->forcePostRequest();
+        $user->status = User::STATUS_ENABLED;
+        $user->save();
 
-            foreach (Membership::GetUserSpaces($user->id) as $space) {
-                if ($space->isSpaceOwner($user->id)) {
-                    $space->addMember(Yii::$app->user->id);
-                    $space->setSpaceOwner(Yii::$app->user->id);
-                }
-            }
-            $user->delete();
-            return $this->redirect(['/admin/user']);
+        return $this->redirect(['list']);
+    }
+
+    public function actionDisable($id)
+    {
+        $this->forcePostRequest();
+
+        $user = User::findOne(['id' => $id]);
+        if ($user === null) {
+            throw new HttpException(404);
         }
 
-        return $this->render('delete', ['model' => $user]);
+        $user->status = User::STATUS_DISABLED;
+        $user->save();
+
+        return $this->redirect(['list']);
+    }
+
+    /**
+     * Redirect to user profile
+     *  
+     * @param int $id
+     * @return \yii\base\Response the response
+     * @throws HttpException
+     */
+    public function actionImpersonate($id)
+    {
+        $this->forcePostRequest();
+
+        $user = User::findOne(['id' => $id]);
+        if ($user === null) {
+            throw new HttpException(404);
+        }
+
+        if (!static::canImpersonate($user)) {
+            throw new HttpException(403);
+        }
+
+        Yii::$app->user->switchIdentity($user);
+
+        return $this->goHome();
+    }
+
+    /**
+     * Determines if the current user can impersonate given user.
+     * 
+     * @param User $user
+     * @return boolean can impersonate
+     */
+    public static function canImpersonate($user)
+    {
+        if (!Yii::$app->getModule('admin')->allowUserImpersonate) {
+            return false;
+        }
+
+        return Yii::$app->user->isAdmin() && $user->id != Yii::$app->user->getIdentity()->id;
     }
 
 }
