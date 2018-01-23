@@ -20,7 +20,10 @@ return [
     '<strong>Open</strong> file' => '',
     'Could not find requested file variant!' => '',
     'Could not find requested file!' => '',
+    'Created by:' => '',
     'Download' => '',
     'Insufficient permissions!' => '',
     'Invalid Mime-Type' => '',
+    'Last update by:' => '',
+    'Size:' => '',
 ];

@@ -27,6 +27,11 @@ class RichText extends JsWidget
     public $text = "";
 
     /**
+     * @var string original text before parsed 
+     */
+    public $originalText = "";
+
+    /**
      * @var boolean
      */
     public $encode = true;
@@ -63,38 +68,14 @@ class RichText extends JsWidget
 
     public function run()
     {
+        $this->originalText = $this->text;
+
         if ($this->encode) {
             $this->text = Html::encode($this->text);
         }
 
         if (!$this->minimal && !$this->edit) {
-            $maxOembedCount = 3; // Maximum OEmbeds
-            $oembedCount = 0; // OEmbeds used
-            $that = $this;
-
-            $pattern= <<<REGEXP
-                    /(?(R) # in case of recursion match parentheses
-				 \(((?>[^\s()]+)|(?R))*\)
-			|      # else match a link with title
-				(https?|ftp):\/\/(([^\s()]+)|(?R))+(?<![\.,:;\'"!\?\s])
-			)/x
-REGEXP;
-            $this->text = preg_replace_callback($pattern, function ($match) use (&$oembedCount, &$maxOembedCount, &$that) {
-
-                // Try use oembed
-                if ($maxOembedCount > $oembedCount) {
-                    $oembed = UrlOembed::GetOEmbed($match[0]);
-                    if ($oembed) {
-                        $oembedCount++;
-                        return $oembed;
-                    }
-                }
-
-                $options = strpos($match[0], Yii::$app->settings->get('baseUrl')) === 0 ? [] : ['target' => '_blank', 'rel' => "noopener noreferrer"];
-
-                // The markdown parser will parse the links by itself
-                return ($this->markdown) ? $match[0] : Html::a($match[0], Html::decode($match[0]), $options);
-            }, $this->text);
+            $this->translateOmbed();
 
             // mark emails
             $this->text = preg_replace_callback('/[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})/', function ($match) {
@@ -131,6 +112,40 @@ REGEXP;
     }
 
     /**
+     * Translates Ombed links
+     */
+    protected function translateOmbed()
+    {
+        $maxOembedCount = 3; // Maximum OEmbeds
+        $oembedCount = 0; // OEmbeds used
+        $that = $this;
+
+        $pattern = <<<REGEXP
+                    /(?(R) # in case of recursion match parentheses
+				 \(((?>[^\s()]+)|(?R))*\)
+			|      # else match a link with title
+				(https?|ftp):\/\/(([^\s()]+)|(?R))+(?<![\.,:;\'"!\?\s])
+			)/x
+REGEXP;
+        $this->text = preg_replace_callback($pattern, function ($match) use (&$oembedCount, &$maxOembedCount, &$that) {
+
+            // Try use oembed
+            if ($maxOembedCount > $oembedCount) {
+                $oembed = UrlOembed::GetOEmbed($match[0]);
+                if ($oembed) {
+                    $oembedCount++;
+                    return $oembed;
+                }
+            }
+
+            $options = strpos($match[0], Yii::$app->settings->get('baseUrl')) === 0 ? [] : ['target' => '_blank', 'rel' => "noopener noreferrer"];
+
+            // The markdown parser will parse the links by itself
+            return ($this->markdown) ? $match[0] : Html::a($match[0], Html::decode($match[0]), $options);
+        }, $this->text);
+    }
+
+    /**
      * Replace emojis from text to img tag
      *
      * @param string $text Contains the complete message
@@ -154,7 +169,7 @@ REGEXP;
         return preg_replace_callback('@;(\w*?);@', function($hit) use(&$show, &$emojis) {
             if (in_array($hit[1], $emojis)) {
                 if ($show) {
-                    return Html::img(Yii::getAlias("@web-static/img/emoji/" . $hit[1] . ".svg"), array('data-emoji-name' => $hit[0], 'data-richtext-feature' => '', 'data-guid' => "@-emoji".$hit[0], 'class' => 'atwho-emoji', 'width' => '18', 'height' => '18', 'alt' => $hit[1]));
+                    return Html::img(Yii::getAlias("@web-static/img/emoji/" . $hit[1] . ".svg"), array('data-emoji-name' => $hit[0], 'data-richtext-feature' => '', 'data-guid' => "@-emoji" . $hit[0], 'class' => 'atwho-emoji', 'width' => '18', 'height' => '18', 'alt' => $hit[1]));
                 }
                 return '';
             }

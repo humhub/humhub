@@ -20,6 +20,8 @@ return [
     'Export' => '',
     'Invalid request method!' => '',
     'Select Me' => '',
+    'Text could not be copied to clipboard' => '',
+    'Text has been copied to clipboard' => '',
     'Time Zone' => '',
     '<strong>Confirm</strong> Action' => '<strong>確認</ strong> アクション',
     '<strong>Latest</strong> updates' => '<strong>最新</strong> 更新',

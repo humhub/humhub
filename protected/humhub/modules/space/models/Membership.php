@@ -157,17 +157,19 @@ class Membership extends ActiveRecord
      * Returns a list of all spaces of the given userId
      *
      * @param int $userId the user id or empty for current user
-     * @return Space[] the list of spaces
+     * @param boolean $cached use cached result if available
+     * @return Space[] an array of spaces
      */
-    public static function GetUserSpaces($userId = "")
+    public static function GetUserSpaces($userId = "", $cached = true)
     {
-        if ($userId == "")
+        if ($userId == "") {
             $userId = Yii::$app->user->id;
+        }
 
         $cacheId = "userSpaces_" . $userId;
 
         $spaces = Yii::$app->cache->get($cacheId);
-        if ($spaces === false) {
+        if ($spaces === false || !$cached) {
 
             $orderSetting = Yii::$app->getModule('space')->settings->get('spaceOrder');
             $orderBy = 'name ASC';
@@ -175,10 +177,11 @@ class Membership extends ActiveRecord
                 $orderBy = 'last_visit DESC';
             }
 
-            $memberships = self::find()->joinWith('space')->where(['user_id' => $userId, 'space_membership.status' => self::STATUS_MEMBER])->orderBy($orderBy);
+            $query = self::find()->joinWith('space')->orderBy($orderBy);
+            $query->where(['user_id' => $userId, 'space_membership.status' => self::STATUS_MEMBER]);
 
-            $spaces = array();
-            foreach ($memberships->all() as $membership) {
+            $spaces = [];
+            foreach ($query->all() as $membership) {
                 $spaces[] = $membership->space;
             }
             Yii::$app->cache->set($cacheId, $spaces);

@@ -19,8 +19,11 @@
 return [
     '<strong>Open</strong> file' => '',
     'Could not find requested file variant!' => '',
+    'Created by:' => '',
     'Download' => '',
     'Invalid Mime-Type' => '',
+    'Last update by:' => '',
+    'Size:' => '',
     'Could not find requested file!' => 'Den begärda filen hittades inte!',
     'Insufficient permissions!' => 'Otillräckliga rättigheter!',
 ];

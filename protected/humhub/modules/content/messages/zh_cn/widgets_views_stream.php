@@ -17,12 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'The content has been archived.' => '内容已被归档。',
-    'The content has been deleted.' => '内容已被删除。',
-    'The content has been pinned.' => '内容已被置顶。',
-    'The content has been unarchived.' => '内容已被解除归档。',
-    'The content has been unpinned.' => '内容已被取消置顶。',
-    'Your last edit state has been saved!' => '你的最新修改已被保存！',
     'Back to stream' => '返回动态',
     'Content with attached files' => '内容含有附件',
     'Created by me' => '我创建的',
@@ -38,5 +32,9 @@ return [
     'Posts only' => '公共内容',
     'Posts with links' => '含链接的内容',
     'Sorting' => '排序',
+    'The content has been archived.' => '内容已被归档。',
+    'The content has been deleted.' => '内容已被删除。',
+    'The content has been unarchived.' => '内容已被解除归档。',
     'Where I´m involved' => '关系密切',
+    'Your last edit state has been saved!' => '你的最新修改已被保存！',
 ];

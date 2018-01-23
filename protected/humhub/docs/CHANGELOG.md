@@ -10,6 +10,14 @@ HumHub Change Log
 - Enh: More readable WallEntryAddon links (@githubjeka)
 - Fix: Documentation grammar fixes (@Felli)
 - Fix: Let's Encrypt ACME Error (@Felli)
+- Fix: Typo in password recovery (@acs-ferreira)
+- Fix: Profile posts of friends not appears on dashboard
+- Fix #2745: Yii2 2.0.13 will break the admin interface
+- Enh: Allow auto detection of response dataType
+- Fix #2947: Allow json success result on modalSubmit
+- Enh: Disabled automatic content following on likes by default
+- Enh: Improved IntegrityChecker memory usage
+
 
 1.2.4  (December 13, 2017)
 --------------------------

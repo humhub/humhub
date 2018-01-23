@@ -16,6 +16,7 @@ use humhub\modules\user\events\UserEvent;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
+use humhub\modules\space\models\Membership;
 use humhub\modules\space\helpers\MembershipHelper;
 
 /**

@@ -24,6 +24,8 @@ return [
     'Profile image of {displayName}' => '',
     'Profile picture of {displayName}' => '',
     'Select Me' => '',
+    'Text could not be copied to clipboard' => '',
+    'Text has been copied to clipboard' => '',
     'Time Zone' => '',
     'Toggle comment menu' => '',
     'Toggle panel menu' => '',

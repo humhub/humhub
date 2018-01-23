@@ -18,5 +18,6 @@
  */
 return [
     '<b>This profile stream is still empty!</b>' => '',
+    '<b>This profile stream is still empty</b><br>Be the first and post something...' => '',
     '<b>Your profile stream is still empty</b><br>Get started and post something...' => '',
 ];

@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -26,7 +26,6 @@ use humhub\modules\like\notifications\NewLike;
  * @property string $updated_at
  * @property integer $updated_by
  *
- * @package humhub.modules_core.like.models
  * @since 0.5
  */
 class Like extends ContentAddonActiveRecord
@@ -102,6 +101,8 @@ class Like extends ContentAddonActiveRecord
             $target = isset($this->getSource()->createdBy) ? $this->getSource()->createdBy : $this->getSource()->content->createdBy;
             NewLike::instance()->from(Yii::$app->user->getIdentity())->about($this)->send($target);
         }
+
+        $this->automaticContentFollowing = Yii::$app->getModule('like')->autoFollowLikedContent;
 
         return parent::afterSave($insert, $changedAttributes);
     }
