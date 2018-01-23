@@ -52,8 +52,29 @@ Thre previous configuration will disable pjax support on your site.
 Available params:
 
 - `allowedLanguages` see the [Translations Section](translations.md)
-- `defaultPermissions` see [Permissions Section (TBD)]()
 - `enablePjax` used to disable/enable pjax support (default true)
+
+## Overwrite default Permissions
+
+Default permission can be overwritten within `humhub/config/common.php` by means of the `defaultPermissions` params array.
+The following example overwrites the default permission of `humhub\modules\mymodule\permissions\MyPermission` for the 
+given groups.
+
+
+```
+return [
+    'params' => [
+        'defaultPermissions' => [
+            'humhub\modules\mymodule\permissions\MyPermission' => [
+                \humhub\modules\user\models\User::USERGROUP_SELF => \humhub\libs\BasePermission::STATE_ALLOW,
+                \humhub\modules\user\models\User::USERGROUP_USER => \humhub\libs\BasePermission::STATE_ALLOW,
+                \humhub\modules\user\models\User::USERGROUP_FRIEND => \humhub\libs\BasePermission::STATE_ALLOW,
+                \humhub\modules\user\models\User::USERGROUP_GUEST => \humhub\libs\BasePermission::STATE_ALLOW,
+            ],
+        ]
+    ]
+]
+```
 
 # Statistics/Tracking
 
