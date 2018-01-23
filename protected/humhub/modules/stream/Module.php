@@ -36,5 +36,4 @@ class Module extends \humhub\components\Module
      * @var boolean show contents of deactivated users in stream
      */
     public $showDeactivatedUserContent = true;
-
 }
