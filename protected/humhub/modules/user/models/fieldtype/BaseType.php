@@ -287,11 +287,12 @@ class BaseType extends Model
      */
     public function getLabels()
     {
-        $labels = [];
-        $labels[$this->profileField->internal_name] = Yii::t($this->profileField->getTranslationCategory(),
-            $this->profileField->title);
-
-        return $labels;
+        return [
+            $this->profileField->internal_name => Yii::t(
+                $this->profileField->getTranslationCategory(),
+                $this->profileField->title
+            )
+        ];
     }
 
     /**
