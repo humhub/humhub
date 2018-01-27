@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -111,8 +111,8 @@ class DateTime extends BaseType
         $internalName = $this->profileField->internal_name;
         $date = $user->profile->$internalName;
 
-        if ($date == "" || $date == "0000-00-00 00:00:00")
-            return "";
+        if ($date == '' || $date == '0000-00-00 00:00:00')
+            return '';
 
         return \yii\helpers\Html::encode($date);
     }
