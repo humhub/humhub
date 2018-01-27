@@ -7,7 +7,7 @@ php:
 matrix:
   fast_finish: true
 
-dist: precise
+dist: trusty
 
 # faster builds on new travis setup not using sudo
 sudo: false
