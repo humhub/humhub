@@ -4,10 +4,14 @@ php:
   - 5.6
   - 7.0
   - 7.1
+
 matrix:
   fast_finish: true
 
 dist: trusty
+
+addons:
+  chrome: stable
 
 # faster builds on new travis setup not using sudo
 sudo: false
