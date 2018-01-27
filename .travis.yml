@@ -25,7 +25,7 @@ services: mysql
 
 before_install:
   - wget https://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip
-  - unzip chromedriver_linux64.zip
+  - unzip -d $HOME chromedriver_linux64.zip
   - $HOME/chromedriver --url-base=/wd/hub &
 
 install:
