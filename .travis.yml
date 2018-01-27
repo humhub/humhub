@@ -24,7 +24,9 @@ cache:
 services: mysql
 
 before_install:
-  - phantomjs -v
+  - wget https://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip
+  - unzip chromedriver_linux64.zip
+  - $HOME/chromedriver --url-base=/wd/hub &
 
 install:
   #- wget http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux64.zip
