@@ -21,7 +21,6 @@ services: mysql
 
 before_install:
   - phantomjs -v
-  - echo "extension=ldap.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 install:
   #- wget http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux64.zip
