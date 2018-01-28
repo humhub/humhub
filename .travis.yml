@@ -11,7 +11,9 @@ matrix:
 dist: trusty
 
 addons:
-  chrome: stable
+  apt:
+    packages:
+      - google-chrome-stable
 
 # faster builds on new travis setup not using sudo
 sudo: false
