@@ -18,6 +18,6 @@ modules:
         browser: chrome
         capabilities:
           chromeOptions:
-            args: ['--headless', '--disable-gpu', '--no-sandbox']
+            args: ['--headless', '--disable-gpu', '--no-sandbox', '--window-size=1024,768']
     - tests\codeception\_support\WebHelper
     - tests\codeception\_support\DynamicFixtureHelper

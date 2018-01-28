@@ -225,7 +225,7 @@ class StreamCest
         $I->click('Send', '#comment_create_form_humhubmodulespostmodelsPost_10');
         $I->waitForText('My Comment', 30, '#comment_humhubmodulespostmodelsPost_10 .comment');
 
-        $I->scrollTop();
+//        $I->scrollTop();
         $I->click('.stream-filter', '#filter');
         $I->waitForElementVisible('#filter_entry_userinvolved');
         $I->click('#filter_entry_userinvolved');
