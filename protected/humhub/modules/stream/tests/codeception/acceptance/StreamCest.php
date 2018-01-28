@@ -225,8 +225,6 @@ class StreamCest
         $I->click('Send', '#comment_create_form_humhubmodulespostmodelsPost_10');
         $I->waitForText('My Comment', 30, '#comment_humhubmodulespostmodelsPost_10 .comment');
 
-        $I->click('Like', '[data-content-key="11"]');
-
         $I->click('.stream-filter', '#filter');
         $I->waitForElementVisible('#filter_entry_userinvolved');
         $I->click('#filter_entry_userinvolved');
@@ -234,7 +232,6 @@ class StreamCest
         $I->waitForText('Involved Post.');
 
         $I->seeElement('[data-content-key="10"]');
-        $I->seeElement('[data-content-key="11"]');
         $I->seeElement('[data-content-key="12"]');
     }
 
