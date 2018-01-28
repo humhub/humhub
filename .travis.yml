@@ -65,7 +65,7 @@ script:
   - php -S 127.0.0.1:8080 &> /dev/null &
   #- phantomjs --webdriver=4444 > /dev/null 2>&1 & # Not in use since phantomjs hangs with QIODevice::write (QTcpSocket): device not open
   - sleep 5
-  - curl http://127.0.0.1:8080/index-test.php
+  - curl -I http://127.0.0.1:8080/index-test.php
   - |
     cd protected/humhub/tests/
     codecept run
