@@ -54,13 +54,12 @@ install:
     php yii migrate/up --includeModuleMigrations=1 --interactive=0
     php yii installer/auto
     php yii search/rebuild
-    cd ../../../../..
-    cd protected/humhub/tests
+    cd ../../
     codecept build
     cd ../../../
 
 script:
-  - php -S 127.0.0.1:8080 > /dev/null 2>&1 &
+  - php -S 127.0.0.1:8080 > /dev/null &
   #- phantomjs --webdriver=4444 > /dev/null 2>&1 & # Not in use since phantomjs hangs with QIODevice::write (QTcpSocket): device not open
   - sleep 5
   - curl http://127.0.0.1:8080/index-test.php
