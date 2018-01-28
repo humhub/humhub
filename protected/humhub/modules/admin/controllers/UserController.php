@@ -263,6 +263,7 @@ class UserController extends Controller
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination = false;
 
         $exporter = new SpreadsheetExport([
             'dataProvider' => $dataProvider,
