@@ -26,7 +26,7 @@ class InviteCest
         $I->fillField('#emails', 'user1234@example.com');
         $I->click('Send invite');
         $I->expectTo('see a confirm message');
-        $I->waitForText('User has been invited.');
-//        $I->seeSuccess();
+//        $I->waitForText('User has been invited.');
+        $I->seeSuccess();
     }
 }
