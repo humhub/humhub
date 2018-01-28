@@ -1,11 +1,21 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace user\acceptance;
 
-use user\AcceptanceTester;
 use tests\codeception\_pages\DirectoryMemberPage;
+use user\AcceptanceTester;
 
 class InviteCest
 {
+    /**
+     * @param AcceptanceTester $I
+     * @throws \Exception
+     */
     public function testUserInvite(AcceptanceTester $I)
     {
         $I->wantTo('Ensure that invite form works.');
@@ -14,7 +24,7 @@ class InviteCest
         DirectoryMemberPage::openBy($I);
 
         $I->click('Send invite');
-        $I->waitForText('Invite new people', null,'#globalModal');
+        $I->waitForText('Invite new people', null, '#globalModal');
 
         $I->amGoingTo('invite an already existing user email');
         $I->fillField('#emails', 'user1@example.com');
@@ -26,7 +36,6 @@ class InviteCest
         $I->fillField('#emails', 'user1234@example.com');
         $I->click('Send invite');
         $I->expectTo('see a confirm message');
-//        $I->waitForText('User has been invited.');
         $I->seeSuccess();
     }
 }

@@ -3,7 +3,6 @@
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\modules\user\tests\codeception\functional;
@@ -15,12 +14,18 @@ use Yii;
 
 class RegistrationCest
 {
+    /**
+     * @param \FunctionalTester $I
+     */
     public function _before(\FunctionalTester $I)
     {
         Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', 1);
         Yii::$app->getModule('user')->settings->set('auth.needApproval', false);
     }
 
+    /**
+     * @param FunctionalTester $I
+     */
     public function testRegisterInvalidEmail(FunctionalTester $I)
     {
         LoginPage::openBy($I);
@@ -31,6 +36,9 @@ class RegistrationCest
         $I->see('Email is not a valid email address.');
     }
 
+    /**
+     * @param FunctionalTester $I
+     */
     public function testRegister(FunctionalTester $I)
     {
         LoginPage::openBy($I);

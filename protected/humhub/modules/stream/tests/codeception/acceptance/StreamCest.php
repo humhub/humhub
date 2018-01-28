@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
 namespace stream\acceptance;
 
@@ -6,6 +11,10 @@ use stream\AcceptanceTester;
 
 class StreamCest
 {
+    /**
+     * @param AcceptanceTester $I
+     * @throws \Exception
+     */
     public function testDeletePost(AcceptanceTester $I)
     {
         $I->amUser();
@@ -32,6 +41,10 @@ class StreamCest
         $I->seeSuccess('The content has been deleted');
     }
 
+    /**
+     * @param AcceptanceTester $I
+     * @throws \Exception
+     */
     public function testArchivePost(AcceptanceTester $I)
     {
         $I->amUser();
@@ -86,6 +99,10 @@ class StreamCest
         $I->see('Archived', $newEntrySelector);
     }
 
+    /**
+     * @param AcceptanceTester $I
+     * @throws \Exception
+     */
     public function testPinPost(AcceptanceTester $I)
     {
         $I->amUser();
@@ -107,24 +124,28 @@ class StreamCest
         $newEntrySelector2 = '[data-content-key="14"]';
         $I->waitForElementVisible($newEntrySelector2);
         $I->expectTo('my new post beeing the latest entry');
-        $I->waitForText('This is my second stream test post',null, '.s2_streamContent div:nth-child(1)');
+        $I->waitForText('This is my second stream test post', null, '.s2_streamContent div:nth-child(1)');
 
         $I->amGoingTo('pin my first entry');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Pin', 10);
         $I->click('Pin', $newEntrySelector);
 
-        $I->waitForText('This is my first stream test post!',null, '.s2_streamContent div:nth-child(1)');
+        $I->waitForText('This is my first stream test post!', null, '.s2_streamContent div:nth-child(1)');
         $I->see('Pinned', $newEntrySelector);
 
         $I->amGoingTo('unpin my first entry');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Unpin', 10);
         $I->click('Unpin', $newEntrySelector);
-        $I->waitForText('This is my second stream test post!',null, '.s2_streamContent div:nth-child(1)');
+        $I->waitForText('This is my second stream test post!', null, '.s2_streamContent div:nth-child(1)');
         $I->dontSee('Pinned', $newEntrySelector);
     }
 
+    /**
+     * @param AcceptanceTester $I
+     * @throws \Exception
+     */
     public function testEditPost(AcceptanceTester $I)
     {
         $I->amUser();
@@ -167,6 +188,10 @@ class StreamCest
         $I->see('This is my edited post!', $newEntrySelector);
     }
 
+    /**
+     * @param AcceptanceTester $I
+     * @throws \Exception
+     */
     public function testEmptyStream(AcceptanceTester $I)
     {
         $I->amUser();
@@ -198,6 +223,10 @@ class StreamCest
         $I->dontSeeElement('#filter');
     }
 
+    /**
+     * @param AcceptanceTester $I
+     * @throws \Exception
+     */
     public function testFilterInvolved(AcceptanceTester $I)
     {
         $I->amUser();
@@ -236,6 +265,10 @@ class StreamCest
         $I->seeElement('[data-content-key="12"]');
     }
 
+    /**
+     * @param AcceptanceTester $I
+     * @throws \Exception
+     */
     public function testSortStream(AcceptanceTester $I)
     {
         $I->amUser();
