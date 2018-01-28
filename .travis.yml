@@ -56,7 +56,8 @@ install:
     php yii migrate/up --includeModuleMigrations=1 --interactive=0
     php yii installer/auto
     php yii search/rebuild
-    cd ../../
+    cd ../../../../..
+    cd protected/humhub/tests
     codecept build
     cd ../../../
 
