@@ -50,12 +50,10 @@ install:
   # Install test environment
   - |
     mysql -e 'CREATE DATABASE `humhub_test` CHARACTER SET utf8 COLLATE utf8_general_ci;'
-    cd protected/humhub/tests/codeception/bin
-    php yii migrate/up --includeModuleMigrations=1 --interactive=0
-    php yii installer/auto
-    php yii search/rebuild
-    cd ../../../../..
     cd protected/humhub/tests
+    php codeception/bin/yii migrate/up --includeModuleMigrations=1 --interactive=0
+    php codeception/bin/yii installer/auto
+    php codeception/bin/yii search/rebuild
     codecept build
     cd ../../../
 
