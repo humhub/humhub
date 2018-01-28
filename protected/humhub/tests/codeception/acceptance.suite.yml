@@ -18,5 +18,7 @@ modules:
         browser: chrome
         capabilities:
           chromeOptions:
-            args: ['--headless', '--disable-gpu', '--no-sandbox', 'window-size=1920,1080']
+            args: ['--headless', '--disable-gpu', '--no-sandbox']
     - tests\codeception\_support\WebHelper
+
+        
