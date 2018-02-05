@@ -129,7 +129,7 @@ var humhub = humhub || (function ($) {
         }
 
         //Initialize the modules when document is ready
-        if(!humhub.initialized) {
+        if (!humhub.initialized) {
             initialModules.push(instance);
         } else { // Init modules added asynchronously (ajax/pjax)
             addModuleLogger(instance);
@@ -365,7 +365,7 @@ var humhub = humhub || (function ($) {
     };
 
     //Initialize all initial modules
-    $(document).ready(function () {
+    $(function() {
         var log = require('log');
 
         $.each(moduleArr, function (i, module) {
