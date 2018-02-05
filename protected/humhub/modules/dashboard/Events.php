@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,7 +10,6 @@ namespace humhub\modules\dashboard;
 
 use Yii;
 use yii\helpers\Url;
-
 use humhub\modules\dashboard\widgets\ShareWidget;
 
 /**
@@ -31,14 +30,14 @@ class Events
     {
 
         // Is Module enabled on this workspace?
-        $event->sender->addItem(array(
+        $event->sender->addItem([
             'label' => Yii::t('DashboardModule.base', 'Dashboard'),
             'id' => 'dashboard',
             'icon' => '<i class="fa fa-tachometer"></i>',
             'url' => Url::toRoute('/dashboard/dashboard'),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'dashboard'),
-        ));
+        ]);
     }
 
 }
