@@ -2,15 +2,18 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\components;
 
+use humhub\modules\user\authclient\AuthClientHelpers;
+use humhub\modules\user\authclient\Password;
+use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
 use Yii;
 use yii\authclient\ClientInterface;
-use humhub\modules\user\authclient\AuthClientHelpers;
+use yii\db\Expression;
 
 /**
  * Description of User
@@ -32,32 +35,36 @@ class User extends \yii\web\User
 
     public function isAdmin()
     {
-        if ($this->isGuest)
+        if ($this->isGuest) {
             return false;
+        }
 
         return $this->getIdentity()->isSystemAdmin();
     }
 
     public function getLanguage()
     {
-        if ($this->isGuest)
-            return "";
+        if ($this->isGuest) {
+            return '';
+        }
 
         return $this->getIdentity()->language;
     }
 
     public function getTimeZone()
     {
-        if ($this->isGuest)
-            return "";
+        if ($this->isGuest) {
+            return '';
+        }
 
         return $this->getIdentity()->time_zone;
     }
 
     public function getGuid()
     {
-        if ($this->isGuest)
-            return "";
+        if ($this->isGuest) {
+            return '';
+        }
 
         return $this->getIdentity()->guid;
     }
@@ -91,8 +98,8 @@ class User extends \yii\web\User
         if ($this->permissionManager !== null) {
             return $this->permissionManager;
         }
-
         $this->permissionManager = new PermissionManager(['subject' => $this->getIdentity()]);
+
         return $this->permissionManager;
     }
 
@@ -103,7 +110,7 @@ class User extends \yii\web\User
     public function canChangePassword()
     {
         foreach ($this->getAuthClients() as $authClient) {
-            if ($authClient->className() == \humhub\modules\user\authclient\Password::className()) {
+            if ($authClient->className() == Password::className()) {
                 return true;
             }
         }
@@ -131,10 +138,11 @@ class User extends \yii\web\User
     public function canDeleteAccount()
     {
         foreach ($this->getAuthClients() as $authClient) {
-            if ($authClient instanceof \humhub\modules\user\authclient\interfaces\AutoSyncUsers) {
+            if ($authClient instanceof AutoSyncUsers) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -159,6 +167,7 @@ class User extends \yii\web\User
                 return $authClient;
             }
         }
+
         return null;
     }
 
@@ -167,7 +176,7 @@ class User extends \yii\web\User
      */
     public function afterLogin($identity, $cookieBased, $duration)
     {
-        $identity->updateAttributes(['last_login' => new \yii\db\Expression('NOW()')]);
+        $identity->updateAttributes(['last_login' => new Expression('NOW()')]);
 
         parent::afterLogin($identity, $cookieBased, $duration);
     }
