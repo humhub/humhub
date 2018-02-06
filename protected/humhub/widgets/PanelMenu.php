@@ -1,24 +1,14 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\widgets;
+
+use yii\base\Widget;
 
 /**
  * PanelMenuWidget add an dropdown menu to the panel header
@@ -27,13 +17,13 @@ namespace humhub\widgets;
  * @since 0.5
  * @author Andreas Strobel
  */
-class PanelMenu extends \yii\base\Widget
+class PanelMenu extends Widget
 {
 
     /**
      * @var String unique id from panel element
      */
-    public $id = "";
+    public $id = '';
 
     /**
      * Workaround to inject menu items to PanelMenu
@@ -42,7 +32,7 @@ class PanelMenu extends \yii\base\Widget
      * @internal description
      * @var String
      */
-    public $extraMenus = "";
+    public $extraMenus = '';
 
     public function init()
     {
@@ -54,12 +44,10 @@ class PanelMenu extends \yii\base\Widget
      */
     public function run()
     {
-        return $this->render('panelMenu', array(
+        return $this->render('panelMenu', [
                     'id' => $this->id,
                     'extraMenus' => $this->extraMenus,
-        ));
+        ]);
     }
 
 }
-
-?>
