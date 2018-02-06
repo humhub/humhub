@@ -2,18 +2,20 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\search\controllers;
 
 use Yii;
+use yii\data\Pagination;
 use humhub\components\Controller;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\search\models\forms\SearchForm;
 use humhub\modules\space\widgets\Image;
+use humhub\modules\search\engine\Search;
 
 /**
  * Search Controller provides search functions inside the application.
@@ -71,7 +73,7 @@ class SearchController extends Controller
         ];
 
         if ($model->scope == SearchForm::SCOPE_CONTENT) {
-            $options['type'] = \humhub\modules\search\engine\Search::DOCUMENT_TYPE_CONTENT;
+            $options['type'] = Search::DOCUMENT_TYPE_CONTENT;
         } elseif ($model->scope == SearchForm::SCOPE_SPACE) {
             $options['model'] = Space::className();
         } elseif ($model->scope == SearchForm::SCOPE_USER) {
@@ -82,20 +84,20 @@ class SearchController extends Controller
 
         $searchResultSet = Yii::$app->search->find($model->keyword, $options);
 
-        // store static for use in widgets (e.g. fileList)
+        // Store static for use in widgets (e.g. fileList)
         self::$keyword = $model->keyword;
 
-        $pagination = new \yii\data\Pagination;
+        $pagination = new Pagination;
         $pagination->totalCount = $searchResultSet->total;
         $pagination->pageSize = $searchResultSet->pageSize;
 
-        return $this->render('index', array(
+        return $this->render('index', [
                     'model' => $model,
                     'results' => $searchResultSet->getResultInstances(),
                     'pagination' => $pagination,
                     'totals' => $model->getTotals($model->keyword, $options),
                     'limitSpaces' => $limitSpaces
-        ));
+        ]);
     }
 
     /**
@@ -103,24 +105,24 @@ class SearchController extends Controller
      */
     public function actionMentioning()
     {
-        \Yii::$app->response->format = 'json';
+        Yii::$app->response->format = 'json';
 
-        $results = array();
-        $keyword = Yii::$app->request->get('keyword', "");
+        $results = [];
+        $keyword = Yii::$app->request->get('keyword', '');
 
         $searchResultSet = Yii::$app->search->find($keyword, [
-            'model' => array(User::className(), Space::className()),
+            'model' => [User::className(), Space::className()],
             'pageSize' => 10
         ]);
 
         foreach ($searchResultSet->getResultInstances() as $container) {
-            $results[] = array(
+            $results[] = [
                 'guid' => $container->guid,
-                'type' => ($container instanceof Space) ? "s" : "u",
+                'type' => ($container instanceof Space) ? 's' : 'u',
                 'name' => $container->getDisplayName(),
                 'image' => ($container instanceof Space) ? Image::widget(['space' => $container, 'width' => 20]) : "<img class='img-rounded' src='" . $container->getProfileImage()->getUrl() . "' height='20' width='20' alt=''>",
                 'link' => $container->getUrl()
-            );
+            ];
         };
 
         return $results;
