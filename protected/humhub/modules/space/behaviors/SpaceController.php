@@ -1,31 +1,18 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
+
 namespace humhub\modules\space\behaviors;
 
+use humhub\modules\space\models\Space;
+use humhub\components\Controller;
 use Yii;
 use yii\base\Behavior;
-
-
-use humhub\modules\space\models\Space;
 use yii\web\HttpException;
-use humhub\components\Controller;
 
 /**
  * SpaceControllerBehavior is a controller behavior used for space modules/controllers.
@@ -65,20 +52,21 @@ class SpaceController extends Behavior
         $guid = Yii::$app->request->get('sguid');
 
         // Try Load the space
-        $this->space = Space::findOne([
-            'guid' => $guid
-        ]);
-        if ($this->space == null)
+        $this->space = Space::findOne(['guid' => $guid]);
+        if ($this->space == null) {
             throw new HttpException(404, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'Space not found!'));
+        }
 
         $this->checkAccess();
+
         return $this->space;
     }
 
     public function checkAccess()
     {
-        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') && Yii::$app->user->isGuest && $this->space->visibility != Space::VISIBILITY_ALL) {
-            throw new HttpException(401, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'You need to login to view contents of this space!'));
+        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') &&
+            Yii::$app->user->isGuest && $this->space->visibility != Space::VISIBILITY_ALL) {
+                throw new HttpException(401, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'You need to login to view contents of this space!'));
         }
 
         // Save users last action on this space
@@ -86,9 +74,8 @@ class SpaceController extends Behavior
         if ($membership != null) {
             $membership->updateLastVisit();
         } else {
-
             // Super Admin can always enter
-            if (! Yii::$app->user->isAdmin()) {
+            if (!Yii::$app->user->isAdmin()) {
                 // Space invisible?
                 if ($this->space->visibility == Space::VISIBILITY_NONE) {
                     // Not Space Member
@@ -103,5 +90,3 @@ class SpaceController extends Behavior
         $this->owner->prependPageTitle($this->space->name);
     }
 }
-
-?>
