@@ -17,7 +17,7 @@ if ($confirmJS != '') {
     $confirm = $confirmJS;
 }
 
-<!-- Link to call the confirm modal -->
+// Link to call the confirm modal
 if ($linkOutput == 'button') {
 ?>
 
