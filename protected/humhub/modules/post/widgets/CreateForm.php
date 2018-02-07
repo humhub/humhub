@@ -2,11 +2,14 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\post\widgets;
+
+use humhub\modules\content\widgets\WallCreateContentForm;
+use humhub\modules\post\permissions\CreatePost;
 
 /**
  * This widget is used include the post form.
@@ -14,7 +17,7 @@ namespace humhub\modules\post\widgets;
  *
  * @since 0.5
  */
-class CreateForm extends \humhub\modules\content\widgets\WallCreateContentForm
+class CreateForm extends WallCreateContentForm
 {
 
     /**
@@ -27,7 +30,7 @@ class CreateForm extends \humhub\modules\content\widgets\WallCreateContentForm
      */
     public function renderForm()
     {
-        return $this->render('form', array());
+        return $this->render('form', []);
     }
 
     /**
@@ -35,7 +38,7 @@ class CreateForm extends \humhub\modules\content\widgets\WallCreateContentForm
      */
     public function run()
     {
-        if (!$this->contentContainer->permissionManager->can(new \humhub\modules\post\permissions\CreatePost())) {
+        if (!$this->contentContainer->permissionManager->can(new CreatePost())) {
             return;
         }
 
@@ -43,5 +46,3 @@ class CreateForm extends \humhub\modules\content\widgets\WallCreateContentForm
     }
 
 }
-
-?>
