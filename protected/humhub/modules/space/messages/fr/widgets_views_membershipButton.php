@@ -1,8 +1,8 @@
 <?php
 return array (
   'Accept Invite' => 'Accepter l\'invitation',
-  'Become member' => 'Devenir membre',
+  'Become member' => 'Rejoindre cet espace',
   'Cancel pending membership application' => 'Annuler la demande d\'adhésion',
   'Deny Invite' => 'Interdire l\'invitation',
-  'Request membership' => 'Envoyer une demande d\'adhésion',
+  'Request membership' => 'Introduire une demande d\'adhésion',
 );

@@ -1,6 +1,6 @@
 <?php
 return array (
-  'End guide' => 'Fin de la visite guidée',
+  'End guide' => 'Fin',
   'Next »' => 'Suivant »',
-  '« Prev' => '« Précédent',
+  '« Prev' => '« Préc.',
 );

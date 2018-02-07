@@ -1,9 +1,9 @@
 <?php
 return array (
   '<i class="fa fa-cog"></i>' => '<i class="fa fa-cog"></i>',
-  'Cancel Membership' => 'Annuler la participation',
-  'Don\'t receive notifications for new content' => 'Ne pas recevoir d\'notification pour les nouveaux contenus',
-  'Hide posts on dashboard' => 'Cacher les messages sur le fil d\'actualités',
+  'Cancel Membership' => 'Annuler l\'adhésion',
+  'Don\'t receive notifications for new content' => 'Ne pas recevoir de notifications pour les nouveaux contenus',
+  'Hide posts on dashboard' => 'Ne pas afficher les messages sur le fil d\'actualités',
   'Members' => 'Membres',
   'Modules' => 'Modules',
   'Receive Notifications for new content' => 'Recevoir des notifications pour les nouveaux contenus',

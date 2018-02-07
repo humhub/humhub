@@ -12,6 +12,6 @@ return array (
   'Password' => 'Mot de passe',
   'Port' => 'Port',
   'User Filer' => 'Filtre utilisateur',
-  'Username' => 'Nom d\'utilisateur',
+  'Username' => 'Identifiant',
   'Username Attribute' => 'Attribut utilisateur',
 );

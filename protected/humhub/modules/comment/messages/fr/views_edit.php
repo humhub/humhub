@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Edit your comment...' => 'Éditer le commentaire...',
+  'Edit your comment...' => 'Modifier le commentaire...',
   'Save' => 'Enregistrer',
 );
