@@ -86,6 +86,19 @@ class InputWidget extends JsWidget
     }
 
     /**
+     * @return string the field value either by extracting from model or if no model is given `$this->value`
+     * @since 1.3
+     */
+    protected function getValue()
+    {
+        if($this->hasModel()) {
+            return Html::getAttributeValue($this->model, $this->attribute);
+        }
+
+        return $this->value;
+    }
+
+    /**
      * @return bool whether this widget is associated with a data model.
      */
     protected function hasModel()

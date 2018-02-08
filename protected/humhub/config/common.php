@@ -12,7 +12,7 @@ Yii::setAlias('@config', '@app/config');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.2.3',
+    'version' => '1.3.0-beta.1',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue'],
     'sourceLanguage' => 'en',
@@ -230,6 +230,9 @@ $config = [
         'defaultPermissions' => [],
         'tour' => [
             'acceptableNames' => ['interface', 'administration', 'profile', 'spaces']
+        ],
+        'richText' => [
+            'class' => 'humhub\modules\content\widgets\richtext\ProsemirrorRichText',
         ],
         'enablePjax' => true,
     ]

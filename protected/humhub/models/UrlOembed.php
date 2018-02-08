@@ -9,6 +9,9 @@
 namespace humhub\models;
 
 use Yii;
+use yii\base\InvalidParamException;
+use yii\helpers\Html;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "url_oembed".
@@ -114,11 +117,11 @@ class UrlOembed extends \yii\db\ActiveRecord
             $jsonOut = UrlOembed::fetchUrl($urlOembed->getProviderUrl());
             if ($jsonOut != ""  && $jsonOut != "Unauthorized") {
                 try {
-                    $data = \yii\helpers\Json::decode($jsonOut);
+                    $data = Json::decode($jsonOut);
                     if (isset($data['html']) && isset($data['type']) && ($data['type'] === "video" || $data['type'] === 'rich' || $data['type'] === 'photo')) {
-                        $html = "<div data-guid='".uniqid('oembed-')."' data-richtext-feature class='oembed_snippet' data-url='" . \yii\helpers\Html::encode($url) . "'>" . $data['html'] . "</div>";
+                        $html = "<div data-guid='".uniqid('oembed-')."' data-richtext-feature class='oembed_snippet' data-url='" . Html::encode($url) . "'>" . $data['html'] . "</div>";
                     }
-                } catch (\yii\base\InvalidParamException $ex) {
+                } catch (InvalidParamException $ex) {
                     Yii::warning($ex->getMessage());
                 }
             }
@@ -209,7 +212,7 @@ class UrlOembed extends \yii\db\ActiveRecord
     {
         $providers = Yii::$app->settings->get('oembedProviders');
         if ($providers != "") {
-            return \yii\helpers\Json::decode($providers);
+            return Json::decode($providers);
         }
 
         return [];
@@ -222,7 +225,7 @@ class UrlOembed extends \yii\db\ActiveRecord
      */
     public static function setProviders($providers)
     {
-        Yii::$app->settings->set('oembedProviders', \yii\helpers\Json::encode($providers));
+        Yii::$app->settings->set('oembedProviders', Json::encode($providers));
     }
 
 }

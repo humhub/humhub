@@ -85,7 +85,8 @@ humhub.module('ui.loader', function (module, require, $) {
     var getInstance = function (cfg, $this) {
         cfg = cfg || {};
 
-        var $result = $(DEFAULT_LOADER_SELECTOR).clone().removeAttr('id').show();
+        // TODO use div template instead of clone
+        var $result = (cfg.span) ? $(module.template) : $(DEFAULT_LOADER_SELECTOR).clone().removeAttr('id').show();
 
         if (cfg['cssClass']) {
             $result.addClass(cfg['cssClass']);

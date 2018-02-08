@@ -46,7 +46,9 @@ humhub.module('ui.markdown', function (module, require, $) {
             $match.each(function () {
                 var $this = $(this);
 
-                if ($this.data('markdownProcessed')) {
+                return;
+
+                if (this.isContentEditable || $this.hasClass('ProseMirror') || $this.data('markdownProcessed')) {
                     return;
                 }
 

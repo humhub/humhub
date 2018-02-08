@@ -33,3 +33,4 @@ Bundled Software / Libaries
 * JShrink - https://github.com/tedious/JShrink
 * CSSCompressor - http://www.yiiframework.com/extension/minifyclientscript/
 * Sample avatars designed by http://www.freepik.com
+* twemoji - https://github.com/twitter/twemoji

@@ -1,6 +1,10 @@
 <?php
 
+use humhub\modules\content\widgets\richtext\RichText;
 use yii\helpers\Html;
+
+/* @var $originator \humhub\modules\user\models\User */
+/* @var $source \humhub\modules\comment\models\Comment */
 
 echo strip_tags(Yii::t('CommentModule.views_activities_CommentCreated', "%displayName% wrote a new comment ", [
     '%displayName%' => Html::encode($originator->displayName)
@@ -8,4 +12,4 @@ echo strip_tags(Yii::t('CommentModule.views_activities_CommentCreated', "%displa
 
 ?>
 
-"<?= strip_tags(\humhub\widgets\RichText::widget(['text' => $source->message, 'minimal' => true])); ?>"
+"<?= strip_tags(RichText::preview($source->message)); ?>"

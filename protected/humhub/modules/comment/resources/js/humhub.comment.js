@@ -15,10 +15,11 @@ humhub.module('comment', function (module, require, $) {
     Form.prototype.submit = function (evt) {
         var that = this;
         client.submit(evt, {dataType: 'html'}).then(function (response) {
+            var richText = that.getRichtext();
             that.addComment(response.html);
             that.getInput().val('').trigger('autosize.resize');
-            that.getRichtext().$.addClass('atwho-placeholder').focus();
-            that.getRichtext().$.trigger('clear');
+            richText.$.trigger('clear');
+            //richText.focus();
             that.getUpload().reset();
         }).catch(function (err) {
             module.log.error(err, true);
@@ -26,7 +27,7 @@ humhub.module('comment', function (module, require, $) {
     };
 
     Form.prototype.getRichtext = function () {
-        return Widget.instance(this.$.find('div.humhub-ui-richtext'));
+        return Widget.closest(this.$.find('div.humhub-ui-richtext'));
     };
 
     Form.prototype.addComment = function (html) {

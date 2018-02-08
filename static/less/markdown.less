@@ -78,7 +78,10 @@
 }
 
 [data-ui-markdown] {
-    
+
+    overflow:hidden;
+    overflow-wrap: break-word;
+
     h1, h2, h3, h4, h5, h6 {
         text-align: start;
         margin: 0 0 0.5em;
@@ -128,38 +131,20 @@
         border-left: 5px solid #888888;
         
     }
-    
+
     table {
-        margin-bottom: 20px;
-        max-width: 100%;
-        background-color: transparent;
-        border-collapse: collapse;
-        border-spacing: 0px;
-    }
-    
-    table caption+thead tr:first-child th, 
-    table caption+thead tr:first-child td, 
-    table colgroup+thead tr:first-child th, 
-    table colgroup+thead tr:first-child td, 
-    table thead:first-child tr:first-child th, 
-    table thead:first-child tr:first-child td {
-        border-top: 0px;
-    }
-    
-    table thead th {
-        vertical-align: bottom;
-    }
-    
-    table th {
-        font-weight: bold;
-        text-align: left;
-    }
-    
-    table th, table td {
-        padding: 8px;
-        line-height: 20px;
-        vertical-align: top;
-        border-top: 1px solid #ddd;
+        width: 100%;
+        th {
+            font-size: 13px;
+            font-weight: 700;
+            color: @text-color-highlight;
+            background-color: @background-color-secondary;
+        }
+
+        td, th {
+            border: 1px solid @background3 !important;
+            padding: 6px;
+        }
     }
     
     dt, dd {
@@ -205,6 +190,14 @@
         position: relative;
         top: -0.5em;
         font-size: .8em;
+    }
+
+    .emoji {
+        width:16px;
+    }
+
+    a.not-found {
+        color: @warning;
     }
 }
 

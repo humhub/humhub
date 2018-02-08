@@ -8,7 +8,9 @@
 
 namespace humhub\modules\post\controllers;
 
+use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\post\models\Post;
+use humhub\modules\post\permissions\CreatePost;
 use Yii;
 
 /**
@@ -21,7 +23,7 @@ class PostController extends \humhub\modules\content\components\ContentContainer
     public function actionPost()
     {
         // Check createPost Permission
-        if (!$this->contentContainer->getPermissionManager()->can(new \humhub\modules\post\permissions\CreatePost())) {
+        if (!$this->contentContainer->getPermissionManager()->can(new CreatePost())) {
             return [];
         }
 
@@ -36,7 +38,7 @@ class PostController extends \humhub\modules\content\components\ContentContainer
           }
          */
 
-        return \humhub\modules\content\widgets\WallCreateContentForm::create($post, $this->contentContainer);
+        return WallCreateContentForm::create($post, $this->contentContainer);
     }
 
     public function actionEdit()

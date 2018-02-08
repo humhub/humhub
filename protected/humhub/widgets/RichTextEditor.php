@@ -28,6 +28,7 @@ use humhub\components\Widget;
  * @package humhub.widgets
  * @since 0.5
  * @author Andreas Strobel
+ * @deprecated since 1.2
  */
 class RichTextEditor extends Widget
 {

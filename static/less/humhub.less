@@ -179,6 +179,11 @@
     @import "tags.less";
 }
 
+@prev-richtext: false;
+& when not(@prev-richtext) {
+  @import "richtext.less";
+}
+
 @import "../resources/css/select2Theme/build.less";
 
 // LEGACY/DEPRECATED User- & Space picker

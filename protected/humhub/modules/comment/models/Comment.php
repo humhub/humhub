@@ -8,6 +8,9 @@
 
 namespace humhub\modules\comment\models;
 
+use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\search\interfaces\Searchable;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 use humhub\modules\post\models\Post;
@@ -112,14 +115,15 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      */
     public function afterSave($insert, $changedAttributes)
     {
-        // flush the cache
         $this->flushCache();
 
+        // Creating activity
         NewComment::instance()->about($this)->save();
 
         // Handle mentioned users
         // Execute before NewCommentNotification to avoid double notification when mentioned.
-        $mentionedUsers = \humhub\modules\user\models\Mentioning::parse($this, $this->message);
+        $processResult = RichText::postProcess($this->message, $this);
+        $mentionedUsers = (isset($processResult['mentioning'])) ? $processResult['mentioning'] : [];
 
         if ($insert) {
             $followers = $this->getCommentedRecord()->getFollowers(null, true);
@@ -176,7 +180,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      */
     protected function updateContentSearch()
     {
-        if ($this->getCommentedRecord() instanceof \humhub\modules\search\interfaces\Searchable) {
+        if ($this->getCommentedRecord() instanceof Searchable) {
             Yii::$app->search->update($this->getCommentedRecord());
         }
     }
@@ -272,7 +276,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             return true;
         }
 
-        if ($this->content->container instanceof \humhub\modules\space\models\Space && $this->content->container->isAdmin($userId)) {
+        if ($this->content->container instanceof Space && $this->content->container->isAdmin($userId)) {
             return true;
         }
 

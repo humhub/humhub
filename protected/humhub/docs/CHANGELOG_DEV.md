@@ -19,3 +19,18 @@ HumHub Change Log - v1.3-dev Branch
 - Enh: Moved SyncUsers (LDAP) and session table cleanup handling into ActiveJob
 - Enh: Added Push live module driver using Redis and Node.JS
 - Enh: Added tooltip option to space Image widget.
+- Enh: Added `humhub.client.json` javascript util for directly receiving json instead of a Response object.
+- Enh: Added `humhub.file.Upload.run()` for triggering the upload of the Upload widget.
+- Chg: Moved `humhub\widgets\RichText` to `humhub\modules\content\widgets\richtext\RichText`
+- Chg: Moved `humhub\widgets\RichTextField` to `humhub\modules\content\widgets\richtext\RichTextField`
+- Enh: Added rich text abstraction by means of configuration parameter `richText`
+- Enh: Added `humhub\modules\content\widgets\richtext\ProsemirrorRichText` as default rich text.
+- Enh: Added `humhub.oembed` js module for loading oembed content
+- Enh: Added `RichText::preview()` helper for minimal rich text output
+- Enh: Added `RichText::output()` helper for rendering the richtext
+- Enh: Added `RichText::postProcess()` for post-processing rich text content (mentionings/oembed etc.)
+- Enh: Added `content` module setting `Module::$maxOembeds` for setting the maximim amount of oembeds in a richtext.
+- Chg: Deprecate `humhub\modules\user\models\Mentioning::parse()` and in favor of `humhub\modules\content\widgets\richtext\RichText::postProcess()`
+- Enh: Added `humhub.user.getLocale()` javascript helper for checking the user locale on client side
+- Enh: Added `humhub\widgets\InputWidget::getValue()` for determining the field value
+- Enh: Added `humhub.client.json` for directly receiving the json result instead of a response wrapper object
