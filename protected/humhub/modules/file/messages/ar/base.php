@@ -19,7 +19,10 @@
 return [
     '<strong>Open</strong> file' => '',
     'Could not find requested file variant!' => '',
+    'Created by:' => '',
     'Download' => '',
+    'Last update by:' => '',
+    'Size:' => '',
     'Could not find requested file!' => 'لم يتم ايجاد الملف المطلوب',
     'Insufficient permissions!' => 'ليست لديك الصلاحيات اللازمة!',
     'Invalid Mime-Type' => '@Invalid Mime-Type@',

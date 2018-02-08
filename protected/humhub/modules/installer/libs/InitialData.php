@@ -445,6 +445,7 @@ class InitialData
         $group = new Group();
         $group->name = "Users";
         $group->description = "Example Group by Installer";
+        $group->show_at_directory = false;
         $group->save();
     }
 

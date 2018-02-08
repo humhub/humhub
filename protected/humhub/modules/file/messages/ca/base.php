@@ -17,10 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Open</strong> file' => '',
-    'Could not find requested file variant!' => '',
-    'Download' => '',
-    'Invalid Mime-Type' => '',
+    'Created by:' => '',
+    'Last update by:' => '',
+    'Size:' => '',
+    '<strong>Open</strong> file' => '<strong>Obrir</strong> arxiu',
+    'Could not find requested file variant!' => 'No s\'ha trobat la variant de l\'arxiu sol·licitada.',
     'Could not find requested file!' => 'No es pot accedir a l\'arxiu sol·licitat!',
+    'Download' => 'Descarregar',
     'Insufficient permissions!' => 'No tens suficients privilegis!',
+    'Invalid Mime-Type' => 'Mime-Type invàlid',
 ];

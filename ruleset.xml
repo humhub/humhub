@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleset name="HumHub">
+    <description>HumHub coding standard.</description>
+
+    <!-- Include PSR-1 -->
+    <rule ref="PSR1"/>
+
+    <!-- Include PSR-2 -->
+    <rule ref="PSR2"/>
+
+    <!-- Prefer [] instead array() -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax.Found">
+        <type>warning</type>
+    </rule>
+
+</ruleset>

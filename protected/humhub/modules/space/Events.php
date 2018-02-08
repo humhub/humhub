@@ -78,7 +78,7 @@ class Events extends \yii\base\Object
         $integrityController = $event->sender;
 
         $integrityController->showTestHeadline("Space Module - Spaces (" . Space::find()->count() . " entries)");
-        foreach (Space::find()->all() as $space) {
+        foreach (Space::find()->each() as $space) {
             foreach ($space->applicants as $applicant) {
                 if ($applicant->user == null) {
                     if ($integrityController->showFix("Deleting applicant record id " . $applicant->id . " without existing user!")) {
@@ -89,7 +89,7 @@ class Events extends \yii\base\Object
         }
 
         $integrityController->showTestHeadline("Space Module - Memberships (" . models\Membership::find()->count() . " entries)");
-        foreach (models\Membership::find()->joinWith('space')->all() as $membership) {
+        foreach (models\Membership::find()->joinWith('space')->each() as $membership) {
             if ($membership->space == null) {
                 if ($integrityController->showFix("Deleting space membership " . $membership->space_id . " without existing space!")) {
                     $membership->delete();

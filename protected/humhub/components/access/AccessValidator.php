@@ -1,20 +1,12 @@
 <?php
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  *
  */
 
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 30.07.2017
- * Time: 03:07
- */
-
 namespace humhub\components\access;
-
 
 use Yii;
 use yii\base\InvalidParamException;
@@ -80,11 +72,11 @@ abstract class AccessValidator extends Object
 
     public function init()
     {
-        if(!$this->name) {
+        if (!$this->name) {
             $this->name = static::class;
         }
 
-        if(empty($this->reason)) {
+        if (empty($this->reason)) {
             $this->reason = Yii::t('error', 'You are not permitted to access this section.');
         }
     }
@@ -97,7 +89,7 @@ abstract class AccessValidator extends Object
      *
      * @return boolean true if validation passed otherwise true
      */
-    abstract function run();
+    abstract public function run();
 
     /**
      * Filters out all rules which are not related to this validator.
@@ -107,7 +99,7 @@ abstract class AccessValidator extends Object
      */
     protected function filterRelatedRules($rules = null)
     {
-        if($rules === null) {
+        if ($rules === null) {
             $rules = $this->access->getRules();
         }
 
@@ -115,11 +107,11 @@ abstract class AccessValidator extends Object
         foreach ($rules as $rule) {
             $ruleName = $this->getRuleName($rule);
 
-            if($this->name === $ruleName) {
+            if ($this->name === $ruleName) {
                 $result[] = $rule;
             }
-
         }
+
         return $result;
     }
 
@@ -185,12 +177,12 @@ abstract class AccessValidator extends Object
      */
     protected function getRuleName($rule)
     {
-        if(empty($rule)) {
+        if (empty($rule)) {
             return null;
         }
 
         $firstKey = current(array_keys($rule));
-        if(is_string($firstKey)) {
+        if (is_string($firstKey)) {
             return $firstKey;
         } else {
             return $rule[$firstKey];

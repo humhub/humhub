@@ -164,7 +164,7 @@ class SpaceModelMembership extends Behavior
      */
     public function isSpaceOwner($userId = null)
     {
-        if (empty($userId) && Yii::$app->user->isGuest) {
+        if(empty($userId) && Yii::$app->user->isGuest) {
             return false;
         } else if ($userId instanceof User) {
             $userId = $userId->id;

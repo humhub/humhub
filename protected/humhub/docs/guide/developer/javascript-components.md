@@ -1,7 +1,7 @@
 Javascript UI Components
 =======
 
-UI Components can be used to bind specific parts of your view to a Javascript Widgets defined in your module. This can be achieved by extending the `action.Component` or the more powerful `ui.Widget` class.
+UI Components can be used to bind specific dom parts of your view to a Javascript Widgets defined in your module. This can be achieved by extending the `action.Component` or the more powerful `ui.Widget` class.
 
 ## Simple Components
 
@@ -29,13 +29,13 @@ humhub.module('example.MyComponent', function(module, require, $) {
         Component.call(this, node, options);
     }
 
-    // Make sure this is called before your function definitions, otherwise they will be lost!
     object.inhertis(MyComponent, Component);
 
     MyComponent.prototype.hello = function(evt) {
         this.$.find('.message').text('Hi!');
     }
 
+    // Export a single class
     module.export = MyComponent;
 });
 ```
@@ -46,7 +46,7 @@ After clicking the button of the previous example the `action` module will searc
 
 If you need the instance of your component, for example in another module, you can retrieve it by calling `Component.instance`:
 
-```javascript
+```Javascript
 humhub.module('example.two', function(module, require, $) {
     var Component = require('action').Component;
 
@@ -75,12 +75,12 @@ Components can be nested, which can be handy for example if you want to implemen
 
 ###### Module:
 
-```javascript
+```Javascript
 humhub.module('example.mylist', function(module, require, $) {
     var object = require('util').object;
     var Component = require('action').Component;
 
-    // our parent component
+   // our parent component
     var List = function(node, options) {
         Component.call(this, node, options);
     }
@@ -115,22 +115,21 @@ humhub.module('example.mylist', function(module, require, $) {
     });
 });
 ```
-> Note: The `data` function of a component will search for a given data attribute on the components own root node and if not present will search the parent components for the data attribute.
 
 ## Widgets
 
-The `humhub.modules.ui.widget.Widget` class extends the `action.Component` class and provides some additional functionality as:
+The `humhub.modules.ui.widget.Widget` class extends the `Component` class and provides some additional functionality as:
 
 - Advanced event handling
-- Eager initialization
+- Eager or lazy initialization
 - Widget options
 
 
 #### Widget Initialization
 
-A Widgets `init` function is called once the widget is created. A Widget is created either immediately within the humhub initialization phase in case the widgets root node contains a `data-ui-init` flag or lazily by calling a widget action or initializing the Widget by means of  calling `Widget.instance('#myWidget')`.
+A Widgets `init` function is called once the widget is created. A Widget is created either immediately within the humhub initialization phase in case the widgets root node contains a `data-ui-init` flag or by lazily creating it when calling a widget action or initializing the Widget by means of  calling `Widget.instance('#myWidget')`.
 
-> Note: If you load a Widget by an ajax call, make sure to apply the [ui.additions](javascript-uiadditions.md) on your inserted dom node, otherwise the `data-ui-init` behaviour won't be recognized.
+> Note: If you load a Widget by an ajax call, make sure to apply the `ui.additions` on your inserted dom nodes, otherwise the `data-ui-init` behavriour won't be recognized.
 
 ###### View:
 ```php
@@ -157,13 +156,14 @@ humhub.module('example.MyWidget', function(module, require, $) {
         this.$.fadeIn('fast');
     }
 
+    // Export a single class
     module.export = MyWidget;
 });
 ```
 
 #### Widget Options
 
-Your Widget options can be set by using `data-*` attributes on your Widgets root node.
+Your widgets option can be set by using `data-*` attributes on your Widgets root node.
 The Widgets `getDefaultOptions()` method can be used to define default Widget options.
 
 ###### View:
@@ -184,6 +184,7 @@ humhub.module('example.MyWidget', function(module, require, $) {
         Widget.call(this, node, options);
     }
 
+    // Make sure this is called before your function definitions, otherwise they will be lost!
     object.inhertis(MyWidget, Widget);
     
     var MyWidget.prototype.getDefaultOptions = function() {
@@ -200,6 +201,7 @@ humhub.module('example.MyWidget', function(module, require, $) {
         }
     }
 
+    // Export a single class
     module.export = MyWidget;
 });
 ```
@@ -211,9 +213,26 @@ TBD
 
 #### JsWidget class
 
-In order to implement a Yii widget responsible for rendering your widgets markup, you can extend hte [[humhub\widgets\JSWidget]] class as in the following examples.
+In order to implement a Yii widget responsible for rendering your widgets markup, you can implement a PHP class derivated of [[humhub\widgets\JSWidget]] as in the following examples.
 
-##### Default widget rendering:
+Here are some of the available attributes of the JSWidget class:
+
+- `id`: the widget root id, if not provided a generated id will be used by default
+- `jsWidget`: defines the Javascript widget namespace
+- `init`: will add the data-ui-init flag if set to true
+- `visible`: can be set to false in case the root node should be rendered hidden on startup
+- `options`: used to overwrite or set the Widgets htmlOptions
+- `events`: defines widget action events
+- `container`: defines the root node name when using the default rendering mechanism
+- `content`: defines the content of the root node when using the default rendering mechanism
+
+Functions:
+
+- `getData()`: returns an array of widget settings which will be transformed into `data-*` attributes.
+- `getAttributes()`: returns an array of html attributes/values
+- `getOptions()`: merges the given `options` with the result of `getData()` and `getAttributes()` and is used as root node options in most of the cases
+
+###### Default widget rendering:
 
 The following example shows a simple JsWidget implementation without overwriting the widgets `run` method.
 
@@ -248,24 +267,6 @@ class MyWidget extends \humhub\widgets\JsWidget
     }
 }
 ```
-
-The following `JSWidget` attributes are available:
-
-- `id`: the widget root id, if not provided a generated id will be used by default
-- `jsWidget`: defines the Javascript widget namespace
-- `init`: will add the data-ui-init flag if set to true
-- `visible`: can be set to false in case the root node should be rendered hidden on startup
-- `options`: used to overwrite or set the Widgets htmlOptions
-- `events`: defines widget action events
-- `container`: defines the root node name when using the default rendering mechanism
-- `content`: defines the content of the root node when using the default rendering mechanism
-
-Functions:
-
-- `getData()`: returns an array of widget settings which will be transformed into `data-*` attributes.
-- `getAttributes()`: returns an array of html attributes/values
-- `getOptions()`: merges the given `options` with the result of `getData()` and `getAttributes()` and is used as root node options in most of the cases
-
 > Note: in this case the `container` setting could be omitted, since `div` is the default container name.
 
 The widget could be used within a view as follows:
@@ -285,7 +286,7 @@ which would render the following output:
 <div class="myWidget" data-some-setting="0" data-ui-init="1">Some content</div>
 ```
 
-##### Custom widget rendering:
+###### Custom widget rendering:
 
 For more complex JsWidgets, you can overwrite your widgets `run` method and use the `getOptions` method to merge the widgets `options` with the default options provided by `getData` und `getAttributes` as follows.
 

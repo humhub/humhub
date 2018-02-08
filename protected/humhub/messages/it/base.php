@@ -17,10 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Export' => '',
-    'Invalid request method!' => '',
-    'Select Me' => '',
-    'Time Zone' => '',
+    'Text could not be copied to clipboard' => '',
+    'Text has been copied to clipboard' => '',
     '<strong>Confirm</strong> Action' => '<strong>Conferma</strong> azione',
     '<strong>Latest</strong> updates' => '<strong>Ultimi</strong> aggiornamenti',
     '<strong>Mail</strong> summary' => 'Sommario <strong>email</strong>',
@@ -51,7 +49,9 @@ return [
     'Error while running your last action (Invalid request method).' => 'Si è verificato un errore durante l\'ultima azione (Invalid request method).',
     'Error:' => 'Errore:',
     'Expand' => 'Espandi',
+    'Export' => 'Esporta',
     'Info:' => 'Informazioni:',
+    'Invalid request method!' => 'Metodo richiesta non valido!',
     'It looks like you may have taken the wrong turn.' => 'Sembrerebbe che tu abbia preso una strada sbagliata.',
     'Language' => 'Lingua',
     'Loading...' => 'Caricamento...',
@@ -74,6 +74,7 @@ return [
     'Save' => 'Salva',
     'Saved' => 'Salvato',
     'Search' => 'Cerca',
+    'Select Me' => 'Selezionami',
     'Show less' => 'Mostra meno',
     'Show more' => 'Mostra altro',
     'Some files could not be uploaded:' => 'Alcuni file non possono essere caricati:',
@@ -83,6 +84,7 @@ return [
     'The requested resource could not be found.' => 'La risorsa richiesta non è stata trovata.',
     'The space has been archived.' => 'Lo Space è stato archiviato. ',
     'The space has been unarchived.' => 'Lo Space è stato disarchiviato.',
+    'Time Zone' => 'Fuso orario',
     'Toggle comment menu' => 'Attiva menu Commento',
     'Toggle panel menu' => 'Attiva menu Pannello',
     'Toggle post menu' => 'Attiva menu Post',

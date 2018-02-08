@@ -29,7 +29,9 @@ use humhub\components\ActiveRecord;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
- * @property integer send_notifications
+ * @property integer $send_notifications
+ *
+ * @property Space $space
  */
 class Membership extends ActiveRecord
 {
@@ -142,10 +144,10 @@ class Membership extends ActiveRecord
     /**
      * Counts all new Items for this membership
      */
-    public function countNewItems($since = "")
+    public function countNewItems()
     {
         $query = \humhub\modules\content\models\Content::find();
-        $query->where(['!=', 'object_model', \humhub\modules\activity\models\Activity::class]);
+        $query->where(['stream_channel' => 'default']);
         $query->andWhere(['contentcontainer_id' => $this->space->contentContainerRecord->id]);
         $query->andWhere(['>', 'created_at', $this->last_visit]);
         return $query->count();
@@ -155,17 +157,19 @@ class Membership extends ActiveRecord
      * Returns a list of all spaces of the given userId
      *
      * @param int $userId the user id or empty for current user
-     * @return Space[] the list of spaces
+     * @param boolean $cached use cached result if available
+     * @return Space[] an array of spaces
      */
-    public static function GetUserSpaces($userId = "")
+    public static function GetUserSpaces($userId = "", $cached = true)
     {
-        if ($userId == "")
+        if ($userId == "") {
             $userId = Yii::$app->user->id;
+        }
 
         $cacheId = "userSpaces_" . $userId;
 
         $spaces = Yii::$app->cache->get($cacheId);
-        if ($spaces === false) {
+        if ($spaces === false || !$cached) {
 
             $orderSetting = Yii::$app->getModule('space')->settings->get('spaceOrder');
             $orderBy = 'name ASC';
@@ -173,10 +177,11 @@ class Membership extends ActiveRecord
                 $orderBy = 'last_visit DESC';
             }
 
-            $memberships = self::find()->joinWith('space')->where(['user_id' => $userId, 'space_membership.status' => self::STATUS_MEMBER])->orderBy($orderBy);
+            $query = self::find()->joinWith('space')->orderBy($orderBy);
+            $query->where(['user_id' => $userId, 'space_membership.status' => self::STATUS_MEMBER]);
 
-            $spaces = array();
-            foreach ($memberships->all() as $membership) {
+            $spaces = [];
+            foreach ($query->all() as $membership) {
                 $spaces[] = $membership->space;
             }
             Yii::$app->cache->set($cacheId, $spaces);

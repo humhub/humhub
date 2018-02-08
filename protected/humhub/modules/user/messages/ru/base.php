@@ -30,7 +30,7 @@ return [
     'You\'re not registered.' => '',
     'Your account is disabled!' => '',
     'Your account is not approved yet!' => '',
-    'Your new password must not equal your current password!' => '',
+    'Your new password must not be equal your current password!' => '',
     'Basic Settings' => 'Основные настройки',
     'Change Email' => 'Сменить e-mail',
     'Change Password' => 'Сменить пароль',

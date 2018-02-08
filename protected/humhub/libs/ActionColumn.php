@@ -96,7 +96,9 @@ class ActionColumn extends Column
      */
     protected function handleUrl($url, $model)
     {
-        $url[$this->modelIdAttribute] = $model->getAttribute($this->modelIdAttribute);
+        if (!isset($url[$this->modelIdAttribute])) {
+            $url[$this->modelIdAttribute] = $model->getAttribute($this->modelIdAttribute);
+        }
 
         return \yii\helpers\Url::to($url);
     }

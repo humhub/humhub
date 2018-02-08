@@ -34,3 +34,8 @@ HumHub Change Log - v1.3-dev Branch
 - Enh: Added `humhub.user.getLocale()` javascript helper for checking the user locale on client side
 - Enh: Added `humhub\widgets\InputWidget::getValue()` for determining the field value
 - Enh: Added `humhub.client.json` for directly receiving the json result instead of a response wrapper object
+- Enh: Added option ContentContainerController to restrict container type
+- Enh: Ensure valid permalinks when URL rewriting is enabled
+- Fix: Birthday field refactoring (@danielkesselberg)
+- Enh #2811: Added option to resend invites (@danielkesselberg)
+

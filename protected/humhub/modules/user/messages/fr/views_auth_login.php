@@ -14,5 +14,5 @@ return array (
   'Sign in' => 'Se connecter',
   'email' => 'e-mail',
   'password' => 'mot de passe',
-  'username or email' => 'nom d\'utilisateur ou e-mail',
+  'username or email' => 'identifiant ou e-mail',
 );

@@ -1,5 +1,5 @@
 <?php
 return array (
-  'E-Mail' => 'E-mail',
+  'E-Mail' => 'e-mail',
   'Web' => 'Web',
 );

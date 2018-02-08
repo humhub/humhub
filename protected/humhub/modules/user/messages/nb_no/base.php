@@ -27,6 +27,7 @@ return [
     'Upload profile image' => '',
     'Your account is disabled!' => '',
     'Your account is not approved yet!' => '',
+    'Your new password must not be equal your current password!' => '',
     'Basic Settings' => 'Standardinnstillinger',
     'Change Email' => 'Endre e-post',
     'Change Password' => 'Bytt passord',
@@ -57,6 +58,5 @@ return [
     'User' => 'Bruker',
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'En bruker med denne e-post adressen eksisterer allerede og er ikke linket til deg. Logg inn med din e-post og tilknytt konto først',
     'You\'re not registered.' => 'Du er ikke registrert.',
-    'Your new password must not equal your current password!' => 'Ditt nye passord kan ikke være ditt samme som nåværende!',
     'or' => 'eller',
 ];

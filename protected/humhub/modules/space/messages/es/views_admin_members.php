@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Manage</strong> members' => '',
+  '<strong>Manage</strong> members' => '<strong>Administrar</strong> miembros',
   'Actions' => 'Acciones',
   'Remove' => 'Borrar',
-  'Role' => '',
+  'Role' => 'Rol',
   'never' => 'Nunca',
 );

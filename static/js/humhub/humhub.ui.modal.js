@@ -1,7 +1,7 @@
 /**
  * Module for creating an manipulating modal dialoges.
  * Normal layout of a dialog:
- * 
+ *
  * <div class="modal">
  *     <div class="modal-dialog">
  *         <div class="modal-content">
@@ -11,7 +11,7 @@
  *         </div>
  *     </div>
  * </div>
- *  
+ *
  * @param {type} param1
  * @param {type} param2
  */
@@ -33,7 +33,7 @@ humhub.module('ui.modal', function (module, require, $) {
      * The Modal class can be used to create new modals or manipulate existing modals.
      * If the constructor finds an element with the given id we use the existing modal,
      * if the id is not already used, we create a new modal dom element.
-     * 
+     *
      * @param {string} id - id of the modal
      */
     var Modal = function (node, options) {
@@ -93,7 +93,7 @@ humhub.module('ui.modal', function (module, require, $) {
 
         this.set(options);
     };
-    
+
     Modal.prototype.checkAriaLabel = function () {
         var $title = this.$.find('.modal-title');
         if($title.length) {
@@ -190,7 +190,7 @@ humhub.module('ui.modal', function (module, require, $) {
     Modal.prototype.load = function (url, cfg, originalEvent) {
         var that = this;
         var cfg = cfg || {};
-        cfg.dataType = cfg.dataType || 'html';
+
         return new Promise(function (resolve, reject) {
             if (!that.isVisible()) {
                 that.loader();
@@ -205,7 +205,7 @@ humhub.module('ui.modal', function (module, require, $) {
     Modal.prototype.post = function (url, cfg, originalEvent) {
         var that = this;
         var cfg = cfg || {};
-        cfg.dataType = cfg.dataType || 'html';
+
         return new Promise(function (resolve, reject) {
             if (!that.isVisible()) {
                 that.loader();
@@ -417,7 +417,7 @@ humhub.module('ui.modal', function (module, require, $) {
     Modal.prototype.setBody = function (content) {
         var $body = this.getBody();
         if (!$body.length) {
-            this.setContent($(this.getTemplate('body')));
+            this.getContent().append($(this.getTemplate('body')));
             $body = this.getBody();
         }
         $body.html(content);
@@ -630,6 +630,11 @@ humhub.module('ui.modal', function (module, require, $) {
 
         var modal = (id) ? module.get(id) : module.global;
         return client.submit(evt, _defaultRequestOptions(evt, options)).then(function (response) {
+            if(response.success) {
+                modal.close();
+                return response;
+            }
+
             modal.setDialog(response);
             if (!modal.$.is(':visible')) {
                 modal.show();
@@ -679,7 +684,6 @@ humhub.module('ui.modal', function (module, require, $) {
 
     var _defaultRequestOptions = function (evt, options) {
         options = options || {};
-        options.dataType = options.dataType || evt.data('data-type', 'html');
         return options;
     };
 

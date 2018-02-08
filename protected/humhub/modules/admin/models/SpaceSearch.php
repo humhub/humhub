@@ -96,6 +96,10 @@ class SpaceSearch extends Space
             'asc' => ['profile.lastname' => SORT_ASC],
             'desc' => ['profile.lastname' => SORT_DESC],
         ];
+
+        // default visibility
+        $this->visibility = Space::VISIBILITY_ALL;
+
         $this->load($params);
 
         if (!$this->validate()) {

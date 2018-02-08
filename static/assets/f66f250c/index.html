@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>clipboard-polyfill</title>
+  <link rel="stylesheet" href="index.css">
+  <script src="build/clipboard-polyfill.js"></script>
+  <script>
+    clipboard.setDebugLog((console.info || console.log).bind(console));
+  </script>
+  <style>
+    .editable {
+      min-width: 20px;
+      min-height: 1em;
+      border: 1px solid #AAA;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <a href="https://github.com/lgarron/clipboard-polyfill">clipboard-polyfill</a>
+</div>
+<div class="ribbon"></div>
+<div class="content">
+
+  <h2>Plain Text</h2>
+
+  <button id="plain-copy">Copy text (plain)</button>
+  <span id="plain-copy-result"></span>
+  <script>
+  document.getElementById("plain-copy").addEventListener("click", function() {
+    var resultField = document.getElementById("plain-copy-result");
+
+    clipboard.writeText("This text is plain.").then(function(){
+      resultField.textContent = "success";
+    }, function(err){
+      resultField.textContent = err;
+    });
+  });
+  </script>
+
+  <h2>Markup</h2>
+
+  <button id="markup-copy">Copy text (markup)</button>
+  <span id="markup-copy-result"></span>
+  <script>
+  document.getElementById("markup-copy").addEventListener("click", function() {
+    var resultField = document.getElementById("markup-copy-result");
+
+    var dt = new clipboard.DT();
+    dt.setData("text/html", "<i>Markup</i> <b>text</b>. Paste me into a rich text editor.");
+    dt.setData("text/plain", "Fallback markup text. Paste me into a rich text editor.");
+    clipboard.write(dt).then(function(){
+      resultField.textContent = "success";
+    }, function(err){
+      resultField.textContent = err;
+    });
+  });
+  </script>
+
+  <h2>DOM node</h2>
+
+  <button id="markup-dom-copy">Copy markup (DOM node &rarr; markup)</button>
+  <span id="markup-dom-copy-result"></span>
+  <br>
+  <span id="markup-dom-copy-source" style="font-family: Helvetica;"><i><span style="font-size: 150%">T</span>his</i> <span style="background: orange; padding: 0px 2px">will be</span> <b>copied</b>.</span>
+  <script>
+  document.getElementById("markup-dom-copy").addEventListener("click", function() {
+    var resultField = document.getElementById("markup-dom-copy-result");
+
+    var dt = new clipboard.DT();
+    dt.setData("text/html", new XMLSerializer().serializeToString(document.getElementById("markup-dom-copy-source")));
+    dt.setData("text/plain", document.getElementById("markup-dom-copy-source").innerText);
+    clipboard.write(dt).then(function(){
+      resultField.textContent = "success";
+    }, function(err){
+      resultField.textContent = err;
+    });
+  });
+  </script>
+
+  <h2>Paste</h2>
+
+  <button id="paste">Paste</button>
+  <span id="paste-result"></span>
+  <script>
+  document.getElementById("paste").addEventListener("click", function() {
+    var resultField = document.getElementById("paste-result");
+
+    clipboard.readText().then(function(result) {
+      resultField.textContent = result;
+    }, function(err) {
+      resultField.textContent = err;
+    });
+  });
+  </script>
+
+<br>
+<br>
+<h2>Paste Area</h2>
+<div contenteditable="true" class="editable"></div>
+</div>
+
+</body>
+</html>

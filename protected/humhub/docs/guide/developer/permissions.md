@@ -233,3 +233,6 @@ return [
 ];
 
 ```
+
+## Guest Access
+(TBD)

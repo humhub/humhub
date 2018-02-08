@@ -1,48 +1,40 @@
 Overview
 ========
 
-The main power of the HumHub platform lies in its flexibility and extensibility through modules and configuration of runtime behaviour.
-HumHub is written mostly in PHP and is based on the [Yii Framework](http://www.yiiframework.com/). Other languages used throughout the platform are *JavaScript*, *HTML*, *SQL* and *CSS*. 
+HumHub provides a powerful modular platform based on the [Yii2 Framework](http://www.yiiframework.com).
+The modular nature of the HumHub platform allows you to add new features or change existing core features by means of
+custom modules.
 
-HumHub uses a [Model-View-Controller (MVC)](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) based software architecture and utilizes technologies such as [Yii2](http://www.yiiframework.com/), [jQuery](https://jquery.com/), [Bootstrap](http://getbootstrap.com/) and [Less](http://lesscss.org/), to name a few.
+Other languages used throughout the platform, besides PHP, are JavaScript, HTML, SQL and CSS/Less. 
+HumHub is based on the Model-View-Controller (MVC) pattern and uses frontend technologies such as [jQuery](https://jquery.com/), [Bootstrap](http://getbootstrap.com/) and [Less](http://lesscss.org/).
+
+In this guide, you will find all the necessary information to customize your HumHub installation and implement your own modules.
+
+As HumHub is based on the [Yii 2.0 PHP Framework](http://www.yiiframework.com/) make sure you're also familiar with the basic concepts this framework:
+
+- [The Definitive Guide to Yii 2.0](http://www.yiiframework.com/doc-2.0/guide-index.html) 
+
+## HumHub Core
 
 ![Application Layers](images/appLayer.svg)
 
-> Note: Since HumHub v1.2 the minimum PHP version is 5.6
+The HumHub core consists of a set of core components, modules, widgets, helpers and views.
+HumHub extends several Yii base components such as:
 
-As HumHub is based on the [Yii 2.0 PHP Framework](http://www.yiiframework.com/) make sure you're also familiar with the concepts of this framework in order to beeing able to write own modules or extend the core platform.
+ - [[humhub\components\ActiveRecord|ActiveRecord]]
+ - [[humhub\components\Application|Application]]
+ - [[humhub\components\Controller|Controller]]
+ - [[humhub\components\Migration|Migration]]
+ - [[humhub\components\Module|Module]]
+ - [[humhub\components\ModuleManager|ModuleManager]]
+ - [[humhub\components\Request|Request]]
+ - [[humhub\components\Theme|Theme]]
+ - [[humhub\components\User|User]]
+ - [[humhub\components\View|View]]
+ - [[humhub\components\Widget|Widget]]
+ - and more...
 
-Here are some recommendet resources for learning Yii:
-
-- [The Definitive Guide to Yii 2.0](http://www.yiiframework.com/doc-2.0/guide-index.html) 
-- [Yii 2.0 Community Cookbook](https://yii2-cookbook.readthedocs.io/)
-
-The HumHub core platform consists of several modules as well as extended Yii components:
-
-**Core Components:**
-
- - [[humhub\components\ActiveRecord]]
- - [[humhub\components\Application]]
- - [[humhub\components\console\Application]]
- - [[humhub\components\AssetManager]] - 
- - [[humhub\components\Controller]]
- - [[humhub\components\Migration]]
- - [[humhub\components\Module]]
- - [[humhub\components\ModuleManager]]
- - [[humhub\components\Request]]
- - [[humhub\components\Response]]
- - [[humhub\components\SettingsManager]]
- - [[humhub\components\Theme]]
- - [[humhub\components\SocialActivity]]
- - [[humhub\components\View]]
- - [[humhub\components\Widget]]
- - **humhub\components\i18n**
- - **humhub\components\mail**
- - **humhub\components\queue**
- - **humhub\components\rendering**
- - **humhub\components\validators**
-
-**Core Modules:**
+and consists of the following core modules:
 
  - **activity:**  User/Space activities
  - **admin:**  Responsible for admin/configuration related issues
@@ -51,14 +43,29 @@ The HumHub core platform consists of several modules as well as extended Yii com
  - **dashboard:**  Dashboard related functionality
  - **directory:**  Directory related functionality
  - **file:**  Basic file module for accessing the filesystem
- - **friendship:**  Friendship system functionality
+ - **friendship:**  User friendship module
  - **installer:**  HumHub installer module
  - **like:**  Content addon for likes
- - **live:**  Live frontend update functionality
- - **notification:**  User notifications (e.g. e-mail, web)
+ - **live:**  Used for frontend live updates
+ - **notification:**  User Notifications
  - **post:**  Simple user-post related functionality
  - **search:**  Luceene Search Module
  - **space:**  Space related functionality
- - **stream:**  Content stream related functionality
- - **tour:**  HumHub user-guide tour
- - **user:**  User and authentication
+ - **stream:**  Content streams and walls
+ - **tour:**  HumHub user-guide
+ - **user:**  Basic user module
+ 
+ ### Application structure
+ 
+ ```
+  assets/               - contains published asset files
+  protected/            - protected files as sources, modules, configuration etc.
+  protected/config      - dynamic and user configuration
+  protected/humhub      - humhub core directory
+  protected/modules     - default directory for non core modules
+  protected/runtime     - runtime files as cache, search index, logs etc.
+  protected/vendor      - third party libraries loaded by composer
+  static/               - static asset files as production assets core javascript/less files etc.
+  themes/               - contains standalone themes (not bundled within a module)
+  uploads/              - uploaded files profile images etc.
+ ```

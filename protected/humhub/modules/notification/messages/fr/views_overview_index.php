@@ -5,5 +5,5 @@ return array (
   'Filter' => 'Filtrer',
   'Mark all as seen' => 'Tout marquer comme lu',
   'Module Filter' => 'Module Filtre',
-  'No notifications found!' => 'Aucune notification trouvée !',
+  'No notifications found!' => 'Aucune notification trouvée.',
 );
