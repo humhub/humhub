@@ -32,6 +32,10 @@ class Topic extends ContentTag
 
         $canAdd = $content->container->can(AddTopic::class);
 
+        if(empty($topics)) {
+            return;
+        }
+
         foreach ($topics as $topic) {
             if(strpos($topic, '_add:') === 0 && $canAdd) {
                 $newTopic = new Topic([

@@ -23,7 +23,7 @@ class JsWidget extends Widget
 
     /**
      * Js Widget namespace
-     * @var type 
+     * @var string
      */
     public $jsWidget;
 
@@ -37,7 +37,7 @@ class JsWidget extends Widget
 
     /**
      * Event action handler.
-     * @var type 
+     * @var array
      */
     public $events = [];
 
@@ -49,7 +49,7 @@ class JsWidget extends Widget
 
     /**
      * Used to hide/show the actual input element.
-     * @var type 
+     * @var boolean
      */
     public $visible = true;
 
@@ -77,7 +77,7 @@ class JsWidget extends Widget
      * This will render a widget html element specified by $container and $content and the given $options/$event attributes.
      * This function should be overwritten for widgets with a more complex rendering.
      * 
-     * @return type
+     * @return string
      */
     public function run()
     {

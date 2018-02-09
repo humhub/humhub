@@ -2,9 +2,11 @@
 
 namespace humhub\modules\stream\models;
 
+use humhub\modules\topic\models\Topic;
 use Yii;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
+use yii\db\Query;
 
 /**
  * Description of StreamQuery
@@ -112,6 +114,13 @@ class StreamQuery extends \yii\base\Model
     public $filters = [];
 
     /**
+     * Array of active topic filters.
+     *
+     * @var array
+     */
+    public $topics = [];
+
+    /**
      * The content query.
      * 
      * @var \yii\db\ActiveQuery 
@@ -130,7 +139,7 @@ class StreamQuery extends \yii\base\Model
     {
         return [
             [['limit', 'from', 'contentId'], 'number'],
-            [['filters', 'sort'], 'safe']
+            [['filters', 'sort', 'topics'], 'safe']
         ];
     }
 
@@ -184,7 +193,13 @@ class StreamQuery extends \yii\base\Model
 
     public function filters($filters = [])
     {
-        $this->filters = (is_string($filters)) ? [$this->filters] : $this->filters;
+        $this->filters = (is_string($filters)) ? [$filters] : $filters;
+        return $this;
+    }
+
+    public function topics($topics = [])
+    {
+        $this->topics = (is_string($topics)) ? [$topics] : $topics;
         return $this;
     }
 
@@ -395,11 +410,28 @@ class StreamQuery extends \yii\base\Model
         } else if ($this->isFilter(self::FILTER_PUBLIC)) {
             $this->filterPublic();
         }
+
+        if(!empty($this->topics)) {
+            $this->filterTopics();
+        }
+    }
+
+    protected function filterTopics()
+    {
+        if(empty($this->topics)) {
+            return;
+        }
+
+        $this->_query->innerJoin('content_tag_relation', [
+            'and',
+            'content.id = content_tag_relation.content_id',
+            ['in', 'content_tag_relation.tag_id', $this->topics]
+        ]);
     }
 
     protected function filterFile()
     {
-        $fileSelector = (new \yii\db\Query())
+        $fileSelector = (new Query())
                 ->select(["id"])
                 ->from('file')
                 ->where('file.object_model=content.object_model AND file.object_id=content.object_id')

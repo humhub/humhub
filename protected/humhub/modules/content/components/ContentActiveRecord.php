@@ -9,6 +9,8 @@
 namespace humhub\modules\content\components;
 
 use humhub\modules\topic\models\Topic;
+use humhub\modules\topic\widgets\TopicLabel;
+use humhub\widgets\Link;
 use Yii;
 use yii\base\Exception;
 use humhub\modules\content\widgets\WallEntry;
@@ -18,6 +20,7 @@ use humhub\modules\content\permissions\ManageContent;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\interfaces\ContentOwner;
+use yii\helpers\Html;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
@@ -215,9 +218,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
         }
 
         foreach (Topic::findByContent($this->content)->all() as $topic) {
-            $labels[] = Label::defaultType($topic->name)->sortOrder(20)->color($topic->color);
+            $labels[] = TopicLabel::forTopic($topic);
         }
-
 
         return Label::sort($labels);
     }

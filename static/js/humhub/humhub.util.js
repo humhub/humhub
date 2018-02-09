@@ -162,10 +162,18 @@ humhub.module('util', function(module, require, $) {
             }
             return val.indexOf(suffix, val.length - suffix.length) !== -1;
         },
+        /* @deptecated use encode */
         htmlEncode: function(value) {
             return $('<div/>').text(value).html();
         },
+        encode: function(value) {
+            return $('<div/>').text(value).html();
+        },
+        /* @deptecated use decode */
         htmlDecode: function(value) {
+            return $('<div/>').html(value).text();
+        },
+        decode: function(value) {
             return $('<div/>').html(value).text();
         },
         template: function(tmpl, config) {

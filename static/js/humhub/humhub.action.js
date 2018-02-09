@@ -323,8 +323,6 @@ humhub.module('action', function(module, require, $) {
             processes[this.data($trigger, 'process')] = $trigger;
         }
 
-        
-
         if(options.originalEvent) {
             options.originalEvent.preventDefault();
         }

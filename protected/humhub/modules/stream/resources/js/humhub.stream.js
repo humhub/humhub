@@ -389,6 +389,11 @@ humhub.module('stream', function (module, require, $) {
 
     object.inherits(Stream, Component);
 
+    Stream.prototype.filterTopic = function(evt) {
+        this.addTopicFilter(evt.$trigger.data('topic-id'));
+        this.init();
+    };
+
     /**
      * Initializes the stream configuration with default values.
      *
@@ -610,9 +615,11 @@ humhub.module('stream', function (module, require, $) {
     Stream.prototype._load = function (cfg) {
         cfg = cfg || {};
         var that = this;
+
         return client.ajax(this.url, {
             data: {
                 'StreamQuery[filters]': that.$.data('filters'),
+                'StreamQuery[topics]': that.$.data('topics'),
                 'StreamQuery[sort]': cfg.sort,
                 'StreamQuery[from]': cfg.from,
                 'StreamQuery[limit]': cfg.limit,
@@ -780,6 +787,15 @@ humhub.module('stream', function (module, require, $) {
             filters.push(filterId);
         }
         this.$.data('filters', filters);
+        return this;
+    };
+
+    Stream.prototype.addTopicFilter = function (topicId) {
+        var filters = this.$.data('topics') || [];
+        if (filters.indexOf(topicId) < 0) {
+            filters.push(topicId);
+        }
+        this.$.data('topics', filters);
         return this;
     };
 
@@ -1069,6 +1085,15 @@ humhub.module('stream', function (module, require, $) {
         return module.getStream().entry(id);
     };
 
+    var filterTopic = function(evt) {
+        try {
+            module.getStream().filterTopic(evt);
+        } catch(e) {
+            module.log.error(e, false);
+        }
+
+    };
+
     module.export({
         init: init,
         initOnPjaxLoad: true,
@@ -1078,6 +1103,7 @@ humhub.module('stream', function (module, require, $) {
         WallStream: WallStream,
         SimpleStream: SimpleStream,
         getStream: getStream,
-        getEntry: getEntry
+        getEntry: getEntry,
+        filterTopic:filterTopic
     });
 });

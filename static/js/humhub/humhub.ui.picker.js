@@ -217,6 +217,7 @@ humhub.module('ui.picker', function (module, require, $) {
      */
     Picker.prototype.prepareResult = function (data, params) {
         var that = this;
+
         $.each(data, function (i, item) {
             item.term = params.term;
             if (that.isDisabledItem(item)) {
@@ -229,14 +230,17 @@ humhub.module('ui.picker', function (module, require, $) {
             item.new = false;
         });
 
-        if(params.term &&
-            params.term.length >= that.options.minimumInputLength &&
+        var encodedTerm = string.encode(params.term);
+
+        if(encodedTerm &&
+            encodedTerm.length >= that.options.minimumInputLength &&
             that.options.addOptions &&
-            $(data).filter(function() {return this.text.localeCompare(params.term)=== 0}).length === 0) {
+            $(data).filter(function() {return this.text.localeCompare(encodedTerm)=== 0}).length === 0) {
+
             data.push({
                 'id': '_add:'+params.term,
-                'text': module.text('addOption')+' \''+params.term+'\'',
-                'textValue': params.term,
+                'text': module.text('addOption')+' \''+encodedTerm+'\'',
+                'textValue': encodedTerm,
                 'image': '<i class="fa fa-plus-circle" aria-hidden="true"></i>',
                 'new': true
             });

@@ -327,7 +327,7 @@ class ContentTag extends ActiveRecord
      * @param bool $force
      * @return mixed
      */
-    protected static function typeQuery($query)
+    public static function typeQuery($query)
     {
         $instance = new static;
         if($instance->includeTypeQuery && static::class != ContentTag::class) {
@@ -343,7 +343,7 @@ class ContentTag extends ActiveRecord
      * @param $query ActiveQuery
      * @return mixed
      */
-    protected static function moduleQuery($query)
+    public static function moduleQuery($query)
     {
         $instance = new static;
         if (!empty($instance->moduleId)) {
