@@ -20,14 +20,15 @@ humhub.module('content.form', function(module, require, $) {
     object.inherits(CreateForm, Widget);
 
     CreateForm.prototype.init = function() {
-        this.$.hide();
+        var that = this;
 
+        this.$.hide();
         // Hide options by default
         $('.contentForm_options').hide();
+
         $('#contentFormError').hide();
 
         this.setDefaultVisibility();
-
         this.$.fadeIn('fast');
 
         if(!module.config['disabled']) {
@@ -39,6 +40,10 @@ humhub.module('content.form', function(module, require, $) {
         } else {
             $('#contentFormBody').find('.humhub-ui-richtext').trigger('disable');
         }
+
+        event.on('humhub:topic:added', function(evt, topic) {
+            that.$.append(topic.$label.clone().addClass('animated bounceIn'));
+        });
     };
 
     CreateForm.prototype.submit = function(evt) {

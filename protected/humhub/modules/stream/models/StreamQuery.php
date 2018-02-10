@@ -2,10 +2,12 @@
 
 namespace humhub\modules\stream\models;
 
+use humhub\modules\content\models\ContentTagRelation;
 use humhub\modules\topic\models\Topic;
 use Yii;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
+use yii\db\Expression;
 use yii\db\Query;
 
 /**
@@ -422,11 +424,15 @@ class StreamQuery extends \yii\base\Model
             return;
         }
 
+        $subQuery = (new Query)->select(['count(*)'])
+            ->from('content_tag_relation')
+            ->where(['and', 'content_tag_relation.content_id = content.id', ['in', 'content_tag_relation.tag_id', $this->topics]]);
+
         $this->_query->innerJoin('content_tag_relation', [
             'and',
             'content.id = content_tag_relation.content_id',
             ['in', 'content_tag_relation.tag_id', $this->topics]
-        ]);
+        ])->andWhere( ['=', new Expression('('.count($this->topics).')'), $subQuery]);
     }
 
     protected function filterFile()

@@ -14,6 +14,7 @@ humhub.module('stream', function (module, require, $) {
     var event = require('event');
     var modal = require('ui.modal');
     var additions = require('ui.additions');
+    var topic = require('topic');
 
     /**
      * Number of initial stream enteis loaded when stream is initialized.
@@ -389,11 +390,6 @@ humhub.module('stream', function (module, require, $) {
 
     object.inherits(Stream, Component);
 
-    Stream.prototype.filterTopic = function(evt) {
-        this.addTopicFilter(evt.$trigger.data('topic-id'));
-        this.init();
-    };
-
     /**
      * Initializes the stream configuration with default values.
      *
@@ -619,7 +615,7 @@ humhub.module('stream', function (module, require, $) {
         return client.ajax(this.url, {
             data: {
                 'StreamQuery[filters]': that.$.data('filters'),
-                'StreamQuery[topics]': that.$.data('topics'),
+                'StreamQuery[topics]': topic.getTopicArray(),
                 'StreamQuery[sort]': cfg.sort,
                 'StreamQuery[from]': cfg.from,
                 'StreamQuery[limit]': cfg.limit,
@@ -790,13 +786,8 @@ humhub.module('stream', function (module, require, $) {
         return this;
     };
 
-    Stream.prototype.addTopicFilter = function (topicId) {
-        var filters = this.$.data('topics') || [];
-        if (filters.indexOf(topicId) < 0) {
-            filters.push(topicId);
-        }
-        this.$.data('topics', filters);
-        return this;
+    Stream.prototype.filterTopic = function(topicId) {
+        this.init();
     };
 
     /**
@@ -975,6 +966,8 @@ humhub.module('stream', function (module, require, $) {
             event.on('humhub:modules:content:newEntry.stream', function (evt, html) {
                 // Prepend entry under last pinned post
                 getStream().prependEntry(html, true);
+            }).on('humhub:topic:added', function(evt, topic) {
+                getStream().filterTopic(topic.id);
             });
         }
     };
@@ -1015,7 +1008,6 @@ humhub.module('stream', function (module, require, $) {
              var yLimit = scrollTop + (windowHeight / 2);
 
              // Get id of current scroll item
-             //TODO: chache the entry nodes !
              var matchingNodes = stream.$entryCache.map(function () {
              var $this = $(this);
              if ($this.offset().top < yLimit) {
@@ -1085,15 +1077,6 @@ humhub.module('stream', function (module, require, $) {
         return module.getStream().entry(id);
     };
 
-    var filterTopic = function(evt) {
-        try {
-            module.getStream().filterTopic(evt);
-        } catch(e) {
-            module.log.error(e, false);
-        }
-
-    };
-
     module.export({
         init: init,
         initOnPjaxLoad: true,
@@ -1104,6 +1087,5 @@ humhub.module('stream', function (module, require, $) {
         SimpleStream: SimpleStream,
         getStream: getStream,
         getEntry: getEntry,
-        filterTopic:filterTopic
     });
 });
