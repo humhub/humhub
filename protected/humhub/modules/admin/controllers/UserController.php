@@ -8,9 +8,13 @@
 
 namespace humhub\modules\admin\controllers;
 
+use Yii;
+use yii\helpers\Url;
+use yii\web\HttpException;
 use humhub\compat\HForm;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Invite;
+use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\forms\Registration;
 use humhub\components\export\DateTimeColumn;
 use humhub\components\export\SpreadsheetExport;
@@ -19,15 +23,7 @@ use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\permissions\ManageUsers;
-use humhub\modules\space\models\Membership;
-use humhub\modules\user\models\forms\Registration;
-use humhub\modules\user\models\ProfileField;
-use humhub\modules\user\models\User;
-use Yii;
-use yii\helpers\Url;
-use yii\web\HttpException;
 
 /**
  * User management
@@ -74,7 +70,6 @@ class UserController extends Controller
             return $this->forbidden();
         }
     }
-
 
     /**
      * Returns a List of Users
@@ -184,8 +179,8 @@ class UserController extends Controller
         }
 
         return $this->render('edit', [
-            'hForm' => $form,
-            'user' => $user
+                    'hForm' => $form,
+                    'user' => $user
         ]);
     }
 
@@ -205,7 +200,7 @@ class UserController extends Controller
      * Deletes a user permanently
      * @throws HttpException
      */
-     public function actionDelete($id)
+    public function actionDelete($id)
     {
         $user = User::findOne(['id' => $id]);
         if ($user == null) {
@@ -220,7 +215,6 @@ class UserController extends Controller
         }
         return $this->render('delete', ['model' => $model]);
     }
-	
 
     /**
      * Redirect to user profile
@@ -370,11 +364,12 @@ class UserController extends Controller
         ];
 
         $profileColumns = (new \yii\db\Query())
-            ->select(['CONCAT(\'profile.\', internal_name)'])
-            ->from(ProfileField::tableName())
-            ->orderBy(['profile_field_category_id' => SORT_ASC, 'sort_order' => SORT_ASC])
-            ->column();
+                ->select(['CONCAT(\'profile.\', internal_name)'])
+                ->from(ProfileField::tableName())
+                ->orderBy(['profile_field_category_id' => SORT_ASC, 'sort_order' => SORT_ASC])
+                ->column();
 
         return array_merge($userColumns, $profileColumns);
     }
+
 }

@@ -26,10 +26,6 @@ use humhub\modules\space\notifications\InviteDeclined;
 use humhub\modules\space\MemberEvent;
 use humhub\modules\space\activities\MemberAdded;
 use humhub\modules\space\activities\MemberRemoved;
-use Yii;
-use yii\base\Behavior;
-use yii\base\Exception;
-use yii\validators\EmailValidator;
 
 /**
  * SpaceModelMemberBehavior bundles all membership related methods of the Space model.
