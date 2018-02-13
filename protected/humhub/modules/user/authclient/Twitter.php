@@ -21,7 +21,7 @@ class Twitter extends OAuth2
         return [
             'popupWidth' => 860,
             'popupHeight' => 480,
-            'cssIcon' => 'fab fa-twitter',
+            'cssIcon' => 'fa-twitter',
             'buttonBackgroundColor' => '#395697',
         ];
     }
