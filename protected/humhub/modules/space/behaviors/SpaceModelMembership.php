@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -26,6 +26,10 @@ use humhub\modules\space\notifications\InviteDeclined;
 use humhub\modules\space\MemberEvent;
 use humhub\modules\space\activities\MemberAdded;
 use humhub\modules\space\activities\MemberRemoved;
+use Yii;
+use yii\base\Behavior;
+use yii\base\Exception;
+use yii\validators\EmailValidator;
 
 /**
  * SpaceModelMemberBehavior bundles all membership related methods of the Space model.
@@ -45,7 +49,6 @@ class SpaceModelMembership extends Behavior
      */
     public function isMember($userId = '')
     {
-
         // Take current userid if none is given
         if ($userId == '' && !Yii::$app->user->isGuest) {
             $userId = Yii::$app->user->id;
@@ -127,7 +130,7 @@ class SpaceModelMembership extends Behavior
 
         if ($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == 0) {
+        } elseif (!$userId || $userId == 0) {
             $userId = Yii::$app->user->id;
         }
 
@@ -164,11 +167,11 @@ class SpaceModelMembership extends Behavior
      */
     public function isSpaceOwner($userId = null)
     {
-        if(empty($userId) && Yii::$app->user->isGuest) {
+        if (empty($userId) && Yii::$app->user->isGuest) {
             return false;
-        } else if ($userId instanceof User) {
+        } elseif ($userId instanceof User) {
             $userId = $userId->id;
-        } else if (empty($userId)) {
+        }  elseif (empty($userId)) {
             $userId = Yii::$app->user->id;
         }
 
@@ -185,7 +188,7 @@ class SpaceModelMembership extends Behavior
     {
         if ($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == 0) {
+        } elseif (!$userId || $userId == 0) {
             $userId = Yii::$app->user->id;
         }
 
@@ -208,7 +211,7 @@ class SpaceModelMembership extends Behavior
     {
         if ($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == "") {
+        } elseif (!$userId || $userId == '') {
             $userId = Yii::$app->user->id;
         }
 
@@ -223,16 +226,17 @@ class SpaceModelMembership extends Behavior
      */
     public function inviteMemberByEMail($email, $originatorUserId)
     {
-
         // Invalid E-Mail
         $validator = new EmailValidator;
-        if (!$validator->validate($email))
+        if (!$validator->validate($email)) {
             return false;
+        }
 
         // User already registered
         $user = User::findOne(['email' => $email]);
-        if ($user != null)
+        if ($user != null) {
             return false;
+        }
 
         $userInvite = Invite::findOne(['email' => $email]);
         // No invite yet
@@ -244,9 +248,9 @@ class SpaceModelMembership extends Behavior
             $userInvite->user_originator_id = $originatorUserId;
             $userInvite->space_invite_id = $this->owner->id;
             // There is a pending registration
-            // Steal it und send mail again
-            // Unfortunately there a no multiple workspace invites supported
-            // so we take the last one
+            // Steal it and send mail again
+            // Unfortunately there are no multiple workspace invites supported
+            // So we take the last one
         } else {
             $userInvite->user_originator_id = $originatorUserId;
             $userInvite->space_invite_id = $this->owner->id;
@@ -282,8 +286,7 @@ class SpaceModelMembership extends Behavior
 
         $membership->save();
 
-        ApprovalRequest::instance()
-                ->from($user)->about($this->owner)->withMessage($message)->sendBulk($this->getAdmins());
+        ApprovalRequest::instance()->from($user)->about($this->owner)->withMessage($message)->sendBulk($this->getAdmins());
     }
 
     /**
@@ -441,9 +444,9 @@ class SpaceModelMembership extends Behavior
      *
      * @param $userId UserId of User to Remove
      */
-    public function removeMember($userId = "")
+    public function removeMember($userId = '')
     {
-        if ($userId == "") {
+        if ($userId == '') {
             $userId = Yii::$app->user->id;
         }
 

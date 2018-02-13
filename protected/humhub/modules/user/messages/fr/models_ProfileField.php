@@ -4,7 +4,7 @@ return array (
   'Created by' => 'Créé par',
   'Description' => 'Description',
   'Editable' => 'Modifiable',
-  'Field Type could not be changed!' => 'Le type de champ ne peut être modifié !',
+  'Field Type could not be changed!' => 'Le type de champ ne peut être modifié.',
   'Fieldtype' => 'Type de champ',
   'ID' => 'ID',
   'Internal Name' => 'Nom interne',

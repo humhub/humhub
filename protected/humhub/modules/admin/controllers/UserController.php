@@ -8,20 +8,26 @@
 
 namespace humhub\modules\admin\controllers;
 
-use Yii;
-use yii\helpers\Url;
-use yii\web\HttpException;
 use humhub\compat\HForm;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\forms\Registration;
+use humhub\components\export\DateTimeColumn;
+use humhub\components\export\SpreadsheetExport;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\UserEditForm;
-use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\admin\models\forms\UserDeleteForm;
 use humhub\modules\admin\models\UserSearch;
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\space\models\Membership;
+use humhub\modules\user\models\forms\Registration;
+use humhub\modules\user\models\ProfileField;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\helpers\Url;
+use yii\web\HttpException;
 
 /**
  * User management
@@ -68,6 +74,7 @@ class UserController extends Controller
             return $this->forbidden();
         }
     }
+
 
     /**
      * Returns a List of Users
@@ -177,8 +184,8 @@ class UserController extends Controller
         }
 
         return $this->render('edit', [
-                    'hForm' => $form,
-                    'user' => $user
+            'hForm' => $form,
+            'user' => $user
         ]);
     }
 
@@ -196,8 +203,9 @@ class UserController extends Controller
 
     /**
      * Deletes a user permanently
+     * @throws HttpException
      */
-    public function actionDelete($id)
+     public function actionDelete($id)
     {
         $user = User::findOne(['id' => $id]);
         if ($user == null) {
@@ -205,15 +213,14 @@ class UserController extends Controller
         } elseif (Yii::$app->user->id == $id) {
             throw new HttpException(400, Yii::t('AdminModule.user', 'You cannot delete yourself!'));
         }
-
         $model = new UserDeleteForm(['user' => $user]);
         if ($model->load(Yii::$app->request->post()) && $model->performDelete()) {
             $this->view->info(Yii::t('AdminModule.user', 'User deletion process queued.'));
             return $this->redirect(['list']);
         }
-
         return $this->render('delete', ['model' => $model]);
     }
+	
 
     /**
      * Redirect to user profile
@@ -302,4 +309,72 @@ class UserController extends Controller
         return Yii::$app->user->isAdmin() && $user->id != Yii::$app->user->getIdentity()->id;
     }
 
+    /**
+     * Export user list as csv or xlsx
+     * @param string $format supported format by phpspreadsheet
+     * @return \yii\web\Response
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionExport($format)
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination = false;
+
+        $exporter = new SpreadsheetExport([
+            'dataProvider' => $dataProvider,
+            'columns' => $this->collectExportColumns(),
+            'resultConfig' => [
+                'fileBaseName' => 'humhub_user',
+                'writerType' => $format,
+            ],
+        ]);
+
+        return $exporter->export()->send();
+    }
+
+    /**
+     * Return array with columns for data export
+     * @return array
+     */
+    private function collectExportColumns()
+    {
+        $userColumns = [
+            'id',
+            'guid',
+            'status',
+            'username',
+            'email',
+            'auth_mode',
+            'tags',
+            'language',
+            'time_zone',
+            [
+                'class' => DateTimeColumn::className(),
+                'attribute' => 'created_at',
+            ],
+            'created_by',
+            [
+                'class' => DateTimeColumn::className(),
+                'attribute' => 'updated_at',
+            ],
+            'updated_by',
+            [
+                'class' => DateTimeColumn::className(),
+                'attribute' => 'last_login',
+            ],
+            'authclient_id',
+            'visibility',
+        ];
+
+        $profileColumns = (new \yii\db\Query())
+            ->select(['CONCAT(\'profile.\', internal_name)'])
+            ->from(ProfileField::tableName())
+            ->orderBy(['profile_field_category_id' => SORT_ASC, 'sort_order' => SORT_ASC])
+            ->column();
+
+        return array_merge($userColumns, $profileColumns);
+    }
 }

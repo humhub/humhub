@@ -22,8 +22,7 @@
         "yiisoft/yii2-httpclient": "~2.0.0",
         "raoul2000/yii2-jcrop-widget": "*",
         "kartik-v/yii2-widgets": "*",
-        "phpoffice/phpexcel": "*",
-        "cebe/markdown": "~1.0.2",
+        "cebe/markdown": "1.0.2",
         "yiisoft/yii2-jui": "~2.0.0",
         "zendframework/zend-http": "*",
         "jbroadway/urlify": "^1.0",
@@ -57,9 +56,10 @@
         "yiisoft/yii2-redis": "^2.0",
         "firebase/php-jwt": "^5.0",
         "npm-asset/socket.io-client": "^2.0"
+        "phpoffice/phpspreadsheet": "^1.0"
     },
     "require-dev": {
-        "codeception/codeception": "*",
+        "codeception/codeception": "~2.3",
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0",

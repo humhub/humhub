@@ -1,5 +1,5 @@
 <?php
 return array (
   'Message' => 'Message',
-  'Subject' => 'Objet',
+  'Subject' => 'Sujet',
 );

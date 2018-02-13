@@ -640,7 +640,7 @@ humhub.module('ui.modal', function (module, require, $) {
                 modal.show();
             }
 
-            modal.$.trigger('submitted');
+            modal.$.trigger('submitted', response);
             return response;
         }).catch(function (error) {
             module.log.error(error, true);

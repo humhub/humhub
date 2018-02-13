@@ -1,9 +1,9 @@
 <?php
 return array (
-  '<strong>Space</strong> followers' => '<strong>Abonnés</strong> à l\'espace',
+  '<strong>Space</strong> followers' => '<strong>Abonnés</strong> à cet espace',
   'Administrator:' => 'Administrateur :',
   'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Impossible de supprimer un utilisateur s\'il est propriétaire d\'un espace ! Espace concerné : {spaceName}',
-  'Default' => 'Défaut',
+  'Default' => 'Par défaut',
   'Everyone can enter' => 'Tout le monde peut entrer',
   'Invite and request' => 'Sur invitation et demande',
   'Moderator:' => 'Modérateur :',

@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Cancel Edit' => 'Annuler les modifications',
+  'Cancel Edit' => 'Annuler la modification',
   'Edit' => 'Modifier',
 );

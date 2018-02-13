@@ -69,7 +69,7 @@ class PasswordRecoveryController extends Controller
         $user = User::findOne(array('guid' => Yii::$app->request->get('guid')));
 
         if ($user === null || !$this->checkPasswordResetToken($user, Yii::$app->request->get('token'))) {
-            throw new HttpException('500', 'It looks like you clicked on an invalid password reset link. Please try again.');
+            throw new HttpException('404', 'It looks like you clicked on an invalid password reset link. Please try again.');
         }
 
         $model = new Password();

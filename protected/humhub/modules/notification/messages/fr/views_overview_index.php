@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Notification</strong> Overview' => 'Tableau de bord des <strong>notifications</strong>',
+  '<strong>Notification</strong> Overview' => 'Gestion des <strong>notifications</strong>',
   'Apply' => 'Appliquer',
   'Filter' => 'Filtrer',
   'Mark all as seen' => 'Tout marquer comme lu',
