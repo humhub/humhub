@@ -23,7 +23,9 @@ class m171015_155102_contentcontainer_module extends Migration
         foreach ($rows as $row) {
             $reflect = new ReflectionClass(humhub\modules\space\models\Space::class);
             $module = Yii::$app->getModule($row['module_id']);
-            $module->settings->set('moduleManager.defaultState.' . $reflect->getShortName(), $row['state']);
+            if ($module !== null) {
+                $module->settings->set('moduleManager.defaultState.' . $reflect->getShortName(), $row['state']);
+            }
         }
 
 
@@ -31,7 +33,9 @@ class m171015_155102_contentcontainer_module extends Migration
         foreach ($rows as $row) {
             $reflect = new ReflectionClass(\humhub\modules\user\models\User::class);
             $module = Yii::$app->getModule($row['module_id']);
-            $module->settings->set('moduleManager.defaultState.' . $reflect->getShortName(), $row['state']);
+            if ($module !== null) {
+                $module->settings->set('moduleManager.defaultState.' . $reflect->getShortName(), $row['state']);
+            }
         }
         
         $this->dropTable('user_module');
@@ -44,19 +48,4 @@ class m171015_155102_contentcontainer_module extends Migration
 
         return false;
     }
-
-    /*
-      // Use up()/down() to run migration code without a transaction.
-      public function up()
-      {
-
-      }
-
-      public function down()
-      {
-      echo "m171015_155102_contentcontainer_module cannot be reverted.\n";
-
-      return false;
-      }
-     */
 }
