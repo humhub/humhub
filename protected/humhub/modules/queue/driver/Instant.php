@@ -18,7 +18,6 @@ use yii\queue\Queue;
  */
 class Instant extends Queue
 {
-
     /**
      * @var int the message counter
      */
@@ -29,16 +28,15 @@ class Instant extends Queue
      */
     protected function pushMessage($message, $ttr, $delay, $priority)
     {
-        $this->handleMessage($this->messageId, $message, $ttr);
+        $this->handleMessage($this->messageId, $message, $ttr, 1);
         $this->messageId++;
     }
 
     /**
      * @inheritdoc
      */
-    protected function status($id)
+    public function status($id)
     {
         return Queue::STATUS_DONE;
     }
-
 }
