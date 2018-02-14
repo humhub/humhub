@@ -60,7 +60,7 @@ class HumHubDbTestCase extends Test
     protected function reloadSettings()
     {
         Yii::$app->settings->reload();
-        
+
         foreach (Yii::$app->modules as $module) {
             if ($module instanceof \humhub\components\Module) {
                 $module->settings->reload();
@@ -126,7 +126,6 @@ class HumHubDbTestCase extends Test
             'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::className()],
             'space' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::className()],
             'space_membership' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture::className()],
-            'space_module' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceModuleFixture::className()],
             'content' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentFixture::className()],
             'notification' => ['class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::className()],
             'file' => ['class' => FileFixture::class],
