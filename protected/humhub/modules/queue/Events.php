@@ -9,7 +9,7 @@
 namespace humhub\modules\queue;
 
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\base\Event;
 use yii\queue\ErrorEvent;
 use yii\queue\PushEvent;
@@ -23,7 +23,7 @@ use humhub\modules\queue\helpers\QueueHelper;
  * @since 1.3
  * @author luke
  */
-class Events extends Object
+class Events extends BaseObject
 {
 
     /**
@@ -38,7 +38,7 @@ class Events extends Object
 
     /**
      * Callback for errors while queue execution
-     * 
+     *
      * @param ErrorEvent $event
      */
     public static function onQueueError(ErrorEvent $event)
@@ -51,7 +51,7 @@ class Events extends Object
     /**
      * Callback before new jobs in the queue.
      * Handles exclusive jobs.
-     * 
+     *
      * @param PushEvent $event
      */
     public static function onQueueBeforePush(PushEvent $event)
@@ -67,7 +67,7 @@ class Events extends Object
     /**
      * Callback after new jobs in the queue.
      * Handles exclusive jobs.
-     * 
+     *
      * @param PushEvent $event
      */
     public static function onQueueAfterPush(PushEvent $event)

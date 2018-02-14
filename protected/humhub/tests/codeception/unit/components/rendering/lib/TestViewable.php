@@ -7,10 +7,10 @@ namespace humhub\tests\codeception\unit\components\rendering\lib;
  *
  * @author buddha
  */
-class TestViewable extends \yii\base\Object implements \humhub\components\rendering\Viewable
+class TestViewable extends \yii\base\BaseObject implements \humhub\components\rendering\Viewable
 {
     public $viewName;
-    
+
     public function getViewName()
     {
         return $this->viewName;

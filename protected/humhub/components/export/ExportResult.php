@@ -11,7 +11,7 @@ namespace humhub\components\export;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\helpers\FileHelper;
 use yii\web\Response;
 
@@ -23,7 +23,7 @@ use yii\web\Response;
  *
  * @see SpreadsheetExport
  */
-class ExportResult extends Object
+class ExportResult extends BaseObject
 {
 
     /**

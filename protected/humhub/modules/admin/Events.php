@@ -15,7 +15,7 @@ use Yii;
  *
  * @since 0.5
  */
-class Events extends \yii\base\Object
+class Events extends \yii\base\BaseObject
 {
 
     /**

@@ -11,7 +11,7 @@ namespace humhub\modules\content\widgets\richtext;
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use yii\base\Object;
+use yii\base\BaseObject;
 
 /**
  * Rich text processors are used to post-process the rich text after saving the related content record.
@@ -22,7 +22,7 @@ use yii\base\Object;
  * @author Julian Harrer <julian.harrer@humhub.com>
  * @since 1.3
  */
-abstract class AbstractRichTextProcessor extends Object
+abstract class AbstractRichTextProcessor extends BaseObject
 {
     /**
      * @var string RichText content

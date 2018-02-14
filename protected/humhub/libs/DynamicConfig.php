@@ -9,7 +9,7 @@
 namespace humhub\libs;
 
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -17,7 +17,7 @@ use yii\helpers\ArrayHelper;
  *
  * @author luke
  */
-class DynamicConfig extends Object
+class DynamicConfig extends BaseObject
 {
 
     /**

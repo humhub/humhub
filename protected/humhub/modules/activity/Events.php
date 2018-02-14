@@ -9,7 +9,7 @@
 namespace humhub\modules\activity;
 
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 use humhub\modules\activity\components\MailSummary;
 use humhub\modules\activity\jobs\SendMailSummary;
 use humhub\modules\activity\models\Activity;
@@ -21,7 +21,7 @@ use yii\db\ActiveRecord;
  *
  * @author luke
  */
-class Events extends Object
+class Events extends BaseObject
 {
 
     /**

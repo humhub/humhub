@@ -16,7 +16,7 @@ use humhub\modules\notification\models\Notification;
  * 
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends \yii\base\BaseObject
 {
 
     /**

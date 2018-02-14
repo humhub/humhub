@@ -10,7 +10,7 @@ namespace humhub\libs;
 
 use humhub\modules\space\models\Space;
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\base\Exception;
 
 /**
@@ -18,7 +18,7 @@ use yii\base\Exception;
 
  * @author luke
  */
-class BasePermission extends Object
+class BasePermission extends BaseObject
 {
 
     /**

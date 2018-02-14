@@ -14,7 +14,7 @@ namespace humhub\modules\live\components;
  * @since 1.2
  * @author Luke
  */
-abstract class LiveEvent extends \yii\base\Object
+abstract class LiveEvent extends \yii\base\BaseObject
 {
 
     /**

@@ -10,7 +10,7 @@ namespace humhub\components\access;
 
 use Yii;
 use yii\base\InvalidParamException;
-use yii\base\Object;
+use yii\base\BaseObject;
 
 /**
  * AccessValidators are responsible for validating a given set of rules.
@@ -43,7 +43,7 @@ use yii\base\Object;
  *
  * @package humhub\components\access
  */
-abstract class AccessValidator extends Object
+abstract class AccessValidator extends BaseObject
 {
     /**
      * @var string the name of the valdiator

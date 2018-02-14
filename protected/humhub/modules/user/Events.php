@@ -13,10 +13,10 @@ use humhub\modules\user\models\Follow;
 
 /**
  * Events provides callbacks for all defined module events.
- * 
+ *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends \yii\base\BaseObject
 {
 
     /**
@@ -144,7 +144,7 @@ class Events extends \yii\base\Object
 
     /**
      * Tasks on hourly cron job
-     * 
+     *
      * @param \yii\base\Event $event
      */
     public static function onHourlyCron($event)
