@@ -33,7 +33,7 @@ use yii\helpers\Url;
  * @since 1.1
  * @author buddha
  */
-abstract class SocialActivity extends \yii\base\Object implements rendering\Viewable, \Serializable
+abstract class SocialActivity extends \yii\base\BaseObject implements rendering\Viewable, \Serializable
 {
 
     /**

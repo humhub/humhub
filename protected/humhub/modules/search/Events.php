@@ -15,7 +15,7 @@ use Yii;
  *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends \yii\base\BaseObject
 {
 
     public static function onTopMenuRightInit($event)

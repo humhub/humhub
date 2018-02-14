@@ -21,7 +21,7 @@ use humhub\modules\notification\components\NotificationCategory;
  *
  * @author buddha
  */
-abstract class BaseTarget extends \yii\base\Object
+abstract class BaseTarget extends \yii\base\BaseObject
 {
 
     /**

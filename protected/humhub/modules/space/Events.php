@@ -20,7 +20,7 @@ use humhub\modules\space\helpers\MembershipHelper;
  * 
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends \yii\base\BaseObject
 {
 
     /**

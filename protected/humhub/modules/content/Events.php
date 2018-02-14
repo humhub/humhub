@@ -17,12 +17,12 @@ use humhub\modules\user\events\UserEvent;
  *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends \yii\base\BaseObject
 {
 
     /**
      * Callback when a user is soft deleted.
-     * 
+     *
      * @param UserEvent $event
      */
     public static function onUserSoftDelete(UserEvent $event)
@@ -35,7 +35,7 @@ class Events extends \yii\base\Object
 
     /**
      * Callback when a user is completely deleted.
-     * 
+     *
      * @param \yii\base\Event $event
      */
     public static function onUserDelete($event)
@@ -48,7 +48,7 @@ class Events extends \yii\base\Object
 
     /**
      * Callback when a user is completely deleted.
-     * 
+     *
      * @param \yii\base\Event $event
      */
     public static function onSpaceDelete($event)
