@@ -876,8 +876,14 @@ humhub.module('stream', function (module, require, $) {
 
     WallStream.prototype.onChange = function () {
         var hasEntries = this.hasEntries();
-        if (!hasEntries && !this.hasFilter()) {
-            this.$.find('.emptyStreamMessage').show();
+        if (!hasEntries && this.isShowSingleEntry()) {
+            // An entry was deleted
+            this.$.find('.emptyStreamMessage').hide();
+            this.$.find('.back_button_holder').hide();
+            this.contentId = undefined;
+            // TODO: Need to Find better way and add tests. After init will be onChange again by !hasEntries && !this.hasFilter()
+            this.init();
+        } else if (!hasEntries && !this.hasFilter()) {
             this.$filter.hide();
         } else if (!hasEntries) {
             this.$.find('.emptyFilterStreamMessage').show();
