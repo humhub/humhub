@@ -159,7 +159,7 @@ class HumHubDbTestCase extends Test
     public function assertEqualsLastEmailSubject($subject)
     {
         $message = $this->getModule('Yii2')->grabLastSentEmail();
-        $this->assertEquals($subject, $message->getSubject());
+        $this->assertEquals($subject, str_replace(["\n", "\r"], '', $message->getSubject()));
     }
 
     public function allowGuestAccess($allow = true)
