@@ -60,6 +60,8 @@
     },
     "require-dev": {
         "codeception/codeception": "~2.3",
+        "codeception/specify": "*",
+        "codeception/verify": "*",
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0",

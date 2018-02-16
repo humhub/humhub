@@ -43,10 +43,8 @@ install:
   #- nohup bash -c "java -jar selenium-server-standalone.jar &" && sleep 1; cat nohup.out
   # Run Composer update
   - travis_retry composer self-update && composer --version
-  - travis_retry composer global require "fxp/composer-asset-plugin:~1.3"
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - travis_retry composer install --dev --prefer-dist --no-interaction
-  - travis_retry composer global require "codeception/codeception=2.3.*" "codeception/specify=*" "codeception/verify=*"
   # Install test environment
   - |
     mysql -e 'CREATE DATABASE `humhub_test` CHARACTER SET utf8 COLLATE utf8_general_ci;'
@@ -54,7 +52,7 @@ install:
     php codeception/bin/yii migrate/up --includeModuleMigrations=1 --interactive=0
     php codeception/bin/yii installer/auto
     php codeception/bin/yii search/rebuild
-    codecept build
+    ../../vendor/bin/codecept build
     cd ../../../
 
 script:
@@ -64,10 +62,4 @@ script:
   - curl -I http://127.0.0.1:8080/index-test.php
   - |
     cd protected/humhub/tests/
-    codecept run
-after_failure:
-  - cd ../modules/user/tests/codeception/_output/
-  - ls
-  - cat useracceptancePasswordRecoveryCest.testPasswordRecovery.fail.html
-   #cat ../modules/*/tests/codeception/_output/*.html
-    
+    ../../vendor/bin/codecept run -f
