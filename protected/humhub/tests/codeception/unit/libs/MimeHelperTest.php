@@ -44,14 +44,14 @@ class MimeHelperTest extends Unit
     public function dataValidExtension()
     {
         return [
-            'word' => [MimeHelper::MIME_WORD, 'doc'],
-            'excel' => [MimeHelper::MIME_EXCEL, 'xls'],
-            'powerpoint' => [MimeHelper::MIME_POWERPOINT, 'ppt'],
-            'pdf' => [MimeHelper::MIME_PDF, 'pdf'],
-            'image' => [MimeHelper::MIME_IMAGE, 'jpg'],
-            'audio' => [MimeHelper::MIME_AUDIO, 'mp3'],
-            'video' => [MimeHelper::MIME_VIDEO, 'avi'],
-            'zip' => [MimeHelper::MIME_ZIP, 'zip'],
+            'word' => [MimeHelper::ICON_WORD, 'doc'],
+            'excel' => [MimeHelper::ICON_EXCEL, 'xls'],
+            'powerpoint' => [MimeHelper::ICON_POWERPOINT, 'ppt'],
+            'pdf' => [MimeHelper::ICON_PDF, 'pdf'],
+            'image' => [MimeHelper::ICON_IMAGE, 'jpg'],
+            'audio' => [MimeHelper::ICON_AUDIO, 'mp3'],
+            'video' => [MimeHelper::ICON_VIDEO, 'avi'],
+            'zip' => [MimeHelper::ICON_ZIP, 'zip'],
         ];
     }
 
@@ -60,7 +60,7 @@ class MimeHelperTest extends Unit
      */
     public function testUnknownExtension()
     {
-        $this->assertEquals(MimeHelper::MIME_FILE, MimeHelper::getMimeIconClassByExtension('unknown'));
+        $this->assertEquals(MimeHelper::ICON_FILE, MimeHelper::getMimeIconClassByExtension('unknown'));
     }
 
     /**
@@ -71,6 +71,6 @@ class MimeHelperTest extends Unit
         $temp = new File;
         $temp->file_name = 'test.unknown';
 
-        $this->assertEquals(MimeHelper::MIME_FILE, MimeHelper::getMimeIconClassByExtension($temp));
+        $this->assertEquals(MimeHelper::ICON_FILE, MimeHelper::getMimeIconClassByExtension($temp));
     }
 }
