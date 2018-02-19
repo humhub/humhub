@@ -270,11 +270,13 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     public function canDelete($userId = '')
     {
 
-        if ($userId == '')
+        if ($userId == '') {
             $userId = Yii::$app->user->id;
+        }
 
-        if ($this->created_by == $userId)
+        if ($this->created_by == $userId) {
             return true;
+        }
 
         if (Yii::$app->user->isAdmin()) {
             return true;
