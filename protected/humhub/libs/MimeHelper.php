@@ -19,66 +19,66 @@ class MimeHelper
 {
 
     /** IconClass */
-    const MIME_WORD = 'mime-word';
-    const MIME_EXCEL = 'mime-excel';
-    const MIME_POWERPOINT = 'mime-powerpoint';
-    const MIME_PDF = 'mime-pdf';
-    const MIME_ZIP = 'mime-zip';
-    const MIME_IMAGE = 'mime-image';
-    const MIME_AUDIO = 'mime-audio';
-    const MIME_VIDEO = 'mime-video';
-    const MIME_PHOTOSHOP = 'mime-photoshop';
-    const MIME_ILLUSTRATOR = 'mime-illustrator';
-    const MIME_FILE = 'mime-file';
+    const ICON_WORD = 'mime-word';
+    const ICON_EXCEL = 'mime-excel';
+    const ICON_POWERPOINT = 'mime-powerpoint';
+    const ICON_PDF = 'mime-pdf';
+    const ICON_ZIP = 'mime-zip';
+    const ICON_IMAGE = 'mime-image';
+    const ICON_AUDIO = 'mime-audio';
+    const ICON_VIDEO = 'mime-video';
+    const ICON_PHOTOSHOP = 'mime-photoshop';
+    const ICON_ILLUSTRATOR = 'mime-illustrator';
+    const ICON_FILE = 'mime-file';
 
     /** @var array Map for Extension to IconClass */
     private static $extensionToIconClass = [
         // Word
-        'doc' => self::MIME_WORD,
-        'docx' => self::MIME_WORD,
-        'odt' => self::MIME_WORD,
+        'doc' => self::ICON_WORD,
+        'docx' => self::ICON_WORD,
+        'odt' => self::ICON_WORD,
         // Excel
-        'xls' => self::MIME_EXCEL,
-        'xlsx' => self::MIME_EXCEL,
-        'ods' => self::MIME_EXCEL,
+        'xls' => self::ICON_EXCEL,
+        'xlsx' => self::ICON_EXCEL,
+        'ods' => self::ICON_EXCEL,
         // Powerpoint
-        'ppt' => self::MIME_POWERPOINT,
-        'pptx' => self::MIME_POWERPOINT,
-        'pps' => self::MIME_POWERPOINT,
-        'ppsx' => self::MIME_POWERPOINT,
-        'odp' => self::MIME_POWERPOINT,
+        'ppt' => self::ICON_POWERPOINT,
+        'pptx' => self::ICON_POWERPOINT,
+        'pps' => self::ICON_POWERPOINT,
+        'ppsx' => self::ICON_POWERPOINT,
+        'odp' => self::ICON_POWERPOINT,
         // PDF
-        'pdf' => self::MIME_PDF,
+        'pdf' => self::ICON_PDF,
         // Archive
-        'zip' => self::MIME_ZIP,
-        'gzip' => self::MIME_ZIP,
-        'rar' => self::MIME_ZIP,
-        'tar' => self::MIME_ZIP,
-        '7z' => self::MIME_ZIP,
+        'zip' => self::ICON_ZIP,
+        'gzip' => self::ICON_ZIP,
+        'rar' => self::ICON_ZIP,
+        'tar' => self::ICON_ZIP,
+        '7z' => self::ICON_ZIP,
         // Image
-        'jpg' => self::MIME_IMAGE,
-        'jpeg' => self::MIME_IMAGE,
-        'png' => self::MIME_IMAGE,
-        'gif' => self::MIME_IMAGE,
-        'webp' => self::MIME_IMAGE,
-        'tiff' => self::MIME_IMAGE,
+        'jpg' => self::ICON_IMAGE,
+        'jpeg' => self::ICON_IMAGE,
+        'png' => self::ICON_IMAGE,
+        'gif' => self::ICON_IMAGE,
+        'webp' => self::ICON_IMAGE,
+        'tiff' => self::ICON_IMAGE,
         // Audio
-        'mp3' => self::MIME_AUDIO,
-        'aiff' => self::MIME_AUDIO,
-        'wav' => self::MIME_AUDIO,
-        'ogg' => self::MIME_AUDIO,
+        'mp3' => self::ICON_AUDIO,
+        'aiff' => self::ICON_AUDIO,
+        'wav' => self::ICON_AUDIO,
+        'ogg' => self::ICON_AUDIO,
         // Video
-        'avi' => self::MIME_VIDEO,
-        'mp4' => self::MIME_VIDEO,
-        'mov' => self::MIME_VIDEO,
-        'mpeg' => self::MIME_VIDEO,
-        'wma' => self::MIME_VIDEO,
-        'webm' => self::MIME_VIDEO,
-        'mkv' => self::MIME_VIDEO,
+        'avi' => self::ICON_VIDEO,
+        'mp4' => self::ICON_VIDEO,
+        'mov' => self::ICON_VIDEO,
+        'mpeg' => self::ICON_VIDEO,
+        'wma' => self::ICON_VIDEO,
+        'webm' => self::ICON_VIDEO,
+        'mkv' => self::ICON_VIDEO,
         // Adobe Photoshop
-        'psd' => self::MIME_PHOTOSHOP,
+        'psd' => self::ICON_PHOTOSHOP,
         // Adobe Illustrator
-        'ai' => self::MIME_ILLUSTRATOR
+        'ai' => self::ICON_ILLUSTRATOR
     ];
 
     /**
@@ -100,6 +100,6 @@ class MimeHelper
             return self::$extensionToIconClass[$ext];
         }
 
-        return self::MIME_FILE;
+        return self::ICON_FILE;
     }
 }
