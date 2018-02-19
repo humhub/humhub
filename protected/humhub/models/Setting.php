@@ -63,7 +63,7 @@ class Setting extends ActiveRecord
      * @param string $moduleId
      * @return string the settings value
      */
-    public static function Get($name, $moduleId = '')
+    public static function get($name, $moduleId = '')
     {
         list ($name, $moduleId) = self::fixModuleIdAndName($name, $moduleId);
         return self::getModule($moduleId)->settings->get($name);
@@ -77,7 +77,7 @@ class Setting extends ActiveRecord
      * @param string $value
      * @param string $moduleId
      */
-    public static function Set($name, $value, $moduleId = '')
+    public static function set($name, $value, $moduleId = '')
     {
         list ($name, $moduleId) = self::fixModuleIdAndName($name, $moduleId);
         return self::getModule($moduleId)->settings->set($name, $value);
@@ -86,7 +86,7 @@ class Setting extends ActiveRecord
     /**
      * @deprecated since version 1.1
      */
-    public static function SetText($name, $value, $moduleId = '')
+    public static function setText($name, $value, $moduleId = '')
     {
         self::Set($name, $value, $moduleId);
     }
@@ -94,7 +94,7 @@ class Setting extends ActiveRecord
     /**
      * @deprecated since version 1.1
      */
-    public static function GetText($name, $moduleId = '')
+    public static function getText($name, $moduleId = '')
     {
         return self::Get($name, $moduleId);
     }
@@ -108,7 +108,7 @@ class Setting extends ActiveRecord
      * @param string $moduleId
      * @return boolean
      */
-    public static function IsFixed($name, $moduleId = '')
+    public static function isFixed($name, $moduleId = '')
     {
         return self::getModule($moduleId)->settings->isFixed($name);
     }
