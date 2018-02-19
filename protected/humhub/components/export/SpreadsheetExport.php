@@ -132,9 +132,12 @@ class SpreadsheetExport extends Component
 
         if ($this->dataProvider === null && $this->query !== null) {
             $this->dataProvider = new ActiveDataProvider([
-                'query' => $this->query,
-                'pagination' => false,
+                'query' => $this->query
             ]);
+        }
+
+        if ($this->dataProvider instanceof ActiveDataProvider) {
+            $this->dataProvider->setPagination(false);
         }
     }
 
