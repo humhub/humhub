@@ -93,8 +93,8 @@ class LogoImage
             'height' => $this->height,
             'width' => 0,
             'mode' => 'max',
-            'transparent' => ($file->getExtension() == 'png' && ImageConverter::checkTransparent($this->getPath())))
-        ];
+            'transparent' => ($file->getExtension() == 'png' && ImageConverter::checkTransparent($this->getPath()))
+        ]);
     }
 
     /**
