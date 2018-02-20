@@ -115,7 +115,7 @@ class StorageManager extends Component implements StorageManagerInterface
                         unlink($file);
                     }
                 }
-                rmdir($path);
+                FileHelper::removeDirectory($path);
             }
         } elseif (is_file($this->get($variant))) {
             unlink($this->get($variant));
