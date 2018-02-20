@@ -332,7 +332,7 @@ class ZendLuceneSearch extends Search
     protected function getIndexPath()
     {
         $path = Yii::getAlias(Yii::$app->params['search']['zendLucenceDataDir']);
-        FileHelper::removeDirectory($path);
+        FileHelper::createDirectory($path);
 
         return $path;
     }
