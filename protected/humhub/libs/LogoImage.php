@@ -70,10 +70,9 @@ class LogoImage
      */
     public function getPath()
     {
-        $path = \Yii::getAlias("@webroot") . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_images . DIRECTORY_SEPARATOR;
+        $path = Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $this->folder_images . DIRECTORY_SEPARATOR;
 
-        if (!is_dir($path))
-            mkdir($path);
+        FileHelper::createDirectory($path);
 
         $path .= 'logo.png';
 
@@ -90,12 +89,12 @@ class LogoImage
         $this->delete();
         move_uploaded_file($file->tempName, $this->getPath());
 
-        ImageConverter::Resize($this->getPath(), $this->getPath(), array(
+        ImageConverter::Resize($this->getPath(), $this->getPath(), [
             'height' => $this->height,
             'width' => 0,
             'mode' => 'max',
             'transparent' => ($file->getExtension() == 'png' && ImageConverter::checkTransparent($this->getPath())))
-        );
+        ];
     }
 
     /**
