@@ -8,10 +8,11 @@
 
 namespace humhub\libs;
 
+use humhub\modules\file\libs\ImageConverter;
 use Yii;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
-use humhub\modules\file\libs\ImageConverter;
+use yii\helpers\FileHelper;
 
 /**
  * LogoImage
