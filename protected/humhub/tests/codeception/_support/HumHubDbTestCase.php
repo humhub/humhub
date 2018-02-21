@@ -190,11 +190,10 @@ class HumHubDbTestCase extends Unit
 
     public function allowGuestAccess($allow = true)
     {
-        if ($allow) {
-            Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 1);
-        } else {
-            Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 0);
-        }
+        Yii::$app
+            ->getModule('user')
+            ->settings
+            ->set('auth.allowGuestAccess', (int)$allow);
     }
 
     public function setGroupPermission($groupId, $permission, $state = BasePermission::STATE_ALLOW)
