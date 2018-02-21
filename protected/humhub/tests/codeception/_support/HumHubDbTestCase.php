@@ -2,20 +2,16 @@
 
 namespace tests\codeception\_support;
 
+use Codeception\Test\Unit;
+use humhub\libs\BasePermission;
+use humhub\modules\activity\models\Activity;
+use humhub\modules\content\components\ContentContainerPermissionManager;
+use humhub\modules\notification\models\Notification;
+use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Event;
 use yii\db\ActiveRecord;
-use humhub\libs\BasePermission;
-use humhub\modules\content\components\ContentContainerPermissionManager;
-use humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture;
-use humhub\modules\file\tests\codeception\fixtures\FileFixture;
-use humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture;
-use humhub\modules\user\components\PermissionManager;
-use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
-use Codeception\TestCase\Test;
-use humhub\modules\user\models\User;
-use humhub\modules\notification\models\Notification;
-use humhub\modules\activity\models\Activity;
 
 /**
  * Inherited Methods
@@ -28,11 +24,10 @@ use humhub\modules\activity\models\Activity;
  * @method void am($role)
  * @method void lookForwardTo($achieveValue)
  * @method void comment($description)
- * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = NULL)
- *
+ * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = null)
  * @SuppressWarnings(PHPMD)
  */
-class HumHubDbTestCase extends Test
+class HumHubDbTestCase extends Unit
 {
 
     protected $fixtureConfig;
@@ -44,7 +39,7 @@ class HumHubDbTestCase extends Test
     protected function setUp()
     {
         parent::setUp();
-        $webRoot = dirname(dirname(__DIR__)).'/../../..';
+        $webRoot = dirname(dirname(__DIR__)) . '/../../..';
         Yii::setAlias('@webroot', realpath($webRoot));
         $this->initModules();
         $this->reloadSettings();
@@ -98,7 +93,7 @@ class HumHubDbTestCase extends Test
     {
         $cfg = \Codeception\Configuration::config();
 
-        if(!$this->fixtureConfig && isset($cfg['fixtures'])) {
+        if (!$this->fixtureConfig && isset($cfg['fixtures'])) {
             $this->fixtureConfig = $cfg['fixtures'];
         }
 
@@ -120,23 +115,27 @@ class HumHubDbTestCase extends Test
     protected function getDefaultFixtures()
     {
         return [
-            'user' => ['class' => UserFullFixture::class],
-            'group_permission' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture::className()],
-            'contentcontainer' => ['class' => ContentContainerFixture::class],
-            'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::className()],
-            'space' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::className()],
-            'space_membership' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture::className()],
-            'content' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentFixture::className()],
-            'notification' => ['class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::className()],
-            'file' => ['class' => FileFixture::class],
-            'activity' => ['class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::className()],
-            'friendship' => ['class' => FriendshipFixture::class]
+            'user' => ['class' => \humhub\modules\user\tests\codeception\fixtures\UserFullFixture::class],
+            'group_permission' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture::class],
+            'contentcontainer' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture::class],
+            'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::class],
+            'space' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::class],
+            'space_membership' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture::class],
+            'content' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentFixture::class],
+            'notification' => ['class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::class],
+            'file' => ['class' => \humhub\modules\file\tests\codeception\fixtures\FileFixture::class],
+            'activity' => ['class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::class],
+            'friendship' => ['class' => \humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture::class],
         ];
     }
 
     public function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $msg = null)
     {
-        $notificationQuery = Notification::find(['class' => $class, 'source_class' => $source->className(), 'source_pk' => $source->getPrimaryKey()]);
+        $notificationQuery = Notification::find()->where([
+            'class' => $class,
+            'source_class' => $source->className(),
+            'source_pk' => $source->getPrimaryKey(),
+        ]);
 
         if ($originator_id != null) {
             $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
@@ -147,24 +146,51 @@ class HumHubDbTestCase extends Test
 
     public function assertHasActivity($class, ActiveRecord $source, $msg = null)
     {
-        $activity = Activity::findOne(['class' => $class, 'object_model' => $source->className(), 'object_id' => $source->getPrimaryKey()]);
+        $activity = Activity::findOne([
+            'class' => $class,
+            'object_model' => $source->className(),
+            'object_id' => $source->getPrimaryKey(),
+        ]);
         $this->assertNotNull($activity, $msg);
     }
 
+    /**
+     * @return \Codeception\Module\Yii2|\Codeception\Module
+     * @throws \Codeception\Exception\ModuleException
+     */
+    public function getYiiModule() {
+        return $this->getModule('Yii2');
+    }
+
+    /**
+     * @deprecated $msg unused
+     * @see assertSentEmail
+     * @since 1.3
+     */
     public function assertMailSent($count = 0, $msg = null)
     {
-        return $this->getModule('Yii2')->seeEmailIsSent($count);
+        return $this->getYiiModule()->seeEmailIsSent($count);
+    }
+
+    /**
+     * @param int $count
+     * @throws \Codeception\Exception\ModuleException
+     * @since 1.3
+     */
+    public function assertSentEmail($count = 0)
+    {
+        return $this->getYiiModule()->seeEmailIsSent($count);
     }
 
     public function assertEqualsLastEmailSubject($subject)
     {
-        $message = $this->getModule('Yii2')->grabLastSentEmail();
+        $message = $this->getYiiModule()->grabLastSentEmail();
         $this->assertEquals($subject, $message->getSubject());
     }
 
     public function allowGuestAccess($allow = true)
     {
-        if($allow) {
+        if ($allow) {
             Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 1);
         } else {
             Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 0);
@@ -178,8 +204,12 @@ class HumHubDbTestCase extends Test
         Yii::$app->user->permissionManager->clear();
     }
 
-    public function setContentContainerPermission($contentContainer, $groupId, $permission, $state = BasePermission::STATE_ALLOW)
-    {
+    public function setContentContainerPermission(
+        $contentContainer,
+        $groupId,
+        $permission,
+        $state = BasePermission::STATE_ALLOW
+    ) {
         $permissionManger = new ContentContainerPermissionManager(['contentContainer' => $contentContainer]);
         $permissionManger->setGroupState($groupId, $permission, $state);
         $contentContainer->permissionManager->clear();
