@@ -110,7 +110,7 @@ class ProfileImage
     {
         $path = Yii::getAlias('@webroot/uploads/' . $this->folder_images . '/');
 
-        FileHelper::createDirectory($path, 0775, true);
+        FileHelper::createDirectory($path);
 
         $path .= $this->guid;
         $path .= $prefix;
