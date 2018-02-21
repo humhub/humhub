@@ -41,7 +41,8 @@ use yii\rbac\Permission;
  * @property string $stream_channel
  * @property integer $contentcontainer_id;
  * @property ContentContainerActiveRecord $container
- *
+ * @mixin \humhub\components\behaviors\PolymorphicRelation
+ * @mixin \humhub\components\behaviors\GUID
  * @since 0.5
  */
 class Content extends ContentDeprecated
@@ -73,7 +74,7 @@ class Content extends ContentDeprecated
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
      */
     protected $_container = null;
-    
+
     /**
      * @var bool flag to disable the creation of default social activities like activity and notifications in afterSave() at content creation.
      * @deprecated since v1.2.3 use ContentActiveRecord::silentContentCreation instead.
@@ -87,8 +88,8 @@ class Content extends ContentDeprecated
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
-                'mustBeInstanceOf' => array(ContentActiveRecord::className()),
+                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
+                'mustBeInstanceOf' => [ContentActiveRecord::class],
             ],
             [
                 'class' => \humhub\components\behaviors\GUID::className(),
@@ -594,7 +595,7 @@ class Content extends ContentDeprecated
         if ($user->isSystemAdmin() && Yii::$app->getModule('content')->adminCanViewAllContent) {
             return true;
         }
-        
+
         if ($this->isPrivate() && $this->getContainer() !== null && $this->getContainer()->canAccessPrivateContent($user)) {
             return true;
         }
