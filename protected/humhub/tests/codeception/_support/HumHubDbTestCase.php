@@ -188,6 +188,9 @@ class HumHubDbTestCase extends Unit
         $this->assertEquals($subject, str_replace(["\n", "\r"], '', $message->getSubject()));
     }
 
+    /**
+     * @param bool $allow
+     */
     public function allowGuestAccess($allow = true)
     {
         Yii::$app
