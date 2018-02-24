@@ -32,18 +32,17 @@ humhub.module('content.form', function(module, require, $) {
         this.$.fadeIn('fast');
 
         if(!module.config['disabled']) {
-            // Remove info text from the textinput
-            $('#contentFormBody').on('click.humhub:content:form dragover.humhub:content:form', function() {
-                // Hide options by default
+            $('#contentFormBody').on('click.humhub:content:form dragover.humhub:content:form', function(evt) {
+                // Prevent fading in for topic remove button clicks
+                if($(evt.target).closest('.topic-remove-label').length) {
+                    return;
+                }
+
                 $('.contentForm_options').fadeIn();
             });
         } else {
             $('#contentFormBody').find('.humhub-ui-richtext').trigger('disable');
         }
-
-        event.on('humhub:topic:added', function(evt, topic) {
-            that.$.append(topic.$label.clone().addClass('animated bounceIn'));
-        });
     };
 
     CreateForm.prototype.submit = function(evt) {

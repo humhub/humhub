@@ -216,6 +216,30 @@ abstract class BootstrapComponent extends Widget
     }
 
     /**
+     * Adds an html title attribute
+     * @param $title
+     * @return $this
+     * @since 1.3
+     */
+    public function title($title)
+    {
+        return $this->options(['title' => $title]);
+    }
+
+    /**
+     * Adds an title + tooltip behaviour class
+     * @param $id
+     * @return $this
+     * @since 1.3
+     */
+    public function tooltip($title)
+    {
+        return $this->title($title)->cssClass('tt');
+    }
+
+
+
+        /**
      * @param $cssClass
      * @return $this
      */

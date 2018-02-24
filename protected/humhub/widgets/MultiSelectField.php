@@ -17,7 +17,7 @@ class MultiSelectField extends BasePickerField
     
     /**
      * Possible values
-     * @var type 
+     * @var array
      */
     public $items = [];
 

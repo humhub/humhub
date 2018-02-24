@@ -109,8 +109,7 @@ class Modal extends JsWidget
 
     public function run()
     {
-        return $this->render('modal', [
-            'id' => $this->id,
+        return $this->render('@humhub/widgets/views/modal', [
             'options' => $this->getOptions(),
             'header' => $this->header,
             'body' => $this->body,

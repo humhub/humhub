@@ -168,9 +168,9 @@ abstract class BasePickerField extends InputWidget
      * }
      * ```
      *
-     * @var bool
+     * @var bool|null
      */
-    public $addOptions = false;
+    public $addOptions = null;
 
 
     /**
@@ -300,9 +300,9 @@ abstract class BasePickerField extends InputWidget
     /**
      * Responsible for building the option data for an item.
      * 
-     * @param type $item
-     * @param type $selected
-     * @return string
+     * @param mixed $item
+     * @param boolean $selected
+     * @return array
      */
     protected function buildItemOption($item, $selected = true)
     {
@@ -325,8 +325,8 @@ abstract class BasePickerField extends InputWidget
      * 
      * e.g. $itemKey = 'id'
      * 
-     * @param type $item
-     * @return type
+     * @param mixed $item
+     * @return string
      */
     protected function getItemKey($item)
     {
@@ -338,8 +338,8 @@ abstract class BasePickerField extends InputWidget
      * Loads all items of the given $selection array.
      * The $selection array contains all selected itemKeys.
      * 
-     * @param array $selection array of itemKeys
-     * @return type array of items of type $itemClass or empty array for an empty selection
+     * @param array|string $selection array of itemKeys or comma separated string
+     * @return array of items of type $itemClass or empty array for an empty selection
      */
     public function loadItems($selection = null)
     {
@@ -432,7 +432,7 @@ abstract class BasePickerField extends InputWidget
     /**
      * Returns the url for this picker instance. If no $url is set we use the $defaultRoute for creating the url.
      * 
-     * @return strings
+     * @return string
      */
     protected function getUrl()
     {

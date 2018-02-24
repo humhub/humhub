@@ -81,7 +81,7 @@ class StreamViewer extends Widget
         }
 
         // Add default Filters
-        if (count($this->filters) === 0) {
+        if (empty($this->filters)) {
             $this->filters['filter_entry_userinvolved'] = Yii::t('ContentModule.widgets_views_stream', 'Where I´m involved');
             $this->filters['filter_entry_mine'] = Yii::t('ContentModule.widgets_views_stream', 'Created by me');
             $this->filters['filter_entry_files'] = Yii::t('ContentModule.widgets_views_stream', 'Content with attached files');
@@ -90,6 +90,8 @@ class StreamViewer extends Widget
             $this->filters['filter_entry_archived'] = Yii::t('ContentModule.widgets_views_stream', 'Include archived posts');
             $this->filters['filter_visibility_public'] = Yii::t('ContentModule.widgets_views_stream', 'Only public posts');
             $this->filters['filter_visibility_private'] = Yii::t('ContentModule.widgets_views_stream', 'Only private posts');
+            $this->filters['sorting_c'] = Yii::t('ContentModule.widgets_views_stream', 'Creation time');
+            $this->filters['sorting_u'] = Yii::t('ContentModule.widgets_views_stream', 'Last update');
         }
 
         // Setup default messages

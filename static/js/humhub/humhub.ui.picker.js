@@ -353,6 +353,10 @@ humhub.module('ui.picker', function (module, require, $) {
         }
     };
 
+    Picker.prototype.remove = function (id) {
+        this.$.find('option[value="'+id+'"]').remove();
+    };
+
     /**
      * Deselects an option with the given id (value)
      * 
@@ -379,6 +383,30 @@ humhub.module('ui.picker', function (module, require, $) {
     Picker.prototype.reset = function () {
         this.$.val('');
         this.$.trigger('change');
+    };
+
+    Picker.prototype.val = function() {
+        return this.$.val();
+    };
+
+    Picker.prototype.map = function() {
+        var val = this.val();
+
+        if(!val) {
+            return {};
+        }
+
+        if(!Array.isArray(val)) {
+            val = [val];
+        }
+
+        var result = {};
+        var that = this;
+        val.forEach(function(value) {
+            result[value] = that.getOption(value).text();
+        })
+
+        return result;
     };
 
     Picker.prototype.isDisabledItem = function (item) {

@@ -51,7 +51,7 @@ class StreamQuery extends \yii\base\Model
      * 
      * @var array Content type filter
      */
-    protected $_includes;
+    public $_includes;
 
     /**
      * @var string stream channel to display
@@ -141,7 +141,7 @@ class StreamQuery extends \yii\base\Model
     {
         return [
             [['limit', 'from', 'contentId'], 'number'],
-            [['filters', 'sort', 'topics'], 'safe']
+            [['filters', 'sort', 'topics', '_includes'], 'safe']
         ];
     }
 
@@ -428,11 +428,8 @@ class StreamQuery extends \yii\base\Model
             ->from('content_tag_relation')
             ->where(['and', 'content_tag_relation.content_id = content.id', ['in', 'content_tag_relation.tag_id', $this->topics]]);
 
-        $this->_query->innerJoin('content_tag_relation', [
-            'and',
-            'content.id = content_tag_relation.content_id',
-            ['in', 'content_tag_relation.tag_id', $this->topics]
-        ])->andWhere( ['=', new Expression('('.count($this->topics).')'), $subQuery]);
+        $this->_query->innerJoin('content_tag_relation', 'content.id = content_tag_relation.content_id');
+        $this->_query->andWhere( ['=', new Expression('('.count($this->topics).')'), $subQuery]);
     }
 
     protected function filterFile()
@@ -490,25 +487,30 @@ class StreamQuery extends \yii\base\Model
 
     protected function setTypeFilter()
     {
-        if (is_string($this->_includes)) {
-            $this->_includes = [$this->_includes];
+        if(!empty($this->_includes)) {
+            if (is_string($this->_includes)) {
+                $this->_includes = [$this->_includes];
+            }
+
+            if (count($this->_includes) === 1) {
+                $this->_query->andWhere(["content.object_model" => $this->_includes[0]]);
+            } else if (!empty($this->_includes)) {
+                $this->_query->andWhere(['IN', 'content.object_model', $this->_includes]);
+            }
         }
 
-        if (count($this->_includes) === 1) {
-            $this->_query->andWhere(["content.object_model" => $this->_includes[0]]);
-        } else if (!empty($this->_includes)) {
-            $this->_query->andWhere(['IN', 'content.object_model', $this->_includes]);
+        if(!empty($this->_excludes)) {
+            if (is_string($this->_excludes)) {
+                $this->_excludes = [$this->_excludes];
+            }
+
+            if (count($this->_excludes) === 1) {
+                $this->_query->andWhere(['!=', "content.object_model", $this->_excludes[0]]);
+            } else if (!empty($this->_excludes)) {
+                $this->_query->andWhere(['NOT IN', 'content.object_model', $this->_excludes]);
+            }
         }
 
-        if (is_string($this->_excludes)) {
-            $this->_excludes = [$this->_excludes];
-        }
-
-        if (count($this->_excludes) === 1) {
-            $this->_query->andWhere(['!=', "content.object_model", $this->_excludes[0]]);
-        } else if (!empty($this->_excludes)) {
-            $this->_query->andWhere(['NOT IN', 'content.object_model', $this->_excludes]);
-        }
     }
 
     /**

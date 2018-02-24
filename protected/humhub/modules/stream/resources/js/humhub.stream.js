@@ -615,7 +615,8 @@ humhub.module('stream', function (module, require, $) {
         return client.ajax(this.url, {
             data: {
                 'StreamQuery[filters]': that.$.data('filters'),
-                'StreamQuery[topics]': topic.getTopicArray(),
+                'StreamQuery[topics]': topic.getTopicIds(),
+                'StreamQuery[_includes]': $('#stream_filter_content_type').val(),
                 'StreamQuery[sort]': cfg.sort,
                 'StreamQuery[from]': cfg.from,
                 'StreamQuery[limit]': cfg.limit,
@@ -768,7 +769,7 @@ humhub.module('stream', function (module, require, $) {
      */
     Stream.prototype.hasFilter = function () {
         var filters = this.$.data('filters') || [];
-        return filters.length > 0;
+        return filters.length > 0 || $('#stream_filter_content_type').val() || $('#stream_filter_topic').val();
     };
 
     /**
@@ -784,10 +785,6 @@ humhub.module('stream', function (module, require, $) {
         }
         this.$.data('filters', filters);
         return this;
-    };
-
-    Stream.prototype.filterTopic = function(topicId) {
-        this.init();
     };
 
     /**
@@ -956,7 +953,6 @@ humhub.module('stream', function (module, require, $) {
 
         if (!stream) {
             module.log.info('Non-Wall-Stream Page!');
-            return;
         } else {
             _initWallStream(stream);
             _initFilterNav();
@@ -965,9 +961,48 @@ humhub.module('stream', function (module, require, $) {
         if (!pjax) {
             event.on('humhub:modules:content:newEntry.stream', function (evt, html) {
                 // Prepend entry under last pinned post
-                getStream().prependEntry(html, true);
+                var stream = getStream();
+                if(stream) {
+                    stream.prependEntry(html, true);
+                }
             }).on('humhub:topic:added', function(evt, topic) {
-                getStream().filterTopic(topic.id);
+                var stream = getStream();
+                if(stream) {
+                    stream.init();
+                    $('#stream-filter-bar').append(topic.$label.clone());
+                } else {
+                    //TODO: link to stream page with active topic filter
+                }
+
+                Component.instance($('#stream_filter_topic')).select(topic.id, topic.name);
+            }).on('humhub:topic:removed', function(evt, topic) {
+                var stream = getStream();
+                if(stream) {
+                    stream.init();
+                    var $topicBar = $('#stream-filter-bar');
+                    var $label = $topicBar.find('[data-topic-id="'+topic.id+'"]');
+
+                    $label.fadeOut('fast', function() {
+                        $label.remove();
+                        if(!$topicBar.children().length) {
+                            $topicBar.hide();
+                        }
+                    });
+                } else {
+                    //TODO: link to stream page with active topic filter
+                }
+
+                Component.instance($('#stream_filter_topic')).remove(topic.id);
+            }).on('humhub:topic:updated', function(evt, topics) {
+                var stream = getStream();
+                if(stream) {
+                    stream.init();
+                    var $topicBar = $('#stream-filter-bar');
+                    $topicBar.find('.topic-remove-label').remove();
+                    topics.forEach(function(topic) {
+                        $topicBar.append(topic.$label.clone());
+                    })
+                }
             });
         }
     };
@@ -1062,6 +1097,38 @@ humhub.module('stream', function (module, require, $) {
             getStream().sort = newSortingMode;
             getStream().init();
         });
+
+        $('#stream_filter_topic').on('change', function() {
+            var topicPicker = Component.instance($(this));
+            var topics = [];
+            $.each(topicPicker.map(), function(key, value) {
+                topics.push({id:key, name: value})
+            });
+            topic.setTopics(topics);
+        });
+
+        $('#stream_filter_content_type').on('change', function() {
+            getStream().init();
+        });
+    };
+
+    var chooseTopic = function() {
+        var topicPicker = Component.instance($('#stream-topic-picker'));
+
+        var topics = [];
+        $.each(topicPicker.map(), function(key, value) {
+            topics.push({id:key, name: value})
+        });
+        topic.setTopics(topics);
+    };
+
+    var focusTopicFilter = function(evt) {
+        evt.originalEvent.stopImmediatePropagation();
+        if(!$('#stream-filter-panel').find('.filter-panel-body').is(':visible')) {
+            $('#stream-filter-toggle').click();
+        }
+
+        Component.instance($('#stream_filter_topic')).focus();
     };
 
     var getStream = function ($selector) {
@@ -1087,5 +1154,7 @@ humhub.module('stream', function (module, require, $) {
         SimpleStream: SimpleStream,
         getStream: getStream,
         getEntry: getEntry,
+        chooseTopic: chooseTopic,
+        focusTopicFilter: focusTopicFilter
     });
 });
