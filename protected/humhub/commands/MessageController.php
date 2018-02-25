@@ -11,6 +11,8 @@ namespace humhub\commands;
 use Yii;
 use yii\helpers\Console;
 use yii\helpers\FileHelper;
+use yii\helpers\Json;
+use yii\base\Exception;
 
 /**
  * Extracts messages to be translated from source files.
@@ -42,9 +44,7 @@ class MessageController extends \yii\console\controllers\MessageController
 
         $config['sourcePath'] = $module->getBasePath();
 
-        if (!is_dir($config['sourcePath'] . '/messages')) {
-            @mkdir($config['sourcePath'] . '/messages');
-        }
+        FileHelper::createDirectory($config['sourcePath'] . '/messages');
 
         $files = FileHelper::findFiles(realpath($config['sourcePath']), $config);
 
@@ -63,9 +63,7 @@ class MessageController extends \yii\console\controllers\MessageController
 
         foreach ($config['languages'] as $language) {
             $dir = $config['sourcePath'] . DIRECTORY_SEPARATOR . 'messages' . DIRECTORY_SEPARATOR . $language;
-            if (!is_dir($dir)) {
-                @mkdir($dir);
-            }
+            FileHelper::createDirectory($dir);
 
             $this->saveMessagesToPHP($messages, $dir, $config['overwrite'], $config['removeUnused'], $config['sort'], false);
         }
@@ -122,7 +120,7 @@ class MessageController extends \yii\console\controllers\MessageController
                 $moduleId = strtolower(preg_replace("/([A-Z])/", '_\1', lcfirst($result[1])));
                 try {
                     return Yii::$app->moduleManager->getModule($moduleId, true);
-                } catch (\yii\base\Exception $ex) {
+                } catch (Exception $ex) {
                     // Module not found, try again with dash syntax
                     $moduleId = strtolower(preg_replace("/([A-Z])/", '-\1', lcfirst($result[1])));
                     return Yii::$app->moduleManager->getModule($moduleId, true);
@@ -156,7 +154,7 @@ class MessageController extends \yii\console\controllers\MessageController
             $archive = [];
             $archiveFile = Yii::getAlias('@humhub/messages/' . $language . '/archive.json');
             if (file_exists($archiveFile)) {
-                $archive = \yii\helpers\Json::decode(file_get_contents($archiveFile));
+                $archive = Json::decode(file_get_contents($archiveFile));
             }
 
             // Loop overall messages
@@ -172,7 +170,7 @@ class MessageController extends \yii\console\controllers\MessageController
                                 $translated = preg_replace('/@@$/', '', $translated);
                             }
 
-                            if ($translated != "") {
+                            if ($translated != '') {
                                 if (isset($archive[$original]) && !in_array($translated, $archive[$original])) {
                                     $archive[$original][] = $translated;
                                 } else {
@@ -185,7 +183,7 @@ class MessageController extends \yii\console\controllers\MessageController
             }
 
             // Save
-            file_put_contents($archiveFile, \yii\helpers\Json::encode($archive));
+            file_put_contents($archiveFile, Json::encode($archive));
 
             print "Saved!\n";
         }
