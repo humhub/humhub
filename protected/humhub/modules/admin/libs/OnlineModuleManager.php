@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -11,6 +11,7 @@ namespace humhub\modules\admin\libs;
 use Yii;
 use yii\web\HttpException;
 use yii\base\Exception;
+use yii\helpers\FileHelper;
 use humhub\libs\CURLHelper;
 use ZipArchive;
 
@@ -40,14 +41,13 @@ class OnlineModuleManager
         $moduleInfo = $this->getModuleInfo($moduleId);
 
         if (!isset($moduleInfo['latestCompatibleVersion'])) {
-            throw new Exception(Yii::t('AdminModule.libs_OnlineModuleManager', "No compatible module version found!"));
+            throw new Exception(Yii::t('AdminModule.libs_OnlineModuleManager', 'No compatible module version found!'));
         }
-
 
         $moduleDir = $modulePath . DIRECTORY_SEPARATOR . $moduleId;
         if (is_dir($moduleDir)) {
             $files = new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator($moduleDir, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
+                     new \RecursiveDirectoryIterator($moduleDir, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
             );
 
             foreach ($files as $fileinfo) {
@@ -55,17 +55,12 @@ class OnlineModuleManager
                 $todo($fileinfo->getRealPath());
             }
 
-            rmdir($moduleDir);
-            #throw new HttpException(500, Yii::t('AdminModule.libs_OnlineModuleManager', 'Module directory for module %moduleId% already exists!', array('%moduleId%' => $moduleId)));
+            FileHelper::removeDirectory($moduleDir);
         }
 
         // Check Module Folder exists
-        $moduleDownloadFolder = Yii::getAlias("@runtime/module_downloads");
-        if (!is_dir($moduleDownloadFolder)) {
-            if (!@mkdir($moduleDownloadFolder)) {
-                throw new Exception("Could not create module download folder!");
-            }
-        }
+        $moduleDownloadFolder = Yii::getAlias('@runtime/module_downloads');
+        FileHelper::createDirectory($moduleDownloadFolder);
 
         $version = $moduleInfo['latestCompatibleVersion'];
 
@@ -171,7 +166,7 @@ class OnlineModuleManager
                         $updates[$moduleId] = $moduleInfo;
                     }
                 } else {
-                    Yii::error("Could not load module: " . $moduleId . " to get updates");
+                    Yii::error('Could not load module: ' . $moduleId . ' to get updates');
                 }
             }
         }
