@@ -8,23 +8,21 @@
 
 namespace humhub\modules\comment\models;
 
-use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\search\interfaces\Searchable;
-use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
-use humhub\modules\post\models\Post;
-use humhub\modules\content\interfaces\ContentOwner;
-use humhub\modules\comment\activities\NewComment;
-use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
-use humhub\modules\comment\live\NewComment as NewCommentLive;
-use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\components\behaviors\PolymorphicRelation;
-use humhub\modules\user\models\Mentioning;
-use humhub\modules\search\interfaces\Searchable;
-use humhub\modules\space\models\Space;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\base\Exception;
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\user\models\User;
+use humhub\modules\user\models\Mentioning;
+use humhub\modules\post\models\Post;
+use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\search\interfaces\Searchable;
+use humhub\modules\space\models\Space;
+use humhub\modules\comment\activities\NewComment;
+use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
+use humhub\modules\comment\live\NewComment as NewCommentLive;
 
 /**
  * This is the model class for table "comment".
