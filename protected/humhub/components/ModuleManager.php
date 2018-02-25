@@ -9,10 +9,12 @@
 namespace humhub\components;
 
 use Yii;
+use yii\base\Component;
 use yii\base\Exception;
 use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
+use yii\helpers\ArrayHelper;
 use humhub\components\bootstrap\ModuleAutoLoader;
 use humhub\models\ModuleEnabled;
 
@@ -21,7 +23,7 @@ use humhub\models\ModuleEnabled;
  *
  * @author luke
  */
-class ModuleManager extends \yii\base\Component
+class ModuleManager extends Component
 {
 
     /**
@@ -82,7 +84,7 @@ class ModuleManager extends \yii\base\Component
 
      * @throws Exception
      */
-    public function registerBulk(Array $configs)
+    public function registerBulk(array $configs)
     {
         foreach ($configs as $basePath => $config) {
             $this->register($basePath, $config);
@@ -104,7 +106,7 @@ class ModuleManager extends \yii\base\Component
 
         // Check mandatory config options
         if (!isset($config['class']) || !isset($config['id'])) {
-            throw new InvalidConfigException("Module configuration requires an id and class attribute!");
+            throw new InvalidConfigException('Module configuration requires an id and class attribute!');
         }
 
         $isCoreModule = (isset($config['isCoreModule']) && $config['isCoreModule']);
@@ -134,7 +136,7 @@ class ModuleManager extends \yii\base\Component
 
         // Handle Submodules
         if (!isset($config['modules'])) {
-            $config['modules'] = array();
+            $config['modules'] = [];
         }
 
         if ($isCoreModule) {
@@ -153,7 +155,7 @@ class ModuleManager extends \yii\base\Component
 
         // Add config file values to module
         if (isset(Yii::$app->modules[$config['id']]) && is_array(Yii::$app->modules[$config['id']])) {
-            $moduleConfig = \yii\helpers\ArrayHelper::merge($moduleConfig, Yii::$app->modules[$config['id']]);
+            $moduleConfig = ArrayHelper::merge($moduleConfig, Yii::$app->modules[$config['id']]);
         }
 
         // Register Yii Module
@@ -240,7 +242,7 @@ class ModuleManager extends \yii\base\Component
             return Yii::createObject($class, [$id, Yii::$app]);
         }
 
-        throw new Exception("Could not find/load requested module: " . $id);
+        throw new Exception('Could not find/load requested module: ' . $id);
     }
 
     /**
@@ -282,7 +284,7 @@ class ModuleManager extends \yii\base\Component
         $module = $this->getModule($moduleId);
 
         if ($module == null) {
-            throw new Exception("Could not load module to remove!");
+            throw new Exception('Could not load module to remove!');
         }
 
         /**
@@ -296,14 +298,10 @@ class ModuleManager extends \yii\base\Component
          * Remove Folder
          */
         if ($this->createBackup) {
-            $moduleBackupFolder = Yii::getAlias("@runtime/module_backups");
-            if (!is_dir($moduleBackupFolder)) {
-                if (!@mkdir($moduleBackupFolder)) {
-                    throw new Exception("Could not create module backup folder!");
-                }
-            }
+            $moduleBackupFolder = Yii::getAlias('@runtime/module_backups');
+            FileHelper::createDirectory($moduleBackupFolder);
 
-            $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $moduleId . "_" . time();
+            $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $moduleId . '_' . time();
             $moduleBasePath = $module->getBasePath();
             FileHelper::copyDirectory($moduleBasePath, $backupFolderName);
             FileHelper::removeDirectory($moduleBasePath);
@@ -367,7 +365,7 @@ class ModuleManager extends \yii\base\Component
     {
         foreach ($modules as $module) {
             $module = ($module instanceof Module) ? $module : $this->getModule($module);
-            if($module != null) {
+            if ($module != null) {
                 $module->disable();
             }
         }

@@ -63,7 +63,7 @@ class Setting extends ActiveRecord
      * @param string $moduleId
      * @return string the settings value
      */
-    public static function Get($name, $moduleId = "")
+    public static function get($name, $moduleId = '')
     {
         list ($name, $moduleId) = self::fixModuleIdAndName($name, $moduleId);
         return self::getModule($moduleId)->settings->get($name);
@@ -77,7 +77,7 @@ class Setting extends ActiveRecord
      * @param string $value
      * @param string $moduleId
      */
-    public static function Set($name, $value, $moduleId = "")
+    public static function set($name, $value, $moduleId = '')
     {
         list ($name, $moduleId) = self::fixModuleIdAndName($name, $moduleId);
         return self::getModule($moduleId)->settings->set($name, $value);
@@ -86,7 +86,7 @@ class Setting extends ActiveRecord
     /**
      * @deprecated since version 1.1
      */
-    public static function SetText($name, $value, $moduleId = "")
+    public static function setText($name, $value, $moduleId = '')
     {
         self::Set($name, $value, $moduleId);
     }
@@ -94,7 +94,7 @@ class Setting extends ActiveRecord
     /**
      * @deprecated since version 1.1
      */
-    public static function GetText($name, $moduleId = "")
+    public static function getText($name, $moduleId = '')
     {
         return self::Get($name, $moduleId);
     }
@@ -108,7 +108,7 @@ class Setting extends ActiveRecord
      * @param string $moduleId
      * @return boolean
      */
-    public static function IsFixed($name, $moduleId = "")
+    public static function isFixed($name, $moduleId = '')
     {
         return self::getModule($moduleId)->settings->isFixed($name);
     }
@@ -133,32 +133,32 @@ class Setting extends ActiveRecord
     public static function fixModuleIdAndName($name, $moduleId)
     {
         if ($name == 'allowGuestAccess' && $moduleId == 'authentication_internal') {
-            return array('allowGuestAccess', 'user');
+            return ['allowGuestAccess', 'user'];
         } elseif ($name == 'defaultUserGroup' && $moduleId == 'authentication_internal') {
-            return array('auth.allowGuestAccess', 'user');
+            return ['auth.allowGuestAccess', 'user'];
         } elseif ($name == 'enabled' && $moduleId == 'authentication_ldap') {
-            return array('auth.ldap.enabled', 'user');
+            return ['auth.ldap.enabled', 'user'];
         } elseif ($name == 'enabled' && $moduleId == 'authentication_ldap') {
-            return array('auth.ldap.enabled', 'user');
+            return ['auth.ldap.enabled', 'user'];
         } elseif ($name == 'systemEmailAddress' && $moduleId == 'mailing') {
-            return array('mailer.systemEmailAddress', 'user');
+            return ['mailer.systemEmailAddress', 'user'];
         } elseif ($name == 'systemEmailName' && $moduleId == 'mailing') {
-            return array('mailer.systemEmailName', 'user');
+            return ['mailer.systemEmailName', 'user'];
         } elseif ($name == 'enabled' && $moduleId == 'proxy') {
-            return array('proxy.enabled', 'base');
+            return ['proxy.enabled', 'base'];
         } elseif ($name == 'server' && $moduleId == 'proxy') {
-            return array('proxy.server', 'base');
+            return ['proxy.server', 'base'];
         } elseif ($name == 'port' && $moduleId == 'proxy') {
-            return array('proxy.port', 'base');
+            return ['proxy.port', 'base'];
         } elseif ($name == 'user' && $moduleId == 'proxy') {
-            return array('proxy.user', 'base');
+            return ['proxy.user', 'base'];
         } elseif ($name == 'pass' && $moduleId == 'proxy') {
-            return array('proxy.password', 'base');
+            return ['proxy.password', 'base'];
         } elseif ($name == 'noproxy' && $moduleId == 'proxy') {
-            return array('proxy.noproxy', 'base');
+            return ['proxy.noproxy', 'base'];
         }
 
-        return array($name, $moduleId);
+        return [$name, $moduleId];
     }
 
     /**
@@ -177,8 +177,9 @@ class Setting extends ActiveRecord
         } else {
             $module = Yii::$app->getModule($moduleId);
         }
+
         if ($module === null) {
-            throw new Exception("Could not find module: " . $moduleId);
+            throw new Exception('Could not find module: ' . $moduleId);
         }
 
         return $module;

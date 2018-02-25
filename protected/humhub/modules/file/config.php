@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\file\Module;
 use humhub\modules\search\engine\Search;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\commands\CronController;
@@ -10,7 +11,7 @@ use humhub\components\ActiveRecord;
 
 return [
     'id' => 'file',
-    'class' => \humhub\modules\file\Module::className(),
+    'class' => Module::className(),
     'isCoreModule' => true,
     'events' => [
         ['class' => WallEntryAddons::class, 'event' => WallEntryAddons::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryAddonInit']],
@@ -21,4 +22,3 @@ return [
         ['class' => Search::class, 'event' => Search::EVENT_SEARCH_ATTRIBUTES, 'callback' => [Events::class, 'onSearchAttributes']]
     ],
 ];
-?>
