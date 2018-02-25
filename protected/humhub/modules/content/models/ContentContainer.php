@@ -20,6 +20,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  * @property string $class
  * @property integer $pk
  * @property integer $owner_user_id
+ * @mixin PolymorphicRelation
  */
 class ContentContainer extends \yii\db\ActiveRecord
 {

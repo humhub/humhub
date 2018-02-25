@@ -45,6 +45,7 @@ use humhub\modules\content\interfaces\ContentOwner;
  * Note: If the underlying Content record cannot be saved or validated an Exception will thrown.
  *
  * @property Content $content
+ * @mixin \humhub\modules\user\behaviors\Followable
  * @author Luke
  */
 class ContentActiveRecord extends ActiveRecord implements ContentOwner
