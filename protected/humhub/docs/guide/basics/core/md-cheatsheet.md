@@ -77,8 +77,17 @@ function fancyAlert(arg) {
 
 ### Links
 ```
-http://github.com - automatic!
-[GitHub](http://github.com)
+https://github.com - automatic!
+[GitHub](https://github.com)
+```
+
+or
+
+```
+I use [Google][1] more than [Yahoo][2] or [Bing][3]. 
+[1]: https://google.com/ "Google Search" 
+[2]: https://search.yahoo.com/ "Yahoo Search" 
+[3]: https://www.bing.com/ "Bing Search" 
 ```
 
 ### Images
@@ -89,9 +98,24 @@ http://github.com - automatic!
 Format: ![Alt Text](image url) - Note: Must have a image file type or won't work.
 ```
 
+or 
+
+```
+[![Alt text][1] 
+[1]: http://simplpost.com/images/sample1.jpg (hover text)
+```
+
 #### Linked Images
 ```
 [![Alt Text](/images/logo.png)](www.example.com) - Note: Must have a image file type or won't work.
+```
+
+or
+
+```
+[![Alt text][2]][1] 
+[1]: https://www.google.com/ 
+[2]: https://simplpost.com/images/sample1.jpg (hover text)
 ```
 
 ### Tables
@@ -105,6 +129,23 @@ Content in the first column | Content in the second column
 ### Strikethrough
 ```
 ~~this~~
+```
+
+### Horizontal Rule
+```
+Three or more...
+
+---
+
+Hyphens
+
+***
+
+Asterisks
+
+___
+
+Underscores
 ```
 
 ### Ignoring Markdown formatting
