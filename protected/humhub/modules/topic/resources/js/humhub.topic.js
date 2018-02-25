@@ -34,7 +34,7 @@ humhub.module('topic', function (module, require, $) {
     };
 
     var getRemoveLabel = function(topic) {
-        return $(string.template(module.template.removeLabel, {id: topic.id, name: topic.name}))
+        return $(string.template(module.template.removeLabel, {id: topic.id, name: string.htmlEncode(topic.name)}))
     };
 
     var removeTopic = function (evt) {

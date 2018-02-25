@@ -53,6 +53,11 @@ class TopicPicker extends ContentTagPicker
         parent::init();
     }
 
+    public function getItemImage($item)
+    {
+        return Yii::$app->getModule('topic')->icon;
+    }
+
     protected function getData()
     {
         $result = parent::getData();

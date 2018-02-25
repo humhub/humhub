@@ -33,6 +33,11 @@ class ContentType extends Model
     public $instance;
 
     /**
+     * @var [] caches the result for contentContainer and global requests [$contentContainer->id|'' => ContentType[]]
+     */
+    public static $cache = [];
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -46,6 +51,12 @@ class ContentType extends Model
      * @return static[] existing content types of the given container
      */
     public static function getContentTypes(ContentContainerActiveRecord $container = null) {
+        $containerId = ($container) ? $container->id : '';
+
+        if(isset(static::$cache[$containerId])) {
+            return static::$cache[$containerId];
+        }
+
         $query = (new Query())->select('object_model')
             ->from('content')->distinct()
             ->where(['stream_channel' => 'default']);
@@ -60,7 +71,7 @@ class ContentType extends Model
             $result[] = new static(['typeClass' => $item['object_model']]);
         }
 
-        return $result;
+        return static::$cache[$containerId] = $result;
     }
 
     /**
@@ -97,6 +108,11 @@ class ContentType extends Model
     public function getContentDescription()
     {
         return $this->instance->getContentDescription();
+    }
+
+    public function getIcon()
+    {
+        return $this->instance->getIcon();
     }
 
 }

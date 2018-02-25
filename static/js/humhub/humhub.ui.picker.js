@@ -205,6 +205,7 @@ humhub.module('ui.picker', function (module, require, $) {
         result: '<a href="#" tabindex="-1" style="margin-right:5px;">{imageNode} {text}</a>',
         resultDisabled: '<a href="#" title="{disabledText}" data-placement="right" tabindex="-1" style="margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} {text}</a>',
         imageNode: '<img class="img-rounded" src="{image}" alt="" style="width:24px;height:24px;"  height="24" width="24">',
+        imageIcon: '<i class="fa {image}"></i> ',
         option: '<option value="{id}" data-image="{image}" selected>{text}</option>',
     };
 
@@ -264,8 +265,8 @@ humhub.module('ui.picker', function (module, require, $) {
             return loader.set($('<div></div>'), {'css': {'padding': '4px'}});
         }
 
-        item.imageNode = this.getImageNode(item);
-        item.disabledText = item.disabledText || '';
+        this.prepareItem(item);
+
         var template = (item.disabled) ? Picker.template.resultDisabled : Picker.template.result;
 
         var $result = $(string.template(template, item))
@@ -289,9 +290,7 @@ humhub.module('ui.picker', function (module, require, $) {
      * @returns {jQuery|$}
      */
     Picker.prototype.templateSelection = function (item, container) {
-        item.text = item.textValue || item.text || $(item.element).data('text');
-        item.image = item.image || $(item.element).data('image');
-        item.imageNode = this.getImageNode(item);
+        this.prepareItem(item);
 
         var selectionTmpl = (item.image && !item.new) ? Picker.template.selectionWithImage : Picker.template.selectionNoImage;
         var $result = $(string.template(selectionTmpl, item));
@@ -306,6 +305,13 @@ humhub.module('ui.picker', function (module, require, $) {
         return $result;
     };
 
+    Picker.prototype.prepareItem = function (item) {
+        item.text = item.textValue || item.text || $(item.element).data('text');
+        item.image = item.image || $(item.element).data('image');
+        item.imageNode = this.getImageNode(item);
+        item.disabledText = item.disabledText || '';
+    }
+
     /**
      * Prepares the image node.
      * 
@@ -313,10 +319,18 @@ humhub.module('ui.picker', function (module, require, $) {
      * @returns {String}
      */
     Picker.prototype.getImageNode = function (item) {
-        var image = item.image;
+        var image = item.image || $(item.element).data('image');
 
         if (!image) {
             return '';
+        }
+
+        if(image.indexOf('<') >= 0) {
+            return image;
+        } else if(image.indexOf('fa-') === 0) {
+            return string.template(Picker.template.imageIcon, item);
+        } else {
+            return string.template(Picker.template.imageNode, item);
         }
 
         // The image is either an html node itself or just an url
@@ -354,7 +368,11 @@ humhub.module('ui.picker', function (module, require, $) {
     };
 
     Picker.prototype.remove = function (id) {
-        this.$.find('option[value="'+id+'"]').remove();
+        let values = this.val();
+        if(values.indexOf(id) >= 0) {
+            values.splice(values.indexOf(id), 1);
+            this.$.val(values).trigger('change');
+        }
     };
 
     /**
@@ -387,6 +405,10 @@ humhub.module('ui.picker', function (module, require, $) {
 
     Picker.prototype.val = function() {
         return this.$.val();
+    };
+
+    Picker.prototype.data = function() {
+        return this.$.select2('data');
     };
 
     Picker.prototype.map = function() {

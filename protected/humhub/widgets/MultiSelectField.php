@@ -61,6 +61,7 @@ class MultiSelectField extends BasePickerField
            
             $result[$key] = $this->buildItemOption([$key => $value], in_array($key, $this->selection));
         }
+
         return $result;
     }
 

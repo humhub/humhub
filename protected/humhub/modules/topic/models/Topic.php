@@ -13,15 +13,40 @@ use humhub\modules\content\models\Content;
 use humhub\modules\topic\permissions\AddTopic;
 use humhub\modules\content\models\ContentTag;
 
+/**
+ * ContentTag type used for categorizing content.
+ *
+ * @since 1.3
+ */
 class Topic extends ContentTag
 {
+    /**
+     * @inheritdoc
+     */
     public $moduleId = 'topic';
 
+    /**
+     * @inheritdoc
+     */
     public static function getLabel()
     {
         return Yii::t('TopicModule.base', 'Topic');
     }
 
+    /**
+     * @return string topic icon used in badges etc.
+     */
+    public static function getIcon()
+    {
+        return Yii::$app->getModule('topic')->icon;
+    }
+
+    /**
+     * Attaches the given topics to the given content instance.
+     *
+     * @param Content $content target content
+     * @param int[]|int|Topic|Topic[] $topics either a single or array of topics or topic Ids to add.
+     */
     public static function attach(Content $content, $topics)
     {
         /* @var $result static[] */
@@ -32,9 +57,12 @@ class Topic extends ContentTag
 
         $canAdd = $content->container->can(AddTopic::class);
 
+
         if(empty($topics)) {
             return;
         }
+
+        $topics = is_array($topics) ? $topics : [$topics];
 
         foreach ($topics as $topic) {
             if(strpos($topic, '_add:') === 0 && $canAdd) {
@@ -52,6 +80,8 @@ class Topic extends ContentTag
                 if($topic) {
                     $result[] = $topic;
                 }
+            } else if($topic instanceof Topic) {
+                $result[] = $topic;
             }
         }
 

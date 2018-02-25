@@ -29,10 +29,34 @@ class StreamFilterBlock extends Widget
     public $filters;
 
     /**
-     * @var boolean true if filter is checked
+     * @var array html options for container
      */
-    public $checked = false;
+    public $options = [];
 
+    /**
+     * @var array html options for the filter link
+     */
+    public $linkOptions = [];
+
+    /**
+     * @var string|[] will be added as data-filter-radio to automatically unset other filters
+     */
+    public $radio;
+
+    /**
+     * @var bool
+     */
+    public $filterClass = 'wallFilter';
+
+    /**
+     * @var array|string of checked filter
+     */
+    public $checked = [];
+
+
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
         $active = false;
@@ -47,10 +71,28 @@ class StreamFilterBlock extends Widget
             return '';
         }
 
+        $this->linkOptions['class'] = $this->filterClass;
+        $this->linkOptions['href'] = '#';
+
+        $reversedRadio = [];
+        if(is_array($this->radio)) {
+            foreach ($this->radio as $key => $filterIds) {
+                foreach ($filterIds as $filterId) {
+                    $reversedRadio[$filterId] = $key;
+                }
+            }
+        }
+
+        $this->checked = is_string($this->checked) ? [$this->checked] : $this->checked;
+
         return $this->render('streamFilterBlock', [
             'filters' => $this->filters,
             'block' => $this->block,
             'title' => $this->title,
+            'options' => $this->options,
+            'radio' => $this->radio,
+            'reversedRadio' => $reversedRadio,
+            'linkOptions' => $this->linkOptions,
             'checked' => $this->checked]);
     }
 

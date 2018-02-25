@@ -7,6 +7,7 @@
  */
 
 use humhub\modules\content\models\ContentType;
+use humhub\modules\content\widgets\ContentTypePicker;
 use humhub\modules\post\models\Post;
 use humhub\modules\stream\widgets\StreamFilterBlock;
 use humhub\modules\topic\widgets\TopicPicker;
@@ -18,15 +19,12 @@ use humhub\widgets\MultiSelectField;
 /* @var $filters [] */
 /* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord|null */
 
-$sorting = Yii::$app->getModule('stream')->settings->get('defaultSort', 'c');
 
 $basicFilter = ['filter_entry_userinvolved', 'filter_entry_mine', 'filter_entry_files'];
 $visibilityFilter = ['filter_visibility_public', 'filter_visibility_private', 'filter_entry_archived'];
 $postFilter = ['filter_model_posts', 'filter_posts_links'];
 $sortFilter = ['sorting_c', 'sorting_u'];
-
-$contentTypeSelection = ContentType::getContentTypeSelection($contentContainer);
-unset($contentTypeSelection[Post::class])
+$checkSorting = Yii::$app->getModule('stream')->settings->get('defaultSort', 'c') === 'c' ? 'sorting_c' : 'sorting_u';
 
 ?>
 
@@ -34,29 +32,35 @@ unset($contentTypeSelection[Post::class])
     <div class="nav-tabs">
         <div id="stream-filter-panel-nav" class="clearfix">
             <div id="stream-filter-bar">
-                <?= ModalButton::defaultType()->icon('fa-plus')->xs()->action('stream.focusTopicFilter')
-                    ->tooltip(Yii::t('ContentModule.widgets_views_stream', 'Add Topic Filter'))->loader(false)->right(); ?>
+                <?= ModalButton::defaultType()->icon('fa-plus')->xs()->action('stream.focusTopicFilter')->id('stream-filter-bar-add')
+                    ->tooltip(Yii::t('ContentModule.widgets_views_stream', 'Add Filter'))->loader(false)->right(); ?>
             </div>
             <?= Button::asLink(Yii::t('ContentModule.widgets_views_stream', 'Filter') . '<b class="caret"></b>')
                 ->id('stream-filter-toggle')->icon('fa-filter')->sm()->style('pa') ?>
         </div>
 
         <div class="filter-panel-body" style="display:none">
+            <hr>
             <div class="filter-container">
                 <div class="filter-col">
                     <?= StreamFilterBlock::widget(['block' => $basicFilter, 'filters' => $filters, 'title' => Yii::t('ContentModule.widgets_views_stream', 'Basic Filter')]); ?>
                     <?= StreamFilterBlock::widget(['block' => $postFilter, 'filters' => $filters, 'title' => Yii::t('ContentModule.widgets_views_stream', 'Post Filter')]); ?>
                 </div>
                 <div class="filter-col">
-                    <?= StreamFilterBlock::widget(['block' => $visibilityFilter, 'filters' => $filters, 'title' => Yii::t('ContentModule.widgets_views_stream', 'Visibility')]); ?>
-                    <?= StreamFilterBlock::widget(['block' => $sortFilter, 'filters' => $filters, 'title' => Yii::t('ContentModule.widgets_views_stream', 'Sorting')]); ?>
+                    <?= StreamFilterBlock::widget(['block' => $visibilityFilter,
+                        'filters' => $filters, 'title' => Yii::t('ContentModule.widgets_views_stream', 'Visibility'),
+                        'radio' => ['visibility' => ['filter_visibility_public', 'filter_visibility_private']]]); ?>
+                    <?= StreamFilterBlock::widget(['block' => $sortFilter, 'filters' => $filters,
+                        'title' => Yii::t('ContentModule.widgets_views_stream', 'Sorting'),
+                        'filterClass' => 'wallSorting',
+                        'radio' =>'sorting',
+                        'checked' => $checkSorting]); ?>
                 </div>
                 <div class="filter-col">
                     <strong><?= Yii::t('ContentModule.widgets_views_stream', 'Content Type') ?></strong>
-                    <?= MultiSelectField::widget([
+                    <?= ContentTypePicker::widget([
                         'id' => 'stream_filter_content_type',
-                        'name' => 'filter_content_type',
-                        'items' => $contentTypeSelection
+                        'name' => 'filter_content_type'
                     ]); ?>
 
                     <strong><?= Yii::t('ContentModule.widgets_views_stream', 'Topics') ?></strong>
@@ -73,7 +77,6 @@ unset($contentTypeSelection[Post::class])
 
 <script>
     var toggleFilterPanel = function () {
-        debugger;
         $('#stream-filter-panel').find('.filter-panel-body').slideToggle();
     };
 
@@ -88,5 +91,5 @@ unset($contentTypeSelection[Post::class])
             evt.preventDefault();
             toggleFilterPanel();
         }
-    })
+    });
 </script>

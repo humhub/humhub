@@ -427,6 +427,7 @@ humhub.module('stream', function (module, require, $) {
     Stream.prototype.init = function () {
         this.lastContentId = 0;
         this.lastEntryLoaded = false;
+        this.updateFilterCount();
         var that = this;
         return new Promise(function (resolve, reject) {
             that.clear();
@@ -764,12 +765,38 @@ humhub.module('stream', function (module, require, $) {
     };
 
     /**
-     * Checks if a stream has filter settings.
+     * Checks if a stream has a given filter settings.
+     * If no filter parameter is given this method checks if any filter is active.
      * @returns {boolean}
      */
-    Stream.prototype.hasFilter = function () {
-        var filters = this.$.data('filters') || [];
-        return filters.length > 0 || $('#stream_filter_content_type').val() || $('#stream_filter_topic').val();
+    Stream.prototype.hasFilter = function (filter) {
+        if(filter) {
+            if(!this.$.data('filters')) {
+                return false;
+            } else {
+                return this.$.data('filters').indexOf(filter) >= 0;
+            }
+        } else {
+            var filters = this.$.data('filters') || [];
+            return filters.length > 0 || $('#stream_filter_content_type').val() || $('#stream_filter_topic').val();
+        }
+    };
+
+    Stream.prototype.updateFilterCount = function () {
+        var count = this.$.data('filters') ? this.$.data('filters').length : 0;
+        count += $('#stream_filter_content_type').val() ? $('#stream_filter_content_type').val().length : 0;
+        count += $('#stream_filter_topic').val() ? $('#stream_filter_topic').val().length : 0;
+
+        var $filterCount = $('#stream-filter-toggle').find('.filterCount');
+
+        if(count) {
+            if(!$filterCount.length) {
+                $filterCount = $('<small class="filterCount"></small>').insertBefore($('#stream-filter-toggle').find('.caret'));
+            }
+            $filterCount.html(' <b>('+count+')</b> ');
+        } else if($filterCount.length) {
+            $filterCount.remove();
+        }
     };
 
     /**
@@ -1062,40 +1089,54 @@ humhub.module('stream', function (module, require, $) {
         });
     };
 
+    var _selectFilter = function($wallFilter) {
+        var wallFilterId = $wallFilter.attr('id');
+        var isSorting = $wallFilter.is('.wallSorting');
+        var wallFilterKey =  (isSorting) ? $wallFilter.attr('id').replace('sorting_', '') : $wallFilter.attr('id').replace('filter_', '');
+        var $checkbox = $wallFilter.children("i");
+        var stream = getStream();
+
+        // Sortings can not be unselected only changed
+        if(!isSorting) {
+            $checkbox.toggleClass('fa-square-o').toggleClass('fa-check-square-o');
+        }  else {
+            $checkbox.removeClass('fa-square-o').addClass('fa-check-square-o');
+        }
+
+        var isChecked = $checkbox.hasClass('fa-check-square-o');
+
+        if(isChecked && $wallFilter.data('filter-radio')) {
+            $('#stream-filter-panel').find('[data-filter-radio="'+$wallFilter.data('filter-radio')+'"]').each(function() {
+                var filterId = $(this).attr('id');
+                if(filterId !== wallFilterId) {
+                    stream.unsetFilter(filterId.replace('filter_', ''));
+                    $(this).find('i')
+                        .removeClass('fa-check-square-o')
+                        .addClass('fa-square-o');
+                }
+            });
+        }
+
+        if(isSorting) {
+            stream.sort = wallFilterKey;
+        } else if (isChecked) {
+            stream.setFilter(wallFilterKey);
+        } else {
+            stream.unsetFilter(wallFilterKey);
+        }
+
+        stream.init();
+    };
+
     var _initFilterNav = function () {
         $(".wallFilter").on('click', function (evt) {
             evt.preventDefault();
-            var $filter = $(this);
-            var checkboxi = $filter.children("i");
-            checkboxi.toggleClass('fa-square-o').toggleClass('fa-check-square-o');
-            if (checkboxi.hasClass('fa-check-square-o')) {
-                getStream().setFilter($filter.attr('id').replace('filter_', ''));
-            } else {
-                getStream().unsetFilter($filter.attr('id').replace('filter_', ''));
-            }
-            getStream().init();
+            _selectFilter($(this));
         });
 
         $(".wallSorting").on('click', function (evt) {
             evt.preventDefault();
-            var newSortingMode = $(this).attr('id');
-
-            // uncheck all sortings
-            $(".wallSorting").find('i')
-                    .removeClass('fa-check-square-o')
-                    .addClass('fa-square-o');
-
-            // check current sorting mode
-            $("#" + newSortingMode).children("i")
-                    .removeClass('fa-square-o')
-                    .addClass('fa-check-square-o');
-
-            // remove sorting id append
-            newSortingMode = newSortingMode.replace('sorting_', '');
-
-            // Switch sorting mode and reload stream
-            getStream().sort = newSortingMode;
-            getStream().init();
+            _selectFilter($(this));
         });
 
         $('#stream_filter_topic').on('change', function() {
@@ -1104,12 +1145,26 @@ humhub.module('stream', function (module, require, $) {
             $.each(topicPicker.map(), function(key, value) {
                 topics.push({id:key, name: value})
             });
+
+            // Note the stream init is triggered by the humhub:topic:updated event
             topic.setTopics(topics);
         });
 
         $('#stream_filter_content_type').on('change', function() {
+            var contentTypePicker = Component.instance($(this));
+
+            var $filterBar = $('#stream-filter-bar');
+            $filterBar.find('.content-type-remove-label').remove();
+            contentTypePicker.data().forEach(function(topic) {
+                $(util.string.template(module.template.removeContentTypeLabel, topic)).insertBefore($('#stream-filter-bar-add'));
+            });
+
             getStream().init();
         });
+    };
+
+    module.template = {
+        removeContentTypeLabel: '<a href="#" class="content-type-remove-label" data-action-click="stream.removeContentTypeFilter" data-type-id="{id}"><span class="label label-default animated bounceIn"><i class="fa {image}"></i> {text}</span></a>'
     };
 
     var chooseTopic = function() {
@@ -1122,13 +1177,18 @@ humhub.module('stream', function (module, require, $) {
         topic.setTopics(topics);
     };
 
+    var removeContentTypeFilter = function(evt) {
+        Component.instance($('#stream_filter_content_type')).remove(evt.$trigger.data('type-id'));
+        evt.$trigger.remove();
+    };
+
     var focusTopicFilter = function(evt) {
         evt.originalEvent.stopImmediatePropagation();
         if(!$('#stream-filter-panel').find('.filter-panel-body').is(':visible')) {
             $('#stream-filter-toggle').click();
         }
 
-        Component.instance($('#stream_filter_topic')).focus();
+        Component.instance($('#stream_filter_content_type')).focus();
     };
 
     var getStream = function ($selector) {
@@ -1155,6 +1215,7 @@ humhub.module('stream', function (module, require, $) {
         getStream: getStream,
         getEntry: getEntry,
         chooseTopic: chooseTopic,
-        focusTopicFilter: focusTopicFilter
+        focusTopicFilter: focusTopicFilter,
+        removeContentTypeFilter: removeContentTypeFilter
     });
 });

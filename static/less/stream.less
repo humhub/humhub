@@ -107,29 +107,53 @@
 
 .wallFilterPanel {
     font-size: 12px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 3px #dadada;
+    -webkit-box-shadow: 0 0 3px #dadada;
+    -moz-box-shadow: 0 0 3px #dadada;
+
+    #stream-filter-bar-add {
+        padding-top:0;
+        padding-bottom:0;
+    }
+
+    #stream-filter-toggle {
+        padding:5px;
+    }
 
     .nav-tabs {
         margin:0;
         background-color: @background-color-secondary;
         border-radius:4px;
-        padding: 5px 5px 5px 0;
+        padding: 5px;
         white-space: nowrap;
+        border:0 !important;
+
+        .filter-panel-body hr {
+            margin-top:5px;
+        }
     }
 
     .topic-remove-label {
-        margin-right:5px;
+        float:left;
+    }
+
+    .topic-remove-label, .content-type-remove-label {
+        margin-right:6px;
     }
 
     .select2 {
-        width:250px !important;
-        margin-bottom:10px;
+        width:275px !important;
+        margin-bottom:5px;
+        margin-top:2px;
+
         .select2-search__field {
             height:20px !important;
         }
 
         .select2-selection__choice {
-            height:20px !important;
+            height:23px !important;
+
             span {
                 line-height: 19px !important;
             }
@@ -141,10 +165,21 @@
 #stream-filter-bar {
     display:inline;
     float:right;
+    white-space: normal;
+
+    .label {
+        height:18px;
+        padding-top:4px;
+    }
+    .btn, .label {
+        box-shadow: 0 0 2px @text-color-secondary;
+        -webkit-box-shadow: 0 0 2px @text-color-secondary;
+        -moz-box-shadow: 0 0 2px @text-color-secondary;
+    }
 }
 
 .filter-container {
-    padding:10px 10px 0 10px;
+    padding: 0 5px;
 
     .filter-col {
         display:table-cell;
@@ -170,9 +205,17 @@
         }
     }
 
+    .filter-col div:last-of-type ul {
+        margin-bottom:5px;
+    }
+
     .filter-col:not(:first-child) {
         border-left: 2px solid @background-color-page;
         padding-left:10px;
+    }
+
+    .filter-col:last-child {
+        padding-right:0;
     }
 }
 
