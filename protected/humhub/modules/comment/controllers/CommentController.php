@@ -16,6 +16,8 @@ use humhub\components\behaviors\AccessControl;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\widgets\Comment as CommentWidget;
 use humhub\modules\comment\widgets\ShowMore;
+use yii\web\BadRequestHttpException;
+use yii\web\ForbiddenHttpException;
 
 /**
  * CommentController provides all comment related actions.
@@ -35,7 +37,13 @@ class CommentController extends ContentAddonController
             'acl' => [
                 'class' => AccessControl::className(),
                 'guestAllowedActions' => ['show']
-            ]
+            ],
+            'verbs' => [
+                'class' => \yii\filters\VerbFilter::className(),
+                'actions' => [
+                    'post' => ['POST'],
+                ],
+            ],
         ];
     }
 
@@ -52,12 +60,12 @@ class CommentController extends ContentAddonController
             'object_model' => $content->className(),
             'object_id' => $content->getPrimaryKey(),
         ]);
-        
+
         $pagination = new Pagination([
             'totalCount' => Comment::GetCommentCount($content->className(), $content->getPrimaryKey()),
             'pageSize' => $this->module->commentsBlockLoadSize
         ]);
-        
+
         $query->offset($pagination->offset)->limit($pagination->limit);
         $comments = array_reverse($query->all());
 
@@ -78,22 +86,20 @@ class CommentController extends ContentAddonController
      */
     public function actionPost()
     {
-        $this->forcePostRequest();
-
-        if (Yii::$app->user->isGuest) {
-            throw new HttpException(403, 'Guests can not comment.');
-        }
-
-        if (!Yii::$app->getModule('comment')->canComment($this->parentContent->content)) {
-            throw new HttpException(403, 'You are not allowed to comment.');
+        if (Yii::$app->user->isGuest || !Yii::$app->getModule('comment')->canComment($this->parentContent->content)) {
+            throw new ForbiddenHttpException(
+                Yii::t(
+                    'CommentModule.controllers_CommentController',
+                    'You are not allowed to comment.'
+                )
+            );
         }
 
         $message = Yii::$app->request->post('message');
         $files = Yii::$app->request->post('fileList');
 
         if (empty(trim($message)) && empty($files)) {
-            // do not create empty comments
-            return '';
+            throw new BadRequestHttpException('The comment is wrong');
         }
 
         $comment = new Comment(['message' => $message]);
