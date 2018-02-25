@@ -15,6 +15,7 @@ use yii\bootstrap\Html;
 use yii\db\Expression;
 use yii\db\ActiveQuery;
 use yii\base\InvalidConfigException;
+use yii\mail\MessageInterface;
 use humhub\components\SocialActivity;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\jobs\SendNotification;
@@ -96,6 +97,7 @@ abstract class BaseNotification extends SocialActivity
         if (!$this->_category) {
             $this->_category = $this->category();
         }
+
         return $this->_category;
     }
 
@@ -121,7 +123,7 @@ abstract class BaseNotification extends SocialActivity
         if ($this->hasContent() && $this->getContent()->updated_at instanceof Expression) {
             $this->getContent()->refresh();
             $date = $this->getContent()->updated_at;
-        } else if ($this->hasContent()) {
+        } elseif ($this->hasContent()) {
             $date = $this->getContent()->updated_at;
         } else {
             $date = null;
@@ -299,7 +301,7 @@ abstract class BaseNotification extends SocialActivity
             // Ensure to update all grouped notifications
             Notification::updateAll([
                 'seen' => 1
-                    ], [
+            ], [
                 'class' => $this->record->class,
                 'user_id' => $this->record->user_id,
                 'group_key' => $this->record->group_key
@@ -392,7 +394,7 @@ abstract class BaseNotification extends SocialActivity
                 ->joinWith(['originator', 'originator.profile'])
                 ->orderBy(['notification.created_at' => SORT_DESC])
                 ->groupBy(['notification.originator_user_id'])
-                ->andWhere(['IS NOT', 'user.id', new \yii\db\Expression('NULL')])
+                ->andWhere(['IS NOT', 'user.id', new Expression('NULL')])
                 ->limit($limit);
 
         foreach ($query->all() as $notification) {
@@ -448,7 +450,7 @@ abstract class BaseNotification extends SocialActivity
      * @param \yii\mail\MessageInterface $message
      * @return boolean when true the mail will be send
      */
-    public function beforeMailSend(\yii\mail\MessageInterface $message)
+    public function beforeMailSend(MessageInterface $message)
     {
         return true;
     }
