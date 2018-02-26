@@ -16,6 +16,14 @@ use humhub\modules\file\components\FileManager;
  * Description of ActiveRecord
  *
  * @property FileManager $fileManager
+ * @property string created_at if has the attribute
+ * @property string created_by if has the attribute
+ * @property string updated_at if has the attribute
+ * @property string updated_by if has the attribute
+ * @property User|null $createdBy
+ * @property User|null $updatedBy
+ * @property string $errorMessage
+ * @property string $uniqueId
  * @author luke
  */
 class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
@@ -54,10 +62,17 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
     /**
      * Returns a unique id for this record/model
      *
-     * @return String Unique Id of this record
+     * @return string Unique Id of this record
      */
     public function getUniqueId()
     {
+        if (is_array($this->primaryKey)) {
+            $id = get_class($this);
+            foreach ($this->primaryKey as $k => $v) {
+                $id .= ' ' . $k;
+            }
+            return str_replace('\\', '', $id);
+        }
         return str_replace('\\', '', get_class($this)) . "_" . $this->primaryKey;
     }
 
@@ -68,9 +83,10 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(User::className(), [
-            'id' => 'created_by'
-        ]);
+        if (!$this->hasAttribute('created_by')) {
+            return null;
+        }
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 
     /**
@@ -80,9 +96,10 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
      */
     public function getUpdatedBy()
     {
-        return $this->hasOne(User::className(), [
-            'id' => 'updated_by'
-        ]);
+        if (!$this->hasAttribute('updated_by')) {
+            return null;
+        }
+        return $this->hasOne(User::className(), ['id' => 'updated_by',]);
     }
 
     /**
