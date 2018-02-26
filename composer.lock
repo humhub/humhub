@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2bd3dc40da2bc1f3e555209d4a95e761",
+    "hash": "39cd7bf1fa54bc71e7d7e87e32b49641",
+    "content-hash": "b492fb883a1bbb385df5c438c128c4c1",
     "packages": [
         {
             "name": "bower-asset/animate.css",
@@ -18,19 +19,9 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/daneden/animate.css/zipball/dac3dab7b59cb6072b5d0fe23eae3805e370a58c",
                 "reference": "dac3dab7b59cb6072b5d0fe23eae3805e370a58c",
-                "shasum": ""
+                "shasum": null
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": "./animate.css",
-                "bower-asset-ignore": [
-                    ".*",
-                    "*.yml",
-                    "Gemfile",
-                    "Gemfile.lock",
-                    "*.md"
-                ]
-            }
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/autosize",
@@ -44,23 +35,12 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/jackmoore/autosize/zipball/64e9f33aba55f6aebcf34e91bc811296089e6ec8",
                 "reference": "64e9f33aba55f6aebcf34e91bc811296089e6ec8",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.7"
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": "jquery.autosize.js"
-            },
-            "description": "Automatically adjust textarea height based on user input.",
-            "keywords": [
-                "form",
-                "jQuery",
-                "jquery-plugin",
-                "textarea",
-                "ui"
-            ]
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/bluebird",
@@ -74,38 +54,11 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/petkaantonov/bluebird/zipball/6320ed7613aa27d3ec375d7bf166473c5c356aef",
                 "reference": "6320ed7613aa27d3ec375d7bf166473c5c356aef",
-                "shasum": ""
+                "shasum": null
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": "js/browser/bluebird.js",
-                "bower-asset-ignore": [
-                    "**/.*",
-                    "benchmark",
-                    "bower_components",
-                    "./browser",
-                    "node_modules",
-                    "test"
-                ]
-            },
+            "type": "bower-asset",
             "license": [
                 "MIT"
-            ],
-            "description": "Bluebird is a full featured promise library with unmatched performance.",
-            "keywords": [
-                "async",
-                "await",
-                "deferred",
-                "deferreds",
-                "dsl",
-                "flow control",
-                "fluent interface",
-                "future",
-                "performance",
-                "promise",
-                "promises",
-                "promises-a",
-                "promises-aplus"
             ]
         },
         {
@@ -120,9 +73,9 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/blueimp/JavaScript-Canvas-to-Blob/zipball/9f3deb2e710d39c72a988559609d9dc9a319de0b",
                 "reference": "9f3deb2e710d39c72a988559609d9dc9a319de0b",
-                "shasum": ""
+                "shasum": null
             },
-            "type": "bower-asset-library"
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/blueimp-file-upload",
@@ -177,9 +130,9 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/blueimp/JavaScript-Templates/zipball/da7647cb93fff2030e73a701db22c66de76a9919",
                 "reference": "da7647cb93fff2030e73a701db22c66de76a9919",
-                "shasum": ""
+                "shasum": null
             },
-            "type": "bower-asset-library"
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/bootstrap",
@@ -193,41 +146,14 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/twbs/bootstrap/zipball/0b9c4a4007c44201dce9a6cc1a38407005c26c86",
                 "reference": "0b9c4a4007c44201dce9a6cc1a38407005c26c86",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.9.1,<4.0"
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "less/bootstrap.less",
-                    "dist/js/bootstrap.js"
-                ],
-                "bower-asset-ignore": [
-                    "/.*",
-                    "_config.yml",
-                    "CNAME",
-                    "composer.json",
-                    "CONTRIBUTING.md",
-                    "docs",
-                    "js/tests",
-                    "test-infra"
-                ]
-            },
+            "type": "bower-asset",
             "license": [
                 "MIT"
-            ],
-            "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
-            "keywords": [
-                "css",
-                "framework",
-                "front-end",
-                "js",
-                "less",
-                "mobile-first",
-                "responsive",
-                "web"
             ]
         },
         {
@@ -242,21 +168,12 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/toopay/bootstrap-markdown/zipball/3f69bb3db5020d29182c2092040f0ad8d390bda7",
                 "reference": "3f69bb3db5020d29182c2092040f0ad8d390bda7",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
                 "bower-asset/bootstrap": "~3"
             },
-            "require-dev": {
-                "bower-asset/markdown": "~0.4.0"
-            },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "./js/bootstrap-markdown.js",
-                    "./css/bootstrap-markdown.min.css"
-                ]
-            },
+            "type": "bower-asset",
             "license": [
                 "Apache-2.0"
             ]
@@ -273,40 +190,25 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/ichord/Caret.js/zipball/2af4966a6bfb61d23eb6da6031add29bb3b14bcb",
                 "reference": "2af4966a6bfb61d23eb6da6031add29bb3b14bcb",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.7.0"
             },
-            "require-dev": {
-                "bower-asset/jasmine-jquery": "~1.5.8"
-            },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": "src/jquery.caret.js",
-                "bower-asset-ignore": [
-                    "**/.*",
-                    "node_modules",
-                    "bower_components",
-                    "test",
-                    "tests",
-                    "spec",
-                    "index.html"
-                ]
-            }
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/clipboard.js",
-            "version": "v2.4.1",
+            "version": "v2.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lgarron/clipboard-polyfill.git",
-                "reference": "23bb29e9c0bd8b33fb3afb9d99dfbee94a8c8a09"
+                "reference": "21ddf5a95494309563127cc506236eb7e11e7453"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lgarron/clipboard-polyfill/zipball/23bb29e9c0bd8b33fb3afb9d99dfbee94a8c8a09",
-                "reference": "23bb29e9c0bd8b33fb3afb9d99dfbee94a8c8a09",
+                "url": "https://api.github.com/repos/lgarron/clipboard-polyfill/zipball/21ddf5a95494309563127cc506236eb7e11e7453",
+                "reference": "21ddf5a95494309563127cc506236eb7e11e7453",
                 "shasum": null
             },
             "type": "bower-asset"
@@ -323,29 +225,11 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/metafizzy/ev-emitter/zipball/1baa3a03d8e07f665b0eb797661fcc2b0d2a5736",
                 "reference": "1baa3a03d8e07f665b0eb797661fcc2b0d2a5736",
-                "shasum": ""
+                "shasum": null
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": "ev-emitter.js",
-                "bower-asset-ignore": [
-                    "**/.*",
-                    "node_modules",
-                    "bower_components",
-                    "test",
-                    "tests",
-                    "sandbox",
-                    "package.json"
-                ]
-            },
+            "type": "bower-asset",
             "license": [
                 "MIT"
-            ],
-            "description": "lil' event emitter",
-            "keywords": [
-                "emitter",
-                "event",
-                "pubsub"
             ]
         },
         {
@@ -360,30 +244,14 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/a8386aae19e200ddb0f6845b5feeee5eb7013687",
                 "reference": "a8386aae19e200ddb0f6845b5feeee5eb7013687",
-                "shasum": ""
+                "shasum": null
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "less/font-awesome.less",
-                    "scss/font-awesome.scss"
-                ],
-                "bower-asset-ignore": [
-                    "*/.*",
-                    "*.json",
-                    "src",
-                    "*.yml",
-                    "Gemfile",
-                    "Gemfile.lock",
-                    "*.md"
-                ]
-            },
+            "type": "bower-asset",
             "license": [
                 "OFL-1.1",
                 "MIT",
                 "CC-BY-3.0"
-            ],
-            "description": "Font Awesome"
+            ]
         },
         {
             "name": "bower-asset/html5shiv",
@@ -397,22 +265,9 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/aFarkas/html5shiv/zipball/ed28c56c071bddfe7d635ad88995674957a016be",
                 "reference": "ed28c56c071bddfe7d635ad88995674957a016be",
-                "shasum": ""
+                "shasum": null
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "dist/html5shiv.js"
-                ],
-                "bower-asset-ignore": [
-                    "**/.*",
-                    "composer.json",
-                    "test",
-                    "build",
-                    "src",
-                    "build.xml"
-                ]
-            }
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/imagesloaded",
@@ -470,40 +325,14 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/jplayer/jPlayer/zipball/34e55cd7694552447bd0dbc38d886fdc96df0d06",
                 "reference": "34e55cd7694552447bd0dbc38d886fdc96df0d06",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.7.2"
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "./dist/jplayer/jquery.jplayer.js",
-                    "./dist/jplayer/jquery.jplayer.swf",
-                    "./dist/skin/pink.flag/jplayer.pink.flag.css",
-                    "./dist/skin/pink.flag/mustache/jplayer.pink.flag.audio.single.html"
-                ],
-                "bower-asset-ignore": [
-                    "artwork",
-                    "examples",
-                    "lib",
-                    "src",
-                    "**/*.md",
-                    "**/*.txt",
-                    "Gruntfile.js"
-                ]
-            },
+            "type": "bower-asset",
             "license": [
                 "MIT"
-            ],
-            "description": "The jQuery HTML5 Audio / Video Library. Allows you to create a media player with a consistent interface and experience across all browsers.",
-            "keywords": [
-                "audio",
-                "jplayer",
-                "jquery-plugin",
-                "media",
-                "player",
-                "video"
             ]
         },
         {
@@ -537,9 +366,9 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/jquery/jquery-color/zipball/9e5e04c1c4ee66427fbe04cfce8155b76748ca64",
                 "reference": "9e5e04c1c4ee66427fbe04cfce8155b76748ca64",
-                "shasum": ""
+                "shasum": null
             },
-            "type": "bower-asset-library"
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/jquery-knob",
@@ -553,20 +382,15 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/aterrien/jQuery-Knob/zipball/755309e933d326ffaa5a2d758dc377147b766515",
                 "reference": "755309e933d326ffaa5a2d758dc377147b766515",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.7.0"
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": "js/jquery.knob.js",
-                "bower-asset-ignore": []
-            },
+            "type": "bower-asset",
             "license": [
                 "MIT"
-            ],
-            "description": "Nice, downward compatible, touchable, jQuery dial."
+            ]
         },
         {
             "name": "bower-asset/jquery-nicescroll",
@@ -580,23 +404,12 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/inuyaksa/jquery.nicescroll/zipball/25737c1a8ecfaccf219a13142d300b64e52e6b58",
                 "reference": "25737c1a8ecfaccf219a13142d300b64e52e6b58",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.8.3"
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "./jquery.nicescroll.js",
-                    "./zoomico.png"
-                ],
-                "bower-asset-ignore": [
-                    "**/.*",
-                    "demo",
-                    "package.json"
-                ]
-            }
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/jquery-placeholder",
@@ -610,33 +423,14 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/mathiasbynens/jquery-placeholder/zipball/bd18712c2f6cc6be2dfd7310a89044b09610057e",
                 "reference": "bd18712c2f6cc6be2dfd7310a89044b09610057e",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.6"
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "jquery.placeholder.js"
-                ],
-                "bower-asset-ignore": [
-                    "*",
-                    "!/bower.json",
-                    "!/jquery.placeholder.js",
-                    "!/jquery.placeholder.min.js",
-                    "!/jquery.placeholder.min.js.map"
-                ]
-            },
+            "type": "bower-asset",
             "license": [
                 "MIT"
-            ],
-            "description": "A jQuery plugin that enables HTML5 placeholder behavior for browsers that aren’t trying hard enough yet",
-            "keywords": [
-                "form",
-                "jQuery",
-                "jquery-plugin",
-                "placeholder"
             ]
         },
         {
@@ -673,9 +467,9 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/rick20/timeentry/zipball/1d5e51ab2bbe877567ce66511a56d65e1fe82a92",
                 "reference": "1d5e51ab2bbe877567ce66511a56d65e1fe82a92",
-                "shasum": ""
+                "shasum": null
             },
-            "type": "bower-asset-library"
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/jquery-ui",
@@ -711,25 +505,12 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/carhartl/jquery-cookie/zipball/7f88a4e631aba8a8c688fd8999ce6b9bcfd50718",
                 "reference": "7f88a4e631aba8a8c688fd8999ce6b9bcfd50718",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.2"
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "./jquery.cookie.js"
-                ],
-                "bower-asset-ignore": [
-                    "test",
-                    ".*",
-                    "*.json",
-                    "*.md",
-                    "*.txt",
-                    "Gruntfile.js"
-                ]
-            }
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/nprogress",
@@ -743,31 +524,11 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/rstacruz/nprogress/zipball/254266ea50c220f6507fa3f2978fc530147c7f06",
                 "reference": "254266ea50c220f6507fa3f2978fc530147c7f06",
-                "shasum": ""
+                "shasum": null
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "nprogress.js",
-                    "nprogress.css"
-                ],
-                "bower-asset-ignore": [
-                    "**/.*",
-                    "node_modules",
-                    "components",
-                    "package.json",
-                    "test",
-                    "vendor"
-                ]
-            },
+            "type": "bower-asset",
             "license": [
                 "MIT"
-            ],
-            "description": "slim progress bar",
-            "keywords": [
-                "bar",
-                "progress",
-                "spinner"
             ]
         },
         {
@@ -782,33 +543,21 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/bestiejs/punycode.js/zipball/38c8d3131a82567bfef18da09f7f4db68c84f8a3",
                 "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3",
-                "shasum": ""
+                "shasum": null
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": "punycode.js",
-                "bower-asset-ignore": [
-                    "coverage",
-                    "tests",
-                    ".*",
-                    "component.json",
-                    "Gruntfile.js",
-                    "node_modules",
-                    "package.json"
-                ]
-            }
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/select2",
             "version": "4.0.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/select2/select2.git",
+                "url": "git@github.com:ivaynberg/select2.git",
                 "reference": "ebf10c93db7d6d7a0d1330119d4c6f32cbd231d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/select2/select2/zipball/ebf10c93db7d6d7a0d1330119d4c6f32cbd231d7",
+                "url": "https://api.github.com/repos/ivaynberg/select2/zipball/ebf10c93db7d6d7a0d1330119d4c6f32cbd231d7",
                 "reference": "ebf10c93db7d6d7a0d1330119d4c6f32cbd231d7",
                 "shasum": null
             },
@@ -829,26 +578,9 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/fk/select2-bootstrap-theme/zipball/1a81f99b47a16d04554c4ec57d5416db4ce2256c",
                 "reference": "1a81f99b47a16d04554c4ec57d5416db4ce2256c",
-                "shasum": ""
+                "shasum": null
             },
-            "require-dev": {
-                "bower-asset/anchor-js": "~1.1.1",
-                "bower-asset/bootstrap": "~3.3.5",
-                "bower-asset/bootstrap-sass-official": "~3.3.5",
-                "bower-asset/respond": "~1.4.2"
-            },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "dist/select2-bootstrap.css",
-                    "dist/select2-bootstrap.min.css"
-                ],
-                "bower-asset-ignore": [
-                    "**/.*",
-                    "node_modules",
-                    "components"
-                ]
-            }
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/yii2-pjax",
@@ -862,24 +594,12 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/yiisoft/jquery-pjax/zipball/aef7b953107264f00234902a3880eb50dafc48be",
                 "reference": "aef7b953107264f00234902a3880eb50dafc48be",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.8"
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": "./jquery.pjax.js",
-                "bower-asset-ignore": [
-                    ".travis.yml",
-                    "Gemfile",
-                    "Gemfile.lock",
-                    "CONTRIBUTING.md",
-                    "vendor/",
-                    "script/",
-                    "test/"
-                ]
-            },
+            "type": "bower-asset",
             "license": [
                 "MIT"
             ]
@@ -942,7 +662,7 @@
                 "markdown",
                 "markdown-extra"
             ],
-            "time": "2015-03-06T05:21:16+00:00"
+            "time": "2015-03-06 05:21:16"
         },
         {
             "name": "container-interop/container-interop",
@@ -973,20 +693,20 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
-            "time": "2017-02-14T19:40:03+00:00"
+            "time": "2017-02-14 19:40:03"
         },
         {
             "name": "ezyang/htmlpurifier",
-            "version": "v4.9.3",
+            "version": "v4.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "95e1bae3182efc0f3422896a3236e991049dac69"
+                "reference": "d85d39da4576a6934b72480be6978fb10c860021"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/95e1bae3182efc0f3422896a3236e991049dac69",
-                "reference": "95e1bae3182efc0f3422896a3236e991049dac69",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d85d39da4576a6934b72480be6978fb10c860021",
+                "reference": "d85d39da4576a6934b72480be6978fb10c860021",
                 "shasum": ""
             },
             "require": {
@@ -1020,7 +740,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-06-03T02:28:16+00:00"
+            "time": "2018-02-23 01:58:20"
         },
         {
             "name": "firebase/php-jwt",
@@ -1066,27 +786,28 @@
             ],
             "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
             "homepage": "https://github.com/firebase/php-jwt",
-            "time": "2017-06-27T22:17:23+00:00"
+            "time": "2017-06-27 22:17:23"
         },
         {
             "name": "imagine/imagine",
-            "version": "v0.5.0",
+            "version": "v0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/avalanche123/Imagine.git",
-                "reference": "f64ec666baaa800edcbf237db41121a569230709"
+                "reference": "a9a702a946073cbca166718f1b02a1e72d742daa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/f64ec666baaa800edcbf237db41121a569230709",
-                "reference": "f64ec666baaa800edcbf237db41121a569230709",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/a9a702a946073cbca166718f1b02a1e72d742daa",
+                "reference": "a9a702a946073cbca166718f1b02a1e72d742daa",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "sami/sami": "dev-master"
+                "sami/sami": "^3.3",
+                "symfony/phpunit-bridge": "^3.2"
             },
             "suggest": {
                 "ext-gd": "to use the GD implementation",
@@ -1094,6 +815,11 @@
                 "ext-imagick": "to use the Imagick implementation"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "0.7-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Imagine": "lib/"
@@ -1118,7 +844,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2013-07-10T17:25:36+00:00"
+            "time": "2017-05-16 10:31:22"
         },
         {
             "name": "jbroadway/urlify",
@@ -1172,7 +898,7 @@
                 "url",
                 "urlify"
             ],
-            "time": "2017-01-03T20:12:54+00:00"
+            "time": "2017-01-03 20:12:54"
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
@@ -1225,7 +951,7 @@
                 "progress",
                 "upload"
             ],
-            "time": "2018-01-22T17:05:07+00:00"
+            "time": "2018-01-22 17:05:07"
         },
         {
             "name": "kartik-v/bootstrap-star-rating",
@@ -1269,7 +995,7 @@
                 "star",
                 "svg"
             ],
-            "time": "2017-11-03T07:22:19+00:00"
+            "time": "2017-11-03 07:22:19"
         },
         {
             "name": "kartik-v/dependent-dropdown",
@@ -1316,7 +1042,7 @@
                 "option",
                 "select"
             ],
-            "time": "2017-08-01T11:43:55+00:00"
+            "time": "2017-08-01 11:43:55"
         },
         {
             "name": "kartik-v/yii2-krajee-base",
@@ -1367,7 +1093,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-09-29T06:18:14+00:00"
+            "time": "2017-09-29 06:18:14"
         },
         {
             "name": "kartik-v/yii2-widget-activeform",
@@ -1419,7 +1145,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-04-27T18:38:05+00:00"
+            "time": "2016-04-27 18:38:05"
         },
         {
             "name": "kartik-v/yii2-widget-affix",
@@ -1468,7 +1194,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-11-09T04:56:27+00:00"
+            "time": "2014-11-09 04:56:27"
         },
         {
             "name": "kartik-v/yii2-widget-alert",
@@ -1523,7 +1249,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-03-10T17:08:52+00:00"
+            "time": "2017-03-10 17:08:52"
         },
         {
             "name": "kartik-v/yii2-widget-colorinput",
@@ -1577,7 +1303,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-01-14T11:15:49+00:00"
+            "time": "2016-01-14 11:15:49"
         },
         {
             "name": "kartik-v/yii2-widget-datepicker",
@@ -1631,7 +1357,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-09-04T03:28:47+00:00"
+            "time": "2017-09-04 03:28:47"
         },
         {
             "name": "kartik-v/yii2-widget-datetimepicker",
@@ -1680,7 +1406,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-06-08T05:53:28+00:00"
+            "time": "2017-06-08 05:53:28"
         },
         {
             "name": "kartik-v/yii2-widget-depdrop",
@@ -1729,7 +1455,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-01-10T17:30:48+00:00"
+            "time": "2016-01-10 17:30:48"
         },
         {
             "name": "kartik-v/yii2-widget-fileinput",
@@ -1784,7 +1510,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-05-25T20:12:30+00:00"
+            "time": "2017-05-25 20:12:30"
         },
         {
             "name": "kartik-v/yii2-widget-growl",
@@ -1833,7 +1559,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-05-03T08:23:04+00:00"
+            "time": "2015-05-03 08:23:04"
         },
         {
             "name": "kartik-v/yii2-widget-rangeinput",
@@ -1882,7 +1608,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-11-22T06:52:44+00:00"
+            "time": "2015-11-22 06:52:44"
         },
         {
             "name": "kartik-v/yii2-widget-rating",
@@ -1938,7 +1664,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-11-18T12:24:51+00:00"
+            "time": "2017-11-18 12:24:51"
         },
         {
             "name": "kartik-v/yii2-widget-select2",
@@ -1991,7 +1717,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-11-25T06:02:18+00:00"
+            "time": "2017-11-25 06:02:18"
         },
         {
             "name": "kartik-v/yii2-widget-sidenav",
@@ -2040,7 +1766,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-11-09T08:07:23+00:00"
+            "time": "2014-11-09 08:07:23"
         },
         {
             "name": "kartik-v/yii2-widget-spinner",
@@ -2088,7 +1814,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-11-09T05:02:05+00:00"
+            "time": "2014-11-09 05:02:05"
         },
         {
             "name": "kartik-v/yii2-widget-switchinput",
@@ -2138,7 +1864,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-01-10T16:47:35+00:00"
+            "time": "2016-01-10 16:47:35"
         },
         {
             "name": "kartik-v/yii2-widget-timepicker",
@@ -2192,7 +1918,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-01-08T06:36:24+00:00"
+            "time": "2017-01-08 06:36:24"
         },
         {
             "name": "kartik-v/yii2-widget-touchspin",
@@ -2242,7 +1968,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-01-10T17:10:39+00:00"
+            "time": "2016-01-10 17:10:39"
         },
         {
             "name": "kartik-v/yii2-widget-typeahead",
@@ -2290,7 +2016,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-06-28T18:05:41+00:00"
+            "time": "2015-06-28 18:05:41"
         },
         {
             "name": "kartik-v/yii2-widgets",
@@ -2352,7 +2078,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-11-09T19:54:17+00:00"
+            "time": "2014-11-09 19:54:17"
         },
         {
             "name": "npm-asset/after",
@@ -2872,7 +2598,7 @@
                 "lucene",
                 "zf2"
             ],
-            "time": "2015-06-12T14:16:08+00:00"
+            "time": "2015-06-12 14:16:08"
         },
         {
             "name": "phpoffice/phpspreadsheet",
@@ -2960,7 +2686,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2018-01-28T12:37:15+00:00"
+            "time": "2018-01-28 12:37:15"
         },
         {
             "name": "psr/container",
@@ -3009,7 +2735,7 @@
                 "container-interop",
                 "psr"
             ],
-            "time": "2017-02-14T16:28:37+00:00"
+            "time": "2017-02-14 16:28:37"
         },
         {
             "name": "psr/simple-cache",
@@ -3057,7 +2783,7 @@
                 "psr-16",
                 "simple-cache"
             ],
-            "time": "2017-01-02T13:31:39+00:00"
+            "time": "2017-01-02 13:31:39"
         },
         {
             "name": "raoul2000/yii2-jcrop-widget",
@@ -3102,7 +2828,7 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2014-07-30T15:40:38+00:00"
+            "time": "2014-07-30 15:40:38"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3156,7 +2882,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2018-01-23T07:37:21+00:00"
+            "time": "2018-01-23 07:37:21"
         },
         {
             "name": "symfony/process",
@@ -3205,7 +2931,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-29T09:03:43+00:00"
+            "time": "2018-01-29 09:03:43"
         },
         {
             "name": "xj/yii2-jplayer-widget",
@@ -3241,7 +2967,7 @@
                 }
             ],
             "description": "yii2-jplayer-widget",
-            "time": "2015-07-01T04:15:08+00:00"
+            "time": "2015-07-01 04:15:08"
         },
         {
             "name": "yiisoft/yii2",
@@ -3341,25 +3067,27 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2017-11-02T22:09:29+00:00"
+            "time": "2017-11-02 22:09:29"
         },
         {
             "name": "yiisoft/yii2-authclient",
-            "version": "2.0.6",
+            "version": "2.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-authclient.git",
-                "reference": "96dd47c762749991a57d8c343b1a1ecfadf9c4c8"
+                "reference": "ff826241c231d8f768f4cb58577d6956fdbc5fab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-authclient/zipball/96dd47c762749991a57d8c343b1a1ecfadf9c4c8",
-                "reference": "96dd47c762749991a57d8c343b1a1ecfadf9c4c8",
+                "url": "https://api.github.com/repos/yiisoft/yii2-authclient/zipball/ff826241c231d8f768f4cb58577d6956fdbc5fab",
+                "reference": "ff826241c231d8f768f4cb58577d6956fdbc5fab",
                 "shasum": ""
             },
             "require": {
-                "ext-curl": "*",
-                "yiisoft/yii2": ">=2.0.4"
+                "yiisoft/yii2-httpclient": "~2.0.5"
+            },
+            "suggest": {
+                "spomky-labs/jose": "required for JWS,JWT or JWK related flows like OpenIDConnect"
             },
             "type": "yii2-extension",
             "extra": {
@@ -3369,7 +3097,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "yii\\authclient\\": ""
+                    "yii\\authclient\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3384,25 +3112,27 @@
             ],
             "description": "External authentication via OAuth and OpenID for the Yii framework",
             "keywords": [
+                "OpenID Connect",
                 "OpenId",
+                "api",
                 "auth",
                 "oauth",
                 "yii2"
             ],
-            "time": "2016-07-08T13:58:12+00:00"
+            "time": "2018-02-07 21:12:40"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
-            "version": "2.0.7",
+            "version": "2.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-bootstrap.git",
-                "reference": "02a54d868343ed11d02f0f0f8cbbecb590e0cb3f"
+                "reference": "3f49c47924bb9fa5363c3fc7b073d954168cf438"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap/zipball/02a54d868343ed11d02f0f0f8cbbecb590e0cb3f",
-                "reference": "02a54d868343ed11d02f0f0f8cbbecb590e0cb3f",
+                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap/zipball/3f49c47924bb9fa5363c3fc7b073d954168cf438",
+                "reference": "3f49c47924bb9fa5363c3fc7b073d954168cf438",
                 "shasum": ""
             },
             "require": {
@@ -3417,7 +3147,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "yii\\bootstrap\\": ""
+                    "yii\\bootstrap\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3426,8 +3156,22 @@
             ],
             "authors": [
                 {
+                    "name": "Paul Klimov",
+                    "email": "klimov.paul@gmail.com"
+                },
+                {
+                    "name": "Alexander Makarov",
+                    "email": "sam@rmcreative.ru",
+                    "homepage": "http://rmcreative.ru/"
+                },
+                {
+                    "name": "Antonio Ramirez",
+                    "email": "amigo.cobos@gmail.com"
+                },
+                {
                     "name": "Qiang Xue",
-                    "email": "qiang.xue@gmail.com"
+                    "email": "qiang.xue@gmail.com",
+                    "homepage": "http://www.yiiframework.com/"
                 }
             ],
             "description": "The Twitter Bootstrap extension for the Yii framework",
@@ -3435,7 +3179,7 @@
                 "bootstrap",
                 "yii2"
             ],
-            "time": "2017-10-09T19:48:22+00:00"
+            "time": "2018-02-16 10:41:52"
         },
         {
             "name": "yiisoft/yii2-composer",
@@ -3485,7 +3229,7 @@
                 "extension installer",
                 "yii2"
             ],
-            "time": "2016-12-20T13:26:02+00:00"
+            "time": "2016-12-20 13:26:02"
         },
         {
             "name": "yiisoft/yii2-httpclient",
@@ -3532,25 +3276,25 @@
                 "httpclient",
                 "yii2"
             ],
-            "time": "2018-02-13T15:11:30+00:00"
+            "time": "2018-02-13 15:11:30"
         },
         {
             "name": "yiisoft/yii2-imagine",
-            "version": "2.0.4",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-imagine.git",
-                "reference": "68ed3d96cd1895035cef3c0e9ce9cf6c2c0c7f1c"
+                "reference": "a8a1a068862a86e3395e665bc86e63d5c9b60841"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-imagine/zipball/68ed3d96cd1895035cef3c0e9ce9cf6c2c0c7f1c",
-                "reference": "68ed3d96cd1895035cef3c0e9ce9cf6c2c0c7f1c",
+                "url": "https://api.github.com/repos/yiisoft/yii2-imagine/zipball/a8a1a068862a86e3395e665bc86e63d5c9b60841",
+                "reference": "a8a1a068862a86e3395e665bc86e63d5c9b60841",
                 "shasum": ""
             },
             "require": {
-                "imagine/imagine": "0.5.*",
-                "yiisoft/yii2": "*"
+                "imagine/imagine": "~0.6.0 | ~0.7.1",
+                "yiisoft/yii2": "~2.0.0"
             },
             "type": "yii2-extension",
             "extra": {
@@ -3560,7 +3304,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "yii\\imagine\\": ""
+                    "yii\\imagine\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3580,7 +3324,7 @@
                 "imagine",
                 "yii2"
             ],
-            "time": "2016-09-04T15:14:08+00:00"
+            "time": "2018-02-22 11:57:06"
         },
         {
             "name": "yiisoft/yii2-jui",
@@ -3626,7 +3370,7 @@
                 "jQuery UI",
                 "yii2"
             ],
-            "time": "2017-11-25T15:32:29+00:00"
+            "time": "2017-11-25 15:32:29"
         },
         {
             "name": "yiisoft/yii2-queue",
@@ -3706,7 +3450,7 @@
                 "redis",
                 "yii"
             ],
-            "time": "2017-12-26T17:16:14+00:00"
+            "time": "2017-12-26 17:16:14"
         },
         {
             "name": "yiisoft/yii2-redis",
@@ -3754,7 +3498,7 @@
                 "session",
                 "yii2"
             ],
-            "time": "2017-12-11T21:17:34+00:00"
+            "time": "2017-12-11 21:17:34"
         },
         {
             "name": "yiisoft/yii2-swiftmailer",
@@ -3804,7 +3548,7 @@
                 "swiftmailer",
                 "yii2"
             ],
-            "time": "2017-05-01T08:29:00+00:00"
+            "time": "2017-05-01 08:29:00"
         },
         {
             "name": "zendframework/zend-escaper",
@@ -3848,7 +3592,7 @@
                 "escaper",
                 "zf2"
             ],
-            "time": "2016-06-30T19:48:38+00:00"
+            "time": "2016-06-30 19:48:38"
         },
         {
             "name": "zendframework/zend-http",
@@ -3901,7 +3645,7 @@
                 "zend",
                 "zf"
             ],
-            "time": "2017-10-13T12:06:24+00:00"
+            "time": "2017-10-13 12:06:24"
         },
         {
             "name": "zendframework/zend-hydrator",
@@ -3959,7 +3703,7 @@
                 "hydrator",
                 "zf2"
             ],
-            "time": "2016-02-18T22:38:26+00:00"
+            "time": "2016-02-18 22:38:26"
         },
         {
             "name": "zendframework/zend-ldap",
@@ -4012,7 +3756,7 @@
                 "ldap",
                 "zf2"
             ],
-            "time": "2017-03-06T20:39:12+00:00"
+            "time": "2017-03-06 20:39:12"
         },
         {
             "name": "zendframework/zend-loader",
@@ -4056,7 +3800,7 @@
                 "loader",
                 "zf2"
             ],
-            "time": "2015-06-03T14:05:47+00:00"
+            "time": "2015-06-03 14:05:47"
         },
         {
             "name": "zendframework/zend-stdlib",
@@ -4115,7 +3859,7 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2016-04-12T21:17:31+00:00"
+            "time": "2016-04-12 21:17:31"
         },
         {
             "name": "zendframework/zend-uri",
@@ -4162,7 +3906,7 @@
                 "uri",
                 "zf2"
             ],
-            "time": "2016-02-17T22:38:51+00:00"
+            "time": "2016-02-17 22:38:51"
         },
         {
             "name": "zendframework/zend-validator",
@@ -4233,7 +3977,7 @@
                 "validator",
                 "zf2"
             ],
-            "time": "2018-02-01T17:05:33+00:00"
+            "time": "2018-02-01 17:05:33"
         }
     ],
     "packages-dev": [
@@ -4294,34 +4038,26 @@
                 "gherkin",
                 "parser"
             ],
-            "time": "2016-10-30T11:50:56+00:00"
+            "time": "2016-10-30 11:50:56"
         },
         {
             "name": "bower-asset/typeahead.js",
             "version": "v0.11.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/twitter/typeahead.js.git",
+                "url": "git@github.com:twitter/typeahead.js.git",
                 "reference": "588440f66559714280628a4f9799f0c4eb880a4a"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/twitter/typeahead.js/zipball/588440f66559714280628a4f9799f0c4eb880a4a",
                 "reference": "588440f66559714280628a4f9799f0c4eb880a4a",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.7"
             },
-            "require-dev": {
-                "bower-asset/jasmine-ajax": "~1.3.1",
-                "bower-asset/jasmine-jquery": "~1.5.2",
-                "bower-asset/jquery": "~1.7"
-            },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": "dist/typeahead.bundle.js"
-            }
+            "type": "bower-asset"
         },
         {
             "name": "cebe/js-search",
@@ -4360,7 +4096,7 @@
                 }
             ],
             "description": "A client side search engine for use on static pages.",
-            "time": "2016-11-22T12:11:39+00:00"
+            "time": "2016-11-22 12:11:39"
         },
         {
             "name": "cebe/markdown-latex",
@@ -4420,7 +4156,7 @@
                 "markdown",
                 "markdown-extra"
             ],
-            "time": "2017-05-19T11:16:33+00:00"
+            "time": "2017-05-19 11:16:33"
         },
         {
             "name": "codeception/codeception",
@@ -4514,27 +4250,27 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2018-01-27T22:47:33+00:00"
+            "time": "2018-01-27 22:47:33"
         },
         {
             "name": "codeception/stub",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Stub.git",
-                "reference": "673ea54cdd7141e0a5138ad78aaa60751912f573"
+                "reference": "95fb7a36b81890dd2e5163e7ab31310df6f1bb99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Stub/zipball/673ea54cdd7141e0a5138ad78aaa60751912f573",
-                "reference": "673ea54cdd7141e0a5138ad78aaa60751912f573",
+                "url": "https://api.github.com/repos/Codeception/Stub/zipball/95fb7a36b81890dd2e5163e7ab31310df6f1bb99",
+                "reference": "95fb7a36b81890dd2e5163e7ab31310df6f1bb99",
                 "shasum": ""
             },
             "require": {
-                "phpunit/phpunit-mock-objects": "^2.3|^3.0|^4.0|^5.0"
+                "phpunit/phpunit-mock-objects": ">2.3 <7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8|^5.0|^6.0|^7.0"
+                "phpunit/phpunit": ">=4.8 <8.0"
             },
             "type": "library",
             "autoload": {
@@ -4547,7 +4283,7 @@
                 "MIT"
             ],
             "description": "Flexible Stub wrapper for PHPUnit's Mock Builder",
-            "time": "2018-01-27T00:37:17+00:00"
+            "time": "2018-02-18 13:56:56"
         },
         {
             "name": "doctrine/instantiator",
@@ -4601,7 +4337,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14T21:17:01+00:00"
+            "time": "2015-06-14 21:17:01"
         },
         {
             "name": "facebook/webdriver",
@@ -4656,7 +4392,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2017-11-15T11:08:09+00:00"
+            "time": "2017-11-15 11:08:09"
         },
         {
             "name": "fzaninotto/faker",
@@ -4706,7 +4442,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2017-08-15T16:48:10+00:00"
+            "time": "2017-08-15 16:48:10"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -4771,7 +4507,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2017-06-22T18:50:49+00:00"
+            "time": "2017-06-22 18:50:49"
         },
         {
             "name": "guzzlehttp/promises",
@@ -4822,7 +4558,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-12-20T10:07:11+00:00"
+            "time": "2016-12-20 10:07:11"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -4887,7 +4623,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-03-20T17:10:46+00:00"
+            "time": "2017-03-20 17:10:46"
         },
         {
             "name": "mikevanriel/text-to-latex",
@@ -4926,7 +4662,7 @@
                 }
             ],
             "description": "A converter class that converts normal ASCII text to valid LaTeX",
-            "time": "2015-12-13T07:33:35+00:00"
+            "time": "2015-12-13 07:33:35"
         },
         {
             "name": "myclabs/deep-copy",
@@ -4971,36 +4707,36 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-10-19T19:58:43+00:00"
+            "time": "2017-10-19 19:58:43"
         },
         {
             "name": "nikic/php-parser",
-            "version": "v0.9.5",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "ef70767475434bdb3615b43c327e2cae17ef12eb"
+                "reference": "f78af2c9c86107aa1a34cd1dbb5bbe9eeb0d9f51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/ef70767475434bdb3615b43c327e2cae17ef12eb",
-                "reference": "ef70767475434bdb3615b43c327e2cae17ef12eb",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/f78af2c9c86107aa1a34cd1dbb5bbe9eeb0d9f51",
+                "reference": "f78af2c9c86107aa1a34cd1dbb5bbe9eeb0d9f51",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
-                "php": ">=5.2"
+                "php": ">=5.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.9-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "PHPParser": "lib/"
-                }
+                "files": [
+                    "lib/bootstrap.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5016,24 +4752,24 @@
                 "parser",
                 "php"
             ],
-            "time": "2014-07-23T18:24:17+00:00"
+            "time": "2015-09-19 14:15:08"
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "1.0.7",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "fc40c3f604ac2287eb5c314174d5109b2c699372"
+                "reference": "793bfd92d9a0fc96ae9608fb3e947c3f59fb3a0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/fc40c3f604ac2287eb5c314174d5109b2c699372",
-                "reference": "fc40c3f604ac2287eb5c314174d5109b2c699372",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/793bfd92d9a0fc96ae9608fb3e947c3f59fb3a0d",
+                "reference": "793bfd92d9a0fc96ae9608fb3e947c3f59fb3a0d",
                 "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "~0.9.4",
+                "nikic/php-parser": "^1.0",
                 "php": ">=5.3.3",
                 "phpdocumentor/reflection-docblock": "~2.0",
                 "psr/log": "~1.0"
@@ -5070,7 +4806,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2014-11-14T11:43:04+00:00"
+            "time": "2016-05-21 08:42:32"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -5119,7 +4855,7 @@
                     "email": "mike.vanriel@naenius.com"
                 }
             ],
-            "time": "2016-01-25T08:17:30+00:00"
+            "time": "2016-01-25 08:17:30"
         },
         {
             "name": "phpspec/php-diff",
@@ -5157,20 +4893,20 @@
                 }
             ],
             "description": "A comprehensive library for generating differences between two hashable objects (strings or arrays).",
-            "time": "2016-04-07T12:29:16+00:00"
+            "time": "2016-04-07 12:29:16"
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.7.4",
+            "version": "1.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "9f901e29c93dae4aa77c0bb161df4276f9c9a1be"
+                "reference": "dfd6be44111a7c41c2e884a336cc4f461b3b2401"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/9f901e29c93dae4aa77c0bb161df4276f9c9a1be",
-                "reference": "9f901e29c93dae4aa77c0bb161df4276f9c9a1be",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/dfd6be44111a7c41c2e884a336cc4f461b3b2401",
+                "reference": "dfd6be44111a7c41c2e884a336cc4f461b3b2401",
                 "shasum": ""
             },
             "require": {
@@ -5220,7 +4956,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2018-02-11T18:49:29+00:00"
+            "time": "2018-02-19 10:16:54"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -5283,7 +5019,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-04-02T07:44:40+00:00"
+            "time": "2017-04-02 07:44:40"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -5330,7 +5066,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2017-11-27T13:52:08+00:00"
+            "time": "2017-11-27 13:52:08"
         },
         {
             "name": "phpunit/php-text-template",
@@ -5371,7 +5107,7 @@
             "keywords": [
                 "template"
             ],
-            "time": "2015-06-21T13:50:34+00:00"
+            "time": "2015-06-21 13:50:34"
         },
         {
             "name": "phpunit/php-timer",
@@ -5420,7 +5156,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2017-02-26T11:10:40+00:00"
+            "time": "2017-02-26 11:10:40"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -5469,7 +5205,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-12-04T08:55:13+00:00"
+            "time": "2017-12-04 08:55:13"
         },
         {
             "name": "phpunit/phpunit",
@@ -5551,7 +5287,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-02-01T05:50:59+00:00"
+            "time": "2018-02-01 05:50:59"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -5610,7 +5346,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2017-06-30T09:13:00+00:00"
+            "time": "2017-06-30 09:13:00"
         },
         {
             "name": "psr/http-message",
@@ -5660,7 +5396,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06T14:39:51+00:00"
+            "time": "2016-08-06 14:39:51"
         },
         {
             "name": "psr/log",
@@ -5707,7 +5443,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10T12:19:37+00:00"
+            "time": "2016-10-10 12:19:37"
         },
         {
             "name": "scrivo/highlight.php",
@@ -5741,7 +5477,7 @@
                 "highlight.php",
                 "syntax"
             ],
-            "time": "2015-12-31T20:33:22+00:00"
+            "time": "2015-12-31 20:33:22"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -5786,7 +5522,7 @@
             ],
             "description": "Looks up which function or method a line of code belongs to",
             "homepage": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/",
-            "time": "2017-03-04T06:30:41+00:00"
+            "time": "2017-03-04 06:30:41"
         },
         {
             "name": "sebastian/comparator",
@@ -5850,7 +5586,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2017-01-29T09:50:25+00:00"
+            "time": "2017-01-29 09:50:25"
         },
         {
             "name": "sebastian/diff",
@@ -5902,7 +5638,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2017-05-22T07:24:03+00:00"
+            "time": "2017-05-22 07:24:03"
         },
         {
             "name": "sebastian/environment",
@@ -5952,7 +5688,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2016-11-26T07:53:53+00:00"
+            "time": "2016-11-26 07:53:53"
         },
         {
             "name": "sebastian/exporter",
@@ -6019,7 +5755,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2016-11-19T08:54:04+00:00"
+            "time": "2016-11-19 08:54:04"
         },
         {
             "name": "sebastian/global-state",
@@ -6070,7 +5806,7 @@
             "keywords": [
                 "global state"
             ],
-            "time": "2015-10-12T03:26:01+00:00"
+            "time": "2015-10-12 03:26:01"
         },
         {
             "name": "sebastian/object-enumerator",
@@ -6116,7 +5852,7 @@
             ],
             "description": "Traverses array structures and object graphs to enumerate all referenced objects",
             "homepage": "https://github.com/sebastianbergmann/object-enumerator/",
-            "time": "2017-02-18T15:18:39+00:00"
+            "time": "2017-02-18 15:18:39"
         },
         {
             "name": "sebastian/recursion-context",
@@ -6169,7 +5905,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2016-11-19T07:33:16+00:00"
+            "time": "2016-11-19 07:33:16"
         },
         {
             "name": "sebastian/resource-operations",
@@ -6211,7 +5947,7 @@
             ],
             "description": "Provides a list of PHP built-in functions that operate on resources",
             "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
-            "time": "2015-07-28T20:34:47+00:00"
+            "time": "2015-07-28 20:34:47"
         },
         {
             "name": "sebastian/version",
@@ -6254,7 +5990,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2016-10-03T07:35:21+00:00"
+            "time": "2016-10-03 07:35:21"
         },
         {
             "name": "symfony/browser-kit",
@@ -6311,7 +6047,7 @@
             ],
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-03T07:37:34+00:00"
+            "time": "2018-01-03 07:37:34"
         },
         {
             "name": "symfony/console",
@@ -6380,7 +6116,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-29T09:03:43+00:00"
+            "time": "2018-01-29 09:03:43"
         },
         {
             "name": "symfony/css-selector",
@@ -6433,7 +6169,7 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-03T07:37:34+00:00"
+            "time": "2018-01-03 07:37:34"
         },
         {
             "name": "symfony/debug",
@@ -6489,7 +6225,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-18T22:16:57+00:00"
+            "time": "2018-01-18 22:16:57"
         },
         {
             "name": "symfony/dom-crawler",
@@ -6545,7 +6281,7 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-03T07:37:34+00:00"
+            "time": "2018-01-03 07:37:34"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -6608,7 +6344,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-03T07:37:34+00:00"
+            "time": "2018-01-03 07:37:34"
         },
         {
             "name": "symfony/finder",
@@ -6657,7 +6393,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-03T07:37:34+00:00"
+            "time": "2018-01-03 07:37:34"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -6716,7 +6452,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-01-30T19:27:44+00:00"
+            "time": "2018-01-30 19:27:44"
         },
         {
             "name": "symfony/yaml",
@@ -6774,29 +6510,30 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-21T19:05:02+00:00"
+            "time": "2018-01-21 19:05:02"
         },
         {
             "name": "yiisoft/yii2-apidoc",
-            "version": "2.0.6",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-apidoc.git",
-                "reference": "15ccf08af29896f0bbd8f7ab0c2a0a808e38cce8"
+                "reference": "dd0918ccbce2c1bdea836667f54e8f8b99d27128"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-apidoc/zipball/15ccf08af29896f0bbd8f7ab0c2a0a808e38cce8",
-                "reference": "15ccf08af29896f0bbd8f7ab0c2a0a808e38cce8",
+                "url": "https://api.github.com/repos/yiisoft/yii2-apidoc/zipball/dd0918ccbce2c1bdea836667f54e8f8b99d27128",
+                "reference": "dd0918ccbce2c1bdea836667f54e8f8b99d27128",
                 "shasum": ""
             },
             "require": {
                 "cebe/js-search": "~0.9.3",
                 "cebe/markdown": "~1.0.0 | ~1.1.0",
                 "cebe/markdown-latex": "~1.0",
-                "nikic/php-parser": "0.9.*",
-                "phpdocumentor/reflection": "^1.0.3",
-                "phpdocumentor/reflection-docblock": "^2.0.1",
+                "nikic/php-parser": "^1.0",
+                "php": ">=5.4",
+                "phpdocumentor/reflection": "^3.0.1",
+                "phpdocumentor/reflection-docblock": "^2.0.4",
                 "scrivo/highlight.php": "~8.0",
                 "yiisoft/yii2": "~2.0.4",
                 "yiisoft/yii2-bootstrap": "~2.0.0"
@@ -6837,7 +6574,7 @@
                 "phpdoc",
                 "yii2"
             ],
-            "time": "2016-11-22T14:21:51+00:00"
+            "time": "2016-11-22 15:29:55"
         },
         {
             "name": "yiisoft/yii2-debug",
@@ -6884,25 +6621,25 @@
                 "debugger",
                 "yii2"
             ],
-            "time": "2017-12-05T07:36:23+00:00"
+            "time": "2017-12-05 07:36:23"
         },
         {
             "name": "yiisoft/yii2-faker",
-            "version": "2.0.3",
+            "version": "2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-faker.git",
-                "reference": "b88ca69ee226a3610b2c26c026c3203d7ac50f6c"
+                "reference": "3df62b1dcb272a8413f9c6e532c9d73f325ccde1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-faker/zipball/b88ca69ee226a3610b2c26c026c3203d7ac50f6c",
-                "reference": "b88ca69ee226a3610b2c26c026c3203d7ac50f6c",
+                "url": "https://api.github.com/repos/yiisoft/yii2-faker/zipball/3df62b1dcb272a8413f9c6e532c9d73f325ccde1",
+                "reference": "3df62b1dcb272a8413f9c6e532c9d73f325ccde1",
                 "shasum": ""
             },
             "require": {
-                "fzaninotto/faker": "*",
-                "yiisoft/yii2": "*"
+                "fzaninotto/faker": "~1.4",
+                "yiisoft/yii2": "~2.0.0"
             },
             "type": "yii2-extension",
             "extra": {
@@ -6931,7 +6668,7 @@
                 "faker",
                 "yii2"
             ],
-            "time": "2015-03-01T06:22:44+00:00"
+            "time": "2018-02-19 20:27:10"
         },
         {
             "name": "yiisoft/yii2-gii",
@@ -6984,7 +6721,7 @@
                 "gii",
                 "yii2"
             ],
-            "time": "2017-12-22T23:53:06+00:00"
+            "time": "2017-12-22 23:53:06"
         }
     ],
     "aliases": [],
