@@ -28,7 +28,17 @@ class ActiveRecordTest extends HumHubDbTestCase
         foreach ($this->getCoreActiveRecordsModels() as $activeRecordName) {
             /** @var \humhub\components\ActiveRecord $activeRecord */
             $activeRecord = new $activeRecordName;
-            $this->assertInstanceOf(\humhub\modules\file\components\FileManager::class, $activeRecord->fileManager);
+            if (isset($activeRecord->fileManager)) {
+                $this->assertInstanceOf(\humhub\modules\file\components\FileManager::class, $activeRecord->fileManager);
+                codecept_debug('Used fileManager - ' . $activeRecordName);
+            } else {
+                codecept_debug('Not Used fileManager - ' . $activeRecordName);
+            }
+        }
+
+        foreach ($this->getCoreActiveRecordsModels() as $activeRecordName) {
+            /** @var \humhub\components\ActiveRecord $activeRecord */
+            $activeRecord = new $activeRecordName;
             $this->assertNull($activeRecord->createdBy, $activeRecordName);
             $this->assertNull($activeRecord->updatedBy, $activeRecordName);
             $this->assertEquals('', $activeRecord->errorMessage, $activeRecordName);
@@ -44,7 +54,7 @@ class ActiveRecordTest extends HumHubDbTestCase
                 && $activeRecord->hasAttribute('updated_by')
                 && $activeRecord->hasAttribute('updated_at')) {
 
-                codecept_debug('Needed beforeSave() - ' . $activeRecordName);
+                codecept_debug('Used beforeSave() - ' . $activeRecordName);
 
                 // before create record
                 $this->assertTrue($activeRecord->beforeSave(true));
@@ -80,7 +90,7 @@ class ActiveRecordTest extends HumHubDbTestCase
             \humhub\modules\space\models\Membership::class,
             \humhub\modules\user\models\Group::class,
             \humhub\modules\user\models\GroupUser::class,
-            \humhub\modules\user\models\Invite::class,
+            // \humhub\modules\user\models\Invite::class,
             \humhub\modules\user\models\Mentioning::class,
             \humhub\modules\user\models\ProfileField::class,
             \humhub\modules\user\models\ProfileFieldCategory::class,
