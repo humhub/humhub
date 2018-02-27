@@ -166,7 +166,7 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
         $this->init();
         $unserializedArr = unserialize($serialized);
         $this->setAttributes($unserializedArr['attributes'],false);
-        $this->setOldAttributes($unserializedArr['oldAttributes'],false);
+        $this->setOldAttributes($unserializedArr['oldAttributes']);
     }
 
 }
