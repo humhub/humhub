@@ -38,4 +38,5 @@ HumHub Change Log - v1.3-dev Branch
 - Enh: Ensure valid permalinks when URL rewriting is enabled
 - Fix: Birthday field refactoring (@danielkesselberg)
 - Enh #2811: Added option to resend invites (@danielkesselberg)
+- Enh: Added current database name to the "Administration -> Information -> Database" (githubjeka)
 
