@@ -22,7 +22,7 @@ trait MetaUserCreatingTrait
      * @param array $link
      * @return null|\yii\db\ActiveQueryInterface
      */
-    abstract public function hasOne($class, array $link);
+    abstract public function hasOne($class, $link);
 
     /**
      * @return User|\yii\db\ActiveQueryInterface|null
