@@ -25,6 +25,9 @@ use humhub\modules\file\components\FileManager;
  * @property string $errorMessage
  * @property string $uniqueId
  * @author luke
+ *
+ * @deprecated
+ * @see \humhub\db\HActiveRecord
  */
 class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
 {
