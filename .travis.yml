@@ -11,11 +11,9 @@ matrix:
 
 dist: trusty
 
+sudo: required
 addons:
   chrome: stable
-
-# faster builds on new travis setup not using sudo
-sudo: false
 
 # cache vendor dirs
 cache:

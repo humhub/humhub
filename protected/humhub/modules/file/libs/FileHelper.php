@@ -9,14 +9,15 @@
 namespace humhub\modules\file\libs;
 
 use humhub\modules\file\widgets\FileDownload;
-use Yii;
-use yii\helpers\Url;
 use humhub\libs\Html;
 use humhub\libs\MimeHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\file\handler\DownloadFileHandler;
 use humhub\modules\file\converter\PreviewImage;
+use humhub\modules\content\components\ContentActiveRecord;
+use Yii;
+use yii\helpers\Url;
 
 /**
  * FileHelper
@@ -35,7 +36,7 @@ class FileHelper extends \yii\helpers\FileHelper
      */
     public static function hasExtension($fileName)
     {
-        return (strpos($fileName, ".") !== false);
+        return (strpos($fileName, '.') !== false);
     }
 
     /**
@@ -54,6 +55,7 @@ class FileHelper extends \yii\helpers\FileHelper
         if (isset($fileParts['extension'])) {
             return $fileParts['extension'];
         }
+
         return '';
     }
 
@@ -76,6 +78,7 @@ class FileHelper extends \yii\helpers\FileHelper
         }
 
         $htmlOptions = array_merge($htmlOptions, ['data-target' => '#globalModal']);
+
         return Html::a($label, Url::to(['/file/view', 'guid' => $file->guid]), $htmlOptions);
     }
 
@@ -90,7 +93,7 @@ class FileHelper extends \yii\helpers\FileHelper
     {
         $relation = $file->getPolymorphicRelation();
 
-        if ($relation !== null && $relation instanceof \humhub\modules\content\components\ContentActiveRecord) {
+        if ($relation !== null && $relation instanceof ContentActiveRecord) {
             if ($relation->content->container !== null) {
                 return $relation->content->container;
             }
@@ -124,7 +127,7 @@ class FileHelper extends \yii\helpers\FileHelper
             'size_format' => Yii::$app->formatter->asShortSize($file->size, 1),
             'url' => $file->getUrl(),
             'openLink' => FileHelper::createLink($file),
-            'thumbnailUrl' => $thumbnailUrl,
+            'thumbnailUrl' => $thumbnailUrl
         ];
     }
 

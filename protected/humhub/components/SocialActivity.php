@@ -307,6 +307,12 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
      */
     public function getContentInfo(ContentOwner $content = null, $withContentName = true)
     {
+        if (!$this->hasContent() && !$content) {
+            return null;
+        } else if (!$content) {
+            $content = $this->source;
+        }
+
         $truncatedDescription = $this->getContentPreview($content, 60);
 
         if(empty($truncatedDescription)) {

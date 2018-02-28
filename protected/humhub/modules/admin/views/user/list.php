@@ -1,20 +1,28 @@
 <?php
 
-use yii\helpers\Url;
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use humhub\widgets\GridView;
-use humhub\widgets\Button;
-use humhub\modules\admin\models\UserSearch;
-use humhub\modules\user\grid\ImageColumn;
-use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\admin\grid\UserActionColumn;
+use humhub\modules\admin\models\UserSearch;
+use humhub\modules\admin\widgets\ExportButton;
+use humhub\modules\user\grid\DisplayNameColumn;
+use humhub\modules\user\grid\ImageColumn;
+use humhub\widgets\Button;
+use humhub\widgets\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\ActiveForm;
+
+/**
+ * @var $searchModel UserSearch
+ * @var $dataProvider \yii\data\ActiveDataProvider
+ * @var $showPendingRegistrations bool
+ */
 ?>
 
 <div class="panel-body">
 
     <div class="pull-right">
         <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Add new user'), ['/admin/user/add'], ['class' => 'btn btn-success btn-sm', 'data-ui-loader' => '']); ?>
+        <?= ExportButton::widget(['filter' => 'UserSearch']) ?>
     </div>
 
     <h4><?= Yii::t('AdminModule.user', 'Overview'); ?></h4>
@@ -41,8 +49,7 @@ use humhub\modules\admin\grid\UserActionColumn;
     <?php ActiveForm::end(); ?>
 
     <div class="table-responsive">
-        <?=
-        GridView::widget([
+        <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'summary' => '',
             'columns' => [
@@ -59,11 +66,10 @@ use humhub\modules\admin\grid\UserActionColumn;
                 ],
                 ['class' => UserActionColumn::class],
             ],
-        ]);
-        ?>
+        ]); ?>
     </div>
-    <?php if ($showPendingRegistrations): ?>    
-        <br />
+    <?php if ($showPendingRegistrations): ?>
+        <br/>
         <?= Button::defaultType(Yii::t('AdminModule.user', 'List pending registrations'))->link(Url::to(['/admin/pending-registrations']))->right()->sm(); ?>
     <?php endif; ?>
 </div>

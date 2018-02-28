@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -8,14 +7,7 @@
 
 namespace humhub\modules\admin\controllers;
 
-use Yii;
-use yii\helpers\Url;
-use yii\web\HttpException;
 use humhub\compat\HForm;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\Invite;
-use humhub\modules\user\models\ProfileField;
-use humhub\modules\user\models\forms\Registration;
 use humhub\components\export\DateTimeColumn;
 use humhub\components\export\SpreadsheetExport;
 use humhub\modules\admin\components\Controller;
@@ -24,6 +16,12 @@ use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\user\models\forms\Registration;
+use humhub\modules\user\models\Invite;
+use humhub\modules\user\models\ProfileField;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\web\HttpException;
 
 /**
  * User management
@@ -64,7 +62,7 @@ class UserController extends Controller
     {
         if (Yii::$app->user->can([new ManageUsers(), new ManageGroups()])) {
             return $this->redirect(['list']);
-        } else if (Yii::$app->user->can(ManageSettings::class)) {
+        } elseif (Yii::$app->user->can(ManageSettings::class)) {
             return $this->redirect(['/admin/authentication']);
         } else {
             return $this->forbidden();
@@ -309,13 +307,12 @@ class UserController extends Controller
      * @return \yii\web\Response
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\Exception
      */
     public function actionExport($format)
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->pagination = false;
 
         $exporter = new SpreadsheetExport([
             'dataProvider' => $dataProvider,
@@ -371,5 +368,4 @@ class UserController extends Controller
 
         return array_merge($userColumns, $profileColumns);
     }
-
 }
