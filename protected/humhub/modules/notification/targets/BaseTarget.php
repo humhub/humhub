@@ -9,7 +9,6 @@
 namespace humhub\modules\notification\targets;
 
 use Yii;
-use yii\base\Object;
 use yii\di\Instance;
 use humhub\modules\user\models\User;
 use humhub\components\rendering\Renderer;
