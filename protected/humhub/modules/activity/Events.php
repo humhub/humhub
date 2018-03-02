@@ -79,7 +79,7 @@ class Events extends Object
         $integrityController->showTestHeadline('Activity Module (' . Activity::find()->count() . ' entries)');
 
         // Loop over all comments
-        foreach (Activity::find()->all() as $a) {
+        foreach (Activity::find()->each() as $a) {
 
             // Check for object_model / object_id
             if ($a->object_model != '' && $a->object_id != '' && $a->getSource() === null) {

@@ -15,4 +15,5 @@ ratings:
 
 exclude_paths:
 - "**/messages/"
+- "**/codeception/_support/_generated/"
 - "static/assets/"

@@ -4,6 +4,9 @@ HumHub Change Log
 1.2.5  (Not released)
 ---------------------
 
+When you customized or used the createCVS method of PendingRegistrationsController please 
+migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
+
 - Enh: Added BaseURL setting protocol scheme validation
 - Fix #2849: ActiveQueryContent doesn't find public profile content when guest access is enabled
 - Enh: Fixed username alignment in comments (@githubjeka)
@@ -15,6 +18,10 @@ HumHub Change Log
 - Fix #2745: Yii2 2.0.13 will break the admin interface
 - Enh: Allow auto detection of response dataType
 - Fix #2947: Allow json success result on modalSubmit
+- Enh: Disabled automatic content following on likes by default
+- Enh: Improved IntegrityChecker memory usage
+- Chg: `PendingRegistrationsController->createCVS` removed
+- Fix: Stream image preview size not changeable
 
 
 1.2.4  (December 13, 2017)

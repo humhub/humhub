@@ -1,4 +1,5 @@
 <?php
+
 use humhub\widgets\AjaxButton;
 
 // add Tooltip to link
@@ -7,9 +8,7 @@ $tooltip = '';
 if ($linkTooltipText != '') {
     $tooltip = 'data-placement="top" data-toggle="tooltip" data-original-title="' . $linkTooltipText . '"';
 }
-?>
 
-<?php
 // replace by default the modal content by the new loaded content
 $confirm = 'function(html){ $("#confirmModal_' . $uniqueID . '").html(html);}';
 
@@ -17,10 +16,10 @@ if ($confirmJS != '') {
     // ... or execute own JavaScript code, if exists
     $confirm = $confirmJS;
 }
-?>
 
-<!-- Link to call the confirm modal -->
-<?php if ($linkOutput == 'button') { ?>
+// Link to call the confirm modal
+if ($linkOutput == 'button') {
+?>
 
     <!-- create button element -->
     <button class="<?= $class; ?> <?= ($ariaLabel) ? ' aria-label="'.$ariaLabel.'"' : '' ?> <?php if ($tooltip != '') : ?>tt<?php endif; ?>" style="<?= $style; ?>"
@@ -78,19 +77,19 @@ if ($confirmJS != '') {
 
 <script>
 
-    $(document).ready(function () {
-        // move modal to body
+    $(function() {
+        // Move modal to body
         $('#confirmModal_<?= $uniqueID; ?>').appendTo(document.body);
     });
 
     $('#confirmModal_<?= $uniqueID; ?>').on('shown.bs.modal', function (e) {
 
-        // execute optional JavaScript code, when modal is showing
+        // Execute optional JavaScript code, when modal is showing
         <?php if ($modalShownJS != '') {
             echo $modalShownJS;
         } ?>
 
-        // remove standard modal with
+        // Remove standard modal with
         $('#confirmModal_<?= $uniqueID; ?> .modal-dialog').attr('style', '');
     });
 

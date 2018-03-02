@@ -1,9 +1,12 @@
 <?php
 $this->registerJsFile("@web-static/js/panelMenu.js", ['position' => yii\web\View::POS_BEGIN]);
 ?>
+
 <ul class="nav nav-pills preferences">
-    <li class="dropdown ">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-label="<?= Yii::t('base', 'Toggle panel menu'); ?>" aria-haspopup="true"><i class="fa fa-angle-down"></i></a>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
+           aria-label="<?= Yii::t('base', 'Toggle panel menu'); ?>" aria-haspopup="true"><i class="fa fa-angle-down"></i>
+        </a>
         <ul class="dropdown-menu pull-right">
             <li>
                 <a href="javascript:togglePanelUp('<?= $id; ?>');" class="panel-collapse">
@@ -15,20 +18,14 @@ $this->registerJsFile("@web-static/js/panelMenu.js", ['position' => yii\web\View
                     <i class="fa fa-plus-square"></i> <?= Yii::t('base', 'Expand'); ?>
                 </a>
             </li>
-            <?php
-            echo $this->context->extraMenus;
-            ?>
+            <?= $this->context->extraMenus; ?>
         </ul>
     </li>
 </ul>
 
-<script type = "text/javascript">
-
-    $(document).ready(function () {
-
+<script>
+    $(function() {
         // check and set panel state from cookie
-        checkPanelMenuCookie('<?php echo $this->context->id; ?>');
+        checkPanelMenuCookie('<?= $this->context->id; ?>');
     });
-
-
 </script>

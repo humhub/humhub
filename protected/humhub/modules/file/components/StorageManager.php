@@ -2,17 +2,18 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\file\components;
 
-use Yii;
-use yii\base\Component;
 use humhub\modules\file\models\File;
 use humhub\modules\file\libs\ImageConverter;
 use humhub\modules\file\libs\FileHelper;
+use Yii;
+use yii\base\Component;
+use yii\web\UploadedFile;
 
 /**
  * StorageManager for File records
@@ -73,7 +74,7 @@ class StorageManager extends Component implements StorageManagerInterface
     /**
      * @inheritdoc
      */
-    public function set(\yii\web\UploadedFile $file, $variant = null)
+    public function set(UploadedFile $file, $variant = null)
     {
         if (is_uploaded_file($file->tempName)) {
             move_uploaded_file($file->tempName, $this->get($variant));
@@ -107,14 +108,14 @@ class StorageManager extends Component implements StorageManagerInterface
             $path = $this->getPath();
 
             // Make really sure, that we dont delete something else :-)
-            if ($this->file->guid != "" && is_dir($path)) {
-                $files = glob($path . DIRECTORY_SEPARATOR . "*");
+            if ($this->file->guid != '' && is_dir($path)) {
+                $files = glob($path . DIRECTORY_SEPARATOR . '*');
                 foreach ($files as $file) {
                     if (is_file($file)) {
                         unlink($file);
                     }
                 }
-                rmdir($path);
+                FileHelper::removeDirectory($path);
             }
         } elseif (is_file($this->get($variant))) {
             unlink($this->get($variant));
@@ -152,9 +153,7 @@ class StorageManager extends Component implements StorageManagerInterface
                 substr($this->file->guid, 1, 1) . DIRECTORY_SEPARATOR .
                 $this->file->guid;
 
-        if (!is_dir($path)) {
-            FileHelper::createDirectory($path, $this->fileMode, true);
-        }
+        FileHelper::createDirectory($path, $this->fileMode, true);
 
         return $path;
     }

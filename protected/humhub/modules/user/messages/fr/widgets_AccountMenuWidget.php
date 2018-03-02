@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Account</strong> settings' => 'Réglages de <strong>votre compte</strong>',
+  '<strong>Account</strong> settings' => 'Paramètres de votre <strong>compte</strong>',
   'Modules' => 'Modules',
   'Profile' => 'Profil',
   'Security' => 'Sécurité',
-  'Settings' => 'Réglages',
+  'Settings' => 'Paramètres',
 );

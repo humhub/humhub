@@ -1,20 +1,21 @@
 <?php
-
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\models\fieldtype;
 
-use Yii;
-use yii\base\Model;
-use yii\base\Exception;
-use yii\helpers\Json;
-use yii\helpers\Html;
 use humhub\libs\Helpers;
 use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\ProfileField;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\base\Exception;
+use yii\base\Model;
+use yii\helpers\Html;
+use yii\helpers\Json;
 
 /**
  * ProfileFieldType is the base class for all Profile Field Types.
@@ -31,39 +32,21 @@ class BaseType extends Model
      * Array
      *  Classname => Field type title
      *
-     * @var Array
+     * @var array
      */
     public $fieldTypes = [];
 
     /**
      * Corresponding ProfileField Model
      *
-     * @var type
+     * @var ProfileField
      */
     public $profileField = null;
-
-    public function init()
-    {
-        // Fire Event
-        #if ($this->hasEventHandler('onInit'))
-        #    $this->onInit(new CEvent($this));
-
-        return parent::init();
-    }
-
-    /**
-     * This event is raised after init is performed.
-     * @param CEvent $event the event parameter
-     */
-    public function onInit($event)
-    {
-        $this->raiseEvent('onInit', $event);
-    }
 
     /**
      * Links a ProfileField to the ProfileFieldType.
      *
-     * @param type $profileField
+     * @param ProfileField $profileField
      */
     public function setProfileField($profileField)
     {
@@ -74,7 +57,7 @@ class BaseType extends Model
     /**
      * Returns a list of all available field type classes.
      *
-     * @return Array
+     * @return array
      */
     public function getFieldTypes()
     {
@@ -98,16 +81,18 @@ class BaseType extends Model
     /**
      * Returns an array of instances of all available field types.
      *
-     * @return Array
+     * @param ProfileField|null $profileField
+     * @return array
+     * @throws Exception
      */
     public function getTypeInstances($profileField = null)
     {
-
         $types = [];
         foreach ($this->getFieldTypes() as $className => $title) {
             if (Helpers::CheckClassType($className, self::className())) {
+                /** @var BaseType $instance */
                 $instance = new $className;
-                if ($profileField != null) {
+                if ($profileField !== null) {
                     $instance->profileField = $profileField;
 
                     // Seems current type, so try load data
@@ -124,15 +109,18 @@ class BaseType extends Model
 
     /**
      * Return the Form Element to edit the value of the Field
+     * @return array
      */
     public function getFieldFormDefinition()
     {
 
-        $definition = [$this->profileField->internal_name => [
+        $definition = [
+            $this->profileField->internal_name => [
                 'type' => 'text',
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable)
-        ]];
+            ]
+        ];
 
         return $definition;
     }
@@ -142,13 +130,13 @@ class BaseType extends Model
      *
      * This method should be overwritten by the file type class.
      *
-     * @param type $definition
-     * @return Array of Form Definition
+     * @param array $definition
+     * @return array of Form Definition
      */
     public function getFormDefinition($definition = [])
     {
-
-        $definition[get_class($this)]['class'] = "fieldTypeSettings " . str_replace("\\", "_", get_class($this));
+        $className = get_class($this);
+        $definition[$className]['class'] = 'fieldTypeSettings ' . str_replace('\\', '_', $className);
 
         return $definition;
     }
@@ -159,6 +147,8 @@ class BaseType extends Model
      * This is only necessary when its linked to a profileField and the profiletype
      * has the current type of profilefieldtype
      *
+     * @param ProfileField|null $attributes
+     * @param bool $clearErrors
      * @return boolean
      */
     public function validate($attributes = null, $clearErrors = true)
@@ -182,6 +172,7 @@ class BaseType extends Model
      * in attribute "field_type_config" as JSON data.
      *
      * The ProfileFieldType Class itself can overwrite this behavior.
+     * @throws Exception
      */
     public function save()
     {
@@ -190,15 +181,16 @@ class BaseType extends Model
 
         foreach ($this->attributes as $attributeName => $value) {
             // Dont save profile field attribute
-            if ($attributeName == 'profileField')
+            if ($attributeName == 'profileField') {
                 continue;
+            }
 
             $data[$attributeName] = $this->$attributeName;
         }
         $this->profileField->field_type_config = Json::encode($data);
 
         if (!$this->profileField->save()) {
-            throw new Exception("Could not save profile field!");
+            throw new Exception('Could not save profile field!');
         }
         // Clear Database Schema
         Yii::$app->getDb()->getSchema()->getTableSchema(Profile::tableName(), true);
@@ -220,21 +212,24 @@ class BaseType extends Model
         $config = Json::decode($this->profileField->field_type_config);
         if (is_array($config)) {
             foreach ($config as $key => $value) {
-                if (property_exists($this, $key))
+                if (property_exists($this, $key)) {
                     $this->$key = $value;
+                }
             }
         }
     }
 
     /**
      * Deletes a Profile Field Type
+     * @throws \yii\db\Exception
      */
     public function delete()
     {
         $columnName = $this->profileField->internal_name;
         if (Profile::columnExists($columnName)) {
-            $query = Yii::$app->db->getQueryBuilder()->dropColumn(Profile::tableName(), $this->profileField->internal_name);
-            Yii::$app->db->createCommand($query)->execute();
+            $db = Yii::$app->getDb();
+            $query = $db->getQueryBuilder()->dropColumn(Profile::tableName(), $this->profileField->internal_name);
+            $db->createCommand($query)->execute();
         } else {
             Yii::error('Could not delete profile column - not exists!');
         }
@@ -244,6 +239,7 @@ class BaseType extends Model
      * Adds the new profile type to the profile table.
      *
      * This method should be overwritten by the child class.
+     * @return bool
      */
     public function addToProfileTable()
     {
@@ -254,14 +250,15 @@ class BaseType extends Model
      * Returns validation rules for field type.
      * The inherited field type class should pass his rules to this method.
      *
-     * @param type $rules
-     * @return Array rules
+     * @param array $rules
+     * @return array rules
      */
     public function getFieldRules($rules = [])
     {
 
-        if ($this->profileField->required)
+        if ($this->profileField->required) {
             $rules[] = [$this->profileField->internal_name, 'required'];
+        }
 
         return $rules;
     }
@@ -269,9 +266,9 @@ class BaseType extends Model
     /**
      * Returns the value of a given user of this field
      *
-     * @param type $user
-     * @param type $raw
-     * @return type
+     * @param User $user
+     * @param bool $raw
+     * @return string
      */
     public function getUserValue($user, $raw = true)
     {
@@ -284,14 +281,25 @@ class BaseType extends Model
         }
     }
 
+    /**
+     * Return array of Labels for Field
+     * @return array
+     */
     public function getLabels()
     {
-        $labels = [];
-        $labels[$this->profileField->internal_name] = Yii::t($this->profileField->getTranslationCategory(), $this->profileField->title);
-
-        return $labels;
+        return [
+            $this->profileField->internal_name => Yii::t(
+                $this->profileField->getTranslationCategory(),
+                $this->profileField->title
+            )
+        ];
     }
 
+    /**
+     * Add new FieldType to stack
+     * @param string $fieldClass
+     * @param string $title
+     */
     public function addFieldType($fieldClass, $title)
     {
         $this->fieldTypes[$fieldClass] = $title;
@@ -299,9 +307,9 @@ class BaseType extends Model
 
     /**
      * This method is called before the field value is stored in Profile table.
-     * 
+     *
      * @param string $value
-     * @return string modified value
+     * @return string|null modified value
      */
     public function beforeProfileSave($value)
     {
@@ -314,11 +322,10 @@ class BaseType extends Model
 
     /**
      * Load field type default settings to the profile
-     * 
+     *
      * @param Profile $profile
      */
     public function loadDefaults(Profile $profile)
     {
     }
-
 }
