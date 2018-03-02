@@ -72,7 +72,7 @@ return array (
   'Toggle panel menu' => 'Bascule du menu du panneau',
   'Toggle post menu' => 'Bascule du menu de contribution',
   'Toggle stream entry menu' => 'Bascule du menu du flux d\'activité',
-  'Unsubscribe' => 'Se désabonner',
+  'Unsubscribe' => 'Gérer les résumés / Se désabonner',
   'Upload' => 'Ajouter',
   'Upload file' => 'Envoyer un fichier',
   'User not found!' => 'Utilisateur non trouvé.',
