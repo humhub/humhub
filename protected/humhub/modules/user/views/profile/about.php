@@ -20,7 +20,7 @@ $categories = $user->profile->getProfileFieldCategories();
     <div class="panel-body">
 
         <p>
-            The member of <?= \Yii::$app->name ?> since date <?= Yii::$app->formatter->asDate($user->created_at) ?>
+            A proud member of <?= \Yii::$app->name ?> since date <?= Yii::$app->formatter->asDate($user->created_at) ?>
         </p>
 
         <?php $firstClass = "active"; ?>
