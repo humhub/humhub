@@ -134,7 +134,7 @@ class SpaceSearch extends Space
         return $dataProvider;
     }
 
-    public function getVisibilityAttributes()
+    public static function getVisibilityAttributes()
     {
         $countPublic = Space::find()->where(['visibility' => Space::VISIBILITY_ALL])->orWhere(['visibility' => Space::VISIBILITY_REGISTERED_ONLY])->count();
         $countPrivate = Space::find()->where(['visibility' => Space::VISIBILITY_NONE])->count();
