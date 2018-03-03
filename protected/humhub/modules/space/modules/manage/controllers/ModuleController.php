@@ -18,7 +18,6 @@ use humhub\modules\space\modules\manage\components\Controller;
  */
 class ModuleController extends Controller
 {
-
     /**
      * Modules Administration Action
      */
@@ -31,7 +30,7 @@ class ModuleController extends Controller
     /**
      * Enables a space module
      *
-     * @return string the output
+     * @return string|array the output
      */
     public function actionEnable()
     {
@@ -57,7 +56,7 @@ class ModuleController extends Controller
     /**
      * Disables a space module
      *
-     * @return string the output
+     * @return string|array the output
      */
     public function actionDisable()
     {
@@ -81,5 +80,3 @@ class ModuleController extends Controller
     }
 
 }
-
-?>
