@@ -20,7 +20,14 @@ $categories = $user->profile->getProfileFieldCategories();
     <div class="panel-body">
 
         <p>
-            A proud member of <?= \Yii::$app->name ?> since date <?= Yii::$app->formatter->asDate($user->created_at) ?>
+            <?= \Yii::t(
+                'UserModule.views_profile_about',
+                'A proud member of {appName} since date {dateValue}',
+                [
+                    'appName' => \Yii::$app->name,
+                    'dateValue' => \Yii::$app->formatter->asDate($user->created_at)
+                ]
+            )?>
         </p>
 
         <?php $firstClass = "active"; ?>
