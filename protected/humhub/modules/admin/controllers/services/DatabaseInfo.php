@@ -8,8 +8,10 @@
 
 namespace humhub\modules\admin\controllers\services;
 
-
-final class DatabaseInfo
+/**
+ * @since 1.3
+ */
+class DatabaseInfo
 {
     /** @var string */
     private $pdoDSN;
