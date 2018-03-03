@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\activities\ModuleDisabledActivity;
+use humhub\modules\content\activities\ModuleEnabledActivity;
 use ReflectionClass;
 use Yii;
 use yii\db\ActiveQuery;
@@ -74,6 +76,25 @@ class ContentContainerModuleManager extends \yii\base\Component
         }
 
         return false;
+    }
+
+    /**
+     * Create ModuleDisabledActivity or ModuleEnabledActivity for contentContainer
+     * @param $moduleName
+     * @param $state
+     * @param $originator
+     * @throws \yii\base\Exception
+     */
+    public function addActivity($moduleName, $state , $originator) {
+        if ($state === ContentContainerModuleState::STATE_DISABLED) {
+            $activity = new ModuleDisabledActivity(['enabledModuleName' => $moduleName]);
+        } else {
+            $activity = new ModuleEnabledActivity(['enabledModuleName' => $moduleName]);
+        }
+
+        $activity->source = $this->contentContainer;
+        $activity->originator = $originator;
+        $activity->create();
     }
 
     /**

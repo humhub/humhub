@@ -8,8 +8,9 @@
 
 namespace humhub\modules\space\modules\manage\controllers;
 
-use Yii;
+use humhub\modules\content\models\ContentContainerModuleState;
 use humhub\modules\space\modules\manage\components\Controller;
+use Yii;
 
 /**
  * Space module management
@@ -42,7 +43,14 @@ class ModuleController extends Controller
         $moduleId = Yii::$app->request->get('moduleId', "");
 
         if (!$space->isModuleEnabled($moduleId)) {
-            $space->enableModule($moduleId);
+            if ($space->enableModule($moduleId)) {
+                $space->moduleManager
+                    ->addActivity(
+                        Yii::$app->moduleManager->getModule($moduleId)->getName(),
+                        ContentContainerModuleState::STATE_ENABLED,
+                        Yii::$app->user->identity
+                    );
+            }
         }
 
         if (!Yii::$app->request->isAjax) {
@@ -68,7 +76,14 @@ class ModuleController extends Controller
         $moduleId = Yii::$app->request->get('moduleId', "");
 
         if ($space->isModuleEnabled($moduleId) && $space->canDisableModule($moduleId)) {
-            $space->disableModule($moduleId);
+            if ($space->disableModule($moduleId)) {
+                $space->moduleManager
+                    ->addActivity(
+                        Yii::$app->moduleManager->getModule($moduleId)->getName(),
+                        ContentContainerModuleState::STATE_DISABLED,
+                        Yii::$app->user->identity
+                    );
+            }
         }
 
         if (!Yii::$app->request->isAjax) {
@@ -77,9 +92,7 @@ class ModuleController extends Controller
             Yii::$app->response->format = 'json';
             return ['success' => true];
         }
-
     }
-
 }
 
 ?>
