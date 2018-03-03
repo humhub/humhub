@@ -4,6 +4,7 @@ HumHub Change Log - v1.3-dev Branch
 1.3.0-beta.1  (Not released yet)
 --------------------------------
 
+- Enh: Added param "the since date" for members on their about pages (githubjeka)
 - Enh: Added file search indexing
 - Enh: Updated composer.json (acs-ferreira)
 - Chg: Switched from Composer FXP plugin to Asset Packagist repository
