@@ -60,7 +60,7 @@ script:
   - curl -I http://127.0.0.1:8080/index-test.php
   - |
     cd $TRAVIS_BUILD_DIR/protected/humhub/tests
-    codecept run
+    php ../../vendor/bin/codecept run
 after_failure:
   - cd ../modules/user/tests/codeception/_output/
   - ls
