@@ -54,10 +54,12 @@ install:
     php ../../vendor/bin/codecept build
 
 script:
-  - php -S 127.0.0.1:8080 &> /dev/null &
+  - |
+    cd $TRAVIS_BUILD_DIR
+    php -S 127.0.0.1:8080 &> /dev/null &
   #- phantomjs --webdriver=4444 > /dev/null 2>&1 & # Not in use since phantomjs hangs with QIODevice::write (QTcpSocket): device not open
   - sleep 5
-  - curl -I http://127.0.0.1:8080/index-test.php
+  - curl --fail http://127.0.0.1:8080/index-test.php
   - |
     cd $TRAVIS_BUILD_DIR/protected/humhub/tests
     php ../../vendor/bin/codecept run
