@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Friendship' => 'Amitié',
-  'Receive Notifications for Friendship Request and Approval events.' => 'Recevoir des notifications pour les demandes d\'amitié et les acceptations.',
+  'Friendship' => 'Amis',
+  'Receive Notifications for Friendship Request and Approval events.' => 'Recevoir une notification lorsqu\'on m\'envoie une demande d\'amitié ou lorsqu\'on accepte une de mes demandes.',
 );

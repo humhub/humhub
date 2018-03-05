@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Basic Settings' => 'Paramètres généraux',
+  'Basic Settings' => 'Général',
   'Change Email' => 'Modifier l\'e-mail',
   'Change Password' => 'Modifier le mot de passe',
   'Confirm new password' => 'Confirmer le nouveau mot de passe',
