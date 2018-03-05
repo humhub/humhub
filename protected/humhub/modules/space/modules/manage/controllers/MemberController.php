@@ -56,6 +56,12 @@ class MemberController extends Controller
             }
 
             if ($membership->load(Yii::$app->request->post()) && $membership->validate() && $membership->save()) {
+
+                \humhub\modules\space\notifications\ChangedRolesMembership::instance()
+                    ->about($membership)
+                    ->from(Yii::$app->user->identity)
+                    ->send($membership->user);
+
                 return Yii::$app->request->post();
             }
             return $membership->getErrors();

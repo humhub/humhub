@@ -94,7 +94,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      *
-     * @var type 
+     * @var type
      */
     public $defaultRoute = '/user/profile';
 
@@ -238,7 +238,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     /**
      * @inheritdoc
      *
-     * @return \humhub\modules\content\components\ActiveQueryContent
+     * @return ActiveQueryUser|object
      */
     public static function find()
     {
@@ -340,7 +340,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * Specifies whether the user should appear in user lists or in the search.
-     * 
+     *
      * @since 1.2.3
      * @return boolean is visible
      */
@@ -370,7 +370,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * 
+     *
      * @since 1.3
      * @throws Exception
      */

@@ -68,7 +68,7 @@ class MembershipSearch extends Membership
 
     /**
      * Creates data provider instance with search query applied
-     * 
+     *
      * @param array $params
      * @return ActiveDataProvider
      */
@@ -127,7 +127,7 @@ class MembershipSearch extends Membership
         if (!empty($this->group_id)) {
             $query->andFilterWhere(['space_membership.group_id' => $this->group_id]);
         }
-        
+
         $query->andFilterWhere(['space_membership.group_id' => $this->group_id]);
         $query->andFilterWhere(['like', 'profile.lastname', $this->getAttribute('user.profile.lastname')]);
         $query->andFilterWhere(['like', 'profile.firstname', $this->getAttribute('user.profile.firstname')]);
