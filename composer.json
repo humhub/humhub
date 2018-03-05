@@ -101,5 +101,5 @@
             "npm-asset-library": "protected/vendor/npm",
             "bower-asset-library": "protected/vendor/bower"
         }
-    },
+    }
 }
