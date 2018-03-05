@@ -22,7 +22,7 @@ migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 - Enh: Improved IntegrityChecker memory usage
 - Chg: `PendingRegistrationsController->createCVS` removed
 - Fix: Stream image preview size not changeable
-
+- Chg: Depreciated Instagram OAuthClient & removed (@Felli)
 
 1.2.4  (December 13, 2017)
 --------------------------
