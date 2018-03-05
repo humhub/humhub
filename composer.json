@@ -56,6 +56,8 @@
     },
     "require-dev": {
         "codeception/codeception": "~2.3",
+        "codeception/specify": "~1.0",
+        "codeception/verify": "~1.0",
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0",
@@ -99,5 +101,11 @@
             "npm-asset-library": "protected/vendor/npm",
             "bower-asset-library": "protected/vendor/bower"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
 }
