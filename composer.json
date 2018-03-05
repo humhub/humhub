@@ -102,10 +102,4 @@
             "bower-asset-library": "protected/vendor/bower"
         }
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
-        }
-    ]
 }
