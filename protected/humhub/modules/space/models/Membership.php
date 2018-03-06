@@ -170,22 +170,51 @@ class Membership extends \yii\db\ActiveRecord
         $spaces = Yii::$app->cache->get($cacheId);
         if ($spaces === false || !$cached) {
 
-            $orderSetting = Yii::$app->getModule('space')->settings->get('spaceOrder');
-            $orderBy = 'name ASC';
-            if ($orderSetting != 0) {
-                $orderBy = 'last_visit DESC';
-            }
-
-            $query = self::find()->joinWith('space')->orderBy($orderBy);
-            $query->where(['user_id' => $userId, 'space_membership.status' => self::STATUS_MEMBER]);
-
             $spaces = [];
-            foreach ($query->all() as $membership) {
+            foreach (static::getMembershipQuery($userId)->all() as $membership) {
                 $spaces[] = $membership->space;
             }
             Yii::$app->cache->set($cacheId, $spaces);
         }
         return $spaces;
+    }
+
+    /**
+     * Returns a list of all spaces' ids of the given userId
+     *
+     * @param integer $userId
+     * @since 1.2.5
+     */
+    public static function GetUserSpaceIds($userId = "")
+    {
+        if ($userId == "") {
+            $userId = Yii::$app->user->id;
+        }
+
+        $cacheId = "userSpaceIds_" . $userId;
+
+        $spaceIds = Yii::$app->cache->get($cacheId);
+        if ($spaceIds === false) {
+
+            $spaceIds = static::getMembershipQuery($userId)->select('space_id')->column();
+
+            Yii::$app->cache->set($cacheId, $spaceIds);
+        }
+        return $spaceIds;
+    }
+
+    private static function getMembershipQuery($userId)
+    {
+        $orderSetting = Yii::$app->getModule('space')->settings->get('spaceOrder');
+        $orderBy = 'name ASC';
+        if ($orderSetting != 0) {
+            $orderBy = 'last_visit DESC';
+        }
+
+        $query = self::find()->joinWith('space')->orderBy($orderBy);
+        $query->where(['user_id' => $userId, 'space_membership.status' => self::STATUS_MEMBER]);
+
+        return $query;
     }
 
     /**
