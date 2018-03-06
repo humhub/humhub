@@ -118,7 +118,6 @@ humhub.module('ui.additions', function (module, require, $) {
         // Show tooltips on elements
         module.register('tooltip', '.tt', function ($match) {
             $match.tooltip({
-                html: false,
                 container: 'body'
             });
 
