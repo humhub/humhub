@@ -42,27 +42,27 @@ install:
   # Run Composer update
   - travis_retry composer self-update && composer --version
   - travis_retry composer global require "fxp/composer-asset-plugin:~1.3"
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - travis_retry composer install --dev --prefer-dist --no-interaction
-  - travis_retry composer global require "codeception/codeception=2.3.*" "codeception/specify=*" "codeception/verify=*"
+  - travis_retry composer install --prefer-dist --no-interaction
+  # - travis_retry composer global require "codeception/codeception=2.3.*" "codeception/specify=*" "codeception/verify=*"
   # Install test environment
   - |
     mysql -e 'CREATE DATABASE `humhub_test` CHARACTER SET utf8 COLLATE utf8_general_ci;'
-    cd protected/humhub/tests
+    cd $TRAVIS_BUILD_DIR/protected/humhub/tests
     php codeception/bin/yii migrate/up --includeModuleMigrations=1 --interactive=0
     php codeception/bin/yii installer/auto
     php codeception/bin/yii search/rebuild
-    codecept build
-    cd ../../../
+    php ../../vendor/bin/codecept build
 
 script:
-  - php -S 127.0.0.1:8080 &> /dev/null &
+  - |
+    cd $TRAVIS_BUILD_DIR
+    php -S 127.0.0.1:8080 &> /dev/null &
   #- phantomjs --webdriver=4444 > /dev/null 2>&1 & # Not in use since phantomjs hangs with QIODevice::write (QTcpSocket): device not open
   - sleep 5
-  - curl -I http://127.0.0.1:8080/index-test.php
+  - curl --fail http://127.0.0.1:8080/index-test.php
   - |
-    cd protected/humhub/tests/
-    codecept run
+    cd $TRAVIS_BUILD_DIR/protected/humhub/tests
+    php ../../vendor/bin/codecept run
 after_failure:
   - cd ../modules/user/tests/codeception/_output/
   - ls
