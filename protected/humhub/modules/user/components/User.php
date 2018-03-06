@@ -17,7 +17,7 @@ use yii\db\Expression;
 
 /**
  * Description of User
- *
+ * @property \humhub\modules\user\models\User|null $identity
  * @author luke
  */
 class User extends \yii\web\User
@@ -183,7 +183,7 @@ class User extends \yii\web\User
 
     /**
      * Checks if the system configuration allows access for guests
-     * 
+     *
      * @return boolean is guest access enabled and allowed
      */
     public static function isGuestAccessEnabled()
