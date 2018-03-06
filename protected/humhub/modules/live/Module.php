@@ -13,6 +13,7 @@ use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Follow;
 use humhub\modules\friendship\models\Friendship;
+use humhub\modules\space\models\Membership;
 
 /**
  * Live module provides a live channel to the users browser.
@@ -85,7 +86,7 @@ class Module extends \humhub\components\Module
             $legitimation[Content::VISIBILITY_OWNER][] = $user->contentContainerRecord->id;
 
             // Collect user space membership with private content visibility
-            $spaces = \humhub\modules\space\models\Membership::GetUserSpaces($user->id);
+            $spaces = Membership::getUserSpaces($user->id);
             foreach ($spaces as $space) {
                 $legitimation[Content::VISIBILITY_PRIVATE][] = $space->contentContainerRecord->id;
             }

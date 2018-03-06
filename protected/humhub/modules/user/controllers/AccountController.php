@@ -14,6 +14,7 @@ use humhub\modules\user\components\BaseAccountController;
 use humhub\modules\user\models\User;
 use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\user\controllers\ImageController;
+use humhub\modules\space\models\Membership;
 
 /**
  * AccountController provides all standard actions for the current logged in
@@ -270,7 +271,7 @@ class AccountController extends BaseAccountController
             throw new HttpException(500, 'Account deletion not allowed');
         }
 
-        foreach (\humhub\modules\space\models\Membership::GetUserSpaces() as $space) {
+        foreach (Membership::getUserSpaces() as $space) {
             if ($space->isSpaceOwner($user->id)) {
                 $isSpaceOwner = true;
             }

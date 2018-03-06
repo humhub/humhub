@@ -340,7 +340,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     public function beforeDelete()
     {
         // We don't allow deletion of users who owns a space - validate that
-        foreach (Membership::GetUserSpaces($this->id, false) as $space) {
+        foreach (Membership::getUserSpaces($this->id, false) as $space) {
             if ($space->isSpaceOwner($this->id)) {
                 throw new Exception('Tried to delete a user (' . $this->id . ') which is owner of a space (' . $space->id . ')!');
             }

@@ -275,7 +275,7 @@ class ZendLuceneSearch extends Search
                 $privateSpaceContentQuery->addSubquery(new QueryTerm(new Term(Space::className(), 'containerModel')), true);
                 $privateSpacesListQuery = new MultiTerm();
 
-                foreach (Membership::GetUserSpaceIds() as $spaceId) {
+                foreach (Membership::getUserSpaceIds() as $spaceId) {
                     $privateSpacesListQuery->addTerm(new Term($spaceId, 'containerPk'));
                 }
 

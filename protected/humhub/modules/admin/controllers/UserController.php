@@ -238,7 +238,7 @@ class UserController extends Controller
         if ($doit == 2) {
             $this->forcePostRequest();
 
-            foreach (Membership::GetUserSpaces($user->id) as $space) {
+            foreach (Membership::getUserSpaces($user->id) as $space) {
                 if ($space->isSpaceOwner($user->id)) {
                     $space->addMember(Yii::$app->user->id);
                     $space->setSpaceOwner(Yii::$app->user->id);
