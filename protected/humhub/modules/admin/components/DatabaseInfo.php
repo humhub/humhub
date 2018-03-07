@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\admin\controllers\services;
+namespace humhub\modules\admin\components;
 
 /**
  * @since 1.3

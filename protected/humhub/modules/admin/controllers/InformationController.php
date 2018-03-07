@@ -9,7 +9,7 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\modules\admin\components\Controller;
-use humhub\modules\admin\controllers\services\DatabaseInfo;
+use humhub\modules\admin\components\DatabaseInfo;
 use humhub\modules\admin\libs\HumHubAPI;
 use Yii;
 
@@ -43,7 +43,7 @@ class InformationController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => \humhub\modules\admin\permissions\SeeAdminInformation::className()],
+            ['permissions' => \humhub\modules\admin\permissions\SeeAdminInformation::class],
         ];
     }
 

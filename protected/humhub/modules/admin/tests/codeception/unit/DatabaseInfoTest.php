@@ -2,10 +2,10 @@
 
 namespace humhub\modules\admin\tests\codeception\unit;
 
-use humhub\modules\admin\controllers\services\DatabaseInfo;
-use tests\codeception\_support\HumHubDbTestCase;
+use Codeception\Test\Unit;
+use humhub\modules\admin\components\DatabaseInfo;
 
-class DatabaseInfoTest extends HumHubDbTestCase
+class DatabaseInfoTest extends Unit
 {
     public function testGetDatabaseNameByMysqlDsn()
     {
