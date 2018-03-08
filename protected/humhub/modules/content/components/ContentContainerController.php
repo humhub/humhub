@@ -18,25 +18,25 @@ use humhub\modules\content\components\ContentContainerControllerAccess;
 
 /**
  * Controller is the base class of web controllers which acts in scope of a ContentContainer (e.g. Space or User).
- * 
+ *
  * To automatically load the current contentcontainer the containers guid must be passed as GET parameter 'cguid'.
  * You can create URLs in the scope of an ContentContainer by passing the contentContainer instance as 'container' or 'contentContainer'
  * as parameter to the URLManager.
- * 
+ *
  * Example:
- * 
+ *
  * ```
  * $url = Url::to(['my/action', 'container' => $this->contentContainer');
  * ```
- * 
+ *
  * Based on the current ContentContainer a behavior (defined in ContentContainerActiveRecord::controllerBehavior) will be automatically
  * attached to this controller instance.
 
- * The attached behavior will perform basic access checks, adds the container sublayout and perform other tasks 
+ * The attached behavior will perform basic access checks, adds the container sublayout and perform other tasks
  * (e.g. the space behavior will update the last visit membership attribute).
- * 
- * @see \humhub\modules\space\behaviors\SpaceController
- * @see \humhub\modules\user\behaviors\ProfileController
+ *
+ * @mixin \humhub\modules\space\behaviors\SpaceController
+ * @mixin \humhub\modules\user\behaviors\ProfileController
  */
 class ContentContainerController extends Controller
 {
@@ -44,8 +44,8 @@ class ContentContainerController extends Controller
     /**
      * Specifies if a contentContainer (e.g. Space or User) is required to run this controller.
      * Set this to false, if your controller should also act on global scope.
-     * 
-     * @var boolean require cguid container parameter 
+     *
+     * @var boolean require cguid container parameter
      */
     public $requireContainer = true;
 
@@ -56,7 +56,7 @@ class ContentContainerController extends Controller
 
     /**
      * Limit this controller only for usage on given contentcontainer types (e.g. Space).
-     * 
+     *
      * @since 1.3
      * @var array|null an array of valid content container classes. if null all container types (User & Space) are allowed.
      */
@@ -123,7 +123,7 @@ class ContentContainerController extends Controller
 
     /**
      * Checks if the requested module is available in this contentContainer.
-     * 
+     *
      * @throws HttpException if the module is not enabled
      */
     protected function checkModuleIsEnabled()
