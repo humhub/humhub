@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Administrative' => 'Administratif',
-  'Receive Notifications for administrative events like available updates.' => 'Recevoir des notifications système (p.ex. une mise à jour disponible)',
+  'Administrative' => 'Système',
+  'Receive Notifications for administrative events like available updates.' => 'Recevoir une notification système (p.ex. lorsqu\'une mise à jour est disponible)',
 );

@@ -191,7 +191,7 @@ class ZendLuceneSearch extends Search
         foreach (explode(' ', $keyword) as $k) {
             // Require a minimum of non-wildcard characters
             if (mb_strlen($k, Yii::$app->charset) >= $this->minQueryTokenLength) {
-                $term = new Term('*$k*');
+                $term = new Term("*$k*");
                 $query->addSubquery(new Wildcard($term), true);
                 $emptyQuery = false;
             }
