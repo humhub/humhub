@@ -8,9 +8,10 @@
 
 namespace humhub\modules\admin\controllers;
 
-use Yii;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\components\DatabaseInfo;
 use humhub\modules\admin\libs\HumHubAPI;
+use Yii;
 
 /**
  * Informations
@@ -42,7 +43,7 @@ class InformationController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => \humhub\modules\admin\permissions\SeeAdminInformation::className()]
+            ['permissions' => \humhub\modules\admin\permissions\SeeAdminInformation::class],
         ];
     }
 
@@ -62,7 +63,7 @@ class InformationController extends Controller
             'currentVersion' => Yii::$app->version,
             'latestVersion' => $latestVersion,
             'isNewVersionAvailable' => $isNewVersionAvailable,
-            'isUpToDate' => $isUpToDate
+            'isUpToDate' => $isUpToDate,
         ]);
     }
 
@@ -73,7 +74,15 @@ class InformationController extends Controller
 
     public function actionDatabase()
     {
-        return $this->render('database', ['migrate' => \humhub\commands\MigrateController::webMigrateAll()]);
+        $databaseInfo = new DatabaseInfo(Yii::$app->db->dsn);
+
+        return $this->render(
+            'database',
+            [
+                'databaseName' => $databaseInfo->getDatabaseName(),
+                'migrate' => \humhub\commands\MigrateController::webMigrateAll(),
+            ]
+        );
     }
 
     /**
@@ -93,7 +102,7 @@ class InformationController extends Controller
         return $this->render('cronjobs', [
             'lastRunHourly' => $lastRunHourly,
             'lastRunDaily' => $lastRunDaily,
-            'currentUser' => $currentUser
+            'currentUser' => $currentUser,
         ]);
     }
 
