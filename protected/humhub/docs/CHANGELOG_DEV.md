@@ -39,4 +39,5 @@ HumHub Change Log - v1.3-dev Branch
 - Fix: Birthday field refactoring (@danielkesselberg)
 - Enh #2811: Added option to resend invites (@danielkesselberg)
 - Enh: Added current database name to the "Administration -> Information -> Database" (githubjeka)
+- Chg: Depreciated Instagram OAuthClient & removed (@Felli)
 
