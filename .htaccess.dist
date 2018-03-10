@@ -3,6 +3,26 @@
 Options +FollowSymLinks
 RewriteEngine on
 
+# X-XSS-Protection
+Header set X-XSS-Protection "1; mode=block"
+
+# X-Frame-Options
+Header always append X-Frame-Options SAMEORIGIN
+
+# X-Content-Type nosniff
+Header set X-Content-Type-Options nosniff
+
+# Extra Security Headers
+Header set X-XSS-Protection "1; mode=block"
+Header always append X-Frame-Options SAMEORIGIN
+Header set X-Content-Type-Options nosniff
+
+# Content Security Policy
+Header set Content-Security-Policy "default-src 'self'"
+
+# Referrer Policy
+Header always set Referrer-Policy "same-origin"
+
 # uncomment to force https requests
 #RewriteCond %{HTTPS} !=on
 #RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$ [NC]
