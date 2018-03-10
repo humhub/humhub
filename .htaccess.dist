@@ -6,9 +6,6 @@ RewriteEngine on
 # X-XSS-Protection
 Header set X-XSS-Protection "1; mode=block"
 
-# X-Frame-Options
-Header always append X-Frame-Options SAMEORIGIN
-
 # X-Content-Type nosniff
 Header set X-Content-Type-Options nosniff
 
