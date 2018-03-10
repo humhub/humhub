@@ -9,10 +9,7 @@ Header set X-XSS-Protection "1; mode=block"
 # X-Content-Type nosniff
 Header set X-Content-Type-Options nosniff
 
-# Content Security Policy
-Header set Content-Security-Policy "default-src 'self'"
-
-# Referrer Policy
+# Referrer Policy	
 Header always set Referrer-Policy "same-origin"
 
 # uncomment to force https requests
