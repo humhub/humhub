@@ -8,10 +8,12 @@
 
 namespace humhub\modules\content\controllers;
 
-use Yii;
 use humhub\components\Controller;
 use humhub\modules\content\models\WallEntry;
 use humhub\modules\content\models\Content;
+use humhub\components\behaviors\AccessControl;
+use Yii;
+use yii\base\Component;
 use yii\web\HttpException;
 
 /**
@@ -31,7 +33,7 @@ class PermaController extends Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::className(),
                 'guestAllowedActions' => ['index', 'wall-entry']
             ]
         ];
@@ -42,13 +44,13 @@ class PermaController extends Controller
      */
     public function actionIndex()
     {
-        $id = (int) Yii::$app->request->get('id', "");
+        $id = (int) Yii::$app->request->get('id', '');
 
         $content = Content::findOne(['id' => $id]);
 
-        if (method_exists($content->getPolymorphicRelation(), 'getUrl')) {
+        if ($content->getPolymorphicRelation()->hasMethod('getUrl')) {
             $url = $content->getPolymorphicRelation()->getUrl();
-        } else if($content->container !== null) {
+        } elseif ($content->container !== null) {
             $url = $content->container->createUrl(null, ['contentId' => $id]);
         }
         
@@ -59,5 +61,3 @@ class PermaController extends Controller
         throw new HttpException(404, Yii::t('ContentModule.controllers_PermaController', 'Could not find requested content!'));
     }
 }
-
-?>

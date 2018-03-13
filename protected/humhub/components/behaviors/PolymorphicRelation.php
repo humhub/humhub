@@ -11,6 +11,7 @@ namespace humhub\components\behaviors;
 use Yii;
 use yii\base\Behavior;
 use yii\db\Exception;
+use yii\db\ActiveRecord;
 
 /**
  * PolymorphicRelations behavior provides simple support for polymorphic relations in ActiveRecords.
@@ -55,16 +56,16 @@ class PolymorphicRelation extends Behavior
 
         $className = $this->owner->getAttribute($this->classAttribute);
 
-        if ($className == "") {
+        if ($className == '') {
             return null;
         }
 
         if (!class_exists($className)) {
-            Yii::error("Underlying object class " . $className . " not found!");
+            Yii::error('Underlying object class ' . $className . ' not found!');
             return null;
         }
 
-        if(!method_exists($className, 'tableName')) {
+        if (!$className->hasMethod('tableName')) {
             // Avoids failures when running integrity checks etc.
             return null;
         }
@@ -94,12 +95,11 @@ class PolymorphicRelation extends Behavior
     {
         if ($this->validateUnderlyingObjectType($object)) {
             $this->_cached = $object;
-            if ($object instanceof \yii\db\ActiveRecord) {
+            if ($object instanceof ActiveRecord) {
                 $this->owner->setAttribute($this->classAttribute, $object->className());
                 $this->owner->setAttribute($this->pkAttribute, $object->getPrimaryKey());
             }
         }
-
 
     }
 
