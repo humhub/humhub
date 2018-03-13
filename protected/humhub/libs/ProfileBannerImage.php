@@ -9,6 +9,7 @@
 namespace humhub\libs;
 
 use humhub\modules\file\libs\ImageConverter;
+use yii\helpers\filehelper;
 
 /**
  * ProfileBannerImage is responsible for the profile banner images.
