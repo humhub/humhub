@@ -14,6 +14,7 @@ use humhub\modules\file\libs\FileHelper;
 use Yii;
 use yii\base\Component;
 use yii\web\UploadedFile;
+use yii\helpers\FileHelper;
 
 /**
  * StorageManager for File records
@@ -85,7 +86,7 @@ class StorageManager extends Component implements StorageManagerInterface
          * For uploaded jpeg files convert them again - to handle special
          * exif attributes (e.g. orientation)
          */
-        if ($file->type == 'image/jpeg') {
+        if ($file->type === 'image/jpeg') {
             ImageConverter::TransformToJpeg($this->get($variant), $this->get($variant));
         }
     }
@@ -112,13 +113,13 @@ class StorageManager extends Component implements StorageManagerInterface
                 $files = glob($path . DIRECTORY_SEPARATOR . '*');
                 foreach ($files as $file) {
                     if (is_file($file)) {
-                        unlink($file);
+                        FileHelper::unlink($file);
                     }
                 }
                 FileHelper::removeDirectory($path);
             }
         } elseif (is_file($this->get($variant))) {
-            unlink($this->get($variant));
+            FileHelper::unlink($this->get($variant));
         }
     }
 
