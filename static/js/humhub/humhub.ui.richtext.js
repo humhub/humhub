@@ -372,8 +372,8 @@ humhub.module('ui.richtext', function(module, require, $) {
         },
         init: function(feature, options) {
             options.data = feature.emojis;
-            options.insertTpl = "<img data-emoji-name=';${name};' class='atwho-emoji' with='18' height='18' src='" + module.config['emoji.url'] + "${name}.svg' />";
-            options.displayTpl = "<li class='atwho-emoji-entry' data-value=';${name};'><img with='18' height='18' src='" + module.config['emoji.url'] + "${name}.svg' /></li>";
+            options.insertTpl = "<img data-emoji-name=';${name};' class='atwho-emoji' width='18' height='18' src='" + module.config['emoji.url'] + "${name}.svg'>";
+            options.displayTpl = "<li class='atwho-emoji-entry' data-value=';${name};'><img width='18' height='18' src='" + module.config['emoji.url'] + "${name}.svg'></li>";
         },
         parse: function($clone) {
             $clone.find('.atwho-emoji').each(function() {

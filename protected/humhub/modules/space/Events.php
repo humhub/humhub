@@ -44,7 +44,7 @@ class Events extends \yii\base\Object
         $user = $event->sender;
 
         // Check if the user owns some spaces
-        foreach (Membership::GetUserSpaces($user->id) as $space) {
+        foreach (Membership::getUserSpaces($user->id) as $space) {
             if ($space->isSpaceOwner($user->id)) {
                 throw new HttpException(500, Yii::t('SpaceModule.base', 'Could not delete user who is a space owner! Name of Space: {spaceName}', array('spaceName' => $space->name)));
             }
