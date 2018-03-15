@@ -1,14 +1,16 @@
 <?php
 
+use humhub\modules\dashboard\Module;
+use humhub\widgets\TopMenu;
+
 return [
     'id' => 'dashboard',
-    'class' => \humhub\modules\dashboard\Module::className(),
+    'class' => Module::className(),
     'isCoreModule' => true,
-    'events' => array(
-        array('class' => \humhub\widgets\TopMenu::className(), 'event' => \humhub\widgets\TopMenu::EVENT_INIT, 'callback' => array('\humhub\modules\dashboard\Events', 'onTopMenuInit')),
-    ),
+    'events' => [
+        ['class' => TopMenu::className(), 'event' => TopMenu::EVENT_INIT, 'callback' => ['\humhub\modules\dashboard\Events', 'onTopMenuInit']],
+    ],
     'urlManagerRules' => [
         'dashboard' => 'dashboard/dashboard'
     ]
 ];
-?>
