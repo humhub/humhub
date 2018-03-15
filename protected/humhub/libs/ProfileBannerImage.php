@@ -9,6 +9,7 @@
 namespace humhub\libs;
 
 use humhub\modules\file\libs\ImageConverter;
+use yii\helpers\FileHelper;
 
 /**
  * ProfileBannerImage is responsible for the profile banner images.
@@ -29,7 +30,7 @@ class ProfileBannerImage extends ProfileImage
     /**
      * @var String is the guid of user or space
      */
-    protected $guid = "";
+    protected $guid = '';
 
     /**
      * @var Integer width of the Image
@@ -44,7 +45,7 @@ class ProfileBannerImage extends ProfileImage
     /**
      * @var String folder name inside the uploads directory
      */
-    protected $folder_images = "profile_image/banner";
+    protected $folder_images = 'profile_image/banner';
 
     /**
      * @var String name of the default image
@@ -73,8 +74,8 @@ class ProfileBannerImage extends ProfileImage
     {
         $this->delete();
         ImageConverter::TransformToJpeg($file->tempName, $this->getPath('_org'));
-        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), array('width' => 1134, 'mode' => 'max'));
-        ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), array('width' => $this->width, 'height' => $this->height));
+        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), ['width' => 1134, 'mode' => 'max']);
+        ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), ['width' => $this->width, 'height' => $this->height]);
     }
 
     /**
@@ -82,8 +83,8 @@ class ProfileBannerImage extends ProfileImage
      */
     public function delete()
     {
-        @unlink($this->getPath());
-        @unlink($this->getPath('_org'));
+        FileHelper::unlink($this->getPath());
+        FileHelper::unlink($this->getPath('_org'));
     }
 
 }

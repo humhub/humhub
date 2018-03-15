@@ -129,7 +129,7 @@ class ZendLuceneSearch extends Search
         foreach (new \DirectoryIterator($indexPath) as $fileInfo) {
             if ($fileInfo->isDot())
                 continue;
-            unlink($indexPath . DIRECTORY_SEPARATOR . $fileInfo->getFilename());
+            FileHelper::unlink($indexPath . DIRECTORY_SEPARATOR . $fileInfo->getFilename());
         }
 
         $this->index = null;

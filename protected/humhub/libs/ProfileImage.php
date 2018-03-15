@@ -139,7 +139,7 @@ class ProfileImage
             return false;
         }
 
-        @unlink($this->getPath(''));
+        FileHelper::unlink($this->getPath(''));
         imagejpeg($destImage, $this->getPath(''), 100);
     }
 
@@ -165,8 +165,8 @@ class ProfileImage
      */
     public function delete()
     {
-        @unlink($this->getPath());
-        @unlink($this->getPath('_org'));
+        FileHelper::unlink($this->getPath());
+        FileHelper::unlink($this->getPath('_org'));
     }
 
 }
