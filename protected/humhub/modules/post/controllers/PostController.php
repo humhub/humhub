@@ -8,35 +8,30 @@
 
 namespace humhub\modules\post\controllers;
 
+use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\post\models\Post;
+use humhub\modules\post\permissions\CreatePost;
+use humhub\modules\content\widgets\WallCreateContentForm;
 use Yii;
 
 /**
  * @package humhub.modules_core.post.controllers
  * @since 0.5
  */
-class PostController extends \humhub\modules\content\components\ContentContainerController
+class PostController extends ContentContainerController
 {
 
     public function actionPost()
     {
         // Check createPost Permission
-        if (!$this->contentContainer->getPermissionManager()->can(new \humhub\modules\post\permissions\CreatePost())) {
+        if (!$this->contentContainer->getPermissionManager()->can(new CreatePost())) {
             return [];
         }
 
         $post = new Post();
-        $post->message = \Yii::$app->request->post('message');
+        $post->message = Yii::$app->request->post('message');
 
-        /*
-          // Experimental: Auto attach found images urls in message as files
-          if (isset(Yii::app()->params['attachFilesByUrlsToContent']) && Yii::app()->params['attachFilesByUrlsToContent'] == true) {
-          Yii::import('application.modules_core.file.libs.*');
-          RemoteFileDownloader::attachFiles($post, $post->message);
-          }
-         */
-
-        return \humhub\modules\content\widgets\WallCreateContentForm::create($post, $this->contentContainer);
+        return WallCreateContentForm::create($post, $this->contentContainer);
     }
 
     public function actionEdit()
@@ -60,7 +55,10 @@ class PostController extends \humhub\modules\content\components\ContentContainer
             }
         }
 
-        return $this->renderAjax('edit', ['post' => $model, 'edited' => $edited]);
+        return $this->renderAjax('edit', [
+            'post' => $model,
+            'edited' => $edited
+        ]);
     }
 
 }
