@@ -40,6 +40,12 @@ use humhub\modules\user\models\Group;
  * @property integer $default_content_visibility
  * @property string $color
  * @property User $ownerUser the owner of this space
+ *
+ * @mixin \humhub\components\behaviors\GUID
+ * @mixin \humhub\modules\content\components\behaviors\SettingsBehavior
+ * @mixin \humhub\modules\space\behaviors\SpaceModelMembership
+ * @mixin \humhub\modules\user\behaviors\Followable
+ * @mixin \humhub\modules\content\components\behaviors\CompatModuleManager
  */
 class Space extends ContentContainerActiveRecord implements \humhub\modules\search\interfaces\Searchable
 {
