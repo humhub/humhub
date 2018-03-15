@@ -8,6 +8,9 @@
 
 namespace humhub\modules\comment\models;
 
+use Yii;
+use yii\db\ActiveRecord;
+use yii\base\Exception;
 use humhub\modules\user\models\User;
 use humhub\modules\post\models\Post;
 use humhub\modules\content\interfaces\ContentOwner;
@@ -19,9 +22,6 @@ use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\user\models\Mentioning;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\space\models\Space;
-use Yii;
-use yii\db\ActiveRecord;
-use yii\base\Exception;
 
 /**
  * This is the model class for table "comment".
@@ -288,5 +288,4 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
         return false;
     }
-
 }

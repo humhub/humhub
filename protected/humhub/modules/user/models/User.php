@@ -108,7 +108,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             [['language'], 'string', 'max' => 5],
             [['email'], 'unique'],
             [['email'], 'email'],
-            [['email'], 'string', 'max' => 100],
+            [['email'], 'string', 'max' => 254],
             [['email'], 'required', 'when' => function($model, $attribute) use ($userModule) {
                     return $userModule->emailRequired;
                 }],
@@ -319,7 +319,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * Specifies whether the user should appear in user lists or in the search.
-     * 
+     *
      * @since 1.2.3
      * @return boolean is visible
      */
