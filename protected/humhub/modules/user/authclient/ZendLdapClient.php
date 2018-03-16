@@ -1,20 +1,21 @@
 <?php
 
 /**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\authclient;
 
+use humhub\modules\user\libs\LdapHelper;
+use humhub\modules\user\models\ProfileField;
+use humhub\modules\user\models\User;
 use Yii;
+use yii\helpers\ArrayHelper;
+use Zend\Ldap\Exception\LdapException;
 use Zend\Ldap\Ldap;
 use Zend\Ldap\Node;
-use Zend\Ldap\Exception\LdapException;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\ProfileField;
-use humhub\modules\user\libs\LdapHelper;
 
 /**
  * LDAP Authentication
@@ -60,7 +61,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
 
     /**
      * Automatically refresh user profiles on cron run
-     * 
+     *
      * @var boolean|null
      */
     public $autoRefreshUsers = null;
@@ -71,7 +72,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     public $byPassApproval = true;
 
     /**
-     * @var array of attributes which are synced with the user table 
+     * @var array of attributes which are synced with the user table
      */
     public $syncUserTableAttributes = ['username', 'email'];
 
@@ -118,7 +119,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
         }
 
         if ($this->autoRefreshUsers === null) {
-            $this->autoRefreshUsers = (boolean) Yii::$app->getModule('user')->settings->get('auth.ldap.refreshUsers');
+            $this->autoRefreshUsers = (boolean)Yii::$app->getModule('user')->settings->get('auth.ldap.refreshUsers');
         }
     }
 
@@ -156,7 +157,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
 
     /**
      * Find user based on ldap attributes
-     * 
+     *
      * @inheritdoc
      * @see interfaces\PrimaryClient
      * @return User the user
@@ -179,7 +180,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     /**
      * Try to find the user if authclient_id mapping is not set yet (legency)
      * or idAttribute is not specified.
-     * 
+     *
      * @return type
      */
     protected function getUserAuto()
@@ -445,7 +446,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
 
     /**
      * Checks if LDAP is supported
-     * 
+     *
      * @deprecated since version 1.2.3
      * @return boolean is LDAP supported (drivers, modules)
      */
@@ -453,5 +454,17 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     {
         return LdapHelper::isLdapAvailable();
     }
+
+    /**
+     * @param array $normalizeUserAttributeMap normalize user attribute map.
+     */
+    public function setNormalizeUserAttributeMap($normalizeUserAttributeMap)
+    {
+        // This method is called if an additional attribute mapping is specifed in the configuration file
+        // So automatically merge HumHub auto mapping with the given one
+        $this->init(); // defaultNormalizeAttributeMap is available after init
+        parent::setNormalizeUserAttributeMap(ArrayHelper::merge($this->defaultNormalizeUserAttributeMap(), $normalizeUserAttributeMap));
+    }
+
 
 }
