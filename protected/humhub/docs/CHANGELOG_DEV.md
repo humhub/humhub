@@ -41,4 +41,4 @@ HumHub Change Log - v1.3-dev Branch
 - Enh: Added current database name to the "Administration -> Information -> Database" (githubjeka)
 - Chg: Depreciated Instagram OAuthClient & removed (@Felli)
 - Enh: Added random default space color on creation
-
+- Enh: Updated to Yii 2.0.14.2
