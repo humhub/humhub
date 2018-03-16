@@ -35,10 +35,10 @@ class NewMembers extends \yii\base\Widget
      */
     public function init()
     {
-        $inviteAllowed = Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
+        $inviteAllowed = !Yii::$app->user->isGuest && Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
 
         if ($this->showInviteButton === null) {
-            $this->showInviteButton = Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
+            $this->showInviteButton = $inviteAllowed;
         } elseif ($this->showInviteButton && !$inviteAllowed) {
             $this->showInviteButton = false;
         }

@@ -143,6 +143,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
     /**
      * Revokes Membership for this workspace
+     * @throws HttpException
      */
     public function actionRevokeMembership()
     {

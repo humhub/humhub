@@ -216,7 +216,7 @@ class UserController extends Controller
 
     /**
      * Redirect to user profile
-     *  
+     *
      * @param int $id
      * @return \yii\base\Response the response
      * @throws HttpException
@@ -263,7 +263,7 @@ class UserController extends Controller
 
     /**
      * Redirect to user profile
-     *  
+     *
      * @param int $id
      * @return \yii\base\Response the response
      * @throws HttpException
@@ -288,7 +288,7 @@ class UserController extends Controller
 
     /**
      * Determines if the current user can impersonate given user.
-     * 
+     *
      * @param User $user
      * @return boolean can impersonate
      */

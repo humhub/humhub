@@ -243,8 +243,11 @@ abstract class BasePickerField extends InputWidget
     {
         if (!$this->selection && $this->model != null) {
             $attribute = $this->attribute;
-
-            $this->selection = $this->loadItems(Html::getAttributeValue($this->model, $attribute));
+            if(strrpos($attribute, '[') !== false) {
+                $this->selection = $this->loadItems(Html::getAttributeValue($this->model, $attribute));
+            } else {
+                $this->selection = $this->loadItems($this->model->$attribute);
+            }
         }
 
         if (!$this->selection) {

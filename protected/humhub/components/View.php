@@ -46,17 +46,6 @@ class View extends \yii\web\View
         return (($this->_pageTitle) ? $this->_pageTitle . " - " : '') . Yii::$app->name;
     }
 
-    /**
-     * Registers a Javascript variable
-     *
-     * @param string $name
-     * @param string $value
-     */
-    public function registerJsVar($name, $value)
-    {
-        $jsCode = "var " . $name . " = '" . addslashes($value) . "';\n";
-        $this->registerJs($jsCode, View::POS_HEAD, $name);
-    }
 
     public function registerJsConfig($module, $params = null)
     {

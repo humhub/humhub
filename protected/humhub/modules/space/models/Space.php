@@ -69,6 +69,9 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     const USERGROUP_MEMBER = 'member';
     const USERGROUP_USER = 'user';
     const USERGROUP_GUEST = 'guest';
+    // Model Scenarios
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_EDIT = 'edit';
 
     /**
      * @inheritdoc
@@ -118,8 +121,8 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $scenarios = parent::scenarios();
 
-        $scenarios['edit'] = ['name', 'color', 'description', 'tags', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
-        $scenarios['create'] = ['name', 'color', 'description', 'join_policy', 'visibility'];
+        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'tags', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
+        $scenarios[static::SCENARIO_CREATE] = ['name', 'color', 'description', 'join_policy', 'visibility'];
 
         return $scenarios;
     }
