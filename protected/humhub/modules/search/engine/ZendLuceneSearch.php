@@ -191,7 +191,7 @@ class ZendLuceneSearch extends Search
         foreach (explode(' ', $keyword) as $k) {
             // Require a minimum of non-wildcard characters
             if (mb_strlen($k, Yii::$app->charset) >= $this->minQueryTokenLength) {
-                $term = new Term('*$k*');
+                $term = new Term("*$k*");
                 $query->addSubquery(new Wildcard($term), true);
                 $emptyQuery = false;
             }
@@ -275,8 +275,8 @@ class ZendLuceneSearch extends Search
                 $privateSpaceContentQuery->addSubquery(new QueryTerm(new Term(Space::className(), 'containerModel')), true);
                 $privateSpacesListQuery = new MultiTerm();
 
-                foreach (Membership::GetUserSpaces() as $space) {
-                    $privateSpacesListQuery->addTerm(new Term($space->id, 'containerPk'));
+                foreach (Membership::getUserSpaceIds() as $spaceId) {
+                    $privateSpacesListQuery->addTerm(new Term($spaceId, 'containerPk'));
                 }
 
                 $privateSpaceContentQuery->addSubquery($privateSpacesListQuery, true);

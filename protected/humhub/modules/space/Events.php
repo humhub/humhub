@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -17,7 +17,7 @@ use humhub\modules\space\helpers\MembershipHelper;
 
 /**
  * Events provides callbacks for all defined module events.
- * 
+ *
  * @author luke
  */
 class Events extends \yii\base\BaseObject
@@ -37,7 +37,7 @@ class Events extends \yii\base\BaseObject
 
     /**
      * Callback on user soft deletion
-     * 
+     *
      * @param UserEvent $event
      */
     public static function onUserSoftDelete(UserEvent $event)

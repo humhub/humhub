@@ -17,7 +17,7 @@ return array (
   'Public (Members only)' => 'Offentlig (Kun medlemmer)',
   'Public (Registered users only)' => 'Offentlig (Kun registrerte brukere)',
   'Public (Visible)' => 'Offentlig (Synlig)',
-  'Settings' => 'Instillinger',
+  'Settings' => 'Innstillinger',
   'Space' => 'Gruppe',
   'Visible for all (members and guests)' => 'Synlig for alle (Medlemmer og gjester)',
 );

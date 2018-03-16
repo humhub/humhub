@@ -40,7 +40,6 @@ class GroupUsers extends Widget
     {
         $users = $this->group->getUsers()->visible()->limit($this->maxUsers + 1)->joinWith('profile')->orderBy(['profile.lastname' => SORT_ASC])->all();
 
-
         if (count($users) === 0) {
             return Html::tag('small', Yii::t('DirectoryModule.base', 'This group has no members yet.'));
         }
