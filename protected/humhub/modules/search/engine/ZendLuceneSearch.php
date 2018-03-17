@@ -94,7 +94,7 @@ class ZendLuceneSearch extends Search
         }
 
         if (Yii::$app->request->isConsoleRequest) {
-            print '.';
+            print ".";
         }
 
         $index->addDocument($doc);
