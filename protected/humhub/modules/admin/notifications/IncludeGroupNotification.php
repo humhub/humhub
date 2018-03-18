@@ -47,7 +47,7 @@ class IncludeGroupNotification extends BaseNotification
     {
         return \Yii::t(
             'AdminModule.notification',
-            'Notify from {appName}. You were removed from the group.',
+            'Notify from {appName}. You were added to the group.',
             ['appName' => \Yii::$app->name]
         );
     }
