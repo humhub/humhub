@@ -54,7 +54,8 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = ($this->query == null) ? User::find()->joinWith('profile') : $this->query;
+        $query = ($this->query == null) ? User::find() : $this->query;
+        $query->joinWith('profile');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

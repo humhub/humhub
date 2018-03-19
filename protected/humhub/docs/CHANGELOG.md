@@ -23,6 +23,7 @@ migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 - Chg: `PendingRegistrationsController->createCVS` removed
 - Fix: Stream image preview size not changeable
 - Fix: Increased maximum e-mail address length from 45 characters to 254
+- Fix: Group member search by firstname/lastname
 
 
 1.2.4  (December 13, 2017)
