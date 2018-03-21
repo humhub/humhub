@@ -16,18 +16,16 @@ use humhub\modules\content\components\behaviors\CompatModuleManager;
 use humhub\modules\content\models\Content;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Space;
-use humhub\modules\space\models\Membership;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\user\behaviors\ProfileController;
 use humhub\modules\user\behaviors\Followable;
-use humhub\modules\user\authclient\Password;
 use humhub\modules\user\widgets\UserWall;
-use humhub\modules\user\models\Session;
-use humhub\modules\user\models\Auth;
+use humhub\modules\user\authclient\Password as PasswordAuth;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\events\UserEvent;
 use humhub\components\behaviors\GUID;
 use Yii;
+use yii\db\ActiveQuery;
 use yii\web\IdentityInterface;
 use yii\db\Expression;
 use yii\base\Exception;
@@ -287,7 +285,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      * Returns all GroupUser relations of this user as ActiveQuery
-     * @return type
+     * @return \yii\db\ActiveQuery
      */
     public function getGroupUsers()
     {
@@ -296,7 +294,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      * Returns all Group relations of this user as ActiveQuery
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getGroups()
     {
@@ -314,7 +312,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      * Returns all GroupUser relations this user is a manager of as ActiveQuery.
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getManagerGroupsUser()
     {
@@ -323,19 +321,20 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      * Returns all Groups this user is a maanger of as ActiveQuery.
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getManagerGroups()
     {
-        return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers', function($query) {
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])
+            ->via('groupUsers', function($query) {
                     $query->andWhere(['is_group_manager' => '1']);
-                });
+            });
     }
 
     /**
      * Returns all user this user is related as friend as ActiveQuery.
      * Returns null if the friendship module is deactivated.
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getFriends()
     {
@@ -431,14 +430,14 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Before Save Addons
      *
-     * @return type
+     * @return bool
      */
     public function beforeSave($insert)
     {
         if ($insert) {
 
             if ($this->auth_mode == '') {
-                $passwordAuth = new Password();
+                $passwordAuth = new PasswordAuth();
                 $this->auth_mode = $passwordAuth->getId();
             }
 
@@ -463,8 +462,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      * After Save Addons
-     *
-     * @return type
      */
     public function afterSave($insert, $changedAttributes)
     {
@@ -491,7 +488,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             Yii::$app->user->setIdentity($user);
         }
 
-        return parent::afterSave($insert, $changedAttributes);
+        parent::afterSave($insert, $changedAttributes);
     }
 
     public function setUpApproved()
@@ -628,7 +625,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      * Returns an array of informations used by search subsystem.
      * Function is defined in interface ISearchable
      *
-     * @return Array
+     * @return array
      */
     public function getSearchAttributes()
     {
@@ -662,7 +659,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      *
-     * @return type
+     * @return ActiveQuery
      */
     public function getSpaces()
     {
@@ -673,7 +670,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
-     * @return type
+     * @return ActiveQuery
      */
     public function getHttpSessions()
     {
@@ -695,7 +692,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
-     * @return type
+     * @return ActiveQuery
      */
     public function getAuths()
     {
