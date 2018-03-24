@@ -2,6 +2,9 @@
 <IfModule mod_rewrite.c>
 RewriteEngine on
 
+# uncomment if you're using a subdomain example: http://yourdomain.com/humhub
+#RewriteBase /subdomain
+
 # uncomment to force https requests
 #RewriteCond %{HTTPS} !=on
 #RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$ [NC]
