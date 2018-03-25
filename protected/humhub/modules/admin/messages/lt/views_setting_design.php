@@ -18,7 +18,7 @@
  */
 return [
     'Auto format based on user language - Example: {example}' => '',
-    'Fixed format (mm/dd/yyyy) - Example: {example}' => '',
+    'Fixed format (dd/mm/yyyy) - Example: {example}' => '',
     'Alphabetical' => 'Pagal abėcėlę',
     'Firstname Lastname (e.g. John Doe)' => 'Vardas Pavardė (pvz.,  John Doe)',
     'Last visit' => 'Paskutinis apsilankymas',
