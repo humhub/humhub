@@ -183,6 +183,7 @@ $config = [
             'lt' => 'lietuvių kalba',
             'ht' => 'Kreyòl ayisyen',
             'lv' => 'Latvijas',
+            'sl' => 'Slovenščina',
         ],
         'ldap' => [
             // LDAP date field formats
