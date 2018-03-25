@@ -1,5 +1,5 @@
 <?php
 return array (
   'Collapse' => 'Összezár',
-  'Read full post...' => '',
+  'Read full post...' => 'Teljes bejegyzés olvasása...',
 );

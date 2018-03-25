@@ -15,7 +15,7 @@ return array (
   'On this page you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'Auf dieser Seite kannst du die Standardeinstellungen für die Benutzer definieren. Die Einstellungen können vom Benutzer in den Einstellungen seines Kontos angepasst werden.',
   'Only include spaces below to the mail summary' => 'E-Mail-Zusammenfassungen aus folgenden Spaces erstellen',
   'Reset to defaults' => 'Auf Standardeinstellungen zurücksetzen',
-  'Spaces' => 'Spaces',
+  'Spaces' => 'Gruppen',
   'Weekly' => 'Wöchentlich',
   'You will only receive an e-mail if there is something new.' => 'Du erhältst nur E-Mails, wenn Neuigkeiten vorliegen.',
   'Your daily summary' => 'Deine tägliche Übersicht',
