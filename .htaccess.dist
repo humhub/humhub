@@ -2,8 +2,8 @@
 <IfModule mod_rewrite.c>
 RewriteEngine on
 
-# uncomment if you're using a subdomain example: http://yourdomain.com/humhub
-#RewriteBase /subdomain
+# uncomment if you've installed HumHub into a subdirectory relative to your webroot & adjust RewriteBase to match the install point
+#RewriteBase /humhub
 
 # uncomment to force https requests
 #RewriteCond %{HTTPS} !=on
