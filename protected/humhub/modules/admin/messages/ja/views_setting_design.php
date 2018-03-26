@@ -19,7 +19,7 @@
 return [
     'Alphabetical' => '',
     'Auto format based on user language - Example: {example}' => '',
-    'Fixed format (mm/dd/yyyy) - Example: {example}' => '',
+    'Fixed format (dd/mm/yyyy) - Example: {example}' => '',
     'Last visit' => '',
     'Firstname Lastname (e.g. John Doe)' => '姓',
     'Save' => '保存',
