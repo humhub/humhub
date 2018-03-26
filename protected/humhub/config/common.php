@@ -184,6 +184,7 @@ $config = [
             'ht' => 'Kreyòl ayisyen',
             'lv' => 'Latvijas',
             'sl' => 'Slovenščina',
+            'hr' => 'Hrvatski',
         ],
         'ldap' => [
             // LDAP date field formats

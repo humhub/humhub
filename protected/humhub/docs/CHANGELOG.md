@@ -25,6 +25,7 @@ migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 - Fix: Increased maximum e-mail address length from 45 characters to 254
 - Fix: Group member search by firstname/lastname
 - Enh: Added Slovene language
+- Enh: Added Croatian language
 
 
 1.2.4  (December 13, 2017)
