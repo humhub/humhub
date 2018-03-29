@@ -21,7 +21,6 @@ use humhub\widgets\GridView;
             'email',
             'profile.firstname',
             'profile.lastname',
-            'profile.lastname',
             [
                 'header' => Yii::t('AdminModule.views_approval_index', 'Actions'),
                 'class' => 'yii\grid\ActionColumn',
