@@ -26,8 +26,8 @@ migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 - Fix: Group member search by firstname/lastname
 - Enh: Added Slovene language
 - Enh: Added Croatian language
+- Fix: User approval, lastname field is shown twice to admins
 - Chg: `Create a new one.` to `Forgot your password?` (@Felli)
-
 
 1.2.4  (December 13, 2017)
 --------------------------
