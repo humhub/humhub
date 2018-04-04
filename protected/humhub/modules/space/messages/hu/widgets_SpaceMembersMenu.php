@@ -1,7 +1,7 @@
 <?php
 return array (
   'Members' => 'Tagok',
-  'Owner' => '',
-  'Pending Approvals' => '',
-  'Pending Invites' => '',
+  'Owner' => 'Tulajdonos',
+  'Pending Approvals' => 'Függő engedélyezések',
+  'Pending Invites' => 'Függő meghívások',
 );
