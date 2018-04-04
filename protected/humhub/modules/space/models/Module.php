@@ -80,6 +80,12 @@ class Module extends \yii\db\ActiveRecord
         return parent::beforeDelete();
     }
 
+    public static function flushCache()
+    {
+        self::$_states = [];
+    }
+
+
     /**
      * Returns an array of moduleId and the their states (enabled, disabled, force enabled)
      * for given space id. If space id is 0 or empty, the default states will be returned.

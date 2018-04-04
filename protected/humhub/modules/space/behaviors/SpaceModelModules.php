@@ -100,6 +100,12 @@ class SpaceModelModules extends Behavior
         return in_array($moduleId, $this->getEnabledModules());
     }
 
+    public function flushModuleCache()
+    {
+        $this->_enabledModules = null;
+        $this->_availableModules = null;
+    }
+
     /**
      * Enables a Module
      */
