@@ -10,7 +10,7 @@ namespace humhub\modules\user\components;
 
 use yii\web\UrlRuleInterface;
 use yii\base\Object;
-use humhub\modules\user\models\User;
+use humhub\modules\user\models\User as UserModel;
 
 /**
  * User Profile URL Rule
@@ -63,7 +63,7 @@ class UrlRule extends Object implements UrlRuleInterface
         if (substr($pathInfo, 0, 2) == "u/") {
             $parts = explode('/', $pathInfo, 3);
             if (isset($parts[1])) {
-                $user = User::find()->where(['username' => $parts[1]])->one();
+                $user = UserModel::find()->where(['username' => $parts[1]])->one();
                 if ($user !== null) {
                     if (!isset($parts[2]) || $parts[2] == "") {
                         $parts[2] = $this->defaultRoute;
@@ -90,7 +90,7 @@ class UrlRule extends Object implements UrlRuleInterface
             return static::$userUrlMap[$guid];
         }
 
-        $user = User::findOne(['guid' => $guid]);
+        $user = UserModel::findOne(['guid' => $guid]);
         if ($user !== null) {
             static::$userUrlMap[$user->guid] = $user->username;
             return static::$userUrlMap[$user->guid];
