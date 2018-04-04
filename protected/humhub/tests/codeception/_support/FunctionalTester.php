@@ -1,6 +1,9 @@
 <?php
 
+use humhub\modules\friendship\models\Friendship;
+use humhub\modules\space\models\Space;
 use tests\codeception\_pages\LoginPage;
+use humhub\modules\user\models\User;
 
 /**
  * Inherited Methods
@@ -22,8 +25,12 @@ class FunctionalTester extends \Codeception\Actor
 
     use _generated\FunctionalTesterActions;
 
-    public function amAdmin()
+    public function amAdmin($logout = false)
     {
+        if($logout) {
+            $this->logout();
+        }
+
         LoginPage::openBy($this)->login('admin', 'test');
         $this->see('Dashboard');
         $this->see('Administration');
@@ -73,7 +80,86 @@ class FunctionalTester extends \Codeception\Actor
 
     public function logout()
     {
+        $this->amGoingTo('logout');
         \Yii::$app->user->logout(true);
+    }
+
+    public function enableFriendships($enable = true)
+    {
+        Yii::$app->getModule('friendship')->settings->set('enable', $enable);
+    }
+
+    public function switchIdentity($username)
+    {
+        Yii::$app->user->switchIdentity(User::findOne(['username' => $username]));
+    }
+
+    public function amFriendWith($username)
+    {
+        $user = User::findOne(['username' => $username]);
+        Friendship::add($user, Yii::$app->user->identity);
+        Friendship::add(Yii::$app->user->identity, $user);
+    }
+
+    public function setProfileField($field, $value)
+    {
+        $user = Yii::$app->user->identity;
+        $user->profile->setAttributes([$field => $value]);
+        $user->profile->save();
+    }
+
+    public function amOnSpace1($path = '/space/space', $params = [])
+    {
+        $this->amOnSpace(1, $path, $params);
+    }
+
+    public function amOnSpace2($path = '/space/space', $params = [])
+    {
+        $this->amOnSpace(2, $path, $params);
+    }
+
+    public function amOnSpace3($path = '/space/space', $params = [])
+    {
+        $this->amOnSpace(3, $path, $params);
+    }
+
+    public function amOnSpace4($path = '/space/space', $params = [])
+    {
+        $this->amOnSpace(4, $path, $params);
+    }
+
+    public $spaces = [
+        '5396d499-20d6-4233-800b-c6c86e5fa34a',
+        '5396d499-20d6-4233-800b-c6c86e5fa34b',
+        '5396d499-20d6-4233-800b-c6c86e5fa34c',
+        '5396d499-20d6-4233-800b-c6c86e5fa34d',
+    ];
+
+    public function amOnSpace($guid, $path = '/space/space', $params = [])
+    {
+        if(!$path) {
+            $path = '/space/space';
+        }
+
+        if(is_int($guid)) {
+            $guid = $this->spaces[--$guid];
+        }
+
+        $params['sguid'] = $guid;
+
+        $this->amOnRoute($path, $params);
+    }
+
+    public function enableModule($guid, $moduleId)
+    {
+        if(is_int($guid)) {
+            $guid = $this->spaces[--$guid];
+        }
+
+        $space = Space::findOne(['guid' => $guid]);
+        $space->enableModule($moduleId);
+        Yii::$app->moduleManager->flushCache();
+        \humhub\modules\space\models\Module::flushCache();
     }
 
 }

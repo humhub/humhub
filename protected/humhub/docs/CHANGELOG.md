@@ -27,7 +27,7 @@ migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 - Fix: User model namespace issue in `humhub/modules/user/components/UrlRule`
 - Enh: Raised notification over view pagination size to 20
 - Enh: Added `humhub/modules/space/models/Module::flushCache()` and `humhub/modules/space/behaviours/SpaceModelModules::flushCache()` in order to flush the space module cache
-
+- Enh: Added further `FunctionalTester` utilities
 
 1.2.4  (December 13, 2017)
 --------------------------
