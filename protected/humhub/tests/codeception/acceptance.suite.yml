@@ -15,6 +15,7 @@ modules:
         url: 'http://localhost:8080/'
         window_size: false # disabled in ChromeDriver
         port: 9515
+        restart: true
         browser: chrome
         capabilities:
           chromeOptions:
