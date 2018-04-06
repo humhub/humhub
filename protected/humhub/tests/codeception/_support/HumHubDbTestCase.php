@@ -135,7 +135,7 @@ class HumHubDbTestCase extends Test
         ];
     }
 
-    public function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $msg = null)
+    public function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $msg = '')
     {
         $notificationQuery = Notification::find(['class' => $class, 'source_class' => $source->className(), 'source_pk' => $source->getPrimaryKey()]);
 
@@ -146,7 +146,7 @@ class HumHubDbTestCase extends Test
         $this->assertNotEmpty($notificationQuery->all(), $msg);
     }
 
-    public function assertHasActivity($class, ActiveRecord $source, $msg = null)
+    public function assertHasActivity($class, ActiveRecord $source, $msg = '')
     {
         $activity = Activity::findOne(['class' => $class, 'object_model' => $source->className(), 'object_id' => $source->getPrimaryKey()]);
         $this->assertNotNull($activity, $msg);
