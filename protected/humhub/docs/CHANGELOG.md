@@ -31,6 +31,7 @@ migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 - Enh: Raised notification over view pagination size to 20
 - Enh: Added `humhub/modules/space/models/Module::flushCache()` and `humhub/modules/space/behaviours/SpaceModelModules::flushCache()` in order to flush the space module cache
 - Enh: Added further `FunctionalTester` utilities
+- Enh: Added Norwegian Nynorsk language
 
 1.2.4  (December 13, 2017)
 --------------------------
