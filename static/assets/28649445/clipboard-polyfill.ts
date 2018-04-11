@@ -1,13 +1,29 @@
-import {Promise} from "es6-promise";
+import {Promise as PromisePolyfill} from "es6-promise";
 import {DT, suppressDTWarnings} from "./DT";
+
+// Avoid using the Promise polyfill unless needed.
+// https://github.com/lgarron/clipboard-polyfill/issues/59
+var PromiseOrPolyfill = (typeof Promise === "undefined") ? PromisePolyfill : Promise;
 
 // Debug log strings should be short, since they are copmiled into the production build.
 // TODO: Compile debug logging code out of production builds?
 var debugLog: (s: string) => void = function(s: string) {};
 var showWarnings = true;
-var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
+var warnOrLog = function() {
+  (console.warn || console.log).call(arguments);
+}; // IE9 workaround (can't bind console functions).
+var warn = warnOrLog.bind(console, "[clipboard-polyfill]");
 
 var TEXT_PLAIN = "text/plain";
+
+declare global {
+  interface Navigator {
+    clipboard: {
+      writeText?: (s: string) => Promise<void>;
+      readText?: () => Promise<string>;
+    };
+  }
+}
 
 export default class ClipboardPolyfill {
   public static readonly DT = DT;
@@ -29,19 +45,18 @@ export default class ClipboardPolyfill {
         "to suppress this warning.");
     }
 
-    return new Promise<void>((resolve, reject) => {
+    return (new PromiseOrPolyfill((resolve, reject) => {
       // Internet Explorer
       if (seemToBeInIE()) {
         if (writeIE(data)) {
-          resolve()
+          resolve();
         } else {
           reject(new Error("Copying failed, possibly because the user rejected it."));
         }
         return;
       }
 
-      var tracker = execCopy(data);
-      if (tracker.success) {
+      if (execCopy(data)) {
         debugLog("regular execCopy worked");
         resolve();
         return;
@@ -56,16 +71,14 @@ export default class ClipboardPolyfill {
       }
 
       // Fallback 1 for desktop Safari.
-      tracker = copyUsingTempSelection(document.body, data);
-      if (tracker.success) {
+      if (copyUsingTempSelection(document.body, data)) {
         debugLog("copyUsingTempSelection worked");
         resolve();
         return;
       }
 
       // Fallback 2 for desktop Safari. 
-      tracker = copyUsingTempElem(data);
-      if (tracker.success) {
+      if (copyUsingTempElem(data)) {
         debugLog("copyUsingTempElem worked");
         resolve();
         return;
@@ -80,17 +93,20 @@ export default class ClipboardPolyfill {
       }
 
       reject(new Error("Copy command failed."));
-    });
+    })) as Promise<void>;
   }
 
   public static writeText(s: string): Promise<void> {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(s);
+    }
     var dt = new DT();
     dt.setData(TEXT_PLAIN, s);
     return this.write(dt);
   }
 
   public static read(): Promise<DT> {
-    return new Promise((resolve, reject) => {
+    return (new PromiseOrPolyfill((resolve, reject) => {
       if (seemToBeInIE()) {
         readIE().then(
           (s: string) => resolve(DTFromText(s)),
@@ -99,18 +115,21 @@ export default class ClipboardPolyfill {
         return;
       }
       // TODO: Attempt to read using async clipboard API.
-      reject("Read is not supported in your browser.")
-    });
+      reject("Read is not supported in your browser.");
+    })) as Promise<DT>;
   }
 
   public static readText(): Promise<string> {
+    if (navigator.clipboard && navigator.clipboard.readText) {
+      return navigator.clipboard.readText();
+    }
     if (seemToBeInIE()) {
       return readIE();
     }
-    return new Promise((resolve, reject) => {
+    return (new PromiseOrPolyfill((resolve, reject) => {
       // TODO: Attempt to read using async clipboard API.
-      reject("Read is not supported in your browser.")
-    });
+      reject("Read is not supported in your browser.");
+    })) as Promise<string>;
   }
 }
 
@@ -133,7 +152,7 @@ function copyListener(tracker: FallbackTracker, data: DT, e: ClipboardEvent): vo
   e.preventDefault();
 }
 
-function execCopy(data: DT): FallbackTracker {
+function execCopy(data: DT): boolean {
   var tracker = new FallbackTracker();
   var listener = copyListener.bind(this, tracker, data);
 
@@ -146,30 +165,32 @@ function execCopy(data: DT): FallbackTracker {
   } finally {
     document.removeEventListener("copy", listener);
   }
-  return tracker;
+  return tracker.success;
 }
 
-// Create a temporary DOM element to select, so that `execCommand()` is not
-// rejected.
-function copyUsingTempSelection(e: HTMLElement, data: DT): FallbackTracker {
+// Temporarily select a DOM element, so that `execCommand()` is not rejected.
+function copyUsingTempSelection(e: HTMLElement, data: DT): boolean {
   selectionSet(e);
-  var tracker = execCopy(data);
+  var success = execCopy(data);
   selectionClear();
-  return tracker;
+  return success;
 }
 
 // Create a temporary DOM element to select, so that `execCommand()` is not
 // rejected.
-function copyUsingTempElem(data: DT): FallbackTracker {
+function copyUsingTempElem(data: DT): boolean {
   var tempElem = document.createElement("div");
+  // Setting an individual property does not support `!important`, so we set the
+  // whole style instead of just the `-webkit-user-select` property.
+  tempElem.setAttribute("style", "-webkit-user-select: text !important");
   // Place some text in the elem so that Safari has something to select.
   tempElem.textContent = "temporary element";
   document.body.appendChild(tempElem);
 
-  var tracker = copyUsingTempSelection(tempElem, data);
+  var success = copyUsingTempSelection(tempElem, data);
 
   document.body.removeChild(tempElem);
-  return tracker;
+  return success;
 }
 
 // Uses shadow DOM.
@@ -177,13 +198,22 @@ function copyTextUsingDOM(str: string): boolean {
   debugLog("copyTextUsingDOM");
 
   var tempElem = document.createElement("div");
-  var shadowRoot = tempElem.attachShadow({mode: "open"});
-  document.body.appendChild(tempElem);
+  // Setting an individual property does not support `!important`, so we set the
+  // whole style instead of just the `-webkit-user-select` property.
+  tempElem.setAttribute("style", "-webkit-user-select: text !important");
+  // Use shadow DOM if available.
+  var spanParent: Node = tempElem;
+  if (tempElem.attachShadow) {
+    debugLog("Using shadow DOM.");
+    spanParent = tempElem.attachShadow({mode: "open"});
+  }
 
   var span = document.createElement("span");
   span.innerText = str;
   // span.style.whiteSpace = "pre-wrap"; // TODO: Use `innerText` above instead?
-  shadowRoot.appendChild(span);
+
+  spanParent.appendChild(span);
+  document.body.appendChild(tempElem);
   selectionSet(span);
 
   var result = document.execCommand("copy");
@@ -213,7 +243,7 @@ function selectionClear(): void {
 
 function DTFromText(s: string): DT {
   var dt = new DT();
-  dt.setData("text/plain", s);
+  dt.setData(TEXT_PLAIN, s);
   return dt;
 }
 
@@ -236,7 +266,7 @@ function seemToBeInIE(): boolean {
 function writeIE(data: DT): boolean {
   // IE supports text or URL, but not HTML: https://msdn.microsoft.com/en-us/library/ms536744(v=vs.85).aspx
   // TODO: Write URLs to `text/uri-list`? https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types
-  var text = data.getData("text/plain");
+  var text = data.getData(TEXT_PLAIN);
   if (text !== undefined) {
     return (window as IEWindow).clipboardData.setData("Text", text);
   }
@@ -246,14 +276,14 @@ function writeIE(data: DT): boolean {
 
 // Returns "" if the read failed, e.g. because the user rejected the permission.
 function readIE(): Promise<string> {
-  return new Promise((resolve, reject) => {
+  return (new PromiseOrPolyfill((resolve, reject) => {
     var text = (window as IEWindow).clipboardData.getData("Text");
     if (text === "") {
       reject(new Error("Empty clipboard or could not read plain text from clipboard"));
     } else {
       resolve(text);
     }
-  })
+  })) as Promise<string>;
 }
 
 /******** Expose `clipboard` on the global object in browser. ********/

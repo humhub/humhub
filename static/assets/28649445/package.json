@@ -1,6 +1,6 @@
 {
   "name": "clipboard-polyfill",
-  "version": "2.3.0",
+  "version": "2.4.6",
   "description": "A polyfill for the asynchronous clipboard API",
   "main": "build/clipboard-polyfill.js",
   "types": "build/clipboard-polyfill.d.ts",

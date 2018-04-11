@@ -1,5 +1,12 @@
-import { Promise } from "es6-promise";
 import { DT } from "./DT";
+declare global  {
+    interface Navigator {
+        clipboard: {
+            writeText?: (s: string) => Promise<void>;
+            readText?: () => Promise<string>;
+        };
+    }
+}
 export default class ClipboardPolyfill {
     static readonly DT: typeof DT;
     static setDebugLog(f: (s: string) => void): void;

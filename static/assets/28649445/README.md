@@ -11,7 +11,7 @@ As of October 2017, this library is a polyfill for the modern `Promise`-based [a
 Get the source using one of the following:
 
 - Download [`build/clipboard-polyfill.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.js) and include it using a `<script>` tag.
-- `npm install clipboard-polyfill`
+- `npm install clipboard-polyfill` and import as `clipboard`.
 
 ## Write / Copy
 
@@ -97,6 +97,7 @@ Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simp
 - In Microsoft Edge, only the *first* data type you specify is copied to the clipboard ([Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)).
   - `DataTransfer` and `clipbard.DT` keep track of the order in which you set items. If you care which data type Edge copies, call `setData()` with that data type first.
 - On iOS Safari ([WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=177715)) and Internet Explorer, only text copying works.
+  - On iOS Safari, `clipboard-polyfill` needs to use the DOM to copy, so the text will be copied as rich text. `clipboard-polyfill` attempts to use shadow DOM in order to avoid some of the page formatting (e.g. background color) from affecting the copied text. However, such formatting might be copied if shadow DOM is not available.
   - In other browsers, writing copy data that does *not* include the `text/plain` data type will succeed, but also show a console warning:
 
 > clipboard.write() was called without a `text/plain` data type. On some platforms, this may result in an empty clipboard. Call clipboard.suppressWarnings() to suppress this warning.
@@ -107,3 +108,4 @@ Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simp
 - `read()` currently only works in Internet Explorer.
   - Internet Explorer can only read `text/plain` values from the clipboard.
 - Internet Explorer does not have a native `Promise` implementation, so the standalone build file for `clipboard-polyfill` also includes `stefanpenner`'s [`es6-promise` polyfill](https://github.com/stefanpenner/es6-promise). This adds significant size to the build. Please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new) if you're interested in a minimal build without Internet Explorer support.
+- Microsoft Edge (at least version <17) does not write `text/html` to the clipboard using the Windows `CF_HTML` clipboard format ([Edge Bug #14372529](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14372529/)), which prevents other programs (including other browsers) from recognizing the copied HTML data ([issue #73](https://github.com/lgarron/clipboard-polyfill/issues/73)). `clipboard-polyfill` currently does not attempt to work around this issue.

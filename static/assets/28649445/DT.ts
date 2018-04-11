@@ -1,38 +1,38 @@
-const DataType: {[key:string]:string} = {
-  TEXT_PLAIN: "text/plain",
-  TEXT_HTML: "text/html"
-};
-
-const DataTypeLookup: Set<string> = new Set<string>();
-for (var key in DataType) {
-  DataTypeLookup.add(DataType[key]);
-}
+const dataTypes = [
+  "text/plain",
+  "text/html"
+];
 
 // TODO: Dedup with main file?
-var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
+var warnOrLog = function() {
+  (console.warn || console.log).call(arguments);
+}; // IE9 workaround (can't bind console functions).
+var warn = warnOrLog.bind(console, "[clipboard-polyfill]");
 var showWarnings = true;
 export function suppressDTWarnings() {
   showWarnings = false;
 }
 
 export class DT {
-  private m: Map<string, string> = new Map<string, string>();
+  private m: {[key:string]: string} = {};
 
   public setData(type: string, value: string): void {
-    if (showWarnings && !(DataTypeLookup.has(type))) {
+    if (showWarnings && dataTypes.indexOf(type) === -1) {
       warn("Unknown data type: " + type, "Call clipboard.suppressWarnings() "+
         "to suppress this warning.");
     }
 
-    this.m.set(type, value);
+    this.m[type] = value;
   }
 
   public getData(type: string): string | undefined {
-    return this.m.get(type);
+    return this.m[type];
   }
 
   // TODO: Provide an iterator consistent with DataTransfer.
   public forEach(f: (value: string, key: string) => void): void {
-    return this.m.forEach(f);
+    for (var k in this.m) {
+      f(this.m[k], k);
+    }
   }
 }
