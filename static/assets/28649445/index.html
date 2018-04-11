@@ -6,7 +6,8 @@
   <link rel="stylesheet" href="index.css">
   <script src="build/clipboard-polyfill.js"></script>
   <script>
-    clipboard.setDebugLog((console.info || console.log).bind(console));
+    var infoOrLog = function() {(console.info || console.log).call(arguments);}; // IE9 workaround (can't bind console functions).
+    clipboard.setDebugLog(infoOrLog.bind(console));
   </script>
   <style>
     .editable {
@@ -80,9 +81,9 @@
   });
   </script>
 
-  <h2>Paste</h2>
+  <h2>Paste Text</h2>
 
-  <button id="paste">Paste</button>
+  <button id="paste">Paste Text</button>
   <span id="paste-result"></span>
   <script>
   document.getElementById("paste").addEventListener("click", function() {

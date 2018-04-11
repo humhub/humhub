@@ -22,8 +22,10 @@ Platforms tested:
 |`getData()` in listener shows if `setData()` worked|✅|✅|⚠️ ²|❌ ³|✅|
 |Copies all types set with `setData()`|✅|✅|✅|❌ ⁴|✅|
 |`exec` reports success correctly|✅|✅|⚠️ ²|❌ ⁵|✅|
-|`contenteditable` does not break document seleciton|❌|❌|❌|✅|✅|
+|`contenteditable` does not break document selection|❌|❌|❌|✅|✅|
+|`user-select: none` does not break document selection|✅(Cr 64)|❌|❌|✅(Edge 16)|✅ (FF 57)|
 |Can construct `new DataTransfer()`|✅|❌|❌|❌|❌|
+|Writes `CF_HTML` on Windows|✅|N/A|N/A|❌⁶|✅|
 
 † Here, we are only specifically interested in the case where the handler is called directly in response to a user gesture. I didn't test for behaviour when there is no user gesture.
 
@@ -32,6 +34,7 @@ Platforms tested:
 - ³ [Edge Bug #14110451](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14110451/)
 - ⁴ [Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)
 - ⁵ [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)
+- ⁶ [Edge Bug #14372529](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14372529/), [GitHub issue #73](https://github.com/lgarron/clipboard-polyfill/issues/73)
 
 ## `supported` always returns true
 
@@ -115,6 +118,20 @@ Consider the following code:
 This fails in Chrome and Safari if the last content in the DOM is the following:
 
     <div contenteditable="true" class="editable"></div>
+
+## `user-select: none` does not break document selection
+
+In Safari, the DOM selection API does not allow Javascript to select parts of the DOM that are not selectable by the user due to `-webkit-user-select: none`.
+
+Reported at https://github.com/lgarron/clipboard-polyfill/issues/75
+
+As a workaround for Safari, it is possible to select an element nested unside an unselectable element that explicitly uses `-webkit-user-select: text` to enable selection. It seems that this [is the specced behaviour](https://drafts.csswg.org/css-ui-4/#valdef-user-select-none), although e.g. [Firefox <21](https://developer.mozilla.org/en-US/docs/Web/CSS/user-select) had a different behaviour.
+
+## Writes `CF_HTML` on Windows
+
+In Edge 16 and earlier, `clipboardData.setData("text/html", data)` does not properly write HTML to the clipbard in the Windows `CF_HTML` clipboard format.
+
+Reported at https://github.com/lgarron/clipboard-polyfill/issues/73
 
 ## Can construct `new DataTransfer()` (see issue 6 below)
 

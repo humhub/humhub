@@ -143,6 +143,66 @@ export class SelectTempElem extends Test {
   }
 }
 
+export class SelectTempElemUserSelectNone extends Test {
+  private tempElem: HTMLElement;
+  setup() {
+    this.tempElem = document.createElement("pre");
+    this.tempElem.style["user-select"] = "none";
+    this.tempElem.style["-webkit-user-select"] = "none";
+    this.tempElem.style["-moz-user-select"] = "none";
+    this.tempElem.style["-ms-user-select"] = "none";
+    this.tempElem.textContent = "SelectTempElemUserSelectNone";
+    document.body.appendChild(this.tempElem);
+    this.select(this.tempElem);
+  }
+  copyListener(e: ClipboardEvent) {
+    console.log("copyListener", "SelectTempElemUserSelectNone");
+    this.results["pre_setData.text_plain"] = e.clipboardData.getData("text/plain");
+    e.clipboardData.setData("text/plain", "SelectTempElemUserSelectNone");
+    this.results["post_setData.text_plain"] = e.clipboardData.getData("text/plain");
+    e.preventDefault();
+  }
+  teardown() {
+    this.clearSelection();
+    document.body.removeChild(this.tempElem);
+  }
+}
+
+export class SelectTempElemUserSelectNoneNested extends Test {
+  private tempElem: HTMLElement;
+  private tempElem2: HTMLElement;
+  setup() {
+
+    this.tempElem2 = document.createElement("pre");
+    this.tempElem2.style["user-select"] = "text";
+    this.tempElem2.style["-webkit-user-select"] = "text";
+    this.tempElem2.style["-moz-user-select"] = "text";
+    this.tempElem2.style["-ms-user-select"] = "text";
+    this.tempElem2.textContent = "SelectTempElemUserSelectNoneNested";
+
+    this.tempElem = document.createElement("pre");
+    this.tempElem.style["user-select"] = "none";
+    this.tempElem.style["-webkit-user-select"] = "none";
+    this.tempElem.style["-moz-user-select"] = "none";
+    this.tempElem.style["-ms-user-select"] = "none";
+    this.tempElem.appendChild(this.tempElem2);
+    document.body.appendChild(this.tempElem);
+
+    this.select(this.tempElem2);
+  }
+  copyListener(e: ClipboardEvent) {
+    console.log("copyListener", "SelectTempElemUserSelectNoneNested");
+    this.results["pre_setData.text_plain"] = e.clipboardData.getData("text/plain");
+    e.clipboardData.setData("text/plain", "SelectTempElemUserSelectNoneNested");
+    this.results["post_setData.text_plain"] = e.clipboardData.getData("text/plain");
+    e.preventDefault();
+  }
+  teardown() {
+    this.clearSelection();
+    document.body.removeChild(this.tempElem);
+  }
+}
+
 export class CopyTempElem extends Test {
   private tempElem: Element;
   setup() {
