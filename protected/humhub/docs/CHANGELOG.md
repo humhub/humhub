@@ -1,7 +1,7 @@
 HumHub Change Log
 =================
 
-1.2.5  (Not released)
+1.2.5  (April 11, 2018)
 ---------------------
 
 When you customized or used the createCVS method of PendingRegistrationsController please 
