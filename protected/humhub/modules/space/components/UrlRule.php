@@ -28,7 +28,7 @@ class UrlRule extends Object implements UrlRuleInterface
     /**
      * @var array map with space guid/url pairs
      */
-    protected static $spaceUrlMap = [];
+    public static $spaceUrlMap = [];
 
     /**
      * @inheritdoc
@@ -81,7 +81,7 @@ class UrlRule extends Object implements UrlRuleInterface
 
     /**
      * Gets space url name by given guid
-     * 
+     *
      * @param string $guid
      * @return string|null the space url part
      */

@@ -32,6 +32,7 @@ migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 - Enh: Added `humhub/modules/space/models/Module::flushCache()` and `humhub/modules/space/behaviours/SpaceModelModules::flushCache()` in order to flush the space module cache
 - Enh: Added further `FunctionalTester` utilities
 - Enh: Added Norwegian Nynorsk language
+- Fix #3009: Change the Space URL raises 404
 
 1.2.4  (December 13, 2017)
 --------------------------
