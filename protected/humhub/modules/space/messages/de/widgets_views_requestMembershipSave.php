@@ -2,5 +2,5 @@
 return array (
   'Close' => 'Schließen',
   'Request workspace membership' => 'Space-Mitgliedschaft beantragen',
-  'Your request was successfully submitted to the workspace administrators.' => 'Dein Antrag wurde die Space-Administration übermittelt.',
+  'Your request was successfully submitted to the workspace administrators.' => 'Deine Anfrage wurde erfolgreich an die Space-Administratoren weitergeleitet.',
 );
