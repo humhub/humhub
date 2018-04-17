@@ -6,7 +6,7 @@ return array (
   'Initializing database...' => 'Initialisiere Datenbank...',
   'Next' => 'Weiter',
   'Ohh, something went wrong!' => 'Ooops! Irgendwas lief schief.',
-  'The name of the database you want to run HumHub in.' => 'Name der Datenbank die von HumHub genutzt werden soll.',
+  'The name of the database you want to run HumHub in.' => 'Name der Datenbank, die von HumHub genutzt werden soll.',
   'Your MySQL password.' => 'Dein MySQL Passwort.',
   'Your MySQL username' => 'Dein MySQL Benutzername.',
 );

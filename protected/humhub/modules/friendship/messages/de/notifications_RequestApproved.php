@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Friendship Approved' => 'Freundschaftsanfrage Bestätigt',
+  'Friendship Approved' => 'Freundschaftsanfrage bestätigt',
 );

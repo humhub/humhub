@@ -2,6 +2,7 @@
 
 namespace tests\codeception\_support;
 
+use humhub\modules\friendship\models\Friendship;
 use Yii;
 use yii\base\Event;
 use yii\db\ActiveRecord;
@@ -170,6 +171,37 @@ class HumHubDbTestCase extends Test
         } else {
             Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 0);
         }
+    }
+
+    public function setProfileField($field, $value, $user)
+    {
+        if(is_int($user)) {
+            $user = User::findOne($user);
+        } else if (is_string($user)) {
+            $user = User::findOne(['username' => $user]);
+        } else if (!$user) {
+            $user = Yii::$app->user->identity;
+        }
+
+        $user->profile->setAttributes([$field => $value]);
+        $user->profile->save();
+    }
+
+    public function becomeFriendWith($username)
+    {
+        $user = User::findOne(['username' => $username]);
+        Friendship::add($user, Yii::$app->user->identity);
+        Friendship::add(Yii::$app->user->identity, $user);
+    }
+
+    public function follow($username)
+    {
+        User::findOne(['username' => $username])->follow();
+    }
+
+    public function enableFriendships($enable = true)
+    {
+        Yii::$app->getModule('friendship')->settings->set('enable', $enable);
     }
 
     public function setGroupPermission($groupId, $permission, $state = BasePermission::STATE_ALLOW)

@@ -1,10 +1,10 @@
 <?php
 return array (
   'About' => 'Benutzerdetails',
-  'Add purchased module by licence key' => 'Erworbene Module per Linzenschlüssel hinzufügen',
-  'Admin' => 'Administrator',
+  'Add purchased module by licence key' => 'Erworbenes Modul per Linzenschlüssel hinzufügen',
+  'Admin' => 'Admin',
   'Administration' => 'Administration',
-  'Approval' => 'Bestätigung',
+  'Approval' => 'Genehmigung',
   'Authentication' => 'Authentifizierung',
   'Back to overview' => 'Zurück zur Übersicht',
   'Back to user overview' => 'Zurück zur Benutzerübersicht',
@@ -18,7 +18,7 @@ return array (
   'Invite' => 'Einladen',
   'Invited by' => 'Eingeladen von',
   'Logging' => 'Protokollierung',
-  'Mailing' => 'E-Mails',
+  'Mailing' => 'Mailing',
   'Modules' => 'Module',
   'OEmbed providers' => 'OEmbed-Provider',
   'Pending user registrations' => 'Ausstehende Benutzerregistrierungen',
