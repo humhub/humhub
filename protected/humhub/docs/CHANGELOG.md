@@ -1,8 +1,14 @@
 HumHub Change Log
 =================
 
+1.2.6  (Unreleased)
+-----------------------
+
+- Fix #3108: Fixed cronjob examples with leading zero (acs-ferreira)
+
+
 1.2.5  (April 11, 2018)
----------------------
+-----------------------
 
 When you customized or used the createCVS method of PendingRegistrationsController please 
 migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
