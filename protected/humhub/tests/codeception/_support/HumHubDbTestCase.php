@@ -2,6 +2,9 @@
 
 namespace tests\codeception\_support;
 
+use Yii;
+use yii\base\Event;
+use yii\db\ActiveRecord;
 use Codeception\Test\Unit;
 use humhub\libs\BasePermission;
 use humhub\modules\activity\models\Activity;
@@ -9,9 +12,7 @@ use humhub\modules\content\components\ContentContainerPermissionManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\User;
-use Yii;
-use yii\base\Event;
-use yii\db\ActiveRecord;
+use humhub\modules\friendship\models\Friendship;
 
 /**
  * Inherited Methods
@@ -129,7 +130,7 @@ class HumHubDbTestCase extends Unit
         ];
     }
 
-    public function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $msg = null)
+    public function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $msg = '')
     {
         $notificationQuery = Notification::find()->where([
             'class' => $class,
@@ -144,7 +145,7 @@ class HumHubDbTestCase extends Unit
         $this->assertNotEmpty($notificationQuery->all(), $msg);
     }
 
-    public function assertHasActivity($class, ActiveRecord $source, $msg = null)
+    public function assertHasActivity($class, ActiveRecord $source, $msg = '')
     {
         $activity = Activity::findOne([
             'class' => $class,
@@ -197,6 +198,37 @@ class HumHubDbTestCase extends Unit
             ->getModule('user')
             ->settings
             ->set('auth.allowGuestAccess', (int)$allow);
+    }
+
+    public function setProfileField($field, $value, $user)
+    {
+        if(is_int($user)) {
+            $user = User::findOne($user);
+        } else if (is_string($user)) {
+            $user = User::findOne(['username' => $user]);
+        } else if (!$user) {
+            $user = Yii::$app->user->identity;
+        }
+
+        $user->profile->setAttributes([$field => $value]);
+        $user->profile->save();
+    }
+
+    public function becomeFriendWith($username)
+    {
+        $user = User::findOne(['username' => $username]);
+        Friendship::add($user, Yii::$app->user->identity);
+        Friendship::add(Yii::$app->user->identity, $user);
+    }
+
+    public function follow($username)
+    {
+        User::findOne(['username' => $username])->follow();
+    }
+
+    public function enableFriendships($enable = true)
+    {
+        Yii::$app->getModule('friendship')->settings->set('enable', $enable);
     }
 
     public function setGroupPermission($groupId, $permission, $state = BasePermission::STATE_ALLOW)

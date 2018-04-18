@@ -9,5 +9,5 @@ return array (
   'Select Groups' => 'Gruppen auswählen',
   'Unapproved' => 'Nicht freigegeben',
   'User not found!' => 'Benutzer nicht gefunden!',
-  'You cannot delete yourself!' => 'Du darfst Dich nicht selbst löschen.',
+  'You cannot delete yourself!' => 'Du kannst dich nicht selbst löschen!',
 );

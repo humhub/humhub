@@ -1,6 +1,6 @@
 <?php
 return array (
-  'End guide' => 'Fim do Guia',
-  'Next »' => 'Próximo >>',
-  '« Prev' => '<< Anterior',
+  'End guide' => 'Bemutató befejezése',
+  'Next »' => 'Előre >>',
+  '« Prev' => '<< Vissza',
 );

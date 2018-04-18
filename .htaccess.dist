@@ -2,6 +2,9 @@
 <IfModule mod_rewrite.c>
 RewriteEngine on
 
+# uncomment if you've installed HumHub into a subdirectory relative to your webroot & adjust RewriteBase to match the install point
+#RewriteBase /humhub
+
 # uncomment to force https requests
 #RewriteCond %{HTTPS} !=on
 #RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$ [NC]

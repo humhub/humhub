@@ -1,6 +1,6 @@
 <?php
 return array (
   '<strong>Modify</strong> your title image' => '',
-  'Close' => 'Zatvori',
+  'Close' => 'Bezár',
   'Save' => 'Mentés',
 );

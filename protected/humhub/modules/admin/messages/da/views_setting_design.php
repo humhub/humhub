@@ -18,7 +18,7 @@
  */
 return [
     'Auto format based on user language - Example: {example}' => '',
-    'Fixed format (mm/dd/yyyy) - Example: {example}' => '',
+    'Fixed format (dd/mm/yyyy) - Example: {example}' => '',
     'Alphabetical' => 'Alfabetisk',
     'Firstname Lastname (e.g. John Doe)' => 'Fornavn Efternavn (E.G. John Doe)',
     'Last visit' => 'Seneste besøg',

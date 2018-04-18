@@ -1,7 +1,7 @@
 HumHub Change Log
 =================
 
-1.2.5  (Not released)
+1.2.5  (April 11, 2018)
 ---------------------
 
 When you customized or used the createCVS method of PendingRegistrationsController please 
@@ -23,7 +23,16 @@ migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 - Chg: `PendingRegistrationsController->createCVS` removed
 - Fix: Stream image preview size not changeable
 - Fix: Increased maximum e-mail address length from 45 characters to 254
-
+- Fix: Group member search by firstname/lastname
+- Enh: Added Slovene language
+- Enh: Added Croatian language
+- Fix: User approval, lastname field is shown twice to admins
+- Fix: User model namespace issue in `humhub/modules/user/components/UrlRule`
+- Enh: Raised notification over view pagination size to 20
+- Enh: Added `humhub/modules/space/models/Module::flushCache()` and `humhub/modules/space/behaviours/SpaceModelModules::flushCache()` in order to flush the space module cache
+- Enh: Added further `FunctionalTester` utilities
+- Enh: Added Norwegian Nynorsk language
+- Fix #3009: Change the Space URL raises 404
 
 1.2.4  (December 13, 2017)
 --------------------------
