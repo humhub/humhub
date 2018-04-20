@@ -114,6 +114,10 @@ class RichTextCompatibilityParser
                 $name = ($container) ? $container->name : 'unknown';
             }
 
+            if ($container === null) {
+                return '';
+            }
+
             return '[' . Html::encode($name) . '](mention:' . $hit[2] . ' "' . $container->getUrl() . '")';
         }, $text);
     }
