@@ -14,7 +14,6 @@ use humhub\modules\file\libs\FileHelper;
 use Yii;
 use yii\base\Component;
 use yii\web\UploadedFile;
-use yii\helpers\FileHelper;
 
 /**
  * StorageManager for File records
