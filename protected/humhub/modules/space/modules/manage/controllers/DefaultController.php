@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\controllers;
 
+use humhub\modules\space\components\UrlRule;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\models\AdvancedSettingsSpace;
@@ -62,6 +63,7 @@ class DefaultController extends Controller
 
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
             $this->view->saved();
+            unset(UrlRule::$spaceUrlMap[$space->guid]);
             return $this->redirect($space->createUrl('advanced'));
         }
 

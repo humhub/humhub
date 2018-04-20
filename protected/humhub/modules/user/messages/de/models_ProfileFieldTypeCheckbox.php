@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Checkbox field options' => 'Markierungsfeld Optionen',
+  'Checkbox field options' => 'Kontrollkästchenfeld-Optionen',
   'Default value' => 'Standardwert',
 );

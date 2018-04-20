@@ -7,6 +7,6 @@ return array (
   'Maximum number of pinned items reached!
 
 You can pin to top only two items at once.
-To however pin this item, unpin another before!' => 'Das Maximum der Beiträge, die angeftet werden können, ist erreicht! Du kannst nur zwei Einträge gleichzeitig anheften. Um den Beitrag anzufheten, bitte vorher die Anheftung eines anderen Beitrages aufheben.',
+To however pin this item, unpin another before!' => 'Maximale Anzahl der angehefteten Elemente erreicht! Du kannst nur zwei Elemente gleichzeitig anheften. Um dieses Element dennoch anzuheften, löse vorher ein anderes! ',
   'This action is disabled!' => 'Diese Aktion ist deaktiviert!',
 );

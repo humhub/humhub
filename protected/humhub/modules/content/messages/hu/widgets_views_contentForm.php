@@ -1,7 +1,7 @@
 <?php
 return array (
   'Add a member to notify' => 'Értesítendő tag hozzáadása',
-  'Content visibility' => '',
+  'Content visibility' => 'Tartalom láthatósága',
   'Make private' => 'Legyen privát',
   'Make public' => 'Legyen nyilvános',
   'Notify members' => 'Megadott tagok értesítése',

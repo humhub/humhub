@@ -7,7 +7,7 @@ return array (
   'Description' => 'Beschreibung',
   'Email' => 'E-Mail Adresse',
   'Language' => 'Sprache',
-  'Last Login' => 'Zuletzt angemeldet am',
+  'Last Login' => 'Letzter Login',
   'Manager' => 'Manager',
   'Name' => 'Name',
   'Show At Directory' => 'Im Verzeichnis anzeigen',

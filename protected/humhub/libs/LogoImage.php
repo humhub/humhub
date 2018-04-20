@@ -81,7 +81,7 @@ class LogoImage
     /**
      * Sets a new logo image by given temp file
      *
-     * @param CUploadedFile $file
+     * @param UploadedFile $file
      */
     public function setNew(UploadedFile $file)
     {
@@ -101,7 +101,10 @@ class LogoImage
      */
     public function delete()
     {
-        FileHelper::unlink($this->getPath());
+        $path = $this->getPath();
+        if(file_exists($path)) {
+            FileHelper::unlink($this->getPath());
+        }
     }
 
 }

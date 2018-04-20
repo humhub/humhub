@@ -28,7 +28,7 @@ class PostController extends ContentContainerController
             return [];
         }
 
-        $post = new Post();
+        $post = new Post($this->contentContainer);
         $post->message = Yii::$app->request->post('message');
 
         return WallCreateContentForm::create($post, $this->contentContainer);
