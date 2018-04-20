@@ -54,7 +54,7 @@ class Invite extends ActiveRecord
             [['token'], 'unique'],
             [['firstname', 'lastname'], 'string', 'max' => 255],
             [['source', 'token'], 'string', 'max' => 254],
-            [['email', 'string', 'max' => 150]],
+            [['email'], 'string', 'max' => 150],
             [['language'], 'string', 'max' => 10],
             [['email'], 'required'],
             [['email'], 'unique'],
