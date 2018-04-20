@@ -126,7 +126,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             [['language'], 'string', 'max' => 5],
             [['email'], 'unique'],
             [['email'], 'email'],
-            [['email'], 'string', 'max' => 254],
+            [['email'], 'string', 'max' => 150],
             [['email'], 'required', 'when' => function($model, $attribute) use ($userModule) {
                     return $userModule->emailRequired;
                 }],

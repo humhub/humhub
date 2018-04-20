@@ -42,3 +42,4 @@ HumHub Change Log - v1.3-dev Branch
 - Chg: Depreciated Instagram OAuthClient & removed (@Felli)
 - Enh: Added random default space color on creation
 - Enh: Updated to Yii 2.0.14.2
+- Chg: Reduced email length to 150 chars to support utf8mb4 charset 
