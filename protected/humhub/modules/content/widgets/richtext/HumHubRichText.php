@@ -11,6 +11,7 @@ namespace humhub\modules\content\widgets\richtext;
 
 use humhub\libs\ParameterEvent;
 use humhub\models\UrlOembed;
+use humhub\modules\content\assets\LegacyRichTextAsset;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Mentioning;
 use humhub\modules\user\models\User;
@@ -32,6 +33,8 @@ class HumHubRichText extends AbstractRichText
      */
     public function run()
     {
+        LegacyRichTextAsset::register($this->view);
+
         if ($this->encode) {
             $this->text = Html::encode($this->text);
         }
