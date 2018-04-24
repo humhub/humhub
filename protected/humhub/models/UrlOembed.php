@@ -181,7 +181,7 @@ class UrlOembed extends ActiveRecord
         curl_setopt($curl, CURLOPT_TIMEOUT, 15);
 
         // Not available when open_basedir or safe_mode is set.
-        if (!function_exists('ini_get') || !ini_get('open_basedir')) || !ini_get('safe_mode')) {
+        if (!function_exists('ini_get') || !ini_get('open_basedir') || !ini_get('safe_mode')) {
             curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         }
         
