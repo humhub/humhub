@@ -7,13 +7,17 @@
  *
  */
 
-use humhub\modules\dashboard\widgets\Sidebar;
-use humhub\modules\admin\Events;
-use humhub\commands\CronController;
+use humhub\modules\content\widgets\WallEntryControls;
+use humhub\modules\space\widgets\HeaderControlsMenu;
+use humhub\modules\topic\Events;
+use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 
 return [
     'id' => 'topic',
-    'class' => \humhub\modules\topic\Module::className(),
+    'class' => \humhub\modules\topic\Module::class,
     'isCoreModule' => true,
-    'events' => [],
+    'events' => [
+        ['class' => WallEntryControls::class, 'event' => WallEntryControls::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryControlsInit']],
+        ['class' => DefaultMenu::class, 'event' => DefaultMenu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceSettingMenuInit']],
+    ],
 ];

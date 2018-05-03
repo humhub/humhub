@@ -55,7 +55,7 @@ humhub.module('content.form', function(module, require, $) {
             that.$.find(".preferences, .fileinput-button").show();
             $('.contentForm_options .preferences, .fileinput-button').show();
             if(!response.errors) {
-                event.trigger('humhub:modules:content:newEntry', response.output);
+                event.trigger('humhub:content:newEntry', response.output);
                 that.resetForm();
             } else {
                 that.handleError(response);

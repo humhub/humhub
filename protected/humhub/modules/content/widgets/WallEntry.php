@@ -174,8 +174,8 @@ class WallEntry extends Widget
      * 
      * [MyWidget::class, [...], [...]]
      * 
-     * If an $editRoute is set this function will include an edit button.
-     * The edit logic can be changed by changing the $editMode.
+     * If an [[editRoute]] is set this function will include an edit button.
+     * The edit logic can be changed by changing the [[editMode]].
      * 
      * @return array
      * @since 1.2

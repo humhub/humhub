@@ -1,5 +1,14 @@
 <?php
  use humhub\libs\Html;
+
+ /* @var $success string */
+ /* @var $saved boolean */
+ /* @var $error string */
+ /* @var $warn string */
+ /* @var $info string */
+ /* @var $script string */
+ /* @var $reload boolean*/
+
 ?>
 <div class="modal-dialog modal-dialog-extra-small animated pulse" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-content">
@@ -27,6 +36,12 @@
         <script>
             $(function () {
                 humhub.modules.ui.modal.global.close();
+                <?php if($script) : ?>
+                    <?= $script ?>
+                <?php endif; ?>
+                <?php if($reload) : ?>
+                    humhub.modules.client.reload();
+                <?php endif; ?>
             });
         </script>
     </div>

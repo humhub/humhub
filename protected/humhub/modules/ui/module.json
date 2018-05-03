@@ -1,0 +1,9 @@
+{
+    "id": "ui",
+    "name": "User Interface",
+    "description": "UI widgets and utils",
+    "keywords": [
+        "user interface"
+    ],
+    "version": "1.0"
+}

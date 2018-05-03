@@ -15,25 +15,28 @@ humhub.module('content', function (module, require, $) {
     var modal = require('ui.modal');
 
     var DATA_CONTENT_KEY = "content-key";
-    var DATA_CONTENT_EDIT_URL = "content-edit-url";
-    var DATA_CONTENT_SAVE_SELECTOR = "[data-content-save]";
     var DATA_CONTENT_DELETE_URL = "content-delete-url";
 
 
     Component.addSelector('content-component');
 
-    var Content = function (container) {
-        Component.call(this, container);
-    };
+    var Content = Component.extend('Content');
 
-    object.inherits(Content, Component);
+    /**
+     * Abstract loader function which can be used to activate or deactivate a
+     * loader within a content entry.
+     *
+     * If $show is undefined or true the loader animation should be rendered
+     * otherwise it should be removed.
+     *
+     * @param {type} $show
+     * @returns {undefined}
+     */
+    Content.prototype.loader = function ($show) { /* Abstract loader function */ };
+    Content.prototype.edit = function (successHandler) {/** Abstract edit function **/};
 
     Content.getNodeByKey = function (key) {
         return $('[data-content-key="' + key + '"]');
-    };
-
-    Content.prototype.actions = function () {
-        return ['create', 'edit', 'delete'];
     };
 
     Content.prototype.getKey = function () {
@@ -47,10 +50,6 @@ humhub.module('content', function (module, require, $) {
         }
 
         this.edit(addContentHandler);
-    };
-
-    Content.prototype.edit = function (successHandler) {
-        // Currently there is no need for a default implementation
     };
 
     Content.prototype.delete = function (options) {
@@ -89,20 +88,6 @@ humhub.module('content', function (module, require, $) {
                 }
             });
         });
-    };
-
-    /**
-     * Abstract loader function which can be used to activate or deactivate a
-     * loader within a content entry.
-     * 
-     * If $show is undefined or true the loader animation should be rendered
-     * otherwise it should be removed.
-     * 
-     * @param {type} $show
-     * @returns {undefined}
-     */
-    Content.prototype.loader = function ($show) {
-        // Has to be overwritten by content type
     };
 
     Content.prototype.remove = function () {

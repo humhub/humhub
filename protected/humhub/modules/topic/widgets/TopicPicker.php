@@ -8,10 +8,9 @@
 
 namespace humhub\modules\topic\widgets;
 
-
-use humhub\modules\topic\permissions\AddTopic;
 use Yii;
-use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\topic\permissions\AddTopic;
 use humhub\modules\content\widgets\ContentTagPicker;
 use humhub\modules\topic\models\Topic;
 
@@ -32,21 +31,18 @@ class TopicPicker extends ContentTagPicker
      */
     public $showDefaults = true;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
-        if(!$this->contentContainer) {
-            $controller = Yii::$app->controller;
-            if($controller instanceof ContentContainerController) {
-                $this->contentContainer = $controller->contentContainer;
-            }
-        }
-
+        $this->contentContainer = $this->contentContainer ? $this->contentContainer : ContentContainerHelper::getCurrent();
 
         if(!$this->url && $this->contentContainer) {
             $this->url = $this->contentContainer->createUrl('/topic/topic/search');
         }
 
-        if(!$this->addOptions === false) {
+        if($this->addOptions !== false) {
             $this->addOptions = $this->contentContainer->can(AddTopic::class);
         }
 

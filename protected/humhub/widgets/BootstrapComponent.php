@@ -142,11 +142,11 @@ abstract class BootstrapComponent extends Widget
      */
     public function right($right = true)
     {
-        if($right) {
-            Html::removeCssClass($this->htmlOptions,'pull-left');
+        if ($right) {
+            Html::removeCssClass($this->htmlOptions, 'pull-left');
             Html::addCssClass($this->htmlOptions, 'pull-right');
         } else {
-            Html::removeCssClass($this->htmlOptions,'pull-right');
+            Html::removeCssClass($this->htmlOptions, 'pull-right');
         }
 
         return $this;
@@ -158,11 +158,11 @@ abstract class BootstrapComponent extends Widget
      */
     public function left($left = true)
     {
-        if($left) {
-            Html::removeCssClass($this->htmlOptions,'pull-right');
+        if ($left) {
+            Html::removeCssClass($this->htmlOptions, 'pull-right');
             Html::addCssClass($this->htmlOptions, 'pull-left');
         } else {
-            Html::removeCssClass($this->htmlOptions,'pull-left');
+            Html::removeCssClass($this->htmlOptions, 'pull-left');
         }
 
         return $this;
@@ -238,8 +238,7 @@ abstract class BootstrapComponent extends Widget
     }
 
 
-
-        /**
+    /**
      * @param $cssClass
      * @return $this
      */
@@ -255,12 +254,12 @@ abstract class BootstrapComponent extends Widget
      */
     public function options($options)
     {
-        if(isset($options['class'])) {
+        if (isset($options['class'])) {
             $this->cssClass($options['class']);
             unset($options['class']);
         }
 
-        if(isset($options['style'])) {
+        if (isset($options['style'])) {
             $this->style($options['style']);
             unset($options['style']);
         }
@@ -277,11 +276,13 @@ abstract class BootstrapComponent extends Widget
      */
     public function icon($content, $right = false, $raw = false)
     {
-        if(!$raw) {
-            $this->icon(Html::tag('i', '', ['class' => 'fa '.$content]), $right, true);
-        } else {
-            $this->_icon = $content;
-            $this->_iconRight = $right;
+        if (!empty($content)) {
+            if (!$raw) {
+                $this->icon(Html::tag('i', '', ['class' => 'fa ' . $content]), $right, true);
+            } else {
+                $this->_icon = $content;
+                $this->_iconRight = $right;
+            }
         }
 
         return $this;
@@ -301,15 +302,15 @@ abstract class BootstrapComponent extends Widget
 
     public function color($color)
     {
-        if($color) {
-            $this->style('background-color:'.$color);
+        if ($color) {
+            $this->style('background-color:' . $color);
         }
         return $this;
     }
 
     public function textColor($color)
     {
-        $this->style('color:'.$color);
+        $this->style('color:' . $color);
         return $this;
     }
 
@@ -330,7 +331,7 @@ abstract class BootstrapComponent extends Widget
 
     protected function setCssClass()
     {
-        if($this->type !== self::TYPE_NONE) {
+        if ($this->type !== self::TYPE_NONE) {
             Html::addCssClass($this->htmlOptions, $this->getComponentBaseClass());
             Html::addCssClass($this->htmlOptions, $this->getTypedClass($this->type));
         }
@@ -338,14 +339,15 @@ abstract class BootstrapComponent extends Widget
 
     protected function getText()
     {
-        if($this->_icon) {
-            return ($this->_iconRight) ? $this->text.' '.$this->_icon : $this->_icon.' '.$this->text;
+        if ($this->_icon) {
+            return ($this->_iconRight) ? $this->text . ' ' . $this->_icon : $this->_icon . ' ' . $this->text;
         }
 
         return $this->text;
     }
 
-    public function visible($isVisible = true) {
+    public function visible($isVisible = true)
+    {
         $this->_visible = $isVisible;
         return $this;
     }

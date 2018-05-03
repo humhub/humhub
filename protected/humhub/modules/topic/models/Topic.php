@@ -9,6 +9,7 @@
 namespace humhub\modules\topic\models;
 
 use Yii;
+use humhub\modules\stream\helper\StreamHelper;
 use humhub\modules\content\models\Content;
 use humhub\modules\topic\permissions\AddTopic;
 use humhub\modules\content\models\ContentTag;
@@ -42,6 +43,14 @@ class Topic extends ContentTag
     }
 
     /**
+     * @return string link to topic filter stream page
+     */
+    public function getUrl()
+    {
+        return StreamHelper::createUrl($this->container, ['topicId' => $this->id]);
+    }
+
+    /**
      * Attaches the given topics to the given content instance.
      *
      * @param Content $content target content
@@ -56,7 +65,6 @@ class Topic extends ContentTag
         static::deleteContentRelations($content);
 
         $canAdd = $content->container->can(AddTopic::class);
-
 
         if(empty($topics)) {
             return;

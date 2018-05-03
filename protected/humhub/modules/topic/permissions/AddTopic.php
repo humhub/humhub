@@ -16,6 +16,9 @@ use Yii;
 
 class AddTopic extends BasePermission
 {
+    /**
+     * @inheritdoc
+     */
     public $moduleId = 'topic';
 
     /**

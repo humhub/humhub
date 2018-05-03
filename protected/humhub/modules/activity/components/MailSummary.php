@@ -13,7 +13,7 @@ use yii\base\Exception;
 use yii\base\Component;
 use yii\helpers\Url;
 use yii\db\Expression;
-use humhub\modules\dashboard\components\actions\DashboardStream;
+use humhub\modules\dashboard\components\actions\DashboardStreamAction;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\activity\models\MailSummaryForm;
 use humhub\modules\activity\models\Activity;
@@ -133,9 +133,9 @@ class MailSummary extends Component
      */
     protected function getActivities()
     {
-        $stream = new DashboardStream('stream', Yii::$app->controller);
+        $stream = new DashboardStreamAction('stream', Yii::$app->controller);
         $stream->limit = $this->maxActivityCount;
-        $stream->mode = DashboardStream::MODE_ACTIVITY;
+        $stream->mode = DashboardStreamAction::MODE_ACTIVITY;
         $stream->user = $this->user;
         $stream->init();
         $stream->activeQuery->andWhere(['>', 'content.created_at', $this->getLastSummaryDate()]);

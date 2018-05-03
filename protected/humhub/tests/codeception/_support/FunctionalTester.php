@@ -22,8 +22,12 @@ class FunctionalTester extends \Codeception\Actor
 
     use _generated\FunctionalTesterActions;
 
-    public function amAdmin()
+    public function amAdmin($logout = false)
     {
+        if ($logout) {
+            $this->logout();
+        }
+
         LoginPage::openBy($this)->login('admin', 'test');
         $this->see('Dashboard');
         $this->see('Administration');

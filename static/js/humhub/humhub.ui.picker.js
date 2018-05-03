@@ -188,6 +188,7 @@ humhub.module('ui.picker', function (module, require, $) {
             setTimeout(function () {
                 that.renderPlaceholder();
             }, 50);
+            return;
         }
 
         if (this.$.children(':selected').length >= this.$.data('maximum-selection-length')) {
@@ -206,7 +207,7 @@ humhub.module('ui.picker', function (module, require, $) {
         resultDisabled: '<a href="#" title="{disabledText}" data-placement="right" tabindex="-1" style="margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} {text}</a>',
         imageNode: '<img class="img-rounded" src="{image}" alt="" style="width:24px;height:24px;"  height="24" width="24">',
         imageIcon: '<i class="fa {image}"></i> ',
-        option: '<option value="{id}" data-image="{image}" selected>{text}</option>',
+        option: '<option value="{id}" data-image=\'{image}\' selected>{text}</option>',
     };
 
     /**
@@ -299,7 +300,6 @@ humhub.module('ui.picker', function (module, require, $) {
         var that = this;
         $result.filter('.picker-close').on('click', function () {
             $(this).siblings('.select2-selection__choice__remove').trigger('click');
-            that.deselect(item.id);
         });
 
         return $result;
@@ -336,6 +336,7 @@ humhub.module('ui.picker', function (module, require, $) {
         // The image is either an html node itself or just an url
         return (image.indexOf('<') >= 0) ? image : string.template(Picker.template.imageNode, item);
     };
+
 
     /**
      * Adds a selection item. If the option is not available yet the option is added
@@ -406,6 +407,16 @@ humhub.module('ui.picker', function (module, require, $) {
     Picker.prototype.val = function() {
         return this.$.val();
     };
+
+    Picker.prototype.hasValue = function(value) {
+        var values = this.val();
+        return values && values.indexOf(value) >= 0;
+    };
+
+    Picker.prototype.hasValues = function(value) {
+        var values = this.val();
+        return values && values.length;
+    }
 
     Picker.prototype.data = function() {
         return this.$.select2('data');

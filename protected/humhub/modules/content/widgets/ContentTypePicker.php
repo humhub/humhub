@@ -8,7 +8,8 @@
 
 namespace humhub\modules\content\widgets;
 
-
+use Yii;
+use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentType;
 use humhub\widgets\MultiSelectField;
@@ -35,6 +36,8 @@ class ContentTypePicker extends MultiSelectField
      */
     public function init()
     {
+        $this->contentContainer = $this->contentContainer ? $this->contentContainer : ContentContainerHelper::getCurrent();
+
         parent::init();
         $this->items = ContentType::getContentTypeSelection($this->contentContainer);
         $this->types = ContentType::getContentTypes($this->contentContainer);
@@ -46,9 +49,9 @@ class ContentTypePicker extends MultiSelectField
     protected function getItemImage($item)
     {
         foreach ($this->types as $type) {
-            $itemkey = $this->getItemKey($item);
+            $itemKey = $this->getItemKey($item);
 
-            if($type->typeClass === $itemkey) {
+            if($type->typeClass === $itemKey) {
                 $icon = $type->getIcon();
                 return empty($icon) ? $this->defaultIcon : $icon;
             }

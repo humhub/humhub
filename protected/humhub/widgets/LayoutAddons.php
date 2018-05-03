@@ -9,7 +9,6 @@
 namespace humhub\widgets;
 
 use humhub\modules\admin\widgets\TrackingWidget;
-use humhub\modules\stream\widgets\StreamTopicModal;
 use humhub\modules\tour\widgets\Tour;
 use Yii;
 

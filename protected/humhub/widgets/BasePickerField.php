@@ -2,7 +2,9 @@
 
 namespace humhub\widgets;
 
+use humhub\components\ActiveRecord;
 use Yii;
+use yii\base\Model;
 use yii\db\ActiveQuery;
 use yii\helpers\Html;
 use \yii\helpers\Url;
@@ -278,8 +280,11 @@ abstract class BasePickerField extends InputWidget
     {
         if (!$this->selection && $this->model != null) {
             $attribute = $this->attribute;
-
-            $this->selection = $this->loadItems($this->model->$attribute);
+            if(strrpos($this->attribute, '[') !== false) {
+                $this->selection = $this->loadItems(Html::getAttributeValue($this->model, $attribute));
+            } else {
+                $this->selection = $this->loadItems($this->model->$attribute);
+            }
         }
 
         if (!$this->selection) {

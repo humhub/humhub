@@ -83,8 +83,8 @@ var humhub = humhub || (function ($) {
      * 
      * var modal = require('ui.modal', true);
      * 
-     * @param {type} id the namespaced id
-     * @param {type} module
+     * @param {string} id the namespaced id
+     * @param {function} moduleFunction
      * @returns {undefined}
      */
     var module = function (id, moduleFunction) {

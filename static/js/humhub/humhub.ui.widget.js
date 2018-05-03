@@ -17,7 +17,7 @@ humhub.module('ui.widget', function(module, require, $) {
     // Add selector for component detection so we can use data-ui-widget instead of data-action-component
     Component.addSelector('ui-widget');
 
-    var Widget = function(node, options) {
+    var Widget = Component.extend(function(node, options) {
         Component.call(this, (node instanceof $) ? node : $(node), options);
         this.errors = [];
         this.options = this.initOptions(options || {});
@@ -37,10 +37,7 @@ humhub.module('ui.widget', function(module, require, $) {
 
             this.fire('afterInit', [this]);
         }
-    };
-
-    object.inherits(Widget, Component);
-
+    });
 
     Widget.prototype.initWidgetEvents = function() {
         // Use internal event object for handling widget events.
@@ -167,10 +164,12 @@ humhub.module('ui.widget', function(module, require, $) {
 
     Widget.prototype.show = function() {
         this.$.show();
+        return this;
     };
 
     Widget.prototype.hide = function() {
         this.$.hide();
+        return this;
     };
 
     Widget.prototype.fadeOut = function() {
@@ -182,6 +181,7 @@ humhub.module('ui.widget', function(module, require, $) {
                 });
             }
         });
+        return this;
     };
 
     Widget.prototype.fadeIn = function() {
@@ -193,6 +193,7 @@ humhub.module('ui.widget', function(module, require, $) {
                 });
             }
         });
+        return this;
     };
 
     Widget.exists = function(ns) {

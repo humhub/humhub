@@ -9,6 +9,7 @@
 
 namespace humhub\modules\topic;
 
+use humhub\modules\topic\permissions\ManageTopics;
 use Yii;
 use humhub\modules\topic\permissions\AddTopic;
 use humhub\modules\space\models\Space;
@@ -30,7 +31,7 @@ class Module extends \humhub\components\Module
     public function getPermissions($contentContainer = null)
     {
         if ($contentContainer instanceof Space) {
-            return [new AddTopic];
+            return [new AddTopic, new ManageTopics];
         }
 
         return [];

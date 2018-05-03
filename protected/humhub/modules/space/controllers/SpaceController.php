@@ -56,12 +56,12 @@ class SpaceController extends ContentContainerController
      */
     public function actions()
     {
-        return array(
-            'stream' => array(
+        return [
+            'stream' => [
                 'class' => ContentContainerStream::className(),
                 'contentContainer' => $this->contentContainer
-            ),
-        );
+            ],
+        ];
     }
 
     /**

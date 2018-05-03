@@ -320,6 +320,20 @@ class ContentTag extends ActiveRecord
     }
 
     /**
+     * Find a single instances either by providing an id or other condition.
+     *
+     * @return static
+     */
+    public static function findOne($condition)
+    {
+        if(is_numeric($condition)) {
+            return static::find()->andWhere(['id' => $condition])->one();
+        } else {
+            return static::find()->andWhere($condition)->one();
+        }
+    }
+
+    /**
      * Adds an type filter query to the given $query instance in case $includeTypeQuery of the subclass is set to true and the
      * calling class is not ContentTag class itself.
      *

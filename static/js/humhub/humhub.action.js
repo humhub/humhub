@@ -16,28 +16,29 @@ humhub.module('action', function(module, require, $) {
 
     var DATA_COMPONENT = 'action-component';
     
-    module.initOnPjax = true;
-    
     var processes = {};
 
-    var Component = function(node, options) {
-        if(!node) {
-            return;
-        }
-
-        if(node instanceof $) {
-            this.$ = node;
-        } else if(object.isString(node)) {
-            this.$ = $(node);
-            if(!this.$.length) {
-                this.$ = $('#' + node);
+    var Component = object.extendable({
+        name: 'Component',
+        init: function(node, options) {
+            if(!node) {
+                return;
             }
+
+            if(node instanceof $) {
+                this.$ = node;
+            } else if(object.isString(node)) {
+                this.$ = $(node);
+                if(!this.$.length) {
+                    this.$ = $('#' + node);
+                }
+            }
+
+            this.base = Component.getNameSpace(this.$);
+
+            this.$.data(this.static('component'), this);
         }
-
-        this.base = Component.getNameSpace(this.$);
-
-        this.$.data(this.static('component'), this);
-    };
+    });
 
     Component._selectors = [DATA_COMPONENT];
     Component.component = 'humhub-component';
@@ -48,15 +49,19 @@ humhub.module('action', function(module, require, $) {
         }).join(',');
     };
 
-    Component.prototype.data = function(dataSuffix) {
+    Component.prototype.data = function(dataSuffix, defaultValue) {
         var result = this.$.data(dataSuffix);
         if(!result) {
             var parentComponent = this.parent();
             if(parentComponent) {
-                return parentComponent.data(dataSuffix);
+                result = parentComponent.data(dataSuffix);
             }
         }
-        return result;
+        return object.defaultValue(result, defaultValue);
+    };
+
+    Component.prototype.setData = function(key, value) {
+        this.$.data(key, value);
     };
 
     Component.prototype.parent = function() {
@@ -93,6 +98,11 @@ humhub.module('action', function(module, require, $) {
     Component.prototype.actions = function() {
         return [];
     };
+
+    Component.prototype.trigger = function() {
+        return this.$.trigger();
+    };
+
 
     /**
      * Finds the closest component of the given node (including the node itself).
@@ -207,6 +217,12 @@ humhub.module('action', function(module, require, $) {
      */
     Component.handleAction = function(event) {
         var component = Component.closest(event.$target);
+
+        if(component && string.startsWith(event.handler, 'parent.')) {
+            component = component.parent();
+            event.handler = event.handler.split('.')[1];
+        }
+
         return (component) ? _executeAction(component, event.handler, event) : false;
     };
 
@@ -631,6 +647,7 @@ humhub.module('action', function(module, require, $) {
     };
 
     module.export({
+        initOnPjax: true,
         init: init,
         bindAction: bindAction,
         registerHandler: registerHandler,
