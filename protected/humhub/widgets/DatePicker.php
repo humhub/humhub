@@ -8,31 +8,15 @@
 
 namespace humhub\widgets;
 
-use Yii;
-use yii\jui\DatePicker as BaseDatePicker;
-use humhub\libs\Html;
 
 /**
  * DatePicker
  *
- * @since 1.2.3
- * @author Luke
+ * @see \humhub\modules\ui\form\widgets\DatePicker
+ * @deprecated since 1.3
+ * @package humhub\widgets
  */
-class DatePicker extends BaseDatePicker
+class DatePicker extends \humhub\modules\ui\form\widgets\DatePicker
 {
-
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        if ($this->dateFormat === null) {
-            $this->dateFormat = Yii::$app->formatter->dateInputFormat;
-        }
-
-        Html::addCssClass($this->options, 'form-control');
-
-        parent::init();
-    }
 
 }

@@ -8,6 +8,7 @@
 
 namespace humhub\widgets;
 
+use humhub\modules\ui\form\widgets\MarkdownModals;
 use Yii;
 
 /**
@@ -36,7 +37,7 @@ class LayoutAddons extends BaseStack
             $this->addWidget(LoaderWidget::class, ['show' => false, 'id' => "humhub-ui-loader-default"]);
             $this->addWidget(StatusBar::class);
             $this->addWidget(BlueimpGallery::class);
-            $this->addWidget(MarkdownFieldModals::class);
+            $this->addWidget(MarkdownModals::class);
 
             if (Yii::$app->params['enablePjax']) {
                 $this->addWidget(Pjax::class);

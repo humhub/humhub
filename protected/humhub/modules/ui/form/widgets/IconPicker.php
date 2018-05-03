@@ -24,7 +24,6 @@ use yii\web\JsExpression;
  * ```
  *
  * @since 1.3
- * @package humhub\widgets
  */
 class IconPicker extends Select2
 {

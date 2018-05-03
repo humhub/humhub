@@ -45,3 +45,4 @@ HumHub Change Log - v1.3-dev Branch
 - Chg: Reduced email length to 150 chars to support utf8mb4 charset 
 - Enh: Added UI core module to group UI components
 - Enh: Added new IconPicker form field
+- Chg: Moved form widgets from `humhub\widgets` to `humhub\modules\ui\form\widgets` (added compatibility layer)
