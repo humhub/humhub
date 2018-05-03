@@ -1,44 +1,42 @@
 # check if RewriteModule is availbale 
 <IfModule mod_rewrite.c>
-RewriteEngine on
+    RewriteEngine on
 
-# uncomment if you've installed HumHub into a subdirectory relative to your webroot & adjust RewriteBase to match the install point
-#RewriteBase /humhub
+    # uncomment if you've installed HumHub into a subdirectory relative to your webroot & adjust RewriteBase to match the install point
+    #RewriteBase /humhub
 
-# uncomment to force https requests
-#RewriteCond %{HTTPS} !=on
-#RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$ [NC]
-#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    # uncomment to force https requests
+    #RewriteCond %{HTTPS} !=on
+    #RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$ [NC]
+    #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+    # prevent httpd from serving dotfiles (.htaccess, .svn, .git, etc.) - except let's encrypt challenge
+    RedirectMatch 403 ^/?\.(?!/well-known/acme-challenge/[\w-]{43}$)
 
-# prevent httpd from serving dotfiles (.htaccess, .svn, .git, etc.) - except let's encrypt challenge
-RedirectMatch 403 ^/?\.(?!/well-known/acme-challenge/[\w-]{43}$)
+    # ensure permalink when url rewriting was enabled (index.php?r=content/perma&id=6 => /content/perma/?id=6
+    RewriteCond %{QUERY_STRING} ^r=content(/|%2)perma&id=([0-9]*)$
+    RewriteRule ^index\.php$ %{REQUEST_URI}/content/perma/?id=%2 [R=302,L]
 
-# ensure permalink when url rewriting was enabled (index.php?r=content/perma&id=6 => /content/perma/?id=6
-RewriteCond %{QUERY_STRING} ^r=content(/|%2)perma&id=([0-9]*)$
-RewriteRule ^index\.php$ %{REQUEST_URI}/content/perma/?id=%2 [R=302,L]
+    RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
+    RewriteRule ^(.*) - [E=BASE:%1]
 
-RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
-RewriteRule ^(.*) - [E=BASE:%1]
+    # Sets the HTTP_AUTHORIZATION header removed by apache
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-# Sets the HTTP_AUTHORIZATION header removed by apache
-RewriteCond %{HTTP:Authorization} .
-RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule .? - [L]
 
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule .? - [L]
-
-RewriteRule .? %{ENV:BASE}/index.php [L]
-
+    RewriteRule .? %{ENV:BASE}/index.php [L]
 </IfModule>
 
 # Config files from vendor should not be readable via browser
-<FilesMatch "composer.json">
-    Order Allow,Deny
-    Deny from All
-</FilesMatch>
-
-<FilesMatch "composer.lock">
-    Order Allow,Deny
-    Deny from All
+<FilesMatch "^(\.|composer\.(json|lock|phar)$)">
+    <IfModule authz_core_module>
+        Require all denied
+    </IfModule>
+    <IfModule !authz_core_module>
+        Order deny,allow
+        Deny from all
+    </IfModule>
 </FilesMatch>
