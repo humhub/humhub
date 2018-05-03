@@ -28,9 +28,6 @@ cache:
 services: mysql
 
 before_install:
-  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('humhub') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
-  - sudo mysql_upgrade
-  - sudo service mysql restart
   - wget https://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip
   - unzip -d $HOME chromedriver_linux64.zip
   - $HOME/chromedriver --url-base=/wd/hub &
