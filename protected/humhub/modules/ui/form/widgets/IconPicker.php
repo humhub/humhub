@@ -9,8 +9,8 @@
 
 namespace humhub\modules\ui\form\widgets;
 
-use Yii;
 use kartik\select2\Select2;
+use Yii;
 use yii\web\JsExpression;
 
 
@@ -641,7 +641,7 @@ class IconPicker extends Select2
      */
     protected function populateIconList()
     {
-        foreach ($this->icons as $icon) {
+        foreach ($this->getIcons() as $icon) {
             $title = $icon;
             if (substr($title, 0, 3) === 'fa-') {
                 $title = substr($title, 3);
@@ -649,6 +649,16 @@ class IconPicker extends Select2
 
             $this->data[$icon] = '<i class="fa ' . $icon . '"></i>&nbsp;&nbsp;' . $title;
         }
+    }
+
+    /**
+     * Returns a list of available icons
+     *
+     * @return array a list of icons
+     */
+    public function getIcons()
+    {
+        return $this->icons;
     }
 
 }
