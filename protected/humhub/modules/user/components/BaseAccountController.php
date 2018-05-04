@@ -8,8 +8,9 @@
 
 namespace humhub\modules\user\components;
 
+use humhub\components\access\ControllerAccess;
+use humhub\modules\user\models\User;
 use Yii;
-use humhub\components\behaviors\AccessControl;
 
 /**
  * BaseAccountController is the base controller for user account (settings) pages
@@ -26,7 +27,17 @@ class BaseAccountController extends \humhub\components\Controller
     public $subLayout = "@humhub/modules/user/views/account/_layout";
 
     /**
-     * @var \humhub\modules\user\models\User the user
+     * @inheritdoc
+     */
+    public function getAccessRules()
+    {
+        return [
+            [ControllerAccess::RULE_LOGGED_IN_ONLY]
+        ];
+    }
+
+    /**
+     * @var User the user
      */
     public $user;
 
@@ -40,21 +51,9 @@ class BaseAccountController extends \humhub\components\Controller
     }
 
     /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'acl' => [
-                'class' => AccessControl::className(),
-            ]
-        ];
-    }
-
-    /**
      * Returns the current user of this account
-     * 
-     * @return \humhub\modules\user\models\User
+     *
+     * @return User
      */
     public function getUser()
     {

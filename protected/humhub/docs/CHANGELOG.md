@@ -5,6 +5,8 @@ HumHub Change Log
 -----------------------
 
 - Fix #3108: Fixed cronjob examples with leading zero (acs-ferreira)
+- Fix: Memory leak in activity mail summary processor cron
+- Fix: With enabled guest mode BaseAccountController does not redirect to login page
 
 
 1.2.5  (April 11, 2018)
@@ -39,6 +41,7 @@ migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 - Enh: Added further `FunctionalTester` utilities
 - Enh: Added Norwegian Nynorsk language
 - Fix #3009: Change the Space URL raises 404
+
 
 1.2.4  (December 13, 2017)
 --------------------------
