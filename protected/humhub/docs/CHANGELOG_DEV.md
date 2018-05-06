@@ -46,3 +46,4 @@ HumHub Change Log - v1.3-dev Branch
 - Enh: Added UI core module to group UI components
 - Enh: Added new IconPicker form field
 - Chg: Moved form widgets from `humhub\widgets` to `humhub\modules\ui\form\widgets` (added compatibility layer)
+- Enh: Added surpressed e-mail addresses configuration variable
