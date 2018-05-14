@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Confirm</strong> image deletion' => '',
-  'Dashboard' => 'Dashboard',
+  'Dashboard' => 'Bacheca',
   'Delete' => 'Cancella',
   'E.g. http://example.com/humhub' => 'Esempio: http://example.com/humhub',
   'Friendship' => 'Amicizia',
