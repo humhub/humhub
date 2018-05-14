@@ -8,7 +8,7 @@ HumHub Change Log
 - Fix: Memory leak in activity mail summary processor cron
 - Fix: With enabled guest mode BaseAccountController does not redirect to login page
 - Enh: Added footer navigation - FooterMenu widget
-
+- Enh: Added HForm class events EVENT_AFTER_INIT and EVENT_BEFORE_RENDER
 
 1.2.5  (April 11, 2018)
 -----------------------

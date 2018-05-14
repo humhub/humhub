@@ -9,6 +9,7 @@
 namespace humhub\modules\user\controllers;
 
 use Yii;
+use yii\base\Exception;
 use yii\web\HttpException;
 use yii\authclient\ClientInterface;
 use humhub\components\Controller;
@@ -18,8 +19,8 @@ use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 
 /**
- * RegistrationController handles new user registration 
- * 
+ * RegistrationController handles new user registration
+ *
  * @since 1.1
  */
 class RegistrationController extends Controller
@@ -32,6 +33,7 @@ class RegistrationController extends Controller
 
     /**
      * @inheritdoc
+     * @throws HttpException
      */
     public function beforeAction($action)
     {
@@ -44,9 +46,9 @@ class RegistrationController extends Controller
 
     /**
      * Registration Form
-     * 
-     * @return type
+     *
      * @throws HttpException
+     * @throws Exception
      */
     public function actionIndex()
     {
@@ -87,6 +89,11 @@ class RegistrationController extends Controller
         return $this->render('index', ['hForm' => $registration]);
     }
 
+    /**
+     * @param $inviteToken
+     * @param Registration $form
+     * @throws HttpException
+     */
     protected function handleInviteRegistration($inviteToken, Registration $form)
     {
         $userInvite = Invite::findOne(['token' => $inviteToken]);
