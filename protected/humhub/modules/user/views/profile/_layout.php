@@ -1,4 +1,7 @@
 <?php
+
+use humhub\widgets\FooterMenu;
+
 $user = $this->context->getUser();
 ?>
 <div class="container profile-layout-container">
@@ -15,6 +18,7 @@ $user = $this->context->getUser();
         <?php if (isset($this->context->hideSidebar) && $this->context->hideSidebar) : ?>
             <div class="col-md-10 layout-content-container">
                 <?php echo $content; ?>
+                <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_FULL_PAGE]); ?>
             </div>
         <?php else: ?>
             <div class="col-md-7 layout-content-container">
@@ -32,6 +36,8 @@ $user = $this->context->getUser();
                     ]
                 ]);
                 ?>
+
+                <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
             </div>
         <?php endif; ?>
     </div>

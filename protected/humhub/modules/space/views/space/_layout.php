@@ -4,6 +4,8 @@
  * @var string $content
  */
 
+use humhub\widgets\FooterMenu;
+
 $space = $this->context->contentContainer;
 ?>
 <div class="container space-layout-container">
@@ -25,6 +27,7 @@ $space = $this->context->contentContainer;
                     'contentContainer' => $space,
                     'content' => $content
                 ]) ?>
+                <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_FULL_PAGE]); ?>
             </div>
         <?php else: ?>
             <div class="col-md-7 layout-content-container">
@@ -41,6 +44,8 @@ $space = $this->context->contentContainer;
                         [\humhub\modules\space\widgets\Members::className(), ['space' => $space], ['sortOrder' => 30]]
                 ]]);
                 ?>
+
+                <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
             </div>
         <?php endif; ?>
     </div>

@@ -7,6 +7,7 @@
 use humhub\modules\dashboard\widgets\DashboardContent;
 use humhub\modules\dashboard\widgets\Sidebar;
 use humhub\modules\activity\widgets\Stream;
+use humhub\widgets\FooterMenu;
 
 ?>
 
@@ -30,6 +31,7 @@ use humhub\modules\activity\widgets\Stream;
                 ]
             ]);
             ?>
+            <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
         </div>
     </div>
 </div>
