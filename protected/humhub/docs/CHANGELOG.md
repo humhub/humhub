@@ -7,6 +7,7 @@ HumHub Change Log
 - Fix #3108: Fixed cronjob examples with leading zero (acs-ferreira)
 - Fix: Memory leak in activity mail summary processor cron
 - Fix: With enabled guest mode BaseAccountController does not redirect to login page
+- Enh: Added footer navigation - FooterMenu widget
 
 
 1.2.5  (April 11, 2018)
