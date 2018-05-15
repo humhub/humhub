@@ -1,6 +1,17 @@
 HumHub Change Log
 =================
 
+1.2.7
+-----------------------
+
+- Fixed empty modal dialog response issue
+- Fix #3146 invalid bootstrap.min.css link in installer
+- Enh: Load `humhub\modules\content\models\ContentTagAddition` model in `humhub\modules\content\models\ContentTag::load()`
+- Enh: Auto save `humhub\modules\content\models\ContentTagAddition` within `humhub\modules\content\models\ContentTag::afterSave()`
+- Enh: Added `humhub\modules\content\components\ContentActiveRecord::isOwner()` to check the ownership of a content
+- Enh: Make directory access configurable by `humhub\modules\directory\Module::active`, `humhub\modules\directory\Module::guestAccess`
+- Enh: Added `humhub\modules\directory\permissions\AccessDirectory` permission for group level directory access
+
 1.2.6  (May 14, 2018)
 -----------------------
 
