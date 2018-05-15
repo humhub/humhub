@@ -88,7 +88,7 @@ class Content extends ContentDeprecated
         return [
             [
                 'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
-                'mustBeInstanceOf' => array(ContentActiveRecord::className()),
+                'mustBeInstanceOf' => [ContentActiveRecord::className()],
             ],
             [
                 'class' => \humhub\components\behaviors\GUID::className(),

@@ -86,7 +86,7 @@ class Image extends Widget
         Html::addCssClass($this->imageOptions, 'img-rounded');
         Html::addCssStyle($this->imageOptions, 'width: ' . $this->width . 'px; height: ' . $this->height . 'px');
 
-        if ($this->showTooltip) {
+        if ($this->tooltipText || $this->showTooltip) {
             $this->imageOptions['data-toggle'] = 'tooltip';
             $this->imageOptions['data-placement'] = 'top';
             $this->imageOptions['data-html'] = 'true';

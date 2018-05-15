@@ -47,7 +47,7 @@ class ContentTagDropDown extends InputWidget
         $items = $this->getItems();
 
         if (empty($items)) {
-            return;
+            return '';
         }
 
         $options = $this->getOptions();

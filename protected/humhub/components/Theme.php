@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use humhub\libs\ThemeHelper;
 
@@ -97,7 +98,7 @@ class Theme extends \yii\base\Theme
         // Web Resource e.g. image
          if (substr($path, 0, 5) === '@web/' || substr($path, 0, 12) === '@web-static/') {
             $themedFile = str_replace(['@web/', '@web-static/'], [$this->getBasePath(), $this->getBasePath() . DIRECTORY_SEPARATOR . '/'], $path);
-            #print $themedFile;
+
             // Check if file exists in theme base dir
             if (file_exists($themedFile)) {
                 return str_replace(['@web/', '@web-static/'], [$this->getBaseUrl(), $this->getBaseUrl() . DIRECTORY_SEPARATOR . '/'], $path);
@@ -243,7 +244,7 @@ class Theme extends \yii\base\Theme
         $variables = $this->parseLessVariables(Yii::getAlias('@webroot-static/less/'.$lessFileName));
 
         // Overwrite theme values
-        return \yii\helpers\ArrayHelper::merge($variables, $this->parseLessVariables($this->getBasePath() . '/less/'.$lessFileName));
+        return ArrayHelper::merge($variables, $this->parseLessVariables($this->getBasePath() . '/less/'.$lessFileName));
     }
 
     /**
