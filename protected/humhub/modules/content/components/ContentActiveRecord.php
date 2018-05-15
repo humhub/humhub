@@ -367,6 +367,24 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     }
 
     /**
+     * Checks if the given user or the current logged in user if no user was given, is the owner of this content
+     * @param null $user
+     * @return bool
+     * @since 1.3
+     */
+    public function isOwner($user = null)
+    {
+        if (!$user && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        } else if (!$user) {
+            return false;
+        }
+
+        return $this->content->created_by === $user->getId();
+
+    }
+
+    /**
      * Related Content model
      *
      * @return \yii\db\ActiveQuery|ActiveQueryContent
