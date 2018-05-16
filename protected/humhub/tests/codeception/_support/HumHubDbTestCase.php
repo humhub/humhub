@@ -138,6 +138,11 @@ class HumHubDbTestCase extends Test
 
     public function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
+        if(is_string($target_id)) {
+            $msg = $target_id;
+            $target_id = null;
+        }
+        
         $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $source->className(), 'source_pk' => $source->getPrimaryKey()]);
 
         if ($originator_id != null) {
