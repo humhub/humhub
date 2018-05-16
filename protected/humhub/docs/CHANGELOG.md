@@ -11,6 +11,7 @@ HumHub Change Log
 - Enh: Added `humhub\modules\content\components\ContentActiveRecord::isOwner()` to check the ownership of a content
 - Enh: Make directory access configurable by `humhub\modules\directory\Module::active`, `humhub\modules\directory\Module::guestAccess`
 - Enh: Added `humhub\modules\directory\permissions\AccessDirectory` permission for group level directory access
+- Fixed `User `namespace issue in `humhub\modules\user\components\BaseAccountController`
 
 1.2.6  (May 14, 2018)
 -----------------------

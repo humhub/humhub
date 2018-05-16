@@ -8,9 +8,8 @@
 
 namespace humhub\modules\user\components;
 
-use humhub\components\access\ControllerAccess;
-use humhub\modules\user\models\User;
 use Yii;
+use humhub\components\access\ControllerAccess;
 
 /**
  * BaseAccountController is the base controller for user account (settings) pages
@@ -37,7 +36,7 @@ class BaseAccountController extends \humhub\components\Controller
     }
 
     /**
-     * @var User the user
+     * @var \humhub\modules\user\models\User the user
      */
     public $user;
 
@@ -53,7 +52,7 @@ class BaseAccountController extends \humhub\components\Controller
     /**
      * Returns the current user of this account
      *
-     * @return User
+     * @return \humhub\modules\user\models\User
      */
     public function getUser()
     {
