@@ -108,9 +108,6 @@ class FunctionalTester extends \Codeception\Actor
 
     public function setProfileField($field, $value)
     {
-        $output = new \Codeception\Lib\Console\Output([]);
-        $output->writeln("Set attribute $field : $value");
-
         $user = Yii::$app->user->identity;
         $user->profile->setAttributes([$field => $value]);
         $user->profile->save();
