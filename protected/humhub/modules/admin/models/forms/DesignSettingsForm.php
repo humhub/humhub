@@ -64,7 +64,7 @@ class DesignSettingsForm extends Model
             ['theme', 'in', 'range' => $themes],
             [['displayName', 'spaceOrder'], 'safe'],
             [['horImageScrollOnMobile'], 'boolean'],
-            ['logo', 'file', 'extensions' => ['jpg', 'png', 'jpeg']],
+            ['logo', 'file', 'extensions' => ['jpg', 'png', 'jpeg'], 'maxSize' => Yii::$app->getModule('file')->settings->get('maxFileSize')],
             ['logo', 'dimensionValidation', 'skipOnError' => true],
             ['dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']],
         ];
