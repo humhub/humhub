@@ -9,7 +9,7 @@
 namespace humhub\modules\topic\models;
 
 use Yii;
-use humhub\modules\stream\helper\StreamHelper;
+use humhub\modules\stream\helpers\StreamHelper;
 use humhub\modules\content\models\Content;
 use humhub\modules\topic\permissions\AddTopic;
 use humhub\modules\content\models\ContentTag;
