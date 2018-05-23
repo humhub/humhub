@@ -16,6 +16,7 @@ namespace humhub\widgets;
  */
 class FooterMenu extends BaseMenu
 {
+    const LOCATION_ACCOUNT_MENU = 'account_menu';
     const LOCATION_LOGIN = 'login';
     const LOCATION_SIDEBAR = 'sidebar';
     const LOCATION_FULL_PAGE = 'full';
@@ -48,6 +49,8 @@ class FooterMenu extends BaseMenu
             $this->template = 'footerNavigation_sidebar';
         } elseif ($this->location === static::LOCATION_EMAIL) {
             $this->template = 'footerNavigation_email';
+        } elseif ($this->location === static::LOCATION_ACCOUNT_MENU) {
+            $this->template = 'footerNavigation_account_menu';
         }
 
         parent::init();
