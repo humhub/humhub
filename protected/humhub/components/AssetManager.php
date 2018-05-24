@@ -60,10 +60,4 @@ class AssetManager extends \yii\web\AssetManager
             $bundle->publish($this);
         }
     }
-
-    public function rePublish()
-    {
-
-    }
-
 }

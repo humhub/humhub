@@ -72,6 +72,7 @@ class ModuleController extends Controller
      */
     public function actionEnable()
     {
+        /** @var $module Module */
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');
