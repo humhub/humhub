@@ -5,6 +5,7 @@ HumHub Change Log
 -----------------------
 
 - Enh: Added user email to javascript user config
+- Fix: Module Assets are not republished after module update
 
 1.2.7 (May 23, 2018)
 -----------------------
