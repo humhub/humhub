@@ -1,7 +1,12 @@
 HumHub Change Log
 =================
 
-1.2.7
+1.2.8
+-----------------------
+
+- Enh: Added user email to javascript user config
+
+1.2.7 (May 23, 2018)
 -----------------------
 
 - Fixed empty modal dialog response issue
