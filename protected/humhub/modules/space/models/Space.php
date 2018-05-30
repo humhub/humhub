@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\models;
 
+use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\space\widgets\Members;
 use Yii;
 
@@ -39,6 +40,7 @@ use yii\helpers\Url;
  * @property integer $contentcontainer_id
  * @property integer $default_content_visibility
  * @property string $color
+ * @mixin SpaceModelMembership
  */
 class Space extends ContentContainerActiveRecord implements \humhub\modules\search\interfaces\Searchable
 {
