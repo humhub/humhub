@@ -27,7 +27,7 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                         'attribute' => 'last_visit',
                         'format' => 'raw',
                         'value' => function ($data) use (&$groups) {
-                            if ($data->last_visit == '') {
+                            if (empty($data->last_visit)) {
                                 return Yii::t('SpaceModule.views_admin_members', 'never');
                             }
                             return TimeAgo::widget(['timestamp' => $data->last_visit]);
