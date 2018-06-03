@@ -8,6 +8,9 @@ use humhub\modules\space\widgets\SpaceContent;
  * @var \humhub\modules\space\models\Space $space
  * @var string $content
  */
+
+use humhub\widgets\FooterMenu;
+
 $space = $this->context->contentContainer;
 ?>
 <div class="container space-layout-container">
@@ -23,6 +26,7 @@ $space = $this->context->contentContainer;
         </div>
         <div class="col-md-10 layout-content-container">
             <?= SpaceContent::widget(['contentContainer' => $space, 'content' => $content]) ?>
+            <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
         </div>
     </div>
 </div>

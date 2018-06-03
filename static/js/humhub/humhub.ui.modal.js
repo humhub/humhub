@@ -431,12 +431,18 @@ humhub.module('ui.modal', function (module, require, $) {
                 content = content.html;
             }
         }
-        this.$.empty().append(content);
-        this.applyAdditions();
-        this.$.find('select:visible, input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
-        this.checkAriaLabel();
-        this.updateDialogOptions();
-        this.$.scrollTop(0);
+
+        if(content) {
+            this.$.empty().append(content);
+            this.applyAdditions();
+            this.$.find('select:visible, input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
+            this.checkAriaLabel();
+            this.updateDialogOptions();
+            this.$.scrollTop(0);
+        } else {
+            this.close(true);
+        }
+
         return this;
     };
 
@@ -632,12 +638,11 @@ humhub.module('ui.modal', function (module, require, $) {
         return client.submit(evt, _defaultRequestOptions(evt, options)).then(function (response) {
             if(response.success) {
                 modal.close();
-                return response;
-            }
-
-            modal.setDialog(response);
-            if (!modal.$.is(':visible')) {
-                modal.show();
+            } else {
+                modal.setDialog(response);
+                if (!modal.$.is(':visible')) {
+                    modal.show();
+                }
             }
 
             modal.$.trigger('submitted', response);

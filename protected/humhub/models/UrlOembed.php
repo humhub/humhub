@@ -72,9 +72,9 @@ class UrlOembed extends ActiveRecord
             // Lookup Cached OEmebed Item from Database
             $urlOembed = UrlOembed::findOne(['url' => $url]);
             if ($urlOembed !== null) {
-                return $urlOembed->preview;
+                return trim(preg_replace('/\s+/', ' ', $urlOembed->preview));
             } else {
-                return self::loadUrl($url);
+                return trim(preg_replace('/\s+/', ' ', self::loadUrl($url)));
             }
         }
 

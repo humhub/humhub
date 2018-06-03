@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use humhub\modules\content\widgets\WallEntry;
@@ -46,6 +47,7 @@ use humhub\modules\content\interfaces\ContentOwner;
  *
  * @property Content $content
  * @mixin \humhub\modules\user\behaviors\Followable
+ * @property User $createdBy
  * @author Luke
  */
 class ContentActiveRecord extends ActiveRecord implements ContentOwner
@@ -381,6 +383,24 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     public function getOwner()
     {
         return $this->content->createdBy;
+    }
+
+    /**
+     * Checks if the given user or the current logged in user if no user was given, is the owner of this content
+     * @param null $user
+     * @return bool
+     * @since 1.3
+     */
+    public function isOwner($user = null)
+    {
+        if (!$user && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        } else if (!$user) {
+            return false;
+        }
+
+        return $this->content->created_by === $user->getId();
+
     }
 
     /**

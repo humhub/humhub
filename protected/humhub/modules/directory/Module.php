@@ -9,6 +9,9 @@
 namespace humhub\modules\directory;
 
 use Yii;
+use yii\helpers\Url;
+use humhub\modules\user\models\Group;
+use humhub\modules\directory\permissions\AccessDirectory;
 
 /**
  * Directory Base Module
@@ -38,6 +41,32 @@ class Module extends \humhub\components\Module
     public $pageSize = 25;
 
     /**
+     * @var bool defines if the directory is active, if not the directory is not visible and can't be accessed
+     */
+    public $active = true;
+
+    /**
+     * @var bool defines if the directory is available for guest users, this flag will only have effect if guest access is allowed and the module is active
+     */
+    public $guestAccess = true;
+
+    /**
+     * @return bool checks if the current user can access the directory
+     */
+    public function canAccess()
+    {
+        if(!$this->active) {
+            return false;
+        }
+
+        if(Yii::$app->user->isGuest) {
+            return $this->guestAccess;
+        }
+
+        return Yii::$app->user->can(AccessDirectory::class);
+    }
+
+    /**
      * On build of the TopMenu, check if module is enabled
      * When enabled add a menu item
      *
@@ -45,14 +74,33 @@ class Module extends \humhub\components\Module
      */
     public static function onTopMenuInit($event)
     {
-        $event->sender->addItem([
-            'label' => Yii::t('DirectoryModule.base', 'Directory'),
-            'id' => 'directory',
-            'icon' => '<i class="fa fa-book"></i>',
-            'url' => \yii\helpers\Url::to(['/directory/directory']),
-            'sortOrder' => 400,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'directory'),
-        ]);
+        /** @var static $module */
+        $module = Yii::$app->getModule('directory');
+
+        if($module->canAccess()) {
+            $event->sender->addItem([
+                'label' => Yii::t('DirectoryModule.base', 'Directory'),
+                'id' => 'directory',
+                'icon' => '<i class="fa fa-book"></i>',
+                'url' => Url::to(['/directory/directory']),
+                'sortOrder' => 400,
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'directory'),
+            ]);
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPermissions($contentContainer = null)
+    {
+        if (!$contentContainer) {
+            return [
+                new AccessDirectory(),
+            ];
+        }
+
+        return [];
     }
 
     /**
@@ -62,7 +110,7 @@ class Module extends \humhub\components\Module
      */
     public function isGroupListingEnabled()
     {
-        return (\humhub\modules\user\models\Group::find()->where(['show_at_directory' => 1])->count() != 0);
+        return (Group::find()->where(['show_at_directory' => 1])->count() != 0);
     }
 
 }

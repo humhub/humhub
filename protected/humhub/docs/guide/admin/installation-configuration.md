@@ -24,7 +24,7 @@ Example Tab:
 
 ```
 30 * * * * /path/to/humhub/protected/yii cron/hourly >/dev/null 2>&1
-00 18 * * * /path/to/humhub/protected/yii cron/daily >/dev/null 2>&1
+0 18 * * * /path/to/humhub/protected/yii cron/daily >/dev/null 2>&1
 ```
 > Note: For more help refer to [here](cron-jobs.md)!
 

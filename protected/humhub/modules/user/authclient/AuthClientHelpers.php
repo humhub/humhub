@@ -24,7 +24,7 @@ class AuthClientHelpers
 
     /**
      * Returns the user object which is linked against given authClient
-     * 
+     *
      * @param ClientInterface $authClient the authClient
      * @return User the user model or null if not found
      */
@@ -45,7 +45,7 @@ class AuthClientHelpers
 
     /**
      * Stores an authClient to an user record
-     * 
+     *
      * @param \yii\authclient\BaseClient $authClient
      * @param User $user
      */
@@ -82,7 +82,7 @@ class AuthClientHelpers
 
     /**
      * Removes Authclient for a user
-     * 
+     *
      * @param \yii\authclient\BaseClient $authClient
      * @param User $user
      */
@@ -97,7 +97,7 @@ class AuthClientHelpers
     /**
      * Updates (or creates) a user in HumHub using AuthClients Attributes
      * This method will be called after login or by cron sync.
-     * 
+     *
      * @param \yii\authclient\BaseClient $authClient
      * @param User $user
      * @return boolean succeed
@@ -117,7 +117,7 @@ class AuthClientHelpers
             $attributes = $authClient->getUserAttributes();
             foreach ($authClient->getSyncAttributes() as $attributeName) {
                 if (isset($attributes[$attributeName])) {
-                    if (in_array($attributeName, ['email', 'username', 'authclient_id'])) {
+                    if ($user->hasAttribute($attributeName) && !in_array($attributeName, ['id', 'guid', 'status', 'contentcontainer_id', 'auth_mode'])) {
                         $user->setAttribute($attributeName, $attributes[$attributeName]);
                     } else {
                         $user->profile->setAttribute($attributeName, $attributes[$attributeName]);
@@ -145,7 +145,7 @@ class AuthClientHelpers
 
     /**
      * Automatically creates user by auth client attributes
-     * 
+     *
      * @param \yii\authclient\BaseClient $authClient
      * @return boolean success status
      */
@@ -179,7 +179,7 @@ class AuthClientHelpers
 
     /**
      * Returns all users which are using an given authclient
-     * 
+     *
      * @param ClientInterface $authClient
      * @return \yii\db\ActiveQuery
      */
@@ -200,14 +200,14 @@ class AuthClientHelpers
 
     /**
      * Returns AuthClients used by given User
-     * 
+     *
      * @param User $user
      * @return ClientInterface[] the users authclients
      */
     public static function getAuthClientsByUser(User $user)
     {
         $authClients = [];
-        
+
         foreach (Yii::$app->authClientCollection->getClients() as $client) {
             /* @var $client ClientInterface */
 
@@ -228,8 +228,8 @@ class AuthClientHelpers
     }
 
     /**
-     * Returns a list of all synchornized user attributes 
-     * 
+     * Returns a list of all synchornized user attributes
+     *
      * @param User $user
      * @return array attribute names
      */

@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\libs\Helpers;
 use humhub\modules\user\models\fieldtype\BaseType;
 use Yii;
 use yii\db\ActiveQuery;
@@ -139,6 +140,7 @@ class ProfileField extends ActiveRecord
      * Returns the ProfileFieldType Class for this Profile Field
      *
      * @return BaseType
+     * @throws \yii\base\Exception
      */
     public function getFieldType()
     {
@@ -146,7 +148,7 @@ class ProfileField extends ActiveRecord
         if ($this->_fieldType != null)
             return $this->_fieldType;
 
-        if ($this->field_type_class != "" && \humhub\libs\Helpers::CheckClassType($this->field_type_class, fieldtype\BaseType::className())) {
+        if ($this->field_type_class != "" && Helpers::CheckClassType($this->field_type_class, fieldtype\BaseType::className())) {
             $type = $this->field_type_class;
             $this->_fieldType = new $type;
             $this->_fieldType->setProfileField($this);
@@ -158,7 +160,7 @@ class ProfileField extends ActiveRecord
     /**
      * Returns The Form Definition to edit the ProfileField Model.
      *
-     * @return Array CForm Definition
+     * @return array CForm Definition
      */
     public function getFormDefinition()
     {
@@ -250,7 +252,6 @@ class ProfileField extends ActiveRecord
         $this->internal_name = trim($this->internal_name);
 
         if (!$this->isNewRecord) {
-
             // Dont allow changes of internal_name - Maybe not the best way to check it.
             $currentProfileField = ProfileField::findOne(['id' => $this->id]);
             if ($this->internal_name != $currentProfileField->internal_name) {
