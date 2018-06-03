@@ -9,6 +9,8 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\user\models\User;
+use humhub\modules\space\models\Space;
 use Yii;
 use yii\helpers\Url;
 
@@ -32,8 +34,8 @@ use yii\helpers\Url;
 class Invite extends ActiveRecord
 {
 
-    const SOURCE_SELF = "self";
-    const SOURCE_INVITE = "invite";
+    const SOURCE_SELF = 'self';
+    const SOURCE_INVITE = 'invite';
     const TOKEN_LENGTH = 12;
 
     /**
@@ -59,7 +61,7 @@ class Invite extends ActiveRecord
             [['email'], 'required'],
             [['email'], 'unique'],
             [['email'], 'email'],
-            [['email'], 'unique', 'targetClass' => \humhub\modules\user\models\User::className(), 'message' => Yii::t('UserModule.base', 'E-Mail is already in use! - Try forgot password.')],
+            [['email'], 'unique', 'targetClass' => User::className(), 'message' => Yii::t('UserModule.base', 'E-Mail is already in use! - Try forgot password.')],
         ];
     }
 
@@ -70,6 +72,7 @@ class Invite extends ActiveRecord
     {
         $scenarios = parent::scenarios();
         $scenarios['invite'] = ['email'];
+
         return $scenarios;
     }
 
@@ -125,11 +128,10 @@ class Invite extends ActiveRecord
 
         // User requested registration link by its self
         if ($this->source == self::SOURCE_SELF) {
-
             $mail = Yii::$app->mailer->compose([
                 'html' => '@humhub/modules/user/views/mails/UserInviteSelf',
                 'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSelf'
-                    ], [
+            ], [
                 'token' => $this->token,
                 'registrationUrl' => $registrationUrl
             ]);
@@ -138,14 +140,14 @@ class Invite extends ActiveRecord
             $mail->send();
         } elseif ($this->source == self::SOURCE_INVITE && $this->space !== null) {
 
-            if($module->sendInviteMailsInGlobalLanguage) {
+            if ($module->sendInviteMailsInGlobalLanguage) {
                 Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
             }
 
             $mail = Yii::$app->mailer->compose([
                 'html' => '@humhub/modules/user/views/mails/UserInviteSpace',
                 'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSpace'
-                    ], [
+            ], [
                 'token' => $this->token,
                 'originator' => $this->originator,
                 'originatorName' => $this->originator->displayName,
@@ -157,7 +159,7 @@ class Invite extends ActiveRecord
             $mail->send();
 
             // Switch back to users language
-            if (Yii::$app->user->language !== "") {
+            if (Yii::$app->user->language !== '') {
                 Yii::$app->language = Yii::$app->user->language;
             }
         } elseif ($this->source == self::SOURCE_INVITE) {
@@ -170,7 +172,7 @@ class Invite extends ActiveRecord
             $mail = Yii::$app->mailer->compose([
                 'html' => '@humhub/modules/user/views/mails/UserInvite',
                 'text' => '@humhub/modules/user/views/mails/plaintext/UserInvite'
-                    ], [
+            ], [
                 'originator' => $this->originator,
                 'originatorName' => $this->originator->displayName,
                 'token' => $this->token,
@@ -181,7 +183,7 @@ class Invite extends ActiveRecord
             $mail->send();
 
             // Switch back to users language
-            if (Yii::$app->user->language !== "") {
+            if (Yii::$app->user->language !== '') {
                 Yii::$app->language = Yii::$app->user->language;
             }
         }
@@ -194,7 +196,7 @@ class Invite extends ActiveRecord
      */
     public function getOriginator()
     {
-        return $this->hasOne(\humhub\modules\user\models\User::className(), ['id' => 'user_originator_id']);
+        return $this->hasOne(User::className(), ['id' => 'user_originator_id']);
     }
 
     /**
@@ -204,7 +206,7 @@ class Invite extends ActiveRecord
      */
     public function getSpace()
     {
-        return $this->hasOne(\humhub\modules\space\models\Space::className(), ['id' => 'space_invite_id']);
+        return $this->hasOne(Space::className(), ['id' => 'space_invite_id']);
     }
 
     /**
