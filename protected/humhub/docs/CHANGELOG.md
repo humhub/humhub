@@ -9,6 +9,9 @@ HumHub Change Log
 - Enh: Added `humhub\components\ModuleManager::EVENT_BEFORE_MODULE_ENABLE` and `humhub\components\ModuleManager::EVENT_AFTER_MODULE_ENABLE` events
 - Enh: Added `humhub\components\ModuleManager::EVENT_BEFORE_MODULE_DISABLE` and `humhub\components\ModuleManager::EVENT_AFTER_MODULE_DISABLE` events
 - Fix: Improved ZendLucence driver error handling
+- Fix #3148: Upload space picture dose not use file size setting in HumHub (acs-ferreira)
+- Fix: Incorrect last visit date shown in space admin pending members view (acs-ferreira)
+
 
 1.2.7 (May 23, 2018)
 -----------------------
