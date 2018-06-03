@@ -71,7 +71,6 @@ migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 - Enh: Added Norwegian Nynorsk language
 - Fix #3009: Change the Space URL raises 404
 
-
 1.2.4  (December 13, 2017)
 --------------------------
 
