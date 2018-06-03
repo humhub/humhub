@@ -8,6 +8,7 @@ HumHub Change Log
 - Fix: Module Assets are not republished after module update
 - Enh: Added `humhub\components\ModuleManager::EVENT_BEFORE_MODULE_ENABLE` and `humhub\components\ModuleManager::EVENT_AFTER_MODULE_ENABLE` events
 - Enh: Added `humhub\components\ModuleManager::EVENT_BEFORE_MODULE_DISABLE` and `humhub\components\ModuleManager::EVENT_AFTER_MODULE_DISABLE` events
+- Fix: Improved ZendLucence driver error handling
 
 1.2.7 (May 23, 2018)
 -----------------------
