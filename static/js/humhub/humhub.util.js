@@ -41,6 +41,13 @@ humhub.module('util', function(module, require, $) {
             });
             return result;
         },
+        swap: function swap(json){
+            var ret = {};
+            for(var key in json){
+                ret[json[key]] = key;
+            }
+            return ret;
+        },
         isDefined: function(obj) {
             if(arguments.length > 1) {
                 var result = true;
@@ -176,8 +183,28 @@ humhub.module('util', function(module, require, $) {
         }
     };
 
+    var array = {
+        move: function (arr, old_index, new_index) {
+            while (old_index < 0) {
+                old_index += arr.length;
+            }
+            while (new_index < 0) {
+                new_index += arr.length;
+            }
+            if (new_index >= arr.length) {
+                var k = new_index - arr.length;
+                while ((k--) + 1) {
+                    arr.push(undefined);
+                }
+            }
+            arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+            return arr; // for testing purposes
+        }
+    };
+
     module.export({
         object: object,
-        string: string
+        string: string,
+        array:array
     });
 });

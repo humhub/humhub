@@ -14,6 +14,8 @@ use humhub\modules\user\components\BaseAccountController;
 use humhub\modules\user\models\User;
 use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\user\controllers\ImageController;
+use humhub\modules\space\helpers\MembershipHelper;
+use humhub\modules\user\models\forms\AccountDelete;
 use humhub\modules\space\models\Membership;
 
 /**
@@ -125,7 +127,7 @@ class AccountController extends BaseAccountController
             return $this->redirect(['edit-settings']);
         }
 
-        // Sort countries list based on user language   
+        // Sort countries list based on user language
         $languages = Yii::$app->i18n->getAllowedLanguages();
         $col = new \Collator(Yii::$app->language);
         $col->asort($languages);
@@ -258,37 +260,26 @@ class AccountController extends BaseAccountController
 
     /**
      * Delete Action
-     *
-     * Its only possible if the user is not owner of a workspace.
      */
     public function actionDelete()
     {
-
-        $isSpaceOwner = false;
-        $user = Yii::$app->user->getIdentity();
-
         if (!Yii::$app->user->canDeleteAccount()) {
-            throw new HttpException(500, 'Account deletion not allowed');
+            throw new HttpException(500, 'Account deletion not allowed!');
         }
 
-        foreach (Membership::getUserSpaces() as $space) {
-            if ($space->isSpaceOwner($user->id)) {
-                $isSpaceOwner = true;
-            }
+        // Ensure user is not owner of a space
+        $ownSpaces = MembershipHelper::getOwnSpaces($this->user);
+        if (count($ownSpaces) !== 0) {
+            return $this->render('delete_spaceowner', ['ownSpaces' => $ownSpaces]);
         }
 
-        $model = new \humhub\modules\user\models\forms\AccountDelete;
-
-        if (!$isSpaceOwner && $model->load(Yii::$app->request->post()) && $model->validate()) {
-            $user->delete();
+        $model = new AccountDelete(['user' => $this->getUser()]);
+        if ($model->load(Yii::$app->request->post()) && $model->performDelete()) {
             Yii::$app->user->logout();
             return $this->goHome();
         }
 
-        return $this->render('delete', array(
-                    'model' => $model,
-                    'isSpaceOwner' => $isSpaceOwner
-        ));
+        return $this->render('delete', ['model' => $model]);
     }
 
     /**
@@ -375,7 +366,7 @@ class AccountController extends BaseAccountController
 
     /**
      * Handle the banner image upload
-     * 
+     *
      * @deprecated since version 1.2
      */
     public function actionBannerImageUpload()
@@ -389,7 +380,7 @@ class AccountController extends BaseAccountController
 
     /**
      * Handle the profile image upload
-     * 
+     *
      * @deprecated since version 1.2
      */
     public function actionProfileImageUpload()

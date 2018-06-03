@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\FooterMenu;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -20,4 +21,6 @@ $this->pageTitle = Yii::t('base', 'Error');
             <a href="<?= Url::home() ?>" class="btn btn-primary"><?= Yii::t('base', 'Back to dashboard'); ?></a>
         </div>
     </div>
+
+    <?= FooterMenu::widget(); ?>
 </div>

@@ -81,14 +81,16 @@ return [
 Google
 ------
 In order to use Google OAuth you must create a **project** at <https://console.developers.google.com/project>
-and setup its credentials at <https://console.developers.google.com/project/[yourProjectId]/apiui/credential>.
+and set up its credentials at <https://console.developers.google.com/project/[yourProjectId]/apiui/credential>.
 
-In order to enable using scopes for retrieving user attributes, you have to enable Google+ API at
+In order to enable using scopes for retrieving user attributes, you should also enable Google+ API at
 <https://console.developers.google.com/project/[yourProjectId]/apiui/api/plus>.
 
+Authorization callback URLs:
+
 Add one of the following **authorization callback URLs** to your  googles **Credentials** configuration:
-- http://<domain>/<path-to-humhub>/user/auth/external?authclient=google (With clean urls enabled)
-- http://<domain>/<path-to-humhub>/index.php?r=user%2Fauth%2Fexternal&authclient=google (Without clean urls)
+- http://domain/path-to-humhub/user/auth/external?authclient=google (With clean urls enabled)
+- http://domain/path-to-humhub/index.php?r=user%2Fauth%2Fexternal&authclient=google (Without clean urls)
 
 >Note: Replace **domain** and **path-to-humhub** in the mentioned redirect urls.
 
@@ -123,7 +125,7 @@ Authorization callback URLs:
 - http://domain/path-to-humhub/user/auth/external (With clean urls enabled)
 - http://domain/path-to-humhub/index.php?r=user%2Fauth%2Fexternal (Without clean urls)
 
-Add following block to your configuration (protected/config/common.php):
+Add the following block to your configuration (protected/config/common.php):
 
 ```php
 return [
@@ -153,7 +155,7 @@ Microsoft Live
 --------------
 In order to use Microsoft Live OAuth you must register your application at <https://account.live.com/developers/applications>.
 
-Also add a new Platform and allow following Redirect URI.
+Also, add a new Platform and allow following Redirect URI.
 
 - https://domain/path-to-humhub/user/auth/external (With clean urls enabled)
 - https://domain/path-to-humhub/index.php (Without clean urls)
@@ -199,33 +201,6 @@ return [
                     'class' => 'humhub\modules\user\authclient\LinkedIn',
                     'clientId' => 'Your LinkedIn Client ID here',
                     'clientSecret' => 'Your LinkedIn Client Secret here',
-                ],
-            ],
-        ],
-        // ...
-    ],
-    // ...
-];
-```
-
-Instagram
---------
-In order to use Instagram OAuth you must register your application at <https://www.instagram.com/developer/clients/manage/>.
-
-Add the following block to your configuration (protected/config/common.php):
-
-```php
-return [
-    // ...
-    'components' => [
-        // ...
-        'authClientCollection' => [
-            'clients' => [
-                // ...
-                'instagram' => [
-                    'class' => 'humhub\modules\user\authclient\Instagram',
-                    'clientId' => 'Your Instagram App ID here',
-                    'clientSecret' => 'Your Instagram App Secret here',
                 ],
             ],
         ],

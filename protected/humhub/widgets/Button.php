@@ -6,15 +6,7 @@
  *
  */
 
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 13.06.2017
- * Time: 22:32
- */
-
 namespace humhub\widgets;
-
 
 use humhub\components\Widget;
 use humhub\libs\Html;
@@ -43,7 +35,7 @@ class Button extends BootstrapComponent
      */
     public static function save($text = null)
     {
-        if(!$text) {
+        if (!$text) {
             $text = Yii::t('base', 'Save');
         }
 
@@ -66,7 +58,7 @@ class Button extends BootstrapComponent
      */
     public static function back($url, $text = null)
     {
-        if(!$text) {
+        if (!$text) {
             $text = Yii::t('base', 'Back');
         }
 
@@ -74,7 +66,7 @@ class Button extends BootstrapComponent
     }
 
     public static function userPickerSelfSelect($selector, $text = null) {
-        if(!$text) {
+        if (!$text) {
             $text = Yii::t('base', 'Select Me');
         }
 
@@ -99,7 +91,7 @@ class Button extends BootstrapComponent
     {
         $this->_link = true;
 
-        if(!$this->type || $this->type == self::TYPE_NONE) {
+        if (!$this->type || $this->type == self::TYPE_NONE) {
             $this->loader(false);
         }
 
@@ -117,9 +109,10 @@ class Button extends BootstrapComponent
      */
     public function pjax($pjax = true)
     {
-        if(!$pjax) {
+        if (!$pjax) {
             $this->options(['data-pjax-prevent' => true]);
         }
+
         return $this;
     }
 
@@ -157,11 +150,11 @@ class Button extends BootstrapComponent
     {
         $this->htmlOptions['data-action-'.$event] = $handler;
 
-        if($url) {
+        if ($url) {
             $this->htmlOptions['data-action-'.$event.'-url'] = Url::to($url);
         }
 
-        if($target) {
+        if ($target) {
             $this->htmlOptions['data-action-'.$event.'-target'] = $target;
         }
 
@@ -179,21 +172,21 @@ class Button extends BootstrapComponent
      */
     public function confirm($title = null, $body = null, $confirmButtonText = null, $cancelButtonText = null)
     {
-        if($title) {
+        if ($title) {
             $this->htmlOptions['data-action-confirm-header'] = $title;
         }
 
-        if($body) {
+        if ($body) {
             $this->htmlOptions['data-action-confirm'] = $body;
         } else {
             $this->htmlOptions['data-action-confirm'] = '';
         }
 
-        if($confirmButtonText) {
+        if ($confirmButtonText) {
             $this->htmlOptions['data-action-confirm-text'] = $confirmButtonText;
         }
 
-        if($cancelButtonText) {
+        if ($cancelButtonText) {
             $this->htmlOptions['data-action-cancel-text'] = $cancelButtonText;
         }
 
@@ -205,11 +198,11 @@ class Button extends BootstrapComponent
      */
     public function renderComponent()
     {
-        if($this->_loader) {
+        if ($this->_loader) {
             $this->htmlOptions['data-ui-loader'] = '';
         }
 
-        if($this->_link) {
+        if ($this->_link) {
             $href = isset($this->htmlOptions['href']) ? $this->htmlOptions['href'] : null;
             return Html::a($this->getText(), $href, $this->htmlOptions);
         } else {
@@ -222,6 +215,7 @@ class Button extends BootstrapComponent
         $options = parent::getWidgetOptions();
         $options['_link'] = $this->_link;
         $options['_loader'] = $this->_loader;
+
         return $options;
     }
 

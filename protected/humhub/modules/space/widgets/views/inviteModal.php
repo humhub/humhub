@@ -1,15 +1,13 @@
 <?php
 
+use humhub\widgets\ModalDialog;
+use humhub\modules\user\widgets\UserPickerField;
 use yii\bootstrap\ActiveForm;
-   
-?>
 
-<?php $modal = \humhub\widgets\ModalDialog::begin([
+$modal = ModalDialog::begin([
     'header' => Yii::t('SpaceModule.views_space_invite', '<strong>Invite</strong> members')
-])?>
+]);
 
-
-<?php
 $modalAnimationClass = ($model->hasErrors()) ? 'shake' : 'fadeIn';
 
 if ($canInviteExternal && $model->hasErrors('inviteExternal')) {
@@ -19,9 +17,12 @@ if ($canInviteExternal && $model->hasErrors('inviteExternal')) {
     $isInviteExternalTabActiveClass = '';
     $isInviteTabActiveClass = 'active';
 }
-?>
 
-<?php $form = ActiveForm::begin(['id' => 'space-invite-modal-form', 'action' => $submitAction]) ?>
+$form = ActiveForm::begin([
+    'id' => 'space-invite-modal-form',
+    'action' => $submitAction
+]);
+?>
     <div class="modal-body">
         <?php if ($canInviteExternal) : ?>
             <div class="text-center">
@@ -42,8 +43,8 @@ if ($canInviteExternal && $model->hasErrors('inviteExternal')) {
 
                 <?= Yii::t('SpaceModule.views_space_invite', 'To invite users to this space, please type their names below to find and pick them.'); ?>
 
-                <br/><br/>
-                <?= \humhub\modules\user\widgets\UserPickerField::widget([
+                <br><br>
+                <?= UserPickerField::widget([
                     'id' => 'space-invite-user-picker',
                     'form' => $form,
                     'model' => $model,
@@ -51,7 +52,8 @@ if ($canInviteExternal && $model->hasErrors('inviteExternal')) {
                     'url' => $searchUrl,
                     'disabledItems' => [Yii::$app->user->guid],
                     'focus' => true
-                ])?>
+                ]);
+                ?>
 
             </div>
 
@@ -62,6 +64,7 @@ if ($canInviteExternal && $model->hasErrors('inviteExternal')) {
                     <?= $form->field($model, 'inviteExternal')->textarea(['id' => 'space-invite-external', 'rows' => '3', 'placeholder' => Yii::t('SpaceModule.views_space_invite', 'Email addresses')]); ?>
                 </div>
             <?php endif; ?>
+
             <script>
             $('.tab-internal a').on('shown.bs.tab', function (e) {
                 $('#space-invite-user-picker').data('picker').focus();
@@ -71,11 +74,12 @@ if ($canInviteExternal && $model->hasErrors('inviteExternal')) {
                 $('#space-invite-external').focus();
             });
             </script>
+
         </div>
     </div>
     <div class="modal-footer">
-        <a href="#" data-action-click="ui.modal.submit" data-action-submit class="btn btn-primary"  data-ui-loader><?= $submitText ?></a>
+        <a href="#" data-action-click="ui.modal.submit" data-action-submit class="btn btn-primary" data-ui-loader><?= $submitText ?></a>
     </div>
 <?php ActiveForm::end() ?>
-    
-<?php \humhub\widgets\ModalDialog::end(); ?>
+
+<?php ModalDialog::end(); ?>

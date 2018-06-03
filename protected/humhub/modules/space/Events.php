@@ -2,23 +2,25 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\space;
 
 use Yii;
+use yii\web\HttpException;
+use humhub\modules\user\events\UserEvent;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
-use yii\web\HttpException;
+use humhub\modules\space\helpers\MembershipHelper;
 
 /**
  * Events provides callbacks for all defined module events.
- * 
+ *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends \yii\base\BaseObject
 {
 
     /**
@@ -34,35 +36,30 @@ class Events extends \yii\base\Object
     }
 
     /**
-     * On User delete, also delete his space related stuff
+     * Callback on user soft deletion
      *
-     * @param type $event
+     * @param UserEvent $event
      */
-    public static function onUserDelete($event)
+    public static function onUserSoftDelete(UserEvent $event)
     {
+        $user = $event->user;
 
-        $user = $event->sender;
-
-        // Check if the user owns some spaces
-        foreach (Membership::getUserSpaces($user->id) as $space) {
-            if ($space->isSpaceOwner($user->id)) {
-                throw new HttpException(500, Yii::t('SpaceModule.base', 'Could not delete user who is a space owner! Name of Space: {spaceName}', array('spaceName' => $space->name)));
-            }
+        // Delete spaces which this user owns
+        foreach (MembershipHelper::getOwnSpaces($user) as $ownedSpace) {
+            $ownedSpace->delete();
         }
 
         // Cancel all space memberships
-        foreach (Membership::findAll(array('user_id' => $user->id)) as $membership) {
+        foreach (Membership::findAll(['user_id' => $user->id]) as $membership) {
             // Avoid activities
             $membership->delete();
         }
 
         // Cancel all space invites by the user
-        foreach (Membership::findAll(array('originator_user_id' => $user->id, 'status' => Membership::STATUS_INVITED)) as $membership) {
+        foreach (Membership::findAll(['originator_user_id' => $user->id, 'status' => Membership::STATUS_INVITED]) as $membership) {
             // Avoid activities
             $membership->delete();
         }
-
-        return true;
     }
 
     public static function onConsoleApplicationInit($event)
@@ -87,15 +84,6 @@ class Events extends \yii\base\Object
                     if ($integrityController->showFix("Deleting applicant record id " . $applicant->id . " without existing user!")) {
                         $applicant->delete();
                     }
-                }
-            }
-        }
-
-        $integrityController->showTestHeadline("Space Module - Module (" . models\Module::find()->count() . " entries)");
-        foreach (models\Module::find()->joinWith('space')->each() as $module) {
-            if ($module->space == null) {
-                if ($integrityController->showFix("Deleting space module " . $module->id . " without existing space!")) {
-                    $module->delete();
                 }
             }
         }

@@ -1,8 +1,8 @@
 <?php
 return array (
   'Birthday' => 'Geburtstag',
-  'Checkbox' => 'Markierungsfeld',
-  'Checkbox List' => 'Markierungsfeldliste',
+  'Checkbox' => 'Kontrollkästchen',
+  'Checkbox List' => 'Kontrollkästchen-Liste',
   'Country' => 'Land',
   'Date' => 'Datum',
   'Datetime' => 'Datum/Uhrzeit',

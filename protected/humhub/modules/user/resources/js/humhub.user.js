@@ -7,9 +7,14 @@ humhub.module('user', function(module, require, $) {
     var guid = function() {
         return module.config.guid;
     };
+
+    var getLocale = function() {
+        return module.config.locale;
+    };
     
     module.export({
         isGuest: isGuest,
-        guid: guid
+        guid: guid,
+        getLocale: getLocale
     });
 });

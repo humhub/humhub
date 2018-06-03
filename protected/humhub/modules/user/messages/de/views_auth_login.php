@@ -18,7 +18,7 @@
  */
 return [
   '<strong>Join</strong> the network' => 'Netzwerk <strong>beitreten</strong>',
-  '<strong>Please</strong> sign in' => '<strong>Einloggen</strong>',
+  '<strong>Please</strong> sign in' => '<strong>Bitte</strong> einloggen',
   '<strong>Sign</strong> up' => '<strong>Registrieren</strong>',
   'Don\'t have an account? Join the network by entering your e-mail address.' => 'Noch kein Benutzerkonto? Werde Mitglied, indem du deine E-Mail Adresse eingibst.',
   'Forgot your password?' => 'Passwort vergessen?',

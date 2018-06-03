@@ -19,7 +19,7 @@ Github - Bugtracker
 **When filing a new bug, please include:**
 
 - Descriptive title - use keywords so others can find your bug (avoiding duplicates)
-- Steps to trigger the problem that are specific, and repeatable
+- Specific and repeatable steps that trigger the problem
 - What happens when you follow the steps, and what you expected to happen instead.
 - Include the exact text of any error messages if applicable (or upload screenshots).
 - HumHub version (or if you're pulling directly from Git, your current commit SHA - use git rev-parse HEAD)
@@ -28,6 +28,16 @@ Github - Bugtracker
 - Modules? Confirm that you've tested with Debug > Reload Without Extensions first (see below).
 - Any errors logged in Debug > Show Developer Tools - Console view
 
+Cron Job Setup
+----------------------------------------
+- Do you have access to setup Cron Jobs?
+- Does your server use Cron or Crontab?
+- Does your server use a third-party Cron Job provider?
+- Are you using VPS or Dedicated/Shared/Other Hosting?
+- Can you provide screenshots of your Cron Job settings? (With personal information blurred out!)
+- What type of server are you using? (CloudLinux CentOS 6, Windows IIS, or etc)
+
+> Note: For more help refer to [here](cron-jobs.md)!
 
 Direct Support (Enterprise Edition only)
 ----------------------------------------

@@ -12,10 +12,14 @@ Yii::setAlias('@config', '@app/config');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.2.4',
+    'version' => '1.3.0-beta.1',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue'],
     'sourceLanguage' => 'en',
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset',
+        '@npm' => '@vendor/npm-asset',
+    ],
     'components' => [
         'moduleManager' => [
             'class' => '\humhub\components\ModuleManager'
@@ -121,7 +125,7 @@ $config = [
             'dsn' => 'mysql:host=localhost;dbname=humhub',
             'username' => '',
             'password' => '',
-            'charset' => 'utf8',
+            'charset' => 'utf8mb4',
             'enableSchemaCache' => true,
             'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
         ],
@@ -130,12 +134,15 @@ $config = [
             'clients' => [],
         ],
         'queue' => [
-            'class' => 'humhub\components\queue\driver\Sync',
+            'class' => 'humhub\modules\queue\driver\Sync',
+        ],
+        'urlManager' => [
+            'class' => 'humhub\components\UrlManager',
         ],
         'live' => [
             'class' => 'humhub\modules\live\components\Sender',
             'driver' => [
-                'class' => 'humhub\modules\live\driver\Database',
+                'class' => 'humhub\modules\live\driver\Poll',
             ],
         ],
     ],
@@ -165,6 +172,7 @@ $config = [
             'ja' => '日本語',
             'hu' => 'Magyar',
             'nb_no' => 'Nnorsk bokmål',
+            'nn_no' => 'Nynorsk',
             'zh_cn' => '中文(简体)',
             'zh_tw' => '中文(台灣)',
             'an' => 'Aragonés',
@@ -226,6 +234,9 @@ $config = [
         'defaultPermissions' => [],
         'tour' => [
             'acceptableNames' => ['interface', 'administration', 'profile', 'spaces']
+        ],
+        'richText' => [
+            'class' => 'humhub\modules\content\widgets\richtext\ProsemirrorRichText',
         ],
         'enablePjax' => true,
     ]

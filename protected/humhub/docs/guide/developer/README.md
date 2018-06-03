@@ -4,41 +4,54 @@ Developement Guide
 Getting Started
 ---------------
 * [Overview](overview.md)
-* [Git Installation](git-installation.md)
-* [Development Environment](environment.md)
+* [Git/Composer Installation](git-installation.md)
 * [Coding Standards](coding-standards.md)
+* [Development Environment](environment.md)
+* [Migration Guide](migration-guide.md)
 
-Module Development
+
+Modules
+---------------
+* [Getting Started](modules.md)
+* [Asset Management](assets.md)
+* [Change core behavior](module-change-behavior.md)
+* [Embedded Themes](embedded-themes.md)
+* [Migration / Updates](migration.md)
+
+Basic Concepts
 ------------------
-* [Introduction](modules-index.md)
-* [Basic Structure](modules-structure.md)
-* [Migration/Updates](modules-migrate.md)
 * [Content](content.md)
-* [Events](modules-events.md)
-* [Settings and Configuration](modules-settings.md)
-* [Models / Database](modules-db.md)
-* [Internationalization](modules-i18n.md)
+* [Streams](stream.md)
+* [Events](events.md)
+* [Settings and Configuration](settings.md)
+* [Models / Database](models.md)
+* [Permissions](permissions.md)
+* [Notifications](notifications.md)
+* [Activities](activities.md)
+* [File Handling](files.md)
+* [Widgets](widgets.md)
+* [Snippets](snippet.md)
+* [Internationalization](i18n.md)
 
 Javascript API
 ------------------
  * [Modules](javascript-index.md)
  * [Components](javascript-components.md)
- * [Additions](javascript-uiadditions.md)
+ * [Additions](javascript-components.md)
  * [Actions](javascript-actions.md)
  * [Client](javascript-client.md)
- * [Modals](javascript-modals.md)
  * [Events](javascript-events.md)
+ * [Widgets](javascript-widgets.md)
+ * [Pjax](javascript-pjax.md)
 
-
-
-Special Topics
+Advanced Topics
 --------------
-* [Notifications](notifications.md)
-* [Activities](activities.md)
+* [HumHub Build](build.md)
 * [Authentication](authentication.md)
+* [Events](events.md)
+* [Live Updates](live.md)
 * [Search](search.md)
+* [Security](security.md)
 * [Console Application](console.md)
-* [Streams](stream.md)
-* [Permissions](permissions.md)
-* [Widgets](widgets.md)
+
 

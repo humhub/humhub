@@ -9,7 +9,7 @@
 namespace humhub\modules\activity\jobs;
 
 use Yii;
-use humhub\components\queue\ActiveJob;
+use humhub\modules\queue\ActiveJob;
 use humhub\modules\activity\components\MailSummaryProcessor;
 use humhub\modules\activity\components\MailSummary;
 

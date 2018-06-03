@@ -2,16 +2,19 @@
 
 namespace humhub\modules\user\models\forms;
 
+use humhub\modules\user\models\User;
+use humhub\modules\user\authclient\Password;
+use humhub\libs\UUID;
 use Yii;
 use yii\helpers\Url;
-use humhub\modules\user\models\User;
+use yii\base\Model;
 
 /**
  * @package humhub.modules_core.user.forms
  * @since 0.5
  * @author Luke
  */
-class AccountRecoverPassword extends \yii\base\Model
+class AccountRecoverPassword extends Model
 {
 
     public $verifyCode;
@@ -22,13 +25,13 @@ class AccountRecoverPassword extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array('email', 'required'),
-            array('email', 'email'),
-            array('email', 'canRecoverPassword'),
-            array('verifyCode', 'captcha', 'captchaAction' => '/user/auth/captcha'),
-            array('email', 'exist', 'targetClass' => User::className(), 'targetAttribute' => 'email', 'message' => Yii::t('UserModule.forms_AccountRecoverPasswordForm', '{attribute} "{value}" was not found!')),
-        );
+        return [
+            ['email', 'required'],
+            ['email', 'email'],
+            ['email', 'canRecoverPassword'],
+            ['verifyCode', 'captcha', 'captchaAction' => '/user/auth/captcha'],
+            ['email', 'exist', 'targetClass' => User::className(), 'targetAttribute' => 'email', 'message' => Yii::t('UserModule.forms_AccountRecoverPasswordForm', '{attribute} "{value}" was not found!')],
+        ];
     }
 
     /**
@@ -38,9 +41,9 @@ class AccountRecoverPassword extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'email' => Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'E-Mail'),
-        );
+        ];
     }
 
     /**
@@ -50,12 +53,12 @@ class AccountRecoverPassword extends \yii\base\Model
     public function canRecoverPassword($attribute, $params)
     {
 
-        if ($this->email != "") {
-            $user = User::findOne(array('email' => $this->email));
-            $passwordAuth = new \humhub\modules\user\authclient\Password();
+        if ($this->email !== '') {
+            $user = User::findOne(['email' => $this->email]);
+            $passwordAuth = new Password();
 
             if ($user != null && $user->auth_mode !== $passwordAuth->getId()) {
-                $this->addError($attribute, Yii::t('UserModule.forms_AccountRecoverPasswordForm', Yii::t('UserModule.forms_AccountRecoverPasswordForm', "Password recovery is not possible on your account type!")));
+                $this->addError($attribute, Yii::t('UserModule.forms_AccountRecoverPasswordForm', Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'Password recovery is not possible on your account type!')));
             }
         }
     }
@@ -67,14 +70,14 @@ class AccountRecoverPassword extends \yii\base\Model
     public function recover()
     {
 
-        $user = User::findOne(array('email' => $this->email));
+        $user = User::findOne(['email' => $this->email]);
 
         // Switch to users language - if specified
-        if ($user->language !== "") {
+        if ($user->language !== '') {
             Yii::$app->language = $user->language;
         }
 
-        $token = \humhub\libs\UUID::v4();
+        $token = UUID::v4();
         Yii::$app->getModule('user')->settings->contentContainer($user)->set('passwordRecoveryToken', $token . '.' . time());
 
         $mail = Yii::$app->mailer->compose([
@@ -82,7 +85,7 @@ class AccountRecoverPassword extends \yii\base\Model
 			'text' => '@humhub/modules/user/views/mails/plaintext/RecoverPassword'
 		], [
             'user' => $user,
-            'linkPasswordReset' => Url::to(["/user/password-recovery/reset", 'token' => $token, 'guid' => $user->guid], true)
+            'linkPasswordReset' => Url::to(['/user/password-recovery/reset', 'token' => $token, 'guid' => $user->guid], true)
         ]);
         $mail->setTo($user->email);
         $mail->setSubject(Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'Password Recovery'));

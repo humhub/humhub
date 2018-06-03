@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Pin to top' => 'oben anheften',
-  'Unpin' => 'Anheftung aufheben',
+  'Pin to top' => 'Oben anheften',
+  'Unpin' => 'Lösen',
 );

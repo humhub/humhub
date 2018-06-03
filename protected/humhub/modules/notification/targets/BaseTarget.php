@@ -9,7 +9,6 @@
 namespace humhub\modules\notification\targets;
 
 use Yii;
-use yii\base\Object;
 use yii\di\Instance;
 use humhub\modules\user\models\User;
 use humhub\components\rendering\Renderer;
@@ -23,7 +22,7 @@ use humhub\modules\notification\components\NotificationCategory;
  *
  * @author buddha
  */
-abstract class BaseTarget extends Object
+abstract class BaseTarget extends \yii\base\BaseObject
 {
 
     /**

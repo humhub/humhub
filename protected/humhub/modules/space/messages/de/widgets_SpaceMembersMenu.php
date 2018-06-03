@@ -2,6 +2,6 @@
 return array (
   'Members' => 'Mitglieder',
   'Owner' => 'Besitzer',
-  'Pending Approvals' => 'Ausstehende Freigaben',
+  'Pending Approvals' => 'Ausstehende Genehmigungen',
   'Pending Invites' => 'Ausstehende Einladungen',
 );

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\models\Content;
 use Yii;
 use yii\base\Exception;
 use humhub\components\ActiveRecord;

@@ -38,8 +38,12 @@ humhub.module('file', function (module, require, $) {
 
         var that = this;
         this.on('upload', function () {
-            that.$.trigger('click');
+            that.run();
         });
+    };
+
+    Upload.prototype.run = function () {
+        this.$.trigger('click');
     };
 
     Upload.prototype.validate = function () {
@@ -234,7 +238,7 @@ humhub.module('file', function (module, require, $) {
         }
 
         //deprecated event use uploadEnd
-        this.fire('humhub:file:uploadEnd', [response]);;
+        this.fire('humhub:file:uploadEnd', [response]);
         this.fire('uploadEnd', [response]);
     };
 

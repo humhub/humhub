@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use humhub\modules\content\widgets\WallEntry;
@@ -45,6 +46,8 @@ use humhub\modules\content\interfaces\ContentOwner;
  * Note: If the underlying Content record cannot be saved or validated an Exception will thrown.
  *
  * @property Content $content
+ * @mixin \humhub\modules\user\behaviors\Followable
+ * @property User $createdBy
  * @author Luke
  */
 class ContentActiveRecord extends ActiveRecord implements ContentOwner
@@ -91,6 +94,13 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      * @since 1.2.3
      */
     public $silentContentCreation = false;
+
+    /**
+     * @var Content used to cache the content relation in order to avoid the relation to be overwritten in the insert process
+     * @see https://github.com/humhub/humhub/issues/3110
+     * @since 1.3
+     */
+    protected $initContent;
 
     /**
      * ContentActiveRecord constructor accepts either an configuration array as first argument or an ContentContainerActiveRecord
@@ -148,12 +158,16 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
          * @see Content
          */
         if ($name == 'content') {
-            $content = parent::__get('content');
-            if (!$this->isRelationPopulated('content') || $content === null) {
-                $content = new Content();
-                $this->populateRelation('content', $content);
-                $content->setPolymorphicRelation($this);
+            $content = $this->initContent = (empty($this->initContent)) ? parent::__get('content') : $this->initContent;
+
+            if(!$content) {
+                $content = $this->initContent =  new Content();
             }
+
+            if(!$this->isRelationPopulated('content')) {
+                $this->populateRelation('content', $content);
+            }
+
             return $content;
         }
         return parent::__get($name);
@@ -325,20 +339,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     /**
      * @inheritdoc
      */
-    public function afterDelete()
-    {
-
-        $content = Content::findOne(['object_id' => $this->id, 'object_model' => $this->className()]);
-        if ($content !== null) {
-            $content->delete();
-        }
-
-        parent::afterDelete();
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function afterSave($insert, $changedAttributes)
     {
         // Auto follow this content
@@ -348,7 +348,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
         // Set polymorphic relation
         if ($insert) {
-            $this->content->object_model = $this->className();
+            $this->populateRelation('content', $this->initContent);
+            $this->content->object_model = static::getObjectModel();
             $this->content->object_id = $this->getPrimaryKey();
         }
 
@@ -356,6 +357,24 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
         $this->content->save();
 
         parent::afterSave($insert, $changedAttributes);
+    }
+
+    public static function getObjectModel() {
+        return static::class;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+
+        $content = Content::findOne(['object_id' => $this->id, 'object_model' => static::getObjectModel()]);
+        if ($content !== null) {
+            $content->delete();
+        }
+
+        parent::afterDelete();
     }
 
     /**
@@ -367,6 +386,24 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     }
 
     /**
+     * Checks if the given user or the current logged in user if no user was given, is the owner of this content
+     * @param null $user
+     * @return bool
+     * @since 1.3
+     */
+    public function isOwner($user = null)
+    {
+        if (!$user && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        } else if (!$user) {
+            return false;
+        }
+
+        return $this->content->created_by === $user->getId();
+
+    }
+
+    /**
      * Related Content model
      *
      * @return \yii\db\ActiveQuery|ActiveQueryContent
@@ -374,7 +411,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     public function getContent()
     {
         return $this->hasOne(Content::className(), ['object_id' => 'id'])
-            ->andWhere(['content.object_model' => self::className()]);
+            ->andWhere(['content.object_model' => static::getObjectModel()]);
     }
 
     /**
@@ -385,7 +422,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      */
     public static function find()
     {
-        return new ActiveQueryContent(get_called_class());
+        return new ActiveQueryContent(static::getObjectModel());
     }
 }
 

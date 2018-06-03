@@ -8,13 +8,17 @@
 
 namespace humhub\components;
 
+use humhub\libs\Helpers;
+use humhub\modules\content\models\Content;
 use Yii;
 use yii\helpers\Html;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\interfaces\ContentOwner;
-use humhub\widgets\RichText;
+use humhub\modules\content\widgets\richtext\RichText;
+use yii\helpers\Json;
+use yii\helpers\Url;
 
 /**
  * This class represents a social Activity triggered within the network.
@@ -29,7 +33,7 @@ use humhub\widgets\RichText;
  * @since 1.1
  * @author buddha
  */
-abstract class SocialActivity extends \yii\base\Object implements rendering\Viewable, \Serializable
+abstract class SocialActivity extends \yii\base\BaseObject implements rendering\Viewable, \Serializable
 {
 
     /**
@@ -234,7 +238,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
 
         // Create absolute URL, for E-Mails
         if (substr($url, 0, 4) !== 'http') {
-            $url = \yii\helpers\Url::to($url, true);
+            $url = Url::to($url, true);
         }
 
         return $url;
@@ -263,7 +267,7 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
      */
     public function json()
     {
-        return \yii\helpers\Json::encode($this->asArray());
+        return Json::encode($this->asArray());
     }
 
     /**
@@ -299,23 +303,23 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
      * If no $content is provided the contentInfo of $source is returned.
      *
      * @param Content $content
-     * @return string
+     * @return string|null
      */
     public function getContentInfo(ContentOwner $content = null, $withContentName = true)
     {
         if (!$this->hasContent() && !$content) {
-            return;
+            return null;
         } else if (!$content) {
             $content = $this->source;
         }
 
-        $truncatedDescription = RichText::widget([
-            'text' => $content->getContentDescription(),
-            'minimal' => true,
-            'maxLength' => 60
-        ]);
+        $truncatedDescription = $this->getContentPreview($content, 60);
 
-        $trimmed = \humhub\libs\Helpers::trimText($truncatedDescription, 60);
+        if(empty($truncatedDescription)) {
+            return null;
+        }
+
+        $trimmed = Helpers::trimText($truncatedDescription, 60);
 
         return ($withContentName) ? Html::encode($content->getContentName()). ' "' . $trimmed . '"' : $trimmed;
 
@@ -326,12 +330,12 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
      * notification source.
      *
      * @param ContentOwner $content
-     * @return type
+     * @return string|null
      */
     public function getContentName(ContentOwner $content = null)
     {
         if (!$this->hasContent() && !$content) {
-            return;
+            return null;
         } else if (!$content) {
             $content = $this->source;
         }
@@ -346,21 +350,17 @@ abstract class SocialActivity extends \yii\base\Object implements rendering\View
      *  If no $content is provided the contentPreview of $source is returned.
      *
      * @param Content $content
-     * @return string
+     * @return string|null
      */
     public function getContentPreview(ContentOwner $content = null, $maxLength = 25)
     {
         if (!$this->hasContent() && !$content) {
-            return;
+            return null;
         } else if (!$content) {
             $content = $this->source;
         }
 
-        return RichText::widget([
-            'text' => $content->getContentDescription(),
-            'minimal' => true,
-            'maxLength' => $maxLength
-        ]);
+        return RichText::preview($content->getContentDescription(), $maxLength);
     }
 
     /**

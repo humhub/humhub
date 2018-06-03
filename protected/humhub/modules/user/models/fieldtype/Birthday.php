@@ -17,13 +17,24 @@ use Yii;
  *
  * @since 0.5
  */
-class Birthday extends Date
+class Birthday extends BaseType
 {
 
     /**
-     * @var boolean hide age per default
+     * The public property $defaultHideAge is configured by loadFieldConfig in BaseType and looks like an integer
+     * but is stored as string. The value for $hideAge (the user input) looks like an integer and is stored as integer.
      */
-    public $defaultHideAge = false;
+
+    const DEFAULT_HIDE_AGE_YES = '1';
+    const DEFAULT_HIDE_AGE_NO = '0';
+
+    const HIDE_AGE_YES = 1;
+    const HIDE_AGE_NO = 0;
+
+    /**
+     * @var string hide age by default
+     */
+    public $defaultHideAge = self::DEFAULT_HIDE_AGE_NO;
 
     /**
      * @inheritdoc
@@ -31,49 +42,62 @@ class Birthday extends Date
     public function rules()
     {
         return [
-            [['defaultHideAge'], 'in', 'range' => array(0, 1)]
+            [['defaultHideAge'], 'in', 'range' => [self::DEFAULT_HIDE_AGE_NO, self::DEFAULT_HIDE_AGE_YES]]
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function getFormDefinition($definition = array())
+    public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-                    get_class($this) => [
-                        'type' => 'form',
-                        'title' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Birthday field options'),
-                        'elements' => [
-                            'defaultHideAge' => [
-                                'type' => 'checkbox',
-                                'label' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Hide age per default'),
-                                'class' => 'form-control',
-                            ],
-                        ]
-                    ]
+            get_class($this) => [
+                'type' => 'form',
+                'title' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Birthday field options'),
+                'elements' => [
+                    'defaultHideAge' => [
+                        'type' => 'checkbox',
+                        'label' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Hide age per default'),
+                        'class' => 'form-control',
+                    ],
+                ]
+            ]
         ]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function delete()
     {
-        // Try create column name
-        if (Profile::columnExists($this->profileField->internal_name)) {
-            $sql = "ALTER TABLE profile DROP `" . $this->profileField->internal_name . "_hide_year`;";
-            Yii::$app->db->createCommand($sql)->execute();
+        // Delete the birthdate_hide_year field
+        $columnNameHideYear = $this->profileField->internal_name . '_hide_year';
+        if (Profile::columnExists($columnNameHideYear)) {
+            $query = Yii::$app->db->getQueryBuilder()->dropColumn(Profile::tableName(), $columnNameHideYear);
+            Yii::$app->db->createCommand($query)->execute();
         }
 
+        // Delete the birthdate field (this is done by parent implementation)
         return parent::delete();
     }
 
     /**
-     * Saves this Profile Field Type
+     * @inheritdoc
      */
     public function save()
     {
+        // Add the birthdate_hide_year field
+        $columnNameHide = $this->profileField->internal_name . '_hide_year';
+        if (!Profile::columnExists($columnNameHide)) {
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnNameHide, 'INT(1)');
+            Yii::$app->db->createCommand($query)->execute();
+        }
+
+        // Add the birthdate field
         $columnName = $this->profileField->internal_name;
-        if (!\humhub\modules\user\models\Profile::columnExists($columnName)) {
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName . '_hide_year', 'INT(1)');
+        if (!Profile::columnExists($columnName)) {
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName, 'DATE');
             Yii::$app->db->createCommand($query)->execute();
         }
 
@@ -81,50 +105,68 @@ class Birthday extends Date
     }
 
     /**
-     * Returns the Field Rules, to validate users input
-     *
-     * @param type $rules
-     * @return type
+     * @inheritdoc
      */
-    public function getFieldRules($rules = array())
+    public function getFieldRules($rules = [])
     {
-
-        $rules[] = [$this->profileField->internal_name . "_hide_year", 'in', 'range' => [0, 1]];
-        $rules[] = [$this->profileField->internal_name,
+        // Add validation for birthdate
+        $rules[] = [
+            $this->profileField->internal_name,
             \humhub\libs\DbDateValidator::className(),
-            'format' => Yii::$app->formatter->dateInputFormat,
-            'convertToFormat' => null,
+            'format' => 'medium',
+            'convertToFormat' => 'Y-m-d',
             'max' => time(),
             'tooBig' => Yii::t('base', 'The date has to be in the past.')
         ];
+
+        // Add validation for birthdate_hide_year
+        $rules[] = [
+            $this->profileField->internal_name . '_hide_year',
+            'in',
+            'range' => [self::HIDE_AGE_NO, self::HIDE_AGE_YES]
+        ];
+
         return parent::getFieldRules($rules);
     }
 
     /**
-     * Return the Form Element to edit the value of the Field
+     * @inheritdoc
      */
     public function getFieldFormDefinition()
     {
-        return [$this->profileField->internal_name => [
+        return [
+            $this->profileField->internal_name => [
                 'type' => 'datetime',
-                'format' => Yii::$app->formatter->dateInputFormat,
+                'format' => 'medium',
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable),
-                'yearRange' => (date('Y') - 100) . ":" . date('Y')
+                'yearRange' => (date('Y') - 100) . ':' . date('Y'),
+                'dateTimePickerOptions' => [
+                    'pickTime' => false
+                ]
             ],
-            $this->profileField->internal_name . "_hide_year" => [
+            $this->profileField->internal_name . '_hide_year' => [
                 'type' => 'checkbox',
                 'readonly' => (!$this->profileField->editable)
             ],
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLabels()
     {
-        $labels = array();
-        $labels[$this->profileField->internal_name] = Yii::t($this->profileField->getTranslationCategory(), $this->profileField->title);
-        $labels[$this->profileField->internal_name . "_hide_year"] = Yii::t($this->profileField->getTranslationCategory(), "Hide year in profile");
-        return $labels;
+        return [
+            $this->profileField->internal_name => Yii::t(
+                $this->profileField->getTranslationCategory(),
+                $this->profileField->title
+            ),
+            $this->profileField->internal_name . '_hide_year' => Yii::t(
+                $this->profileField->getTranslationCategory(),
+                'Hide year in profile'
+            ),
+        ];
     }
 
     /**
@@ -133,30 +175,51 @@ class Birthday extends Date
     public function getUserValue($user, $raw = true)
     {
         $internalName = $this->profileField->internal_name;
-        $birthdayDate = $user->profile->$internalName;
+        $birthdayDate = \DateTime::createFromFormat('Y-m-d', $user->profile->$internalName);
 
-        if ($birthdayDate == "" || $birthdayDate == "0000-00-00")
-            return "";
-
-        $internalNameHideAge = $this->profileField->internal_name . "_hide_year";
-
+        $internalNameHideAge = $this->profileField->internal_name . '_hide_year';
         $hideAge = $user->profile->$internalNameHideAge;
-        if (($hideAge === null && !$this->defaultHideAge) || $hideAge === 0) {
-            $birthDate = new \DateTime($birthdayDate);
-            $lifeSpan = $birthDate->diff(new \DateTime());
-            $age = Yii::t('UserModule.models_ProfileFieldTypeBirthday', '%y Years', array('%y' => $lifeSpan->format("%y")));
 
-            return Yii::$app->formatter->asDate($birthdayDate, 'long') . " (" . $age . ")";
-        } else {
+        /*
+         * the current value is invalid or empty
+         */
+        if ($birthdayDate === false) {
+            return '';
+        }
+
+        /*
+         * when getUserValue is called but loadDefaults not $hideAge might be null
+         */
+        if ($hideAge === null) {
+            if ($this->defaultHideAge === self::DEFAULT_HIDE_AGE_YES) {
+                $hideAge = self::HIDE_AGE_YES;
+            } else {
+                $hideAge = self::HIDE_AGE_NO;
+            }
+        }
+
+        /*
+         * - user set hide age yes
+         */
+        if ($hideAge === self::HIDE_AGE_YES) {
             return Yii::$app->formatter->asDate($birthdayDate, 'dd. MMMM');
         }
+
+        $ageInYears = Yii::t(
+            'UserModule.models_ProfileFieldTypeBirthday',
+            '%y Years',
+            ['%y' => $birthdayDate->diff(new \DateTime())->y]
+        );
+
+        return Yii::$app->formatter->asDate($birthdayDate, 'long') . ' (' . $ageInYears . ')';
     }
 
     /**
      * @inheritdoc
      */
-    public function loadDefaults(\humhub\modules\user\models\Profile $profile)
+    public function loadDefaults(Profile $profile)
     {
+        //you may configure the default for hideAge as administrator. currently the global default is 0.
         $internalNameHideAge = $this->profileField->internal_name . '_hide_year';
         if ($profile->$internalNameHideAge === null) {
             $profile->$internalNameHideAge = $this->defaultHideAge;
@@ -164,5 +227,3 @@ class Birthday extends Date
     }
 
 }
-
-?>

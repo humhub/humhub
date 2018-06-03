@@ -1,6 +1,196 @@
 Content
 =======
 
+Content record classes as for example `Post`, `Poll` and `Wiki` are subclasses of 
+[[\humhub\modules\content\components\ContentContainerActiveRecord]].
+ Instances ofand are related to a 
+[[humhub\modules\content\models\Content]] record. 
+A ContentContainerActiveRecord subclass provides all features of a basic 
+Yii [ActiveRecords](http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html) as validation and data access methods,
+ please refer to the [Yii Guide](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) for more information
+  about [ActiveRecords](http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html).
+
+While the ContentContainerActiveRecord class contains the actual content data as texts and content settings, the related Content instance is beside others used to check **Permissions**, the **ContentContainer** relation, content **visibility** and is furthermore connected to ContentAddons as Like and Comments.
+
+Beside the basic ActiveRecord methods your ContentContainerActiveRecord class should at least implement the following functions
+
+-  `getContentName()` - short name/type of content
+-  `getContentDescription()` - returns a short description of the content instance used to preview the content for example in activities etc.
+
+```php
+class Example extends \humhub\modules\content\components\ContentContainerActiveRecord
+{
+    public static function tableName()
+    {
+        return 'example_content';
+    }
+
+    public function getContentName()
+    {
+        return Yii::t('ExampleModule.models_Example', "Example");
+    }
+
+    public function getContentDescription()
+    {
+        return $this->question;
+    }
+
+    public function rules()
+    {
+        //return validation rules
+    }
+
+    .....
+
+}
+```
+
+Your content model should be **instantiated** as follows:
+
+```php
+// Instantiate my model assign a content container and visibility.
+$model = new MyModel();
+$model->content->container = $someSpace;
+$model->content->container = Content::VISIBILITY_PRIVATE;
+...
+// Save model and content
+$model->save();
+```
+
+Get the model instance from a given content instance:
+
+```php
+$model = $content->getPolymorphicRelation();
+```
+
+Calling [[\humhub\modules\content\components\ContentActiveRecord::find()]] will return a [[\humhub\modules\content\components\ActiveQueryContent]] with additional methods to select specific content:
+
+```php
+// Returns all MyModels related to the given $space
+$models = MyModel::find()->contentContainer($space)->all();
+
+// Returns all MyModels related to the given $space and readable by the current user
+$models = MyModel::find()->contentContainer($space)->readable()->all();
+
+// Loads all MyModels of the current users member spaces
+$models = MyModel::find()->userRelated([ActiveQueryContent::USER_RELATED_SCOPE_SPACES])->all();
+
+// Loads all readable MyModels of the current users spaces and also followed spaces
+$models = MyModel::find()->userRelated([
+    ActiveQueryContent::USER_RELATED_SCOPE_SPACES,
+    ActiveQueryContent::USER_RELATED_SCOPE_FOLLOWED_SPACES
+])->readable()->all();
+```
+
+There are the following user related scopes available:
+
+- `USER_RELATED_SCOPE_OWN` Content created by the given user itself (`content.created_by`)
+- `USER_RELATED_SCOPE_SPACES` Content related to the users member spaces
+- `USER_RELATED_SCOPE_FOLLOWED_SPACES` = Content related to the users followed spaces
+- `USER_RELATED_SCOPE_FOLLOWED_USERS` = Content related to the users followed user profiles
+- `USER_RELATED_SCOPE_OWN_PROFILE` = Content related to the users own profile
+
+### Content features
+
+**Content visibility**
+
+The content visibility can be checked by calling `isPublic()` and `isPrivate()`.
+
+```php
+$model->content->isPublic();
+
+$model->content->isPrivate();
+
+// Set visibility
+$model->content->container = Content::VISIBILITY_PRIVATE;
+```
+
+**Pin content** 
+
+The default space stream supports the pinning of content, which will load the pinned entries at the top of the
+stream. Normally you won't need to call the pin/unpin methods by yourself, since this is part of the default stream
+entry logic. In case your content is not part of the default stream, you may use these functions for your own module logic.
+
+```php
+$model->content->pin();
+
+$model->content->unpin();
+
+$model->content->isPinned();
+
+$model->content->canPin();
+```
+
+**Archive content**
+
+Archived content is by default excluded from the streams. As with the pin logic, you won't have to handle this by yourself.
+
+```php
+$model->content->archive();
+
+$model->content->unarchive();
+
+$model->content->isArchived();
+
+$model->content->canArchive();
+
+```
+
+**Content Url**
+
+By default the `Content::getUrl()` returns the permalink of the wallentry. In case the content is used outside of the default stream, this behaviour can be changed by implementing a `getUrl()` method in your ContentActiveRecord class.
+
+```php
+$permaLink = $model->content->getUrl();
+```
+
+### Check content permissions
+
+By default a user can edit a content if one of the following conditions defined in `Content::canEdit()` are met:
+
+- User is the owner of the content
+- User is system administrator and the content module setting `adminCanEditAllContent` is set to true (default)
+- The user is granted the space ManagePermission set by the model record class. Since v1.2.1 a ContentContainerActiveRecord can define an own `$managePermission` which will be described later.
+- The user meets the additional condition, which is defined in the ContentContainerActiveRecords `canEdit()` function.
+
+You can check the edit permission of a user by means of the `Content::canEdit()` function as
+
+```php
+// Check edit permission for current logged user
+if($model->content->canEdit()) {...}
+
+// Check edit permission for a given user
+if($model->content->canEdit($someUserIdentity)) {...}
+
+// Check other permission for the current logged user on the contents contentContainer
+if($model->content->can(new MyCustomPermission()) {...}
+```
+
+Since HumHub v1.2.1 you can overwrite the default ManageContent permission as follows:
+
+```php
+class Example extends ContentContainerActiveRecord
+{
+    $managePermission = MyCustomManagePermission::class;
+    .....
+}
+```
+
+The default `Content::canView()` permission behaviour of content is handled as follows
+
+- Guests can only access public content of visible spaces/users
+- Other users can access all public content within the network
+- System admins can access all content if the `adminCanViewAllContent` setting of the `content` modules is enabled (default)
+- All space members can access private space content
+- Non space members can only access public space content
+- Only friend users can access prviate profile content of a user.
+
+```php
+if($model->content->canView()) {...}
+```
+
+>Info: For more information about permissions, please see the [Permission Section](module-permissions.md).
+
 ## ContentContainer
 
 A [[humhub\modules\content\models\ContentContainer|ContentContainer]] in HumHub is the base concept for assigning content entries to a specific container instance (user or space).
@@ -27,8 +217,6 @@ The [[humhub\modules\content\components\ContentContainerController|ContentContai
 - Layout selection based on container type (User or Space)
 - Create URL's for the given ContentContainer
 
-For example:
-
 ```php
 class ExampleController extends \humhub\modules\content\components\ContentContainerController
 {
@@ -41,8 +229,7 @@ class ExampleController extends \humhub\modules\content\components\ContentContai
 }
 ```
 
-Url's pointing to a ContentContainer action should be created by using the `createUrl()` function
-of your ContentContainer instance. This will add the required sguid or uguid to your request.
+Urls pointing to a ContentContainer action should be created by using the `createUrl()` function of your ContentContainer instance. This will add the required sguid or uguid to your request.
 
 ```php
  // Direct ContentContainer call
@@ -75,112 +262,19 @@ if($profileImage->hasImage()) {
 
 ### ContentContainerModule
 
-If a module should appear in the content containers module section, the module class must extend [[humhub\modules\content\components\ContentContainerModule]].
-A ContentContainerModule can be enabled or disabled for a specific ContentContainer. The calendar module, for example, can be enabled for a specific space or a specific user account.
+See the [Getting Started](modules-index.md) section
 
-See the [[humhub\modules\content\components\ContentContainerModule]] class for a full list of  options.
+#### Content Streams
 
-Example of a modules `Module.php` file:
+See the [Stream](stream.md) section
 
-```php
-class Module extends \humhub\modules\content\components\ContentContainerModule
-{
-
-    // Defines for which content container type this module is appropriate
-    public function getContentContainerTypes()
-    {
-        // This content container can be assigned to Spaces and User
-        return [
-            Space::className(),
-            User::className(),
-        ];
-    }
-
-    // Is called when the whole module is disabled
-    public function disable()
-    {
-        // Clear all Module data and call parent disable
-        parent::disable();
-    }
-
-    // Is called when the module is disabled on a specific container
-    public function disableContentContainer(ContentContainerActiveRecord $container)
-    {
-        parent::disableContentContainer($container);
-        //Here you can clear all data related to the given container
-    }
-
-    // Can be used to define a specific description text for different container types
-    public function getContentContainerDescription(ContentContainerActiveRecord $container)
-    {
-        if ($container instanceof Space) {
-            return Yii::t('MyModule.base', 'Description related to spaces.');
-        } elseif ($container instanceof User) {
-            return Yii::t('MyModule.base', 'Description related to user.');
-        }
-    }
-```
-> Note: If you're working with content or other persistent data, make sure to delete container related data when the module is disabled on a contentcontainer. This can be archieved by overwriting the [[humhub\modules\content\components\ContentContainerModule::disableContentContainer]] function.
-
-
-## Content
-
-TBD
-
-### ContentActiveRecord
-
-Each Content ActiveRecord (derived from [[\humhub\modules\content\components\ContentActiveRecord]]) is automatically linked to a [[humhub\modules\content\models\Content]] record via the *content* attribute. 
-
-This Content record holds all neccessary information and provides common methods:
-
-- ContentContainer which the Content belongs to
-- Meta Information (created_at, created_by, updated_at, updated_by)
-- Wall Assignments / Methods
-- Archiving / Pinning
-- And more...
-
-If you're implementing an ActiveRecord based on [[humhub\modules\content\components\ContentContainerActiveRecord]] you need to implement the following abstract methods:
-
-- `getContentName()` - Returns the displayed name of the Content (e.g. Post or Poll)
-- `getContentDescription()` - Returns a preview of the Content - which is used in Notifications for example.
-
-Example:
-
-```php
- (TBD)
-
-```
-
-#### Wall/Stream Output
+## Global content
 (TBD)
 
-#### Querying Content
-
-If you're calling find() on a [[\humhub\modules\content\components\ContentActiveRecord]] instance you'll get a special [[\humhub\modules\content\components\ActiveQueryContent]] which provides additional methods to select content.
-
-- contentContainer($container) - Find content only inside a given container
-- readable($user) - Return only user readable content
-- ...
-
-
-### Controller
-
-TBD
-
-## ContentAddon
+## Content addons
 
 TBD
 
 - Always linked to particual Content, inherits access rules from it
 - Examples: Like, File, Comment
 - Can be nested (e.g. Container -> Content -> Addon (Comment) -> Addon (Like)
-
-### ActiveRecord
-
-TBD
-
-Provides access to the related content via *content *Attribute
-
-### Controller
-
-TBD

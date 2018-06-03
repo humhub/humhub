@@ -54,6 +54,12 @@ class Module extends \humhub\components\Module
     public $maxAttachedFiles = 50;
 
     /**
+     * @since 1.3
+     * @var integer Maximum allowed number of oembeds in richtexts
+     */
+    public $maxOembeds = 5;
+
+    /**
      * @inheritdoc
      */
     public function getName()
