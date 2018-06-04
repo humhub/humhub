@@ -165,9 +165,13 @@ class DynamicConfig extends BaseObject
             $mail['useFileTransport'] = true;
         }
         $config['components']['mailer'] = $mail;
-        $config = ArrayHelper::merge($config, ThemeHelper::getThemeConfig(Yii::$app->settings->get('theme')));
-        $config['params']['config_created_at'] = time();
 
+
+        // Remove old theme/view stuff
+        unset($config['components']['view']);
+        unset($config['components']['mailer']['view']);
+
+        $config['params']['config_created_at'] = time();
         $config['params']['horImageScrollOnMobile'] = Yii::$app->settings->get('horImageScrollOnMobile');
 
         self::save($config);

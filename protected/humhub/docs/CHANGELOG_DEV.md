@@ -50,4 +50,6 @@ HumHub Change Log - v1.3-dev Branch
 - Chg: `Create a new one.` to `Forgot your password?` (@Felli)
 - Enh/Fix: Cache Handling + File Preview Fix (@Felli)
 - Enh: BaseSettingsManager allow to bunch delete settings with prefix
+- Chg: Migrated view and theme components to  `humhub\modules\ui\view` package
+- Enh: Improved Theme component
 

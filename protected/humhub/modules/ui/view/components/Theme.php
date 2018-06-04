@@ -1,0 +1,150 @@
+<?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\modules\ui\view\components;
+
+use Yii;
+
+/**
+ * Theme represents a HumHub theme.
+ *
+ * - Overwrite views
+ * When [[View]] renders a view file, it will check the [[View::theme|active theme]]
+ * to see if there is a themed version of the view file exists. If so, the themed version will be rendered instead.
+ * See [[ThemeViews]] for more details.
+ *
+ * - Using less variables
+ * Using this theme class you can also access all LESS style variables of the current theme.
+ *
+ * Examples:
+ *
+ * ```php
+ * $primaryColorCode = Yii::$app->view->theme->variable('primary');
+ * $isFluid = (boolean) Yii::$app->view->theme->variable('isFluid');
+ * ```
+ *
+ * See [[ThemeVariables]] for more details.
+ *
+ * @since 1.3
+ * @inheritdoc
+ */
+class Theme extends \yii\base\Theme
+{
+    /**
+     * @var string the name of the theme
+     */
+    public $name;
+
+    /**
+     * @inheritdoc
+     */
+    private $_baseUrl = null;
+
+    /**
+     * @var boolean indicates that resources should be published via assetManager
+     */
+    public $publishResources = false;
+
+    /**
+     * @var ThemeVariables
+     */
+    public $variables = null;
+
+    /**
+     * @var ThemeViews
+     */
+    public $views = null;
+
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        if ($this->getBasePath() == '') {
+            $this->setBasePath('@webroot/themes/' . $this->name);
+        }
+
+        $this->pathMap = [
+            '@humhub/views' => $this->getBasePath() . '/views',
+        ];
+
+        $this->variables = new ThemeVariables(['theme' => $this]);
+        $this->views = new ThemeViews(['theme' => $this]);
+
+        parent::init();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getBaseUrl()
+    {
+        if ($this->_baseUrl !== null) {
+            return $this->_baseUrl;
+        }
+
+        $this->_baseUrl = ($this->publishResources) ? $this->publishResources() : rtrim(Yii::getAlias('@web/themes/' . $this->name), '/');
+        return $this->_baseUrl;
+    }
+
+    /**
+     * Activate this theme
+     */
+    public function activate()
+    {
+        $this->publishResources(true);
+        $this->variables->flushCache();
+        Yii::$app->settings->set('theme', $this->getBasePath());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function applyTo($path)
+    {
+        $translated = $this->views->translate($path);
+        if ($translated !== null) {
+            return $translated;
+        }
+
+        return parent::applyTo($path);
+    }
+
+    /**
+     * Publishs theme assets (e.g. images or css)
+     *
+     * @param boolean|null $force
+     * @return string url of published resources
+     */
+    public function publishResources($force = null)
+    {
+        if ($force === null) {
+            $force = (YII_DEBUG);
+        }
+
+        $published = Yii::$app->assetManager->publish(
+            $this->getBasePath(), ['forceCopy' => $force, 'except' => ['views/']]
+        );
+
+        return $published[1];
+    }
+
+    /**
+     * Returns the value of a given theme variable
+     *
+     * @since 1.2
+     * @param string $key the variable name
+     * @return string the variable value
+     */
+    public function variable($key, $default = null)
+    {
+        return $this->variables->get($key, $default);
+    }
+
+}
