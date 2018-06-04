@@ -8,6 +8,8 @@
 
 namespace humhub\modules\space\models;
 
+use humhub\modules\space\behaviors\SpaceModelMembership;
+use humhub\modules\space\widgets\Members;
 use Yii;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
@@ -40,6 +42,12 @@ use humhub\modules\user\models\Group;
  * @property integer $default_content_visibility
  * @property string $color
  * @property User $ownerUser the owner of this space
+ *
+ * @mixin \humhub\components\behaviors\GUID
+ * @mixin \humhub\modules\content\components\behaviors\SettingsBehavior
+ * @mixin \humhub\modules\space\behaviors\SpaceModelMembership
+ * @mixin \humhub\modules\user\behaviors\Followable
+ * @mixin \humhub\modules\content\components\behaviors\CompatModuleManager
  */
 class Space extends ContentContainerActiveRecord implements \humhub\modules\search\interfaces\Searchable
 {
@@ -63,6 +71,9 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     const USERGROUP_MEMBER = 'member';
     const USERGROUP_USER = 'user';
     const USERGROUP_GUEST = 'guest';
+    // Model Scenarios
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_EDIT = 'edit';
 
     /**
      * @inheritdoc
@@ -112,8 +123,8 @@ class Space extends ContentContainerActiveRecord implements \humhub\modules\sear
     {
         $scenarios = parent::scenarios();
 
-        $scenarios['edit'] = ['name', 'color', 'description', 'tags', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
-        $scenarios['create'] = ['name', 'color', 'description', 'join_policy', 'visibility'];
+        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'tags', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
+        $scenarios[static::SCENARIO_CREATE] = ['name', 'color', 'description', 'join_policy', 'visibility'];
 
         return $scenarios;
     }

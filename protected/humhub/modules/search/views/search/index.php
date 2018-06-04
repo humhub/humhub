@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\FooterMenu;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
@@ -21,7 +22,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                         <div class="col-md-6">
                             <?php $form = ActiveForm::begin(['action' => Url::to(['index']), 'method' => 'GET']); ?>
                                 <div class="form-group form-group-search">
-                                    <?= $form->field($model, 'keyword')->textInput(['placeholder' => Yii::t('SearchModule.views_search_index', 'Search for user, spaces and content'), 
+                                    <?= $form->field($model, 'keyword')->textInput(['placeholder' => Yii::t('SearchModule.views_search_index', 'Search for user, spaces and content'),
                                         'title' => Yii::t('SearchModule.views_search_index', 'Search for user, spaces and content'), 'class' => 'form-control form-search', 'id' => 'search-input-field'])->label(false); ?>
                                     <?php echo Html::submitButton(Yii::t('base', 'Search'), ['class' => 'btn btn-default btn-sm form-button-search', 'data-ui-loader' => '']); ?>
                                 </div>
@@ -53,7 +54,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
             </div>
         </div>
     </div>
-    
+
     <?php if ($model->keyword != ""): ?>
         <div class="row">
             <div class="col-md-2">
@@ -134,6 +135,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
         </div>
     <?php endif; ?>
 
+    <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_FULL_PAGE]); ?>
 </div>
 
 <script type="text/javascript">

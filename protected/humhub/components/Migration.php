@@ -38,15 +38,16 @@ class Migration extends \yii\db\Migration
         $this->updateSilent('file', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('like', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('notification', ['source_class' => $newClass], ['source_class' => $oldClass]);
+        $this->updateSilent('notification', ['class' => $newClass], ['class' => $oldClass]);
         $this->updateSilent('user_mentioning', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('user_follow', ['object_model' => $newClass], ['object_model' => $oldClass]);
-        
+
         //$this->updateSilent('wall', ['object_model' => $newClass], ['object_model' => $oldClass]);
 
         /**
          * Looking up "NewLike" activities with this className
          * Since 0.20 the className changed to Like (is not longer the target object e.g. post)
-         * 
+         *
          * Use raw query for better performace.
          */
         $updateSql = "
@@ -55,7 +56,7 @@ class Migration extends \yii\db\Migration
             SET activity.object_model=:likeModelClass, activity.object_id=like.id
             WHERE activity.class=:likedActivityClass AND like.id IS NOT NULL and activity.object_model != :likeModelClass
         ";
-        
+
         Yii::$app->db->createCommand($updateSql, [
             ':likeModelClass' => \humhub\modules\like\models\Like::className(),
             ':likedActivityClass' => \humhub\modules\like\activities\Liked::className()

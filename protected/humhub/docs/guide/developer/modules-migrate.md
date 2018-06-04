@@ -23,6 +23,12 @@ The existing `humhub\components\queue\ActiveJob` is declared as deprecated and w
 
 Added new user status (User::SOFT_DELETED). You can find more information here: [Users](modules-users.md)
 
+### Widgets
+
+Moved all form and field related widgets from `humhub\widgets` to `humhub\modules\ui\form\widgets` namespace.
+There is a compatibility layer for the 1.3 release.
+
+
 
 Migrate from 1.1 to 1.2
 -----------------------

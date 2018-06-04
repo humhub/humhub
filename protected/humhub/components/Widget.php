@@ -42,7 +42,7 @@ class Widget extends \yii\base\Widget
         }
 
         if(isset($config['render']) && $config['render'] === false) {
-           return;
+           return '';
         }
 
         \yii\base\Event::trigger(self::className(), self::EVENT_CREATE, new WidgetCreateEvent($config));

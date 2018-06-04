@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\FooterMenu;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -15,7 +16,8 @@ use yii\helpers\Url;
 
             <br>
             <hr>
-            <button class="btn btn-info" data-action-click="ui.modal.load" data-action-url="<?= Url::to(Yii::$app->user->loginUrl) ?>" data-ui-loader>
+            <button class="btn btn-info" data-action-click="ui.modal.load"
+                    data-action-url="<?= Url::to(Yii::$app->user->loginUrl) ?>" data-ui-loader>
                 <?= Yii::t('base', 'Login') ?>
             </button>
             <button data-action-click="client.back" class="btn btn-primary pull-right" data-ui-loader>
@@ -23,4 +25,7 @@ use yii\helpers\Url;
             </button>
         </div>
     </div>
+
+    <?= FooterMenu::widget(); ?>
+
 </div>

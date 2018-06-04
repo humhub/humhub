@@ -22,7 +22,7 @@
 
 <strong><?= Yii::t('AdminModule.views_setting_cronjob', 'Crontab of user: {user}', array('{user}' => $currentUser)); ?></strong>
 30 * * * * <?= Yii::getAlias('@app/yii'); ?> cron/hourly >/dev/null 2>&1
-00 18 * * * <?= Yii::getAlias('@app/yii'); ?> cron/daily >/dev/null 2>&1
+0 18 * * * <?= Yii::getAlias('@app/yii'); ?> cron/daily >/dev/null 2>&1
 
 <?php if ($currentUser != ""): ?>
 <strong><?= Yii::t('AdminModule.views_setting_cronjob', 'Or Crontab of root user'); ?></strong>

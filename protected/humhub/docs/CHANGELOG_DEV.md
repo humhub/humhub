@@ -38,4 +38,18 @@ HumHub Change Log - v1.3-dev Branch
 - Enh: Ensure valid permalinks when URL rewriting is enabled
 - Fix: Birthday field refactoring (@danielkesselberg)
 - Enh #2811: Added option to resend invites (@danielkesselberg)
+- Enh: Added current database name to the "Administration -> Information -> Database" (githubjeka)
+- Chg: Depreciated Instagram OAuthClient & removed (@Felli)
+- Enh: Added random default space color on creation
+- Enh: Updated to Yii 2.0.14.2
+- Chg: Reduced email length to 150 chars to support utf8mb4 charset 
+- Enh: Added UI core module to group UI components
+- Enh: Added new IconPicker form field
+- Chg: Moved form widgets from `humhub\widgets` to `humhub\modules\ui\form\widgets` (added compatibility layer)
+- Enh: Added surpressed e-mail addresses configuration variable
+- Chg: `Create a new one.` to `Forgot your password?` (@Felli)
+- Enh/Fix: Cache Handling + File Preview Fix (@Felli)
+- Enh: BaseSettingsManager allow to bunch delete settings with prefix
+- Chg: Migrated view and theme components to  `humhub\modules\ui\view` package
+- Enh: Improved Theme component
 

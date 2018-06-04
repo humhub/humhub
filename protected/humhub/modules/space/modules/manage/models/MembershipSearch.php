@@ -136,7 +136,7 @@ class MembershipSearch extends Membership
         return $dataProvider;
     }
 
-    public function getRoles(Space $space)
+    public static function getRoles(Space $space)
     {
         $groups = $space->getUserGroups();
         unset($groups[Space::USERGROUP_OWNER], $groups[Space::USERGROUP_GUEST], $groups[Space::USERGROUP_USER]);

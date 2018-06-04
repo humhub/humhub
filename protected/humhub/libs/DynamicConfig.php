@@ -44,13 +44,14 @@ class DynamicConfig extends BaseObject
             self::save([]);
         }
 
-        // Load config file with file_get_contents and eval, cause require don't reload
-        // the file when it's changed on runtime
+        // Load config file with 'file_get_contents' and 'eval'
+        // because 'require' don't reload the file when it's changed on runtime
         $configContent = str_replace(['<' . '?php', '<' . '?', '?' . '>'], '', file_get_contents($configFile));
         $config = eval($configContent);
 
-        if (!is_array($config))
+        if (!is_array($config)) {
             return [];
+        }
 
         return $config;
     }
@@ -121,7 +122,7 @@ class DynamicConfig extends BaseObject
         } elseif ($cacheClass === \yii\redis\Cache::class) {
             $config['components']['cache'] = [
                 'class' => \yii\redis\Cache::class,
-                'keyPrefix' => Yii::$app->id,
+                'keyPrefix' => Yii::$app->id
             ];
         }
 
@@ -143,7 +144,7 @@ class DynamicConfig extends BaseObject
 
             if (Yii::$app->settings->get('mailer.username')) {
                 $mail['transport']['username'] = Yii::$app->settings->get('mailer.username');
-            } else if (!Yii::$app->settings->get('mailer.password')) {
+            } elseif (!Yii::$app->settings->get('mailer.password')) {
                 $mail['transport']['authMode'] = 'null';
             }
 
@@ -158,22 +159,19 @@ class DynamicConfig extends BaseObject
             if (Yii::$app->settings->get('mailer.port')) {
                 $mail['transport']['port'] = Yii::$app->settings->get('mailer.port');
             }
-
-            /*
-              if (Yii::$app->settings->get('mailer.allowSelfSignedCerts')) {
-              $mail['transport']['ssl']['allow_self_signed'] = true;
-              $mail['transport']['ssl']['verify_peer'] = false;
-              }
-             */
         } elseif (Yii::$app->settings->get('mailer.transportType') == 'php') {
             $mail['transport']['class'] = 'Swift_MailTransport';
         } else {
             $mail['useFileTransport'] = true;
         }
         $config['components']['mailer'] = $mail;
-        $config = ArrayHelper::merge($config, ThemeHelper::getThemeConfig(Yii::$app->settings->get('theme')));
-        $config['params']['config_created_at'] = time();
 
+
+        // Remove old theme/view stuff
+        unset($config['components']['view']);
+        unset($config['components']['mailer']['view']);
+
+        $config['params']['config_created_at'] = time();
         $config['params']['horImageScrollOnMobile'] = Yii::$app->settings->get('horImageScrollOnMobile');
 
         self::save($config);

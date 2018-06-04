@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Fixed format (dd/mm/yyyy) - Example: {example}' => '',
     'Alphabetical' => 'Алфавитный',
     'Auto format based on user language - Example: {example}' => 'Автоформат на основе языка пользователя - Пример: {example}',
     'Firstname Lastname (e.g. John Doe)' => 'Имя Фамилия (например, Василий Иванов)',
-    'Fixed format (mm/dd/yyyy) - Example: {example}' => 'Установленный формат (mm/dd/yyyy) - Пример: {example}',
     'Last visit' => 'Последний визит',
     'Save' => 'Сохранить',
     'Username (e.g. john)' => 'Имя пользователя',

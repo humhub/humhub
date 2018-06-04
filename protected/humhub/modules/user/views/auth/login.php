@@ -43,12 +43,11 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
             <hr>
             <div class="row">
                 <div class="col-md-4">
-                    <?= CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Sign in'), array('id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary')); ?>
+                    <?= CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
                 </div>
                 <div class="col-md-8 text-right">
                     <small>
-                        <?= Yii::t('UserModule.views_auth_login', 'Forgot your password?'); ?>
-                        <a id="password-recovery-link" href="<?= Url::toRoute('/user/password-recovery'); ?>" data-pjax-prevent><br><?= Yii::t('UserModule.views_auth_login', 'Create a new one.') ?></a>
+                        <a id="password-recovery-link" href="<?= Url::toRoute('/user/password-recovery'); ?>" data-pjax-prevent><br><?= Yii::t('UserModule.views_auth_login', 'Forgot your password?') ?></a>
                     </small>
                 </div>
             </div>

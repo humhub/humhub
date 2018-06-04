@@ -28,7 +28,7 @@ class UrlRule extends BaseObject implements UrlRuleInterface
     /**
      * @var array map with space guid/url pairs
      */
-    protected static $spaceUrlMap = [];
+    public static $spaceUrlMap = [];
 
     /**
      * @inheritdoc

@@ -1,5 +1,5 @@
 <?php
 return array (
   'Access denied!' => 'Nincs hozzáférésed!',
-  'Insufficent permissions!' => '',
+  'Insufficent permissions!' => 'Elégtelen jogosultságok!',
 );

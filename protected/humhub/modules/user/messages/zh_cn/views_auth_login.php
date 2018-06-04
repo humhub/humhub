@@ -21,7 +21,6 @@ return [
     '<strong>Join</strong> the network' => '<strong>加入</strong> 社交平台',
     '<strong>Please</strong> sign in' => '<strong>请</strong> 登录',
     '<strong>Sign</strong> up' => '注册',
-    'Create a new one.' => '创建一个新的',
     'Don\'t have an account? Join the network by entering your e-mail address.' => '你还没有帐号？通过输入电子邮箱加入我们。',
     'Forgot your password?' => '忘记你的密码？',
     'If you\'re already a member, please login with your username/email and password.' => '如果你已经是会员，请登录',

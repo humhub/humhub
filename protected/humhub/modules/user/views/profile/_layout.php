@@ -2,8 +2,10 @@
 
 use humhub\modules\user\widgets\ProfileHeader;
 use humhub\modules\user\widgets\ProfileMenu;
+use humhub\widgets\FooterMenu;
 
 $user = $this->context->contentContainer;
+
 ?>
 <div class="container profile-layout-container">
     <div class="row">
@@ -17,6 +19,7 @@ $user = $this->context->contentContainer;
         </div>
         <div class="col-md-10 layout-content-container">
             <?= $content; ?>
+            <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_FULL_PAGE]); ?>
         </div>
     </div>
 </div>

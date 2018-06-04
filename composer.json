@@ -14,7 +14,7 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.6.0",
-        "yiisoft/yii2": "2.0.13",
+        "yiisoft/yii2": "2.0.15",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "yiisoft/yii2-authclient": "~2.1.0",
@@ -50,16 +50,19 @@
         "bower-asset/imagesloaded": "*",
         "bower-asset/jquery-timeentry": "^2.0",
         "bower-asset/caret.js": "0.2.2",
-        "npm-asset/humhub-prosemirror-richtext": "1.0.2",
+        "npm-asset/humhub-prosemirror-richtext": "1.0.3",
         "npm-asset/at.js": "^1.5.1",
         "yiisoft/yii2-queue": "~2.0.0",
         "yiisoft/yii2-redis": "~2.0.0",
         "firebase/php-jwt": "^5.0",
         "npm-asset/socket.io-client": "^2.0",
-        "phpoffice/phpspreadsheet": "^1.0"
+        "phpoffice/phpspreadsheet": "^1.0",
+        "mistic100/randomcolor": "^1.0"
     },
     "require-dev": {
         "codeception/codeception": "~2.3",
+        "codeception/specify": "~0.4 || ~1.0",
+        "codeception/verify": "~0.4 || ~1.0",
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0",

@@ -8,45 +8,17 @@
 
 namespace humhub\widgets;
 
+use humhub\modules\ui\form\widgets\ColorPicker;
+
 /**
  * Adds a color picker form field for the given model.
  *
+ * @see ColorPicker
+ * @deprecated since 1.3
  * @author buddha
  */
-class ColorPickerField extends InputWidget
+class ColorPickerField extends ColorPicker
 {
 
-    /**
-     * @deprecated since v1.2.2 use $attribute instead
-     */
-    public $field;
-    
-    /**
-     * The container id used to append the actual color picker js widget.
-     * @var string 
-     */
-    public $container;
-
-    /**
-     * @inheritdoc
-     */
-    public $attribute = 'color';
-
-    public function init()
-    {
-        if(!empty($this->field)) {
-            $this->attribute = $this->field;
-        }
-    }
-
-    public function run()
-    {
-        return $this->render('colorPickerField', [
-                    'model' => $this->model,
-                    'field' => $this->attribute,
-                    'container' => $this->container,
-                    'inputId' => $this->getId(true)
-        ]);
-    }
 
 }
