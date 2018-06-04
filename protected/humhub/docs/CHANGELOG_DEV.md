@@ -42,4 +42,10 @@ HumHub Change Log - v1.3-dev Branch
 - Chg: Depreciated Instagram OAuthClient & removed (@Felli)
 - Enh: Added random default space color on creation
 - Enh: Updated to Yii 2.0.14.2
-- Enh/Fix: Cache Handling + File Preview Fix (@Felli)
+- Chg: Reduced email length to 150 chars to support utf8mb4 charset 
+- Enh: Added UI core module to group UI components
+- Enh: Added new IconPicker form field
+- Chg: Moved form widgets from `humhub\widgets` to `humhub\modules\ui\form\widgets` (added compatibility layer)
+- Enh: Added surpressed e-mail addresses configuration variable
+- Chg: `Create a new one.` to `Forgot your password?` (@Felli)
+ - Enh/Fix: Cache Handling + File Preview Fix (@Felli)

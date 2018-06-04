@@ -1,10 +1,11 @@
 <?php
 return array (
+  '[Deleted]' => '[Gelöscht]',
   '{displayNames} commented {contentTitle}' => '{displayNames} kommentierte {contentTitle}
 ',
   '{displayNames} commented {contentTitle} in space {space}' => '{displayNames} kommentierte {contentTitle} im Space {space}
 ',
-  '{displayNames} commented {contentTitle}.' => '{displayNames} kommentierten {contentTitle}.',
+  '{displayNames} commented {contentTitle}.' => '{displayNames} kommentierte {contentTitle}.',
   '{displayNames} just commented your {contentTitle}' => '{displayNames} kommentiere gerade deinen {contentTitle}
 ',
   '{displayNames} just commented your {contentTitle} in space {space}' => '{displayNames} kommentierte gerade deinen {contentTitle} im Space {space}
@@ -18,5 +19,4 @@ return array (
 ',
   '{displayName} just commented your {contentTitle} in space {space}' => '{displayName} kommentierte gerade deinen {contentTitle} im Space {space}
 ',
-  '[Deleted]' => '[Gelöscht]'
 );

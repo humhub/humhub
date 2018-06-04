@@ -20,7 +20,7 @@ return [
     'Alphabetical' => '',
     'Auto format based on user language - Example: {example}' => '',
     'Firstname Lastname (e.g. John Doe)' => '',
-    'Fixed format (mm/dd/yyyy) - Example: {example}' => '',
+    'Fixed format (dd/mm/yyyy) - Example: {example}' => '',
     'Last visit' => '',
     'Username (e.g. john)' => '',
     'Save' => 'Αποθήκευση',

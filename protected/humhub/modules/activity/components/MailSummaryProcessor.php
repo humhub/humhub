@@ -70,9 +70,14 @@ class MailSummaryProcessor
             } catch (\Exception $ex) {
                 Yii::error('Could not send activity mail to: ' . $user->displayName . ' (' . $ex->getMessage() . ')', 'activity');
             }
+
+            // Remove cached user settings
+            Yii::$app->getModule('activity')->settings->flushContentContainer($user);
+
             if ($interactive) {
                 Console::updateProgress( ++$processed, $totalUsers);
             }
+
         }
 
         if ($interactive) {

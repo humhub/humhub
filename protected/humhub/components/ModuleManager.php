@@ -25,6 +25,25 @@ use yii\helpers\FileHelper;
  */
 class ModuleManager extends Component
 {
+    /**
+     * @event triggered before a module is enabled
+     */
+    const EVENT_BEFORE_MODULE_ENABLE = 'beforeModuleEnabled';
+
+    /**
+     * @event triggered after a module is enabled
+     */
+    const EVENT_AFTER_MODULE_ENABLE = 'afterModuleEnabled';
+
+    /**
+     * @event triggered before a module is disabled
+     */
+    const EVENT_BEFORE_MODULE_DISABLE = 'beforeModuleDisabled';
+
+    /**
+     * @event triggered after a module is disabled
+     */
+    const EVENT_AFTER_MODULE_DISABLE = 'afterModuleDisabled';
 
     /**
      * Create a backup on module folder deletion
@@ -72,7 +91,7 @@ class ModuleManager extends Component
         if (Yii::$app instanceof console\Application && !Yii::$app->isDatabaseInstalled()) {
             $this->enabledModules = [];
         } else {
-            $this->enabledModules = \humhub\models\ModuleEnabled::getEnabledIds();
+            $this->enabledModules = ModuleEnabled::getEnabledIds();
         }
     }
 
@@ -325,15 +344,16 @@ class ModuleManager extends Component
      */
     public function enable(Module $module)
     {
-        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $module->id]);
-        if ($moduleEnabled == null) {
-            $moduleEnabled = new ModuleEnabled();
-            $moduleEnabled->module_id = $module->id;
-            $moduleEnabled->save();
+        $this->trigger(static::EVENT_BEFORE_MODULE_ENABLE, new ModuleEvent(['module' => $module]));
+
+        if (!ModuleEnabled::findOne(['module_id' => $module->id])) {
+            (new ModuleEnabled(['module_id' => $module->id]))->save();
         }
 
         $this->enabledModules[] = $module->id;
         $this->register($module->getBasePath());
+
+        $this->trigger(static::EVENT_AFTER_MODULE_ENABLE, new ModuleEvent(['module' => $module]));
     }
 
     public function enableModules($modules = [])
@@ -354,6 +374,8 @@ class ModuleManager extends Component
      */
     public function disable(Module $module)
     {
+        $this->trigger(static::EVENT_BEFORE_MODULE_DISABLE, new ModuleEvent(['module' => $module]));
+
         $moduleEnabled = ModuleEnabled::findOne(['module_id' => $module->id]);
         if ($moduleEnabled != null) {
             $moduleEnabled->delete();
@@ -363,8 +385,9 @@ class ModuleManager extends Component
             unset($this->enabledModules[$key]);
         }
 
-        // TODO setModule expected Module|array|null instead string 'null'
-        Yii::$app->setModule($module->id, 'null');
+        Yii::$app->setModule($module->id, null);
+
+        $this->trigger(static::EVENT_AFTER_MODULE_DISABLE, new ModuleEvent(['module' => $module]));
     }
 
     public function disableModules($modules = [])

@@ -172,6 +172,7 @@ $config = [
             'ja' => '日本語',
             'hu' => 'Magyar',
             'nb_no' => 'Nnorsk bokmål',
+            'nn_no' => 'Nynorsk',
             'zh_cn' => '中文(简体)',
             'zh_tw' => '中文(台灣)',
             'an' => 'Aragonés',
@@ -190,6 +191,8 @@ $config = [
             'lt' => 'lietuvių kalba',
             'ht' => 'Kreyòl ayisyen',
             'lv' => 'Latvijas',
+            'sl' => 'Slovenščina',
+            'hr' => 'Hrvatski',
         ],
         'ldap' => [
             // LDAP date field formats

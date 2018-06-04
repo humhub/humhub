@@ -8,6 +8,8 @@
 
 namespace humhub\modules\space\models;
 
+use humhub\modules\space\behaviors\SpaceModelMembership;
+use humhub\modules\space\widgets\Members;
 use Yii;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;

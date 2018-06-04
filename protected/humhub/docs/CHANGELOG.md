@@ -1,8 +1,45 @@
 HumHub Change Log
 =================
 
-1.2.5  (Not released)
----------------------
+1.2.8
+-----------------------
+
+- Enh: Added user email to javascript user config
+- Fix: Module Assets are not republished after module update
+- Enh: Added `humhub\components\ModuleManager::EVENT_BEFORE_MODULE_ENABLE` and `humhub\components\ModuleManager::EVENT_AFTER_MODULE_ENABLE` events
+- Enh: Added `humhub\components\ModuleManager::EVENT_BEFORE_MODULE_DISABLE` and `humhub\components\ModuleManager::EVENT_AFTER_MODULE_DISABLE` events
+- Fix: Improved ZendLucence driver error handling
+
+1.2.7 (May 23, 2018)
+-----------------------
+
+- Fixed empty modal dialog response issue
+- Fix #3146 invalid bootstrap.min.css link in installer
+- Enh: Load `humhub\modules\content\models\ContentTagAddition` model in `humhub\modules\content\models\ContentTag::load()`
+- Enh: Auto save `humhub\modules\content\models\ContentTagAddition` within `humhub\modules\content\models\ContentTag::afterSave()`
+- Enh: Added `humhub\modules\content\components\ContentActiveRecord::isOwner()` to check the ownership of a content
+- Enh: Make directory access configurable by `humhub\modules\directory\Module::active`, `humhub\modules\directory\Module::guestAccess`
+- Enh: Added `humhub\modules\directory\permissions\AccessDirectory` permission for group level directory access
+- Fixed `User `namespace issue in `humhub\modules\user\components\BaseAccountController`
+- Chg: Added footer menu to account menu on small display resolutions
+
+
+1.2.6  (May 14, 2018)
+-----------------------
+
+When you are using a custom theme, you may need to add the newly introduced footer navigation to your overwritten view files.
+You can find a full list of the view changes here: https://github.com/humhub/humhub/commit/a1815fb61d83619ce9ca40166800b8c5dcb9d539
+
+- Fix #3108: Fixed cronjob examples with leading zero (acs-ferreira)
+- Fix: Memory leak in activity mail summary processor cron
+- Fix: With enabled guest mode BaseAccountController does not redirect to login page
+- Enh: Added footer navigation - FooterMenu widget
+- Enh: Added HForm class events EVENT_AFTER_INIT and EVENT_BEFORE_RENDER
+- Enh: Updated translations
+
+
+1.2.5  (April 11, 2018)
+-----------------------
 
 When you customized or used the createCVS method of PendingRegistrationsController please 
 migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
@@ -23,7 +60,16 @@ migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 - Chg: `PendingRegistrationsController->createCVS` removed
 - Fix: Stream image preview size not changeable
 - Fix: Increased maximum e-mail address length from 45 characters to 254
-
+- Fix: Group member search by firstname/lastname
+- Enh: Added Slovene language
+- Enh: Added Croatian language
+- Fix: User approval, lastname field is shown twice to admins
+- Fix: User model namespace issue in `humhub/modules/user/components/UrlRule`
+- Enh: Raised notification over view pagination size to 20
+- Enh: Added `humhub/modules/space/models/Module::flushCache()` and `humhub/modules/space/behaviours/SpaceModelModules::flushCache()` in order to flush the space module cache
+- Enh: Added further `FunctionalTester` utilities
+- Enh: Added Norwegian Nynorsk language
+- Fix #3009: Change the Space URL raises 404
 
 1.2.4  (December 13, 2017)
 --------------------------

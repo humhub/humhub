@@ -72,9 +72,9 @@ class UrlOembed extends ActiveRecord
             // Lookup Cached OEmebed Item from Database
             $urlOembed = UrlOembed::findOne(['url' => $url]);
             if ($urlOembed !== null) {
-                return $urlOembed->preview;
+                return trim(preg_replace('/\s+/', ' ', $urlOembed->preview));
             } else {
-                return self::loadUrl($url);
+                return trim(preg_replace('/\s+/', ' ', self::loadUrl($url)));
             }
         }
 
@@ -181,7 +181,7 @@ class UrlOembed extends ActiveRecord
         curl_setopt($curl, CURLOPT_TIMEOUT, 15);
 
         // Not available when open_basedir or safe_mode is set.
-        if (!function_exists('ini_get') || !ini_get('open_basedir')) || !ini_get('safe_mode')) {
+        if (!function_exists('ini_get') || !ini_get('open_basedir') || !ini_get('safe_mode')) {
             curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         }
         

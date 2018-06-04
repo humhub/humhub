@@ -47,6 +47,20 @@ class SettingsManager extends BaseSettingsManager
         return $this->contentContainers[$container->contentcontainer_id];
     }
 
+
+    /**
+     * Clears runtime cached content container settings
+     *
+     * @param ContentContainerActiveRecord|null $container if null all content containers will be flushed
+     */
+    public function flushContentContainer(ContentContainerActiveRecord $container = null) {
+        if ($container === null) {
+            $this->contentContainers = [];
+        } else {
+            unset($this->contentContainers[$container->contentcontainer_id]);
+        }
+    }
+
     /**
      * Returns ContentContainerSettingsManager for the given $user or current logged in user
      * @return ContentContainerSettingsManager

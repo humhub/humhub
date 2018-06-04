@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Basic Settings' => 'Grundlegende Einstellungen',
+  'Basic Settings' => 'Grundeinstellungen',
   'Change Email' => 'E-Mail ändern',
   'Change Password' => 'Passwort ändern',
   'Confirm new password' => 'Neues Passwort bestätigen',
@@ -36,10 +36,10 @@ return array (
   'Upload profile banner' => 'Profilhintergrundbild hochladen',
   'Upload profile image' => 'Profilbild hochladen',
   'User' => 'Benutzer',
-  'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Ein Benutzer mit der selben Email-Adresse existiert bereits. Dieser ist aber nicht mit dir verknüpft. Melde dich mit deiner Email-Adresse an, um die Verkn&uuml;pfung herzustellen.',
+  'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Benutzer mit der gleichen E-Mail existiert bereits, ist aber nicht mit dir verlinkt. Logge dich zuerst mit deiner E-Mail ein, um sie zu verlinken.',
   'You\'re not registered.' => 'Du bist noch nicht registriert.',
   'Your account is disabled!' => 'Dein Account ist deaktiviert!',
   'Your account is not approved yet!' => 'Dein Account wurde noch nicht freigeschaltet!',
-  'Your new password must not be equal your current password!' => 'Das neue Passwort darf nicht dasselbe wie das alte sein!',
+  'Your new password must not be equal your current password!' => 'Das neue Passwort darf nicht mit dem aktuellen Passwort übereinstimmen!',
   'or' => 'oder',
 );

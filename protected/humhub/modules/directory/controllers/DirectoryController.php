@@ -8,7 +8,6 @@
 
 namespace humhub\modules\directory\controllers;
 
-use humhub\components\behaviors\AccessControl;
 use humhub\modules\directory\components\UserPostsStreamAction;
 use humhub\modules\directory\components\Controller;
 use humhub\modules\user\models\Group;
@@ -34,7 +33,6 @@ use Yii;
  */
 class DirectoryController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -47,19 +45,6 @@ class DirectoryController extends Controller
         ]);
 
         return parent::init();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'acl' => [
-                'class' => AccessControl::className(),
-                'guestAllowedActions' => ['groups', 'index', 'members', 'spaces', 'user-posts', 'stream']
-            ]
-        ];
     }
 
     /**

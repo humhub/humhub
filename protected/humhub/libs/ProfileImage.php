@@ -60,7 +60,8 @@ class ProfileImage
      *
      * UserId is optional, if not given the current user will used
      *
-     * @param type $guid
+     * @param string $guid
+     * @param string $defaultImage
      */
     public function __construct($guid, $defaultImage = 'default_user')
     {
@@ -139,8 +140,8 @@ class ProfileImage
             return false;
         }
 
-        FileHelper::unlink($this->getPath(''));
-        imagejpeg($destImage, $this->getPath(''), 100);
+        FileHelper::unlink($this->getPath());
+        imagejpeg($destImage, $this->getPath(), 100);
     }
 
     /**
@@ -165,8 +166,15 @@ class ProfileImage
      */
     public function delete()
     {
-        FileHelper::unlink($this->getPath());
-        FileHelper::unlink($this->getPath('_org'));
+        $path = $this->getPath();
+        if(file_exists($path)) {
+            FileHelper::unlink($path);
+        }
+
+        $prefixPath = $this->getPath('_org');
+        if(file_exists($prefixPath)) {
+            FileHelper::unlink($prefixPath);
+        }
     }
 
 }

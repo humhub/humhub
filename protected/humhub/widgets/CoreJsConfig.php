@@ -26,6 +26,7 @@ class CoreJsConfig extends Widget
         if (!Yii::$app->user->isGuest) {
             $userConfig = \humhub\modules\user\models\UserPicker::asJSON(Yii::$app->user->getIdentity());
             $userConfig['isGuest'] = false;
+            $userConfig['email'] = Yii::$app->user->getIdentity()->email;
         } else {
             $userConfig = ['isGuest' => true];
         }

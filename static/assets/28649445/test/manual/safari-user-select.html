@@ -1,0 +1,41 @@
+<html>
+<head>
+  <script src="../../build/clipboard-polyfill.js"></script>
+  <style>
+    * {
+      -webkit-user-select: none !important;
+    }
+  </style>
+</head>
+<body>
+<script>
+clipboard.setDebugLog(console.log.bind(console));
+function reportResult(text, e) {
+  document.querySelector("#result").textContent = text;
+  if (e) {
+    console.log(e);
+    document.querySelector("#result").textContent += " " + e;
+  }
+}
+function test() {
+  try {
+    var dt = new clipboard.DT();
+    dt.setData("text/html", "<i>Markup</i> <b>text</b>. Paste me into a rich text editor.");
+    dt.setData("text/plain", "Fallback markup text. Paste me into a rich text editor.");
+    clipboard.write(dt).then(
+      reportResult.bind(this, "PASS"),
+      function(e) {
+        reportResult("FAIL (after promise): ", e);
+        console.log(e);
+      },
+    );
+  } catch (e) {
+    reportResult("FAIL (outside promise): ", e);
+  }
+}
+</script>
+Platform: desktop Safari, iOS Safari<br>
+<button onclick="test()">Test</button>
+<div id="result">Result</div>
+</body>
+</html>

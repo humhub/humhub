@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\FooterMenu;
 use yii\helpers\Url;
 use yii\helpers\Html;
 
@@ -20,7 +21,7 @@ use yii\helpers\Html;
 
                 <?php $defaultBackground =  Yii::$app->view->theme->variable('background-color-main', '#fff') ?>
                 <?php $colorPrimary =  Yii::$app->view->theme->variable('primary', '#708fa0') ?>
-                
+
                 .ReadMsgBody {
                     width: 100%;
                     background-color: <?= $defaultBackground ?>;
@@ -679,22 +680,23 @@ use yii\helpers\Html;
 
                                                 <tr>
                                                     <td valign="middle">
-                                                        <?php $soft2Color = Yii::$app->view->theme->variable('text-color-soft2', '#aeaeae')?>    
+                                                        <?php $soft2Color = Yii::$app->view->theme->variable('text-color-soft2', '#aeaeae')?>
                                                         <table align="center" border="0" cellspacing="0" cellpadding="0" class="container2">
 
                                                             <tr>
                                                                 <td align="center" valign="top" style="font-size: 11px;  line-height: 18px; font-weight:300; text-align: center; font-family:Open Sans,Arail,Tahoma, Helvetica, Arial, sans-serif;">
-                         
+
                                                                     <?php if (isset(Yii::$app->view->params['showUnsubscribe']) && Yii::$app->view->params['showUnsubscribe'] === true) : ?>
                                                                         <?php $url = (isset(Yii::$app->view->params['unsubscribeUrl'])) ? Yii::$app->view->params['unsubscribeUrl'] : \yii\helpers\Url::to(['/notification/user'], true) ?>
                                                                         <span style="text-decoration: none; color: <?= $soft2Color ?>;">
                                                                             <a href="<?= $url ?>" style="text-decoration: none; color: <?= $soft2Color ?>;"><?= Yii::t('base', 'Unsubscribe') ?></a>
-                                                                            • 
-                                                                        </span> 
+                                                                            •
+                                                                        </span>
                                                                     <?php endif; ?>
 
                                                                     <span style="text-decoration: none; color:<?= $soft2Color ?>;">
-                                                                        Powered by <a href="http://www.humhub.org"  style="text-decoration: none; color: <?= $soft2Color ?>;">HumHub</a> 
+                                                                        <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_EMAIL]); ?>
+                                                                        Powered by <a href="http://www.humhub.org"  style="text-decoration: none; color: <?= $soft2Color ?>;">HumHub</a>
                                                                     </span>
 
                                                                 </td>

@@ -8,7 +8,6 @@
 
 namespace humhub\modules\user\controllers;
 
-use Yii;
 use humhub\components\Controller;
 use humhub\modules\user\models\User;
 use humhub\modules\user\authclient\AuthAction;
@@ -16,6 +15,11 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
+use humhub\modules\user\authclient\BaseFormAuth;
+use humhub\modules\user\models\Session;
+use Yii;
+use yii\authclient\BaseClient;
+use yii\web\Cookie;
 
 /**
  * AuthController handles login and logout
@@ -28,7 +32,7 @@ class AuthController extends Controller
     /**
      * @inheritdoc
      */
-    public $layout = "@humhub/modules/user/views/layouts/main";
+    public $layout = '@humhub/modules/user/views/layouts/main';
 
     /**
      * @inheritdoc
@@ -86,9 +90,10 @@ class AuthController extends Controller
         }
 
         if (Yii::$app->request->isAjax) {
-            return $this->renderAjax('login_modal', array('model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()));
+            return $this->renderAjax('login_modal', ['model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
         }
-        return $this->render('login', array('model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()));
+
+        return $this->render('login', ['model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
     }
 
     /**
@@ -97,7 +102,7 @@ class AuthController extends Controller
      * @param \yii\authclient\BaseClient $authClient
      * @return Response
      */
-    public function onAuthSuccess(\yii\authclient\BaseClient $authClient)
+    public function onAuthSuccess(BaseClient $authClient)
     {
         $attributes = $authClient->getUserAttributes();
 
@@ -121,16 +126,12 @@ class AuthController extends Controller
 
         // Check if E-Mail is given
         if (!isset($attributes['email']) && Yii::$app->getModule('user')->emailRequired) {
-            Yii::$app->session->setFlash('error', Yii::t(
-                            'UserModule.base', 'Missing E-Mail Attribute from AuthClient.'
-            ));
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Missing E-Mail Attribute from AuthClient.'));
             return $this->redirect(['/user/auth/login']);
         }
 
         if (!isset($attributes['id'])) {
-            Yii::$app->session->setFlash('error', Yii::t(
-                            'UserModule.base', 'Missing ID AuthClient Attribute from AuthClient.'
-            ));
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Missing ID AuthClient Attribute from AuthClient.'));
             return $this->redirect(['/user/auth/login']);
         }
 
@@ -168,7 +169,7 @@ class AuthController extends Controller
         $redirectUrl = ['/user/auth/login'];
         if ($user->status == User::STATUS_ENABLED) {
             $duration = 0;
-            if ($authClient instanceof \humhub\modules\user\authclient\BaseFormAuth) {
+            if ($authClient instanceof BaseFormAuth) {
                 if ($authClient->login->rememberMe) {
                     $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
                 }
@@ -205,8 +206,8 @@ class AuthController extends Controller
         Yii::$app->user->logout();
 
         // Store users language in session
-        if ($language != "") {
-            $cookie = new \yii\web\Cookie([
+        if ($language !== '') {
+            $cookie = new Cookie([
                 'name' => 'language',
                 'value' => $language,
                 'expire' => time() + 86400 * 365,
@@ -218,7 +219,8 @@ class AuthController extends Controller
     }
 
     /**
-     * Allows third party applications to convert a valid sessionId
+     * Allows third party applications
+     * to convert a valid sessionId
      * into a username.
      */
     public function actionGetSessionUserJson()
@@ -227,9 +229,9 @@ class AuthController extends Controller
 
         $sessionId = Yii::$app->request->get('sessionId');
 
-        $output = array();
+        $output = [];
         $output['valid'] = false;
-        $httpSession = \humhub\modules\user\models\Session::findOne(['id' => $sessionId]);
+        $httpSession = Session::findOne(['id' => $sessionId]);
         if ($httpSession != null && $httpSession->user != null) {
             $output['valid'] = true;
             $output['userName'] = $httpSession->user->username;
@@ -237,9 +239,8 @@ class AuthController extends Controller
             $output['email'] = $httpSession->user->email;
             $output['superadmin'] = $httpSession->user->isSystemAdmin();
         }
+
         return $output;
     }
 
 }
-
-?>
