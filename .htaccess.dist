@@ -1,9 +1,14 @@
 # check if RewriteModule is availbale 
 <IfModule mod_rewrite.c>
+
+    Options +FollowSymLinks
     RewriteEngine on
 
     # uncomment if you've installed HumHub into a subdirectory relative to your webroot & adjust RewriteBase to match the install point
     #RewriteBase /humhub
+
+    # prevent httpd from serving dotfiles (.htaccess, .svn, .git, etc.) - except let's encrypt challenge
+    RedirectMatch 403 ^/?\.(?!/well-known/acme-challenge/[\w-]{43}$)
 
     # uncomment to force https requests
     #RewriteCond %{HTTPS} !=on
@@ -39,4 +44,9 @@
         Order deny,allow
         Deny from all
     </IfModule>
+</FilesMatch>
+
+# Caching schema
+<FilesMatch "\.(jpg|png|gif|css|js)$">
+Header set Cache-Control "private, max-age=3600"
 </FilesMatch>
