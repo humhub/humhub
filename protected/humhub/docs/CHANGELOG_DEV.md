@@ -48,4 +48,6 @@ HumHub Change Log - v1.3-dev Branch
 - Chg: Moved form widgets from `humhub\widgets` to `humhub\modules\ui\form\widgets` (added compatibility layer)
 - Enh: Added surpressed e-mail addresses configuration variable
 - Chg: `Create a new one.` to `Forgot your password?` (@Felli)
- - Enh/Fix: Cache Handling + File Preview Fix (@Felli)
+- Enh/Fix: Cache Handling + File Preview Fix (@Felli)
+- Enh: BaseSettingsManager allow to bunch delete settings with prefix
+
