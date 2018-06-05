@@ -27,13 +27,15 @@ class ThemeViews extends Component
 
     /**
      * Converts a file to a themed file if possible.
+     * If no view theme is available for the given view path null is returned.
      *
      * @param $path
-     * @return string
+     * @return string|null the translated file name or null
      */
     public function translate($path)
     {
         $translated = $this->legacyTranslate($path);
+
         if ($translated !== null && is_file($translated)) {
             return $translated;
         }

@@ -53,4 +53,5 @@ HumHub Change Log - v1.3-dev Branch
 - Chg: Migrated view and theme components to  `humhub\modules\ui\view` package
 - Enh: Improved Theme component
 - Enh: Added notification for MembershipSpace by role member changes (@githubjeka)
+- Enh: Added Theme cascading to reduce view overwrites
 

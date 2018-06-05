@@ -8,6 +8,7 @@
 
 namespace humhub\modules\ui\view\components;
 
+use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
 
 /**
@@ -60,6 +61,11 @@ class Theme extends \yii\base\Theme
      */
     public $views = null;
 
+    /**
+     * @var Theme[] the parent themes
+     */
+    protected $parents;
+
 
     /**
      * @inheritdoc
@@ -69,10 +75,6 @@ class Theme extends \yii\base\Theme
         if ($this->getBasePath() == '') {
             $this->setBasePath('@webroot/themes/' . $this->name);
         }
-
-        $this->pathMap = [
-            '@humhub/views' => $this->getBasePath() . '/views',
-        ];
 
         $this->variables = new ThemeVariables(['theme' => $this]);
         $this->views = new ThemeViews(['theme' => $this]);
@@ -108,12 +110,36 @@ class Theme extends \yii\base\Theme
      */
     public function applyTo($path)
     {
+        $this->initPathMap();
+
         $translated = $this->views->translate($path);
         if ($translated !== null) {
             return $translated;
         }
 
+        // Check if a parent theme may translate this view
+        foreach ($this->getParents() as $theme) {
+            $translated = $theme->views->translate($path);
+            if ($translated !== null) {
+                return $translated;
+            }
+        }
+
         return parent::applyTo($path);
+    }
+
+    /**
+     * Initialize the default view path map including all parent themes
+     */
+    protected function initPathMap()
+    {
+        if ($this->pathMap === null) {
+            $this->pathMap = ['@humhub/views' => [$this->getBasePath() . '/views']];
+
+            foreach ($this->getParents() as $theme) {
+                $this->pathMap['@humhub/views'][] = $theme->getBasePath() . '/views';
+            }
+        }
     }
 
     /**
@@ -147,4 +173,20 @@ class Theme extends \yii\base\Theme
         return $this->variables->get($key, $default);
     }
 
+
+    /**
+     * Returns the base/parent themes of this theme.
+     * The parent is specified in the LESS Variable file as variable "baseTheme".
+     *
+     * @see ThemeVariables
+     * @return Theme[] the theme parents
+     */
+    public function getParents()
+    {
+        if ($this->parents === null) {
+            $this->parents = ThemeHelper::getThemeTree($this, false);
+        }
+
+        return $this->parents;
+    }
 }
