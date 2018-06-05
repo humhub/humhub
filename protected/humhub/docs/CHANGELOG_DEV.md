@@ -52,4 +52,5 @@ HumHub Change Log - v1.3-dev Branch
 - Enh: BaseSettingsManager allow to bunch delete settings with prefix
 - Chg: Migrated view and theme components to  `humhub\modules\ui\view` package
 - Enh: Improved Theme component
+- Enh: Added notification for MembershipSpace by role member changes (@githubjeka)
 

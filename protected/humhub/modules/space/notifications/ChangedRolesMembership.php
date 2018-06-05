@@ -65,7 +65,7 @@ class ChangedRolesMembership extends BaseNotification
 
         return Yii::t(
             'SpaceModule.notification',
-            '{displayName} changed your role to {roleName} in the space {spaceName}',
+            '{displayName} changed your role to {roleName} in the space {spaceName}.',
             [
                 '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
                 '{roleName}' => Html::tag('strong', $groups[$this->source->group_id]),
