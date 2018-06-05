@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1a142bb4c52e7c2bf8519b5b36843329",
-    "content-hash": "dc5a1101259c2a6117a212f6a5e7f8e9",
+    "hash": "d74f7b745d4aea4d47a6be39f47f52c1",
+    "content-hash": "f87a81bfaa3eda8239704e58a5ee5d42",
     "packages": [
         {
             "name": "bower-asset/animate.css",
@@ -529,6 +529,25 @@
             "type": "bower-asset",
             "license": [
                 "MIT"
+            ]
+        },
+        {
+            "name": "bower-asset/open-sans-fontface",
+            "version": "1.4.2",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:FontFaceKit/open-sans.git",
+                "reference": "2285c0300e6a4c8b102b98fb030fb38c26aa081c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FontFaceKit/open-sans/zipball/2285c0300e6a4c8b102b98fb030fb38c26aa081c",
+                "reference": "2285c0300e6a4c8b102b98fb030fb38c26aa081c",
+                "shasum": null
+            },
+            "type": "bower-asset",
+            "license": [
+                "Apache License version 2.0"
             ]
         },
         {

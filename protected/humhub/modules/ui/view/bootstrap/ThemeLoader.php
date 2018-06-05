@@ -20,6 +20,7 @@ use yii\base\BootstrapInterface;
  */
 class ThemeLoader implements BootstrapInterface
 {
+
     /**
      * @inheritdoc
      */
@@ -36,7 +37,8 @@ class ThemeLoader implements BootstrapInterface
             $app->view->theme = $theme;
             $app->mailer->view->theme = $theme;
         }
-    }
 
+        $theme->register();
+    }
 
 }

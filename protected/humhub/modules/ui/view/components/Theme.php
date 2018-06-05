@@ -8,8 +8,10 @@
 
 namespace humhub\modules\ui\view\components;
 
+use humhub\assets\AppAsset;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
+use yii\base\Theme as BaseTheme;
 
 /**
  * Theme represents a HumHub theme.
@@ -34,7 +36,7 @@ use Yii;
  * @since 1.3
  * @inheritdoc
  */
-class Theme extends \yii\base\Theme
+class Theme extends BaseTheme
 {
     /**
      * @var string the name of the theme
@@ -93,6 +95,20 @@ class Theme extends \yii\base\Theme
 
         $this->_baseUrl = ($this->publishResources) ? $this->publishResources() : rtrim(Yii::getAlias('@web/themes/' . $this->name), '/');
         return $this->_baseUrl;
+    }
+
+    /**
+     * Registers theme css and resources to the view
+     */
+    public function register()
+    {
+        // Register parent themes first
+        foreach (array_reverse($this->getParents()) as $parent) {
+            /** @var Theme $parent */
+            $parent->register();
+        }
+
+        Yii::$app->view->registerCssFile($this->getBaseUrl() . '/css/theme.css', ['depends' => AppAsset::class]);
     }
 
     /**
@@ -173,7 +189,6 @@ class Theme extends \yii\base\Theme
         return $this->variables->get($key, $default);
     }
 
-
     /**
      * Returns the base/parent themes of this theme.
      * The parent is specified in the LESS Variable file as variable "baseTheme".
@@ -189,4 +204,6 @@ class Theme extends \yii\base\Theme
 
         return $this->parents;
     }
+
+
 }

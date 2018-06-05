@@ -57,7 +57,8 @@
         "firebase/php-jwt": "^5.0",
         "npm-asset/socket.io-client": "^2.0",
         "phpoffice/phpspreadsheet": "^1.0",
-        "mistic100/randomcolor": "^1.0"
+        "mistic100/randomcolor": "^1.0",
+        "bower-asset/open-sans-fontface": "^1.4"
     },
     "require-dev": {
         "codeception/codeception": "~2.3",
