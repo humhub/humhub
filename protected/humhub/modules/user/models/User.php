@@ -251,7 +251,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * @inheritdoc
      *
-     * @return \humhub\modules\content\components\ActiveQueryContent
+     * @return ActiveQueryUser|object
      */
     public static function find()
     {
