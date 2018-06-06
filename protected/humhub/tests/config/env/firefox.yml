@@ -1,4 +1,4 @@
 modules:
-    config:
-        WebDriver:
-            browser: 'firefox'
+  config:
+    WebDriver:
+      browser: firefox
