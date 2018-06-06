@@ -64,7 +64,7 @@ class SpaceModelMembership extends Behavior
     /**
      * Checks if a given Userid is allowed to leave this space.
      * A User is allowed to leave, if the can_cancel_membership flag in the space_membership table is 1. If it is 2, the decision is delegated to the space.
-     * 
+     *
      * @param number $userId, if empty hte currently logged in user is taken.
      * @return bool
      */
@@ -163,7 +163,7 @@ class SpaceModelMembership extends Behavior
      */
     public function isSpaceOwner($userId = null)
     {
-        
+
         if (empty($userId) && Yii::$app->user->isGuest) {
             return false;
         } elseif ($userId instanceof User) {
@@ -203,6 +203,8 @@ class SpaceModelMembership extends Behavior
      * Returns the SpaceMembership Record for this Space
      *
      * If none Record is found, null is given
+     *
+     * @return Membership the membership
      */
     public function getMembership($userId = null)
     {
@@ -320,7 +322,7 @@ class SpaceModelMembership extends Behavior
                     // If user is an applicant of this space add user and return.
                     $this->addMember(Yii::$app->user->id);
                 case Membership::STATUS_MEMBER:
-                    // If user is already a member just ignore the invitation. 
+                    // If user is already a member just ignore the invitation.
                     return;
                 case Membership::STATUS_INVITED:
                     // If user is already invited, remove old invite notification and retrigger
@@ -337,7 +339,7 @@ class SpaceModelMembership extends Behavior
             ]);
         }
 
-        // Update or set originator 
+        // Update or set originator
         $membership->originator_user_id = $originatorId;
 
         if ($membership->save()) {
@@ -349,7 +351,7 @@ class SpaceModelMembership extends Behavior
 
     /**
      * Sends an Invite Notification to the given user.
-     * 
+     *
      * @param integer $userId
      * @param integer $originatorId
      */
@@ -421,8 +423,8 @@ class SpaceModelMembership extends Behavior
         MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_ADDED, new MemberEvent([
             'space' => $this->owner, 'user' => $user
         ]));
-        
-        
+
+
         // Create Activity
         MemberAdded::instance()->from($user)->about($this->owner)->save();
 

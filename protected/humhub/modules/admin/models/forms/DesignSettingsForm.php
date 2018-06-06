@@ -8,15 +8,20 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use Yii;
 use humhub\libs\ThemeHelper;
+use humhub\components\Theme;
+use humhub\libs\LogoImage;
+use humhub\libs\DynamicConfig;
+use Yii;
+use yii\base\Model;
+use yii\web\UploadedFile;
 
 /**
  * DesignSettingsForm
  *
  * @since 0.5
  */
-class DesignSettingsForm extends \yii\base\Model
+class DesignSettingsForm extends Model
 {
 
     public $theme;
@@ -59,7 +64,7 @@ class DesignSettingsForm extends \yii\base\Model
             ['theme', 'in', 'range' => $themes],
             [['displayName', 'spaceOrder'], 'safe'],
             [['horImageScrollOnMobile'], 'boolean'],
-            ['logo', 'file', 'extensions' => ['jpg', 'png', 'jpeg'], 'maxSize' => 3 * 1024 * 1024],
+            ['logo', 'file', 'extensions' => ['jpg', 'png', 'jpeg'], 'maxSize' => Yii::$app->getModule('file')->settings->get('maxFileSize')],
             ['logo', 'dimensionValidation', 'skipOnError' => true],
             ['dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']],
         ];
@@ -88,8 +93,9 @@ class DesignSettingsForm extends \yii\base\Model
     {
         if (is_object($this->logo)) {
             list($width, $height) = getimagesize($this->logo->tempName);
-            if ($height < 40)
+            if ($height < 40) {
                 $this->addError('logo', 'Logo size should have at least 40px of height');
+            }
         }
     }
 
@@ -98,7 +104,7 @@ class DesignSettingsForm extends \yii\base\Model
      */
     public function load($data, $formName = null)
     {
-        $files = \yii\web\UploadedFile::getInstancesByName('logo');
+        $files = UploadedFile::getInstancesByName('logo');
         if (count($files) != 0) {
             $file = $files[0];
             $this->logo = $file;
@@ -117,7 +123,7 @@ class DesignSettingsForm extends \yii\base\Model
         $settingsManager = Yii::$app->settings;
 
         $settingsManager->set('theme', $this->theme);
-        \humhub\components\Theme::setColorVariables($this->theme);
+        Theme::setColorVariables($this->theme);
         $settingsManager->set('paginationSize', $this->paginationSize);
         $settingsManager->set('displayNameFormat', $this->displayName);
         Yii::$app->getModule('space')->settings->set('spaceOrder', $this->spaceOrder);
@@ -125,11 +131,11 @@ class DesignSettingsForm extends \yii\base\Model
         $settingsManager->set('horImageScrollOnMobile', $this->horImageScrollOnMobile);
 
         if ($this->logo) {
-            $logoImage = new \humhub\libs\LogoImage();
+            $logoImage = new LogoImage();
             $logoImage->setNew($this->logo);
         }
 
-        \humhub\libs\DynamicConfig::rewrite();
+        DynamicConfig::rewrite();
 
         return true;
     }

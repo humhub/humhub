@@ -11,13 +11,11 @@
 class_name: AcceptanceTester
 modules:
   enabled:
-    - WebDriver:
-        url: 'http://localhost:8080/'
-        window_size: false # disabled in ChromeDriver
-        port: 9515
-        browser: chrome
-        capabilities:
-          chromeOptions:
-            args: ['--headless', '--disable-gpu', '--no-sandbox', '--window-size=1024,768']
+    - WebDriver
     - tests\codeception\_support\WebHelper
     - tests\codeception\_support\DynamicFixtureHelper
+  config:
+    WebDriver:
+      url: 'http://localhost:8080/'
+      browser: chrome
+      port: 4444

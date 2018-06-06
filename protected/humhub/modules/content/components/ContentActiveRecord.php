@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use humhub\modules\content\widgets\WallEntry;
@@ -45,6 +46,7 @@ use humhub\modules\content\interfaces\ContentOwner;
  * Note: If the underlying Content record cannot be saved or validated an Exception will thrown.
  *
  * @property Content $content
+ * @property User $createdBy
  * @author Luke
  */
 class ContentActiveRecord extends ActiveRecord implements ContentOwner
