@@ -2,8 +2,8 @@
 
 namespace humhub\modules\space\widgets;
 
-use Yii;
 use humhub\components\Widget;
+use Yii;
 
 /**
  * Used to render a single space chooser result.
@@ -58,9 +58,9 @@ class SpaceChooserItem extends Widget
     {
         if ($this->isMember) {
             return '<i class="fa fa-users badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_spaceChooserItem', 'You are a member of this space') . '" aria-hidden="true"></i>';
-        } else if ($this->isFollowing) {
+        } elseif ($this->isFollowing) {
             return '<i class="fa fa-star badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_spaceChooserItem', 'You are following this space') . '" aria-hidden="true"></i>';
-        } else if ($this->space->isArchived()) {
+        } elseif ($this->space->isArchived()) {
             return '<i class="fa fa-history badge-space pull-right type tt" title="' . Yii::t('SpaceModule.widgets_spaceChooserItem', 'This space is archived') . '" aria-hidden="true"></i>';
         }
     }
@@ -69,9 +69,9 @@ class SpaceChooserItem extends Widget
     {
         if ($this->isMember) {
             return 'data-space-member';
-        } else if ($this->isFollowing) {
+        } elseif ($this->isFollowing) {
             return 'data-space-following';
-        } else if ($this->space->isArchived()) {
+        } elseif ($this->space->isArchived()) {
             return 'data-space-archived';
         } else {
             return 'data-space-none';
