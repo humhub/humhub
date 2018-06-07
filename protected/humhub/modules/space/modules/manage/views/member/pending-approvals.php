@@ -33,7 +33,7 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                             'delete' => function ($url, $model) use ($space) {
                                 return Html::a('Reject', $space->createUrl('reject-applicant', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']);
                             },
-                            'update' => function($url, $model) use($space) {
+                            'update' => function ($url, $model) use ($space) {
                                 return Html::a('Approve', $space->createUrl('approve-applicant', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-primary btn-sm', 'data-method' => 'POST']);
                             },
                         ],
