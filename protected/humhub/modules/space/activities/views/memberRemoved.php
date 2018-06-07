@@ -2,7 +2,7 @@
 
 use humhub\libs\Helpers;
 use humhub\modules\content\components\ContentContainerController;
-use use yii\helpers\Html;;
+use yii\helpers\Html;
 
 if (!Yii::$app->controller instanceof ContentContainerController) {
     echo Yii::t('ActivityModule.views_activities_ActivitySpaceMemberRemoved', '%displayName% left the space %spaceName%', [
