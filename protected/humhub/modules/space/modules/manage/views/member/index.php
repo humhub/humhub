@@ -8,7 +8,7 @@ use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\widgets\TimeAgo;
-use use yii\helpers\Html;
+use yii\helpers\Html;
 ?>
 
 <div class="panel panel-default">
