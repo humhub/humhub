@@ -10,6 +10,7 @@ namespace humhub\modules\space\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\user\models\User;
+use humhub\modules\content\models\Content;
 use Yii;
 
 /**
@@ -76,7 +77,7 @@ class Membership extends ActiveRecord
             [['space_id', 'user_id'], 'required'],
             [['space_id', 'user_id', 'originator_user_id', 'status', 'created_by', 'updated_by'], 'integer'],
             [['request_message'], 'string'],
-            [['last_visit', 'created_at', 'group_id', 'updated_at'], 'safe'],
+            [['last_visit', 'created_at', 'group_id', 'updated_at'], 'safe']
         ];
     }
 
@@ -96,7 +97,7 @@ class Membership extends ActiveRecord
             'created_by' => Yii::t('SpaceModule.models_Membership', 'Created By'),
             'updated_at' => Yii::t('SpaceModule.models_Membership', 'Updated At'),
             'updated_by' => Yii::t('SpaceModule.models_Membership', 'Updated By'),
-            'can_leave' => 'Can Leave',
+            'can_leave' => 'Can Leave'
         ];
     }
 
@@ -154,10 +155,11 @@ class Membership extends ActiveRecord
      */
     public function countNewItems()
     {
-        $query = \humhub\modules\content\models\Content::find();
+        $query = Content::find();
         $query->where(['stream_channel' => 'default']);
         $query->andWhere(['contentcontainer_id' => $this->space->contentContainerRecord->id]);
         $query->andWhere(['>', 'created_at', $this->last_visit]);
+
         return $query->count();
     }
 
@@ -184,6 +186,7 @@ class Membership extends ActiveRecord
             }
             Yii::$app->cache->set($cacheId, $spaces);
         }
+
         return $spaces;
     }
 
@@ -206,6 +209,7 @@ class Membership extends ActiveRecord
             $spaceIds = static::getMembershipQuery($userId)->select('space_id')->column();
             Yii::$app->cache->set($cacheId, $spaceIds);
         }
+
         return $spaceIds;
     }
 
@@ -326,7 +330,9 @@ class Membership extends ActiveRecord
         }
 
         $query->andWhere(['space_id' => $space->id])->defaultOrder();
+
         return $query;
     }
 
 }
+
