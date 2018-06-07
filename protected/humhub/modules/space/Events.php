@@ -8,19 +8,20 @@
 
 namespace humhub\modules\space;
 
-use Yii;
-use yii\web\HttpException;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\helpers\MembershipHelper;
+use Yii;
+use yii\base\BaseObject;
+use yii\web\HttpException;
 
 /**
  * Events provides callbacks for all defined module events.
  *
  * @author luke
  */
-class Events extends \yii\base\BaseObject
+class Events extends BaseObject
 {
 
     /**
