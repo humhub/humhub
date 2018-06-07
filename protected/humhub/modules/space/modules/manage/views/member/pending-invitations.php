@@ -1,21 +1,20 @@
 <?php
 
-
 use yii\helpers\Html;
 use humhub\widgets\GridView;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
+use humhub\widgets\TimeAgo;
 ?>
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Manage</strong> members'); ?>
+        <?= Yii::t('SpaceModule.views_admin_members', '<strong>Manage</strong> members'); ?>
     </div>
     <?= MemberMenu::widget(['space' => $space]); ?>
     <div class="panel-body">
         <div class="table-responsive">
             <?php
             $groups = $space->getUserGroups();
-
 
             echo GridView::widget([
                 'dataProvider' => $dataProvider,
@@ -28,8 +27,8 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                         'attribute' => 'last_visit',
                         'format' => 'raw',
                         'value' =>
-                        function($data) use(&$groups) {
-                            return humhub\widgets\TimeAgo::widget(['timestamp' => $data->last_visit]);
+                        function ($data) use (&$groups) {
+                            return TimeAgo::widget(['timestamp' => $data->last_visit]);
                         }
                             ],
                             [
@@ -45,11 +44,11 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                                             'update' => function() {
                                         return;
                                     },
-                                        ],
-                                    ],
                                 ],
-                            ]);
-                            ?>
+                            ],
+                        ],
+                ]);
+                ?>
         </div>
     </div>
 </div>
