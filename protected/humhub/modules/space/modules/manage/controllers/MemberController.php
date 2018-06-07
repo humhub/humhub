@@ -11,7 +11,7 @@ namespace humhub\modules\space\modules\manage\controllers;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
-use \humhub\modules\space\notifications\ChangedRolesMembership;
+use humhub\modules\space\notifications\ChangedRolesMembership;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\modules\manage\models\ChangeOwnerForm;
