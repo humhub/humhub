@@ -12,7 +12,6 @@ use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\events\SearchAddEvent;
 use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\space\behaviors\SpaceController;
-use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\user\behaviors\Followable;
 use humhub\components\behaviors\GUID;
 use humhub\modules\content\components\behaviors\SettingsBehavior;
