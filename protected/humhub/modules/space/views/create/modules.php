@@ -33,7 +33,7 @@ SpaceAsset::register($this);
 
                                 <?php
                                 $enable = '';
-                                $disable = "hidden";
+                                $disable = 'hidden';
 
                                 if ($space->isModuleEnabled($moduleId)) {
                                     $enable = 'hidden';
