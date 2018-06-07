@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\AjaxLinkPager;
 use yii\helpers\Html;
 ?>
 
@@ -7,19 +8,17 @@ use yii\helpers\Html;
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"
-                id="myModalLabel">
-                    <?php echo $title; ?>
+            <h4 class="modal-title" id="myModalLabel">
+                <?= Html::encode($title); ?>
             </h4>
-            <br/>
+            <br>
         </div>
 
-        <?php if (count($spaces) === 0): ?>
+        <?php if (count($spaces) === 0) : ?>
             <div class="modal-body">
-                <p><?php echo Yii::t('SpaceModule.base', 'No spaces found.'); ?></p>
+                <p><?= Yii::t('SpaceModule.base', 'No spaces found.'); ?></p>
             </div>
-        <?php endif; ?>      
-
+        <?php endif; ?>
 
         <div id="spacelist-content">
 
@@ -31,19 +30,17 @@ use yii\helpers\Html;
 
                             <div class="media">
                                 <img class="media-object img-rounded pull-left"
-                                     src="<?php echo $space->getProfileImage()->getUrl(); ?>" width="50"
+                                     src="<?= $space->getProfileImage()->getUrl(); ?>" width="50"
                                      height="50" alt="50x50" data-src="holder.js/50x50"
                                      style="width: 50px; height: 50px;">
 
-
                                 <div class="media-body">
-                                    <h4 class="media-heading"><?php echo Html::encode($space->name); ?>
-                                    <h5><?php echo Html::encode($space->description); ?></h5>
+                                    <h4 class="media-heading"><?= Html::encode($space->name); ?>
+                                    <h5><?= Html::encode($space->description); ?></h5>
                                 </div>
                             </div>
                         </a>
                     </li>
-
 
                 <?php endforeach; ?>
                 <!-- END: Results -->
@@ -51,21 +48,18 @@ use yii\helpers\Html;
             </ul>
 
             <div class="pagination-container">
-                <?= \humhub\widgets\AjaxLinkPager::widget(['pagination' => $pagination]); ?>
+                <?= AjaxLinkPager::widget(['pagination' => $pagination]); ?>
             </div>
 
-
         </div>
-
 
     </div>
 
 </div>
 
-<script type="text/javascript">
+<script>
 
     // scroll to top of list
     $(".modal-body").animate({scrollTop: 0}, 200);
 
 </script>
-

@@ -1,6 +1,5 @@
 <?php
 
-use yii\helpers\Html;
 use humhub\widgets\GridView;
 use humhub\widgets\ActiveForm;
 use humhub\modules\space\models\Space;
@@ -8,11 +7,13 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
+use humhub\widgets\TimeAgo;
+use use yii\helpers\Html;
 ?>
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?php echo Yii::t('SpaceModule.views_admin_members', '<strong>Manage</strong> members'); ?>
+        <?= Yii::t('SpaceModule.views_admin_members', '<strong>Manage</strong> members'); ?>
     </div>
     <?= MemberMenu::widget(['space' => $space]); ?>
     <div class="panel-body">
@@ -54,7 +55,7 @@ use humhub\modules\space\modules\manage\models\MembershipSearch;
                                 return Yii::t('SpaceModule.views_admin_members', '-');
                             }
 
-                            return humhub\widgets\TimeAgo::widget(['timestamp' => $data->last_visit]);
+                            return TimeAgo::widget(['timestamp' => $data->last_visit]);
                         }
                     ],
                     [
@@ -62,11 +63,11 @@ use humhub\modules\space\modules\manage\models\MembershipSearch;
                         'format' => 'raw',
                         'value' =>
                         function ($data) use (&$groups) {
-                            if ($data->last_visit == '') {
+                            if (empty($data->last_visit)) {
                                 return Yii::t('SpaceModule.views_admin_members', 'never');
                             }
 
-                            return humhub\widgets\TimeAgo::widget(['timestamp' => $data->last_visit]);
+                            return TimeAgo::widget(['timestamp' => $data->last_visit]);
                         }
                     ],
                     [
@@ -91,13 +92,13 @@ use humhub\modules\space\modules\manage\models\MembershipSearch;
                         'class' => 'yii\grid\ActionColumn',
                         'options' => ['style' => 'width:40px; min-width:40px;'],
                         'buttons' => [
-                            'view' => function($url, $model) {
+                            'view' => function ($url, $model) {
                                 return false;
                             },
-                            'update' => function($url, $model) {
+                            'update' => function ($url, $model) {
                                 return false;
                             },
-                            'delete' => function($url, $model) {
+                            'delete' => function ($url, $model) {
                                 return Html::a('<i class="fa fa-times"></i>', '#', [
                                             'title' => Yii::t('SpaceModule.manage', 'Remove from space'),
                                             'class' => 'btn btn-danger btn-xs tt',

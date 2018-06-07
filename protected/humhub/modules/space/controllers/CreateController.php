@@ -8,14 +8,16 @@
 
 namespace humhub\modules\space\controllers;
 
+use humhub\components\Controller;
+use humhub\components\behaviors\AccessControl;
+use humhub\modules\space\models\Space;
+use humhub\modules\space\permissions\CreatePrivateSpace;
+use humhub\modules\space\permissions\CreatePublicSpace;
+use humhub\modules\space\models\forms\InviteForm;
 use Colors\RandomColor;
 use Yii;
 use yii\base\Exception;
 use yii\web\HttpException;
-use humhub\components\Controller;
-use humhub\modules\space\models\Space;
-use humhub\modules\space\permissions\CreatePrivateSpace;
-use humhub\modules\space\permissions\CreatePublicSpace;
 
 /**
  * CreateController is responsible for creation of new spaces
@@ -38,7 +40,7 @@ class CreateController extends Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::className(),
             ]
         ];
     }
@@ -135,9 +137,9 @@ class CreateController extends Controller
      */
     public function actionInvite($space = null)
     {
-        $space = ($space == null) ? Space::findOne(['id' => Yii::$app->request->get('spaceId', "")]) : $space;
+        $space = ($space == null) ? Space::findOne(['id' => Yii::$app->request->get('spaceId', '')]) : $space;
 
-        $model = new \humhub\modules\space\models\forms\InviteForm();
+        $model = new InviteForm();
         $model->space = $space;
 
         $canInviteExternal = Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
@@ -166,5 +168,3 @@ class CreateController extends Controller
     }
 
 }
-
-?>

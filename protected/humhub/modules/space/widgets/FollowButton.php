@@ -8,9 +8,10 @@
 
 namespace humhub\modules\space\widgets;
 
+use humhub\modules\space\models\Space;
 use Yii;
 use yii\bootstrap\Html;
-use humhub\modules\space\models\Space;
+use yii\base\Widget;
 
 /**
  * UserFollowButton
@@ -18,7 +19,7 @@ use humhub\modules\space\models\Space;
  * @author luke
  * @since 0.11
  */
-class FollowButton extends \yii\base\Widget
+class FollowButton extends Widget
 {
 
     /**
@@ -52,26 +53,27 @@ class FollowButton extends \yii\base\Widget
     public function init()
     {
         if ($this->followLabel === null) {
-            $this->followLabel = Yii::t('SpaceModule.widgets_views_followButton', "Follow");
+            $this->followLabel = Yii::t('SpaceModule.widgets_views_followButton', 'Follow');
         }
+
         if ($this->unfollowLabel === null) {
-            $this->unfollowLabel = Yii::t('SpaceModule.widgets_views_followButton', "Unfollow");
+            $this->unfollowLabel = Yii::t('SpaceModule.widgets_views_followButton', 'Unfollow');
         }
 
         if (!isset($this->followOptions['class'])) {
-            $this->followOptions['class'] = "";
+            $this->followOptions['class'] = '';
         } 
         
         if (!isset($this->unfollowOptions['class'])) {
-            $this->unfollowOptions['class'] = "";
+            $this->unfollowOptions['class'] = '';
         }
 
         if (!isset($this->followOptions['style'])) {
-            $this->followOptions['style'] = "";
+            $this->followOptions['style'] = '';
         }
         
         if (!isset($this->unfollowOptions['style'])) {
-            $this->unfollowOptions['style'] = "";
+            $this->unfollowOptions['style'] = '';
         }
     }
  
@@ -119,7 +121,7 @@ class FollowButton extends \yii\base\Widget
         }
 
         return Html::a($this->unfollowLabel, '#', $this->unfollowOptions) .
-                Html::a($this->followLabel, '#', $this->followOptions);
+               Html::a($this->followLabel, '#', $this->followOptions);
     }
 
 }

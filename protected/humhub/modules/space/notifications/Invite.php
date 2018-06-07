@@ -23,12 +23,12 @@ class Invite extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $moduleId = "space";
+    public $moduleId = 'space';
 
     /**
      * @inheritdoc
      */
-    public $viewName = "invite";
+    public $viewName = 'invite';
 
     /**
      * @inheritdoc
@@ -71,5 +71,3 @@ class Invite extends BaseNotification
     }
 
 }
-
-?>

@@ -8,13 +8,17 @@
 
 namespace humhub\modules\space\controllers;
 
-use Yii;
-use yii\web\HttpException;
+use humhub\modules\content\components\ContentContainerController;
+use humhub\components\behaviors\AccessControl;
 use humhub\modules\user\models\UserPicker;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\forms\RequestMembershipForm;
+use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\user\widgets\UserListBox;
+use humhub\widgets\ModalClose;
+use Yii;
+use yii\web\HttpException;
 
 /**
  * SpaceController is the main controller for spaces.
@@ -26,7 +30,7 @@ use humhub\modules\user\widgets\UserListBox;
  * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
-class MembershipController extends \humhub\modules\content\components\ContentContainerController
+class MembershipController extends ContentContainerController
 {
 
     /**
@@ -36,7 +40,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::className(),
             ]
         ];
     }
@@ -100,6 +104,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
         }
 
         $space->addMember(Yii::$app->user->id);
+
         return $this->htmlRedirect($space->getUrl());
     }
 
@@ -131,6 +136,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
     {
         $space = $this->getSpace();
         Yii::$app->notification->setSpaceSetting(Yii::$app->user->getIdentity(), $space, false);
+
         return $this->redirect($space->getUrl());
     }
 
@@ -138,6 +144,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
     {
         $space = $this->getSpace();
         Yii::$app->notification->setSpaceSetting(Yii::$app->user->getIdentity(), $space, true);
+
         return $this->redirect($space->getUrl());
     }
 
@@ -173,7 +180,7 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
             throw new HttpException(403, Yii::t('SpaceModule.controllers_MembershipController', 'Access denied - You cannot invite members!'));
         }
 
-        $model = new \humhub\modules\space\models\forms\InviteForm();
+        $model = new InviteForm();
         $model->space = $space;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -195,15 +202,15 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
 
             switch ($statusInvite) {
                 case Membership::STATUS_INVITED:
-                    return \humhub\widgets\ModalClose::widget(['success' => Yii::t('SpaceModule.views_space_statusInvite', 'User has been invited.')]);
+                    return ModalClose::widget(['success' => Yii::t('SpaceModule.views_space_statusInvite', 'User has been invited.')]);
                 case Membership::STATUS_MEMBER:
-                    return \humhub\widgets\ModalClose::widget(['success' => Yii::t('SpaceModule.views_space_statusInvite', 'User has become a member.')]);
+                    return ModalClose::widget(['success' => Yii::t('SpaceModule.views_space_statusInvite', 'User has become a member.')]);
                 default:
-                    return \humhub\widgets\ModalClose::widget(['warn' => Yii::t('SpaceModule.views_space_statusInvite', 'User has not been invited.')]);
+                    return ModalClose::widget(['warn' => Yii::t('SpaceModule.views_space_statusInvite', 'User has not been invited.')]);
             }
         }
 
-        return $this->renderAjax('invite', array('model' => $model, 'space' => $space));
+        return $this->renderAjax('invite', ['model' => $model, 'space' => $space]);
     }
 
     /**
@@ -270,5 +277,3 @@ class MembershipController extends \humhub\modules\content\components\ContentCon
     }
 
 }
-
-?>

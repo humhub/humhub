@@ -1,15 +1,17 @@
 <?php
 
 use yii\helpers\Html;
-?><div class="panel panel-default">
+?>
+
+<div class="panel panel-default">
     <div class="panel-heading">
         <?= Yii::t('SpaceModule.views_admin_modules', '<strong>Space</strong> Modules'); ?>
     </div>
     <div class="panel-body">
 
-        <?php if (count($availableModules) == 0): ?>
+        <?php if (count($availableModules) == 0) : ?>
             <p><?= Yii::t('SpaceModule.views_admin_modules', 'Currently there are no modules available for this space!'); ?></p>
-        <?php else: ?>
+        <?php else : ?>
             <?= Yii::t('SpaceModule.views_admin_modules', 'Enhance this space with modules.'); ?><br>
         <?php endif; ?>
 
@@ -30,7 +32,7 @@ use yii\helpers\Html;
 
                     <p><?= $module->getContentContainerDescription($space); ?></p>
 
-                    <?php if ($space->canDisableModule($moduleId)): ?>
+                    <?php if ($space->canDisableModule($moduleId)) : ?>
                         <a href="#" style="<?= $space->isModuleEnabled($moduleId) ? '' : 'display:none' ?>"
                            data-action-click="content.container.disableModule" 
                            data-action-url="<?= $space->createUrl('/space/manage/module/disable', ['moduleId' => $moduleId]) ?>" data-reload="1"

@@ -23,12 +23,12 @@ class ApprovalRequestDeclined extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $moduleId = "space";
+    public $moduleId = 'space';
 
     /**
      * @inheritdoc
      */
-    public $viewName = "approvalDeclined";
+    public $viewName = 'approvalDeclined';
 
     /**
      *  @inheritdoc
@@ -58,5 +58,3 @@ class ApprovalRequestDeclined extends BaseNotification
     }
 
 }
-
-?>
