@@ -92,10 +92,10 @@ humhub.module('stream', function (module, require, $) {
         return ['delete', 'edit'];
     };
 
-    StreamEntry.prototype.delete = function () {
+    StreamEntry.prototype.delete = function (evt) {
         // Either call delete of a nestet content component or call default content delete
         var content = this.contentComponent();
-        var promise = (content && content.delete) ? content.delete() : this.super('delete');
+        var promise = (content && content.delete) ? content.delete(evt) : this.super('delete', evt);
 
         var that = this;
         var stream = this.stream();
