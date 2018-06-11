@@ -54,6 +54,8 @@ class MailContentEntry extends \yii\base\Widget
      */
     public function run()
     {
+        $content = null;
+
         if (is_string($this->content)) {
             $content = $this->content;
         } else if ($this->content instanceof Viewable) {
@@ -69,7 +71,6 @@ class MailContentEntry extends \yii\base\Widget
                 $this->originator = $this->content->content->createdBy;
             }
         }
-
 
         return $this->render('mailContentEntry', [
                     'originator' => $this->originator,

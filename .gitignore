@@ -35,3 +35,7 @@ favicon.ico
 /.buildpath
 /.project
 /protected/vendor/
+
+**/tests/codeception/_support/_generated/**
+
+**/tests/codeception/_output/**

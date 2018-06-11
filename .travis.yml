@@ -22,7 +22,7 @@ cache:
 services: mysql
 
 before_install:
-  - wget https://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip
+  - wget https://chromedriver.storage.googleapis.com/2.39/chromedriver_linux64.zip
   - unzip -d $HOME chromedriver_linux64.zip
   - $HOME/chromedriver --url-base=/wd/hub &
 
@@ -62,7 +62,7 @@ script:
   - curl --fail http://127.0.0.1:8080/index-test.php
   - |
     cd $TRAVIS_BUILD_DIR/protected/humhub/tests
-    php ../../vendor/bin/codecept run
+    php ../../vendor/bin/codecept run --env travis
 after_failure:
   - cd ../modules/user/tests/codeception/_output/
   - ls
