@@ -16,6 +16,8 @@ use humhub\modules\space\widgets\Menu;
 use humhub\modules\space\widgets\Chooser;
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\DeleteForm;
+use humhub\modules\space\activities\SpaceArchieved;
+use humhub\modules\space\activities\SpaceUnArchieved;
 
 /**
  * Default space admin action
@@ -84,6 +86,9 @@ class DefaultController extends Controller
         $space = $this->getSpace();
         $space->archive();
 
+        // Create Activity
+        SpaceArchieved::instance()->from($space)->about($space->owner)->save();
+
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = 'json';
             return [
@@ -102,6 +107,9 @@ class DefaultController extends Controller
     {
         $space = $this->getSpace();
         $space->unarchive();
+
+        // Create Activity
+        SpaceUnArchieved::instance()->from($space)->about($space->owner)->save();
 
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = 'json';
