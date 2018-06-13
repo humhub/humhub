@@ -53,5 +53,4 @@ class SpaceUnArchieved extends BaseActivity implements ConfigurableActivityInter
     {
         return Yii::t('SpaceModule.activities', 'Whenever a space is unarchieved.');
     }
-
 }
