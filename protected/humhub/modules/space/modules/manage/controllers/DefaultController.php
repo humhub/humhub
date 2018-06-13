@@ -86,7 +86,7 @@ class DefaultController extends Controller
         $space = $this->getSpace();
         $space->archive();
 
-        // Create Activity
+        // Create Activity when the space in archieved
         SpaceArchieved::instance()->from($space)->about($space->owner)->save();
 
         if (Yii::$app->request->isAjax) {
@@ -108,7 +108,7 @@ class DefaultController extends Controller
         $space = $this->getSpace();
         $space->unarchive();
 
-        // Create Activity
+        // Create Activity when the space in unarchieved
         SpaceUnArchieved::instance()->from($space)->about($space->owner)->save();
 
         if (Yii::$app->request->isAjax) {
