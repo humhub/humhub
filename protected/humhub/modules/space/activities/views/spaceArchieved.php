@@ -7,4 +7,6 @@ echo Yii::t('ActivityModule.views_activities_ActivitySpaceMemberAdded', '%spaceN
     '%spaceName%' => '<strong>' . Html::encode(Helpers::truncateText($source->name, 40)) . '</strong>'
 ]);
 
+?>
+
 
