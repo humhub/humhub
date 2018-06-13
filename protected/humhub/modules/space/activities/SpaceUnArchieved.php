@@ -22,12 +22,12 @@ class SpaceUnArchieved extends BaseActivity implements ConfigurableActivityInter
     /**
      * @inheritdoc
      */
-    public $viewName = "spaceUnArchieved";
+    public $viewName = 'spaceUnArchieved';
 
     /**
      * @inheritdoc
      */
-    public $moduleId = "space";
+    public $moduleId = 'space';
 
     /**
      * @inheritdoc

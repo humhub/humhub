@@ -22,12 +22,12 @@ class SpaceArchieved extends BaseActivity implements ConfigurableActivityInterfa
     /**
      * @inheritdoc
      */
-    public $viewName = "spaceArchieved";
+    public $viewName = 'spaceArchieved';
 
     /**
      * @inheritdoc
      */
-    public $moduleId = "space";
+    public $moduleId = 'space';
 
     /**
      * @inheritdoc
@@ -53,5 +53,4 @@ class SpaceArchieved extends BaseActivity implements ConfigurableActivityInterfa
     {
         return Yii::t('SpaceModule.activities', 'Whenever a space is archieved.');
     }
-
 }
