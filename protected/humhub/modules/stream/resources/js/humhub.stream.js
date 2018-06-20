@@ -21,6 +21,8 @@ humhub.module('stream', function (module, require, $) {
 
     /**
      * Returns a single entry with a given contentId of the wall stream
+     *
+     * @deprecated since v1.3 use Component.instance instead
      * @param id
      */
     var getEntry = function (contentId) {

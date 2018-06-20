@@ -91,6 +91,8 @@ humhub.module('stream.Stream', function (module, require, $) {
 
     Stream.prototype.initScroll = function() {/* abstract initScroll function */};
 
+    Stream.prototype.initEvents = function() {/* abstract initScroll function */};
+
     /**
      * Initializes the stream configuration with default values.
      *
@@ -129,6 +131,7 @@ humhub.module('stream.Stream', function (module, require, $) {
     Stream.prototype.initWidget = function() {
         this.$content = this.$.find(this.options.contentSelector);
         this.loader = this.options.loader || new StreamLoader(this);
+        this.initEvents();
         this.initFilter();
         this.initScroll();
     };
@@ -207,7 +210,7 @@ humhub.module('stream.Stream', function (module, require, $) {
         this.hide();
         this.$content.empty();
         this.loader.show(false);
-        this.trigger('humhub:modules:stream:clear', this);
+        this.trigger('humhub:stream:clear', this);
         this.onClear();
         return this;
     };

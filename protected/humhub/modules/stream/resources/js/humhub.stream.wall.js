@@ -39,13 +39,11 @@ humhub.module('stream.wall', function (module, require, $) {
         if (module.config.horizontalImageScrollOnMobile && /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
             this.$.addClass('mobile');
         }
-
-        this.initEvents();
     });
 
     WallStream.prototype.initEvents = function () {
         var that = this;
-        this.$.on('humhub:stream:beforeLoadEntries', function () {
+        this.on('humhub:stream:beforeLoadEntries', function () {
             $('#btn-load-more').hide();
         }).on('humhub:stream:afterAddEntries', function (evt, resp, res) {
             $.each(resp.contentSuppressions, function (key, contentSuppression) {
@@ -55,7 +53,10 @@ humhub.module('stream.wall', function (module, require, $) {
                     $(string.template(WallStream.template.loadSuppressedButton, contentSuppression)).insertAfter(entry.$).fadeIn('fast');
                 }
             });
-            $('#btn-load-more').show();
+
+            if(!resp.isLast) {
+                $('#btn-load-more').show();
+            }
         }).on('humhub:stream:lastEntryLoaded', function () {
             $('#btn-load-more').hide();
         });
@@ -146,9 +147,9 @@ humhub.module('stream.wall', function (module, require, $) {
             }
         });
 
-        event.on('humhub:topic:added', $.proxy(this.onTopicAdded, this))
-            .on('humhub:topic:removed', $.proxy(this.onTopicRemoved, this))
-            .on('humhub:topic:updated', $.proxy(this.onTopicUpdated, this));
+        event.on('humhub:topic:added.wallStream', $.proxy(this.onTopicAdded, this))
+            .on('humhub:topic:removed.wallStream', $.proxy(this.onTopicRemoved, this))
+            .on('humhub:topic:updated.wallStream', $.proxy(this.onTopicUpdated, this));
 
        this.initTopicPicker();
        this.initContentTypePicker();
@@ -177,8 +178,8 @@ humhub.module('stream.wall', function (module, require, $) {
             contentTypePicker.$.on('change', function() {
                 var $filterBar = that.getFilterBar();
                 $filterBar.find('.content-type-remove-label').remove();
-                Widget.instance($(this)).data().forEach(function(topic) {
-                    $(string.template(WallStreamFilter.template.removeContentTypeLabel, topic)).appendTo($filterBar);
+                Widget.instance($(this)).data().forEach(function(contentType) {
+                    $(string.template(WallStreamFilter.template.removeContentTypeLabel, contentType)).appendTo($filterBar);
                 });
             });
         }
@@ -195,23 +196,6 @@ humhub.module('stream.wall', function (module, require, $) {
 
         $label.fadeOut('fast', function() {
             $label.remove();
-            if(!$filterBar.children().length) {
-                $filterBar.hide();
-            }
-        });
-
-        this.getTopicPicker().remove(topic.id);
-    };
-
-    WallStreamFilter.prototype.onTopicUpdated = function(evt, topic) {
-        var $filterBar = this.getFilterBar();
-        var $label = $filterBar.find('[data-topic-id="'+topic.id+'"]');
-
-        $label.fadeOut('fast', function() {
-            $label.remove();
-            if(!$filterBar.children().length) {
-                $filterBar.hide();
-            }
         });
 
         this.getTopicPicker().remove(topic.id);
@@ -219,17 +203,25 @@ humhub.module('stream.wall', function (module, require, $) {
 
     WallStreamFilter.prototype.onTopicUpdated = function(evt, topics) {
         var topicPicker =  this.getTopicPicker();
+        var $filterBar = this.getFilterBar();
+
         topics.forEach(function(topic) {
             if(!topicPicker.hasValue(topic.id)) {
                 topicPicker.select(topic.id, topic.name, topic.icon);
             }
-        });
 
-        var $filterBar = this.getFilterBar();
+            if(!$filterBar.find(['data-topic-id="'+topic.id+'"']).length) {
+                topic.$label.clone().prependTo($filterBar);
+            }
+        });
     };
 
     WallStreamFilter.prototype.getTopicPicker = function() {
         return Widget.instance($('#stream-topic-picker'));
+    };
+
+    WallStreamFilter.prototype.removeContentTypeFilter = function(evt) {
+        this.getContentTypePicker().remove(evt.$trigger.data('typeId'));
     };
 
     WallStreamFilter.prototype.triggerChange = function() {
@@ -265,10 +257,8 @@ humhub.module('stream.wall', function (module, require, $) {
         this.$.find('.wall-stream-filter-body').slideToggle();
     };
 
-
-
     WallStreamFilter.template = {
-        removeContentTypeLabel: '<a href="#" class="content-type-remove-label" data-action-click="stream.removeContentTypeFilter" data-type-id="{id}"><span class="label label-default animated bounceIn"><i class="fa {image}"></i> {text}</span></a>'
+        removeContentTypeLabel: '<a href="#" class="content-type-remove-label" data-action-click="removeContentTypeFilter" data-type-id="{id}"><span class="label label-default animated bounceIn"><i class="fa {image}"></i> {text}</span></a>'
     };
 
     module.export({
