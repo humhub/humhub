@@ -30,7 +30,6 @@ $rightPanelBlocks = isset($panels[WallStreamFilterNavigation::PANEL_POSITION_RIG
                 ->cssClass('wall-stream-filter-toggle')->icon('fa-filter')->sm()->style('pa') ?>
         </div>
         <div class="wall-stream-filter-body" style="display:none">
-            <hr>
             <div class="filter-root">
                 <div class="row">
                     <?= FilterPanel::widget(['blocks' => $leftPanelBlocks, 'span' => count($panels)])?>

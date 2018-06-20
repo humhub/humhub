@@ -106,23 +106,31 @@
 
 #wall-stream-filter-nav {
     font-size: 12px;
-    margin-bottom: 15px;
-    margin-top: -17px;
+    margin-bottom: 10px;
     padding-top:2px;
-    box-shadow: 0 0 3px #dadada;
-    -webkit-box-shadow: 0 0 3px #dadada;
-    -moz-box-shadow: 0 0 3px #dadada;
-    background-color: @background-color-secondary;
     border-radius: 0 0 4px 4px;
+
     .wall-stream-filter-root {
         margin:0;
-        padding: 5px;
         white-space: nowrap;
         border:0 !important;
     }
 
+    .filter-panel {
+        padding: 0 10px;
+    }
+
+    .wall-stream-filter-head {
+        padding: 5px 5px 10px 5px;
+        border-bottom: 1px solid #ddd;
+    }
+
     .wall-stream-filter-body {
         overflow:auto;
+        background-color: @background-color-secondary;
+        border: 1px solid #ddd;
+        border-top: 0;
+        border-radius: 0 0 4px 4px;
     }
 
     hr {
