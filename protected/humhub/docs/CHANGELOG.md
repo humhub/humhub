@@ -12,6 +12,7 @@ HumHub Change Log
 - Fix #3148: Upload space picture dose not use file size setting in HumHub (acs-ferreira)
 - Fix: Incorrect last visit date shown in space admin pending members view (acs-ferreira)
 - Enh: Allow enable/disable modules by CLI
+- Enh: Added UTC only timezone in server timezone dropdown
 
 
 1.2.7 (May 23, 2018)
