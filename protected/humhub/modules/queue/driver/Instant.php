@@ -36,7 +36,7 @@ class Instant extends Queue
     /**
      * @inheritdoc
      */
-    protected function status($id)
+    public function status($id)
     {
         return Queue::STATUS_DONE;
     }
