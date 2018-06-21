@@ -155,6 +155,11 @@ humhub.module('stream.Stream', function (module, require, $) {
     };
 
     Stream.prototype.handleResponse = function(request) {
+        // If request is undefined the request was blocked @see canLoadMore
+        if(!request) {
+            return Promise.resolve();
+        }
+
         if (request.isLastEntryResponse()) {
             return Promise.resolve(this.handleLastEntryLoaded());
         } else if (request.options.insertAfter) {
