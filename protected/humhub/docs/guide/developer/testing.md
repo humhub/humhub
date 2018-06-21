@@ -50,8 +50,6 @@ Configure the database connection for your test environment in `@humhub/tests/co
 
 `php yii migrate/up --includeModuleMigrations=1 --interactive=0`
 
-`php yii installer/auto`
-
 >Note: You'll have to run the migrations for your test environment manually in order to keep your test environment up to date.
 
 - Install test environment:

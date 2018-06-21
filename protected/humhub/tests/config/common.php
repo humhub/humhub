@@ -19,7 +19,7 @@ return [
             ],
         ],
         'queue' => [
-            'class' => 'humhub\components\queue\driver\Instant',
+            'class' => 'humhub\modules\queue\driver\Instant',
         ],
     ],
     'params' => [

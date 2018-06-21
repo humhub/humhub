@@ -171,7 +171,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     }
 
     /**
-     * Can be used to define an icon for this content type.
+     * Can be used to define an icon for this content type e.g.: 'fa-calendar'.
      * @return string
      */
     public function getIcon()

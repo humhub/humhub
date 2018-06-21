@@ -208,11 +208,19 @@ humhub.module('comment', function (module, require, $) {
         });
     };
 
+    var toggleComment = function(evt) {
+        let visible = evt.$target.is(':visible');
+        evt.$target.slideToggle(undefined, function() {
+            evt.$target.find('.humhub-ui-richtext').trigger('focus');
+        });
+    };
+
     module.export({
         init: init,
         Comment: Comment,
         Form: Form,
         showAll: showAll,
-        showMore: showMore
+        showMore: showMore,
+        toggleComment: toggleComment
     });
 });

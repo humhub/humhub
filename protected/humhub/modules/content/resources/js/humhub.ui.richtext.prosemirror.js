@@ -66,16 +66,18 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         }).on('focus', function() {
             that.focus();
         });
+
+        this.$.find('.humhub-ui-richtext').on('focus', function() {
+            that.focus();
+        })
     };
 
-    RichTextEditor.prototype.focus = function(tooltip) {
-        this.editor.view.focus();
+    RichTextEditor.prototype.focus = function() {
         this.editor.view.focus();
     };
 
     RichTextEditor.prototype.disable = function(tooltip) {
         tooltip = tooltip || this.options.disabledText;
-        debugger;
         $(this.editor.view.dom).removeAttr('contenteditable').attr({
             disabled: 'disabled',
             title: tooltip,
@@ -103,6 +105,10 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
             this.editor = new MarkdownEditor(this.$, this.options);
             this.$.html(this.editor.render());
         }
+
+        // See https://github.com/ProseMirror/prosemirror/issues/432
+        document.execCommand('enableObjectResizing', false, 'false');
+        document.execCommand('enableInlineTableEditing', false, 'false');
     };
 
     HumHubMentionProvider = function(options) {
