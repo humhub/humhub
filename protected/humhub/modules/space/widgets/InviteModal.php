@@ -1,14 +1,16 @@
 <?php
+
 namespace humhub\modules\space\widgets;
 
 use Yii;
+use yii\base\Widget;
 
 /**
  * Description of InviteModal
  *
  * @author buddha
  */
-class InviteModal extends \yii\base\Widget
+class InviteModal extends Widget
 {
     public $submitText;
     public $submitAction;
@@ -18,7 +20,7 @@ class InviteModal extends \yii\base\Widget
     
     public function run()
     {
-        if(!$this->attribute) {
+        if (!$this->attribute) {
             $this->attribute = 'invite';
         }
         

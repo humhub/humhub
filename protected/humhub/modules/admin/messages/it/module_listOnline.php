@@ -1,10 +1,10 @@
 <?php
 return array (
-  'Installed' => '@@Installato@@',
+  'Installed' => 'Installato',
   'No modules found!' => 'Nessun modulo trovato!',
-  'No purchased modules found!' => '',
+  'No purchased modules found!' => 'Nessun modulo acquistato trovato!',
   'Register' => 'Registrati',
   'Search' => 'Cerca',
-  'Third-party' => '',
+  'Third-party' => 'Terze parti',
   'search for available modules online' => 'cerca moduli disponibili online',
 );

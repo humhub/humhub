@@ -8,9 +8,9 @@
 
 namespace humhub\modules\notification\controllers;
 
-use Yii;
 use humhub\components\Controller;
 use humhub\modules\notification\models\Notification;
+use Yii;
 
 /**
  * ListController
@@ -41,7 +41,7 @@ class ListController extends Controller
 
         $notifications = Notification::loadMore(Yii::$app->request->get('from', 0));
         $lastEntryId = 0;
-        
+
         $output = "";
         foreach ($notifications as $notification) {
             try {
@@ -49,8 +49,8 @@ class ListController extends Controller
                 $lastEntryId = $notification->id;
                 $notification->desktop_notified = 1;
                 $notification->update();
-            } catch(\Exception $e) {
-                Yii::error($e);
+            } catch (\Exception $e) {
+                Yii::error('Could not display notification: ' . $notification->id . '(' . $e . ')');
             }
         }
 
@@ -68,7 +68,7 @@ class ListController extends Controller
     public function actionMarkAsSeen()
     {
         $this->forcePostRequest();
-        
+
         Yii::$app->response->format = 'json';
         $count = Notification::updateAll(['seen' => 1], ['user_id' => Yii::$app->user->id]);
 
@@ -80,7 +80,7 @@ class ListController extends Controller
 
     /**
      * Returns new notifications
-     * 
+     *
      * @deprecated since version 1.2
      */
     public function actionGetUpdateJson()
@@ -102,10 +102,10 @@ class ListController extends Controller
         $update['newNotifications'] = Notification::findUnseen()->count();
 
         $unnotified = Notification::findUnnotifiedInFrontend()->all();
-        
+
         $update['notifications'] = [];
         foreach ($unnotified as $notification) {
-            if(Yii::$app->getModule('notification')->settings->user()->getInherit('enable_html5_desktop_notifications', true)) {
+            if (Yii::$app->getModule('notification')->settings->user()->getInherit('enable_html5_desktop_notifications', true)) {
                 $update['notifications'][] = $notification->getBaseModel()->text();
             }
             $notification->desktop_notified = 1;

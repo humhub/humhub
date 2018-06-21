@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -28,7 +28,7 @@ abstract class AbstractDateValidator extends Validator
         $date = $model->$attribute;
         if (is_string($model->$attribute)) {
             $date = strtotime($model->$attribute);
-        } else if ($model->$attribute instanceof DateTime) {
+        } elseif ($model->$attribute instanceof DateTime) {
             $date = $model->$attribute->getTimestamp();
         }
 

@@ -2,12 +2,13 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\models\ContentTag;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
@@ -46,10 +47,13 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
 
         $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
 
+        $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::className()]);
+        $this->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::className()]);
+        $conditionSpace = '';
+        $conditionUser = '';
+
         if ($user !== null) {
             $this->leftJoin('space_membership', 'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId', [':userId' => $user->id, ':spaceClass' => Space::className()]);
-            $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::className()]);
-            $this->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::className()]);
 
             // Build Access Check based on Space Content Container
             $conditionSpace = 'space.id IS NOT NULL AND (';                                         // space content
@@ -66,15 +70,17 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
                 $conditionUser .= ' OR (content.visibility = 0 AND cff.id IS NOT NULL)';  // users are friends
             }
             $conditionUser .= ')';
-            
+
             // Created content of is always visible
             $conditionUser .= 'OR content.created_by=' . $user->id;
-
-            $this->andWhere("{$conditionSpace} OR {$conditionUser}");
+        } elseif (Yii::$app->user->isGuestAccessEnabled()) {
+            $conditionSpace = 'space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1';
+            $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
         } else {
-            $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::className()]);
-            $this->andWhere('space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1');
+            $this->emulateExecution();
         }
+
+        $this->andWhere("{$conditionSpace} OR {$conditionUser}");
 
 
 
@@ -96,6 +102,40 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
         } else {
             $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
             $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => $container->className()]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Filters contents by given contentTags.
+     *
+     * @param array|string|ContentTag $contentTags array of or single content tag classes or instances
+     * @return $this
+     * @since 1.3
+     */
+    public function contentTag($contentTags = [])
+    {
+        if(empty($contentTag)) {
+            return $this;
+        }
+
+        if(!is_array($contentTags)) {
+            $contentTags = [$contentTags];
+        }
+
+        $this->innerJoinWith('tags');
+        foreach ($contentTags as $contentTag) {
+            $contentTagClass = null;
+            if($contentTag instanceof ContentTag) {
+                $contentTagClass = get_class($contentTag);
+            } else if(is_string($contentTag)) {
+                $contentTagClass = $contentTag;
+            }
+
+            if($contentTagClass) {
+                call_user_func($contentTagClass .'::addQueryCondition', $this);
+            }
         }
 
         return $this;

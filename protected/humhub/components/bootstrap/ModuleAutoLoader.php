@@ -12,7 +12,7 @@ use Yii;
 use yii\base\BootstrapInterface;
 
 /**
- * ModuleAutoLoader automatically searches for autostart.php files in module folder an executes them.
+ * ModuleAutoLoader automatically searches for config.php files in module folder an executes them.
  *
  * @author luke
  */

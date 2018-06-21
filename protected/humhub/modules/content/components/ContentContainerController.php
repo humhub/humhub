@@ -2,108 +2,95 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\content\components;
 
-use humhub\components\Controller;
-use humhub\modules\space\behaviors\SpaceController;
-use humhub\modules\space\models\Space;
-use humhub\modules\space\widgets\Image;
-use humhub\modules\user\behaviors\ProfileController;
-use humhub\modules\user\models\User;
 use Yii;
-use yii\helpers\Html;
-use yii\helpers\Json;
 use yii\web\HttpException;
+use humhub\components\Controller;
+use humhub\modules\content\models\ContentContainer;
+use humhub\modules\content\components\ContentContainerModule;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\components\ContentContainerControllerAccess;
 
 /**
- * ContainerController is the base controller for all space or user profile controllers.
- * It automatically detects the Container by request parameters.
- * Use [[ContentContainerActiveCreated::createUrl]] method to generate URLs.
- * e.g. $this->contentContainer->createUrl();
- * Depends on the loaded the Container Type a Behavior with additional methods will be attached.
- * - Space  \humhub\modules\space\behaviors\SpaceController
- * - User attached Behavior: \humhub\modules\user\behaviors\ProfileController
+ * Controller is the base class of web controllers which acts in scope of a ContentContainer (e.g. Space or User).
  *
- * @since 0.6
+ * To automatically load the current contentcontainer the containers guid must be passed as GET parameter 'cguid'.
+ * You can create URLs in the scope of an ContentContainer by passing the contentContainer instance as 'container' or 'contentContainer'
+ * as parameter to the URLManager.
+ *
+ * Example:
+ *
+ * ```
+ * $url = Url::to(['my/action', 'container' => $this->contentContainer');
+ * ```
+ *
+ * Based on the current ContentContainer a behavior (defined in ContentContainerActiveRecord::controllerBehavior) will be automatically
+ * attached to this controller instance.
+
+ * The attached behavior will perform basic access checks, adds the container sublayout and perform other tasks
+ * (e.g. the space behavior will update the last visit membership attribute).
+ *
+ * @mixin \humhub\modules\space\behaviors\SpaceController
+ * @mixin \humhub\modules\user\behaviors\ProfileController
  */
 class ContentContainerController extends Controller
 {
+
     /**
-     * @var ContentContainerActiveRecord
+     * Specifies if a contentContainer (e.g. Space or User) is required to run this controller.
+     * Set this to false, if your controller should also act on global scope.
+     *
+     * @var boolean require cguid container parameter
+     */
+    public $requireContainer = true;
+
+    /**
+     * @var ContentContainerActiveRecord the content container (e.g. Space or User record)
      */
     public $contentContainer = null;
 
     /**
-     * @var boolean automatic check user access permissions to this container
-     */
-    public $autoCheckContainerAccess = true;
-
-    /**
-     * @var boolean hides containers sidebar in layout
-     * @since 0.11
-     */
-    public $hideSidebar = true;
-
-    /**
-     * Automatically loads the underlying contentContainer (User/Space) by using
-     * the uguid/sguid request parameter
+     * Limit this controller only for usage on given contentcontainer types (e.g. Space).
      *
-     * @return bool
-     * @throws HttpException
+     * @since 1.3
+     * @var array|null an array of valid content container classes. if null all container types (User & Space) are allowed.
+     */
+    public $validContentContainerClasses = null;
+
+    /**
+     * @inheritdoc
      */
     public function init()
     {
-        $request = Yii::$app->request;
-        $spaceGuid = $request->get('sguid');
-        $userGuid = $request->get('uguid');
-
-        if ($spaceGuid !== null) {
-
-            $this->contentContainer = Space::findOne(['guid' => $spaceGuid]);
-            if ($this->contentContainer == null) {
-                throw new HttpException(404, Yii::t('base', 'Space not found!'));
-            }
-
-            $this->attachBehavior('SpaceControllerBehavior', [
-                'class' => SpaceController::className(),
-                'space' => $this->contentContainer,
-            ]);
-            $this->subLayout = "@humhub/modules/space/views/space/_layout";
-
-            // Handle case, if a non-logged user tries to acccess a hidden space
-            // Redirect to Login instead of showing error
-            if ($this->contentContainer->visibility == Space::VISIBILITY_NONE && Yii::$app->user->isGuest) {
-                
-            }
-            
-        } elseif ($userGuid !== null) {
-
-            $this->contentContainer = User::findOne(['guid' => $userGuid]);
-            if ($this->contentContainer == null) {
-                throw new HttpException(404, Yii::t('base', 'User not found!'));
-            }
-
-            $this->attachBehavior('ProfileControllerBehavior', [
-                'class' => ProfileController::className(),
-                'user' => $this->contentContainer,
-            ]);
-
-            $this->subLayout = "@humhub/modules/user/views/profile/_layout";
-
-        } else {
-            throw new HttpException(500, Yii::t('base', 'Could not determine content container!'));
-        }
-
-
-        if (!$this->checkModuleIsEnabled()) {
-            throw new HttpException(405, Yii::t('base', 'Module is not enabled on this content container!'));
-        }
-
         parent::init();
+
+        // Load the ContentContainer
+        $guid = Yii::$app->request->get('cguid', Yii::$app->request->get('sguid', Yii::$app->request->get('uguid')));
+        if (!empty($guid)) {
+            $contentContainerModel = ContentContainer::findOne(['guid' => $guid]);
+            if ($contentContainerModel !== null) {
+                $this->contentContainer = $contentContainerModel->getPolymorphicRelation();
+            }
+        }
+
+        if ($this->requireContainer && $this->contentContainer === null) {
+            throw new HttpException(404, Yii::t('base', 'Could not find requested page.'));
+        }
+
+        if ($this->validContentContainerClasses !== null) {
+            if ($this->contentContainer === null || !in_array($this->contentContainer->className(), $this->validContentContainerClasses)) {
+                throw new HttpException(400);
+            }
+        }
+
+        if ($this->contentContainer !== null && $this->contentContainer->controllerBehavior) {
+            $this->attachBehavior('containerControllerBehavior', ['class' => $this->contentContainer->controllerBehavior]);
+        }
     }
 
     /**
@@ -111,7 +98,7 @@ class ContentContainerController extends Controller
      */
     public function beforeAction($action)
     {
-        if (parent::beforeAction($action) === false) {
+        if (!parent::beforeAction($action)) {
             return false;
         }
 
@@ -121,41 +108,9 @@ class ContentContainerController extends Controller
             return false;
         }
 
-        // Auto check access rights to this container
-        if ($this->contentContainer != null && $this->autoCheckContainerAccess) {
-            $this->checkContainerAccess();
-        }
-
-        if ($this->contentContainer instanceof Space && (Yii::$app->request->isPjax || !Yii::$app->request->isAjax)) {
-            $options = [
-                'guid' => $this->contentContainer->guid,
-                'name' => Html::encode($this->contentContainer->name),
-                'archived' => $this->contentContainer->isArchived(),
-                'image' => Image::widget([
-                    'space' => $this->contentContainer,
-                    'width' => 32,
-                    'htmlOptions' => [
-                        'class' => 'current-space-image',
-                    ],
-                ]),
-            ];
-
-            $this->view->registerJs('humhub.modules.space.setSpace(' . Json::encode($options) . ', ' .
-                                    Json::encode(Yii::$app->request->isPjax) . ')');
-        }
+        $this->checkModuleIsEnabled();
 
         return true;
-    }
-
-    /**
-     * Checks if current user can access current ContentContainer by using
-     * underlying behavior ProfileControllerBehavior/SpaceControllerBehavior.
-     * If access check failed, an CHttpException is thrown.
-     */
-    public function checkContainerAccess()
-    {
-        // Implemented by behavior
-        $this->checkAccess();
     }
 
     /**
@@ -167,18 +122,16 @@ class ContentContainerController extends Controller
     }
 
     /**
-     * Checks if current module is enabled on this content container.
+     * Checks if the requested module is available in this contentContainer.
      *
-     * @todo Also support submodules
-     * @return boolean is current module enabled
+     * @throws HttpException if the module is not enabled
      */
-    public function checkModuleIsEnabled()
+    protected function checkModuleIsEnabled()
     {
-        if ($this->module instanceof ContentContainerModule && $this->contentContainer !== null) {
-            return $this->contentContainer->isModuleEnabled($this->module->id);
+        if ($this->module instanceof ContentContainerModule && $this->contentContainer !== null &&
+                !$this->contentContainer->moduleManager->isEnabled($this->module->id)) {
+            throw new HttpException(405, Yii::t('base', 'Module is not enabled on this content container!'));
         }
-
-        return true;
     }
 
 }

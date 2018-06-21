@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\models\Content;
 use Yii;
 use yii\base\Exception;
 use humhub\components\ActiveRecord;
@@ -36,6 +37,11 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      * @var boolean also update underlying contents last update stream sorting 
      */
     protected $updateContentStreamSort = true;
+
+    /**
+     * @var boolean automatic following of the addon creator to the related content
+     */
+    protected $automaticContentFollowing = true;
 
     /**
      * Content object which this addon belongs to
@@ -195,8 +201,9 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function afterSave($insert, $changedAttributes)
     {
-        // Auto follow the content which this addon belongs to
-        $this->content->getPolymorphicRelation()->follow($this->created_by);
+        if ($this->automaticContentFollowing) {
+            $this->content->getPolymorphicRelation()->follow($this->created_by);
+        }
 
         if ($this->updateContentStreamSort) {
             $this->getSource()->content->updateStreamSortTime();

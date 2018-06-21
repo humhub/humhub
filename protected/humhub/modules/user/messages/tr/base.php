@@ -31,7 +31,7 @@ return [
     'You\'re not registered.' => '',
     'Your account is disabled!' => '',
     'Your account is not approved yet!' => '',
-    'Your new password must not equal your current password!' => '',
+    'Your new password must not be equal your current password!' => '',
     'Basic Settings' => 'Temel Ayarlar',
     'Change Email' => 'E-posta Değiştir',
     'Change Password' => 'Şifre Değiştir',

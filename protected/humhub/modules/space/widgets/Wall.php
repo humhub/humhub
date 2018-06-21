@@ -2,7 +2,7 @@
 
 namespace humhub\modules\space\widgets;
 
-use \yii\base\Widget;
+use yii\base\Widget;
 
 class Wall extends Widget
 {
@@ -11,9 +11,7 @@ class Wall extends Widget
 
     public function run()
     {
-        return $this->render('spaceWall', array('space' => $this->space));
+        return $this->render('spaceWall', ['space' => $this->space]);
     }
 
 }
-
-?>

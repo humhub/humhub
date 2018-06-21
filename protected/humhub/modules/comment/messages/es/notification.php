@@ -1,5 +1,6 @@
 <?php
 return array (
+  '[Deleted]' => '[Eliminado]',
   '{displayNames} commented {contentTitle}' => '{displayNames} comentaron {contentTitle}',
   '{displayNames} commented {contentTitle} in space {space}' => '{displayNames} comentaron {contentTitle} en {space}',
   '{displayNames} commented {contentTitle}.' => '{displayNames} comentaron en {contentTitle}.',

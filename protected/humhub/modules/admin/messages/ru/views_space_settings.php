@@ -17,6 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Save' => 'Сохранить',
-    'Space Settings' => 'Настройки по умолчанию'
+    'Space Settings' => 'Настройки по умолчанию',
 ];

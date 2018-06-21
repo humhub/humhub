@@ -1,4 +1,4 @@
 <?php
 return array (
-  'comment' => 'Commentaire',
+  'comment' => 'le commentaire',
 );

@@ -58,7 +58,6 @@ class InitialData
         Yii::$app->getModule('admin')->settings->set('installationId', md5(uniqid("", true)));
 
         // Design
-        Yii::$app->settings->set('theme', "HumHub");
         Yii::$app->getModule('space')->settings->set('spaceOrder', 0);
 
         // Basic
@@ -445,6 +444,7 @@ class InitialData
         $group = new Group();
         $group->name = "Users";
         $group->description = "Example Group by Installer";
+        $group->show_at_directory = false;
         $group->save();
     }
 

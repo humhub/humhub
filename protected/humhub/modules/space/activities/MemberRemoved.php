@@ -8,9 +8,10 @@
 
 namespace humhub\modules\space\activities;
 
-use Yii;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
+use humhub\modules\content\models\Content;
+use Yii;
 
 /**
  * Description of MemberRemoved
@@ -23,19 +24,19 @@ class MemberRemoved extends BaseActivity implements ConfigurableActivityInterfac
     /**
      * @inheritdoc
      */
-    public $viewName = "memberRemoved";
+    public $viewName = 'memberRemoved';
 
     /**
      * @inheritdoc
      */
-    public $moduleId = "space";
+    public $moduleId = 'space';
 
     /**
      * @inheritdoc
      */
     public function init()
     {
-        $this->visibility = \humhub\modules\content\models\Content::VISIBILITY_PRIVATE;
+        $this->visibility = Content::VISIBILITY_PRIVATE;
         parent::init();
     }
 

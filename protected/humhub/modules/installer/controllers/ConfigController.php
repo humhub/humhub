@@ -237,6 +237,8 @@ class ConfigController extends Controller
                 $adminImage = new \humhub\libs\ProfileImage($admin->guid);
                 $adminImage->setNew(Yii::getAlias("@webroot-static/resources/installer/user_male_1.jpg"));
 
+                $usersGroup = Group::findOne(['name' => 'Users']);
+
                 // Create second user
                 $userModel = new User();
                 $userModel->scenario = 'registration';
@@ -263,6 +265,10 @@ class ConfigController extends Controller
                 $profileModel->country = "Virginia";
                 $profileModel->save();
 
+                if ($usersGroup !== null) {
+                    $usersGroup->addUser($userModel);
+                }
+
                 // Create third user
                 $userModel2 = new User();
                 $userModel2->scenario = 'registration';
@@ -288,6 +294,10 @@ class ConfigController extends Controller
                 $profileModel2->city = "Friedland";
                 $profileModel2->country = "Niedersachsen";
                 $profileModel2->save();
+
+                if ($usersGroup !== null) {
+                    $usersGroup->addUser($userModel2);
+                }
 
                 // Switch Identity
                 $user = User::find()->where(['id' => 1])->one();

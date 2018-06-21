@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Dashboard' => 'Encieto',
+  'Dashboard' => 'Inicio',
 );

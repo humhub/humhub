@@ -21,6 +21,7 @@ return [
     'Approval' => '',
     'Back to overview' => '',
     'Back to user overview' => '',
+    'Base URL needs to begin with http:// or https://' => '',
     'Cronjobs' => '',
     'Invite' => '',
     'Invited by' => '',

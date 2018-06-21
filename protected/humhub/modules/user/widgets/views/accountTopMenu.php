@@ -5,6 +5,8 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
+use humhub\widgets\FooterMenu;
 use \yii\helpers\Html;
 use \yii\helpers\Url;
 
@@ -49,6 +51,7 @@ $userModel = Yii::$app->user->getIdentity();
                         </li>
                     <?php endif; ?>
                 <?php endforeach; ?>
+                <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_ACCOUNT_MENU]); ?>
             </ul>
         </li>
     </ul>

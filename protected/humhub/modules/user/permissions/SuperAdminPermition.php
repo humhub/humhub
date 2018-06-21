@@ -17,7 +17,7 @@ namespace humhub\modules\user\permissions;
 class SuperAdminPermition extends \humhub\libs\BasePermission
 {
 
-        /**
+    /**
      * @inheritdoc
      */
     protected $id = 'create_private_space';

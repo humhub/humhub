@@ -18,7 +18,7 @@ cd /path/to/humhub/protected
 php yii search/rebuild
 ```
 
-or by means of [grunt](../developer/core-build.md):
+or by means of [grunt](../developer/build.md):
 
 ```
 grunt build-search
@@ -27,7 +27,7 @@ grunt build-search
 Zend Lucence Engine
 --------------------
 
-By default HumHub is using a *Lucence* Index (Zend Lucence) to store search data.
+By default, HumHub is using a *Lucence* Index (Zend Lucence) to store search data.
 
 Default database folder: `/protected/runtime/searchdb/`
 

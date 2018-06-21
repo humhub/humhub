@@ -8,10 +8,16 @@
 
 namespace humhub\components;
 
-use humhub\modules\file\libs\FileHelper;
-use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\activity\models\Activity;
 use Yii;
 use yii\helpers\Json;
+use humhub\models\Setting;
+use humhub\modules\file\libs\FileHelper;
+use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\content\models\ContentContainerSetting;
+use yii\web\AssetBundle;
+use yii\web\HttpException;
 
 /**
  * Base Class for Modules / Extensions
@@ -161,10 +167,22 @@ class Module extends \yii\base\Module
 
     /**
      * Publishes the basePath/resourcesPath (assets) module directory if existing.
+     * @param bool $all whether or not to publish sub assets within the `assets` directory
      * @return array
      */
-    public function publishAssets()
+    public function publishAssets($all = false)
     {
+        /** @var $assetBundle AssetBundle */
+        /** @var $manager AssetManager */
+
+        if($all) {
+            foreach ($this->getAssetClasses() as $assetClass) {
+                $assetBundle = new $assetClass();
+                $manager = Yii::$app->getAssetManager();
+                $manager->forcePublish($assetBundle);
+            }
+        }
+
         if ($this->hasAssets()) {
             return Yii::$app->assetManager->publish($this->getAssetPath(), ['forceCopy' => true]);
         }
@@ -248,21 +266,8 @@ class Module extends \yii\base\Module
             }
         }
 
-        foreach (\humhub\modules\content\models\ContentContainerSetting::findAll(['module_id' => $this->id]) as $containerSetting) {
-            $containerSetting->delete();
-        }
-
-        foreach (\humhub\models\Setting::findAll(['module_id' => $this->id]) as $containerSetting) {
-            $containerSetting->delete();
-        }
-
-        foreach (\humhub\modules\user\models\Module::findAll(['module_id' => $this->id]) as $userModule) {
-            $userModule->delete();
-        }
-
-        foreach (\humhub\modules\space\models\Module::findAll(['module_id' => $this->id]) as $spaceModule) {
-            $spaceModule->delete();
-        }
+        ContentContainerSetting::deleteAll(['module_id' => $this->id]);
+        Setting::deleteAll(['module_id' => $this->id]);
 
         Yii::$app->moduleManager->disable($this);
     }
@@ -347,7 +352,7 @@ class Module extends \yii\base\Module
         if (is_dir($notificationDirectory)) {
             foreach (FileHelper::findFiles($notificationDirectory, ['recursive' => false,]) as $file) {
                 $notificationClass = $notificationNamespace . '\\' . basename($file, '.php');
-                if(is_subclass_of($notificationClass, BaseNotification::class)) {
+                if (is_subclass_of($notificationClass, BaseNotification::class)) {
                     $notifications[] = $notificationClass;
                 }
             }
@@ -386,11 +391,43 @@ class Module extends \yii\base\Module
         $activityDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'activities';
         if (is_dir($activityDirectory)) {
             foreach (FileHelper::findFiles($activityDirectory, ['recursive' => false,]) as $file) {
-                $activities[] = $activityNamespace . '\\' . basename($file, '.php');
+                $activityClass = $activityNamespace . '\\' . basename($file, '.php');
+                if(is_subclass_of($activityClass, BaseActivity::class)) {
+                    $activities[] = $activityClass;
+                }
             }
         }
 
         return $activities;
+    }
+
+    /**
+     * Returns a list of asset class names this modules provides.
+     *
+     * @since 1.2.8
+     * @return array list of asset class names
+     */
+    public function getAssetClasses()
+    {
+        $class = get_class($this);
+        if (($pos = strrpos($class, '\\')) !== false) {
+            $assetNamespace = substr($class, 0, $pos) . '\\assets';
+        } else {
+            $assetNamespace = '';
+        }
+
+        $assets = [];
+        $assetDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'assets';
+        if (is_dir($assetDirectory)) {
+            foreach (FileHelper::findFiles($assetDirectory, ['recursive' => false,]) as $file) {
+                $assetClass =  $assetNamespace . '\\' . basename($file, '.php');
+                if(is_subclass_of($assetClass, AssetBundle::class)) {
+                    $assets[] = $assetClass;
+                }
+            }
+        }
+
+        return $assets;
     }
 
 }

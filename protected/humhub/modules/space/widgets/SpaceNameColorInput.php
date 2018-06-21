@@ -2,15 +2,8 @@
 
 namespace humhub\modules\space\widgets;
 
-
 use humhub\components\Widget;
 
-/**
- * Created by PhpStorm.
- * User: Struppi
- * Date: 17.12.13
- * Time: 12:49
- */
 class SpaceNameColorInput extends Widget
 {
     
@@ -28,5 +21,3 @@ class SpaceNameColorInput extends Widget
         ]);
     }
 }
-
-?>

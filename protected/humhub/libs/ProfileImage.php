@@ -10,6 +10,8 @@ namespace humhub\libs;
 
 use Yii;
 use yii\helpers\Url;
+use yii\helpers\FileHelper;
+use yii\web\UploadedFile;
 use humhub\modules\file\libs\ImageConverter;
 
 /**
@@ -31,7 +33,7 @@ class ProfileImage
     /**
      * @var String is the guid of user or space
      */
-    protected $guid = "";
+    protected $guid = '';
 
     /**
      * @var Integer width of the Image
@@ -46,7 +48,7 @@ class ProfileImage
     /**
      * @var String folder name inside the uploads directory
      */
-    protected $folder_images = "profile_image";
+    protected $folder_images = 'profile_image';
 
     /**
      * @var String name of the default image
@@ -58,7 +60,8 @@ class ProfileImage
      *
      * UserId is optional, if not given the current user will used
      *
-     * @param type $guid
+     * @param string $guid
+     * @param string $defaultImage
      */
     public function __construct($guid, $defaultImage = 'default_user')
     {
@@ -73,7 +76,7 @@ class ProfileImage
      * @param boolean $scheme URL Scheme
      * @return String Url of the profile image
      */
-    public function getUrl($prefix = "", $scheme = false)
+    public function getUrl($prefix = '', $scheme = false)
     {
         if (file_exists($this->getPath($prefix))) {
             $path = '@web/uploads/' . $this->folder_images . '/';
@@ -95,7 +98,7 @@ class ProfileImage
      */
     public function hasImage()
     {
-        return file_exists($this->getPath("_org"));
+        return file_exists($this->getPath('_org'));
     }
 
     /**
@@ -104,16 +107,15 @@ class ProfileImage
      * @param String $prefix for the profile image
      * @return String Path to the profile image
      */
-    public function getPath($prefix = "")
+    public function getPath($prefix = '')
     {
         $path = Yii::getAlias('@webroot/uploads/' . $this->folder_images . '/');
 
-        if (!is_dir($path))
-            mkdir($path);
+        FileHelper::createDirectory($path);
 
         $path .= $this->guid;
         $path .= $prefix;
-        $path .= ".jpg";
+        $path .= '.jpg';
 
         return $path;
     }
@@ -138,8 +140,8 @@ class ProfileImage
             return false;
         }
 
-        unlink($this->getPath(''));
-        imagejpeg($destImage, $this->getPath(''), 100);
+        FileHelper::unlink($this->getPath());
+        imagejpeg($destImage, $this->getPath(), 100);
     }
 
     /**
@@ -149,7 +151,7 @@ class ProfileImage
      */
     public function setNew($file)
     {
-        if ($file instanceof \yii\web\UploadedFile) {
+        if ($file instanceof UploadedFile) {
             $file = $file->tempName;
         }
 
@@ -164,8 +166,15 @@ class ProfileImage
      */
     public function delete()
     {
-        @unlink($this->getPath());
-        @unlink($this->getPath('_org'));
+        $path = $this->getPath();
+        if(file_exists($path)) {
+            FileHelper::unlink($path);
+        }
+
+        $prefixPath = $this->getPath('_org');
+        if(file_exists($prefixPath)) {
+            FileHelper::unlink($prefixPath);
+        }
     }
 
 }

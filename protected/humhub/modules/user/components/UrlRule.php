@@ -2,22 +2,23 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\components;
 
 use yii\web\UrlRuleInterface;
-use yii\base\Object;
+use yii\base\BaseObject;
 use humhub\modules\user\models\User;
+use humhub\modules\user\models\User as UserModel;
 
 /**
  * User Profile URL Rule
  *
  * @author luke
  */
-class UrlRule extends Object implements UrlRuleInterface
+class UrlRule extends BaseObject implements UrlRuleInterface
 {
 
     /**
@@ -35,10 +36,10 @@ class UrlRule extends Object implements UrlRuleInterface
      */
     public function createUrl($manager, $route, $params)
     {
-        if (isset($params['uguid'])) {
-            $username = static::getUrlByUserGuid($params['uguid']);
+        if (isset($params['cguid'])) {
+            $username = static::getUrlByUserGuid($params['cguid']);
             if ($username !== null) {
-                unset($params['uguid']);
+                unset($params['cguid']);
 
                 if ($this->defaultRoute == $route) {
                     $route = "";
@@ -63,13 +64,13 @@ class UrlRule extends Object implements UrlRuleInterface
         if (substr($pathInfo, 0, 2) == "u/") {
             $parts = explode('/', $pathInfo, 3);
             if (isset($parts[1])) {
-                $user = User::find()->where(['username' => $parts[1]])->one();
+                $user = UserModel::find()->where(['username' => $parts[1]])->one();
                 if ($user !== null) {
                     if (!isset($parts[2]) || $parts[2] == "") {
                         $parts[2] = $this->defaultRoute;
                     }
                     $params = $request->get();
-                    $params['uguid'] = $user->guid;
+                    $params['cguid'] = $user->guid;
 
                     return [$parts[2], $params];
                 }
@@ -90,13 +91,9 @@ class UrlRule extends Object implements UrlRuleInterface
             return static::$userUrlMap[$guid];
         }
 
-        $user = User::findOne(['guid' => $guid]);
-        if ($user !== null) {
-            static::$userUrlMap[$user->guid] = $user->username;
-            return static::$userUrlMap[$user->guid];
-        }
-
-        return null;
+        $user = UserModel::findOne(['guid' => $guid]);
+        static::$userUrlMap[$guid] = ($user !== null) ? $user->username : null;
+        return static::$userUrlMap[$guid];
     }
 
 }

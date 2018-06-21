@@ -1,5 +1,6 @@
 <?php
 return array (
+  '[Deleted]' => '[Törölt]',
   '{displayNames} commented {contentTitle}' => '{displayNames} hozzászólt {contentTitle}',
   '{displayNames} commented {contentTitle} in space {space}' => '{displayNames} hozzászólt {contentTitle} a(z) {space} témakörben',
   '{displayNames} commented {contentTitle}.' => '{displayNames} hozzászólt {contentTitle}.',

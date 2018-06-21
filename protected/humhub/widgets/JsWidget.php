@@ -4,6 +4,7 @@ namespace humhub\widgets;
 
 use humhub\components\Widget;
 use humhub\libs\Html;
+use yii\helpers\ArrayHelper;
 
 /**
  * Description of JsWidget
@@ -31,13 +32,13 @@ class JsWidget extends Widget
      * Used to overwrite select input field attributes. This array can be used for overwriting
      * texts, or other picker settings.
      * 
-     * @var string
+     * @var []
      */
     public $options = [];
 
     /**
      * Event action handler.
-     * @var array
+     * @var []
      */
     public $events = [];
 
@@ -81,7 +82,7 @@ class JsWidget extends Widget
      */
     public function run()
     {
-        return \yii\helpers\Html::tag($this->container, $this->content, $this->getOptions());
+        return Html::tag($this->container, $this->content, $this->getOptions());
     }
 
     /**
@@ -99,7 +100,7 @@ class JsWidget extends Widget
 
         $this->setDefaultOptions();
 
-        $result = \yii\helpers\ArrayHelper::merge($attributes, $this->options);
+        $result = ArrayHelper::merge($attributes, $this->options);
 
         if (!$this->visible) {
             Html::addCssStyle($result, 'display:none');
@@ -140,8 +141,8 @@ class JsWidget extends Widget
      * 
      * Note that the id is automatically included within the <code>getOptions()<code> function.
      * 
-     * @param type $autoGenerate
-     * @return type
+     * @param boolean $autoGenerate
+     * @return string
      */
     public function getId($autoGenerate = true)
     {
@@ -158,7 +159,7 @@ class JsWidget extends Widget
      * 
      * The data-* attributes should be inserted to the widgets root element.
      * 
-     * @return type
+     * @return []
      */
     protected function getData()
     {
@@ -167,7 +168,7 @@ class JsWidget extends Widget
 
     /**
      * Returns all html attributes for used by this widget and will normally inserted in the widgets root html element.
-     * @return type
+     * @return []
      */
     protected function getAttributes()
     {

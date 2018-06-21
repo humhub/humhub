@@ -153,7 +153,7 @@ class Friendship extends \humhub\components\ActiveRecord
      * @return \yii\db\ActiveQuery
      * @param User $user
      */
-    public static function getFriendsQuery($user)
+    public static function getFriendsQuery(User $user)
     {
         $query = User::find();
 
@@ -174,7 +174,7 @@ class Friendship extends \humhub\components\ActiveRecord
      * @param User $user
      * @return \yii\db\ActiveQuery
      */
-    public static function getSentRequestsQuery($user)
+    public static function getSentRequestsQuery(User $user)
     {
         $query = User::find();
 

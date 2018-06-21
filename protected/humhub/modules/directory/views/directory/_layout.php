@@ -2,6 +2,7 @@
 
 use humhub\modules\directory\widgets\Menu;
 use humhub\modules\directory\widgets\Sidebar;
+use humhub\widgets\FooterMenu;
 
 \humhub\assets\JqueryKnobAsset::register($this);
 ?>
@@ -16,6 +17,7 @@ use humhub\modules\directory\widgets\Sidebar;
         </div>
         <div class="col-md-3">
             <?= Sidebar::widget(); ?>
+            <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
         </div>
     </div>
 </div>

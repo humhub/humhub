@@ -8,10 +8,11 @@
 
 namespace humhub\libs;
 
+use humhub\modules\file\libs\ImageConverter;
 use Yii;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
-use humhub\modules\file\libs\ImageConverter;
+use yii\helpers\FileHelper;
 
 /**
  * LogoImage
@@ -27,7 +28,7 @@ class LogoImage
     /**
      * @var String folder name inside the uploads directory
      */
-    protected $folder_images = "logo_image";
+    protected $folder_images = 'logo_image';
 
     /**
      * Returns the URl of Logo Image
@@ -70,11 +71,8 @@ class LogoImage
      */
     public function getPath()
     {
-        $path = \Yii::getAlias("@webroot") . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $this->folder_images . DIRECTORY_SEPARATOR;
-
-        if (!is_dir($path))
-            mkdir($path);
-
+        $path = Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $this->folder_images . DIRECTORY_SEPARATOR;
+        FileHelper::createDirectory($path);
         $path .= 'logo.png';
 
         return $path;
@@ -83,19 +81,19 @@ class LogoImage
     /**
      * Sets a new logo image by given temp file
      *
-     * @param CUploadedFile $file
+     * @param UploadedFile $file
      */
     public function setNew(UploadedFile $file)
     {
         $this->delete();
         move_uploaded_file($file->tempName, $this->getPath());
 
-        ImageConverter::Resize($this->getPath(), $this->getPath(), array(
+        ImageConverter::Resize($this->getPath(), $this->getPath(), [
             'height' => $this->height,
             'width' => 0,
             'mode' => 'max',
-            'transparent' => ($file->getExtension() == 'png' && ImageConverter::checkTransparent($this->getPath())))
-        );
+            'transparent' => ($file->getExtension() === 'png' && ImageConverter::checkTransparent($this->getPath()))
+        ]);
     }
 
     /**
@@ -103,7 +101,10 @@ class LogoImage
      */
     public function delete()
     {
-        @unlink($this->getPath());
+        $path = $this->getPath();
+        if(file_exists($path)) {
+            FileHelper::unlink($this->getPath());
+        }
     }
 
 }

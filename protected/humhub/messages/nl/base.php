@@ -60,6 +60,8 @@ return array (
   'Show more' => 'Toon meer',
   'Some files could not be uploaded:' => 'Enkele bestanden zijn niet geüpload.',
   'Space not found!' => 'Ruimte niet gevonden!',
+  'Text could not be copied to clipboard' => 'De tekst kon niet worden gekopieerd naar het klembord.',
+  'Text has been copied to clipboard' => 'De tekst is naar het klembord gekopieerd.',
   'The date has to be in the past.' => 'De datum moet in het verleden liggen.',
   'The file has been deleted.' => 'Het bestand is verwijderd.',
   'The requested resource could not be found.' => 'De gevraagde hulpbron kan niet worden gevonden.',

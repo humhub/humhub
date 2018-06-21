@@ -13,6 +13,7 @@ use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Follow;
 use humhub\modules\friendship\models\Friendship;
+use humhub\modules\space\models\Membership;
 
 /**
  * Live module provides a live channel to the users browser.
@@ -23,34 +24,9 @@ class Module extends \humhub\components\Module
 {
 
     /**
-     * Defines the minimum polling interval in seconds if the default polling client is active.
-     */
-    public $minPollInterval = 15;
-
-    /**
-     * Defines the maximum polling interval in seconds if the default polling client is active.
-     */
-    public $maxPollInterval = 45;
-    
-    /**
-     * Factor used in the actual interval calculation in case of user idle.
-     */
-    public $idleFactor = 0.1;
-    
-    /**
-     * Interval for updating the update delay in case of user idle in seconds.
-     */
-    public $idleInterval = 20;
-
-    /**
      * @inheritdoc
      */
     public $isCoreModule = true;
-
-    /**
-     * @var int seconds to delete old live events
-     */
-    public $maxLiveEventAge = 600;
 
     /**
      * @var string cache prefix for legitimate content container ids by user
@@ -81,11 +57,17 @@ class Module extends \humhub\components\Module
                 Content::VISIBILITY_OWNER => [],
             ];
 
+            // When no content container record exists (yet)
+            // This may happen during the registration process
+            if ($user->contentContainerRecord === null) {
+                return $legitimation;
+            }
+
             // Add users own content container (user == contentcontainer)
             $legitimation[Content::VISIBILITY_OWNER][] = $user->contentContainerRecord->id;
 
             // Collect user space membership with private content visibility
-            $spaces = \humhub\modules\space\models\Membership::GetUserSpaces($user->id);
+            $spaces = Membership::getUserSpaces($user->id);
             foreach ($spaces as $space) {
                 $legitimation[Content::VISIBILITY_PRIVATE][] = $space->contentContainerRecord->id;
             }
@@ -103,9 +85,16 @@ class Module extends \humhub\components\Module
             }
 
             Yii::$app->cache->set(self::$legitimateCachePrefix . $user->id, $legitimation);
+            Yii::$app->live->driver->onContentContainerLegitimationChanged($user, $legitimation);
         };
 
         return $legitimation;
+    }
+
+    public function refreshLegitimateContentContainerIds(User $user)
+    {
+        Yii::$app->cache->delete(self::$legitimateCachePrefix . $user->id);
+        $this->getLegitimateContentContainerIds($user);
     }
 
 }

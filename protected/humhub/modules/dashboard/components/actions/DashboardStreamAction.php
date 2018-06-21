@@ -18,7 +18,7 @@ use humhub\modules\content\models\Content;
 
 /**
  * DashboardStreamAction
- * 
+ *
  * Note: This stream action is also used for activity e-mail content.
  *
  * @since 0.11
@@ -63,13 +63,14 @@ class DashboardStreamAction extends ActivityStreamAction
             ->where('user.status=1 AND user.visibility = ' . User::VISIBILITY_ALL);
         $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($publicProfilesSql)[0];
 
-        $this->activeQuery->andWhere('content.contentcontainer_id IN (' . $union . ') OR content.contentcontainer_id IS NULL', [':spaceClass' => Space::className(), ':userClass' => User::className()]);
+        $this->activeQuery->andWhere('content.contentcontainer_id IN (' . $union . ') OR content.contentcontainer_id IS NULL', [':spaceClass' => Space::class, ':userClass' => User::class]);
         $this->activeQuery->andWhere(['content.visibility' => Content::VISIBILITY_PUBLIC]);
     }
 
     public function setupUserFilter()
     {
         $friendshipEnabled = Yii::$app->getModule('friendship')->getIsEnabled();
+        $dashboardModule = Yii::$app->getModule('dashboard');
 
         /**
          * Collect all wall_ids we need to include into dashboard stream
@@ -80,7 +81,6 @@ class DashboardStreamAction extends ActivityStreamAction
             ->from('user_follow')
             ->leftJoin('contentcontainer', 'contentcontainer.pk=user_follow.object_id AND contentcontainer.class=user_follow.object_model')
             ->where('user_follow.user_id=' . $this->user->id . ' AND (user_follow.object_model = :spaceClass OR user_follow.object_model = :userClass)');
-
         $union = Yii::$app->db->getQueryBuilder()->build($userFollows)[0];
 
         // User to space memberships
@@ -90,7 +90,6 @@ class DashboardStreamAction extends ActivityStreamAction
             ->leftJoin('space sm', 'sm.id=space_membership.space_id')
             ->leftJoin('contentcontainer', 'contentcontainer.pk=sm.id AND contentcontainer.class = :spaceClass')
             ->where('space_membership.user_id=' . $this->user->id . ' AND space_membership.show_at_dashboard = 1');
-
         $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($spaceMemberships)[0];
 
         if ($friendshipEnabled) {
@@ -105,6 +104,13 @@ class DashboardStreamAction extends ActivityStreamAction
             $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($usersFriends)[0];
         }
 
+        // Automatic include user profile posts without required following
+        if ($dashboardModule->autoIncludeProfilePosts == Module::STREAM_AUTO_INCLUDE_PROFILE_POSTS_ALWAYS || (
+                $dashboardModule->autoIncludeProfilePosts == Module::STREAM_AUTO_INCLUDE_PROFILE_POSTS_ADMIN_ONLY && Yii::$app->user->isAdmin())) {
+            $allUsers = (new Query())->select(["allusers.id"])->from('user allusers');
+            $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($allUsers)[0];
+        }
+
         // Glue together also with current users wall
         $wallIdsSql = (new Query())
             ->select('cc.id')
@@ -113,7 +119,7 @@ class DashboardStreamAction extends ActivityStreamAction
         $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($wallIdsSql)[0];
 
         // Manual Union (https://github.com/yiisoft/yii2/issues/7992)
-        $this->activeQuery->andWhere('contentcontainer.id IN (' . $union . ') OR contentcontainer.id IS NULL', [':spaceClass' => Space::className(), ':userClass' => User::className()]);
+        $this->activeQuery->andWhere('contentcontainer.id IN (' . $union . ') OR contentcontainer.id IS NULL', [':spaceClass' => Space::class, ':userClass' => User::class]);
 
         /**
          * Begin visibility checks regarding the content container
@@ -132,10 +138,20 @@ class DashboardStreamAction extends ActivityStreamAction
             // In case of friendship we can also display private content
             $condition .= ' (contentcontainer.class=:userModel AND content.visibility=0 AND user_friendship.id IS NOT NULL) OR ';
         }
+
         // In case of an space entry, we need to join the space membership to verify the user can see private space content
         $condition .= ' (contentcontainer.class=:spaceModel AND content.visibility = 0 AND space_membership.status = ' . Membership::STATUS_MEMBER . ') OR ';
-        $condition .= ' (content.visibility = 1 OR content.visibility IS NULL) ';
-        $this->activeQuery->andWhere($condition, [':userId' => $this->user->id, ':spaceModel' => Space::className(), ':userModel' => User::className()]);
+        $condition .= ' (content.visibility = 1 OR content.visibility IS NULL) OR';
+
+        // User can see private and public of his own profile (also when not created by hisself)
+        $condition .= ' (content.visibility = 0 AND content.contentcontainer_id=:userContentContainerId) ';
+
+        $this->activeQuery->andWhere($condition, [
+            ':userId' => $this->user->id,
+            ':userModel' => User::class,
+            ':spaceModel' => Space::class,
+            ':userContentContainerId' => $this->user->contentcontainer_id
+        ]);
     }
 
 }

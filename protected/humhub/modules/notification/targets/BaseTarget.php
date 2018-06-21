@@ -9,6 +9,7 @@
 namespace humhub\modules\notification\targets;
 
 use Yii;
+use yii\di\Instance;
 use humhub\modules\user\models\User;
 use humhub\components\rendering\Renderer;
 use humhub\modules\notification\components\BaseNotification;
@@ -21,7 +22,7 @@ use humhub\modules\notification\components\NotificationCategory;
  *
  * @author buddha
  */
-abstract class BaseTarget extends \yii\base\Object
+abstract class BaseTarget extends \yii\base\BaseObject
 {
 
     /**
@@ -71,14 +72,14 @@ abstract class BaseTarget extends \yii\base\Object
     /**
      * @return string Human readable title for views.
      */
-    public abstract function getTitle();
+    abstract public function getTitle();
 
     /**
      * @return \humhub\components\rendering\Renderer default renderer for this target.
      */
     public function getRenderer()
     {
-        return \yii\di\Instance::ensure($this->renderer, Renderer::class);
+        return Instance::ensure($this->renderer, Renderer::class);
     }
 
     /**
@@ -89,7 +90,7 @@ abstract class BaseTarget extends \yii\base\Object
      *
      * @param BaseNotification $notification
      */
-    public abstract function handle(BaseNotification $notification, User $user);
+    abstract public function handle(BaseNotification $notification, User $user);
 
     /**
      * Used to acknowledge the seding/processing of the given $notification.
@@ -113,6 +114,7 @@ abstract class BaseTarget extends \yii\base\Object
         if ($this->acknowledgeFlag && $notification->record->hasAttribute($this->acknowledgeFlag)) {
             return $notification->record->getAttribute($this->acknowledgeFlag);
         }
+
         return false;
     }
 
@@ -215,6 +217,7 @@ abstract class BaseTarget extends \yii\base\Object
         }
 
         $category = $notification->getCategory();
+
         return ($category) ? $this->isCategoryEnabled($category, $user) : $this->defaultSetting;
     }
 

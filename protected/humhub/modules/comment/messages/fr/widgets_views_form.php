@@ -1,5 +1,5 @@
 <?php
 return array (
   'Send' => 'Envoyer',
-  'Write a new comment...' => 'Écrire un nouveau commentaire...',
+  'Write a new comment...' => 'Écrire un commentaire...',
 );

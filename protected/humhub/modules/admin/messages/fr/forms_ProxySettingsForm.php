@@ -5,5 +5,5 @@ return array (
   'Password' => 'Mot de passe',
   'Port' => 'Port',
   'Server' => 'Serveur',
-  'User' => 'Nom d\'utilisateur',
+  'User' => 'Identifiant',
 );

@@ -19,11 +19,10 @@ return [
             ],
         ],
         'queue' => [
-            'class' => 'humhub\components\queue\driver\Instant',
+            'class' => 'humhub\modules\queue\driver\Instant',
         ],
     ],
     'params' => [
         'installed' => true,
-        'moduleAutoloadPaths' => ['/home/travis/build/humhub'],
     ]
 ];

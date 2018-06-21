@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\components\Module;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\admin\components\Controller;
@@ -15,6 +16,8 @@ use humhub\modules\admin\libs\OnlineModuleManager;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
+use humhub\modules\content\components\ContentContainerModuleManager;
 
 /**
  * Module Controller controls all third party modules in a humhub installation.
@@ -71,6 +74,7 @@ class ModuleController extends Controller
      */
     public function actionEnable()
     {
+        /** @var $module Module */
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');
@@ -88,7 +92,7 @@ class ModuleController extends Controller
     /**
      * Disables a module
      *
-     * @throws CHttpException
+     * @throws HttpException
      */
     public function actionDisable()
     {
@@ -103,6 +107,22 @@ class ModuleController extends Controller
         }
 
         $module->disable();
+
+        return $this->redirect(['/admin/module/list']);
+    }
+
+
+    /**
+     * Flushes the assets for a given module
+     */
+    public function actionFlush()
+    {
+        /** @var $module Module */
+        $this->forcePostRequest();
+
+        $moduleId = Yii::$app->request->get('moduleId');
+        $module = Yii::$app->moduleManager->getModule($moduleId);
+        $module->publishAssets(true);
 
         return $this->redirect(['/admin/module/list']);
     }
@@ -158,7 +178,7 @@ class ModuleController extends Controller
     /**
      * Updates a module with the most recent version online
      *
-     * @throws CHttpException
+     * @throws HttpException
      */
     public function actionUpdate()
     {
@@ -166,6 +186,8 @@ class ModuleController extends Controller
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');
+
+        /** @var Module $module */
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
@@ -174,6 +196,12 @@ class ModuleController extends Controller
 
         $onlineModules = $this->getOnlineModuleManager();
         $onlineModules->update($moduleId);
+
+        try {
+            $module->publishAssets(true);
+        } catch(\Exception $e) {
+            Yii::error($e);
+        }
 
         return $this->redirect(['/admin/module/list']);
     }
@@ -300,45 +328,13 @@ class ModuleController extends Controller
             throw new HttpException(500, 'Invalid module type!');
         }
 
-        $model = new \humhub\modules\admin\models\forms\ModuleSetAsDefaultForm();
-
-        $spaceDefaultModule = null;
-        if ($module->hasContentContainerType(Space::className())) {
-            $spaceDefaultModule = \humhub\modules\space\models\Module::find()->where(['module_id' => $moduleId])->andWhere(['IS', 'space_id', new \yii\db\Expression('NULL')])->one();
-            if ($spaceDefaultModule === null) {
-                $spaceDefaultModule = new \humhub\modules\space\models\Module();
-                $spaceDefaultModule->module_id = $moduleId;
-                $spaceDefaultModule->state = \humhub\modules\space\models\Module::STATE_DISABLED;
-            }
-            $model->spaceDefaultState = $spaceDefaultModule->state;
-        }
-
-        $userDefaultModule = null;
-        if ($module->hasContentContainerType(User::className())) {
-            $userDefaultModule = \humhub\modules\user\models\Module::find()->where(['module_id' => $moduleId])->andWhere(['IS', 'user_id', new \yii\db\Expression('NULL')])->one();
-            if ($userDefaultModule === null) {
-                $userDefaultModule = new \humhub\modules\user\models\Module();
-                $userDefaultModule->module_id = $moduleId;
-                $userDefaultModule->state = \humhub\modules\user\models\Module::STATE_DISABLED;
-            }
-            $model->userDefaultState = $userDefaultModule->state;
-        }
+        $model = new ModuleSetAsDefaultForm();
+        $model->spaceDefaultState = ContentContainerModuleManager::getDefaultState(Space::class, $moduleId);
+        $model->userDefaultState = ContentContainerModuleManager::getDefaultState(User::class, $moduleId);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($module->hasContentContainerType(Space::className())) {
-                $spaceDefaultModule->state = $model->spaceDefaultState;
-                if (!$spaceDefaultModule->save()) {
-                    throw new HttpException('Could not save: ' . print_r($spaceDefaultModule->getErrors(), 1));
-                }
-            }
-
-            if ($module->hasContentContainerType(User::className())) {
-                $userDefaultModule->state = $model->userDefaultState;
-                if (!$userDefaultModule->save()) {
-                    throw new HttpException('Could not save: ' . print_r($userDefaultModule->getErrors(), 1));
-                }
-            }
-
+            ContentContainerModuleManager::setDefaultState(User::class, $moduleId, $model->userDefaultState);
+            ContentContainerModuleManager::setDefaultState(Space::class, $moduleId, $model->spaceDefaultState);
             return $this->renderModalClose();
         }
 

@@ -45,7 +45,7 @@ return [
     'You\'re not registered.' => '',
     'Your account is disabled!' => '',
     'Your account is not approved yet!' => '',
-    'Your new password must not equal your current password!' => '',
+    'Your new password must not be equal your current password!' => '',
     'or' => '',
     'Delete' => 'Ištrinti',
     'E-Mail is already in use! - Try forgot password.' => 'Nurodytas elektronio pašto adresas jau naudojamas! - bandykite spausti "pamiršau slaptažodį".',

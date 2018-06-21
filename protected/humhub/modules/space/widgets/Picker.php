@@ -8,9 +8,10 @@
 
 namespace humhub\modules\space\widgets;
 
+use humhub\modules\space\models\Space;
 use Yii;
-use \yii\base\Widget;
-use \humhub\modules\space\models\Space;
+use yii\base\Widget;
+use yii\helpers\Url;
 
 /**
  * Picker displays a space picker instead of an input field.
@@ -35,7 +36,7 @@ class Picker extends Widget
     /**
      * @var string The id of input element which should replaced
      */
-    public $inputId = "";
+    public $inputId = '';
 
     /**
      * JSON Search URL - default: /space/browse/search-json
@@ -43,7 +44,7 @@ class Picker extends Widget
      *
      * @var string the search url
      */
-    public $spaceSearchUrl = "";
+    public $spaceSearchUrl = '';
 
     /**
      * @var int the maximum of spaces
@@ -64,7 +65,7 @@ class Picker extends Widget
     /**
      * @var string the initial value of comma separated space guids
      */
-    public $value = "";
+    public $value = '';
 
     /**
      * @var string placeholder message, when no space is set
@@ -82,8 +83,8 @@ class Picker extends Widget
             $this->value = $this->model->$attribute;
         }
 
-        if ($this->spaceSearchUrl == "")
-            $this->spaceSearchUrl = \yii\helpers\Url::to(['/space/browse/search-json', 'keyword' => '-keywordPlaceholder-']);
+        if ($this->spaceSearchUrl == '')
+            $this->spaceSearchUrl = Url::to(['/space/browse/search-json', 'keyword' => '-keywordPlaceholder-']);
 
         if ($this->placeholder === null) {
             $this->placeholder = Yii::t('SpaceModule.picker', 'Add {n,plural,=1{space} other{spaces}}', ['n' => $this->maxSpaces]);
@@ -98,16 +99,14 @@ class Picker extends Widget
             }
         }
 
-        return $this->render('spacePicker', array(
+        return $this->render('spacePicker', [
                     'spaceSearchUrl' => $this->spaceSearchUrl,
                     'maxSpaces' => $this->maxSpaces,
                     'value' => $this->value,
                     'spaces' => $spaces,
                     'placeholder' => $this->placeholder,
                     'inputId' => $this->inputId,
-        ));
+        ]);
     }
 
 }
-
-?>

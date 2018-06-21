@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Latest</strong> activities' => 'Activités <strong>récentes</strong>',
-  'There are no activities yet.' => 'Il n\'y a aucune activité récente.',
+  '<strong>Latest</strong> activities' => '<strong>Activités</strong> récentes',
+  'There are no activities yet.' => 'Il n\'y a pas d\'activité.',
 );

@@ -1,8 +1,10 @@
 <?php
 
+use humhub\modules\space\modules\manage\widgets\DefaultMenu;
+use humhub\modules\space\widgets\SpaceNameColorInput;
+use humhub\widgets\DataSaved;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
-use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 ?>
 
 <div class="panel panel-default">
@@ -18,20 +20,19 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 
         <?php $form = ActiveForm::begin(['options' => ['id' => 'spaceIndexForm'], 'enableClientValidation' => false]); ?>
         
-        <?= humhub\modules\space\widgets\SpaceNameColorInput::widget(['form' => $form, 'model' => $model])?>
+        <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model])?>
 
-        <?php echo $form->field($model, 'description')->textarea(['rows' => 6]); ?>
+        <?= $form->field($model, 'description')->textarea(['rows' => 6]); ?>
 
-        <?php echo $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
+        <?= $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
 
+        <?= Html::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
-        <?php echo Html::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
-
-        <?php echo \humhub\widgets\DataSaved::widget(); ?>
+        <?= DataSaved::widget(); ?>
 
         <div class="pull-right">
             <?php if ($model->isSpaceOwner()) : ?>
-                <?= Html::a(Yii::t('SpaceModule.views_admin_edit', 'Delete'), $model->createUrl('delete'), array('class' => 'btn btn-danger', 'data-post' => 'POST')); ?>
+                <?= Html::a(Yii::t('SpaceModule.views_admin_edit', 'Delete'), $model->createUrl('delete'), ['class' => 'btn btn-danger', 'data-post' => 'POST']); ?>
             <?php endif; ?>
         </div>
 

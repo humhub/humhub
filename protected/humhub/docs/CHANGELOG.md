@@ -1,6 +1,100 @@
 HumHub Change Log
 =================
 
+1.2.8
+-----------------------
+
+- Enh: Added user email to javascript user config
+- Fix: Module Assets are not republished after module update
+- Enh: Added `humhub\components\ModuleManager::EVENT_BEFORE_MODULE_ENABLE` and `humhub\components\ModuleManager::EVENT_AFTER_MODULE_ENABLE` events
+- Enh: Added `humhub\components\ModuleManager::EVENT_BEFORE_MODULE_DISABLE` and `humhub\components\ModuleManager::EVENT_AFTER_MODULE_DISABLE` events
+- Fix: Improved ZendLucence driver error handling
+
+1.2.7 (May 23, 2018)
+-----------------------
+
+- Fixed empty modal dialog response issue
+- Fix #3146 invalid bootstrap.min.css link in installer
+- Enh: Load `humhub\modules\content\models\ContentTagAddition` model in `humhub\modules\content\models\ContentTag::load()`
+- Enh: Auto save `humhub\modules\content\models\ContentTagAddition` within `humhub\modules\content\models\ContentTag::afterSave()`
+- Enh: Added `humhub\modules\content\components\ContentActiveRecord::isOwner()` to check the ownership of a content
+- Enh: Make directory access configurable by `humhub\modules\directory\Module::active`, `humhub\modules\directory\Module::guestAccess`
+- Enh: Added `humhub\modules\directory\permissions\AccessDirectory` permission for group level directory access
+- Fixed `User `namespace issue in `humhub\modules\user\components\BaseAccountController`
+- Chg: Added footer menu to account menu on small display resolutions
+
+
+1.2.6  (May 14, 2018)
+-----------------------
+
+When you are using a custom theme, you may need to add the newly introduced footer navigation to your overwritten view files.
+You can find a full list of the view changes here: https://github.com/humhub/humhub/commit/a1815fb61d83619ce9ca40166800b8c5dcb9d539
+
+- Fix #3108: Fixed cronjob examples with leading zero (acs-ferreira)
+- Fix: Memory leak in activity mail summary processor cron
+- Fix: With enabled guest mode BaseAccountController does not redirect to login page
+- Enh: Added footer navigation - FooterMenu widget
+- Enh: Added HForm class events EVENT_AFTER_INIT and EVENT_BEFORE_RENDER
+- Enh: Updated translations
+
+
+1.2.5  (April 11, 2018)
+-----------------------
+
+When you customized or used the createCVS method of PendingRegistrationsController please 
+migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
+
+- Enh: Added BaseURL setting protocol scheme validation
+- Fix #2849: ActiveQueryContent doesn't find public profile content when guest access is enabled
+- Enh: Fixed username alignment in comments (@githubjeka)
+- Enh: More readable WallEntryAddon links (@githubjeka)
+- Fix: Documentation grammar fixes (@Felli)
+- Fix: Let's Encrypt ACME Error (@Felli)
+- Fix: Typo in password recovery (@acs-ferreira)
+- Fix: Profile posts of friends not appears on dashboard
+- Fix #2745: Yii2 2.0.13 will break the admin interface
+- Enh: Allow auto detection of response dataType
+- Fix #2947: Allow json success result on modalSubmit
+- Enh: Disabled automatic content following on likes by default
+- Enh: Improved IntegrityChecker memory usage
+- Chg: `PendingRegistrationsController->createCVS` removed
+- Fix: Stream image preview size not changeable
+- Fix: Increased maximum e-mail address length from 45 characters to 254
+- Fix: Group member search by firstname/lastname
+- Enh: Added Slovene language
+- Enh: Added Croatian language
+- Fix: User approval, lastname field is shown twice to admins
+- Fix: User model namespace issue in `humhub/modules/user/components/UrlRule`
+- Enh: Raised notification over view pagination size to 20
+- Enh: Added `humhub/modules/space/models/Module::flushCache()` and `humhub/modules/space/behaviours/SpaceModelModules::flushCache()` in order to flush the space module cache
+- Enh: Added further `FunctionalTester` utilities
+- Enh: Added Norwegian Nynorsk language
+- Fix #3009: Change the Space URL raises 404
+
+1.2.4  (December 13, 2017)
+--------------------------
+
+- Enh: Translation updates
+- Fix: Added `ManageSpaces` and SystemAdmin check to `UserGroupAccessValidator`.
+- Fix: Only include content with `stream_channel = default` into spacechooser update count.
+- Enh: Add LinkedIn auth to login. (Felli)
+- Enh: Add Twitter auth to login. (Felli)
+- Enh: Add Instagram auth to login. (Felli)
+- Enh: Add Twitter, LinkedIn & Instagram auth to docs (Felli)
+- Enh: Make lucene search term limit configurable via `ZendLuceneSearch::$searchItemLimit`.
+- Fix: Empty stream message between friends
+- Enh: Improve composer-asset-plugin config (cebe)
+- Enh: Added a link to the permalink from the ago text (benklop)
+- Enh: Added directory group description (githubjeka)
+- Enh: Added configuration option to include user profile posts in dashboard without following
+- Fix: User profile sidebar disappered
+- Fix: Like notification for comments not working
+- Fix: Add example users to default Users group
+- Fix #2851: getting model attribute value using Html::getAttributeValue()
+- Fix #2844: Directory member search broken on page 2
+- Fix #2702: Disable content search for guest users due to space visibility
+- Fix #2806: Register process broken on some environments (Felli)
+
 1.2.3  (October 23, 2017)
 -------------------------
 

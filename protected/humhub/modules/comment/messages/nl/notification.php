@@ -1,5 +1,6 @@
 <?php
 return array (
+  '[Deleted]' => '[Verwijderd]',
   '{displayNames} commented {contentTitle}' => '{displayNames} reageerde op {contentTitle}',
   '{displayNames} commented {contentTitle} in space {space}' => '{displayNames} reageerde op {contentTitle} in ruimte {space}',
   '{displayNames} commented {contentTitle}.' => '{displayNames} heeft gereageerd: {contentTitle}.',

@@ -1,5 +1,6 @@
 <?php
 return array (
+  '[Deleted]' => '[Slettet]',
   '{displayNames} commented {contentTitle}' => '{displayNames} kommenterte {contentTitle}',
   '{displayNames} commented {contentTitle} in space {space}' => '{displayNames} kommenterte {contentTitle} in gruppen {space}',
   '{displayNames} commented {contentTitle}.' => '{displayNames} kommenterte {contentTitle}.',

@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  *
  */
@@ -11,15 +11,9 @@ namespace humhub\modules\content\widgets;
 use Yii;
 use humhub\libs\Html;
 use humhub\modules\content\models\ContentTag;
-use humhub\widgets\InputWidget;
+use humhub\modules\ui\form\widgets\JsInputWidget;
 
-/**
- * This InputWidget provides a generic ContentTag Dropdown
- *
- *
- * @package humhub\modules\content\widgets
- */
-class ContentTagDropDown extends InputWidget
+class ContentTagDropDown extends JsInputWidget
 {
     /**
      * @var string tagClass
@@ -33,18 +27,19 @@ class ContentTagDropDown extends InputWidget
     public $promptValue = 0;
 
     public $items;
-    private $_itemOptions = [];
+    private $itemOptions = [];
 
-    public function int() {
-        if(!$this->tagClass) {
+    public function int()
+    {
+        if (!$this->tagClass) {
             $this->tagClass = ContentTag::class;
             // Reset default behavior inf no specific tagClass is given
-            if($this->type === true) {
+            if ($this->type === true) {
                 $this->type = null;
             }
         }
 
-        if(!$this->none && !$this->noneLabel) {
+        if (!$this->none && !$this->noneLabel) {
             $this->noneLabel = Yii::t('ContentModule.widgets_ContentTagDropDown', 'None');
         }
     }
@@ -53,16 +48,16 @@ class ContentTagDropDown extends InputWidget
     {
         $items = $this->getItems();
 
-        if(empty($items)) {
+        if (empty($items)) {
             return;
         }
 
         $options = $this->getOptions();
         unset($options['id']);
 
-        if($this->form && $this->hasModel()) {
+        if ($this->form && $this->hasModel()) {
             return $this->form->field($this->model, $this->attribute)->dropDownList($items, $options);
-        } else if($this->hasModel()) {
+        } elseif ($this->hasModel()) {
             return Html::activeDropDownList($this->model, $this->attribute, $items, $options);
         } else {
             return Html::dropDownList($this->name, $this->value, $items, $options);
@@ -73,10 +68,10 @@ class ContentTagDropDown extends InputWidget
     {
         $result = [
             'class' => 'form-control',
-            'options' => $this->_itemOptions
+            'options' => $this->itemOptions
         ];
 
-        if($this->prompt) {
+        if ($this->prompt) {
             $result['prompt'] = $this->prompt;
         }
 
@@ -85,14 +80,14 @@ class ContentTagDropDown extends InputWidget
 
     public function getItems()
     {
-        if($this->items) {
+        if ($this->items) {
             return $this->items;
         }
 
-        if(!$this->query) {
-            if($this->contentContainer) {
+        if (!$this->query) {
+            if ($this->contentContainer) {
                 $this->query = call_user_func($this->tagClass .'::findByContainer', $this->contentContainer, $this->includeGlobal);
-            } elseif(!empty($this->type)){
+            } elseif (!empty($this->type)) {
                 $type = ($this->type === true) ? $this->tagClass : $this->type;
                 $this->query = call_user_func($this->tagClass .'::findByType', [$type]);
             } else {
@@ -105,7 +100,7 @@ class ContentTagDropDown extends InputWidget
         $result = [];
         foreach ($tags as $tag) {
             $result[$tag->id] = $tag->name;
-            $this->_itemOptions[$tag->id] = [
+            $this->itemOptions[$tag->id] = [
                 'data-type-color' => $tag->color
             ];
         }

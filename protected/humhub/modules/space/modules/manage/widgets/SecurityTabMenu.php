@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
+use humhub\widgets\BaseMenu;
 use Yii;
 
 /**
@@ -15,10 +16,10 @@ use Yii;
  *
  * @author Luke
  */
-class SecurityTabMenu extends \humhub\widgets\BaseMenu
+class SecurityTabMenu extends BaseMenu
 {
 
-    public $template = "@humhub/widgets/views/tabMenu";
+    public $template = '@humhub/widgets/views/tabMenu';
 
     /**
      * @var \humhub\modules\space\models\Space
@@ -27,18 +28,20 @@ class SecurityTabMenu extends \humhub\widgets\BaseMenu
 
     public function init()
     {
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('AdminModule.manage', 'General'),
             'url' => $this->space->createUrl('/space/manage/security'),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->id == 'security' && Yii::$app->controller->action->id == 'index'),
-        ));
-        $this->addItem(array(
+        ]);
+
+        $this->addItem([
             'label' => Yii::t('AdminModule.manage', 'Permissions'),
             'url' => $this->space->createUrl('/space/manage/security/permissions'),
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->id == 'security' && Yii::$app->controller->action->id == 'permissions'),
-        ));
+        ]);
+
         parent::init();
     }
 

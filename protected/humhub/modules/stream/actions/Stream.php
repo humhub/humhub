@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -10,13 +10,16 @@ namespace humhub\modules\stream\actions;
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\stream\models\WallStreamQuery;
-use Yii;
-use yii\base\Action;
-use yii\base\Exception;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
 use humhub\modules\stream\models\StreamQuery;
+use humhub\modules\stream\models\StreamSuppressQuery;
+use Yii;
+use yii\base\Action;
+use yii\base\Exception;
 use yii\base\ActionEvent;
+use yii\web\Response;
+use yii\db\Expression;
 
 /**
  * Stream is the basic action for content streams.
@@ -62,8 +65,8 @@ abstract class Stream extends Action
     /**
      * Modes
      */
-    const MODE_NORMAL = "normal";
-    const MODE_ACTIVITY = "activity";
+    const MODE_NORMAL = 'normal';
+    const MODE_ACTIVITY = 'activity';
 
     /**
      * Maximum wall entries per request
@@ -211,7 +214,7 @@ abstract class Stream extends Action
      */
     public function run()
     {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        Yii::$app->response->format = Response::FORMAT_JSON;
         $output = [];
 
         $output['content'] = [];
@@ -235,7 +238,7 @@ abstract class Stream extends Action
         $output['contentOrder'] = array_keys($output['content']);
         $output['lastContentId'] = end($output['contentOrder']);
 
-        if ($this->streamQuery instanceof \humhub\modules\stream\models\StreamSuppressQuery && !$this->streamQuery->isSingleContentQuery()) {
+        if ($this->streamQuery instanceof StreamSuppressQuery && !$this->streamQuery->isSingleContentQuery()) {
             $output['contentSuppressions'] = $this->streamQuery->getSuppressions();
             $output['lastContentId'] = $this->streamQuery->getLastContentId();
         }
@@ -292,7 +295,7 @@ abstract class Stream extends Action
         }
 
         if (!$record->wallEntryClass || !$record->content) {
-            return "";
+            return '';
         }
 
         if (isset($options['jsWidget'])) {
@@ -337,7 +340,7 @@ abstract class Stream extends Action
         }
 
         // Fix for newly created content
-        if ($content->created_at instanceof \yii\db\Expression) {
+        if ($content->created_at instanceof Expression) {
             $content->created_at = date('Y-m-d G:i:s');
             $content->updated_at = $content->created_at;
         }
@@ -364,6 +367,7 @@ abstract class Stream extends Action
     {
         $event = new ActionEvent($this);
         $this->trigger(self::EVENT_BEFORE_RUN, $event);
+
         return $event->isValid;
     }
 

@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Cancel' => 'poništi',
-  'Decline & delete user: <strong>{displayName}</strong>' => '',
+  'Cancel' => 'Poništi',
+  'Decline & delete user: <strong>{displayName}</strong>' => 'Odbij i obriši korisnika: <strong>{displayName}</strong>',
 );

@@ -8,10 +8,11 @@
 
 namespace humhub\modules\space\modules\manage\models;
 
-
+use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use humhub\modules\space\models\Membership;
 
 /**
  * Description of GroupSearch
@@ -20,6 +21,16 @@ use humhub\modules\space\models\Membership;
  */
 class MembershipSearch extends Membership
 {
+
+    /**
+     * @var string the freetext search string
+     */
+    public $freeText;
+
+    /**
+     * @var string the role id
+     */
+    public $roleId;
 
     /**
      * @var int Status of members to display
@@ -42,7 +53,7 @@ class MembershipSearch extends Membership
     {
         return [
             [['user_id', 'status'], 'integer'],
-            [['user.profile.firstname', 'user.profile.lastname', 'user.username', 'group_id'], 'safe'],
+            [['user.profile.firstname', 'user.profile.lastname', 'user.username', 'group_id', 'freeText'], 'safe']
         ];
     }
 
@@ -57,7 +68,7 @@ class MembershipSearch extends Membership
 
     /**
      * Creates data provider instance with search query applied
-     * 
+     *
      * @param array $params
      * @return ActiveDataProvider
      */
@@ -69,7 +80,7 @@ class MembershipSearch extends Membership
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => ['pageSize' => 50],
+            'pagination' => ['pageSize' => 50]
         ]);
 
 
@@ -83,10 +94,16 @@ class MembershipSearch extends Membership
                     'asc' => ['profile.lastname' => SORT_ASC],
                     'desc' => ['profile.lastname' => SORT_DESC],
                 ],
+                'profile.lastname' => [
+                    'asc' => ['profile.lastname' => SORT_ASC],
+                    'desc' => ['profile.lastname' => SORT_DESC],
+                ],
                 'user.username',
                 'last_visit',
+                'created_at',
                 'group_id',
-        ]]);
+            ]
+        ]);
 
         $this->load($params);
 
@@ -97,12 +114,36 @@ class MembershipSearch extends Membership
 
         $query->andWhere(['space_membership.space_id' => $this->space_id]);
 
+        // Freetext filters
+        if (!empty($this->freeText)) {
+            $query->andWhere([
+                'OR',
+                ['like', 'user.id', $this->freeText],
+                ['like', 'user.username', $this->freeText],
+                ['like', 'user.email', $this->freeText],
+                ['like', 'profile.firstname', $this->freeText],
+                ['like', 'profile.lastname', $this->freeText]
+            ]);
+        }
+        if (!empty($this->group_id)) {
+            $query->andFilterWhere(['space_membership.group_id' => $this->group_id]);
+        }
+
         $query->andFilterWhere(['space_membership.group_id' => $this->group_id]);
         $query->andFilterWhere(['like', 'profile.lastname', $this->getAttribute('user.profile.lastname')]);
         $query->andFilterWhere(['like', 'profile.firstname', $this->getAttribute('user.profile.firstname')]);
         $query->andFilterWhere(['like', 'user.username', $this->getAttribute('user.username')]);
 
         return $dataProvider;
+    }
+
+    public static function getRoles(Space $space)
+    {
+        $groups = $space->getUserGroups();
+        unset($groups[Space::USERGROUP_OWNER], $groups[Space::USERGROUP_GUEST], $groups[Space::USERGROUP_USER]);
+        $groups = array_merge(['' => Yii::t('SpaceModule.manage', 'Show all')], $groups);
+
+        return $groups;
     }
 
 }

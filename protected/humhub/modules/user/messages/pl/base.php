@@ -29,6 +29,7 @@ return [
     'Upload profile image' => '',
     'Your account is disabled!' => '',
     'Your account is not approved yet!' => '',
+    'Your new password must not be equal your current password!' => '',
     'Basic Settings' => 'Podstawowe ustawienia',
     'Change Email' => 'Zmień adres e-mail',
     'Change Password' => 'Zmień hasło',
@@ -57,6 +58,5 @@ return [
     'User' => 'Użytkownik',
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Użytkownik o tym samym adresie e-mail już istnieje, ale nie jest powiązany z tobą. Zaloguj się za pomocą adresu e-mail, aby go najpierw połączyć.',
     'You\'re not registered.' => 'Nie jesteś zarejestrowany.',
-    'Your new password must not equal your current password!' => 'Nowe hasło musi się różnić od aktualnego!',
     'or' => 'lub',
 ];
