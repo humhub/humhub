@@ -10,6 +10,7 @@ namespace humhub\modules\dashboard\components\actions;
 
 use Yii;
 use yii\db\Query;
+use humhub\modules\dashboard\Module;
 use humhub\modules\activity\actions\ActivityStreamAction;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;

@@ -213,17 +213,6 @@ class ContentTag extends ActiveRecord
         return parent::validate($attributeNames, $clearErrors);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function afterSave($insert, $changedAttributes)
-    {
-        if($this->hasAddition()) {
-            $this->getAddition()->save();
-        }
-        parent::afterSave($insert, $changedAttributes);
-    }
-
     public function load($data, $formName = null)
     {
         if($this->hasAddition()) {
