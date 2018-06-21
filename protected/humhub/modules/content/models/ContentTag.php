@@ -298,6 +298,18 @@ class ContentTag extends ActiveRecord
     public static function find()
     {
         $query = parent::find();
+        return static::addQueryCondition($query);
+    }
+
+    /**
+     * Adds content tag related fitler conditions to a given query.
+     *
+     * @param ActiveQuery $query
+     * @return ActiveQuery
+     * @since 1.3
+     */
+    public static function addQueryCondition(ActiveQuery $query)
+    {
         self::moduleQuery($query);
         return self::typeQuery($query);
     }
