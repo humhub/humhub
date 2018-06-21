@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Personne n\'a rien publié pour le moment.</b><br>Soyez le premier à publier quelque chose...',
-  '<b>There are no profile posts yet!</b>' => '<b>Il n\'y a aucune publication actuellement.</b>',
+  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<strong>Personne n\'a rien écrit pour le moment.</strong><br>Soyez le premier à publier quelque chose...',
+  '<b>There are no profile posts yet!</b>' => '<strong>Il n\'y a aucune publication sur ce profil.</strong>',
   '<strong>Directory</strong> menu' => 'Menu <strong>annuaire</strong>',
   '<strong>Group</strong> members - {group}' => 'Membres du <strong>groupe</strong> - {group}',
   '<strong>Group</strong> stats' => 'Statistiques du <strong>groupe</strong>',
@@ -12,7 +12,7 @@ return array (
   '<strong>New</strong> spaces' => '<strong>Nouveaux</strong> espaces',
   '<strong>Space</strong> directory' => 'Liste des <strong>espaces</strong>',
   '<strong>Space</strong> stats' => 'Statistiques des <strong>espaces</strong>',
-  'Average members' => 'Moyenne des membres',
+  'Average members' => 'Moyenne des membres par groupe',
   'Directory' => 'Annuaire',
   'Follows somebody' => 'Abonnés à quelqu\'un ',
   'Groups' => 'Groupes',
@@ -27,7 +27,7 @@ return array (
   'Send invite' => 'Envoyer une invitation',
   'Spaces' => 'Espaces',
   'This group has no members yet.' => 'Ce groupe n\'a pas encore de membres.',
-  'Top Group' => 'Groupe le plus actif',
+  'Top Group' => 'Groupe le plus grand',
   'Total groups' => 'Nombre de groupes',
   'Total spaces' => 'Nombre d\'espaces',
   'Total users' => 'Nombre de membres',
@@ -35,5 +35,5 @@ return array (
   'You are a member of this space' => 'Vous êtes membre de cet espace',
   'search for members' => 'rechercher des membres',
   'search for spaces' => 'rechercher des espaces',
-  'show all members' => 'voir tous les membres',
+  'show all members' => 'afficher tout',
 );

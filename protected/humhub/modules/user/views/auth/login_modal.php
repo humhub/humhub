@@ -8,7 +8,7 @@ use humhub\modules\user\widgets\AuthChoice;
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel"><?php echo Yii::t('UserModule.views_auth_login', '<strong>Join</strong> the network'); ?></h4>
+            <h4 class="modal-title" id="myModalLabel"><?= Yii::t('UserModule.views_auth_login', '<strong>Join</strong> the network'); ?></h4>
         </div>
         <div class="modal-body">
             <br/>
@@ -16,13 +16,13 @@ use humhub\modules\user\widgets\AuthChoice;
             <?php if ($canRegister) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                        <li class="<?php echo (!isset($_POST['Invite'])) ? "active" : ""; ?> tab-login"><a
+                        <li class="<?= (!isset($_POST['Invite'])) ? "active" : ""; ?> tab-login"><a
                                 href="#login"
-                                data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'Login'); ?></a>
+                                data-toggle="tab"><?= Yii::t('SpaceModule.views_space_invite', 'Login'); ?></a>
                         </li>
-                        <li class="<?php echo (isset($_POST['Invite'])) ? "active" : ""; ?> tab-register"><a
+                        <li class="<?= (isset($_POST['Invite'])) ? "active" : ""; ?> tab-register"><a
                                 href="#register"
-                                data-toggle="tab"><?php echo Yii::t('SpaceModule.views_space_invite', 'New user?'); ?></a>
+                                data-toggle="tab"><?= Yii::t('SpaceModule.views_space_invite', 'New user?'); ?></a>
                         </li>
                     </ul>
                 </div>
@@ -31,21 +31,21 @@ use humhub\modules\user\widgets\AuthChoice;
 
 
             <div class="tab-content">
-                <div class="tab-pane <?php echo (!isset($_POST['Invite'])) ? "active" : ""; ?>" id="login">
+                <div class="tab-pane <?= (!isset($_POST['Invite'])) ? "active" : ""; ?>" id="login">
 
                     <?php if (AuthChoice::hasClients()): ?>
                         <?= AuthChoice::widget([]) ?>
                     <?php else: ?>
                         <?php if ($canRegister) : ?>
-                            <p><?php echo Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
+                            <p><?= Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
                         <?php else: ?>
-                            <p><?php echo Yii::t('UserModule.views_auth_login', "Please login with your username/email and password."); ?></p>
+                            <p><?= Yii::t('UserModule.views_auth_login', "Please login with your username/email and password."); ?></p>
                         <?php endif; ?>                    <?php endif; ?>
 
                     <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
-                    <?php echo $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.views_auth_login', 'username or email')]); ?>
-                    <?php echo $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => Yii::t('UserModule.views_auth_login', 'password')]); ?>
-                    <?php echo $form->field($model, 'rememberMe')->checkbox(); ?>
+                    <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.views_auth_login', 'username or email')]); ?>
+                    <?= $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => Yii::t('UserModule.views_auth_login', 'password')]); ?>
+                    <?= $form->field($model, 'rememberMe')->checkbox(); ?>
                     <hr>
                     <div class="row">
                         <div class="col-md-4">
@@ -56,10 +56,8 @@ use humhub\modules\user\widgets\AuthChoice;
                         </div>
                         <div class="col-md-8 text-right">
                             <small>
-                                <?= Yii::t('UserModule.views_auth_login', 'Forgot your password?'); ?>
-                                <br/>
                                 <a id="recoverPasswordBtn" href="#" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/user/password-recovery']) ?>">
-                                    <?= Yii::t('UserModule.views_auth_login', 'Create a new one.') ?>
+                                    <?= Yii::t('UserModule.views_auth_login', 'Forgot your password?') ?>
                                 </a>
                             </small>
                         </div>

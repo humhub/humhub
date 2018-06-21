@@ -16,6 +16,7 @@ use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\user\controllers\ImageController;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\user\models\forms\AccountDelete;
+use humhub\modules\space\models\Membership;
 
 /**
  * AccountController provides all standard actions for the current logged in
@@ -126,7 +127,7 @@ class AccountController extends BaseAccountController
             return $this->redirect(['edit-settings']);
         }
 
-        // Sort countries list based on user language   
+        // Sort countries list based on user language
         $languages = Yii::$app->i18n->getAllowedLanguages();
         $col = new \Collator(Yii::$app->language);
         $col->asort($languages);
@@ -365,7 +366,7 @@ class AccountController extends BaseAccountController
 
     /**
      * Handle the banner image upload
-     * 
+     *
      * @deprecated since version 1.2
      */
     public function actionBannerImageUpload()
@@ -379,7 +380,7 @@ class AccountController extends BaseAccountController
 
     /**
      * Handle the profile image upload
-     * 
+     *
      * @deprecated since version 1.2
      */
     public function actionProfileImageUpload()

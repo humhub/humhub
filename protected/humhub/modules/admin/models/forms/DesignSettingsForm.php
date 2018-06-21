@@ -8,8 +8,8 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
-use humhub\libs\ThemeHelper;
 
 /**
  * DesignSettingsForm
@@ -36,7 +36,7 @@ class DesignSettingsForm extends \yii\base\Model
 
         $settingsManager = Yii::$app->settings;
 
-        $this->theme = $settingsManager->get('theme');
+        $this->theme = Yii::$app->view->theme->name;
         $this->paginationSize = $settingsManager->get('paginationSize');
         $this->displayName = $settingsManager->get('displayNameFormat');
         $this->spaceOrder = Yii::$app->getModule('space')->settings->get('spaceOrder');
@@ -49,14 +49,9 @@ class DesignSettingsForm extends \yii\base\Model
      */
     public function rules()
     {
-        $themes = [];
-        foreach (ThemeHelper::getThemes() as $theme) {
-            $themes[] = $theme->name;
-        }
-
         return [
             ['paginationSize', 'integer', 'max' => 200, 'min' => 1],
-            ['theme', 'in', 'range' => $themes],
+            ['theme', 'in', 'range' => $this->getThemes()],
             [['displayName', 'spaceOrder'], 'safe'],
             [['horImageScrollOnMobile'], 'boolean'],
             ['logo', 'file', 'extensions' => ['jpg', 'png', 'jpeg'], 'maxSize' => 3 * 1024 * 1024],
@@ -108,6 +103,19 @@ class DesignSettingsForm extends \yii\base\Model
     }
 
     /**
+     * @return array a list of available themes
+     */
+    public function getThemes() {
+        $themes = [];
+
+        foreach (ThemeHelper::getThemes() as $theme) {
+            $themes[$theme->name] = $theme->name;
+        }
+
+        return $themes;
+    }
+
+    /**
      * Saves the form
      *
      * @return boolean
@@ -116,8 +124,11 @@ class DesignSettingsForm extends \yii\base\Model
     {
         $settingsManager = Yii::$app->settings;
 
-        $settingsManager->set('theme', $this->theme);
-        \humhub\components\Theme::setColorVariables($this->theme);
+        $theme = ThemeHelper::getThemeByName($this->theme);
+        if ($theme !== null) {
+            $theme->activate();
+        }
+
         $settingsManager->set('paginationSize', $this->paginationSize);
         $settingsManager->set('displayNameFormat', $this->displayName);
         Yii::$app->getModule('space')->settings->set('spaceOrder', $this->spaceOrder);

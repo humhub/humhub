@@ -150,22 +150,28 @@ humhub.module('action', function(module, require, $) {
      */
     Component.instance = function(node, options) {
         //Determine closest component node (parent or or given node)
-        var $node = _getNode(node);
+        try {
+            var $node = _getNode(node);
 
-        if(!$node.length) {
-            return;
+            if(!$node.length) {
+                return;
+            }
+
+            var ns = Component.getNameSpace($node);
+
+            var ComponentClass = (ns) ? require(ns) : this;
+            return Component._getInstance(ComponentClass, $node, options);
+        } catch(e) {
+            module.log.warn(e);
         }
 
-        var ns = Component.getNameSpace($node);
-
-        var ComponentClass = (ns) ? require(ns) : this;
-        return Component._getInstance(ComponentClass, $node, options);
+        return null;
     };
 
     var _getNode = function(node) {
         var $node = (node instanceof $) ? node : $(node);
 
-        if(!$node.length && object.isString(node)) {
+        if(!$node.length && object.isString(node) && node.length) {
             $node = $('#' + node);
         }
         return $node;

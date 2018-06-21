@@ -12,7 +12,7 @@ use humhub\libs\BasePermission;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidParamException;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\web\Controller;
 
 /**
@@ -103,7 +103,7 @@ use yii\web\Controller;
  * @see AccessValidator
  * @since 1.2.2
  */
-class ControllerAccess extends Object
+class ControllerAccess extends BaseObject
 {
     /**
      * Allows the action rule setting only by extra option ['myRule', 'actions' => ['action1', 'action2']]

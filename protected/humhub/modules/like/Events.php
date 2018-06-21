@@ -15,7 +15,7 @@ use humhub\modules\like\models\Like;
  * 
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends \yii\base\BaseObject
 {
 
     /**

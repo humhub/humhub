@@ -11,7 +11,7 @@ namespace humhub\modules\user\authclient;
 /**
  * @inheritdoc
  */
-class Google extends \yii\authclient\clients\GoogleOAuth
+class Google extends \yii\authclient\clients\Google
 {
 
     /**

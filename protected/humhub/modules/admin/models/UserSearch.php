@@ -69,9 +69,10 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = ($this->query == null) ? User::find()->joinWith('profile') : $this->query;
+        $query = ($this->query == null) ? User::find() : $this->query;
         /* @var $query \humhub\modules\user\components\ActiveQueryUser */
-        
+        $query->joinWith('profile');
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => ['pageSize' => 50],
@@ -143,7 +144,7 @@ class UserSearch extends User
         return $dataProvider;
     }
 
-    public function getStatusAttributes()
+    public static function getStatusAttributes()
     {
         $countActive = User::find()->where(['user.status' => User::STATUS_ENABLED])->count();
         $countDisabled = User::find()->where(['user.status' => User::STATUS_DISABLED])->count();

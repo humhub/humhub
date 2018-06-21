@@ -21,7 +21,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  * @since 1.2
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends \yii\base\BaseObject
 {
 
     /**

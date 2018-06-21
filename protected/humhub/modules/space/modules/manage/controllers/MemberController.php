@@ -8,14 +8,15 @@
 
 namespace humhub\modules\space\modules\manage\controllers;
 
-use Yii;
-use yii\web\HttpException;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
+use humhub\modules\space\notifications\ChangedRolesMembership;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\modules\manage\models\ChangeOwnerForm;
+use Yii;
+use yii\web\HttpException;
 
 /**
  * Member Controller
@@ -33,6 +34,7 @@ class MemberController extends Controller
         $result[] = [
             'userGroup' => [Space::USERGROUP_OWNER], 'actions' => ['change-owner']
         ];
+
         return $result;
     }
 
@@ -56,16 +58,22 @@ class MemberController extends Controller
             }
 
             if ($membership->load(Yii::$app->request->post()) && $membership->validate() && $membership->save()) {
+
+                ChangedRolesMembership::instance()
+                    ->about($membership)
+                    ->from(Yii::$app->user->identity)
+                    ->send($membership->user);
+
                 return Yii::$app->request->post();
             }
             return $membership->getErrors();
         }
 
-        return $this->render('index', array(
+        return $this->render('index', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
                     'space' => $space
-        ));
+        ]);
     }
 
     /**
@@ -79,11 +87,11 @@ class MemberController extends Controller
         $searchModel->status = Membership::STATUS_INVITED;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('pending-invitations', array(
+        return $this->render('pending-invitations', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
                     'space' => $space
-        ));
+        ]);
     }
 
     /**
@@ -97,11 +105,11 @@ class MemberController extends Controller
         $searchModel->status = Membership::STATUS_APPLICANT;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('pending-approvals', array(
+        return $this->render('pending-approvals', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
                     'space' => $space
-        ));
+        ]);
     }
 
     /**

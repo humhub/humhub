@@ -1,10 +1,10 @@
 <?php
 return array (
-  '<strong>Administration</strong> menu' => 'Menu d\'<strong>Administration</strong>',
+  '<strong>Administration</strong> menu' => 'Menu <strong>administration</strong>',
   'Advanced' => 'Avancé',
   'Appearance' => 'Apparence',
   'Caching' => 'Cache',
-  'E-Mail summaries' => 'Résumés par E-mail',
+  'E-Mail summaries' => 'Résumés par e-mail',
   'Files' => 'Fichiers',
   'General' => 'Général',
   'Information' => 'Information',
@@ -12,7 +12,7 @@ return array (
   'Modules' => 'Modules',
   'Notifications' => 'Notifications',
   'OEmbed' => 'OEmbed',
-  'Proxy' => 'Serveur Proxy',
+  'Proxy' => 'Proxy',
   'Settings' => 'Paramètres',
   'Spaces' => 'Espaces',
   'Statistics' => 'Statistiques',

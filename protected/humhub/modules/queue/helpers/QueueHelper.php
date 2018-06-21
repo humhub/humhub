@@ -9,7 +9,7 @@
 namespace humhub\modules\queue\helpers;
 
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\base\InvalidParamException;
 use yii\queue\Queue;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
@@ -20,7 +20,7 @@ use humhub\modules\queue\models\QueueExclusive;
  *
  * @author Luke
  */
-class QueueHelper extends Object
+class QueueHelper extends BaseObject
 {
 
     public static function isQueued(ExclusiveJobInterface $job)

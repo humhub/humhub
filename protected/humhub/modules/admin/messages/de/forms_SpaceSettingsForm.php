@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Default Content Visiblity' => 'Standard Sichtbarkeit von Inhalten',
-  'Default Join Policy' => 'Standard Beitrittseinstellung',
+  'Default Content Visiblity' => 'Standard Inhalts-Sichtbarkeit',
+  'Default Join Policy' => 'Standard Beitrittsrichtlinie',
   'Default Visibility' => 'Standard Sichtbarkeit',
 );

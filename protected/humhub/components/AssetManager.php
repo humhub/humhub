@@ -8,7 +8,10 @@
 
 namespace humhub\components;
 
+use Yii;
+use yii\base\InvalidParamException;
 use yii\helpers\FileHelper;
+use yii\web\AssetBundle;
 
 /**
  * AssetManager
@@ -18,6 +21,7 @@ use yii\helpers\FileHelper;
  */
 class AssetManager extends \yii\web\AssetManager
 {
+    private $_published = [];
 
     /**
      * Clears all currently published assets
@@ -36,4 +40,24 @@ class AssetManager extends \yii\web\AssetManager
         }
     }
 
+    public function forcePublish(AssetBundle $bundle, $options = [])
+    {
+        $options['forceCopy'] = true;
+
+        if ($bundle->sourcePath !== null && !isset($bundle->basePath, $bundle->baseUrl)) {
+            $path = Yii::getAlias($bundle->sourcePath);
+
+            if (!is_string($path) || ($src = realpath($path)) === false) {
+                throw new InvalidParamException("The file or directory to be published does not exist: $path");
+            }
+
+            if (is_file($src)) {
+                return $this->publishFile($src);
+            } else {
+                return $this->publishDirectory($src, $options);
+            }
+        } else {
+            $bundle->publish($this);
+        }
+    }
 }

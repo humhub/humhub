@@ -2,18 +2,22 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\space\controllers;
 
-use Yii;
-use yii\web\HttpException;
 use humhub\components\Controller;
+use humhub\components\behaviors\AccessControl;
 use humhub\modules\space\models\Space;
-use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\permissions\CreatePrivateSpace;
+use humhub\modules\space\permissions\CreatePublicSpace;
+use humhub\modules\space\models\forms\InviteForm;
+use Colors\RandomColor;
+use Yii;
+use yii\base\Exception;
+use yii\web\HttpException;
 
 /**
  * CreateController is responsible for creation of new spaces
@@ -36,7 +40,7 @@ class CreateController extends Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::className(),
             ]
         ];
     }
@@ -48,6 +52,8 @@ class CreateController extends Controller
 
     /**
      * Creates a new Space
+     * @throws HttpException
+     * @throws Exception
      */
     public function actionCreate($visibility = null, $skip = 0)
     {
@@ -59,7 +65,7 @@ class CreateController extends Controller
         $model = $this->createSpaceModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if($skip) {
+            if ($skip) {
                 return $this->htmlRedirect($model->getUrl());
             }
             return $this->actionModules($model->id);
@@ -91,7 +97,27 @@ class CreateController extends Controller
     }
 
     /**
+     * Creates an empty space model
+     *
+     * @return Space the preconfigured space object
+     */
+    protected function createSpaceModel()
+    {
+        /* @var \humhub\modules\space\Module $module */
+        $module = Yii::$app->getModule('space');
+
+        $model = new Space();
+        $model->scenario = Space::SCENARIO_CREATE;
+        $model->visibility = $module->settings->get('defaultVisibility', Space::VISIBILITY_REGISTERED_ONLY);
+        $model->join_policy = $module->settings->get('defaultJoinPolicy', Space::JOIN_POLICY_APPLICATION);
+        $model->color = RandomColor::one(['luminosity' => 'dark']);
+
+        return $model;
+    }
+
+    /**
      * Activate / deactivate modules
+     * @throws Exception
      */
     public function actionModules($space_id)
     {
@@ -106,12 +132,14 @@ class CreateController extends Controller
 
     /**
      * Invite user
+     *
+     * @throws Exception
      */
     public function actionInvite($space = null)
     {
-        $space = ($space == null) ? Space::findOne(['id' => Yii::$app->request->get('spaceId', "")]) : $space;
+        $space = ($space == null) ? Space::findOne(['id' => Yii::$app->request->get('spaceId', '')]) : $space;
 
-        $model = new \humhub\modules\space\models\forms\InviteForm();
+        $model = new InviteForm();
         $model->space = $space;
 
         $canInviteExternal = Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
@@ -133,26 +161,10 @@ class CreateController extends Controller
         }
 
         return $this->renderAjax('invite', [
-                    'canInviteExternal' => $canInviteExternal,
-                    'model' => $model,
-                    'space' => $space
+            'canInviteExternal' => $canInviteExternal,
+            'model' => $model,
+            'space' => $space
         ]);
     }
 
-    /**
-     * Creates an empty space model
-     *
-     * @return Space
-     */
-    protected function createSpaceModel()
-    {
-        $model = new Space();
-        $model->scenario = 'create';
-        $model->visibility = Yii::$app->getModule('space')->settings->get('defaultVisibility', Space::VISIBILITY_REGISTERED_ONLY);
-        $model->join_policy = Yii::$app->getModule('space')->settings->get('defaultJoinPolicy', Space::JOIN_POLICY_APPLICATION);
-        return $model;
-    }
-
 }
-
-?>

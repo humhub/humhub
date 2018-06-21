@@ -1,13 +1,14 @@
 <?php
 
+use humhub\modules\directory\Module;
 use humhub\widgets\TopMenu;
 
 return [
     'id' => 'directory',
-    'class' => \humhub\modules\directory\Module::className(),
+    'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
-        ['class' => TopMenu::className(), 'event' => TopMenu::EVENT_INIT, 'callback' => [humhub\modules\directory\Module::className(), 'onTopMenuInit']],
+        ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => [Module::class, 'onTopMenuInit']],
     ],
     'urlManagerRules' => [
         'directory/members' => 'directory/directory/members',

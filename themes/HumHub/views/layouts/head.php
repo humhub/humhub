@@ -1,6 +1,3 @@
-<link href="<?= $this->theme->getBaseUrl(); ?>/css/theme.css" rel="stylesheet">
-<link href="<?= $this->theme->getBaseUrl(); ?>/font/open_sans/open-sans.css" rel="stylesheet">
-
 <!-- start: Web App Data-->
 <link rel="manifest" href="<?= $this->theme->getBaseUrl(); ?>/ico/manifest.json">
 <meta name="application-name" content="<?= \yii\helpers\Html::encode(Yii::$app->name) ?>">
@@ -34,5 +31,3 @@
 <!-- start: Android Fullscreen -->
 <meta name="mobile-web-app-capable" content="yes">
 <!-- end: Android Fullscreen -->
-
-

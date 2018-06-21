@@ -11,20 +11,11 @@ namespace humhub\widgets;
 /**
  * ActiveForm
  *
+ * @see \humhub\modules\ui\form\widgets\ActiveForm
+ * @deprecated since 1.3
  * @since 1.1
  * @author Luke
  */
-class ActiveForm extends \yii\bootstrap\ActiveForm
+class ActiveForm extends \humhub\modules\ui\form\widgets\ActiveForm
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $enableClientValidation = false;
-
-    /**
-     * @inheritdoc
-     */
-    public $fieldClass = 'humhub\widgets\ActiveField';
-
 }

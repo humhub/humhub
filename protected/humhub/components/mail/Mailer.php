@@ -9,6 +9,7 @@
 namespace humhub\components\mail;
 
 use Yii;
+use yii\mail\MailEvent;
 
 /**
  * Mailer implements a mailer based on SwiftMailer.
@@ -24,6 +25,12 @@ class Mailer extends \yii\swiftmailer\Mailer
      * @inheritdoc
      */
     public $messageClass = 'humhub\components\mail\Message';
+
+    /**
+     * @var array of surpressed recipient e-mail addresses
+     * @since 1.3
+     */
+    public $surpressedRecipients = ['david.roberts@example.com', 'sara.schuster@example.com'];
 
     /**
      * Creates a new message instance and optionally composes its body content via view rendering.
@@ -56,5 +63,49 @@ class Mailer extends \yii\swiftmailer\Mailer
 
         return $message;
     }
+
+
+    /**
+     * @inheritdoc
+     * @param Message $message
+     */
+    public function sendMessage($message)
+    {
+        // Remove example e-mails
+        $address = $message->getTo();
+
+        if (is_array($address)) {
+            foreach (array_keys($address) as $email) {
+                if ($this->isRecipientSurpressed($email)) {
+                    unset($address[$email]);
+                }
+            }
+            if (count($address) == 0) {
+                return true;
+            }
+            $message->setTo($address);
+        } elseif ($this->isRecipientSurpressed($address)) {
+            return true;
+        }
+
+        return parent::sendMessage($message);
+    }
+
+    /**
+     * Checks if an given e-mail address is surpressed.
+     *
+     * @since 1.3
+     * @param $email
+     * @return boolean is surpressed
+     */
+    public function isRecipientSurpressed($email)
+    {
+        if (in_array($email, $this->surpressedRecipients)) {
+            return true;
+        }
+
+        return false;
+    }
+
 
 }

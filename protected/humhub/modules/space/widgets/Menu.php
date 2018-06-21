@@ -8,10 +8,11 @@
 
 namespace humhub\modules\space\widgets;
 
-use Yii;
-use yii\base\Exception;
+use humhub\widgets\BaseMenu;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
+use Yii;
+use yii\base\Exception;
 
 /**
  * The Main Navigation for a space. It includes the Modules the Stream
@@ -20,11 +21,11 @@ use humhub\modules\space\models\Space;
  * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
-class Menu extends \humhub\widgets\BaseMenu
+class Menu extends BaseMenu
 {
     /** @var Space */
     public $space;
-    public $template = "@humhub/widgets/views/leftNavigation";
+    public $template = '@humhub/widgets/views/leftNavigation';
 
     public function init()
     {
@@ -33,25 +34,25 @@ class Menu extends \humhub\widgets\BaseMenu
         }
 
         if ($this->space === null) {
-            throw new Exception("Could not instance space menu without space!");
+            throw new Exception('Could not instance space menu without space!');
         }
         
         $this->id = 'navigation-menu-space-' . $this->space->getUniqueId();
 
-        $this->addItemGroup(array(
+        $this->addItemGroup([
             'id' => 'modules',
             'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', '<strong>Space</strong> menu'),
             'sortOrder' => 100,
-        ));
+        ]);
 
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', 'Stream'),
             'group' => 'modules',
             'url' => $this->space->createUrl('/space/space/home'),
             'icon' => '<i class="fa fa-bars"></i>',
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->id == 'space' && (Yii::$app->controller->action->id == 'index' || Yii::$app->controller->action->id == 'home') && Yii::$app->controller->module->id == 'space'),
-        ));
+        ]);
 
         parent::init();
     }

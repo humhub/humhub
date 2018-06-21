@@ -17,7 +17,6 @@ use humhub\libs\ProfileImage;
 use humhub\modules\user\models\User;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\content\components\ContentContainerModuleManager;
 
 /**
  * ContentContainerActiveRecord for ContentContainer Models e.g. Space or User.
@@ -44,13 +43,13 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     protected $permissionManager = null;
 
     /**
-     * @var ModuleManager
+     * @var ContentContainerModuleManager
      */
     protected $moduleManager = null;
 
     /**
      * The behavior which will be attached to the base controller.
-     * 
+     *
      * @since 1.3
      * @see \humhub\modules\contentcontainer\components\Controller
      * @var string class name of additional the controller behavior
@@ -209,9 +208,9 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * ```php
      * $contentContainer->can(MyPermisison::class);
      * ```
-     * 
+     *
      * Note: This method is used to verify ContentContainerPermissions and not GroupPermissions.
-     * 
+     *
      * @param string|string[]|BasePermission $permission
      * @see PermissionManager::can()
      * @return boolean
@@ -285,7 +284,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * Returns weather or not the contentcontainer is archived. (Default false).
-     * @return boolean 
+     * @return boolean
      * @since 1.2
      */
     public function isArchived()

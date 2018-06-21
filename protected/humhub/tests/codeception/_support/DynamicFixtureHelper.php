@@ -44,7 +44,7 @@ class DynamicFixtureHelper extends Module
             $this->loadFixtures();
         }
     }
-    
+
      public function _afterSuite($settings = [])
     {
         if (!$this->beforeTest) {
@@ -115,7 +115,6 @@ class DynamicFixtureHelper extends Module
             'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::className()],
             'space' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::className()],
             'space_membership' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture::className()],
-            'space_module' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceModuleFixture::className()],
             'content' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentFixture::className()],
             'file' => ['class' => FileFixture::class],
             'notification' => [ 'class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::className()],

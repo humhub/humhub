@@ -9,12 +9,13 @@ Yii::setAlias('@webroot', realpath(__DIR__ . '/../../../'));
 Yii::setAlias('@app', '@webroot/protected');
 Yii::setAlias('@humhub', '@app/humhub');
 Yii::setAlias('@config', '@app/config');
+Yii::setAlias('@themes', '@webroot/themes');
 
 $config = [
     'name' => 'HumHub',
     'version' => '1.3.0-beta.1',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
-    'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue'],
+    'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue', 'humhub\modules\ui\view\bootstrap\ThemeLoader'],
     'sourceLanguage' => 'en',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -46,12 +47,13 @@ $config = [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
+                    'except' => ['yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403', 'yii\web\HttpException:404', 'yii\web\HttpException:405'],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
                 [
                     'class' => 'yii\log\DbTarget',
                     'levels' => ['error', 'warning'],
-                    'except' => ['yii\web\HttpException:404', 'yii\web\HttpException:403', 'yii\web\HttpException:401'],
+                    'except' => ['yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403', 'yii\web\HttpException:404', 'yii\web\HttpException:405'],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
             ],
@@ -102,7 +104,7 @@ $config = [
             'view' => [
                 'class' => '\yii\web\View',
                 'theme' => [
-                    'class' => '\humhub\components\Theme',
+                    'class' => '\humhub\modules\ui\view\components\Theme',
                     'name' => 'HumHub'
                 ],
             ],
@@ -113,9 +115,9 @@ $config = [
             'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD || YII_ENV_TEST ? 'assets-prod.php' : 'assets-dev.php')),
         ],
         'view' => [
-            'class' => '\humhub\components\View',
+            'class' => '\humhub\modules\ui\view\components\View',
             'theme' => [
-                'class' => '\humhub\components\Theme',
+                'class' => '\humhub\modules\ui\view\components\Theme',
                 'name' => 'HumHub',
             ],
         ],
@@ -171,6 +173,7 @@ $config = [
             'ja' => '日本語',
             'hu' => 'Magyar',
             'nb_no' => 'Nnorsk bokmål',
+            'nn_no' => 'Nynorsk',
             'zh_cn' => '中文(简体)',
             'zh_tw' => '中文(台灣)',
             'an' => 'Aragonés',
@@ -189,6 +192,8 @@ $config = [
             'lt' => 'lietuvių kalba',
             'ht' => 'Kreyòl ayisyen',
             'lv' => 'Latvijas',
+            'sl' => 'Slovenščina',
+            'hr' => 'Hrvatski',
         ],
         'ldap' => [
             // LDAP date field formats

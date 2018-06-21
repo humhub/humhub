@@ -2,6 +2,6 @@
 return array (
   'Advanced' => 'Avansert',
   'Basic' => 'Basic',
-  'General' => 'Gennerelt',
+  'General' => 'Generelt',
   'Permissions' => 'Tilatelser',
 );

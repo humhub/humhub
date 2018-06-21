@@ -2,21 +2,27 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\comment\models;
 
+use Yii;
+use yii\db\ActiveRecord;
+use yii\base\Exception;
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\user\models\User;
+use humhub\modules\user\models\Mentioning;
+use humhub\modules\post\models\Post;
+use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
-use Yii;
-use humhub\modules\post\models\Post;
-use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\comment\activities\NewComment;
-use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
+use humhub\modules\comment\live\NewComment as NewCommentLive;
 
 /**
  * This is the model class for table "comment".
@@ -65,9 +71,9 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
+                'class' => PolymorphicRelation::className(),
                 'mustBeInstanceOf' => [
-                    \yii\db\ActiveRecord::className(),
+                    ActiveRecord::className(),
                 ]
             ]
         ];
@@ -90,7 +96,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         try {
             $this->updateContentSearch();
-        } catch (\yii\base\Exception $ex) {
+        } catch (Exception $ex) {
             Yii::error($ex);
         }
 
@@ -132,13 +138,13 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             // Update updated_at etc..
             $this->refresh();
 
-            \humhub\modules\comment\notifications\NewComment::instance()
+            NewCommentNotification::instance()
                     ->from(Yii::$app->user->getIdentity())
                     ->about($this)
                     ->sendBulk($followers);
 
             if ($this->content->container) {
-                Yii::$app->live->send(new \humhub\modules\comment\live\NewComment([
+                Yii::$app->live->send(new NewCommentLive([
                     'contentContainerId' => $this->content->container->id,
                     'visibility' => $this->content->visibility,
                     'contentId' => $this->content->id,
@@ -160,13 +166,13 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      */
     private function filterMentionings(&$followers, $mentionedUsers)
     {
-        if(empty($mentionedUsers)) {
+        if (empty($mentionedUsers)) {
             return;
         }
 
         foreach($followers as $i => $follower) {
             foreach($mentionedUsers as $mentioned) {
-                if($follower->is($mentioned)) {
+                if ($follower->is($mentioned)) {
                     unset($followers[$i]);
                     continue 2;
                 }
@@ -263,14 +269,16 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         return $this->message;
     }
 
-    public function canDelete($userId = "")
+    public function canDelete($userId = '')
     {
 
-        if ($userId == "")
+        if ($userId == '') {
             $userId = Yii::$app->user->id;
+        }
 
-        if ($this->created_by == $userId)
+        if ($this->created_by == $userId) {
             return true;
+        }
 
         if (Yii::$app->user->isAdmin()) {
             return true;
@@ -282,5 +290,4 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
         return false;
     }
-
 }

@@ -7,22 +7,16 @@
 
 namespace humhub\widgets;
 
-use kartik\base\TranslationTrait;
-use kartik\base\WidgetTrait;
 use Yii;
 
-class TimePicker extends \kartik\time\TimePicker
+/**
+ * Class TimePicker
+ *
+ * @see \humhub\modules\ui\form\widgets\TimePicker
+ * @deprecated since 1.3
+ * @package humhub\widgets
+ */
+class TimePicker extends \humhub\modules\ui\form\widgets\TimePicker
 {
-    public function init()
-    {
-        parent::init();
 
-        if (!isset($this->pluginOptions['showMeridian'])) {
-            $this->pluginOptions['showMeridian'] = Yii::$app->formatter->isShowMeridiem();
-        }
-
-        if (!isset($this->pluginOptions['defaultTime'])) {
-            $this->pluginOptions['defaultTime'] = ($this->pluginOptions['showMeridian']) ? '10:00 AM' : '10:00';
-        }
-    }
 }

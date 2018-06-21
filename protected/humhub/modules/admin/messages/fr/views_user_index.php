@@ -6,7 +6,7 @@ return array (
   'Last login' => 'Dernière connexion',
   'Overview' => 'Aperçu',
   'Send invite' => 'Envoyer une invitation',
-  'Settings' => 'Réglages',
+  'Settings' => 'Paramètres',
   'This overview contains a list of each registered user with actions to view, edit and delete users.' => 'Cet écran affiche la liste de tous les utilisateurs enregistrés et les commandes pour voir, modifier et supprimer des utilisateurs.',
   'Users' => 'Utilisateurs',
   'never' => 'jamais',

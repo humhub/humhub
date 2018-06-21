@@ -23,6 +23,16 @@ class HForm extends \yii\base\Component
     const EVENT_BEFORE_VALIDATE = 'beforeValidate';
     const EVENT_AFTER_VALIDATE = 'afterValidate';
 
+    /**
+     * @since 1.2.6
+     */
+    const EVENT_AFTER_INIT = 'afterInit';
+    
+    /**
+     * @since 1.2.6
+     */
+    const EVENT_BEFORE_RENDER = 'beforeRender';
+
     public $showErrorSummary;
     protected $form;
     public $primaryModel = null;
@@ -40,6 +50,7 @@ class HForm extends \yii\base\Component
         $this->primaryModel = $primaryModel;
 
         $this->init();
+        $this->trigger(static::EVENT_AFTER_INIT);
     }
 
     public function submitted($buttonName = "")
@@ -118,6 +129,8 @@ class HForm extends \yii\base\Component
     public function render($form)
     {
         $this->form = $form;
+
+        $this->trigger(static::EVENT_BEFORE_RENDER);
 
         $out = $this->renderElements($this->definition['elements']);
         $out .= $this->renderButtons($this->definition['buttons']);
@@ -237,11 +250,11 @@ class HForm extends \yii\base\Component
                         return $field;
                     case 'multiselectdropdown':
                         return MultiSelectField::widget([
-                                    'form' => $this->form,
-                                    'model' => $model,
-                                    'attribute' => $name,
-                                    'items' => $definition['items'],
-                                    'options' => $definition['options']
+                            'form' => $this->form,
+                            'model' => $model,
+                            'attribute' => $name,
+                            'items' => $definition['items'],
+                            'options' => $definition['options']
                         ]);
                     case 'dropdownlist':
                         return $this->form->field($model, $name)->dropDownList($definition['items'], $options);
@@ -279,15 +292,15 @@ class HForm extends \yii\base\Component
                         $yearRange = isset($definition['yearRange']) ? $definition['yearRange'] : (date('Y') - 100) . ":" . (date('Y') + 100);
 
                         return $this->form->field($model, $name)->widget(\yii\jui\DatePicker::className(), [
-                                    'dateFormat' => $format,
-                                    'clientOptions' => [
-                                        'changeYear' => true,
-                                        'yearRange' => $yearRange,
-                                        'changeMonth' => true,
-                                        'disabled' => (isset($options['readOnly']) && $options['readOnly'])
-                                    ],
-                                    'options' => [
-                                        'class' => 'form-control']
+                            'dateFormat' => $format,
+                            'clientOptions' => [
+                                'changeYear' => true,
+                                'yearRange' => $yearRange,
+                                'changeMonth' => true,
+                                'disabled' => (isset($options['readOnly']) && $options['readOnly'])
+                            ],
+                            'options' => [
+                                'class' => 'form-control']
                         ]);
                     case 'markdown':
                         $options['id'] = $name;

@@ -1,9 +1,10 @@
 <?php
+
 use humhub\widgets\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
-use yii\helpers\Url;
 use humhub\modules\space\widgets\SpaceNameColorInput;
+use yii\helpers\Url;
 
 /* @var $model \humhub\modules\space\models\Space */
 /* @var $visibilityOptions array */
@@ -25,7 +26,7 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
             </a>
 
             <div id="collapse-access-settings" class="panel-collapse collapse">
-                <br/>
+                <br>
                 <div class="row">
                     <div class="col-md-6">
                         <?= $form->field($model, 'visibility')->radioList($visibilityOptions)->hint(false); ?>
@@ -38,22 +39,20 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
         </div>
 
         <div class="modal-footer">
-            <?= ModalButton::submitModal(Url::to(['/space/create/create']), Yii::t('SpaceModule.views_create_create', 'Next')) ?>
-            <?php /** ModalButton::submitModal(Url::to(['/space/create/create', 'skip' => 1]), Yii::t('SpaceModule.views_create_create', 'Skip'))
-                ->setType('default')->icon('fa-forward', true)->cssClass('tt')->options(['title' => Yii::t('SpaceModule.views_create_create', 'Skip other steps')]) */?>
+            <?= ModalButton::submitModal(Url::to(['/space/create/create']), Yii::t('SpaceModule.views_create_create', 'Next')); ?>
         </div>
     <?php ActiveForm::end(); ?>
 <?php ModalDialog::end(); ?>
 
-<script type="text/javascript">
+<script>
 
     var $checkedVisibility = $('input[type=radio][name="Space[visibility]"]:checked');
-    if($checkedVisibility.length && $checkedVisibility[0].value == 0) {
+    if ($checkedVisibility.length && $checkedVisibility[0].value == 0) {
         $('.spaceJoinPolicy').hide();
     }
 
     $('input[type=radio][name="Space[visibility]"]').on('change', function() {
-        if(this.value == 0) {
+        if (this.value == 0) {
             $('.spaceJoinPolicy').fadeOut();
         } else {
             $('.spaceJoinPolicy').fadeIn();
@@ -71,4 +70,5 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
         $('#access-settings-link i').removeClass('fa-caret-down');
         $('#access-settings-link i').addClass('fa-caret-right');
     });
+
 </script>

@@ -19,7 +19,7 @@ use humhub\modules\file\converter\TextConverter;
  * 
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends \yii\base\BaseObject
 {
 
     /**

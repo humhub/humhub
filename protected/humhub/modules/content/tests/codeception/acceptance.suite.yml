@@ -10,13 +10,12 @@
 
 class_name: AcceptanceTester
 modules:
-    enabled:
-        - WebDriver
-        - tests\codeception\_support\WebHelper
-        - tests\codeception\_support\DynamicFixtureHelper
-    config:
-        WebDriver:
-            url: http://localhost:8080/
-            browser: firefox
-            window_size: 1024x768
-            lang: en
+  enabled:
+    - WebDriver
+    - tests\codeception\_support\WebHelper
+    - tests\codeception\_support\DynamicFixtureHelper
+  config:
+    WebDriver:
+      url: 'http://localhost:8080/'
+      browser: chrome
+      port: 4444

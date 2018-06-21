@@ -2,8 +2,8 @@
 return array (
   '<strong>Something</strong> went wrong' => '<strong>Hiba</strong> történt',
   'Followers' => 'Követő',
-  'Following' => '',
-  'Friends' => '',
+  'Following' => 'Követett',
+  'Friends' => 'Barát',
   'Ok' => '',
-  'Spaces' => '',
+  'Spaces' => 'Témakör',
 );

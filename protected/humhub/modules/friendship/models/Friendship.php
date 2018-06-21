@@ -151,9 +151,9 @@ class Friendship extends \humhub\components\ActiveRecord
      * Returns a query for friends of a user
      * 
      * @return \yii\db\ActiveQuery
-     * @param type $user
+     * @param User $user
      */
-    public static function getFriendsQuery($user)
+    public static function getFriendsQuery(User $user)
     {
         $query = User::find();
 
@@ -172,9 +172,9 @@ class Friendship extends \humhub\components\ActiveRecord
      * Returns a query for sent and not approved friend requests of an user
      * 
      * @return \yii\db\ActiveQuery
-     * @param type $user
+     * @param User $user
      */
-    public static function getSentRequestsQuery($user)
+    public static function getSentRequestsQuery(User $user)
     {
         $query = User::find();
 

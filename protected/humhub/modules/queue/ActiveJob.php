@@ -8,7 +8,7 @@
 
 namespace humhub\modules\queue;
 
-use yii\base\Object;
+use yii\base\BaseObject;
 use humhub\modules\queue\interfaces\JobInterface;
 
 /**
@@ -17,7 +17,7 @@ use humhub\modules\queue\interfaces\JobInterface;
  * @since 1.3
  * @author Luke
  */
-abstract class ActiveJob extends Object implements JobInterface
+abstract class ActiveJob extends BaseObject implements JobInterface
 {
 
     /**
