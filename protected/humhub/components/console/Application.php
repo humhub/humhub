@@ -9,6 +9,7 @@
 namespace humhub\components\console;
 
 use Yii;
+use yii\console\Exception;
 
 /**
  * Description of Application
@@ -29,11 +30,8 @@ class Application extends \yii\console\Application
     public function init()
     {
         if (version_compare(phpversion(), '5.6', '<')) {
-            throw new \yii\console\Exception('Installed PHP Version is too old! Required minimum version is PHP 5.6 (Installed: ' . phpversion() . ')');
+            throw new Exception('Installed PHP Version is too old! Required minimum version is PHP 5.6 (Installed: ' . phpversion() . ')');
         }
-
-        parent::init();
-        $this->trigger(self::EVENT_ON_INIT);
 
         if ($this->isDatabaseInstalled()) {
             $baseUrl = Yii::$app->settings->get('baseUrl');
@@ -61,6 +59,9 @@ class Application extends \yii\console\Application
                 $this->urlManager->hostInfo = $hostInfo;
             }
         }
+
+        parent::init();
+        $this->trigger(self::EVENT_ON_INIT);
     }
 
     /**
