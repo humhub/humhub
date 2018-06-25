@@ -25,7 +25,8 @@ Facebook
 --------
 In order to use Facebook OAuth you must register your application at <https://developers.facebook.com/apps> then follow the below instructions.
 
-- In your app settings under **Basic** set your **Site URL**
+- In your app settings under **Basic** set your **Site URL**.
+- Under **Settings > Advanced > Domain Manager** add any sub-domains used by the app.
 - Under **Facebook Login > Client OAuth Settings > Valid OAuth Redirect URIs** place your `https://domain/path-to-humhub/user/auth/external?authclient=facebook` URL.
 > https://domain/path-to-humhub/user/auth/external?authclient=facebook (With clean urls)
 
