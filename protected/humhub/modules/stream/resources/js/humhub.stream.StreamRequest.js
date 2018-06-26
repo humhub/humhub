@@ -57,7 +57,7 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
     StreamRequest.prototype.load = function() {
         this.stream.trigger('humhub:stream:beforeLoadEntries', [this.stream, this]);
 
-        if(!this.stream.canLoadMore()) {
+        if(this.stream.isLoading()) {
             return Promise.resolve();
         }
 
@@ -100,13 +100,15 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
     };
 
     StreamRequest.prototype.getRequestData = function() {
-        let data = {};
+        var data = {};
 
         var that = this;
-        data[this.buildRequestDataKey('sort')] = this.sort;
 
-        data[this.buildRequestDataKey('from')] = this.from;
-        data[this.buildRequestDataKey('limit')] = this.limit;
+        if(!this.contentId) {
+            data[this.buildRequestDataKey('sort')] = this.sort;
+            data[this.buildRequestDataKey('from')] = this.from;
+            data[this.buildRequestDataKey('limit')] = this.limit;
+        }
 
         data[this.buildRequestDataKey('contentId')] = this.contentId;
         data[this.buildRequestDataKey('suppressionOnly')] = this.suppressionsOnly;

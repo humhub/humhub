@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>HTML5 placeholder jQuery Plugin</title>
+		<style>
+			body { font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; }
+			input, textarea { font-size: 1em; font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;}
+			input { width: 250px; }
+			input[type="radio"], input[type="checkbox"] { width: auto }
+			label code { display: inline-block; width: 200px; }
+			textarea { height: 2em; width: 20em;, font-family: sans-serif; }
+			.my-placeholder { color: #aaa; }
+			.note { border: 1px solid orange; font-size: 13px; padding: 1em; background: #ffffe0; }
+		</style>
+	</head>
+
+	<body>
+		<h1>HTML5 Placeholder jQuery Plugin</h1>
+
+		<a href="https://github.com/mathiasbynens/jquery-placeholder"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+		<form method="GET" action="">
+			<input type="radio" name="color" value="red" placeholder="This can't be seen"> Red
+			<input type="radio" name="color" value="green" placeholder="This can't be seen"> Green
+
+			<br />
+
+			<input type="checkbox" name="fruits" value="apple" placeholder="This can't be seen"> Apple
+			<input type="checkbox" name="fruits" value="banana" placeholder="This can't be seen"> Banana
+
+			<br />
+	
+			<input type="hidden" name="hidden" placeholder="This can't be seen" value="secret">
+
+			<br />
+
+			<input type="search" name="search" placeholder="type=search">
+
+			<br />
+			<br />
+
+			<input type="text" name="name" placeholder="type=text">
+
+			<br />
+			<br />
+
+			<input type="email" name="email" placeholder="type=email" value="prefilled@example.com">
+
+			<br />
+			<br />
+			
+			<input type="url" name="url" placeholder="type=url" value="http://prefilled.example.com">
+
+			<br />
+			<br />
+
+			<input type="tel" name="tel" placeholder="type=tel">
+
+			<br />
+			<br />
+	
+			<input type="password" name="password" placeholder="type=password" id="p">
+
+			<br />
+			<br />
+		
+			<textarea name="message" placeholder="textarea"></textarea>
+
+			<br />
+			
+			<input type="text" name="location" disabled="disabled" placeholder="disabled type=text">
+
+			<br />
+		
+			<input type="password" name="code" disabled="disabled" placeholder="disabled type=password">
+
+			<br />
+	
+			<textarea name="comments" disabled="disabled" placeholder="disabled textarea"></textarea>
+			
+			<br />
+			<br />
+			
+			<label for="p">A Label: Click me to focus password field up above</label>
+
+			<br />
+			<br />
+
+			<div class="wrapped">
+				<input type="password" name="password2" placeholder="type=password 2">
+			</div>
+
+			<br />
+
+			<input type="submit" value="type=submit"> 
+			<input type="reset" value="type=reset">
+		</form>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="jquery.placeholder.js"></script>
+		<script>
+			// To test the @id toggling on password inputs in browsers that don’t support changing an input’s @type dynamically (e.g. Firefox 3.6 or IE), uncomment this:
+			// $.fn.hide = function() { return this; }
+			// Then uncomment the last rule in the <style> element (in the <head>).
+			$(function() {
+				// Invoke the plugin
+				$('input, textarea').placeholder({customClass:'my-placeholder'});
+				// That’s it, really.
+				
+				var html;
+
+				if ($.fn.placeholder.input && $.fn.placeholder.textarea) {
+					html = '<strong>Your current browser natively supports <code>placeholder</code> for <code>input</code> and <code>textarea</code> elements.</strong> The plugin won’t run in this case, since it’s not needed. If you want to test the plugin, use an older browser.';
+				} else if ($.fn.placeholder.input) {
+					html = '<strong>Your current browser natively supports <code>placeholder</code> for <code>input</code> elements, but not for <code>textarea</code> elements.</strong> The plugin will only do its thang on the <code>textarea</code>s.';
+				}
+
+				if (html) {
+					$('<p class="note">' + html + '</p>').insertBefore('form');
+				}
+			});
+		</script>
+	</body>
+</html>

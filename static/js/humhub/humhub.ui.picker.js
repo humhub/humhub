@@ -369,7 +369,7 @@ humhub.module('ui.picker', function (module, require, $) {
     };
 
     Picker.prototype.remove = function (id) {
-        let values = this.val();
+        var values = this.val();
         if(values.indexOf(id) >= 0) {
             values.splice(values.indexOf(id), 1);
             this.$.val(values).trigger('change');

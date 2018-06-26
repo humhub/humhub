@@ -1,0 +1,40 @@
+{
+  "name": "jquery-placeholder",
+  "version": "2.3.1",
+  "title": "HTML5 Placeholder jQuery Plugin",
+  "description": "A jQuery plugin that enables HTML5 placeholder behavior for browsers that aren’t trying hard enough yet",
+  "author": {
+    "name": "Mathias Bynens",
+    "url": "https://mathiasbynens.be/"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mathiasbynens/jquery-placeholder.git"
+  },
+  "homepage": "https://github.com/mathiasbynens/jquery-placeholder",
+  "bugs": {
+    "url": "https://github.com/mathiasbynens/jquery-placeholder/issues"
+  },
+  "main": "jquery.placeholder.js",
+  "files": [ "jquery.placeholder.js" ],
+  "directories": {
+    "test": "tests"
+  },
+  "keywords": [
+    "form",
+    "placeholder",
+    "jQuery",
+    "jquery-plugin"
+  ],
+  "peerDependencies": {
+    "jquery": "*"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-uglify": "^0.7.0",
+    "grunt-notify": "^0.4.1",
+    "load-grunt-tasks": "^2.0.0",
+    "time-grunt": "^1.0.0"
+  }
+}

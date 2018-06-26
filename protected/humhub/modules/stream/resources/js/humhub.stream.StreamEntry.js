@@ -24,6 +24,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
     var loader = require('ui.loader');
     var modal = require('ui.modal');
     var additions = require('ui.additions');
+    var streamModule = require('stream');
 
     /**
      * Represents a single stream entry within a stream.
@@ -74,8 +75,8 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
 
         promise.then(function ($confirm) {
             if ($confirm) {
-                that.remove(); // Make sure to remove the wallentry node.
-                module.log.success('success.delete');
+                that.$.remove(); // Make sure to remove the wallentry node.
+                streamModule.log.success('success.delete');
             }
         }).catch(function (err) {
             module.log.error(err, true);
@@ -194,7 +195,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         }).status({
             200: function (response) {
                 that.$.html(response.html);
-                module.log.success('success.edit');
+                streamModule.log.success('success.edit');
                 that.apply();
                 that.highlight();
             },
@@ -248,7 +249,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         client.post(evt).then(function (response) {
             if (response.success) {
                 that.reload();
-                module.log.success('saved');
+                streamModule.log.success('saved');
             } else {
                 module.log.error(response, true);
                 that.loader(false);
@@ -270,7 +271,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         client.post(evt.url, evt).then(function (data) {
             if (data.success) {
                 that.remove().then(function () {
-                    stream.loadEntry(that.getKey(), {'prepend': true});
+                    stream.load({'contentId': that.getKey(), 'prepend': true});
                 });
             } else if (data.info) {
                 module.log.info(data.info, true);
@@ -314,8 +315,8 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
             that.$.fadeOut(function () {
                 that.$.replaceWith($newEntry);
                 // Sinc the response does not only include the node itself we have to search it.
-                that.$ = $newEntry.find(DATA_STREAM_ENTRY_SELECTOR)
-                    .addBack(DATA_STREAM_ENTRY_SELECTOR);
+                that.$ = $newEntry.find(StreamEntry.SELECTOR)
+                    .addBack(StreamEntry.SELECTOR);
 
                 that.apply();
 
@@ -338,13 +339,13 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         client.post(evt.url).then(function (response) {
             if (response.success) {
                 // Either just remove entry or reload it in case the stream includes archived entries
-                if (that.stream().hasFilter(FILTER_INCLUDE_ARCHIVED)) {
+                if (that.stream().filter.isActive('entry_archived')) {
                     that.reload().then(function () {
-                        module.log.success('success.archive', true);
+                        streamModule.log.success('success.archive', true);
                     });
                 } else {
                     that.remove().then(function () {
-                        module.log.success('success.archive', true);
+                        streamModule.log.success('success.archive', true);
                     });
                 }
             } else {
@@ -367,9 +368,9 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         client.post(evt.url).then(function (response) {
             if (response.success) {
                 that.reload().then(function () {
-                    module.log.success('success.unarchive', true);
+                    streamModule.log.success('success.unarchive', true);
                 }).catch(function (err) {
-                    module.log.error('error.default', true);
+                    streamModule.log.error('error.default', true);
                 });
             }
         }).catch(function (e) {

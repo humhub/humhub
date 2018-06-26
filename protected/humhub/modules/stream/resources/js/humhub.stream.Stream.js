@@ -164,6 +164,8 @@ humhub.module('stream.Stream', function (module, require, $) {
             return Promise.resolve(this.handleLastEntryLoaded());
         } else if (request.options.insertAfter) {
             return this.handleInsertAfterResponse(request);
+        } else if(request.options.prepend) {
+            return this.prependResponseEntries(request);
         } else {
             return this.handleLoadMoreResponse(request);
         }
@@ -189,7 +191,11 @@ humhub.module('stream.Stream', function (module, require, $) {
     };
 
     Stream.prototype.canLoadMore = function () {
-        return !(this.state.loading || this.state.lastEntryLoaded);
+        return !this.isLoading() && !this.state.lastEntryLoaded;
+    };
+
+    Stream.prototype.isLoading = function () {
+        return this.state.loading === true;
     };
 
     Stream.prototype.load = function (options) {
@@ -398,7 +404,8 @@ humhub.module('stream.Stream', function (module, require, $) {
 
             entry.loader();
 
-            that.loadEntry(entry.getKey()).then(function ($entryNode) {
+            that.loadEntry(entry.getKey()).then(function (request) {
+                var $entryNode = $(request.getResultHtml());
                 // If no entry was returned it means it is not visible in the current scope
                 if (!$entryNode || !$entryNode.length) {
                     entry.remove();
@@ -415,6 +422,8 @@ humhub.module('stream.Stream', function (module, require, $) {
     Stream.prototype.onChange = function () {
         var hasEntries = this.hasEntries();
 
+        this.$.find('.streamMessage').remove();
+
         if (!hasEntries) {
             this.onEmptyStream();
         } else if (this.isShowSingleEntry()) {
@@ -424,9 +433,13 @@ humhub.module('stream.Stream', function (module, require, $) {
         }
     };
 
+    Stream.prototype.hasFilter = function (filter) {
+        return this.filter.hasFilter(filter);
+    }
+
     Stream.prototype.onEmptyStream = function () {
         var hasActiveFilters = this.hasActiveFilters();
-        this.$.find('streamMessage').remove();
+        this.$.find('.streamMessage').remove();
 
         this.$content.append(string.template(this.static('templates').streamMessage, {
             message: (hasActiveFilters) ? this.options.streamEmptyFilterMessage : this.options.streamEmptyMessage,
