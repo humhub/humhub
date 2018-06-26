@@ -8,6 +8,7 @@
 
 namespace humhub\components\console;
 
+use humhub\libs\BaseSettingsManager;
 use Yii;
 use yii\console\Exception;
 
@@ -33,7 +34,7 @@ class Application extends \yii\console\Application
             throw new Exception('Installed PHP Version is too old! Required minimum version is PHP 5.6 (Installed: ' . phpversion() . ')');
         }
 
-        if ($this->isDatabaseInstalled()) {
+        if (BaseSettingsManager::isDatabaseInstalled()) {
             $baseUrl = Yii::$app->settings->get('baseUrl');
             if (!empty($baseUrl)) {
 

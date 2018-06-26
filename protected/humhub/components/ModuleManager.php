@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use humhub\components\bootstrap\ModuleAutoLoader;
+use humhub\libs\BaseSettingsManager;
 use humhub\models\ModuleEnabled;
 use Yii;
 use yii\base\Component;
@@ -88,7 +89,7 @@ class ModuleManager extends Component
             return;
         }
 
-        if (Yii::$app instanceof console\Application && !Yii::$app->isDatabaseInstalled()) {
+        if (!BaseSettingsManager::isDatabaseInstalled()) {
             $this->enabledModules = [];
         } else {
             $this->enabledModules = ModuleEnabled::getEnabledIds();

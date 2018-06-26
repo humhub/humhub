@@ -53,7 +53,8 @@ class SettingsManager extends BaseSettingsManager
      *
      * @param ContentContainerActiveRecord|null $container if null all content containers will be flushed
      */
-    public function flushContentContainer(ContentContainerActiveRecord $container = null) {
+    public function flushContentContainer(ContentContainerActiveRecord $container = null)
+    {
         if ($container === null) {
             $this->contentContainers = [];
         } else {
@@ -67,7 +68,7 @@ class SettingsManager extends BaseSettingsManager
      */
     public function user($user = null)
     {
-        if(!$user) {
+        if (!$user) {
             $user = Yii::$app->user->getIdentity();
         }
 
@@ -112,5 +113,6 @@ class SettingsManager extends BaseSettingsManager
 
         return parent::get($name, $default);
     }
+
 
 }
