@@ -4,6 +4,7 @@
  * Application configuration for unit tests
  */
 $testConfig = [
+
     'components' => [
         'request' => [
             'cookieValidationKey' => 'test'
@@ -11,6 +12,9 @@ $testConfig = [
         'user' => [
         	'enableSession' => false
         ],
+        'assetManager' => [
+            'basePath' => '@root/assets/'
+        ]
     ],
 ];
 
