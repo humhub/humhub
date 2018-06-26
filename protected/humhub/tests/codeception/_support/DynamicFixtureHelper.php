@@ -72,7 +72,7 @@ class DynamicFixtureHelper extends Module
     public function _after(\Codeception\TestCase $test)
     {
         if ($this->beforeTest) {
-            $this->unloadFixtures();
+            //$this->unloadFixtures();
         }
     }
 

@@ -57,7 +57,7 @@ class FixtureHelper extends Module
     public function globalFixtures()
     {
         return [
-            InitDbFixture::className(),
+            InitDbFixture::class,
         ];
     }
 
