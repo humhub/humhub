@@ -249,8 +249,12 @@ abstract class BaseSettingsManager extends Component
      */
     public static function isDatabaseInstalled()
     {
-        if (in_array('setting', Yii::$app->db->schema->getTableNames())) {
-            return true;
+        try {
+            if (in_array('setting', Yii::$app->db->schema->getTableNames())) {
+                return true;
+            }
+        } catch (\Exception $ex) {
+            return false;
         }
 
         return false;
