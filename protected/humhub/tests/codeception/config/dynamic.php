@@ -22,24 +22,6 @@
       array (
       ),
       'useFileTransport' => true,
-      'view' => 
-      array (
-        'theme' => 
-        array (
-          'name' => 'HumHub',
-          'basePath' => 'E:\\codebase\\humhub\\master/themes\\HumHub',
-          'publishResources' => false,
-        ),
-      ),
-    ),
-    'view' => 
-    array (
-      'theme' => 
-      array (
-        'name' => 'HumHub',
-        'basePath' => 'E:\\codebase\\humhub\\master/themes\\HumHub',
-        'publishResources' => false,
-      ),
     ),
     'cache' => 
     array (
