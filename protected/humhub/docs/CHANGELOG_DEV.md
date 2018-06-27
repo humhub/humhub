@@ -59,3 +59,4 @@ HumHub Change Log - v1.3-dev Branch
 - Chg: Renamed information cronjob section to Background jobs and added queue status
 - Chg: MySQL queue is now the default job queuing driver
 - Enh: Add steps to using Facebook Oauth (@Felli)
+- Enh: Added css `footer-nav` class for footer navigation

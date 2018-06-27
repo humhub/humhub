@@ -3,6 +3,8 @@
 namespace humhub\modules\user\tests\codeception\unit;
 
 use humhub\modules\comment\models\Comment;
+use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Mentioning;
@@ -20,11 +22,11 @@ class MentionTest extends HumHubDbTestCase
         $this->becomeUser('User2');
         $space = Space::findOne(['id' => 1]);
 
-        $post = new Post(['message' => '@-u01e50e0d-82cd-41fc-8b0c-552392f5839c']);
+        $post = new Post(['message' => ' [url](mention:01e50e0d-82cd-41fc-8b0c-552392f5839c "url")']);
         $post->content->container = $space;
         $post->save();
 
-        Mentioning::parse($post, $post->message);
+        ProsemirrorRichText::getProcessor($post->message, $post)->parseMentioning();
 
         $this->assertHasNotification(Mentioned::class, $post);
         $this->assertMailSent(1, 'Mentioned Notification');
@@ -36,8 +38,8 @@ class MentionTest extends HumHubDbTestCase
 
         // Mention Admin in Space 1 (Admin is author of post)
         $comment = new Comment([
-            'message' => 'Hi @-u01e50e0d-82cd-41fc-8b0c-552392f5839c',
-            'object_model' => Post::className(),
+            'message' => 'Hi [url](mention:01e50e0d-82cd-41fc-8b0c-552392f5839c "url")',
+            'object_model' => Post::class,
             'object_id' => 7
         ]);
 
@@ -55,8 +57,8 @@ class MentionTest extends HumHubDbTestCase
 
         // Mention User1 in post
         $comment = new Comment([
-            'message' => 'Hi @-u01e50e0d-82cd-41fc-8b0c-552392f5839d',
-            'object_model' => Post::className(),
+            'message' => 'Hi [url](mention:01e50e0d-82cd-41fc-8b0c-552392f5839d "url")',
+            'object_model' => Post::class,
             'object_id' => 7
         ]);
 
