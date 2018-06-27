@@ -437,6 +437,14 @@ humhub.module('ui.richtext', function(module, require, $) {
                         // reset query count
                         query.length = 0;
                     }
+                },
+                beforeInsert: function(value, $li) {
+                    if ($li.data('item-data').link == undefined) {
+                        return "";
+                    }
+                    else {
+                        return value;
+                    }
                 }
             }
         };
