@@ -35,7 +35,15 @@ The views will be automatically loaded from the specified base theme.
 
 ## Space & Profile Layouts
 
-The sidebars are now moved into own files `_sidebar.php` view files.
+The sidebar handling of the content container layouts has changed.
+
+Please check following view files for changes:
+
+- `/protected/humhub/modules/user/views/profile/_layout.php`
+- `/protected/humhub/modules/user/views/space/_layout.php`
+- `/protected/humhub/modules/user/views/profile/home.php`
+- `/protected/humhub/modules/user/views/space/home.php`
+
 
 ## New Richtext
 
@@ -43,7 +51,7 @@ The sidebars are now moved into own files `_sidebar.php` view files.
 
  - `/protected/humhub/modules/comment/views/comment/edit.php`
  - `/protected/humhub/modules/comment/widgets/views/form.php`
- 
+
  
 #### Added wrapper div `post-richtext-input-group` to
 
