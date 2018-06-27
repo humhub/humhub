@@ -52,5 +52,6 @@ use yii\helpers\Html;
     // scroll to top of list
     $(".modal-body").animate({scrollTop: 0}, 200);
 
+    $(document).on('pjax:end',   function() { humhub.modules.ui.modal.get("#globalModal").close(); });
 </script>
 
