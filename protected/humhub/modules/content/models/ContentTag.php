@@ -71,12 +71,21 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  */
 class ContentTag extends ActiveRecord
 {
+    /**
+     * @var string id of the module related to this content tag concept
+     */
     public $moduleId;
 
+    /**
+     * @var string class of ContentTagAddition (optional), if set a call to $tag->addition will create an empty addition instance,
+     * the addition will also be validated and saved in the tag save process.
+     */
     public $additionClass;
 
-    protected $_container;
-
+    /**
+     * @var bool if set to true the default search queries will include a type condition beside the module condition,
+     * this is only required if one module provides multiple content tag concepts.
+     */
     public $includeTypeQuery = false;
 
     /**
@@ -182,8 +191,7 @@ class ContentTag extends ActiveRecord
             $addition = parent::__get('addition');
             if (!$this->isRelationPopulated('addition') || $addition === null) {
                 $addition = Yii::createObject($this->additionClass);
-                $this->populateRelation('addition', $addition);
-                $addition->setTag($this);
+                $this->setAddition($addition);
             }
             return $addition;
         }
@@ -195,14 +203,14 @@ class ContentTag extends ActiveRecord
      */
     public function validate($attributeNames = null, $clearErrors = true)
     {
-        $result = parent::validate($attributeNames, $clearErrors);
         if($attributeNames === null || in_array('addition', $attributeNames)) {
             // the addition will only be validated if $tag->addition has been called
             if($this->hasAddition() && !$this->addition->validate()) {
                 return false;
             }
         }
-        return $result;
+
+        return parent::validate($attributeNames, $clearErrors);
     }
 
     public function load($data, $formName = null)
@@ -216,7 +224,7 @@ class ContentTag extends ActiveRecord
     /**
      * Returns the ContentContainer relation as ActiveQuery to this tag or null if this is a global tag.
      *
-     * Note: In order to retrieve the actual Cotnainer (Space/User) use `getContainer()`.
+     * Note: In order to retrieve the actual Container (Space/User) use `getContainer()`.
      * @return \yii\db\ActiveQuery
      */
     public function getContentContainer()
@@ -240,11 +248,7 @@ class ContentTag extends ActiveRecord
             return null;
         }
 
-        if ($this->_container === null) {
-            $this->_container = $this->contentContainer->getPolymorphicRelation();
-        }
-
-        return $this->_container;
+        return $this->contentContainer->getPolymorphicRelation();
     }
 
     /**
@@ -273,13 +277,21 @@ class ContentTag extends ActiveRecord
         return $this->hasOne($this->additionClass, ['tag_id' => 'id']);
     }
 
+    /**
+     * @return bool check if this content tag has an related addition
+     */
     public function hasAddition()
     {
         return $this->additionClass != null && $this->isRelationPopulated('addition');
     }
 
+    /**
+     * Sets a ContentTagAddition for this instance, note you'll have to call `$tag->save()` manually
+     * @param ContentTagAddition $addition
+     */
     public function setAddition(ContentTagAddition $addition)
     {
+        $this->populateRelation('addition', $addition);
         $addition->setTag($this);
     }
 
@@ -329,6 +341,20 @@ class ContentTag extends ActiveRecord
     }
 
     /**
+     * Find a single instances either by providing an id or other condition.
+     *
+     * @return static
+     */
+    public static function findOne($condition)
+    {
+        if(is_numeric($condition)) {
+            return static::find()->andWhere(['id' => $condition])->one();
+        } else {
+            return static::find()->andWhere($condition)->one();
+        }
+    }
+
+    /**
      * Adds an type filter query to the given $query instance in case $includeTypeQuery of the subclass is set to true and the
      * calling class is not ContentTag class itself.
      *
@@ -336,7 +362,7 @@ class ContentTag extends ActiveRecord
      * @param bool $force
      * @return mixed
      */
-    protected static function typeQuery($query)
+    public static function typeQuery($query)
     {
         $instance = new static;
         if($instance->includeTypeQuery && static::class != ContentTag::class) {
@@ -352,7 +378,7 @@ class ContentTag extends ActiveRecord
      * @param $query ActiveQuery
      * @return mixed
      */
-    protected static function moduleQuery($query)
+    public static function moduleQuery($query)
     {
         $instance = new static;
         if (!empty($instance->moduleId)) {
@@ -362,7 +388,7 @@ class ContentTag extends ActiveRecord
     }
 
     /**
-     *
+     * Finds ContentTag for the given $moduleId
      *
      * @param $moduleId
      * @return \yii\db\ActiveQuery
@@ -385,6 +411,28 @@ class ContentTag extends ActiveRecord
         return $query;
     }
 
+    /**
+     * Finds instances by given name and optionally by contentContainer.
+     * @param $name
+     * @param ContentContainerActiveRecord|int|null $contentContainer
+     * @return ActiveQuery
+     */
+    public static function findByName($name, $contentContainer = null)
+    {
+        if($contentContainer) {
+            $query = static::findByContainer($contentContainer);
+        } else {
+            $query = static::find();
+        }
+
+        $query->andWhere(['content_tag.name' => $name]);
+        return $query;
+    }
+
+    /**
+     * Finds all global content tags of this type.
+     * @return ActiveQuery
+     */
     public static function findGlobal()
     {
         $query = self::find();
@@ -450,11 +498,43 @@ class ContentTag extends ActiveRecord
     }
 
     /**
+     * Deletes all tags by module id
+     * @param ContentContainerActiveRecord|int $contentContainer
+     */
+    public static function deleteByModule($contentContainer = null)
+    {
+        $instance = new static();
+
+        if($contentContainer) {
+            $container_id = $contentContainer instanceof ContentContainerActiveRecord ? $contentContainer->contentcontainer_id : $contentContainer;
+            static::deleteAll(['module_id' => $instance->module_id, 'contentcontainer_id' => $container_id]);
+        } else {
+            static::deleteAll(['module_id' => $instance->module_id]);
+        }
+    }
+
+    /**
+     * Deletes all tags by type
+     * @param ContentContainerActiveRecord|int $contentContainer
+     */
+    public static function deleteByType($contentContainer = null)
+    {
+        $instance = new static();
+
+        if($contentContainer) {
+            $container_id = $contentContainer instanceof ContentContainerActiveRecord ? $contentContainer->contentcontainer_id : $contentContainer;
+            static::deleteAll(['type' => $instance->type, 'contentcontainer_id' => $container_id]);
+        } else {
+            static::deleteAll(['type' => $instance->type]);
+        }
+    }
+
+    /**
      * Finds instances by ContentContainerActiveRecord and optional type.
      *
      * If $includeGlobal is set to true the query will also include global content tags of this type.
      *
-     * @param $container
+     * @param $container ContentContainerActiveRecord|int
      * @param bool $includeGlobal if true the query will include global tags as well @since 1.2.3
      * @return ActiveQuery
      * @internal param ContentContainerActiveRecord|int $record Container instance or contentcontainer_id

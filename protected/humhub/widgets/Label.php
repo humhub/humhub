@@ -42,7 +42,16 @@ class Label extends BootstrapComponent
      */
     public function action($handler, $url = null, $target = null)
     {
-        $this->_link = Link::withAction($this->getText(), $url, $target);
+        $this->_link = Link::withAction($this->getText(), $handler, $url, $target);
+        return $this;
+    }
+
+    public function withLink($link)
+    {
+        if($link instanceof Link) {
+            $this->_link = $link;
+        }
+
         return $this;
     }
 

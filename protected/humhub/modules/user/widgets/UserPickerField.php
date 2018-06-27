@@ -3,6 +3,8 @@
 namespace humhub\modules\user\widgets;
 
 use Yii;
+use humhub\modules\user\models\User;
+use yii\helpers\Html;
 use \yii\helpers\Url;
 use humhub\widgets\BasePickerField;
 
@@ -29,8 +31,10 @@ class UserPickerField extends BasePickerField
      * @inheritdoc 
      */
     public function init() {
-        $this->itemClass = \humhub\modules\user\models\User::className();
-        $this->itemKey = 'guid';
+        $this->itemClass = User::className();
+        if(!$this->itemKey) {
+            $this->itemKey = 'guid';
+        }
     }
     
     /**
@@ -78,7 +82,7 @@ class UserPickerField extends BasePickerField
      */
     protected function getItemText($item)
     {
-        return \yii\helpers\Html::encode($item->displayName);
+        return Html::encode($item->displayName);
     }
 
     /**

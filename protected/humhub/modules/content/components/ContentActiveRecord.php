@@ -8,6 +8,9 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\topic\models\Topic;
+use humhub\modules\topic\widgets\TopicLabel;
+use humhub\widgets\Link;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
@@ -18,6 +21,7 @@ use humhub\modules\content\permissions\ManageContent;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\interfaces\ContentOwner;
+use yii\helpers\Html;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
@@ -162,6 +166,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
             if(!$content) {
                 $content = $this->initContent =  new Content();
+                $content->setPolymorphicRelation($this);
             }
 
             if(!$this->isRelationPopulated('content')) {
@@ -225,6 +230,10 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
         if ($includeContentName) {
             $labels[] = Label::defaultType($this->getContentName())->icon($this->getIcon())->sortOrder(400);
+        }
+
+        foreach (Topic::findByContent($this->content)->all() as $topic) {
+            $labels[] = TopicLabel::forTopic($topic);
         }
 
         return Label::sort($labels);

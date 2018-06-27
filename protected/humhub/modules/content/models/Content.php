@@ -477,8 +477,8 @@ class Content extends ContentDeprecated
      * Adds a new ContentTagRelation for this content and the given $tag instance.
      *
      * @since 1.2.2
-     * @throws InvalidParamException if the provided tag is part of another ContentContainer
-     * @return boolean true if tag relation could be saved or is already assigned otherwise false
+     * @param ContentTag $tag
+     * @return bool if the provided tag is part of another ContentContainer
      */
     public function addTag(ContentTag $tag)
     {
@@ -494,6 +494,19 @@ class Content extends ContentDeprecated
 
         $contentRelation = new ContentTagRelation($this, $tag);
         return $contentRelation->save();
+    }
+
+    /**
+     * Adds the given ContentTag array to this content.
+     *
+     * @since 1.3
+     * @param $tags ContentTag[]
+     */
+    public function addTags($tags)
+    {
+        foreach ($tags as $tag) {
+            $this->addTag($tag);
+        }
     }
 
     /**

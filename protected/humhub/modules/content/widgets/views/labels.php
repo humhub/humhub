@@ -7,7 +7,7 @@ use humhub\widgets\Label;
  * This view shows common labels for wall entries.
  * Its used by WallEntryLabelWidget.
  *
- * @property \humhub\modules\content\components\ContentActiveRecord $object the content object (e.g. Post)
+ * @var \humhub\modules\content\components\ContentActiveRecord $object the content object (e.g. Post)
  *
  * @since 0.5
  */

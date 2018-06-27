@@ -5,14 +5,14 @@
  *
  */
 humhub.module('oembed', function(module, require, $) {
-    let client = require('client');
+    var client = require('client');
 
-    let cache = {};
+    var cache = {};
 
-    let load = function(urls) {
+    var load = function(urls) {
         return new Promise(function(resolve, reject) {
-            let result = {};
-            let requestUrls = [];
+            var result = {};
+            var requestUrls = [];
             urls.forEach(function(url) {
                 if(!cache[url]) {
                     requestUrls.push(url);
@@ -28,14 +28,14 @@ humhub.module('oembed', function(module, require, $) {
         });
     };
 
-    let get = function(url) {
-        let result = cache[url];
+    var get = function(url) {
+        var result = cache[url];
 
         if(result) {
            return $(result);
         }
 
-        let $dom =  $('[data-oembed="' + url + '"]');
+        var $dom =  $('[data-oembed="' + url + '"]');
         if($dom.length) {
             return $dom.clone().show();
         }

@@ -1,0 +1,26 @@
+{
+  "name": "open-sans-fontface",
+  "version": "1.4.2",
+  "main": "./open-sans.css",
+  "homepage": "https://github.com/FontFaceKit/open-sans",
+  "authors": [
+    "Gustavo Henke <gustavo@injoin.com.br>",
+    "Martin Domke <martin.domke@gateprotect.com>"
+  ],
+  "description": "The Open Sans fontface",
+  "keywords": [
+    "font"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FontFaceKit/open-sans"
+  },
+  "license": "Apache License version 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

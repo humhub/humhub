@@ -86,9 +86,20 @@ class Post extends ContentActiveRecord implements Searchable
         return Yii::t('PostModule.models_Post', 'post');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLabels($result = [], $includeContentName = true)
     {
         return parent::getLabels($result, false);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getIcon()
+    {
+        return 'fa-comment';
     }
 
     /**

@@ -57,3 +57,4 @@ HumHub Change Log - v1.3-dev Branch
 - Enh: Automatic theme stylesheet loading including parent theme stylesheets
 - Chg: Moved OpenSans font to core assets
 - Enh: Add steps to using Facebook Oauth (@Felli)
+- Chg: Renamed information cronjob section to Background jobs and added queue status 
