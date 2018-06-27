@@ -166,6 +166,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
 
             if(!$content) {
                 $content = $this->initContent =  new Content();
+                $content->setPolymorphicRelation($this);
             }
 
             if(!$this->isRelationPopulated('content')) {
