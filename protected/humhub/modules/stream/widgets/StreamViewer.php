@@ -84,7 +84,7 @@ class StreamViewer extends JsWidget
      * @var string stream view
      * @since 1.3
      */
-    public $view = 'wallStream';
+    public $view = '@stream/widgets/views/wallStream';
 
     /**
      * @inheritdoc
