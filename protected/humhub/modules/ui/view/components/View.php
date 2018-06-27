@@ -20,6 +20,11 @@ use Yii;
  */
 class View extends \yii\web\View
 {
+    /**
+     * the id of the sidebar block
+     */
+    const BLOCK_SIDEBAR = 'sidebar';
+
 
     private $_pageTitle;
 
@@ -262,5 +267,27 @@ class View extends \yii\web\View
         }
     }
 
+    /**
+     * @return bool checks if a sidebar exists
+     */
+    public function hasSidebar()
+    {
+        return (isset($this->blocks[static::BLOCK_SIDEBAR]));
+    }
+
+
+    /**
+     * Returns the sidebar which is stored in the block called 'sidebar'
+     *
+     * @return string returns the rendered sidebar
+     */
+    public function getSidebar()
+    {
+        if ($this->hasSidebar()) {
+            return $this->blocks[static::BLOCK_SIDEBAR];
+        }
+
+        return '';
+    }
 
 }
