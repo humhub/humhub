@@ -51,10 +51,16 @@ class Theme extends \yii\base\Theme
         if ($this->getBasePath() == '') {
             $this->setBasePath('@webroot/themes/' . $this->name);
         }
+        
+        $pathMap = [];
 
-        $this->pathMap = [
+        if (is_array($this->pathMap)) {
+            $pathMap = $this->pathMap;
+        }
+        
+        $this->pathMap = array_merge($pathMap, [
             '@humhub/views' => $this->getBasePath() . '/views',
-        ];
+        ]);
 
         parent::init();
     }
