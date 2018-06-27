@@ -14,19 +14,33 @@ By default, the PHP Mail Transport is used. <http://php.net/manual/en/mail.setup
 
 
 
-CronJobs
---------
+CronJobs and Job Processing
+---------------------------
 
- - Daily cron command: `> yii cron/daily`
- - Hourly cron command: `> yii cron/hourly`
+- Execute scheduled tasks (**new**):
+> /usr/bin/php /path/to/humhub queue/run
+ 
+You only require this cron jobs if there is no other job worker configured. See [Asynchronous Tasks](asynchronous-tasks.md) for more details.
 
-Example Tab:
+
+- Daily cron jobs (e.g. daily summaries, search index optimization)
+> /usr/bin/php /path/to/humhub cron/daily
+
+
+- Hourly cron jobs (e.g. update e-mails)
+> /usr/bin/php /path/to/humhub cron/hourly
+
+
+**Example CronTab configuration:**
 
 ```
-30 * * * * /path/to/humhub/protected/yii cron/hourly >/dev/null 2>&1
-0 18 * * * /path/to/humhub/protected/yii cron/daily >/dev/null 2>&1
+* * * * *  /usr/bin/php /path/to/humhub/protected/yii queue/run >/dev/null 2>&1
+30 * * * * /usr/bin/php /path/to/humhub/protected/yii cron/hourly >/dev/null 2>&1
+0 18 * * * /usr/bin/php /path/to/humhub/protected/yii cron/daily >/dev/null 2>&1
 ```
+
 > Note: For more help refer to [here](cron-jobs.md)!
+
 
 Url Rewriting (Optional)
 ------------------------
@@ -48,8 +62,8 @@ return [
 
 ```  
 
+Asynchronous Tasks
+------------------
 
-Job Scheduling
---------------
+Please see the chapter [Asynchronous Tasks](asynchronous-tasks.md) for more details about queuing and job processing options.
 
-TBD
