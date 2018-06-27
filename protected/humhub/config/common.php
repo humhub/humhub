@@ -135,7 +135,7 @@ $config = [
             'clients' => [],
         ],
         'queue' => [
-            'class' => 'humhub\modules\queue\driver\Sync',
+            'class' => 'humhub\modules\queue\driver\MySQL',
         ],
         'urlManager' => [
             'class' => 'humhub\components\UrlManager',

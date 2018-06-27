@@ -4,6 +4,8 @@ HumHub Change Log - v1.3-dev Branch
 1.3.0-beta.1  (Not released yet)
 --------------------------------
 
+> Warning: Please read the [Update Notes](https://github.com/humhub/humhub/tree/v1.3-dev/protected/humhub/docs/guide/admin/updating-130.md) before updating!
+
 - Enh: Added file search indexing
 - Enh: Updated composer.json (acs-ferreira)
 - Chg: Switched from Composer FXP plugin to Asset Packagist repository
@@ -56,4 +58,5 @@ HumHub Change Log - v1.3-dev Branch
 - Enh: Added Theme cascading to reduce view overwrites
 - Enh: Automatic theme stylesheet loading including parent theme stylesheets
 - Chg: Moved OpenSans font to core assets
-- Chg: Renamed information cronjob section to Background jobs and added queue status 
+- Chg: Renamed information cronjob section to Background jobs and added queue status
+- Chg: MySQL queue is now the default job queuing driver
