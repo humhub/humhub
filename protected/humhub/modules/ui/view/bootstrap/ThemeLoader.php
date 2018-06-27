@@ -11,6 +11,7 @@ namespace humhub\modules\ui\view\bootstrap;
 use humhub\libs\BaseSettingsManager;
 use humhub\modules\ui\view\components\Theme;
 use humhub\modules\ui\view\helpers\ThemeHelper;
+use Yii;
 use yii\base\BootstrapInterface;
 
 /**
@@ -29,7 +30,7 @@ class ThemeLoader implements BootstrapInterface
     public function bootstrap($app)
     {
         // Skip dynamic theme loading during the installation
-        if (!BaseSettingsManager::isDatabaseInstalled()) {
+        if (!BaseSettingsManager::isDatabaseInstalled() || Yii::getAlias('@web', false) === false) {
             return;
         }
 
