@@ -63,7 +63,7 @@ class WallEntry extends Widget
     /**
      * Defines the way the edit of this wallentry is displayed.
      * 
-     * @var type 
+     * @var string
      */
     public $editMode = self::EDIT_MODE_INLINE;
 
@@ -166,7 +166,7 @@ class WallEntry extends Widget
     }
 
     /**
-     * Returns an array of contextmenu items either in form of a single array:
+     * Returns an array of context menu items either in form of a single array:
      * 
      * ['label' => 'mylabel', 'icon' => 'fa-myicon', 'data-action-click' => 'myaction', ...]
      * 
@@ -174,8 +174,8 @@ class WallEntry extends Widget
      * 
      * [MyWidget::class, [...], [...]]
      * 
-     * If an $editRoute is set this function will include an edit button.
-     * The edit logic can be changed by changing the $editMode.
+     * If an [[editRoute]] is set this function will include an edit button.
+     * The edit logic can be changed by changing the [[editMode]].
      * 
      * @return array
      * @since 1.2

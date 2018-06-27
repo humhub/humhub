@@ -19,6 +19,20 @@ class Yii extends \yii\BaseYii
  * Used for properties that are identical for both WebApplication and ConsoleApplication
  * @property-read \humhub\components\ModuleManager $moduleManager
  * @property-read \humhub\components\i18n\I18N $i18n
+ * @property \humhub\components\mail\Mailer $mailer
+ * @property \humhub\modules\ui\view\components\View $view
+ * @property \humhub\components\SettingsManager $settings
+ * @property \humhub\modules\notification\components\NotificationManager $notification
+ * @property \humhub\components\ModuleManager $moduleManager
+ * @property \humhub\modules\search\engine\Search $search
+ * @property \humhub\components\i18n\I18N $i18n
+ * @property \humhub\components\i18n\Formatter
+ * @property \humhub\components\AssetManager $assetManager
+ * @property \humhub\modules\user\authclient\Collection $authClientCollection
+ * @property \yii\queue\Queue $queue
+ * @property \humhub\components\UrlManager $urlManager
+ * @property \humhub\modules\live\components\Sender $live
+ *
  */
 abstract class BaseApplication extends yii\base\Application
 {

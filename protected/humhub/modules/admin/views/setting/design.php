@@ -25,7 +25,7 @@ $this->registerJsConfig('admin', [
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'theme')->dropDownList($themes); ?>
+    <?= $form->field($model, 'theme')->dropDownList($model->getThemes()); ?>
 
     <?= $form->field($model, 'paginationSize'); ?>
 
@@ -35,7 +35,7 @@ $this->registerJsConfig('admin', [
 
     <?= $form->field($model, 'dateInputDisplayFormat')->dropDownList([
         '' => Yii::t('AdminModule.views_setting_design', 'Auto format based on user language - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'short')]),
-        'php:d/m/Y' => Yii::t('AdminModule.views_setting_design', 'Fixed format (mm/dd/yyyy) - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]),
+        'php:d/m/Y' => Yii::t('AdminModule.views_setting_design', 'Fixed format (dd/mm/yyyy) - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]),
     ]);
     ?>
     <strong><?= Yii::t('AdminModule.views_setting_index', 'Wall entry layout'); ?></strong>

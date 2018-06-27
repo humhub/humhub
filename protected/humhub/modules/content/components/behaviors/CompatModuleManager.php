@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -11,18 +10,19 @@ namespace humhub\modules\content\components\behaviors;
 use yii\base\Behavior;
 
 /**
- * Compatiblity layer for old ContentContainer ModuleManager calls.
- * 
- * @see \humhub\modules\contentcontainer\components\ModuleManager
+ * Compatibility layer for old ContentContainer ModuleManager calls.
+ *
+ * @see \humhub\modules\content\components\ContentContainerModuleManager
  * @see \humhub\modules\content\components\ContentContainerActiveRecord
  * @since 1.3
  * @author luke
+ *
+ * @property \humhub\modules\content\components\ContentContainerActiveRecord $owner
  */
 class CompatModuleManager extends Behavior
 {
-
     /**
-     * @var \humhub\modules\contentcontainer\components\ModuleManager
+     * @var \humhub\modules\content\components\ContentContainerModuleManager
      */
     public $moduleManager;
 
@@ -61,5 +61,4 @@ class CompatModuleManager extends Behavior
     {
         return $this->moduleManager->disable($moduleId);
     }
-
 }

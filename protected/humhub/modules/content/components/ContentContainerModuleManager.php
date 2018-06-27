@@ -10,14 +10,12 @@ namespace humhub\modules\content\components;
 
 use ReflectionClass;
 use Yii;
-use yii\db\ActiveQuery;
-use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\models\ContentContainerModuleState;
 use humhub\modules\content\models\ContentContainer;
 
 /**
  * ModuleManager handles modules of a content container.
- * 
+ *
  * @since 1.3
  * @author Luke
  */
@@ -36,7 +34,7 @@ class ContentContainerModuleManager extends \yii\base\Component
 
     /**
      * Disables a module for the content container
-     * 
+     *
      * @param string $id the module id
      * @return boolean
      */
@@ -56,8 +54,8 @@ class ContentContainerModuleManager extends \yii\base\Component
     }
 
     /**
-     * Enables a module for this content container 
-     * 
+     * Enables a module for this content container
+     *
      * @param string $id the module id
      * @return boolean
      */
@@ -78,9 +76,9 @@ class ContentContainerModuleManager extends \yii\base\Component
 
     /**
      * Checks whether the module is activated or not
-     * 
+     *
      * @param string $id the module id
-     * @return boolean 
+     * @return boolean
      */
     public function isEnabled($id)
     {
@@ -89,7 +87,7 @@ class ContentContainerModuleManager extends \yii\base\Component
 
     /**
      * Checks whether the module can be enabled or not
-     * 
+     *
      * @param string $id the module id
      * @return boolean
      */
@@ -105,7 +103,7 @@ class ContentContainerModuleManager extends \yii\base\Component
 
     /**
      * Checks whether the module can be disabled or not
-     * 
+     *
      * @param string $id the module id
      * @return boolean
      */
@@ -120,7 +118,7 @@ class ContentContainerModuleManager extends \yii\base\Component
 
     /**
      * Returns an array of all enabled module ids
-     * 
+     *
      * @return array a list of enabled module ids
      */
     public function getEnabled()
@@ -138,7 +136,7 @@ class ContentContainerModuleManager extends \yii\base\Component
 
     /**
      * Returns an array of all available modules
-     * 
+     *
      * @return ContentContainerModule[] a list of modules
      */
     public function getAvailable()
@@ -161,7 +159,7 @@ class ContentContainerModuleManager extends \yii\base\Component
 
     /**
      * Returns an array of all module states.
-     * 
+     *
      * @see Module
      * @return array a list of modules with the corresponding state
      */
@@ -186,7 +184,7 @@ class ContentContainerModuleManager extends \yii\base\Component
 
     /**
      * Sets the default state for a module based on the contentcontainer class
-     * 
+     *
      * @param string $class the class name (e.g. Space or User)
      * @param string $id the module id
      * @param int $state the state
@@ -199,7 +197,7 @@ class ContentContainerModuleManager extends \yii\base\Component
 
     /**
      * Returns the default module state for a given contentcontainer class
-     * 
+     *
      * @param string $class the class name (e.g. Space or User)
      * @param string $id the module id
      * @return int|null the default state or null when no default state is defined
@@ -218,10 +216,10 @@ class ContentContainerModuleManager extends \yii\base\Component
 
     /**
      * Returns an Module record instance for the given module id
-     * 
+     *
      * @see Module
      * @param string $id the module id
-     * @return Module the Module record instance
+     * @return ContentContainerModuleState
      */
     protected function getModuleStateRecord($id)
     {
@@ -237,9 +235,9 @@ class ContentContainerModuleManager extends \yii\base\Component
 
     /**
      * Returns a query for \humhub\modules\content\models\ContentContainer where the given module is enabled.
-     * 
+     *
      * @param string $id the module mid
-     * @return \yii\db\ActiveQuerythe list of content container
+     * @return \yii\db\ActiveQuery the list of content container
      */
     public static function getContentContainerQueryByModule($id)
     {

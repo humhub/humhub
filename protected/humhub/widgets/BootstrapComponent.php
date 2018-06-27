@@ -215,6 +215,29 @@ abstract class BootstrapComponent extends Widget
     }
 
     /**
+     * Adds an html title attribute
+     * @param $title
+     * @return $this
+     * @since 1.3
+     */
+    public function title($title)
+    {
+        return $this->options(['title' => $title]);
+    }
+
+    /**
+     * Adds an title + tooltip behaviour class
+     * @param $id
+     * @return $this
+     * @since 1.3
+     */
+    public function tooltip($title)
+    {
+        return $this->title($title)->cssClass('tt');
+    }
+
+
+    /**
      * @param $cssClass
      * @return $this
      */
@@ -254,11 +277,13 @@ abstract class BootstrapComponent extends Widget
      */
     public function icon($content, $right = false, $raw = false)
     {
-        if (!$raw) {
-            $this->icon(Html::tag('i', '', ['class' => 'fa '.$content]), $right, true);
-        } else {
-            $this->_icon = $content;
-            $this->_iconRight = $right;
+        if (!empty($content)) {
+            if (!$raw) {
+                $this->icon(Html::tag('i', '', ['class' => 'fa ' . $content]), $right, true);
+            } else {
+                $this->_icon = $content;
+                $this->_iconRight = $right;
+            }
         }
 
         return $this;
@@ -277,15 +302,15 @@ abstract class BootstrapComponent extends Widget
 
     public function color($color)
     {
-        $this->style('background-color:'.$color);
-
+        if ($color) {
+            $this->style('background-color:' . $color);
+        }
         return $this;
     }
 
     public function textColor($color)
     {
-        $this->style('color:'.$color);
-
+        $this->style('color:' . $color);
         return $this;
     }
 
@@ -321,7 +346,8 @@ abstract class BootstrapComponent extends Widget
         return $this->text;
     }
 
-    public function visible($isVisible = true) {
+    public function visible($isVisible = true)
+    {
         $this->_visible = $isVisible;
 
         return $this;

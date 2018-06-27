@@ -1,4 +1,0 @@
-modules:
-    config:
-        WebDriver:
-            browser: 'chrome'

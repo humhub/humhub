@@ -8,22 +8,39 @@
 
 namespace humhub\modules\friendship\controllers;
 
-use Yii;
-use yii\web\HttpException;
-use humhub\modules\user\models\User;
 use humhub\components\Controller;
 use humhub\modules\friendship\models\Friendship;
+use humhub\modules\friendship\Module;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\web\HttpException;
 
 /**
  * Membership Handling Controller
  *
+ * @property Module $module
  * @author luke
  */
 class RequestController extends Controller
 {
 
     /**
+     * @inheritdoc
+     * @throws HttpException
+     */
+    public function beforeAction($action)
+    {
+        if (!$this->module->getIsEnabled()) {
+            throw new HttpException(404, 'Friendship system is not enabled!');
+        }
+
+        return parent::beforeAction($action);
+    }
+
+
+    /**
      * Adds or Approves Friendship Request
+     * @throws HttpException
      */
     public function actionAdd()
     {
@@ -42,6 +59,7 @@ class RequestController extends Controller
 
     /**
      * Declines or Deletes Friendship
+     * @throws HttpException
      */
     public function actionDelete()
     {

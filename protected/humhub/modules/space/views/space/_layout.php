@@ -3,11 +3,13 @@
 use humhub\modules\space\widgets\Header;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\space\widgets\SpaceContent;
+use humhub\widgets\FooterMenu;
 
 /**
  * @var \humhub\modules\space\models\Space $space
  * @var string $content
  */
+
 $space = $this->context->contentContainer;
 ?>
 <div class="container space-layout-container">
@@ -22,7 +24,12 @@ $space = $this->context->contentContainer;
             <br>
         </div>
         <div class="col-md-10 layout-content-container">
-            <?= SpaceContent::widget(['contentContainer' => $space, 'content' => $content]) ?>
+            <?= SpaceContent::widget([
+                'contentContainer' => $space,
+                'content' => $content
+            ]);
+            ?>
+            <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
         </div>
     </div>
 </div>

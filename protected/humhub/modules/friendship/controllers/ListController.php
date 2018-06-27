@@ -26,6 +26,9 @@ class ListController extends Controller
 
     /**
      * Returns an list of all friends of a user
+     *
+     * @throws HttpException
+     * @throws \Exception
      */
     public function actionPopup()
     {

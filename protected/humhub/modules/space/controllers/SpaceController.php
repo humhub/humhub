@@ -8,9 +8,6 @@
 
 namespace humhub\modules\space\controllers;
 
-use Yii;
-use yii\web\HttpException;
-use yii\db\Expression;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\components\behaviors\AccessControl;
 use humhub\modules\space\models\Space;
@@ -19,6 +16,9 @@ use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\post\permissions\CreatePost;
+use Yii;
+use yii\web\HttpException;
+use yii\db\Expression;
 
 /**
  * SpaceController is the main controller for spaces.
@@ -41,7 +41,7 @@ class SpaceController extends ContentContainerController
         return [
             'acl' => [
                 'class' => AccessControl::className(),
-                'guestAllowedActions' => ['index', 'stream'],
+                'guestAllowedActions' => ['index', 'stream']
             ]
         ];
     }
@@ -51,12 +51,12 @@ class SpaceController extends ContentContainerController
      */
     public function actions()
     {
-        return array(
-            'stream' => array(
+        return [
+            'stream' => [
                 'class' => ContentContainerStream::className(),
                 'contentContainer' => $this->contentContainer
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -108,7 +108,7 @@ class SpaceController extends ContentContainerController
      */
     public function actionFollow()
     {
-        if(Yii::$app->getModule('space')->disableFollow) {
+        if (Yii::$app->getModule('space')->disableFollow) {
             throw new HttpException(403, Yii::t('ContentModule.controllers_ContentController', 'This action is disabled!'));
         }
 

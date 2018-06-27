@@ -296,6 +296,7 @@ humhub.module('ui.modal', function (module, require, $) {
             } else {
                 this.$.modal('show');
             }
+            this.focus();
         }
 
         this.getDialog().show();
@@ -431,13 +432,23 @@ humhub.module('ui.modal', function (module, require, $) {
                 content = content.html;
             }
         }
-        this.$.empty().append(content);
-        this.applyAdditions();
-        this.$.find('select:visible, input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
-        this.checkAriaLabel();
-        this.updateDialogOptions();
-        this.$.scrollTop(0);
+
+        if(content) {
+            this.$.empty().append(content);
+            this.applyAdditions();
+            this.$.find('select:visible, input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
+            this.checkAriaLabel();
+            this.updateDialogOptions();
+            this.$.scrollTop(0);
+        } else {
+            this.close(true);
+        }
+
         return this;
+    };
+
+    Modal.prototype.focus = function (content) {
+        this.$.find('select:visible, input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
     };
 
     Modal.prototype.updateDialogOptions = function() {
@@ -632,12 +643,11 @@ humhub.module('ui.modal', function (module, require, $) {
         return client.submit(evt, _defaultRequestOptions(evt, options)).then(function (response) {
             if(response.success) {
                 modal.close();
-                return response;
-            }
-
-            modal.setDialog(response);
-            if (!modal.$.is(':visible')) {
-                modal.show();
+            } else {
+                modal.setDialog(response);
+                if (!modal.$.is(':visible')) {
+                    modal.show();
+                }
             }
 
             modal.$.trigger('submitted', response);
@@ -682,6 +692,13 @@ humhub.module('ui.modal', function (module, require, $) {
         });
     };
 
+    var show = function (evt) {
+        var modal = get(evt.$target);
+        if(modal) {
+            modal.show();
+        }
+    }
+
     var _defaultRequestOptions = function (evt, options) {
         options = options || {};
         return options;
@@ -722,6 +739,7 @@ humhub.module('ui.modal', function (module, require, $) {
         get: get,
         post: post,
         load: load,
+        show: show,
         submit: submit
     });
 });

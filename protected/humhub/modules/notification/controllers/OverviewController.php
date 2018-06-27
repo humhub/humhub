@@ -12,6 +12,7 @@ use Yii;
 use humhub\components\Controller;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\models\forms\FilterForm;
+use yii\data\Pagination;
 
 /**
  * ListController
@@ -21,6 +22,7 @@ use humhub\modules\notification\models\forms\FilterForm;
  */
 class OverviewController extends Controller
 {
+    const PAGINATION_PAGE_SIZE = 20;
 
     /**
      * @inheritdoc
@@ -43,7 +45,7 @@ class OverviewController extends Controller
             return Yii::$app->user->loginRequired();
         }
 
-        $pageSize = 10;
+        $pageSize = static::PAGINATION_PAGE_SIZE;
         $notifications = [];
 
         $filterForm = new FilterForm();
@@ -55,7 +57,6 @@ class OverviewController extends Controller
             $query->andFilterWhere(['not in', 'class', $filterForm->getExcludeClassFilter()]);
         } else {
             return $this->render('index', [
-                        'notificationEntries' => [],
                         'filterForm' => $filterForm,
                         'pagination' => null,
                         'notifications' => $notifications
@@ -63,7 +64,7 @@ class OverviewController extends Controller
         }
 
         $countQuery = clone $query;
-        $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize]);
+        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize]);
 
         //Reset pagegination after new filter set
         if (Yii::$app->request->post()) {

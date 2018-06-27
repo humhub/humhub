@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\components\Module;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\admin\components\Controller;
@@ -73,6 +74,7 @@ class ModuleController extends Controller
      */
     public function actionEnable()
     {
+        /** @var $module Module */
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');
@@ -90,7 +92,7 @@ class ModuleController extends Controller
     /**
      * Disables a module
      *
-     * @throws CHttpException
+     * @throws HttpException
      */
     public function actionDisable()
     {
@@ -105,6 +107,22 @@ class ModuleController extends Controller
         }
 
         $module->disable();
+
+        return $this->redirect(['/admin/module/list']);
+    }
+
+
+    /**
+     * Flushes the assets for a given module
+     */
+    public function actionFlush()
+    {
+        /** @var $module Module */
+        $this->forcePostRequest();
+
+        $moduleId = Yii::$app->request->get('moduleId');
+        $module = Yii::$app->moduleManager->getModule($moduleId);
+        $module->publishAssets(true);
 
         return $this->redirect(['/admin/module/list']);
     }
@@ -160,7 +178,7 @@ class ModuleController extends Controller
     /**
      * Updates a module with the most recent version online
      *
-     * @throws CHttpException
+     * @throws HttpException
      */
     public function actionUpdate()
     {
@@ -168,6 +186,8 @@ class ModuleController extends Controller
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');
+
+        /** @var Module $module */
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
@@ -176,6 +196,12 @@ class ModuleController extends Controller
 
         $onlineModules = $this->getOnlineModuleManager();
         $onlineModules->update($moduleId);
+
+        try {
+            $module->publishAssets(true);
+        } catch(\Exception $e) {
+            Yii::error($e);
+        }
 
         return $this->redirect(['/admin/module/list']);
     }

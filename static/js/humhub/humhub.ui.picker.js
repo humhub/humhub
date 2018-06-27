@@ -45,7 +45,12 @@ humhub.module('ui.picker', function (module, require, $) {
                     return that.$.data('input-too-long');
                 },
                 errorLoading: function () {
-                    return module.text('error.loadingResult');
+                    // Aborted requests currently would trigger this message, so we can't make us of it...
+                    // https://github.com/select2/select2/issues/4355
+                    module.log.error('Error Loading Picker result! The request may just has been aborted.');
+                    return loader.set($('<div></div>'), {'css': {'padding': '4px'}});
+                    return '';
+                    //return module.text('error.loadingResult');
                 },
                 loadingMore: function () {
                     return module.text('showMore');
@@ -103,6 +108,8 @@ humhub.module('ui.picker', function (module, require, $) {
         results.sort(function (a, b) {
             if (a.disabled !== b.disabled) {
                 return (a.disabled < b.disabled) ? -1 : 1;
+            } else if(a.new !== b.new) {
+                return (a.new < b.new) ? -1 : 1;
             } else if (a.priority !== b.priority) {
                 return (a.priority > b.priority) ? -1 : 1;
             } else {
@@ -181,6 +188,7 @@ humhub.module('ui.picker', function (module, require, $) {
             setTimeout(function () {
                 that.renderPlaceholder();
             }, 50);
+            return;
         }
 
         if (this.$.children(':selected').length >= this.$.data('maximum-selection-length')) {
@@ -192,38 +200,58 @@ humhub.module('ui.picker', function (module, require, $) {
         }
     };
 
-    /**
-     * Template function for selected items.
-     * 
-     * @param {type} data item data
-     * @param {type} container
-     * @returns {jQuery|$}
-     */
-    Picker.prototype.templateSelection = function (data, container) {
-        data.text = data.text || $(data.element).data('text');
-        data.image = data.image || $(data.element).data('image');
-        data.imageNode = this.getImageNode(data);
-
-        var selectionTmpl = (data.image) ? Picker.template.selectionWithImage : Picker.template.selectionNoImage;
-        var $result = $(string.template(selectionTmpl, data));
-
-        // Initialize item close button
-        var that = this;
-        $result.filter('.picker-close').on('click', function () {
-            $(this).siblings('.select2-selection__choice__remove').trigger('click');
-            that.deselect(data.id);
-        });
-
-        return $result;
-    };
-
     Picker.template = {
         selectionWithImage: '{imageNode}<span class="with-image">{text}</span> <i class="fa fa-times-circle picker-close"></i>',
         selectionNoImage: '<span class="no-image">{text}</span> <i class="fa fa-times-circle picker-close"></i>',
         result: '<a href="#" tabindex="-1" style="margin-right:5px;">{imageNode} {text}</a>',
         resultDisabled: '<a href="#" title="{disabledText}" data-placement="right" tabindex="-1" style="margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} {text}</a>',
-        imageNode: '<img class="img-rounded" src="{image}" alt="24x24" style="width:24px;height:24px;"  height="24" width="24">',
-        option: '<option value="{id}" data-image="{image}" selected>{text}</option>',
+        imageNode: '<img class="img-rounded" src="{image}" alt="" style="width:24px;height:24px;"  height="24" width="24">',
+        imageIcon: '<i class="fa {image}"></i> ',
+        option: '<option value="{id}" data-image=\'{image}\' selected>{text}</option>',
+    };
+
+    /**
+     * Called after ajax result are received.
+     *
+     * @param data
+     * @param params
+     * @returns {{results: *}}
+     */
+    Picker.prototype.prepareResult = function (data, params) {
+        var that = this;
+
+        $.each(data, function (i, item) {
+            item.term = params.term;
+            if (that.isDisabledItem(item)) {
+                item.disabled = true;
+            }
+            // Compatibility with old picker implementation and data attributes
+            item.id = item.guid || item.id || item['data-id'];
+            item.text = item.text || item.title || item.displayName || item['data-text'];
+            item.image = item.image || item['data-image'];
+            item.new = false;
+        });
+
+        var encodedTerm = string.encode(params.term);
+
+        if(encodedTerm &&
+            encodedTerm.length >= that.options.minimumInputLength &&
+            that.options.addOptions &&
+            $(data).filter(function() {return this.text.localeCompare(encodedTerm)=== 0}).length === 0) {
+
+            data.push({
+                'id': '_add:'+params.term,
+                'text': module.text('addOption')+' \''+encodedTerm+'\'',
+                'textValue': encodedTerm,
+                'image': '<i class="fa fa-plus-circle" aria-hidden="true"></i>',
+                'new': true
+            });
+        }
+
+        return {
+            results: data,
+            /*pagination: {more: (params.page * 30) < data.total_count}*/
+        };
     };
 
     /**
@@ -238,8 +266,8 @@ humhub.module('ui.picker', function (module, require, $) {
             return loader.set($('<div></div>'), {'css': {'padding': '4px'}});
         }
 
-        item.imageNode = this.getImageNode(item);
-        item.disabledText = item.disabledText || '';
+        this.prepareItem(item);
+
         var template = (item.disabled) ? Picker.template.resultDisabled : Picker.template.result;
 
         var $result = $(string.template(template, item))
@@ -256,29 +284,67 @@ humhub.module('ui.picker', function (module, require, $) {
     };
 
     /**
+     * Template function for selected items.
+     *
+     * @param {type} item item data
+     * @param {type} container
+     * @returns {jQuery|$}
+     */
+    Picker.prototype.templateSelection = function (item, container) {
+        this.prepareItem(item);
+
+        var selectionTmpl = (item.image && !item.new) ? Picker.template.selectionWithImage : Picker.template.selectionNoImage;
+        var $result = $(string.template(selectionTmpl, item));
+
+        // Initialize item close button
+        var that = this;
+        $result.filter('.picker-close').on('click', function () {
+            $(this).siblings('.select2-selection__choice__remove').trigger('click');
+        });
+
+        return $result;
+    };
+
+    Picker.prototype.prepareItem = function (item) {
+        item.text = item.textValue || item.text || $(item.element).data('text');
+        item.image = item.image || $(item.element).data('image');
+        item.imageNode = this.getImageNode(item);
+        item.disabledText = item.disabledText || '';
+    }
+
+    /**
      * Prepares the image node.
      * 
-     * @param {type} image
+     * @param {type} item
      * @returns {String}
      */
     Picker.prototype.getImageNode = function (item) {
-        var image = item.image;
+        var image = item.image || $(item.element).data('image');
 
         if (!image) {
             return '';
+        }
+
+        if(image.indexOf('<') >= 0) {
+            return image;
+        } else if(image.indexOf('fa-') === 0) {
+            return string.template(Picker.template.imageIcon, item);
+        } else {
+            return string.template(Picker.template.imageNode, item);
         }
 
         // The image is either an html node itself or just an url
         return (image.indexOf('<') >= 0) ? image : string.template(Picker.template.imageNode, item);
     };
 
+
     /**
      * Adds a selection item. If the option is not available yet the option is added
      * to our select field.
-     * 
-     * @param string id item id
-     * @param string text item text
-     * @param string image item image
+     *
+     * @param {string} id item id
+     * @param {string} text item text
+     * @param {string} image item image
      * @returns {undefined}
      */
     Picker.prototype.select = function (id, text, image) {
@@ -299,6 +365,14 @@ humhub.module('ui.picker', function (module, require, $) {
             }));
             this.$.triggerHandler('change');
             this.renderPlaceholder(true);
+        }
+    };
+
+    Picker.prototype.remove = function (id) {
+        var values = this.val();
+        if(values.indexOf(id) >= 0) {
+            values.splice(values.indexOf(id), 1);
+            this.$.val(values).trigger('change');
         }
     };
 
@@ -325,28 +399,47 @@ humhub.module('ui.picker', function (module, require, $) {
         });
     };
 
-    Picker.prototype.prepareResult = function (data, params) {
-        var that = this;
-        $.each(data, function (i, item) {
-            item.term = params.term;
-            if (that.isDisabledItem(item)) {
-                item.disabled = true;
-            }
-            // Compatibility with old picker implementation and data attributes
-            item.id = item.guid || item.id || item['data-id'];
-            item.text = item.text || item.title || item.displayName || item['data-text'];
-            item.image = item.image || item['data-image'];
-        });
-
-        return {
-            results: data,
-            /*pagination: {more: (params.page * 30) < data.total_count}*/
-        };
-    };
-
     Picker.prototype.reset = function () {
         this.$.val('');
         this.$.trigger('change');
+    };
+
+    Picker.prototype.val = function() {
+        return this.$.val();
+    };
+
+    Picker.prototype.hasValue = function(value) {
+        var values = this.val();
+        return values && values.indexOf(value) >= 0;
+    };
+
+    Picker.prototype.hasValues = function(value) {
+        var values = this.val();
+        return values && values.length;
+    }
+
+    Picker.prototype.data = function() {
+        return this.$.select2('data');
+    };
+
+    Picker.prototype.map = function() {
+        var val = this.val();
+
+        if(!val) {
+            return {};
+        }
+
+        if(!Array.isArray(val)) {
+            val = [val];
+        }
+
+        var result = {};
+        var that = this;
+        val.forEach(function(value) {
+            result[value] = that.getOption(value).text();
+        })
+
+        return result;
     };
 
     Picker.prototype.isDisabledItem = function (item) {

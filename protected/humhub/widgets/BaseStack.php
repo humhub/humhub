@@ -8,8 +8,8 @@
 
 namespace humhub\widgets;
 
+use humhub\components\Widget;
 use Yii;
-use yii\base\Widget;
 
 /**
  * StackWidget is a widget which can hold a set of subwidgets.
@@ -21,7 +21,7 @@ use yii\base\Widget;
  * @since 0.5
  * @author Luke
  */
-class BaseStack extends \yii\base\Widget
+class BaseStack extends Widget
 {
 
     const EVENT_INIT = 'init';

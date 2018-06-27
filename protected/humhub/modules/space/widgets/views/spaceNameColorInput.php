@@ -1,13 +1,16 @@
 <?php
-    $containerId = time().'space-color-chooser-edit';
+
+use humhub\widgets\ColorPickerField;
+
+$containerId = time().'space-color-chooser-edit';
     
-    if($model->color == null) {
-        $model->color = '#d1d1d1';
-    }
+if ($model->color === null) {
+    $model->color = '#d1d1d1';
+}
 ?>
 
 <div id="<?= $containerId ?>" class="form-group space-color-chooser-edit" style="margin-top: 5px;">
-    <?= humhub\widgets\ColorPickerField::widget(['model' => $model, 'field' => 'color', 'container' => $containerId]); ?>
+    <?= ColorPickerField::widget(['model' => $model, 'field' => 'color', 'container' => $containerId]); ?>
 
     <?= $form->field($model, 'name', ['template' => '
         {label}
@@ -18,5 +21,5 @@
             {input}
         </div>
         {error}{hint}'
-        ])->textInput(['placeholder' => Yii::t('SpaceModule.views_create_create', 'Space name'), 'maxlength' => 45 ]) ?>
+        ])->textInput(['placeholder' => Yii::t('SpaceModule.views_create_create', 'Space name'), 'maxlength' => 45 ]); ?>
 </div>

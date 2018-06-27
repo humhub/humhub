@@ -8,9 +8,9 @@
 
 namespace humhub\modules\space\notifications;
 
+use humhub\modules\notification\components\BaseNotification;
 use Yii;
 use yii\bootstrap\Html;
-use humhub\modules\notification\components\BaseNotification;
 
 /**
  * SpaceInviteDeclinedNotification is sent to the originator of the invite to
@@ -25,12 +25,12 @@ class InviteDeclined extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $moduleId = "space";
+    public $moduleId = 'space';
 
     /**
      * @inheritdoc
      */
-    public $viewName = "inviteDeclined";
+    public $viewName = 'inviteDeclined';
 
     /**
      *  @inheritdoc
@@ -65,5 +65,3 @@ class InviteDeclined extends BaseNotification
     }
 
 }
-
-?>

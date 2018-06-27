@@ -10,7 +10,8 @@ use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\content\widgets\WallEntryLabels;
 use yii\helpers\Url;
 
-/* @var $object \humhub\modules\content\components\ContentContainerActiveRecord */
+/* @var $object \humhub\modules\content\models\Content */
+/* @var $container \humhub\modules\content\components\ContentContainerActiveRecord */
 /* @var $renderControls boolean */
 /* @var $wallEntryWidget string */
 /* @var $user \humhub\modules\user\models\User */

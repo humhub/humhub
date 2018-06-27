@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\models\ContentTag;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
@@ -101,6 +102,40 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
         } else {
             $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
             $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => $container->className()]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Filters contents by given contentTags.
+     *
+     * @param array|string|ContentTag $contentTags array of or single content tag classes or instances
+     * @return $this
+     * @since 1.3
+     */
+    public function contentTag($contentTags = [])
+    {
+        if(empty($contentTag)) {
+            return $this;
+        }
+
+        if(!is_array($contentTags)) {
+            $contentTags = [$contentTags];
+        }
+
+        $this->innerJoinWith('tags');
+        foreach ($contentTags as $contentTag) {
+            $contentTagClass = null;
+            if($contentTag instanceof ContentTag) {
+                $contentTagClass = get_class($contentTag);
+            } else if(is_string($contentTag)) {
+                $contentTagClass = $contentTag;
+            }
+
+            if($contentTagClass) {
+                call_user_func($contentTagClass .'::addQueryCondition', $this);
+            }
         }
 
         return $this;

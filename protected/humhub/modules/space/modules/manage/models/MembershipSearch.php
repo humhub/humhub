@@ -8,11 +8,11 @@
 
 namespace humhub\modules\space\modules\manage\models;
 
+use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use humhub\modules\space\models\Membership;
-use humhub\modules\space\models\Space;
 
 /**
  * Description of GroupSearch
@@ -53,7 +53,7 @@ class MembershipSearch extends Membership
     {
         return [
             [['user_id', 'status'], 'integer'],
-            [['user.profile.firstname', 'user.profile.lastname', 'user.username', 'group_id', 'freeText'], 'safe'],
+            [['user.profile.firstname', 'user.profile.lastname', 'user.username', 'group_id', 'freeText'], 'safe']
         ];
     }
 
@@ -68,7 +68,7 @@ class MembershipSearch extends Membership
 
     /**
      * Creates data provider instance with search query applied
-     * 
+     *
      * @param array $params
      * @return ActiveDataProvider
      */
@@ -80,7 +80,7 @@ class MembershipSearch extends Membership
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => ['pageSize' => 50],
+            'pagination' => ['pageSize' => 50]
         ]);
 
 
@@ -102,7 +102,8 @@ class MembershipSearch extends Membership
                 'last_visit',
                 'created_at',
                 'group_id',
-        ]]);
+            ]
+        ]);
 
         $this->load($params);
 
@@ -127,7 +128,7 @@ class MembershipSearch extends Membership
         if (!empty($this->group_id)) {
             $query->andFilterWhere(['space_membership.group_id' => $this->group_id]);
         }
-        
+
         $query->andFilterWhere(['space_membership.group_id' => $this->group_id]);
         $query->andFilterWhere(['like', 'profile.lastname', $this->getAttribute('user.profile.lastname')]);
         $query->andFilterWhere(['like', 'profile.firstname', $this->getAttribute('user.profile.firstname')]);
@@ -136,7 +137,7 @@ class MembershipSearch extends Membership
         return $dataProvider;
     }
 
-    public function getRoles(Space $space)
+    public static function getRoles(Space $space)
     {
         $groups = $space->getUserGroups();
         unset($groups[Space::USERGROUP_OWNER], $groups[Space::USERGROUP_GUEST], $groups[Space::USERGROUP_USER]);

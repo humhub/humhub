@@ -4,5 +4,5 @@ return array (
   'Followers' => 'Követő',
   'Members' => 'Tag',
   'Ok' => '',
-  'Posts' => 'Hozzászólás',
+  'Posts' => 'Hozzászólások',
 );

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="microid" content="mailto+http:sha1:566841e568e84b46c92d2291b44b836dfddc5c42" />
+    <title>timeago: a jQuery plugin</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="jquery.timeago.js" type="text/javascript"></script>
+    <script src="test/test_helpers.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      jQuery(document).ready(function($) {
+        prepareDynamicDates();
+        $(".timeago").timeago();
+
+        $("#prog_date").text(jQuery.timeago(new Date()));
+        $("#prog_string").text(jQuery.timeago("2008-07-17"));
+        $("#prog_element").text(jQuery.timeago("2008-07-20"));
+      });
+
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css" />
+    <style>
+      * { margin: 0; padding: 0; }
+      body { font-family: Helvetica,Arial,sans-serif; color: #333; background-color: #ccc; font-size: 16px; line-height: 24px; }
+      h1 { margin: 0; font-size: 60px; line-height: 100px; text-align: center; }
+      h2 { margin: -30px 0 40px 50px; font-size: 20px; line-height: 20px; text-align: center; color: #999; }
+      h3 { margin: 24px 0 6px 0; font-size: 18px; line-height: 18px; border-bottom: 1px solid #ccc; }
+      h1 img { vertical-align: middle; }
+      p { margin: 0 0 24px 0; }
+      p.example { margin: 0 0 12px 0; }
+      p.how, p.last { margin: 0; }
+      ul { margin: 0 24px 24px; }
+      li { line-height: 24px; }
+      pre { background-color: #333; color: #fff; margin: 12px 0; font-size: 12px; padding: 0 6px; }
+      pre em { font-style: normal; background-color: #554; }
+      pre, tt { font-family: monaco, "courier new", mono, monospace; }
+      abbr[title], time[title] { border-bottom: 1px dotted #333; }
+      tt { font-size: 14px; }
+      a { color: #06e; padding: 1px; }
+      em { font-style: normal; background-color: #feb; }
+      a:hover { background-color: #06c; color: #fff; text-decoration: none; }
+      #content { margin:0 auto; padding: 24px; width:700px; background-color:#fff; border: 1px solid #999; border-width: 0 1px 1px 1px; }
+      #footer { margin:0 auto 24px; padding: 12px; width:700px; line-height: 24px; }
+      .help { font-size: 14px; color: #888; }
+      .github-fork-ribbon:before { background-color: #f80; }
+    </style>
+    <!-- Google Analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-2856277-2', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <!-- End Google Analytics -->
+  </head>
+  <body>
+    <div id="content">
+      <h1><img src="clock.png" /> timeago</h1>
+      <h2>a jQuery plugin</h2>
+
+      <h3>What?</h3>
+      <p>
+        Timeago is a jQuery plugin that makes it easy to support automatically updating fuzzy
+        timestamps (e.g. "4 minutes ago" or "about 1 day ago").  <a href="jquery.timeago.js">Download</a>, view
+        the examples, and enjoy.
+      </p>
+      <noscript><p class="example"><strong>Whoah, whoah, whoah. You see the irony here, don't you? You're looking for a jQuery plugin, yet you surf the Internet with JavaScript turned off. This confuses the Interwebs. Afterall, there might be some useful demos and such that you could enjoy, but instead, you're wasting your time reading this. I'm so sorry.</strong></p></noscript>
+      <p class="example">
+        You opened this page <time class="loaded timeago">when you opened the page</time>. <span class="help">(This will update every minute. Wait for it.)</span>
+      </p>
+      <p class="example">
+        This page was last modified <time class="modified timeago">sometime before now [browser might not support document.lastModified]</time>.
+      </p>
+      <p class="example">
+        Ryan was born <time class="timeago" datetime="1978-12-18T17:17:00Z">Dec 18, 1978</time>.
+      </p>
+
+      <h3>Why?</h3>
+      <p>Timeago was originally built for use with <a href="http://yarp.com">Yarp.com</a> to timestamp comments.</p>
+      <ul>
+        <li>Avoid timestamps dated "1 minute ago" even though the page was opened 10 minutes ago; <em>timeago refreshes automatically</em>.</li>
+        <li>You can <em>take full advantage of page caching</em> in your web applications, because the timestamps aren't calculated on the server.</li>
+        <li>You get to <em>use standard HTML5 tags</em>.</li>
+      </ul>
+
+      <h3>How?</h3>
+      <p class="how">
+        First, load <a href="http://jquery.com/">jQuery</a> and the plugin:
+      </p>
+      <pre>
+&lt;script src=&quot;jquery.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;jquery.timeago.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</pre>
+      <p class="how">
+        Now, let's attach it to your timestamps on DOM ready:
+      </p>
+      <pre>
+jQuery(document).ready(function() {
+  jQuery("time.timeago").timeago();
+});</pre>
+      <p class="how">
+        This will turn all <tt>time</tt> elements with a class
+        of <tt>timeago</tt> and an <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> timestamp in the datetime:
+      </p>
+      <pre>
+&lt;time class=&quot;<em>timeago</em>&quot; datetime=&quot;<em>2008-07-17T09:24:17Z</em>&quot;&gt;July 17, 2008&lt;/time&gt;</pre>
+      <p class="how">
+        into something like this:
+      </p>
+      <pre>
+&lt;time class=&quot;timeago&quot; datetime=&quot;<em>2008-07-17T09:24:17Z</em>&quot; title=&quot;July 17, 2008&quot;&gt;<em><time class="timeago" datetime="2008-07-17T09:24:17Z">time ago</time></em>&lt;/time&gt;</pre>
+      <p>
+        which yields: <time class="timeago" datetime="2008-07-17T09:24:17Z">July 17, 2008</time>.  As time passes, the timestamps will automatically update.
+      </p>
+
+      <p class="how">
+        You can also use it programmatically:
+      </p>
+      <pre>
+jQuery.timeago(new Date());             //=> &quot;<span id="prog_date"></span>&quot;
+jQuery.timeago("2008-07-17");           //=> &quot;<span id="prog_string"></span>&quot;
+jQuery.timeago(jQuery("time#some_id")); //=> &quot;<span id="prog_element"></span>&quot;     // [title=&quot;2008-07-20&quot;]</pre>
+
+      <p class="how">
+        To support timestamps in the future, use the <tt>allowFuture</tt> setting:
+      </p>
+      <pre>
+jQuery.timeago.settings.allowFuture = true;</pre>
+
+      <p class="how">
+        To disable timestamps in the past, use the <tt>allowPast</tt> setting.
+        This setting is set to true by default. When set to false, if the time is in the past then instead of displaying a message like "5 minutes ago" a static message will be displayed.
+        The staic message displayed can be configured with the <tt>strings.inPast</tt> setting:
+      </p>
+      <pre>
+jQuery.timeago.settings.strings.inPast = "time has elapsed";
+jQuery.timeago.settings.allowPast = false;</pre>
+
+      <h3>Excusez-moi?</h3>
+      <p>
+        Yes, timeago has locale/i18n/language support.  Here are some <a href="https://github.com/rmm5t/jquery-timeago/tree/master/locales">configuration examples</a>.  Please submit a <a href="https://github.com/rmm5t/jquery-timeago">GitHub pull request</a> for corrections or additional languages.
+      </p>
+
+      <h3>Where?</h3>
+      <p><a href="jquery.timeago.js">Download the &quot;stable&quot; release</a>.</p>
+      <p>
+        The code is hosted on
+        GitHub: <a href="http://github.com/rmm5t/jquery-timeago">http://github.com/rmm5t/jquery-timeago</a>.
+        Go on, live on the edge.
+      </p>
+
+      <h3>Who?</h3>
+      <p>
+        Timeago was built by <a href="http://ryan.mcgeary.org">Ryan McGeary</a>
+        (<a href="http://twitter.com/rmm5t">@rmm5t</a>) while standing on the
+        shoulders of giants.  John Resig wrote about
+        a <a href="http://ejohn.org/blog/javascript-pretty-date/">similar
+        approach</a>.  The verbiage was based on
+        the <tt>distance_of_time_in_words</tt> ActionView helper
+        in <a href="http://rubyonrails.org">Ruby on Rails</a>.
+      </p>
+
+      <h3>When?</h3>
+      <p>
+        Timeago was conceived <time class="timeago" title="2008-07-17T02:30:00-0500">on July 17, 2008</time>.  <span class="help">(Yup, that's powered by timeago too)</span>
+      </p>
+
+      <h3>What else?</h3>
+      <p class="example">
+        The HTML5 <tt>time</tt> tag is strongly recommended, but the legacy <a href="http://microformats.org/wiki/datetime-design-pattern">datetime microformat</a> using the <tt>abbr</tt> tag is also supported:
+      </p>
+      <pre>
+&lt;abbr class=&quot;<em>timeago</em>&quot; title=&quot;<em>2008-07-17T09:24:17Z</em>&quot;&gt;July 17, 2008&lt;/abbr&gt;</pre>
+      <p class="how">
+        Attach timeago like so:
+      </p>
+      <pre>
+jQuery(document).ready(function() {
+  jQuery("abbr.timeago").timeago();
+});</pre>
+
+      <p>
+        Are you concerned about time zone support? Don't be. Timeago handles
+        this too. As long as your timestamps are
+        in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format
+        and include a
+        full <a href="http://en.wikipedia.org/wiki/ISO_8601#Time_zone_designators">time
+        zone designator</a> (±hhmm), everything should work out of the box
+        regardless of the time zone that your visitors live in.
+      </p>
+
+      <h3>Huh?</h3>
+      <p class="last">
+        Need a Rails helper to make those fancy microformat <tt>time</tt> tags?  Fine, here ya go:
+      </p>
+      <pre>
+def timeago(time, options = {})
+  options[:class] ||= "timeago"
+  content_tag(:time, time.to_s, options.merge(datetime: time.getutc.iso8601)) if time
+end</pre>
+
+      <h3>Do you use Timeago?</h3>
+
+      <p>
+        Great! Please add your site to the list
+        of <a href="https://github.com/rmm5t/jquery-timeago/wiki/Sites-that-use-Timeago">Sites
+        that use Timeago</a>.
+      </p>
+
+    </div>
+    <div id="footer">
+      <div style="float:right;">
+        <a href="http://www.opensource.org/licenses/mit-license.php">MIT
+        License</a>
+      </div>
+      Copyright &copy; 2008-2017 <a href="http://ryan.mcgeary.org">Ryan McGeary</a>
+      (<a href="http://twitter.com/rmm5t">@rmm5t</a>)
+    </div>
+
+    <a class="github-fork-ribbon" href="http://github.com/rmm5t/jquery-timeago" title="Fork me on GitHub">Fork me on GitHub</a>
+  </body>
+</html>

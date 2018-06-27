@@ -107,7 +107,7 @@ class ExportResult extends BaseObject
     public function delete()
     {
         if (!empty($this->tempFileName) && is_writable($this->tempFileName)) {
-            unlink($this->tempFileName);
+            FileHelper::unlink($this->tempFileName);
             return true;
         }
         return false;

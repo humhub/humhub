@@ -8,6 +8,9 @@
 
 namespace humhub\widgets;
 
+use humhub\modules\admin\widgets\TrackingWidget;
+use humhub\modules\tour\widgets\Tour;
+use humhub\modules\ui\form\widgets\MarkdownModals;
 use Yii;
 
 /**
@@ -24,22 +27,24 @@ class LayoutAddons extends BaseStack
      */
     public function init()
     {
-        if(!Yii::$app->request->isPjax) {
+        if (!Yii::$app->request->isPjax) {
             $this->addWidget(GlobalModal::class);
             $this->addWidget(GlobalConfirmModal::class);
 
             if(Yii::$app->params['installed']) {
-                $this->addWidget(\humhub\modules\tour\widgets\Tour::class);
-                $this->addWidget(\humhub\modules\admin\widgets\TrackingWidget::class);
+                $this->addWidget(Tour::class);
+                $this->addWidget(TrackingWidget::class);
             }
 
             $this->addWidget(LoaderWidget::class, ['show' => false, 'id' => "humhub-ui-loader-default"]);
             $this->addWidget(StatusBar::class);
-            $this->addWidget(BlueimpGallery::class);
-            $this->addWidget(MarkdownFieldModals::class);
+            if (Yii::$app->params['installed']) {
+                $this->addWidget(BlueimpGallery::class);
+                $this->addWidget(MarkdownModals::class);
 
-            if (Yii::$app->params['enablePjax']) {
-                $this->addWidget(Pjax::class);
+                if (Yii::$app->params['enablePjax']) {
+                    $this->addWidget(Pjax::class);
+                }
             }
         }
         parent::init();

@@ -31,10 +31,10 @@ class MembershipButton extends Widget
     {
         $membership = $this->space->getMembership();
 
-        return $this->render('membershipButton', array(
+        return $this->render('membershipButton', [
                     'space' => $this->space,
                     'membership' => $membership
-        ));
+        ]);
     }
 
 }

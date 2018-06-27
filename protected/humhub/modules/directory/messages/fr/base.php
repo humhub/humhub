@@ -12,7 +12,7 @@ return array (
   '<strong>New</strong> spaces' => '<strong>Nouveaux</strong> espaces',
   '<strong>Space</strong> directory' => 'Liste des <strong>espaces</strong>',
   '<strong>Space</strong> stats' => 'Statistiques des <strong>espaces</strong>',
-  'Average members' => 'Moyenne des membres',
+  'Average members' => 'Moyenne des membres par groupe',
   'Directory' => 'Annuaire',
   'Follows somebody' => 'Abonnés à quelqu\'un ',
   'Groups' => 'Groupes',
