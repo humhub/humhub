@@ -33,7 +33,7 @@ $space = $context->contentContainer;
         <?php if ($this->hasSidebar()): ?>
             <div class="col-md-3">
                 <?= $this->getSidebar() ?>
-                <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>x
+                <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
             </div>
         <?php endif; ?>
     </div>

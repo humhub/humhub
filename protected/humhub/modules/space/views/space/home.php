@@ -34,10 +34,9 @@ echo StreamViewer::widget([
 
 <?php $this->beginBlock('sidebar'); ?>
 <?= Sidebar::widget(['space' => $space, 'widgets' => [
-    [ActivityStreamViewer::className(), ['contentContainer' => $space], ['sortOrder' => 10]],
-    [PendingApprovals::className(), ['space' => $space], ['sortOrder' => 20]],
-    [Members::className(), ['space' => $space], ['sortOrder' => 30]]
+    [ActivityStreamViewer::class, ['contentContainer' => $space], ['sortOrder' => 10]],
+    [PendingApprovals::class, ['space' => $space], ['sortOrder' => 20]],
+    [Members::class, ['space' => $space], ['sortOrder' => 30]]
 ]]);
 ?>
 <?php $this->endBlock(); ?>
-
