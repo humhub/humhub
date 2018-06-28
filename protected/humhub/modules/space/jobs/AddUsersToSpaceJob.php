@@ -54,7 +54,7 @@ class AddUsersToSpaceJob extends ActiveJob
             $this->space->inviteMember($user->id, $this->originator->id, false);
             if ($this->space->addMember($user->id, 2, true) === false) {
                 \Yii::error(
-                    'The User ' . $user->getDisplayName() . ' can not be added to the ' . $this->space->getDisplayName(),
+                    'The User ' . $user->getDisplayName() . ' can not be added to Space ' . $this->space->getDisplayName(),
                     'Space.Jobs.AddUsersToSpace'
                 );
             };

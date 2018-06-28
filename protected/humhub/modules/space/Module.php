@@ -50,7 +50,6 @@ class Module extends \humhub\components\Module
         if ($contentContainer instanceof models\Space) {
             return [
                 new permissions\InviteUsers(),
-                new permissions\MembersManagePermission(),
             ];
         } elseif ($contentContainer instanceof User) {
             return [];

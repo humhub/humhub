@@ -2,7 +2,7 @@
 
 namespace humhub\modules\space\widgets;
 
-use humhub\modules\space\permissions\MembersManagePermission;
+use humhub\modules\admin\permissions\ManageUsers;
 use Yii;
 use yii\base\Widget;
 
@@ -37,7 +37,7 @@ class InviteModal extends Widget
             'model' => $this->model,
             'attribute' => $this->attribute,
             'searchUrl' => $this->searchUrl,
-            'canManageMembers' => $this->model->space->getPermissionManager()->can(new MembersManagePermission()),
+            'canManageMembers' => $this->model->space->getPermissionManager()->can(new ManageUsers()),
         ]);
     }
 }

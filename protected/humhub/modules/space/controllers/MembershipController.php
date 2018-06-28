@@ -9,13 +9,13 @@
 namespace humhub\modules\space\controllers;
 
 use humhub\components\behaviors\AccessControl;
+use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\jobs\AddUsersToSpaceJob;
 use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
-use humhub\modules\space\permissions\MembersManagePermission;
 use humhub\modules\user\models\UserPicker;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\widgets\ModalClose;
@@ -199,7 +199,7 @@ class MembershipController extends ContentContainerController
             $statusInvite = false;
 
             if (($model->withoutInvite || $model->allRegisteredUsers) &&
-                $space->getPermissionManager()->can(new MembersManagePermission())) {
+                $space->getPermissionManager()->can(new ManageUsers())) {
                 \Yii::$app->queue->push(new AddUsersToSpaceJob([
                     'originator' => Yii::$app->user->identity,
                     'space' => $space,
