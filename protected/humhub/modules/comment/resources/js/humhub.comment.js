@@ -16,6 +16,7 @@ humhub.module('comment', function (module, require, $) {
         var that = this;
         client.submit(evt, {dataType: 'html'}).then(function (response) {
             var richText = that.getRichtext();
+            console.log(response.html);
             that.addComment(response.html);
             that.getInput().val('').trigger('autosize.resize');
             richText.$.trigger('clear');
@@ -31,11 +32,15 @@ humhub.module('comment', function (module, require, $) {
     };
 
     Form.prototype.addComment = function (html) {
-        var $html = $(html).hide();
-        additions.applyTo($html);
+        var $html = $(html);
+        var $elements = $(html).not('script, link').filter(function () {
+            return this.nodeType === 1; // filter out text nodes
+        });
+        $elements.hide();
+        additions.applyTo($elements);
         this.getCommentsContainer().append($html);
         this.incrementCommentCount(1);
-        $html.fadeIn();
+        $elements.fadeIn();
     };
     
     Form.prototype.incrementCommentCount = function (count) {
@@ -209,7 +214,7 @@ humhub.module('comment', function (module, require, $) {
     };
 
     var toggleComment = function(evt) {
-        let visible = evt.$target.is(':visible');
+        var visible = evt.$target.is(':visible');
         evt.$target.slideToggle(undefined, function() {
             evt.$target.find('.humhub-ui-richtext').trigger('focus');
         });

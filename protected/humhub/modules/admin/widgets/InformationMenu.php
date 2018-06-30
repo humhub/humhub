@@ -46,10 +46,10 @@ class InformationMenu extends \humhub\widgets\BaseMenu
         ]);
 
         $this->addItem([
-            'label' => Yii::t('AdminModule.information', 'CronJobs'),
-            'url' => Url::to(['/admin/information/cronjobs']),
+            'label' => Yii::t('AdminModule.information', 'Background Jobs'),
+            'url' => Url::to(['/admin/information/background-jobs']),
             'sortOrder' => 400,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'information' && Yii::$app->controller->action->id == 'cronjobs'),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'information' && Yii::$app->controller->action->id == 'background-jobs'),
         ]);
 
         $this->addItem([

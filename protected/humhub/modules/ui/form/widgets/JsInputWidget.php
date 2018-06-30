@@ -75,18 +75,19 @@ abstract class JsInputWidget extends JsWidget
     /**
      * Initializes the widget.
      * If you override this method, make sure you call the parent implementation first.
-     *
-     * @throws InvalidConfigException
      */
-    public function init()
+    public function beforeRun()
     {
+        if (!parent::beforeRun()) {
+            return false;
+        }
         if ($this->name === null && !$this->hasModel()) {
             throw new InvalidConfigException("Either 'name', or 'model' and 'attribute' properties must be specified.");
         }
         if (!$this->id && !isset($this->options['id'])) {
             $this->id = $this->options['id'] = $this->hasModel() ? Html::getInputId($this->model, $this->attribute) : $this->getId(true);
         }
-        parent::init();
+        return true;
     }
 
     /**

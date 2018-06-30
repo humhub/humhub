@@ -8,7 +8,9 @@
 
 namespace humhub\components\console;
 
+use humhub\libs\BaseSettingsManager;
 use Yii;
+use yii\console\Exception;
 
 /**
  * Description of Application
@@ -29,13 +31,10 @@ class Application extends \yii\console\Application
     public function init()
     {
         if (version_compare(phpversion(), '5.6', '<')) {
-            throw new \yii\console\Exception('Installed PHP Version is too old! Required minimum version is PHP 5.6 (Installed: ' . phpversion() . ')');
+            throw new Exception('Installed PHP Version is too old! Required minimum version is PHP 5.6 (Installed: ' . phpversion() . ')');
         }
 
-        parent::init();
-        $this->trigger(self::EVENT_ON_INIT);
-
-        if ($this->isDatabaseInstalled()) {
+        if (BaseSettingsManager::isDatabaseInstalled()) {
             $baseUrl = Yii::$app->settings->get('baseUrl');
             if (!empty($baseUrl)) {
 
@@ -61,6 +60,9 @@ class Application extends \yii\console\Application
                 $this->urlManager->hostInfo = $hostInfo;
             }
         }
+
+        parent::init();
+        $this->trigger(self::EVENT_ON_INIT);
     }
 
     /**
@@ -76,19 +78,4 @@ class Application extends \yii\console\Application
             'fixture' => 'yii\console\controllers\FixtureController',
         ];
     }
-
-    /**
-     * Checks if database is installed
-     *
-     * @return boolean is database installed/migrated
-     */
-    public function isDatabaseInstalled()
-    {
-        if (in_array('setting', Yii::$app->db->schema->getTableNames())) {
-            return true;
-        }
-
-        return false;
-    }
-
 }

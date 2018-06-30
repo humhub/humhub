@@ -1,10 +1,16 @@
-
 <?php
 
+/**
+ * @var \humhub\modules\ui\view\components\View $this
+ */
+
+use humhub\modules\activity\widgets\ActivityStreamViewer;
 use humhub\modules\post\widgets\Form;
+use humhub\modules\space\modules\manage\widgets\PendingApprovals;
+use humhub\modules\space\widgets\Members;
+use humhub\modules\space\widgets\Sidebar;
 use humhub\modules\stream\widgets\StreamViewer;
 
-$this->beginContent('@space/views/space/_sidebar.php', ['space' => $space]);
 
 echo Form::widget(['contentContainer' => $space]);
 
@@ -24,4 +30,13 @@ echo StreamViewer::widget([
     'messageStreamEmptyCss' => ($canCreatePosts) ? 'placeholder-empty-stream' : '',
 ]);
 
-$this->endContent();
+?>
+
+<?php $this->beginBlock('sidebar'); ?>
+<?= Sidebar::widget(['space' => $space, 'widgets' => [
+    [ActivityStreamViewer::class, ['contentContainer' => $space], ['sortOrder' => 10]],
+    [PendingApprovals::class, ['space' => $space], ['sortOrder' => 20]],
+    [Members::class, ['space' => $space], ['sortOrder' => 30]]
+]]);
+?>
+<?php $this->endBlock(); ?>

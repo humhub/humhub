@@ -17,6 +17,8 @@ class ModalClose extends \yii\base\Widget
     public $error;
     public $warn;
     public $saved;
+    public $script;
+    public $reload = false;
     
     /**
      * @inheritdoc
@@ -29,6 +31,8 @@ class ModalClose extends \yii\base\Widget
             'error' => $this->error,
             'warn' => $this->warn,
             'saved' => $this->saved,
+            'script' => $this->script,
+            'reload' => $this->reload
         ]);
     }
 }

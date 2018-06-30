@@ -3,10 +3,9 @@
  * @var \humhub\modules\user\models\User $contentContainer
  * @var bool $showProfilePostForm
  */
-
+use humhub\modules\activity\widgets\ActivityStreamViewer;
 use humhub\modules\dashboard\widgets\DashboardContent;
 use humhub\modules\dashboard\widgets\Sidebar;
-use humhub\modules\activity\widgets\Stream;
 use humhub\widgets\FooterMenu;
 
 ?>
@@ -24,8 +23,8 @@ use humhub\widgets\FooterMenu;
             <?= Sidebar::widget([
                 'widgets' => [
                     [
-                        Stream::className(),
-                        ['streamAction' => '/dashboard/dashboard/stream'],
+                        ActivityStreamViewer::class,
+                        ['streamAction' => '/dashboard/dashboard/activity-stream'],
                         ['sortOrder' => 150]
                     ]
                 ]

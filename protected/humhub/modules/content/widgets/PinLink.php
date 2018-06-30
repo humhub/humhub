@@ -40,11 +40,11 @@ class PinLink extends \yii\base\Widget
             return;
         }
 
-        return $this->render('pinLink', array(
+        return $this->render('pinLink', [
                     'pinUrl' => Url::to(['/content/content/pin', 'id' => $this->content->content->id]),
                     'unpinUrl' => Url::to(['/content/content/un-pin', 'id' => $this->content->content->id]),
                     'isPinned' => $this->content->content->isPinned()
-        ));
+        ]);
     }
 
 }

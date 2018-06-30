@@ -202,7 +202,6 @@ class HumHubDbTestCase extends Unit
     }
 
     /**
-     * @deprecated $msg unused
      * @see assertSentEmail
      * @since 1.3
      */

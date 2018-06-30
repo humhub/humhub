@@ -8,8 +8,6 @@ module.exports = function (grunt) {
     var cssMinAssetcfg = {};
     cssMinAssetcfg[grunt.option('to')] = [grunt.option('from')];
     
-    grunt.log.write(grunt.option('from'));
-    
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         clean: ["assets/*"],

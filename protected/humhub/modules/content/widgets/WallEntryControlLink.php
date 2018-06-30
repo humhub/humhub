@@ -36,8 +36,6 @@ class WallEntryControlLink extends \humhub\components\Widget
      */
     public $icon;
 
-    protected $_icon;
-
     /**
      *
      * @var [] link html options
@@ -49,18 +47,10 @@ class WallEntryControlLink extends \humhub\components\Widget
      */
     public function init()
     {
-        if(empty($this->label)) {
+        if(empty($this->getLabel())) {
             $this->label = ArrayHelper::remove($this->options, 'label', 'Label');
         }
 
-        if(empty($this->icon)) {
-            $this->icon = ArrayHelper::remove($this->options, 'icon');
-        }
-
-        if($this->icon) {
-            $this->_icon = '<i class="fa '.$this->icon.'"></i> ';
-        }
-        
         ArrayHelper::remove($this->options, 'sortOrder');
         parent::init();
     }
@@ -70,7 +60,43 @@ class WallEntryControlLink extends \humhub\components\Widget
      */
     public function run()
     {
-        return '<li>'.\yii\helpers\Html::a($this->_icon.$this->label, '#', $this->options).'</li>';
+        return '<li>'.$this->renderLink().'</li>';
+    }
+
+    /**
+     * @return string link label
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * @return string link icon
+     */
+    public function getIcon()
+    {
+        if(empty($this->icon)) {
+            $this->icon = ArrayHelper::remove($this->options, 'icon');
+        }
+
+        return $this->icon;
+    }
+
+    /**
+     * @return string renders the actual link
+     */
+    protected function renderLink()
+    {
+        return Html::a($this->renderLinkText(), '#', $this->options);
+    }
+
+    /**
+     * @return string renders the link text with icon
+     */
+    protected function renderLinkText()
+    {
+        return ($this->icon) ? '<i class="fa '.$this->getIcon().'"></i> '.$this->getLabel() : $this->getLabel();
     }
 
 }

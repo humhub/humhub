@@ -190,7 +190,7 @@ class ThemeHelper
             LessHelper::getVariableFile($theme)
         );
 
-        if (isset($variables['baseTheme']) && isset($themes[$variables['baseTheme']])) {
+        if (isset($variables['baseTheme']) && isset($themes[$variables['baseTheme']]) && $variables['baseTheme'] !== $theme->name) {
             return $themes[$variables['baseTheme']];
         }
 

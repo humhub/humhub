@@ -8,6 +8,7 @@
 
 namespace humhub\modules\search\engine;
 
+use humhub\modules\search\commands\SearchController;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\libs\SearchResult;
 use humhub\modules\search\libs\SearchResultSet;
@@ -93,7 +94,7 @@ class ZendLuceneSearch extends Search
             }
         }
 
-        if (Yii::$app->request->isConsoleRequest) {
+        if (Yii::$app->request->isConsoleRequest && Yii::$app->controller instanceof SearchController) {
             print ".";
         }
 
