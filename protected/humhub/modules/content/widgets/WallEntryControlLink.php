@@ -15,12 +15,20 @@ class WallEntryControlLink extends \humhub\components\Widget
 {
 
     /**
-     * Object derived from HActiveRecordContent
-     *
-     * @var string
+     * @var string link label
      */
     public $label;
-    
+
+    /**
+     * @var string link action
+     */
+    public $action;
+
+    /**
+     * @var string link action-url
+     */
+    public $actionUrl;
+
     /**
      * Object derived from HActiveRecordContent
      *
@@ -32,7 +40,7 @@ class WallEntryControlLink extends \humhub\components\Widget
 
     /**
      *
-     * @var type 
+     * @var [] link html options
      */
     public $options = [];
 

@@ -8,40 +8,42 @@
 
 namespace humhub\modules\content\permissions;
 
-use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use Yii;
 
 /**
- * Manage content permission for a content container
- * 
- * @since 1.1
- * @author Luke
+ * CreatePrivateContent Permission
  */
-class ManageContent extends \humhub\libs\BasePermission
+class CreatePrivateContent extends \humhub\libs\BasePermission
 {
+
     /**
      * @inheritdoc
      */
     protected $moduleId = 'content';
 
+
     /**
      * @inheritdoc
      */
-    protected $defaultAllowedGroups = [
+    public $defaultAllowedGroups = [
         Space::USERGROUP_OWNER,
         Space::USERGROUP_ADMIN,
         Space::USERGROUP_MODERATOR,
-        User::USERGROUP_SELF
+        Space::USERGROUP_MEMBER,
+        User::USERGROUP_SELF,
     ];
 
     /**
      * @inheritdoc
      */
     protected $fixedGroups = [
-        Space::USERGROUP_GUEST,
-        Space::USERGROUP_MEMBER,
+        Space::USERGROUP_OWNER,
+        Space::USERGROUP_ADMIN,
+        Space::USERGROUP_MODERATOR,
         Space::USERGROUP_USER,
+        Space::USERGROUP_GUEST,
         User::USERGROUP_SELF,
         User::USERGROUP_FRIEND,
         User::USERGROUP_USER,
@@ -53,7 +55,7 @@ class ManageContent extends \humhub\libs\BasePermission
      */
     public function getTitle()
     {
-        return  Yii::t('CommentModule.permissions', 'Manage content');
+        return Yii::t('SpaceModule.permissions', 'Create private content');
     }
 
     /**
@@ -61,6 +63,6 @@ class ManageContent extends \humhub\libs\BasePermission
      */
     public function getDescription()
     {
-        return Yii::t('CommentModule.permissions', 'Can manage (e.g. archive, stick or delete) arbitrary content');
+        return Yii::t('SpaceModule.permissions', 'Allows the user to create private content');
     }
 }

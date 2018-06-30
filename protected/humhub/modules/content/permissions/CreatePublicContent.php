@@ -16,6 +16,10 @@ use humhub\modules\user\models\User;
  */
 class CreatePublicContent extends \humhub\libs\BasePermission
 {
+    /**
+     * @inheritdoc
+     */
+    protected $moduleId = 'content';
 
     /**
      * @inheritdoc
@@ -43,23 +47,16 @@ class CreatePublicContent extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = 'Create public content';
-
-    /**
-     * @inheritdoc
-     */
-    protected $description = 'Allows the user to create public content';
-
-    /**
-     * @inheritdoc
-     */
-    protected $moduleId = 'content';
-
-    public function __construct($config = array()) {
-        parent::__construct($config);
-        
-        $this->title = \Yii::t('SpaceModule.permissions', 'Create public content');
-        $this->description = \Yii::t('SpaceModule.permissions', 'Allows the user to create public content');
+    public function getTitle()
+    {
+        return Yii::t('SpaceModule.permissions', 'Create public content');
     }
-    
+
+    /**
+     * @inheritdoc
+     */
+    public function getDescription()
+    {
+        return Yii::t('SpaceModule.permissions', 'Allows the user to create public content');
+    }
 }

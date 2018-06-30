@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\models\Movable;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
@@ -50,9 +51,8 @@ use humhub\modules\content\interfaces\ContentOwner;
  * @property User $createdBy
  * @author Luke
  */
-class ContentActiveRecord extends ActiveRecord implements ContentOwner
+class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
 {
-
     /**
      * @see \humhub\modules\content\widgets\WallEntry
      * @var string the WallEntry widget class
@@ -63,6 +63,14 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      * @var boolean should the originator automatically follows this content when saved.
      */
     public $autoFollow = true;
+
+    /**
+     * Note: this may not be implemented by legacy modules
+     *
+     * @var string related moduleId
+     * @since 1.3
+     */
+    protected $moduleId;
 
     /**
      * The stream channel where this content should displayed.
@@ -101,6 +109,13 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
      * @since 1.3
      */
     protected $initContent;
+
+    /**
+     * @var bool defines if the Movable behaviour of this ContentContainerActiveRecord type is active.
+     * @see Content::move()
+     * @since 1.3
+     */
+    protected $canMove = false;
 
     /**
      * ContentActiveRecord constructor accepts either an configuration array as first argument or an ContentContainerActiveRecord
@@ -417,13 +432,53 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner
     /**
      * Returns an ActiveQueryContent to find content.
      *
-     * @inheritdoc
+     * {@inheritdoc}
      * @return ActiveQueryContent
      */
     public static function find()
     {
         return new ActiveQueryContent(static::getObjectModel());
     }
+
+    /**
+     * Returns the id of the module related to this content type
+     * Note: This may not be implemented by some legacy modules
+     *
+     * @since 1.3
+     */
+    public function getModuleId()
+    {
+        return $this->moduleId;
+    }
+
+    /**
+     * Can be overwritten to define additional model specific checks.
+     *
+     * This function should also validate all existing sub-content entries to prevent data inconsistency.
+     *
+     * > Note: Default checks for the underlying content are automatically handled within the [[Content::canMove()]]
+     */
+    public function canMove(ContentContainerActiveRecord $container = null)
+    {
+        if(!$this->canMove) {
+            return Yii::t('ContentModel.base', 'This content type can\'t be moved');
+        }
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public final function move(ContentContainerActiveRecord $container = null, $force = false)
+    {
+        return $this->content->move($container, $force);
+    }
+
+    /**
+     * This function can be overwritten in order to define model specific logic as moving sub-content or other related
+     */
+    public function afterMove(ContentContainerActiveRecord $container = null) {}
 }
 
 ?>

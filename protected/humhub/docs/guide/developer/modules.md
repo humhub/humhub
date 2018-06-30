@@ -9,7 +9,6 @@ Before even starting the developement of a custom module, you first have to cons
 
 - [Can my module be enabled on profile and/or space level?](modules.md#container-module)
 - Does my module produce [stream entries](stream.md) or other [content](content.md)?
-- Does my module produce [global](content.md#global-content) content or views (not bound to a profile/space) ?
 - Does my module provide any kind of sidebar [snippet](snippet.md)?
 - Do I need to [change the default behaviour](module-change-behavior.md) of some core components?
 - Do I need specific [permissions](permissions.md) for my module?
