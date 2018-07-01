@@ -198,6 +198,10 @@ humhub.module('stream.Stream', function (module, require, $) {
         return this.state.loading === true;
     };
 
+    Stream.prototype.lastEntryLoaded = function () {
+        return this.state.lastEntryLoaded === true;
+    };
+
     Stream.prototype.load = function (options) {
         return new StreamRequest(this, options).load()
             .then($.proxy(this.handleResponse, this))

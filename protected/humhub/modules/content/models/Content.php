@@ -412,7 +412,7 @@ class Content extends ContentDeprecated implements Movable
 
         // Check for legacy modules
         if(!$model->getModuleId()) {
-            return Yii::t('ContentModel.base', 'This content type can\'t be moved due to a missing module-id setting.');
+            return Yii::t('ContentModule.base', 'This content type can\'t be moved due to a missing module-id setting.');
         }
 
         if(!$container) {
@@ -424,27 +424,27 @@ class Content extends ContentDeprecated implements Movable
         if(!$container->moduleManager->isEnabled($model->getModuleId())) {
             $module = Yii::$app->getModule($model->getModuleId());
             $moduleName = ($module instanceof ContentContainerModule) ? $module->getContentContainerName($container) : $module->getName();
-            return Yii::t('ContentModel.base', 'The module {moduleName} is not enabled on the selected target space.', ['moduleName' => $moduleName]);
+            return Yii::t('ContentModule.base', 'The module {moduleName} is not enabled on the selected target space.', ['moduleName' => $moduleName]);
         }
 
         // Check if the current user is allowed to move this content at all
         if(!$isContentOwner && !$this->container->can(ManageContent::class)) {
-            return Yii::t('ContentModel.base', 'You do not have the permission to move this content.');
+            return Yii::t('ContentModule.base', 'You do not have the permission to move this content.');
         }
 
         // Check if the current user is allowed to move this content to the given target space
         if(!$isContentOwner && !$container->can(ManageContent::class)) {
-            return Yii::t('ContentModel.base', 'You do not have the permission to move this content to the given space.');
+            return Yii::t('ContentModule.base', 'You do not have the permission to move this content to the given space.');
         }
 
         // Check if the content owner is allowed to create content on the target space
         $ownerPermissions = $container->getPermissionManager($this->createdBy);
         if($this->isPrivate() && !$ownerPermissions->can(CreatePrivateContent::class)) {
-            return Yii::t('ContentModel.base', 'The author of this content is not allowed to create private content within the selected space.');
+            return Yii::t('ContentModule.base', 'The author of this content is not allowed to create private content within the selected space.');
         }
 
         if($this->isPublic() && !$ownerPermissions->can(CreatePublicContent::class)) {
-            return Yii::t('ContentModel.base', 'The author of this content is not allowed to create public content within the selected space.');
+            return Yii::t('ContentModule.base', 'The author of this content is not allowed to create public content within the selected space.');
         }
 
         return true;

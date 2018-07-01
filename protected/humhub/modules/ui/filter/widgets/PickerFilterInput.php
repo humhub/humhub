@@ -8,7 +8,7 @@
 
 namespace humhub\modules\ui\filter\widgets;
 
-use humhub\widgets\BasePickerField;
+use humhub\modules\ui\form\widgets\BasePicker;
 use yii\helpers\ArrayHelper;
 
 class PickerFilterInput extends FilterInput
@@ -25,7 +25,7 @@ class PickerFilterInput extends FilterInput
 
     public $pickerOptions = [];
 
-    public $picker = BasePickerField::class;
+    public $picker = BasePicker::class;
 
     /**
      * @var string data-action-click handler of the input event

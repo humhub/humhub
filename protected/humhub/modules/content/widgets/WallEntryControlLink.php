@@ -51,6 +51,14 @@ class WallEntryControlLink extends \humhub\components\Widget
             $this->label = ArrayHelper::remove($this->options, 'label', 'Label');
         }
 
+        if(!empty($this->getAction())) {
+            $this->options['data-action-click'] = $this->getAction();
+        }
+
+        if(!empty($this->getActionUrl())) {
+            $this->options['data-action-url'] = $this->getActionUrl();
+        }
+
         ArrayHelper::remove($this->options, 'sortOrder');
         parent::init();
     }
@@ -60,7 +68,37 @@ class WallEntryControlLink extends \humhub\components\Widget
      */
     public function run()
     {
+        if($this->preventRender()) {
+            return '';
+        }
+
         return '<li>'.$this->renderLink().'</li>';
+    }
+
+    /**
+     * This function may contain validation logic as permission checks.
+     *
+     * @return bool true if this link should be rendered false if not
+     */
+    public function preventRender()
+    {
+        return false;
+    }
+
+    /**
+     * @return string renders the actual link
+     */
+    protected function renderLink()
+    {
+        return Html::a($this->renderLinkText(), '#', $this->options);
+    }
+
+    /**
+     * @return string renders the link text with icon
+     */
+    protected function renderLinkText()
+    {
+        return ($this->icon) ? '<i class="fa '.$this->getIcon().'"></i> '.$this->getLabel() : $this->getLabel();
     }
 
     /**
@@ -84,19 +122,21 @@ class WallEntryControlLink extends \humhub\components\Widget
     }
 
     /**
-     * @return string renders the actual link
+     * @return string|null action url
+     * @since 1.3
      */
-    protected function renderLink()
+    public function getActionUrl()
     {
-        return Html::a($this->renderLinkText(), '#', $this->options);
+        return null;
     }
 
     /**
-     * @return string renders the link text with icon
+     * @return string|null link action
+     * @since 1.3
      */
-    protected function renderLinkText()
+    private function getAction()
     {
-        return ($this->icon) ? '<i class="fa '.$this->getIcon().'"></i> '.$this->getLabel() : $this->getLabel();
+        return $this->action;
     }
 
 }

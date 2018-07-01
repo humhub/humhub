@@ -28,11 +28,20 @@ use humhub\modules\user\models\User;
  */
 class Post extends ContentActiveRecord implements Searchable
 {
-
     /**
      * @inheritdoc
      */
     public $wallEntryClass = 'humhub\modules\post\widgets\WallEntry';
+
+    /**
+     * @inheritdoc
+     */
+    public $moduleId = 'post';
+
+    /**
+     * @inheritdoc
+     */
+    public $canMove = true;
 
     /**
      * @inheritdoc

@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\controllers;
 
+use humhub\libs\Html;
+use humhub\modules\content\models\forms\MoveContentForm;
 use Yii;
 use yii\web\HttpException;
 use humhub\components\Controller;
@@ -31,7 +33,7 @@ class ContentController extends Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => \humhub\components\behaviors\AccessControl::class,
             ]
         ];
     }
@@ -265,6 +267,27 @@ class ContentController extends Controller
         }
 
         return $this->asJson($json);
+    }
+
+    public function actionMove($id)
+    {
+        $form = new MoveContentForm(['id' => $id]);
+
+        if(!$form->content) {
+            throw new HttpException(404);
+        }
+
+        if($form->load(Yii::$app->request->post()) && $form->save()) {
+            return $this->asJson([
+                'success' => true,
+                'id' => $id,
+                'target' => $form->getTargetContainer()->id,
+                'message' => Yii::t('ContentModule.base', 'Content has been moved to {spacename}', ['spacename' => Html::encode($form->getTargetContainer()->getDisplayName())])
+            ]);
+        }
+
+        return $this->renderAjax('moveModal', ['model' => $form]);
+
     }
 
 }

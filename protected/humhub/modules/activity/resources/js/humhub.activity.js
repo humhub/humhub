@@ -51,28 +51,12 @@ humhub.module('activity', function (module, require, $) {
     var ActivityStream = stream.Stream.extend(function (container, options) {
         var that = this;
         stream.Stream.call(this, container, {
-            loadInitialCount: STREAM_INIT_COUNT,
+            initLoadCount: STREAM_INIT_COUNT,
             loadCount: STREAM_LOAD_COUNT,
             streamEntryClass: ActivityStreamEntry,
 
         });
     });
-
-    /*ActivityStream.prototype.showLoader = function () {
-        var $loaderListItem = $('<li id="activityLoader" class="streamLoader">');
-        loader.append($loaderListItem);
-        this.$content.append($loaderListItem);
-    };
-
-    ActivityStream.prototype.hideLoader = function () {
-        this.$content.find('#activityLoader').remove();
-    };*/
-
-    /*ActivityStream.prototype.onChange = function () {
-        if (!this.hasEntries()) {
-            this.$.html('<div id="activityEmpty"><div class="placeholder">' + module.text('activityEmpty') + '</div></div>');
-        }
-    };*/
 
     ActivityStream.prototype.initScroll = function () {
         if(!this.$content.is(':visible')) {
@@ -83,6 +67,9 @@ humhub.module('activity', function (module, require, $) {
         var scrolling = true;
         var that = this;
         this.$content.scroll(function (evt) {
+            if(that.lastEntryLoaded()) {
+                return;
+            }
             // save height of the overflow container
             var _containerHeight = that.$content.height();
             // save scroll height

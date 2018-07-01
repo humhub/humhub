@@ -9,14 +9,13 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\permissions\ManageContent;
-use yii\helpers\Url;
-use humhub\modules\content\permissions\CreatePublicContent;
+use Yii;
 
 /**
- * Visibility link for Wall Entries can be used to switch form public to private and vice versa.
+ * MoveLink used to move a wallentry to another space.
  *
  * @package humhub.modules_core.wall.widgets
- * @since 1.2
+ * @since 1.3
  */
 class MoveLink extends WallEntryControlLink
 {
@@ -24,27 +23,38 @@ class MoveLink extends WallEntryControlLink
     /**
      * @var \humhub\modules\content\components\ContentActiveRecord
      */
-    public $contentRecord;
+    public $model;
 
     /**
-     * @inheritdoc
+     * @inheritdocs
      */
-    public function run()
+    public $icon = 'fa-arrows-h';
+
+    /**
+     * @inheritdocs
+     */
+    public $action = 'ui.modal.load';
+
+    /**
+     * @inheritdocs
+     */
+    public function getLabel()
     {
-        $content = $this->contentRecord->content;
-        $contentContainer = $content->container;
+        return Yii::t('ContentModule.base', 'Move content');
+    }
 
-        if($this->contentObject->isOwner() && $contentContainer->can(ManageContent::class)) {
-            return '';
-        }
+    /**
+     * @inheritdocs
+     */
+    public function getActionUrl() {
+        return $this->model->content->container->createUrl('/content/content/move', ['id' => $this->model->content->id]);
+    }
 
-        $this->action = 'move';
-        $this->actionUrl = $contentContainer->createUrl(['']);
-
-        
-        return $this->render('moveLink', [
-                'content' => $content,
-                'toggleLink' => Url::to(['/content/content/toggle-visibility', 'id' => $content->id])
-        ]);
+    /**
+     * @inheritdocs
+     */
+    public function preventRender()
+    {
+        return !$this->model->isOwner() || !$this->model->content->container->can(ManageContent::class);
     }
 }

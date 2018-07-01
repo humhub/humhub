@@ -117,6 +117,18 @@ humhub.module('content', function (module, require, $) {
         });
     };
 
+    var submitMove = function(evt) {
+        debugger;
+        modal.submit(evt).then(function(response) {
+           if(response.success) {
+               if(response.message) {
+                   module.log.success(response.message);
+               }
+               event.trigger('humhub:content:afterMove', response);
+           }
+        });
+    };
+
     var templates = {
         permalinkBody: '<div class="clearfix"><textarea rows="3" class="form-control permalink-txt" spellcheck="false" readonly>{permalink}</textarea><p class="help-block pull-right"><a href="#" data-action-click="copyToClipboard" data-action-target=".permalink-txt"><i class="fa fa-clipboard" aria-hidden="true"></i> {info}</a></p></div>',
         permalinkFooter: '<button data-modal-close class="btn btn-default">{buttonClose}</button><a href="{permalink}" class="btn btn-primary" data-ui-loader>{buttonOpen}</a>'
@@ -124,6 +136,7 @@ humhub.module('content', function (module, require, $) {
 
     module.export({
         Content: Content,
-        templates: templates
+        templates: templates,
+        submitMove: submitMove
     });
 });

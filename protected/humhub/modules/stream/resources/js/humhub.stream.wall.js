@@ -21,6 +21,7 @@ humhub.module('stream.wall', function (module, require, $) {
     var Filter = require('ui.filter').Filter;
     var string = require('util').string;
     var topic = require('topic');
+    var view = require('ui.view');
 
     /**
      * Stream implementation for main wall streams.
@@ -43,9 +44,9 @@ humhub.module('stream.wall', function (module, require, $) {
 
     WallStream.prototype.initEvents = function () {
         var that = this;
-        this.on('humhub:stream:beforeLoadEntries', function () {
+        this.on('humhub:stream:beforeLoadEntries.wallStream', function () {
             $('#btn-load-more').hide();
-        }).on('humhub:stream:afterAddEntries', function (evt, resp, res) {
+        }).on('humhub:stream:afterAddEntries.wallStream', function (evt, resp, res) {
             $.each(resp.contentSuppressions, function (key, contentSuppression) {
                 var entry = that.entry(key);
                 if(entry) {
@@ -57,12 +58,24 @@ humhub.module('stream.wall', function (module, require, $) {
             if(!resp.isLast) {
                 $('#btn-load-more').show();
             }
-        }).on('humhub:stream:lastEntryLoaded', function () {
+        }).on('humhub:stream:lastEntryLoaded.wallStream', function () {
             $('#btn-load-more').hide();
         });
 
-        event.on('humhub:content:newEntry', function (evt, html) {
+        event.on('humhub:content:newEntry.wallStream', function (evt, html) {
             that.prependEntry(html, true);
+        });
+
+        event.on('humhub:content:afterMove.wallStream', function (evt, response) {
+            var entry = that.entry(response.id);
+            debugger;
+            if(entry) {
+                if(view.getState().moduleId === 'dashboard') {
+                    entry.reload();
+                } else {
+                    setTimeout($.proxy(entry.remove, entry), 1000);
+                }
+            }
         });
     };
 
@@ -119,7 +132,9 @@ humhub.module('stream.wall', function (module, require, $) {
     };
 
     var unload = function() {
+        debugger;
         event.off('humhub:content:newEntry.wallStream');
+        event.off('humhub:content:afterMove.wallStream');
         event.off('humhub:topic:added.wallStream');
         event.off('humhub:topic:removed.wallStream');
         event.off('humhub:topic:updated.wallStream');
@@ -263,6 +278,7 @@ humhub.module('stream.wall', function (module, require, $) {
 
     module.export({
         WallStream: WallStream,
-        WallStreamFilter: WallStreamFilter
+        WallStreamFilter: WallStreamFilter,
+        unload: unload
     });
 });
