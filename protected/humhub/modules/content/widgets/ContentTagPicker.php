@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\libs\Html;
 use Yii;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\widgets\BasePickerField;
@@ -78,13 +79,13 @@ class ContentTagPicker extends BasePickerField
         return static::jsonResult($query->limit($instance->limit)->all());
     }
 
-    public static function jsonResult($topics)
+    public static function jsonResult($tags)
     {
         $result = [];
-        foreach($topics as $topic) {
+        foreach($tags as $tag) {
             $result[] = [
-                'id' => $topic->id,
-                'text' => $topic->name
+                'id' => $tag->id,
+                'text' => strip_tags($tag->name)
             ];
         }
 
@@ -103,7 +104,7 @@ class ContentTagPicker extends BasePickerField
             return;
         }
 
-        return $item->name;
+        return Html::encode($item->name);
     }
 
     /**

@@ -195,7 +195,6 @@ humhub.module('stream.wall', function (module, require, $) {
     };
 
     WallStreamFilter.prototype.onTopicUpdated = function(evt, topics) {
-        debugger;
         var topicPicker =  this.getTopicPicker();
         var $filterBar = this.getFilterBar();
 

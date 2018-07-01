@@ -360,7 +360,7 @@ humhub.module('ui.picker', function (module, require, $) {
             this.$.append(string.template(Picker.template.option, {
                 id: id,
                 image: image || '',
-                text: text
+                text: $("<div />").html(text).text()
             }));
         }
 

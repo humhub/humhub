@@ -27,19 +27,18 @@ humhub.module('topic', function (module, require, $) {
 
     var getTopicFromTrigger = function ($trigger) {
         var id = $trigger.data('topic-id');
-        var name = $trigger.find('.label').text();
+        var name = string.decode($trigger.find('.label').text());
         var $linked = getRemoveLabel({id:id, name:name});
         return {
             id: $trigger.data('topic-id'),
-            name: $trigger.find('.label').text(),
+            name: name,
             $label: $linked,
             icon: module.config.icon
         };
     };
 
     var getRemoveLabel = function(topic) {
-        var test = string.template(module.template.removeLabel, {id: topic.id, name: string.htmlEncode(topic.name), icon: module.config.icon});
-        return $(string.template(module.template.removeLabel, {id: topic.id, name: string.htmlEncode(topic.name), icon: module.config.icon}));
+        return $(string.template(module.template.removeLabel, {id: topic.id, name: topic.name, icon: module.config.icon}));
     };
 
     var removeTopic = function (evt) {
