@@ -347,30 +347,71 @@ humhub.module('ui.picker', function (module, require, $) {
      * @param {string} image item image
      * @returns {undefined}
      */
-    Picker.prototype.select = function (id, text, image) {
+    Picker.prototype.select = function (id, text, image, options) {
+        var options = options || {};
         var $option = this.getOption(id);
 
         // Only select if not already selected
         if ($option.length && $option.is(':selected')) {
-            return;
+            return false;
         } else if ($option.length) {
             $option.prop('selected', true);
-            this.$.triggerHandler('change');
-            this.renderPlaceholder(true);
         } else {
             this.$.append(string.template(Picker.template.option, {
                 id: id,
                 image: image || '',
                 text: text
             }));
-            this.$.triggerHandler('change');
-            this.renderPlaceholder(true);
+        }
+
+        if(options.triggerChange !== false) {
+            this.triggerChange();
+        }
+
+        return true;
+    };
+
+    Picker.prototype.triggerChange = function () {
+        this.$.triggerHandler('change');
+        this.renderPlaceholder(true);
+    }
+
+    Picker.prototype.setSelection = function (selection, translate) {
+        var that = this;
+        var changed = false;
+        var vals = this.val();
+
+        this.clear(false);
+
+        selection.forEach(function(item) {
+            if(translate) {
+                item = translate.call(this, item);
+            }
+
+            if(item && that.select(item.id, item.text, item.image, {triggerChange: false}) && vals.indexOf(item.id) < 0) {
+                changed = true;
+            }
+        });
+
+        vals.forEach(function(id) {
+            if(!that.isSelected(id)) {
+                changed = true;
+            }
+        });
+
+        if(changed) {
+            that.triggerChange();
         }
     };
 
+    Picker.prototype.isSelected = function (id) {
+        var values = this.val();
+        return values.indexOf(id) >= 0;
+    }
+
     Picker.prototype.remove = function (id) {
         var values = this.val();
-        if(values.indexOf(id) >= 0) {
+        if(this.isSelected(id)) {
             values.splice(values.indexOf(id), 1);
             this.$.val(values).trigger('change');
         }
@@ -387,6 +428,16 @@ humhub.module('ui.picker', function (module, require, $) {
         this.$.trigger('change');
     };
 
+    Picker.prototype.clear = function (triggerChange) {
+        this.$.val(null);
+
+        if(triggerChange !== false) {
+            this.triggerChange();
+        }
+
+        return this;
+    };
+
     /**
      * Returns an option node by the given id (value)
      * 
@@ -395,7 +446,7 @@ humhub.module('ui.picker', function (module, require, $) {
      */
     Picker.prototype.getOption = function (id) {
         return this.$.children().filter(function () {
-            return this.value === id;
+            return this.value == id;
         });
     };
 

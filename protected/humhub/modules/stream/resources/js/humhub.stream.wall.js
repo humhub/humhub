@@ -133,8 +133,6 @@ humhub.module('stream.wall', function (module, require, $) {
     var unload = function() {
         event.off('humhub:content:newEntry.wallStream');
         event.off('humhub:content:afterMove.wallStream');
-        event.off('humhub:topic:added.wallStream');
-        event.off('humhub:topic:removed.wallStream');
         event.off('humhub:topic:updated.wallStream');
         event.off('scroll.wallStream');
     };
@@ -160,9 +158,7 @@ humhub.module('stream.wall', function (module, require, $) {
             }
         });
 
-        event.on('humhub:topic:added.wallStream', $.proxy(this.onTopicAdded, this))
-            .on('humhub:topic:removed.wallStream', $.proxy(this.onTopicRemoved, this))
-            .on('humhub:topic:updated.wallStream', $.proxy(this.onTopicUpdated, this));
+        event.on('humhub:topic:updated.wallStream', $.proxy(this.onTopicUpdated, this));
 
        this.initTopicPicker();
        this.initContentTypePicker();
@@ -189,7 +185,6 @@ humhub.module('stream.wall', function (module, require, $) {
         var contentTypePicker = this.getContentTypePicker();
         if(contentTypePicker) {
             contentTypePicker.$.on('change', function() {
-                debugger;
                 var $filterBar = that.getFilterBar();
                 $filterBar.find('.content-type-remove-label').remove();
                 Widget.instance($(this)).data().forEach(function(contentType) {
@@ -199,36 +194,33 @@ humhub.module('stream.wall', function (module, require, $) {
         }
     };
 
-    WallStreamFilter.prototype.onTopicAdded = function(evt, topic) {
-        this.getFilterBar().append(topic.$label.clone());
-        debugger;
-        this.getTopicPicker().select(topic.id, topic.name, topic.icon);
-    };
-
-    WallStreamFilter.prototype.onTopicRemoved = function(evt, topic) {
-        var $filterBar = this.getFilterBar();
-        var $label = $filterBar.find('[data-topic-id="'+topic.id+'"]');
-
-        $label.fadeOut('fast', function() {
-            $label.remove();
-        });
-
-        this.getTopicPicker().remove(topic.id);
-    };
-
     WallStreamFilter.prototype.onTopicUpdated = function(evt, topics) {
         debugger;
         var topicPicker =  this.getTopicPicker();
         var $filterBar = this.getFilterBar();
 
-        topics.forEach(function(topic) {
-            if(!topicPicker.hasValue(topic.id)) {
-                topicPicker.select(topic.id, topic.name, topic.icon);
-            }
+        topicPicker.setSelection(topics, function(topic) {
+           return {
+               id: topic.id,
+               text: topic.name,
+               image: topic.icon
+           };
+        });
 
-            if(!$filterBar.find('[data-topic-id="'+topic.id+'"]').length) {
+        var selectors = [];
+
+        topics.forEach(function(topic) {
+            var selector = '[data-topic-id="'+topic.id+'"]';
+            selectors.push(selector);
+            if(!$filterBar.find(selector).length) {
                 topic.$label.clone().prependTo($filterBar);
             }
+        });
+
+        var toRemove = selectors.length ? '[data-topic-id]:not('+selectors.join(',')+')' : '[data-topic-id]';
+
+        $filterBar.find(toRemove).fadeOut('fast', function() {
+            $(this).remove();
         });
     };
 
