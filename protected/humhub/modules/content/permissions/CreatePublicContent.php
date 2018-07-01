@@ -10,6 +10,7 @@ namespace humhub\modules\content\permissions;
 
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * CreatePublicContent Permission

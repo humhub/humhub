@@ -72,6 +72,11 @@ class MoveContentForm extends Model
         }
     }
 
+    public function getSearchUrl()
+    {
+        return $this->content->container->createUrl('/content/move/search', ['contentId' => $this->content->id]);
+    }
+
     /**
      * @return Space|null
      */

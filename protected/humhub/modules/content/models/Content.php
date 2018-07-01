@@ -422,6 +422,10 @@ class Content extends ContentDeprecated implements Movable
             return true;
         }
 
+        if($container->contentcontainer_id === $this->contentcontainer_id) {
+            return Yii::t('ContentModule.base', 'The content can\'t be moved to its current space.');
+        }
+
         // Check if the related module is installed on the target space
         if(!$container->moduleManager->isEnabled($model->getModuleId())) {
             $module = Yii::$app->getModule($model->getModuleId());

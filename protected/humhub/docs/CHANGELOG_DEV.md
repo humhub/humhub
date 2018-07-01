@@ -60,3 +60,6 @@ HumHub Change Log - v1.3-dev Branch
 - Chg: MySQL queue is now the default job queuing driver
 - Enh: Add steps to using Facebook Oauth (@Felli)
 - Enh: Added css `footer-nav` class for footer navigation
+- Enh: Added Pin/Archived/Public wallentry icons
+- Enh: Added move content behavior by means of a `humhub\modules\content\models\Movable` interface
+

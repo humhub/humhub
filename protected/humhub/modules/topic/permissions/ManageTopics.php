@@ -48,7 +48,7 @@ class ManageTopics extends BasePermission
      */
     public function getTitle()
     {
-        return Yii::t('MeetingModule.meeting', 'Manage Topics');
+        return Yii::t('TopicModule.meeting', 'Manage Topics');
     }
 
     /**
@@ -56,6 +56,6 @@ class ManageTopics extends BasePermission
      */
     public function getDescription()
     {
-        return Yii::t('CommentModule.permissions', 'Can edit and remove topics');
+        return Yii::t('TopicModule.permissions', 'Can edit and remove topics');
     }
 }

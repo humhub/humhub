@@ -47,7 +47,7 @@ class MoveContentLink extends WallEntryControlLink
      * @inheritdocs
      */
     public function getActionUrl() {
-        return $this->model->content->container->createUrl('/content/content/move', ['id' => $this->model->content->id]);
+        return $this->model->content->container->createUrl('/content/move/move', ['id' => $this->model->content->id]);
     }
 
     /**
@@ -55,6 +55,6 @@ class MoveContentLink extends WallEntryControlLink
      */
     public function preventRender()
     {
-        return !$this->model->isOwner() || !$this->model->content->container->can(ManageContent::class);
+        return !$this->model->isOwner() && !$this->model->content->container->can(ManageContent::class);
     }
 }

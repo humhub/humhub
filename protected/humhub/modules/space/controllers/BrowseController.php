@@ -31,7 +31,7 @@ class BrowseController extends Controller
     {
         return [
             'acl' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'guestAllowedActions' => ['search-json']
             ]
         ];

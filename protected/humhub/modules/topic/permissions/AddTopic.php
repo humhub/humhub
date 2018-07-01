@@ -48,7 +48,7 @@ class AddTopic extends BasePermission
      */
     public function getTitle()
     {
-        return Yii::t('MeetingModule.meeting', 'Add Topics');
+        return Yii::t('TopicModule.meeting', 'Add Topics');
     }
 
     /**
@@ -56,6 +56,6 @@ class AddTopic extends BasePermission
      */
     public function getDescription()
     {
-        return Yii::t('CommentModule.permissions', 'Can add new topics');
+        return Yii::t('TopicModule.permissions', 'Can add new topics');
     }
 }

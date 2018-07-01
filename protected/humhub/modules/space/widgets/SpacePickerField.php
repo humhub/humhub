@@ -2,8 +2,8 @@
 
 namespace humhub\modules\space\widgets;
 
-use humhub\widgets\BasePickerField;
 use humhub\modules\space\models\Space;
+use humhub\modules\ui\form\widgets\BasePicker;
 use Yii;
 use yii\helpers\Html;
 
@@ -14,7 +14,7 @@ use yii\helpers\Html;
  * @since 1.2
  * @author buddha
  */
-class SpacePickerField extends BasePickerField
+class SpacePickerField extends BasePicker
 {
     /**
      * @inheritdoc
