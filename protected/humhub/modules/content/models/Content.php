@@ -389,8 +389,10 @@ class Content extends ContentDeprecated implements Movable
         if($move === true) {
             static::getDb()->transaction(function($db) use ($container) {
                 $this->setContainer($container);
-                $this->save();
-                $this->getModel()->afterMove();
+                if($this->save()) {
+                    ContentTag::deleteContentRelations($this, false);
+                    $this->getModel()->afterMove();
+                }
             });
         }
 

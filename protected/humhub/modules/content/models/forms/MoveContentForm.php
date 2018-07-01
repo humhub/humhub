@@ -51,6 +51,13 @@ class MoveContentForm extends Model
         ];
     }
 
+    public function attributeLabels()
+    {
+        return[
+            'target' => Yii::t('ContentModule.base', 'Target Space')
+        ];
+    }
+
     public function validateTarget($attribute, $params, $validator)
     {
         $targetContainer = $this->getTargetContainer();

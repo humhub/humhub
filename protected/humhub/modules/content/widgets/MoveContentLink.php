@@ -12,12 +12,12 @@ use humhub\modules\content\permissions\ManageContent;
 use Yii;
 
 /**
- * MoveLink used to move a wallentry to another space.
+ * MoveContentLink used to move a wallentry to another space.
  *
  * @package humhub.modules_core.wall.widgets
  * @since 1.3
  */
-class MoveLink extends WallEntryControlLink
+class MoveContentLink extends WallEntryControlLink
 {
 
     /**

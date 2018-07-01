@@ -110,7 +110,6 @@
 
     .wall-stream-filter-root {
         margin:0;
-        white-space: nowrap;
         border:0 !important;
     }
 
@@ -124,7 +123,7 @@
     }
 
     .wall-stream-filter-body {
-        overflow:auto;
+        overflow:hidden;
         background-color: @background-color-secondary;
         border: 1px solid #ddd;
         border-top: 0;
@@ -181,6 +180,17 @@
             -moz-box-shadow: 0 0 2px @text-color-secondary;
         }
     }
+}
+
+@media (max-width: 767px) {
+  #wall-stream-filter-nav {
+     .wall-stream-filter-root {
+          white-space: nowrap;
+     }
+    .wall-stream-filter-body {
+        overflow: auto;
+    }
+  }
 }
 
 .filter-root {

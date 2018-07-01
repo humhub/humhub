@@ -176,7 +176,7 @@ class WallStreamFilterNavigation extends FilterNavigation
 
         $this->addFilter([
             'id' => DefaultStreamFilter::FILTER_FILES,
-            'title' => Yii::t('ContentModule.widgets_views_stream', 'Content with attached files'),
+            'title' => Yii::t('ContentModule.widgets_views_stream', 'With file attachments'),
             'sortOrder' => 300
         ],static::FILTER_BLOCK_BASIC);
     }

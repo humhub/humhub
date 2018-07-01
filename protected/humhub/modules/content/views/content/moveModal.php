@@ -12,10 +12,10 @@ use humhub\widgets\Button;
 <?php ModalDialog::begin(['header' => Yii::t('ContentModule.base', '<strong>Move</strong> content')]) ?>
  <?php $form = ActiveForm::begin() ?>
     <div class="modal-body">
-      <?= $form->field($model, 'target')->widget(SpacePickerField::class, ['maxSelection' => 1])?>
+      <?= $form->field($model, 'target')->widget(SpacePickerField::class, ['maxSelection' => 1, 'focus' => true])?>
     </div>
     <div class="modal-footer">
-        <?= Button::primary(Yii::t('base', 'Save'))->action('content.submitMove') ?>
+        <?= Button::primary(Yii::t('base', 'Save'))->action('content.submitMove')->loader(true) ?>
         <?= ModalButton::cancel() ?>
     </div>
  <?php ActiveForm::end() ?>

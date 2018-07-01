@@ -37,7 +37,7 @@ class InviteModal extends Widget
             'model' => $this->model,
             'attribute' => $this->attribute,
             'searchUrl' => $this->searchUrl,
-            'canManageMembers' => $this->model->space->getPermissionManager()->can(new ManageUsers()),
+            'canManageMembers' => Yii::$app->user->can(ManageUsers::class),
         ]);
     }
 }

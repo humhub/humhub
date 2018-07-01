@@ -20,6 +20,7 @@ use Yii;
 use yii\db\ActiveQuery;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use yii\db\Expression;
 
 /**
  * ContentTags are a concept to categorize content on module and ContentContainer level.
@@ -472,13 +473,17 @@ class ContentTag extends ActiveRecord
      * @param Content $content
      * @return ContentTagRelation[]
      */
-    public static function getTagContentRelations(Content $content)
+    public static function getTagContentRelations(Content $content, $includeGlobal = true)
     {
         $query = $content->getTagRelations()->innerJoin('content_tag', 'content_tag_relation.tag_id = content_tag.id');
 
         $instance = new static;
         if (!empty($instance->moduleId)) {
             $query->andWhere(['content_tag.module_id' => $instance->moduleId]);
+        }
+
+        if(!$includeGlobal) {
+            $query->andWhere(['IS NOT', 'content_tag.contentcontainer_id', new Expression('NULL')]);
         }
 
         if (static::class != ContentTag::class) {
@@ -493,9 +498,9 @@ class ContentTag extends ActiveRecord
      *
      * @param Content $content
      */
-    public static function deleteContentRelations(Content $content)
+    public static function deleteContentRelations(Content $content, $includeGlobal = true)
     {
-        $relations = self::getTagContentRelations($content);
+        $relations = self::getTagContentRelations($content, $includeGlobal);
         foreach ($relations as $relation) {
             $relation->delete();
         }
