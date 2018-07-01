@@ -68,7 +68,6 @@ humhub.module('stream.wall', function (module, require, $) {
 
         event.on('humhub:content:afterMove.wallStream', function (evt, response) {
             var entry = that.entry(response.id);
-            debugger;
             if(entry) {
                 if(view.getState().moduleId === 'dashboard') {
                     entry.reload();
@@ -132,7 +131,6 @@ humhub.module('stream.wall', function (module, require, $) {
     };
 
     var unload = function() {
-        debugger;
         event.off('humhub:content:newEntry.wallStream');
         event.off('humhub:content:afterMove.wallStream');
         event.off('humhub:topic:added.wallStream');
@@ -191,6 +189,7 @@ humhub.module('stream.wall', function (module, require, $) {
         var contentTypePicker = this.getContentTypePicker();
         if(contentTypePicker) {
             contentTypePicker.$.on('change', function() {
+                debugger;
                 var $filterBar = that.getFilterBar();
                 $filterBar.find('.content-type-remove-label').remove();
                 Widget.instance($(this)).data().forEach(function(contentType) {
@@ -202,6 +201,7 @@ humhub.module('stream.wall', function (module, require, $) {
 
     WallStreamFilter.prototype.onTopicAdded = function(evt, topic) {
         this.getFilterBar().append(topic.$label.clone());
+        debugger;
         this.getTopicPicker().select(topic.id, topic.name, topic.icon);
     };
 
@@ -217,6 +217,7 @@ humhub.module('stream.wall', function (module, require, $) {
     };
 
     WallStreamFilter.prototype.onTopicUpdated = function(evt, topics) {
+        debugger;
         var topicPicker =  this.getTopicPicker();
         var $filterBar = this.getFilterBar();
 
@@ -225,7 +226,7 @@ humhub.module('stream.wall', function (module, require, $) {
                 topicPicker.select(topic.id, topic.name, topic.icon);
             }
 
-            if(!$filterBar.find(['data-topic-id="'+topic.id+'"']).length) {
+            if(!$filterBar.find('[data-topic-id="'+topic.id+'"]').length) {
                 topic.$label.clone().prependTo($filterBar);
             }
         });

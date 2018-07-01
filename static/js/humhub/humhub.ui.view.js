@@ -15,7 +15,6 @@ humhub.module('ui.view', function (module, require, $) {
     };
 
     var setState = function (moduleId, controlerId, action) {
-        debugger;
         state = {
             title: document.title,
             moduleId: moduleId,
@@ -34,7 +33,6 @@ humhub.module('ui.view', function (module, require, $) {
     
     module.initOnPjaxLoad = true;
     var init = function ($pjax) {
-        //title = document.title;
         module.log.debug('Current view state', state);
     };
 

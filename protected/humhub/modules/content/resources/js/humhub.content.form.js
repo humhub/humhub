@@ -145,6 +145,11 @@ humhub.module('content.form', function(module, require, $) {
         Widget.instance('#notifyUserInput').focus();
     };
 
+    CreateForm.prototype.setTopics = function() {
+        $('#postTopicContainer').show();
+        Widget.instance('#postTopicInput').focus();
+    };
+
     var init = function() {
         var $root = $(CREATE_FORM_ROOT_SELECTOR);
         if($root.length) {

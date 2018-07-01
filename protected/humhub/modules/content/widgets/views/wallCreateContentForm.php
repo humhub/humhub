@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\Button;
+use humhub\modules\topic\widgets\TopicPicker;
 use yii\helpers\Html;
 use humhub\modules\content\assets\ContentFormAsset;
 use humhub\modules\file\widgets\FilePreview;
@@ -9,6 +9,8 @@ use humhub\modules\user\widgets\UserPickerField;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\UploadProgress;
+use humhub\widgets\Link;
+use humhub\widgets\Button;
 
 /* @var $defaultVisibility integer */
 /* @var $submitUrl string */
@@ -50,6 +52,14 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
             ]) ?>
         </div>
 
+        <div id="postTopicContainer" class="form-group" style="margin-top: 15px;display:none;">
+            <?= TopicPicker::widget([
+                    'id' => 'postTopicInput',
+                    'name' => 'postTopicInput',
+                    'contentContainer' => $contentContainer
+            ]); ?>
+        </div>
+
         <?= Html::hiddenInput("containerGuid", $contentContainer->guid); ?>
         <?= Html::hiddenInput("containerClass", get_class($contentContainer)); ?>
 
@@ -58,9 +68,7 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
         <div class="contentForm_options">
             <hr>
             <div class="btn_container">
-                <button id="post_submit_button" data-action-click="submit" data-action-submit data-ui-loader class="btn btn-info">
-                    <?= $submitButtonText ?>
-                </button>
+                <?= Button::info($submitButtonText)->action('submit')->id('post_submit_button')->submit() ?>
 
                 <?php
                 $uploadButton = UploadButton::widget([
@@ -87,15 +95,15 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
                                 <i class="fa fa-cogs"></i></a>
                             <ul class="dropdown-menu pull-right">
                                 <li>
-                                    <a data-action-click="notifyUser">
-                                        <i class="fa fa-bell"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Notify members'); ?>
-                                    </a>
+                                    <?= Link::withAction(Yii::t('ContentModule.widgets_views_contentForm', 'Notify members'), 'notifyUser')->icon('fa-bell')?>
+                                </li>
+                                 <li>
+                                     <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon) ?>
                                 </li>
                                 <?php if ($canSwitchVisibility): ?>
                                     <li>
-                                        <a id="contentForm_visibility_entry" data-action-click="changeVisibility">
-                                            <i class="fa fa-unlock"></i> <?= Yii::t('ContentModule.widgets_views_contentForm', 'Make public'); ?>
-                                        </a>
+                                        <?= Link::withAction(Yii::t('ContentModule.widgets_views_contentForm', 'Make public'), 'changeVisibility')
+                                            ->id('contentForm_visibility_entry')->icon('fa-unlock') ?>
                                     </li>
                                 <?php endif; ?>
                             </ul>

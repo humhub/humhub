@@ -118,7 +118,6 @@ humhub.module('content', function (module, require, $) {
     };
 
     var submitMove = function(evt) {
-        debugger;
         modal.submit(evt).then(function(response) {
            if(response.success) {
                if(response.message) {
