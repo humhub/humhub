@@ -29,4 +29,10 @@ class GlobalModal extends Modal
      * accidental closing of which can lead to loss of user data.
      */
     public $backdrop = false;
+
+    public function init()
+    {
+        $this->options['data-pjax-close']="true";
+        parent::init();
+    }
 }

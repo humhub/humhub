@@ -536,6 +536,12 @@ humhub.module('ui.modal', function (module, require, $) {
             $(this).attr('aria-hidden', 'false');
         });
 
+        $(document).on('pjax:end', function (event) {
+            if (module.global.$.hasClass('in') && module.global.$.data('pjax-close')==true) {
+                module.global.close();
+            }
+        });
+
         $(document).on('shown.bs.modal', '.modal.in', function (event) {
             _setModalsAndBackdropsOrder();
         });
