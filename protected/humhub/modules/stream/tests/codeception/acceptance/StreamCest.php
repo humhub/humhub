@@ -157,7 +157,6 @@ class StreamCest
 
         $newEntrySelector = '[data-content-key="12"]';
 
-        $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my first stream test post', '.wall-entry');
 
         $I->amGoingTo('edit load the edit form');
@@ -165,7 +164,7 @@ class StreamCest
         $I->waitForText('Edit', 10);
         $I->click('Edit', $newEntrySelector);
 
-        $I->waitForElementVisible($newEntrySelector . ' .content_edit', 20);
+        $I->waitForElementVisible($newEntrySelector . ' .content_edit');
         $I->amGoingTo('cancel my edit');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Cancel Edit', 10);
