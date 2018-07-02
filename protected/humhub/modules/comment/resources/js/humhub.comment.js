@@ -16,7 +16,6 @@ humhub.module('comment', function (module, require, $) {
         var that = this;
         client.submit(evt, {dataType: 'html'}).then(function (response) {
             var richText = that.getRichtext();
-            console.log(response.html);
             that.addComment(response.html);
             that.getInput().val('').trigger('autosize.resize');
             richText.$.trigger('clear');
@@ -33,14 +32,23 @@ humhub.module('comment', function (module, require, $) {
 
     Form.prototype.addComment = function (html) {
         var $html = $(html);
-        var $elements = $(html).not('script, link').filter(function () {
+
+        // Filter out all script/links and text nodes
+        var $elements = $html.not('script, link').filter(function () {
             return this.nodeType === 1; // filter out text nodes
         });
-        $elements.hide();
-        additions.applyTo($elements);
+
+        // We use opacity because some additions require the actual size of the elements.
+        $elements.css('opacity', 0);
+
+        // call insert callback
         this.getCommentsContainer().append($html);
         this.incrementCommentCount(1);
-        $elements.fadeIn();
+
+        // apply additions to elements and fade them in.
+        additions.applyTo($elements);
+
+        $elements.hide().css('opacity', 1).fadeIn('fast');
     };
     
     Form.prototype.incrementCommentCount = function (count) {
