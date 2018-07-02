@@ -22,7 +22,7 @@ cache:
 services: mysql
 
 before_install:
-  - wget https://chromedriver.storage.googleapis.com/2.39/chromedriver_linux64.zip
+  - wget https://chromedriver.storage.googleapis.com/2.40/chromedriver_linux64.zip
   - unzip -d $HOME chromedriver_linux64.zip
   - $HOME/chromedriver --url-base=/wd/hub &
 
