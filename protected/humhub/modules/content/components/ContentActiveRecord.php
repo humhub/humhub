@@ -466,6 +466,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * This function should also validate all existing sub-content entries to prevent data inconsistency.
      *
      * > Note: Default checks for the underlying content are automatically handled within the [[Content::canMove()]]
+     * @param ContentContainerActiveRecord|null $container
+     * @return bool|string
      */
     public function canMove(ContentContainerActiveRecord $container = null)
     {
@@ -486,6 +488,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
 
     /**
      * This function can be overwritten in order to define model specific logic as moving sub-content or other related
+     * @param ContentContainerActiveRecord|null $container
      */
     public function afterMove(ContentContainerActiveRecord $container = null) {}
 }
