@@ -21,29 +21,30 @@ humhub.module('topic', function (module, require, $) {
         }
 
         topics[topicId] = getTopicFromTrigger(evt.$trigger);
-        event.trigger('humhub:topic:added', topics[topicId]);
+
+        updated();
     };
 
     var getTopicFromTrigger = function ($trigger) {
         var id = $trigger.data('topic-id');
-        var name = $trigger.find('.label').text();
+        var name = string.decode($trigger.find('.label').text());
         var $linked = getRemoveLabel({id:id, name:name});
         return {
             id: $trigger.data('topic-id'),
-            name: $trigger.find('.label').text(),
+            name: name,
             $label: $linked,
             icon: module.config.icon
         };
     };
 
     var getRemoveLabel = function(topic) {
-        return $(string.template(module.template.removeLabel, {id: topic.id, name: string.htmlEncode(topic.name), icon: module.config.icon}));
+        return $(string.template(module.template.removeLabel, {id: topic.id, name: topic.name, icon: module.config.icon}));
     };
 
     var removeTopic = function (evt) {
         var topic = getTopicFromTrigger(evt.$trigger);
         delete topics[topic.id];
-        event.trigger('humhub:topic:removed', topic);
+        updated();
     };
 
     var getTopics = function () {
@@ -57,8 +58,13 @@ humhub.module('topic', function (module, require, $) {
             topic.icon = module.config.icon;
             topics[topic.id] = topic;
         });
-        event.trigger('humhub:topic:updated', [getTopicArray()]);
+
+        updated();
     };
+
+    var updated = function() {
+        event.trigger('humhub:topic:updated', [getTopicArray()]);
+    }
 
     var getTopicIds = function () {
         return Object.keys(topics) || [];

@@ -79,7 +79,7 @@ humhub.module('content.form', function(module, require, $) {
         $contentForm.filter('textarea').val('').trigger('autosize.resize');
         $contentForm.attr('checked', false);
 
-        this.resetNotifyUser();
+        this.resetSettingInputs();
         this.setDefaultVisibility();
         this.resetFilePreview();
 
@@ -87,9 +87,11 @@ humhub.module('content.form', function(module, require, $) {
         $('#contentFormBody').find('.humhub-ui-richtext').trigger('clear');
     };
 
-    CreateForm.prototype.resetNotifyUser = function() {
+    CreateForm.prototype.resetSettingInputs = function() {
         $('#notifyUserContainer').hide();
         Widget.instance('#notifyUserInput').reset();
+        $('#postTopicContainer').hide();
+        Widget.instance('#postTopicInput').reset();
     };
 
     CreateForm.prototype.resetFilePreview = function() {
@@ -143,6 +145,11 @@ humhub.module('content.form', function(module, require, $) {
     CreateForm.prototype.notifyUser = function() {
         $('#notifyUserContainer').show();
         Widget.instance('#notifyUserInput').focus();
+    };
+
+    CreateForm.prototype.setTopics = function() {
+        $('#postTopicContainer').show();
+        Widget.instance('#postTopicInput').focus();
     };
 
     var init = function() {
