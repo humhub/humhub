@@ -27,23 +27,9 @@ before_install:
   - $HOME/chromedriver --url-base=/wd/hub &
 
 install:
-  #- wget http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux64.zip
-  #- unzip chromedriver_linux64.zip -d ./
-  #- export CHROME_BIN=chromium-browser
-  # Start xvfb for gui test
-  #- "export DISPLAY=:99.0"
-  #- "sh -e /etc/init.d/xvfb start"
-  # Download and start selenium
-  #- sleep 3 # give xvfb some time to start
-  #- echo "Download selenium-server-standalone jar file"
-  #- wget -c -nc --retry-connrefused --tries=0 http://goo.gl/EoH85x -O selenium-server-standalone.jar
-  #- echo "Run selenium server - background process"
-  #- nohup bash -c "java -jar selenium-server-standalone.jar &" && sleep 1; cat nohup.out
   # Run Composer update
   - travis_retry composer self-update && composer --version
   - travis_retry composer install --prefer-dist --no-interaction
-  # - travis_retry composer global require "codeception/codeception=2.3.*" "codeception/specify=*" "codeception/verify=*"
-  # Install test environment
   - |
     mysql -e 'CREATE DATABASE `humhub_test` CHARACTER SET utf8 COLLATE utf8_general_ci;'
     cd $TRAVIS_BUILD_DIR/protected/humhub/tests
@@ -56,15 +42,13 @@ script:
   - |
     cd $TRAVIS_BUILD_DIR
     php -S 127.0.0.1:8080 &> /dev/null &
-  #- phantomjs --webdriver=4444 > /dev/null 2>&1 & # Not in use since phantomjs hangs with QIODevice::write (QTcpSocket): device not open
   - sleep 5
   - curl --fail http://127.0.0.1:8080/index-test.php
   - |
     cd $TRAVIS_BUILD_DIR/protected/humhub/tests
     php ../../vendor/bin/codecept run --env travis
 after_failure:
-  - cd ../modules/user/tests/codeception/_output/
+  - cd ../modules/stream/tests/codeception/_output/
   - ls
-  - cat useracceptancePasswordRecoveryCest.testPasswordRecovery.fail.html
-   #cat ../modules/*/tests/codeception/_output/*.html
+  - cat stream.acceptance.StreamCest.testEditPost.fail.html
     
