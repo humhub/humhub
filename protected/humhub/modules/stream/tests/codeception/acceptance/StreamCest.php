@@ -157,6 +157,7 @@ class StreamCest
 
         $newEntrySelector = '[data-content-key="12"]';
 
+        $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my first stream test post', '.wall-entry');
 
         $I->amGoingTo('edit load the edit form');

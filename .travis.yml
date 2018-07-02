@@ -50,5 +50,6 @@ script:
 after_failure:
   - cd ../modules/stream/tests/codeception/_output/
   - ls
+  - curl --upload-file ./stream.acceptance.StreamCest.testEditPost.fail.png https://transfer.sh/fail.png
   - cat stream.acceptance.StreamCest.testEditPost.fail.html
     
