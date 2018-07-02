@@ -470,7 +470,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     public function canMove(ContentContainerActiveRecord $container = null)
     {
         if(!$this->canMove) {
-            return Yii::t('ContentModule.base', 'This content type can\'t be moved');
+            return Yii::t('ContentModule.base', 'This content type can\'t be moved.');
         }
 
         return true;

@@ -102,4 +102,9 @@ class MoveContentForm extends Model
         $this->content->move($this->getTargetContainer());
         return true;
     }
+
+    public function isMovable()
+    {
+        return $this->content->canMove();
+    }
 }
