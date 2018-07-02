@@ -12,7 +12,6 @@ use humhub\modules\admin\models\forms\SpaceSettingsForm;
 use humhub\modules\admin\models\SpaceSearch;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
-use humhub\modules\space\permissions\CreatePublicSpace;
 use Yii;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -73,8 +72,9 @@ class SpaceController extends Controller
 
     /**
      * Deep link into space
+     * @throws HttpException
      */
-    public function actionOpen($id, $section)
+    public function actionOpen($id, $section = null)
     {
         $space = Space::findOne(['id' => $id]);
         if ($space === null) {
