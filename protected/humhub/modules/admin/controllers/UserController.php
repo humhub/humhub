@@ -11,6 +11,7 @@ use humhub\compat\HForm;
 use humhub\components\export\DateTimeColumn;
 use humhub\components\export\SpreadsheetExport;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\models\forms\UserDeleteForm;
 use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\permissions\ManageGroups;
