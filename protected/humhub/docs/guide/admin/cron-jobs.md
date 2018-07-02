@@ -9,26 +9,26 @@ The following guides are meant to help you with your Cron Job setup, since those
 The following is a default setup for CloudLinux (CentOS) 6 and may not work for all users.
 
 ```
-/usr/local/bin/php /home/USERNAME/public_html/WEB-DIRECTORY/protected/yii cron/hourly >/dev/null 2>&1
+/usr/local/bin/php /home/USERNAME/public_html/WEB-DIRECTORY/protected/yii cron/run >/dev/null 2>&1
 
-30 * * * *
+* * * * *
 
-/usr/local/bin/php /home/USERNAME/public_html/WEB-DIRECTORY/protected/yii cron/daily >/dev/null 2>&1
+/usr/local/bin/php /home/USERNAME/public_html/WEB-DIRECTORY/protected/yii queue/run >/dev/null 2>&1
 
-00 18 * * *
+* * * * *
 ```
 
 ### cPanel Hosted Server
 The following is a default setup for cPanel Hosted Server and may not work for all users.
 
 ```
-/usr/local/bin/php /home/USERNAME/public_html/WEB-DIRECTORY/protected/yii cron/hourly >/dev/null 2>&1
+/usr/local/bin/php /home/USERNAME/public_html/WEB-DIRECTORY/protected/yii cron/run >/dev/null 2>&1
 
-0,30 * * * *
+* * * * *
 
-/usr/local/bin/php /home/USERNAME/public_html/WEB-DIRECTORY/protected/yii cron/daily >/dev/null 2>&1
+/usr/local/bin/php /home/USERNAME/public_html/WEB-DIRECTORY/protected/yii queue/run >/dev/null 2>&1
 
-00 0,12 * * *
+* * * * *
 ```
 
 ### IIS Windows Server
@@ -48,11 +48,11 @@ Create the following files then follow the above link.
 
 **cronh.php**
 
-`<?php $humhubh = '/usr/local/php5.6/bin/php '.__DIR__.'/protected/yii cron/hourly '; exec($humhubh); ?>`
+`<?php $humhubh = '/usr/local/php5.6/bin/php '.__DIR__.'/protected/yii cron/run '; exec($humhubh); ?>`
 
 **crond.php**
 
-`<?php $humhubd = '/usr/local/php5.6/bin/php '.__DIR__.'/protected/yii cron/daily '; exec($humhubd); ?>`
+`<?php $humhubd = '/usr/local/php5.6/bin/php '.__DIR__.'/protected/yii queue/run '; exec($humhubd); ?>`
 
 ### Debian
 Please read up on this [article](https://debian-administration.org/article/56/Command_scheduling_with_cron).

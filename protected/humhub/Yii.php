@@ -32,6 +32,7 @@ class Yii extends \yii\BaseYii
  * @property \yii\queue\Queue $queue
  * @property \humhub\components\UrlManager $urlManager
  * @property \humhub\modules\live\components\Sender $live
+ * @property \yii\mutex\Mutex $mutex
  *
  */
 abstract class BaseApplication extends yii\base\Application
