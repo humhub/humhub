@@ -15,7 +15,7 @@ use yii\web\HttpException;
 
 /**
  * Events provides callbacks for all defined module events.
- * 
+ *
  * @author luke
  */
 class Events extends \yii\base\Object
@@ -93,7 +93,7 @@ class Events extends \yii\base\Object
 
         $integrityController->showTestHeadline("Space Module - Module (" . models\Module::find()->count() . " entries)");
         foreach (models\Module::find()->joinWith('space')->each() as $module) {
-            if ($module->space == null) {
+            if ($module->space == null && !empty($module->space_id)) {
                 if ($integrityController->showFix("Deleting space module " . $module->id . " without existing space!")) {
                     $module->delete();
                 }

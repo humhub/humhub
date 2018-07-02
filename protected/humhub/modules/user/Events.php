@@ -13,7 +13,7 @@ use humhub\modules\user\models\Follow;
 
 /**
  * Events provides callbacks for all defined module events.
- * 
+ *
  * @author luke
  */
 class Events extends \yii\base\Object
@@ -130,7 +130,7 @@ class Events extends \yii\base\Object
 
         $integrityController->showTestHeadline("User Module - Modules (" . models\Module::find()->count() . " entries)");
         foreach (models\Module::find()->joinWith(['user'])->each() as $module) {
-            if ($module->user == null) {
+            if ($module->user == null && !empty($module->user_id)) {
                 if ($integrityController->showFix("Deleting user-module " . $module->id . " of non existing user!")) {
                     $module->delete();
                 }
@@ -153,7 +153,7 @@ class Events extends \yii\base\Object
 
     /**
      * Tasks on hourly cron job
-     * 
+     *
      * @param \yii\base\Event $event
      */
     public static function onHourlyCron($event)
@@ -161,7 +161,7 @@ class Events extends \yii\base\Object
         foreach (Yii::$app->authClientCollection->getClients() as $authClient) {
             if ($authClient instanceof authclient\interfaces\AutoSyncUsers) {
                 /**
-                 * @var authclient\interfaces\AutoSyncUsers $authClient 
+                 * @var authclient\interfaces\AutoSyncUsers $authClient
                  */
                 $authClient->syncUsers();
             }
