@@ -48,8 +48,7 @@ script:
     cd $TRAVIS_BUILD_DIR/protected/humhub/tests
     php ../../vendor/bin/codecept run --env travis
 after_failure:
-  - cd ../modules/stream/tests/codeception/_output/
+  - cd ../../runtime/logs
   - ls
-  - curl --upload-file ./stream.acceptance.StreamCest.testEditPost.fail.png https://transfer.sh/fail.png
-  - cat stream.acceptance.StreamCest.testEditPost.fail.html
+  - cat app.log
     
