@@ -23,6 +23,8 @@ humhub.module('stream.wall', function (module, require, $) {
     var topic = require('topic');
     var view = require('ui.view');
 
+    var DATA_STREAM_TOPIC = 'stream-topic';
+
     /**
      * Stream implementation for main wall streams.
      *
@@ -41,6 +43,16 @@ humhub.module('stream.wall', function (module, require, $) {
             this.$.addClass('mobile');
         }
     });
+
+    WallStream.prototype.loadInit = function () {
+        var initTopic = this.$.data(DATA_STREAM_TOPIC);
+        if(initTopic) {
+            topic.setTopics([initTopic]);
+            this.$.data(DATA_STREAM_TOPIC, null);
+        }
+
+        return  this.super('loadInit');
+    };
 
     WallStream.prototype.initEvents = function () {
         var that = this;
@@ -195,32 +207,42 @@ humhub.module('stream.wall', function (module, require, $) {
     };
 
     WallStreamFilter.prototype.onTopicUpdated = function(evt, topics) {
-        var topicPicker =  this.getTopicPicker();
-        var $filterBar = this.getFilterBar();
+        // prevent double execution
+        if(this.topicUpdate) {
+            return;
+        }
+        
+        try {
+            this.topicUpdate = true;
+            var topicPicker =  this.getTopicPicker();
+            var $filterBar = this.getFilterBar();
 
-        topicPicker.setSelection(topics, function(topic) {
-           return {
-               id: topic.id,
-               text: topic.name,
-               image: topic.icon
-           };
-        });
+            topicPicker.setSelection(topics, function(topic) {
+               return {
+                   id: topic.id,
+                   text: topic.name,
+                   image: topic.icon
+               };
+            });
 
-        var selectors = [];
+            var selectors = [];
 
-        topics.forEach(function(topic) {
-            var selector = '[data-topic-id="'+topic.id+'"]';
-            selectors.push(selector);
-            if(!$filterBar.find(selector).length) {
-                topic.$label.clone().prependTo($filterBar);
-            }
-        });
+            topics.forEach(function(topic) {
+                var selector = '[data-topic-id="'+topic.id+'"]';
+                selectors.push(selector);
+                if(!$filterBar.find(selector).length) {
+                    topic.$label.clone().prependTo($filterBar);
+                }
+            });
 
-        var toRemove = selectors.length ? '[data-topic-id]:not('+selectors.join(',')+')' : '[data-topic-id]';
+            var toRemove = selectors.length ? '[data-topic-id]:not('+selectors.join(',')+')' : '[data-topic-id]';
 
-        $filterBar.find(toRemove).fadeOut('fast', function() {
-            $(this).remove();
-        });
+            $filterBar.find(toRemove).fadeOut('fast', function() {
+                $(this).remove();
+            });
+        } finally {
+            this.topicUpdate = false;
+        }
     };
 
     WallStreamFilter.prototype.getTopicPicker = function() {

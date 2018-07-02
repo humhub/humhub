@@ -70,21 +70,6 @@ humhub.module('stream.Stream', function (module, require, $) {
      */
     var Stream = Widget.extend(function (container, options) {
         Widget.call(this, container, options);
-
-
-
-        //this.$filter = this.options['filterPanel'];
-        //this.$stream = this.$;
-
-        //TODO: add to wallentry filter If a contentId is set on the stream, the root we will only show a single entry
-        /*if (this.$.data(DATA_STREAM_CONTENTID)) {
-            this.contentId = parseInt(this.$.data(DATA_STREAM_CONTENTID));
-        }*/
-
-        //Cache some stream relevant data/nodes
-
-        //TODO: make this configurable
-        //this.sort = module.config.defaultSort || 'c';
     });
 
     Stream.prototype.onClear = function() {/* abstract onClear function */};
@@ -114,7 +99,6 @@ humhub.module('stream.Stream', function (module, require, $) {
      * @returns {Promise}
      */
     Stream.prototype.init = function () {
-        // TODO: this.updateFilterCount();
         this.state = new StreamState(this);
 
         if(!this.$content) {
@@ -149,6 +133,7 @@ humhub.module('stream.Stream', function (module, require, $) {
         // content Id data is only relevant for the first request
         var contentId = this.$.data(DATA_STREAM_CONTENTID);
         this.$.data(DATA_STREAM_CONTENTID, null);
+
         return new StreamRequest(this, {
             contentId: contentId,
             limit: this.options.initLoadCount}).load();

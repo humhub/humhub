@@ -130,7 +130,7 @@ class StreamViewer extends JsWidget
         }
 
         if (Yii::$app->request->getQueryParam('topicId')) {
-            $topic = Topic::findOne((int)Yii::$app->request->getQueryParam('topicId'));
+            $topic = Topic::findOne((int) Yii::$app->request->getQueryParam('topicId'));
             if ($topic) {
                 $result['stream-topic'] = ['id' => $topic->id, 'name' => $topic->name];
             }
