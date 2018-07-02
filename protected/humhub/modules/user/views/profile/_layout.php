@@ -20,6 +20,9 @@ $user = $this->context->contentContainer;
         </div>
         <div class="col-md-<?= ($this->hasSidebar()) ? '7' : '10' ?> layout-content-container">
             <?= $content; ?>
+            <?php if (!$this->hasSidebar()): ?>
+                <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_FULL_PAGE]); ?>
+            <?php endif; ?>
         </div>
         <?php if ($this->hasSidebar()): ?>
             <div class="col-md-3">
@@ -28,7 +31,4 @@ $user = $this->context->contentContainer;
             </div>
         <?php endif; ?>
     </div>
-    <?php if (!$this->hasSidebar()): ?>
-        <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_FULL_PAGE]); ?>
-    <?php endif; ?>
 </div>
