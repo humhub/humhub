@@ -9,4 +9,6 @@ Updating to 1.3
 - [Module Migration Guide](../developer/migration-guide.md)
 
 
-2.) This release comes with a new cronjob, see the chapter [Installation: Configuration](installation-configuration.md) for more details!
+2.) This release changes the existing cron jobs. 
+Please see the chapter [Installation: Configuration](installation-configuration.md) for the new cronjob configuration!
+

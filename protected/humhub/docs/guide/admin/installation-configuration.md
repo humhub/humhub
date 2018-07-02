@@ -14,29 +14,24 @@ By default, the PHP Mail Transport is used. <http://php.net/manual/en/mail.setup
 
 
 
-CronJobs and Job Processing
+CronJobs and Job Processing (v1.3+)
 ---------------------------
 
-- Execute scheduled tasks (**new**):
+- Execute scheduled tasks:
 > /usr/bin/php /path/to/humhub queue/run
  
 You only require this cron jobs if there is no other job worker configured. See [Asynchronous Tasks](asynchronous-tasks.md) for more details.
 
 
-- Daily cron jobs (e.g. daily summaries, search index optimization)
-> /usr/bin/php /path/to/humhub cron/daily
-
-
-- Hourly cron jobs (e.g. update e-mails)
-> /usr/bin/php /path/to/humhub cron/hourly
+- Cron jobs (e.g. mail summaries, search index optimization)
+> /usr/bin/php /path/to/humhub cron/run
 
 
 **Example CronTab configuration:**
 
 ```
 * * * * *  /usr/bin/php /path/to/humhub/protected/yii queue/run >/dev/null 2>&1
-30 * * * * /usr/bin/php /path/to/humhub/protected/yii cron/hourly >/dev/null 2>&1
-0 18 * * * /usr/bin/php /path/to/humhub/protected/yii cron/daily >/dev/null 2>&1
+* * * * *  /usr/bin/php /path/to/humhub/protected/yii cron/run >/dev/null 2>&1
 ```
 
 > Note: For more help refer to [here](cron-jobs.md)!

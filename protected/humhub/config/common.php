@@ -146,6 +146,9 @@ $config = [
                 'class' => 'humhub\modules\live\driver\Poll',
             ],
         ],
+        'mutex' => [
+            'class' => 'yii\mutex\MysqlMutex'
+        ],
     ],
     'params' => [
         'installed' => false,
@@ -240,6 +243,7 @@ $config = [
             'class' => 'humhub\modules\content\widgets\richtext\ProsemirrorRichText',
         ],
         'enablePjax' => true,
+        'dailyCronExecutionTime' => '18:00',
     ]
 ];
 
