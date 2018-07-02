@@ -4,7 +4,7 @@ use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
 use humhub\widgets\Button;
-use humhub\modules\content\widgets\richtext\RichtextField;
+use humhub\modules\content\widgets\richtext\RichTextField;
 use yii\bootstrap\ActiveForm;
 
 /* @var  $post \humhub\modules\post\models\Post */
@@ -17,7 +17,7 @@ $submitUrl = $post->content->container->createUrl('/post/post/edit', ['id' => $p
     <?php $form = ActiveForm::begin(['id' => 'post-edit-form_' . $post->id]); ?>
 
         <div class="post-richtext-input-group">
-            <?= $form->field($post, 'message')->widget(RichtextField::class, [
+            <?= $form->field($post, 'message')->widget(RichTextField::class, [
                 'id' => 'post_input_'. $post->id,
                 'placeholder' => Yii::t('PostModule.views_edit', 'Edit your post...')
             ])->label(false) ?>
