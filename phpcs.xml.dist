@@ -24,6 +24,21 @@
         <severity>0</severity>
     </rule>
 
+    <!-- Require space for string concatenation -->
+    <rule ref="Squiz.Strings.ConcatenationSpacing">
+        <properties>
+            <property name="spacing" value="1"/>
+            <property name="ignoreNewlines" value="true"/>
+        </properties>
+    </rule>
+
+    <!-- Accept missing space before : when using short if -->
+    <rule ref="Squiz.ControlStructures.ControlSignature">
+        <properties>
+            <property name="requiredSpacesBeforeColon" value="0"/>
+        </properties>
+    </rule>
+
     <!-- Ignore for migrations. -->
     <!-- Ignore missing namespace for migrations -->
     <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">

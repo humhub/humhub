@@ -54,37 +54,47 @@ humhub.module('content', function (module, require, $) {
 
     Content.prototype.delete = function (options) {
         options = options || {};
+
         var that = this;
         return new Promise(function (resolve, reject) {
 
             var modalOptions = options.modal || module.config.modal.deleteConfirm;
 
-            modal.confirm(modalOptions).then(function ($confirmed) {
-                if (!$confirmed) {
-                    resolve(false);
-                    return;
-                }
+            if(options.$trigger && options.$trigger.is('[data-action-confirm]')) {
+                that.deleteContent(resolve, reject);
+            } else {
+                modal.confirm(modalOptions).then(function ($confirmed) {
+                    if (!$confirmed) {
+                        resolve(false);
+                        return;
+                    }
 
-                that.loader();
-                var deleteUrl = that.data(DATA_CONTENT_DELETE_URL) || module.config.deleteUrl;
-                if (deleteUrl) {
-                    client.post(deleteUrl, {
-                        data: {id: that.getKey()}
-                    }).then(function (response) {
-                        that.remove().then(function () {
-                            resolve(true);
-                        });
-                    }).catch(function (err) {
-                        reject(err);
-                    }).finally(function () {
-                        that.loader(false);
-                    });
-                } else {
-                    reject('Content delete was called, but no url could be determined for ' + that.base);
-                    that.loader(false);
-                }
-            });
+                    that.deleteContent(resolve, reject);
+                });
+            }
         });
+    };
+
+    Content.prototype.deleteContent = function(resolve, reject) {
+        var that = this;
+        that.loader();
+        var deleteUrl = that.data(DATA_CONTENT_DELETE_URL) || module.config.deleteUrl;
+        if (deleteUrl) {
+            client.post(deleteUrl, {
+                data: {id: that.getKey()}
+            }).then(function (response) {
+                that.remove().then(function () {
+                    resolve(true);
+                });
+            }).catch(function (err) {
+                reject(err);
+            }).finally(function () {
+                that.loader(false);
+            });
+        } else {
+            reject('Content delete was called, but no url could be determined for ' + that.base);
+            that.loader(false);
+        }
     };
 
     Content.prototype.remove = function () {
