@@ -6,7 +6,7 @@ use tests\codeception\_pages\DirectoryPage;
 
 class AccountCest
 {
-    public function testBaseAccountSettings(AcceptanceTester $I)
+   /* public function testBaseAccountSettings(AcceptanceTester $I)
     {
         $I->wantTo('ensure that the basic account settings work');
         
@@ -36,7 +36,7 @@ class AccountCest
         $I->selectOption('#accountsettings-language', 'English(US)');
         $I->click('Save');
         $I->waitForElementVisible('.data-saved', 5);
-        */
+        *
         
         $I->seeSuccess('Saved');
 
@@ -45,7 +45,7 @@ class AccountCest
         /*$directory->clickMembers();
         $I->expectTo('see my user tags');
         $I->see('Tester');
-        $I->see('Actor');*/
+        $I->see('Actor');*
     }
     
     public function testSaveBaseNotifications(AcceptanceTester $I)
@@ -81,6 +81,6 @@ class AccountCest
         /*$I->amOnPage('index-test.php?r=notification%2Fuser');
         $I->waitForText('Notification Settings');
         $I->seeInField('[name="NotificationSettings[settings][notification.followed_web]"]', 0);
-        $I->seeInField('[name="NotificationSettings[settings][notification.comments_web]"]', 0);*/
-    }
+        $I->seeInField('[name="NotificationSettings[settings][notification.comments_web]"]', 0);
+    }*/
 }
