@@ -1,5 +1,5 @@
 <?php
 return array (
   'Collapse' => 'Zarrar',
-  'Read full post...' => '',
+  'Read full post...' => 'Leyer toda a publicación',
 );
