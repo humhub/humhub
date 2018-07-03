@@ -25,6 +25,7 @@ abstract class BootstrapComponent extends Widget
     public $type;
     public $htmlOptions = [];
     public $text;
+    public $encode = false;
     public $_icon;
     public $_iconRight;
 
@@ -314,11 +315,12 @@ abstract class BootstrapComponent extends Widget
 
     protected function getText()
     {
+        $text = ($this->encode) ? Html::encode($this->text) : $this->text;
         if ($this->_icon) {
-            return ($this->_iconRight) ? $this->text.' '.$this->_icon : $this->_icon.' '.$this->text;
+            return ($this->_iconRight) ? $text.' '.$this->_icon : $this->_icon.' '.$text;
         }
 
-        return $this->text;
+        return $text;
     }
 
     public function visible($isVisible = true) {
@@ -344,6 +346,7 @@ abstract class BootstrapComponent extends Widget
             'type' => $this->type,
             'text' => $this->text,
             'htmlOptions' => $this->htmlOptions,
+            'encode' => $this->encode,
             '_icon' => $this->_icon,
             '_iconRight' => $this->_iconRight,
             'render' => $this->_visible
