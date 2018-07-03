@@ -1,8 +1,8 @@
 HumHub Change Log
 =================
 
-1.2.8
------------------------
+1.2.8 (July 3, 2018)
+--------------------
 
 - Enh: Added user email to javascript user config
 - Fix: Module Assets are not republished after module update
@@ -14,10 +14,11 @@ HumHub Change Log
 - Enh: Allow enable/disable modules by CLI
 - Enh: Added UTC only timezone in server timezone dropdown
 - Fix #3176: Integrity checker removes modules default state
+- Enh: Updated translations
 
 
 1.2.7 (May 23, 2018)
------------------------
+--------------------
 
 - Fixed empty modal dialog response issue
 - Fix #3146 invalid bootstrap.min.css link in installer
