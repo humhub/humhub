@@ -146,18 +146,12 @@ class ContentTag extends ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'stripHtml'],
             [['name', 'module_id'], 'required'],
             [['name', 'module_id', 'type'], 'string', 'max' => '100'],
             ['color', 'string', 'max' => '7'],
             [['parent_id'], 'integer'],
             [['name'], 'validateUnique']
         ];
-    }
-
-    public function stripHtml($attribute, $params, $validator)
-    {
-        $this->name = strip_tags($this->name);
     }
 
     /**

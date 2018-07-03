@@ -85,7 +85,7 @@ class ContentTagPicker extends BasePickerField
         foreach($tags as $tag) {
             $result[] = [
                 'id' => $tag->id,
-                'text' => strip_tags($tag->name)
+                'text' => $tag->name
             ];
         }
 
@@ -104,7 +104,7 @@ class ContentTagPicker extends BasePickerField
             return;
         }
 
-        return Html::encode($item->name);
+        return $item->name;
     }
 
     /**

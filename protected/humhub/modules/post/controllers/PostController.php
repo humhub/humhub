@@ -56,8 +56,7 @@ class PostController extends ContentContainerController
         }
 
         return $this->renderAjax('edit', [
-            'post' => $model,
-            'edited' => $edited
+            'post' => $model
         ]);
     }
 

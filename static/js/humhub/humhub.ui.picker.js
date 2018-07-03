@@ -50,7 +50,6 @@ humhub.module('ui.picker', function (module, require, $) {
                     module.log.error('Error Loading Picker result! The request may just has been aborted.');
                     return loader.set($('<div></div>'), {'css': {'padding': '4px'}});
                     return '';
-                    //return module.text('error.loadingResult');
                 },
                 loadingMore: function () {
                     return module.text('showMore');
@@ -201,13 +200,13 @@ humhub.module('ui.picker', function (module, require, $) {
     };
 
     Picker.template = {
-        selectionWithImage: '{imageNode}<span class="with-image">{text}</span> <i class="fa fa-times-circle picker-close"></i>',
-        selectionNoImage: '<span class="no-image">{text}</span> <i class="fa fa-times-circle picker-close"></i>',
-        result: '<a href="#" tabindex="-1" style="margin-right:5px;">{imageNode} {text}</a>',
-        resultDisabled: '<a href="#" title="{disabledText}" data-placement="right" tabindex="-1" style="margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} {text}</a>',
+        selectionWithImage: '{imageNode}<span class="picker-text with-image"></span> <i class="fa fa-times-circle picker-close"></i>',
+        selectionNoImage: '<span class="picker-text no-image"></span> <i class="fa fa-times-circle picker-close"></i>',
+        result: '<a href="#" tabindex="-1" style="margin-right:5px;">{imageNode} <span class="picker-text"></span></a>',
+        resultDisabled: '<a href="#" title="{disabledText}" data-placement="right" tabindex="-1" style="margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} <span class="picker-text"></span></a>',
         imageNode: '<img class="img-rounded" src="{image}" alt="" style="width:24px;height:24px;"  height="24" width="24">',
         imageIcon: '<i class="fa {image}"></i> ',
-        option: '<option value="{id}" data-image=\'{image}\' selected>{text}</option>',
+        option: '<option value="{id}" data-image=\'{image}\' selected></option>',
     };
 
     /**
@@ -232,17 +231,16 @@ humhub.module('ui.picker', function (module, require, $) {
             item.new = false;
         });
 
-        var encodedTerm = string.encode(params.term);
+        var encodedTerm =  string.encode(params.term);
 
-        if(encodedTerm &&
-            encodedTerm.length >= that.options.minimumInputLength &&
+        if(encodedTerm && encodedTerm.length >= that.options.minimumInputLength &&
             that.options.addOptions &&
             $(data).filter(function() {return this.text.localeCompare(encodedTerm)=== 0}).length === 0) {
 
             data.push({
                 'id': '_add:'+params.term,
                 'text': module.text('addOption')+' \''+encodedTerm+'\'',
-                'textValue': encodedTerm,
+                'textValue': params.term,
                 'image': '<i class="fa fa-plus-circle" aria-hidden="true"></i>',
                 'new': true
             });
@@ -276,6 +274,8 @@ humhub.module('ui.picker', function (module, require, $) {
                     evt.preventDefault();
                 });
 
+        $result.find('.picker-text').text(item.text);
+
         if (item.term) {
             $result.highlight(item.term);
         }
@@ -294,7 +294,11 @@ humhub.module('ui.picker', function (module, require, $) {
         this.prepareItem(item);
 
         var selectionTmpl = (item.image && !item.new) ? Picker.template.selectionWithImage : Picker.template.selectionNoImage;
+
         var $result = $(string.template(selectionTmpl, item));
+
+        var test = $result.find('.picker-text');
+        $result.filter('.picker-text').text(item.text);
 
         // Initialize item close button
         var that = this;
@@ -348,7 +352,7 @@ humhub.module('ui.picker', function (module, require, $) {
      * @returns {undefined}
      */
     Picker.prototype.select = function (id, text, image, options) {
-        var options = options || {};
+        options = options || {};
         var $option = this.getOption(id);
 
         // Only select if not already selected
@@ -357,11 +361,10 @@ humhub.module('ui.picker', function (module, require, $) {
         } else if ($option.length) {
             $option.prop('selected', true);
         } else {
-            this.$.append(string.template(Picker.template.option, {
+            this.$.append($(string.template(Picker.template.option, {
                 id: id,
-                image: image || '',
-                text: $("<div />").html(text).text()
-            }));
+                image: image || ''
+            })).text(text));
         }
 
         if(options.triggerChange !== false) {

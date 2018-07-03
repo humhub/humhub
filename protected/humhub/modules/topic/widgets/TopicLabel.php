@@ -19,6 +19,6 @@ class TopicLabel extends Label
     public static function forTopic(ContentTag $topic)
     {
         $link = Link::withAction('', 'topic.addTopic')->options(['data-topic-id' => $topic->id]);
-        return static::defaultType(Html::encode($topic->name))->sortOrder(20)->color($topic->color)->withLink($link)->icon('fa-star');
+        return static::defaultType($topic->name)->sortOrder(20)->color($topic->color)->withLink($link)->icon('fa-star');
     }
 }
