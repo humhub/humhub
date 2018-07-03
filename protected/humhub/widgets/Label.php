@@ -23,6 +23,7 @@ class Label extends BootstrapComponent
 {
 
     public $_sortOrder = 1000;
+    public $encode = true;
 
     public $_link;
     public $_action;

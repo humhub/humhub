@@ -13,6 +13,7 @@ HumHub Change Log
 - Fix: Incorrect last visit date shown in space admin pending members view (acs-ferreira)
 - Enh: Allow enable/disable modules by CLI
 - Enh: Added UTC only timezone in server timezone dropdown
+- Fix #3176: Integrity checker removes modules default state
 
 
 1.2.7 (May 23, 2018)
