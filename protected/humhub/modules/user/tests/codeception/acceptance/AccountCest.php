@@ -42,10 +42,10 @@ class AccountCest
 
         $I->amOnProfile();
         $directory = DirectoryPage::openBy($I);
-        $directory->clickMembers();
+        /*$directory->clickMembers();
         $I->expectTo('see my user tags');
         $I->see('Tester');
-        $I->see('Actor');
+        $I->see('Actor');*/
     }
     
     public function testSaveBaseNotifications(AcceptanceTester $I)

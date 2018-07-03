@@ -48,10 +48,10 @@ script:
     cd $TRAVIS_BUILD_DIR/protected/humhub/tests
     php ../../vendor/bin/codecept run --env travis
 after_failure:
-  - cd ../modules/user/tests/codeception/_output/
-  - ls
-  - curl --upload-file ./user.acceptance.AccountCest.testBaseAccountSettings.fail.png https://transfer.sh/hello.txt
-  - cat user.acceptance.AccountCest.testBaseAccountSettings.fail.html
+  #- cd ../modules/user/tests/codeception/_output/
+  #- ls
+  #- curl --upload-file ./user.acceptance.AccountCest.testBaseAccountSettings.fail.png https://transfer.sh/fail.png
+  #- cat user.acceptance.AccountCest.testBaseAccountSettings.fail.html
   #- cd ../../runtime/logs
   #- ls
   #- cat app.log
