@@ -139,7 +139,7 @@ class ImageController extends Controller
         $type = Yii::$app->request->get('type', 'profile');
         $json = array('type' => $type);
 
-        $image = NULL;
+        $image = null;
         if ($type == 'profile') {
             $image = new ProfileImage($space->guid, 'default_space');
         } elseif ($type == 'banner') {
