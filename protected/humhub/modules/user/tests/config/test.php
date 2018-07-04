@@ -7,6 +7,3 @@ return [
         'user_mentioning' => 'humhub\modules\user\tests\codeception\fixtures\UserMentioningFixture'
     ]
 ];
-
-
-

@@ -29,4 +29,3 @@ return yii\helpers\ArrayHelper::merge(
                 // Unit Test Config
                 $testConfig
 );
-

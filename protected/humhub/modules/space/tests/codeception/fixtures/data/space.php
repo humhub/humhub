@@ -23,4 +23,3 @@ return array(
     array('id' => '3', 'guid' => '5396d499-20d6-4233-800b-c6c86e5fa34c', 'name' => 'Space 3', 'contentcontainer_id' => '6', 'description' => 'Another User 1 Space', 'join_policy' => '2', 'visibility' => '2', 'status' => '1', 'tags' => NULL, 'created_at' => '2014-08-08 05:36:04', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:04', 'updated_by' => '2', 'ldap_dn' => NULL, 'auto_add_new_members' => '1'),
     array('id' => '4', 'guid' => '5396d499-20d6-4233-800b-c6c86e5fa34d', 'name' => 'Space 4', 'contentcontainer_id' => '7', 'description' => 'User 1/2 Space', 'join_policy' => '2', 'visibility' => '2', 'status' => '1', 'tags' => NULL, 'created_at' => '2014-08-08 05:36:04', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:04', 'updated_by' => '2', 'ldap_dn' => NULL, 'auto_add_new_members' => '1')
 );
-
