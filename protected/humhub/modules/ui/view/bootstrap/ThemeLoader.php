@@ -30,23 +30,26 @@ class ThemeLoader implements BootstrapInterface
     public function bootstrap($app)
     {
         // Skip dynamic theme loading during the installation
-        if (!BaseSettingsManager::isDatabaseInstalled() || Yii::getAlias('@web', false) === false) {
+        if (Yii::getAlias('@web', false) === false) {
             return;
         }
 
-        $themePath = $app->settings->get('theme');
-        if (!empty($themePath) && is_dir($themePath)) {
-            $theme = ThemeHelper::getThemeByPath($themePath);
+        if (BaseSettingsManager::isDatabaseInstalled()) {
+            $themePath = $app->settings->get('theme');
+            if (!empty($themePath) && is_dir($themePath)) {
+                $theme = ThemeHelper::getThemeByPath($themePath);
 
-            if ($theme !== null) {
-                $app->view->theme = $theme;
-                $app->mailer->view->theme = $theme;
+                if ($theme !== null) {
+                    $app->view->theme = $theme;
+                    $app->mailer->view->theme = $theme;
+                }
             }
         }
 
         if ($app->view->theme instanceof Theme) {
             $app->view->theme->register();
         }
+
     }
 
 }
