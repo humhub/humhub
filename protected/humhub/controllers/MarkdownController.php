@@ -40,5 +40,4 @@ class MarkdownController extends Controller
 
         return MarkdownView::widget(['markdown' => Yii::$app->request->post('markdown')]);
     }
-
 }

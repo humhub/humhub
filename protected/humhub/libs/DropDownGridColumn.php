@@ -109,5 +109,4 @@ class DropDownGridColumn extends DataColumn
 
         return Html::dropDownList($inputName, $model[$this->attribute], $options, $this->htmlOptions);
     }
-
 }

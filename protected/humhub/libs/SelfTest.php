@@ -371,5 +371,4 @@ class SelfTest
 
         return $checks;
     }
-
 }

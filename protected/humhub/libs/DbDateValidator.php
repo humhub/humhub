@@ -198,5 +198,4 @@ class DbDateValidator extends \yii\validators\DateValidator
     {
         return (preg_match(self::REGEX_DBFORMAT_DATE, $value) || preg_match(self::REGEX_DBFORMAT_DATETIME, $value));
     }
-
 }

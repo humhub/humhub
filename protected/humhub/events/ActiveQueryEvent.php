@@ -24,5 +24,4 @@ class ActiveQueryEvent extends Event
      * @var ActiveQuery the active query
      */
     public $query;
-
 }

@@ -19,6 +19,4 @@ namespace humhub\libs;
  */
 class ThemeHelper extends \humhub\modules\ui\view\helpers\ThemeHelper
 {
-
-
 }

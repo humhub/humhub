@@ -181,5 +181,4 @@ class DynamicConfig extends BaseObject
     {
         return Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
     }
-
 }

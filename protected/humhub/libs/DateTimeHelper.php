@@ -81,5 +81,4 @@ class DateTimeHelper
     {
         return $interval->days * 86400 + $interval->h * 3600 + $interval->i * 60 + $interval->s;
     }
-
 }
