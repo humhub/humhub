@@ -97,10 +97,10 @@ class Label extends BootstrapComponent
             if ($a->_sortOrder == $b->_sortOrder) {
                 return 0;
             } elseif ($a->_sortOrder < $b->_sortOrder) {
-                    return - 1;
-                } else {
-                    return 1;
-                }
+                return - 1;
+            } else {
+                return 1;
+            }
         });
 
         return $labels;
