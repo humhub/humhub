@@ -101,7 +101,7 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
                 'displayName' => Html::encode($this->originator->displayName),
                 'contentTitle' => Helpers::truncateText($contentRecord->getContentDescription(), 25),
             ]);
-        } else if ($space) {
+        } elseif ($space) {
             return Yii::t('CommentModule.notification', "{displayName} commented {contentTitle} in space {space}", [
                 'displayName' => Html::encode($this->originator->displayName),
                 'contentTitle' => $contentInfo,
@@ -135,7 +135,7 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
                 'displayNames' => $this->getGroupUserDisplayNames(),
                 'contentTitle' => $contentInfo,
             ]);
-        } else if ($space) {
+        } elseif ($space) {
             return Yii::t('CommentModule.notification', "{displayNames} commented {contentTitle} in space {space}", [
                 'displayNames' => $this->getGroupUserDisplayNames(),
                 'contentTitle' => $contentInfo,

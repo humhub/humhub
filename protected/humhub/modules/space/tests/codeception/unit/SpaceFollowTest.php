@@ -37,7 +37,7 @@ class SpaceFollowTest extends HumHubDbTestCase
         
         if($followers[0]->id == 2) {
            $this->assertTrue(true);
-        } else if($followers[1]->id == 2) {
+        } elseif($followers[1]->id == 2) {
             $this->assertTrue(true);
         } else {
             $this->assertTrue(false, 'User not in follower list.');

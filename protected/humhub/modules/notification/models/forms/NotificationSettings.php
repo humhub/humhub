@@ -227,7 +227,7 @@ class NotificationSettings extends Model
     {
         if (Yii::$app->user->can(new ManageSettings())) {
             return true;
-        } else if (!$this->user) {
+        } elseif (!$this->user) {
             return false; // Only ManageSettings user can set global notification settings
         } else {
             return Yii::$app->user->id == $this->user->id;

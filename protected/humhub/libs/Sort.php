@@ -19,7 +19,7 @@ class Sort
 
             if ($sortA == $sortB) {
                 return 0;
-            } else if ($sortA < $sortB) {
+            } elseif ($sortA < $sortB) {
                 return -1;
             } else {
                 return 1;

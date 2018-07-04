@@ -76,7 +76,7 @@ class RichTextCompatibilityParser
         return preg_replace_callback('@;(\w*?);@', function ($hit) use (&$emojis, &$emojiMapping) {
             if (array_key_exists($hit[1], $emojiMapping)) {
                 return ':' . $emojiMapping[$hit[1]] . ':';
-            } else if (in_array($hit[1], $emojis)) {
+            } elseif (in_array($hit[1], $emojis)) {
                 return ':' . strtolower($hit[1]) . ':';
             }
             return $hit[0];

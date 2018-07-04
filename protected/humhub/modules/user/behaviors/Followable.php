@@ -66,7 +66,7 @@ class Followable extends Behavior
     {
         if($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == "") {
+        } elseif (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
         }
 
@@ -100,7 +100,7 @@ class Followable extends Behavior
     {
         if($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == "") {
+        } elseif (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
         }
 
@@ -130,7 +130,7 @@ class Followable extends Behavior
     {
         if($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == "") {
+        } elseif (!$userId || $userId == "") {
             $userId = \Yii::$app->user->id;
         }
 

@@ -241,9 +241,9 @@ class HumHubDbTestCase extends Unit
     {
         if(is_int($user)) {
             $user = User::findOne($user);
-        } else if (is_string($user)) {
+        } elseif (is_string($user)) {
             $user = User::findOne(['username' => $user]);
-        } else if (!$user) {
+        } elseif (!$user) {
             $user = Yii::$app->user->identity;
         }
 

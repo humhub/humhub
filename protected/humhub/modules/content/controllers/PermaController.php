@@ -48,7 +48,7 @@ class PermaController extends Controller
 
         if (method_exists($content->getPolymorphicRelation(), 'getUrl')) {
             $url = $content->getPolymorphicRelation()->getUrl();
-        } else if($content->container !== null) {
+        } elseif($content->container !== null) {
             $url = $content->container->createUrl(null, ['contentId' => $id]);
         }
         

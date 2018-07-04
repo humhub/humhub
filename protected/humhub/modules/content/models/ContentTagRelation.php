@@ -46,7 +46,7 @@ class ContentTagRelation extends ActiveRecord
     {
         if(is_array($content)) {
             parent::__construct($content);
-        } else if($content instanceof Content) {
+        } elseif($content instanceof Content) {
             $this->setContent($content);
 
             if($tag !== null && $tag->isNewRecord) {

@@ -50,7 +50,7 @@ class UploadButton extends UploadInput
     {   
         if($this->label === true) {
             $this->label = '&nbsp;'.Yii::t('base', 'Upload');
-        } else if($this->label === false) {
+        } elseif($this->label === false) {
             $this->label = '';
         } else {
             $this->label = '&nbsp;'.$this->label;

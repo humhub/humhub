@@ -241,7 +241,7 @@ class ImageConverter
                 $dst_h = $sourceHeight;
                 $dst_w = $sourceWidth;
             }
-        } else if ($options['mode'] == 'force') {
+        } elseif ($options['mode'] == 'force') {
 
             // When ratio not fit, crop it - requires given width & height
             if ($width != 0 && $height != 0) {

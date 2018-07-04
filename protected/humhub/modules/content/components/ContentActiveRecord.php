@@ -145,11 +145,11 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     {
         if(is_array($contentContainer)) {
             parent::__construct($contentContainer);
-        } else if($contentContainer instanceof ContentContainerActiveRecord) {
+        } elseif($contentContainer instanceof ContentContainerActiveRecord) {
             $this->content->setContainer($contentContainer);
             if(is_array($visibility)) {
                 $config = $visibility;
-            } else if($visibility !== null) {
+            } elseif($visibility !== null) {
                 $this->content->visibility = $visibility;
             }
             parent::__construct($config);
@@ -278,18 +278,18 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     {
         if(!$this->hasManagePermission()) {
             return null;
-        } else if(is_string($this->managePermission)) { // Simple Permission class specification
+        } elseif(is_string($this->managePermission)) { // Simple Permission class specification
             return $this->managePermission;
-        } else if(is_array($this->managePermission)) {
+        } elseif(is_array($this->managePermission)) {
             if(isset($this->managePermission['class'])) { // ['class' => '...', 'callback' => '...']
                 $handler = $this->managePermission['class'].'::'.$this->managePermission['callback'];
                 return call_user_func($handler, $this);
             } else { // Simple Permission array specification
                 return $this->managePermission;
             }
-        } else if(is_callable($this->managePermission)) { // anonymous function
+        } elseif(is_callable($this->managePermission)) { // anonymous function
             return $this->managePermission($this);
-        } else if($this->managePermission instanceof BasePermission) {
+        } elseif($this->managePermission instanceof BasePermission) {
             return $this->managePermission;
         } else {
             return null;
@@ -336,7 +336,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
             $widget = new $class;
             $widget->contentObject = $this;
             return $widget;
-        } else if(!empty($this->wallEntryClass)) {
+        } elseif(!empty($this->wallEntryClass)) {
             $class = $this->wallEntryClass;
             $widget = new $class;
             return $widget;
@@ -419,7 +419,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     {
         if (!$user && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
-        } else if (!$user) {
+        } elseif (!$user) {
             return false;
         }
 

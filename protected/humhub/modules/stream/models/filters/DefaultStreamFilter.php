@@ -79,7 +79,7 @@ class DefaultStreamFilter extends StreamQueryFilter
         // Visibility filters
         if ($this->isFilterActive(self::FILTER_PRIVATE)) {
             $this->filterPrivate();
-        } else if ($this->isFilterActive(self::FILTER_PUBLIC)) {
+        } elseif ($this->isFilterActive(self::FILTER_PUBLIC)) {
             $this->filterPublic();
         }
     }

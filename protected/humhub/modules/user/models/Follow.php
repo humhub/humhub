@@ -166,7 +166,7 @@ class Follow extends \yii\db\ActiveRecord
         
         if ($withNotifications === true) {
             $subQuery->andWhere(['user_follow.send_notifications' => 1]);
-        } else if ($withNotifications === false) {
+        } elseif ($withNotifications === false) {
             $subQuery->andWhere(['user_follow.send_notifications' => 0]);
         }
         
@@ -189,7 +189,7 @@ class Follow extends \yii\db\ActiveRecord
         
         if ($withNotifications === true) {
             $subQuery->andWhere(['user_follow.send_notifications' => 1]);
-        } else if ($withNotifications === false) {
+        } elseif ($withNotifications === false) {
             $subQuery->andWhere(['user_follow.send_notifications' => 0]);
         }
         

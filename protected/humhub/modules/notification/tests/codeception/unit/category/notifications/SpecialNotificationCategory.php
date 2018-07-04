@@ -21,7 +21,7 @@ class SpecialNotificationCategory extends \humhub\modules\notification\component
     {
         if ($target->id === MailTarget::getId()) {
             return false;
-        } else if ($target->id === WebTarget::getId()) {
+        } elseif ($target->id === WebTarget::getId()) {
             return false;
         }
 
