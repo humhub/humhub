@@ -85,7 +85,7 @@ class OnlineModuleManager
         if (file_exists($downloadTargetFileName)) {
             $zip = new ZipArchive;
             $res = $zip->open($downloadTargetFileName);
-            if ($res === TRUE) {
+            if ($res === true) {
                 $zip->extractTo($modulePath);
                 $zip->close();
             } else {

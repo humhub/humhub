@@ -117,4 +117,3 @@ class PermissionGridEditor extends GridView
             }
 
         }
-        

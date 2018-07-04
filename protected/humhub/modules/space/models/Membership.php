@@ -335,4 +335,3 @@ class Membership extends ActiveRecord
     }
 
 }
-

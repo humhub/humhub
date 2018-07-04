@@ -5,6 +5,3 @@ return [
         'default'
     ]
 ];
-
-
-
