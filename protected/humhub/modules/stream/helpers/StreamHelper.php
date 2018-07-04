@@ -24,7 +24,7 @@ class StreamHelper
     public static function createUrl(ContentContainerActiveRecord $container, $options = []) {
         if($container instanceof Space) {
             return $container->createUrl('/space/space/home', $options);
-        } else if($container instanceof User) {
+        } elseif($container instanceof User) {
             return $container->createUrl('/user/profile/home', $options);
         }
     }

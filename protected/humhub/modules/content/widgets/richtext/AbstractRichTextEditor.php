@@ -148,7 +148,7 @@ class AbstractRichTextEditor extends InputWidget
             $input = $this->form->field($this->model, $this->attribute)->textarea($inputOptions)->label(false);
             $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
             $richText = $this->getLabel() . $richText;
-        } else if ($this->model != null) {
+        } elseif ($this->model != null) {
             $input = Html::activeTextarea($this->model, $this->attribute, $inputOptions);
             $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
             $richText = $this->getLabel() . $richText;

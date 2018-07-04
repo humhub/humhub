@@ -129,7 +129,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
             $contentTagClass = null;
             if($contentTag instanceof ContentTag) {
                 $contentTagClass = get_class($contentTag);
-            } else if(is_string($contentTag)) {
+            } elseif(is_string($contentTag)) {
                 $contentTagClass = $contentTag;
             }
 

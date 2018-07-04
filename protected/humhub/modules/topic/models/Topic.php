@@ -83,12 +83,12 @@ class Topic extends ContentTag
                     $result[] = $newTopic;
                 }
 
-            } else if(is_numeric($topic)) {
+            } elseif(is_numeric($topic)) {
                 $topic = Topic::findOne((int) $topic);
                 if($topic) {
                     $result[] = $topic;
                 }
-            } else if($topic instanceof Topic) {
+            } elseif($topic instanceof Topic) {
                 $result[] = $topic;
             }
         }

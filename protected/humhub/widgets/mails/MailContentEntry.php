@@ -58,14 +58,14 @@ class MailContentEntry extends \yii\base\Widget
 
         if (is_string($this->content)) {
             $content = $this->content;
-        } else if ($this->content instanceof Viewable) {
+        } elseif ($this->content instanceof Viewable) {
             try {
                 $renderer = new ViewPathRenderer(['parent' => true, 'subPath' => 'mail']);
                 $content =  $renderer->render($this->content);
             } catch (\yii\base\ViewNotFoundException $e) {
                 Yii::error($e);
             }
-        } else if ($this->content instanceof ContentOwner) {
+        } elseif ($this->content instanceof ContentOwner) {
             $content = RichText::preview($this->content->getContentDescription());
             if(!$this->originator) {
                 $this->originator = $this->content->content->createdBy;
