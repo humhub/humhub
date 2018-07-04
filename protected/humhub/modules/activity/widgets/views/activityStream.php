@@ -24,4 +24,3 @@ use yii\helpers\Html;
         </ul>
       </div>
     <?= Html::endTag('div')?>
-</div>
