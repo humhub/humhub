@@ -35,5 +35,4 @@ interface Renderer
      * @param type $params
      */
     public function render(Viewable $viewable, $params = []);
-
 }

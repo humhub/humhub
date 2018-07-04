@@ -19,7 +19,6 @@ use Yii;
  */
 class HForm extends \yii\base\Component
 {
-
     const EVENT_BEFORE_VALIDATE = 'beforeValidate';
     const EVENT_AFTER_VALIDATE = 'afterValidate';
 
@@ -56,7 +55,6 @@ class HForm extends \yii\base\Component
     public function submitted($buttonName = "")
     {
         if (Yii::$app->request->method == 'POST') {
-
             if ($buttonName == "" || isset($_POST[$buttonName])) {
                 foreach ($this->models as $model) {
                     $model->load(Yii::$app->request->post());
@@ -323,5 +321,4 @@ class HForm extends \yii\base\Component
 
         return $output;
     }
-
 }

@@ -88,5 +88,4 @@ class Migration extends \yii\db\Migration
     {
         $this->db->createCommand()->insert($table, $columns)->execute();
     }
-
 }

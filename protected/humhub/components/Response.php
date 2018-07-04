@@ -33,5 +33,4 @@ class Response extends \yii\web\Response
 
         return parent::xSendFile($filePath, $attachmentName, $options);
     }
-
 }

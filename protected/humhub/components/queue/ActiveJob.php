@@ -18,5 +18,4 @@ namespace humhub\components\queue;
  */
 abstract class ActiveJob extends \humhub\modules\queue\ActiveJob
 {
-
 }

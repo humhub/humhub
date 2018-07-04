@@ -113,6 +113,4 @@ class SettingsManager extends BaseSettingsManager
 
         return parent::get($name, $default);
     }
-
-
 }

@@ -16,7 +16,6 @@ namespace humhub\components\rendering;
  */
 class MailLayoutRenderer extends LayoutRenderer
 {
-
     public $subPath = 'mails';
 
     /**
@@ -55,5 +54,4 @@ class MailLayoutRenderer extends LayoutRenderer
     {
         return $this->textLayout;
     }
-
 }

@@ -400,5 +400,4 @@ class ModuleManager extends Component
             }
         }
     }
-
 }

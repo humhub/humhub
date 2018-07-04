@@ -139,7 +139,7 @@ class AccessControl extends ActionFilter
         if (empty(Yii::$app->params['installed']) &&
                   Yii::$app->controller->module != null &&
                   Yii::$app->controller->module->id == 'installer') {
-                      return true;
+            return true;
         }
 
         $this->handleDeprecatedSettings();

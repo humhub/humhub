@@ -142,5 +142,4 @@ class ExportResult extends BaseObject
 
         return $response->sendFile($this->getTempFileName(), $this->getResultFileName(), $options);
     }
-
 }

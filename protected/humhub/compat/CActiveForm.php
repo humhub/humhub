@@ -15,7 +15,6 @@ namespace humhub\compat;
  */
 class CActiveForm extends \yii\widgets\ActiveForm
 {
-
     public function label($model, $attribute, $htmlOptions = array())
     {
         return CHtml::activeLabel($model, $attribute, $htmlOptions);
@@ -92,5 +91,4 @@ class CActiveForm extends \yii\widgets\ActiveForm
 
         return CHtml::activeHiddenInput($model, $attribute, $htmlOptions);
     }
-
 }

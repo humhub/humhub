@@ -11,7 +11,6 @@ use Yii;
 
 class GuestAccessValidator extends AccessValidator
 {
-
     public $name = 'guestAccess';
 
     public $code = 403;
