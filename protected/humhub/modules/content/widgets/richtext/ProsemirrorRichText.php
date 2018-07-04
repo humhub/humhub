@@ -160,7 +160,7 @@ class ProsemirrorRichText extends AbstractRichText
             $this->text = Helpers::truncateText($this->text, $this->maxLength);
         }
 
-        $this->content = $this->text;
+        $this->content = Html::encode($this->text);
         $output = parent::run() . $this->buildOembedOutput();
         $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
 
