@@ -28,11 +28,20 @@ use humhub\modules\user\models\User;
  */
 class Post extends ContentActiveRecord implements Searchable
 {
-
     /**
      * @inheritdoc
      */
     public $wallEntryClass = 'humhub\modules\post\widgets\WallEntry';
+
+    /**
+     * @inheritdoc
+     */
+    public $moduleId = 'post';
+
+    /**
+     * @inheritdoc
+     */
+    public $canMove = true;
 
     /**
      * @inheritdoc
@@ -76,7 +85,6 @@ class Post extends ContentActiveRecord implements Searchable
 
         parent::afterSave($insert, $changedAttributes);
         RichText::postProcess($this->message, $this);
-        return true;
     }
 
     /**
@@ -87,9 +95,20 @@ class Post extends ContentActiveRecord implements Searchable
         return Yii::t('PostModule.models_Post', 'post');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLabels($result = [], $includeContentName = true)
     {
         return parent::getLabels($result, false);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getIcon()
+    {
+        return 'fa-comment';
     }
 
     /**
@@ -105,11 +124,11 @@ class Post extends ContentActiveRecord implements Searchable
      */
     public function getSearchAttributes()
     {
-        $attributes = array(
+        $attributes = [
             'message' => $this->message,
             'url' => $this->url,
             'user' => $this->getPostAuthorName()
-        );
+        ];
 
         $this->trigger(self::EVENT_SEARCH_ADD, new \humhub\modules\search\events\SearchAddEvent($attributes));
 

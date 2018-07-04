@@ -2,6 +2,9 @@
 
 namespace humhub\modules\notification\models;
 
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\db\Expression;
 
@@ -20,6 +23,10 @@ use yii\db\Expression;
  * @property integer $desktop_notified
  * @property integer $originator_user_id
  * @property integer $send_web_notifications
+ * @property User|null $originator
+ * @property User $user
+ *
+ * @mixin PolymorphicRelation
  */
 class Notification extends \humhub\components\ActiveRecord
 {
@@ -29,7 +36,7 @@ class Notification extends \humhub\components\ActiveRecord
      */
     public $group_count;
 
-    /*
+    /**
      * @var int number of involved users of grouped notifications
      */
     public $group_user_count;
@@ -41,13 +48,13 @@ class Notification extends \humhub\components\ActiveRecord
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
+                'class' => PolymorphicRelation::class,
                 'classAttribute' => 'source_class',
                 'pkAttribute' => 'source_pk',
                 'mustBeInstanceOf' => [
                     \yii\db\ActiveRecord::className(),
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -79,15 +86,19 @@ class Notification extends \humhub\components\ActiveRecord
     {
         return [
             [['class', 'user_id'], 'required'],
-            [['user_id', 'seen', 'source_pk', 'space_id', 'emailed', 'desktop_notified', 'originator_user_id'], 'integer'],
-            [['class', 'source_class'], 'string', 'max' => 100]
+            [
+                ['user_id', 'seen', 'source_pk', 'space_id', 'emailed', 'desktop_notified', 'originator_user_id'],
+                'integer',
+            ],
+            [['class', 'source_class'], 'string', 'max' => 100],
         ];
     }
 
     /**
      * Use getBaseModel instead.
      * @deprecated since version 1.2
-     * @param type $params
+     * @param array $params
+     * @return \humhub\modules\notification\components\BaseNotification
      */
     public function getClass($params = [])
     {
@@ -97,6 +108,7 @@ class Notification extends \humhub\components\ActiveRecord
     /**
      * Returns the business model of this notification
      *
+     * @param array $params
      * @return \humhub\modules\notification\components\BaseNotification
      */
     public function getBaseModel($params = [])
@@ -108,9 +120,9 @@ class Notification extends \humhub\components\ActiveRecord
             if ($this->group_count > 1) {
                 // Make sure we're loaded the latest notification record
                 $params['record'] = self::find()
-                        ->orderBy(['seen' => SORT_ASC, 'created_at' => SORT_DESC])
-                        ->andWhere(['class' => $this->class, 'user_id' => $this->user_id, 'group_key' => $this->group_key])
-                        ->one();
+                    ->orderBy(['seen' => SORT_ASC, 'created_at' => SORT_DESC])
+                    ->andWhere(['class' => $this->class, 'user_id' => $this->user_id, 'group_key' => $this->group_key])
+                    ->one();
                 $params['originator'] = $params['record']->originator;
 
             } else {
@@ -129,7 +141,7 @@ class Notification extends \humhub\components\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(\humhub\modules\user\models\User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     /**
@@ -137,18 +149,18 @@ class Notification extends \humhub\components\ActiveRecord
      */
     public function getOriginator()
     {
-        return $this->hasOne(\humhub\modules\user\models\User::className(), ['id' => 'originator_user_id']);
+        return $this->hasOne(User::class, ['id' => 'originator_user_id']);
     }
 
     /**
      * Returns space of this notification
      *
      * @deprecated since version 1.1
-     * @return type
+     * @return \yii\db\ActiveQuery
      */
     public function getSpace()
     {
-        return $this->hasOne(\humhub\modules\space\models\Space::className(), ['id' => 'space_id']);
+        return $this->hasOne(Space::class, ['id' => 'space_id']);
     }
 
     /**
@@ -190,16 +202,17 @@ class Notification extends \humhub\components\ActiveRecord
     public static function getNotificationClasses()
     {
         return (new \yii\db\Query())
-                        ->select(['class'])
-                        ->from(self::tableName())
-                        ->distinct()->all();
+            ->select(['class'])
+            ->from(self::tableName())
+            ->distinct()->all();
     }
 
     /**
      * Loads a certain amount ($limit) of grouped notifications from a given id set by $from.
      *
-     * @param integer $from notificatoin id which was the last loaded entry.
-     * @param limit $limit limit count of results.
+     * @param integer $from notification id which was the last loaded entry.
+     * @param int $limit count of results.
+     * @return array|\yii\db\ActiveRecord[]
      * @since 1.2
      */
     public static function loadMore($from = 0, $limit = 6)
@@ -219,6 +232,8 @@ class Notification extends \humhub\components\ActiveRecord
      * Finds grouped notifications if $sendWebNotifications is set to 1 we filter only notifications
      * with send_web_notifications setting to 1.
      *
+     * @param User|null $user
+     * @param int $sendWebNotifications
      * @return \yii\db\ActiveQuery
      */
     public static function findGrouped(User $user = null, $sendWebNotifications = 1)
@@ -226,7 +241,8 @@ class Notification extends \humhub\components\ActiveRecord
         $user = ($user) ? $user : Yii::$app->user->getIdentity();
 
         $query = self::find();
-        $query->addSelect(['notification.*',
+        $query->addSelect([
+            'notification.*',
             new Expression('count(distinct(originator_user_id)) as group_user_count'),
             new Expression('count(*) as group_count'),
             new Expression('max(created_at) as group_created_at'),
@@ -249,21 +265,23 @@ class Notification extends \humhub\components\ActiveRecord
      * Finds all grouped unseen notifications for the given user or the current loggedIn user
      * if no User instance is provided.
      *
-     * @param \humhub\modules\notification\models\User $user
+     * @param User $user
      * @since 1.2
+     * @return \yii\db\ActiveQuery
      */
     public static function findUnseen(User $user = null)
     {
         return Notification::findGrouped($user)
-                        ->andWhere(['seen' => 0])
-                        ->orWhere(['IS', 'seen', new Expression('NULL')]);
+            ->andWhere(['seen' => 0])
+            ->orWhere(['IS', 'seen', new Expression('NULL')]);
     }
 
     /**
      * Finds all grouped unseen notifications which were not already sent to the frontend.
      *
-     * @param \humhub\modules\notification\models\User $user
-     *  @since 1.2
+     * @param User $user
+     * @return \yii\db\ActiveQuery
+     * @since 1.2
      */
     public static function findUnnotifiedInFrontend(User $user = null)
     {

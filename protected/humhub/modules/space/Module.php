@@ -29,19 +29,19 @@ class Module extends \humhub\components\Module
      * @var boolean Allow global admins (super admin) access to private content also when no member
      */
     public $globalAdminCanAccessPrivateContent = false;
-    
+
     /**
      *
-     * @var boolean Do not allow multiple spaces with the same name 
+     * @var boolean Do not allow multiple spaces with the same name
      */
     public $useUniqueSpaceNames = true;
-    
+
     /**
      * @var boolean defines if the space following is disabled or not.
-     * @since 1.2 
+     * @since 1.2
      */
     public $disableFollow = false;
-    
+
     /**
      * @inheritdoc
      */
@@ -60,7 +60,7 @@ class Module extends \humhub\components\Module
             new permissions\CreatePublicSpace(),
         ];
     }
-    
+
     public function getName()
     {
         return Yii::t('SpaceModule.base', 'Space');
@@ -69,7 +69,7 @@ class Module extends \humhub\components\Module
     /**
      * @inheritdoc
      */
-    public function getNotifications() 
+    public function getNotifications()
     {
        return [
            'humhub\modules\space\notifications\ApprovalRequest',

@@ -9,6 +9,8 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\permissions\CreatePublicContent;
+use humhub\modules\stream\actions\Stream;
+use humhub\modules\topic\models\Topic;
 use Yii;
 use yii\web\HttpException;
 use humhub\components\Widget;
@@ -110,14 +112,14 @@ class WallCreateContentForm extends Widget
      * [See guide section](guide:dev-module-stream.md#CreateContentForm)
      *
      * @param ContentActiveRecord $record
-     * @return string json
+     * @return array json
      */
     public static function create(ContentActiveRecord $record, ContentContainerActiveRecord $contentContainer = null)
     {
         Yii::$app->response->format = 'json';
 
-        $visibility = Yii::$app->request->post('visibility');
-        if ($visibility == Content::VISIBILITY_PUBLIC && !$contentContainer->permissionManager->can(new CreatePublicContent())) {
+        $visibility = Yii::$app->request->post('visibility', Content::VISIBILITY_PRIVATE);
+        if ($visibility == Content::VISIBILITY_PUBLIC && !$contentContainer->can(CreatePublicContent::class)) {
             $visibility = Content::VISIBILITY_PRIVATE;
         }
 
@@ -137,8 +139,13 @@ class WallCreateContentForm extends Widget
         }
 
         if ($record->save()) {
+            $topics = Yii::$app->request->post('postTopicInput');
+            if(!empty($topics)) {
+                Topic::attach($record->content, $topics);
+            }
+
             $record->fileManager->attach(Yii::$app->request->post('fileList'));
-            return \humhub\modules\stream\actions\Stream::getContentResultEntry($record->content);
+            return Stream::getContentResultEntry($record->content);
         }
 
         return array('errors' => $record->getErrors());

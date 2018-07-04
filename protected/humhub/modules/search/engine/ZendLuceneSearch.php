@@ -8,6 +8,7 @@
 
 namespace humhub\modules\search\engine;
 
+use humhub\modules\search\commands\SearchController;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\libs\SearchResult;
 use humhub\modules\search\libs\SearchResultSet;
@@ -93,12 +94,16 @@ class ZendLuceneSearch extends Search
             }
         }
 
-        if (Yii::$app->request->isConsoleRequest) {
-            print '.';
+        if (Yii::$app->request->isConsoleRequest && Yii::$app->controller instanceof SearchController) {
+            print ".";
         }
 
-        $index->addDocument($doc);
-        $index->commit();
+        try {
+            $index->addDocument($doc);
+            $index->commit();
+        } catch (RuntimeException $e) {
+            Yii::error('Could not add document to search index. Error: '. $e->getMessage(), 'search');
+        }
     }
 
     public function update(Searchable $object)
@@ -117,10 +122,18 @@ class ZendLuceneSearch extends Search
 
         $hits = $index->find($query);
         foreach ($hits as $hit) {
-            $index->delete($hit->id);
+            try {
+                $index->delete($hit->id);
+            } catch (RuntimeException $e) {
+                Yii::error('Could not delete document from search index. Error: '. $e->getMessage(), 'search');
+            }
         }
 
-        $index->commit();
+        try {
+            $index->commit();
+        } catch (RuntimeException $e) {
+            Yii::error('Could not commit search index. Error: '. $e->getMessage(), 'search');
+        }
     }
 
     public function flush()
@@ -129,7 +142,7 @@ class ZendLuceneSearch extends Search
         foreach (new \DirectoryIterator($indexPath) as $fileInfo) {
             if ($fileInfo->isDot())
                 continue;
-            unlink($indexPath . DIRECTORY_SEPARATOR . $fileInfo->getFilename());
+            FileHelper::unlink($indexPath . DIRECTORY_SEPARATOR . $fileInfo->getFilename());
         }
 
         $this->index = null;
@@ -175,7 +188,7 @@ class ZendLuceneSearch extends Search
 
     /**
      * Returns the lucence search query
-     * 
+     *
      * @param string $keyword
      * @param array $options
      * @return \ZendSearch\Lucene\Search\Query\AbstractQuery
@@ -191,7 +204,7 @@ class ZendLuceneSearch extends Search
         foreach (explode(' ', $keyword) as $k) {
             // Require a minimum of non-wildcard characters
             if (mb_strlen($k, Yii::$app->charset) >= $this->minQueryTokenLength) {
-                $term = new Term('*$k*');
+                $term = new Term("*$k*");
                 $query->addSubquery(new Wildcard($term), true);
                 $emptyQuery = false;
             }
@@ -275,8 +288,8 @@ class ZendLuceneSearch extends Search
                 $privateSpaceContentQuery->addSubquery(new QueryTerm(new Term(Space::className(), 'containerModel')), true);
                 $privateSpacesListQuery = new MultiTerm();
 
-                foreach (Membership::GetUserSpaces() as $space) {
-                    $privateSpacesListQuery->addTerm(new Term($space->id, 'containerPk'));
+                foreach (Membership::getUserSpaceIds() as $spaceId) {
+                    $privateSpacesListQuery->addTerm(new Term($spaceId, 'containerPk'));
                 }
 
                 $privateSpaceContentQuery->addSubquery($privateSpacesListQuery, true);

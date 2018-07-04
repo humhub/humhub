@@ -8,9 +8,12 @@
 
 namespace humhub\modules\admin\controllers;
 
-use Yii;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\components\DatabaseInfo;
 use humhub\modules\admin\libs\HumHubAPI;
+use humhub\modules\queue\interfaces\QueueInfoInterface;
+use ReflectionClass;
+use Yii;
 
 /**
  * Informations
@@ -42,7 +45,7 @@ class InformationController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => \humhub\modules\admin\permissions\SeeAdminInformation::className()]
+            ['permissions' => \humhub\modules\admin\permissions\SeeAdminInformation::class],
         ];
     }
 
@@ -62,7 +65,7 @@ class InformationController extends Controller
             'currentVersion' => Yii::$app->version,
             'latestVersion' => $latestVersion,
             'isNewVersionAvailable' => $isNewVersionAvailable,
-            'isUpToDate' => $isUpToDate
+            'isUpToDate' => $isUpToDate,
         ]);
     }
 
@@ -73,27 +76,58 @@ class InformationController extends Controller
 
     public function actionDatabase()
     {
-        return $this->render('database', ['migrate' => \humhub\commands\MigrateController::webMigrateAll()]);
+        $databaseInfo = new DatabaseInfo(Yii::$app->db->dsn);
+
+        return $this->render(
+            'database',
+            [
+                'databaseName' => $databaseInfo->getDatabaseName(),
+                'migrate' => \humhub\commands\MigrateController::webMigrateAll(),
+            ]
+        );
     }
 
     /**
      * Caching Options
      */
-    public function actionCronjobs()
+    public function actionBackgroundJobs()
     {
-        $currentUser = '';
-        if (function_exists('get_current_user')) {
-            $currentUser = get_current_user();
+        $lastRunHourly = (int) Yii::$app->settings->getUncached('cronLastHourlyRun');
+        $lastRunDaily = (int) Yii::$app->settings->getUncached('cronLastDailyRun');
+
+        $queue = Yii::$app->queue;
+
+        $waitingJobs = null;
+        $delayedJobs = null;
+        $doneJobs = null;
+        $reservedJobs = null;
+
+        if ($queue instanceof QueueInfoInterface) {
+            /** @var QueueInfoInterface $queue */
+            $waitingJobs = $queue->getWaitingJobCount();
+            $delayedJobs = $queue->getDelayedJobCount();
+            $doneJobs = $queue->getDoneJobCount();
+            $reservedJobs = $queue->getReservedJobCount();
         }
 
-        $lastRunHourly = Yii::$app->settings->getUncached('cronLastHourlyRun');
-        $lastRunDaily = Yii::$app->settings->getUncached('cronLastDailyRun');
+        $driverName = null;
+        try {
+            $reflect = new ReflectionClass($queue);
+            $driverName = $reflect->getShortName();
+        } catch (\ReflectionException $e) {
+            Yii::error('Could not determine queue driver: '. $e->getMessage());
+        }
 
 
-        return $this->render('cronjobs', [
+        return $this->render('background-jobs', [
             'lastRunHourly' => $lastRunHourly,
             'lastRunDaily' => $lastRunDaily,
-            'currentUser' => $currentUser
+            'waitingJobs' => $waitingJobs,
+            'delayedJobs' => $delayedJobs,
+            'doneJobs' => $doneJobs,
+            'reservedJobs' => $reservedJobs,
+            'driverName' => $driverName
+
         ]);
     }
 

@@ -70,7 +70,7 @@ class TourController extends \humhub\components\Controller
         $space = null;
 
         // Loop over all spaces where the user is member
-        foreach (\humhub\modules\space\models\Membership::GetUserSpaces() as $space) {
+        foreach (\humhub\modules\space\models\Membership::getUserSpaces() as $space) {
             if ($space->isAdmin() && !$space->isArchived()) {
                 // If user is admin on this space, it´s the perfect match
                 break;

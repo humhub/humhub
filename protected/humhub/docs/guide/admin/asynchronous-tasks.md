@@ -4,77 +4,19 @@ Asynchronous Task Processing
 Introduction
 ------------
 
-To provide a fast and responive user experience, extensive processes are handeld activly by background processes instead being directly executed on request. 
+To provide a fast and responsive user experience, extensive processes are handled by background processes instead being directly executed on request. 
 
 Some examples for such background processes are:
 
-- Notifications (informing the users via e-ails or mobile push notifications) 
-- Search index rebuilds
+- Notifications (informing the users by e-mails or mobile push notifications) 
+- Search index processing
 - File indexing
 
 
-Queue Driver
-------------
+Workers / Job Processing
+------------------------
 
-### Sychronous Driver
-
-By default this driver is used to immediately execute asychronous tasks.
-It doesn't require any Worker configuration below.
-
-We recommend to switch to the MySQL or Redis driver on production environments.
-
-### MySQL Database Driver
-
-If you don't have Redis or any other supported queuing software (RabbitMQ, Beanstalk or Gearman) running, this is the recommended driver.
-To enable this driver you need to add following block to your local configuration file (protected/config/common.php):
-
-```
-    // ...
-    'components' => [
-        // ...
-
-        'queue' => [
-            'class' => 'humhub\components\queue\driver\MySQL',
-        ],
-        
-        // ...
-    ],
-    // ...
-
-```
-
-> Note: You'll need to configure Workers (see description below).
-
-### Redis 
-
-If you're already using Redis (e.g. for caching or push) we recommend this queue driver.
-Please make sure you already configured Redis as described here: [Redis Configuration](redis.md).
-
-
-To enable this driver you need to add following block to your local configuration file (protected/config/common.php):
-
-```
-    // ...
-    'components' => [
-        // ...
-
-        'queue' => [
-            'class' => 'humhub\components\queue\driver\Redis',
-        ],
-        
-        // ...
-    ],
-    // ...
-
-```
-
-> Note: You'll need to configure Workers (see description below).
-
-
-Workers
-------
-
-### Cronjob
+### Cronjob (Default)
 
 You can start workers using cron by executing the queue/run command. It works as long as the queues contain jobs.
 
@@ -84,7 +26,7 @@ CronTab Example:
 * * * * * /usr/bin/php <INSERT HUMHUB PATH HERE>/yii queue/run
 ```
 
-In this case the cron will start the command every minute and execute schedulded tasks.
+In this case the cron will start the command every minute and execute scheduled tasks.
 
 
 ### Daemon 
@@ -112,5 +54,52 @@ user=www-data
 numprocs=4
 redirect_stderr=true
 stdout_logfile=<INSERT HUMHUB PATH HERE>/protected/runtime/logs/yii-queue-worker.log
+```
+
+
+
+
+Queue Driver
+------------
+
+### MySQL Database Driver (Default)
+
+If you don't have Redis or any other supported queuing software (RabbitMQ, Beanstalk or Gearman) running, this is the recommended driver.
+To enable this driver you need to add following block to your local configuration file (protected/config/common.php):
+
+```
+    // ...
+    'components' => [
+        // ...
+
+        'queue' => [
+            'class' => 'humhub\components\queue\driver\MySQL',
+        ],
+        
+        // ...
+    ],
+    // ...
+
+```
+### Redis 
+
+If you're already using Redis (e.g. for caching or push) we recommend this queue driver.
+Please make sure you already configured Redis as described here: [Redis Configuration](redis.md).
+
+To enable this driver you need to add following block to your local configuration file (protected/config/common.php):
+
+```
+    // ...
+    'components' => [
+        // ...
+
+        'queue' => [
+            'class' => 'humhub\components\queue\driver\Redis',
+        ],
+        
+        // ...
+    ],
+    // ...
+
 ```
 

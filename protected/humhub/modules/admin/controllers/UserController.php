@@ -11,6 +11,7 @@ use humhub\compat\HForm;
 use humhub\components\export\DateTimeColumn;
 use humhub\components\export\SpreadsheetExport;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\models\forms\UserDeleteForm;
 use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\permissions\ManageGroups;
@@ -216,7 +217,7 @@ class UserController extends Controller
 
     /**
      * Redirect to user profile
-     *  
+     *
      * @param int $id
      * @return \yii\base\Response the response
      * @throws HttpException
@@ -263,7 +264,7 @@ class UserController extends Controller
 
     /**
      * Redirect to user profile
-     *  
+     *
      * @param int $id
      * @return \yii\base\Response the response
      * @throws HttpException
@@ -288,7 +289,7 @@ class UserController extends Controller
 
     /**
      * Determines if the current user can impersonate given user.
-     * 
+     *
      * @param User $user
      * @return boolean can impersonate
      */

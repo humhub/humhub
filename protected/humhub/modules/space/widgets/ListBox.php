@@ -8,6 +8,9 @@
 
 namespace humhub\modules\space\widgets;
 
+use yii\base\Widget;
+use yii\data\Pagination;
+
 /**
  * ListBox returns the content of the space list modal
  * 
@@ -27,7 +30,7 @@ namespace humhub\modules\space\widgets;
  * @since 1.1
  * @author luke
  */
-class ListBox extends \yii\base\Widget
+class ListBox extends Widget
 {
 
     /**
@@ -51,10 +54,10 @@ class ListBox extends \yii\base\Widget
     public function run()
     {
         $countQuery = clone $this->query;
-        $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->pageSize]);
+        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->pageSize]);
         $this->query->offset($pagination->offset)->limit($pagination->limit);
 
-        return $this->render("listBox", [
+        return $this->render('listBox', [
                     'title' => $this->title,
                     'spaces' => $this->query->all(),
                     'pagination' => $pagination

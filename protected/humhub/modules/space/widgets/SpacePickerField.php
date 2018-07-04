@@ -2,8 +2,9 @@
 
 namespace humhub\modules\space\widgets;
 
+use humhub\modules\space\models\Space;
+use humhub\modules\ui\form\widgets\BasePicker;
 use Yii;
-use humhub\widgets\BasePickerField;
 use yii\helpers\Html;
 
 /**
@@ -13,7 +14,7 @@ use yii\helpers\Html;
  * @since 1.2
  * @author buddha
  */
-class SpacePickerField extends BasePickerField
+class SpacePickerField extends BasePicker
 {
     /**
      * @inheritdoc
@@ -25,7 +26,7 @@ class SpacePickerField extends BasePickerField
      * @inheritdoc
      */
     public $defaultRoute = '/space/browse/search-json';
-    public $itemClass = \humhub\modules\space\models\Space::class;
+    public $itemClass = Space::class;
     public $itemKey = 'guid';
 
     /**
@@ -42,6 +43,7 @@ class SpacePickerField extends BasePickerField
         if ($this->maxSelection) {
             $result['maximum-selected'] = Yii::t('SpaceModule.widgets_SpacePickerField', 'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}', ['n' => $this->maxSelection]);
         }
+
         return $result;
     }
 
@@ -58,7 +60,7 @@ class SpacePickerField extends BasePickerField
      */
     protected function getItemImage($item)
     {
-        return Image::widget(["space" => $item, "width" => 24]);
+        return Image::widget(['space' => $item, 'width' => 24]);
     }
 
 }

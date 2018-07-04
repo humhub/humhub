@@ -2,6 +2,9 @@
 
 namespace tests\codeception\_support;
 
+use Yii;
+use yii\base\Event;
+use yii\db\ActiveRecord;
 use Codeception\Test\Unit;
 use humhub\libs\BasePermission;
 use humhub\modules\activity\models\Activity;
@@ -9,9 +12,7 @@ use humhub\modules\content\components\ContentContainerPermissionManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\User;
-use Yii;
-use yii\base\Event;
-use yii\db\ActiveRecord;
+use humhub\modules\friendship\models\Friendship;
 
 /**
  * Inherited Methods
@@ -129,22 +130,60 @@ class HumHubDbTestCase extends Unit
         ];
     }
 
-    public function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $msg = null)
+    public function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
         $notificationQuery = Notification::find()->where([
             'class' => $class,
             'source_class' => $source->className(),
             'source_pk' => $source->getPrimaryKey(),
         ]);
+        if(is_string($target_id)) {
+            $msg = $target_id;
+            $target_id = null;
+        }
 
         if ($originator_id != null) {
             $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
         }
 
+        if($target_id != null) {
+            $notificationQuery->andWhere(['user_id' => $target_id]);
+        }
+
         $this->assertNotEmpty($notificationQuery->all(), $msg);
     }
 
-    public function assertHasActivity($class, ActiveRecord $source, $msg = null)
+    public function assertEqualsNotificationCount($count, $class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
+    {
+        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $source->className(), 'source_pk' => $source->getPrimaryKey()]);
+
+        if ($originator_id != null) {
+            $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
+        }
+
+        if($target_id != null) {
+            $notificationQuery->andWhere(['user_id' => $target_id]);
+        }
+
+        $this->assertEquals($count, $notificationQuery->count(), $msg);
+    }
+
+    public function assertHasNoNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
+    {
+        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $source->className(), 'source_pk' => $source->getPrimaryKey()]);
+
+        if ($originator_id != null) {
+            $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
+        }
+
+        if($target_id != null) {
+            $notificationQuery->andWhere(['user_id' => $target_id]);
+        }
+
+        $this->assertEmpty($notificationQuery->all(), $msg);
+    }
+
+    public function assertHasActivity($class, ActiveRecord $source, $msg = '')
     {
         $activity = Activity::findOne([
             'class' => $class,
@@ -163,7 +202,6 @@ class HumHubDbTestCase extends Unit
     }
 
     /**
-     * @deprecated $msg unused
      * @see assertSentEmail
      * @since 1.3
      */
@@ -197,6 +235,37 @@ class HumHubDbTestCase extends Unit
             ->getModule('user')
             ->settings
             ->set('auth.allowGuestAccess', (int)$allow);
+    }
+
+    public function setProfileField($field, $value, $user)
+    {
+        if(is_int($user)) {
+            $user = User::findOne($user);
+        } else if (is_string($user)) {
+            $user = User::findOne(['username' => $user]);
+        } else if (!$user) {
+            $user = Yii::$app->user->identity;
+        }
+
+        $user->profile->setAttributes([$field => $value]);
+        $user->profile->save();
+    }
+
+    public function becomeFriendWith($username)
+    {
+        $user = User::findOne(['username' => $username]);
+        Friendship::add($user, Yii::$app->user->identity);
+        Friendship::add(Yii::$app->user->identity, $user);
+    }
+
+    public function follow($username)
+    {
+        User::findOne(['username' => $username])->follow();
+    }
+
+    public function enableFriendships($enable = true)
+    {
+        Yii::$app->getModule('friendship')->settings->set('enable', $enable);
     }
 
     public function setGroupPermission($groupId, $permission, $state = BasePermission::STATE_ALLOW)

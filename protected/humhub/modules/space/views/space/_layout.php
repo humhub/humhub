@@ -3,12 +3,18 @@
 use humhub\modules\space\widgets\Header;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\space\widgets\SpaceContent;
+use humhub\widgets\FooterMenu;
 
 /**
+ * @var \humhub\modules\ui\view\components\View $this
  * @var \humhub\modules\space\models\Space $space
  * @var string $content
  */
-$space = $this->context->contentContainer;
+
+/** @var \humhub\modules\content\components\ContentContainerController $context */
+$context = $this->context;
+$space = $context->contentContainer;
+
 ?>
 <div class="container space-layout-container">
     <div class="row">
@@ -21,8 +27,18 @@ $space = $this->context->contentContainer;
             <?= Menu::widget(['space' => $space]); ?>
             <br>
         </div>
-        <div class="col-md-10 layout-content-container">
+        <div class="col-md-<?= ($this->hasSidebar()) ? '7' : '10' ?> layout-content-container">
             <?= SpaceContent::widget(['contentContainer' => $space, 'content' => $content]) ?>
         </div>
+        <?php if ($this->hasSidebar()): ?>
+            <div class="col-md-3">
+                <?= $this->getSidebar() ?>
+                <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
+            </div>
+        <?php endif; ?>
     </div>
+
+    <?php if (!$this->hasSidebar()): ?>
+        <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_FULL_PAGE]); ?>
+    <?php endif; ?>
 </div>

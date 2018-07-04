@@ -32,7 +32,7 @@ class StreamCest
         $I->amGoingTo('Delte my new post');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->wait(1);
-        $I->click('Delete');
+        $I->click('Delete','[data-content-key="12"]');
 
         $I->waitForElementVisible('#globalModalConfirm', 5);
         $I->see('Confirm post deletion');
@@ -70,9 +70,9 @@ class StreamCest
         $I->dontSeeElement($newEntrySelector);
 
         $I->amGoingTo('check if my post is visible with filter include archived');
-        $I->click('Filter', '#filter');
-        $I->waitForElementVisible('#filter_entry_archived');
-        $I->click('#filter_entry_archived');
+        $I->click('Filter', '.wall-stream-filter-head');
+        $I->waitForElementVisible('[data-filter-id="entry_archived"]');
+        $I->click('[data-filter-id="entry_archived"]');
 
         $I->waitForElementVisible($newEntrySelector, 20);
         $I->expectTo('see my archived post');
@@ -165,7 +165,7 @@ class StreamCest
         $I->waitForText('Edit', 10);
         $I->click('Edit', $newEntrySelector);
 
-        $I->waitForElementVisible($newEntrySelector . ' .content_edit', 20);
+        $I->waitForElementVisible($newEntrySelector . ' .content_edit');
         $I->amGoingTo('cancel my edit');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Cancel Edit', 10);
@@ -199,7 +199,7 @@ class StreamCest
         $I->wantToTest('the empty stream message and filter');
 
         $I->waitForText('This space is still empty!');
-        $I->dontSeeElement('#filter');
+        $I->dontSeeElement('#wall-stream-filter-nav');
 
         $I->amGoingTo('create a new post and delete it afterwards');
 
@@ -208,8 +208,8 @@ class StreamCest
         $I->wait(1);
 
         $I->amGoingTo('Delete my new post again.');
+        $I->waitForElementVisible('#wall-stream-filter-nav');
         $I->dontSee('This space is still empty!');
-        $I->seeElement('#filter');
         $I->click('.preferences .dropdown-toggle', '[data-stream-entry]:nth-of-type(1)');
         $I->wait(1);
         $I->click('Delete');
@@ -220,7 +220,7 @@ class StreamCest
 
         $I->seeSuccess('The content has been deleted');
         $I->see('This space is still empty!');
-        $I->dontSeeElement('#filter');
+        $I->dontSeeElement('#wall-stream-filter-nav');
     }
 
     /**
@@ -231,10 +231,12 @@ class StreamCest
     {
         $I->amUser();
         $I->amOnSpace2();
-        $I->waitForElementVisible('#filter');
-        $I->click('.stream-filter', '#filter');
-        $I->waitForElementVisible('#filter_entry_userinvolved');
-        $I->click('#filter_entry_userinvolved');
+
+
+        $I->waitForElementVisible('.wall-stream-filter-head');
+        $I->click('Filter', '.wall-stream-filter-head');
+        $I->waitForElementVisible('[data-filter-id="entry_userinvolved"]');
+        $I->click('[data-filter-id="entry_userinvolved"]');
         $I->waitForText('No matches with your selected filters!');
 
         $I->createPost('Involved Post.');
@@ -242,22 +244,24 @@ class StreamCest
         $I->dontSee('No matches with your selected filters!');
 
         $I->amGoingTo('Reset filter');
-        $I->click('.stream-filter', '#filter');
-        $I->waitForElementVisible('#filter_entry_userinvolved');
-        $I->click('#filter_entry_userinvolved');
+        $I->click('Filter', '.wall-stream-filter-head');
+        $I->waitForElementVisible('[data-filter-id="entry_userinvolved"]');
+        $I->click('[data-filter-id="entry_userinvolved"]');
 
-        $I->waitForElementVisible('[data-content-key="10"]');
 
-        $I->click('Comment', '[data-content-key="10"]');
-        $I->waitForElementVisible('#newCommentForm_humhubmodulespostmodelsPost_10');
-        $I->fillField('#newCommentForm_humhubmodulespostmodelsPost_10', 'My Comment');
-        $I->click('Send', '#comment_create_form_humhubmodulespostmodelsPost_10');
-        $I->waitForText('My Comment', 30, '#comment_humhubmodulespostmodelsPost_10 .comment');
+        $postSelector = '[data-content-key="10"]';
+        $I->waitForElementVisible($postSelector);
+
+        $I->click('Comment', $postSelector);
+        $I->waitForElementVisible($postSelector.' .comment-container', null );
+        $I->fillField('[data-content-key="10"] .comment_create .humhub-ui-richtext', 'My Comment');
+        $I->click('Send', '[data-content-key="10"] .comment_create');
+        $I->waitForText('My Comment', null, '[data-content-key="10"] .comment');
 
 //        $I->scrollTop();
-        $I->click('.stream-filter', '#filter');
-        $I->waitForElementVisible('#filter_entry_userinvolved');
-        $I->click('#filter_entry_userinvolved');
+        $I->click('Filter', '.wall-stream-filter-head');
+        $I->waitForElementVisible('[data-filter-id="entry_userinvolved"]');
+        $I->click('[data-filter-id="entry_userinvolved"]');
         $I->wait(1);
         $I->waitForText('Involved Post.');
 
@@ -300,9 +304,9 @@ class StreamCest
 
         $I->scrollTop();
 
-        $I->click('.stream-sorting', '#filter');
-        $I->waitForElementVisible('#sorting_u');
-        $I->click('#sorting_u');
+        $I->click('Filter', '.wall-stream-filter-head');
+        $I->waitForElementVisible('[data-filter-id="sort_update"]');
+        $I->click('[data-filter-id="sort_update"]');
         $I->wait(2);
         $I->waitForElementVisible($post4Selector);
 

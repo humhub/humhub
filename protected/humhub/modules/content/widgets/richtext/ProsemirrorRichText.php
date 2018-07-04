@@ -10,6 +10,7 @@ namespace humhub\modules\content\widgets\richtext;
 
 use humhub\libs\Helpers;
 use humhub\libs\Markdown;
+use humhub\libs\ParameterEvent;
 use humhub\modules\content\assets\ProseMirrorRichTextAsset;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\space\models\Space;
@@ -160,7 +161,10 @@ class ProsemirrorRichText extends AbstractRichText
         }
 
         $this->content = $this->text;
-        return parent::run() . $this->buildOembedOutput();
+        $output = parent::run() . $this->buildOembedOutput();
+        $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
+
+        return trim($output);
 
     }
 

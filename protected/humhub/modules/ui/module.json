@@ -1,0 +1,9 @@
+{
+    "id": "ui",
+    "name": "User Interface",
+    "description": "Core User Interface",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

@@ -166,7 +166,7 @@ class PermissionManager extends Component
         }
 
         $record->permission_id = $permission->getId();
-        $record->module_id = $permission->moduleId;
+        $record->module_id = $permission->getModuleId();
         $record->class = $permission->className();
         $record->group_id = $groupId;
         $record->state = $state;
@@ -258,7 +258,7 @@ class PermissionManager extends Component
     {
         return $this->getQuery()->andWhere([
                     'group_id' => $groupId,
-                    'module_id' => $permission->moduleId,
+                    'module_id' => $permission->getModuleId(),
                     'permission_id' => $permission->getId()
                 ])->one();
     }

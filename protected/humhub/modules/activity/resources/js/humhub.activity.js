@@ -8,6 +8,7 @@ humhub.module('activity', function (module, require, $) {
     var object = util.object;
     var stream = require('stream');
     var loader = require('ui.loader');
+    var Widget = require('ui.widget').Widget;
 
     /**
      * Number of initial stream enteis loaded when stream is initialized.
@@ -34,27 +35,12 @@ humhub.module('activity', function (module, require, $) {
     var instance;
 
 
-    var ActivityStreamEntry = function (id) {
+    var ActivityStreamEntry = stream.StreamEntry.extend(function (id) {
         stream.StreamEntry.call(this, id);
-    };
+    });
 
-    object.inherits(ActivityStreamEntry, stream.StreamEntry);
-
-
-    ActivityStreamEntry.prototype.actions = function () {
-        return [];
-    };
-    
-    ActivityStreamEntry.prototype.actions = function () {
-        
-    }
-
-    ActivityStreamEntry.prototype.delete = function () {
-        /* Not implemented */
-    }
-    ActivityStreamEntry.prototype.edit = function () {
-        /* Not implemented */
-    }
+    ActivityStreamEntry.prototype.delete = function () {/* Not implemented */};
+    ActivityStreamEntry.prototype.edit = function () {/* Not implemented */};
 
     /**
      * ActivityStream implementation.
@@ -62,41 +48,17 @@ humhub.module('activity', function (module, require, $) {
      * @param {type} container id or jQuery object of the stream container
      * @returns {undefined}
      */
-    var ActivityStream = function (container) {
+    var ActivityStream = stream.Stream.extend(function (container, options) {
+        var that = this;
         stream.Stream.call(this, container, {
-            'loadInitialCount': STREAM_INIT_COUNT,
-            'loadCount': STREAM_LOAD_COUNT,
-            'streamEntryClass': ActivityStreamEntry
+            initLoadCount: STREAM_INIT_COUNT,
+            loadCount: STREAM_LOAD_COUNT,
+            streamEntryClass: ActivityStreamEntry,
+
         });
-    };
+    });
 
-    object.inherits(ActivityStream, stream.Stream);
-
-    ActivityStream.prototype.showLoader = function () {
-        var $loaderListItem = $('<li id="activityLoader" class="streamLoader">');
-        loader.append($loaderListItem);
-        this.$content.append($loaderListItem);
-    };
-
-    ActivityStream.prototype.hideLoader = function () {
-        this.$content.find('#activityLoader').remove();
-    };
-
-    ActivityStream.prototype.onChange = function () {
-        if (!this.hasEntries()) {
-            this.$.html('<div id="activityEmpty"><div class="placeholder">' + module.text('activityEmpty') + '</div></div>');
-        }
-    };
-
-    ActivityStream.prototype.init = function () {
-        this.super('init').then(function(that) {
-            that.initScrolling();
-        }).catch(function(err) {
-            module.log.error('Could not initialize activity stream!',err);
-        });
-    };
-
-    ActivityStream.prototype.initScrolling = function () {
+    ActivityStream.prototype.initScroll = function () {
         if(!this.$content.is(':visible')) {
             return;
         }
@@ -105,6 +67,9 @@ humhub.module('activity', function (module, require, $) {
         var scrolling = true;
         var that = this;
         this.$content.scroll(function (evt) {
+            if(that.lastEntryLoaded()) {
+                return;
+            }
             // save height of the overflow container
             var _containerHeight = that.$content.height();
             // save scroll height
@@ -139,8 +104,12 @@ humhub.module('activity', function (module, require, $) {
         });
     };
 
+    ActivityStream.templates = {
+        streamMessage: '<div class="streamMessage activity"><div class="panel-body">{message}</div></div>'
+    };
+
     var getStream = function () {
-        instance = instance || new ActivityStream($(ACTIVITY_STREAM_SELECTOR));
+        instance = instance || Widget.instance(ACTIVITY_STREAM_SELECTOR);
 
         if (!instance.$.length) {
             return;
@@ -149,15 +118,6 @@ humhub.module('activity', function (module, require, $) {
         return instance;
     };
 
-    var init = function () {
-        var stream = getStream();
-
-        if (!stream) {
-            module.log.debug('Non-Activity-Stream page!');
-        } else {
-            stream.init();
-        }
-    };
     
     var unload = function() {
         // Cleanup nicescroll rails from dom
@@ -171,7 +131,6 @@ humhub.module('activity', function (module, require, $) {
     module.export({
         ActivityStream: ActivityStream,
         getStream: getStream,
-        init: init,
         initOnPjaxLoad: true,
         unload: unload
     });

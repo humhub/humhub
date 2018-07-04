@@ -8,8 +8,8 @@
 
 namespace humhub\modules\space\modules\manage\controllers;
 
-use Yii;
 use humhub\modules\space\modules\manage\components\Controller;
+use Yii;
 
 /**
  * Space module management
@@ -18,20 +18,20 @@ use humhub\modules\space\modules\manage\components\Controller;
  */
 class ModuleController extends Controller
 {
-
     /**
      * Modules Administration Action
      */
     public function actionIndex()
     {
         $space = $this->getSpace();
+
         return $this->render('index', ['availableModules' => $space->getAvailableModules(), 'space' => $space]);
     }
 
     /**
      * Enables a space module
      *
-     * @return string the output
+     * @return string|array the output
      */
     public function actionEnable()
     {
@@ -39,7 +39,7 @@ class ModuleController extends Controller
 
         $space = $this->getSpace();
 
-        $moduleId = Yii::$app->request->get('moduleId', "");
+        $moduleId = Yii::$app->request->get('moduleId', '');
 
         if (!$space->isModuleEnabled($moduleId)) {
             $space->enableModule($moduleId);
@@ -53,11 +53,10 @@ class ModuleController extends Controller
         }
     }
 
-
     /**
      * Disables a space module
      *
-     * @return string the output
+     * @return string|array the output
      */
     public function actionDisable()
     {
@@ -65,7 +64,7 @@ class ModuleController extends Controller
 
         $space = $this->getSpace();
 
-        $moduleId = Yii::$app->request->get('moduleId', "");
+        $moduleId = Yii::$app->request->get('moduleId', '');
 
         if ($space->isModuleEnabled($moduleId) && $space->canDisableModule($moduleId)) {
             $space->disableModule($moduleId);
@@ -81,5 +80,3 @@ class ModuleController extends Controller
     }
 
 }
-
-?>

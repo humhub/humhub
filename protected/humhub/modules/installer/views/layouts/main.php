@@ -15,9 +15,9 @@ AppAsset::register($this);
         <title><?php echo Html::encode($this->title); ?></title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta name="language" content="en"/>
+
         <?= Html::csrfMetaTags() ?>
 
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::getAlias("@web"); ?>/css/bootstrap.min.css"/>
         <?php $this->head() ?>
 
         <!-- start: render additional head (css and js files) -->

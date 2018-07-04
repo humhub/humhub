@@ -7,5 +7,5 @@ return array (
   'Currently there are no modules available for this space!' => 'Aucun module n\'est disponible actuellement pour cet espace.',
   'Disable' => 'Désactiver',
   'Enable' => 'Activer',
-  'Enhance this space with modules.' => 'Améliorez cet espace en y ajoutant des modules.',
+  'Enhance this space with modules.' => 'Améliorer cet espace en y ajoutant des modules.',
 );

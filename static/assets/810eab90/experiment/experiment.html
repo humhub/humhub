@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>clipboard-polyfill experiments</title>
+  <link rel="stylesheet" href="experiment.css">
+  <script>exports = {};</script>
+  <script src="experiment.js"></script>
+  <style>
+    .editable {
+      min-width: 20px;
+      min-height: 1em;
+      border: 1px solid #AAA;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  clipboard-polyfill experiments
+</div>
+<div class="ribbon"></div>
+<div class="content">
+
+<h2>Test</h2>
+
+<button onclick='new Test["Plain"]().run()'>Plain</button>
+<div contenteditable="true" class="editable"></div>
+<br>
+
+<button onclick='new Test["PlainHTML"]().run()'>PlainHTML</button>
+<div contenteditable="true" class="editable"></div>
+<br>
+
+<button onclick='new Test["PlainBoth"]().run()'>PlainBoth</button>
+<div contenteditable="true" class="editable"></div>
+<br>
+
+<button onclick='new Test["PlainBothHTMLFirst"]().run()'>PlainBothHTMLFirst</button>
+<div contenteditable="true" class="editable"></div>
+<br>
+
+<button onclick='new Test["SelectBody"]().run()'>SelectBody</button>
+<div contenteditable="true" class="editable"></div>
+<br>
+
+<button onclick='new Test["SelectTempElem"]().run()'>SelectTempElem</button>
+<div contenteditable="true" class="editable"></div>
+<br>
+
+<button onclick='new Test["SelectTempElemUserSelectNone"]().run()'>SelectTempElemUserSelectNone</button>
+<div contenteditable="true" class="editable"></div>
+<br>
+
+<button onclick='new Test["SelectTempElemUserSelectNoneNested"]().run()'>SelectTempElemUserSelectNoneNested</button>
+<div contenteditable="true" class="editable"></div>
+<br>
+
+<button onclick='new Test["CopyTempElem"]().run()'>CopyTempElem</button>
+<div contenteditable="true" class="editable"></div>
+<br>
+
+<button onclick='new Test["WindowClipboardData"]().run()'>WindowClipboardData</button>
+<div contenteditable="true" class="editable"></div>
+<br>
+
+<button onclick='new Test["DataTransferConstructor"]().run()'>DataTransferConstructor</button>
+<div contenteditable="true" class="editable"></div>
+<br>
+
+</div>
+
+</body>
+</html>

@@ -36,7 +36,7 @@ class UploadProfileImage extends Model
     {
         return [
             ['image', 'required'],
-            ['image', 'file', 'extensions' => 'jpg, jpeg, png, tiff', 'maxSize' => 3 * 1024 * 1024],
+            ['image', 'file', 'extensions' => 'jpg, jpeg, png, tiff', 'maxSize' => Yii::$app->getModule('file')->settings->get('maxFileSize')],
         ];
     }
 

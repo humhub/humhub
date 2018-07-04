@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Fixed format (dd/mm/yyyy) - Example: {example}' => '',
     'Alphabetical' => '按字母顺序排列的',
     'Auto format based on user language - Example: {example}' => '根据用户语言自动格式化 - 例如：{example}',
-    'Fixed format (mm/dd/yyyy) - Example: {example}' => '固定格式 (mm/dd/yyyy) - 例如: {example}',
-    'Last visit' => '最后访问',
     'Firstname Lastname (e.g. John Doe)' => '姓 名 (例如 John Doe)',
+    'Last visit' => '最后访问',
     'Save' => '保 存',
     'Username (e.g. john)' => '用户名(例如 John)',
 ];

@@ -25,6 +25,7 @@ abstract class BootstrapComponent extends Widget
     public $type;
     public $htmlOptions = [];
     public $text;
+    public $encode = false;
     public $_icon;
     public $_iconRight;
 
@@ -215,6 +216,29 @@ abstract class BootstrapComponent extends Widget
     }
 
     /**
+     * Adds an html title attribute
+     * @param $title
+     * @return $this
+     * @since 1.3
+     */
+    public function title($title)
+    {
+        return $this->options(['title' => $title]);
+    }
+
+    /**
+     * Adds an title + tooltip behaviour class
+     * @param $id
+     * @return $this
+     * @since 1.3
+     */
+    public function tooltip($title)
+    {
+        return $this->title($title)->cssClass('tt');
+    }
+
+
+    /**
      * @param $cssClass
      * @return $this
      */
@@ -254,11 +278,13 @@ abstract class BootstrapComponent extends Widget
      */
     public function icon($content, $right = false, $raw = false)
     {
-        if (!$raw) {
-            $this->icon(Html::tag('i', '', ['class' => 'fa '.$content]), $right, true);
-        } else {
-            $this->_icon = $content;
-            $this->_iconRight = $right;
+        if (!empty($content)) {
+            if (!$raw) {
+                $this->icon(Html::tag('i', '', ['class' => 'fa ' . $content]), $right, true);
+            } else {
+                $this->_icon = $content;
+                $this->_iconRight = $right;
+            }
         }
 
         return $this;
@@ -277,15 +303,15 @@ abstract class BootstrapComponent extends Widget
 
     public function color($color)
     {
-        $this->style('background-color:'.$color);
-
+        if ($color) {
+            $this->style('background-color:' . $color);
+        }
         return $this;
     }
 
     public function textColor($color)
     {
-        $this->style('color:'.$color);
-
+        $this->style('color:' . $color);
         return $this;
     }
 
@@ -314,14 +340,16 @@ abstract class BootstrapComponent extends Widget
 
     protected function getText()
     {
+        $text = ($this->encode) ? Html::encode($this->text) : $this->text;
         if ($this->_icon) {
-            return ($this->_iconRight) ? $this->text.' '.$this->_icon : $this->_icon.' '.$this->text;
+            return ($this->_iconRight) ? $text.' '.$this->_icon : $this->_icon.' '.$text;
         }
 
-        return $this->text;
+        return $text;
     }
 
-    public function visible($isVisible = true) {
+    public function visible($isVisible = true)
+    {
         $this->_visible = $isVisible;
 
         return $this;
@@ -344,6 +372,7 @@ abstract class BootstrapComponent extends Widget
             'type' => $this->type,
             'text' => $this->text,
             'htmlOptions' => $this->htmlOptions,
+            'encode' => $this->encode,
             '_icon' => $this->_icon,
             '_iconRight' => $this->_iconRight,
             'render' => $this->_visible

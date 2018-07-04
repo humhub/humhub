@@ -290,5 +290,4 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
         return false;
     }
-
 }

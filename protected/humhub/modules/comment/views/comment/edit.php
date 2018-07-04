@@ -24,7 +24,7 @@ $submitUrl = Url::to(['/comment/comment/edit', 'id' => $comment->id, 'contentMod
             <?= $form->field($comment, 'message')->widget(RichTextField::class, [
                 'id' => 'comment_input_'.$comment->id,
                 'placeholder' => Yii::t('CommentModule.views_edit', 'Edit your comment...')
-            ]) ?>
+            ])->label(false) ?>
 
             <div class="comment-buttons">
 

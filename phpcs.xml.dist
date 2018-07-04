@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="HumHub">
+    <description>HumHub coding standards</description>
+
+    <!-- Include PSR-1 -->
+    <rule ref="PSR1"/>
+    
+    <rule ref="PSR2">
+        <!-- We don't have line length (line width) limits. -->
+        <exclude name="Generic.Files.LineLength"/>
+
+        <!-- CASE keyword must be indented 4 spaces from SWITCH keyword. -->
+        <exclude name="PSR2.ControlStructures.SwitchDeclaration"/>
+    </rule>
+
+    <!-- Prefer [] instead array() -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax.Found">
+        <type>warning</type>
+    </rule>
+
+    <!-- If string doesn't contain variables or single quotes, use single quotes. -->
+    <rule ref="Squiz.Strings.DoubleQuoteUsage.ContainsVar">
+        <!-- Not check variable substitution -->
+        <severity>0</severity>
+    </rule>
+
+    <!-- Require space for string concatenation -->
+    <rule ref="Squiz.Strings.ConcatenationSpacing">
+        <properties>
+            <property name="spacing" value="1"/>
+            <property name="ignoreNewlines" value="true"/>
+        </properties>
+    </rule>
+
+    <!-- Accept missing space before : when using short if -->
+    <rule ref="Squiz.ControlStructures.ControlSignature">
+        <properties>
+            <property name="requiredSpacesBeforeColon" value="0"/>
+        </properties>
+    </rule>
+
+    <!-- Ignore for migrations. -->
+    <!-- Ignore missing namespace for migrations -->
+    <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+        <exclude-pattern>m\d{6}_\d{6}_.+\.php$</exclude-pattern>
+    </rule>
+
+    <!-- Ignore camel caps format for class name of migrations -->
+    <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps">
+        <exclude-pattern>m\d{6}_\d{6}_.+\.php$</exclude-pattern>
+    </rule>
+
+    <!-- Ignore for tests. -->
+    <!-- Ignore method name prefixed with underscore to indicate visibility -->
+    <rule ref="PSR2.Methods.MethodDeclaration.Underscore">
+        <exclude-pattern>tests?/*(Cest|Test).php$</exclude-pattern>
+    </rule>
+
+</ruleset>

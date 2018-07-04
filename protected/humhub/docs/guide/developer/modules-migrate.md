@@ -6,6 +6,11 @@ Here you will learn how you can adapt existing modules to working fine with actu
 Migrate from 1.2 to 1.3
 -----------------------
 
+### New Stream Javascript API
+
+In v1.3 we've reworked the Stream Javascript API. Please check the [Javascript Stream](javascript-stream.md) documentation
+for more information.
+
 ### ContentContainer Controller
 
 The base controller attributes `autoCheckContainerAccess` and `hideSidebar` are not longer available.
@@ -22,6 +27,12 @@ The existing `humhub\components\queue\ActiveJob` is declared as deprecated and w
 ### Partial user deletion (Soft Delete)
 
 Added new user status (User::SOFT_DELETED). You can find more information here: [Users](modules-users.md)
+
+### Widgets
+
+Moved all form and field related widgets from `humhub\widgets` to `humhub\modules\ui\form\widgets` namespace.
+There is a compatibility layer for the 1.3 release.
+
 
 
 Migrate from 1.1 to 1.2

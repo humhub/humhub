@@ -19,9 +19,9 @@ use humhub\components\Controller;
 
 /**
  * SpaceController Behavior
- * 
+ *
  * In Space scopes, this behavior will automatically attached to a contentcontainer controller.
- * 
+ *
  * @see Space::controllerBehavior
  * @see \humhub\modules\contentcontainer\components\Controller
  * @property \humhub\modules\contentcontainer\components\Controller $owner the controller
@@ -30,7 +30,7 @@ class SpaceController extends Behavior
 {
 
     /**
-     * @var humhub\modules\space\models\Space
+     * @var \humhub\modules\space\models\Space
      */
     public $space;
 
@@ -112,5 +112,3 @@ class SpaceController extends Behavior
     }
 
 }
-
-?>

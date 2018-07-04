@@ -1,21 +1,28 @@
 <?php
 
 use humhub\compat\CActiveForm;
-
+use humhub\widgets\LoaderWidget;
+use humhub\widgets\AjaxButton;
+use humhub\widgets\DataSaved;
+use yii\helpers\Html;
+use yii\web\JsExpression;
+use raoul2000\jcrop\JCropWidget;
 ?>
+
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
         <?php $form = CActiveForm::begin(['id' => 'space-crop-image-form']); ?>
-        <?php echo $form->errorSummary($model); ?>
-        <?php echo $form->hiddenField($model, 'cropX', ['id' => 'cropX']); ?>
-        <?php echo $form->hiddenField($model, 'cropY', ['id' => 'cropY']); ?>
-        <?php echo $form->hiddenField($model, 'cropW', ['id' => 'cropW']); ?>
-        <?php echo $form->hiddenField($model, 'cropH', ['id' => 'cropH']); ?>
+        <?= $form->errorSummary($model); ?>
+        <?= $form->hiddenField($model, 'cropX', ['id' => 'cropX']); ?>
+        <?= $form->hiddenField($model, 'cropY', ['id' => 'cropY']); ?>
+        <?= $form->hiddenField($model, 'cropW', ['id' => 'cropW']); ?>
+        <?= $form->hiddenField($model, 'cropH', ['id' => 'cropH']); ?>
 
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('UserModule.views_profile_cropBannerImage', '<strong>Modify</strong> your title image'); ?></h4>
+            <h4 class="modal-title" id="myModalLabel">
+                <?= Yii::t('UserModule.views_profile_cropBannerImage', '<strong>Modify</strong> your title image'); ?>
+            </h4>
         </div>
         <div class="modal-body">
             <style>
@@ -31,10 +38,9 @@ use humhub\compat\CActiveForm;
             </style>
 
             <div id="cropimage">
-                <?php
-                echo \yii\helpers\Html::img($profileImage->getUrl('_org'), ['id' => 'foobar']);
+                <?= Html::img($profileImage->getUrl('_org'), ['id' => 'foobar']);
 
-                echo raoul2000\jcrop\JCropWidget::widget([
+                echo JCropWidget::widget([
                     'selector' => '#foobar',
                     'pluginOptions' => [
                         'aspectRatio' => 6.3,
@@ -43,7 +49,7 @@ use humhub\compat\CActiveForm;
                         'bgColor' => 'black',
                         'bgOpacity' => '0.5',
                         'boxWidth' => '440',
-                        'onChange' => new yii\web\JsExpression('function(c){ $("#cropX").val(c.x);$("#cropY").val(c.y);$("#cropW").val(c.w);$("#cropH").val(c.h); }')
+                        'onChange' => new JsExpression('function(c){ $("#cropX").val(c.x);$("#cropY").val(c.y);$("#cropW").val(c.w);$("#cropH").val(c.h); }')
                     ]
                 ]);
                 ?>
@@ -53,13 +59,12 @@ use humhub\compat\CActiveForm;
         </div>
         <div class="modal-footer">
 
-            <?php
-            echo \humhub\widgets\AjaxButton::widget([
+            <?= AjaxButton::widget([
                 'label' => Yii::t('UserModule.views_profile_cropProfileImage', 'Save'),
                 'ajaxOptions' => [
                     'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
-                    'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
+                    'beforeSend' => new JsExpression('function(){ setModalLoader(); }'),
+                    'success' => new JsExpression('function(html){ $("#globalModal").html(html); }'),
                     'url' => $space->createUrl('/space/manage/image/crop-banner'),
                 ],
                 'htmlOptions' => [
@@ -68,18 +73,16 @@ use humhub\compat\CActiveForm;
             ]);
             ?>
 
-            <button type="button" class="btn btn-primary"
-                    data-dismiss="modal"><?php echo Yii::t('UserModule.views_profile_cropBannerImage', 'Close'); ?></button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">
+                <?= Yii::t('UserModule.views_profile_cropBannerImage', 'Close'); ?>
+            </button>
 
-
-            <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'crop-loader', 'cssClass' => 'loader-modal hidden']); ?>
+            <?= LoaderWidget::widget(['id' => 'crop-loader', 'cssClass' => 'loader-modal hidden']); ?>
         </div>
 
-        <?php echo \humhub\widgets\DataSaved::widget(); ?>
+        <?= DataSaved::widget(); ?>
         <?php CActiveForm::end(); ?>
 
     </div>
 
 </div>
-
-

@@ -8,10 +8,10 @@
 
 namespace humhub\modules\space\widgets;
 
-use \yii\base\Widget;
 use humhub\modules\space\models\Membership;
-use yii\db\Expression;
 use humhub\modules\space\models\Space;
+use yii\db\Expression;
+use yii\base\Widget;
 
 /**
  * Space Members Snippet
@@ -60,6 +60,7 @@ class Members extends Widget
         $query = Membership::getSpaceMembersQuery($this->space)->visible();
         $query->limit($this->maxMembers);
         $query->orderBy(new Expression('FIELD(space_membership.group_id, "' . Space::USERGROUP_OWNER . '", "' . Space::USERGROUP_MODERATOR . '", "' . Space::USERGROUP_MEMBER . '")'));
+
         return $query;
     }
 
@@ -87,5 +88,3 @@ class Members extends Widget
     }
 
 }
-
-?>

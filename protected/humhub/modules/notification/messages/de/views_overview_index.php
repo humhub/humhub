@@ -1,9 +1,9 @@
 <?php
 return array (
-  '<strong>Notification</strong> Overview' => 'Übersicht über <strong>Mitteilungen</strong>',
+  '<strong>Notification</strong> Overview' => '<strong>Benachrichtigungs</strong>übersicht',
   'Apply' => 'Anwenden',
   'Filter' => 'Filter',
   'Mark all as seen' => 'Alle als gelesen markieren',
-  'Module Filter' => 'Filter Modul',
+  'Module Filter' => 'Modul Filter',
   'No notifications found!' => 'Keine Benachrichtigungen gefunden!',
 );

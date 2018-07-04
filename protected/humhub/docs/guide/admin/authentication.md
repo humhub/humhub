@@ -23,9 +23,16 @@ Note: Make sure to use lower case in the field.
 
 Facebook
 --------
-In order to use Facebook OAuth you must register your application at <https://developers.facebook.com/apps>.
+In order to use Facebook OAuth you must register your application at <https://developers.facebook.com/apps> then follow the below instructions.
 
-Add the following block to your configuration (protected/config/common.php):
+- In your app settings under **Basic** set your **Site URL**.
+- Under **Settings > Advanced > Domain Manager** add any sub-domains used by the app.
+- Under **Facebook Login > Client OAuth Settings > Valid OAuth Redirect URIs** place your `https://domain/path-to-humhub/user/auth/external?authclient=facebook` URL.
+> https://domain/path-to-humhub/user/auth/external?authclient=facebook (With clean urls)
+
+> http://domain/path-to-humhub/index.php?r=user%2Fauth%2Fexternal&authclient=facebook (Without clean urls)
+- Make sure **Client OAuth Login** & **Web OAuth Login** are both enabled!
+- Add the following block to your configuration (protected/config/common.php):
 
 ```php
 return [

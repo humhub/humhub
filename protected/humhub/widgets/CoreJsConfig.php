@@ -26,6 +26,7 @@ class CoreJsConfig extends Widget
         if (!Yii::$app->user->isGuest) {
             $userConfig = \humhub\modules\user\models\UserPicker::asJSON(Yii::$app->user->getIdentity());
             $userConfig['isGuest'] = false;
+            $userConfig['email'] = Yii::$app->user->getIdentity()->email;
         } else {
             $userConfig = ['isGuest' => true];
         }
@@ -57,6 +58,9 @@ class CoreJsConfig extends Widget
                         'text' => [
                             'actionHandlerNotFound' => Yii::t('base', 'An error occurred while handling your last action. (Handler not found).'),
                         ]
+                    ],
+                    'topic' => [
+                        'icon' => '<i class="fa '.Yii::$app->getModule('topic')->icon.'"></i>'
                     ],
                     'ui.modal' => [
                         'defaultConfirmHeader' => Yii::t('base', '<strong>Confirm</strong> Action'),
@@ -199,9 +203,11 @@ class CoreJsConfig extends Widget
                         ]
                     ],
                     'ui.picker' => [
+                        'addImage' => $this->view->theme->getBaseUrl().'/img/picker_add.png',
                         'text' => [
                             'error.loadingResult' => Yii::t('base', 'An unexpected error occurred while loading the search result.'),
                             'showMore' => Yii::t('base', 'Show more'),
+                            'addOption' => Yii::t('base', 'Add:'),
                         ]
                     ],
                     'ui.showMore' => [

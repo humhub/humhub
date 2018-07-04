@@ -21,11 +21,18 @@ use humhub\modules\file\widgets\UploadInput;
  */
 class ProsemirrorRichTextEditor extends AbstractRichTextEditor
 {
+    const MENU_CLASS_FOCUS = 'focusMenu';
+    const MENU_CLASS_PLAIN = 'plainMenu';
 
     /**
      * @inheritdoc
      */
     public $jsWidget = 'ui.richtext.prosemirror.RichTextEditor';
+
+    /**
+     * @var string defines the editor style, which will be added as class attribute
+     */
+    public $menuClass = self::MENU_CLASS_FOCUS;
 
     public static  $renderer = [
         'class' => ProsemirrorRichText::class
@@ -37,7 +44,7 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
     public function getAttributes()
     {
         return [
-            'class' => 'ProsemirrorEditor'
+            'class' => 'ProsemirrorEditor '.$this->menuClass
         ];
     }
 

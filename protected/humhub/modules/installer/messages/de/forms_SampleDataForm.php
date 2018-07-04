@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Set up example content (recommended)' => 'Beispielsinhalte einrichten (empfohlen)',
+  'Set up example content (recommended)' => 'Beispielinhalte einrichten (empfohlen)',
 );

@@ -75,6 +75,8 @@ class AppAsset extends AssetBundle
         'humhub\modules\file\assets\FileAsset',
         'humhub\modules\post\assets\PostAsset',
         'humhub\modules\space\assets\SpaceAsset',
+        'humhub\modules\topic\assets\TopicAsset',
+        'humhub\modules\ui\filter\assets\FilterAsset',
         'humhub\modules\comment\assets\CommentAsset',
         'humhub\assets\NProgressAsset',
         'humhub\assets\IE9FixesAsset',
@@ -83,6 +85,7 @@ class AppAsset extends AssetBundle
         'humhub\assets\ClipboardJsAsset',
         'humhub\assets\ImagesLoadedAsset',
         'humhub\assets\SocketIoAsset',
+        'humhub\assets\OpenSansAsset'
     ];
 
     /**
