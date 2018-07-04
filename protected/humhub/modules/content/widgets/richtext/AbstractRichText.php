@@ -134,6 +134,11 @@ abstract class AbstractRichText extends JsWidget
     protected static $processorClass;
 
     /**
+     * @var mixed can be used to identify the related record
+     */
+    public $record;
+
+    /**
      * @inheritdoc
      */
     public function init() {

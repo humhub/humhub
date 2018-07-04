@@ -6,6 +6,11 @@ Here you will learn how you can adapt existing modules to working fine with actu
 Migrate from 1.2 to 1.3
 -----------------------
 
+### New Stream Javascript API
+
+In v1.3 we've reworked the Stream Javascript API. Please check the [Javascript Stream](javascript-stream.md) documentation
+for more information.
+
 ### ContentContainer Controller
 
 The base controller attributes `autoCheckContainerAccess` and `hideSidebar` are not longer available.

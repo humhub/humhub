@@ -135,7 +135,7 @@ $config = [
             'clients' => [],
         ],
         'queue' => [
-            'class' => 'humhub\modules\queue\driver\Sync',
+            'class' => 'humhub\modules\queue\driver\MySQL',
         ],
         'urlManager' => [
             'class' => 'humhub\components\UrlManager',
@@ -145,6 +145,9 @@ $config = [
             'driver' => [
                 'class' => 'humhub\modules\live\driver\Poll',
             ],
+        ],
+        'mutex' => [
+            'class' => 'yii\mutex\MysqlMutex'
         ],
     ],
     'params' => [
@@ -240,6 +243,7 @@ $config = [
             'class' => 'humhub\modules\content\widgets\richtext\ProsemirrorRichText',
         ],
         'enablePjax' => true,
+        'dailyCronExecutionTime' => '18:00',
     ]
 ];
 

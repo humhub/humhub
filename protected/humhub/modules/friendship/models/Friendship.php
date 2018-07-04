@@ -149,7 +149,7 @@ class Friendship extends \humhub\components\ActiveRecord
 
     /**
      * Returns a query for friends of a user
-     * 
+     *
      * @return \yii\db\ActiveQuery
      * @param User $user
      */
@@ -170,9 +170,9 @@ class Friendship extends \humhub\components\ActiveRecord
 
     /**
      * Returns a query for sent and not approved friend requests of an user
-     * 
-     * @return \yii\db\ActiveQuery
+     *
      * @param User $user
+     * @return \yii\db\ActiveQuery
      */
     public static function getSentRequestsQuery(User $user)
     {

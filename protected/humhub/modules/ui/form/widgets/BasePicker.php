@@ -2,10 +2,12 @@
 
 namespace humhub\modules\ui\form\widgets;
 
+use humhub\components\ActiveRecord;
 use Yii;
+use yii\base\Model;
+use yii\db\ActiveQuery;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use humhub\modules\ui\form\widgets\JsInputWidget;
 
 /**
  * Abstract class for picker form fields.
@@ -37,7 +39,6 @@ use humhub\modules\ui\form\widgets\JsInputWidget;
  */
 abstract class BasePicker extends JsInputWidget
 {
-
     /**
      * Defines the javascript picker implementation.
      *
@@ -93,7 +94,7 @@ abstract class BasePicker extends JsInputWidget
      * It this array is not set, the picker will try to load the items by means of the
      * model attribute
      *
-     * @see BasePicker::loadItems
+     * @see BasePickerField::loadItems
      * @var array
      */
     public $selection;
@@ -112,11 +113,13 @@ abstract class BasePicker extends JsInputWidget
 
     /**
      * The item key used as option value and loading items by attribute value.
-     * e.g. id or guid
+     * e.g. id or guid.
+     *
+     * @since v1.3 'id' by default
      *
      * @var string
      */
-    public $itemKey;
+    public $itemKey = 'id';
 
     /**
      * If the ActiveForm is set, it will be used to create the picker field,
@@ -145,6 +148,30 @@ abstract class BasePicker extends JsInputWidget
      * @var string
      */
     public $attribute;
+
+    /**
+     * If set to true, the picker will allow adding new options not included in the current search result.
+     *
+     * > Note: New values will be submitted as '_add:term' to distinguish between new and existing options. The filtering and insertion
+     * has to be handled manually within the submit/form logic.
+     *
+     * e.g.:
+     *
+     * ```php
+     * foreach($values as $value) {
+     *     if(strpos($value, '_add:') === 0) {
+     *         $newValue = substr($value, strlen('_add:'));
+     *         // Save new item with newValue
+     *     } else {
+     *         $item = MyItem::findOne((int) $value);
+     *         // ...
+     *     }
+     * }
+     * ```
+     *
+     * @var bool|null
+     */
+    public $addOptions = null;
 
 
     /**
@@ -184,9 +211,22 @@ abstract class BasePicker extends JsInputWidget
      * Used to retrieve the option image url of a given $item.
      *
      * @param \yii\db\ActiveRecord $item selected item
-     * @return string image url or null if no selection image required.
+     * @return string|null image url or null if no selection image required.
      */
     protected abstract function getItemImage($item);
+
+    /**
+     * @inhertidoc
+     */
+    public function beforeRun()
+    {
+        //Only for compatibility
+        if (empty($this->name)) {
+            $this->name = $this->formName;
+        }
+
+        return parent::beforeRun();
+    }
 
     /**
      * @inhertidoc
@@ -194,11 +234,6 @@ abstract class BasePicker extends JsInputWidget
     public function run()
     {
         \humhub\assets\Select2BootstrapAsset::register($this->view);
-
-        //Only for compatibility
-        if (empty($this->name)) {
-            $this->name = $this->formName;
-        }
 
         if ($this->selection != null && !is_array($this->selection)) {
             $this->selection = [$this->selection];
@@ -251,6 +286,7 @@ abstract class BasePicker extends JsInputWidget
             }
         }
 
+
         if (!$this->selection) {
             $this->selection = [];
         }
@@ -269,9 +305,9 @@ abstract class BasePicker extends JsInputWidget
     /**
      * Responsible for building the option data for an item.
      *
-     * @param type $item
-     * @param type $selected
-     * @return string
+     * @param mixed $item
+     * @param boolean $selected
+     * @return array
      */
     protected function buildItemOption($item, $selected = true)
     {
@@ -294,8 +330,8 @@ abstract class BasePicker extends JsInputWidget
      *
      * e.g. $itemKey = 'id'
      *
-     * @param type $item
-     * @return type
+     * @param mixed $item
+     * @return string
      */
     protected function getItemKey($item)
     {
@@ -307,13 +343,17 @@ abstract class BasePicker extends JsInputWidget
      * Loads all items of the given $selection array.
      * The $selection array contains all selected itemKeys.
      *
-     * @param array $selection array of itemKeys
-     * @return type array of items of type $itemClass or empty array for an empty selection
+     * @param array|string $selection array of itemKeys or comma separated string
+     * @return array of items of type $itemClass or empty array for an empty selection
      */
     public function loadItems($selection = null)
     {
         if (empty($selection)) {
             return [];
+        }
+
+        if ($selection instanceof ActiveQuery) {
+            return $selection->all();
         }
 
         // For older version (prior 1.2) - try to convert comma separated list to array
@@ -362,8 +402,9 @@ abstract class BasePicker extends JsInputWidget
         $placeholderMore = ($this->placeholderMore != null) ? $this->placeholderMore : Yii::t('UserModule.widgets_BasePickerField', 'Add more...');
 
         $result = [
+            'add-options' => $this->addOptions,
             'picker-url' => $this->getUrl(),
-            'picker-focus' => ($this->focus) ? 'true' : null,
+            'picker-focus' => ($this->focus) ? 1 : null,
             'disabled-items' => (!$this->disabledItems) ? null : $this->disabledItems,
             'maximum-selection-length' => $this->maxSelection,
             'maximum-input-length' => $this->maxInput,
@@ -396,11 +437,10 @@ abstract class BasePicker extends JsInputWidget
     /**
      * Returns the url for this picker instance. If no $url is set we use the $defaultRoute for creating the url.
      *
-     * @return strings
+     * @return string
      */
     protected function getUrl()
     {
         return ($this->url) ? $this->url : Url::to([$this->defaultRoute]);
     }
-
 }

@@ -15,6 +15,7 @@ use yii\helpers\Html;
     </div>
 
     <?= DefaultMenu::widget(['space' => $model]); ?>
+
     <div class="panel-body">
 
         <?php $form = ActiveForm::begin(['options' => ['id' => 'spaceIndexForm'], 'enableClientValidation' => false]); ?>

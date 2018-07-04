@@ -63,7 +63,7 @@ class WallEntry extends Widget
     /**
      * Defines the way the edit of this wallentry is displayed.
      * 
-     * @var type 
+     * @var string
      */
     public $editMode = self::EDIT_MODE_INLINE;
 
@@ -166,7 +166,7 @@ class WallEntry extends Widget
     }
 
     /**
-     * Returns an array of contextmenu items either in form of a single array:
+     * Returns an array of context menu items either in form of a single array:
      * 
      * ['label' => 'mylabel', 'icon' => 'fa-myicon', 'data-action-click' => 'myaction', ...]
      * 
@@ -174,8 +174,8 @@ class WallEntry extends Widget
      * 
      * [MyWidget::class, [...], [...]]
      * 
-     * If an $editRoute is set this function will include an edit button.
-     * The edit logic can be changed by changing the $editMode.
+     * If an [[editRoute]] is set this function will include an edit button.
+     * The edit logic can be changed by changing the [[editMode]].
      * 
      * @return array
      * @since 1.2
@@ -183,15 +183,18 @@ class WallEntry extends Widget
     public function getContextMenu()
     {
         $result = [];
+
+        $this->addControl($result, [DeleteLink::class, ['content' => $this->contentObject], ['sortOrder' => 100]]);
+
         if (!empty($this->getEditUrl())) {
             $this->addControl($result, [EditLink::class, ['model' => $this->contentObject, 'mode' => $this->editMode, 'url' => $this->getEditUrl()], ['sortOrder' => 200]]);
         }
 
-        $this->addControl($result, [DeleteLink::class, ['content' => $this->contentObject], ['sortOrder' => 100]]);
         $this->addControl($result, [VisibilityLink::class, ['contentRecord' => $this->contentObject], ['sortOrder' => 250]]);
         $this->addControl($result, [NotificationSwitchLink::class, ['content' => $this->contentObject], ['sortOrder' => 300]]);
         $this->addControl($result, [PermaLink::class, ['content' => $this->contentObject], ['sortOrder' => 400]]);
         $this->addControl($result, [PinLink::class, ['content' => $this->contentObject], ['sortOrder' => 500]]);
+        $this->addControl($result, [MoveContentLink::class, ['model' => $this->contentObject], ['sortOrder' => 550]]);
         $this->addControl($result, [ArchiveLink::class, ['content' => $this->contentObject], ['sortOrder' => 600]]);
 
         if(isset($this->controlsOptions['add'])) {

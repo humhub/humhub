@@ -8,15 +8,15 @@
 
 namespace humhub\modules\content\components;
 
-use Yii;
-use yii\helpers\Url;
 use humhub\components\ActiveRecord;
 use humhub\libs\BasePermission;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
-use humhub\modules\user\models\User;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\helpers\Url;
 
 /**
  * ContentContainerActiveRecord for ContentContainer Models e.g. Space or User.
@@ -51,7 +51,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * The behavior which will be attached to the base controller.
      *
      * @since 1.3
-     * @see \humhub\modules\contentcontainer\components\Controller
+     * @see \humhub\modules\content\components\ContentContainerController
      * @var string class name of additional the controller behavior
      */
     public $controllerBehavior = null;
@@ -196,7 +196,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         }
 
         return $this->hasOne(ContentContainer::className(), ['pk' => 'id'])
-                        ->andOnCondition(['class' => $this->className()]);
+            ->andOnCondition(['class' => $this->className()]);
     }
 
     /**

@@ -8,6 +8,8 @@
 
 namespace humhub\widgets;
 
+use humhub\modules\admin\widgets\TrackingWidget;
+use humhub\modules\tour\widgets\Tour;
 use humhub\modules\ui\form\widgets\MarkdownModals;
 use Yii;
 
@@ -29,9 +31,9 @@ class LayoutAddons extends BaseStack
             $this->addWidget(GlobalModal::class);
             $this->addWidget(GlobalConfirmModal::class);
 
-            if (Yii::$app->params['installed']) {
-                $this->addWidget(\humhub\modules\tour\widgets\Tour::class);
-                $this->addWidget(\humhub\modules\admin\widgets\TrackingWidget::class);
+            if(Yii::$app->params['installed']) {
+                $this->addWidget(Tour::class);
+                $this->addWidget(TrackingWidget::class);
             }
 
             $this->addWidget(LoaderWidget::class, ['show' => false, 'id' => "humhub-ui-loader-default"]);

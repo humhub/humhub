@@ -11,7 +11,9 @@ namespace humhub\modules\stream\widgets;
 use Yii;
 use yii\base\Exception;
 use yii\helpers\Url;
-use humhub\components\Widget;
+use humhub\modules\stream\actions\Stream;
+use humhub\modules\topic\models\Topic;
+use humhub\widgets\JsWidget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
@@ -19,7 +21,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  *
  * @since 1.2
  */
-class StreamViewer extends Widget
+class StreamViewer extends JsWidget
 {
 
     /**
@@ -39,16 +41,21 @@ class StreamViewer extends Widget
     public $streamActionParams = [];
 
     /**
+     * @var string definition of stream filter navigation widget class
+     */
+    public $streamFilterNavigation = WallStreamFilterNavigation::class;
+
+    /**
+     * @var array list of active filters filters to show this will be set as [[StreamFilter::definition]] when rendering the filter navigation
+     */
+    public $filters = [];
+
+    /**
      * Show default wall filters
      *
      * @var boolean
      */
     public $showFilters = true;
-
-    /**
-     * @var array filters to show
-     */
-    public $filters = [];
 
     /**
      * @var string the message when stream is empty and filters are active
@@ -71,6 +78,24 @@ class StreamViewer extends Widget
      */
     public $messageStreamEmptyCss = "";
 
+    public $jsWidget = 'stream.wall.WallStream';
+
+    /**
+     * @var string stream view
+     * @since 1.3
+     */
+    public $view = '@stream/widgets/views/wallStream';
+
+    /**
+     * @inheritdoc
+     */
+    public $id = 'wallStream';
+
+    /**
+     * @inheritdoc
+     */
+    public $init = true;
+
     /**
      * @inheritdoc
      */
@@ -80,18 +105,6 @@ class StreamViewer extends Widget
             throw new Exception('You need to set the streamAction attribute to use this widget!');
         }
 
-        // Add default Filters
-        if (count($this->filters) === 0) {
-            $this->filters['filter_entry_userinvolved'] = Yii::t('ContentModule.widgets_views_stream', 'Where I´m involved');
-            $this->filters['filter_entry_mine'] = Yii::t('ContentModule.widgets_views_stream', 'Created by me');
-            $this->filters['filter_entry_files'] = Yii::t('ContentModule.widgets_views_stream', 'Content with attached files');
-            $this->filters['filter_posts_links'] = Yii::t('ContentModule.widgets_views_stream', 'Posts with links');
-            $this->filters['filter_model_posts'] = Yii::t('ContentModule.widgets_views_stream', 'Posts only');
-            $this->filters['filter_entry_archived'] = Yii::t('ContentModule.widgets_views_stream', 'Include archived posts');
-            $this->filters['filter_visibility_public'] = Yii::t('ContentModule.widgets_views_stream', 'Only public posts');
-            $this->filters['filter_visibility_private'] = Yii::t('ContentModule.widgets_views_stream', 'Only private posts');
-        }
-
         // Setup default messages
         if ($this->messageStreamEmpty == "") {
             $this->messageStreamEmpty = Yii::t('ContentModule.widgets_views_stream', 'Nothing here yet!');
@@ -99,6 +112,31 @@ class StreamViewer extends Widget
         if ($this->messageStreamEmptyWithFilters == "") {
             $this->messageStreamEmptyWithFilters = Yii::t('ContentModule.widgets_views_stream', 'No matches with your selected filters!');
         }
+    }
+
+    public function getData()
+    {
+        $result = [
+            'content-delete-url' => Url::to(['/content/content/delete']),
+            'stream' => $this->getStreamUrl(),
+            'stream-empty-message' => $this->messageStreamEmpty,
+            'stream-empty-class' => $this->messageStreamEmptyCss,
+            'stream-empty-filter-message' => $this->messageStreamEmptyWithFilters,
+            'stream-empty-filter-class' => $this->messageStreamEmptyWithFiltersCss
+        ];
+
+        if (!empty(Yii::$app->request->getQueryParam('contentId'))) {
+            $result['stream-contentid'] = Yii::$app->request->getQueryParam('contentId');
+        }
+
+        if (Yii::$app->request->getQueryParam('topicId')) {
+            $topic = Topic::findOne((int) Yii::$app->request->getQueryParam('topicId'));
+            if ($topic) {
+                $result['stream-topic'] = ['id' => $topic->id, 'name' => $topic->name];
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -111,13 +149,10 @@ class StreamViewer extends Widget
      */
     protected function getStreamUrl()
     {
-        $params = array_merge([
-            'mode' => \humhub\modules\stream\actions\Stream::MODE_NORMAL
-                ], $this->streamActionParams);
-
         if ($this->contentContainer) {
-            return $this->contentContainer->createUrl($this->streamAction, $params);
+            return $this->contentContainer->createUrl($this->streamAction, $this->streamActionParams);
         } else {
+            $params = $this->streamActionParams;
             array_unshift($params, $this->streamAction);
             return Url::to($params);
         }
@@ -128,18 +163,16 @@ class StreamViewer extends Widget
      */
     public function run()
     {
-        $defaultStreamSort = Yii::$app->getModule('stream')->settings->get('defaultSort', 'c');
+        $filterNav = ($this->showFilters && !empty($this->streamFilterNavigation)) ? call_user_func($this->streamFilterNavigation.'::widget', [
+            'definition' => $this->filters
+        ]) : '';
 
-        $contentId = (int) Yii::$app->request->getQueryParam('contentId');
 
-        return $this->render('@stream/widgets/views/stream', [
-                    'streamUrl' => $this->getStreamUrl(),
-                    'showFilters' => $this->showFilters,
-                    'filters' => $this->filters,
-                    'contentContainer' => $this->contentContainer,
-                    'defaultStreamSort' => $defaultStreamSort,
-                    'contentId' => $contentId,
+
+        return $this->render($this->view, [
+                'filterNav' => $filterNav,
+                'contentContainer' => $this->contentContainer,
+                'options' => $this->getOptions(),
         ]);
     }
-
 }

@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -21,5 +22,5 @@ $commentCountSpan = Html::tag('span', ' ('.$commentCount.')', [
 <?php elseif(Yii::$app->user->isGuest): ?>
     <?= Html::a(Yii::t('CommentModule.widgets_views_link', "Comment").$commentCountSpan, Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
 <?php else : ?>
-    <?= Html::a(Yii::t('CommentModule.widgets_views_link', "Comment").$commentCountSpan, "#",['onClick' => "$('#comment_" . $id . "').slideToggle('fast');$('#newCommentForm_" . $id . "').focus();return false;"]); ?>
+    <?= Button::asLink(Yii::t('CommentModule.widgets_views_link', "Comment").$commentCountSpan)->action('comment.toggleComment', null, '#comment_' . $id)?>
 <?php endif; ?>

@@ -26,29 +26,31 @@ use humhub\widgets\TimeAgo;
                     [
                         'attribute' => 'last_visit',
                         'format' => 'raw',
-                        'value' =>
-                        function ($data) use (&$groups) {
+                        'value' => function ($data) use (&$groups) {
+                            if (empty($data->last_visit)) {
+                                return Yii::t('SpaceModule.views_admin_members', 'never');
+                            }
                             return TimeAgo::widget(['timestamp' => $data->last_visit]);
                         }
-                            ],
-                            [
-                                'header' => Yii::t('SpaceModule.views_admin_members', 'Actions'),
-                                'class' => 'yii\grid\ActionColumn',
-                                'buttons' => [
-                                    'view' => function() {
-                                        return;
-                                    },
-                                    'delete' => function($url, $model) use($space) {
-                                        return Html::a('Cancel', $space->createUrl('remove', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-confirm' => 'Are you sure?', 'data-method' => 'POST']);
-                                    },
-                                            'update' => function() {
-                                        return;
-                                    },
-                                ],
-                            ],
+                    ],
+                    [
+                        'header' => Yii::t('SpaceModule.views_admin_members', 'Actions'),
+                        'class' => 'yii\grid\ActionColumn',
+                        'buttons' => [
+                            'view' => function() {
+                                return;
+                            },
+                            'delete' => function($url, $model) use($space) {
+                                return Html::a('Cancel', $space->createUrl('remove', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-confirm' => 'Are you sure?', 'data-method' => 'POST']);
+                            },
+                            'update' => function() {
+                                return;
+                            },
                         ],
-                ]);
-                ?>
+                    ],
+                ],
+            ]);
+            ?>
         </div>
     </div>
 </div>

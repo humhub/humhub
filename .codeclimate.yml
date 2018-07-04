@@ -6,8 +6,6 @@ engines:
      - php
  phpcodesniffer:
    enabled: true
-   config:
-    standard: "ruleset.xml"
 
 ratings:
  paths:

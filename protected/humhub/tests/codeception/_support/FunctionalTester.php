@@ -27,7 +27,7 @@ class FunctionalTester extends \Codeception\Actor
 
     public function amAdmin($logout = false)
     {
-        if($logout) {
+        if ($logout) {
             $this->logout();
         }
 

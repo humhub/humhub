@@ -82,6 +82,11 @@ class ContentContainerModuleManager extends \yii\base\Component
      */
     public function isEnabled($id)
     {
+        // Workaround for core post module
+        if($id === 'post') {
+            return true;
+        }
+
         return in_array($id, $this->getEnabled());
     }
 

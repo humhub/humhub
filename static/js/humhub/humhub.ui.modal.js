@@ -296,6 +296,7 @@ humhub.module('ui.modal', function (module, require, $) {
             } else {
                 this.$.modal('show');
             }
+            this.focus();
         }
 
         this.getDialog().show();
@@ -444,6 +445,10 @@ humhub.module('ui.modal', function (module, require, $) {
         }
 
         return this;
+    };
+
+    Modal.prototype.focus = function (content) {
+        this.$.find('select:visible, input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
     };
 
     Modal.prototype.updateDialogOptions = function() {
@@ -687,6 +692,13 @@ humhub.module('ui.modal', function (module, require, $) {
         });
     };
 
+    var show = function (evt) {
+        var modal = get(evt.$target);
+        if(modal) {
+            modal.show();
+        }
+    }
+
     var _defaultRequestOptions = function (evt, options) {
         options = options || {};
         return options;
@@ -727,6 +739,7 @@ humhub.module('ui.modal', function (module, require, $) {
         get: get,
         post: post,
         load: load,
+        show: show,
         submit: submit
     });
 });

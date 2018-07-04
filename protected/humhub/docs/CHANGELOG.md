@@ -1,17 +1,24 @@
 HumHub Change Log
 =================
 
-1.2.8
------------------------
+1.2.8 (July 3, 2018)
+--------------------
 
 - Enh: Added user email to javascript user config
 - Fix: Module Assets are not republished after module update
 - Enh: Added `humhub\components\ModuleManager::EVENT_BEFORE_MODULE_ENABLE` and `humhub\components\ModuleManager::EVENT_AFTER_MODULE_ENABLE` events
 - Enh: Added `humhub\components\ModuleManager::EVENT_BEFORE_MODULE_DISABLE` and `humhub\components\ModuleManager::EVENT_AFTER_MODULE_DISABLE` events
 - Fix: Improved ZendLucence driver error handling
+- Fix #3148: Upload space picture dose not use file size setting in HumHub (acs-ferreira)
+- Fix: Incorrect last visit date shown in space admin pending members view (acs-ferreira)
+- Enh: Allow enable/disable modules by CLI
+- Enh: Added UTC only timezone in server timezone dropdown
+- Fix #3176: Integrity checker removes modules default state
+- Enh: Updated translations
+
 
 1.2.7 (May 23, 2018)
------------------------
+--------------------
 
 - Fixed empty modal dialog response issue
 - Fix #3146 invalid bootstrap.min.css link in installer

@@ -59,6 +59,9 @@ class CoreJsConfig extends Widget
                             'actionHandlerNotFound' => Yii::t('base', 'An error occurred while handling your last action. (Handler not found).'),
                         ]
                     ],
+                    'topic' => [
+                        'icon' => '<i class="fa '.Yii::$app->getModule('topic')->icon.'"></i>'
+                    ],
                     'ui.modal' => [
                         'defaultConfirmHeader' => Yii::t('base', '<strong>Confirm</strong> Action'),
                         'defaultConfirmBody' => Yii::t('base', 'Do you really want to perform this action?'),
@@ -200,9 +203,11 @@ class CoreJsConfig extends Widget
                         ]
                     ],
                     'ui.picker' => [
+                        'addImage' => $this->view->theme->getBaseUrl().'/img/picker_add.png',
                         'text' => [
                             'error.loadingResult' => Yii::t('base', 'An unexpected error occurred while loading the search result.'),
                             'showMore' => Yii::t('base', 'Show more'),
+                            'addOption' => Yii::t('base', 'Add:'),
                         ]
                     ],
                     'ui.showMore' => [
