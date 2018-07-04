@@ -26,7 +26,7 @@ use yii\helpers\Html;
                 <!-- BEGIN: Results -->
                 <?php foreach ($spaces as $space) : ?>
                     <li>
-                        <a href="<?php echo $space->getUrl(); ?>">
+                        <a href="<?php echo $space->getUrl(); ?>" data-modal-close="1">
 
                             <div class="media">
                                 <img class="media-object img-rounded pull-left"
