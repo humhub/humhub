@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Add all registered users' => '',
+    'Add users to Space without inviting them' => '',
     '<strong>Invite</strong> members' => '<strong>Inviter</strong> brukere',
     'Done' => 'Klart',
     'Email addresses' => 'E-mail adresser',

@@ -17,10 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Allows the user to create private content' => '',
     'Allows the user to create public content' => '',
     'Allows the user to invite new members to the space' => '',
     'Can create hidden (private) spaces.' => '',
     'Can create public visible spaces. (Listed in directory)' => '',
+    'Create private content' => '',
     'Create private space' => '',
     'Create public content' => '',
     'Create public space' => '',

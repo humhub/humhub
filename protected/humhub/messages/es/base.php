@@ -17,8 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Add:' => '',
+    'Could not find requested page.' => '',
+    'Delete' => '',
+    'Edit' => '',
+    'Please type at least {count} characters' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
+    'The current main HumHub database name is ' => '',
     '<strong>Confirm</strong> Action' => '<strong>Confirmar</strong> Acción',
     '<strong>Latest</strong> updates' => '<strong>Últimas</strong> actualizaciones',
     '<strong>Mail</strong> summary' => '<strong>Resumen</strong> de Correo',
@@ -40,7 +46,6 @@ return [
     'Confirm' => 'Confirmar',
     'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '¡La fuente de Contenido del Complemento debe ser una instancia de HActiveRecordContent o HActiveRecordContentAddon!',
     'Copy to clipboard' => 'Copiar a la Papelera',
-    'Could not determine content container!' => '¡No se pudo determinar el contenedor de contenido!',
     'Could not find content of addon!' => '¡No se pudo encontrar el contenido del complemento!',
     'Default' => 'Por Defecto',
     'Deny' => 'Denegar',
@@ -78,7 +83,6 @@ return [
     'Show less' => 'Mostrar menos',
     'Show more' => 'Mostrar más',
     'Some files could not be uploaded:' => 'Algunos archivos no se pueden cargar:',
-    'Space not found!' => '¡Espacio no encontrado!',
     'The date has to be in the past.' => 'La fecha tiene que ser en el pasado.',
     'The file has been deleted.' => 'Este archivo ha sido borrado.',
     'The requested resource could not be found.' => 'El recurso solicitado no pudo ser encontrado.',
@@ -92,6 +96,5 @@ return [
     'Unsubscribe' => 'Anular la suscripción',
     'Upload' => 'Subir',
     'Upload file' => 'Cargar archivo',
-    'User not found!' => '¡Usuario no encontrado!',
     'You are not allowed to run this action.' => 'No estás autorizado para realizar esta acción.',
 ];

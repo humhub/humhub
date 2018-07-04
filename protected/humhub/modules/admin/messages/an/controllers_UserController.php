@@ -18,12 +18,10 @@
  */
 return [
     'Add Groups...' => '',
-    'Become this user' => '',
     'Disabled' => '',
     'Enabled' => '',
     'Select Groups' => '',
     'Unapproved' => '',
-    'You cannot delete yourself!' => '',
     'Delete' => 'Eliminar',
     'Save' => 'Uložit',
     'User not found!' => ' Gebruikers niet gevonden!',

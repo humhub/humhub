@@ -18,7 +18,6 @@
  */
 return [
     'The following list contains all pending sign-ups and invites.' => '',
-    'Actions' => 'Akce',
     'Pending user approvals' => 'Uživatelé čekající na schválení',
     'The following list contains all registered users awaiting an approval.' => 'Seznam obsahující všechny registrované uživatele čekající na schválení.',
 ];

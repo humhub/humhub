@@ -19,12 +19,10 @@
 return [
     'Add Groups...' => '',
     'Select Groups' => '',
-    'Become this user' => 'Войти как данный пользователь',
     'Delete' => 'Удалить',
     'Disabled' => 'Отключён',
     'Enabled' => 'Включён',
     'Save' => 'Сохранить',
     'Unapproved' => 'Не подтверждён',
     'User not found!' => 'Пользователь не найден!',
-    'You cannot delete yourself!' => 'Вы не можете удалить себя!',
 ];

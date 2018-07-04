@@ -38,6 +38,7 @@ return [
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
     'My Account' => '',
+    'Name' => '',
     'New password' => '',
     'No users found.' => '',
     'Password' => '',

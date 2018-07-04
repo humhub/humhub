@@ -18,6 +18,8 @@
  */
 return [
     '<strong>Group</strong> members - {group}' => '',
+    'Access directory' => '',
+    'Can access the directory section.' => '',
     'Send invite' => '',
     'This group has no members yet.' => '',
     '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Kol kas niekas neparaše.</b><br>Būkite pirmas ir ką nors parašykite...',

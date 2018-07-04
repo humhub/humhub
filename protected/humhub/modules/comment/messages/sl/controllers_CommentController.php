@@ -19,4 +19,5 @@
 return [
     'Access denied!' => '',
     'Insufficent permissions!' => '',
+    'You are not allowed to comment.' => '',
 ];

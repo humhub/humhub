@@ -17,11 +17,17 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Add:' => '',
+    'Could not find requested page.' => '',
+    'Delete' => '',
+    'Edit' => '',
     'Export' => '',
     'Invalid request method!' => '',
+    'Please type at least {count} characters' => '',
     'Select Me' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
+    'The current main HumHub database name is ' => '',
     'Time Zone' => '',
     '<strong>Confirm</strong> Action' => '<strong>Potvrdit</strong> Akci',
     '<strong>Latest</strong> updates' => '<strong>Poslední</strong> události',
@@ -44,7 +50,6 @@ return [
     'Confirm' => 'Potvrdit',
     'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon musí být buď instancí objektu HActiveRecordContent nebo HActiveRecordContentAddon!',
     'Copy to clipboard' => 'Kopírovat do schránky',
-    'Could not determine content container!' => 'Obsah nenalezen!',
     'Could not find content of addon!' => 'Nebylo možné nalézt obsah dolpňku!',
     'Default' => 'Výchozí',
     'Deny' => 'Odmítnout',
@@ -79,7 +84,6 @@ return [
     'Show less' => 'Zobrazit méně',
     'Show more' => 'Zobrazit více',
     'Some files could not be uploaded:' => 'Některé soubory nelze nahrát:',
-    'Space not found!' => 'Prostor nebyl nalezen!',
     'The date has to be in the past.' => 'Datum musí být v minulosti.',
     'The file has been deleted.' => 'Tento soubor byl vymazán.',
     'The requested resource could not be found.' => 'Požadovaný zdroj nebyl nalezen.',
@@ -92,6 +96,5 @@ return [
     'Unsubscribe' => 'Odhlásit odběr',
     'Upload' => 'Nahrát',
     'Upload file' => 'Nahrát soubor',
-    'User not found!' => 'Uživatel nebyl nalezen!',
     'You are not allowed to run this action.' => 'Nemáte povolení spustit tuto akci.',
 ];

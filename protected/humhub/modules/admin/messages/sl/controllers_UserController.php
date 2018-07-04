@@ -18,7 +18,6 @@
  */
 return [
     'Add Groups...' => '',
-    'Become this user' => '',
     'Delete' => '',
     'Disabled' => '',
     'Enabled' => '',
@@ -26,5 +25,4 @@ return [
     'Select Groups' => '',
     'Unapproved' => '',
     'User not found!' => '',
-    'You cannot delete yourself!' => '',
 ];

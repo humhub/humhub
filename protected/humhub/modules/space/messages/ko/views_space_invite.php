@@ -18,6 +18,8 @@
  */
 return [
     '<strong>Invite</strong> members' => '',
+    'Add all registered users' => '',
+    'Add users to Space without inviting them' => '',
     'Done' => '',
     'Email addresses' => '',
     'Invite by email' => '',

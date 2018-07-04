@@ -18,13 +18,11 @@
  */
 return [
     'Add Groups...' => '',
-    'Become this user' => '',
     'Delete' => '',
     'Disabled' => '',
     'Enabled' => '',
     'Select Groups' => '',
     'Unapproved' => '',
-    'You cannot delete yourself!' => '',
     'Save' => '儲存',
     'User not found!' => '找不到此用戶',
 ];

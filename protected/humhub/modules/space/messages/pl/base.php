@@ -19,11 +19,13 @@
 return [
     '<strong>Space</strong> followers' => '',
     'Administrator:' => '',
+    'Archived' => '',
     'Moderator:' => '',
+    'Name' => '',
     'No spaces found.' => '',
     'Owner:' => '',
     'Space' => '',
-    'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Nie można usunąć użytkownika który jest właścicielem strefy! Nazwa strefy: {spaceName} ',
+    '{count} members' => '',
     'Default' => 'Domyślna',
     'Everyone can enter' => 'Każdy może dołączyć ',
     'Invite and request' => 'Zaproś i złóż podanie ',
@@ -34,7 +36,6 @@ return [
     'Public (Members & Guests)' => 'Publiczna (Członkowie i Goście)',
     'Public (Members only)' => 'Publiczna (Tylko członkowie)',
     'Public (Registered users only)' => 'Publiczna (Tylko zarejestrowani)',
-    'Public (Visible)' => 'Publiczna (widoczna) ',
     'Settings' => 'Ustawienia',
     'Visible for all (members and guests)' => 'Widoczne dla wszystkich (użytkownicy i goście)',
 ];

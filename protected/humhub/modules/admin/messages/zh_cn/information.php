@@ -17,8 +17,19 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>CronJob</strong> Status' => '',
+    '<strong>Queue</strong> Status' => '',
+    'Background Jobs' => '',
+    'Delayed' => '',
+    'Done' => '',
+    'Driver' => '',
+    'Last run (daily):' => '',
+    'Last run (hourly):' => '',
+    'Never' => '',
+    'Please refer to the documentation to setup the cronjobs and queue workers.' => '',
+    'Reserved' => '',
+    'Waiting' => '',
     'About HumHub' => '关于HumHub',
-    'CronJobs' => '定时任务',
     'Database' => '数据库',
     'Logging' => '日志',
     'Prerequisites' => '环境需求',

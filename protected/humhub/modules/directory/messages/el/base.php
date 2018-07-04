@@ -28,6 +28,8 @@ return [
     '<strong>New</strong> spaces' => '',
     '<strong>Space</strong> directory' => '',
     '<strong>Space</strong> stats' => '',
+    'Access directory' => '',
+    'Can access the directory section.' => '',
     'Follows somebody' => '',
     'Most members' => '',
     'No spaces found!' => '',

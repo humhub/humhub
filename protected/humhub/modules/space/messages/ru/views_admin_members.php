@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Role' => 'Роль',
+    '-' => '',
     '<strong>Manage</strong> members' => '<strong>Управление</strong> пользователями',
     'Actions' => 'Действия',
-    'Remove' => 'Удалить',
+    'Role' => 'Роль',
     'never' => 'никогда',
 ];

@@ -24,6 +24,7 @@ return [
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => '',
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
+    'Name' => '',
     'Unknown user status!' => '',
     'Upload profile banner' => '',
     'Upload profile image' => '',

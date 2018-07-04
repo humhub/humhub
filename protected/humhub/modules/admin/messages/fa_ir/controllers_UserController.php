@@ -19,12 +19,10 @@
 return [
     'Add Groups...' => '',
     'Select Groups' => '',
-    'Become this user' => 'این کاربر بشو',
     'Delete' => 'حذف',
     'Disabled' => 'غیرفعال شده',
     'Enabled' => 'فعال شده',
     'Save' => 'ذخیره',
     'Unapproved' => 'تایید نشده',
     'User not found!' => 'کاربر یافت نشد!',
-    'You cannot delete yourself!' => 'شما نمی‌توانید خودتان را حذف کنید!',
 ];

@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Remove from space' => '',
+    'Show all' => '',
     'As owner of this space you can transfer this role to another administrator in space.' => '作为这个空间的所有者，你可以把这个角色转移到另一个空间管理员。',
     'Space owner' => '空间拥有者',
     'The url contains illegal characters!' => 'url包含非法字符！',

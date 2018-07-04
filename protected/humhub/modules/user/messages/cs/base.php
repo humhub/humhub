@@ -20,6 +20,7 @@ return [
     'Crop profile background' => '',
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
+    'Name' => '',
     'Unknown user status!' => '',
     'Upload profile banner' => '',
     'Your new password must not be equal your current password!' => '',

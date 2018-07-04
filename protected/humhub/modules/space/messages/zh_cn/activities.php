@@ -17,6 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Space has been archieved' => '',
+    'Space has been unarchieved' => '',
+    'Whenever a space is archieved.' => '',
+    'Whenever a space is unarchieved.' => '',
     'Space member joined' => '空间成员加入',
     'Space member left' => '空间成员离开',
     'Whenever a member leaves one of your spaces.' => '每当有成员离开你的空间。',

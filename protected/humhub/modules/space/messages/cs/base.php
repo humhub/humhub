@@ -18,10 +18,12 @@
  */
 return [
     'Administrator:' => '',
+    'Archived' => '',
     'Moderator:' => '',
+    'Name' => '',
     'Owner:' => '',
+    '{count} members' => '',
     '<strong>Space</strong> followers' => '<strong>Sledující prostoru</strong>',
-    'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Nelze smazat uživatele, který je vlastníkem prostoru! Prostor: {spaceName}',
     'Default' => 'Výchozí',
     'Everyone can enter' => 'Každý se může přidat',
     'Invite and request' => 'Pozváním nebo požádáním',
@@ -33,7 +35,6 @@ return [
     'Public (Members & Guests)' => 'Veřejné (pro členy a hosty)',
     'Public (Members only)' => 'Veřejné (pouze pro členy)',
     'Public (Registered users only)' => 'Veřejné (pouze registrovaní uživatelé)',
-    'Public (Visible)' => 'Veřejné (viditelné)',
     'Settings' => 'Nastavení',
     'Space' => 'Prostor',
     'Visible for all (members and guests)' => 'Viditelné pro všechny',
