@@ -7,7 +7,7 @@ Getting Started
 * [Git/Composer Installation](git-installation.md)
 * [Coding Standards](coding-standards.md)
 * [Development Environment](environment.md)
-* [Migration Guide](migration-guide.md)
+* [Migration Guide](modules-migrate.md)
 
 
 Modules
