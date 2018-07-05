@@ -29,11 +29,8 @@ use yii\db\ActiveRecord;
  */
 class ContentTagAddition extends ActiveRecord
 {
-
     public function setTag(ContentTag $tag)
     {
         $this->tag_id = $tag->id;
     }
-
-
 }

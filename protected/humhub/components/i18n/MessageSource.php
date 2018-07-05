@@ -15,7 +15,6 @@ use Yii;
  */
 class MessageSource extends \yii\i18n\PhpMessageSource
 {
-
     public $sourceCategory = '';
 
     protected function getMessageFilePath($category, $language)
@@ -63,7 +62,6 @@ class MessageSource extends \yii\i18n\PhpMessageSource
             $fallbackMessages = $this->loadMessagesFromFile($fallbackMessageFile);
 
             if ($messages === null && $fallbackMessages === null && $fallbackLanguage != $this->sourceLanguage) {
-
             } elseif (empty($messages)) {
                 return $fallbackMessages;
             } elseif (!empty($fallbackMessages)) {
@@ -77,5 +75,4 @@ class MessageSource extends \yii\i18n\PhpMessageSource
 
         return (array) $messages;
     }
-
 }

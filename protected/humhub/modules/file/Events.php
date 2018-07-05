@@ -12,13 +12,14 @@ use humhub\modules\search\engine\Search;
 use humhub\modules\file\models\File;
 use yii\base\Event;
 use humhub\modules\search\events\SearchAttributesEvent;
+use humhub\modules\file\converter\TextConverter;
 
 /**
  * Events provides callbacks to handle events.
  * 
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends \yii\base\BaseObject
 {
 
     /**
@@ -28,7 +29,7 @@ class Events extends \yii\base\Object
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget(widgets\ShowFiles::className(), array('object' => $event->sender->object), array('sortOrder' => 5));
+        $event->sender->addWidget(widgets\ShowFiles::className(), ['object' => $event->sender->object], ['sortOrder' => 5]);
     }
 
     /**
@@ -93,7 +94,7 @@ class Events extends \yii\base\Object
 
     public static function onUserDelete($event)
     {
-        foreach (File::findAll(array('created_by' => $event->sender->id)) as $file) {
+        foreach (File::findAll(['created_by' => $event->sender->id]) as $file) {
             $file->delete();
         }
         return true;
@@ -113,8 +114,16 @@ class Events extends \yii\base\Object
 
         foreach (File::findAll(['object_model' => $event->record->className(), 'object_id' => $event->record->id]) as $file) {
             /* @var $file File */
+
+            $textContent = null;
+            $textConverter = new TextConverter();
+            if ($textConverter->applyFile($file)) {
+                $textContent = $textConverter->getContentAsText();
+            }
+
             $event->attributes['files'][$file->id] = [
-                'name' => $file->file_name
+                'name' => $file->file_name,
+                'content' => $textContent
             ];
 
             // Add comment related attributes

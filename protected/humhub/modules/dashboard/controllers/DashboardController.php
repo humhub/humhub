@@ -9,8 +9,7 @@
 namespace humhub\modules\dashboard\controllers;
 
 use humhub\components\Controller;
-use humhub\components\behaviors\AccessControl;
-use humhub\modules\dashboard\components\actions\DashboardStream;
+use humhub\modules\dashboard\components\actions\DashboardStreamAction;
 use Yii;
 
 class DashboardController extends Controller
@@ -28,7 +27,7 @@ class DashboardController extends Controller
     {
         return [
             'acl' => [
-                'class' => AccessControl::className(),
+                'class' => \humhub\components\behaviors\AccessControl::class,
                 'guestAllowedActions' => [
                     'index',
                     'stream'
@@ -44,8 +43,14 @@ class DashboardController extends Controller
     {
         return [
             'stream' => [
-                'class' => DashboardStream::className()
+                'class' => DashboardStreamAction::class,
+                'activity' => false
+            ],
+            'activity-stream' => [
+                'class' => DashboardStreamAction::class,
+                'activity' => true
             ]
+
         ];
     }
 

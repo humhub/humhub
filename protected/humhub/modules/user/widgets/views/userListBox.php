@@ -19,7 +19,7 @@ use yii\helpers\Html;
         <ul class="media-list">
             <?php foreach ($users as $user) : ?>
                 <li>
-                    <a href="<?= $user->getUrl(); ?>">
+                    <a href="<?= $user->getUrl(); ?>"  data-modal-close="1">
                         <div class="media">
                             <img class="media-object img-rounded pull-left"
                                  src="<?= $user->getProfileImage()->getUrl(); ?>" width="50"

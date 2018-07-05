@@ -19,12 +19,10 @@
 return [
     'Add Groups...' => '',
     'Select Groups' => '',
-    'Become this user' => 'السيطرة على حساب هذا العضو',
     'Delete' => 'حذف',
     'Disabled' => 'غير مفعل',
     'Enabled' => 'مفعّل',
     'Save' => 'حفظ',
     'Unapproved' => 'لم تتم الموافقة عليه',
     'User not found!' => 'لم يتم إيجااد العضو!',
-    'You cannot delete yourself!' => 'لا تستطيع حذف نفسك!',
 ];

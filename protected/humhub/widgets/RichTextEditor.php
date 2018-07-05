@@ -28,6 +28,7 @@ use humhub\components\Widget;
  * @package humhub.widgets
  * @since 0.5
  * @author Andreas Strobel
+ * @deprecated since 1.2
  */
 class RichTextEditor extends Widget
 {
@@ -65,7 +66,7 @@ class RichTextEditor extends Widget
 
     public function run()
     {
-        return $this->render('richTextEditor', array('id' => $this->id, 'userSearchUrl' => $this->searchUrl, 'inputContent' => $this->inputContent));
+        return $this->render('richTextEditor', ['id' => $this->id, 'userSearchUrl' => $this->searchUrl, 'inputContent' => $this->inputContent]);
     }
 
 }

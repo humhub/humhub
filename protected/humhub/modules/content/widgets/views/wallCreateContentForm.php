@@ -1,9 +1,26 @@
 <?php
 
+use humhub\modules\topic\widgets\TopicPicker;
 use yii\helpers\Html;
+use humhub\modules\content\assets\ContentFormAsset;
+use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\widgets\UserPickerField;
+use humhub\modules\file\widgets\UploadButton;
+use humhub\modules\file\widgets\FileHandlerButtonDropdown;
+use humhub\modules\file\widgets\UploadProgress;
+use humhub\widgets\Link;
+use humhub\widgets\Button;
 
-\humhub\modules\content\assets\ContentFormAsset::register($this);
+/* @var $defaultVisibility integer */
+/* @var $submitUrl string */
+/* @var $form string */
+/* @var $submitButtonText string */
+/* @var $fileHandlers \humhub\modules\file\handler\BaseFileHandler[] */
+/* @var $canSwitchVisibility boolean */
+/* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
+
+ContentFormAsset::register($this);
 
 $this->registerJsConfig('content.form', [
     'defaultVisibility' => $defaultVisibility,
@@ -14,6 +31,8 @@ $this->registerJsConfig('content.form', [
         'info.archived' => Yii::t('ContentModule.widgets_views_contentForm', 'This space is archived.')
 ]]);
 
+$pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl('/space/membership/search') : null;
+
 ?>
 
 <div class="panel panel-default clearfix">
@@ -23,16 +42,22 @@ $this->registerJsConfig('content.form', [
         <?= $form; ?>
 
         <div id="notifyUserContainer" class="form-group" style="margin-top: 15px;display:none;">
-            <?=
-            humhub\modules\user\widgets\UserPickerField::widget([
+            <?= UserPickerField::widget([
                 'id' => 'notifyUserInput',
-                'url' => ($contentContainer instanceof Space) ? $contentContainer->createUrl('/space/membership/search') : null,
+                'url' => $pickerUrl,
                 'formName' => 'notifyUserInput',
                 'maxSelection' => 10,
                 'disabledItems' => [Yii::$app->user->guid],
                 'placeholder' => Yii::t('ContentModule.widgets_views_contentForm', 'Add a member to notify'),
-            ])
-            ?>
+            ]) ?>
+        </div>
+
+        <div id="postTopicContainer" class="form-group" style="margin-top: 15px;display:none;">
+            <?= TopicPicker::widget([
+                    'id' => 'postTopicInput',
+                    'name' => 'postTopicInput',
+                    'contentContainer' => $contentContainer
+            ]); ?>
         </div>
 
         <?= Html::hiddenInput("containerGuid", $contentContainer->guid); ?>
@@ -43,12 +68,10 @@ $this->registerJsConfig('content.form', [
         <div class="contentForm_options">
             <hr>
             <div class="btn_container">
-                <button id="post_submit_button" data-action-click="submit" data-action-submit data-ui-loader class="btn btn-info">
-                    <?= $submitButtonText ?>
-                </button>
+                <?= Button::info($submitButtonText)->action('submit')->id('post_submit_button')->submit() ?>
 
                 <?php
-                $uploadButton = humhub\modules\file\widgets\UploadButton::widget([
+                $uploadButton = UploadButton::widget([
                             'id' => 'contentFormFiles',
                             'progress' => '#contentFormFiles_progress',
                             'preview' => '#contentFormFiles_preview',
@@ -56,7 +79,7 @@ $this->registerJsConfig('content.form', [
                             'max' => Yii::$app->getModule('content')->maxAttachedFiles
                 ]);
                 ?>
-                <?= humhub\modules\file\widgets\FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
+                <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
 
                 <!-- public checkbox -->
                 <?= Html::checkbox("visibility", "", ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true', 'title' => Yii::t('ContentModule.widgets_views_contentForm', 'Content visibility') ]); ?>
@@ -72,15 +95,15 @@ $this->registerJsConfig('content.form', [
                                 <i class="fa fa-cogs"></i></a>
                             <ul class="dropdown-menu pull-right">
                                 <li>
-                                    <a data-action-click="notifyUser">
-                                        <i class="fa fa-bell"></i> <?php echo Yii::t('ContentModule.widgets_views_contentForm', 'Notify members'); ?>
-                                    </a>
+                                    <?= Link::withAction(Yii::t('ContentModule.widgets_views_contentForm', 'Notify members'), 'notifyUser')->icon('fa-bell')?>
+                                </li>
+                                 <li>
+                                     <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon) ?>
                                 </li>
                                 <?php if ($canSwitchVisibility): ?>
                                     <li>
-                                        <a id="contentForm_visibility_entry" data-action-click="changeVisibility">
-                                            <i class="fa fa-unlock"></i> <?= Yii::t('ContentModule.widgets_views_contentForm', 'Make public'); ?>
-                                        </a>
+                                        <?= Link::withAction(Yii::t('ContentModule.widgets_views_contentForm', 'Make public'), 'changeVisibility')
+                                            ->id('contentForm_visibility_entry')->icon('fa-unlock') ?>
                                     </li>
                                 <?php endif; ?>
                             </ul>
@@ -89,12 +112,12 @@ $this->registerJsConfig('content.form', [
                 </div>
             </div>
 
-            <?= \humhub\modules\file\widgets\UploadProgress::widget(['id' => 'contentFormFiles_progress']) ?>
-            <?= \humhub\modules\file\widgets\FilePreview::widget(['id' => 'contentFormFiles_preview', 'edit' => true, 'options' => ['style' => 'margin-top:10px;']]); ?>
+            <?= UploadProgress::widget(['id' => 'contentFormFiles_progress']) ?>
+            <?= FilePreview::widget(['id' => 'contentFormFiles_preview', 'edit' => true, 'options' => ['style' => 'margin-top:10px;']]); ?>
 
         </div>
         <!-- /contentForm_Options -->
-        <?php echo Html::endForm(); ?>
+        <?= Html::endForm(); ?>
     </div>
     <!-- /panel body -->
 </div> <!-- /panel -->

@@ -10,7 +10,7 @@ use yii\helpers\Html;
 ?>
 
 <?php if ($numItems > 0): ?>
-    <div class="text-center" style="filter:opacity(.6);font-size:12px">
+    <div class="text-center footer-nav">
         <small>
             <?php foreach ($items as $item): ?>
                 <?= Html::a($item['label'], $item['url']); ?>&nbsp;&middot;&nbsp;

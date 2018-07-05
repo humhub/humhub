@@ -11,6 +11,7 @@ namespace humhub\modules\user\widgets;
 use Yii;
 use humhub\libs\Html;
 use humhub\components\Widget;
+use humhub\modules\user\models\User;
 
 /**
  * Image shows the user profile image
@@ -83,6 +84,10 @@ class Image extends Widget
      */
     public function run()
     {
+        if ($this->user->status == User::STATUS_SOFT_DELETED) {
+            $this->link = false;
+        }
+        
         Html::addCssClass($this->imageOptions, 'img-rounded');
         Html::addCssStyle($this->imageOptions, 'width: ' . $this->width . 'px; height: ' . $this->height . 'px');
 

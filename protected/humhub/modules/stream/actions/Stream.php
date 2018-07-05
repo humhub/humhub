@@ -2,20 +2,24 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\stream\actions;
 
 use humhub\modules\content\components\ContentActiveRecord;
-use Yii;
-use yii\base\Action;
-use yii\base\Exception;
+use humhub\modules\stream\models\WallStreamQuery;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
 use humhub\modules\stream\models\StreamQuery;
+use humhub\modules\stream\models\StreamSuppressQuery;
+use Yii;
+use yii\base\Action;
+use yii\base\Exception;
 use yii\base\ActionEvent;
+use yii\web\Response;
+use yii\db\Expression;
 
 /**
  * Stream is the basic action for content streams.
@@ -55,13 +59,14 @@ abstract class Stream extends Action
      * Constants used for sorting
      */
     const SORT_CREATED_AT = 'c';
+
     const SORT_UPDATED_AT = 'u';
 
     /**
      * Modes
      */
-    const MODE_NORMAL = "normal";
-    const MODE_ACTIVITY = "activity";
+    const MODE_NORMAL = 'normal';
+    const MODE_ACTIVITY = 'activity';
 
     /**
      * Maximum wall entries per request
@@ -108,8 +113,6 @@ abstract class Stream extends Action
 
     /**
      * @var \yii\db\ActiveQuery
-     *
-     * @deprecated since version 1.2 use $streamQuery->query() instead
      */
     public $activeQuery;
 
@@ -137,7 +140,7 @@ abstract class Stream extends Action
 
     /**
      * Stream query model instance
-     * @var \humhub\modules\stream\models\StreamSuppressQuery
+     * @var \humhub\modules\stream\models\StreamQuery
      * @since 1.2
      */
     protected $streamQuery;
@@ -145,7 +148,7 @@ abstract class Stream extends Action
     /**
      * @var string suppress similar content types in a row
      */
-    public $streamQueryClass = 'humhub\modules\stream\models\StreamSuppressQuery';
+    public $streamQueryClass = WallStreamQuery::class;
 
     /**
      * @inheritdoc
@@ -160,10 +163,6 @@ abstract class Stream extends Action
         // Read parameters
         if (!Yii::$app->request->isConsoleRequest) {
             $this->streamQuery->load(Yii::$app->request->get());
-
-            if (Yii::$app->getRequest()->get('mode', $this->mode) === self::MODE_ACTIVITY) {
-                $this->mode = self::MODE_ACTIVITY;
-            }
 
             foreach (explode(',', Yii::$app->getRequest()->get('filters', "")) as $filter) {
                 $this->streamQuery->addFilter(trim($filter));
@@ -198,13 +197,6 @@ abstract class Stream extends Action
         if (empty($this->streamQuery->sort)) {
             $this->streamQuery->sort = $this->sort;
         }
-
-        if ($this->mode == self::MODE_ACTIVITY) {
-            $this->streamQuery->channel(StreamQuery::CHANNEL_ACTIVITY);
-            if ($this->streamQuery->user) {
-                $this->streamQuery->query()->andWhere('content.created_by != :userId', [':userId' => $this->streamQuery->user->id]);
-            }
-        }
     }
 
     public function setupCriteria()
@@ -222,7 +214,7 @@ abstract class Stream extends Action
      */
     public function run()
     {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        Yii::$app->response->format = Response::FORMAT_JSON;
         $output = [];
 
         $output['content'] = [];
@@ -246,7 +238,7 @@ abstract class Stream extends Action
         $output['contentOrder'] = array_keys($output['content']);
         $output['lastContentId'] = end($output['contentOrder']);
 
-        if ($this->streamQuery instanceof \humhub\modules\stream\models\StreamSuppressQuery && !$this->streamQuery->isSingleContentQuery()) {
+        if ($this->streamQuery instanceof StreamSuppressQuery && !$this->streamQuery->isSingleContentQuery()) {
             $output['contentSuppressions'] = $this->streamQuery->getSuppressions();
             $output['lastContentId'] = $this->streamQuery->getLastContentId();
         }
@@ -303,7 +295,7 @@ abstract class Stream extends Action
         }
 
         if (!$record->wallEntryClass || !$record->content) {
-            return "";
+            return '';
         }
 
         if (isset($options['jsWidget'])) {
@@ -348,7 +340,7 @@ abstract class Stream extends Action
         }
 
         // Fix for newly created content
-        if ($content->created_at instanceof \yii\db\Expression) {
+        if ($content->created_at instanceof Expression) {
             $content->created_at = date('Y-m-d G:i:s');
             $content->updated_at = $content->created_at;
         }
@@ -375,6 +367,7 @@ abstract class Stream extends Action
     {
         $event = new ActionEvent($this);
         $this->trigger(self::EVENT_BEFORE_RUN, $event);
+
         return $event->isValid;
     }
 

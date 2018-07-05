@@ -74,7 +74,7 @@ class Controller extends \yii\web\Controller
      */
     public function getAccess()
     {
-        if(!$this->access) {
+        if (!$this->access) {
             return null;
         }
 
@@ -262,9 +262,8 @@ class Controller extends \yii\web\Controller
         if (Yii::$app->request->isPjax) {
             Yii::$app->response->statusCode = $statusCode;
             Yii::$app->response->headers->add('X-PJAX-REDIRECT-URL', Url::to($url));
-            return;
+            return Yii::$app->getResponse();
         }
-
         return Yii::$app->getResponse()->redirect(Url::to($url), $statusCode);
     }
 
@@ -284,5 +283,4 @@ class Controller extends \yii\web\Controller
             \humhub\widgets\TopMenu::setViewState();
         }
     }
-
 }

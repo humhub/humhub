@@ -31,9 +31,9 @@ class ProfileCest
         
         $I->amGoingTo('fill all required fields plus birthday and hide year field');
         $I->fillField('#profile-lastname', 'MyLastName');
-        $I->fillField('#profile-birthday', '4/16/87');
         $I->click('label[for="profile-birthday_hide_year"]'); // Hide year in profile
-        
+        $I->fillField('#profile-birthday', 'Apr 16, 1987');
+
         $I->scrollToTop();
         
         $I->click('Communication');
@@ -45,7 +45,9 @@ class ProfileCest
         $I->scrollToBottom();
         $I->click('save');
         $I->wait(1);
+
         $I->expectTo('see no errors after saving');
+
         $I->dontSeeElement('.has-error');
         
         $I->amGoingTo('access my profiles about page');

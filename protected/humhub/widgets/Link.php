@@ -27,6 +27,7 @@ use yii\helpers\Url;
  */
 class Link extends Button
 {
+    public $_link = true;
 
     public static function to($text, $url = '#', $pjax = true) {
         return self::asLink($text, $url)->pjax($pjax);

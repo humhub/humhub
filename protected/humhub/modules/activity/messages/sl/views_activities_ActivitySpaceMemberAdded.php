@@ -19,4 +19,6 @@
 return [
     '%displayName% joined the space %spaceName%' => '',
     '%displayName% joined this space.' => '',
+    '%spaceName% has been archived' => '',
+    '%spaceName% has been unarchived' => '',
 ];

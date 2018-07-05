@@ -12,7 +12,6 @@ use humhub\modules\admin\models\forms\SpaceSettingsForm;
 use humhub\modules\admin\models\SpaceSearch;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
-use humhub\modules\space\permissions\CreatePublicSpace;
 use Yii;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -49,10 +48,7 @@ class SpaceController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => [
-                ManageSpaces::className(),
-                ManageSettings::className()
-            ]],
+            ['permissions' => [ManageSpaces::className(), ManageSettings::className()]],
         ];
     }
 
@@ -61,21 +57,43 @@ class SpaceController extends Controller
      */
     public function actionIndex()
     {
-        if (Yii::$app->user->can(new ManageSpaces())) {
-            $searchModel = new SpaceSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-            return $this->render('index', [
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel
-            ]);
-        } else if (Yii::$app->user->can(new ManageSettings())) {
-            return $this->redirect([
-                'settings'
-            ]);
+        if (!Yii::$app->user->can(new ManageSpaces())) {
+            return $this->redirect(['settings']);
         }
 
-        throw new HttpException(403);
+        $searchModel = new SpaceSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel
+        ]);
+    }
+
+    /**
+     * Deep link into space
+     * @throws HttpException
+     */
+    public function actionOpen($id, $section = null)
+    {
+        $space = Space::findOne(['id' => $id]);
+        if ($space === null) {
+            throw new HttpException(404);
+        }
+
+        if ($section == 'members') {
+            return $this->redirect($space->createUrl('/space/manage/member'));
+        } elseif ($section == 'owner') {
+            return $this->redirect($space->createUrl('/space/manage/member/change-owner'));
+        } elseif ($section == 'edit') {
+            return $this->redirect($space->createUrl('/space/manage'));
+        } elseif ($section == 'modules') {
+            return $this->redirect($space->createUrl('/space/manage/module'));
+        } elseif ($section == 'delete') {
+            return $this->redirect($space->createUrl('/space/manage/default/delete'));
+        } else {
+            return $this->redirect($space->getUrl());
+        }
     }
 
     /**
@@ -109,11 +127,11 @@ class SpaceController extends Controller
             Content::VISIBILITY_PUBLIC => Yii::t('SpaceModule.base', 'Public')];
 
         return $this->render('settings', [
-                'model' => $form,
-                'joinPolicyOptions' => $joinPolicyOptions,
-                'visibilityOptions' => $visibilityOptions,
-                'contentVisibilityOptions' => $contentVisibilityOptions
-            ]
+                    'model' => $form,
+                    'joinPolicyOptions' => $joinPolicyOptions,
+                    'visibilityOptions' => $visibilityOptions,
+                    'contentVisibilityOptions' => $contentVisibilityOptions
+                        ]
         );
     }
 

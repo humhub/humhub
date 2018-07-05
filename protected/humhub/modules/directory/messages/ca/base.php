@@ -19,6 +19,8 @@
 return [
     '<b>There are no profile posts yet!</b>' => '',
     '<strong>Group</strong> members - {group}' => '',
+    'Access directory' => '',
+    'Can access the directory section.' => '',
     'See all' => '',
     'Send invite' => '',
     'This group has no members yet.' => '',

@@ -13,7 +13,7 @@ use yii\helpers\Url;
             <!-- start: tags for user skills -->
             <div class="tags">
                 <?php foreach ($user->getTags() as $tag): ?>
-                    <?php echo Html::a(Html::encode($tag), Url::to(['/directory/directory/members', 'keyword' => $tag]), array('class' => 'btn btn-default btn-xs tag')); ?>
+                    <?php echo Html::a(Html::encode($tag), Url::to(['/directory/directory/members', 'keyword' => $tag]), ['class' => 'btn btn-default btn-xs tag']); ?>
                 <?php endforeach; ?>
             </div>
             <!-- end: tags for user skills -->

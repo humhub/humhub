@@ -17,8 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Space member joined' => '',
-    'Space member left' => '',
-    'Whenever a member leaves one of your spaces.' => '',
-    'Whenever a new member joined one of your spaces.' => '',
+    'Space has been archieved' => '',
+    'Space has been unarchieved' => '',
+    'Whenever a space is archieved.' => '',
+    'Whenever a space is unarchieved.' => '',
+    'Space member joined' => 'Nätverksmedlem anslöt',
+    'Space member left' => 'Nätverksmedlem lämnade',
+    'Whenever a member leaves one of your spaces.' => 'Närsom en medlem lämnar ett av dina nätverk.',
+    'Whenever a new member joined one of your spaces.' => 'Närsom en ny medlem ansluter ett av dina nätverk.',
 ];

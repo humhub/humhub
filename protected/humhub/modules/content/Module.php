@@ -54,6 +54,12 @@ class Module extends \humhub\components\Module
     public $maxAttachedFiles = 50;
 
     /**
+     * @since 1.3
+     * @var integer Maximum allowed number of oembeds in richtexts
+     */
+    public $maxOembeds = 5;
+
+    /**
      * @inheritdoc
      */
     public function getName()
@@ -68,6 +74,7 @@ class Module extends \humhub\components\Module
     {
         if ($contentContainer !== null) {
             return [
+                // Note: we do not return CreatePrivateContent Permission since its not writable at the moment
                 new permissions\ManageContent(),
                 new permissions\CreatePublicContent()
             ];

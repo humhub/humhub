@@ -64,11 +64,11 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
     /**
      * Relation to User defined in created_by attribute
      *
-     * @return \yii\db\ActiveQuery
+     * @return User|null
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(User::className(), [
+        return $this->hasOne(User::class, [
             'id' => 'created_by'
         ]);
     }
@@ -76,11 +76,11 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
     /**
      * Relation to User defined in updated_by attribute
      *
-     * @return \yii\db\ActiveQuery
+     * @return User|null
      */
     public function getUpdatedBy()
     {
-        return $this->hasOne(User::className(), [
+        return $this->hasOne(User::class, [
             'id' => 'updated_by'
         ]);
     }
@@ -151,5 +151,4 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
         $this->setAttributes($unserializedArr['attributes'],false);
         $this->setOldAttributes($unserializedArr['oldAttributes'],false);
     }
-
 }

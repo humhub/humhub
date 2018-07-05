@@ -17,5 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Change owner' => '',
+    'Manage members' => '',
+    'Manage modules' => '',
+    'Open space' => '',
+    'Search by name, description, id or owner.' => '',
     'Add new space' => 'Добавить новое пространство',
 ];

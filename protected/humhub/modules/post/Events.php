@@ -14,7 +14,7 @@ use humhub\modules\post\models\Post;
 /**
  * Event callbacks for the post module
  */
-class Events extends \yii\base\Object
+class Events extends \yii\base\BaseObject
 {
 
     /**

@@ -8,8 +8,8 @@
 
 namespace humhub\modules\space\modules\manage\models;
 
-use Yii;
 use humhub\modules\space\models\Space;
+use Yii;
 
 /**
  * AdvancedSettingsSpace
@@ -39,6 +39,7 @@ class AdvancedSettingsSpace extends Space
         $rules = parent::rules();
         $rules[] = [['indexUrl'], 'string'];
         $rules[] = [['indexGuestUrl'], 'string'];
+
         return $rules;
     }
 
@@ -50,6 +51,7 @@ class AdvancedSettingsSpace extends Space
         $scenarios = parent::scenarios();
         $scenarios['edit'][] = 'indexUrl';
         $scenarios['edit'][] = 'indexGuestUrl';
+
         return $scenarios;
     }
 
@@ -61,6 +63,7 @@ class AdvancedSettingsSpace extends Space
         $labels = parent::attributeLabels();
         $labels['indexUrl'] = Yii::t('SpaceModule.models_Space', 'Homepage');
         $labels['indexGuestUrl'] = Yii::t('SpaceModule.models_Space', 'Homepage (Guests)');
+
         return $labels;
     }
 

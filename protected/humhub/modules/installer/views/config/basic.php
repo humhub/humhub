@@ -18,13 +18,13 @@ use humhub\compat\CHtml;
 
         <div class="form-group">
             <?php echo $form->labelEx($model, 'name'); ?>
-            <?php echo $form->textField($model, 'name', array('class' => 'form-control')); ?>
+            <?php echo $form->textField($model, 'name', ['class' => 'form-control']); ?>
             <?php echo $form->error($model, 'name'); ?>
         </div>
 
         <hr>
 
-        <?php echo CHtml::submitButton(Yii::t('InstallerModule.views_config_basic', 'Next'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
+        <?php echo CHtml::submitButton(Yii::t('InstallerModule.views_config_basic', 'Next'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
         <?php CActiveForm::end(); ?>
     </div>

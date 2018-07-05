@@ -170,7 +170,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     /**
      * @inheritdoc
      */
-    public function clientLink($client, $text = null, array $htmlOptions = array())
+    public function clientLink($client, $text = null, array $htmlOptions = [])
     {
         $viewOptions = $client->getViewOptions();
 

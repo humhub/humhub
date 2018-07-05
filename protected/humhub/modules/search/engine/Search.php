@@ -106,7 +106,7 @@ abstract class Search extends \yii\base\Component
 
     protected function getMetaInfoArray(Searchable $obj)
     {
-        $meta = array();
+        $meta = [];
         $meta['type'] = $this->getDocumentType($obj);
         $meta['pk'] = $obj->getPrimaryKey();
         $meta['model'] = $obj->className();
@@ -162,7 +162,7 @@ abstract class Search extends \yii\base\Component
         }
 
         if (!isset($options['limitSpaces'])) {
-            $options['limitSpaces'] = array();
+            $options['limitSpaces'] = [];
         }
 
         return $options;

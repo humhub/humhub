@@ -19,11 +19,13 @@
 return [
     '<strong>Space</strong> followers' => '',
     'Administrator:' => '',
+    'Archived' => '',
     'Moderator:' => '',
+    'Name' => '',
     'No spaces found.' => '',
     'Owner:' => '',
     'Space' => '',
-    'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Kunne ikke slette bruger som er en side-ejer! Navnet på siden: {spaceName}',
+    '{count} members' => '',
     'Default' => 'Standard',
     'Everyone can enter' => 'Alle kan komme ind',
     'Invite and request' => 'Inviter og anmod',
@@ -34,7 +36,6 @@ return [
     'Public (Members & Guests)' => 'Offentlig (Medlemmer & Gæster)',
     'Public (Members only)' => 'Offentlig (Kun medlemmer)',
     'Public (Registered users only)' => 'Offentlig (Kun registrerede brugere)',
-    'Public (Visible)' => 'Offentlig (Synlig)',
     'Settings' => 'Indstillinger',
     'Visible for all (members and guests)' => 'Synlig for alle (Medlemmer og gæster)',
 ];

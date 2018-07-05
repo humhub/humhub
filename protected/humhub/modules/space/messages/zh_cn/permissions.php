@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Allows the user to create private content' => '',
+    'Create private content' => '',
     'Allows the user to create public content' => '允许用户创建公共内容',
     'Allows the user to invite new members to the space' => '允许用户邀请新成员进空间',
     'Can create hidden (private) spaces.' => '可以创建私有的空间。',

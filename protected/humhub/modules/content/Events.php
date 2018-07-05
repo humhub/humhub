@@ -2,40 +2,63 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\content;
 
-use Yii;
 use humhub\modules\content\models\Content;
+use humhub\modules\user\events\UserEvent;
+use humhub\modules\search\interfaces\Searchable;
+use Yii;
+use yii\base\BaseObject;
 
 /**
  * Events provides callbacks to handle events.
  *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends BaseObject
 {
 
+    /**
+     * Callback when a user is soft deleted.
+     *
+     * @param UserEvent $event
+     */
+    public static function onUserSoftDelete(UserEvent $event)
+    {
+        // Delete user profile content on soft delete
+        foreach (Content::findAll(['contentcontainer_id' => $event->user->contentcontainer_id]) as $content) {
+            $content->delete();
+        }
+    }
+
+    /**
+     * Callback when a user is completely deleted.
+     *
+     * @param \yii\base\Event $event
+     */
     public static function onUserDelete($event)
     {
         $user = $event->sender;
         foreach (Content::findAll(['created_by' => $user->id]) as $content) {
             $content->delete();
         }
-        return true;
     }
 
+    /**
+     * Callback when a user is completely deleted.
+     *
+     * @param \yii\base\Event $event
+     */
     public static function onSpaceDelete($event)
     {
         $space = $event->sender;
         foreach (Content::findAll(['contentcontainer_id' => $space->contentContainerRecord->id]) as $content) {
             $content->delete();
         }
-
-        return true;
     }
 
     /**
@@ -47,15 +70,15 @@ class Events extends \yii\base\Object
     {
         $integrityController = $event->sender;
 
-        $integrityController->showTestHeadline("Content Objects (" . Content::find()->count() . " entries)");
+        $integrityController->showTestHeadline('Content Objects (' . Content::find()->count() . ' entries)');
         foreach (Content::find()->each() as $content) {
             if ($content->user == null) {
-                if ($integrityController->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid user!")) {
+                if ($integrityController->showFix('Deleting content id ' . $content->id . ' of type ' . $content->object_model . ' without valid user!')) {
                     $content->delete();
                 }
             }
-            if ($content->getPolymorphicRelation() == null) {
-                if ($integrityController->showFix("Deleting content id " . $content->id . " of type " . $content->object_model . " without valid content object!")) {
+            if ($content->getPolymorphicRelation() === null) {
+                if ($integrityController->showFix('Deleting content id ' . $content->id . ' of type ' . $content->object_model . ' without valid content object!')) {
                     $content->delete();
                 }
             }
@@ -69,11 +92,11 @@ class Events extends \yii\base\Object
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget(widgets\WallEntryLinks::className(), array(
+        $event->sender->addWidget(widgets\WallEntryLinks::className(), [
             'object' => $event->sender->object,
-            'seperator' => "&nbsp;&middot;&nbsp;",
+            'seperator' => '&nbsp;&middot;&nbsp;',
             'template' => '<div class="wall-entry-controls">{content}</div>',
-                ), array('sortOrder' => 10)
+                ], ['sortOrder' => 10]
         );
     }
 
@@ -86,7 +109,7 @@ class Events extends \yii\base\Object
     {
         foreach (Content::find()->each() as $content) {
             $contentObject = $content->getPolymorphicRelation();
-            if ($contentObject instanceof \humhub\modules\search\interfaces\Searchable) {
+            if ($contentObject instanceof Searchable) {
                 Yii::$app->search->add($contentObject);
             }
         }
@@ -99,7 +122,7 @@ class Events extends \yii\base\Object
      */
     public static function onContentActiveRecordSave($event)
     {
-        if ($event->sender instanceof \humhub\modules\search\interfaces\Searchable) {
+        if ($event->sender instanceof Searchable) {
             Yii::$app->search->update($event->sender);
         }
     }
@@ -111,7 +134,7 @@ class Events extends \yii\base\Object
      */
     public static function onContentActiveRecordDelete($event)
     {
-        if ($event->sender instanceof \humhub\modules\search\interfaces\Searchable) {
+        if ($event->sender instanceof Searchable) {
             Yii::$app->search->delete($event->sender);
         }
     }

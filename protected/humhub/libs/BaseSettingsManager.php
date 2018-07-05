@@ -11,6 +11,7 @@ namespace humhub\libs;
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
+use yii\db\conditions\LikeCondition;
 use yii\helpers\Json;
 
 /**
@@ -71,12 +72,12 @@ abstract class BaseSettingsManager extends Component
         }
 
         if (is_bool($value)) {
-            $value = (int) $value;
+            $value = (int)$value;
         }
 
-        $record->value = (string) $value;
+        $record->value = (string)$value;
         if (!$record->save()) {
-            throw new Exception("Could not store setting! (" . print_r($record->getErrors(), 1) . ")");
+            Yii::error('Could not store setting: ' . $name);
         }
 
         // Store to runtime
@@ -106,7 +107,7 @@ abstract class BaseSettingsManager extends Component
     public function getSerialized($name, $default = null)
     {
         $value = $this->get($name, $default);
-        if(is_string($value)) {
+        if (is_string($value)) {
             $value = Json::decode($value);
         }
         return $value;
@@ -164,7 +165,7 @@ abstract class BaseSettingsManager extends Component
             $this->_loaded = [];
             $settings = &$this->_loaded;
 
-            array_map(function ($record) use(&$settings ) {
+            array_map(function ($record) use (&$settings) {
                 $settings[$record->name] = $record->value;
             }, $this->find()->all());
 
@@ -225,12 +226,37 @@ abstract class BaseSettingsManager extends Component
 
     /**
      * Deletes all stored settings
+     *
+     * @param string|null $prefix if set only delete settings with given name prefix (e.g. theme.)
      */
-    public function deleteAll()
+    public function deleteAll($prefix = null)
     {
-        foreach ($this->find()->all() as $setting) {
+        $query = $this->find();
+        if ($prefix !== null) {
+            $query->andWhere(new LikeCondition('name', 'LIKE', $prefix));
+        }
+
+        foreach ($query->all() as $setting) {
             $this->delete($setting->name);
         }
     }
 
+    /**
+     * Checks if settings table exists or application is not installed yet
+     *
+     * @since 1.3
+     * @return bool
+     */
+    public static function isDatabaseInstalled()
+    {
+        try {
+            if (in_array('setting', Yii::$app->db->schema->getTableNames())) {
+                return true;
+            }
+        } catch (\Exception $ex) {
+            return false;
+        }
+
+        return false;
+    }
 }

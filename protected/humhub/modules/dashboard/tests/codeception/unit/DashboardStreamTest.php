@@ -6,7 +6,7 @@ use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\post\models\Post;
-use humhub\modules\dashboard\components\actions\DashboardStream;
+use humhub\modules\dashboard\components\actions\DashboardStreamAction;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 
@@ -132,12 +132,12 @@ class DashboardStreamTest extends HumHubDbTestCase
         $w2 = $post2->content->id;
 
         $ids = $this->getStreamActionIds(2);
-        $this->assertEquals($ids, array($w2, $w1));
+        $this->assertEquals($ids, [$w2, $w1]);
     }
 
     private function getStreamActionIds($limit = 4)
     {
-        $action = new DashboardStream('stream', Yii::$app->controller, [
+        $action = new DashboardStreamAction('stream', Yii::$app->controller, [
             'limit' => $limit,
         ]);
         

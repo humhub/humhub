@@ -23,12 +23,12 @@ class Invite extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $moduleId = "space";
+    public $moduleId = 'space';
 
     /**
      * @inheritdoc
      */
-    public $viewName = "invite";
+    public $viewName = 'invite';
 
     /**
      * @inheritdoc
@@ -64,12 +64,10 @@ class Invite extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('SpaceModule.notification', '{displayName} invited you to the space {spaceName}', array(
+        return Yii::t('SpaceModule.notification', '{displayName} invited you to the space {spaceName}', [
                     '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
                     '{spaceName}' => Html::tag('strong', Html::encode($this->getSpace()->name))
-        ));
+        ]);
     }
 
 }
-
-?>

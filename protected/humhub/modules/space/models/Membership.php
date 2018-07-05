@@ -8,31 +8,35 @@
 
 namespace humhub\modules\space\models;
 
-use Yii;
+use humhub\components\ActiveRecord;
 use humhub\modules\user\models\User;
-use humhub\modules\space\models\Space;
+use humhub\modules\content\models\Content;
+use Yii;
 
 /**
  * This is the model class for table "space_membership".
  *
+ * @property integer $id
  * @property integer $space_id
  * @property integer $user_id
- * @property string $originator_user_id
- * @property integer $status
- * @property string $request_message
- * @property string $last_visit
+ * @property string|null $originator_user_id
+ * @property integer|null $status
+ * @property string|null $request_message
+ * @property string|null $last_visit
  * @property integer $show_at_dashboard
  * @property integer $can_cancel_membership
  * @property string $group_id
- * @property string $created_at
- * @property integer $created_by
- * @property string $updated_at
- * @property integer $updated_by
+ * @property string|null $created_at
+ * @property integer|null $created_by
+ * @property string|null $updated_at
+ * @property integer|null $updated_by
  * @property integer $send_notifications
  *
  * @property Space $space
+ * @property User $user
+ * @property User|null $originator
  */
-class Membership extends \yii\db\ActiveRecord
+class Membership extends ActiveRecord
 {
 
     /**
@@ -73,7 +77,7 @@ class Membership extends \yii\db\ActiveRecord
             [['space_id', 'user_id'], 'required'],
             [['space_id', 'user_id', 'originator_user_id', 'status', 'created_by', 'updated_by'], 'integer'],
             [['request_message'], 'string'],
-            [['last_visit', 'created_at', 'group_id', 'updated_at'], 'safe'],
+            [['last_visit', 'created_at', 'group_id', 'updated_at'], 'safe']
         ];
     }
 
@@ -93,7 +97,7 @@ class Membership extends \yii\db\ActiveRecord
             'created_by' => Yii::t('SpaceModule.models_Membership', 'Created By'),
             'updated_at' => Yii::t('SpaceModule.models_Membership', 'Updated At'),
             'updated_by' => Yii::t('SpaceModule.models_Membership', 'Updated By'),
-            'can_leave' => 'Can Leave',
+            'can_leave' => 'Can Leave'
         ];
     }
 
@@ -151,17 +155,18 @@ class Membership extends \yii\db\ActiveRecord
      */
     public function countNewItems()
     {
-        $query = \humhub\modules\content\models\Content::find();
+        $query = Content::find();
         $query->where(['stream_channel' => 'default']);
         $query->andWhere(['contentcontainer_id' => $this->space->contentContainerRecord->id]);
         $query->andWhere(['>', 'created_at', $this->last_visit]);
+
         return $query->count();
     }
 
     /**
      * Returns a list of all spaces of the given userId
      *
-     * @param integer $userId the user id
+     * @param int|string $userId the user id or empty for current user
      * @param boolean $cached use cached result if available
      * @return Space[] an array of spaces
      */
@@ -181,6 +186,7 @@ class Membership extends \yii\db\ActiveRecord
             }
             Yii::$app->cache->set($cacheId, $spaces);
         }
+
         return $spaces;
     }
 
@@ -203,6 +209,7 @@ class Membership extends \yii\db\ActiveRecord
             $spaceIds = static::getMembershipQuery($userId)->select('space_id')->column();
             Yii::$app->cache->set($cacheId, $spaceIds);
         }
+
         return $spaceIds;
     }
 
@@ -226,13 +233,17 @@ class Membership extends \yii\db\ActiveRecord
      * @since 1.0
      * @param \humhub\modules\user\models\User $user
      * @param boolean $memberOnly include only member status - no pending/invite states
-     * @param boolean $withNotificationsOnly include only memberships with sendNotification setting
+     * @param boolean|null $withNotifications include only memberships with sendNotification setting
      * @return \yii\db\ActiveQuery for space model
      */
     public static function getUserSpaceQuery(User $user, $memberOnly = true, $withNotifications = null)
     {
         $query = Space::find();
-        $query->leftJoin('space_membership', 'space_membership.space_id=space.id and space_membership.user_id=:userId', [':userId' => $user->id]);
+        $query->leftJoin(
+            'space_membership',
+            'space_membership.space_id=space.id and space_membership.user_id=:userId',
+            [':userId' => $user->id]
+        );
 
         if ($memberOnly) {
             $query->andWhere(['space_membership.status' => self::STATUS_MEMBER]);
@@ -240,7 +251,7 @@ class Membership extends \yii\db\ActiveRecord
 
         if ($withNotifications === true) {
             $query->andWhere(['space_membership.send_notifications' => 1]);
-        } else if ($withNotifications === false) {
+        } elseif ($withNotifications === false) {
             $query->andWhere(['space_membership.send_notifications' => 0]);
         }
 
@@ -257,15 +268,18 @@ class Membership extends \yii\db\ActiveRecord
 
     /**
      * Returns an ActiveQuery selcting all memberships for the given $user.
-     *  
+     *
      * @param User $user
-     * @param integer $membershipSatus the status of the Space by default self::STATUS_MEMBER.
+     * @param integer $membershipStatus the status of the Space by default self::STATUS_MEMBER.
      * @param integer $spaceStatus the status of the Space by default Space::STATUS_ENABLED.
      * @return \yii\db\ActiveQuery
      * @since 1.2
      */
-    public static function findByUser(User $user = null, $membershipSatus = self::STATUS_MEMBER, $spaceStatus = Space::STATUS_ENABLED)
-    {
+    public static function findByUser(
+        User $user = null,
+        $membershipStatus = self::STATUS_MEMBER,
+        $spaceStatus = Space::STATUS_ENABLED
+    ) {
         if (!$user) {
             $user = Yii::$app->user->getIdentity();
         }
@@ -284,8 +298,8 @@ class Membership extends \yii\db\ActiveRecord
             $query->andWhere(['space.status' => $spaceStatus]);
         }
 
-        if ($membershipSatus) {
-            $query->andWhere(['space_membership.status' => $membershipSatus]);
+        if ($membershipStatus) {
+            $query->andWhere(['space_membership.status' => $membershipStatus]);
         }
 
         return $query;
@@ -293,10 +307,11 @@ class Membership extends \yii\db\ActiveRecord
 
     /**
      * Returns a user query for space memberships
-     * 
+     *
      * @since 1.1
      * @param Space $space
      * @param boolean $membersOnly Only return approved members
+     * @param boolean|null $withNotifications include only memberships with sendNotification setting
      * @return \humhub\modules\user\components\ActiveQueryUser
      */
     public static function getSpaceMembersQuery(Space $space, $membersOnly = true, $withNotifications = null)
@@ -310,11 +325,12 @@ class Membership extends \yii\db\ActiveRecord
 
         if ($withNotifications === true) {
             $query->andWhere(['space_membership.send_notifications' => 1]);
-        } else if ($withNotifications === false) {
+        } elseif ($withNotifications === false) {
             $query->andWhere(['space_membership.send_notifications' => 0]);
         }
 
         $query->andWhere(['space_id' => $space->id])->defaultOrder();
+
         return $query;
     }
 

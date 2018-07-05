@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'The request to add users has been added to the queue' => '',
     'User has become a member.' => 'Пользователь стал участником.',
     'User has been invited.' => 'Пользователь был приглашен.',
     'User has not been invited.' => 'Пользователь не был приглашен.',

@@ -2,14 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\components;
 
 use yii\web\UrlRuleInterface;
-use yii\base\Object;
+use yii\base\BaseObject;
+use humhub\modules\user\models\User;
 use humhub\modules\user\models\User as UserModel;
 
 /**
@@ -17,7 +18,7 @@ use humhub\modules\user\models\User as UserModel;
  *
  * @author luke
  */
-class UrlRule extends Object implements UrlRuleInterface
+class UrlRule extends BaseObject implements UrlRuleInterface
 {
 
     /**
@@ -35,10 +36,10 @@ class UrlRule extends Object implements UrlRuleInterface
      */
     public function createUrl($manager, $route, $params)
     {
-        if (isset($params['uguid'])) {
-            $username = static::getUrlByUserGuid($params['uguid']);
+        if (isset($params['cguid'])) {
+            $username = static::getUrlByUserGuid($params['cguid']);
             if ($username !== null) {
-                unset($params['uguid']);
+                unset($params['cguid']);
 
                 if ($this->defaultRoute == $route) {
                     $route = "";
@@ -69,7 +70,7 @@ class UrlRule extends Object implements UrlRuleInterface
                         $parts[2] = $this->defaultRoute;
                     }
                     $params = $request->get();
-                    $params['uguid'] = $user->guid;
+                    $params['cguid'] = $user->guid;
 
                     return [$parts[2], $params];
                 }
@@ -91,12 +92,8 @@ class UrlRule extends Object implements UrlRuleInterface
         }
 
         $user = UserModel::findOne(['guid' => $guid]);
-        if ($user !== null) {
-            static::$userUrlMap[$user->guid] = $user->username;
-            return static::$userUrlMap[$user->guid];
-        }
-
-        return null;
+        static::$userUrlMap[$guid] = ($user !== null) ? $user->username : null;
+        return static::$userUrlMap[$guid];
     }
 
 }

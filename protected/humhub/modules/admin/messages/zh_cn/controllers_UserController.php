@@ -18,13 +18,11 @@
  */
 return [
     'Add Groups...' => '增加组...',
-    'Select Groups' => '选择组',
-    'Become this user' => '成为这个用户',
     'Delete' => '删除',
     'Disabled' => '生效',
     'Enabled' => '失效',
     'Save' => '保存',
+    'Select Groups' => '选择组',
     'Unapproved' => '未批准',
     'User not found!' => '用户未找到',
-    'You cannot delete yourself!' => '你不能删除自己',
 ];

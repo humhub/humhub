@@ -52,6 +52,45 @@
     }
 }
 
+// fileupload button
+.comment_create,
+.content_edit {
+    position: relative;
+
+    .comment-buttons {
+        position: absolute;
+        bottom: 2px;
+        right: 5px;
+    }
+
+    .btn-comment-submit {
+        margin-top: 3px;
+    }
+
+    .fileinput-button {
+        float: left;
+        padding: 6px 10px;
+        background: transparent !important;
+        .fa {
+            color: @background3;
+        }
+    }
+    .fileinput-button:hover .fa {
+        background: transparent !important;
+        color: @background4;
+    }
+    .fileinput-button:active {
+        box-shadow: none !important;
+    }
+}
+
+.post-richtext-input-group {
+    position:relative;
+    .comment-buttons {
+        bottom:7px !important;
+    }
+}
+
 .comment-container .content_edit {
     margin-left: 50px;
 }
@@ -62,4 +101,9 @@
 
 .comment-message {
     overflow:hidden;
+    overflow-wrap: break-word;
+}
+
+.comment-create-input-group {
+    position:relative;
 }

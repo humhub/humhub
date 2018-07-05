@@ -8,9 +8,10 @@
 
 namespace humhub\modules\space\notifications;
 
+use humhub\modules\notification\components\BaseNotification;
 use Yii;
 use yii\bootstrap\Html;
-use humhub\modules\notification\components\BaseNotification;
+use yii\helpers\ArrayHelper;
 
 /**
  * SpaceApprovalRequestNotification
@@ -23,12 +24,12 @@ class ApprovalRequest extends BaseNotification
     /**
      * @inheritdoc
      */
-    public $moduleId = "space";
+    public $moduleId = 'space';
 
     /**
      * @inheritdoc
      */
-    public $viewName = "approval";
+    public $viewName = 'approval';
     public $message;
 
     /**
@@ -53,9 +54,9 @@ class ApprovalRequest extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function getViewParams($params = array())
+    public function getViewParams($params = [])
     {
-        return \yii\helpers\ArrayHelper::merge(parent::getViewParams(['message' => $this->message]), $params);
+        return ArrayHelper::merge(parent::getViewParams(['message' => $this->message]), $params);
     }
 
     /**
@@ -109,5 +110,3 @@ class ApprovalRequest extends BaseNotification
     }
 
 }
-
-?>

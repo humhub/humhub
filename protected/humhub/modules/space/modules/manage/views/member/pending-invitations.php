@@ -2,8 +2,8 @@
 
 use yii\helpers\Html;
 use humhub\widgets\GridView;
-use humhub\widgets\TimeAgo;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
+use humhub\widgets\TimeAgo;
 ?>
 
 <div class="panel panel-default">

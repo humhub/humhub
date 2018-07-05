@@ -29,5 +29,4 @@ class StrictAccess extends ControllerAccess
         $fixed[] = [self::RULE_STRICT];
         return $fixed;
     }
-
 }

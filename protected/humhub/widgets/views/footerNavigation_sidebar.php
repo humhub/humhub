@@ -11,7 +11,7 @@ $i = 0;
 ?>
 
 <?php if ($numItems > 0): ?>
-    <div style="filter:opacity(.6);font-size:12px">
+    <div class="footer-nav">
         <small>
 
             <?php foreach ($items as $item): ?>

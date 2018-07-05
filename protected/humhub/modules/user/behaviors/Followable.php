@@ -39,7 +39,7 @@ class Followable extends Behavior
 
     public function beforeDelete($event)
     {
-        UserFollow::model()->deleteAllByAttributes(array('object_model' => get_class($this->getOwner()), 'object_id' => $this->getOwner()->getPrimaryKey()));
+        UserFollow::model()->deleteAllByAttributes(['object_model' => get_class($this->getOwner()), 'object_id' => $this->getOwner()->getPrimaryKey()]);
         return parent::beforeValidate($event);
     }
 
@@ -66,7 +66,7 @@ class Followable extends Behavior
     {
         if($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == "") {
+        } elseif (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
         }
 
@@ -100,7 +100,7 @@ class Followable extends Behavior
     {
         if($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == "") {
+        } elseif (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
         }
 
@@ -130,7 +130,7 @@ class Followable extends Behavior
     {
         if($userId instanceof User) {
             $userId = $userId->id;
-        } else if (!$userId || $userId == "") {
+        } elseif (!$userId || $userId == "") {
             $userId = \Yii::$app->user->id;
         }
 

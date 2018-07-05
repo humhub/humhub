@@ -8,9 +8,10 @@
 
 namespace humhub\commands;
 
+use humhub\components\Module;
 use Yii;
-use yii\web\Application;
 use yii\console\Exception;
+use yii\web\Application;
 
 /**
  * Manages application migrations.
@@ -103,7 +104,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
 
         sort($migrations);
 
-		return $migrations;
+        return $migrations;
     }
 
     /**
@@ -117,7 +118,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
             $this->migrationPath = $this->getMigrationPath($class);
         }
 
-		return parent::createMigration($class);
+        return parent::createMigration($class);
     }
 
     /**
@@ -136,7 +137,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
             }
         }
 
-		throw new Exception("Could not find path for: " . $migration);
+        throw new Exception("Could not find path for: " . $migration);
     }
 
     /**
@@ -148,8 +149,15 @@ class MigrateController extends \yii\console\controllers\MigrateController
     {
         $migrationPaths = ['base' => $this->migrationPath];
         foreach (Yii::$app->getModules() as $id => $config) {
+            $class = null;
             if (is_array($config) && isset($config['class'])) {
-                $reflector = new \ReflectionClass($config['class']);
+                $class = $config['class'];
+            } elseif ($config instanceof Module) {
+                $class = get_class($config);
+            }
+
+            if ($class !== null) {
+                $reflector = new \ReflectionClass($class);
                 $path = dirname($reflector->getFileName()) . '/migrations';
                 if (is_dir($path)) {
                     $migrationPaths[$id] = $path;
@@ -157,7 +165,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
             }
         }
 
-		return $migrationPaths;
+        return $migrationPaths;
     }
 
     /**
@@ -175,7 +183,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
         $controller->color = false;
         $controller->runAction('up');
 
-		return ob_get_clean();
+        return ob_get_clean();
     }
 
     /**
@@ -220,5 +228,4 @@ class MigrateController extends \yii\console\controllers\MigrateController
             return parent::stderr($string);
         }
     }
-
 }

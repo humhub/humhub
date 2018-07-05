@@ -6,6 +6,3 @@ return [
         'humhub\modules\post\tests\codeception\fixtures\PostFixture'
     ]
 ];
-
-
-

@@ -44,13 +44,13 @@ class FriendsPanel extends \yii\base\Widget
         $totalCount = $querz->count();
         $friends = $querz->limit($this->limit)->all();
 
-        return $this->render('friendsPanel', array(
+        return $this->render('friendsPanel', [
                     'friends' => $friends,
                     'friendsShowLimit' => $this->limit,
                     'totalCount' => $totalCount,
                     'limit' => $this->limit,
                     'user' => $this->user,
-        ));
+        ]);
     }
 
 }

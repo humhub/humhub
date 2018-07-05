@@ -18,10 +18,12 @@
  */
 return [
     'Administrator:' => '',
+    'Archived' => '',
     'Moderator:' => '',
+    'Name' => '',
     'Owner:' => '',
+    '{count} members' => '',
     '<strong>Space</strong> followers' => '<strong>空间</strong> 关注者',
-    'Could not delete user who is a space owner! Name of Space: {spaceName}' => '无法删除用户，用户是空间{spaceName}的主人',
     'Default' => '默认',
     'Everyone can enter' => '所有人能加入',
     'Invite and request' => '邀请和请求',
@@ -33,7 +35,6 @@ return [
     'Public (Members & Guests)' => '公开 (成员 和 游客)',
     'Public (Members only)' => '公开 (仅成员)',
     'Public (Registered users only)' => '公开 (仅注册用户)',
-    'Public (Visible)' => '公共(可见)',
     'Settings' => '设置',
     'Space' => '空间',
     'Visible for all (members and guests)' => '所有人可见 (成员 和 游客)',

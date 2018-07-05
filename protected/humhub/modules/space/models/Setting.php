@@ -10,7 +10,6 @@ namespace humhub\modules\space\models;
 
 use Yii;
 
-
 /**
  * Space settings compatiblity layer class
  * 
@@ -29,7 +28,7 @@ class Setting
      * @param type $value
      * @param type $moduleId
      */
-    public static function Set($spaceId, $name, $value, $moduleId = "")
+    public static function Set($spaceId, $name, $value, $moduleId = '')
     {
         $user = Space::findOne(['id' => $spaceId]);
         self::getModule($moduleId)->settings->contentContainer($user)->set($name, $value);
@@ -45,13 +44,14 @@ class Setting
      * @param string $defaultValue
      * @return string
      */
-    public static function Get($space, $name, $moduleId = "", $defaultValue = "")
+    public static function Get($space, $name, $moduleId = '', $defaultValue = '')
     {
         $user = Space::findOne(['id' => $space]);
         $value = self::getModule($moduleId)->settings->contentContainer($user)->get($name);
         if ($value === null) {
             return $defaultValue;
         }
+
         return $value;
     }
 
@@ -69,6 +69,7 @@ class Setting
         } else {
             $app = Yii::$app->getModule($moduleId);
         }
+
         return $app;
     }
 

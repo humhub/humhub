@@ -17,11 +17,17 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Add:' => '',
+    'Could not find requested page.' => '',
+    'Delete' => '',
+    'Edit' => '',
     'Export' => '',
     'Invalid request method!' => '',
+    'Please type at least {count} characters' => '',
     'Select Me' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
+    'The current main HumHub database name is ' => '',
     'Time Zone' => '',
     '<strong>Confirm</strong> Action' => '<strong>Apstiprināt</strong> Darbību',
     '<strong>Latest</strong> updates' => '<strong>Jaunākie</strong> atjauninājumi',
@@ -45,7 +51,6 @@ return [
     'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon avotam jābū HActiveRecordContent vai HActiveRecordContentAddon instancei!
 ',
     'Copy to clipboard' => 'Kopēt uz starpliktuvi',
-    'Could not determine content container!' => 'Nevarēja noteikt satura konteineri!',
     'Could not find content of addon!' => 'Nevarēja atrast spraudņa saturu!',
     'Default' => 'Noklusējums',
     'Deny' => 'Noraidīt',
@@ -80,7 +85,6 @@ return [
     'Show less' => 'Rādīt mazāk',
     'Show more' => 'Rādīt vairāk',
     'Some files could not be uploaded:' => 'Dažus failus nav iespējams augšupielādēt:',
-    'Space not found!' => 'Vieta nav atrasta',
     'The date has to be in the past.' => 'Datumam ir jābūt pagātnē.',
     'The file has been deleted.' => 'Fails tika izdzēsts.',
     'The requested resource could not be found.' => 'Pieprasītais resurss nav atrodams.',
@@ -93,6 +97,5 @@ return [
     'Unsubscribe' => 'Atrakstīties',
     'Upload' => 'Augšupielādēt',
     'Upload file' => 'Augšupielādēt failu',
-    'User not found!' => 'Lietotājs nav atrasts!',
     'You are not allowed to run this action.' => 'Tev nav tiesību izpildīt šo darbību.',
 ];

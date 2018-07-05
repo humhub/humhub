@@ -16,7 +16,7 @@ use humhub\modules\notification\models\Notification;
  * 
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events extends \yii\base\BaseObject
 {
 
     /**
@@ -49,7 +49,7 @@ class Events extends \yii\base\Object
     public static function onSpaceDelete($event)
     {
 
-        foreach (Notification::findAll(array('space_id' => $event->sender->id)) as $notification) {
+        foreach (Notification::findAll(['space_id' => $event->sender->id]) as $notification) {
             $notification->delete();
         }
     }

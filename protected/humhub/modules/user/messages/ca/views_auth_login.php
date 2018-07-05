@@ -24,7 +24,6 @@ return [
     'Remember me' => '',
     '<strong>Please</strong> sign in' => '<strong>Si us plau</strong> inicia sessió',
     '<strong>Sign</strong> up' => '<strong>Registrar-me</strong>',
-    'Create a new one.' => 'Crea un de nou.',
     'Forgot your password?' => 'No recordes la contrasenya?',
     'Login' => 'Inici de sessió',
     'Register' => 'Registre',

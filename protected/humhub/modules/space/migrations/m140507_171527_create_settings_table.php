@@ -8,7 +8,7 @@ class m140507_171527_create_settings_table extends Migration {
     public function up() {
 
         // Create New User Settings Table
-        $this->createTable('space_setting', array(
+        $this->createTable('space_setting', [
             'id' => 'pk',
             'space_id' => 'int(10)',
             'module_id' => 'varchar(100) DEFAULT NULL',
@@ -18,7 +18,7 @@ class m140507_171527_create_settings_table extends Migration {
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+                ], '');
 
         $this->createIndex('idx_space_setting', 'space_setting', 'space_id, module_id, name', true);
     }

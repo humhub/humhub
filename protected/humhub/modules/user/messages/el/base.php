@@ -38,6 +38,7 @@ return [
     'Missing ID AuthClient Attribute from AuthClient.' => '',
     'Modules' => '',
     'My Account' => '',
+    'Name' => '',
     'New password' => '',
     'No users found.' => '',
     'Profile' => '',

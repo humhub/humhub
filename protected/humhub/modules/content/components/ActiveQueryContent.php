@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\models\ContentTag;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
@@ -107,6 +108,40 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
     }
 
     /**
+     * Filters contents by given contentTags.
+     *
+     * @param array|string|ContentTag $contentTags array of or single content tag classes or instances
+     * @return $this
+     * @since 1.3
+     */
+    public function contentTag($contentTags = [])
+    {
+        if(empty($contentTag)) {
+            return $this;
+        }
+
+        if(!is_array($contentTags)) {
+            $contentTags = [$contentTags];
+        }
+
+        $this->innerJoinWith('tags');
+        foreach ($contentTags as $contentTag) {
+            $contentTagClass = null;
+            if($contentTag instanceof ContentTag) {
+                $contentTagClass = get_class($contentTag);
+            } elseif(is_string($contentTag)) {
+                $contentTagClass = $contentTag;
+            }
+
+            if($contentTagClass) {
+                call_user_func($contentTagClass .'::addQueryCondition', $this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * Adds an additional WHERE condition to the existing one.
      * 
      * @inheritdoc
@@ -115,7 +150,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
      * @param array $params
      * @return $this
      */
-    public function where($condition, $params = array())
+    public function where($condition, $params = [])
     {
         return parent::andWhere($condition, $params);
     }
@@ -128,7 +163,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
      * @param User $user
      * @return \humhub\modules\content\components\ActiveQueryContent
      */
-    public function userRelated($scopes = array(), $user = null)
+    public function userRelated($scopes = [], $user = null)
     {
         if ($user === null) {
             $user = Yii::$app->user->getIdentity();

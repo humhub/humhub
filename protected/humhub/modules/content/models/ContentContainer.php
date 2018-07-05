@@ -20,6 +20,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  * @property string $class
  * @property integer $pk
  * @property integer $owner_user_id
+ * @mixin PolymorphicRelation
  */
 class ContentContainer extends \yii\db\ActiveRecord
 {
@@ -67,7 +68,7 @@ class ContentContainer extends \yii\db\ActiveRecord
         return [
             [
                 'class' => PolymorphicRelation::className(),
-                'mustBeInstanceOf' => array(ContentContainerActiveRecord::className()),
+                'mustBeInstanceOf' => [ContentContainerActiveRecord::className()],
                 'classAttribute' => 'class',
                 'pkAttribute' => 'pk'
             ]

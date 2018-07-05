@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Name' => '',
     'Your new password must not be equal your current password!' => '',
     'Basic Settings' => 'Thiết lập cơ bản',
     'Change Email' => 'Đổi Email',

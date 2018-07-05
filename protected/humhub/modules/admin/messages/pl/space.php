@@ -18,4 +18,9 @@
  */
 return [
     'Add new space' => '',
+    'Change owner' => '',
+    'Manage members' => '',
+    'Manage modules' => '',
+    'Open space' => '',
+    'Search by name, description, id or owner.' => '',
 ];

@@ -13,9 +13,9 @@ class m140226_111945_ldap extends Migration
         $this->addColumn('space', 'ldap_dn', 'string');
         $this->addColumn('group', 'ldap_dn', 'string');
 
-        $this->update('profile_field', array('ldap_attribute' => 'givenName'), "internal_name='firstname'");
-        $this->update('profile_field', array('ldap_attribute' => 'sn'), "internal_name='lastname'");
-        $this->update('profile_field', array('ldap_attribute' => 'title'), "internal_name='title'");
+        $this->update('profile_field', ['ldap_attribute' => 'givenName'], "internal_name='firstname'");
+        $this->update('profile_field', ['ldap_attribute' => 'sn'], "internal_name='lastname'");
+        $this->update('profile_field', ['ldap_attribute' => 'title'], "internal_name='title'");
     }
 
     public function down()

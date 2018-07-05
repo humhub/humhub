@@ -40,7 +40,7 @@ class DropDownGridColumn extends DataColumn
     /**
      * @var array ajax options
      */
-    public $ajaxOptions = array();
+    public $ajaxOptions = [];
     public $readonly = false;
 
     /**
@@ -109,5 +109,4 @@ class DropDownGridColumn extends DataColumn
 
         return Html::dropDownList($inputName, $model[$this->attribute], $options, $this->htmlOptions);
     }
-
 }

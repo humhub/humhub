@@ -35,9 +35,9 @@ class Select extends BaseType
      */
     public function rules()
     {
-        return array(
-            array(['options'], 'safe'),
-        );
+        return [
+            [['options'], 'safe'],
+        ];
     }
 
     /**
@@ -45,21 +45,21 @@ class Select extends BaseType
      *
      * @return Array Form Definition
      */
-    public function getFormDefinition($definition = array())
+    public function getFormDefinition($definition = [])
     {
-        return parent::getFormDefinition(array(
-                    get_class($this) => array(
+        return parent::getFormDefinition([
+                    get_class($this) => [
                         'type' => 'form',
                         'title' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Select field options'),
-                        'elements' => array(
-                            'options' => array(
+                        'elements' => [
+                            'options' => [
                                 'type' => 'textarea',
                                 'label' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Possible values'),
                                 'class' => 'form-control',
                                 'hint' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
-                            ),
-                        )
-        )));
+                            ],
+                        ]
+        ]]);
     }
 
     /**
@@ -82,9 +82,9 @@ class Select extends BaseType
      * @param type $rules
      * @return type
      */
-    public function getFieldRules($rules = array())
+    public function getFieldRules($rules = [])
     {
-        $rules[] = array($this->profileField->internal_name, 'in', 'range' => array_keys($this->getSelectItems()));
+        $rules[] = [$this->profileField->internal_name, 'in', 'range' => array_keys($this->getSelectItems())];
         return parent::getFieldRules($rules);
     }
 
@@ -93,13 +93,13 @@ class Select extends BaseType
      */
     public function getFieldFormDefinition()
     {
-        return array($this->profileField->internal_name => array(
+        return [$this->profileField->internal_name => [
                 'type' => 'dropdownlist',
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable),
                 'items' => $this->getSelectItems(),
                 'prompt' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Please select:'),
-        ));
+        ]];
     }
 
     /**
@@ -109,7 +109,7 @@ class Select extends BaseType
      */
     public function getSelectItems()
     {
-        $items = array();
+        $items = [];
 
         foreach (explode("\n", $this->options) as $option) {
 

@@ -11,6 +11,3 @@ return [
         'default',
     ]
 ];
-
-
-

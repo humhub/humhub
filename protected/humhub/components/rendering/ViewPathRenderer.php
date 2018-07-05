@@ -33,7 +33,7 @@ use Yii;
  * @author buddha
  * @since 1.2
  */
-class ViewPathRenderer extends \yii\base\Object implements Renderer
+class ViewPathRenderer extends \yii\base\BaseObject implements Renderer
 {
 
     /**
@@ -145,5 +145,4 @@ class ViewPathRenderer extends \yii\base\Object implements Renderer
 
         return $dir;
     }
-
 }

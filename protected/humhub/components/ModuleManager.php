@@ -8,15 +8,16 @@
 
 namespace humhub\components;
 
+use humhub\components\bootstrap\ModuleAutoLoader;
+use humhub\libs\BaseSettingsManager;
+use humhub\models\ModuleEnabled;
 use Yii;
 use yii\base\Component;
-use yii\base\Exception;
 use yii\base\Event;
+use yii\base\Exception;
 use yii\base\InvalidConfigException;
-use yii\helpers\FileHelper;
 use yii\helpers\ArrayHelper;
-use humhub\components\bootstrap\ModuleAutoLoader;
-use humhub\models\ModuleEnabled;
+use yii\helpers\FileHelper;
 
 /**
  * ModuleManager handles all installed modules.
@@ -88,7 +89,7 @@ class ModuleManager extends Component
             return;
         }
 
-        if (Yii::$app instanceof console\Application && !Yii::$app->isDatabaseInstalled()) {
+        if (!BaseSettingsManager::isDatabaseInstalled()) {
             $this->enabledModules = [];
         } else {
             $this->enabledModules = ModuleEnabled::getEnabledIds();
@@ -97,11 +98,11 @@ class ModuleManager extends Component
 
     /**
      * Registers a module to the manager
-     * This is usally done by autostart.php in modules root folder.
+     * This is usually done by config.php in modules root folder.
+     * @see \humhub\components\bootstrap\ModuleAutoLoader::bootstrap
      *
-     * @param array $
-
-     * @throws Exception
+     * @param array $configs
+     * @throws InvalidConfigException
      */
     public function registerBulk(array $configs)
     {
@@ -119,8 +120,9 @@ class ModuleManager extends Component
      */
     public function register($basePath, $config = null)
     {
-        if ($config === null && is_file($basePath . '/config.php')) {
-            $config = require($basePath . '/config.php');
+        $filename = $basePath . '/config.php';
+        if ($config === null && is_file($filename)) {
+            $config = require $filename;
         }
 
         // Check mandatory config options
@@ -169,7 +171,7 @@ class ModuleManager extends Component
 
         $moduleConfig = [
             'class' => $config['class'],
-            'modules' => $config['modules']
+            'modules' => $config['modules'],
         ];
 
         // Add config file values to module
@@ -246,7 +248,7 @@ class ModuleManager extends Component
      * Returns a module instance by id
      *
      * @param string $id Module Id
-     * @return \yii\base\Module
+     * @return Module|object
      */
     public function getModule($id)
     {
@@ -275,7 +277,8 @@ class ModuleManager extends Component
     /**
      * Checks the module can removed
      *
-     * @param type $moduleId
+     * @param string $moduleId
+     * @return bool
      */
     public function canRemoveModule($moduleId)
     {
@@ -296,7 +299,10 @@ class ModuleManager extends Component
     /**
      * Removes a module
      *
-     * @param strng $id the module id
+     * @param string $moduleId
+     * @param bool $disableBeforeRemove
+     * @throws Exception
+     * @throws \yii\base\ErrorException
      */
     public function removeModule($moduleId, $disableBeforeRemove = true)
     {
@@ -394,5 +400,4 @@ class ModuleManager extends Component
             }
         }
     }
-
 }

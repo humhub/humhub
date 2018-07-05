@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Access directory' => '',
+    'Can access the directory section.' => '',
     'Send invite' => '',
     'This group has no members yet.' => '',
     '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Nikt jeszcze nic nie napisał.</b><br>Bądź pierwszy i napisz coś...',

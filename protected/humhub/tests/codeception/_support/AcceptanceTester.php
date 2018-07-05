@@ -118,7 +118,7 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->jsClick('#contentForm_message');
         $this->wait(1);
-        $this->fillField('#contentForm_message', $text);
+        $this->fillField('#contentForm_message .humhub-ui-richtext', $text);
         $this->executeJS("$('#contentForm_message').trigger('focusout');");
         $this->wait(1);
         $this->jsClick('#post_submit_button');

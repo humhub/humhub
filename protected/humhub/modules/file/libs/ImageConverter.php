@@ -65,7 +65,7 @@ class ImageConverter
      * @param String $targetFile
      * @param Array $options
      */
-    public static function Resize($sourceFile, $targetFile, $options = array())
+    public static function Resize($sourceFile, $targetFile, $options = [])
     {
 
         if (!isset($options['width']))
@@ -152,7 +152,7 @@ class ImageConverter
      * @param type $targetFile
      * @param type $options
      */
-    private static function ResizeGD($sourceFile, $targetFile, $options = array())
+    private static function ResizeGD($sourceFile, $targetFile, $options = [])
     {
 
         $width = $options['width'];
@@ -241,7 +241,7 @@ class ImageConverter
                 $dst_h = $sourceHeight;
                 $dst_w = $sourceWidth;
             }
-        } else if ($options['mode'] == 'force') {
+        } elseif ($options['mode'] == 'force') {
 
             // When ratio not fit, crop it - requires given width & height
             if ($width != 0 && $height != 0) {
@@ -312,7 +312,7 @@ class ImageConverter
      * @param type $targetFile
      * @param type $options
      */
-    private static function ResizeImageMagick($sourceFile, $targetFile, $options = array())
+    private static function ResizeImageMagick($sourceFile, $targetFile, $options = [])
     {
         $convertCommand = Yii::$app->getModule('file')->settings->get('imageMagickPath');
         $width = (int) $options['width'];

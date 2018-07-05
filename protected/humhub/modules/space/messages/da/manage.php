@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Remove from space' => '',
+    'Show all' => '',
     'The url contains illegal characters!' => '',
     'e.g. example for {baseUrl}/s/example' => '',
     'the default start page of this space for members' => '',

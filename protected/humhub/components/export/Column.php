@@ -7,7 +7,7 @@
 
 namespace humhub\components\export;
 
-use yii\base\Object;
+use yii\base\BaseObject;
 
 /**
  * Column is the base class of all [[SpreadsheetExport]] column classes.
@@ -15,7 +15,7 @@ use yii\base\Object;
  * This class was originally developed by Paul Klimov <klimov.paul@gmail.com> and his
  * project csv-grid (https://github.com/yii2tech/csv-grid).
  */
-class Column extends Object
+class Column extends BaseObject
 {
     /**
      * @var SpreadsheetExport the grid view object that owns this column.

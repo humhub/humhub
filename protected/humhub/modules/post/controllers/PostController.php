@@ -8,10 +8,10 @@
 
 namespace humhub\modules\post\controllers;
 
+use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\post\models\Post;
 use humhub\modules\post\permissions\CreatePost;
-use humhub\modules\content\widgets\WallCreateContentForm;
 use Yii;
 
 /**
@@ -28,7 +28,7 @@ class PostController extends ContentContainerController
             return [];
         }
 
-        $post = new Post();
+        $post = new Post($this->contentContainer);
         $post->message = Yii::$app->request->post('message');
 
         return WallCreateContentForm::create($post, $this->contentContainer);
@@ -56,8 +56,7 @@ class PostController extends ContentContainerController
         }
 
         return $this->renderAjax('edit', [
-            'post' => $model,
-            'edited' => $edited
+            'post' => $model
         ]);
     }
 

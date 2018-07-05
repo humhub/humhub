@@ -53,7 +53,7 @@ class PreviewImage extends BaseConverter
     {
         if ($file) {
             return Html::encode($file->file_name);
-        } else if($this->file) {
+        } elseif($this->file) {
             return Html::encode($this->file->file_name);
         }
         return '';

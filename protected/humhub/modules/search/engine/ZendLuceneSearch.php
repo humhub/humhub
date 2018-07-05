@@ -8,6 +8,7 @@
 
 namespace humhub\modules\search\engine;
 
+use humhub\modules\search\commands\SearchController;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\libs\SearchResult;
 use humhub\modules\search\libs\SearchResultSet;
@@ -93,8 +94,8 @@ class ZendLuceneSearch extends Search
             }
         }
 
-        if (Yii::$app->request->isConsoleRequest) {
-            print '.';
+        if (Yii::$app->request->isConsoleRequest && Yii::$app->controller instanceof SearchController) {
+            print ".";
         }
 
         try {
@@ -141,7 +142,7 @@ class ZendLuceneSearch extends Search
         foreach (new \DirectoryIterator($indexPath) as $fileInfo) {
             if ($fileInfo->isDot())
                 continue;
-            unlink($indexPath . DIRECTORY_SEPARATOR . $fileInfo->getFilename());
+            FileHelper::unlink($indexPath . DIRECTORY_SEPARATOR . $fileInfo->getFilename());
         }
 
         $this->index = null;

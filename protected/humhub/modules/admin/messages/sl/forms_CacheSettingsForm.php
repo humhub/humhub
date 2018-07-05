@@ -23,4 +23,5 @@ return [
     'File' => '',
     'No caching' => '',
     'PHP APC(u) Extension missing - Type not available!' => '',
+    'Redis' => '',
 ];

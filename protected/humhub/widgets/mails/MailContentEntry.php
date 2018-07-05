@@ -9,7 +9,7 @@
 namespace humhub\widgets\mails;
 
 use Yii;
-use humhub\widgets\RichText;
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\components\rendering\ViewPathRenderer;
 use humhub\components\rendering\Viewable;
 use humhub\modules\content\interfaces\ContentOwner;
@@ -58,15 +58,15 @@ class MailContentEntry extends \yii\base\Widget
 
         if (is_string($this->content)) {
             $content = $this->content;
-        } else if ($this->content instanceof Viewable) {
+        } elseif ($this->content instanceof Viewable) {
             try {
                 $renderer = new ViewPathRenderer(['parent' => true, 'subPath' => 'mail']);
                 $content =  $renderer->render($this->content);
             } catch (\yii\base\ViewNotFoundException $e) {
                 Yii::error($e);
             }
-        } else if ($this->content instanceof \humhub\modules\content\interfaces\ContentOwner) {
-            $content = RichText::widget(['text' => $this->content->getContentDescription(), 'minimal' => true]);
+        } elseif ($this->content instanceof ContentOwner) {
+            $content = RichText::preview($this->content->getContentDescription());
             if(!$this->originator) {
                 $this->originator = $this->content->content->createdBy;
             }
@@ -80,7 +80,5 @@ class MailContentEntry extends \yii\base\Widget
                     'isComment' => $this->isComment,
         ]);
     }
-
 }
-
 ?>

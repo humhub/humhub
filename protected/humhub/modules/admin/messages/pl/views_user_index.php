@@ -17,14 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Actions' => '',
-    'Group Manager' => '',
     'Send invite' => '',
-    'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
     'Add new user' => 'Dodaj nowego użytkownika',
-    'Last login' => 'Ostatnie logowanie',
     'Overview' => 'Przegląd',
     'Settings' => 'Ustawienia',
     'Users' => 'Użytkownicy',
-    'never' => 'nigdy',
 ];

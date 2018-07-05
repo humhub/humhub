@@ -19,12 +19,10 @@
 return [
     'Add Groups...' => '',
     'Select Groups' => '',
-    'Become this user' => 'Bli denna användare',
     'Delete' => 'Ta bort',
     'Disabled' => 'Avaktiverad',
     'Enabled' => 'Aktiverad',
     'Save' => 'Spara',
     'Unapproved' => 'Icke godkänd',
     'User not found!' => 'Användaren hittades inte!',
-    'You cannot delete yourself!' => 'Du kan inte ta bort dig själv!',
 ];

@@ -18,12 +18,10 @@
  */
 return [
     'Add Groups...' => '',
-    'Become this user' => '',
     'Disabled' => '',
     'Enabled' => '',
     'Select Groups' => '',
     'Unapproved' => '',
-    'You cannot delete yourself!' => '',
     'Delete' => 'Изтрий',
     'Save' => 'Запази',
     'User not found!' => 'Потребителят не е намерен!',

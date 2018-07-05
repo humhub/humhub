@@ -23,6 +23,7 @@ return [
     'Delete profile image' => '',
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
+    'Name' => '',
     'Sign in' => '',
     'Sign in / up' => '',
     'Unknown user status!' => '',

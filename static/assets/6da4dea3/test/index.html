@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>jQuery-Timeago Test Suite</title>
+  <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.11.0.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+
+  <div id="main">
+    <h2>Short term</h2>
+
+    <p>You opened this page <time class="loaded timeago testShortTerm">(you shouldn't see this)</time>.</p>
+
+    <p>
+      This page was last modified <time class="modified timeago">sometime before
+      now (your browser might not support document.lastModified for local resources)</time>.
+    </p>
+
+    <h2>Long term</h2>
+
+    <p>
+      Jett was born
+      <abbr class="timeago testLongTerm" title="2008-02-27T00:23:00Z">(you shouldn't see this)</abbr>
+      [from Z].
+    </p>
+    <p>
+      Jett was born
+      <abbr class="timeago testLongTerm" title="2008-02-26T19:23:00-0500">(you shouldn't see this)</abbr>
+      [from -0500].
+    </p>
+    <p>
+      Logan was born
+      <abbr class="timeago testLongTerm" title="2005-06-17T23:42:00Z">(you shouldn't see this)</abbr>
+      [from Z].
+    </p>
+    <p>
+      Logan was born
+      <abbr class="timeago testLongTerm" title="2005-06-17T19:42:00-0400">(you shouldn't see this)</abbr>
+      [from -0400].
+    </p>
+    <p>
+      Ryan was born
+      <abbr class="timeago testLongTerm" title="1978-12-18T17:17:00Z">(you shouldn't see this)</abbr>
+      [from Z].
+    </p>
+    <p>
+      Ryan was born
+      <abbr class="timeago testLongTerm" title="1978-12-18T12:17:00-05:00">(you shouldn't see this)</abbr>
+      [from -0500].
+    </p>
+
+    <h2>Other formats</h2>
+
+    <p>Date only (abbr element): <abbr class="timeago" title="2008-02-26">(you shouldn't see this)</abbr>.</p>
+    <p>Date only (time element): <time class="timeago" datetime="2008-02-26">(you shouldn't see this)</time>.</p>
+    <p>Date only (friendly tooltip): <abbr id="testTooltip" class="timeago" title="2008-02-26">February 26th</abbr>.</p>
+    <p>Date only (default tooltip): <abbr id="defaultTooltip" class="timeago" title="2008-02-26"> </abbr>.</p>
+    <p>Timestsamp (with millis): <abbr class="timeago" title="1978-12-18T17:17:00.021Z">(you shouldn't see this)</abbr>.</p>
+
+    <p><time id="testTimeTitle" class="timeago" datetime="2012-05-07T10:06:02+02:00" title="May 10, 2012 10:06">May 10, 2012</time></p>
+    <p><time id="testTimeTitle2" class="timeago" datetime="2012-05-07T10:06:02+02:00">May 10, 2012</time></p>
+
+    <h2>Cutoff</h2>
+
+    <p>Date that is before a past cutoff: <abbr class="timeago cutoff doCutoffPast" title="1978-12-18">(this should be displayed)</abbr></p>
+
+    <p>Date that is after a past cutoff: <time class="timeago loaded cutoff dontCutoffPast">(you shouldn't see this)</time></p>
+
+    <p>Date that is past a future cutoff: <abbr class="timeago cutoff doCutoffFuture" title="2999-12-18">(this should be displayed)</abbr></p>
+
+    <p>Date that is before a future cutoff: <time class="timeago loaded cutoff dontCutoffFuture">(you shouldn't see this)</time></p>
+
+    <h2>Errors</h2>
+
+    <p>Bad (letters): <abbr class="bad timeago" title="bleh">(this should be displayed)</abbr>.</p>
+    <p>Bad (blank): <abbr class="bad timeago" title="">(this should be displayed)</abbr>.</p>
+    <p>Bad (missing): <abbr class="bad timeago">(this should be displayed)</abbr>.</p>
+
+    <h2>Parsing</h2>
+
+    <p>Ryan was born&#133;</p>
+    <ul>
+      <li><abbr id="testParsing1" class="todate" title="1978-12-18T17:17:00Z"></abbr> [from Z]</li>
+      <li><abbr id="testParsing2" class="todate" title="1978-12-18T17:17:00-00:00"></abbr> [from -00:00]</li>
+      <li><abbr id="testParsing3" class="todate" title="1978-12-18T12:17:00-05:00"></abbr> [from -05:00]</li>
+      <li><abbr id="testParsing4" class="todate" title="1978-12-18T12:17:00-0500"></abbr> [from -0500]</li>
+      <li><abbr id="testParsing5" class="todate" title="1978-12-19T02:17:00+09:00"></abbr> [from +09:00]</li>
+      <li><abbr id="testParsing6" class="todate" title="1978-12-19T02:17:00+0900"></abbr> [from +0900]</li>
+      <li><abbr id="testParsing7" class="todate" title="1978-12-18 17:17:00"></abbr> [from blank TZ]</li>
+      <li><abbr id="testParsing8" class="todate" title="1978-12-18 17:17:00.021Z"></abbr> [from Z with milliseconds]</li>
+      <li><abbr id="testParsing9" class="todate" title="1978-12-18 17:17:00.021432Z"></abbr> [from Z with microseconds]</li>
+      <li><abbr id="testParsing10" class="todate" title="1978-12-18 17:17:00.0Z"></abbr> [from Z with tenths of a second]</li>
+      <li><abbr id="testParsing11" class="todate" title="1978-12-18 17:17:00.02Z"></abbr> [from Z with hundreths of a second]</li>
+      <li><abbr id="testParsing12" class="todate" title="1978-12-19T02:17:00+09"></abbr> [from +09]</li>
+    </ul>
+
+    <h2>Wording</h2>
+
+    <ul>
+      <li><abbr id="testWording1" class="towords" title="-7200"></abbr> [-120 min]</li>
+      <li><abbr id="testWording2" class="towords" title="-60"></abbr> [-60 sec]</li>
+      <li><abbr id="testWording3" class="towords" title="-30"></abbr> [-30 sec]</li>
+      <li><abbr id="testWording4" class="towords" title="-1"></abbr> [-1 sec]</li>
+      <li><abbr id="testWording5" class="towords" title="0"></abbr> [0 sec]</li>
+      <li><abbr id="testWording6" class="towords" title="30"></abbr> [30 sec]</li>
+      <li><abbr id="testWording7" class="towords" title="45"></abbr> [45 sec]</li>
+      <li><abbr id="testWording8" class="towords" title="90"></abbr> [90 sec]</li>
+      <li><abbr id="testWording9" class="towords" title="120"></abbr> [120 sec]</li>
+      <li><abbr id="testWording10" class="towords" title="2700"></abbr> [45 min]</li>
+      <li><abbr id="testWording11" class="towords" title="5340"></abbr> [89 min]</li>
+      <li><abbr id="testWording12" class="towords" title="5400"></abbr> [90 min]</li>
+      <li><abbr id="testWording13" class="towords" title="7200"></abbr> [120 min]</li>
+      <li><abbr id="testWording14" class="towords" title="82800"></abbr> [1380 min]</li>
+      <li><abbr id="testWording15" class="towords" title="90000"></abbr> [25 hours]</li>
+      <li><abbr id="testWording16a" class="towords" title="147600"></abbr> [41 hours]</li>
+      <li><abbr id="testWording16b" class="towords" title="151200"></abbr> [42 hours]</li>
+      <li><abbr id="testWording16c" class="towords" title="172800"></abbr> [48 hours]</li>
+      <li><abbr id="testWording17" class="towords" title="2505600"></abbr> [696 hours]</li>
+      <li><abbr id="testWording18" class="towords" title="2592000"></abbr> [30 days]</li>
+      <li><abbr id="testWording19" class="towords" title="16416000"></abbr> [190 days]</li>
+      <li><abbr id="testWording20" class="towords" title="31622400"></abbr> [366 days]</li>
+      <li><abbr id="testWording21" class="towords" title="62640000"></abbr> [725 days]</li>
+      <li><abbr id="testWording22" class="towords" title="94608000"></abbr> [1095 days]</li>
+    </ul>
+
+    <h2>Settings</h2>
+
+    <ul>
+      <li><abbr id="testNumbersSettings1" class="tonumbers" title="120"></abbr> [2 min]</li>
+      <li><abbr id="testNumbersSettings2" class="tonumbers" title="540"></abbr> [9 min]</li>
+      <li><abbr id="testNumbersSettings3" class="tonumbers" title="600"></abbr> [10 min]</li>
+
+      <li><abbr id="testYoungOldSettings1" class="toyoungold" title="504576000"></abbr> [5840 days]</li>
+      <li><abbr id="testYoungOldSettings2" class="toyoungold" title="2018304000"></abbr> [23360 days]</li>
+
+      <li><abbr id="testNoSpaces1" class="nospaces" title="120"></abbr> [120 sec]</li>
+      <li><abbr id="testNullSpaces1" class="nullspaces" title="120"></abbr> [120 sec]</li>
+
+      <li><abbr id="testLatinSettings1" class="tolatin" title="-7200"></abbr> [-120 min]</li>
+      <li><abbr id="testLatinSettings2" class="tolatin" title="-60"></abbr> [-60 sec]</li>
+      <li><abbr id="testLatinSettings3" class="tolatin" title="-30"></abbr> [-30 sec]</li>
+      <li><abbr id="testLatinSettings4" class="tolatin" title="-1"></abbr> [-1 sec]</li>
+      <li><abbr id="testLatinSettings5" class="tolatin" title="0"></abbr> [0 sec]</li>
+      <li><abbr id="testLatinSettings6" class="tolatin" title="30"></abbr> [30 sec]</li>
+      <li><abbr id="testLatinSettings7" class="tolatin" title="45"></abbr> [45 sec]</li>
+      <li><abbr id="testLatinSettings8" class="tolatin" title="90"></abbr> [90 sec]</li>
+      <li><abbr id="testLatinSettings9" class="tolatin" title="120"></abbr> [120 sec]</li>
+      <li><abbr id="testLatinSettings10" class="tolatin" title="2700"></abbr> [45 min]</li>
+      <li><abbr id="testLatinSettings11" class="tolatin" title="5340"></abbr> [89 min]</li>
+      <li><abbr id="testLatinSettings12" class="tolatin" title="5400"></abbr> [90 min]</li>
+      <li><abbr id="testLatinSettings13" class="tolatin" title="7200"></abbr> [120 min]</li>
+      <li><abbr id="testLatinSettings14" class="tolatin" title="82800"></abbr> [1380 min]</li>
+      <li><abbr id="testLatinSettings15" class="tolatin" title="90000"></abbr> [25 hours]</li>
+      <li><abbr id="testLatinSettings16" class="tolatin" title="172800"></abbr> [48 hours]</li>
+      <li><abbr id="testLatinSettings17" class="tolatin" title="2505600"></abbr> [696 hours]</li>
+      <li><abbr id="testLatinSettings18" class="tolatin" title="2592000"></abbr> [30 days]</li>
+      <li><abbr id="testLatinSettings19" class="tolatin" title="16416000"></abbr> [190 days]</li>
+      <li><abbr id="testLatinSettings20" class="tolatin" title="31622400"></abbr> [366 days]</li>
+      <li><abbr id="testLatinSettings21" class="tolatin" title="94608000"></abbr> [1095 days]</li>
+
+      <li><abbr id="testRussianSettings1" class="torussian" title="-7200"></abbr> [-120 min]</li>
+      <li><abbr id="testRussianSettings2" class="torussian" title="-60"></abbr> [-60 sec]</li>
+      <li><abbr id="testRussianSettings3" class="torussian" title="-30"></abbr> [-30 sec]</li>
+      <li><abbr id="testRussianSettings4" class="torussian" title="-1"></abbr> [-1 sec]</li>
+      <li><abbr id="testRussianSettings5" class="torussian" title="0"></abbr> [0 sec]</li>
+      <li><abbr id="testRussianSettings6" class="torussian" title="30"></abbr> [30 sec]</li>
+      <li><abbr id="testRussianSettings7" class="torussian" title="45"></abbr> [45 sec]</li>
+      <li><abbr id="testRussianSettings8" class="torussian" title="90"></abbr> [90 sec]</li>
+      <li><abbr id="testRussianSettings9" class="torussian" title="120"></abbr> [120 sec]</li>
+      <li><abbr id="testRussianSettings10" class="torussian" title="2700"></abbr> [45 min]</li>
+      <li><abbr id="testRussianSettings11" class="torussian" title="5340"></abbr> [89 min]</li>
+      <li><abbr id="testRussianSettings12" class="torussian" title="5400"></abbr> [90 min]</li>
+      <li><abbr id="testRussianSettings13" class="torussian" title="7200"></abbr> [120 min]</li>
+      <li><abbr id="testRussianSettings14" class="torussian" title="82800"></abbr> [1380 min]</li>
+      <li><abbr id="testRussianSettings15" class="torussian" title="90000"></abbr> [25 hours]</li>
+      <li><abbr id="testRussianSettings16" class="torussian" title="172800"></abbr> [48 hours]</li>
+      <li><abbr id="testRussianSettings17" class="torussian" title="2505600"></abbr> [696 hours]</li>
+      <li><abbr id="testRussianSettings18" class="torussian" title="2592000"></abbr> [30 days]</li>
+      <li><abbr id="testRussianSettings19" class="torussian" title="16416000"></abbr> [190 days]</li>
+      <li><abbr id="testRussianSettings20" class="torussian" title="31622400"></abbr> [366 days]</li>
+      <li><abbr id="testRussianSettings21" class="torussian" title="94608000"></abbr> [1095 days]</li>
+
+      <li><abbr id="testMillisSettings1" class="tomillis" title="-7200"></abbr> [-120 min]</li>
+      <li><abbr id="testMillisSettings2" class="tomillis" title="-60"></abbr> [-60 sec]</li>
+      <li><abbr id="testMillisSettings3" class="tomillis" title="-30"></abbr> [-30 sec]</li>
+      <li><abbr id="testMillisSettings4" class="tomillis" title="-1"></abbr> [-1 sec]</li>
+      <li><abbr id="testMillisSettings5" class="tomillis" title="0"></abbr> [0 sec]</li>
+      <li><abbr id="testMillisSettings6" class="tomillis" title="30"></abbr> [30 sec]</li>
+      <li><abbr id="testMillisSettings7" class="tomillis" title="45"></abbr> [45 sec]</li>
+      <li><abbr id="testMillisSettings8" class="tomillis" title="90"></abbr> [90 sec]</li>
+      <li><abbr id="testMillisSettings9" class="tomillis" title="120"></abbr> [120 sec]</li>
+    </ul>
+
+    <h2>Do Not Allow Future</h2>
+
+    <ul>
+      <li><abbr id="testAllowFutureFalse1" class="doNotAllowFuture" title="2012-01-01T09:24:17Z">(you shouldn't see this)</abbr></li>
+    </ul>
+
+    <h2>Do Not Allow Past</h2>
+
+    <ul>
+      <li><abbr id="testAllowPastFalse1" class="doNotAllowPast" title="2008-01-01T09:24:17Z">(you shouldn't see this)</abbr></li>
+      <li><abbr id="testAllowPastAndFutureFalse" title="2008-01-01T09:24:17Z"></abbr></li>
+    </ul>
+
+    <h2>Disposal</h2>
+    <p><abbr class="disposal disposed"></abbr></p>
+    <p><abbr class="disposal notDisposed"></abbr></p>
+  </div>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="http://code.jquery.com/qunit/qunit-1.11.0.js"></script>
+  <script src="../jquery.timeago.js"></script>
+  <script src="test_helpers.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    (function ($) {
+      function testElements(selector, test) {
+        var elements       = $(selector);
+        var numberOfTests  = elements.length;
+        var numberOfPasses = 0;
+
+        elements.each(function () {
+          if (test($(this))) { numberOfPasses++; }
+        });
+
+        return (numberOfTests === numberOfPasses);
+      }
+
+      function toWords() {
+        var string = $.timeago.inWords(parseInt(this.title, 10) * 1000);
+        $(this).text(string);
+      }
+
+      $.timeago.settings.allowFuture = true;
+
+      prepareDynamicDates();
+
+      $("abbr.timeago").not("abbr.cutoff").timeago();
+      $("time.timeago").timeago();
+
+      loadCutoffSetting();
+      $("abbr.cutoff").timeago();
+      unloadCutoffSetting();
+
+      var tooltip = $("#testTooltip").data("timeago");
+
+      $("abbr.todate").each(function () {
+        var date = $.timeago.parse(this.title);
+        $(this).text(date.toUTCString());
+      });
+
+      $("abbr.towords").each(toWords);
+
+      loadNumbers();
+      $("abbr.tonumbers").each(toWords);
+      unloadNumbers();
+
+      loadDoNotAllowFuture();
+      $("abbr.doNotAllowFuture").timeago();
+      unloadDoNotAllowFuture();
+
+      loadDoNotAllowPast();
+      $("abbr.doNotAllowPast").timeago();
+      unloadDoNotAllowPast();
+
+      setupDisposal();
+
+      loadYoungOldYears();
+      $("abbr.toyoungold").each(toWords);
+
+      loadNoSpaces();
+      $("abbr.nospaces").each(toWords);
+
+      loadNullSpaces();
+      $("abbr.nullspaces").each(toWords);
+
+      loadPigLatin();
+      $("abbr.tolatin").each(toWords);
+
+      loadRussian();
+      $("abbr.torussian").each(toWords);
+
+      loadMillis();
+      $("abbr.tomillis").each(toWords);
+
+      module("Valid date");
+
+      test("Text in abbr tag should be replaced", function () {
+        ok(testElements("abbr.timeago", function (element) {
+          return (element.html() !== "(you shouldn't see this)");
+        }), "All text was replaced");
+      });
+
+      test("Text in time tag should be replaced", function () {
+        ok(testElements("time.timeago", function (element) {
+          return (element.html() !== "(you shouldn't see this)");
+        }), "All text was replaced");
+      });
+
+      module("Invalid date");
+
+      test("Text in abbr should not be replaced", function () {
+        ok(testElements("abbr.bad", function (element) {
+          return (element.html() === "(this should be displayed)");
+        }), "No text was replaced");
+      });
+
+      module("Short term");
+
+      test("Dates shorter than a minute should be replaced with short term text", function () {
+        ok(testElements("abbr.testShortTerm", function (element) {
+          return (element.html() === "less than a minute ago");
+        }), "All short term dates correctly parsed");
+      });
+
+      module("Long term");
+
+      test("Dates older than one year should contain the word 'year'", function () {
+        ok(testElements("abbr.testLongTerm", function (element) {
+          return (element.html().match(/year/));
+        }), "All long term dates correctly parsed");
+      });
+
+      module("Data object");
+
+      test("should set timeago data object", function () {
+        ok(tooltip, "data set");
+        ok(tooltip.datetime, "datetime set");
+      });
+
+      module("Cutoff");
+
+      test("should not change dates older than cutoff setting", function () {
+        ok(testElements("abbr.doCutoffPast", function (element) {
+          return (element.html() === "(this should be displayed)");
+        }), "Cutoff setting working fine");
+      });
+
+      test("should change dates newer than cutoff setting", function () {
+        ok(testElements("abbr.dontCutoffPast", function (element) {
+          return (element.html() === "less than a minute ago");
+        }), "Cutoff setting working fine");
+      });
+
+      test("should not change dates older than cutoff setting", function () {
+        ok(testElements("abbr.doCutoffFuture", function (element) {
+          return (element.html() === "(this should be displayed)");
+        }), "Cutoff setting working fine");
+      });
+
+      test("should change dates newer than cutoff setting", function () {
+        ok(testElements("abbr.dontCutoffFuture", function (element) {
+          return (element.html() === "less than a minute ago");
+        }), "Cutoff setting working fine");
+      });
+
+      module("Tooltip");
+
+      test("should set title to original text contents", function () {
+        ok($("#testTooltip").attr("title") === "February 26th", "correctly set");
+      });
+
+      test("should leave title alone if no text text content", function () {
+        ok($("#defaultTooltip").attr("title") === "2008-02-26", "correctly set");
+      });
+
+      test("should preserve title in time tags", function () {
+        ok(($("#testTimeTitle").attr('title') === "May 10, 2012 10:06"), "title preserved")
+      });
+
+      test("should set title in time tags without a title", function () {
+        ok(($("#testTimeTitle2").attr('title') === "May 10, 2012"), "title set")
+      });
+
+      module("Parsing");
+
+      // Note, different browsers behave slightly different
+      var correctMatch = /Mon, 18 Dec 1978 17:17:00 (GMT|UTC)/;
+
+      test("From Z", function () {
+        var time = $("#testParsing1");
+        ok((time.html().match(correctMatch)), "Incorrectly parsed " + time.attr("title"));
+      });
+
+      test("From -00:00", function () {
+        var time = $("#testParsing2");
+        ok((time.html().match(correctMatch)), "Incorrectly parsed " + time.attr("title"));
+      });
+
+      test("From -05:00", function () {
+        var time = $("#testParsing3");
+        ok((time.html().match(correctMatch)), "Incorrectly parsed " + time.attr("title"));
+      });
+
+      test("From -0500", function () {
+        var time = $("#testParsing4");
+        ok((time.html().match(correctMatch)), "Incorrectly parsed " + time.attr("title"));
+      });
+
+      test("From +09:00", function () {
+        var time = $("#testParsing5");
+        ok((time.html().match(correctMatch)), "Incorrectly parsed " + time.attr("title"));
+      });
+
+      test("From +0900", function () {
+        var time = $("#testParsing6");
+        ok((time.html().match(correctMatch)), "Incorrectly parsed " + time.attr("title"));
+      });
+
+      // We no longer support blank TZs. From ISO 8601: If no UTC relation
+      // information is given with a time representation, the time is assumed to
+      // be in local time. While it may be safe to assume local time when
+      // communicating in the same time zone, it is ambiguous when used in
+      // communicating across different time zones. It is usually preferable to
+      // indicate a time zone (zone designator) using the standard's notation.
+      //
+      // test("From blank TZ", function () {
+      //   var time = $("#testParsing7");
+      //   var correctMatch = /Mon, 18 Dec 1978 \d\d:17:00 (GMT|UTC)/;
+      //   ok((time.html().match(correctMatch)), "Incorrectly parsed " + time.attr("title"));
+      // });
+
+      test("From Z with milliseconds", function () {
+        var time = $("#testParsing8");
+        ok((time.html().match(correctMatch)), "Incorrectly parsed " + time.attr("title"));
+      });
+
+      test("From Z with microseconds", function () {
+        var time = $("#testParsing9");
+        ok((time.html().match(correctMatch)), "Incorrectly parsed " + time.attr("title"));
+      });
+
+      test("From Z with tenths of a second", function () {
+        var time = $("#testParsing10");
+        ok((time.html().match(correctMatch)), "Incorrectly parsed " + time.attr("title"));
+      });
+
+      test("From Z with hundreths of a second", function () {
+        var time = $("#testParsing11");
+        ok((time.html().match(correctMatch)), "Incorrectly parsed " + time.attr("title"));
+      });
+
+      test("From +09", function () {
+        var time = $("#testParsing12");
+        ok((time.html().match(correctMatch)), "Incorrectly parsed " + time.attr("title"));
+      });
+
+      module("Wording");
+
+      test("-120 min", function () {
+        ok(($("#testWording1").html() === "about 2 hours from now"), "Incorrectly parsed");
+      });
+
+      test("-60 sec", function () {
+        ok(($("#testWording2").html() === "about a minute from now"), "Incorrectly parsed");
+      });
+
+      test("-30 sec", function () {
+        ok(($("#testWording3").html() === "less than a minute from now"), "Incorrectly parsed");
+      });
+
+      test("-1 sec", function () {
+        ok(($("#testWording4").html() === "less than a minute from now"), "Incorrectly parsed");
+      });
+
+      test("0 sec", function () {
+        ok(($("#testWording5").html() === "less than a minute ago"), "Incorrectly parsed");
+      });
+
+      test("30 sec", function () {
+        ok(($("#testWording6").html() === "less than a minute ago"), "Incorrectly parsed");
+      });
+
+      test("45 sec", function () {
+        ok(($("#testWording7").html() === "about a minute ago"), "Incorrectly parsed");
+      });
+
+      test("90 sec", function () {
+        ok(($("#testWording8").html() === "2 minutes ago"), "Incorrectly parsed");
+      });
+
+      test("120 sec", function () {
+        ok(($("#testWording9").html() === "2 minutes ago"), "Incorrectly parsed");
+      });
+
+      test("45 min", function () {
+        ok(($("#testWording10").html() === "about an hour ago"), "Incorrectly parsed");
+      });
+
+      test("89 min", function () {
+        ok(($("#testWording11").html() === "about an hour ago"), "Incorrectly parsed");
+      });
+
+      test("90 min", function () {
+        ok(($("#testWording12").html() === "about 2 hours ago"), "Incorrectly parsed");
+      });
+
+      test("120 min", function () {
+        ok(($("#testWording13").html() === "about 2 hours ago"), "Incorrectly parsed");
+      });
+
+      test("1380 min", function () {
+        ok(($("#testWording14").html() === "about 23 hours ago"), "Incorrectly parsed");
+      });
+
+      test("25 hours", function () {
+        ok(($("#testWording15").html() === "a day ago"), "Incorrectly parsed");
+      });
+
+      test("41 hour", function () {
+        ok(($("#testWording16a").html() === "a day ago"), "Incorrectly parsed");
+      });
+      test("42 hours", function () {
+        ok(($("#testWording16b").html() === "2 days ago"), "Incorrectly parsed");
+      });
+      test("48 hours", function () {
+        ok(($("#testWording16c").html() === "2 days ago"), "Incorrectly parsed");
+      });
+
+      test("696 hours", function () {
+        ok(($("#testWording17").html() === "29 days ago"), "Incorrectly parsed");
+      });
+
+      test("30 days", function () {
+        ok(($("#testWording18").html() === "about a month ago"), "Incorrectly parsed");
+      });
+
+      test("190 days", function () {
+        ok(($("#testWording19").html() === "6 months ago"), "Incorrectly parsed");
+      });
+
+      test("366 days", function () {
+        ok(($("#testWording20").html() === "about a year ago"), "Incorrectly parsed");
+      });
+
+      test("725 days", function () {
+        ok(($("#testWording21").html() === "2 years ago"), "Incorrectly parsed");
+      });
+
+      test("1095 days", function () {
+        ok(($("#testWording22").html() === "3 years ago"), "Incorrectly parsed");
+      });
+
+      module("Settings");
+
+      test("suffixFromNow", function () {
+        ok($("#testLatinSettings1").html().match(/omNow-fray$/), "Settings correctly applied");
+        ok($("#testMillisSettings1").html().match(/from now$/), "Settings correctly applied");
+      });
+
+      test("suffixAgo", function () {
+        ok($("#testLatinSettings5").html().match(/ago-hay$/), "Settings correctly applied");
+        ok($("#testRussianSettings5").html().match(/назад$/), "Settings correctly applied");
+        ok($("#testMillisSettings5").html().match(/ago/), "Settings correctly applied");
+      });
+
+      test("prefixFromNow", function () {
+        ok($("#testRussianSettings2").html().match(/^через/), "Settings correctly applied");
+      });
+
+      test("seconds", function () {
+        ok($("#testLatinSettings5").html().match(/^ess-lay an-thay a-hay inute-may/), "Settings correctly applied");
+        ok($("#testRussianSettings5").html().match(/^меньше минуты/), "Settings correctly applied");
+        ok($("#testMillisSettings5").html().match(/0 milliseconds/), "Settings correctly applied");
+      });
+
+      test("minute", function () {
+        ok($("#testLatinSettings7").html().match(/^about-hay a-hay inute-may/), "Settings correctly applied");
+        ok($("#testRussianSettings7").html().match(/^минуту/), "Settings correctly applied");
+        ok($("#testMillisSettings7").html().match(/45000 milliseconds/), "Settings correctly applied");
+      });
+
+      test("minutes", function () {
+        ok($("#testLatinSettings8").html().match(/^2 inutes-may/), "Settings correctly applied");
+        ok($("#testRussianSettings8").html().match(/^2 минуты/), "Settings correctly applied");
+        // TODO: Test "минута" and "минут"
+      });
+
+      test("hour", function () {
+        ok($("#testLatinSettings10").html().match(/^about-hay an-hay hour-hay/), "Settings correctly applied");
+        ok($("#testRussianSettings10").html().match(/^час/), "Settings correctly applied");
+      });
+
+      test("hours", function () {
+        ok($("#testLatinSettings12").html().match(/^about-hay 2 hours-hay/), "Settings correctly applied");
+        ok($("#testRussianSettings12").html().match(/^2 часа/), "Settings correctly applied");
+        // TODO: Test "час" and "часов"
+      });
+
+      test("day", function () {
+        ok($("#testLatinSettings15").html().match(/^a-hay ay-day/), "Settings correctly applied");
+        ok($("#testRussianSettings15").html().match(/^день/), "Settings correctly applied");
+      });
+
+      test("days", function () {
+        ok($("#testLatinSettings16").html().match(/^2 ays-day/), "Settings correctly applied");
+        ok($("#testRussianSettings16").html().match(/^2 дня/), "Settings correctly applied");
+        ok($("#testRussianSettings17").html().match(/^29 дней/), "Settings correctly applied");
+        // TODO: Test "день"
+      });
+
+      test("month", function () {
+        ok($("#testLatinSettings18").html().match(/^about-hay a-hay onth-may/), "Settings correctly applied");
+        ok($("#testRussianSettings18").html().match(/^месяц/), "Settings correctly applied");
+      });
+
+      test("months", function () {
+        ok($("#testLatinSettings19").html().match(/^6 onths-may/), "Settings correctly applied");
+        ok($("#testRussianSettings19").html().match(/^6 месяцев/), "Settings correctly applied");
+        // TODO: Test "месяца" and "месяц"
+      });
+
+      test("year", function () {
+        ok($("#testLatinSettings20").html().match(/^about-hay a-hay ear-yay/), "Settings correctly applied");
+        ok($("#testRussianSettings20").html().match(/^год/), "Settings correctly applied");
+      });
+
+      test("years", function () {
+        ok($("#testYoungOldSettings1").html().match(/^16 young years/), "Settings correctly applied");
+        ok($("#testYoungOldSettings2").html().match(/^64 old years/), "Settings correctly applied");
+        ok($("#testLatinSettings21").html().match(/^3 years-yay/), "Settings correctly applied");
+        ok($("#testRussianSettings21").html().match(/^3 года/), "Settings correctly applied");
+        // TODO: Test "год" and "лет"
+      });
+
+      test("numbers", function () {
+        ok($("#testNumbersSettings1").html().match(/^two minutes/), "Settings correctly applied");
+        ok($("#testNumbersSettings2").html().match(/^nine minutes/), "Settings correctly applied");
+        ok($("#testNumbersSettings3").html().match(/^10 minutes/), "Settings correctly applied");
+      });
+
+      test("wordSeparator", function () {
+        ok($("#testNoSpaces1").html().match(/^2minutesago$/), "Settings correctly applied");
+        ok($("#testNullSpaces1").html().match(/^2minutesago$/), "Settings correctly applied");
+      });
+
+      module("Allow Future and Past");
+
+      // if allowFuture is false, then a minute into the future is actually reported as a minute in the past.
+      // we did not want to alter the current behavior and break backwards compatability
+      test("allow future false with a future date moves time backwards", function () {
+        equal($("#testAllowFutureFalse1").html(), "2 years ago");
+      });
+
+      test("allow future false with a future date moves time backwards", function () {
+        equal($("#testAllowPastFalse1").html(), "in the past");
+      });
+
+      test("throws if allowPast and allowFuture are both false", function () {
+        // setup
+        var origAllowFuture = $.timeago.settings.allowFuture;
+        var origAllowPast = $.timeago.settings.allowPast;
+        $.timeago.settings.allowFuture = false;
+        $.timeago.settings.allowPast = false;
+
+        try {
+          throws(function () {
+            $("#testAllowPastAndFutureFalse").timeago();
+          });
+        } finally {
+          // teardown
+          $.timeago.settings.allowFuture = origAllowFuture;
+          $.timeago.settings.allowPast = origAllowPast;
+        }
+      });
+
+      module("Disposal");
+
+      asyncTest("disposal", function() {
+        var disposed = $(".disposal.disposed");
+        var active = $(".disposal.notDisposed");
+        disposed.timeago('dispose');
+        var initialTime_disposedTimeago = disposed.html();
+        var initialTime_activeTimeago = active.html();
+
+        expect(2);
+        setTimeout(function() {
+          var updatedTime_disposedTimeago = disposed.html();
+          var updatedTime_activeTimeago = active.html();
+
+          ok(initialTime_disposedTimeago === updatedTime_disposedTimeago, "A disposed timeago didn't get updated");
+          ok(initialTime_activeTimeago !== updatedTime_activeTimeago, "A non-disposed timeago continued to be updated");
+
+          // Dispose still-active timeago
+          active.timeago('dispose');
+          resetRefreshMillis();
+          start();
+        }, 50);
+      });
+    })(jQuery);
+  </script>
+</body>
+</html>

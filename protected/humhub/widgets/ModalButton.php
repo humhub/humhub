@@ -45,6 +45,11 @@ class ModalButton extends Button
         return $this->action('ui.modal.post', $url)->loader(false);
     }
 
+    public function show($target)
+    {
+        return $this->action('ui.modal.show', null, $target);
+    }
+
     /**
      * @param null $url
      * @param null $text

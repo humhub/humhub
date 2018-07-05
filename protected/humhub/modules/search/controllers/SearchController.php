@@ -111,7 +111,7 @@ class SearchController extends Controller
         $keyword = Yii::$app->request->get('keyword', '');
 
         $searchResultSet = Yii::$app->search->find($keyword, [
-            'model' => [User::className(), Space::className()],
+            'model' => [User::class, Space::class],
             'pageSize' => 10
         ]);
 

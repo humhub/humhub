@@ -178,6 +178,14 @@ humhub.module('client', function (module, require, $) {
         return ajax(url, cfg, originalEvent);
     };
 
+    var json = function (url, cfg, originalEvent) {
+        return new Promise(function(resolve, reject) {
+            get(url,cfg, originalEvent).then(function(response) {
+              resolve(response.data);
+            }).catch(reject)
+        });
+    };
+
     var ajax = function (url, cfg, originalEvent) {
 
         // support for ajax(url, event) and ajax(path, successhandler);
@@ -324,6 +332,7 @@ humhub.module('client', function (module, require, $) {
         reload: reload,
         submit: submit,
         init: init,
+        json: json,
         //upload: upload,
         Response: Response
     });

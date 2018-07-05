@@ -1,19 +1,25 @@
 <?php
 
+use humhub\modules\content\widgets\richtext\RichText;
 use yii\helpers\Html;
-use humhub\widgets\RichText;
 use humhub\modules\user\models\fieldtype\MarkdownEditor;
 use humhub\widgets\MarkdownView;
+
+/**
+ * @var $this \humhub\components\View
+ * @var $user \humhub\modules\user\models\User
+ */
+$categories = $user->profile->getProfileFieldCategories();
 ?>
 <div class="panel panel-default">
     <div
-        class="panel-heading"><?php echo Yii::t('UserModule.views_profile_about', '<strong>About</strong> this user'); ?></div>
+        class="panel-heading"><?= Yii::t('UserModule.views_profile_about', '<strong>About</strong> this user'); ?></div>
     <div class="panel-body">
         <?php $firstClass = "active"; ?>
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-            <?php foreach ($user->profile->getProfileFieldCategories() as $category): ?>
-                <li class="<?php echo $firstClass; ?>">
-                    <a href="#profile-category-<?php echo $category->id; ?>" data-toggle="tab"><?php echo Html::encode(Yii::t($category->getTranslationCategory(), $category->title)); ?></a>
+            <?php foreach ($categories as $category): ?>
+                <li class="<?= $firstClass; ?>">
+                    <a href="#profile-category-<?= $category->id; ?>" data-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)); ?></a>
                 </li>
                 <?php
                 $firstClass = "";
@@ -22,20 +28,20 @@ use humhub\widgets\MarkdownView;
         </ul>
         <?php $firstClass = "active"; ?>
         <div class="tab-content">
-            <?php foreach ($user->profile->getProfileFieldCategories() as $category): ?>
+            <?php foreach ($categories as $category): ?>
                 <div class="tab-pane <?php
                 echo $firstClass;
                 $firstClass = "";
-                ?>" id="profile-category-<?php echo $category->id; ?>">
+                ?>" id="profile-category-<?= $category->id; ?>">
                     <form class="form-horizontal" role="form">
                         <?php foreach ($user->profile->getProfileFields($category) as $field) : ?>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">
-                                    <?php echo Html::encode(Yii::t($field->getTranslationCategory(), $field->title)); ?>
+                                    <?= Html::encode(Yii::t($field->getTranslationCategory(), $field->title)); ?>
                                 </label>
                                 <?php if (strtolower($field->title) == 'about'): ?>
                                     <div class="col-sm-9">
-                                        <p class="form-control-static"><?php echo RichText::widget(['text' => $field->getUserValue($user, true)]); ?></p>
+                                        <p class="form-control-static"><?= RichText::output($field->getUserValue($user, true)); ?></p>
                                     </div>
                                 <?php else: ?>
                                     <div class="col-sm-9">
@@ -44,7 +50,7 @@ use humhub\widgets\MarkdownView;
                                                 <?= MarkdownView::widget(['markdown' => $field->getUserValue($user, false)]); ?>
                                             </p>
                                         <?php else: ?>
-                                            <p class="form-control-static"><?php echo $field->getUserValue($user, false); ?></p>                     
+                                            <p class="form-control-static"><?= $field->getUserValue($user, false); ?></p>
                                         <?php endif; ?>
                                     </div>
                                 <?php endif; ?>

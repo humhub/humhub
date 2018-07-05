@@ -35,5 +35,4 @@ class Request extends \yii\web\Request
             $this->cookieValidationKey = 'installer';
         }
     }
-
 }

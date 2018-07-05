@@ -8,6 +8,11 @@
 
 namespace humhub\modules\content\models;
 
+use humhub\components\behaviors\GUID;
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\content\components\ContentContainerModule;
+use humhub\modules\content\permissions\CreatePrivateContent;
+use humhub\modules\content\permissions\CreatePublicContent;
 use Yii;
 use humhub\modules\user\components\PermissionManager;
 use yii\base\Exception;
@@ -41,10 +46,12 @@ use yii\rbac\Permission;
  * @property string $stream_channel
  * @property integer $contentcontainer_id;
  * @property ContentContainerActiveRecord $container
- *
+ * @property User $createdBy
+ * @mixin PolymorphicRelation
+ * @mixin GUID
  * @since 0.5
  */
-class Content extends ContentDeprecated
+class Content extends ContentDeprecated implements Movable
 {
 
     /**
@@ -73,7 +80,7 @@ class Content extends ContentDeprecated
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
      */
     protected $_container = null;
-    
+
     /**
      * @var bool flag to disable the creation of default social activities like activity and notifications in afterSave() at content creation.
      * @deprecated since v1.2.3 use ContentActiveRecord::silentContentCreation instead.
@@ -87,11 +94,11 @@ class Content extends ContentDeprecated
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
-                'mustBeInstanceOf' => [ContentActiveRecord::className()],
+                'class' => PolymorphicRelation::class,
+                'mustBeInstanceOf' => [ContentActiveRecord::class],
             ],
             [
-                'class' => \humhub\components\behaviors\GUID::className(),
+                'class' => GUID::className(),
             ],
         ];
     }
@@ -373,6 +380,91 @@ class Content extends ContentDeprecated
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function move(ContentContainerActiveRecord $container = null, $force = false)
+    {
+        $move = $force || $this->canMove($container, $force);
+
+        if($move === true) {
+            static::getDb()->transaction(function($db) use ($container) {
+                $this->setContainer($container);
+                if($this->save()) {
+                    ContentTag::deleteContentRelations($this, false);
+                    $this->getModel()->afterMove();
+                }
+            });
+        }
+
+        return $move;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function canMove(ContentContainerActiveRecord $container = null)
+    {
+        $model = $this->getModel();
+        $isContentOwner = $model->isOwner();
+
+        $canModelBeMoved = $model->canMove();
+        if($canModelBeMoved !== true) {
+            return $canModelBeMoved;
+        }
+
+        // Check for legacy modules
+        if(!$model->getModuleId()) {
+            return Yii::t('ContentModule.base', 'This content type can\'t be moved due to a missing module-id setting.');
+        }
+
+        if(!$container) {
+            // The content type is movable and no container was provided
+            return true;
+        }
+
+        if($container->contentcontainer_id === $this->contentcontainer_id) {
+            return Yii::t('ContentModule.base', 'The content can\'t be moved to its current space.');
+        }
+
+        // Check if the related module is installed on the target space
+        if(!$container->moduleManager->isEnabled($model->getModuleId())) {
+            $module = Yii::$app->getModule($model->getModuleId());
+            $moduleName = ($module instanceof ContentContainerModule) ? $module->getContentContainerName($container) : $module->getName();
+            return Yii::t('ContentModule.base', 'The module {moduleName} is not enabled on the selected target space.', ['moduleName' => $moduleName]);
+        }
+
+        // Check if the current user is allowed to move this content at all
+        if(!$isContentOwner && !$this->container->can(ManageContent::class)) {
+            return Yii::t('ContentModule.base', 'You do not have the permission to move this content.');
+        }
+
+        // Check if the current user is allowed to move this content to the given target space
+        if(!$isContentOwner && !$container->can(ManageContent::class)) {
+            return Yii::t('ContentModule.base', 'You do not have the permission to move this content to the given space.');
+        }
+
+        // Check if the content owner is allowed to create content on the target space
+        $ownerPermissions = $container->getPermissionManager($this->createdBy);
+        if($this->isPrivate() && !$ownerPermissions->can(CreatePrivateContent::class)) {
+            return Yii::t('ContentModule.base', 'The author of this content is not allowed to create private content within the selected space.');
+        }
+
+        if($this->isPublic() && !$ownerPermissions->can(CreatePublicContent::class)) {
+            return Yii::t('ContentModule.base', 'The author of this content is not allowed to create public content within the selected space.');
+        }
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterMove(ContentContainerActiveRecord $container = null)
+    {
+        // TODO: Implement afterMove() method.
+    }
+
+    /**
      * Unarchives the content object
      */
     public function unarchive()
@@ -476,8 +568,8 @@ class Content extends ContentDeprecated
      * Adds a new ContentTagRelation for this content and the given $tag instance.
      *
      * @since 1.2.2
-     * @throws InvalidParamException if the provided tag is part of another ContentContainer
-     * @return boolean true if tag relation could be saved or is already assigned otherwise false
+     * @param ContentTag $tag
+     * @return bool if the provided tag is part of another ContentContainer
      */
     public function addTag(ContentTag $tag)
     {
@@ -493,6 +585,19 @@ class Content extends ContentDeprecated
 
         $contentRelation = new ContentTagRelation($this, $tag);
         return $contentRelation->save();
+    }
+
+    /**
+     * Adds the given ContentTag array to this content.
+     *
+     * @since 1.3
+     * @param $tags ContentTag[]
+     */
+    public function addTags($tags)
+    {
+        foreach ($tags as $tag) {
+            $this->addTag($tag);
+        }
     }
 
     /**
@@ -529,8 +634,7 @@ class Content extends ContentDeprecated
             return true;
         }
 
-        /* @var $model ContentActiveRecord */
-        $model = $this->getPolymorphicRelation();
+        $model = $this->getModel();
 
         // Check additional manage permission for the given container
         if ($model->hasManagePermission() && $this->getContainer() && $this->getContainer()->getPermissionManager($user)->can($model->getManagePermission())) {
@@ -544,6 +648,15 @@ class Content extends ContentDeprecated
         }
 
         return false;
+    }
+
+    /**
+     * @return ContentActiveRecord
+     * @since 1.3
+     */
+    public function getModel()
+    {
+        return $this->getPolymorphicRelation();
     }
 
     /**
@@ -594,7 +707,7 @@ class Content extends ContentDeprecated
         if ($user->isSystemAdmin() && Yii::$app->getModule('content')->adminCanViewAllContent) {
             return true;
         }
-        
+
         if ($this->isPrivate() && $this->getContainer() !== null && $this->getContainer()->canAccessPrivateContent($user)) {
             return true;
         }
@@ -629,5 +742,4 @@ class Content extends ContentDeprecated
     {
         $this->updateAttributes(['stream_sort_date' => new \yii\db\Expression('NOW()')]);
     }
-
 }

@@ -19,8 +19,7 @@ use Yii;
  */
 class Iso3166Codes
 {
-
-    public static $countries = array(
+    public static $countries = [
         'AF' => 'Afghanistan',
         'AX' => 'Aland Islands',
         'AL' => 'Albania',
@@ -272,9 +271,9 @@ class Iso3166Codes
         'YE' => 'Yemen',
         'ZM' => 'Zambia',
         'ZW' => 'Zimbabwe'
-    );
+    ];
 
-    public static $phoneCodes = array(
+    public static $phoneCodes = [
         "AF" => "93",
         "AX" => "358",
         "AL" => "355",
@@ -520,7 +519,7 @@ class Iso3166Codes
         "YE" => "967",
         "ZM" => "260",
         "ZW" => "263"
-    );
+    ];
 
     public static function country($code, $translate = true)
     {

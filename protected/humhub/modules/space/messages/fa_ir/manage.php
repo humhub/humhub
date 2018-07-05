@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Remove from space' => '',
+    'Show all' => '',
     'the default start page of this space for members' => '',
     'the default start page of this space for visitors' => '',
     'As owner of this space you can transfer this role to another administrator in space.' => 'بعنوان مدير اين انجمن شما مي توانيد اين نقش را به كس ديگري محول كنيد',

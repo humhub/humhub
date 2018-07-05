@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'This profile is no longer available!' => '',
     'This user account is not approved yet!' => '',
-    'User not found!' => '',
     'You need to login to view this user profile!' => '',
 ];

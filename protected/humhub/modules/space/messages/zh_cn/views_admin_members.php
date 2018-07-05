@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '-' => '',
     '<strong>Manage</strong> members' => '<strong>管理</strong> 成员',
     'Actions' => '动作',
-    'Remove' => '移除',
     'Role' => '角色',
     'never' => '从不',
 ];

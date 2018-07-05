@@ -71,11 +71,11 @@ class Text extends BaseType
      */
     public function rules()
     {
-        return array(
-            array(['default', 'minLength', 'maxLength', 'validator', 'regexp', 'regexpErrorMessage'], 'safe'),
-            array(['maxLength', 'minLength'], 'integer', 'min' => 1, 'max' => 255),
-            array(['default'], 'string', 'max' => 255),
-        );
+        return [
+            [['default', 'minLength', 'maxLength', 'validator', 'regexp', 'regexpErrorMessage'], 'safe'],
+            [['maxLength', 'minLength'], 'integer', 'min' => 1, 'max' => 255],
+            [['default'], 'string', 'max' => 255],
+        ];
     }
 
     /**
@@ -84,7 +84,7 @@ class Text extends BaseType
      * @param array $definition
      * @return Array Form Definition
      */
-    public function getFormDefinition($definition = array())
+    public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
                     get_class($this) => [
@@ -194,7 +194,7 @@ class Text extends BaseType
         if (!$raw && $this->validator == self::VALIDATOR_EMAIL) {
             return \yii\helpers\Html::a(\yii\helpers\Html::encode($value), 'mailto:' . $value);
         } elseif (!$raw && $this->validator == self::VALIDATOR_URL) {
-            return \yii\helpers\Html::a(\yii\helpers\Html::encode($value), $value, array('target' => '_blank'));
+            return \yii\helpers\Html::a(\yii\helpers\Html::encode($value), $value, ['target' => '_blank']);
         }
 
         return \yii\helpers\Html::encode($value);

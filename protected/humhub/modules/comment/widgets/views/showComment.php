@@ -2,10 +2,19 @@
 
 use humhub\libs\Html;
 use humhub\widgets\TimeAgo;
-use humhub\widgets\RichText;
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\file\widgets\ShowFiles;
 use humhub\modules\like\widgets\LikeLink;
+
+/* @var $deleteUrl string */
+/* @var $editUrl string */
+/* @var $loadUrl string */
+/* @var $user \humhub\modules\user\models\User */
+/* @var $canWrite bool */
+/* @var $canDelete bool */
+/* @var $createdAt string */
+/* @var $updatedAt string */
 ?>
 
 <div class="media" id="comment_<?= $comment->id; ?>"
@@ -56,7 +65,7 @@ use humhub\modules\like\widgets\LikeLink;
         <!-- class comment_edit_content required since v1.2 -->
         <div class="content comment_edit_content" id="comment_editarea_<?= $comment->id; ?>">
             <div id="comment-message-<?= $comment->id; ?>" class="comment-message" data-ui-markdown data-ui-show-more data-read-more-text="<?= Yii::t('CommentModule.widgets_views_showComment', 'Read full comment...') ?>">
-                <?= RichText::widget(['text' => $comment->message, 'record' => $comment, 'markdown' => true]); ?>
+                <?= RichText::output($comment->message, ['record' => $comment]); ?>
             </div>
             <?= ShowFiles::widget(['object' => $comment]); ?>
         </div>

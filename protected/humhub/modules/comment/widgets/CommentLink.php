@@ -8,6 +8,7 @@
 
 namespace humhub\modules\comment\widgets;
 
+use humhub\modules\comment\models\Comment;
 use Yii;
 
 /**
@@ -65,7 +66,7 @@ class CommentLink extends \yii\base\Widget
      */
     public function getCommentsCount()
     {
-        return \humhub\modules\comment\models\Comment::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey());
+        return Comment::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey());
     }
 
 }

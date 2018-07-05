@@ -262,7 +262,7 @@ class UserPicker extends \yii\base\Widget
         
         if($permission != null && $permission instanceof \humhub\libs\BasePermission) {
             $disabled = !$user->getPermissionManager()->can($permission);
-        } else if($permission != null) {
+        } elseif($permission != null) {
             $disabled = $permission;
         }
         

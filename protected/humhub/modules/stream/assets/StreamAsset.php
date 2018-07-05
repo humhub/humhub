@@ -28,14 +28,20 @@ class StreamAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
+        'js/humhub.stream.StreamEntry.js',
+        'js/humhub.stream.StreamRequest.js',
+        'js/humhub.stream.Stream.js',
+        'js/humhub.stream.wall.js',
+        'js/humhub.stream.SimpleStream.js',
         'js/humhub.stream.js',
     ];
-    
+
     /**
      * @inheritdoc
      */
     public $depends = [
-        'humhub\modules\content\assets\ContentAsset'
+        'humhub\modules\content\assets\ContentAsset',
+        'humhub\modules\ui\filter\assets\FilterAsset'
     ];
 
 }

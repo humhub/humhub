@@ -11,6 +11,7 @@ namespace humhub\widgets;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\Json;
 use yii\web\JsExpression;
 
 /**
@@ -23,9 +24,9 @@ class AjaxButton extends Widget
 
     public $beforeSend;
     public $success;
-    public $ajaxOptions = array();
-    public $htmlOptions = array();
-    public $label = "Unnamed";
+    public $ajaxOptions = [];
+    public $htmlOptions = [];
+    public $label = 'Unnamed';
     public $tag = 'button';
 
     public function init()
@@ -48,11 +49,11 @@ class AjaxButton extends Widget
             $this->ajaxOptions['data'] = new JsExpression("$('#{$this->htmlOptions['id']}').closest('form').serialize()");
         }
 
-        if (isset($this->ajaxOptions['beforeSend']) && !$this->ajaxOptions['beforeSend'] instanceof \yii\web\JsExpression) {
+        if (isset($this->ajaxOptions['beforeSend']) && !$this->ajaxOptions['beforeSend'] instanceof JsExpression) {
             $this->ajaxOptions['beforeSend'] = new JsExpression($this->ajaxOptions['beforeSend']);
         }
 
-        if (isset($this->ajaxOptions['success']) && !$this->ajaxOptions['success'] instanceof \yii\web\JsExpression) {
+        if (isset($this->ajaxOptions['success']) && !$this->ajaxOptions['success'] instanceof JsExpression) {
             $this->ajaxOptions['success'] = new JsExpression($this->ajaxOptions['success']);
         }
     }
@@ -61,13 +62,14 @@ class AjaxButton extends Widget
     {
         echo Html::tag($this->tag, $this->label, $this->htmlOptions);
 
-        if (isset($this->htmlOptions['return']) && $this->htmlOptions['return'])
+        if (isset($this->htmlOptions['return']) && $this->htmlOptions['return']) {
             $return = 'return true';
-        else
+        } else {
             $return = 'return false';
+        }
 
         $this->view->registerJs("$('#{$this->htmlOptions['id']}').click(function() {
-                $.ajax(" . \yii\helpers\Json::encode($this->ajaxOptions) . ");
+                $.ajax(" . Json::encode($this->ajaxOptions) . ");
                     {$return};
             });");
     }

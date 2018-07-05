@@ -16,6 +16,14 @@ humhub.module('util', function(module, require, $) {
             return $.isArray(obj);
         },
         isEmpty: function(obj) {
+            if(!obj) {
+                return true;
+            }
+
+            if(object.isArray(obj)) {
+                return obj.length <= 0;
+            }
+
             return $.isEmptyObject(obj);
         },
         isString: function(obj) {
@@ -26,6 +34,9 @@ humhub.module('util', function(module, require, $) {
         },
         isBoolean: function(obj) {
             return typeof obj === 'boolean';
+        },
+        defaultValue: function(obj, defaultValue) {
+            return object.isDefined(obj) ? obj : defaultValue;
         },
         resolve: function(obj, ns, init) {
             var result = obj;
@@ -40,6 +51,13 @@ humhub.module('util', function(module, require, $) {
                 }
             });
             return result;
+        },
+        swap: function swap(json){
+            var ret = {};
+            for(var key in json){
+                ret[json[key]] = key;
+            }
+            return ret;
         },
         isDefined: function(obj) {
             if(arguments.length > 1) {
@@ -81,14 +99,17 @@ humhub.module('util', function(module, require, $) {
                 if (callNow) func.apply(context, args);
             };
         },
-        inherits: function(Sub, Parent) {
+        inherits: function(Sub, Parent, options) {
             for(var i in Parent) {
-                Sub[i] = Parent[i];
+                if(!options || !options.excludeFields || options.excludeFields.indexOf(i) < 0) {
+                    Sub[i] = Parent[i];
+                }
             }
 
             Sub.prototype = Object.create(Parent.prototype);
             Sub._super = Parent.prototype;
-            Sub._superConst = Parent;
+            Sub._superConst = Parent; // Deprecated
+
             Sub.prototype.static = function(name) {
                 var staticField = Sub[name];
                 if(object.isFunction(staticField)) {
@@ -104,6 +125,7 @@ humhub.module('util', function(module, require, $) {
                     return staticField;
                 }
             };
+
             Sub.prototype.super = function() {
                 if(!Sub._super[arguments[0]]) {
                     throw new Error('Call of undefined method of super type: ' + arguments[0]);
@@ -118,6 +140,40 @@ humhub.module('util', function(module, require, $) {
                 }
                 return Sub._super[arguments[0]].apply(this, args);
             };
+        },
+        extendable: function(options) {
+
+            if(object.isFunction(options)) {
+                options = {init:options};
+            }
+
+            var extendableClass = options.init || function() {};
+
+            if(options.name) {
+                Object.defineProperty(extendableClass, "name", { value: options.name});
+            }
+
+            extendableClass.extend = function(init, name) {
+                if(object.isString(init)) {
+                    name = init;
+                    init = undefined;
+                }
+
+                init = init || function() {
+                    extendableClass.apply(this, arguments);
+                };
+
+                var Sub = object.extendable({
+                    init: init,
+                    name: name
+                });
+
+                object.inherits(Sub, extendableClass, {excludeFields: ['extend']});
+
+                return Sub;
+            };
+
+            return extendableClass;
         }
     };
 
@@ -162,10 +218,18 @@ humhub.module('util', function(module, require, $) {
             }
             return val.indexOf(suffix, val.length - suffix.length) !== -1;
         },
+        /* @deptecated use encode */
         htmlEncode: function(value) {
             return $('<div/>').text(value).html();
         },
+        encode: function(value) {
+            return $('<div/>').text(value).html();
+        },
+        /* @deptecated use decode */
         htmlDecode: function(value) {
+            return $('<div/>').html(value).text();
+        },
+        decode: function(value) {
             return $('<div/>').html(value).text();
         },
         template: function(tmpl, config) {
@@ -176,8 +240,28 @@ humhub.module('util', function(module, require, $) {
         }
     };
 
+    var array = {
+        move: function (arr, old_index, new_index) {
+            while (old_index < 0) {
+                old_index += arr.length;
+            }
+            while (new_index < 0) {
+                new_index += arr.length;
+            }
+            if (new_index >= arr.length) {
+                var k = new_index - arr.length;
+                while ((k--) + 1) {
+                    arr.push(undefined);
+                }
+            }
+            arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+            return arr; // for testing purposes
+        }
+    };
+
     module.export({
         object: object,
-        string: string
+        string: string,
+        array:array
     });
 });

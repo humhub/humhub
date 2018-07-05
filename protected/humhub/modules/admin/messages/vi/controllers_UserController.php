@@ -18,13 +18,11 @@
  */
 return [
     'Add Groups...' => '',
-    'Become this user' => '',
     'Disabled' => '',
     'Enabled' => '',
     'Save' => '',
     'Select Groups' => '',
     'Unapproved' => '',
-    'You cannot delete yourself!' => '',
     'Delete' => 'Xóa',
     'User not found!' => 'Không tìm thấy người dùng!',
 ];

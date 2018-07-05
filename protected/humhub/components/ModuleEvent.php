@@ -21,7 +21,7 @@ class ModuleEvent extends \yii\base\Event
     public function init()
     {
         parent::init();
-        if($this->module) {
+        if ($this->module) {
             $this->moduleId = $this->module->id;
         }
     }
@@ -31,11 +31,10 @@ class ModuleEvent extends \yii\base\Event
      */
     public function getModule()
     {
-        if(!$this->module && $this->moduleId) {
+        if (!$this->module && $this->moduleId) {
             $this->module = Yii::$app->moduleManager->getModule($this->moduleId);
         }
 
         return $this->module;
     }
-
 }

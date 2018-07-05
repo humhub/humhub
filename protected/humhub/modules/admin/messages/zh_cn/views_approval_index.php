@@ -18,7 +18,6 @@
  */
 return [
     'The following list contains all pending sign-ups and invites.' => '',
-    'Actions' => '动作',
     'Pending user approvals' => '待审核用户',
     'The following list contains all registered users awaiting an approval.' => '下面的列表包含等待审核的所有注册用户。',
 ];

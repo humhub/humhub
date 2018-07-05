@@ -8,15 +8,27 @@
 
 namespace humhub\modules\user\models;
 
-use Yii;
-use yii\base\Exception;
+use humhub\modules\search\interfaces\Searchable;
+use humhub\modules\search\events\SearchAddEvent;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\user\components\ActiveQueryUser;
-use humhub\modules\user\events\UserEvent;
+use humhub\modules\content\components\behaviors\SettingsBehavior;
+use humhub\modules\content\components\behaviors\CompatModuleManager;
+use humhub\modules\content\models\Content;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Space;
-use humhub\modules\content\models\Content;
-use humhub\modules\space\models\Membership;
+use humhub\modules\space\helpers\MembershipHelper;
+use humhub\modules\user\behaviors\ProfileController;
+use humhub\modules\user\behaviors\Followable;
+use humhub\modules\user\widgets\UserWall;
+use humhub\modules\user\authclient\Password as PasswordAuth;
+use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\user\events\UserEvent;
+use humhub\components\behaviors\GUID;
+use Yii;
+use yii\db\ActiveQuery;
+use yii\web\IdentityInterface;
+use yii\db\Expression;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "user".
@@ -40,7 +52,7 @@ use humhub\modules\space\models\Membership;
  * @property integer $contentcontainer_id
  * @property Profile $profile
  */
-class User extends ContentContainerActiveRecord implements \yii\web\IdentityInterface, \humhub\modules\search\interfaces\Searchable
+class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
 {
 
     /**
@@ -49,6 +61,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     const STATUS_DISABLED = 0;
     const STATUS_ENABLED = 1;
     const STATUS_NEED_APPROVAL = 2;
+    const STATUS_SOFT_DELETED = 3;
 
     /**
      * Visibility Modes
@@ -70,6 +83,11 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     const EVENT_CHECK_VISIBILITY = 'checkVisibility';
 
     /**
+     * @event UserEvent an event that is triggered when the user is soft deleted (without contents) and also before complete deletion.
+     */
+    const EVENT_BEFORE_SOFT_DELETE = 'beforeSoftDelete';
+
+    /**
      * A initial group for the user assigned while registration.
      * @var type
      */
@@ -79,6 +97,17 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      * @var boolean is system admin (cached)
      */
     private $_isSystemAdmin = null;
+
+    /**
+     * @inheritdoc
+     */
+    public $controllerBehavior = ProfileController::class;
+
+    /**
+     *
+     * @var type
+     */
+    public $defaultRoute = '/user/profile';
 
     /**
      * @inheritdoc
@@ -108,7 +137,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             [['language'], 'string', 'max' => 5],
             [['email'], 'unique'],
             [['email'], 'email'],
-            [['email'], 'string', 'max' => 254],
+            [['email'], 'string', 'max' => 150],
             [['email'], 'required', 'when' => function($model, $attribute) use ($userModule) {
                     return $userModule->emailRequired;
                 }],
@@ -143,7 +172,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
              * Replacement for old super_admin flag version
              */
             return $this->isSystemAdmin();
-        } else if ($name == 'profile') {
+        } elseif ($name == 'profile') {
             /**
              * Ensure there is always a related Profile Model also when it's
              * not really exists yet.
@@ -156,6 +185,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
             }
             return $profile;
         }
+
         return parent::__get($name);
     }
 
@@ -166,6 +196,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         $scenarios['editAdmin'] = ['username', 'email', 'status'];
         $scenarios['registration_email'] = ['username', 'email'];
         $scenarios['registration'] = ['username'];
+
         return $scenarios;
     }
 
@@ -194,14 +225,17 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
-        return array(
-            \humhub\components\behaviors\GUID::className(),
-            \humhub\modules\content\components\behaviors\SettingsBehavior::className(),
-            \humhub\modules\user\behaviors\Followable::className(),
-            \humhub\modules\user\behaviors\UserModelModules::className()
-        );
+        return [
+            GUID::class,
+            SettingsBehavior::class,
+            Followable::class,
+            CompatModuleManager::class
+        ];
     }
 
     public static function findIdentity($id)
@@ -217,7 +251,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     /**
      * @inheritdoc
      *
-     * @return \humhub\modules\content\components\ActiveQueryContent
+     * @return ActiveQueryUser|object
      */
     public static function find()
     {
@@ -251,7 +285,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * Returns all GroupUser relations of this user as ActiveQuery
-     * @return type
+     * @return \yii\db\ActiveQuery
      */
     public function getGroupUsers()
     {
@@ -260,7 +294,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * Returns all Group relations of this user as ActiveQuery
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getGroups()
     {
@@ -278,7 +312,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * Returns all GroupUser relations this user is a manager of as ActiveQuery.
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getManagerGroupsUser()
     {
@@ -287,25 +321,27 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * Returns all Groups this user is a maanger of as ActiveQuery.
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getManagerGroups()
     {
-        return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers', function($query) {
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])
+            ->via('groupUsers', function($query) {
                     $query->andWhere(['is_group_manager' => '1']);
-                });
+            });
     }
 
     /**
      * Returns all user this user is related as friend as ActiveQuery.
      * Returns null if the friendship module is deactivated.
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getFriends()
     {
         if (Yii::$app->getModule('friendship')->getIsEnabled()) {
-            return \humhub\modules\friendship\models\Friendship::getFriendsQuery($this);
+            return Friendship::getFriendsQuery($this);
         }
+
         return null;
     }
 
@@ -330,6 +366,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         if ($event->result['isVisible'] && $this->isActive()) {
             return true;
         }
+
         return false;
     }
 
@@ -339,24 +376,38 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function beforeDelete()
     {
-        // We don't allow deletion of users who owns a space - validate that
-        foreach (Membership::getUserSpaces($this->id, false) as $space) {
-            if ($space->isSpaceOwner($this->id)) {
-                throw new Exception('Tried to delete a user (' . $this->id . ') which is owner of a space (' . $space->id . ')!');
-            }
+        $this->softDelete();
+
+        if ($this->profile !== null) {
+            $this->profile->delete();
         }
 
-        // Disable all enabled modules
-        foreach ($this->getAvailableModules() as $moduleId => $module) {
-            if ($this->isModuleEnabled($moduleId)) {
-                $this->disableModule($moduleId);
-            }
+        return parent::beforeDelete();
+    }
+
+    /**
+     *
+     * @since 1.3
+     * @throws Exception
+     */
+    public function softDelete()
+    {
+        // Delete spaces which are owned by this user.
+        foreach (MembershipHelper::getOwnSpaces($this) as $space) {
+            $space->delete();
         }
 
-        // Delete profile image
+        $this->trigger(self::EVENT_BEFORE_SOFT_DELETE, new UserEvent(['user' => $this]));
+
+        if ($this->profile !== null) {
+            $this->profile->softDelete();
+        }
         $this->getProfileImage()->delete();
+        $this->getProfileBannerImage()->delete();
 
-        // Remove from search index
+        foreach ($this->moduleManager->getEnabled() as $module) {
+            $this->moduleManager->disable($module);
+        }
         Yii::$app->search->delete($this);
 
         // Cleanup related tables
@@ -364,24 +415,29 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         Follow::deleteAll(['user_id' => $this->id]);
         Follow::deleteAll(['object_model' => $this->className(), 'object_id' => $this->id]);
         Password::deleteAll(['user_id' => $this->id]);
-        Profile::deleteAll(['user_id' => $this->id]);
         GroupUser::deleteAll(['user_id' => $this->id]);
         Session::deleteAll(['user_id' => $this->id]);
 
-        return parent::beforeDelete();
+        $this->updateAttributes([
+            'email' => new Expression('NULL'),
+            'username' => 'deleted-' . $this->id,
+            'status' => User::STATUS_SOFT_DELETED
+        ]);
+
+        return true;
     }
 
     /**
      * Before Save Addons
      *
-     * @return type
+     * @return bool
      */
     public function beforeSave($insert)
     {
         if ($insert) {
 
             if ($this->auth_mode == '') {
-                $passwordAuth = new \humhub\modules\user\authclient\Password();
+                $passwordAuth = new PasswordAuth();
                 $this->auth_mode = $passwordAuth->getId();
             }
 
@@ -392,12 +448,12 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
                 }
             }
 
-            if ($this->status == "") {
+            if ($this->status == '') {
                 $this->status = self::STATUS_ENABLED;
             }
         }
 
-        if ($this->time_zone == "") {
+        if ($this->time_zone == '') {
             $this->time_zone = Yii::$app->settings->get('timeZone');
         }
 
@@ -406,8 +462,6 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
 
     /**
      * After Save Addons
-     *
-     * @return type
      */
     public function afterSave($insert, $changedAttributes)
     {
@@ -433,7 +487,8 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         if (Yii::$app->user->id == $this->id) {
             Yii::$app->user->setIdentity($user);
         }
-        return parent::afterSave($insert, $changedAttributes);
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     public function setUpApproved()
@@ -443,7 +498,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         if ($userInvite !== null) {
             // User was invited to a space
             if ($userInvite->source == Invite::SOURCE_INVITE) {
-                $space = \humhub\modules\space\models\Space::findOne(['id' => $userInvite->space_invite_id]);
+                $space = Space::findOne(['id' => $userInvite->space_invite_id]);
                 if ($space != null) {
                     $space->addMember($this->id);
                 }
@@ -454,7 +509,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         }
 
         // Auto Add User to the default spaces
-        foreach (\humhub\modules\space\models\Space::findAll(['auto_add_new_members' => 1]) as $space) {
+        foreach (Space::findAll(['auto_add_new_members' => 1]) as $space) {
             $space->addMember($this->id);
         }
     }
@@ -475,7 +530,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         $format = Yii::$app->settings->get('displayNameFormat');
 
         if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}')
-            $name = $this->profile->firstname . " " . $this->profile->lastname;
+            $name = $this->profile->firstname . ' ' . $this->profile->lastname;
 
         // Return always username as fallback
         if ($name == '' || $name == ' ')
@@ -509,6 +564,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         if (!$user) {
             return false;
         }
+
         return $user->id === $this->id;
     }
 
@@ -542,7 +598,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      */
     public function getWallOut()
     {
-        return \humhub\modules\user\widgets\UserWall::widget(['user' => $this]);
+        return UserWall::widget(['user' => $this]);
     }
 
     /**
@@ -569,7 +625,7 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
      * Returns an array of informations used by search subsystem.
      * Function is defined in interface ISearchable
      *
-     * @return Array
+     * @return array
      */
     public function getSearchAttributes()
     {
@@ -591,33 +647,19 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
         if (!$this->profile->isNewRecord) {
             foreach ($this->profile->getProfileFields() as $profileField) {
                 if ($profileField->searchable) {
-                    $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, true);
+                    $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, false);
                 }
             }
         }
 
-        $this->trigger(self::EVENT_SEARCH_ADD, new \humhub\modules\search\events\SearchAddEvent($attributes));
+        $this->trigger(self::EVENT_SEARCH_ADD, new SearchAddEvent($attributes));
 
         return $attributes;
     }
 
-    public function createUrl($route = null, $params = [], $scheme = false)
-    {
-        if ($route === null) {
-            $route = '/user/profile';
-        }
-
-        array_unshift($params, $route);
-        if (!isset($params['uguid'])) {
-            $params['uguid'] = $this->guid;
-        }
-
-        return \yii\helpers\Url::toRoute($params, $scheme);
-    }
-
     /**
      *
-     * @return type
+     * @return ActiveQuery
      */
     public function getSpaces()
     {
@@ -628,11 +670,11 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * @return type
+     * @return ActiveQuery
      */
     public function getHttpSessions()
     {
-        return $this->hasMany(\humhub\modules\user\models\Session::className(), ['user_id' => 'id']);
+        return $this->hasMany(Session::className(), ['user_id' => 'id']);
     }
 
     /**
@@ -650,11 +692,11 @@ class User extends ContentContainerActiveRecord implements \yii\web\IdentityInte
     }
 
     /**
-     * @return type
+     * @return ActiveQuery
      */
     public function getAuths()
     {
-        return $this->hasMany(\humhub\modules\user\models\Auth::className(), ['user_id' => 'id']);
+        return $this->hasMany(Auth::className(), ['user_id' => 'id']);
     }
 
     /**

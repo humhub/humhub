@@ -17,24 +17,21 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Content with attached files' => '',
     'Created by me' => '',
     'Filter' => '',
-    'Include archived posts' => '',
+    'Include archived content' => '',
     'Load more' => '',
     'No matches with your selected filters!' => '',
     'Nothing here yet!' => '',
-    'Only private posts' => '',
-    'Only public posts' => '',
-    'Posts only' => '',
-    'Posts with links' => '',
+    'Only private content' => '',
+    'Only public content' => '',
     'The content has been archived.' => '',
     'The content has been deleted.' => '',
     'The content has been unarchived.' => '',
     'Where I´m involved' => '',
+    'With file attachments' => '',
     'Your last edit state has been saved!' => '',
     'Back to stream' => 'ストリームに戻る',
     'Creation time' => '作成時間',
     'Last update' => '最後のアップデート',
-    'Sorting' => '並べ替え',
 ];

@@ -23,6 +23,10 @@ class Label extends BootstrapComponent
 {
 
     public $_sortOrder = 1000;
+    public $encode = true;
+
+    public $_link;
+    public $_action;
 
     public function sortOrder($sortOrder)
     {
@@ -31,11 +35,37 @@ class Label extends BootstrapComponent
     }
 
     /**
+     * Adds a data-action-click handler to the button.
+     * @param $handler
+     * @param null $url
+     * @param null $target
+     * @return static
+     */
+    public function action($handler, $url = null, $target = null)
+    {
+        $this->_link = Link::withAction($this->getText(), $handler, $url, $target);
+        return $this;
+    }
+
+    public function withLink($link)
+    {
+        if($link instanceof Link) {
+            $this->_link = $link;
+        }
+
+        return $this;
+    }
+
+    /**
      * @return string renders and returns the actual html element by means of the current settings
      */
     public function renderComponent()
     {
-        return Html::tag('span', $this->getText(), $this->htmlOptions);
+        $result = Html::tag('span', $this->getText(), $this->htmlOptions);
+        if($this->_link) {
+            $result = (string) $this->_link->setText($result);
+        }
+        return $result;
     }
 
     /**
@@ -54,17 +84,23 @@ class Label extends BootstrapComponent
         return 'label-'.$type;
     }
 
+    public function getWidgetOptions()
+    {
+        $options = parent::getWidgetOptions();
+        $options['_link'] = $this->_link;
+        return $options;
+    }
+
     public static function sort(&$labels)
     {
         usort($labels, function ($a, $b) {
             if ($a->_sortOrder == $b->_sortOrder) {
                 return 0;
-            } else
-                if ($a->_sortOrder < $b->_sortOrder) {
-                    return - 1;
-                } else {
-                    return 1;
-                }
+            } elseif ($a->_sortOrder < $b->_sortOrder) {
+                return - 1;
+            } else {
+                return 1;
+            }
         });
 
         return $labels;

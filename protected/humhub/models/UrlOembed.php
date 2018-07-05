@@ -8,6 +8,10 @@
 
 namespace humhub\models;
 
+use yii\base\InvalidParamException;
+use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\db\ActiveRecord;
 use Yii;
 
 /**
@@ -16,7 +20,7 @@ use Yii;
  * @property string $url
  * @property string $preview
  */
-class UrlOembed extends \yii\db\ActiveRecord
+class UrlOembed extends ActiveRecord
 {
 
     /**
@@ -63,7 +67,7 @@ class UrlOembed extends \yii\db\ActiveRecord
         $url = trim($url);
 
         // Check if the given URL has OEmbed Support
-        if (UrlOembed::HasOEmbedSupport($url)) {
+        if (UrlOembed::hasOEmbedSupport($url)) {
 
             // Lookup Cached OEmebed Item from Database
             $urlOembed = UrlOembed::findOne(['url' => $url]);
@@ -107,24 +111,24 @@ class UrlOembed extends \yii\db\ActiveRecord
     {
         $urlOembed = new UrlOembed();
         $urlOembed->url = $url;
-        $html = "";
+        $html = '';
 
-        if ($urlOembed->getProviderUrl() != "") {
+        if ($urlOembed->getProviderUrl() != '') {
             // Build OEmbed Preview
             $jsonOut = UrlOembed::fetchUrl($urlOembed->getProviderUrl());
-            if ($jsonOut != ""  && $jsonOut != "Unauthorized") {
+            if ($jsonOut != ''  && $jsonOut != 'Unauthorized') {
                 try {
-                    $data = \yii\helpers\Json::decode($jsonOut);
+                    $data = Json::decode($jsonOut);
                     if (isset($data['html']) && isset($data['type']) && ($data['type'] === "video" || $data['type'] === 'rich' || $data['type'] === 'photo')) {
-                        $html = "<div data-guid='".uniqid('oembed-')."' data-richtext-feature class='oembed_snippet' data-url='" . \yii\helpers\Html::encode($url) . "'>" . $data['html'] . "</div>";
+                        $html = "<div data-guid='".uniqid('oembed-')."' data-richtext-feature class='oembed_snippet' data-url='" . Html::encode($url) . "'>" . $data['html'] . "</div>";
                     }
-                } catch (\yii\base\InvalidParamException $ex) {
+                } catch (InvalidParamException $ex) {
                     Yii::warning($ex->getMessage());
                 }
             }
         }
 
-        if ($html != "") {
+        if ($html != '') {
             $urlOembed->preview = $html;
             $urlOembed->save();
         }
@@ -142,7 +146,7 @@ class UrlOembed extends \yii\db\ActiveRecord
                 return str_replace("%url%", urlencode($this->url), $providerAPI);
             }
         }
-        return "";
+        return '';
     }
 
     /**
@@ -152,7 +156,7 @@ class UrlOembed extends \yii\db\ActiveRecord
      *
      * @return boolean
      */
-    public static function HasOEmbedSupport($url)
+    public static function hasOEmbedSupport($url)
     {
         foreach (UrlOembed::getProviders() as $providerBaseUrl => $providerAPI) {
             if (strpos($url, $providerBaseUrl) !== false) {
@@ -176,9 +180,11 @@ class UrlOembed extends \yii\db\ActiveRecord
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 15);
 
-        // Not available when open_basedir is set.
-        @curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-
+        // Not available when open_basedir or safe_mode is set.
+        if (!function_exists('ini_get') || !ini_get('open_basedir') || !ini_get('safe_mode')) {
+            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        }
+        
         if (Yii::$app->settings->get('proxy.enabled')) {
             curl_setopt($curl, CURLOPT_PROXY, Yii::$app->settings->get('proxy.server'));
             curl_setopt($curl, CURLOPT_PROXYPORT, Yii::$app->settings->get('proxy.port'));
@@ -208,8 +214,8 @@ class UrlOembed extends \yii\db\ActiveRecord
     public static function getProviders()
     {
         $providers = Yii::$app->settings->get('oembedProviders');
-        if ($providers != "") {
-            return \yii\helpers\Json::decode($providers);
+        if ($providers != '') {
+            return Json::decode($providers);
         }
 
         return [];
@@ -222,7 +228,7 @@ class UrlOembed extends \yii\db\ActiveRecord
      */
     public static function setProviders($providers)
     {
-        Yii::$app->settings->set('oembedProviders', \yii\helpers\Json::encode($providers));
+        Yii::$app->settings->set('oembedProviders', Json::encode($providers));
     }
 
 }

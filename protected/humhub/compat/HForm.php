@@ -19,7 +19,6 @@ use Yii;
  */
 class HForm extends \yii\base\Component
 {
-
     const EVENT_BEFORE_VALIDATE = 'beforeValidate';
     const EVENT_AFTER_VALIDATE = 'afterValidate';
 
@@ -36,8 +35,8 @@ class HForm extends \yii\base\Component
     public $showErrorSummary;
     protected $form;
     public $primaryModel = null;
-    public $models = array();
-    public $definition = array();
+    public $models = [];
+    public $definition = [];
 
     /**
      * @var boolean manually mark form as submitted
@@ -56,7 +55,6 @@ class HForm extends \yii\base\Component
     public function submitted($buttonName = "")
     {
         if (Yii::$app->request->method == 'POST') {
-
             if ($buttonName == "" || isset($_POST[$buttonName])) {
                 foreach ($this->models as $model) {
                     $model->load(Yii::$app->request->post());
@@ -138,7 +136,7 @@ class HForm extends \yii\base\Component
         return $out;
     }
 
-    public function renderElements($elements, $forms = array())
+    public function renderElements($elements, $forms = [])
     {
         $output = "";
         foreach ($elements as $name => $element) {
@@ -323,5 +321,4 @@ class HForm extends \yii\base\Component
 
         return $output;
     }
-
 }

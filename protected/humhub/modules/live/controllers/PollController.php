@@ -54,7 +54,7 @@ class PollController extends Controller
         }
 
         if (parent::beforeAction($action)) {
-            if (!Yii::$app->live->driver instanceof \humhub\modules\live\driver\Database) {
+            if (!Yii::$app->live->driver instanceof \humhub\modules\live\driver\Poll) {
                 throw new Exception('Polling is only available when using the live database driver!');
             }
 
