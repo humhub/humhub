@@ -40,7 +40,7 @@ class DropDownGridColumn extends DataColumn
     /**
      * @var array ajax options
      */
-    public $ajaxOptions = array();
+    public $ajaxOptions = [];
     public $readonly = false;
 
     /**
