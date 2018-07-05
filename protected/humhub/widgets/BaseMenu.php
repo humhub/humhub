@@ -103,7 +103,7 @@ class BaseMenu extends Widget
         }
 
         if (!isset($item['htmlOptions'])) {
-            $item['htmlOptions'] = array();
+            $item['htmlOptions'] = [];
         }
 
         if (!isset($item['pjax'])) {

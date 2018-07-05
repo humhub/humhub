@@ -107,7 +107,7 @@ class ModalConfirm extends \yii\base\Widget
      */
     public function run()
     {
-        return $this->render('modalConfirm', array(
+        return $this->render('modalConfirm', [
                     'uniqueID' => $this->uniqueID,
                     'linkOutput' => $this->linkOutput,
                     'title' => $this->title,
@@ -122,7 +122,7 @@ class ModalConfirm extends \yii\base\Widget
                     'linkTooltipText' => $this->linkTooltipText,
                     'confirmJS' => $this->confirmJS,
                     'modalShownJS' => $this->modalShownJS
-        ));
+        ]);
     }
 
 }
