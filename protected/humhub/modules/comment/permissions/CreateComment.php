@@ -49,7 +49,7 @@ class CreateComment extends \humhub\libs\BasePermission
      */
     protected $moduleId = 'comment';
 
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         parent::__construct($config);
 

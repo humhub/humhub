@@ -61,17 +61,17 @@ class ProfileField extends ActiveRecord
      */
     public function rules()
     {
-        return array(
-            array(['profile_field_category_id', 'field_type_class', 'internal_name', 'title', 'sort_order'], 'required'),
-            array(['profile_field_category_id', 'required', 'editable', 'searchable', 'show_at_registration', 'visible', 'sort_order'], 'integer'),
-            array(['module_id', 'field_type_class', 'title'], 'string', 'max' => 255),
-            array('internal_name', 'string', 'max' => 100),
-            array(['ldap_attribute', 'translation_category'], 'string', 'max' => 255),
-            array('internal_name', 'checkInternalName'),
-            array('internal_name', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9_]/', 'message' => Yii::t('UserModule.models_ProfileField', 'Only alphanumeric characters allowed!')),
-            array('field_type_class', 'checkType'),
-            array(['description'], 'safe'),
-        );
+        return [
+            [['profile_field_category_id', 'field_type_class', 'internal_name', 'title', 'sort_order'], 'required'],
+            [['profile_field_category_id', 'required', 'editable', 'searchable', 'show_at_registration', 'visible', 'sort_order'], 'integer'],
+            [['module_id', 'field_type_class', 'title'], 'string', 'max' => 255],
+            ['internal_name', 'string', 'max' => 100],
+            [['ldap_attribute', 'translation_category'], 'string', 'max' => 255],
+            ['internal_name', 'checkInternalName'],
+            ['internal_name', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9_]/', 'message' => Yii::t('UserModule.models_ProfileField', 'Only alphanumeric characters allowed!')],
+            ['field_type_class', 'checkType'],
+            [['description'], 'safe'],
+        ];
     }
 
     /**
@@ -87,7 +87,7 @@ class ProfileField extends ActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id' => Yii::t('UserModule.models_ProfileField', 'ID'),
             'profile_field_category_id' => Yii::t('UserModule.models_ProfileField', 'Profile Field Category'),
             'module_id' => Yii::t('UserModule.models_ProfileField', 'Module'),
@@ -108,7 +108,7 @@ class ProfileField extends ActiveRecord
             'created_by' => Yii::t('UserModule.models_ProfileField', 'Created by'),
             'updated_at' => Yii::t('UserModule.models_ProfileField', 'Updated at'),
             'updated_by' => Yii::t('UserModule.models_ProfileField', 'Updated by'),
-        );
+        ];
     }
 
     /**
@@ -166,69 +166,69 @@ class ProfileField extends ActiveRecord
     {
         $categories = ProfileFieldCategory::find()->orderBy('sort_order')->all();
         $profileFieldTypes = new fieldtype\BaseType();
-        $definition = array(
-            'ProfileField' => array(
+        $definition = [
+            'ProfileField' => [
                 'type' => 'form',
                 #'showErrorSummary' => true,
-                'elements' => array(
-                    'internal_name' => array(
+                'elements' => [
+                    'internal_name' => [
                         'type' => 'text',
                         'maxlength' => 32,
                         'class' => 'form-control',
-                    ),
-                    'title' => array(
+                    ],
+                    'title' => [
                         'type' => 'text',
                         'maxlength' => 32,
                         'class' => 'form-control',
-                    ),
-                    'description' => array(
+                    ],
+                    'description' => [
                         'type' => 'textarea',
                         'class' => 'form-control',
-                    ),
-                    'sort_order' => array(
+                    ],
+                    'sort_order' => [
                         'type' => 'text',
                         'maxlength' => 32,
                         'class' => 'form-control',
-                    ),
-                    'translation_category' => array(
+                    ],
+                    'translation_category' => [
                         'type' => 'text',
                         'maxlength' => 32,
                         'class' => 'form-control',
                         'value' => $this->getTranslationCategory(),
-                    ),
+                    ],
                     //ToDo: Hide me, when Ldap Support is disabled
-                    'ldap_attribute' => array(
+                    'ldap_attribute' => [
                         'type' => 'text',
                         'maxlength' => 255,
                         'class' => 'form-control',
-                    ),
-                    'required' => array(
+                    ],
+                    'required' => [
                         'type' => 'checkbox',
-                    ),
-                    'visible' => array(
+                    ],
+                    'visible' => [
                         'type' => 'checkbox',
-                    ),
-                    'show_at_registration' => array(
+                    ],
+                    'show_at_registration' => [
                         'type' => 'checkbox',
-                    ),
-                    'editable' => array(
+                    ],
+                    'editable' => [
                         'type' => 'checkbox',
-                    ),
-                    'searchable' => array(
+                    ],
+                    'searchable' => [
                         'type' => 'checkbox',
-                    ),
-                    'profile_field_category_id' => array(
+                    ],
+                    'profile_field_category_id' => [
                         'type' => 'dropdownlist',
                         'items' => \yii\helpers\ArrayHelper::map($categories, 'id', 'title'),
                         'class' => 'form-control',
-                    ),
-                    'field_type_class' => array(
+                    ],
+                    'field_type_class' => [
                         'type' => 'dropdownlist',
                         'items' => $profileFieldTypes->getFieldTypes(),
                         'class' => 'form-control',
-                    ),
-                )
-        ));
+                    ],
+                ]
+        ]];
 
         // Field Type and Internal Name cannot be changed for existing records
         // So disable these fields.

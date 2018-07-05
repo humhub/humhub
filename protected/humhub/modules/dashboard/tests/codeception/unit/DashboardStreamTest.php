@@ -132,7 +132,7 @@ class DashboardStreamTest extends HumHubDbTestCase
         $w2 = $post2->content->id;
 
         $ids = $this->getStreamActionIds(2);
-        $this->assertEquals($ids, array($w2, $w1));
+        $this->assertEquals($ids, [$w2, $w1]);
     }
 
     private function getStreamActionIds($limit = 4)

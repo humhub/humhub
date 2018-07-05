@@ -16,7 +16,7 @@ class UserFollower extends \yii\base\Widget
 
     public function run()
     {
-        return $this->render('userFollower', array('user' => $this->user));
+        return $this->render('userFollower', ['user' => $this->user]);
     }
 
 }

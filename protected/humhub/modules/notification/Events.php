@@ -49,7 +49,7 @@ class Events extends \yii\base\BaseObject
     public static function onSpaceDelete($event)
     {
 
-        foreach (Notification::findAll(array('space_id' => $event->sender->id)) as $notification) {
+        foreach (Notification::findAll(['space_id' => $event->sender->id]) as $notification) {
             $notification->delete();
         }
     }

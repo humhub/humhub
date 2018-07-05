@@ -17,7 +17,7 @@ use \humhub\compat\CHtml;
     <?php echo $form->field($model, 'newEmail')->textInput(['maxlength' => 45]); ?>
 
     <hr>
-    <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_changeEmail', 'Save'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
+    <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_changeEmail', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
     <!-- show flash message after saving -->
     <?php echo \humhub\widgets\DataSaved::widget(); ?>

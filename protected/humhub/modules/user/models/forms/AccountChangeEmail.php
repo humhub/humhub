@@ -55,10 +55,10 @@ class AccountChangeEmail extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'currentPassword' => Yii::t('UserModule.forms_AccountChangeEmailForm', 'Current password'),
             'newEmail' => Yii::t('UserModule.forms_AccountChangeEmailForm', 'New E-Mail address'),
-        );
+        ];
     }
 
     /**

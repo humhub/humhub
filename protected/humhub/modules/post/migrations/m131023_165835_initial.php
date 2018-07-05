@@ -9,7 +9,7 @@ class m131023_165835_initial extends Migration
     public function up()
     {
 
-        $this->createTable('post', array(
+        $this->createTable('post', [
             'id' => 'pk',
             'message' => 'text DEFAULT NULL',
             'original_message' => 'text DEFAULT NULL',
@@ -18,7 +18,7 @@ class m131023_165835_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+                ], '');
     }
 
     public function down()

@@ -8,12 +8,12 @@ class m151226_164234_authclient extends Migration
 
     public function up()
     {
-        $this->createTable('user_auth', array(
+        $this->createTable('user_auth', [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
             'source' => $this->string(255)->notNull(),
             'source_id' => $this->string(255)->notNull(),
-        ));
+        ]);
         $this->addForeignKey('fk_user_id', 'user_auth', 'user_id', 'user', 'id', 'CASCADE', 'CASCADE');
     }
 

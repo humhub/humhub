@@ -25,7 +25,7 @@ class IndexController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index', array());
+        return $this->render('index', []);
     }
 
     /**
