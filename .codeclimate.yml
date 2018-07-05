@@ -1,17 +1,15 @@
 engines:
- duplication:
-   enabled: true
-   config:
-     languages:
-     - php
- phpcodesniffer:
-   enabled: true
-
+    duplication:
+        enabled: true
+        config:
+            languages: [php]
+    phpcodesniffer:
+        enabled: true
+        standard: phpcs.xml.dist
 ratings:
- paths:
- - "**.php"
-
+    paths:
+        - '**.php'
 exclude_paths:
-- "**/messages/"
-- "**/codeception/_support/_generated/"
-- "static/assets/"
+    - '**/messages/'
+    - '**/codeception/_support/_generated/'
+    - static/assets/
