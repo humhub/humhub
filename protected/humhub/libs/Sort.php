@@ -13,7 +13,7 @@ class Sort
 {
     public static function sort(&$arr, $field = 'sortOrder')
     {
-        usort($arr, function($a, $b) use($field) {
+        usort($arr, function($a, $b) use ($field) {
             $sortA = (isset($a[$field])) ? $a[$field] : PHP_INT_MAX;
             $sortB = (isset($b[$field])) ? $b[$field] : PHP_INT_MAX;
 
@@ -28,5 +28,4 @@ class Sort
 
         return $arr;
     }
-
 }

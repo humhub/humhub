@@ -74,7 +74,7 @@ class Controller extends \yii\web\Controller
      */
     public function getAccess()
     {
-        if(!$this->access) {
+        if (!$this->access) {
             return null;
         }
 
@@ -283,5 +283,4 @@ class Controller extends \yii\web\Controller
             \humhub\widgets\TopMenu::setViewState();
         }
     }
-
 }

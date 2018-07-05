@@ -39,7 +39,7 @@ abstract class ActionAccessValidator extends AccessValidator
     {
         $rules = $this->filterRelatedRules();
 
-        if(empty($rules)) {
+        if (empty($rules)) {
             return true;
         }
 

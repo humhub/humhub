@@ -18,7 +18,6 @@ use yii\validators\Validator;
  */
 abstract class AbstractDateValidator extends Validator
 {
-
     public $message;
 
     abstract public function dateValidation($timestamp);
@@ -36,5 +35,4 @@ abstract class AbstractDateValidator extends Validator
             $this->addError($model, $attribute, $this->message);
         }
     }
-
 }

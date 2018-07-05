@@ -110,7 +110,7 @@ class I18N extends \yii\i18n\I18N
      */
     protected function setLocale($locale)
     {
-        if(!empty($locale)) {
+        if (!empty($locale)) {
             Yii::$app->language = $locale;
             Yii::$app->formatter->locale = $locale;
         }
@@ -252,5 +252,4 @@ class I18N extends \yii\i18n\I18N
             $this->setLocale('en-US');
         }
     }
-
 }

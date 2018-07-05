@@ -35,5 +35,4 @@ class TestController extends \yii\console\Controller
 
         Console::output("Message successfully sent!");
     }
-
 }

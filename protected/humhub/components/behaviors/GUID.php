@@ -20,7 +20,6 @@ use yii\base\Behavior;
  */
 class GUID extends Behavior
 {
-
     public function events()
     {
         return [
@@ -30,12 +29,12 @@ class GUID extends Behavior
         ];
     }
 
-    public function setGuid($event) {
+    public function setGuid($event)
+    {
         if ($this->owner->isNewRecord) {
             if ($this->owner->guid == "") {
                 $this->owner->guid = \humhub\libs\UUID::v4();
             }
         }
     }
-
 }

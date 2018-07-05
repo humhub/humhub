@@ -102,9 +102,8 @@ class LogoImage
     public function delete()
     {
         $path = $this->getPath();
-        if(file_exists($path)) {
+        if (file_exists($path)) {
             FileHelper::unlink($this->getPath());
         }
     }
-
 }

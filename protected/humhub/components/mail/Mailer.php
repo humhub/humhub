@@ -106,6 +106,4 @@ class Mailer extends \yii\swiftmailer\Mailer
 
         return false;
     }
-
-
 }

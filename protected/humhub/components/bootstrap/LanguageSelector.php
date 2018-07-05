@@ -28,5 +28,4 @@ class LanguageSelector implements BootstrapInterface
 
         $app->i18n->autosetLocale();
     }
-
 }

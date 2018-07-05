@@ -16,7 +16,6 @@ namespace humhub\libs;
  */
 class MarkdownPreview extends \cebe\markdown\Parser
 {
-
     protected function renderParagraph($block)
     {
         return $this->renderAbsy($block['content']) . "\n";
@@ -131,14 +130,11 @@ REGEXP;
 
     protected function renderLink($block)
     {
-
         return "[" . $block['url'] . "]";
     }
 
     protected function renderImage($block)
     {
-
         return "[" . $block['text'] . "]";
     }
-
 }

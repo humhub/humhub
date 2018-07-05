@@ -49,5 +49,4 @@ class CURLHelper
 
         return $options;
     }
-
 }

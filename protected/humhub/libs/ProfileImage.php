@@ -167,14 +167,13 @@ class ProfileImage
     public function delete()
     {
         $path = $this->getPath();
-        if(file_exists($path)) {
+        if (file_exists($path)) {
             FileHelper::unlink($path);
         }
 
         $prefixPath = $this->getPath('_org');
-        if(file_exists($prefixPath)) {
+        if (file_exists($prefixPath)) {
             FileHelper::unlink($prefixPath);
         }
     }
-
 }

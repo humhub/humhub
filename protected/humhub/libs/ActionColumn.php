@@ -44,7 +44,6 @@ class ActionColumn extends Column
      */
     protected function renderDataCellContent($model, $key, $index)
     {
-
         $actions = $this->getActions($model, $key, $index);
 
         if (empty($actions)) {
@@ -102,5 +101,4 @@ class ActionColumn extends Column
 
         return \yii\helpers\Url::to($url);
     }
-
 }

@@ -315,14 +315,13 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
 
         $truncatedDescription = $this->getContentPreview($content, 60);
 
-        if(empty($truncatedDescription)) {
+        if (empty($truncatedDescription)) {
             return null;
         }
 
         $trimmed = Helpers::trimText($truncatedDescription, 60);
 
         return ($withContentName) ? Html::encode($content->getContentName()). ' "' . $trimmed . '"' : $trimmed;
-
     }
 
     /**
@@ -393,5 +392,4 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
         $this->from($unserializedArr['originator']);
         $this->about($unserializedArr['source']);
     }
-
 }

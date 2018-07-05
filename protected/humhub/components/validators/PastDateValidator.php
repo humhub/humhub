@@ -39,5 +39,4 @@ class PastDateValidator extends \yii\validators\DbDateValidator
             $this->addError($model, $attribute, $this->message);
         }
     }
-
 }

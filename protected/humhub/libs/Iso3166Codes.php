@@ -19,7 +19,6 @@ use Yii;
  */
 class Iso3166Codes
 {
-
     public static $countries = array(
         'AF' => 'Afghanistan',
         'AX' => 'Aland Islands',
