@@ -24,11 +24,11 @@ class SpaceStatistics extends \yii\base\Widget
         $statsSpaceMostMembers = Space::find()->where('id = (SELECT space_id  FROM space_membership GROUP BY space_id ORDER BY count(*) DESC LIMIT 1)')->one();
 
         // Render widgets view
-        return $this->render('spaceStats', array(
+        return $this->render('spaceStats', [
             'statsSpaceMostMembers' => $statsSpaceMostMembers,
             'statsCountSpaces' => $statsCountSpaces,
             'statsCountSpacesHidden' => $statsCountSpacesHidden,
-        ));
+        ]);
     }
 
 }

@@ -25,7 +25,7 @@ class Events extends \yii\base\BaseObject
      */
     public static function onUserDelete($event)
     {
-        foreach (Like::findAll(array('created_by' => $event->sender->id)) as $like) {
+        foreach (Like::findAll(['created_by' => $event->sender->id]) as $like) {
             $like->delete();
         }
 
@@ -36,7 +36,7 @@ class Events extends \yii\base\BaseObject
     {
         $record = $event->sender;
         if ($record->hasAttribute('id')) {
-            foreach (Like::findAll(array('object_id' => $record->id, 'object_model' => $record->className())) as $like) {
+            foreach (Like::findAll(['object_id' => $record->id, 'object_model' => $record->className()]) as $like) {
                 $like->delete();
             }
         }
@@ -74,7 +74,7 @@ class Events extends \yii\base\BaseObject
      */
     public static function onWallEntryLinksInit($event)
     {
-        $event->sender->addWidget(widgets\LikeLink::className(), array('object' => $event->sender->object), array('sortOrder' => 10));
+        $event->sender->addWidget(widgets\LikeLink::className(), ['object' => $event->sender->object], ['sortOrder' => 10]);
     }
 
 }

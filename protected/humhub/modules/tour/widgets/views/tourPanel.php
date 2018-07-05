@@ -6,7 +6,7 @@ use yii\helpers\Url;
 <div class="panel panel-default panel-tour" id="getting-started-panel">
     <?php
     // Temporary workaround till panel widget rewrite in 0.10 verion
-    $removeOptionHtml = "<li>" . \humhub\widgets\ModalConfirm::widget(array(
+    $removeOptionHtml = "<li>" . \humhub\widgets\ModalConfirm::widget([
                 'uniqueID' => 'hide-panel-button',
                 'title' => Yii::t('TourModule.widgets_views_tourPanel', '<strong>Remove</strong> tour panel'),
                 'message' => Yii::t('TourModule.widgets_views_tourPanel', 'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.'),
@@ -15,11 +15,11 @@ use yii\helpers\Url;
                 'linkContent' => '<i class="fa fa-eye-slash"></i> ' . Yii::t('TourModule.widgets_views_tourPanel', ' Remove panel'),
                 'linkHref' => Url::to(["/tour/tour/hide-panel", "ajax" => 1]),
                 'confirmJS' => '$(".panel-tour").slideToggle("slow")'
-                    ), true) . "</li>";
+                    ], true) . "</li>";
     ?>
 
     <!-- Display panel menu widget -->
-    <?php echo \humhub\widgets\PanelMenu::widget(array('id' => 'getting-started-panel', 'extraMenus' => $removeOptionHtml)); ?>
+    <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'getting-started-panel', 'extraMenus' => $removeOptionHtml]); ?>
 
     <div class="panel-heading">
         <?php echo Yii::t('TourModule.widgets_views_tourPanel', '<strong>Getting</strong> Started'); ?>
@@ -41,7 +41,7 @@ use yii\helpers\Url;
                 </a>
             </li>
             <li class="<?php if ($profile == 1) : ?>completed<?php endif; ?>">
-                <a href="<?php echo Yii::$app->user->getIdentity()->createUrl('//user/profile', array('tour' => 'true')); ?>" data-pjax-prevent>
+                <a href="<?php echo Yii::$app->user->getIdentity()->createUrl('//user/profile', ['tour' => 'true']); ?>" data-pjax-prevent>
                     <i class="fa fa-play-circle-o"></i><?php echo Yii::t('TourModule.widgets_views_tourPanel', '<strong>Guide:</strong> User profile'); ?>
                 </a>
             </li>

@@ -45,10 +45,10 @@ class FileUploadList extends \yii\base\Widget
         if ($this->object !== null) {
             $files = $this->object->fileManager->find()->all();
         }
-        return $this->render('fileUploadList', array(
+        return $this->render('fileUploadList', [
                     'uploaderId' => $this->uploaderId,
                     'files' => $files
-        ));
+        ]);
     }
 
 }

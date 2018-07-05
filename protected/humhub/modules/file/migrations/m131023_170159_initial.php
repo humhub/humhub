@@ -8,7 +8,7 @@ class m131023_170159_initial extends Migration
 
     public function up()
     {
-        $this->createTable('file', array(
+        $this->createTable('file', [
             'id' => 'pk',
             'guid' => 'varchar(45) DEFAULT NULL',
             'object_model' => 'varchar(100) NOT NULL',
@@ -21,7 +21,7 @@ class m131023_170159_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+                ], '');
     }
 
     public function down()

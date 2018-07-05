@@ -78,7 +78,7 @@ class MarkdownView extends \yii\base\Widget
             return $html;
         }
 
-        return $this->render('markdownView', array('content' => $html, 'highlightJsCss' => $this->highlightJsCss));
+        return $this->render('markdownView', ['content' => $html, 'highlightJsCss' => $this->highlightJsCss]);
     }
 
 }

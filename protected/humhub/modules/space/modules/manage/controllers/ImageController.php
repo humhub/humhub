@@ -137,7 +137,7 @@ class ImageController extends Controller
         $space = $this->getSpace();
 
         $type = Yii::$app->request->get('type', 'profile');
-        $json = array('type' => $type);
+        $json = ['type' => $type];
 
         $image = null;
         if ($type == 'profile') {

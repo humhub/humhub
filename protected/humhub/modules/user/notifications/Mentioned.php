@@ -79,10 +79,10 @@ class Mentioned extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('UserModule.notification', '{displayName} mentioned you in {contentTitle}.', array(
+        return Yii::t('UserModule.notification', '{displayName} mentioned you in {contentTitle}.', [
                     'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
                     'contentTitle' => $this->getContentInfo($this->source)
-        ));
+        ]);
     }
 
 }

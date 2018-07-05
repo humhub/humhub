@@ -35,8 +35,8 @@ class HForm extends \yii\base\Component
     public $showErrorSummary;
     protected $form;
     public $primaryModel = null;
-    public $models = array();
-    public $definition = array();
+    public $models = [];
+    public $definition = [];
 
     /**
      * @var boolean manually mark form as submitted
@@ -136,7 +136,7 @@ class HForm extends \yii\base\Component
         return $out;
     }
 
-    public function renderElements($elements, $forms = array())
+    public function renderElements($elements, $forms = [])
     {
         $output = "";
         foreach ($elements as $name => $element) {

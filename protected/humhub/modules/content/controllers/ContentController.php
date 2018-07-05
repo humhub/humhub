@@ -103,7 +103,7 @@ class ContentController extends Controller
         Yii::$app->response->format = 'json';
         $this->forcePostRequest();
 
-        $json = array();
+        $json = [];
         $json['success'] = false;
 
         $id = (int) Yii::$app->request->get('id', "");
@@ -127,7 +127,7 @@ class ContentController extends Controller
     {
         $this->forcePostRequest();
 
-        $json = array();
+        $json = [];
         $json['success'] = false;   // default
 
         $id = (int) Yii::$app->request->get('id', "");
@@ -208,7 +208,7 @@ class ContentController extends Controller
     {
         $this->forcePostRequest();
 
-        $json = array();
+        $json = [];
         $json['success'] = false;
 
         $content = Content::findOne(['id' => Yii::$app->request->get('id', "")]);
@@ -253,7 +253,7 @@ class ContentController extends Controller
     {
         $this->forcePostRequest();
 
-        $json = array();
+        $json = [];
         $json['success'] = false;   // default
 
         $content = Content::findOne(['id' => Yii::$app->request->get('id', "")]);

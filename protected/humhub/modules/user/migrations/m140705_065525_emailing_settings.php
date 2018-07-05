@@ -25,26 +25,26 @@ class m140705_065525_emailing_settings extends Migration
             $receive_email_messaging = $row['receive_email_messaging'];
             $receive_email_activities = $row['receive_email_activities'];
 
-            $this->insert('user_setting', array(
+            $this->insert('user_setting', [
                 'user_id' => $userId,
                 'module_id' => 'core',
                 'name' => 'receive_email_notifications',
                 'value' => $receive_email_notifications,
-            ));
+            ]);
 
-            $this->insert('user_setting', array(
+            $this->insert('user_setting', [
                 'user_id' => $userId,
                 'module_id' => 'core',
                 'name' => 'receive_email_messaging',
                 'value' => $receive_email_messaging,
-            ));
+            ]);
 
-            $this->insert('user_setting', array(
+            $this->insert('user_setting', [
                 'user_id' => $userId,
                 'module_id' => 'core',
                 'name' => 'receive_email_activities',
                 'value' => $receive_email_activities,
-            ));
+            ]);
         }
 
         $this->dropColumn('user', 'receive_email_notifications');
@@ -53,16 +53,16 @@ class m140705_065525_emailing_settings extends Migration
 
         if (\humhub\models\Setting::isInstalled()) {
 
-            $this->insert('setting', array(
+            $this->insert('setting', [
                 'name' => 'receive_email_activities',
                 'value' => '1',
                 'name' => 'mailing'
-            ));
-            $this->insert('setting', array(
+            ]);
+            $this->insert('setting', [
                 'name' => 'receive_email_notifications',
                 'value' => '2',
                 'name' => 'mailing'
-            ));
+            ]);
         }
     }
 

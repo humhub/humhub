@@ -29,9 +29,9 @@ class LoginPage extends BasePage
     
     public function selfInvite($email)
     {
-        $this->actor->submitForm('#invite-form', array('Invite' => array(
+        $this->actor->submitForm('#invite-form', ['Invite' => [
             'email' => $email
-       )));
+       ]]);
     }
 
 }

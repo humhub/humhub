@@ -75,7 +75,7 @@ class WallEntryControls extends \humhub\widgets\BaseStack
      */
     function isAssoc($arr)
     {
-        if (array() === $arr) {
+        if ([] === $arr) {
             return false;
         }
         return array_keys($arr) !== range(0, count($arr) - 1);

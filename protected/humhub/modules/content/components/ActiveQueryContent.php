@@ -150,7 +150,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
      * @param array $params
      * @return $this
      */
-    public function where($condition, $params = array())
+    public function where($condition, $params = [])
     {
         return parent::andWhere($condition, $params);
     }
@@ -163,7 +163,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
      * @param User $user
      * @return \humhub\modules\content\components\ActiveQueryContent
      */
-    public function userRelated($scopes = array(), $user = null)
+    public function userRelated($scopes = [], $user = null)
     {
         if ($user === null) {
             $user = Yii::$app->user->getIdentity();

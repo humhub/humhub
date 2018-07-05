@@ -18,7 +18,7 @@ use humhub\compat\CActiveForm;
             <br/>
 
             <?php //echo $form->labelEx($model, 'message');  ?>
-            <?php echo $form->textArea($model, 'message', array('rows' => '8', 'class' => 'form-control', 'id' => 'request-message')); ?>
+            <?php echo $form->textArea($model, 'message', ['rows' => '8', 'class' => 'form-control', 'id' => 'request-message']); ?>
             <?php echo $form->error($model, 'message'); ?>
 
         </div>
