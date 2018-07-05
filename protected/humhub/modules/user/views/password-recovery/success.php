@@ -5,7 +5,7 @@ use yii\helpers\Url;
 $this->pageTitle = Yii::t('UserModule.views_auth_recoverPassword', 'Password recovery');
 ?>
 <div class="container" style="text-align: center;">
-    <?php echo humhub\widgets\SiteLogo::widget(array('place' => 'login')); ?>
+    <?php echo humhub\widgets\SiteLogo::widget(['place' => 'login']); ?>
     <br>
     <div class="row">
         <div class="panel panel-default animated fadeIn" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">

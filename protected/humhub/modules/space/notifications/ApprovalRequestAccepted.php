@@ -51,10 +51,10 @@ class ApprovalRequestAccepted extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('SpaceModule.notification', '{displayName} approved your membership for the space {spaceName}', array(
+        return Yii::t('SpaceModule.notification', '{displayName} approved your membership for the space {spaceName}', [
                     '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
                     '{spaceName}' => Html::tag('strong', Html::encode($this->source->name))
-        ));
+        ]);
     }
 
 }

@@ -68,7 +68,7 @@ class ContentContainer extends \yii\db\ActiveRecord
         return [
             [
                 'class' => PolymorphicRelation::className(),
-                'mustBeInstanceOf' => array(ContentContainerActiveRecord::className()),
+                'mustBeInstanceOf' => [ContentContainerActiveRecord::className()],
                 'classAttribute' => 'class',
                 'pkAttribute' => 'pk'
             ]

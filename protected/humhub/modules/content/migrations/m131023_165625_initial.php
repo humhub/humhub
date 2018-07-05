@@ -9,7 +9,7 @@ class m131023_165625_initial extends Migration
     public function up()
     {
 
-        $this->createTable('wall', array(
+        $this->createTable('wall', [
             'id' => 'pk',
             'type' => 'varchar(45) DEFAULT NULL',
             'object_model' => 'varchar(50) NOT NULL',
@@ -18,9 +18,9 @@ class m131023_165625_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+                ], '');
 
-        $this->createTable('wall_entry', array(
+        $this->createTable('wall_entry', [
             'id' => 'pk',
             'wall_id' => 'int(11) NOT NULL',
             'content_id' => 'int(11) NOT NULL',
@@ -28,10 +28,10 @@ class m131023_165625_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+                ], '');
 
 
-        $this->createTable('content', array(
+        $this->createTable('content', [
             'id' => 'pk',
             'guid' => 'varchar(45) NOT NULL',
             'object_model' => 'varchar(100) NOT NULL',
@@ -45,7 +45,7 @@ class m131023_165625_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ), '');
+                ], '');
     }
 
     public function down()

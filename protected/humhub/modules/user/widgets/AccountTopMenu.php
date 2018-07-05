@@ -40,48 +40,48 @@ class AccountTopMenu extends BaseMenu
         }
 
         $user = Yii::$app->user->getIdentity();
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('base', 'My profile'),
             'icon' => '<i class="fa fa-user"></i>',
             'url' => $user->createUrl('/user/profile/home'),
             'sortOrder' => 100,
-        ));
-        $this->addItem(array(
+        ]);
+        $this->addItem([
             'label' => Yii::t('base', 'Account settings'),
             'icon' => '<i class="fa fa-edit"></i>',
             'url' => Url::toRoute('/user/account/edit'),
             'sortOrder' => 200,
-        ));
+        ]);
 
         if (\humhub\modules\admin\widgets\AdminMenu::canAccess()) {
-            $this->addItem(array(
+            $this->addItem([
                 'label' => '---',
                 'url' => '#',
                 'sortOrder' => 300,
-            ));
+            ]);
 
-            $this->addItem(array(
+            $this->addItem([
                 'label' => Yii::t('base', 'Administration'),
                 'icon' => '<i class="fa fa-cogs"></i>',
                 'url' => Url::toRoute('/admin'),
                 'sortOrder' => 400,
-            ));
+            ]);
         }
 
-        $this->addItem(array(
+        $this->addItem([
             'label' => '---',
             'url' => '#',
             'sortOrder' => 600,
-        ));
+        ]);
 
-        $this->addItem(array(
+        $this->addItem([
             'label' => Yii::t('base', 'Logout'),
             'id' => 'account-logout',
             'icon' => '<i class="fa fa-sign-out"></i>',
             'pjax' => false,
             'url' => Url::toRoute('/user/auth/logout'),
             'sortOrder' => 700,
-        ));
+        ]);
 
         parent::init();
     }

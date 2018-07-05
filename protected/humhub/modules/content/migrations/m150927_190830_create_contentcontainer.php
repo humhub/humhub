@@ -8,14 +8,14 @@ class m150927_190830_create_contentcontainer extends Migration
 
     public function up()
     {
-        $this->createTable('contentcontainer', array(
+        $this->createTable('contentcontainer', [
             'id' => Schema::TYPE_PK,
             'guid' => Schema::TYPE_STRING,
             'class' => Schema::TYPE_STRING,
             'pk' => Schema::TYPE_INTEGER,
             'owner_user_id' => Schema::TYPE_INTEGER,
             'wall_id' => Schema::TYPE_INTEGER,
-                ), '');
+                ], '');
         
 
         # 1.3 - prepare utf8_mb4 support

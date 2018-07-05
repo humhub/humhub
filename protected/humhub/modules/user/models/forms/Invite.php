@@ -49,12 +49,12 @@ class Invite extends Model
             foreach ($this->getEmails() as $email) {
                 $validator = new \yii\validators\EmailValidator();
                 if (!$validator->validate($email)) {
-                    $this->addError($attribute, Yii::t('UserModule.invite', '{email} is not valid!', array("{email}" => $email)));
+                    $this->addError($attribute, Yii::t('UserModule.invite', '{email} is not valid!', ["{email}" => $email]));
                     continue;
                 }
 
                 if (User::findOne(['email' => $email]) != null) {
-                    $this->addError($attribute, Yii::t('UserModule.invite', '{email} is already registered!', array("{email}" => $email)));
+                    $this->addError($attribute, Yii::t('UserModule.invite', '{email} is already registered!', ["{email}" => $email]));
                     continue;
                 }
             }

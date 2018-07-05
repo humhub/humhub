@@ -132,7 +132,7 @@ class AccountController extends BaseAccountController
         $col = new \Collator(Yii::$app->language);
         $col->asort($languages);
 
-        return $this->render('editSettings', array('model' => $model, 'languages' => $languages));
+        return $this->render('editSettings', ['model' => $model, 'languages' => $languages]);
     }
 
     /**
@@ -217,7 +217,7 @@ class AccountController extends BaseAccountController
         $user = Yii::$app->user->getIdentity();
         $availableModules = $user->getAvailableModules();
 
-        return $this->render('editModules', array('user' => $user, 'availableModules' => $availableModules));
+        return $this->render('editModules', ['user' => $user, 'availableModules' => $availableModules]);
     }
 
     public function actionEnableModule()
@@ -294,10 +294,10 @@ class AccountController extends BaseAccountController
         $model = new \humhub\modules\user\models\forms\AccountChangeEmail;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeEmail()) {
-            return $this->render('changeEmail_success', array('model' => $model));
+            return $this->render('changeEmail_success', ['model' => $model]);
         }
 
-        return $this->render('changeEmail', array('model' => $model));
+        return $this->render('changeEmail', ['model' => $model]);
     }
 
     /**
@@ -329,7 +329,7 @@ class AccountController extends BaseAccountController
         $user->email = $email;
         $user->save();
 
-        return $this->render('changeEmailValidate', array('newEmail' => $email));
+        return $this->render('changeEmailValidate', ['newEmail' => $email]);
     }
 
     /**
@@ -352,7 +352,7 @@ class AccountController extends BaseAccountController
             return $this->render('changePassword_success');
         }
 
-        return $this->render('changePassword', array('model' => $userPassword));
+        return $this->render('changePassword', ['model' => $userPassword]);
     }
 
     /**

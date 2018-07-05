@@ -35,7 +35,7 @@ class ViewAboutPage extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         parent::__construct($config);
         $this->title = \Yii::t('UserModule.permissions', 'View your about page');

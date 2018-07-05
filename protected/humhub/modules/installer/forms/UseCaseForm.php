@@ -28,9 +28,9 @@ class UseCaseForm extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array(['useCase'], 'required'),
-        );
+        return [
+            [['useCase'], 'required'],
+        ];
     }
 
     /**
@@ -38,9 +38,9 @@ class UseCaseForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'useCase' => Yii::t('InstallerModule.forms_UseCaseForm', 'I want to use HumHub for:'),
-        );
+        ];
     }
 
 }

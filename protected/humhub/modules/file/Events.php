@@ -29,7 +29,7 @@ class Events extends \yii\base\BaseObject
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget(widgets\ShowFiles::className(), array('object' => $event->sender->object), array('sortOrder' => 5));
+        $event->sender->addWidget(widgets\ShowFiles::className(), ['object' => $event->sender->object], ['sortOrder' => 5]);
     }
 
     /**
@@ -94,7 +94,7 @@ class Events extends \yii\base\BaseObject
 
     public static function onUserDelete($event)
     {
-        foreach (File::findAll(array('created_by' => $event->sender->id)) as $file) {
+        foreach (File::findAll(['created_by' => $event->sender->id]) as $file) {
             $file->delete();
         }
         return true;

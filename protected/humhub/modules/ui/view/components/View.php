@@ -97,7 +97,7 @@ class View extends \yii\web\View
     /**
      * @inheritdoc
      */
-    public function renderAjax($view, $params = array(), $context = null)
+    public function renderAjax($view, $params = [], $context = null)
     {
         $viewFile = $this->findViewFile($view, $context);
 
@@ -130,7 +130,7 @@ class View extends \yii\web\View
     /**
      * @inheritdoc
      */
-    public function registerJsFile($url, $options = array(), $key = null)
+    public function registerJsFile($url, $options = [], $key = null)
     {
         parent::registerJsFile($this->addCacheBustQuery($url), $options, $key);
     }
@@ -138,7 +138,7 @@ class View extends \yii\web\View
     /**
      * @inheritdoc
      */
-    public function registerCssFile($url, $options = array(), $key = null)
+    public function registerCssFile($url, $options = [], $key = null)
     {
         parent::registerCssFile($this->addCacheBustQuery($url), $options, $key);
     }

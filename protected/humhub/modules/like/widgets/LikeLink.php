@@ -37,7 +37,7 @@ class LikeLink extends \yii\base\Widget
             }
         }
 
-        return $this->render('likeLink', array(
+        return $this->render('likeLink', [
                     'object' => $this->object,
                     'likes' => $likes,
                     'currentUserLiked' => $currentUserLiked,
@@ -46,7 +46,7 @@ class LikeLink extends \yii\base\Widget
                     'unlikeUrl' => Url::to(['/like/like/unlike', 'contentModel' => $this->object->className(), 'contentId' => $this->object->id]),
                     'userListUrl' => Url::to(['/like/like/user-list', 'contentModel' => $this->object->className(), 'contentId' => $this->object->getPrimaryKey()]),
                     'title' => $this->generateLikeTitleText($currentUserLiked, $likes)
-        ));
+        ]);
     }
 
     private function generateLikeTitleText($currentUserLiked, $likes)
@@ -85,7 +85,7 @@ class LikeLink extends \yii\base\Widget
                 // check if exists more user as limited
                 if ($i == $maxUser) {
                     // output with the number of not rendered users
-                    $userlist .= Yii::t('LikeModule.widgets_views_likeLink', 'and {count} more like this.', array('{count}' => (int)(count($likes) - $maxUser)));
+                    $userlist .= Yii::t('LikeModule.widgets_views_likeLink', 'and {count} more like this.', ['{count}' => (int)(count($likes) - $maxUser)]);
 
                     // stop the loop
                     break;

@@ -45,7 +45,7 @@ class CHtml extends \yii\helpers\Html
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated label tag
      */
-    public static function activeLabelEx($model, $attribute, $htmlOptions = array())
+    public static function activeLabelEx($model, $attribute, $htmlOptions = [])
     {
         $realAttribute = $attribute;
         self::resolveName($model, $attribute); // strip off square brackets if any
@@ -65,7 +65,7 @@ class CHtml extends \yii\helpers\Html
      * @see clientChange
      * @see activeInputField
      */
-    public static function activeTextField($model, $attribute, $htmlOptions = array())
+    public static function activeTextField($model, $attribute, $htmlOptions = [])
     {
         self::resolveNameID($model, $attribute, $htmlOptions);
         #self::clientChange('change', $htmlOptions);
@@ -93,7 +93,7 @@ class CHtml extends \yii\helpers\Html
                 return $modelName . $sub . '[' . $attribute . ']';
             }
             if (preg_match('/\](\w+\[.*)$/', $attribute, $matches)) {
-                $name = $modelName . '[' . str_replace(']', '][', trim(strtr($attribute, array('][' => ']', '[' => ']')), ']')) . ']';
+                $name = $modelName . '[' . str_replace(']', '][', trim(strtr($attribute, ['][' => ']', '[' => ']']), ']')) . ']';
                 $attribute = $matches[1];
                 return $name;
             }
@@ -127,7 +127,7 @@ class CHtml extends \yii\helpers\Html
      */
     public static function getIdByName($name)
     {
-        return str_replace(array('[]', '][', '[', ']', ' '), array('', '_', '_', '', '_'), $name);
+        return str_replace(['[]', '][', '[', ']', ' '], ['', '_', '_', '', '_'], $name);
     }
 
     /**

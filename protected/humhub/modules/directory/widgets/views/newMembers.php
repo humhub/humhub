@@ -21,10 +21,10 @@ use humhub\modules\user\widgets\Image;
         <?php endif; ?>
 
         <?php if ($showInviteButton): ?>
-            <?= Html::a('<i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('DirectoryModule.base', 'Send invite'), Url::to(['/user/invite']), array('data-target' => '#globalModal')); ?>
+            <?= Html::a('<i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('DirectoryModule.base', 'Send invite'), Url::to(['/user/invite']), ['data-target' => '#globalModal']); ?>
         <?php endif; ?>
         <?php if ($showMoreButton): ?>
-            <?= Html::a('<i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('DirectoryModule.base', 'See all'), Url::to(['/directory/directory/members']), array('classx' => 'btn btn-xl btn-primary', 'class' => 'pull-right')); ?>
+            <?= Html::a('<i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('DirectoryModule.base', 'See all'), Url::to(['/directory/directory/members']), ['classx' => 'btn btn-xl btn-primary', 'class' => 'pull-right']); ?>
         <?php endif; ?>
 
     </div>

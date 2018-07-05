@@ -74,10 +74,10 @@ class UserDeleteForm extends Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'deleteContributions' => Yii::t('AdminModule.user', 'Delete all contributions of this user'),
             'deleteSpaces' => Yii::t('AdminModule.user', 'Delete spaces which are owned by this user'),
-        );
+        ];
     }
 
     /**
@@ -85,10 +85,10 @@ class UserDeleteForm extends Model
      */
     public function attributeHints()
     {
-        return array(
+        return [
             'deleteContributions' => Yii::t('AdminModule.user', 'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.'),
             'deleteSpaces' => Yii::t('AdminModule.user', 'If this option is not selected, the ownership of the spaces will be transferred to your account.'),
-        );
+        ];
     }
 
     /**

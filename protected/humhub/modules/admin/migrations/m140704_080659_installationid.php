@@ -10,11 +10,11 @@ class m140704_080659_installationid extends Migration
     {
         if (\humhub\models\Setting::isInstalled()) {
 
-            $this->insert('setting', array(
+            $this->insert('setting', [
                 'name' => 'installationId',
                 'value' => md5(uniqid("", true)),
                 'module_id' => 'admin'
-            ));
+            ]);
         }
     }
 

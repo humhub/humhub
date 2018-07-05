@@ -70,7 +70,7 @@ class ProfileHeader extends \yii\base\Widget
         /* @var $imageController ImageController  */
         $imageController = new ImageController('image-controller', null, ['user' => $this->user]);
 
-        return $this->render('profileHeader', array(
+        return $this->render('profileHeader', [
                     'user' => $this->user,
                     'isProfileOwner' => $this->isProfileOwner,
                     'friendshipsEnabled' => $friendshipsEnabled,
@@ -81,7 +81,7 @@ class ProfileHeader extends \yii\base\Widget
                     'countSpaces' => $this->getFollowingSpaceCount(),
                     'allowModifyProfileImage' => $imageController->allowModifyProfileImage,
                     'allowModifyProfileBanner' => $imageController->allowModifyProfileBanner,
-        ));
+        ]);
     }
 
     /**

@@ -20,28 +20,28 @@ use yii\helpers\Html;
         <hr/>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'hostname'); ?>
-            <?php echo $form->textField($model, 'hostname', array('class' => 'form-control', 'id' => 'hostname')); ?>
+            <?php echo $form->textField($model, 'hostname', ['class' => 'form-control', 'id' => 'hostname']); ?>
             <p class="help-block"><?php echo Yii::t('InstallerModule.views_setup_database', 'Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)'); ?></p>
             <?php echo $form->error($model, 'hostname'); ?>
         </div>
         <hr/>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'username'); ?>
-            <?php echo $form->textField($model, 'username', array('class' => 'form-control')); ?>
+            <?php echo $form->textField($model, 'username', ['class' => 'form-control']); ?>
             <p class="help-block"><?php echo Yii::t('InstallerModule.views_setup_database', 'Your MySQL username'); ?></p>
             <?php echo $form->error($model, 'username'); ?>
         </div>
         <hr/>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'password'); ?>
-            <?php echo $form->passwordField($model, 'password', array('class' => 'form-control')); ?>
+            <?php echo $form->passwordField($model, 'password', ['class' => 'form-control']); ?>
             <p class="help-block"><?php echo Yii::t('InstallerModule.views_setup_database', 'Your MySQL password.'); ?></p>
             <?php echo $form->error($model, 'password'); ?>
         </div>
         <hr/>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'database'); ?>
-            <?php echo $form->textField($model, 'database', array('class' => 'form-control')); ?>
+            <?php echo $form->textField($model, 'database', ['class' => 'form-control']); ?>
             <p class="help-block"><?php echo Yii::t('InstallerModule.views_setup_database', 'The name of the database you want to run HumHub in.'); ?></p>
             <?php echo $form->error($model, 'database'); ?>
         </div>
@@ -55,7 +55,7 @@ use yii\helpers\Html;
 
         <hr>
 
-        <?php echo Html::submitButton(Yii::t('InstallerModule.views_setup_database', 'Next'), array('class' => 'btn btn-primary', 'data-loader' => "modal", 'data-message' => Yii::t('InstallerModule.views_setup_database', 'Initializing database...'))); ?>
+        <?php echo Html::submitButton(Yii::t('InstallerModule.views_setup_database', 'Next'), ['class' => 'btn btn-primary', 'data-loader' => "modal", 'data-message' => Yii::t('InstallerModule.views_setup_database', 'Initializing database...')]); ?>
 
         <?php CActiveForm::end(); ?>
     </div>

@@ -90,7 +90,7 @@ class WallCreateContentForm extends Widget
         $fileHandlerImport = FileHandlerCollection::getByType(FileHandlerCollection::TYPE_IMPORT);
         $fileHandlerCreate = FileHandlerCollection::getByType(FileHandlerCollection::TYPE_CREATE);
 
-        return $this->render('@humhub/modules/content/widgets/views/wallCreateContentForm', array(
+        return $this->render('@humhub/modules/content/widgets/views/wallCreateContentForm', [
                     'form' => $this->renderForm(),
                     'contentContainer' => $this->contentContainer,
                     'submitUrl' => $this->contentContainer->createUrl($this->submitUrl),
@@ -98,7 +98,7 @@ class WallCreateContentForm extends Widget
                     'defaultVisibility' => $defaultVisibility,
                     'canSwitchVisibility' => $canSwitchVisibility,
                     'fileHandlers' => array_merge($fileHandlerCreate, $fileHandlerImport),
-        ));
+        ]);
     }
 
     /**
@@ -148,7 +148,7 @@ class WallCreateContentForm extends Widget
             return Stream::getContentResultEntry($record->content);
         }
 
-        return array('errors' => $record->getErrors());
+        return ['errors' => $record->getErrors()];
     }
 
 }
