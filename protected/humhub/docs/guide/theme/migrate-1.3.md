@@ -33,7 +33,7 @@ After adding the line you can delete all unmodified files from your themes `/vie
 The views will be automatically loaded from the specified base theme.
 
 
-## Space & Profile Layouts
+## Space & Profile Layouts and header
 
 The sidebar handling of the content container layouts has changed.
 
@@ -47,7 +47,11 @@ Please check following view files for changes:
 Also check the deprecation of `humhub\modules\activity\widgets\Stream` in case you've overwritten
 the space or dashboard layout.
 
-> Please note the deprecation of 
+Also the space/profile header files (Statistic section) has slightly changed.
+
+Please check following view files for changes:
+- `/protected/humhub/modules/user/widgets/views/profileHeader.php`
+- `/protected/humhub/modules/space/widgets/views/header.php`
 
 
 ## New Richtext

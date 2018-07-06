@@ -2,6 +2,11 @@ HumHub Change Log
 =================
 
 
+1.3.0-beta.2  (Unreleased)
+--------------------------
+- Enh: Added CounterSet Widget to handle Space/Profile header statistic counts
+
+
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------
 
