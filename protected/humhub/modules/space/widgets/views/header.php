@@ -1,14 +1,16 @@
 <?php
 /* @var $this \humhub\components\View */
+
 /* @var $currentSpace \humhub\modules\space\models\Space */
 
-use humhub\widgets\ModalConfirm;
-use humhub\modules\space\widgets\Image;
+use humhub\modules\space\widgets\FollowButton;
 use humhub\modules\space\widgets\HeaderControls;
+use humhub\modules\space\widgets\HeaderControlsMenu;
+use humhub\modules\space\widgets\HeaderCounterSet;
+use humhub\modules\space\widgets\Image;
 use humhub\modules\space\widgets\InviteButton;
 use humhub\modules\space\widgets\MembershipButton;
-use humhub\modules\space\widgets\FollowButton;
-use humhub\modules\space\widgets\HeaderControlsMenu;
+use humhub\widgets\ModalConfirm;
 use yii\helpers\Html;
 
 if ($space->isAdmin()) {
@@ -79,20 +81,20 @@ if ($space->isAdmin()) {
                        href="<?= $space->createUrl('/space/manage/image/crop-banner'); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static"><i
                             class="fa fa-edit"></i></a>
-                        <?= ModalConfirm::widget([
-                            'uniqueID' => 'modal_bannerimagedelete',
-                            'linkOutput' => 'a',
-                            'title' => Yii::t('SpaceModule.widgets_views_deleteBanner', '<strong>Confirm</strong> image deleting'),
-                            'message' => Yii::t('SpaceModule.widgets_views_deleteBanner', 'Do you really want to delete your title image?'),
-                            'buttonTrue' => Yii::t('SpaceModule.widgets_views_deleteBanner', 'Delete'),
-                            'buttonFalse' => Yii::t('SpaceModule.widgets_views_deleteBanner', 'Cancel'),
-                            'linkContent' => '<i class="fa fa-times"></i>',
-                            'cssClass' => 'btn btn-danger btn-sm',
-                            'style' => $space->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
-                            'linkHref' => $space->createUrl('/space/manage/image/delete', ['type' => 'banner']),
-                            'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
-                        ]);
-                        ?>
+                    <?= ModalConfirm::widget([
+                        'uniqueID' => 'modal_bannerimagedelete',
+                        'linkOutput' => 'a',
+                        'title' => Yii::t('SpaceModule.widgets_views_deleteBanner', '<strong>Confirm</strong> image deleting'),
+                        'message' => Yii::t('SpaceModule.widgets_views_deleteBanner', 'Do you really want to delete your title image?'),
+                        'buttonTrue' => Yii::t('SpaceModule.widgets_views_deleteBanner', 'Delete'),
+                        'buttonFalse' => Yii::t('SpaceModule.widgets_views_deleteBanner', 'Cancel'),
+                        'linkContent' => '<i class="fa fa-times"></i>',
+                        'cssClass' => 'btn btn-danger btn-sm',
+                        'style' => $space->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
+                        'linkHref' => $space->createUrl('/space/manage/image/delete', ['type' => 'banner']),
+                        'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
+                    ]);
+                    ?>
                 </div>
 
             <?php } ?>
@@ -138,20 +140,20 @@ if ($space->isAdmin()) {
                        href="<?= $space->createUrl('/space/manage/image/crop'); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static"><i
                             class="fa fa-edit"></i></a>
-                        <?= ModalConfirm::widget([
-                            'uniqueID' => 'modal_profileimagedelete',
-                            'linkOutput' => 'a',
-                            'title' => Yii::t('SpaceModule.widgets_views_deleteImage', '<strong>Confirm</strong> image deleting'),
-                            'message' => Yii::t('SpaceModule.widgets_views_deleteImage', 'Do you really want to delete your profile image?'),
-                            'buttonTrue' => Yii::t('SpaceModule.widgets_views_deleteImage', 'Delete'),
-                            'buttonFalse' => Yii::t('SpaceModule.widgets_views_deleteImage', 'Cancel'),
-                            'linkContent' => '<i class="fa fa-times"></i>',
-                            'cssClass' => 'btn btn-danger btn-sm',
-                            'style' => $space->getProfileImage()->hasImage() ? '' : 'display: none;',
-                            'linkHref' => $space->createUrl('/space/manage/image/delete', ['type' => 'profile']),
-                            'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
-                        ]);
-                        ?>
+                    <?= ModalConfirm::widget([
+                        'uniqueID' => 'modal_profileimagedelete',
+                        'linkOutput' => 'a',
+                        'title' => Yii::t('SpaceModule.widgets_views_deleteImage', '<strong>Confirm</strong> image deleting'),
+                        'message' => Yii::t('SpaceModule.widgets_views_deleteImage', 'Do you really want to delete your profile image?'),
+                        'buttonTrue' => Yii::t('SpaceModule.widgets_views_deleteImage', 'Delete'),
+                        'buttonFalse' => Yii::t('SpaceModule.widgets_views_deleteImage', 'Cancel'),
+                        'linkContent' => '<i class="fa fa-times"></i>',
+                        'cssClass' => 'btn btn-danger btn-sm',
+                        'style' => $space->getProfileImage()->hasImage() ? '' : 'display: none;',
+                        'linkHref' => $space->createUrl('/space/manage/image/delete', ['type' => 'profile']),
+                        'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
+                    ]);
+                    ?>
                 </div>
             <?php endif; ?>
 
@@ -163,44 +165,19 @@ if ($space->isAdmin()) {
     <div class="panel-body">
 
         <div class="panel-profile-controls">
-            <!-- start: User statistics -->
             <div class="row">
                 <div class="col-md-12">
-                    <div class="statistics pull-left">
-
-                        <div class="pull-left entry">
-                            <span class="count"><?= $postCount; ?></span>
-                            <br>
-                            <span class="title"><?= Yii::t('SpaceModule.widgets_views_profileHeader', 'Posts'); ?></span>
-                        </div>
-
-                        <a href="<?= $space->createUrl('/space/membership/members-list'); ?>" data-target="#globalModal">
-                            <div class="pull-left entry">
-                                <span class="count"><?= $space->getMemberships()->count(); ?></span>
-                                <br>
-                                <span class="title"><?= Yii::t('SpaceModule.widgets_views_profileHeader', 'Members'); ?></span>
-                            </div>
-                        </a>
-                        <?php if ($followingEnabled) : ?>
-                            <a href="<?= $space->createUrl('/space/space/follower-list'); ?>" data-target="#globalModal">
-                                <div class="pull-left entry">
-                                    <span class="count"><?= $space->getFollowerCount(); ?></span><br>
-                                    <span class="title"><?= Yii::t('SpaceModule.widgets_views_profileHeader', 'Followers'); ?></span>
-                                </div>
-                            </a>
-                        <?php endif; ?>
-                    </div>
-                    <!-- end: User statistics -->
+                    <?= HeaderCounterSet::widget(['space' => $space]); ?>
 
                     <div class="controls controls-header pull-right">
                         <?= HeaderControls::widget(['widgets' => [
-                                [InviteButton::className(), ['space' => $space], ['sortOrder' => 10]],
-                                [MembershipButton::className(), ['space' => $space], ['sortOrder' => 20]],
-                                [FollowButton::className(), [
-                                    'space' => $space,
-                                    'followOptions' => ['class' => 'btn btn-primary'],
-                                    'unfollowOptions' => ['class' => 'btn btn-info']
-                                ],
+                            [InviteButton::class, ['space' => $space], ['sortOrder' => 10]],
+                            [MembershipButton::class, ['space' => $space], ['sortOrder' => 20]],
+                            [FollowButton::class, [
+                                'space' => $space,
+                                'followOptions' => ['class' => 'btn btn-primary'],
+                                'unfollowOptions' => ['class' => 'btn btn-info']
+                            ],
                                 ['sortOrder' => 30]]
                         ]]);
                         ?>
