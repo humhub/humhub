@@ -97,7 +97,7 @@ class ListController extends Controller
      *
      * @return string JSON String
      */
-    public static function getUpdates()
+    public static function getUpdates($includeContent = true)
     {
         $update['newNotifications'] = Notification::findUnseen()->count();
 
@@ -105,7 +105,7 @@ class ListController extends Controller
 
         $update['notifications'] = [];
         foreach ($unnotified as $notification) {
-            if (Yii::$app->getModule('notification')->settings->user()->getInherit('enable_html5_desktop_notifications', true)) {
+            if ($includeContent && Yii::$app->getModule('notification')->settings->user()->getInherit('enable_html5_desktop_notifications', true)) {
                 $update['notifications'][] = $notification->getBaseModel()->text();
             }
             $notification->desktop_notified = 1;

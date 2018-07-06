@@ -9,6 +9,7 @@
 namespace humhub\modules\notification\widgets;
 
 use Yii;
+use humhub\modules\notification\controllers\ListController;
 
 /**
  * Notificaiton overview widget.
@@ -29,10 +30,9 @@ class Overview extends \yii\base\Widget
         }
 
         return $this->render('overview', [
-            'update' => \humhub\modules\notification\controllers\ListController::getUpdates(),
-            'unseenCount' => \humhub\modules\notification\models\Notification::findUnseen()->count()]);
+            'update' => ListController::getUpdates(false)
+        ]);
     }
-
 }
 
 ?>
