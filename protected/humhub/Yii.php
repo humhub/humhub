@@ -19,20 +19,18 @@ class Yii extends \yii\BaseYii
  * Used for properties that are identical for both WebApplication and ConsoleApplication
  * @property-read \humhub\components\ModuleManager $moduleManager
  * @property-read \humhub\components\i18n\I18N $i18n
- * @property \humhub\components\mail\Mailer $mailer
- * @property \humhub\modules\ui\view\components\View $view
- * @property \humhub\components\SettingsManager $settings
- * @property \humhub\modules\notification\components\NotificationManager $notification
- * @property \humhub\components\ModuleManager $moduleManager
- * @property \humhub\modules\search\engine\Search $search
- * @property \humhub\components\i18n\I18N $i18n
- * @property \humhub\components\i18n\Formatter
- * @property \humhub\components\AssetManager $assetManager
- * @property \humhub\modules\user\authclient\Collection $authClientCollection
- * @property \yii\queue\Queue $queue
- * @property \humhub\components\UrlManager $urlManager
- * @property \humhub\modules\live\components\Sender $live
- * @property \yii\mutex\Mutex $mutex
+ * @property-read  \humhub\components\mail\Mailer $mailer
+ * @property-read \humhub\modules\ui\view\components\View $view
+ * @property-read \humhub\components\SettingsManager $settings
+ * @property-read \humhub\modules\notification\components\NotificationManager $notification
+ * @property-read \humhub\modules\search\engine\Search $search
+ * @property-read \humhub\components\i18n\Formatter
+ * @property-read \humhub\components\AssetManager $assetManager
+ * @property-read \humhub\modules\user\authclient\Collection $authClientCollection
+ * @property-read \yii\queue\Queue $queue
+ * @property-read \humhub\components\UrlManager $urlManager
+ * @property-read \humhub\modules\live\components\Sender $live
+ * @property-read \yii\mutex\Mutex $mutex
  *
  */
 abstract class BaseApplication extends yii\base\Application
