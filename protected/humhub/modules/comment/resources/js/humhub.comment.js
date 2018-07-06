@@ -19,7 +19,6 @@ humhub.module('comment', function (module, require, $) {
             that.addComment(response.html);
             that.getInput().val('').trigger('autosize.resize');
             richText.$.trigger('clear');
-            //richText.focus();
             that.getUpload().reset();
         }).catch(function (err) {
             module.log.error(err, true);
@@ -224,6 +223,7 @@ humhub.module('comment', function (module, require, $) {
     var toggleComment = function(evt) {
         var visible = evt.$target.is(':visible');
         evt.$target.slideToggle(undefined, function() {
+            debugger;
             evt.$target.find('.humhub-ui-richtext').trigger('focus');
         });
     };

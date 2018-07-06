@@ -239,7 +239,7 @@ humhub.module('ui.additions', function (module, require, $) {
         var observer = new MutationObserver(function (mutations) {
             mutations.forEach(function (mutation) {
                 var $nodes = $(mutation.addedNodes).filter(function () {
-                    return this.nodeType === 1; // filter out text nodes
+                    return this.nodeType === 1 && !$(this).closest('.humhub-ui-richtext').length; // filter out text nodes and ignore richtext changes
                 });
 
                 $nodes.each(function () {
