@@ -66,7 +66,7 @@ class RichTextEditor extends Widget
 
     public function run()
     {
-        return $this->render('richTextEditor', array('id' => $this->id, 'userSearchUrl' => $this->searchUrl, 'inputContent' => $this->inputContent));
+        return $this->render('richTextEditor', ['id' => $this->id, 'userSearchUrl' => $this->searchUrl, 'inputContent' => $this->inputContent]);
     }
 
 }

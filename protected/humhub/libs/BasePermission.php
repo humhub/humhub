@@ -165,7 +165,7 @@ class BasePermission extends BaseObject
     {
         if (isset(Yii::$app->params['defaultPermissions'][self::className()]) &&
             isset(Yii::$app->params['defaultPermissions'][self::className()][$groupId])) {
-                return Yii::$app->params['defaultPermissions'][self::className()][$groupId];
+            return Yii::$app->params['defaultPermissions'][self::className()][$groupId];
         }
 
         return null;
@@ -208,5 +208,4 @@ class BasePermission extends BaseObject
 
         throw new Exception('Invalid permission state');
     }
-
 }

@@ -112,7 +112,7 @@ class Markdown extends JsInputWidget
 
         if ($this->form != null) {
             $textArea = $this->form->field($this->model, $this->attribute)->textarea($this->getOptions())->label($this->label);
-        } else if ($this->model != null) {
+        } elseif ($this->model != null) {
             $textArea = Html::activeTextarea($this->model, $this->attribute, $this->getOptions());
         } else {
             $textArea = Html::textarea($this->name, $this->value, $this->getOptions());

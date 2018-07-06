@@ -47,7 +47,6 @@ class PolymorphicRelation extends Behavior
      */
     public function getPolymorphicRelation()
     {
-
         if ($this->_cached !== null) {
             return $this->_cached;
         }
@@ -64,7 +63,7 @@ class PolymorphicRelation extends Behavior
             return null;
         }
 
-        if(!method_exists($className, 'tableName')) {
+        if (!method_exists($className, 'tableName')) {
             // Avoids failures when running integrity checks etc.
             return null;
         }
@@ -77,7 +76,7 @@ class PolymorphicRelation extends Behavior
                 $this->_cached = $object;
                 return $object;
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             // Avoid failures when running integrity checks etc.
             Yii::error($e);
         }
@@ -99,8 +98,6 @@ class PolymorphicRelation extends Behavior
                 $this->owner->setAttribute($this->pkAttribute, $object->getPrimaryKey());
             }
         }
-
-
     }
 
     /**
@@ -133,5 +130,4 @@ class PolymorphicRelation extends Behavior
         
         return false;
     }
-
 }

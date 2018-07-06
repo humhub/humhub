@@ -103,4 +103,3 @@ class ActivityWebRenderer extends LayoutRenderer
     }
 
 }
-

@@ -24,7 +24,7 @@ class LdapHelper
 
     public static function getLdapConnection()
     {
-        $options = array(
+        $options = [
             'host' => Yii::$app->getModule('user')->settings->get('auth.ldap.hostname'),
             'port' => Yii::$app->getModule('user')->settings->get('auth.ldap.port'),
             'username' => Yii::$app->getModule('user')->settings->get('auth.ldap.username'),
@@ -34,7 +34,7 @@ class LdapHelper
             'bindRequiresDn' => true,
             'baseDn' => Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn'),
             'accountFilterFormat' => Yii::$app->getModule('user')->settings->get('auth.ldap.loginFilter'),
-        );
+        ];
 
         $ldap = new \Zend\Ldap\Ldap($options);
         $ldap->bind();

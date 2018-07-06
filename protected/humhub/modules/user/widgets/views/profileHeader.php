@@ -141,7 +141,7 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
                        aria-label="<?= Yii::t('UserModule.base', 'Crop profile image'); ?>">
                         <i class="fa fa-edit"></i></a>
                     <?php
-                    echo \humhub\widgets\ModalConfirm::widget(array(
+                    echo \humhub\widgets\ModalConfirm::widget([
                         'uniqueID' => 'modal_profileimagedelete',
                         'linkOutput' => 'a',
                         'ariaLabel' => Yii::t('UserModule.base', 'Delete profile image'),
@@ -154,7 +154,7 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
                         'style' => $user->getProfileImage()->hasImage() ? '' : 'display: none;',
                         'linkHref' => Url::to(["/user/image/delete", 'type' => ImageController::TYPE_PROFILE_IMAGE, 'userGuid' => $user->guid]),
                         'confirmJS' => 'function(jsonResp) { resetProfileImage(jsonResp); }'
-                    ));
+                    ]);
                     ?>
                 </div>
             <?php endif; ?>

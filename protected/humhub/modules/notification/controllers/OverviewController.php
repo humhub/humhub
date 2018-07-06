@@ -77,11 +77,11 @@ class OverviewController extends Controller
             $notifications[] = $notificationRecord->getClass();
         }
 
-        return $this->render('index', array(
+        return $this->render('index', [
                     'notifications' => $notifications,
                     'filterForm' => $filterForm,
                     'pagination' => $pagination
-        ));
+        ]);
     }
 
 }

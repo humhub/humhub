@@ -14,7 +14,6 @@ use humhub\modules\file\models\File;
 
 class Markdown extends \cebe\markdown\GithubMarkdown
 {
-
     protected function handleInternalUrls($url)
     {
         // Handle urls to file
@@ -133,5 +132,4 @@ REGEXP;
 
         return false;
     }
-
 }

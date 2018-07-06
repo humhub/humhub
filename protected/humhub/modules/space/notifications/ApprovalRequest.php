@@ -54,7 +54,7 @@ class ApprovalRequest extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function getViewParams($params = array())
+    public function getViewParams($params = [])
     {
         return ArrayHelper::merge(parent::getViewParams(['message' => $this->message]), $params);
     }

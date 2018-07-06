@@ -36,7 +36,7 @@ class VisibilityLink extends \yii\base\Widget
         // Prevent Make Public in private spaces
         if(!$content->canEdit() || (!$content->visibility && !$contentContainer->visibility)) {
             return;
-        } else if($content->isPrivate() && !$contentContainer->permissionManager->can(new CreatePublicContent())) {
+        } elseif($content->isPrivate() && !$contentContainer->permissionManager->can(new CreatePublicContent())) {
             return;
         }
         

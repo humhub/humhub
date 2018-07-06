@@ -35,7 +35,7 @@ class OriginatorStreamFilter extends StreamQueryFilter
 
         if($this->originators instanceof User) {
             $this->originators = [$this->originators->id];
-        } else if(!is_array($this->originators)) {
+        } elseif(!is_array($this->originators)) {
             $this->originators = [$this->originators];
         }
 
@@ -43,7 +43,7 @@ class OriginatorStreamFilter extends StreamQueryFilter
 
         if (count($this->originators) === 1) {
             $this->query->andWhere(["user.guid" => $this->originators[0]]);
-        } else if (!empty($this->originators)) {
+        } elseif (!empty($this->originators)) {
             $this->query->andWhere(['IN', 'user.guid', $this->originators]);
         }
     }

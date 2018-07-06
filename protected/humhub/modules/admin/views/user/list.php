@@ -61,7 +61,7 @@ use yii\widgets\ActiveForm;
                     'label' => Yii::t('AdminModule.user', 'Last login'),
                     'options' => ['style' => 'width:120px;'],
                     'value' => function ($data) {
-                        return ($data->last_login == NULL) ? Yii::t('AdminModule.user', 'never') : Yii::$app->formatter->asDate($data->last_login);
+                        return ($data->last_login == null) ? Yii::t('AdminModule.user', 'never') : Yii::$app->formatter->asDate($data->last_login);
                     }
                 ],
                 ['class' => UserActionColumn::class],

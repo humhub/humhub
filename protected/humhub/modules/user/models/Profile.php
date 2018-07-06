@@ -176,8 +176,8 @@ class Profile extends \yii\db\ActiveRecord
      */
     public function getFormDefinition()
     {
-        $definition = array();
-        $definition['elements'] = array();
+        $definition = [];
+        $definition['elements'] = [];
 
         $syncAttributes = [];
         if ($this->user !== null) {
@@ -188,11 +188,11 @@ class Profile extends \yii\db\ActiveRecord
 
         foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $profileFieldCategory) {
 
-            $category = array(
+            $category = [
                 'type' => 'form',
                 'title' => Yii::t($profileFieldCategory->getTranslationCategory(), $profileFieldCategory->title),
-                'elements' => array(),
-            );
+                'elements' => [],
+            ];
 
             foreach (ProfileField::find()->orderBy('sort_order')->where(['profile_field_category_id' => $profileFieldCategory->id])->all() as $profileField) {
                 /** @var ProfileField $profileField */

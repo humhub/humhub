@@ -198,7 +198,7 @@ class NotificationManager
                 // Add explicit follower and non explicit follower if $isDefault
                 $followers = $this->findFollowers($container, $isDefault)->all();
                 $result = array_merge($members, $followers);
-            } else if ($isDefault) {
+            } elseif ($isDefault) {
                 // Add all members without explicit following and no notification settings.
                 $followers = Membership::getSpaceMembersQuery($container, true, false)
                                 ->andWhere(['not exists', $this->findNotExistingSettingSubQuery()])->all();
@@ -206,7 +206,7 @@ class NotificationManager
             } else {
                 $result = $members;
             }
-        } else if ($container instanceof User) {
+        } elseif ($container instanceof User) {
             // Note the notification follow logic for users is currently not implemented.
             // TODO: perhaps return only friends if public is false?
             $result = (!$public) ? [] : Follow::getFollowersQuery($container, true)->all();

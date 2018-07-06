@@ -215,7 +215,7 @@ class ProsemirrorRichText extends AbstractRichText
                 return $container->isActive()
                     ?  '['.Html::encode($container->getDisplayName()).'](mention:'.$container->guid.' "'.$container->getUrl().'")'
                     : $notFoundResult;
-            } else if($container instanceof Space) {
+            } elseif($container instanceof Space) {
                 return '['.Html::encode($container->name).'](mention:'.$container->guid.' "'.$container->getUrl().'")';
             }
         });

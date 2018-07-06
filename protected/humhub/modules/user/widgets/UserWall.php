@@ -9,7 +9,7 @@ class UserWall extends \yii\base\Widget
 
     public function run()
     {
-        return $this->render('userWall', array('user' => $this->user));
+        return $this->render('userWall', ['user' => $this->user]);
     }
 
 }

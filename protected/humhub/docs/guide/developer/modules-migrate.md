@@ -33,6 +33,32 @@ Added new user status (User::SOFT_DELETED). You can find more information here: 
 Moved all form and field related widgets from `humhub\widgets` to `humhub\modules\ui\form\widgets` namespace.
 There is a compatibility layer for the 1.3 release.
 
+### Deprecations
+
+ - `humhub\components\Theme.php` -> `humhub\modules\ui\view\components\Theme`
+ - `humhub\components\View` -> `humhub\modules\ui\view\components\View`
+ - `humhub\libs\ThemeHelper` -> `humhub\modules\ui\view\components\ThemeHelper`
+ - `humhub\modules\content\widgets\richtext\HumHubRichText` -> Compatibility class for legacy richtext was replaced with prosemirror richtext.
+ - `humhub\modules\content\widgets\richtext\HumHubRichTextEditor` -> Compatibility class for legacy richtext was replaced with prosemirror richtext editor.
+ - `humhub\widgets\RichText` -> `humhub\modules\content\widgets\richtext\RichText`
+ - `humhub\widgets\RichTextField` -> `humhub\modules\content\widgets\richtext\RichTextField`
+ - `humhub\modules\user\models\Mentioning::parse()` -> `humhub\modules\content\widgets\richtext\RichText::processText()`
+ 
+  
+##### We moved most of the `humhub\widgets` into the new `ui` core module as:
+
+ - `humhub\widgets\ActiveField`
+ - `humhub\widgets\ActiveForm`
+ - `humhub\widgets\BasePickerField`
+ - `humhub\widgets\ColorPickerField`
+ - `humhub\widgets\ContentTagDropDown`
+ - `humhub\widgets\DatePicker`
+ - `humhub\widgets\DurationPicker`
+ - `humhub\widgets\InputWidget`
+ - `humhub\widgets\MarkdownField`
+ - `humhub\widgets\MarkdownFieldModals`
+ - `humhub\widgets\MultiSelectField`
+ - `humhub\widgets\TimePicker`
 
 
 Migrate from 1.1 to 1.2

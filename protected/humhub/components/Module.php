@@ -175,7 +175,7 @@ class Module extends \yii\base\Module
         /** @var $assetBundle AssetBundle */
         /** @var $manager AssetManager */
 
-        if($all) {
+        if ($all) {
             foreach ($this->getAssetClasses() as $assetClass) {
                 $assetBundle = new $assetClass();
                 $manager = Yii::$app->getAssetManager();
@@ -392,7 +392,7 @@ class Module extends \yii\base\Module
         if (is_dir($activityDirectory)) {
             foreach (FileHelper::findFiles($activityDirectory, ['recursive' => false,]) as $file) {
                 $activityClass = $activityNamespace . '\\' . basename($file, '.php');
-                if(is_subclass_of($activityClass, BaseActivity::class)) {
+                if (is_subclass_of($activityClass, BaseActivity::class)) {
                     $activities[] = $activityClass;
                 }
             }
@@ -421,7 +421,7 @@ class Module extends \yii\base\Module
         if (is_dir($assetDirectory)) {
             foreach (FileHelper::findFiles($assetDirectory, ['recursive' => false,]) as $file) {
                 $assetClass =  $assetNamespace . '\\' . basename($file, '.php');
-                if(is_subclass_of($assetClass, AssetBundle::class)) {
+                if (is_subclass_of($assetClass, AssetBundle::class)) {
                     $assets[] = $assetClass;
                 }
             }
@@ -429,5 +429,4 @@ class Module extends \yii\base\Module
 
         return $assets;
     }
-
 }

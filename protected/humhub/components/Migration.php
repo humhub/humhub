@@ -73,7 +73,7 @@ class Migration extends \yii\db\Migration
      * refer to [[Query::where()]] on how to specify conditions.
      * @param array $params the parameters to be bound to the query.
      */
-    public function updateSilent($table, $columns, $condition = '', $params = array())
+    public function updateSilent($table, $columns, $condition = '', $params = [])
     {
         $this->db->createCommand()->update($table, $columns, $condition, $params)->execute();
     }
@@ -88,5 +88,4 @@ class Migration extends \yii\db\Migration
     {
         $this->db->createCommand()->insert($table, $columns)->execute();
     }
-
 }

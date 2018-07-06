@@ -14,7 +14,7 @@ class Stream extends ActivityStreamViewer
     {
         if($this->streamAction == '/dashboard/dashboard/stream') {
             $this->streamAction = '/dashboard/dashboard/activity-stream';
-        } else if($this->streamAction === '/space/space/stream') {
+        } elseif($this->streamAction === '/space/space/stream') {
             $this->streamAction = '/activity/stream/stream';
         }
         parent::init();

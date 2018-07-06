@@ -35,5 +35,3 @@ return yii\helpers\ArrayHelper::merge(
                 // Acceptance Test Config
                 $testConfig
 );
-
-

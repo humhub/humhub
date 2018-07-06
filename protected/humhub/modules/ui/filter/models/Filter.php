@@ -30,9 +30,9 @@ abstract class Filter extends Model
         if($this->autoLoad === static::AUTO_LOAD_ALL) {
             $this->load(Yii::$app->request->get());
             $this->load(Yii::$app->request->post());
-        } else if($this->autoLoad === static::AUTO_LOAD_GET) {
+        } elseif($this->autoLoad === static::AUTO_LOAD_GET) {
             $this->load(Yii::$app->request->get());
-        } else if($this->autoLoad === static::AUTO_LOAD_POST) {
+        } elseif($this->autoLoad === static::AUTO_LOAD_POST) {
             $this->load(Yii::$app->request->post());
         }
     }

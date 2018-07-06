@@ -35,10 +35,10 @@ class DeleteLink extends \yii\base\Widget
         }
         
         if ($this->content->content->canEdit()) {
-            return $this->render('deleteLink', array(
+            return $this->render('deleteLink', [
                         'model' => $this->content->content->object_model,
                         'id' => $this->content->content->object_id
-            ));
+            ]);
         }
     }
 

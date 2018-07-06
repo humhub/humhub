@@ -37,12 +37,11 @@ class OembedController extends Controller
         $result = [];
         foreach ($urls as $url) {
             $oembed = UrlOembed::GetOEmbed($url);
-            if($oembed) {
+            if ($oembed) {
                 $result[$url] = $oembed;
             }
         }
 
         return $this->asJson($result);
     }
-
 }

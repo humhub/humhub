@@ -38,5 +38,4 @@ class UrlManager extends \yii\web\UrlManager
 
         return parent::createUrl($params);
     }
-
 }

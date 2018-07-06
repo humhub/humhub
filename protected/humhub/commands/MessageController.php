@@ -188,5 +188,4 @@ class MessageController extends \yii\console\controllers\MessageController
             print "Saved!\n";
         }
     }
-
 }

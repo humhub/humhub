@@ -42,7 +42,7 @@ class TimezoneHelper
             DateTimeZone::PACIFIC,
         ];
 
-        if($includeUTC) {
+        if ($includeUTC) {
             $regions[] = DateTimeZone::UTC;
         }
 
@@ -80,5 +80,4 @@ class TimezoneHelper
 
         return $timezone_list;
     }
-
 }

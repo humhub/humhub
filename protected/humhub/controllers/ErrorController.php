@@ -56,5 +56,4 @@ class ErrorController extends Controller
             'message' => $message
         ]);
     }
-
 }

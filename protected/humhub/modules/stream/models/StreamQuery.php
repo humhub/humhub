@@ -203,7 +203,7 @@ class StreamQuery extends Model
     {
         if (!is_string($filters)) {
             $this->filters[] = $filters;
-        } else if (is_array($filters)) {
+        } elseif (is_array($filters)) {
             $this->filters = ArrayHelper::merge($this->filters, $filters);
         }
         return $this;
@@ -213,7 +213,7 @@ class StreamQuery extends Model
     {
         if (is_string($includes)) {
             $this->includes = [$includes];
-        } else if (is_array($includes)) {
+        } elseif (is_array($includes)) {
             $this->includes = $includes;
         }
 
@@ -224,7 +224,7 @@ class StreamQuery extends Model
     {
         if (is_string($types)) {
             $this->excludes = [$types];
-        } else if (is_array($types)) {
+        } elseif (is_array($types)) {
             $this->excludes = $types;
         }
 

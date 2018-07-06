@@ -60,10 +60,10 @@ class MarkdownEditor extends \yii\base\Widget
      */
     public function run()
     {
-        return $this->render('markdownEditor', array(
+        return $this->render('markdownEditor', [
                     'fieldId' => $this->fieldId,
                     'previewUrl' => $this->previewUrl
-        ));
+        ]);
     }
 
 }

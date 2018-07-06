@@ -146,7 +146,7 @@ humhub.module('stream.wall', function (module, require, $) {
         event.off('humhub:content:newEntry.wallStream');
         event.off('humhub:content:afterMove.wallStream');
         event.off('humhub:topic:updated.wallStream');
-        event.off('scroll.wallStream');
+        $(window).off('scroll.wallStream');
     };
 
     var WallStreamFilter = Filter.extend();

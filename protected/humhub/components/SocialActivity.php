@@ -213,7 +213,7 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         if ($this->source instanceof ContentContainerActiveRecord) {
             return $this->source;
-        } else if ($this->hasContent()) {
+        } elseif ($this->hasContent()) {
             return $this->getContent()->getContainer();
         }
 
@@ -309,20 +309,19 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         if (!$this->hasContent() && !$content) {
             return null;
-        } else if (!$content) {
+        } elseif (!$content) {
             $content = $this->source;
         }
 
         $truncatedDescription = $this->getContentPreview($content, 60);
 
-        if(empty($truncatedDescription)) {
+        if (empty($truncatedDescription)) {
             return null;
         }
 
         $trimmed = Helpers::trimText($truncatedDescription, 60);
 
         return ($withContentName) ? Html::encode($content->getContentName()). ' "' . $trimmed . '"' : $trimmed;
-
     }
 
     /**
@@ -336,7 +335,7 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         if (!$this->hasContent() && !$content) {
             return null;
-        } else if (!$content) {
+        } elseif (!$content) {
             $content = $this->source;
         }
 
@@ -356,7 +355,7 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         if (!$this->hasContent() && !$content) {
             return null;
-        } else if (!$content) {
+        } elseif (!$content) {
             $content = $this->source;
         }
 
@@ -393,5 +392,4 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
         $this->from($unserializedArr['originator']);
         $this->about($unserializedArr['source']);
     }
-
 }

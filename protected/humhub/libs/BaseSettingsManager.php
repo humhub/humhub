@@ -259,5 +259,4 @@ abstract class BaseSettingsManager extends Component
 
         return false;
     }
-
 }

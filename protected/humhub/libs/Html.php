@@ -107,5 +107,4 @@ class Html extends \yii\bootstrap\Html
             throw new InvalidParamException('Content container type not supported!');
         }
     }
-
 }

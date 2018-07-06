@@ -50,12 +50,12 @@ class FileUploadButton extends \yii\base\Widget
             $objectId = $this->object->getPrimaryKey();
         }
 
-        return $this->render('fileUploadButton', array(
+        return $this->render('fileUploadButton', [
                     'fileListFieldName' => $this->fileListFieldName,
                     'uploaderId' => $this->uploaderId,
                     'objectModel' => $objectModel,
                     'objectId' => $objectId
-        ));
+        ]);
     }
 
 }

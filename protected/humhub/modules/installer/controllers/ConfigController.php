@@ -101,7 +101,7 @@ class ConfigController extends Controller
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 
-        return $this->render('basic', array('model' => $form));
+        return $this->render('basic', ['model' => $form]);
     }
 
     /**
@@ -116,7 +116,7 @@ class ConfigController extends Controller
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 
-        return $this->render('useCase', array('model' => $form));
+        return $this->render('useCase', ['model' => $form]);
     }
 
     /**
@@ -170,7 +170,7 @@ class ConfigController extends Controller
         if (Yii::$app->settings->get("useCase") == self::USECASE_OTHER) {
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         } else {
-            return $this->render('security', array('model' => $form));
+            return $this->render('security', ['model' => $form]);
         }
     }
 
@@ -210,7 +210,7 @@ class ConfigController extends Controller
         if (Yii::$app->settings->get("useCase") == self::USECASE_OTHER) {
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         } else {
-            return $this->render('modules', array('modules' => $modules));
+            return $this->render('modules', ['modules' => $modules]);
         }
     }
 
@@ -349,7 +349,7 @@ class ConfigController extends Controller
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 
-        return $this->render('sample-data', array('model' => $form));
+        return $this->render('sample-data', ['model' => $form]);
     }
 
     /**
@@ -375,54 +375,54 @@ class ConfigController extends Controller
         $profileModel->scenario = 'registration';
 
         // Build Form Definition
-        $definition = array();
-        $definition['elements'] = array();
+        $definition = [];
+        $definition['elements'] = [];
 
         // Add User Form
-        $definition['elements']['User'] = array(
+        $definition['elements']['User'] = [
             'type' => 'form',
-            'elements' => array(
-                'username' => array(
+            'elements' => [
+                'username' => [
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 25,
-                ),
-                'email' => array(
+                ],
+                'email' => [
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 100,
-                )
-            ),
-        );
+                ]
+            ],
+        ];
 
         // Add User Password Form
-        $definition['elements']['Password'] = array(
+        $definition['elements']['Password'] = [
             'type' => 'form',
-            'elements' => array(
-                'newPassword' => array(
+            'elements' => [
+                'newPassword' => [
                     'type' => 'password',
                     'class' => 'form-control',
                     'maxlength' => 255,
-                ),
-                'newPasswordConfirm' => array(
+                ],
+                'newPasswordConfirm' => [
                     'type' => 'password',
                     'class' => 'form-control',
                     'maxlength' => 255,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         // Add Profile Form
-        $definition['elements']['Profile'] = array_merge(array('type' => 'form'), $profileModel->getFormDefinition());
+        $definition['elements']['Profile'] = array_merge(['type' => 'form'], $profileModel->getFormDefinition());
 
         // Get Form Definition
-        $definition['buttons'] = array(
-            'save' => array(
+        $definition['buttons'] = [
+            'save' => [
                 'type' => 'submit',
                 'class' => 'btn btn-primary',
                 'label' => Yii::t('InstallerModule.controllers_ConfigController', 'Create Admin Account'),
-            ),
-        );
+            ],
+        ];
 
         $form = new \humhub\compat\HForm($definition);
         $form->models['User'] = $userModel;
@@ -483,7 +483,7 @@ class ConfigController extends Controller
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 
-        return $this->render('admin', array('hForm' => $form));
+        return $this->render('admin', ['hForm' => $form]);
     }
 
     public function actionFinish()

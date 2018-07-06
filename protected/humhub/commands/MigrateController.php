@@ -149,7 +149,6 @@ class MigrateController extends \yii\console\controllers\MigrateController
     {
         $migrationPaths = ['base' => $this->migrationPath];
         foreach (Yii::$app->getModules() as $id => $config) {
-
             $class = null;
             if (is_array($config) && isset($config['class'])) {
                 $class = $config['class'];
@@ -229,5 +228,4 @@ class MigrateController extends \yii\console\controllers\MigrateController
             return parent::stderr($string);
         }
     }
-
 }

@@ -61,11 +61,11 @@ class Login extends Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'username' => Yii::t('UserModule.views_auth_login', 'username or email'),
             'password' => Yii::t('UserModule.views_auth_login', 'password'),
             'rememberMe' => Yii::t('UserModule.views_auth_login', 'Remember me'),
-        );
+        ];
     }
 
     /**

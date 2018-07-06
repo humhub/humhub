@@ -99,14 +99,14 @@ class Registration extends HForm
         if ($this->enablePasswordForm) {
             $this->definition['elements']['Password'] = $this->getPasswordFormDefinition();
         }
-        $this->definition['elements']['Profile'] = array_merge(array('type' => 'form'), $this->getProfile()->getFormDefinition());
-        $this->definition['buttons'] = array(
-            'save' => array(
+        $this->definition['elements']['Profile'] = array_merge(['type' => 'form'], $this->getProfile()->getFormDefinition());
+        $this->definition['buttons'] = [
+            'save' => [
                 'type' => 'submit',
                 'class' => 'btn btn-primary',
                 'label' => Yii::t('UserModule.controllers_AuthController', 'Create account'),
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -116,11 +116,11 @@ class Registration extends HForm
      */
     protected function getUserFormDefinition()
     {
-        $form = array(
+        $form = [
             'type' => 'form',
             'title' => Yii::t('UserModule.controllers_AuthController', 'Account'),
             'elements' => [],
-        );
+        ];
 
         $form['elements']['username'] = [
             'type' => 'text',
@@ -144,21 +144,21 @@ class Registration extends HForm
      */
     protected function getPasswordFormDefinition()
     {
-        return array(
+        return [
             'type' => 'form',
-            'elements' => array(
-                'newPassword' => array(
+            'elements' => [
+                'newPassword' => [
                     'type' => 'password',
                     'class' => 'form-control',
                     'maxlength' => 255,
-                ),
-                'newPasswordConfirm' => array(
+                ],
+                'newPasswordConfirm' => [
                     'type' => 'password',
                     'class' => 'form-control',
                     'maxlength' => 255,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     protected function getGroupFormDefinition()
@@ -169,7 +169,7 @@ class Registration extends HForm
 
         if ($defaultUserGroup != "") {
             $groupFieldType = "hidden";
-        } else if (count($groupModels) == 1) {
+        } elseif (count($groupModels) == 1) {
             $groupFieldType = "hidden";
             $defaultUserGroup = $groupModels[0]->id;
         }

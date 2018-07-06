@@ -24,4 +24,3 @@ class DatabaseInfoTest extends Unit
         }
     }
 }
-

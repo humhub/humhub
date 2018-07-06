@@ -27,7 +27,7 @@ if ($linkOutput == 'button') {
                 <?= $linkContent; ?>
     </button>
 
-<?php } else if ($linkOutput == 'a') { ?>
+<?php } elseif ($linkOutput == 'a') { ?>
 
     <!-- create normal link element -->
     <a id="deleteLinkPost_<?= $uniqueID; ?>" <?= ($ariaLabel) ? ' aria-label="'.$ariaLabel.'"' : '' ?> class="<?= $class; ?> <?php if ($tooltip != '') : ?>tt<?php endif; ?>" style="<?= $style; ?>" href="#"

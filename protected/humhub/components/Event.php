@@ -22,5 +22,4 @@ class Event extends \yii\base\Event
      * Note that this varies according to which event is currently executing.
      */
     public $result;
-
 }

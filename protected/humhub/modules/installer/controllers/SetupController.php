@@ -104,7 +104,7 @@ class SetupController extends Controller
         }
 
         // Render Template
-        return $this->render('database', array('model' => $model, 'errorMessage' => $errorMessage));
+        return $this->render('database', ['model' => $model, 'errorMessage' => $errorMessage]);
     }
 
     /**

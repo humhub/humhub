@@ -110,7 +110,7 @@ class ContentTag extends ActiveRecord
     {
         if (is_array($contentContainer)) {
             parent::__construct($contentContainer);
-        } else if ($contentContainer instanceof ContentContainerActiveRecord) {
+        } elseif ($contentContainer instanceof ContentContainerActiveRecord) {
             $this->contentcontainer_id = $contentContainer->contentcontainer_id;
             parent::__construct($config);
         } else {

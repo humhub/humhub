@@ -45,7 +45,7 @@ class ContentTypeStreamFilter extends StreamQueryFilter
 
             if (count($this->includes) === 1) {
                 $this->query->andWhere(["content.object_model" => $this->includes[0]]);
-            } else if (!empty($this->includes)) {
+            } elseif (!empty($this->includes)) {
                 $this->query->andWhere(['IN', 'content.object_model', $this->includes]);
             }
         }
@@ -57,7 +57,7 @@ class ContentTypeStreamFilter extends StreamQueryFilter
 
             if (count($this->excludes) === 1) {
                 $this->query->andWhere(['!=', "content.object_model", $this->excludes[0]]);
-            } else if (!empty($this->excludes)) {
+            } elseif (!empty($this->excludes)) {
                 $this->query->andWhere(['NOT IN', 'content.object_model', $this->excludes]);
             }
         }

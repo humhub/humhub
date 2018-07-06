@@ -111,7 +111,6 @@ class CronController extends Controller
         $lastRun = (int)Yii::$app->settings->getUncached('cronLastDailyRun');
 
         if (!empty($lastRun) && $force !== true) {
-
             $lastTime = new DateTime('@' . $lastRun);
             $todayTime = DateTime::createFromFormat(
                 'Y-m-d H:i',

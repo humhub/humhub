@@ -18,7 +18,6 @@ use Yii;
  */
 class JSONResponse
 {
-
     const STATE_CONFIRM = 0;
     const STATE_ERROR_APPLICATION = 1;
     const STATE_ERROR_VALIDATOIN = 2;
@@ -50,7 +49,7 @@ class JSONResponse
 
     public function confirm($content)
     {
-        if($content != null) {
+        if ($content != null) {
             $this->content($content);
         }
         $this->result['status'] = self::STATE_CONFIRM;
@@ -60,7 +59,7 @@ class JSONResponse
 
     public function data($key, $value)
     {
-        if(!is_array($this->result['data'])) {
+        if (!is_array($this->result['data'])) {
             $this->result['data'] = [];
         }
         $this->result['data'][$key] = $value;
@@ -73,7 +72,5 @@ class JSONResponse
         Yii::$app->response->format = 'json';
 
         return $this->result;
-
     }
-
 }

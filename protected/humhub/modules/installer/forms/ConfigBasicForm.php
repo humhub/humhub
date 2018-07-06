@@ -28,9 +28,9 @@ class ConfigBasicForm extends \yii\base\Model
      */
     public function rules()
     {
-        return array(
-            array('name', 'required'),
-        );
+        return [
+            ['name', 'required'],
+        ];
     }
 
     /**
@@ -38,9 +38,9 @@ class ConfigBasicForm extends \yii\base\Model
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'name' => Yii::t('InstallerModule.forms_ConfigBasicForm', 'Name of your network'),
-        );
+        ];
     }
 
 }

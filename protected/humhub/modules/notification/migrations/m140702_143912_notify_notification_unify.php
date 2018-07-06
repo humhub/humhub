@@ -8,10 +8,10 @@ class m140702_143912_notify_notification_unify extends Migration
 
     public function up()
     {
-        $this->delete('notification', 'class=:class', array(':class' => 'PostCreatedNotification'));
-        $this->delete('notification', 'class=:class', array(':class' => 'NoteCreatedNotification'));
-        $this->delete('notification', 'class=:class', array(':class' => 'PollCreatedNotification'));
-        $this->delete('notification', 'class=:class', array(':class' => 'TaskCreatedNotification'));
+        $this->delete('notification', 'class=:class', [':class' => 'PostCreatedNotification']);
+        $this->delete('notification', 'class=:class', [':class' => 'NoteCreatedNotification']);
+        $this->delete('notification', 'class=:class', [':class' => 'PollCreatedNotification']);
+        $this->delete('notification', 'class=:class', [':class' => 'TaskCreatedNotification']);
     }
 
     public function down()
