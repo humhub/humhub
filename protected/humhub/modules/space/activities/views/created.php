@@ -2,7 +2,6 @@
 
 use humhub\libs\Helpers;
 use humhub\modules\content\components\ContentContainerController;
-use Yii;
 use yii\helpers\Html;
 
 if (!Yii::$app->controller instanceof ContentContainerController) {
