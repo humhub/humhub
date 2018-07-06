@@ -1,19 +1,13 @@
 <?php 
 
 use yii\helpers\Url;
+use yii\helpers\Html;
 
-$this->registerJsConfig('notification', [
-    'icon' => $this->theme->getBaseUrl().'/ico/notification-o.png',
-    'loadEntriesUrl' => Url::to(['/notification/list']),
-    'sendDesktopNotifications' => boolval(Yii::$app->notification->getDesktopNoficationSettings(Yii::$app->user->getIdentity())),
-    'text' =>  [
-        'placeholder' => Yii::t('NotificationModule.widgets_views_list', 'There are no notifications yet.')
-    ]
-]);
+/* @var $options []*/
 
 ?>
-<div id="notification_widget" data-ui-widget="notification.NotificationDropDown" data-ui-init='<?= \yii\helpers\Json::encode($update); ?>' class="btn-group">
-    <a href="#" id="icon-notifications" data-action-click='toggle' aria-label="<?= Yii::t('NotificationModule.widgets_views_list', 'Open the notification dropdown menu')?>" data-toggle="dropdown" >
+<?= Html::beginTag('div', $options) ?>
+   <a href="#" id="icon-notifications" data-action-click='toggle' aria-label="<?= Yii::t('NotificationModule.widgets_views_list', 'Open the notification dropdown menu')?>" data-toggle="dropdown" >
         <i class="fa fa-bell"></i>
     </a>
     
@@ -30,9 +24,9 @@ $this->registerJsConfig('notification', [
             </div>
         </li>
         <ul class="media-list"></ul>
-        <li id="loader_notifications">
-            <?= \humhub\widgets\LoaderWidget::widget(); ?>
-        </li>
+            <li id="loader_notifications">
+                <?= \humhub\widgets\LoaderWidget::widget(); ?>
+            </li>
         <li>
             <div class="dropdown-footer">
                 <a class="btn btn-default col-md-12" href="<?= Url::to(['/notification/overview']); ?>">
@@ -41,4 +35,4 @@ $this->registerJsConfig('notification', [
             </div>
         </li>
     </ul>
-</div>
+<?= Html::endTag('div') ?>
