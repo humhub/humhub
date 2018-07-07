@@ -45,8 +45,8 @@ class ThemeLoader implements BootstrapInterface
                 }
             }
         }
-
-        if ($app->view->theme instanceof Theme) {
+        
+        if (!Yii::$app->request->isConsoleRequest && $app->view->theme instanceof Theme) {
             $app->view->theme->register();
         }
 
