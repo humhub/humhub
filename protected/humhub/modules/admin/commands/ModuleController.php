@@ -135,8 +135,6 @@ class ModuleController extends \yii\console\Controller
 
     /**
      * Updates all modules to the latest available version.
-     *
-     * @param array $args
      */
     public function actionUpdateAll()
     {
