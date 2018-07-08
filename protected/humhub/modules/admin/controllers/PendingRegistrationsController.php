@@ -91,13 +91,7 @@ class PendingRegistrationsController extends Controller
      */
     public function actionResend($id)
     {
-        $invite = Invite::findOne(['id' => $id]);
-        if ($invite === null) {
-            throw new HttpException(404, Yii::t(
-                'AdminModule.controllers_PendingRegistrationsController',
-                'Invite not found!'
-            ));
-        }
+        $invite = $this->findInviteById($id);
         if (Yii::$app->request->isPost) {
             $invite->sendInviteMail();
             $this->view->success(Yii::t(
@@ -119,13 +113,7 @@ class PendingRegistrationsController extends Controller
      */
     public function actionDelete($id)
     {
-        $invite = Invite::findOne(['id' => $id]);
-        if ($invite === null) {
-            throw new HttpException(404, Yii::t(
-                'AdminModule.controllers_PendingRegistrationsController',
-                'Invite not found!'
-            ));
-        }
+        $invite = $this->findInviteById($id);
         if (Yii::$app->request->isPost) {
             $invite->delete();
             $this->view->success(Yii::t(
@@ -163,5 +151,23 @@ class PendingRegistrationsController extends Controller
             'firstname',
             'lastname',
         ];
+    }
+
+    /**
+     * Find invite by id
+     * @param $id
+     * @return Invite|null
+     * @throws HttpException
+     */
+    private function findInviteById($id)
+    {
+        $invite = Invite::findOne(['id' => $id]);
+        if ($invite === null) {
+            throw new HttpException(404, Yii::t(
+                'AdminModule.controllers_PendingRegistrationsController',
+                'Invite not found!'
+            ));
+        }
+        return $invite;
     }
 }
