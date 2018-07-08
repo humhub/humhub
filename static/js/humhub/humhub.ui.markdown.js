@@ -128,10 +128,10 @@ humhub.module('ui.markdown', function (module, require, $) {
                         icon: {glyph: 'glyphicon glyphicon-link', fa: 'fa fa-link', 'fa-3': 'icon-link'},
                         callback: function (e) {
 
-							vtitle = e.getSelection().text;
+							var vtitle = e.getSelection().text;
 							if (vtitle != "") {
 
-								vLink = '[' + vtitle + '](' +  vtitle + ')';
+								var vLink = '[' + vtitle + '](' +  vtitle + ')';
 								e.replaceSelection(vLink);
 							}
                         }
