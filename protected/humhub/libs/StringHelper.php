@@ -27,8 +27,8 @@ class StringHelper extends \yii\helpers\StringHelper
     {
         $hex_guid = bin2hex($object_guid);
 
-        if ($hex_guid == "") {
-            return "";
+        if ($hex_guid == '') {
+            return '';
         }
 
         $hex_guid_to_guid_str = '';
