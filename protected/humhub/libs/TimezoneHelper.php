@@ -75,7 +75,7 @@ class TimezoneHelper
             $current_time = $c->format('H:i');
 
             #$timezone_list[$timezone] = $pretty_offset." - ".$current_time."  - ".$timezone;
-            $timezone_list[$timezone] = $pretty_offset . " - " . $timezone;
+            $timezone_list[$timezone] = $pretty_offset . ' - ' . $timezone;
         }
 
         return $timezone_list;
