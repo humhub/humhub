@@ -123,9 +123,23 @@ humhub.module('ui.markdown', function (module, require, $) {
                 [{
                     name: "groupCustom",
                     data: [{
+                        name: "cmdInterLinkWiki",
+                        title: "InterlinkWiki",
+                        icon: {glyph: 'glyphicon glyphicon-link', fa: 'fa fa-link', 'fa-3': 'icon-link'},
+                        callback: function (e) {
+
+							vtitle = e.getSelection().text;
+							if (vtitle != "") {
+
+								vLink = '[' + vtitle + '](' +  vtitle + ')';
+								e.replaceSelection(vLink);
+							}
+                        }
+                    },
+                    {
                         name: "cmdLinkWiki",
                         title: "URL/Link",
-                        icon: {glyph: 'glyphicon glyphicon-link', fa: 'fa fa-link', 'fa-3': 'icon-link'},
+	                    icon: {glyph: 'glyphicon glyphicon-link', fa: 'fa fa-external-link', 'fa-3': 'icon-link'},
                         callback: function (e) {
                             var linkModal = modal.get('#markdown-modal-add-link');
                             $titleInput = linkModal.$.find('.linkTitle');
