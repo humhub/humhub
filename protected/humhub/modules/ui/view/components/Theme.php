@@ -108,7 +108,11 @@ class Theme extends BaseTheme
             $parent->register();
         }
 
-        Yii::$app->view->registerCssFile($this->getBaseUrl() . '/css/theme.css', ['depends' => AppAsset::class]);
+        if (file_exists($this->getBasePath() . '/css/theme.css')) {
+            $mtime = filemtime($this->getBasePath() . '/css/theme.css');
+            Yii::$app->view->registerCssFile($this->getBaseUrl() . '/css/theme.css?v=' . $mtime, ['depends' => AppAsset::class]);
+        }
+
     }
 
     /**
