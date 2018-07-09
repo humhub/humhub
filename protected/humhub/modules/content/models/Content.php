@@ -224,7 +224,10 @@ class Content extends ContentDeprecated implements Movable
     private function notifyContentCreated()
     {
         $contentSource = $this->getPolymorphicRelation();
-        $notifyUsers = array_merge($this->notifyUsersOfNewContent, Yii::$app->notification->getFollowers($this));
+        $notifyUsers = array_merge(
+            $this->notifyUsersOfNewContent,
+            Yii::$app->notification->getFollowers($this)
+        );
 
         \humhub\modules\content\notifications\ContentCreated::instance()
             ->from($this->user)

@@ -22,22 +22,22 @@ use humhub\modules\notification\targets\BaseTarget;
 /**
  * The NotificationManager component is responsible for sending BaseNotifications to Users over different
  * notification targets by using the send and sendBulk function.
- * 
- * A aotification target may be disabled for a specific user and will be skipped.
- * 
+ *
+ * A notification target may be disabled for a specific user and will be skipped.
+ *
  * @author buddha
  */
 class NotificationManager
 {
 
     /**
-     * 
+     *
      * @var array Target configuration.
      */
     public $targets = [];
 
     /**
-     * 
+     *
      * @var BaseNotification[] Cached array of BaseNotification instances.
      */
     protected $_notifications;
@@ -56,7 +56,7 @@ class NotificationManager
     /**
      * Sends the given $notification to all enabled targets of the given $users if possible
      * as bulk message.
-     * 
+     *
      * @param \humhub\modules\notification\components\BaseNotification $notification
      * @param User[] $users
      */
@@ -74,7 +74,7 @@ class NotificationManager
 
     /**
      * Filters out duplicates and the originator of the notification itself.
-     * 
+     *
      * @param User[] $users
      * @return User[] array of unique user instances
      */
@@ -98,7 +98,7 @@ class NotificationManager
 
     /**
      * Sends the given $notification to all enabled targets of a single user.
-     * 
+     *
      * @param \humhub\modules\notification\components\BaseNotification $notification
      * @param User $user target user
      */
@@ -110,8 +110,8 @@ class NotificationManager
     /**
      * Returns all active targets for the given user.
      * If no user is given, all configured targets will be returned.
-     * 
-     * @param User $user|null the user 
+     *
+     * @param User $user|null the user
      * @return BaseTarget[] the target
      */
     public function getTargets(User $user = null)
@@ -136,7 +136,7 @@ class NotificationManager
 
     /**
      * Factory function for receiving a target instance for the given class.
-     * 
+     *
      * @param string $class
      * @return BaseTarget
      */
@@ -152,7 +152,7 @@ class NotificationManager
     /**
      * Checks if the given user is following notifications for the given space.
      * This is the case for members and followers with the sent_notifications settings.
-     * 
+     *
      * @param User $user
      * @param Space $space
      * @return boolean
@@ -171,7 +171,7 @@ class NotificationManager
      * Returns all notification followers for the given $content instance.
      * This function includes ContentContainer followers only if the content visibility is set to public,
      * else only space members with send_notifications settings are returned.
-     * 
+     *
      * @param Content $content
      * @return User[]
      */
@@ -183,7 +183,7 @@ class NotificationManager
     /**
      * Returns all notification followers for the given $container. If $public is set to false
      * only members with send_notifications settings are returned.
-     * 
+     *
      * @param ContentContainerActiveRecord $container
      * @param boolean $public
      * @return User[]
@@ -246,7 +246,7 @@ class NotificationManager
 
     /**
      * Returns all spaces this user is following (including member spaces) with sent_notification setting.
-     * 
+     *
      * @param User $user
      * @return Space[]
      */
@@ -265,7 +265,7 @@ class NotificationManager
 
     /**
      * Returns all spaces this user is not following.
-     * 
+     *
      * @param User $user
      * @return Space[]
      */
@@ -285,9 +285,9 @@ class NotificationManager
 
     /**
      * Sets the notification space settings for this user (or global if no user is given).
-     * 
+     *
      * Those are the spaces for which the user want to receive ContentCreated Notifications.
-     * 
+     *
      * @param string[] $spaceGuids array of space guids
      * @param User $user
      */
@@ -326,7 +326,7 @@ class NotificationManager
 
     /**
      * Defines the enable_html5_desktop_notifications setting for the given user or global if no user is given.
-     * 
+     *
      * @param integer $value
      * @param User $user
      */
@@ -354,7 +354,7 @@ class NotificationManager
 
     /**
      * Sets the send_notifications settings for the given space and user.
-     * 
+     *
      * @param User $user user instance for which this settings will aplly
      * @param Space $space which notifications will be followed / unfollowed
      * @param boolean $follow the setting value (true by default)
@@ -381,7 +381,7 @@ class NotificationManager
 
     /**
      * Returns all available Notifications
-     * 
+     *
      * @return BaseNotification[]
      */
     public function getNotifications()

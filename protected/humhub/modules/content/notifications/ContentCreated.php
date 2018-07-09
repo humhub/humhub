@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\notifications;
 
+use humhub\modules\notification\components\BaseNotification;
 use Yii;
 use yii\bootstrap\Html;
 use humhub\modules\user\models\User;
@@ -17,7 +18,7 @@ use humhub\libs\Helpers;
  * ContentCreatedNotification is fired to all users which are manually selected
  * in ContentFormWidget to receive a notification.
  */
-class ContentCreated extends \humhub\modules\notification\components\BaseNotification
+class ContentCreated extends BaseNotification
 {
 
     /**
