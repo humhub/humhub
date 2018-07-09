@@ -1,29 +1,18 @@
 <?php
 
 /**
- * HumHub
- * Copyright © 2014 The HumHub Project
- *
- * The texts of the GNU Affero General Public License with an additional
- * permission and of our proprietary license can be found at and
- * in the LICENSE file you have received along with this program.
- *
- * According to our dual licensing model, this program can be used either
- * under the terms of the GNU Affero General Public License, version 3,
- * or under a proprietary license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\behaviors;
 
-use Yii;
-use yii\base\Behavior;
+use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
+use Yii;
+use yii\base\Behavior;
 
 /**
  * HFollowableBehavior adds following methods to HActiveRecords
@@ -34,7 +23,7 @@ use humhub\modules\user\models\User;
  */
 class Followable extends Behavior
 {
-    
+
     private $_followerCache = [];
 
     public function beforeDelete($event)
@@ -64,7 +53,7 @@ class Followable extends Behavior
      */
     public function follow($userId = null, $withNotifications = true)
     {
-        if($userId instanceof User) {
+        if ($userId instanceof User) {
             $userId = $userId->id;
         } elseif (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
@@ -98,7 +87,7 @@ class Followable extends Behavior
      */
     public function unfollow($userId = null)
     {
-        if($userId instanceof User) {
+        if ($userId instanceof User) {
             $userId = $userId->id;
         } elseif (!$userId || $userId == "") {
             $userId = Yii::$app->user->id;
@@ -119,7 +108,7 @@ class Followable extends Behavior
 
     /**
      * Checks if the given user follows this owner record.
-     * 
+     *
      * Note that the followers for this owner will be cached.
      *
      * @param int $userId
@@ -128,18 +117,18 @@ class Followable extends Behavior
      */
     public function isFollowedByUser($userId = null, $withNotifications = false)
     {
-        if($userId instanceof User) {
+        if ($userId instanceof User) {
             $userId = $userId->id;
         } elseif (!$userId || $userId == "") {
             $userId = \Yii::$app->user->id;
         }
 
-        if(!isset($this->_followerCache[$userId])) {
+        if (!isset($this->_followerCache[$userId])) {
             $this->_followerCache[$userId] = $this->getFollowRecord($userId);
         }
-        
+
         $record = $this->_followerCache[$userId];
-        
+
         if ($record) {
             if ($withNotifications && $record->send_notifications == 1) {
                 return true;
@@ -166,7 +155,8 @@ class Followable extends Behavior
      *
      * @param CDbCriteria $eCriteria e.g. for limit the result
      * @param boolean $withNotifications only return followers with enabled notifications
-     * @return Array of Users
+     * @param boolean $returnQuery only return the query instead of User objects
+     * @return Users[]|ActiveQueryUser the user objects or the active query
      */
     public function getFollowers($query = null, $withNotification = false, $returnQuery = false)
     {
