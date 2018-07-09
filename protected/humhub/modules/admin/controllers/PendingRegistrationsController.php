@@ -3,7 +3,6 @@
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\modules\admin\controllers;
@@ -14,7 +13,9 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\PendingRegistrationSearch;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\user\models\Invite;
 use Yii;
+use yii\web\HttpException;
 
 class PendingRegistrationsController extends Controller
 {
@@ -62,7 +63,7 @@ class PendingRegistrationsController extends Controller
      * @return \yii\web\Response
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\Exception
      */
     public function actionExport($format)
     {
@@ -82,6 +83,49 @@ class PendingRegistrationsController extends Controller
     }
 
     /**
+     * Resend a invite
+     *
+     * @param integer $id
+     * @return string
+     * @throws HttpException
+     */
+    public function actionResend($id)
+    {
+        $invite = $this->findInviteById($id);
+        if (Yii::$app->request->isPost) {
+            $invite->sendInviteMail();
+            $this->view->success(Yii::t(
+                'AdminModule.controllers_PendingRegistrationsController',
+                'Resend invitation email'
+            ));
+            return $this->redirect(['index']);
+        }
+        return $this->render('resend', ['model' => $invite]);
+    }
+
+    /**
+     * Delete an invite
+     *
+     * @param integer $id
+     * @return string
+     * @throws HttpException
+     * @throws \Throwable
+     */
+    public function actionDelete($id)
+    {
+        $invite = $this->findInviteById($id);
+        if (Yii::$app->request->isPost) {
+            $invite->delete();
+            $this->view->success(Yii::t(
+                'AdminModule.controllers_PendingRegistrationsController',
+                'Deleted invitation'
+            ));
+            return $this->redirect(['index']);
+        }
+        return $this->render('delete', ['model' => $invite]);
+    }
+
+    /**
      * Return array with columns for data export
      * @return array
      */
@@ -94,12 +138,12 @@ class PendingRegistrationsController extends Controller
             'email',
             'source',
             [
-                'class' => DateTimeColumn::className(),
+                'class' => DateTimeColumn::class,
                 'attribute' => 'created_at',
             ],
             'created_by',
             [
-                'class' => DateTimeColumn::className(),
+                'class' => DateTimeColumn::class,
                 'attribute' => 'updated_at',
             ],
             'updated_by',
@@ -107,5 +151,23 @@ class PendingRegistrationsController extends Controller
             'firstname',
             'lastname',
         ];
+    }
+
+    /**
+     * Find invite by id
+     * @param $id
+     * @return Invite|null
+     * @throws HttpException
+     */
+    private function findInviteById($id)
+    {
+        $invite = Invite::findOne(['id' => $id]);
+        if ($invite === null) {
+            throw new HttpException(404, Yii::t(
+                'AdminModule.controllers_PendingRegistrationsController',
+                'Invite not found!'
+            ));
+        }
+        return $invite;
     }
 }

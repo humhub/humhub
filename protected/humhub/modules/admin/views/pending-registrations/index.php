@@ -3,7 +3,9 @@
 use humhub\modules\admin\widgets\ExportButton;
 use humhub\widgets\GridView;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
+/** @var $searchModel \humhub\modules\admin\models\PendingRegistrationSearch */
 ?>
 
 <div class="panel-body">
@@ -42,7 +44,28 @@ use yii\helpers\Html;
                     return isset($types[$data->source]) ?: Html::encode($data->source);
                 },
             ],
+            [
+                'header' => Yii::t('AdminModule.views_user_index', 'Actions'),
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{resend} {delete}',
+                'buttons' => [
+                    'resend' => function ($url, $model, $key) {
+                        return Html::a(
+                            '<i class="fa fa-envelope"></i>',
+                            Url::to(['resend', 'id' => $model->id]),
+                            ['class' => 'btn btn-primary btn-xs tt']
+                        );
+                    },
+                    'delete' => function ($url, $model, $key) {
+                        return Html::a(
+                            '<i class="fa fa-trash"></i>',
+                            Url::to(['delete', 'id' => $model->id]),
+                            ['class' => 'btn btn-primary btn-xs tt']
+                        );
+                    },
+                ],
+            ],
+
         ]
     ]) ?>
-
 </div>
