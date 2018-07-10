@@ -9,6 +9,8 @@
 namespace humhub\modules\content;
 
 use humhub\modules\content\models\Content;
+use humhub\modules\search\jobs\DeleteDocument;
+use humhub\modules\search\jobs\UpdateDocument;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\search\interfaces\Searchable;
 use Yii;
@@ -123,7 +125,10 @@ class Events extends BaseObject
     public static function onContentActiveRecordSave($event)
     {
         if ($event->sender instanceof Searchable) {
-            Yii::$app->search->update($event->sender);
+            Yii::$app->queue->push(new UpdateDocument([
+                'activeRecordClass' => get_class($event->sender),
+                'primaryKey' => $event->sender->id
+            ]));
         }
     }
 
@@ -135,7 +140,10 @@ class Events extends BaseObject
     public static function onContentActiveRecordDelete($event)
     {
         if ($event->sender instanceof Searchable) {
-            Yii::$app->search->delete($event->sender);
+            Yii::$app->queue->push(new DeleteDocument([
+                'activeRecordClass' => get_class($event->sender),
+                'primaryKey' => $event->sender->id
+            ]));
         }
     }
 

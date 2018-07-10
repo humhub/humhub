@@ -10,6 +10,8 @@ namespace humhub\modules\space\models;
 
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\events\SearchAddEvent;
+use humhub\modules\search\jobs\DeleteDocument;
+use humhub\modules\search\jobs\UpdateDocument;
 use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\space\behaviors\SpaceController;
 use humhub\modules\user\behaviors\Followable;
@@ -194,7 +196,10 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         parent::afterSave($insert, $changedAttributes);
 
-        Yii::$app->search->update($this);
+        Yii::$app->queue->push(new UpdateDocument([
+            'activeRecordClass' => get_class($this),
+            'primaryKey' => $this->id
+        ]));
 
         $user = User::findOne(['id' => $this->created_by]);
 
@@ -254,7 +259,11 @@ class Space extends ContentContainerActiveRecord implements Searchable
             $this->moduleManager->disable($module);
         }
 
-        Yii::$app->search->delete($this);
+        Yii::$app->queue->push(new DeleteDocument([
+            'activeRecordClass' => get_class($this),
+            'primaryKey' => $this->id
+        ]));
+
 
         $this->getProfileImage()->delete();
         $this->getProfileBannerImage()->delete();

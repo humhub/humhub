@@ -15,6 +15,8 @@ use humhub\modules\content\components\behaviors\SettingsBehavior;
 use humhub\modules\content\components\behaviors\CompatModuleManager;
 use humhub\modules\content\models\Content;
 use humhub\modules\friendship\models\Friendship;
+use humhub\modules\search\jobs\DeleteDocument;
+use humhub\modules\search\jobs\UpdateDocument;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\user\behaviors\ProfileController;
@@ -408,7 +410,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         foreach ($this->moduleManager->getEnabled() as $module) {
             $this->moduleManager->disable($module);
         }
-        Yii::$app->search->delete($this);
+
+        Yii::$app->queue->push(new DeleteDocument([
+            'activeRecordClass' => get_class($this),
+            'primaryKey' => $this->id
+        ]));
 
         // Cleanup related tables
         Invite::deleteAll(['user_originator_id' => $this->id]);
@@ -470,9 +476,15 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $user = User::findOne(['id' => $this->id]);
 
         if ($user->isVisible()) {
-            Yii::$app->search->update($user);
+            Yii::$app->queue->push(new UpdateDocument([
+                'activeRecordClass' => get_class($this),
+                'primaryKey' => $this->id
+            ]));
         } else {
-            Yii::$app->search->delete($user);
+            Yii::$app->queue->push(new DeleteDocument([
+                'activeRecordClass' => get_class($this),
+                'primaryKey' => $this->id
+            ]));
         }
 
         if ($insert) {
