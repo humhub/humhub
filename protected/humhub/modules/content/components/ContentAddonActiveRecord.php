@@ -8,11 +8,12 @@
 
 namespace humhub\modules\content\components;
 
-use humhub\modules\content\models\Content;
-use Yii;
-use yii\base\Exception;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\models\Content;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\base\Exception;
 
 /**
  * HActiveRecordContentAddon is the base active record for content addons.
@@ -34,7 +35,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
 {
 
     /**
-     * @var boolean also update underlying contents last update stream sorting 
+     * @var boolean also update underlying contents last update stream sorting
      */
     protected $updateContentStreamSort = true;
 
@@ -177,7 +178,6 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
 
     /**
      * Validates
-     *
      * @param type $attributes
      * @param type $clearErrors
      * @return type
@@ -214,7 +214,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
 
     public function getUser()
     {
-        return $this->hasOne(\humhub\modules\user\models\User::className(), ['id' => 'created_by']);
+        return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
 }

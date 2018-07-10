@@ -8,21 +8,21 @@
 
 namespace humhub\modules\comment\models;
 
-use Yii;
-use yii\db\ActiveRecord;
-use yii\base\Exception;
 use humhub\components\behaviors\PolymorphicRelation;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\Mentioning;
-use humhub\modules\post\models\Post;
-use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\comment\activities\NewComment;
+use humhub\modules\comment\live\NewComment as NewCommentLive;
+use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\post\models\Post;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\space\models\Space;
-use humhub\modules\comment\activities\NewComment;
-use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
-use humhub\modules\comment\live\NewComment as NewCommentLive;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "comment".
@@ -86,7 +86,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         $this->flushCache();
 
-		return parent::beforeDelete();
+        return parent::beforeDelete();
     }
 
     /**
@@ -100,7 +100,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             Yii::error($ex);
         }
 
-		parent::afterDelete();
+        parent::afterDelete();
     }
 
     /**
@@ -132,16 +132,19 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         $mentionedUsers = (isset($processResult['mentioning'])) ? $processResult['mentioning'] : [];
 
         if ($insert) {
-            $followers = $this->getCommentedRecord()->getFollowers(null, true);
-            $this->filterMentionings($followers, $mentionedUsers);
+            $followerQuery = $this->getCommentedRecord()->getFollowers(null, true, true);
+
+            // Remove mentioned users from followers query to avoid double notification
+            if (count($mentionedUsers) !== 0) {
+                $followerQuery->andWhere(['NOT IN', 'user.id', array_map(function (User $user) {
+                    return $user->id;
+                }, $mentionedUsers)]);
+            }
 
             // Update updated_at etc..
             $this->refresh();
 
-            NewCommentNotification::instance()
-                    ->from(Yii::$app->user->getIdentity())
-                    ->about($this)
-                    ->sendBulk($followers);
+            NewCommentNotification::instance()->from($this->user)->about($this)->sendBulk($followerQuery);
 
             if ($this->content->container) {
                 Yii::$app->live->send(new NewCommentLive([
@@ -158,27 +161,6 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         parent::afterSave($insert, $changedAttributes);
     }
 
-    /**
-     * Filters out all users contained in $mentionedUsers from $followers
-     *
-     * @param \humhub\modules\user\models\User[] $followers
-     * @param \humhub\modules\user\models\User[] $mentionedUsers
-     */
-    private function filterMentionings(&$followers, $mentionedUsers)
-    {
-        if (empty($mentionedUsers)) {
-            return;
-        }
-
-        foreach($followers as $i => $follower) {
-            foreach($mentionedUsers as $mentioned) {
-                if ($follower->is($mentioned)) {
-                    unset($followers[$i]);
-                    continue 2;
-                }
-            }
-        }
-    }
 
     /**
      * Force search update of underlying content object.
