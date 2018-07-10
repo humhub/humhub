@@ -8,17 +8,16 @@
 
 namespace humhub\modules\notification\components;
 
-use humhub\modules\notification\models\Notification;
-use humhub\modules\user\components\ActiveQueryUser;
-use Yii;
-use humhub\modules\user\models\User;
-use humhub\modules\space\models\Membership;
-use humhub\modules\user\models\Follow;
-use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\notification\targets\BaseTarget;
+use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\user\models\Follow;
+use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * The NotificationManager component is responsible for sending BaseNotifications to Users over different
@@ -59,42 +58,28 @@ class NotificationManager
      * as bulk message.
      *
      * @param \humhub\modules\notification\components\BaseNotification $notification
-     * @param User[] $users
+     * @param ActiveQueryUser $userQuery
      */
-    public function sendBulk(BaseNotification $notification, $users)
+    public function sendBulk(BaseNotification $notification, $userQuery)
     {
-        $recipients = $this->filterRecipients($notification, $users);
-
-        foreach ($recipients as $recipient) {
-            $notification->saveRecord($recipient);
-            foreach ($this->getTargets($recipient) as $target) {
-                $target->send($notification, $recipient);
-            }
-        }
-    }
-
-    /**
-     * Filters out duplicates and the originator of the notification itself.
-     *
-     * @param User[] $users
-     * @return User[] array of unique user instances
-     */
-    protected function filterRecipients(BaseNotification $notification, $users)
-    {
-        $userIds = [];
-        $filteredUsers = [];
-        foreach ($users as $user) {
+        $processed = [];
+        foreach ($userQuery->each() as $user) {
 
             if ($notification->suppressSendToOriginator && $notification->isOriginator($user)) {
                 continue;
             }
 
-            if (!in_array($user->id, $userIds)) {
-                $filteredUsers[] = $user;
-                $userIds[] = $user->id;
+            if (in_array($user->id, $processed)) {
+                continue;
             }
+
+            $notification->saveRecord($user);
+            foreach ($this->getTargets($user) as $target) {
+                $target->send($notification, $user);
+            }
+
+            $processed[] = $user->id;
         }
-        return $filteredUsers;
     }
 
     /**
@@ -105,14 +90,14 @@ class NotificationManager
      */
     public function send(BaseNotification $notification, User $user)
     {
-        $this->sendBulk($notification, [$user]);
+        $this->sendBulk($notification, User::find()->where(['user.id' => $user->id]));
     }
 
     /**
      * Returns all active targets for the given user.
      * If no user is given, all configured targets will be returned.
      *
-     * @param User $user|null the user
+     * @param User $user |null the user
      * @return BaseTarget[] the target
      */
     public function getTargets(User $user = null)
@@ -205,7 +190,7 @@ class NotificationManager
             } elseif ($isDefault) {
                 // Add all members without explicit following and no notification settings.
                 $query->union(Membership::getSpaceMembersQuery($container, true, false)
-                                ->andWhere(['not exists', $this->findNotExistingSettingSubQuery()]));
+                    ->andWhere(['not exists', $this->findNotExistingSettingSubQuery()]));
             }
 
         } elseif ($container instanceof User) {
@@ -244,9 +229,9 @@ class NotificationManager
     private function findNotExistingSettingSubQuery()
     {
         return ContentContainerSetting::find()
-                        ->where('contentcontainer_setting.contentcontainer_id=user.contentcontainer_id')
-                        ->andWhere(['contentcontainer_setting.module_id' => 'notification'])
-                        ->andWhere(['contentcontainer_setting.name' => 'notification.like_email']);
+            ->where('contentcontainer_setting.contentcontainer_id=user.contentcontainer_id')
+            ->andWhere(['contentcontainer_setting.module_id' => 'notification'])
+            ->andWhere(['contentcontainer_setting.name' => 'notification.like_email']);
     }
 
     /**
@@ -309,7 +294,7 @@ class NotificationManager
             $this->setSpaceSetting($user, $space);
         }
 
-        $spaceIds = array_map(function($space) {
+        $spaceIds = array_map(function ($space) {
             return $space->id;
         }, $spaces);
 
@@ -418,7 +403,7 @@ class NotificationManager
 
         $this->_categories = array_values($result);
 
-        usort($this->_categories, function($a, $b) {
+        usort($this->_categories, function ($a, $b) {
             return $a->sortOrder - $b->sortOrder;
         });
 

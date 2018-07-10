@@ -14,12 +14,11 @@ use humhub\modules\notification\jobs\SendNotification;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\targets\BaseTarget;
 use humhub\modules\notification\targets\WebTarget;
+use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\bootstrap\Html;
-use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -31,7 +30,7 @@ use yii\mail\MessageInterface;
  *
  * The BaseNotification can should be created like this:
  *
- * MyNotification::instance()->from($originator)->about($source)->sendBulk($userList);
+ * MyNotification::instance()->from($originator)->about($source)->sendBulk($activeQueryUser);
  *
  * This will send Notifications to different notification targets by using a queue.
  *
@@ -142,26 +141,32 @@ abstract class BaseNotification extends SocialActivity
     /**
      * Sends this notification to a set of users.
      *
-     * This function will filter out duplicates and the originator itself if given in the
-     * $users array.
+     * Note: For compatibility reasons this method also allows to pass an array of user objects.
+     * This support will removed for future usage.
      *
-     * @param mixed $users can be an array of User records or an ActiveQuery.
+     * @param ActiveQueryUser $query the user query
      */
-    public function sendBulk($users)
+    public function sendBulk($query)
     {
         if (empty($this->moduleId)) {
-            throw new InvalidConfigException('No moduleId given for "' . $this->className() . '"');
+            throw new InvalidConfigException('No moduleId given for "' . get_class($this) . '"');
         }
 
-        if ($users instanceof ActiveQuery) {
-            $users = $users->all();
+        if (!$query instanceof ActiveQueryUser) {
+            /** @var array $query */
+            Yii::debug('BaseNotification::sendBulk - pass ActiveQueryUser instead of array!', 'notification');
+
+            // Migrate given array to ActiveQueryUser
+            $query = User::find()->where(['IN', 'user.id', array_map(function ($user) {
+                if ($user instanceof User) {
+                    return $user->id;
+                }
+                // User id
+                return $user;
+            }, $query)]);
         }
 
-        try {
-            Yii::$app->queue->push(new SendBulkNotification(['notification' => $this, 'recepients' => $users]));
-        } catch (Exception $e) {
-            Yii::error($e);
-        }
+        Yii::$app->queue->push(new SendBulkNotification(['notification' => $this, 'query' => $query]));
     }
 
     /**
