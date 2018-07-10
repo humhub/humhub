@@ -8,6 +8,8 @@
 
 namespace humhub\modules\notification\jobs;
 
+use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\user\models\User;
 use Yii;
 use humhub\modules\queue\ActiveJob;
 
@@ -20,20 +22,23 @@ use humhub\modules\queue\ActiveJob;
 class SendNotification extends ActiveJob
 {
     /**
-     * @var humhub\modules\notification\components\BaseNotification notification instance
+     * @var BaseNotification notification instance
      */
     public $notification;
 
     /**
-     * @var \humhub\modules\user\models\User Recepient user id.
+     * @var int the user id of the recipient
      */
-    public $recepient;
+    public $recipientId;
 
     /**
      * @inheritdoc
      */
     public function run()
     {
-        Yii::$app->notification->send($this->notification, $this->recepient);
+        $recipient = User::findOne(['id' => $this->recepientId]);
+        if ($recipient !== null) {
+            Yii::$app->notification->send($this->notification, $recipient);
+        }
     }
 }
