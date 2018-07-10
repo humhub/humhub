@@ -7,9 +7,6 @@
     # uncomment if you've installed HumHub into a subdirectory relative to your webroot & adjust RewriteBase to match the install point
     #RewriteBase /humhub
 
-    # prevent httpd from serving dotfiles (.htaccess, .svn, .git, etc.) - except let's encrypt challenge
-    RedirectMatch 403 ^/?\.(?!/well-known/acme-challenge/[\w-]{43}$)
-
     # uncomment to force https requests
     #RewriteCond %{HTTPS} !=on
     #RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$ [NC]
