@@ -10,20 +10,19 @@ namespace humhub\modules\content\models;
 
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
-use Yii;
+use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\models\User;
+use Yii;
 use yii\base\Exception;
 use yii\base\InvalidParamException;
 use yii\helpers\Url;
-use humhub\modules\user\models\User;
-use humhub\modules\space\models\Space;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\permissions\ManageContent;
-use yii\rbac\Permission;
 
 /**
  * This is the model class for table "content".
@@ -193,7 +192,7 @@ class Content extends ContentDeprecated implements Movable
             $this->notifyContentCreated();
         }
 
-        if($this->container) {
+        if ($this->container) {
             Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
                 'sguid' => ($this->container instanceof Space) ? $this->container->guid : null,
                 'uguid' => ($this->container instanceof User) ? $this->container->guid : null,
@@ -224,15 +223,21 @@ class Content extends ContentDeprecated implements Movable
     private function notifyContentCreated()
     {
         $contentSource = $this->getPolymorphicRelation();
-        $notifyUsers = array_merge(
-            $this->notifyUsersOfNewContent,
-            Yii::$app->notification->getFollowers($this)
-        );
+
+        $userQuery = Yii::$app->notification->getFollowers($this);
+        if (count($this->notifyUsersOfNewContent) != 0) {
+            // Add manually notified users
+            $userQuery->union(
+                User::find()->active()->where(['IN', 'user.id', array_map(function (User $user) {
+                    return $user->id;
+                }, $this->notifyUsersOfNewContent)])
+            );
+        }
 
         \humhub\modules\content\notifications\ContentCreated::instance()
             ->from($this->user)
             ->about($contentSource)
-            ->sendBulk($notifyUsers);
+            ->sendBulk($userQuery);
 
         \humhub\modules\content\activities\ContentCreated::instance()
             ->from($this->user)
@@ -389,10 +394,10 @@ class Content extends ContentDeprecated implements Movable
     {
         $move = $force || $this->canMove($container, $force);
 
-        if($move === true) {
-            static::getDb()->transaction(function($db) use ($container) {
+        if ($move === true) {
+            static::getDb()->transaction(function ($db) use ($container) {
                 $this->setContainer($container);
-                if($this->save()) {
+                if ($this->save()) {
                     ContentTag::deleteContentRelations($this, false);
                     $this->getModel()->afterMove();
                 }
@@ -411,48 +416,48 @@ class Content extends ContentDeprecated implements Movable
         $isContentOwner = $model->isOwner();
 
         $canModelBeMoved = $model->canMove();
-        if($canModelBeMoved !== true) {
+        if ($canModelBeMoved !== true) {
             return $canModelBeMoved;
         }
 
         // Check for legacy modules
-        if(!$model->getModuleId()) {
+        if (!$model->getModuleId()) {
             return Yii::t('ContentModule.base', 'This content type can\'t be moved due to a missing module-id setting.');
         }
 
-        if(!$container) {
+        if (!$container) {
             // The content type is movable and no container was provided
             return true;
         }
 
-        if($container->contentcontainer_id === $this->contentcontainer_id) {
+        if ($container->contentcontainer_id === $this->contentcontainer_id) {
             return Yii::t('ContentModule.base', 'The content can\'t be moved to its current space.');
         }
 
         // Check if the related module is installed on the target space
-        if(!$container->moduleManager->isEnabled($model->getModuleId())) {
+        if (!$container->moduleManager->isEnabled($model->getModuleId())) {
             $module = Yii::$app->getModule($model->getModuleId());
             $moduleName = ($module instanceof ContentContainerModule) ? $module->getContentContainerName($container) : $module->getName();
             return Yii::t('ContentModule.base', 'The module {moduleName} is not enabled on the selected target space.', ['moduleName' => $moduleName]);
         }
 
         // Check if the current user is allowed to move this content at all
-        if(!$isContentOwner && !$this->container->can(ManageContent::class)) {
+        if (!$isContentOwner && !$this->container->can(ManageContent::class)) {
             return Yii::t('ContentModule.base', 'You do not have the permission to move this content.');
         }
 
         // Check if the current user is allowed to move this content to the given target space
-        if(!$isContentOwner && !$container->can(ManageContent::class)) {
+        if (!$isContentOwner && !$container->can(ManageContent::class)) {
             return Yii::t('ContentModule.base', 'You do not have the permission to move this content to the given space.');
         }
 
         // Check if the content owner is allowed to create content on the target space
         $ownerPermissions = $container->getPermissionManager($this->createdBy);
-        if($this->isPrivate() && !$ownerPermissions->can(CreatePrivateContent::class)) {
+        if ($this->isPrivate() && !$ownerPermissions->can(CreatePrivateContent::class)) {
             return Yii::t('ContentModule.base', 'The author of this content is not allowed to create private content within the selected space.');
         }
 
-        if($this->isPublic() && !$ownerPermissions->can(CreatePublicContent::class)) {
+        if ($this->isPublic() && !$ownerPermissions->can(CreatePublicContent::class)) {
             return Yii::t('ContentModule.base', 'The author of this content is not allowed to create public content within the selected space.');
         }
 

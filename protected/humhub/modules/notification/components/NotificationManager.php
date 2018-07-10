@@ -9,6 +9,7 @@
 namespace humhub\modules\notification\components;
 
 use humhub\modules\notification\models\Notification;
+use humhub\modules\user\components\ActiveQueryUser;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Membership;
@@ -173,7 +174,7 @@ class NotificationManager
      * else only space members with send_notifications settings are returned.
      *
      * @param Content $content
-     * @return User[]
+     * @return ActiveQueryUser
      */
     public function getFollowers(Content $content)
     {
@@ -186,33 +187,37 @@ class NotificationManager
      *
      * @param ContentContainerActiveRecord $container
      * @param boolean $public
-     * @return User[]
+     * @return ActiveQueryUser
      */
     public function getContainerFollowers(ContentContainerActiveRecord $container, $public = true)
     {
-        $result = [];
+
+        $query = null;
+
         if ($container instanceof Space) {
             $isDefault = $this->isDefaultNotificationSpace($container);
-            $members = Membership::getSpaceMembersQuery($container, true, true)->all();
+
+            $query = Membership::getSpaceMembersQuery($container, true, true);
+
             if ($public) {
                 // Add explicit follower and non explicit follower if $isDefault
-                $followers = $this->findFollowers($container, $isDefault)->all();
-                $result = array_merge($members, $followers);
+                $query->union($this->findFollowers($container, $isDefault));
             } elseif ($isDefault) {
                 // Add all members without explicit following and no notification settings.
-                $followers = Membership::getSpaceMembersQuery($container, true, false)
-                                ->andWhere(['not exists', $this->findNotExistingSettingSubQuery()])->all();
-                $result = array_merge($members, $followers);
-            } else {
-                $result = $members;
+                $query->union(Membership::getSpaceMembersQuery($container, true, false)
+                                ->andWhere(['not exists', $this->findNotExistingSettingSubQuery()]));
             }
+
         } elseif ($container instanceof User) {
             // Note the notification follow logic for users is currently not implemented.
             // TODO: perhaps return only friends if public is false?
-            $result = (!$public) ? [] : Follow::getFollowersQuery($container, true)->all();
-            $result[] = $container;
+
+            $query = User::find()->where(['id' => $container->id]);
+            if ($public) {
+                $query->union(Follow::getFollowersQuery($container, true));
+            }
         }
-        return $result;
+        return $query;
     }
 
     private function isDefaultNotificationSpace($container)

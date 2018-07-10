@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\events\FollowEvent;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\space\models\Space;
@@ -152,7 +153,7 @@ class Follow extends \yii\db\ActiveRecord
     /**
      * Returns all followed spaces of the given user as ActiveQuery.
      * If $withNotifications is set only follower with the given send_notifications setting are returned.
-     * 
+     *
      * @param \humhub\modules\user\models\User $user
      * @param boolean|null $withNotifications by notification setting (default is null without notification handling)
      * @return \yii\db\ActiveQuery Space query of all followed spaces
@@ -163,36 +164,36 @@ class Follow extends \yii\db\ActiveRecord
         $subQuery = self::find()
                 ->where(['user_follow.user_id' => $user->id, 'user_follow.object_model' => Space::class])
                 ->andWhere('user_follow.object_id=space.id');
-        
+
         if ($withNotifications === true) {
             $subQuery->andWhere(['user_follow.send_notifications' => 1]);
         } elseif ($withNotifications === false) {
             $subQuery->andWhere(['user_follow.send_notifications' => 0]);
         }
-        
+
         return Space::find()->where(['exists', $subQuery]);
     }
 
     /**
      * Returns all active users following the given $target record.
      * If $withNotifications is set only follower with the given send_notifications setting are returned.
-     * 
+     *
      * @param \yii\db\ActiveRecord $target
      * @param boolean $withNotifications
-     * @return ActiveQuery
+     * @return ActiveQueryUser
      */
     public static function getFollowersQuery(\yii\db\ActiveRecord $target, $withNotifications = null)
     {
         $subQuery = self::find()
                 ->where(['user_follow.object_model' => $target->className(), 'user_follow.object_id' => $target->getPrimaryKey()])
                 ->andWhere('user_follow.user_id=user.id');
-        
+
         if ($withNotifications === true) {
             $subQuery->andWhere(['user_follow.send_notifications' => 1]);
         } elseif ($withNotifications === false) {
             $subQuery->andWhere(['user_follow.send_notifications' => 0]);
         }
-        
+
         return User::find()->active()->andWhere(['exists', $subQuery]);
     }
 
