@@ -142,7 +142,7 @@ abstract class BaseNotification extends SocialActivity
      * Sends this notification to a set of users.
      *
      * Note: For compatibility reasons this method also allows to pass an array of user objects.
-     * This support will removed for future usage.
+     * This support will removed in future versions.
      *
      * @param ActiveQueryUser $query the user query
      */
