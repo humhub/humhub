@@ -11,7 +11,9 @@ namespace humhub\modules\admin\controllers;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\components\DatabaseInfo;
 use humhub\modules\admin\libs\HumHubAPI;
+use humhub\modules\queue\helpers\QueueHelper;
 use humhub\modules\queue\interfaces\QueueInfoInterface;
+use humhub\modules\search\jobs\RebuildIndex;
 use ReflectionClass;
 use Yii;
 
@@ -78,9 +80,15 @@ class InformationController extends Controller
     {
         $databaseInfo = new DatabaseInfo(Yii::$app->db->dsn);
 
+        $rebuildSearchJob = new RebuildIndex();
+        if (Yii::$app->request->isPost && Yii::$app->request->get('rebuildSearch') == 1) {
+            Yii::$app->queue->push($rebuildSearchJob);
+        }
+
         return $this->render(
             'database',
             [
+                'rebuildSearchRunning' => QueueHelper::isQueued($rebuildSearchJob),
                 'databaseName' => $databaseInfo->getDatabaseName(),
                 'migrate' => \humhub\commands\MigrateController::webMigrateAll(),
             ]

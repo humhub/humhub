@@ -8,6 +8,8 @@ HumHub Change Log
 - Fix: UI addition mutation observer interfering with new rich-text mutation logic
 - Fix: ThemeLoader publishes assets on CLI requests
 - Enh: Add possibility to delete an invitation [#2980](https://github.com/humhub/humhub/issues/2980)
+- Enh: Moved search index tasks (add, update & delete) into asynchronous tasks
+- Enh: Added search index rebuild button
 
 
 1.3.0-beta.1  (July 4, 2018)
