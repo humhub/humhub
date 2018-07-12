@@ -16,6 +16,10 @@ HumHub Change Log
 - Fix #3204 invalid russian translation in module overview
 - Fix #3169 post markdown not stripped in mails and activities
 - Fix #3157 invalid use of relative space target link in MailContentEntry widget 
+- Fix force invite not working on space creation
+- Enh: Enable invite all instead of force membership in case force invite checkbox is not selected
+- Fix prevent MembersAdded activity when using force space membership
+- Enh added `humhub.modules.ui.picker.Picker.disable()` in order to disable/enable userpicker fields
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------

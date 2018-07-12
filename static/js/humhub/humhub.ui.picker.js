@@ -441,6 +441,11 @@ humhub.module('ui.picker', function (module, require, $) {
         return this;
     };
 
+    Picker.prototype.disable = function($disable) {
+        $disable = (!object.isDefined($disable)) ? true : $disable;
+        this.$.prop('disabled', $disable);
+    };
+
     /**
      * Returns an option node by the given id (value)
      * 

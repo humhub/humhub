@@ -2,6 +2,8 @@
 
 namespace humhub\modules\space\models\forms;
 
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\space\jobs\AddUsersToSpaceJob;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -79,6 +81,58 @@ class InviteForm extends Model
             'invite' => Yii::t('SpaceModule.forms_SpaceInviteForm', 'Invites'),
             'inviteExternal' => Yii::t('SpaceModule.forms_SpaceInviteForm', 'New user by e-mail (comma separated)'),
         ];
+    }
+
+    public function save()
+    {
+        if(!$this->validate()) {
+            return false;
+        }
+
+        if ($this->isForceMembership()) {
+            $this->forceInvite();
+        } else {
+            $this->inviteMembers();
+        }
+
+        $this->inviteExternal();
+
+        return true;
+    }
+
+    public function isForceMembership()
+    {
+        return ($this->withoutInvite || $this->allRegisteredUsers) && $this->space->can(ManageUsers::class);
+    }
+
+    public function forceInvite() {
+        Yii::$app->queue->push(new AddUsersToSpaceJob([
+            'originator' => Yii::$app->user->identity,
+            'forceMembership' => $this->withoutInvite,
+            'space' => $this->space,
+            'users' => $this->getInvites(),
+            'allUsers' => $this->allRegisteredUsers,
+        ]));
+    }
+
+    public function inviteMembers() {
+        foreach ($this->getInvites() as $user) {
+            $this->space->inviteMember($user->id, Yii::$app->user->id);
+        }
+    }
+
+    public function inviteExternal()
+    {
+        if ($this->canInviteExternal()) {
+            foreach ($this->getInvitesExternal() as $email) {
+                $this->space->inviteMemberByEMail($email, Yii::$app->user->id);
+            }
+        }
+    }
+
+    public function canInviteExternal()
+    {
+        return Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
     }
 
     /**

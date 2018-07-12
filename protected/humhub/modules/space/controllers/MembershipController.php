@@ -11,11 +11,13 @@ namespace humhub\modules\space\controllers;
 use humhub\components\behaviors\AccessControl;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\content\components\ContentContainerControllerAccess;
 use humhub\modules\space\jobs\AddUsersToSpaceJob;
 use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\permissions\InviteUsers;
 use humhub\modules\user\models\UserPicker;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\widgets\ModalClose;
@@ -34,16 +36,19 @@ use yii\web\HttpException;
  */
 class MembershipController extends ContentContainerController
 {
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
+    public function getAccessRules()
     {
         return [
-            'acl' => [
-                'class' => AccessControl::className(),
-            ],
+            ['permission' => [InviteUsers::class], 'actions' => ['invite']],
+            [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_MEMBER],
+                'actions' => [
+                    'revoke-membership',
+                    'revoke-notifications',
+                    'receive-notifications',
+                    'search-invite',
+                    'switch-dashboard-display'
+                    ]
+            ]
         ];
     }
 
@@ -70,30 +75,6 @@ class MembershipController extends ContentContainerController
             'fillUser' => true,
             'disabledText' => Yii::t('SpaceModule.controllers_SpaceController',
                 'This user is not a member of this space.'),
-        ]);
-    }
-
-    /**
-     * Provides a searchable user list of all workspace members in json.
-     *
-     */
-    public function actionSearchInvite()
-    {
-        Yii::$app->response->format = 'json';
-
-        $space = $this->getSpace();
-
-        if (!$space->isMember()) {
-            throw new HttpException(404, Yii::t('SpaceModule.controllers_SpaceController',
-                'This action is only available for workspace members!'));
-        }
-
-        return UserPicker::filter([
-            'query' => $space->getNonMembershipUser(),
-            'keyword' => Yii::$app->request->get('keyword'),
-            'fillUser' => true,
-            'disabledText' => Yii::t('SpaceModule.controllers_SpaceController',
-                'This user is already a member of this space.'),
         ]);
     }
 
@@ -179,73 +160,45 @@ class MembershipController extends ContentContainerController
     }
 
     /**
+     * Provides a searchable user list of all workspace members in json.
+     *
+     */
+    public function actionSearchInvite()
+    {
+        $space = $this->getSpace();
+
+        return $this->asJson(UserPicker::filter([
+            'query' => $space->getNonMembershipUser(),
+            'keyword' => Yii::$app->request->get('keyword'),
+            'fillUser' => true,
+            'disabledText' => Yii::t('SpaceModule.controllers_SpaceController',
+                'This user is already a member of this space.'),
+        ]));
+    }
+
+
+    /**
      * Invite New Members to this workspace
      */
     public function actionInvite()
     {
-        $space = $this->getSpace();
+        $model = new InviteForm(['space' => $this->getSpace()]);
 
-        // Check Permissions to Invite
-        if (!$space->canInvite()) {
-            throw new HttpException(403,
-                Yii::t('SpaceModule.controllers_MembershipController', 'Access denied - You cannot invite members!'));
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if($model->isForceMembership()) {
+                $success = ($model->withoutInvite)
+                    ? Yii::t( 'SpaceModule.base', 'User memberships have been added to the queue')
+                    : Yii::t( 'SpaceModule.base', 'User invitations have been added to the queue');
+            } else {
+                $success = Yii::t('SpaceModule.views_space_statusInvite', 'Users has been invited.');
+            }
+
+            return ModalClose::widget([
+                'success' => $success
+            ]);
         }
 
-        $model = new InviteForm();
-        $model->space = $space;
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-
-            $statusInvite = false;
-
-            if (($model->withoutInvite || $model->allRegisteredUsers) &&
-                $space->getPermissionManager()->can(new ManageUsers())) {
-                \Yii::$app->queue->push(new AddUsersToSpaceJob([
-                    'originator' => Yii::$app->user->identity,
-                    'space' => $space,
-                    'users' => $model->getInvites(),
-                    'allUsers' => $model->allRegisteredUsers,
-                ]));
-
-                return ModalClose::widget([
-                    'success' => Yii::t(
-                        'SpaceModule.views_space_statusInvite',
-                        'The request to add users has been added to the queue'
-                    ),
-                ]);
-            }
-
-            // Invite existing members
-            foreach ($model->getInvites() as $user) {
-                $space->inviteMember($user->id, Yii::$app->user->id);
-                $statusInvite = $space->getMembership($user->id)->status;
-            }
-
-            // Invite non existing members
-            if (Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite')) {
-                foreach ($model->getInvitesExternal() as $email) {
-                    $statusInvite = ($space->inviteMemberByEMail($email, Yii::$app->user->id))
-                        ? Membership::STATUS_INVITED : false;
-                }
-            }
-
-            switch ($statusInvite) {
-                case Membership::STATUS_INVITED:
-                    return ModalClose::widget([
-                        'success' => Yii::t('SpaceModule.views_space_statusInvite', 'User has been invited.'),
-                    ]);
-                case Membership::STATUS_MEMBER:
-                    return ModalClose::widget([
-                        'success' => Yii::t('SpaceModule.views_space_statusInvite', 'User has become a member.'),
-                    ]);
-                default:
-                    return ModalClose::widget([
-                        'warn' => Yii::t('SpaceModule.views_space_statusInvite', 'User has not been invited.'),
-                    ]);
-            }
-        }
-
-        return $this->renderAjax('invite', ['model' => $model, 'space' => $space]);
+        return $this->renderAjax('invite', ['model' => $model, 'space' => $model->space]);
     }
 
     /**
@@ -254,15 +207,13 @@ class MembershipController extends ContentContainerController
      */
     public function actionInviteAccept()
     {
-
         $this->forcePostRequest();
         $space = $this->getSpace();
 
         // Load Pending Membership
         $membership = $space->getMembership();
         if ($membership == null) {
-            throw new HttpException(404,
-                Yii::t('SpaceModule.controllers_SpaceController', 'There is no pending invite!'));
+            throw new HttpException(404, Yii::t('SpaceModule.controllers_SpaceController', 'There is no pending invite!'));
         }
 
         // Check there are really an Invite
@@ -278,22 +229,13 @@ class MembershipController extends ContentContainerController
      *
      * @throws HttpException
      */
-    public function actionSwitchDashboardDisplay()
+    public function actionSwitchDashboardDisplay($show = 0)
     {
         $this->forcePostRequest();
         $space = $this->getSpace();
 
-        // Load Pending Membership
         $membership = $space->getMembership();
-        if ($membership == null) {
-            throw new HttpException(404, 'Membership not found!');
-        }
-
-        if (Yii::$app->request->get('show') == 0) {
-            $membership->show_at_dashboard = 0;
-        } else {
-            $membership->show_at_dashboard = 1;
-        }
+        $membership->show_at_dashboard = ($show) ? 1 : 0;
         $membership->save();
 
         return $this->redirect($space->getUrl());
@@ -304,11 +246,9 @@ class MembershipController extends ContentContainerController
      */
     public function actionMembersList()
     {
-        $title = Yii::t('SpaceModule.controllers_MembershipController', "<strong>Members</strong>");
-
         return $this->renderAjaxContent(UserListBox::widget([
             'query' => Membership::getSpaceMembersQuery($this->getSpace())->visible(),
-            'title' => $title,
+            'title' => Yii::t('SpaceModule.controllers_MembershipController', "<strong>Members</strong>"),
         ]));
     }
 

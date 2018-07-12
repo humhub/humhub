@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\jobs;
 
+use Yii;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\notifications\UserAddedNotification;
@@ -23,6 +24,9 @@ class AddUsersToSpaceJob extends ActiveJob
 
     /** @var bool */
     public $allUsers = false;
+
+    /** @var bool */
+    public $forceMembership = false;
 
     /** @var User */
     public $originator;
@@ -51,14 +55,20 @@ class AddUsersToSpaceJob extends ActiveJob
             if ($user->id === $this->originator->id) {
                 continue;
             }
-            $this->space->inviteMember($user->id, $this->originator->id, false);
-            if ($this->space->addMember($user->id, 2, true) === false) {
-                \Yii::error(
-                    'The User ' . $user->getDisplayName() . ' can not be added to Space ' . $this->space->getDisplayName(),
-                    'Space.Jobs.AddUsersToSpace'
-                );
-            };
-            UserAddedNotification::instance()->from($this->originator)->about($this->space)->send($user);
+
+            $this->space->inviteMember($user->id, $this->originator->id, !$this->forceMembership);
+
+            if($this->forceMembership) {
+                if ($this->space->addMember($user->id, 2, true) === false) {
+                    Yii::error(
+                        'The User ' . $user->getDisplayName() . ' can not be added to Space ' . $this->space->getDisplayName(),
+                        'Space.Jobs.AddUsersToSpace'
+                    );
+                };
+
+                UserAddedNotification::instance()->from($this->originator)->about($this->space)->send($user);
+            }
+
         }
     }
 }

@@ -135,33 +135,22 @@ class CreateController extends Controller
      *
      * @throws Exception
      */
-    public function actionInvite($space = null)
+    public function actionInvite($space = null, $spaceId = null)
     {
-        $space = ($space == null) ? Space::findOne(['id' => Yii::$app->request->get('spaceId', '')]) : $space;
+        $space = ($space == null) ? Space::findOne(['id' => $spaceId]) : $space;
 
-        $model = new InviteForm();
-        $model->space = $space;
+        if(!$space) {
+            throw new HttpException(404);
+        }
 
-        $canInviteExternal = Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
+        $model = new InviteForm(['space' => $space]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-
-            // Invite existing members
-            foreach ($model->getInvites() as $user) {
-                $space->inviteMember($user->id, Yii::$app->user->id);
-            }
-            // Invite non existing members
-            if ($canInviteExternal) {
-                foreach ($model->getInvitesExternal() as $email) {
-                    $space->inviteMemberByEMail($email, Yii::$app->user->id);
-                }
-            }
-
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->htmlRedirect($space->getUrl());
         }
 
         return $this->renderAjax('invite', [
-            'canInviteExternal' => $canInviteExternal,
+            'canInviteExternal' => $model->canInviteExternal(),
             'model' => $model,
             'space' => $space
         ]);

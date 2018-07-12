@@ -69,17 +69,22 @@ $form = ActiveForm::begin([
             ]);
             ?>
 
-            <?php if ($canManageMembers) : ?>
-                <?= $form
-                    ->field($model, 'withoutInvite')
-                    ->label(Yii::t('SpaceModule.views_space_invite',
-                        'Add users to Space without inviting them'))
-                    ->checkbox() ?>
 
+
+
+            <?php if ($canManageMembers) : ?>
+                <br>
                 <?= $form
                     ->field($model, 'allRegisteredUsers')
                     ->label(Yii::t('SpaceModule.views_space_invite',
-                        'Add all registered users'))
+                        'Select all registered users'))
+                    ->checkbox() ?>
+
+                <br>
+                <?= $form
+                    ->field($model, 'withoutInvite')
+                    ->label(Yii::t('SpaceModule.views_space_invite',
+                        'Add users without invitation'))
                     ->checkbox() ?>
             <?php endif; ?>
 
@@ -99,6 +104,16 @@ $form = ActiveForm::begin([
         <?php endif; ?>
 
         <script>
+            $('#inviteform-allregisteredusers').on('change', function() {
+                var userPicker = humhub.modules.action.Component.instance('#space-invite-user-picker');
+
+                if($(this).is(':checked')) {
+                    userPicker.clear();
+                    userPicker.disable();
+                } else {
+                    userPicker.disable(false);
+                }
+            });
             $('.tab-internal a').on('shown.bs.tab', function (e) {
                 $('#space-invite-user-picker').data('picker').focus();
             });
