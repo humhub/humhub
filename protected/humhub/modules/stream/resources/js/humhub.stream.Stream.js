@@ -134,9 +134,11 @@ humhub.module('stream.Stream', function (module, require, $) {
         var contentId = this.$.data(DATA_STREAM_CONTENTID);
         this.$.data(DATA_STREAM_CONTENTID, null);
 
-        return new StreamRequest(this, {
+        this.state.firstRequest = new StreamRequest(this, {
             contentId: contentId,
-            limit: this.options.initLoadCount}).load();
+            limit: this.options.initLoadCount});
+
+        return this.state.firstRequest.load();
     };
 
     Stream.prototype.handleResponse = function(request) {

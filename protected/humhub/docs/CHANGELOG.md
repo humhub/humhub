@@ -10,6 +10,9 @@ HumHub Change Log
 - Enh: Add possibility to delete an invitation [#2980](https://github.com/humhub/humhub/issues/2980)
 - Enh: Moved search index tasks (add, update & delete) into asynchronous tasks
 - Enh: Added search index rebuild button
+- Fix #3200 wall stream scroll not working after single entry load request
+- Fix added missing required validation of target space for move content feature
+- Enh: Added `humhub.modules.stream.StreamState.firstRequest` in order to determine the initial request
 
 
 1.3.0-beta.1  (July 4, 2018)

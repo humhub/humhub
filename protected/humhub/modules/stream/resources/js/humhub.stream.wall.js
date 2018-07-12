@@ -112,7 +112,7 @@ humhub.module('stream.wall', function (module, require, $) {
     WallStream.prototype.initScroll = function() {
         var that = this;
         $(window).off('scroll.wallStream').on('scroll.wallStream', function () {
-            if(that.state.scrollLock || !that.canLoadMore() || !that.state.lastRequest || that.state.lastRequest.isSingleEntryRequest()) {
+            if(that.state.scrollLock || !that.canLoadMore() || !that.state.lastRequest || that.state.firstRequest.isSingleEntryRequest()) {
                 return;
             }
 

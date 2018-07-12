@@ -13,7 +13,7 @@ $canMove = $model->isMovable() === true;
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('ContentModule.base', '<strong>Move</strong> content')]) ?>
- <?php $form = ActiveForm::begin() ?>
+ <?php $form = ActiveForm::begin(['enableClientValidation' => false]) ?>
     <div class="modal-body">
         <?php if($canMove): ?>
               <?= $form->field($model, 'target')->widget(SpacePickerField::class, [
@@ -28,7 +28,7 @@ $canMove = $model->isMovable() === true;
         <?php endif; ?>
     </div>
     <div class="modal-footer">
-        <?= Button::primary(Yii::t('base', 'Save'))->action('content.submitMove')->loader(true)->visible($canMove) ?>
+        <?= Button::primary(Yii::t('base', 'Save'))->action('content.submitMove')->submit()->loader(true)->visible($canMove) ?>
         <?= ModalButton::cancel() ?>
     </div>
  <?php ActiveForm::end() ?>
