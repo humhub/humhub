@@ -15,7 +15,7 @@ HumHub Change Log
 - Enh: Added `humhub.modules.stream.StreamState.firstRequest` in order to determine the initial request
 - Fix #3204 invalid russian translation in module overview
 - Fix #3169 post markdown not stripped in mails and activities
-
+- Fix #3157 invalid use of relative space target link in MailContentEntry widget 
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------
