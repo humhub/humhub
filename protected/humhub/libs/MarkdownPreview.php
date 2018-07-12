@@ -130,7 +130,17 @@ REGEXP;
 
     protected function renderLink($block)
     {
-        return "[" . $block['url'] . "]";
+        $result = '';
+
+        if(isset($block['text']) && isset($block['text'][0]) && isset($block['text'][0][1])) {
+            $result = $block['text'][0][1];
+        }
+
+        if(!empty($result) && isset($block['url']) && strrpos($block['url'], 'mention:') === 0) {
+            $result = '@'.$result;
+        }
+
+        return $result;
     }
 
     protected function renderImage($block)

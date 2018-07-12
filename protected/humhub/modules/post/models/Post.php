@@ -8,8 +8,9 @@
 
 namespace humhub\modules\post\models;
 
-use humhub\modules\content\widgets\richtext\RichText;
 use Yii;
+use humhub\libs\MarkdownPreview;
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\user\models\User;
@@ -116,7 +117,7 @@ class Post extends ContentActiveRecord implements Searchable
      */
     public function getContentDescription()
     {
-        return $this->message;
+        return (new MarkdownPreview())->parse($this->message);
     }
 
     /**
