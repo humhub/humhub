@@ -91,7 +91,7 @@ class Follow extends \yii\db\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if ($insert && $this->object_model == User::className()) {
+        if ($insert && $this->object_model == User::class) {
             \humhub\modules\user\notifications\Followed::instance()
                     ->from($this->user)
                     ->about($this)

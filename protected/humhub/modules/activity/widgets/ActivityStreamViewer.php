@@ -42,16 +42,11 @@ class ActivityStreamViewer extends StreamViewer
 
     protected function getStreamUrl()
     {
-        //TODO: use own activity stream
-        $params = [
-            'mode' => StreamAction::MODE_ACTIVITY,
-        ];
-
         if ($this->contentContainer) {
-            return $this->contentContainer->createUrl($this->streamAction, $params);
+            return $this->contentContainer->createUrl($this->streamAction);
         }
 
-        return Url::to(array_merge([$this->streamAction], $params));
+        return Url::to(array_merge([$this->streamAction]));
     }
 
 }
