@@ -567,9 +567,9 @@ class Content extends ContentDeprecated implements Movable
      * @since 1.2.2
      * @return \yii\db\ActiveQuery
      */
-    public function getTags()
+    public function getTags($tagClass = ContentTag::class)
     {
-        return $this->hasMany(ContentTag::class, ['id' => 'tag_id'])->via('tagRelations');
+        return $this->hasMany($tagClass, ['id' => 'tag_id'])->via('tagRelations');
     }
 
     /**

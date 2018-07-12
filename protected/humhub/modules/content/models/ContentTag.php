@@ -15,7 +15,6 @@
 
 namespace humhub\modules\content\models;
 
-
 use Yii;
 use yii\db\ActiveQuery;
 use humhub\components\ActiveRecord;
@@ -163,9 +162,9 @@ class ContentTag extends ActiveRecord
     public function validateUnique($attribute, $params, $validator)
     {
         if (empty($this->contentcontainer_id)) {
-            $query = self::find()->andWhere('contentcontainer_id IS NULL');
+            $query = static::find()->andWhere('contentcontainer_id IS NULL');
         } else {
-            $query = self::findByContainer($this->contentcontainer_id);
+            $query = static::findByContainer($this->contentcontainer_id);
         }
 
         $query->andWhere(['name' => $this->name]);
@@ -253,6 +252,15 @@ class ContentTag extends ActiveRecord
     }
 
     /**
+     * @return string related link
+     */
+    public function getUrl()
+    {
+        return null;
+    }
+
+
+    /**
      * Returns the parent tag relation.
      *
      * @return \yii\db\ActiveQuery
@@ -337,8 +345,8 @@ class ContentTag extends ActiveRecord
      */
     public static function addQueryCondition(ActiveQuery $query)
     {
-        self::moduleQuery($query);
-        return self::typeQuery($query);
+        static::moduleQuery($query);
+        return static::typeQuery($query);
     }
 
     /**
@@ -408,7 +416,7 @@ class ContentTag extends ActiveRecord
     public static function findByType($type)
     {
         $query = parent::find();
-        self::moduleQuery($query)->andWhere(['content_tag.type' => $type]);
+        static::moduleQuery($query)->andWhere(['content_tag.type' => $type]);
         return $query;
     }
 
@@ -436,7 +444,7 @@ class ContentTag extends ActiveRecord
      */
     public static function findGlobal()
     {
-        $query = self::find();
+        $query = static::find();
         $query->andWhere('content_tag.contentcontainer_id IS NULL');
         return $query;
     }
@@ -450,15 +458,15 @@ class ContentTag extends ActiveRecord
      */
     public static function findByContent(Content $content)
     {
-        $query = $content->getTags();
-        self::moduleQuery($query);
+        $query = $content->getTags(static::class);
+        static::moduleQuery($query);
         $instance = new static;
 
         if (!empty($instance->moduleId)) {
             $query->andWhere(['content_tag.module_id' => $instance->moduleId]);
         }
 
-        return self::typeQuery($query);
+        return static::typeQuery($query);
     }
 
     /**
@@ -494,7 +502,7 @@ class ContentTag extends ActiveRecord
      */
     public static function deleteContentRelations(Content $content, $includeGlobal = true)
     {
-        $relations = self::getTagContentRelations($content, $includeGlobal);
+        $relations = static::getTagContentRelations($content, $includeGlobal);
         foreach ($relations as $relation) {
             $relation->delete();
         }
@@ -550,9 +558,9 @@ class ContentTag extends ActiveRecord
         $container_id = $container instanceof ContentContainerActiveRecord ? $container->contentcontainer_id : $container;
 
         if(!$includeGlobal) {
-            return self::find()->andWhere(['content_tag.contentcontainer_id' => $container_id]);
+            return static::find()->andWhere(['content_tag.contentcontainer_id' => $container_id]);
         } else {
-            return self::find()->andWhere(['or',
+            return static::find()->andWhere(['or',
                 ['content_tag.contentcontainer_id' => $container_id],
                 'content_tag.contentcontainer_id IS NULL',
             ]);

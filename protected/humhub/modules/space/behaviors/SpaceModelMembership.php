@@ -442,8 +442,10 @@ class SpaceModelMembership extends Behavior
         ]));
 
 
-        // Create Activity
-        MemberAdded::instance()->from($user)->about($this->owner)->save();
+        if(!$silent) {
+            // Create Activity
+            MemberAdded::instance()->from($user)->about($this->owner)->save();
+        }
 
         // Members can't also follow the space
         $this->owner->unfollow($userId);

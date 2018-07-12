@@ -20,6 +20,7 @@ HumHub Change Log
 - Enh: Enable invite all instead of force membership in case force invite checkbox is not selected
 - Fix prevent MembersAdded activity when using force space membership
 - Enh added `humhub.modules.ui.picker.Picker.disable()` in order to disable/enable userpicker fields
+- Enh topic labels now redirect to space stream with active topic filter if clicked outside of space stream
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------
