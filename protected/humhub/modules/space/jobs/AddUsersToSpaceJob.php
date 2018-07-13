@@ -68,7 +68,7 @@ class AddUsersToSpaceJob extends ActiveJob
     public function run()
     {
         if ($this->allUsers) {
-            foreach (User::find()->where(['status' => User::STATUS_ENABLED])->batch() as $users) {
+            foreach (User::find()->active()->batch() as $users) {
                 $this->addUsers($users);
             };
         } else {
@@ -92,13 +92,7 @@ class AddUsersToSpaceJob extends ActiveJob
                 $this->space->inviteMember($user->id, $this->originator->id, !$this->forceMembership);
 
                 if ($this->forceMembership) {
-                    if ($this->space->addMember($user->id, 2, true) === false) {
-                        Yii::error(
-                            'The User ' . $user->id . ' could not be added to Space ' . $this->space->id,
-                            'Space.Jobs.AddUsersToSpace'
-                        );
-                    };
-
+                    $this->space->addMember($user->id, 2, true);
                     UserAddedNotification::instance()->from($this->originator)->about($this->space)->send($user);
                 }
             } catch (Exception $e) {
