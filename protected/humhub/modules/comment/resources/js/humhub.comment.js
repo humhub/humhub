@@ -223,7 +223,6 @@ humhub.module('comment', function (module, require, $) {
     var toggleComment = function(evt) {
         var visible = evt.$target.is(':visible');
         evt.$target.slideToggle(undefined, function() {
-            debugger;
             evt.$target.find('.humhub-ui-richtext').trigger('focus');
         });
     };
