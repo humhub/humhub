@@ -47,6 +47,11 @@ class InviteForm extends Model
     public $invites = [];
 
     /**
+     * @var int[] invite user ids
+     */
+    public $inviteIds = [];
+
+    /**
      * Parsed list of E-Mails of field inviteExternal
      */
     public $invitesExternal = [];
@@ -83,13 +88,19 @@ class InviteForm extends Model
         ];
     }
 
+    /**
+     * Saves the form and either directly invites the selected users directly or by queue if forceinvite or all registered
+     * users are selected.
+     *
+     * @return bool true if save was successful otherwise false
+     */
     public function save()
     {
         if(!$this->validate()) {
             return false;
         }
 
-        if ($this->isForceMembership()) {
+        if ($this->isQueuedJob()) {
             $this->forceInvite();
         } else {
             $this->inviteMembers();
@@ -100,27 +111,38 @@ class InviteForm extends Model
         return true;
     }
 
-    public function isForceMembership()
+    /**
+     * @return bool checks if
+     */
+    public function isQueuedJob()
     {
         return ($this->withoutInvite || $this->allRegisteredUsers) && $this->space->can(ManageUsers::class);
     }
 
     public function forceInvite() {
         Yii::$app->queue->push(new AddUsersToSpaceJob([
-            'originator' => Yii::$app->user->identity,
+            'originatorId' => Yii::$app->user->identity->id,
             'forceMembership' => $this->withoutInvite,
-            'space' => $this->space,
-            'users' => $this->getInvites(),
+            'spaceId' => $this->space->id,
+            'userIds' => $this->getInviteIds(),
             'allUsers' => $this->allRegisteredUsers,
         ]));
     }
 
+    /**
+     * Invites selected members immediately
+     *
+     * @throws \yii\base\Exception
+     */
     public function inviteMembers() {
         foreach ($this->getInvites() as $user) {
             $this->space->inviteMember($user->id, Yii::$app->user->id);
         }
     }
 
+    /**
+     * Invite external users by mail
+     */
     public function inviteExternal()
     {
         if ($this->canInviteExternal()) {
@@ -130,6 +152,11 @@ class InviteForm extends Model
         }
     }
 
+    /**
+     * Checks if external user invitation setting is enabled
+     *
+     * @return int
+     */
     public function canInviteExternal()
     {
         return Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
@@ -164,7 +191,7 @@ class InviteForm extends Model
 
                 $membership = Membership::findOne(['space_id' => $this->space->id, 'user_id' => $user->id]);
 
-                if ($membership != null && $membership->status == Membership::STATUS_MEMBER) {
+                if ($membership && $membership->status == Membership::STATUS_MEMBER) {
                     $this->addError(
                         $attribute,
                         Yii::t(
@@ -174,7 +201,7 @@ class InviteForm extends Model
                         )
                     );
                     continue;
-                } elseif ($membership != null && $membership->status == Membership::STATUS_APPLICANT) {
+                } elseif ($membership && $membership->status == Membership::STATUS_APPLICANT) {
                     $this->addError($attribute, Yii::t('SpaceModule.forms_SpaceInviteForm',
                         "User '{username}' is already an applicant of this space!",
                         ['username' => $user->getDisplayName()]));
@@ -182,6 +209,7 @@ class InviteForm extends Model
                 }
 
                 $this->invites[] = $user;
+                $this->inviteIds[] = $user->id;
             }
         }
     }
@@ -225,11 +253,19 @@ class InviteForm extends Model
     }
 
     /**
-     * Returns an Array with selected recipients
+     * @return User[] an Array with selected recipients
      */
     public function getInvites()
     {
         return $this->invites;
+    }
+
+    /**
+     * @return int[] user invite ids
+     */
+    public function getInviteIds()
+    {
+        return $this->inviteIds;
     }
 
     /**

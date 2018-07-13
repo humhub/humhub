@@ -185,7 +185,7 @@ class MembershipController extends ContentContainerController
         $model = new InviteForm(['space' => $this->getSpace()]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if($model->isForceMembership()) {
+            if($model->isQueuedJob()) {
                 $success = ($model->withoutInvite)
                     ? Yii::t( 'SpaceModule.base', 'User memberships have been added to the queue')
                     : Yii::t( 'SpaceModule.base', 'User invitations have been added to the queue');

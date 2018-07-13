@@ -13,23 +13,54 @@ use humhub\modules\queue\ActiveJob;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\notifications\UserAddedNotification;
 use humhub\modules\user\models\User;
+use yii\base\Exception;
 
 class AddUsersToSpaceJob extends ActiveJob
 {
-    /** @var Space */
-    public $space;
+    /**
+     * @var Space target space
+     */
+    private $space;
 
-    /** @var User[] */
-    public $users;
+    /**
+     * @var int
+     */
+    public $spaceId;
 
-    /** @var bool */
+    /**
+     * @var int[]
+     */
+    public $userIds;
+
+    /**
+     * @var User originator user
+     */
+    private $originator;
+
+    /**
+     * @var User originator user id
+     */
+    public $originatorId;
+
+    /**
+     * @var bool
+     */
     public $allUsers = false;
 
-    /** @var bool */
+    /**
+     * @var bool
+     */
     public $forceMembership = false;
 
-    /** @var User */
-    public $originator;
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        $this->space = Space::findOne(['id' => $this->spaceId]);
+        $this->originator = User::findOne(['id' => $this->originatorId]);
+    }
 
     /**
      * @inheritdoc
@@ -41,34 +72,38 @@ class AddUsersToSpaceJob extends ActiveJob
                 $this->addUsers($users);
             };
         } else {
-            $this->addUsers($this->users);
+            $this->addUsers($this->userIds);
         }
     }
 
     /**
-     * @param User[] $users
-     * @throws \yii\base\Exception
+     * @param User[]|int[] $users
      */
     private function addUsers($users)
     {
         foreach ($users as $user) {
-            if ($user->id === $this->originator->id) {
-                continue;
+            try {
+                $user = ($user instanceof User) ? $user : User::findOne(['id' => $user]);
+
+                if (!$user || $user->id === $this->originator->id) {
+                    continue;
+                }
+
+                $this->space->inviteMember($user->id, $this->originator->id, !$this->forceMembership);
+
+                if ($this->forceMembership) {
+                    if ($this->space->addMember($user->id, 2, true) === false) {
+                        Yii::error(
+                            'The User ' . $user->id . ' could not be added to Space ' . $this->space->id,
+                            'Space.Jobs.AddUsersToSpace'
+                        );
+                    };
+
+                    UserAddedNotification::instance()->from($this->originator)->about($this->space)->send($user);
+                }
+            } catch (Exception $e) {
+                Yii::error($e);
             }
-
-            $this->space->inviteMember($user->id, $this->originator->id, !$this->forceMembership);
-
-            if($this->forceMembership) {
-                if ($this->space->addMember($user->id, 2, true) === false) {
-                    Yii::error(
-                        'The User ' . $user->getDisplayName() . ' can not be added to Space ' . $this->space->getDisplayName(),
-                        'Space.Jobs.AddUsersToSpace'
-                    );
-                };
-
-                UserAddedNotification::instance()->from($this->originator)->about($this->space)->send($user);
-            }
-
         }
     }
 }

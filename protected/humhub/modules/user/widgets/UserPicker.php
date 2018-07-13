@@ -149,7 +149,7 @@ class UserPicker extends \yii\base\Widget
      * Creates a json user array used in the userpicker js frontend.
      * The $cfg is used to specify the filter values the following values are available:
      * 
-     * query - (ActiveQuery) The initial query which is used to append additional filters. - default = User Friends if friendship module is enabled else User::find()
+     * query - (ActiveQuery) The initial query which is used to append additional filters. - default = User::find()
      * 
      * active - (boolean) Specifies if only active user should be included in the result - default = true
      * 
@@ -182,11 +182,8 @@ class UserPicker extends \yii\base\Widget
         
         $cfg = ($cfg == null) ? $defaultCfg : array_merge($defaultCfg, $cfg);
         
-        //If no initial query is given we use getFriends if friendship module is enabled otherwise all users
         if(!isset($cfg['query'])) {
-            $cfg['query'] = (Yii::$app->getModule('friendship')->getIsEnabled()) 
-                    ? Yii::$app->user->getIdentity()->getFriends()
-                    : UserFilter::find();
+            $cfg['query'] = UserFilter::find();
         }
         
         //Filter the initial query and disable user without the given permission
