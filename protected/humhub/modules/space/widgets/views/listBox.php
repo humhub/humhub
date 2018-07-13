@@ -1,65 +1,60 @@
 <?php
 
 use humhub\widgets\AjaxLinkPager;
+use humhub\widgets\ModalDialog;
 use yii\helpers\Html;
+use humhub\modules\space\widgets\Image;
+
+/* @var $spaces \humhub\modules\space\models\Space[] */
 ?>
 
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">
-                <?= Html::encode($title); ?>
-            </h4>
-            <br>
+
+<?php ModalDialog::begin(['header' => $title]) ?>
+
+    <?php if (count($spaces) === 0) : ?>
+        <div class="modal-body">
+            <p><?= Yii::t('SpaceModule.base', 'No spaces found.'); ?></p>
         </div>
+    <?php endif; ?>
 
-        <?php if (count($spaces) === 0) : ?>
-            <div class="modal-body">
-                <p><?= Yii::t('SpaceModule.base', 'No spaces found.'); ?></p>
-            </div>
-        <?php endif; ?>
+    <div id="spacelist-content">
 
-        <div id="spacelist-content">
+        <ul class="media-list">
+            <!-- BEGIN: Results -->
+            <?php foreach ($spaces as $space) : ?>
+                <li>
+                    <a href="<?= $space->getUrl(); ?>" data-modal-close="1">
 
-            <ul class="media-list">
-                <!-- BEGIN: Results -->
-                <?php foreach ($spaces as $space) : ?>
-                    <li>
-                        <a href="<?php echo $space->getUrl(); ?>" data-modal-close="1">
+                        <div class="media">
+                            <img class="media-object img-rounded pull-left"
+                                 src="<?= $space->getProfileImage()->getUrl(); ?>" width="50"
+                                 height="50" style="width: 50px; height: 50px;">
 
-                            <div class="media">
-                                <img class="media-object img-rounded pull-left"
-                                     src="<?= $space->getProfileImage()->getUrl(); ?>" width="50"
-                                     height="50" alt="50x50" data-src="holder.js/50x50"
-                                     style="width: 50px; height: 50px;">
-
-                                <div class="media-body">
-                                    <h4 class="media-heading"><?= Html::encode($space->name); ?>
-                                    <h5><?= Html::encode($space->description); ?></h5>
-                                </div>
+                            <div class="media-body">
+                                <h4 class="media-heading"><?= Html::encode($space->name); ?></h4>
+                                <h5><?= Html::encode($space->description); ?></h5>
                             </div>
-                        </a>
-                    </li>
+                        </div>
+                    </a>
+                </li>
 
-                <?php endforeach; ?>
-                <!-- END: Results -->
+            <?php endforeach; ?>
+            <!-- END: Results -->
 
-            </ul>
+        </ul>
 
-            <div class="pagination-container">
-                <?= AjaxLinkPager::widget(['pagination' => $pagination]); ?>
-            </div>
-
+        <div class="pagination-container">
+            <?= AjaxLinkPager::widget(['pagination' => $pagination]); ?>
         </div>
 
     </div>
+    <script>
 
-</div>
+        // scroll to top of list
+        $(".modal-body").animate({scrollTop: 0}, 200);
 
-<script>
+    </script>
+<?php ModalDialog::end() ?>
 
-    // scroll to top of list
-    $(".modal-body").animate({scrollTop: 0}, 200);
 
-</script>
+

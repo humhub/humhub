@@ -2,8 +2,10 @@
 
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
+use humhub\widgets\AjaxLinkPager;
 use yii\helpers\Html;
 
+/* @var $users \humhub\modules\user\models\User[] */
 ?>
 
 <?php ModalDialog::begin(['header' => $title]) ?>
@@ -37,7 +39,7 @@ use yii\helpers\Html;
         </ul>
 
         <div class="pagination-container">
-            <?= \humhub\widgets\AjaxLinkPager::widget(['pagination' => $pagination]); ?>
+            <?= AjaxLinkPager::widget(['pagination' => $pagination]); ?>
         </div>
     </div>
 
@@ -45,12 +47,13 @@ use yii\helpers\Html;
         <?= ModalButton::cancel(Yii::t('base', 'Close'))?>
     </div>
 
-<?php ModalDialog::end() ?>
-
 <script type="text/javascript">
 
     // scroll to top of list
     $(".modal-body").animate({scrollTop: 0}, 200);
 
 </script>
+
+<?php ModalDialog::end() ?>
+
 

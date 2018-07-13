@@ -22,6 +22,7 @@ HumHub Change Log
 - Enh added `humhub.modules.ui.picker.Picker.disable()` in order to disable/enable userpicker fields
 - Enh topic labels now redirect to space stream with active topic filter if clicked outside of space stream
 - Fix #3123 unbalanced html tags leads to broken comment after load more
+- Fix #3211 escaped html rendered on space list modal
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------
