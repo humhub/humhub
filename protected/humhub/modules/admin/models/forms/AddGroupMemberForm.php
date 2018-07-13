@@ -71,13 +71,13 @@ class AddGroupMemberForm extends Model
     {
         $group = $this->getGroup();
 
-        if($group == null) {
+        if ($group == null) {
             throw new HttpException(404, Yii::t('AdminModule.models_form_AddGroupMemberForm', 'Group not found!'));
         }
 
         foreach ($this->userGuids as $userGuid) {
             $user = User::findIdentityByAccessToken($userGuid);
-            if($user != null) {
+            if ($user != null) {
                $group->addUser($user);
             }
         }
@@ -87,6 +87,6 @@ class AddGroupMemberForm extends Model
 
     public function getGroup()
     {
-        return Group::findOne($this->groupId);
+        return Group::findOne(['id' => $this->groupId]);
     }
 }

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use yii\base\Model;
 use humhub\modules\user\models\Group;
 
 /**
@@ -15,7 +16,7 @@ use humhub\modules\user\models\Group;
  *
  * @author buddha
  */
-class UserGroupForm extends \yii\base\Model
+class UserGroupForm extends Model
 {
 
     /**
@@ -81,8 +82,8 @@ class UserGroupForm extends \yii\base\Model
     public function save()
     {
         //Check old group selection and remove non selected groups
-        foreach($this->currentGroups as $userGroup) {
-            if(!$this->isInGroupSelection($userGroup)) {
+        foreach ($this->currentGroups as $userGroup) {
+            if (!$this->isInGroupSelection($userGroup)) {
                 $this->user->getGroupUsers()->where(['group_id' => $userGroup->id])->one()->delete();
             }
         }
@@ -90,7 +91,7 @@ class UserGroupForm extends \yii\base\Model
         //Add all selectedGroups to the given user
         foreach ($this->groupSelection as $groupId) {
             if (!$this->isCurrentlyMemberOf($groupId)) {
-                Group::findOne($groupId)->addUser($this->user);
+                Group::findOne(['id' => $groupId])->addUser($this->user);
             }
         }
 

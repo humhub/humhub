@@ -242,7 +242,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     public static function findIdentity($id)
     {
-        return static::findOne($id);
+        return static::findOne(['id' => $id]);
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
@@ -541,12 +541,14 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         $format = Yii::$app->settings->get('displayNameFormat');
 
-        if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}')
+        if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}') {
             $name = $this->profile->firstname . ' ' . $this->profile->lastname;
+        }
 
         // Return always username as fallback
-        if ($name == '' || $name == ' ')
+        if ($name == '' || $name == ' ') {
             return $this->username;
+        }
 
         return $name;
     }

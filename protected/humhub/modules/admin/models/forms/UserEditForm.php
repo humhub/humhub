@@ -3,14 +3,16 @@
 namespace humhub\modules\admin\models\forms;
 
 use Yii;
+use humhub\modules\user\models\User;
 use humhub\modules\user\models\Group;
+use humhub\modules\admin\permissions\ManageGroups;
 
 /**
  * Description of UserEditForm
  *
  * @author buddha
  */
-class UserEditForm extends \humhub\modules\user\models\User
+class UserEditForm extends User
 {
     /**
      * GroupId selection array of the form.
@@ -63,10 +65,10 @@ class UserEditForm extends \humhub\modules\user\models\User
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if(Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageGroups())) {
+        if (Yii::$app->user->can(new ManageGroups())) {
             //Check old group selection and remove non selected groups
-            foreach($this->currentGroups as $userGroup) {
-                if(!$this->isInGroupSelection($userGroup)) {
+            foreach ($this->currentGroups as $userGroup) {
+                if (!$this->isInGroupSelection($userGroup)) {
                     $this->getGroupUsers()->where(['group_id' => $userGroup->id])->one()->delete();
                 }
             }
@@ -76,7 +78,7 @@ class UserEditForm extends \humhub\modules\user\models\User
             //Add all new selectedGroups to the given user
             foreach ($this->groupSelection as $groupId) {
                 if (!$this->isCurrentlyMemberOf($groupId)) {
-                    Group::findOne($groupId)->addUser($this);
+                    Group::findOne(['id' => $groupId])->addUser($this);
                 }
             }
         }
@@ -122,7 +124,7 @@ class UserEditForm extends \humhub\modules\user\models\User
     public static function getGroupItems($groups = null)
     {
         if($groups == null) {
-            $groups = \humhub\modules\user\models\Group::find()->all();
+            $groups = Group::find()->all();
         }
 
         $result = [];
