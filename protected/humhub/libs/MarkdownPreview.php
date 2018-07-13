@@ -8,6 +8,9 @@
 
 namespace humhub\libs;
 
+use cebe\markdown\block\CodeTrait;
+use cebe\markdown\block\HeadlineTrait;
+
 /**
  * MarkdownPreview generates a plain text (no HTML) of markdown.
  * Some elements like images or links will be displayed more clearly.
@@ -16,9 +19,20 @@ namespace humhub\libs;
  */
 class MarkdownPreview extends \cebe\markdown\Parser
 {
+    use HeadlineTrait;
+
     protected function renderParagraph($block)
     {
         return $this->renderAbsy($block['content']) . "\n";
+    }
+
+
+    /**
+     * Renders a headline
+     */
+    protected function renderHeadline($block)
+    {
+        return $this->renderAbsy($block['content']) ."\n";
     }
 
     /**
