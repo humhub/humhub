@@ -23,6 +23,7 @@ HumHub Change Log
 - Enh topic labels now redirect to space stream with active topic filter if clicked outside of space stream
 - Fix #3123 unbalanced html tags leads to broken comment after load more
 - Fix #3211 escaped html rendered on space list modal
+- Fix invalid userpicker translation syntax in czech language
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------
