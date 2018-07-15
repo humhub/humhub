@@ -5,22 +5,22 @@
 use yii\helpers\Html;
 use humhub\modules\directory\widgets\GroupUsers;
 ?>
+
 <div class="panel panel-default groups">
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', '<strong>Member</strong> Group Directory'); ?>
+        <?= Yii::t('DirectoryModule.base', '<strong>Member</strong> Group Directory'); ?>
     </div>
 
     <div class="panel-body">
         <?php foreach ($groups as $group) : ?>
             <h1><?= Html::encode($group->name); ?></h1>
             <p class="hint-block">
-                <?= Html::encode($group->description) ?>
+                <?= Html::encode($group->description); ?>
             </p>
             <?= GroupUsers::widget(['group' => $group]); ?>
-            <hr />
+            <hr>
         <?php endforeach; ?>
     </div>
 
 </div>
-
