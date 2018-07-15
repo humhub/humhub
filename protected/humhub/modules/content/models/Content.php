@@ -10,6 +10,8 @@ namespace humhub\modules\content\models;
 
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\components\Module;
+use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
@@ -330,7 +332,7 @@ class Content extends ContentDeprecated implements Movable
             return false;
         }
 
-        return $this->getContainer()->permissionManager->can(new ManageContent());
+        return $this->getContainer()->permissionManager->can(ManageContent::class);
     }
 
     /**
@@ -413,21 +415,14 @@ class Content extends ContentDeprecated implements Movable
     public function canMove(ContentContainerActiveRecord $container = null)
     {
         $model = $this->getModel();
-        $isContentOwner = $model->isOwner();
 
-        $canModelBeMoved = $model->canMove();
+        $canModelBeMoved = $this->isModelMovable($container);
         if ($canModelBeMoved !== true) {
             return $canModelBeMoved;
         }
 
-        // Check for legacy modules
-        if (!$model->getModuleId()) {
-            return Yii::t('ContentModule.base', 'This content type can\'t be moved due to a missing module-id setting.');
-        }
-
         if (!$container) {
-            // The content type is movable and no container was provided
-            return true;
+            return $this->checkMovePermission() ? true : Yii::t('ContentModule.base', 'You do not have the permission to move this content.');
         }
 
         if ($container->contentcontainer_id === $this->contentcontainer_id) {
@@ -436,18 +431,19 @@ class Content extends ContentDeprecated implements Movable
 
         // Check if the related module is installed on the target space
         if (!$container->moduleManager->isEnabled($model->getModuleId())) {
+            /* @var $module Module */
             $module = Yii::$app->getModule($model->getModuleId());
             $moduleName = ($module instanceof ContentContainerModule) ? $module->getContentContainerName($container) : $module->getName();
             return Yii::t('ContentModule.base', 'The module {moduleName} is not enabled on the selected target space.', ['moduleName' => $moduleName]);
         }
 
         // Check if the current user is allowed to move this content at all
-        if (!$isContentOwner && !$this->container->can(ManageContent::class)) {
+        if (!$this->checkMovePermission()) {
             return Yii::t('ContentModule.base', 'You do not have the permission to move this content.');
         }
 
         // Check if the current user is allowed to move this content to the given target space
-        if (!$isContentOwner && !$container->can(ManageContent::class)) {
+        if (!$this->checkMovePermission($container)) {
             return Yii::t('ContentModule.base', 'You do not have the permission to move this content to the given space.');
         }
 
@@ -462,6 +458,41 @@ class Content extends ContentDeprecated implements Movable
         }
 
         return true;
+    }
+
+    public function isModelMovable(ContentContainerActiveRecord $container = null)
+    {
+        $model = $this->getModel();
+        $canModelBeMoved = $model->canMove($container);
+        if ($canModelBeMoved !== true) {
+            return $canModelBeMoved;
+        }
+
+        // Check for legacy modules
+        if (!$model->getModuleId()) {
+            return Yii::t('ContentModule.base', 'This content type can\'t be moved due to a missing module-id setting.');
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if the current user has generally the permission to move this content on the given container or the current container if no container was provided.
+     *
+     * Note this function is only used for a general permission check use [[canMove()]] for a
+     *
+     * This is the case if:
+     *
+     * - The current user is the owner of this content
+     * @param ContentContainerActiveRecord|null $container
+     * @return bool determines if the current user is generally permitted to move content on the given container (or the related container if no container was provided)
+     */
+    public function checkMovePermission(ContentContainerActiveRecord $container = null)
+    {
+        if(!$container) {
+            $container = $this->container;
+        }
+        return $this->getModel()->isOwner() || Yii::$app->user->can(ManageUsers::class) || $container->can(ManageContent::class);
     }
 
     /**

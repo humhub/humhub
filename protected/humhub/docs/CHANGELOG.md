@@ -25,6 +25,7 @@ HumHub Change Log
 - Fix: #3211: escaped html rendered on space list modal
 - Fix: invalid userpicker translation syntax in czech language
 - Fix: added missing layout-snippet-container class in space and profile layout
+- Fix: move profile content not possible
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------
