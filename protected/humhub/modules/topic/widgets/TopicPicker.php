@@ -8,11 +8,11 @@
 
 namespace humhub\modules\topic\widgets;
 
-use Yii;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\topic\permissions\AddTopic;
 use humhub\modules\content\widgets\ContentTagPicker;
 use humhub\modules\topic\models\Topic;
+use Yii;
 
 class TopicPicker extends ContentTagPicker
 {
@@ -38,11 +38,11 @@ class TopicPicker extends ContentTagPicker
     {
         $this->contentContainer = $this->contentContainer ? $this->contentContainer : ContentContainerHelper::getCurrent();
 
-        if(!$this->url && $this->contentContainer) {
+        if (!$this->url && $this->contentContainer) {
             $this->url = $this->contentContainer->createUrl('/topic/topic/search');
         }
 
-        if($this->addOptions !== false) {
+        if ($this->addOptions !== false) {
             $this->addOptions = $this->contentContainer->can(AddTopic::class);
         }
 
@@ -65,6 +65,7 @@ class TopicPicker extends ContentTagPicker
         if ($this->maxSelection) {
             $result['maximum-selected'] = Yii::t('TopicModule.widgets_TopicPicker', 'This field only allows a maximum of {n,plural,=1{# topic} other{# topics}}', ['n' => $this->maxSelection]);
         }
+
         return $result;
     }
 }
