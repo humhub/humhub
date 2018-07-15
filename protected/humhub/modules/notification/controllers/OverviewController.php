@@ -9,7 +9,7 @@
 namespace humhub\modules\notification\controllers;
 
 use humhub\components\Controller;
-use humhub\components\behaviors\AccessControl;;
+use humhub\components\behaviors\AccessControl;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\models\forms\FilterForm;
 use Yii;
