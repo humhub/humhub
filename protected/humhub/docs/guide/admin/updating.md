@@ -26,6 +26,8 @@ For each version there will be a themeing and module migration guide available:
 	
 4. Run database migration tool
 
+> Note: After a manual update you should also check for available module updates under `Administration -> Modules -> Avilable Updates`.
+
 ```
 cd protected
 php yii migrate/up --includeModuleMigrations=1

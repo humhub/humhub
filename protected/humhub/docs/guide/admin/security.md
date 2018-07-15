@@ -1,10 +1,12 @@
 Security
 ========
 
-Disable Errors / Debugging
+Enable Production Mode
 --------------------------
 
- - Modify *index.php* in your humhub root directory
+By default HumHub is operating in _DEBUG_ mode, which besides others uses a different error handling and non combined
+assets. Before opening your installation to the public you should enable the production mode first by commenting out the
+following lines of the `index.php` file within your HumHub root directory:
 
 ```php
 [...]
@@ -14,16 +16,19 @@ Disable Errors / Debugging
 [...]
 ```
 
- - Delete *index-test.php* in your humhub root directory if exists
+> Note: In this example the lines are already commented out.
+
+You should also delete the `index-test.php` file in your HumHub root directory if existing.
 
 Protected Directories
 ---------------------
 
 Make sure the following directories are not accessible by web:
+
 - protected
 - uploads/file
 
-By default these folders are protected with a ".htaccess" file.
+> Info: By default these folders are protected with a ".htaccess" file.
 
 Limit User Access
 -----------------
@@ -34,9 +39,12 @@ If you're running a private social network, make sure the user registration has 
 - Enable user approvals: `Administration -> Users -> Settings -> Require group admin approval after registration`
 - Make sure guest access is disabled: `Administration -> Users -> Settings -> Allow limited access for non-authenticated users (guests)`
 
-Keep up with the latest HumHub version
+Keep HumHub Up-To-Date 
 ---------------------------------------
 
-As an admin you'll receive a notification when a new HumHub version has been released. We strongly recommend to always use the latest stable version when possible.
+As an admin you'll receive notifications about new HumHub releases. We strongly recommend to always update to the latest stable version if possible.
+Check the [automatic](updating-automatic.md) or [manual](updating.md) update guide for more information about updating your HumHub installation.
+
+Furthermore, you should regularly check the `Administration -> Modules -> Available Updates` section for module updates. 
 
 We take security very seriously, and we're continuously improving the security features of HumHub. 
