@@ -8,9 +8,9 @@
 
 namespace humhub\modules\topic;
 
-use Yii;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\ContentTopicButton;
+use Yii;
 use yii\base\BaseObject;
 
 class Events extends BaseObject
@@ -19,7 +19,7 @@ class Events extends BaseObject
     {
         $record = $event->sender->object;
 
-        if($record->content->canWrite()) {
+        if ($record->content->canWrite()) {
             $event->sender->addWidget(ContentTopicButton::class, ['record' => $record], ['sortOrder' => 240]);
         }
     }
