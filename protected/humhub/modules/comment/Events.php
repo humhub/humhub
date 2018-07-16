@@ -14,10 +14,11 @@ use humhub\modules\search\engine\Search;
 use Yii;
 use yii\base\Component;
 use yii\base\Event;
+use Yii;
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @author luke
  */
 class Events extends Component
@@ -105,8 +106,8 @@ class Events extends Component
     }
 
     /**
-     * Handles the SearchAttributesEvent and adds related comments 
-     * 
+     * Handles the SearchAttributesEvent and adds related comments
+     *
      * @since 1.2.3
      * @param SearchAttributesEvent $event
      */
@@ -122,7 +123,7 @@ class Events extends Component
                 'author' => ($comment->user !== null) ? $comment->user->displayName : '',
                 'message' => $comment->message
             ];
-            
+
             // Add comment related attributes (e.g. files)
             Event::trigger(Search::class, Search::EVENT_SEARCH_ATTRIBUTES, new SearchAttributesEvent($event->attributes['comments'][$comment->id], $comment));
         }
