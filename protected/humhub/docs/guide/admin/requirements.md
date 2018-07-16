@@ -1,6 +1,6 @@
 Requirements
 ============
-> Note: All vital requirements will be also checked during the web installer.
+> Note: All vital requirements will also be also checked during the web installation.
 
 Server Requirements
 -------------------
