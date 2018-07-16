@@ -218,7 +218,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     {
         $node = $this->getUserNode();
         if ($node !== null) {
-            $this->setUserAttributes($node->getAttributes());
+            $this->setUserAttributes(array_merge(['dn' => $node], $node->getAttributes()));
             return true;
         }
 
