@@ -30,6 +30,10 @@ HumHub Change Log
 - Fix: Error thrown for empty url links in `humhub\libs\Markdown` when used in console environment
 - Fix: UserUrlRule double User model import
 - Fix: Skip soft delete validation
+- Fix: Added user dn to ldap attributes on login
+- Enh: Added Twig template engine for usage in modules
+- Enh: Added id data attribute on contentcontainer links
+
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------

@@ -3,13 +3,15 @@
 /* @var $keyword string */
 /* @var $group humhub\modules\user\models\Group */
 /* @var $users humhub\modules\user\models\User[] */
+
 /* @var $pagination yii\data\Pagination */
 
-use yii\helpers\Html;
-use humhub\modules\user\widgets\Image;
+use humhub\libs\Html;
 use humhub\modules\directory\widgets\MemberActionsButton;
-use humhub\modules\directory\widgets\UserTagList;
 use humhub\modules\directory\widgets\UserGroupList;
+use humhub\modules\directory\widgets\UserTagList;
+use humhub\modules\user\widgets\Image;
+
 ?>
 <div class="panel panel-default">
 
@@ -51,10 +53,14 @@ use humhub\modules\directory\widgets\UserGroupList;
                         <?= MemberActionsButton::widget(['user' => $user]); ?>
                     </div>
 
-                    <?= Image::widget(['user' => $user, 'htmlOptions' => ['class' => 'pull-left']]); ?>
+                    <?= Image::widget([
+                        'user' => $user,
+                        'htmlOptions' => ['class' => 'pull-left'],
+                        'linkOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id]
+                    ]); ?>
                     <div class="media-body">
                         <h4 class="media-heading">
-                            <a href="<?= $user->getUrl(); ?>"><?= Html::encode($user->displayName); ?></a>
+                            <?= Html::containerLink($user); ?>
                             <?= UserGroupList::widget(['user' => $user]); ?>
                         </h4>
                         <h5><?= Html::encode($user->profile->title); ?></h5>
