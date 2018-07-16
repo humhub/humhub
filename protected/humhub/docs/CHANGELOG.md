@@ -26,6 +26,8 @@ HumHub Change Log
 - Fix: invalid userpicker translation syntax in czech language
 - Fix: added missing layout-snippet-container class in space and profile layout
 - Fix: move profile content not possible
+- Fix: Stream wall scroll event not detached on pjax call
+- Fix: Error thrown for empty url links in `humhub\libs\Markdown` when used in console environment
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------
