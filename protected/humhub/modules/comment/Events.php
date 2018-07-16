@@ -8,13 +8,12 @@
 
 namespace humhub\modules\comment;
 
+use Yii;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\search\events\SearchAttributesEvent;
 use humhub\modules\search\engine\Search;
-use Yii;
 use yii\base\Component;
 use yii\base\Event;
-use Yii;
 
 /**
  * Events provides callbacks to handle events.
