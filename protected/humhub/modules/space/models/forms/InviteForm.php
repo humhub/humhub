@@ -116,7 +116,7 @@ class InviteForm extends Model
      */
     public function isQueuedJob()
     {
-        return ($this->withoutInvite || $this->allRegisteredUsers) && $this->space->can(ManageUsers::class);
+        return ($this->withoutInvite || $this->allRegisteredUsers) && Yii::$app->user->can(ManageUsers::class);
     }
 
     public function forceInvite() {

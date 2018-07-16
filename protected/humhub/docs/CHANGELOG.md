@@ -33,7 +33,7 @@ HumHub Change Log
 - Fix: Added user dn to ldap attributes on login
 - Enh: Added Twig template engine for usage in modules
 - Enh: Added id data attribute on contentcontainer links
-
+- Fix: Wrong permission check on force invite check
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------
