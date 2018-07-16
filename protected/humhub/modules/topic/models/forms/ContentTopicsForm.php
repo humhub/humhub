@@ -37,10 +37,11 @@ class ContentTopicsForm extends Model
 
     public function save()
     {
-        if($this->validate()) {
+        if ($this->validate()) {
             Topic::attach($this->content, $this->topics);
             return true;
         }
+
         return false;
     }
 }

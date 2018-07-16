@@ -8,11 +8,11 @@
 
 namespace humhub\modules\topic\controllers;
 
-use Yii;
 use humhub\widgets\ModalClose;
 use humhub\components\Controller;
 use humhub\modules\content\models\Content;
 use humhub\modules\topic\models\forms\ContentTopicsForm;
+use Yii;
 use yii\web\HttpException;
 
 class ContentTopicController extends Controller
@@ -21,7 +21,7 @@ class ContentTopicController extends Controller
     {
         $content = Content::findOne(['id' => $contentId]);
 
-        if(!$content) {
+        if (!$content) {
             throw new HttpException(404);
         } elseif (!$content->canEdit()) {
             throw new HttpException(403);
@@ -29,7 +29,7 @@ class ContentTopicController extends Controller
 
         $form = new ContentTopicsForm(['content' => $content]);
 
-        if($form->load(Yii::$app->request->post()) && $form->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
             return ModalClose::widget(['script' => 'humhub.modules.stream.getEntry('.$content->id.').reload()']);
         }
 

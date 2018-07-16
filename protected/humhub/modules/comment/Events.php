@@ -11,6 +11,7 @@ namespace humhub\modules\comment;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\search\events\SearchAttributesEvent;
 use humhub\modules\search\engine\Search;
+use yii\base\Component;
 use yii\base\Event;
 
 /**
@@ -18,7 +19,7 @@ use yii\base\Event;
  * 
  * @author luke
  */
-class Events extends \yii\base\Component
+class Events extends Component
 {
 
     /**
@@ -28,8 +29,7 @@ class Events extends \yii\base\Component
      */
     public static function onContentDelete($event)
     {
-
-        foreach (models\Comment::find()->where(['object_model' => $event->sender->className(), 'object_id' => $event->sender->id])->all() as $comment) {
+        foreach (Comment::find()->where(['object_model' => $event->sender->className(), 'object_id' => $event->sender->id])->all() as $comment) {
             $comment->delete();
         }
     }
@@ -41,7 +41,6 @@ class Events extends \yii\base\Component
      */
     public static function onUserDelete($event)
     {
-
         foreach (Comment::findAll(['created_by' => $event->sender->id]) as $comment) {
             $comment->delete();
         }
@@ -57,21 +56,21 @@ class Events extends \yii\base\Component
     public static function onIntegrityCheck($event)
     {
         $integrityController = $event->sender;
-        $integrityController->showTestHeadline("Comment Module (" . Comment::find()->count() . " entries)");
+        $integrityController->showTestHeadline('Comment Module (' . Comment::find()->count() . ' entries)');
 
         // Loop over all comments
         foreach (Comment::find()->all() as $c) {
 
             // Check underlying record exists
             if ($c->source === null) {
-                if ($integrityController->showFix("Deleting comment id " . $c->id . " without existing target!")) {
+                if ($integrityController->showFix('Deleting comment id ' . $c->id . ' without existing target!')) {
                     $c->delete();
                 }
             }
 
             // User exists
             if ($c->user === null) {
-                if ($integrityController->showFix("Deleting comment id " . $c->id . " without existing user!")) {
+                if ($integrityController->showFix('Deleting comment id ' . $c->id . ' without existing user!')) {
                     $c->delete();
                 }
             }
@@ -89,7 +88,7 @@ class Events extends \yii\base\Component
             return;
         }
 
-        if (\Yii::$app->getModule('comment')->canComment($event->sender->object->content)) {
+        if (Yii::$app->getModule('comment')->canComment($event->sender->object->content)) {
             $event->sender->addWidget(widgets\CommentLink::className(), ['object' => $event->sender->object], ['sortOrder' => 10]);
         }
     }
