@@ -51,7 +51,7 @@ use humhub\modules\like\widgets\LikeLink;
             </li>
         </ul>
     <?php endif; ?>
-    <?= UserImage::widget(['user' => $user, 'width' => 40, 'htmlOptions' => ['class' => 'pull-left']]); ?>
+    <?= UserImage::widget(['user' => $user, 'width' => 40, 'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $user->contentcontainer_id]]); ?>
     <div>
         <div class="media-body">
             <h4 class="media-heading"><?= Html::containerLink($user); ?>
