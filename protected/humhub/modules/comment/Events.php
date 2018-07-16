@@ -11,6 +11,7 @@ namespace humhub\modules\comment;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\search\events\SearchAttributesEvent;
 use humhub\modules\search\engine\Search;
+use Yii;
 use yii\base\Component;
 use yii\base\Event;
 
@@ -25,7 +26,7 @@ class Events extends Component
     /**
      * On content deletion make sure to delete all its comments
      *
-     * @param CEvent $event
+     * @param Event $event
      */
     public static function onContentDelete($event)
     {
@@ -37,7 +38,7 @@ class Events extends Component
     /**
      * On User delete, also delete all comments
      *
-     * @param CEvent $event
+     * @param Event $event
      */
     public static function onUserDelete($event)
     {
@@ -80,7 +81,7 @@ class Events extends Component
     /**
      * On init of the WallEntryLinksWidget, attach the comment link widget.
      *
-     * @param CEvent $event
+     * @param Event $event
      */
     public static function onWallEntryLinksInit($event)
     {
@@ -96,7 +97,7 @@ class Events extends Component
     /**
      * On init of the WallEntryAddonWidget, attach the comment widget.
      *
-     * @param CEvent $event
+     * @param Event $event
      */
     public static function onWallEntryAddonInit($event)
     {
