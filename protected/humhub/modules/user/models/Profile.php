@@ -317,7 +317,7 @@ class Profile extends ActiveRecord
             }
         }
 
-        if (!$this->save()) {
+        if (!$this->save(false)) {
             Yii::error('Could not soft delete profile!');
         }
     }
