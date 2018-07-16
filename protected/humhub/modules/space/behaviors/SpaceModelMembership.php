@@ -72,7 +72,6 @@ class SpaceModelMembership extends Behavior
      */
     public function canLeave($userId = '')
     {
-
         // Take current userid if none is given
         if ($userId == '') {
             $userId = Yii::$app->user->id;
@@ -165,7 +164,6 @@ class SpaceModelMembership extends Behavior
      */
     public function isSpaceOwner($userId = null)
     {
-
         if (empty($userId) && Yii::$app->user->isGuest) {
             return false;
         } elseif ($userId instanceof User) {
@@ -273,7 +271,6 @@ class SpaceModelMembership extends Behavior
      */
     public function requestMembership($userId, $message = '')
     {
-
         $user = ($userId instanceof User) ? $userId : User::findOne(['id' => $userId]);
 
         // Add Membership
@@ -313,7 +310,6 @@ class SpaceModelMembership extends Behavior
 
         return $query;
     }
-
 
     /**
      * Invites a registered user to this space
@@ -413,7 +409,6 @@ class SpaceModelMembership extends Behavior
                     ->send(User::findOne(['id' => $userInvite->user_originator_id]));
             }
         } else {
-
             // User is already member
             if ($membership->status == Membership::STATUS_MEMBER) {
                 return true;
@@ -441,8 +436,7 @@ class SpaceModelMembership extends Behavior
             'space' => $this->owner, 'user' => $user
         ]));
 
-
-        if(!$silent) {
+        if (!$silent) {
             // Create Activity
             MemberAdded::instance()->from($user)->about($this->owner)->save();
         }
@@ -480,7 +474,6 @@ class SpaceModelMembership extends Behavior
         if ($membership == null) {
             return true;
         }
-
 
         foreach (Membership::findAll(['user_id' => $userId, 'space_id' => $this->owner->id]) as $membership) {
             $membership->delete();
