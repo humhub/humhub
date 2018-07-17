@@ -30,7 +30,9 @@ before_install:
 install:
   # Run Composer update
   - travis_retry composer self-update && composer --version
-  - travis_retry composer install --prefer-dist --no-interaction
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - travis_retry composer install --dev --prefer-dist --no-interaction
+  # Install test environment
   - |
     mysql -e 'CREATE DATABASE `humhub_test` CHARACTER SET utf8 COLLATE utf8_general_ci;'
     cd $TRAVIS_BUILD_DIR/protected/humhub/tests
@@ -47,13 +49,4 @@ script:
   - curl --fail http://127.0.0.1:8080/index-test.php
   - |
     cd $TRAVIS_BUILD_DIR/protected/humhub/tests
-    php ../../vendor/bin/codecept run --env travis
-after_failure:
-  #- cd ../modules/user/tests/codeception/_output/
-  #- ls
-  #- curl --upload-file ./user.acceptance.AccountCest.testBaseAccountSettings.fail.png https://transfer.sh/fail.png
-  #- cat user.acceptance.AccountCest.testBaseAccountSettings.fail.html
-  #- cd ../../runtime/logs
-  #- ls
-  #- cat app.log
-    
+    php ../../vendor/bin/codecept run --env travis -f
