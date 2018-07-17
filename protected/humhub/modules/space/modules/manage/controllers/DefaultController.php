@@ -18,6 +18,7 @@ use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\DeleteForm;
 use humhub\modules\space\activities\SpaceArchieved;
 use humhub\modules\space\activities\SpaceUnArchieved;
+use yii\helpers\Url;
 
 /**
  * Default space admin action
@@ -70,9 +71,9 @@ class DefaultController extends Controller
         }
 
         $indexModuleSelection = Menu::getAvailablePages();
+        unset($indexModuleSelection[Url::to(['/space/home', 'container' => $space])]);
 
         // To avoid infinit redirects of actionIndex we remove the stream value and set an empty selection instead
-        array_shift($indexModuleSelection);
         $indexModuleSelection = ['' => Yii::t('SpaceModule.controllers_AdminController', 'Stream (Default)')] + $indexModuleSelection;
 
         return $this->render('advanced', ['model' => $space, 'indexModuleSelection' => $indexModuleSelection]);
