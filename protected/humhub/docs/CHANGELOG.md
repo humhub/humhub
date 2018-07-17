@@ -35,6 +35,7 @@ HumHub Change Log
 - Enh: Added id data attribute on contentcontainer links
 - Fix: Wrong permission check on force invite check
 - Fix: Space homepage doesn't allow custom pages on first position
+- Enh: Added integrity check for notification originator
 
 
 1.3.0-beta.1  (July 4, 2018)
