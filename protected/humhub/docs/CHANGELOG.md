@@ -36,7 +36,9 @@ HumHub Change Log
 - Fix: Wrong permission check on force invite check
 - Fix: Space homepage doesn't allow custom pages on first position
 - Enh: Added integrity check for notification originator
-
+- Enh: Use of new richtext version 1.0.4 see https://github.com/humhub/humhub-prosemirror/blob/master/docs/CHANGELOG.md 
+- Enh: Added max-height for post/comment/edit richtext
+- Enh: Richtext style enhancements (dashed selection)
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------

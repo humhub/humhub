@@ -10,6 +10,10 @@
     height:100%;
   }
 
+  .humhub-ui-richtext {
+    max-height:none !important;
+  }
+
   .ProseMirror {
     position:static;
     overflow:auto;
@@ -296,7 +300,7 @@
   }
 
   .ProseMirror-selectednode {
-    outline: 2px solid #8cf;
+    outline: 2px dashed #8cf;
   }
 
   /* Make sure li selections wrap around markers */
@@ -388,6 +392,7 @@
 
   .ProseMirror p {
     margin-top: 1em;
+    padding:2px;
   }
 
   // Prevent first paragraph to stetch the input
