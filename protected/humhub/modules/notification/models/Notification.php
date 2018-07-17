@@ -52,7 +52,7 @@ class Notification extends \humhub\components\ActiveRecord
                 'classAttribute' => 'source_class',
                 'pkAttribute' => 'source_pk',
                 'mustBeInstanceOf' => [
-                    \yii\db\ActiveRecord::className(),
+                    \yii\db\ActiveRecord::class,
                 ],
             ],
         ];
