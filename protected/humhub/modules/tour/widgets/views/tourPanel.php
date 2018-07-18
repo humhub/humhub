@@ -59,7 +59,7 @@ use yii\helpers\Url;
 <?php if ($showWelcome) : ?>
     <script type="text/javascript">
 
-        $(document).on('ready pjax:success', function () {
+        $(document).on('humhub:ready', function () {
 
             $('#globalModal').modal({
                 show: true,
