@@ -26,11 +26,15 @@ before_install:
   - wget https://chromedriver.storage.googleapis.com/2.40/chromedriver_linux64.zip
   - unzip -d $HOME chromedriver_linux64.zip
   - $HOME/chromedriver --url-base=/wd/hub &
+  - sudo curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+  - sudo apt-get install -y nodejs
 
 install:
   # Run Composer update
   - travis_retry composer self-update && composer --version
   - travis_retry composer install --prefer-dist --no-interaction
+  - npm install
+  - grunt build-assets
   - |
     mysql -e 'CREATE DATABASE `humhub_test` CHARACTER SET utf8 COLLATE utf8_general_ci;'
     cd $TRAVIS_BUILD_DIR/protected/humhub/tests
@@ -38,6 +42,10 @@ install:
     php codeception/bin/yii installer/auto
     php codeception/bin/yii search/rebuild
     php ../../vendor/bin/codecept build
+
+  # Install npm
+  - sudo curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+  - sudo apt-get install -y nodejs
 
 script:
   - |
