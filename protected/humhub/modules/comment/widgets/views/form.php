@@ -31,6 +31,7 @@ $submitUrl = Url::to(['/comment/comment/post']);
         <div class="comment-buttons">
             <?= UploadButton::widget([
                 'id' => 'comment_create_upload_' . $id,
+                'options' => ['class' => 'main_comment_upload'],
                 'progress' => '#comment_create_upload_progress_' . $id,
                 'preview' => '#comment_create_upload_preview_' . $id,
                 'dropZone' => '#comment_create_form_'.$id,
@@ -43,8 +44,6 @@ $submitUrl = Url::to(['/comment/comment/post']);
         </div>
     </div>
 
-    <?= Html::endForm(); ?>
-
     <div id="comment_create_upload_progress_<?= $id ?>" style="display:none;margin:10px 0px;"></div>
 
     <?= FilePreview::widget([
@@ -53,4 +52,5 @@ $submitUrl = Url::to(['/comment/comment/post']);
         'edit' => true
     ]); ?>
 
+    <?= Html::endForm(); ?>
 </div>
