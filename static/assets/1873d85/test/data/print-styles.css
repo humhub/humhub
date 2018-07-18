@@ -1,8 +1,0 @@
-.print-styles article {
-	border: 5px dotted #000;
-}
-@media print {
-	article.print-styles-print {
-		border: 5px dotted #000;
-	}
-}

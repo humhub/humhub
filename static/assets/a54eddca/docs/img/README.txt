@@ -1,1 +1,0 @@
-SVG available upon request.
