@@ -2,8 +2,13 @@ HumHub Change Log
 =================
 
 
-1.3.0-beta.2  (Unreleased)
---------------------------
+1.3.0-beta.2  (July 18, 2018)
+-----------------------------
+
+Please read the [Update Guide](http://docs.humhub.org/beta/admin-updating-130.html) before updating!
+
+> If you're using the sources directly from GitHub, you need to build the required assets manually. Please see the chapter [Build production assets](http://docs.humhub.org/dev-environment.html#build-production-assets) for more details.
+
 - Enh: Added CounterSet Widget to handle Space/Profile header statistic counts
 - Fix: UI addition mutation observer interfering with new rich-text mutation logic
 - Fix: ThemeLoader publishes assets on CLI requests
@@ -42,6 +47,8 @@ HumHub Change Log
 - Fix: Upload preview for comments not cleared after submit
 - Fix: Profile/Space image upload not working after full page reloads
 - Fix: File upload errors not handled by richtext
+- Enh: Removed built and compressed assets from GitHub sources
+
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------

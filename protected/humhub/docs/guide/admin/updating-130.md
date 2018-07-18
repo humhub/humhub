@@ -12,3 +12,6 @@ Updating to 1.3
 2.) This release changes the existing cron jobs. 
 Please see the chapter [Installation: Configuration](installation-configuration.md) for the new cronjob configuration!
 
+
+3.) If you're using the sources directly from GitHub, you need to build the required assets manually.
+Please see the chapter [Development Environment](dev-environment.md#build-production-assets) for more details.
