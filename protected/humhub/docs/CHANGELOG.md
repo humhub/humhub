@@ -39,6 +39,7 @@ HumHub Change Log
 - Enh: Use of new richtext version 1.0.4 see https://github.com/humhub/humhub-prosemirror/blob/master/docs/CHANGELOG.md 
 - Enh: Added max-height for post/comment/edit richtext
 - Enh: Richtext style enhancements (dashed selection)
+- Fix: Upload preview for comments not cleared after submit
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------

@@ -3,6 +3,7 @@
 namespace humhub\modules\file\widgets;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * UploadButtonWidget renders an upload button with integrated file input.
@@ -66,7 +67,7 @@ class UploadButton extends UploadInput
             ]
         ];
         
-        $options = \yii\helpers\ArrayHelper::merge($defaultButtonOptions, $this->buttonOptions);
+        $options = ArrayHelper::merge($defaultButtonOptions, $this->buttonOptions);
         
         return $this->render('uploadButton', [
                     'input' => parent::run(),
