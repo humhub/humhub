@@ -41,6 +41,7 @@ HumHub Change Log
 - Enh: Richtext style enhancements (dashed selection)
 - Fix: Upload preview for comments not cleared after submit
 - Fix: Profile/Space image upload not working after full page reloads
+- Fix: File upload errors not handled by richtext
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------
