@@ -40,6 +40,7 @@ HumHub Change Log
 - Enh: Added max-height for post/comment/edit richtext
 - Enh: Richtext style enhancements (dashed selection)
 - Fix: Upload preview for comments not cleared after submit
+- Fix: Profile/Space image upload not working after full page reloads
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------
