@@ -374,7 +374,7 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         return serialize([
             'source' => $this->source,
-            'originator' => $this->originator
+            'originator_id' => $this->originator->id
         ]);
     }
 
@@ -389,7 +389,7 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         $this->init();
         $unserializedArr = unserialize($serialized);
-        $this->from($unserializedArr['originator']);
+        $this->from(User::findOne(['id' => $unserializedArr['originator_id']]));
         $this->about($unserializedArr['source']);
     }
 }
