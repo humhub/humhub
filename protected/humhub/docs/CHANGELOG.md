@@ -6,6 +6,7 @@ HumHub Change Log
 
 - Fix: prevent user serialization for SocialActivity
 - Fix: wrong return value for `Content::move()`
+- Fix: space archive activity wrong originator assignment
 
 1.3.0-beta.2  (July 18, 2018)
 -----------------------------
