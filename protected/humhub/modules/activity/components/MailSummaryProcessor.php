@@ -59,7 +59,7 @@ class MailSummaryProcessor
             try {
                 if (self::checkUser($user, $interval)) {
                     $mailSummary = Yii::createObject([
-                                'class' => MailSummary::className(),
+                                'class' => MailSummary::class,
                                 'user' => $user,
                                 'interval' => $interval
                     ]);

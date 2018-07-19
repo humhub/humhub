@@ -39,7 +39,7 @@ class ProfileController extends ContentContainerController
     {
         return [
             'acl' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'guestAllowedActions' => ['index', 'stream', 'about']
             ]
         ];
@@ -52,7 +52,7 @@ class ProfileController extends ContentContainerController
     {
         return [
             'stream' => [
-                'class' => ContentContainerStream::className(),
+                'class' => ContentContainerStream::class,
                 'mode' => ContentContainerStream::MODE_NORMAL,
                 'contentContainer' => $this->contentContainer
             ],
@@ -121,7 +121,7 @@ class ProfileController extends ContentContainerController
     public function actionFollowerList()
     {
         $query = User::find();
-        $query->leftJoin('user_follow', 'user.id=user_follow.user_id AND object_model=:userClass AND user_follow.object_id=:userId', [':userClass' => User::className(), ':userId' => $this->getUser()->id]);
+        $query->leftJoin('user_follow', 'user.id=user_follow.user_id AND object_model=:userClass AND user_follow.object_id=:userId', [':userClass' => User::class, ':userId' => $this->getUser()->id]);
         $query->orderBy(['user_follow.id' => SORT_DESC]);
         $query->andWhere(['IS NOT', 'user_follow.id', new Expression('NULL')]);
         $query->active();
@@ -134,7 +134,7 @@ class ProfileController extends ContentContainerController
     public function actionFollowedUsersList()
     {
         $query = User::find();
-        $query->leftJoin('user_follow', 'user.id=user_follow.object_id AND object_model=:userClass AND user_follow.user_id=:userId', [':userClass' => User::className(), ':userId' => $this->getUser()->id]);
+        $query->leftJoin('user_follow', 'user.id=user_follow.object_id AND object_model=:userClass AND user_follow.user_id=:userId', [':userClass' => User::class, ':userId' => $this->getUser()->id]);
         $query->orderBy(['user_follow.id' => SORT_DESC]);
         $query->andWhere(['IS NOT', 'user_follow.id', new Expression('NULL')]);
         $query->active();

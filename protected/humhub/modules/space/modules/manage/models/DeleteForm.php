@@ -32,7 +32,7 @@ class DeleteForm extends Model
     {
         return [
             ['currentPassword', 'required'],
-            ['currentPassword', CheckPasswordValidator::className()]
+            ['currentPassword', CheckPasswordValidator::class]
         ];
     }
 

@@ -11,7 +11,7 @@ class m150703_033650_namespace extends Migration
 
     public function up()
     {
-        $this->renameClass('Notification', Notification::className());
+        $this->renameClass('Notification', Notification::class);
         
         $this->update('notification', ['class' => 'humhub\modules\comment\notifications\NewComment'], ['class' => 'NewCommentNotification']);
         $this->update('notification', ['class' => 'humhub\modules\like\notifications\NewLike'], ['class' => 'NewLikeNotification']);

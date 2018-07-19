@@ -116,11 +116,11 @@ class UploadAction extends Action
         }
 
 
-        if ($model != '' && $pk != '' && Helpers::CheckClassType($model, \yii\db\ActiveRecord::className())) {
+        if ($model != '' && $pk != '' && Helpers::CheckClassType($model, \yii\db\ActiveRecord::class)) {
 
             $record = $model::findOne(['id' => $pk]);
             if ($record !== null && ($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord)) {
-                if ($record->content->canWrite()) {
+                if ($record->content->canEdit()) {
                     $this->record = $record;
                 }
             }

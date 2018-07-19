@@ -32,7 +32,7 @@ class OverviewController extends Controller
     {
         return [
             'acl' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
             ]
         ];
     }
@@ -75,7 +75,8 @@ class OverviewController extends Controller
         $query->offset($pagination->offset)->limit($pagination->limit);
 
         foreach ($query->all() as $notificationRecord) {
-            $notifications[] = $notificationRecord->getClass();
+            /* @var $notificationRecord \humhub\modules\notification\models\Notification */
+            $notifications[] = $notificationRecord->getBaseModel();
         }
 
         return $this->render('index', [

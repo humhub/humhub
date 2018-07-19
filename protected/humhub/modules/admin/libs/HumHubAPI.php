@@ -60,7 +60,7 @@ class HumHubAPI
 
         try {
             return Json::decode($json);
-        } catch (\yii\base\InvalidParamException $ex) {
+        } catch (\yii\base\InvalidArgumentException $ex) {
             Yii::error('Could not parse HumHub API response! ' . $ex->getMessage());
             return [];
         }

@@ -163,9 +163,9 @@ class BasePermission extends BaseObject
      */
     protected function getConfiguredState($groupId)
     {
-        if (isset(Yii::$app->params['defaultPermissions'][self::className()]) &&
-            isset(Yii::$app->params['defaultPermissions'][self::className()][$groupId])) {
-            return Yii::$app->params['defaultPermissions'][self::className()][$groupId];
+        if (isset(Yii::$app->params['defaultPermissions'][static::class]) &&
+            isset(Yii::$app->params['defaultPermissions'][static::class][$groupId])) {
+            return Yii::$app->params['defaultPermissions'][static::class][$groupId];
         }
 
         return null;

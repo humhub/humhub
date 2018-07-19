@@ -10,7 +10,7 @@ use humhub\modules\search\engine\Search;
 
 return [
     'id' => 'comment',
-    'class' => \humhub\modules\comment\Module::className(),
+    'class' => \humhub\modules\comment\Module::class,
     'isCoreModule' => true,
     'events' => [
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],

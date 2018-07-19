@@ -17,12 +17,12 @@ use humhub\widgets\FooterMenu;
             <?= Sidebar::widget([
                 'widgets' => [
                     [
-                        NewMembers::className(),
+                        NewMembers::class,
                         ['showMoreButton' => true],
                         ['sortOrder' => 300]
                     ],
                     [
-                        NewSpaces::className(),
+                        NewSpaces::class,
                         ['showMoreButton' => true],
                         ['sortOrder' => 400]
                     ],

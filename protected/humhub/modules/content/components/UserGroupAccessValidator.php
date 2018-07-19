@@ -9,14 +9,13 @@
 namespace humhub\modules\content\components;
 
 
+use Yii;
 use humhub\components\access\ActionAccessValidator;
-use humhub\libs\BasePermission;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\User;
-use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 
 class UserGroupAccessValidator extends ActionAccessValidator
 {
@@ -68,7 +67,7 @@ class UserGroupAccessValidator extends ActionAccessValidator
             return false;
         }
 
-        throw new InvalidParamException('Invalid userGroup rule provided for action ' . $this->action);
+        throw new InvalidArgumentException('Invalid userGroup rule provided for action ' . $this->action);
     }
 
     /**

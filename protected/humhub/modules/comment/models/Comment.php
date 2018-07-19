@@ -71,9 +71,9 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         return [
             [
-                'class' => PolymorphicRelation::className(),
+                'class' => PolymorphicRelation::class,
                 'mustBeInstanceOf' => [
-                    ActiveRecord::className(),
+                    ActiveRecord::class,
                 ]
             ]
         ];

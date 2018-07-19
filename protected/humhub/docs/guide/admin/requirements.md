@@ -41,3 +41,9 @@ The following privilege are required for the HumHub database user:
 - INDEX
 - DROP
 - REFERENCES
+
+Further Requirements
+--------
+Some hoster block certain PHP function, please make sure your environment allows the execution of:
+
+ - `set_time_limit()`

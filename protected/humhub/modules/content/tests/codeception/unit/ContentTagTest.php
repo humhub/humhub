@@ -21,7 +21,7 @@ use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
 use humhub\modules\space\models\Space;
 use tests\codeception\_support\HumHubDbTestCase;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 
 class ContentTagTest extends HumHubDbTestCase
 {
@@ -170,7 +170,7 @@ class ContentTagTest extends HumHubDbTestCase
         try {
             $content->addTag($tag);
             $this->assertTrue(false);
-        } catch(InvalidParamException $e) {
+        } catch(InvalidArgumentException $e) {
             // Tag was not saved
             $this->assertTrue(true);
         }
@@ -180,7 +180,7 @@ class ContentTagTest extends HumHubDbTestCase
         try {
             $content->addTag($tag);
             $this->assertTrue(false);
-        } catch(InvalidParamException $e) {
+        } catch(InvalidArgumentException $e) {
             // Tag assigned with invalid container_id
             $this->assertTrue(true);
         }

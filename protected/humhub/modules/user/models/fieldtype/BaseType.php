@@ -62,17 +62,17 @@ class BaseType extends Model
     public function getFieldTypes()
     {
         $fieldTypes = array_merge([
-            Number::className() => Yii::t('UserModule.models_ProfileFieldType', 'Number'),
-            Text::className() => Yii::t('UserModule.models_ProfileFieldType', 'Text'),
-            TextArea::className() => Yii::t('UserModule.models_ProfileFieldType', 'Text Area'),
-            Select::className() => Yii::t('UserModule.models_ProfileFieldType', 'Select List'),
-            Date::className() => Yii::t('UserModule.models_ProfileFieldType', 'Date'),
-            DateTime::className() => Yii::t('UserModule.models_ProfileFieldType', 'Datetime'),
-            Birthday::className() => Yii::t('UserModule.models_ProfileFieldType', 'Birthday'),
-            CountrySelect::className() => Yii::t('UserModule.models_ProfileFieldType', 'Country'),
-            MarkdownEditor::className() => Yii::t('UserModule.models_ProfileFieldType', 'Markdown'),
-            Checkbox::className() => Yii::t('UserModule.models_ProfileFieldType', 'Checkbox'),
-            CheckboxList::className() => Yii::t('UserModule.models_ProfileFieldType', 'Checkbox List'),
+            Number::class => Yii::t('UserModule.models_ProfileFieldType', 'Number'),
+            Text::class => Yii::t('UserModule.models_ProfileFieldType', 'Text'),
+            TextArea::class => Yii::t('UserModule.models_ProfileFieldType', 'Text Area'),
+            Select::class => Yii::t('UserModule.models_ProfileFieldType', 'Select List'),
+            Date::class => Yii::t('UserModule.models_ProfileFieldType', 'Date'),
+            DateTime::class => Yii::t('UserModule.models_ProfileFieldType', 'Datetime'),
+            Birthday::class => Yii::t('UserModule.models_ProfileFieldType', 'Birthday'),
+            CountrySelect::class => Yii::t('UserModule.models_ProfileFieldType', 'Country'),
+            MarkdownEditor::class => Yii::t('UserModule.models_ProfileFieldType', 'Markdown'),
+            Checkbox::class => Yii::t('UserModule.models_ProfileFieldType', 'Checkbox'),
+            CheckboxList::class => Yii::t('UserModule.models_ProfileFieldType', 'Checkbox List'),
         ], $this->fieldTypes);
 
         return $fieldTypes;
@@ -89,7 +89,7 @@ class BaseType extends Model
     {
         $types = [];
         foreach ($this->getFieldTypes() as $className => $title) {
-            if (Helpers::CheckClassType($className, self::className())) {
+            if (Helpers::CheckClassType($className, static::class)) {
                 /** @var BaseType $instance */
                 $instance = new $className;
                 if ($profileField !== null) {

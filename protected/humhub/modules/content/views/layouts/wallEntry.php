@@ -12,7 +12,7 @@
 ?>
 <?php
 $cssClass = ($entry->pinned) ? 'wall-entry pinned-entry' : 'wall-entry';
-$isActivity = $entry->object_model == humhub\modules\activity\models\Activity::className();
+$isActivity = $entry->object_model == humhub\modules\activity\models\Activity::class;
 ?>
 
 <?php if (!$isActivity) : ?>

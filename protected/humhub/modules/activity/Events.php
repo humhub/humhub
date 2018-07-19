@@ -60,7 +60,7 @@ class Events extends BaseObject
         if ($pk !== null && !is_array($pk)) {
             $modelsActivity = Activity::find()->where([
                 'object_id' => $pk,
-                'object_model' => $activeRecordModel::className(),
+                'object_model' => $activeRecordModel->className()
             ])->each();
             foreach ($modelsActivity as $activity) {
                 $activity->delete();

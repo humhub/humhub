@@ -13,7 +13,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\user\notifications\Mentioned;
 use yii\base\Exception;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 
 /**
  * This is the model class for table "user_mentioning".
@@ -42,8 +42,8 @@ class Mentioning extends ActiveRecord
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
-                'mustBeInstanceOf' => [ContentActiveRecord::className(), ContentAddonActiveRecord::className()],
+                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
+                'mustBeInstanceOf' => [ContentActiveRecord::class, ContentAddonActiveRecord::class],
             ],
         ];
     }
@@ -120,13 +120,13 @@ class Mentioning extends ActiveRecord
      * @param string|string[] $guids
      * @param ContentActiveRecord|ContentAddonActiveRecord $record
      * @return array new mentionings for the given $record
-     * @throws InvalidParamException if an invalid $record is provided
+     * @throws InvalidArgumentException if an invalid $record is provided
      * @since 1.3
      */
     public static function mention($guids, $record)
     {
         if (!($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord)) {
-            throw new InvalidParamException("Mentioning can only used in HActiveRecordContent or HActiveRecordContentAddon objects!");
+            throw new InvalidArgumentException("Mentioning can only used in HActiveRecordContent or HActiveRecordContentAddon objects!");
         }
 
         if(is_string($guids)) {
@@ -170,7 +170,7 @@ class Mentioning extends ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(\humhub\modules\user\models\User::className(), ['id' => 'user_id']);
+        return $this->hasOne(\humhub\modules\user\models\User::class, ['id' => 'user_id']);
     }
 
 }

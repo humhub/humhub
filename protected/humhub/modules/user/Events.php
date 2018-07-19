@@ -135,7 +135,7 @@ class Events extends BaseObject
         }
         $integrityController->showTestHeadline('User Module - Content container (' . ContentContainer::find()->count() . ' entries)');
         foreach (ContentContainer::find()->where(['NOT IN', 'owner_user_id', $userIds])->each() as $contentContainer) {
-            if ($contentContainer['class'] == User::className() && $contentContainer['pk'] == $contentContainer['owner_user_id']) {
+            if ($contentContainer['class'] == User::class && $contentContainer['pk'] == $contentContainer['owner_user_id']) {
                 if ($integrityController->showFix('Deleting content container ' . $contentContainer->id . ' without existing user!')) {
                     $contentContainer->delete();
                 }

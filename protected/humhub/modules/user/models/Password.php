@@ -79,7 +79,7 @@ class Password extends ActiveRecord
             [['password', 'salt'], 'string'],
             [['created_at'], 'safe'],
             [['algorithm'], 'string', 'max' => 20],
-            [['currentPassword'], CheckPasswordValidator::className(), 'on' => 'changePassword'],
+            [['currentPassword'], CheckPasswordValidator::class, 'on' => 'changePassword'],
             [['newPassword', 'newPasswordConfirm', 'currentPassword'], 'required', 'on' => 'changePassword'],
             [['newPassword', 'newPasswordConfirm'], 'string', 'min' => 5, 'max' => 255, 'on' => 'changePassword'],
             [['newPassword'], 'unequalsCurrentPassword', 'on' => 'changePassword'],
@@ -185,7 +185,7 @@ class Password extends ActiveRecord
 
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
 }

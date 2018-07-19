@@ -10,7 +10,7 @@ namespace humhub\modules\queue\helpers;
 
 use Yii;
 use yii\base\BaseObject;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\queue\Queue;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
 use humhub\modules\queue\models\QueueExclusive;
@@ -35,7 +35,7 @@ class QueueHelper extends BaseObject
             if (Yii::$app->queue->isDone($queueExclusive->job_message_id)) {
                 $jobInQueue = false;
             }
-        } catch (InvalidParamException $ex) {
+        } catch (InvalidArgumentException $ex) {
             // not exists
             $jobInQueue = false;
         }

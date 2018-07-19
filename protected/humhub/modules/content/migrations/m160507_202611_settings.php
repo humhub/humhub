@@ -23,7 +23,7 @@ class m160507_202611_settings extends Migration
         $rows = (new Query())
                 ->select("*, contentcontainer.id as cid")
                 ->from('user_setting')
-                ->leftJoin('contentcontainer', 'user_setting.user_id = contentcontainer.pk AND contentcontainer.class=:class', [':class' => \humhub\modules\user\models\User::className()])
+                ->leftJoin('contentcontainer', 'user_setting.user_id = contentcontainer.pk AND contentcontainer.class=:class', [':class' => \humhub\modules\user\models\User::class])
                 ->andWhere('contentcontainer.id IS NOT NULL')
                 ->all();
         foreach ($rows as $row) {
@@ -39,7 +39,7 @@ class m160507_202611_settings extends Migration
         $rows = (new Query())
                 ->select("*, contentcontainer.id as cid")
                 ->from('space_setting')
-                ->leftJoin('contentcontainer', 'space_setting.space_id = contentcontainer.pk AND contentcontainer.class=:class', [':class' => humhub\modules\space\models\Space::className()])
+                ->leftJoin('contentcontainer', 'space_setting.space_id = contentcontainer.pk AND contentcontainer.class=:class', [':class' => humhub\modules\space\models\Space::class])
                 ->andWhere('contentcontainer.id IS NOT NULL')
                 ->all();
         foreach ($rows as $row) {

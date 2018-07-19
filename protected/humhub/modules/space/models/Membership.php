@@ -114,17 +114,17 @@ class Membership extends ActiveRecord
 
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     public function getOriginator()
     {
-        return $this->hasOne(User::className(), ['id' => 'originator_user_id']);
+        return $this->hasOne(User::class, ['id' => 'originator_user_id']);
     }
 
     public function getSpace()
     {
-        return $this->hasOne(Space::className(), ['id' => 'space_id']);
+        return $this->hasOne(Space::class, ['id' => 'space_id']);
     }
 
     public function beforeSave($insert)

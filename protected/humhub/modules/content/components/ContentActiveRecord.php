@@ -202,7 +202,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function getContentName()
     {
-        return $this->className();
+        return static::class;
     }
 
     /**
@@ -435,7 +435,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function getContent()
     {
-        return $this->hasOne(Content::className(), ['object_id' => 'id'])
+        return $this->hasOne(Content::class, ['object_id' => 'id'])
             ->andWhere(['content.object_model' => static::getObjectModel()]);
     }
 

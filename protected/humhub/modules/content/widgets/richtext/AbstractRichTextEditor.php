@@ -8,8 +8,7 @@
 
 namespace humhub\modules\content\widgets\richtext;
 
-use humhub\widgets\InputWidget;
-use Yii;
+use humhub\modules\ui\form\widgets\JsInputWidget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -45,7 +44,7 @@ use yii\helpers\Url;
  * @author Julian Harrer <julian.harrer@humhub.com>
  * @since 1.3
  */
-class AbstractRichTextEditor extends InputWidget
+class AbstractRichTextEditor extends JsInputWidget
 {
     /**
      * @var string richtext feature preset e.g: 'markdown', 'normal', 'full'
@@ -192,9 +191,9 @@ class AbstractRichTextEditor extends InputWidget
 
         if ($this->label === true && $this->model != null) {
             return Html::activeLabel($this->model, $this->attribute, ['class' => 'control-label']);
-        } else {
-            return $this->label;
         }
+
+        return $this->label;
     }
 
     /**
@@ -203,8 +202,8 @@ class AbstractRichTextEditor extends InputWidget
      * This function will call [[RichText::output()]] with given richtext settings and `edit = true`.
      *
      * @param $content
-     * @param array $params
      * @return string
+     * @internal param array $params
      */
     protected function editOutput($content)
     {

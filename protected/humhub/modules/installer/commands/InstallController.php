@@ -10,6 +10,7 @@ namespace humhub\modules\installer\commands;
 
 use Yii;
 use yii\console\Controller;
+use yii\console\ExitCode;
 use yii\helpers\Console;
 use yii\base\Exception;
 use humhub\modules\user\models\User;
@@ -60,7 +61,7 @@ class InstallController extends Controller
         // Assign to system admin group
         Group::getAdminGroup()->addUser($user);
 
-        return self::EXIT_CODE_NORMAL;
+        return ExitCode::OK;
     }
 
 }

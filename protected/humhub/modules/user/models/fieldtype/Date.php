@@ -40,7 +40,7 @@ class Date extends BaseType
     {
         $rules[] = [
             $this->profileField->internal_name,
-            DbDateValidator::className(),
+            DbDateValidator::class,
             'format' => Yii::$app->formatter->dateInputFormat,
             'convertToFormat' => 'Y-m-d',
         ];

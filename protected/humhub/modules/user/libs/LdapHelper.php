@@ -9,10 +9,6 @@
 namespace humhub\modules\user\libs;
 
 use Yii;
-use yii\base\InvalidParamException;
-use Zend\Ldap\Ldap;
-use Zend\Ldap\Exception\LdapException;
-use humhub\modules\user\authclient\ZendLdapClient;
 
 /**
  * This class contains a lot of html helpers for the views

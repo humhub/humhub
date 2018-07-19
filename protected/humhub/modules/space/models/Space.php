@@ -120,11 +120,11 @@ class Space extends ContentContainerActiveRecord implements Searchable
             [['visibility'], 'checkVisibility'],
             [['url'], 'unique', 'skipOnEmpty' => 'true'],
             [['guid', 'name', 'url'], 'string', 'max' => 45, 'min' => 2],
-            [['url'], UrlValidator::className()],
+            [['url'], UrlValidator::class],
         ];
 
         if (Yii::$app->getModule('space')->useUniqueSpaceNames) {
-            $rules[] = [['name'], 'unique', 'targetClass' => self::className()];
+            $rules[] = [['name'], 'unique', 'targetClass' => static::class];
         }
 
         return $rules;
@@ -494,7 +494,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
 
     public function getMemberships()
     {
-        $query = $this->hasMany(Membership::className(), ['space_id' => 'id']);
+        $query = $this->hasMany(Membership::class, ['space_id' => 'id']);
         $query->andWhere(['space_membership.status' => Membership::STATUS_MEMBER]);
         $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
 
@@ -525,7 +525,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
 
     public function getApplicants()
     {
-        $query = $this->hasMany(Membership::className(), ['space_id' => 'id']);
+        $query = $this->hasMany(Membership::class, ['space_id' => 'id']);
         $query->andWhere(['space_membership.status' => Membership::STATUS_APPLICANT]);
 
         return $query;

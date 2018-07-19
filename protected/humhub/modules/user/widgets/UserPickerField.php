@@ -37,7 +37,7 @@ class UserPickerField extends BasePickerField
      */
     public function init()
     {
-        $this->itemClass = User::className();
+        $this->itemClass = User::class;
         if (empty($this->itemKey)) {
             $this->itemKey = 'guid';
         }

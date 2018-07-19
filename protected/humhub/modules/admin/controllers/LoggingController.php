@@ -41,7 +41,7 @@ class LoggingController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => SeeAdminInformation::className()]
+            ['permissions' => SeeAdminInformation::class]
         ];
     }
 

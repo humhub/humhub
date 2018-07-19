@@ -84,7 +84,7 @@ class Friendship extends \humhub\components\ActiveRecord
      */
     public function getFriendUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'friend_user_id']);
+        return $this->hasOne(User::class, ['id' => 'friend_user_id']);
     }
 
     /**
@@ -92,7 +92,7 @@ class Friendship extends \humhub\components\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     /**

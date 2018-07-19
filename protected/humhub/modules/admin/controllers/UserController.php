@@ -344,17 +344,17 @@ class UserController extends Controller
             'language',
             'time_zone',
             [
-                'class' => DateTimeColumn::className(),
+                'class' => DateTimeColumn::class,
                 'attribute' => 'created_at',
             ],
             'created_by',
             [
-                'class' => DateTimeColumn::className(),
+                'class' => DateTimeColumn::class,
                 'attribute' => 'updated_at',
             ],
             'updated_by',
             [
-                'class' => DateTimeColumn::className(),
+                'class' => DateTimeColumn::class,
                 'attribute' => 'last_login',
             ],
             'authclient_id',

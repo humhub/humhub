@@ -18,7 +18,7 @@ class CommentTest extends HumHubDbTestCase
         
         $comment = new Comment([
             'message' => 'User2 comment!',
-            'object_model' => Post::className(),
+            'object_model' => Post::class,
             'object_id' => 11
         ]);
 

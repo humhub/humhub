@@ -23,7 +23,7 @@ use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\helpers\Url;
 
 /**
@@ -99,7 +99,7 @@ class Content extends ContentDeprecated implements Movable
                 'mustBeInstanceOf' => [ContentActiveRecord::class],
             ],
             [
-                'class' => GUID::className(),
+                'class' => GUID::class,
             ],
         ];
     }
@@ -216,7 +216,7 @@ class Content extends ContentDeprecated implements Movable
      */
     private function isMuted()
     {
-        return $this->getPolymorphicRelation()->silentContentCreation || $this->muteDefaultSocialActivities || !$this->container;
+        return $this->getPolymorphicRelation()->silentContentCreation || $this->getModel()->silentContentCreation || !$this->container;
     }
 
     /**
@@ -578,7 +578,7 @@ class Content extends ContentDeprecated implements Movable
      */
     public function getContentContainer()
     {
-        return $this->hasOne(ContentContainer::className(), ['id' => 'contentcontainer_id']);
+        return $this->hasOne(ContentContainer::class, ['id' => 'contentcontainer_id']);
     }
 
     /**
@@ -589,7 +589,7 @@ class Content extends ContentDeprecated implements Movable
      */
     public function getTagRelations()
     {
-        return $this->hasMany(ContentTagRelation::className(), ['content_id' => 'id']);
+        return $this->hasMany(ContentTagRelation::class, ['content_id' => 'id']);
     }
 
     /**
@@ -613,7 +613,7 @@ class Content extends ContentDeprecated implements Movable
     public function addTag(ContentTag $tag)
     {
         if (!empty($tag->contentcontainer_id) && $tag->contentcontainer_id != $this->contentcontainer_id) {
-            throw new InvalidParamException(Yii::t('ContentModule.base', 'Content Tag with invalid contentcontainer_id assigned.'));
+            throw new InvalidArgumentException(Yii::t('ContentModule.base', 'Content Tag with invalid contentcontainer_id assigned.'));
         }
 
         if (ContentTagRelation::findBy($this, $tag)->count()) {
@@ -650,7 +650,7 @@ class Content extends ContentDeprecated implements Movable
      *  - The user meets the additional condition implemented by the model records class own `canEdit()` function.
      *
      * @since 1.1
-     * @param User $user
+     * @param User|integer $user user instance or user id
      * @return bool can edit this content
      */
     public function canEdit($user = null)
@@ -661,6 +661,8 @@ class Content extends ContentDeprecated implements Movable
 
         if ($user === null) {
             $user = Yii::$app->user->getIdentity();
+        } else if(!($user instanceof User)) {
+            $user = User::findOne(['id' => $user]);
         }
 
         // Only owner can edit his content
@@ -718,13 +720,15 @@ class Content extends ContentDeprecated implements Movable
      * Checks if user can view this content.
      *
      * @since 1.1
-     * @param User $user
+     * @param User|integer $user
      * @return boolean can view this content
      */
     public function canView($user = null)
     {
         if (!$user && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
+        } else if(! $user instanceof User) {
+            $user = User::findOne(['id' => $user]);
         }
 
         // User cann access own content

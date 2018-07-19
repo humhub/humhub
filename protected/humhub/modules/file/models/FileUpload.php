@@ -33,7 +33,7 @@ class FileUpload extends File
     public function rules()
     {
         $rules = [
-            [['uploadedFile'], FileValidator::className()],
+            [['uploadedFile'], FileValidator::class],
         ];
 
         return array_merge(parent::rules(), $rules);

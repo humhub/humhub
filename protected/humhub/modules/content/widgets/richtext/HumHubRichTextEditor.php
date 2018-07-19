@@ -8,11 +8,6 @@
 
 namespace humhub\modules\content\widgets\richtext;
 
-use Yii;
-use yii\helpers\Html;
-use yii\helpers\Url;
-use humhub\widgets\RichText;
-
 /**
  * Legacy rich text editor implementation.
  *

@@ -23,7 +23,7 @@ use humhub\modules\user\models\User;
 
             <div class="row">
 
-                <?php if ($module->hasContentContainerType(Space::className())) : ?>
+                <?php if ($module->hasContentContainerType(Space::class)) : ?>
                     <div class="col-md-6">
                         <label for=""><?= Yii::t('AdminModule.views_module_setAsDefault', 'Spaces'); ?></label>
 
@@ -68,7 +68,7 @@ use humhub\modules\user\models\User;
                         <br>
                     </div>
                 <?php endif; ?>
-                <?php if ($module->hasContentContainerType(User::className())) : ?>
+                <?php if ($module->hasContentContainerType(User::class)) : ?>
                     <div class="col-md-6">
                         <label for=""><?= Yii::t('AdminModule.views_module_setAsDefault', 'User Profiles'); ?></label>
 

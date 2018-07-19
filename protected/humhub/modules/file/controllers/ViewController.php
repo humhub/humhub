@@ -29,7 +29,7 @@ class ViewController extends \humhub\components\Controller
     {
         return [
             'acl' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'guestAllowedActions' => ['view']
             ],
         ];

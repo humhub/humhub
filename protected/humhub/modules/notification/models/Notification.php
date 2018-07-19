@@ -96,7 +96,7 @@ class Notification extends \humhub\components\ActiveRecord
 
     /**
      * Use getBaseModel instead.
-     * @deprecated since version 1.2
+     * @deprecated since version 1.2 use [getBaseModel()] instead
      * @param array $params
      * @return \humhub\modules\notification\components\BaseNotification
      */
@@ -141,7 +141,7 @@ class Notification extends \humhub\components\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     /**

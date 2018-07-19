@@ -20,7 +20,7 @@ class Events extends \yii\base\BaseObject
 
     public static function onTopMenuRightInit($event)
     {
-        $event->sender->addWidget(widgets\SearchMenu::className());
+        $event->sender->addWidget(widgets\SearchMenu::class);
     }
 
     public static function onAfterSaveComment($event)
@@ -44,7 +44,7 @@ class Events extends \yii\base\BaseObject
     {
 
         $application = $event->sender;
-        $application->controllerMap['search'] = commands\SearchController::className();
+        $application->controllerMap['search'] = commands\SearchController::class;
     }
 
 }

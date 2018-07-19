@@ -35,11 +35,11 @@ class CommentController extends ContentAddonController
     {
         return [
             'acl' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'guestAllowedActions' => ['show']
             ],
             'verbs' => [
-                'class' => \yii\filters\VerbFilter::className(),
+                'class' => \yii\filters\VerbFilter::class,
                 'actions' => [
                     'post' => ['POST'],
                 ],
@@ -115,7 +115,7 @@ class CommentController extends ContentAddonController
 
     public function actionEdit()
     {
-        $this->loadContentAddon(Comment::className(), Yii::$app->request->get('id'));
+        $this->loadContentAddon(Comment::class, Yii::$app->request->get('id'));
 
         if (!$this->contentAddon->canWrite()) {
             throw new HttpException(403, Yii::t('CommentModule.controllers_CommentController', 'Access denied!'));
@@ -141,7 +141,7 @@ class CommentController extends ContentAddonController
 
     public function actionLoad()
     {
-        $this->loadContentAddon(Comment::className(), Yii::$app->request->get('id'));
+        $this->loadContentAddon(Comment::class, Yii::$app->request->get('id'));
 
         if (!$this->contentAddon->canRead()) {
             throw new HttpException(403, Yii::t('CommentModule.controllers_CommentController', 'Access denied!'));
@@ -157,7 +157,7 @@ class CommentController extends ContentAddonController
     public function actionDelete()
     {
         $this->forcePostRequest();
-        $this->loadContentAddon(Comment::className(), Yii::$app->request->get('id'));
+        $this->loadContentAddon(Comment::class, Yii::$app->request->get('id'));
         Yii::$app->response->format = 'json';
 
         if ($this->contentAddon->canDelete()) {

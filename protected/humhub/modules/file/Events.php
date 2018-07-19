@@ -25,11 +25,11 @@ class Events extends \yii\base\BaseObject
     /**
      * On init of the WallEntryAddonWidget, attach the files of the content.
      *
-     * @param CEvent $event
+     * @param Event $event
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget(widgets\ShowFiles::className(), ['object' => $event->sender->object], ['sortOrder' => 5]);
+        $event->sender->addWidget(widgets\ShowFiles::class, ['object' => $event->sender->object], ['sortOrder' => 5]);
     }
 
     /**
@@ -37,7 +37,7 @@ class Events extends \yii\base\BaseObject
      * We delete all files which are not assigned to object_model/object_id
      * within 1 day.
      *
-     * @param type $event
+     * @param Event $event
      */
     public static function onCronDailyRun($event)
     {
@@ -76,7 +76,7 @@ class Events extends \yii\base\BaseObject
     /**
      * On delete of a model, check there are files bound to it and delete them
      *
-     * @param CEvent $event
+     * @param Event $event
      */
     public static function onBeforeActiveRecordDelete($event)
     {

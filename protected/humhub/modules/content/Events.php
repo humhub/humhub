@@ -94,7 +94,7 @@ class Events extends BaseObject
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget(widgets\WallEntryLinks::className(), [
+        $event->sender->addWidget(widgets\WallEntryLinks::class, [
             'object' => $event->sender->object,
             'seperator' => '&nbsp;&middot;&nbsp;',
             'template' => '<div class="wall-entry-controls">{content}</div>',

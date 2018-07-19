@@ -53,7 +53,7 @@ class Controller extends \humhub\components\Controller
 
         return [
             'acl' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'adminOnly' => $this->adminOnly,
                 'rules' => $this->getAccessRules()
             ]
@@ -71,7 +71,7 @@ class Controller extends \humhub\components\Controller
         // Use by default ManageModule permission, if method is not overwritten by custom module
         if ($this->module->id != 'admin') {
             return [
-                ['permission' => \humhub\modules\admin\permissions\ManageModules::className()]
+                ['permission' => \humhub\modules\admin\permissions\ManageModules::class]
             ];
         }
 

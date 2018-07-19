@@ -61,7 +61,7 @@ class Invite extends ActiveRecord
             [['email'], 'required'],
             [['email'], 'unique'],
             [['email'], 'email'],
-            [['email'], 'unique', 'targetClass' => User::className(), 'message' => Yii::t('UserModule.base', 'E-Mail is already in use! - Try forgot password.')],
+            [['email'], 'unique', 'targetClass' => User::class, 'message' => Yii::t('UserModule.base', 'E-Mail is already in use! - Try forgot password.')],
         ];
     }
 
@@ -196,7 +196,7 @@ class Invite extends ActiveRecord
      */
     public function getOriginator()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_originator_id']);
+        return $this->hasOne(User::class, ['id' => 'user_originator_id']);
     }
 
     /**
@@ -206,7 +206,7 @@ class Invite extends ActiveRecord
      */
     public function getSpace()
     {
-        return $this->hasOne(Space::className(), ['id' => 'space_invite_id']);
+        return $this->hasOne(Space::class, ['id' => 'space_invite_id']);
     }
 
     /**

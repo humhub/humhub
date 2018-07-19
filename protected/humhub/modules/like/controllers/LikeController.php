@@ -30,7 +30,7 @@ class LikeController extends ContentAddonController
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => \humhub\components\behaviors\AccessControl::class,
                 'guestAllowedActions' => ['show-likes']
             ]
         ];

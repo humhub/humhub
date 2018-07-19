@@ -17,7 +17,7 @@ namespace humhub\modules\content\models;
 
 
 use humhub\components\ActiveRecord;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 
 /**
  * Class ContentTagRelation
@@ -50,7 +50,7 @@ class ContentTagRelation extends ActiveRecord
             $this->setContent($content);
 
             if($tag !== null && $tag->isNewRecord) {
-                throw new InvalidParamException('ContentTag was not saved before creating ContentTagRelation');
+                throw new InvalidArgumentException('ContentTag was not saved before creating ContentTagRelation');
             }
 
             if($tag !== null) {

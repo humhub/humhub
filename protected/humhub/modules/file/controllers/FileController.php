@@ -30,7 +30,7 @@ class FileController extends \humhub\components\Controller
     {
         return [
             'acl' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'guestAllowedActions' => ['download']
             ],
         ];
@@ -43,10 +43,10 @@ class FileController extends \humhub\components\Controller
     {
         return [
             'download' => [
-                'class' => DownloadAction::className(),
+                'class' => DownloadAction::class,
             ],
             'upload' => [
-                'class' => UploadAction::className(),
+                'class' => UploadAction::class,
             ],
         ];
     }

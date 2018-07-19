@@ -33,7 +33,7 @@ class InviteController extends Controller
     {
         return [
             'acl' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
             ]
         ];
     }

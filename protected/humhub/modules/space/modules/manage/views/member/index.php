@@ -1,7 +1,7 @@
 <?php
 
 use humhub\widgets\GridView;
-use humhub\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use humhub\modules\user\grid\ImageColumn;
@@ -9,6 +9,8 @@ use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\widgets\TimeAgo;
 use yii\helpers\Html;
+
+/* @var $space Space */
 ?>
 
 <div class="panel panel-default">

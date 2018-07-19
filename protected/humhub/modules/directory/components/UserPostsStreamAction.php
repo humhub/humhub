@@ -39,7 +39,7 @@ class UserPostsStreamAction extends Stream
             $wallIdsQuery->andWhere('visibility=' . User::VISIBILITY_ALL);
         }
         $wallIdsSql = Yii::$app->db->getQueryBuilder()->build($wallIdsQuery)[0];
-        $this->activeQuery->andWhere('content.contentcontainer_id IN (' . $wallIdsSql . ')', [':userClass' => User::className()]);
+        $this->activeQuery->andWhere('content.contentcontainer_id IN (' . $wallIdsSql . ')', [':userClass' => User::class]);
     }
 
 }

@@ -76,11 +76,11 @@ class File extends FileCompat
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
-                'mustBeInstanceOf' => [\humhub\components\ActiveRecord::className()],
+                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
+                'mustBeInstanceOf' => [\humhub\components\ActiveRecord::class],
             ],
             [
-                'class' => \humhub\components\behaviors\GUID::className(),
+                'class' => \humhub\components\behaviors\GUID::class,
             ],
         ];
     }
@@ -131,7 +131,7 @@ class File extends FileCompat
     {
         $object = $this->getPolymorphicRelation();
         if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
-            return $object->content->canRead($userId);
+            return $object->content->canView($userId);
         }
 
         return true;
@@ -151,12 +151,12 @@ class File extends FileCompat
             if ($object instanceof ContentAddonActiveRecord) {
                 return $object->canWrite($userId);
             } elseif ($object instanceof ContentActiveRecord) {
-                return $object->content->canWrite($userId);
+                return $object->content->canEdit($userId);
             }
         }
 
         if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
-            return $object->content->canWrite($userId);
+            return $object->content->canEdit($userId);
         }
 
         // File is not bound to an object

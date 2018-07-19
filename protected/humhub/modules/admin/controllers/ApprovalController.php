@@ -44,8 +44,8 @@ class ApprovalController extends Controller
     {
         return [
             ['permissions' => [
-                ManageUsers::className(),
-                ManageGroups::className()
+                ManageUsers::class,
+                ManageGroups::class
             ]]
         ];
     }

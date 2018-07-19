@@ -5,10 +5,10 @@ use humhub\widgets\TopMenu;
 
 return [
     'id' => 'dashboard',
-    'class' => Module::className(),
+    'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
-        ['class' => TopMenu::className(), 'event' => TopMenu::EVENT_INIT, 'callback' => ['\humhub\modules\dashboard\Events', 'onTopMenuInit']],
+        ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => ['\humhub\modules\dashboard\Events', 'onTopMenuInit']],
     ],
     'urlManagerRules' => [
         'dashboard' => 'dashboard/dashboard'

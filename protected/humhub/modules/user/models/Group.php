@@ -157,7 +157,7 @@ class Group extends ActiveRecord
      */
     public function getGroupUsers()
     {
-        return $this->hasMany(GroupUser::className(), ['group_id' => 'id']);
+        return $this->hasMany(GroupUser::class, ['group_id' => 'id']);
     }
 
     /**

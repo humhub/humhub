@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use humhub\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use humhub\modules\admin\widgets\SpaceGridView;
 use humhub\modules\admin\grid\SpaceActionColumn;
 use humhub\modules\admin\grid\SpaceTitleColumn;

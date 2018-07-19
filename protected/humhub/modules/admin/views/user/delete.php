@@ -4,7 +4,7 @@ use yii\helpers\Url;
 use humhub\libs\Html;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\space\widgets\Image as SpaceImage;
-use humhub\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 /* @var $model \yii\base\Model */
 ?>

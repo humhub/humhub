@@ -32,9 +32,6 @@ use yii\helpers\Html;
 <?php endif; ?>
 
 <hr>
-<span class="pull-right">
-    <?= Yii::powered(); ?>
-</span>
 © <?= date("Y") ?> HumHub GmbH & Co. KG
 &middot;
 <?= Html::a(Yii::t('AdminModule.views_about_index', 'Licences'), "https://www.humhub.org/licences", ['target' => '_blank']); ?>

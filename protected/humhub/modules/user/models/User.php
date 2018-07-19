@@ -257,7 +257,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public static function find()
     {
-        return Yii::createObject(ActiveQueryUser::className(), [get_called_class()]);
+        return Yii::createObject(ActiveQueryUser::class, [get_called_class()]);
     }
 
     public function getId()
@@ -277,12 +277,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     public function getCurrentPassword()
     {
-        return $this->hasOne(Password::className(), ['user_id' => 'id'])->orderBy('created_at DESC');
+        return $this->hasOne(Password::class, ['user_id' => 'id'])->orderBy('created_at DESC');
     }
 
     public function getProfile()
     {
-        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
+        return $this->hasOne(Profile::class, ['user_id' => 'id']);
     }
 
     /**
@@ -291,7 +291,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getGroupUsers()
     {
-        return $this->hasMany(GroupUser::className(), ['user_id' => 'id']);
+        return $this->hasMany(GroupUser::class, ['user_id' => 'id']);
     }
 
     /**
@@ -300,7 +300,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getGroups()
     {
-        return $this->hasMany(Group::className(), ['id' => 'group_id'])->via('groupUsers');
+        return $this->hasMany(Group::class, ['id' => 'group_id'])->via('groupUsers');
     }
 
     /**
@@ -327,7 +327,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getManagerGroups()
     {
-        return $this->hasMany(Group::className(), ['id' => 'group_id'])
+        return $this->hasMany(Group::class, ['id' => 'group_id'])
             ->via('groupUsers', function($query) {
                     $query->andWhere(['is_group_manager' => '1']);
             });
@@ -419,7 +419,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         // Cleanup related tables
         Invite::deleteAll(['user_originator_id' => $this->id]);
         Follow::deleteAll(['user_id' => $this->id]);
-        Follow::deleteAll(['object_model' => $this->className(), 'object_id' => $this->id]);
+        Follow::deleteAll(['object_model' => static::class, 'object_id' => $this->id]);
         Password::deleteAll(['user_id' => $this->id]);
         GroupUser::deleteAll(['user_id' => $this->id]);
         Session::deleteAll(['user_id' => $this->id]);
@@ -679,7 +679,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
 
         // TODO: SHOW ONLY REAL MEMBERSHIPS
-        return $this->hasMany(Space::className(), ['id' => 'space_id'])
+        return $this->hasMany(Space::class, ['id' => 'space_id'])
                         ->viaTable('space_membership', ['user_id' => 'id']);
     }
 
@@ -688,7 +688,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getHttpSessions()
     {
-        return $this->hasMany(Session::className(), ['user_id' => 'id']);
+        return $this->hasMany(Session::class, ['user_id' => 'id']);
     }
 
     /**
@@ -710,7 +710,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getAuths()
     {
-        return $this->hasMany(Auth::className(), ['user_id' => 'id']);
+        return $this->hasMany(Auth::class, ['user_id' => 'id']);
     }
 
     /**

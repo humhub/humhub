@@ -9,7 +9,7 @@
 namespace humhub\modules\user\jobs;
 
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
 use humhub\modules\user\models\User;
@@ -31,7 +31,7 @@ class SoftDeleteUser extends ActiveJob implements ExclusiveJobInterface
     public function getExclusiveJobId()
     {
         if (empty($this->user_id)) {
-            throw new InvalidParamException('User id cannot be empty!');
+            throw new InvalidArgumentException('User id cannot be empty!');
         }
 
         return 'user.softDeleteUser.' . $this->user_id;

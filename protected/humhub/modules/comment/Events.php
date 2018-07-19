@@ -90,7 +90,7 @@ class Events extends Component
         }
 
         if (Yii::$app->getModule('comment')->canComment($event->sender->object->content)) {
-            $event->sender->addWidget(widgets\CommentLink::className(), ['object' => $event->sender->object], ['sortOrder' => 10]);
+            $event->sender->addWidget(widgets\CommentLink::class, ['object' => $event->sender->object], ['sortOrder' => 10]);
         }
     }
 
@@ -101,7 +101,7 @@ class Events extends Component
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget(widgets\Comments::className(), ['object' => $event->sender->object], ['sortOrder' => 20]);
+        $event->sender->addWidget(widgets\Comments::class, ['object' => $event->sender->object], ['sortOrder' => 20]);
     }
 
     /**

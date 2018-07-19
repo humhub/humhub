@@ -157,7 +157,7 @@ class Events extends \yii\base\BaseObject
     public static function onLayoutAddons($event)
     {
         if(Yii::$app->request->isPjax) {
-            $event->sender->addWidget(widgets\UpdateNotificationCount::className());
+            $event->sender->addWidget(widgets\UpdateNotificationCount::class);
         }
     }
 

@@ -73,9 +73,14 @@ class ContentController extends Controller
         //Due to backward compatibility we use the old delte mechanism in case a model parameter is provided
         $id = (int) ($model != null) ? Yii::$app->request->get('id') : Yii::$app->request->post('id');
 
+        /* @var $contentObjs Content */
         $contentObj = ($model != null) ? Content::Get($model, $id) : Content::findOne($id);
 
-        if (!$contentObj->canDelete()) {
+        if(!$contentObj) {
+            throw new HttpException(404);
+        }
+
+        if (!$contentObj->canEdit()) {
             throw new HttpException(400, Yii::t('ContentModule.controllers_ContentController', 'Could not delete content: Access denied!'));
         }
 

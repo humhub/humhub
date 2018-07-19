@@ -65,7 +65,7 @@ class RegistrationCest
         $I->fillField('#profile-lastname', 'User');
 
         $I->click('.btn-primary', '#create-account-form');
-        $I->seeRecord(User::className(), [
+        $I->seeRecord(User::class, [
             'email' => 'mytestmail@test.de',
             'username' => 'RegistrationUser',
         ]);
