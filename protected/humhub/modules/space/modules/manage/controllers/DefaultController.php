@@ -110,7 +110,7 @@ class DefaultController extends Controller
         $space->unarchive();
 
         // Create Activity when the space in unarchieved
-        SpaceUnArchieved::instance()->from($space)->about($space->owner)->save();
+        SpaceUnArchieved::instance()->from(Yii::$app->user->getIdentity())->about($space->owner)->save();
 
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = 'json';
