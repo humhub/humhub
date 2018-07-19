@@ -8,60 +8,25 @@
 
 namespace enterprise\acceptance\modules\emailwhitelist;
 
-use Yii;
 use humhub\modules\space\models\Space;
 use FunctionalTester;
 
 class DeleteSpaceCest
 {
-    
-    public function testOwnerDeletion(FunctionalTester $I)
+    public function testSpaceDeleteAccess(FunctionalTester $I)
     {
-        $I->wantTo('ensure the owner of the space is able to delete the space');
-        $I->amUser();
-        $space = $this->createSpace();
-        $I->amOnRoute('/space/manage/default/delete', ['sguid' => $space->guid]);
-        $I->canSeeResponseCodeIs(200);
-    }
-
-    public function testMemberDeletion(FunctionalTester $I)
-    {
-        $I->wantTo('ensure a member of the space is not able to delete the space');
-        $I->amUser1();
-        // User1 is member of Space3
-        $I->amOnRoute('/space/manage/default/delete', ['sguid' =>'5396d499-20d6-4233-800b-c6c86e5fa34c']);
-        $I->canSeeResponseCodeIs(403);
+        $I->assertSpaceAccessFalse(Space::USERGROUP_MEMBER, '/space/manage/default/delete');
+        $I->assertSpaceAccessFalse(Space::USERGROUP_USER, '/space/manage/default/delete');
+        $I->assertSpaceAccessFalse(Space::USERGROUP_MODERATOR, '/space/manage/default/delete');
+        $I->assertSpaceAccessFalse(Space::USERGROUP_ADMIN, '/space/manage/default/delete');
+        $I->assertSpaceAccessTrue(Space::USERGROUP_OWNER, '/space/manage/default/delete');
+        $space = $I->assertSpaceAccessStatus(Space::USERGROUP_OWNER, 302, '/space/manage/default/delete', [], ['DeleteForm[currentPassword]' => '123qwe']);
+        $I->amOnSpace($space);
+        $I->seeResponseCodeIs(404);
     }
 
     public function testSystemAdminDeletion(FunctionalTester $I)
     {
-        $I->wantTo('ensure a system admin is able to delete the space');
-        $I->amAdmin();
-        // User1 is member of Space3
-        $I->amOnRoute('/space/manage/default/delete', ['sguid' =>'5396d499-20d6-4233-800b-c6c86e5fa34c']);
-        $I->canSeeResponseCodeIs(200);
+        $I->assertSpaceAccessTrue('root', '/space/manage/default/delete', [],  ['DeleteForm[currentPassword]' => 'test']);
     }
-
-    public function testAdminDeletion(FunctionalTester $I)
-    {
-        $I->wantTo('ensure a simple space admin is not able to delete the space');
-        $I->amUser1();
-        // User1 is admin of Space4
-        $I->amOnRoute('/space/manage/default/delete', ['sguid' =>'5396d499-20d6-4233-800b-c6c86e5fa34d']);
-        $I->canSeeResponseCodeIs(403);
-    }
-    
-    private function createSpace()
-    {
-        $space = new Space([
-            'name' => 'DeleteSpaceTest'
-        ]);
-
-        $space->created_by = Yii::$app->user->getId();
-        $space->save();
-
-        return $space;
-    }
-
-
 }

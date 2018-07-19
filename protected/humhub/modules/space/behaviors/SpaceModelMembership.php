@@ -158,6 +158,15 @@ class SpaceModelMembership extends Behavior
     }
 
     /**
+     * @return bool checks if the current user is allowed to delete this space
+     * @since 1.3
+     */
+    public function canDelete()
+    {
+        return Yii::$app->user->isAdmin() || $this->isSpaceOwner();
+    }
+
+    /**
      * Is given User owner of this Space
      * @param User|int|null $userId
      * @return bool

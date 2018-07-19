@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\models;
 
+use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\Model;
 use humhub\modules\space\models\Membership;
@@ -60,7 +61,7 @@ class ChangeOwnerForm extends Model
     {
         $possibleOwners = [];
 
-        $query = Membership::find()->joinWith(['user', 'user.profile'])->andWhere(['space_membership.group_id' => 'admin', 'space_membership.space_id' => $this->space->id]);
+        $query = Membership::find()->joinWith(['user', 'user.profile'])->andWhere(['space_membership.group_id' => Space::USERGROUP_ADMIN, 'space_membership.space_id' => $this->space->id]);
         foreach ($query->all() as $membership) {
             $possibleOwners[$membership->user->id] = $membership->user->displayName;
         }

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\controllers;
 
+use humhub\modules\content\components\ContentContainerControllerAccess;
 use humhub\modules\space\components\UrlRule;
 use Yii;
 use humhub\modules\space\models\Space;
@@ -34,10 +35,8 @@ class DefaultController extends Controller
     public function getAccessRules()
     {
         $result = parent::getAccessRules();
-        $result[] = [
-            'userGroup' => [Space::USERGROUP_OWNER], 'actions' => ['archive', 'unarchive', 'delete']
-        ];
-
+        $result[] =  [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_OWNER], 'actions' => ['archive', 'unarchive', 'delete']];
+        $result[] =  [ContentContainerControllerAccess::RULE_POST => ['archive', 'unarchive']];
         return $result;
     }
 
@@ -90,15 +89,10 @@ class DefaultController extends Controller
         // Create Activity when the space in archieved
         SpaceArchieved::instance()->from(Yii::$app->user->getIdentity())->about($space->owner)->save();
 
-        if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = 'json';
-            return [
-                'success' => true,
-                'space' => Chooser::getSpaceResult($space, true, ['isMember' => true])
-            ];
-        }
-
-        return $this->redirect($space->createUrl('/space/manage'));
+        return $this->asJson( [
+            'success' => true,
+            'space' => Chooser::getSpaceResult($space, true, ['isMember' => true])
+        ]);
     }
 
     /**
@@ -136,5 +130,4 @@ class DefaultController extends Controller
 
         return $this->render('delete', ['model' => $model, 'space' => $this->getSpace()]);
     }
-
 }

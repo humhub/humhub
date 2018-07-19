@@ -31,9 +31,7 @@ class MemberController extends Controller
     public function getAccessRules()
     {
         $result = parent::getAccessRules();
-        $result[] = [
-            'userGroup' => [Space::USERGROUP_OWNER], 'actions' => ['change-owner']
-        ];
+        $result[] = ['userGroup' => [Space::USERGROUP_OWNER], 'actions' => ['change-owner']];
 
         return $result;
     }
@@ -186,7 +184,6 @@ class MemberController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $space->setSpaceOwner($model->ownerId);
-
             return $this->redirect($space->getUrl());
         }
 

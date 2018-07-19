@@ -5,6 +5,7 @@ use humhub\modules\space\widgets\SpaceNameColorInput;
 use humhub\widgets\DataSaved;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
+use humhub\widgets\Button;
 ?>
 
 <div class="panel panel-default">
@@ -30,11 +31,7 @@ use yii\helpers\Html;
 
         <?= DataSaved::widget(); ?>
 
-        <div class="pull-right">
-            <?php if ($model->isSpaceOwner()) : ?>
-                <?= Html::a(Yii::t('SpaceModule.views_admin_edit', 'Delete'), $model->createUrl('delete'), ['class' => 'btn btn-danger', 'data-post' => 'POST']); ?>
-            <?php endif; ?>
-        </div>
+        <?= Button::danger(Yii::t('SpaceModule.views_admin_edit', 'Delete'))->right()->link($model->createUrl('delete'))->visible($model->canDelete()) ?>
 
         <?php ActiveForm::end(); ?>
     </div>
