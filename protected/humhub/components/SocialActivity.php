@@ -389,7 +389,9 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         $this->init();
         $unserializedArr = unserialize($serialized);
-        $this->from(User::findOne(['id' => $unserializedArr['originator_id']]));
+        if(isset($unserializedArr['originator_id'])) {
+            $this->from(User::findOne(['id' => $unserializedArr['originator_id']]));
+        }
         $this->about($unserializedArr['source']);
     }
 }
