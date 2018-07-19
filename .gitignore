@@ -9,6 +9,8 @@ node_modules
 protected/config/local/*
 !protected/config/local/.gitignore
 
+protected/humhub/config/assets-prod.php
+
 uploads/files/*
 !uploads/files/.gitignore
 !uploads/files/.htaccess
