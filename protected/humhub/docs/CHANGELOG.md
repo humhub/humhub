@@ -8,6 +8,7 @@ HumHub Change Log
 - Fix: wrong return value for `Content::move()`
 - Fix: space archive activity wrong originator assignment
 - Fix: suppress "unable to determine dataType" error for aborted xhr requests
+- Enh: added `FunctionalTester::loginBySpaceUserGroup()` and `FunctionalTest::assertSpaceAccessStatus()` for ACL testing
 
 1.3.0-beta.2  (July 18, 2018)
 -----------------------------
