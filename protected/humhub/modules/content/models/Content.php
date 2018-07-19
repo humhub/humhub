@@ -394,7 +394,7 @@ class Content extends ContentDeprecated implements Movable
      */
     public function move(ContentContainerActiveRecord $container = null, $force = false)
     {
-        $move = $force || $this->canMove($container, $force);
+        $move = ($force) ? true : $this->canMove($container);
 
         if ($move === true) {
             static::getDb()->transaction(function ($db) use ($container) {
