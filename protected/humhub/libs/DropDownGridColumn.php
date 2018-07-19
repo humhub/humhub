@@ -10,8 +10,6 @@ namespace humhub\libs;
 
 use Yii;
 use yii\grid\DataColumn;
-use yii\helpers\Json;
-use yii\helpers\Html;
 use yii\web\JsExpression;
 
 /**
