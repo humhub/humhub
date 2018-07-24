@@ -28,6 +28,7 @@ before_install:
   - $HOME/chromedriver --url-base=/wd/hub &
   - sudo curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
   - sudo apt-get install -y nodejs
+  - npm install -g npm@latest
 
 install:
   # Run Composer update
