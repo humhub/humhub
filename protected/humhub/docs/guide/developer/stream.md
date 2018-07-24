@@ -11,7 +11,7 @@ filters.
 
 The `stream_channel` attribute of a [[humhub\modules\content\models\Content]] entry defines the relation of this content to
 a specific type of stream. The `default` stream channel for example is used by _space/profile_ and _dashboard_
-streams and the `activity` stream channel is exclusively used in activity streams.
+streams whereas the `activity` stream-channel is exclusively used in activity streams.
 
 The stream channel of your content type can be overwritten by setting the [[humhub\modules\content\components\ContentActiveRecord::streamChannel|ContentActiveRecord::streamChannel]] attribute.
 
@@ -44,6 +44,7 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
 ```
 
 wallEntry.php:
+
 ```php
 <div>
     <?= $model->title ?>
@@ -53,7 +54,7 @@ wallEntry.php:
 ```
 
 The WallEntry widget will be provided with a [[humhub\modules\content\widgets\WallEntry::contentObject|contentObject]] which holds the
-[humhub\modules\content\components\ContentActiveRecord|ContentActiveRecord]] model to be rendered.
+[[humhub\modules\content\components\ContentActiveRecord|ContentActiveRecord]] model to be rendered.
 
 Your [[humhub\modules\content\widgets\WallEntry|WallEntry]] class can also set the following attributes:
 
@@ -218,13 +219,13 @@ class WallCreateForm extends \humhub\modules\content\widgets\WallCreateContentFo
 Create a view file for widget which contains module specific fields. All standard fields (e.g. visibility) are added automatically.
 
 ```php
-<?php echo Html::textArea("question", "", array('id' => 'contentForm_question', 'class' => 'form-control autosize contentForm', 'rows' => '1', "tabindex" => "1", "placeholder" => Yii::t('PollsModule.widgets_views_pollForm', "Ask something..."))); ?>
+<?= Html::textArea("question", "", array('id' => 'contentForm_question', 'class' => 'form-control autosize contentForm', 'rows' => '1', "tabindex" => "1", "placeholder" => Yii::t('PollsModule.widgets_views_pollForm', "Ask something..."))); ?>
 
 <div class="contentForm_options">
-    <?php echo Html::textArea("answersText", "", array('id' => "contentForm_answersText", 'rows' => '5', 'style' => 'height: auto !important;', "class" => "form-control contentForm", "tabindex" => "2", "placeholder" => Yii::t('PollsModule.widgets_views_pollForm', "Possible answers (one per line)"))); ?>
+    <?= Html::textArea("answersText", "", array('id' => "contentForm_answersText", 'rows' => '5', 'style' => 'height: auto !important;', "class" => "form-control contentForm", "tabindex" => "2", "placeholder" => Yii::t('PollsModule.widgets_views_pollForm', "Possible answers (one per line)"))); ?>
     <div class="checkbox">
         <label>
-            <?php echo Html::checkbox("allowMultiple", "", array('id' => "contentForm_allowMultiple", 'class' => 'checkbox contentForm', "tabindex" => "4")); ?> <?php echo Yii::t('PollsModule.widgets_views_pollForm', 'Allow multiple answers per user?'); ?>
+            <?= Html::checkbox("allowMultiple", "", array('id' => "contentForm_allowMultiple", 'class' => 'checkbox contentForm', "tabindex" => "4")); ?> <?php echo Yii::t('PollsModule.widgets_views_pollForm', 'Allow multiple answers per user?'); ?>
         </label>
     </div>
 
@@ -235,7 +236,7 @@ Create a view file for widget which contains module specific fields. All standar
 
 Create an action in your modules controller to receive form inputs.
 
-All default tasks (e.g. access validation, ContentContainer assignment) are handled by [[humhub\modules\content\widgets\WallCreateContentForm::create]]
+All default tasks (e.g. access validation, ContentContainer assignment) are handled by [[humhub\modules\content\widgets\WallCreateContentForm::create()]]
 
 
 Example:

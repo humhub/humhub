@@ -1,16 +1,15 @@
 Content
 =======
 
-Content record classes as for example `Post`, `Poll` and `Wiki` are subclasses of 
-[[\humhub\modules\content\components\ContentContainerActiveRecord]].
- Instances ofand are related to a 
-[[humhub\modules\content\models\Content]] record. 
-A ContentContainerActiveRecord subclass provides all features of a basic 
-Yii [ActiveRecords](http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html) as validation and data access methods,
- please refer to the [Yii Guide](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) for more information
-  about [ActiveRecords](http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html).
+[[humhub\modules\content\models\Content|Content]] entries are the base of HumHub content-types as Posts, Polls and Wiki Pages. Content entries reside in the
+`content` table and are related to a specific [[\humhub\modules\content\components\ContentContainerActiveRecord|ContentActiveRecord]] instance by a polymorphic relation defined by the `object_model`
+and `object_class` columns.
 
-While the ContentContainerActiveRecord class contains the actual content data as texts and content settings, the related Content instance is beside others used to check **Permissions**, the **ContentContainer** relation, content **visibility** and is furthermore connected to ContentAddons as Like and Comments.
+You can implement your own [[\humhub\modules\content\components\ContentContainerActiveRecord|ContentActiveRecord]] classes in order to embed your content to [Streams](stream.md)
+and make it enable comments and likes.
+
+While the [[\humhub\modules\content\components\ContentContainerActiveRecord|ContentActiveRecord] class contains the actual content data as texts and content-type related settings, the underlying Content instance can be used to 
+check and define **Permissions**, access the related **ContentContainer**, define the content **visibility** and is furthermore connected to ContentAddons as Likes and Comments.
 
 Beside the basic ActiveRecord methods your ContentContainerActiveRecord class should at least implement the following functions
 
@@ -18,8 +17,14 @@ Beside the basic ActiveRecord methods your ContentContainerActiveRecord class sh
 -  `getContentDescription()` - returns a short description of the content instance used to preview the content for example in activities etc.
 
 ```php
-class Example extends \humhub\modules\content\components\ContentContainerActiveRecord
+namespace mymodule\models;
+
+class MyModel extends \humhub\modules\content\components\ContentContainerActiveRecord
 {
+    protected $moduleId = 'mymodule';
+    
+    protected $canMove = true;
+    
     public static function tableName()
     {
         return 'example_content';
@@ -40,28 +45,49 @@ class Example extends \humhub\modules\content\components\ContentContainerActiveR
         //return validation rules
     }
 
-    .....
-
 }
 ```
 
-Your content model should be **instantiated** as follows:
+### Instantiating a ContentContainerActiveRecord:
+
 
 ```php
-// Instantiate my model assign a content container and visibility.
+// Only provide an array of attributes
+$model = new MyModel(['some_field' => $field]);
+
+
+// Instantiate my model by providing only content-container, the default visibility of the space will be used
+$model = new MyModel($someSpace);
+
+// Provide content-container and attribute options
+$model = new MyModel($someSpace, ['some_field' => $field]);
+
+// Instantiate my model by providing content-container and visibility
+$model = new MyModel($someSpace, Content::VISIBILITY_PRIVATE);
+
+// Provide content-container, visibility and options array
+$model = new MyModel($someSpace, Content::VISIBILITY_PRIVATE, ['some_field' => $field]);
+
+// Setting of container and visibility and fields manually
 $model = new MyModel();
 $model->content->container = $someSpace;
-$model->content->container = Content::VISIBILITY_PRIVATE;
-...
+$model->content->visibility = Content::VISIBILITY_PRIVATE;
+$model->some_field = $field;
+
 // Save model and content
 $model->save();
 ```
 
-Get the model instance from a given content instance:
+> Note: You won't have to worry about instantiating or saving the underlying content record, since this is handled within
+the ContentContainerActiveRecord automatically.
+
+When given a Content instance, you can load the related model as follow:
 
 ```php
-$model = $content->getPolymorphicRelation();
+$model = $content->getModel();
 ```
+
+### Use of ActiveQueryContent:
 
 Calling [[\humhub\modules\content\components\ContentActiveRecord::find()]] will return a [[\humhub\modules\content\components\ActiveQueryContent]] with additional methods to select specific content:
 
@@ -90,7 +116,34 @@ There are the following user related scopes available:
 - `USER_RELATED_SCOPE_FOLLOWED_USERS` = Content related to the users followed user profiles
 - `USER_RELATED_SCOPE_OWN_PROFILE` = Content related to the users own profile
 
-### Content features
+
+> Note: A ContentContainerActiveRecord subclass provides all features of a basic Yii [ActiveRecords](http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html) 
+as validation and data access methods, please refer to the [Yii Guide](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) for more information
+about [ActiveRecords](http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html).
+
+### Move Content (since v1.3)
+
+In case your content should be movable to other spaces you'll have to enable the [[\humhub\modules\content\components\ContentActiveRecord::canMove|ContentActiveRecord::canMove]] flag.
+For complex content-types you may want to overwrite the [[\humhub\modules\content\components\ContentActiveRecord::afterMove()|ContentActiveRecord::afterMove()]] function.
+This is required for example when your content is related to any sub content or other content-container related settings.
+
+```php
+public function afterMove($container = null)
+{
+    foreach($this->subcontent as $subcontent)
+    {
+        $subcontent->move($container);
+    }
+}
+```
+
+### Silent Content Creation
+
+By default, the creation of a content triggers the an activity and notifications for content-container subscribers.
+This behaviour can be deactivated by setting the [[\humhub\modules\content\components\ContentActiveRecord::silentContentCreation|ContentActiveRecord::silentContentCreation]]
+to `true`. This setting can for example be used for sub content-types which are not of interest.
+
+### Other Content Features
 
 **Content visibility**
 
@@ -138,13 +191,13 @@ $model->content->canArchive();
 
 **Content Url**
 
-By default the `Content::getUrl()` returns the permalink of the wallentry. In case the content is used outside of the default stream, this behaviour can be changed by implementing a `getUrl()` method in your ContentActiveRecord class.
+By default the `Content::getUrl()` returns the permalink of the stream-entry. In case the content is used outside of the default stream, this behaviour can be changed by implementing a `getUrl()` method in your ContentActiveRecord class.
 
 ```php
 $permaLink = $model->content->getUrl();
 ```
 
-### Check content permissions
+### Content permissions
 
 By default a user can edit a content if one of the following conditions defined in `Content::canEdit()` are met:
 
@@ -172,7 +225,8 @@ Since HumHub v1.2.1 you can overwrite the default ManageContent permission as fo
 class Example extends ContentContainerActiveRecord
 {
     $managePermission = MyCustomManagePermission::class;
-    .....
+    
+    // ...
 }
 ```
 
@@ -248,7 +302,6 @@ Beside others, this abstract class provides the following functionality:
 
 - [Permission Management](dev-permissions.md) `getPermissionManager()`
 - Profile-/Banner-image access `getProfileImage()`, `getProfileBannerImage()`
-- Rendering the container stream `getWallOut()` (see [Permission Management](dev-stream.md))
 
 Profile image example:
 
@@ -267,9 +320,6 @@ See the [Getting Started](modules-index.md) section
 #### Content Streams
 
 See the [Stream](stream.md) section
-
-## Global content
-(TBD)
 
 ## Content addons
 

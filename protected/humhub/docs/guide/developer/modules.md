@@ -75,7 +75,7 @@ return [
     'class' => 'johndoe\example\Module',
     'namespace' => 'johndoe\example',
     'events' => [
-        ['class' => TopMenu::className(), 'event' => TopMenu::EVENT_INIT, 'callback' => ['johndoe\example\Module', 'onTopMenuInit']],
+        ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => ['johndoe\example\Module', 'onTopMenuInit']],
     ]
 ];
 ?>
@@ -112,19 +112,23 @@ class Module extends \humhub\components\Module
     }
 }
 ```
->Note: The default implementation of `disable()` will clear some module data automatically as the module global and ContentContainer settings, profile/space module relations.
+> Note: The default implementation of `disable()` will clear some module data automatically as the modules global and ContentContainer settings, profile/space module relations.
 
-#### Handling the enabling and disabling of this module for a given space or profile
-See the [Container Module]() section for more information.
+ - Handling the enabling and disabling of this module for a given space or profile
 
-####  Export Module Permissions
-Module specific permissions are exported by means of the [[humhub\components\Module::getPermissions()]] function. See the [Permissions]() section for more information.
+See the [Container Module](#container-module) section for more information.
 
-#### Export Module Notification
+ - Export Module Permissions
+
+Module specific permissions are exported by means of the [[humhub\components\Module::getPermissions()]] function. See the [Permissions](permissions.md) section for more information.
+
+ -  Export Module Notification
+
 Modules can export Notificaions in order to make them configurable in the notificaiton settings.
-See the [Notifications]() section for more information.
+See the [Notifications](notifications.md) section for more information.
 
-####  Module Assets and `$resourcesPath`
+ -   Module Assets and `$resourcesPath`
+
 The [[humhub\components\Module::resourcesPath]] defines the modules resource directory, containing images, javascript files or other assets.
 
 See the [Module Assets]() section for more information.
@@ -159,7 +163,7 @@ Example `module.php` file:
 
 ## Extended Module Structure
 
-The following structure contains some additional directories and files, which should be added for specific usecases or features. 
+The following structure contains some additional directories and files, which should be added for specific use-cases or features. 
 
 
 ```
@@ -185,7 +189,7 @@ The following structure contains some additional directories and files, which sh
  module.json    - see above
 ```
 
->Note: the extended module structure and it's directory names is just a recommendation.
+> Note: the extended module structure and it's directory names is just a recommendation.
 
 ## Container Module
 
@@ -198,6 +202,7 @@ In case your module can be enabled on space or profile level your `Module` class
 - The `getContentContentContainerDescription()` method provides a general description of this module for the given ContentContainer.
 
 The following example module can be enabled on space and profile level:
+
 ```php
 class Module extends \humhub\modules\content\components\ContentContainerModule
 {
@@ -215,8 +220,7 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
     // Is called when the whole module is disabled
     public function disable()
     {
-        // Clear all Module data and call parent disable
-        [...]
+        // Clear all Module data and call parent disable!
         parent::disable();
     }
 
@@ -239,8 +243,8 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
 }
 ```
 
-> Note: If you're working with content or other persistent data, make sure to delete container related data when the module is disabled on a contentcontainer. This can be archieved by overwriting the [[humhub\modules\content\components\ContentContainerModule::disableContentContainer]] function.
+> Note: If you're working with content or other persistent data, make sure to delete container related data when the module is disabled on a contentcontainer. This can be archieved by overwriting the [[humhub\modules\content\components\ContentContainerModule::disableContentContainer()]] function.
 
-## Creating a Module Template with Gii
+## Devtools Module
 
-(TBD)
+You may want to use the [devtools Module](https://github.com/humhub/humhub-modules-devtools) to create a module skeleton.

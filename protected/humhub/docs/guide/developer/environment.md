@@ -1,34 +1,35 @@
 Development Environment
 =======================
 
+This guide shows some recommended settings of your development environment.
+
 Quick Notes
 -----------
 
 - Make sure you are using a [Git/Composer HumHub installation](git-installation.md)
 - Enable the debug mode, see [Disable Errors Section](../admin/security.md#disable-errors-debugging)
 - Disable caching under `Administration -> Settings -> Advanced -> Caching -> None`
+- Use file based mailing `Administration -> Settings -> Advanced -> E-Mail`
 
 External Modules Directory
 -----------------
 
 Custom modules can also be located outside of the default HumHub modules directory by
-setting the `moduleAutoloadPaths` parameter in your `/protected/config/common.php` configuration. This seperation can
+setting the `moduleAutoloadPaths` parameter in your `/protected/config/common.php` configuration. This separation can
 be useful while working with custom modules.
 
 ```php
 return [
-    //...
     'params' => [
         'moduleAutoloadPaths' => ['/some/folder/modules'],        
     ],
-    //...
 ]
 ```
 
 Yii Debug Module
 ----------------
 
-Add following block to your local web configuration `/protected/config/web.php` in order
+Add the following block to your local web configuration `/protected/config/web.php` in order
 to allow [Yii's debug Module](http://www.yiiframework.com/doc-2.0/ext-debug-index.html).
 
 ```php
