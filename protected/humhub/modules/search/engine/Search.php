@@ -153,11 +153,13 @@ abstract class Search extends Component
 
     protected function setDefaultFindOptions($options)
     {
-        if (!isset($options['page']) || $options['page'] == '')
+        if (!isset($options['page']) || $options['page'] == '') {
             $options['page'] = 1;
+        }
 
-        if (!isset($options['pageSize']) || $options['pageSize'] == '')
+        if (!isset($options['pageSize']) || $options['pageSize'] == '') {
             $options['pageSize'] = Yii::$app->settings->get('paginationSize');
+        }
 
         if (!isset($options['checkPermissions'])) {
             $options['checkPermissions'] = true;
@@ -181,6 +183,7 @@ abstract class Search extends Component
     {
         $additionalAttributes = [];
         $this->trigger(self::EVENT_SEARCH_ATTRIBUTES, new SearchAttributesEvent($additionalAttributes, $object));
+
         return $additionalAttributes;
     }
 
