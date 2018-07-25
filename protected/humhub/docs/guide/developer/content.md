@@ -364,7 +364,7 @@ Urls pointing to a `ContentContainerActiveRecord` action should be created by us
 
 ### ContentContainerModule
 
-See the [Getting Started](modules-index.md) section
+See the [Getting Started](modules.md#container-module) section
 
 #### Content Streams
 
