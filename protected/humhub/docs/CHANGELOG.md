@@ -12,6 +12,7 @@ HumHub Change Log
 - Fix #2721 delete space button not visible for system admin
 - Enh: added `humhub\modules\space\behaviors\SpaceModelMembership::canDelete()`
 - Fix #3221: Popover Space title "&" to "&amp;"
+- Fix invalid translation syntax used in croatian language
 
 1.3.0-beta.2  (July 18, 2018)
 -----------------------------
