@@ -2,6 +2,7 @@
 
 namespace tests\codeception\_support;
 
+use humhub\components\bootstrap\ModuleAutoLoader;
 use Yii;
 use yii\base\Event;
 use yii\db\ActiveRecord;
@@ -45,12 +46,6 @@ class HumHubDbTestCase extends Unit
         $this->initModules();
         $this->reloadSettings();
         $this->deleteMails();
-    }
-
-    protected function tearDown()
-    {
-        Event::offAll();
-        parent::tearDown();
     }
 
     protected function reloadSettings()
