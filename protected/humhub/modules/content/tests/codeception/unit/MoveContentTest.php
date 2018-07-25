@@ -104,7 +104,7 @@ class MoveContentTest extends HumHubDbTestCase
 
         $this->becomeUser('User1');
 
-        $post = Content::findOne(['id' => 11]);
+        $post = Content::findOne(['id' => 12]);
 
         // Space Admin is allowed to move this content
         $this->assertTrue($post->canMove() === true);
@@ -133,7 +133,7 @@ class MoveContentTest extends HumHubDbTestCase
 
         $this->becomeUser('User2');
 
-        $post = Content::findOne(['id' => 11]);
+        $post = Content::findOne(['id' => 12]);
 
         // User Manager is allowed to move this content
         $this->assertTrue($post->canMove() === true);

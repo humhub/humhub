@@ -30,4 +30,8 @@ return [
 
     ['id' => '10', 'message_2trash' => null, 'message' => 'User 2 Space 2 Post Public', 'url' => null, 'created_at' => '2014-08-08 05:36:06', 'created_by' => '2', 'updated_at' => '2014-08-08 05:36:06', 'updated_by' => '2'],
     ['id' => '11', 'message_2trash' => null, 'message' => 'User 2 Space 2 Post Private', 'url' => null, 'created_at' => '2014-08-08 05:36:06', 'created_by' => '2', 'updated_at' => '2014-08-08 05:36:06', 'updated_by' => '2'],
+
+    ['id' => '12', 'message_2trash' => null, 'message' => 'Admin Space 2 Post Public', 'url' => null, 'created_at' => '2014-08-08 05:36:06', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:06', 'updated_by' => '1'],
+    ['id' => '13', 'message_2trash' => null, 'message' => 'Admin Space 2 Post Private', 'url' => null, 'created_at' => '2014-08-08 05:36:06', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:06', 'updated_by' => '1'],
+
 ];
