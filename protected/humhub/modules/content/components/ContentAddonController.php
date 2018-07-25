@@ -100,7 +100,7 @@ class ContentAddonController extends Controller
             $this->parentContent = $target;
         }
 
-        if (!$this->parentContent->content->canEdit()) {
+        if (!$this->parentContent->content->canView()) {
             throw new HttpException(403, 'Access denied!');
         }
 
