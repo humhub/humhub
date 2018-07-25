@@ -87,11 +87,8 @@ class CommentController extends ContentAddonController
     public function actionPost()
     {
         if (Yii::$app->user->isGuest || !Yii::$app->getModule('comment')->canComment($this->parentContent->content)) {
-            throw new ForbiddenHttpException(
-                Yii::t(
-                    'CommentModule.controllers_CommentController',
-                    'You are not allowed to comment.'
-                )
+            throw new ForbiddenHttpException(Yii::t('CommentModule.controllers_CommentController',
+                'You are not allowed to comment.')
             );
         }
 
@@ -99,7 +96,7 @@ class CommentController extends ContentAddonController
         $files = Yii::$app->request->post('fileList');
 
         if (empty(trim($message)) && empty($files)) {
-            throw new BadRequestHttpException('The comment is wrong');
+            throw new BadRequestHttpException(Yii::t('CommentModule.base','The comment must not be empty!'));
         }
 
         $comment = new Comment(['message' => $message]);
