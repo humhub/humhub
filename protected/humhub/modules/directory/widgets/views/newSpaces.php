@@ -13,18 +13,13 @@ use yii\helpers\Html;
     </div>
     <div class="panel-body">
         <?php foreach ($newSpaces as $space) : ?>
-            <?php echo \humhub\modules\space\widgets\Image::widget([
+            <?= \humhub\modules\space\widgets\Image::widget([
                 'space' => $space,
+                'showTooltip' => true,
                 'width' => 40,
                 'link' => true,
                 'htmlOptions' => [
                     'style' => 'margin-bottom: 5px;',
-                ],
-                'linkOptions' => [
-                    'class' => 'tt',
-                    'data-toggle' => 'tooltip',
-                    'data-placement' => 'top',
-                    'title' => Html::encode($space->name),
                 ]
             ]); ?>
         <?php endforeach; ?>

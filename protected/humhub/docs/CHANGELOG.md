@@ -11,6 +11,7 @@ HumHub Change Log
 - Enh: added `FunctionalTester::loginBySpaceUserGroup()` and `FunctionalTest::assertSpaceAccessStatus()` for ACL testing
 - Fix #2721 delete space button not visible for system admin
 - Enh: added `humhub\modules\space\behaviors\SpaceModelMembership::canDelete()`
+- Fix #3221: Popover Space title "&" to "&amp;"
 
 1.3.0-beta.2  (July 18, 2018)
 -----------------------------
@@ -58,7 +59,6 @@ Please read the [Update Guide](http://docs.humhub.org/beta/admin-updating-130.ht
 - Fix: Profile/Space image upload not working after full page reloads
 - Fix: File upload errors not handled by richtext
 - Enh: Removed built and compressed assets from GitHub sources
-
 
 
 1.3.0-beta.1  (July 4, 2018)
