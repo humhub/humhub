@@ -15,6 +15,8 @@ HumHub Change Log
 - Fix invalid translation syntax used in croatian language
 - Enh added highligh.js as ui addition
 - Fix: ui.addition.applyTo with filter ignores first filter index
+- Fix: introduction tour not working
+- Chng: Moved static js dependencies from `static/resources` into `static/js`
 
 1.3.0-beta.2  (July 18, 2018)
 -----------------------------

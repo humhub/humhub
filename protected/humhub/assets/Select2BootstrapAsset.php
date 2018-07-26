@@ -33,12 +33,11 @@ class Select2BootstrapAsset extends AssetBundle
      * After removing this, all themes have to be rebuilt.
      * @deprecated since version 1.2.0-beta.3
      */
-    public $css = ['resources/css/select2Theme/select2-humhub.css'];
+    public $css = ['css/select2Theme/select2-humhub.css'];
 
     /**
-     *
-     * @var type
-     */
+    * @inheritdoc
+    */
     public $depends = [
         'humhub\assets\Select2Asset'
     ];

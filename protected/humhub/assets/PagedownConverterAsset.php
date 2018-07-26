@@ -14,6 +14,7 @@ use yii\web\AssetBundle;
  * jquery-highlight
  *
  * @author buddha
+ * @deprecated since v1.3
  */
 class PagedownConverterAsset extends AssetBundle
 {
@@ -32,9 +33,9 @@ class PagedownConverterAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'resources/js/pagedown/Markdown.Converter.js',
-        'resources/js/pagedown/Markdown.Sanitizer.js',
-        'resources/js/pagedown/Markdown.Extra.js',
+        'js/pagedown/Markdown.Converter.js',
+        'js/pagedown/Markdown.Sanitizer.js',
+        'js/pagedown/Markdown.Extra.js',
     ];
 
 }

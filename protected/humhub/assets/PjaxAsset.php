@@ -35,9 +35,4 @@ class PjaxAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['js/jquery.pjax.modified.js'];
-
-    public $depends = [
-        //'yii\web\YiiAsset',
-    ];
-
 }
