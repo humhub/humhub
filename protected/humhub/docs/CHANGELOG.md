@@ -17,6 +17,7 @@ HumHub Change Log
 - Fix: ui.addition.applyTo with filter ignores first filter index
 - Fix: introduction tour not working
 - Chng: Moved static js dependencies from `static/resources` into `static/js`
+- Fix: Comment edit cancel edit context item not shown
 
 1.3.0-beta.2  (July 18, 2018)
 -----------------------------

@@ -83,7 +83,6 @@ humhub.module('comment', function (module, require, $) {
         var that = this;
         client.post(evt, {dataType: 'html'}).then(function (response) {
             that.$.find('.comment_edit_content').replaceWith(response.html);
-            that.getRichtext().focus();
             that.$.find('.comment-cancel-edit-link').show();
             that.$.find('.comment-edit-link').hide();
         }).finally(function () {
