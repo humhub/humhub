@@ -39,7 +39,7 @@ return yii\helpers\ArrayHelper::merge(
                 // Web Config
                 require(YII_APP_BASE_PATH . '/humhub/config/web.php'),
                 // Test Common Config
-                require(dirname(__DIR__) . '/config/config.php'),
+                require(__DIR__ . '/config.php'),
                 // Functional Test Config
                 $testConfig
 );
