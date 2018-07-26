@@ -9,6 +9,7 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
     var object = require('util').object;
     var client = require('client');
     var Widget = require('ui.widget').Widget;
+    var additions = require('ui.additions');
 
     var MarkdownEditor = prosemirror.MarkdownEditor;
     var MentionProvider = prosemirror.MentionProvider;
@@ -98,6 +99,7 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         if(!this.options.edit) {
             this.editor = new MarkdownEditor(this.$, this.options);
             this.$.html(this.editor.render());
+            additions.applyTo(this.$, {filter: ['highlightCode']});
         }
 
         // See https://github.com/ProseMirror/prosemirror/issues/432

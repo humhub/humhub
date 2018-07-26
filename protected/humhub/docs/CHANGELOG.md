@@ -13,6 +13,8 @@ HumHub Change Log
 - Enh: added `humhub\modules\space\behaviors\SpaceModelMembership::canDelete()`
 - Fix #3221: Popover Space title "&" to "&amp;"
 - Fix invalid translation syntax used in croatian language
+- Enh added highligh.js as ui addition
+- Fix: ui.addition.applyTo with filter ignores first filter index
 
 1.3.0-beta.2  (July 18, 2018)
 -----------------------------
