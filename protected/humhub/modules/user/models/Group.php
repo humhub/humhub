@@ -29,6 +29,7 @@ use Yii;
  * @property integer $show_at_registration
  * @property string $updated_at
  * @property integer $updated_by
+ * @property integer $is_admin_group
  *
  * @property User[] $manager
  * @property Space|null $defaultSpace

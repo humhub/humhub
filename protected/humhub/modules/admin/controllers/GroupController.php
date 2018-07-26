@@ -21,6 +21,7 @@ use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
 use Yii;
+use yii\db\Exception;
 use yii\db\Query;
 use yii\web\HttpException;
 
@@ -82,6 +83,8 @@ class GroupController extends Controller
             $group = new EditGroupForm();
         }
 
+        $this->checkGroupAccess($group);
+
         $wasNew = $group->isNewRecord;
 
         if ($group->load(Yii::$app->request->post()) && $group->validate() && $group->save()) {
@@ -106,17 +109,17 @@ class GroupController extends Controller
     {
         $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
 
+        $this->checkGroupAccess($group);
+
         // Save changed permission states
         if (!$group->isNewRecord && Yii::$app->request->post('dropDownColumnSubmit')) {
-            Yii::$app->response->format = 'json';
-            $permission = Yii::$app->user->permissionManager->getById(Yii::$app->request->post('permissionId'),
-                Yii::$app->request->post('moduleId'));
+            $permission = Yii::$app->user->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
             if ($permission === null) {
                 throw new HttpException(500, 'Could not find permission!');
             }
-            Yii::$app->user->permissionManager->setGroupState($group->id, $permission,
-                Yii::$app->request->post('state'));
-            return [];
+            Yii::$app->user->permissionManager->setGroupState($group->id, $permission, Yii::$app->request->post('state'));
+
+            return $this->asJson([]);
         }
 
         return $this->render('permissions', ['group' => $group]);
@@ -125,6 +128,8 @@ class GroupController extends Controller
     public function actionManageGroupUsers()
     {
         $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
+        $this->checkGroupAccess($group);
+
         $searchModel = new UserSearch();
         $searchModel->query = $group->getUsers();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -142,6 +147,7 @@ class GroupController extends Controller
         $this->forcePostRequest();
         $request = Yii::$app->request;
         $group = Group::findOne(['id' => $request->get('id')]);
+        $this->checkGroupAccess($group);
 
         if ($group->removeUser($request->get('userId'))) {
             ExcludeGroupNotification::instance()
@@ -171,9 +177,7 @@ class GroupController extends Controller
         $this->forcePostRequest();
         $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
 
-        if ($group === null) {
-            throw new HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
-        }
+        $this->checkGroupAccess($group);
 
         //Double check to get sure we don't remove the admin group
         if (!$group->is_admin_group) {
@@ -185,42 +189,36 @@ class GroupController extends Controller
 
     public function actionEditManagerRole()
     {
-        Yii::$app->response->format = Response::FORMAT_JSON;
         $this->forcePostRequest();
 
         $group = Group::findOne(Yii::$app->request->post('id'));
-        if ($group === null) {
-            throw new HttpException(
-                404,
-                Yii::t('AdminModule.controllers_GroupController', 'Group not found!')
-            );
-        }
+        $this->checkGroupAccess($group);
 
         $value = Yii::$app->request->post('value');
+
         if ($value === null) {
-            throw new HttpException(
-                400,
+            throw new HttpException(400,
                 Yii::t('AdminModule.controllers_GroupController', 'No value found!')
             );
         }
 
         $groupUser = $group->getGroupUser(User::findOne(Yii::$app->request->post('userId')));
         if ($groupUser === null) {
-            throw new HttpException(
-                404,
+            throw new HttpException(404,
                 Yii::t('AdminModule.controllers_GroupController', 'Group user not found!')
             );
         }
 
         $groupUser->is_group_manager = (bool)$value;
 
-        return ['success' => $groupUser->save()];
+        return $this->asJson(['success' => $groupUser->save()]);
     }
 
     public function actionAddMembers()
     {
         $this->forcePostRequest();
         $form = new AddGroupMemberForm();
+
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $form->save();
         }
@@ -237,6 +235,8 @@ class GroupController extends Controller
 
         $keyword = Yii::$app->request->get('keyword');
         $group = Group::findOne(Yii::$app->request->get('id'));
+
+
 
         $subQuery = (new Query())->select('*')->from(GroupUser::tableName() . ' g')->where([
             'and',
@@ -258,19 +258,31 @@ class GroupController extends Controller
         return $result;
     }
 
-    public function actionAdminUserSearch()
+    public function actionAdminUserSearch($keyword, $id)
     {
-        Yii::$app->response->format = 'json';
+        $group = Group::findOne($id);
 
-        $keyword = Yii::$app->request->get('keyword');
-        $group = Group::findOne(Yii::$app->request->get('id'));
+        if(!$group) {
+            throw new HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
+        }
 
-        return UserPicker::filter([
+        return $this->asJson(UserPicker::filter([
             'query' => $group->getUsers(),
             'keyword' => $keyword,
             'fillQuery' => User::find(),
             'disableFillUser' => false,
-        ]);
+        ]));
+    }
+
+    public function checkGroupAccess($group)
+    {
+        if(!$group) {
+            throw new HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
+        }
+
+        if($group->is_admin_group && !Yii::$app->user->isAdmin()) {
+            throw new HttpException(403);
+        }
     }
 
 }
