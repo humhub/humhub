@@ -11,13 +11,13 @@ before writing your own code as:
  - [Views](https://www.yiiframework.com/doc/guide/2.0/en/structure-views)
 
 You should also follow the [Coding Standards](coding-standards.md) and keep an eye on the [Migration Guide](modules-migrate.md) in order to
-keep your module compatible with new HumHub versions and also facilitate new features.
+keep your module compatible with new HumHub versions and facilitate new features.
 
 ## Introduction
 
 Before starting with the development of your custom module, you first have to consider the following **module options**:
 
-- Can my module be [enabled on profile and/or space level](modules.md#container-module)?
+- Can my module be [enabled on profile and/or space level](#use-of-contentcontainermodule)?
 - Does my module produce [content](content.md)?
 - Does my module produce [stream entries](stream.md)?
 - Does my module provide any kind of [sidebar snippet](snippet.md)?
@@ -55,6 +55,8 @@ In order to use a module, you'll have to `enable` it first. This can be achieved
 
 Enabling a module will run the modules database migrations in order to setup the database scheme and furthermore adds an entry to the `modules_enabled` table.
 
+The `ModuleManager` responsible for enabling module will furthermore trigger an  Trigger `ModuleManager::EVENT_BEFORE_MODULE_DISABLE` and `ModuleManager::EVENT_BEFORE_MODULE_DISABLE` `ModuleEvent`.
+
 During the `bootstrap` process of the application the [[humhub\components\bootstrap\ModuleAutoLoader]] will search for all `enabled` modules
 within the module autoload path and initializes the modules event listeners.
 
@@ -64,6 +66,11 @@ Module can be disabled by means of
 
 - Administration Backend `Administration -> Modules`
 - Console command `php yii module/disable`
+
+The `ModuleManager` responsible for disabling module will furthermore trigger an  Trigger `ModuleManager::EVENT_BEFORE_MODULE_ENABLE` and `ModuleManager::EVENT_AFTER_MODULE_ENABLE` `ModuleEvent`.
+
+> Note: [ContentContainerModules](#use-of-contentcontainermodule) also have to be enabled within a space or user profile by means of the space management
+section.
 
 > Info: You can add additional module paths by means of the `moduleAutoloadPaths` parameter. 
 Please see the [Developement Environment Section](environment.md#external-modules-directory) for more information.
@@ -166,6 +173,12 @@ class Module extends \humhub\components\Module
 }
 ```
 
+By default the `disable()` function will clear the following data:
+
+ - Execute your modules `uninstall.php` migration script
+ - Clear all `ContentContainerSettings` and global `Settings` related with this module
+ - Clear the `module_enabled` entry
+
 > Note: The default implementation of `disable()` will clear some module data automatically as the modules global and ContentContainer settings, profile and space module relations.
 
 #### Handling the enabling and disabling of this module for a given space or profile
@@ -239,20 +252,26 @@ The following structure contains some additional directories and files, which sh
 
 ## Use of ContentContainerModule
 
-In case your module can be enabled on space or user account level your `Module` class has to extend from [[humhub\modules\content\components\ContentContainerModule]]. 
+In case your module can be enabled on space or user account level your `Module` class has to derive from [[humhub\modules\content\components\ContentContainerModule]]. 
 
-This class provides some additional functions as:
+`ContentContainerModule` classes provide some additional functions as:
 
-- `getContentContainerTypes()` method defines for which container-type (space or user account) this module can be enabled. 
+- `getContentContainerTypes()` - defines for which container-type (space or user account) this module can be enabled. 
 
-- `disableContentContainer()` method is called when this module is disabled for a given container.
+- `disableContentContainer()` - is called when this module is disabled for a given container.
 
-- `getContentContentContainerDescription()` method provides a general description of this module for a given container.
+- `getContentContentContainerDescription()` - provides a general description of this module for a given container.
 
 The following example module can be enabled on space and profile level:
 
 ```php
-class Module extends \humhub\modules\content\components\ContentContainerModule
+namespace mymodule;
+
+use humhub\modules\content\components\ContentContainerModule;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
+
+class Module extends ContentContainerModule
 {
 
     // Defines for which content container type this module can be enabled
@@ -260,8 +279,8 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
     {
         // This content container can be assigned to Spaces and User
         return [
-            Space::className(),
-            User::className(),
+            Space::class,
+            User::class,
         ];
     }
 
@@ -291,9 +310,45 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
 }
 ```
 
-> Note: If you're working with content or other persistent data, make sure to delete container related data when the module is disabled on a container. 
-This can be achieved by overwriting the [[humhub\modules\content\components\ContentContainerModule::disableContentContainer()|ContentContainerModule::disableContentContainer()]] function.
+Globally enabled `ContentContainerModules` can be enabled on the container within the **User Account Module Settings** or **Space Module Settings** (depending
+on the `getContentContainerTypes()` return value), which will add an `contentcontainer_module` table entry.
 
-## The Devtools Module
+By default the `CotnentContainerModule::disableContentContainer()` clears the following data:
 
-You may want to use the [devtools Module](https://github.com/humhub/humhub-modules-devtools) to create a module skeleton.
+- All cotnainer related [settings](settings.md)
+
+The `CotnentContainerModule::disable()` will
+ 
+ - call `CotnentContainerModule::disableContentContainer()` for each container this module is enabled.
+ - clear all `contentcontainer_module` entries related to this module.
+ - call `parent::disable()` (see )
+
+The following example shows the usual `disable` logic of a module with an [ContentContainerActiveRecord](content.md#implement-custom-contentactiverecords)
+
+```php
+    /**
+     * @inheritdoc
+     */
+    public function disable()
+    {
+        foreach (Poll::find()->all() as $poll) {
+            $poll->delete();
+        }
+
+        parent::disable();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function disableContentContainer(ContentContainerActiveRecord $container)
+    {
+        parent::disableContentContainer($container);
+
+        foreach (Poll::find()->contentContainer($container)->all() as $poll) {
+            $poll->delete();
+        }
+    }
+```
+
+> Info: You may want to use the [devtools Module](https://github.com/humhub/humhub-modules-devtools) to create a module skeleton.

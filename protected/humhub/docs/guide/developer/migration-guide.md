@@ -1,6 +1,18 @@
 # Module Migration Guide
 
-Here you will learn how you can adapt existing modules to working fine with actually versions.
+This guide provides useful information about migrating your custom modules in order to keep them compatible with new HumHub versions.
+You should keep your modules up-to-date by removing deprecations and align code breaking changes of the platform and ideally test your
+modules against new HumHub version. Also keep in mind to align the `minVersion` of your module when using new features.
+
+You can execute code for specific versions by using the `version_compare` function as:
+
+```php
+if (version_compare(Yii::$app->version, '1.3', '>')) {
+    // Use some 1.3+ features here
+} else {
+     // Compatibility code for older versions
+}
+```
 
 ## Migrate from 1.1 to 1.2
 

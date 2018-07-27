@@ -7,16 +7,17 @@ Getting Started
 * [Git/Composer Installation](git-installation.md)
 * [Coding Standards](coding-standards.md)
 * [Development Environment](environment.md)
-* [Migration Guide](modules-migrate.md)
 
 
 Module Developement
 ---------------
 * [Getting Started](modules.md)
+* [Database Scheme](modules.md)
+* [Module Migration Guide](modules-migrate.md)
 * [Asset Management](assets.md)
 * [Change core behavior](module-change-behavior.md)
 * [Embedded Themes](embedded-themes.md)
-* [Migration / Updates](migration.md)
+* [Module Updates](migration.md)
 
 Basic Concepts
 ------------------

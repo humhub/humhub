@@ -1,4 +1,4 @@
-Installation (Developers)
+Git/Composer Installation
 =========================
 
 The following guide describes a git based installation of the HumHub platform. Please note that this is only recommended for
