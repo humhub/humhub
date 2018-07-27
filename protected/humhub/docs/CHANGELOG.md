@@ -19,6 +19,8 @@ HumHub Change Log
 - Chng: Moved static js dependencies from `static/resources` into `static/js`
 - Fix: Comment edit cancel edit context item not shown
 - Fix  #2700: Prevent GroupManager access to system admin group management
+- Enh: Styled user deletion view
+- Fixed: Space and User Admin Filterbar padding
 
 1.3.0-beta.2  (July 18, 2018)
 -----------------------------
