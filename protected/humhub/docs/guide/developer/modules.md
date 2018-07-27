@@ -1,19 +1,30 @@
-Module - Getting Started
+Module Developement - Getting Started
 =================
 
 The following guide describes the basic module structure and extended module features as well as important considerations regarding your own custom module.
+Since HumHub is based on the [Yii Application Framework](http://www.yiiframework.com/doc-2.0) you should at least be familiar with the basic concepts of this framework
+before writing your own code as:
 
-## Before starting
+ - [Basic Application Structure](https://www.yiiframework.com/doc/guide/2.0/en/structure-overview)
+ - [Controllers](https://www.yiiframework.com/doc/guide/2.0/en/structure-controllers)
+ - [Models](https://www.yiiframework.com/doc/guide/2.0/en/structure-models)
+ - [Views](https://www.yiiframework.com/doc/guide/2.0/en/structure-views)
 
-Before even starting the developement of a custom module, you first have to consider the following **module options**:
+You should also follow the [Coding Standards](coding-standards.md) and keep an eye on the [Migration Guide](modules-migrate.md) in order to
+keep your module compatible with new HumHub versions and also facilitate new features.
 
-- [Can my module be enabled on profile and/or space level?](modules.md#container-module)
-- Does my module produce [stream entries](stream.md) or other [content](content.md)?
-- Does my module provide any kind of sidebar [snippet](snippet.md)?
+## Introduction
+
+Before starting with the development of your custom module, you first have to consider the following **module options**:
+
+- Can my module be [enabled on profile and/or space level](modules.md#container-module)?
+- Does my module produce [content](content.md)?
+- Does my module produce [stream entries](stream.md)?
+- Does my module provide any kind of [sidebar snippet](snippet.md)?
 - Do I need to [change the default behaviour](module-change-behavior.md) of some core components?
 - Do I need specific [permissions](permissions.md) for my module?
 - Does my module create any [notifications](notifications.md) or [activities](activities.md)?
-- Should [guest](permissions.md#guests-access) users have access to some of my module views and functions?
+- Should [guest users](permissions.md#guests-access) have access to some of my module views and functions?
 
 Furthermore you may have to consider the following **issues**:
 
@@ -31,6 +42,33 @@ Furthermore you may have to consider the following **issues**:
 - [Submodules](#submodules)
 - [Security](security.md)
 - [Theming](embedded-themes.md)
+
+## Basic Life Cycle
+
+A module is considered as `installed` once it resides within one of the `moduleAutoloadPaths`, by default non core modules reside in `protected/modules`.
+You can install modules either by adding them manually to an module autoload path or by loading them from the marketplace. 
+
+In order to use a module, you'll have to `enable` it first. This can be achieved by:
+
+- Administration Backend `Administration -> Modules`
+- Console command `php yii module/enable`
+
+Enabling a module will run the modules database migrations in order to setup the database scheme and furthermore adds an entry to the `modules_enabled` table.
+
+During the `bootstrap` process of the application the [[humhub\components\bootstrap\ModuleAutoLoader]] will search for all `enabled` modules
+within the module autoload path and initializes the modules event listeners.
+
+`Disabling` a module will usually drop all related module data from the database and will detach the module from the `bootstrap` process.
+
+Module can be disabled by means of
+
+- Administration Backend `Administration -> Modules`
+- Console command `php yii module/disable`
+
+> Info: You can add additional module paths by means of the `moduleAutoloadPaths` parameter. 
+Please see the [Developement Environment Section](environment.md#external-modules-directory) for more information.
+
+> Warning: You should never delete an enabled module folder without disabling it first.
 
 
 ## Basic Module Structure
@@ -50,10 +88,10 @@ A very basic module consists of the following elements:
  module.json  - module metadata
 ```
 
-### config.php
+### Basic Module Configuration config.php
 
 The `config.php` file enables automatic module loading and event configuration, without the need to manually modify the main application config, by returning an array including the following fields:
-
+Module configuration files of enabled modules are processed by the [[humhub\components\bootstrap\ModuleAutoLoader]] within the `bootstrap` process of the application.
 
 - **id** - Unqiue ID of the module (required)
 - **class** - Namespaced classname of the module class (required)
@@ -75,7 +113,7 @@ return [
     'class' => 'johndoe\example\Module',
     'namespace' => 'johndoe\example',
     'events' => [
-        ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => ['johndoe\example\Module', 'onTopMenuInit']],
+        ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => ['johndoe\example\Events', 'onTopMenuInit']],
     ]
 ];
 ?>
@@ -83,17 +121,32 @@ return [
 
 > Note: Do not execute any code in the `config.php` since the result will be cached!
 
+#### Module Events
 
-### Module.php
+In order to extend or alter the behavior of some features, your module can listen to class level events like:
 
-The `Module.php` file contains the actual module class which should either extend the [[humhub\components\Module]] or [[humhub\modules\content\components\ContentContainerModule]] class.
+ - **Widget** events
+ - **ActiveRecord** validation,save or delete events
+ - **Application** events
+ - **Controller** events
+ - And other custom events
+ 
+Events are configured within your modules `config.php` file as in the previous example. Module event handler should ideally reside in an
+extra `Events` class, especially if you plan many event handlers. In some simpler cases events handlers are implemented within the `Module` class
+itself.
 
+See [change the default behaviour](module-change-behavior.md) for some use-cases of event handlers.
 
-The [[humhub\components\Module|Module]] class provides some basic module functions used for installing/uninstalling and retrieving metadata, whereas the [[humhub\modules\content\components\ContentContainerModule]] class has to be extended in case your module requires to be enabled on space or profile level. 
+### Module Classes
+
+The `Module.php` file contains the actual module class which should either extend [[humhub\components\Module]] or [[humhub\modules\content\components\ContentContainerModule]].
+
+The base `Module` class provides some basic module functions used for enabling, disabling and retrieving metadata, 
+whereas the `ContentContainerModule` class has to be extended in case your module requires to be enabled on space or user account level. 
 
 The Module class is responsible for:
 
-**Handling the enabling and disabling of the module**
+#### Handling the enabling and disabling of the module
 
 The modules `disable()` function is called if the module is disabled.
 
@@ -112,30 +165,24 @@ class Module extends \humhub\components\Module
     }
 }
 ```
-> Note: The default implementation of `disable()` will clear some module data automatically as the modules global and ContentContainer settings, profile/space module relations.
 
- - Handling the enabling and disabling of this module for a given space or profile
+> Note: The default implementation of `disable()` will clear some module data automatically as the modules global and ContentContainer settings, profile and space module relations.
+
+#### Handling the enabling and disabling of this module for a given space or profile
 
 See the [Container Module](#container-module) section for more information.
 
- - Export Module Permissions
+#### Export Module Permissions
 
 Module specific permissions are exported by means of the [[humhub\components\Module::getPermissions()]] function. See the [Permissions](permissions.md) section for more information.
 
- -  Export Module Notification
-
-Modules can export Notificaions in order to make them configurable in the notificaiton settings.
-See the [Notifications](notifications.md) section for more information.
-
- -   Module Assets and `$resourcesPath`
+#### Module Assets and `$resourcesPath`
 
 The [[humhub\components\Module::resourcesPath]] defines the modules resource directory, containing images, javascript files or other assets.
 
-See the [Module Assets]() section for more information.
-
 ### module.json
 
-This file holds basic metadata which is for example used by the markeplace.
+The `module.json` file holds basic metadata which is used for example by the marketplace.
 
 Example `module.php` file:
 
@@ -148,7 +195,7 @@ Example `module.php` file:
     "screenshots": ["assets/screen_1.jpg"],
     "version": "1.0",
     "humhub": {
-    "minVersion": "0.20"
+        "minVersion": "1.2"
     }
 }
 ```
@@ -157,14 +204,15 @@ Example `module.php` file:
 - **name** - The modules name
 - **description** - A short module description
 - **keywords** - Array of significant keywords
-- **screenshots** - Some screenshots for the marketplace
+- **screenshots** - Some screenshots for the marketplace, those should reside in the `resourcesPath` of your module.
 - **version** - Current module version
 - **minVersion** - Defines the minimum HumHub core version this module version is compatible with.
+
+> Warning: You should align the `minVersion` of your module when using new features and test your modules on all supported versions.
 
 ## Extended Module Structure
 
 The following structure contains some additional directories and files, which should be added for specific use-cases or features. 
-
 
 ```
  activities     - activity classes
@@ -189,17 +237,17 @@ The following structure contains some additional directories and files, which sh
  module.json    - see above
 ```
 
-> Note: the extended module structure and it's directory names is just a recommendation.
+## Use of ContentContainerModule
 
-## Container Module
+In case your module can be enabled on space or user account level your `Module` class has to extend from [[humhub\modules\content\components\ContentContainerModule]]. 
 
-In case your module can be enabled on space or profile level your `Module` class has to extend from [[humhub\modules\content\components\ContentContainerModule]]. You should extend this class if your module provides space or profile specific views or content. 
+This class provides some additional functions as:
 
-- The `getContentContainerTypes()` method defines for which ContentContainer type (space or profile) this module can be enabled. 
+- `getContentContainerTypes()` method defines for which container-type (space or user account) this module can be enabled. 
 
-- The `disableContentContainer()` method is called when this module is disabled for a given ContentContainer (Space or Profile).
+- `disableContentContainer()` method is called when this module is disabled for a given container.
 
-- The `getContentContentContainerDescription()` method provides a general description of this module for the given ContentContainer.
+- `getContentContentContainerDescription()` method provides a general description of this module for a given container.
 
 The following example module can be enabled on space and profile level:
 
@@ -243,8 +291,9 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
 }
 ```
 
-> Note: If you're working with content or other persistent data, make sure to delete container related data when the module is disabled on a contentcontainer. This can be archieved by overwriting the [[humhub\modules\content\components\ContentContainerModule::disableContentContainer()]] function.
+> Note: If you're working with content or other persistent data, make sure to delete container related data when the module is disabled on a container. 
+This can be achieved by overwriting the [[humhub\modules\content\components\ContentContainerModule::disableContentContainer()|ContentContainerModule::disableContentContainer()]] function.
 
-## Devtools Module
+## The Devtools Module
 
 You may want to use the [devtools Module](https://github.com/humhub/humhub-modules-devtools) to create a module skeleton.

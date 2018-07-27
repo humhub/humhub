@@ -4,39 +4,63 @@ Content
 Before you keep reading, make sure you are familiar with the following Yii concepts:
  
  - [Yii Models](https://www.yiiframework.com/doc/guide/2.0/en/structure-models)
- - [Yii ActiveRecords](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record) and how
+ - [Yii ActiveRecords](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record)
+ - [Yii Controller](https://www.yiiframework.com/doc/guide/2.0/en/structure-controllers)
 
-[[humhub\modules\content\models\Content|Content]] entries are the base of HumHub content-types as Posts, Polls and Wiki Pages. Content entries reside in the
-`content` table and are related to a specific [[\humhub\modules\content\components\ContentActiveRecord|ContentActiveRecord]] by a polymorphic relation defined by the `object_model`
-and `object_class` columns.
+## Introduction
 
-```php
-// Post is derived from ContentActiveRecord
-$post = new Post($space, ['message' => 'This is an example post']);
+[[humhub\modules\content\models\Content|Content]] entries are the base of HumHub content-types as `Posts`, `Polls` and `Wiki Pages`. `Content` entries reside in the
+`content` table and are always related to a specific [[\humhub\modules\content\components\ContentActiveRecord|ContentActiveRecord]] by a polymorphic relation defined in the `object_model`
+and `object_class` columns of the `content` table.
 
-// You can access the underlying content instance which is automatically created like this
-$content = $post->content;
-
-// You can access the related ContentContainerActiveRecord as follows
-$space = $post->content->container;
-
-// This will save the post and the underlying content
-$post->save();
-```
-
-You should implement your own `ContentActiveRecord` classes in case you need to embed a custom content-type to any [Stream](stream.md)
-or in order to enable `Likes` and `Comments` on your content. While the `ContentActiveRecord` holds the actual data as texts and content-type related settings,
+While the `ContentActiveRecord` holds the actual data as texts and content-type related settings,
 the underlying `Content` class also provides:
 
 - **Permission** checks as `canEdit()`, `canView()`
 - **ContentContainer** access
 - **Visibility** settings `public` or `private`
 
+Custom `ContentActiveRecord` classes can be implemented in case you need to embed a custom content-type to a [Stream](stream.md)
+or in order to enable `Likes` and `Comments` on your content. 
 
-### Custom ContentActiveRecord
+The following example shows the basic usage of a `ContentActiveRecord`:
 
-Just like other [ActiveRecords](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record) `ContentActiveRecord` classes should be put under the `yourModule/models` namespace.
-Beside the basic `ActiveRecord` features as `validation` and `attributeLabels` your ContentContainerActiveRecord class should at least implement the following fields and methods:
+```php
+// Post is a subclass of ContentActiveRecord and message is an attribute of the post table
+$post = new Post($space, ['message' => 'This is an example post']);
+
+// You can access the underlying content instance (which was automatically) created like this
+$content = $post->content;
+
+// You can access the related ContentContainerActiveRecord as follows
+$space = $post->content->container;
+
+// This will validate and save the post entry and the underlying content
+$post->save();
+```
+
+In practice your model data is usually loaded into your model from a `post` request within your controller logic as in the following basic example:
+
+```php
+public function actionEdit($id = null) {
+    $news = empty($id) ? new News() :  News::findeOne['id' => $id];
+    
+    if(!$news->content->canEdit()) {
+        throw new HttpException(403);
+    }
+    
+    if($news->load(Yii::$app->request->post() && $news->save()) {
+        $this->view->saved()        
+    }
+    
+    return $this->render('edit', ['news' => $news]);
+}
+```
+
+## Implement Custom ContentActiveRecords
+
+Just like other [ActiveRecords](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record) `ContentActiveRecord` classes should be put under the `yourModule/models` namespace of your module.
+Beside the basic `ActiveRecord` features as `validation` and `attributeLabels` your `ContentContainerActiveRecord` class should at least implement the following fields and methods:
 
 - `moduleId` - id of the related module
 - `getContentName()` - short name/type of content
@@ -75,8 +99,9 @@ class MyModel extends ContentActiveRecord
 }
 ```
 
-### Instantiating a ContentContainerActiveRecord:
+## Instantiating a ContentContainerActiveRecord:
 
+You can instantiate your `ContentContainerActiveRecord` as follows:
 
 ```php
 // Only provide an array of attributes
@@ -105,7 +130,7 @@ $model->some_field = $field;
 $model->save();
 ```
 
-When given a Content instance, you can load the related model as follow:
+When given a `Content` instance, you can access the related model as follow:
 
 ```php
 $model = $content->getModel();
@@ -114,11 +139,10 @@ $model = $content->getModel();
 > Note: You won't have to worry about instantiating or saving the underlying content record, since this is handled within
 the ContentContainerActiveRecord class automatically.
 
-### Use of ActiveQueryContent:
+## Use of ActiveQueryContent:
 
 The `Content` class furthermore provides some extended [ActiveQuery](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record#querying-data) capabilities.
-Calling [[\humhub\modules\content\components\ContentActiveRecord::find()]] will return a [[\humhub\modules\content\components\ActiveQueryContent]] with additional methods to select specific content:
-
+Calling [[\humhub\modules\content\components\ContentActiveRecord::find()|ContentActiveRecord::find()]] will return a [[\humhub\modules\content\components\ActiveQueryContent]] instance with additional methods to filter specific content entries:
 
 ```php
 // Returns all MyModels related to the given $space
@@ -145,7 +169,7 @@ There are the following user related scopes available:
 - `USER_RELATED_SCOPE_FOLLOWED_USERS` = Content related to the users followed user profiles
 - `USER_RELATED_SCOPE_OWN_PROFILE` = Content related to the users own profile
 
-### Move Content (since v1.3)
+## Move Content (since v1.3)
 
 In case your content should be movable to other spaces you'll have to enable the [[\humhub\modules\content\components\ContentActiveRecord::canMove|ContentActiveRecord::canMove]] flag.
 For complex content-types you may want to overwrite the [[\humhub\modules\content\components\ContentActiveRecord::afterMove()|ContentActiveRecord::afterMove()]] function.
@@ -161,13 +185,13 @@ public function afterMove($container = null)
 }
 ```
 
-### Silent Content Creation
+## Silent Content Creation
 
 By default, the creation of a content entry triggers an activity and notifications for space subscribers.
 This behaviour can be deactivated by setting the [[\humhub\modules\content\components\ContentActiveRecord::silentContentCreation|ContentActiveRecord::silentContentCreation]]
 to `true`. This setting can for example be used for sub content-types which are not of high interest.
 
-### Content Visibility
+## Content Visibility
 
 The content visibility specifies who is be allowed to view the content. When instantiating a new `ContentActiveRecord` without [a predefined visibility](#instantiating-a-contentcontaineractiverecord)
 the underlying content will adapt the default content visibility of its `ContentContainerActiveRecord`.
@@ -206,7 +230,7 @@ if(!$model->content->canView()) {
 
 > Info: Private spaces can not create public content.
 
-### Content Write Permission
+## Content Write Permission
 
 By default users can edit a content if one of the following conditions defined in `Content::canEdit()` are met:
 
@@ -247,7 +271,7 @@ class Example extends ContentContainerActiveRecord
 
 >Info: For more information about permissions, please see the [Permission Section](module-permissions.md).
 
-### Content Url
+## Content Url
 
 By default the url returned by `Content::getUrl()` links to the space or profile stream with active `contentId` filter.
 If you want to change this behaviour and for example rather link to a content-type specific detail view of your content, you can
@@ -266,9 +290,9 @@ Retrieve the content url:
 $url = $model->content->getUrl();
 ```
 
-### Other content features
+## Other content features
 
-#### Pin content
+### Pin content
 
 The default space stream supports the pinning of content, which will load the pinned entries at the top of the
 stream. Normally you won't need to call the pin/unpin methods by yourself, since this is part of the default stream
@@ -284,7 +308,7 @@ $model->content->isPinned();
 $model->content->canPin();
 ```
 
-#### Archive content
+### Archive content
 
 Archived content is by default excluded from the streams. As with the pin logic, you won't have to handle this by yourself.
 
@@ -299,16 +323,21 @@ $model->content->canArchive();
 
 ```
 
-### ContentContainer
+## ContentContainer
 
-[[humhub\modules\content\models\ContentContainer|ContentContainers]] in HumHub are used to assign content to a specific
-container like a User Account or Space. Similar to `Content` and `ContentActiveRecords`, `ContentContainer` entries can be seen as an abstraction
+[[humhub\modules\content\models\ContentContainer|ContentContainers]] in HumHub are used to assign `Content` entries to a specific
+container like a `User Account` or `Space`. Similar to `Content` and `ContentActiveRecords`, `ContentContainer` entries can be seen as an abstraction
 of `ContentContainerActiveRecords`. Each `Content` entry (except global content) is related to one `ContentContainer` which again
 is related to one `ContentContainerActiveRecord` (Space or User). In practice you'll usually directly work with `ContentActiveRecords` instances.
 
-By means of `$content->container` you can retrieve an `ContentContainerActiveRecord` instance of your content.
- 
 Each container is assigned with an unique `guid`, which beside others is used in controllers to identify the context of its actions.
+
+The `ContentContainerActiveRecord` of a content can be accessed as follows 
+
+```php
+$news = News::findOne(['id' => $id]);
+$container = $news->content->container; 
+```
 
 There are two types of `ContentContainerActiveRecords`:
  
@@ -317,21 +346,21 @@ There are two types of `ContentContainerActiveRecords`:
 
 ![Application Layers](images/contentContainerClassDiag.jpg)
 
-> Note: It's not possible to create custom ContentContainerActiveRecord classes.
+> Note: It's not supported to create custom ContentContainerActiveRecord classes.
 
-### ContentContainerController
+## ContentContainerController
 
-When working with `Content` or other `ContentContainer` related data, you'll normally want to extend the [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] class.
-A `ContentContainerController` will automatically search and instantiate a `ContentContainerActiveRecord` related to a **cguid** request parameter and provide additional features as:
+When working with `Content` or other `ContentContainer` related data, your controller should extend the [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] class.
+A `ContentContainerController` will automatically search and instantiate a `ContentContainerActiveRecord` related to a `cguid` request parameter and provide additional features as:
 
-- Additional Access Checks
-- Default layout selection based on container type (User or Space)
-- Create URL's for the given container
+- Additional **access checks**
+- Default **layout selection** based on container type (User or Space)
+- Create **container URL's** for the given container
 
-By default a `ContentContainerController` will block requests without a given **cguid** request parameter. If you need to implement a controller which
-should be able to handle global as well as container related requests you'll have to set the `ContentContainerController::requireContainer` field to `false`.
+By default a `ContentContainerController` will block requests without a given `cguid` request parameter. If you need to implement a controller which
+should be able to handle container related as well as global requests you'll have to set the `ContentContainerController::requireContainer` field to `false`.
 
-You can access the `ContentContainerActiveRecord` within your controller by means of `$this->contentContainer`.
+In your controller logic you can access the `ContentContainerActiveRecord` within your controller by means of `$this->contentContainer`.
 
 You can even restrict the allowed `ContentContainerActiveRecord` types by setting the `ContentContainerController::validContentContainerClasses` array. This can be
 useful for example if your controller should only handle space related requests.
@@ -349,7 +378,8 @@ class ExampleController extends ContentContainerController
 }
 ```
 
-Urls pointing to a `ContentContainerActiveRecord` action should be created by using the `createUrl()` function of your ``ContentContainerActiveRecord`` instance. This will add the required cguid parameter to your request.
+Urls pointing to a `ContentContainerController` action should be created by using the `ContentContainerActiveRecord::createUrl()` function. 
+This will add the required cguid parameter to your request.
 
 ```php
  // Direct ContentContainer call
@@ -362,11 +392,11 @@ Urls pointing to a `ContentContainerActiveRecord` action should be created by us
  $this->contentContainer->createUrl('/module/controller/action');
 ```
 
-### ContentContainerModule
+## ContentContainerModule
 
-See the [Getting Started](modules.md#container-module) section
+See the [Use of ContentContainerModule](modules.md#use-of-container-module) section.
 
-#### Content Streams
+## Content Streams
 
 See the [Stream](stream.md) section
 
