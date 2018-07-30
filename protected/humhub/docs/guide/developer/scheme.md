@@ -1,8 +1,14 @@
-Module Database Scheme
+Database and Models
 =================
 
 This guide describes how to setup and update your modules database scheme. All database installation and update scripts will reside in
 your modules `migration` directory.
+
+## Conventions
+
+- **prefix** your tables with the module id. e.g. `example_foo`
+- **singular** table names
+- use **underscorce** in fieldnames andattributes e.g. `user_id`
 
 ## Initial Migration
 
@@ -75,3 +81,31 @@ class uninstall extends Migration
 
 }
 ```
+
+## Integrity Check
+
+The integrity check is a command which validates and if necessary repairs the application database.
+
+If you want to add own checking methods for your module to it, you can intercept the [[humhub\controllers\IntegrityController::EVENT_ON_RUN]] event.
+
+Example callback implementation:
+
+```php
+public static function onIntegrityCheck($event)
+{
+    $integrityController = $event->sender;
+    $integrityController->showTestHeadline("Polls Module - Answers (" . PollAnswer::find()->count() . " entries)");
+
+    foreach (PollAnswer::find()->joinWith('poll')->all() as $answer) {
+        if ($answer->poll === null) {
+            if ($integrityController->showFix("Deleting poll answer id " . $answer->id . " without existing poll!")) {
+                $answer->delete();
+            }
+        }
+    }
+}
+```
+
+## Create a ActiveRecord
+
+HumHub uses Yii's [ActiveRecords](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) as database access layer.
