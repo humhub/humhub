@@ -218,6 +218,10 @@ abstract class BaseNotification extends SocialActivity
      */
     public function saveRecord(User $user)
     {
+        if (!$this->validate()) {
+            return false;
+        }
+
         $notification = new Notification([
             'user_id' => $user->id,
             'class' => static::class,
@@ -240,9 +244,12 @@ abstract class BaseNotification extends SocialActivity
                 static::class . ' ' .
                 print_r($notification->getErrors(), true)
             );
+            return false;
         }
 
         $this->record = $notification;
+
+        return true;
     }
 
     /**

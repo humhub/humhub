@@ -117,7 +117,7 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
 
     private function getGroupTitle()
     {
-        
+
         $user = $this->record->user;
         $contentRecord = $this->getCommentedRecord();
         $contentInfo = $this->getContentInfo($this->getCommentedRecord());
