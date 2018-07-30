@@ -1,7 +1,7 @@
 Javascript Actions
 =======
 
-The `humhub.modules.action` module provides a machanism for binding Javascript action handlers to dom events as the click of a button.
+The `humhub.modules.action` module provides a mechanism for binding Javascript action handlers to dom events as the click of a button.
 
 The following example binds the action `example.myAction` to `click` events of a button.
 The action handler uses the `client` module for calling an url defined by `data-action-url`. 

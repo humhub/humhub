@@ -10,11 +10,10 @@ Getting Started
 Module Developement
 ---------------
 * [Introduction](modules.md)
+* [HumHub Build](build.md)
 * [Module Migration Guide](modules-migrate.md)
-* [Asset Management](assets.md)
 * [Change core behavior](module-change-behavior.md)
 * [Embedded Themes](embedded-themes.md)
-* [Module Updates](migration.md)
 
 Basic Concepts
 ------------------
@@ -34,19 +33,14 @@ Basic Concepts
 Javascript API
 ------------------
  * [Modules](javascript-index.md)
- * [Components](javascript-components.md)
- * [Additions](javascript-components.md)
  * [Actions](javascript-actions.md)
+ * [Components and Widgets](javascript-components.md)
+ * [Additions](javascript-components.md)
  * [Client](javascript-client.md)
- * [Events](javascript-events.md)
- * [Widgets](javascript-widgets.md)
- * [Pjax](javascript-pjax.md)
 
 Advanced Topics
 --------------
-* [HumHub Build](build.md)
 * [Authentication](authentication.md)
-* [Events](events.md)
 * [Live Updates](live.md)
 * [Search](search.md)
 * [Security](security.md)
