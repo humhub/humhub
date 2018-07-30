@@ -1,7 +1,7 @@
 HumHub Change Log
 =================
 
-1.3.0-beta.3
+1.3.0-beta.3  (July 30, 2018)
 -----------------------------
 
 - Fix: prevent user serialization for SocialActivity
