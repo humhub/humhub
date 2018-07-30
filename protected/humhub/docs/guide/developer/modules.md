@@ -15,21 +15,21 @@ keep your module compatible with new HumHub versions and facilitate new features
 
 ## Introduction
 
-Before starting with the development of your custom module, you first have to consider the following **module options**:
+Before starting with the development of your custom module, first consider the following **module options**:
 
-- Can my module be [enabled on profile and/or space level](#use-of-contentcontainermodule)?
+- Can my module be [enabled on user and/or space level](#use-of-contentcontainermodule)?
 - Does my module produce [content](content.md)?
 - Does my module produce [stream entries](stream.md)?
-- Does my module provide any kind of [sidebar snippet](snippet.md)?
-- Do I need to [change the default behaviour](module-change-behavior.md) of some core components?
+- Does my module add any [sidebar snippets](snippet.md)?
+- Do I need to [extend or change the default behaviour](module-change-behavior.md) of core components?
 - Do I need specific [permissions](permissions.md) for my module?
 - Does my module create any [notifications](notifications.md) or [activities](activities.md)?
-- Should [guest users](permissions.md#guest-access) have access to some of my module views and functions?
+- Should [guest users](permissions.md#guest-access) have access to some parts of my module?
 
 Furthermore you may have to consider the following **issues**:
 
 - [Module settings and configuration](settings.md)
-- [Append my module to a specific navigation](module-change-behavior.md#extend-menus)
+- [Append a module to a specific navigation](module-change-behavior.md#extend-menus)
 - [Client side developement](javascript-index.md)
 - [Schema Migrations and Integrity](models.md)
 - [Testing](testing.md)
@@ -40,57 +40,61 @@ Furthermore you may have to consider the following **issues**:
 - [Security](security.md)
 - [Embedded Themes](../theme/module.md)
 
-## Basic Life Cycle
+## Module Life Cycle
 
 ### Install Module
 
-A module is considered as `installed` once it resides within one of the `moduleAutoloadPaths`. By default non core modules reside in `@humhub/protected/modules`.
+A module is considered as `installed` once it resides in one of the `moduleAutoloadPaths`. By default non core modules reside in `@humhub/protected/modules`.
 You can install modules either by adding them manually to an autoload path or by loading them from the marketplace. 
+
+> Info: You can add additional module paths by means of the `moduleAutoloadPaths` parameter. 
+Please see the [Developement Environment Section](environment.md#external-modules-directory) for more information.
+
+### Enabled Module
 
 In order to use a module, you'll have to `enable` it first. This can be achieved by:
 
 - Administration Backend `Administration -> Modules`
 - Console command `php yii module/enable`
 
-
-### Enabled Module
-
-Enabling a module will run the modules database migrations in order to setup the database scheme and furthermore adds an entry to the `modules_enabled` table.
+Enabling a module will run the modules [database migrations](models.md#initial-migration) and add an entry to the `modules_enabled` table.
 
 The `ModuleManager` responsible for enabling modules will trigger the following events right before and after enabling a module:
 
 - `ModuleManager::EVENT_BEFORE_MODULE_ENABLE`
 - `ModuleManager::EVENT_AFTER_MODULE_ENABLE`
 
-
 ### Bootstrap
 
-During the `bootstrap` process of the application the [[humhub\components\bootstrap\ModuleAutoLoader]] will search for all `enabled` modules
-within the module autoload path and initializes the modules event listeners.
-
+During the `bootstrap` phase of the application the [[humhub\components\bootstrap\ModuleAutoLoader]] will search for all `enabled` modules
+within the module autoload path and attach the [modules event listeners](#module-events).
 
 ### Disable Module
 
 `Disabling` a module will usually drop all related module data from the database and will detach the module from the `bootstrap` process.
 
-Module can be disabled by means of
+Modules can be disabled by means of
 
 - Administration Backend `Administration -> Modules`
 - Console command `php yii module/disable`
 
-The `ModuleManager` responsible for disabling module will furthermore trigger an  Trigger `ModuleManager::EVENT_BEFORE_MODULE_ENABLE` and `ModuleManager::EVENT_AFTER_MODULE_ENABLE` `ModuleEvent`.
+The `ModuleManager` responsible for disabling modules will trigger the following events right before and after enabling a module:
+
+- `ModuleManager::EVENT_BEFORE_MODULE_DISABLE`
+- `ModuleManager::EVENT_AFTER_MODULE_DISABLE`
 
 > Note: [ContentContainerModules](#use-of-contentcontainermodule) also have to be enabled within a space or user profile by means of the space management
 section.
 
-> Info: You can add additional module paths by means of the `moduleAutoloadPaths` parameter. 
-Please see the [Developement Environment Section](environment.md#external-modules-directory) for more information.
+### Uninstall Module
 
-> Warning: You should never delete an enabled module folder without disabling it first.
+`Uninstalling` a module means removing it from the àutoload path.
+
+> Warning: You should never delete an enabled module folder manually without disabling it first.
 
 ## Basic Module Structure
 
-Basically modules in HumHub are identical to [Yii2 modules](http://www.yiiframework.com/doc-2.0/guide-structure-modules.html).
+Basically HumHub modules are identical to [Yii2 modules](http://www.yiiframework.com/doc-2.0/guide-structure-modules.html).
 
 A very basic module consists of the following elements:
 
@@ -107,8 +111,10 @@ A very basic module consists of the following elements:
 
 ### Basic Module Configuration `config.php`
 
-The `config.php` file enables automatic module loading and event configuration, without the need to manually modify the main application config, by returning an array including the following fields:
+The `config.php` file enables automatic module loading and event configuration, without the need to manually modify the main application config. 
 Module configuration files of enabled modules are processed by the [[humhub\components\bootstrap\ModuleAutoLoader]] within the `bootstrap` process of the application.
+
+The `config.php` should contain the following attributes:
 
 - **id** - Unqiue ID of the module (required)
 - **class** - Namespaced classname of the module class (required)
@@ -117,7 +123,7 @@ Module configuration files of enabled modules are processed by the [[humhub\comp
 - **urlManagerRules** - Array of [URL Manager Rules](http://www.yiiframework.com/doc-2.0/yii-web-urlmanager.html#addRules()-detail) (optional)
 - **modules** - Submodules (optional)
 
-Example `config.php` file:
+Example:
 
 ```php
 <?php
@@ -140,32 +146,78 @@ return [
 
 #### Module Events
 
-In order to extend or alter the behavior of some features, your module can listen to class level events like:
+In order to extend or alter the behavior of some features, your module can listen to class level events as for example:
 
  - **Widget** events
  - **ActiveRecord** validation,save or delete events
  - **Application** events
  - **Controller** events
- - And other custom events
  
-Events are configured within your modules `config.php` file as in the previous example. Module event handler should ideally reside in an
-extra `Events` class, especially if you plan many event handlers. In some simpler cases events handlers are implemented within the `Module` class
+Events are configured within your modules `config.php` file as described in the previous section. Module event handler should ideally reside in an
+extra `Events` class, especially if you plan multiple event handlers. In simpler cases events handlers may be implemented directly within the `Module` class
 itself.
 
-See [change the default behaviour](module-change-behavior.md) for additional use-cases of event handlers.
+See [change the default behaviour](module-change-behavior.md) for additional event use-cases.
 
 ### Module Classes
 
 The `Module.php` file contains the actual module class which should either extend [[humhub\components\Module]] or [[humhub\modules\content\components\ContentContainerModule]].
+The `Module` class provides basic module functions used for disabling and retrieving metadata.
 
-The base `Module` class provides basic module functions used for enabling, disabling and retrieving metadata. 
-The [ContentContainerModule](#use-of-contentcontainermodule) class has to be extended in case your module requires to be enabled on space or user account level. 
+#### Module Class Level Configuration
 
-The `Module` class is responsible for:
+Public fields of the `Module` class can be overwritten by the application configuration. This can be useful to provide some extra settings.
 
-#### Handling the enabling and disabling of the module
+The following example module defines
 
-The modules `disable()` function is called if the module is disabled.
+```php
+namespace  mymodule;
+
+class Module extends \humhub\components\Module
+{
+    public $maxValue = 200;
+    
+    // ...
+}
+```
+The `maxValue` can be overwritten by the following settings within the `@humhub/protected/config/common.php`
+
+```php
+return [
+    'modules' => [
+        'mymodule' => [
+            'maxValue' => 300
+        ]
+    ]
+]
+```
+
+The setting is used within your domain logic as follows:
+
+```php
+$maxValue = Yii::$app->getModule('mymodule')->maxValue;
+```
+
+While module class level configurations are handy for values which are not changed that often, 
+you may should consider using [Settings and Configurations](settings.md) in combination with the `Module::getConfigUrl()`
+to implement a admin configuration.
+
+#### Module Settings
+
+The `Module::getConfigUrl()` can be used to set a module configuration view. Once this function is implemented an `Configure`
+button will be added to your module within the module overview section.
+
+The controller handling your configuration should extend [[humhub\modules\admin\components\Controller]].
+Refer to the [Settings and Configurations](settings.md) in order to learn how to save global or container related settings.
+
+[ContentContainerModules](#use-of-contentcontainermodule) provide a `getContentContainerConfigUrl()` function respectively.
+
+#### Disable Module Logic
+
+The modules `Module::disable()` function is called while disabling the module. Within the disable logic of your module
+you should clear all module related database entries. Note that you should iterate over the entries and delete them by means of the
+`ActiveRecord::delete()` function in order to trigger ActiveRecord events. Note the `ActiveRecord::deleteAll()` **does
+not trigger** those events. 
 
 ```php
 class Module extends \humhub\components\Module
@@ -189,11 +241,7 @@ By default the `disable()` function will clear the following data:
  - Clear all `ContentContainerSettings` and global `Settings` related with this module
  - Clear the `module_enabled` entry
 
-> Note: The default implementation of `disable()` will clear some module data automatically as the modules global and ContentContainer settings, profile and space module relations.
-
-#### Handling the enabling and disabling of this module for a given space or profile
-
-See the [Container Module](#container-module) section for more information.
+See the [Container Module](#container-module) section for information about disabling your module on `ContentContainer` level.
 
 #### Export Module Permissions
 
@@ -271,6 +319,8 @@ In case your module can be enabled on space or user account level your `Module` 
 - `disableContentContainer()` - is called when this module is disabled for a given container.
 
 - `getContentContentContainerDescription()` - provides a general description of this module for a given container.
+
+- `getContentContainerConfigUrl()` - returns an URL linking to a container level configuration
 
 The following example module can be enabled on space and profile level:
 
