@@ -1,7 +1,7 @@
 Module Developement - Getting Started
 =================
 
-The following guide describes the basic module structure and extended module features as well as important considerations regarding your own custom module.
+The following guide describes the basic module structure and extended module features as well as important considerations regarding your own custom modules.
 Since HumHub is based on the [Yii Application Framework](http://www.yiiframework.com/doc-2.0) you should at least be familiar with the basic concepts of this framework
 before writing your own code as:
 

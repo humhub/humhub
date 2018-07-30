@@ -4,15 +4,13 @@ Developement Guide
 Getting Started
 ---------------
 * [Overview](overview.md)
-* [Git/Composer Installation](git-installation.md)
-* [Coding Standards](coding-standards.md)
 * [Development Environment](environment.md)
-
+* [Coding Standards](coding-standards.md)
 
 Module Developement
 ---------------
 * [Getting Started](modules.md)
-* [Database Scheme](modules.md)
+* [Database and Models](modules.md)
 * [Module Migration Guide](modules-migrate.md)
 * [Asset Management](assets.md)
 * [Change core behavior](module-change-behavior.md)
