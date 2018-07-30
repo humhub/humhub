@@ -1,4 +1,4 @@
-Module Developement - Getting Started
+Module Developement
 =================
 
 The following guide describes the basic module structure and extended module features as well as important considerations regarding your own custom modules.
@@ -24,41 +24,52 @@ Before starting with the development of your custom module, you first have to co
 - Do I need to [change the default behaviour](module-change-behavior.md) of some core components?
 - Do I need specific [permissions](permissions.md) for my module?
 - Does my module create any [notifications](notifications.md) or [activities](activities.md)?
-- Should [guest users](permissions.md#guests-access) have access to some of my module views and functions?
+- Should [guest users](permissions.md#guest-access) have access to some of my module views and functions?
 
 Furthermore you may have to consider the following **issues**:
 
 - [Module settings and configuration](settings.md)
-- [Append my module to a specific navigation](module-change-behavior.md)
+- [Append my module to a specific navigation](module-change-behavior.md#extend-menus)
 - [Client side developement](javascript-index.md)
-- [Asset Management](assets.md)
-- [Data Integrity](models.md#data-integrity)
-- [Migrations and Uninstallation and Compatibility](migration.md)
+- [Schema Migrations and Integrity](models.md)
 - [Testing](testing.md)
 - [File handling](files.md)
 - [Events](events.md)
 - [Translation](i18n.md)
 - [Live UI updates](live.md)
-- [Submodules](#submodules)
 - [Security](security.md)
-- [Theming](embedded-themes.md)
+- [Embedded Themes](../theme/module.md)
 
 ## Basic Life Cycle
 
-A module is considered as `installed` once it resides within one of the `moduleAutoloadPaths`, by default non core modules reside in `protected/modules`.
-You can install modules either by adding them manually to an module autoload path or by loading them from the marketplace. 
+### Install Module
+
+A module is considered as `installed` once it resides within one of the `moduleAutoloadPaths`. By default non core modules reside in `@humhub/protected/modules`.
+You can install modules either by adding them manually to an autoload path or by loading them from the marketplace. 
 
 In order to use a module, you'll have to `enable` it first. This can be achieved by:
 
 - Administration Backend `Administration -> Modules`
 - Console command `php yii module/enable`
 
+
+### Enabled Module
+
 Enabling a module will run the modules database migrations in order to setup the database scheme and furthermore adds an entry to the `modules_enabled` table.
 
-The `ModuleManager` responsible for enabling module will furthermore trigger an  Trigger `ModuleManager::EVENT_BEFORE_MODULE_DISABLE` and `ModuleManager::EVENT_BEFORE_MODULE_DISABLE` `ModuleEvent`.
+The `ModuleManager` responsible for enabling modules will trigger the following events right before and after enabling a module:
+
+- `ModuleManager::EVENT_BEFORE_MODULE_ENABLE`
+- `ModuleManager::EVENT_AFTER_MODULE_ENABLE`
+
+
+### Bootstrap
 
 During the `bootstrap` process of the application the [[humhub\components\bootstrap\ModuleAutoLoader]] will search for all `enabled` modules
 within the module autoload path and initializes the modules event listeners.
+
+
+### Disable Module
 
 `Disabling` a module will usually drop all related module data from the database and will detach the module from the `bootstrap` process.
 
@@ -77,7 +88,6 @@ Please see the [Developement Environment Section](environment.md#external-module
 
 > Warning: You should never delete an enabled module folder without disabling it first.
 
-
 ## Basic Module Structure
 
 Basically modules in HumHub are identical to [Yii2 modules](http://www.yiiframework.com/doc-2.0/guide-structure-modules.html).
@@ -95,7 +105,7 @@ A very basic module consists of the following elements:
  module.json  - module metadata
 ```
 
-### Basic Module Configuration config.php
+### Basic Module Configuration `config.php`
 
 The `config.php` file enables automatic module loading and event configuration, without the need to manually modify the main application config, by returning an array including the following fields:
 Module configuration files of enabled modules are processed by the [[humhub\components\bootstrap\ModuleAutoLoader]] within the `bootstrap` process of the application.
@@ -142,16 +152,16 @@ Events are configured within your modules `config.php` file as in the previous e
 extra `Events` class, especially if you plan many event handlers. In some simpler cases events handlers are implemented within the `Module` class
 itself.
 
-See [change the default behaviour](module-change-behavior.md) for some use-cases of event handlers.
+See [change the default behaviour](module-change-behavior.md) for additional use-cases of event handlers.
 
 ### Module Classes
 
 The `Module.php` file contains the actual module class which should either extend [[humhub\components\Module]] or [[humhub\modules\content\components\ContentContainerModule]].
 
-The base `Module` class provides some basic module functions used for enabling, disabling and retrieving metadata, 
-whereas the `ContentContainerModule` class has to be extended in case your module requires to be enabled on space or user account level. 
+The base `Module` class provides basic module functions used for enabling, disabling and retrieving metadata. 
+The [ContentContainerModule](#use-of-contentcontainermodule) class has to be extended in case your module requires to be enabled on space or user account level. 
 
-The Module class is responsible for:
+The `Module` class is responsible for:
 
 #### Handling the enabling and disabling of the module
 

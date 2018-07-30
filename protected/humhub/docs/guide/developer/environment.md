@@ -11,6 +11,9 @@ Quick Notes
 - Disable caching under `Administration -> Settings -> Advanced -> Caching -> None`
 - Use file based mailing `Administration -> Settings -> Advanced -> E-Mail`
 
+Since HumHub v1.3 makes heavy use of [Queues](../admin/asynchronous-tasks.md) you should configure the [Instant or Sync Queue]([Queues](../admin/asynchronous-tasks.md#sync-and-instant-queue)) 
+queue in your development environment. Otherwise you'll have to execute the `queue/run` command manually in order to test `Notifications` or other queued jobs.
+
 Git/Composer Installation
 =========================
 

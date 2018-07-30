@@ -25,7 +25,7 @@ and one for [[humhub\modules\content\models\ContentContainerPermission|ContentCo
 
 [[humhub\modules\user\models\GroupPermission|GroupPermissions]] are system wide permissions which can be assigned to system groups (Administration -> Users -> Groups).
 
-Example of [[humhub\modules\user\models\GroupPermission|GroupPermissions]] are
+Example of GroupPermissions `GroupPermissions are
 
  - [[humhub\modules\admin\permissions\ManageUsers]] - Permission to access the global user management section.
  - [[humhub\modules\admin\permissions\ManageGroups]] - Permission to access the global user group section.
@@ -37,12 +37,12 @@ Group permissions of the current user can be verified by calling [[humhub\module
 
 ```php
 // Note that we are using the user component and not the user model here!
-Yii::$app->user->can(new MyPermission());
+Yii::$app->user->can(MyPermission::class);
 
 // or
-Yii::$app->user->getPermissionManager()->can(new MyPermission());  
+Yii::$app->user->permissionManager->can(MyPermission::class);  
 
-// or
+// or manually
 // Note that you can leave the subject parameter if you want to verify against the currently logged in user model.
 $permissionManager = new PermissionManager(['subject' => $myUserModel]);
 $permissionManager->can(new MyPermission());
@@ -54,20 +54,20 @@ $permissionManager->can(new MyPermission());
 so-called user-groups.
 
 User user-groups:
-    - User::USERGROUP_SELF: The permission container is the user instance itself.
-    - User::USERGROUP_FRIEND: The permission container is a friend of the user.
-    - User::USERGROUP_USER: The user is just a network member, but does not have any specific relationship with the permission container.
-    - User::USERGROUP_GUEST: The user is a guest user and therefore has no relationship with the permission container.
+    - `User::USERGROUP_SELF`: The permission container is the user instance itself.
+    - `User::USERGROUP_FRIEND`: The permission container is a friend of the user.
+    - `User::USERGROUP_USER`: The user is just a network member, but does not have any specific relationship with the permission container.
+    - `User::USERGROUP_GUEST`: The user is a guest user and therefore has no relationship with the permission container.
 
 Space user-groups:
-    - Space::USERGROUP_OWNER_ User is the owner of the space.
-    - Space::USERGROUP_ADMIN: User is member of the space administrator group.
-    - Space::USERGROUP_MODERATOR: User is member of the  space moderator group.
-    - Space::USERGROUP_MEMBER: User is a simple member of the space.
-    - Space::USERGROUP_USER: User is not a member of the space but a member of the network.
-    - Space::USERGROUP_GUEST: User is not a member of the space nor a member of the network.
+    - `Space::USERGROUP_OWNER`: User is the owner of the space.
+    - `Space::USERGROUP_ADMIN`: User is member of the space administrator group.
+    - `Space::USERGROUP_MODERATOR`: User is member of the  space moderator group.
+    - `Space::USERGROUP_MEMBER`: User is a simple member of the space.
+    - `Space::USERGROUP_USER`: User is not a member of the space but a member of the network.
+    - `Space::USERGROUP_GUEST`: User is not a member of the space nor a member of the network.
 
-Example of [[humhub\modules\content\models\ContentContainerPermission|ContentContainerPermissions]] are
+Example of `ContentContainerPermissions` are:
 
  - [[humhub\modules\space\permissions\InviteUsers]] - Permission to invite users to a space.
  - [[humhub\modules\mail\permissions\SendMail]] - Allows/Disallows other users to send messages.
@@ -77,32 +77,31 @@ Example of [[humhub\modules\content\models\ContentContainerPermission|ContentCon
 
 ```php
 // check if the current user is allowed to send messages to user A
-$userA = User::findOne([...]);
-$userA->can(new SendMail());
+$userA->can(SendMail::class);
 
 // check if the current user is allowed to manage content in spaceA
-$spaceA->can(new ManageContent());
+$spaceA->can(ManageContent::class);
 
 // or
-// Note the 'all' parameter is used in this case to require all given Permissions to be verified successfully instead of only one.
+// Note the 'all' parameter is used in this example to require all given Permissions to be verified successfully instead of only one.
 $permissionManager = new ContentContainerPermissionManager(['subject' => $myUserModel, 'contentContainer' => '$mySpace']);
 $permissionManager->can([new MyPermissionA, new MyPermissionB], ['all' => true]);
 ```
 
 ## Custom Permissions
 
-All permission classes are derived from [[humhub\libs\BasePermission]] and should reside in the 'permissions' directory of your module. 
+All permission classes are derived from [[humhub\libs\BasePermission]] and should reside in the `permissions` directory of your module. 
 A [[humhub\libs\BasePermission]] subclass should at least overwrite the following attributes:
 
- - [[humhub\libs\BasePermission::$id|BasePermission::$id]] - A unique permission id.
- - [[humhub\libs\BasePermission::$moduleId|BasePermission::$moduleId]] - The moduleId this Permission belongs to.
- - [[humhub\libs\BasePermission::$title|BasePermission::$title]] - Permission title used to display the permission.
- - [[humhub\libs\BasePermission::$description|BasePermission::$description]] - Short description of the permission.
+ - [[humhub\libs\BasePermission::id|BasePermission::id]] - A unique permission id.
+ - [[humhub\libs\BasePermission::moduleId|BasePermission::moduleId]] - The moduleId this Permission belongs to.
+ - [[humhub\libs\BasePermission::title|BasePermission::title]] - Permission title used to display the permission.
+ - [[humhub\libs\BasePermission::description|BasePermission::description]] - Short description of the permission.
 
 ### Default State
 
-By default a permission is only granted if either the [[humhub\libs\BasePermission::$defaultState|BasePermission::$defaultState]] is set to [[humhub\libs\BasePermission::$STATE_ALLOW|BasePermission::$STATE_ALLOW]]
-or if the given group is contained in the [[humhub\libs\BasePermission::$defaultAllowedGroups|BasePermission::$defaultAllowedGroups]] array.
+By default a permission is only granted if either the [[humhub\libs\BasePermission::$defaultState|BasePermission::defaultState]] is set to [[humhub\libs\BasePermission::STATE_ALLOW|BasePermission::STATE_ALLOW]]
+or if the given group is contained in the [[humhub\libs\BasePermission::defaultAllowedGroups|BasePermission::defaultAllowedGroups]] array.
 
 The default state of a group can either be overwritten by setting a group state in the database
 
@@ -130,14 +129,14 @@ return [
 
 ### Fixed Groups
 
-The defaultstate of a group can be fixated by overwriting the [[humhub\libs\BasePermission::$fixedGroups|BasePermission::$fixedGroups]] array within your permission class.
-This will disable the edit function of the given groups, which can be used for security reasons.
+The default-state of a group can be fixated by overwriting the [[humhub\libs\BasePermission::fixedGroups|BasePermission::fixedGroups]] array within your permission class.
+This will disable the edit capabilities of the given groups.
 
-By default the followng space user-groups are fixed:
+By default the following space user-groups are fixed:
 
-- Space::USERGROUP_GUEST
-- Space::USERGROUP_OWNER
-- Space::USERGROUP_ADMIN
+- `Space::USERGROUP_GUEST`
+- `Space::USERGROUP_OWNER`
+- `Space::USERGROUP_ADMIN`
 
 ## Edit Permissions
 
@@ -153,6 +152,7 @@ public function getPermissions($contentContainer = null)
             new permissions\MySpacePermission()
         ];
     } elseif ($contentContainer instanceof User) {
+        // This module does not provide yn user level permission
         return [];
     }
 
@@ -164,75 +164,129 @@ public function getPermissions($contentContainer = null)
 
 ## Controller Access Permission
 
-To restrict the access to a controller or specific controller actions a controller can use the [[humhub\components\behaviors\AccessControl]] behaviour.
-
-The following example shows a controller which restricts the access of the 'secret' action.
-
+To restrict the access to a controller or specific controller actions your controller should overwrite the
+ [[humhub\components\Controller::getAccessRules()]] function. This function should return an array of access rules as:
 
 ```php
 class SpecialController extends Controller
 {
-    public function behaviors()
+    public function getAccessRules()
     {
         return [
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
-                'rules' => [
-                    ['permissions' => SpecialPermission::className(), 'actions' => ['secret']]
-                ];
-            ]
-        ];
+            // This will block all controller actions for non loggedIn users.
+            ['login'],
+            // This will block the secret action for users without SpecialPermission
+            ['permission' => [SpecialPermission::class, 'actions' => ['secret']]
+        ]
     }
 
     public function actionIndex()
     {
-        ...
+        // Only accessible by logged in users
     }
 
     // Will only be allowed for users with SpecialPermission
     public function actionSecret()
     {
-        ...
+        // Only accessible by users with SpecialPermission permission
     }
 }
 ```
 
-In the following, we'll show some more use cases for the [[humhub\components\behaviors\AccessControl|AccessControl]]
+The set of available rules is defined by the [[humhub\components\access\ControllerAccess]] which is defined by 
+[[humhub\components\Controller::access]]. There are three `ControllerAccess` classes available:
+
+ - `humhub\components\access\ControllerAccess` - default access control
+ - `humhub\components\access\StrictAccess` - adds an additional restriction for guest users in non guest mode environments
+ - `humhub\modules\content\components\ContentContainerControllerAccess` - default access control in `ContentContainerController`
+
+In the following, we'll show some more use cases for the `getAccessRules` function:
+
+Disable guest access for all controller actions:
 
 ```php
+public function getAccessRules()
+{
+    return [
+         ['login']
+    ];
+}
+```
 
-// Allow only system administrators
-return [
-    'acl' => [
-        'class' => \humhub\components\behaviors\AccessControl::className(),
-        'adminOnly' => true
-    ]
-];
+Disable guest access for specific controller actions:
 
-// Allow guest access for index actions
-return [
-    'acl' => [
-        'class' => \humhub\components\behaviors\AccessControl::className(),
-        'guestAllowedActions' => ['index']
-        'rules' => [
-            ['permissions' => SpecialPermission::className(), 'actions' => ['secret']]
-        ];
-    ]
-];
+```php
+public function getAccessRules()
+{
+    return [
+         ['login' => ['action1', 'action2']]
+    ];
+}
+```
 
-// Combined rules: Every action is only granted for users with SpecialPermission except 'secret' action, which is accessible by SpecialPermission and SpecialAdminPermission users.
-return [
-    'acl' => [
-        'class' => \humhub\components\behaviors\AccessControl::className(),
-        'guestAllowedActions' => ['index']
-        'rules' => [
-            ['permissions' => SpecialPermission::className()]
-            ['permissions' => [SpecialPermission::className(), SpecialAdminPermission::className()], 'actions' => ['secret']]
-        ];
-    ]
-];
+All users have to be logged in + additional permission check for 'action1' and 'action2':
 
+```php
+public function getAccessRules()
+{
+    return [
+         ['login'],
+         ['permission' => MyPermission::class, 'actions' => ['action1', 'action2']]
+    ];
+}
+```
+
+Custom inline validator for action 'action1':
+
+```php
+public function getAccessRules()
+{
+    return [
+         ['validateMyCustomRule', 'someParameter' => 'someValue', 'actions' => ['action1']]
+    ];
+}
+
+public function validateMyCustomRule($rule, $access)
+{
+    if($rule['someParameter'] !== 'someValue') {
+         $access->code = 401;
+         $access->reason = 'Not authorized!';
+         return false;
+    }
+
+     return true;
+}
+```
+
+### ContentContainerControllerAccess
+
+The `ContentContainerControllerAccess` used in `ContentContainerController` provides some additional access rules as:
+
+ - `ContentContainerControllerAccess::RULE_SPACE_ONLY` restrict to space requests
+ - `ContentContainerControllerAccess::RULE_PROFILE_ONLY` restrict to user account requests
+ - `ContentContainerControllerAccess::RULE_USER_GROUP_ONLY` restricts the access to a given level of container groups
+
+The following example restricts the access for non members of a space. Note the USERGROUP_MEMBER should specify the
+minimum user group level which should be able to access the controller/actions. 
+
+```php
+public function getAccessRules()
+{
+    return [
+        [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_MEMBER]]
+    ];
+}
 ```
 
 ## Guest Access
-(TBD)
+
+Since HumHub can also be operated in guest mode, you have to consider that a call to `Yii::$app->user->getIdentity()` may return a `null` value.
+Therefore you should either block guest access within your module controllers (see [Controller Access](#controller-access-permission)) or add a check for
+`Yii::$app->user->isGuest` before accessing your user identity. 
+
+> Note: Global controllers (non ContentContainerController) should be protected by `StrictAccess`
+
+> Note: You also should hide view components as buttons and menus which are not accessible by guest users.
+
+> Note: If the guest mode is active, guest users are allowed to access public content.
+

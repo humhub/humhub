@@ -12,8 +12,8 @@ about the usage of events. And also check the [Module Events](modules.md#module-
 The following list shows an overview of most of the events available in the HumHub core:
 
 - Models:
- - `Model::EVENT_BEFORE_VALIDATE`
- - `Model::EVENT_AFTER_VALIDATE`
+  - `Model::EVENT_BEFORE_VALIDATE`
+  - `Model::EVENT_AFTER_VALIDATE`
 - ActiveRecord:
   - `ActiveRecord::EVENT_INIT`
   - `ActiveRecord::EVENT_AFTER_FIND`
@@ -29,16 +29,16 @@ The following list shows an overview of most of the events available in the HumH
   - `Controller::EVENT_BEFORE_ACTION`
   - `Controller::EVENT_AFTER_ACTION`
 - Application
- - `Application::EVENT_ON_INIT`
+  - `Application::EVENT_ON_INIT`
 - CronController:
   - `CronController::EVENT_ON_HOURLY_RUN`
   - `CronController::EVENT_ON_DALY_RUN`
 - Integrity:
   - `IntegrityController::EVENT_ON_RUN`
 - Response:
- - `Response::EVENT_BEFORE_SEND`
- - `Response::EVENT_AFTER_SEND`
- - `Response::EVENT_AFTER_PREPARE`
+  - `Response::EVENT_BEFORE_SEND`
+  - `Response::EVENT_AFTER_SEND`
+  - `Response::EVENT_AFTER_PREPARE`
 - ModuleManager:
   - `ModuleManager::EVENT_BEFORE_MODULE_ENABLED`
   - `ModuleManager::EVENT_AFTER_MODULE_ENABLED`
@@ -78,7 +78,7 @@ The following list shows an overview of most of the events available in the HumH
 - FileHandlerCollection:
   - `FileHandlerCollection::EVENT_INIT`
 - humhub\modules\installer\Module:
-  -`humhub\modules\installer\Module::EVENT_INIT_CONFIG_STEPS`
+  - `humhub\modules\installer\Module::EVENT_INIT_CONFIG_STEPS`
 - humhub\modules\installer\controllers\ConfigController:
   - `humhub\modules\installer\controllers\ConfigController::EVENT_INSTALL_SAMPLE_DATA`
 - Search:
@@ -105,11 +105,11 @@ The following list shows an overview of most of the events available in the HumH
 
 ## Widgets
 
-Widget events are often used to extend view components as menus and forms. Here are some usecases for widget events:
+Widget events are often used to extend view components as menus and forms. Here are some use-cases for widget events:
 
 ### Extend menus
 
-Widgets based on [[humhub\widgets\BaseMenu]] and [[humhub\widgets\BaseStack]] can be intercepted and extended by means of the [[humhub\widgets\BaseMenu|BaseMenu::EVENT_INIT]] event.
+Widgets based on [[humhub\widgets\BaseMenu]] and [[humhub\widgets\BaseStack]] can be intercepted and extended by means of the [[humhub\widgets\BaseMenu::EVENT_INIT]] event.
 Please see the [Sidebars and Snippets](snippet.md#event-handlers) section for useful examples of such event handlers.
 
 ### Overwrite widget classes
@@ -129,7 +129,6 @@ In order to completely replace a widget implementation you can use the [[humhub\
 ```php
 public static function onCreateSomeWidget($event)
 {
-    // Switch to Enterprise Space Chooser
     $event->config['class'] = MyOverwriteWidget::class;
 }
 ```

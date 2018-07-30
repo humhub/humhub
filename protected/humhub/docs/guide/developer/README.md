@@ -9,7 +9,7 @@ Getting Started
 
 Module Developement
 ---------------
-* [Getting Started](modules.md)
+* [Introduction](modules.md)
 * [Module Migration Guide](modules-migrate.md)
 * [Asset Management](assets.md)
 * [Change core behavior](module-change-behavior.md)
