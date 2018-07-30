@@ -1,12 +1,10 @@
-Javascript API Getting Started
+Javascript Module Guide
 =======
 
 Since version 1.2, HumHub provides a module based Javascript API within the `humhub` namespace.
 Instead of embeding inline script blocks into your views, it's highly recommended to store your Javascript code in external script files and use the HumHub module system.
 
-## Modules System
-
-### Publish a Module Asset
+## Publish a Module Asset
 
 Your script files should reside within the `resources/js` folder of your humhub module and should ideally be appended at the bottom of the document. 
 
@@ -48,7 +46,7 @@ If your bundle is registered to a view retrieved by an ajax call, make sure to r
 
 > Note: Yii loads Javascript Files only once per page load, therefore all your script files will only be loaded and executed once. This can lead to unexpected behaviour especially with [Pjax](javascript-client.md) single page loading enabled.
 
-### Register Modules
+## Register Modules
 
 Modules are registered by calling the `humhub.module` function as follows
 
@@ -75,7 +73,7 @@ Your module function is provided with the following arguments:
 2. `require` - Used for injecting other modules.
 3. `$` - jQuery instance.
 
-##### Export Module Logic
+### Export Module Logic
 
 Module functions and attributes can only be accessed outside of the module if they are exported, either by directly appending them to the `module` instance or by calling `module.export`.
 
@@ -109,7 +107,7 @@ module.export = MyClass;
 ```
 > Note: When exporting a single object or class, the exported object won't have the usual module attributes and utilities. The plain object or function will simply be added to the namespace.
 
-##### Module Initialization
+### Module Initialization
 
 Your module can define its initialization logic by implementing and exporting an `init` function.
 
@@ -136,7 +134,7 @@ module.export({
 
 > Warning: Once registered, your modules `init` function may be called even if you are not currently in your desired modules view. This occures especially if [Pjax](javascript-pjax.md) is enabled and `initOnPjaxLoad` is set to `true`. Therfore, if your modules initialization logic only makes sense in a specific context, make sure you reside in the desired view before running your actual initialization code e.g: `if(!$('#mySpecialElement').length) {return;}`.
 
-##### Module Unload
+### Module Unload
 
 For the purpose of cleaning up module related dom nodes etc. there is also an `unload` function which is called before each Pjax page load. This function is mainly used to remove obsolete dom nodes, prevent memory leaks, remove obsolete dom listeners or clear some module data.  
 
@@ -152,7 +150,7 @@ module.export({
 
 > Note: Some third party libraries append helper elements to the document body. Make sure to remove such elements in the `unload` function. 
 
-##### Module Dependencies
+### Module Dependencies
 
 Other modules can be injected into your module by using the `require` function as follows 
 
@@ -207,7 +205,7 @@ humhub.module('example', function(module, require, $) {
 
 > Info: All core modules are appended to the head section of your document, so they should not be any dependency problem if you append your assets either at the begin or the end of the document body.
 
-### Module Lifecycle
+## Module Lifecycle
 
 A module runs through the following lifecycle (by the example of our `example` module):
 
@@ -226,7 +224,7 @@ A module runs through the following lifecycle (by the example of our `example` m
 13. `humhub:modules:client:pjax:success`
 14. Reinitialize all modules with `initOnPjaxLoad=true` by calling `init` with `isPjax = true` 
 
-### Module Configuration
+## Module Configuration
 
 If you need to transfer values as texts, flags or urls from your php backend to your Javascript module, you can use the `module.config` array as follows
 
@@ -283,7 +281,7 @@ humhub.config.set('myModule', 'myKey', 'value');
 
 > Warning: Since the configuration can easily be manipulated, you should not set values which can compromise the security of your application.
 
-### Module Texts
+## Module Texts
 
 Beside the `config` array, the module instance furthermore provides a `text` utility function for accessing texts  configurations.
 
@@ -305,7 +303,7 @@ module.text('error.notallowed');
 module.config['text']['error.notallowed'];
 ```
 
-### Module Log
+## Module Log
 
 Your module can be used to create module specific log entries by using the `module.log` utility.
 The log object supports the following log level functions:
@@ -346,3 +344,25 @@ The trace level of your module can be configured by setting the `traceLevel` con
 > Info: The `module.log.success()` function will trigger a status bar update by default.
 
 > Note: If you change the `traceLevel` of a module at runtime, you'll have to call `module.log.update()`.
+
+## Overwrite Module Behaviour
+
+You can overwrite the default module exports within your custom module by listening to the `beforeInit` function the target module.
+
+Within your example module:
+
+```javascript
+// you can also use humhub.modules.event instead in case you are outside a humhub module
+var event = require('event');
+
+event.on('humhub:modules:someModule:afterInit', function(evt, someModule) {
+    
+    someModule.someExport = function() {
+        // overwritten
+    };
+    
+    someModule.config['someConfigKey'] = 'overwritten';
+    
+});
+
+```

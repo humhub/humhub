@@ -4,32 +4,32 @@ Streams are used to asynchronously load batches of content entries which can be 
 The stream concept is used for example in _space and profile walls_, the _dashboard_ and
 _activity stream_.
 
-Custom modules can use own streams for example to filter content by a specific type, or other custom
-filters.
-
-### Stream Channel
+## Stream Channel
 
 The `stream_channel` attribute of a [[humhub\modules\content\models\Content]] entry defines the relation of this content to
-a specific type of stream. The `default` stream channel for example is used by _space/profile_ and _dashboard_
+a specific type of stream. The `default` stream channel for example is used by _space_, _user_ and _dashboard_
 streams whereas the `activity` stream-channel is exclusively used in activity streams.
 
-The stream channel of your content type can be overwritten by setting the [[humhub\modules\content\components\ContentActiveRecord::streamChannel|ContentActiveRecord::streamChannel]] attribute.
+The `stream_channel` of your content type can be overwritten by setting the [[humhub\modules\content\components\ContentActiveRecord::streamChannel|ContentActiveRecord::streamChannel]] attribute.
 
-You can consider the following stream channel options for your own [[humhub\modules\content\components\ContentActiveRecord|ContentActiveRecord]]:
+For own `ContentActiveRecord` you can consider the following `stream_channel` options:
 
-- `default` stream channel will include your content to default _space/profile walls_ and the _dashboard_. You are still able to create a custom stream view which filters content by type.
+- `default` this stream_channel will include your content to default _space/profile walls_ and the _dashboard_. You are still able to create a custom stream view which filters content by type.
 - `null` will exclude the content from the default streams
-- Use a custom stream channel if you exclusively want your content to be included in your own custom stream (similar to activity concept).
+- Use a custom stream channel if you exclusively want your content to be included in your own custom stream (similar to the activity concept).
+
 > Note: A custom stream channel should be unique, so choose a meaningful name preferably with module prefix.
 
-### WallEntry Widget
+## WallEntry Widget
 
-A [[humhub\modules\content\widgets\WallEntry|WallEntry widget]] is responsible for rendering the individual stream entries
-of a stream and is defined by [[humhub\modules\content\components\ContentActiveRecord::wallEntryClass|ContentActiveRecord::wallEntryClass]].
+A [[humhub\modules\content\widgets\WallEntry|WallEntry widget]] is responsible for rendering the individual `stream entries`
+of a `stream` and is defined by [[humhub\modules\content\components\ContentActiveRecord::wallEntryClass|ContentActiveRecord::wallEntryClass]].
 
 The following example shows a very basic WallEntry widget implementation.
 
 > Note: By default your WallEntry view only have to render the actual content, the default WallEntry layout is available in `@humhub/modules/content/widgets/views/wallEntry.php`
+
+**mymodule\widgets\WallEntry.php**:
 
 ```php
 class WallEntry extends \humhub\modules\content\widgets\WallEntry
@@ -43,7 +43,7 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
 }
 ```
 
-wallEntry.php:
+**mymodule\widgets\views\wallEntry.php**:
 
 ```php
 <div>
@@ -53,17 +53,17 @@ wallEntry.php:
 </div>
 ```
 
-The WallEntry widget will be provided with a [[humhub\modules\content\widgets\WallEntry::contentObject|contentObject]] which holds the
-[[humhub\modules\content\components\ContentActiveRecord|ContentActiveRecord]] model to be rendered.
+The `WallEntry` widget will be provided with a [[humhub\modules\content\widgets\WallEntry::contentObject|contentObject]] which holds the
+`ContentActiveRecord` model to be rendered.
 
-Your [[humhub\modules\content\widgets\WallEntry|WallEntry]] class can also set the following attributes:
+Your `WallEntry` widget class can also set the following attributes:
 
  - [[humhub\modules\content\widgets\WallEntry::editRoute|editRoute]] defines an edit route to your edit action which will be used to render an edit link (see WallEntryControls section)
  - [[humhub\modules\content\widgets\WallEntry::editMode|editMode]] defines the way the edit action is triggered (see WallEntryControls section)
  - [[humhub\modules\content\widgets\WallEntry::wallEntryLayout|wallEntryLayout]] defines the layout used to embed the result of `render()`, by default you only have to care about rendering the content section of your WallEntry
 
 
-#### WallEntryControls
+### WallEntryControls
 
 The default WallEntry layout contains a context menu with content actions like `edit`, `delete`, `archive` etc.
 This menu can be manipulated by overwriting the [[humhub\modules\content\widgets\WallEntry::getContextMenu()|getContextMenu()]] function and 
@@ -107,7 +107,7 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
 }
 ```
 
-CloseLink example:
+**CloseLink example**:
 
 ```php
 class CloseLink extends humhub\modules\content\widgets\WallEntryControlLink
@@ -133,65 +133,69 @@ class CloseLink extends humhub\modules\content\widgets\WallEntryControlLink
 }
 ```
 
-## Create own Module Content Stream
+## Create Module Content Streams
 
 ### Implement StreamAction
 
 Derived from [[humhub\modules\content\components\actions\ContentContainerStream]]
 
-Example:
+A `StreamAction` is responsible for handling a stream request and filtering stream entries.
+The following example extends the default [[humhub\modules\content\components\actions\ContentContainerStream|ContentContainerStream]] and
+adds an content-type filter:
 
 ```php
-class StreamAction extends humhub\modules\content\components\actions\ContentContainerStream
+namespace mymodule\actions;
+
+use humhub\modules\content\components\actions\ContentContainerStream;
+
+class StreamAction extends ContentContainerStream
 {
     public function setupFilters()
     {
 		// Limit output to specific content type
-        $this->activeQuery->andWhere(['content.object_model' => Poll::className()]);
+        $this->activeQuery->andWhere(['content.object_model' => MyModel::class]);
     }
 }
 ```
 
-Specify Action in Controller
-
-Example:
+Add the `StreamAction` to your Controller:
 
 ```php
-class PollController extends ContentContainerController
+class StreamController extends ContentContainerController
 {
 
     public function actions()
     {
-        return array(
-            'stream' => array(
-                'class' => \humhub\modules\polls\components\StreamAction::className(),
-                'mode' => \humhub\modules\polls\components\StreamAction::MODE_NORMAL,
+        return [
+            'stream' => [
+                'class' => StreamAction::class,
                 'contentContainer' => $this->contentContainer
-            ),
-        );
+            ],
+        ];
     }
 ```
 
 ### Display Stream
 
-You can use the Stream Widget to display the Stream in your View.
+You can use the [[humhub\modules\stream\widgets\StreamViewer|StreamViewer]] widget to display your stream within your view as follows:
 
 ```php
 
-echo \humhub\modules\content\widgets\Stream::widget(array(
+<?= \humhub\modules\stream\widgets\StreamViewer::widget([
     'contentContainer' => $contentContainer,
-    'streamAction' => '//polls/poll/stream',
+    'streamAction' => '/mymodule/stream/stream',
     'messageStreamEmpty' => ($contentContainer->canWrite()) ?
             Yii::t('PollsModule.widgets_views_stream', '<b>There are no polls yet!</b><br>Be the first and create one...') :
             Yii::t('PollsModule.widgets_views_stream', '<b>There are no polls yet!</b>'),
-    'messageStreamEmptyCss' => ($contentContainer->canWrite()) ?
-            'placeholder-empty-stream' :
-            '',
-));
+    'messageStreamEmptyCss' => ($contentContainer->canWrite()) ? 'placeholder-empty-stream' : '',
+]); ?>
 
 ```
 
 ## Create Content Form
+
+You can add a [[humhub\modules\content\widgets\WallCreateContentForm|WallCreateContentForm]] on top of your custom `stream` in
+order to create new stream-entries within your stream view.
 
 ### Create Form Widget
 
@@ -199,36 +203,37 @@ Create a Form Widget derived from [[humhub\modules\content\widgets\WallCreateCon
 
 ```php
 
-namespace humhub\modules\polls\widgets;
+namespace mymodule\widgets;
 
-class WallCreateForm extends \humhub\modules\content\widgets\WallCreateContentForm
+use humhub\modules\content\widgets\WallCreateContentForm;
+
+class WallCreateForm extends WallCreateContentForm
 {
 
-    public $submitUrl = '/polls/poll/create';
+    public $submitUrl = '/mymodule/mymodel/create';
 
     public function renderForm()
     {
         // Render your custom form here
-        return $this->render('form', array());
+        return $this->render('form', []);
     }
 
 }
 
 ```
 
-Create a view file for widget which contains module specific fields. All standard fields (e.g. visibility) are added automatically.
+Create a widget `view` which contains module specific fields. All standard fields (e.g. visibility) are added automatically.
 
 ```php
-<?= Html::textArea("question", "", array('id' => 'contentForm_question', 'class' => 'form-control autosize contentForm', 'rows' => '1', "tabindex" => "1", "placeholder" => Yii::t('PollsModule.widgets_views_pollForm', "Ask something..."))); ?>
+<?= Html::textArea("question", "", ['id' => 'contentForm_question', 'class' => 'form-control autosize contentForm', 'rows' => '1', "tabindex" => "1", "placeholder" => Yii::t('PollsModule.widgets_views_pollForm', "Ask something..."])); ?>
 
 <div class="contentForm_options">
-    <?= Html::textArea("answersText", "", array('id' => "contentForm_answersText", 'rows' => '5', 'style' => 'height: auto !important;', "class" => "form-control contentForm", "tabindex" => "2", "placeholder" => Yii::t('PollsModule.widgets_views_pollForm', "Possible answers (one per line)"))); ?>
+    <?= Html::textArea("answersText", "", ['id' => "contentForm_answersText", 'rows' => '5', 'style' => 'height: auto !important;', "class" => "form-control contentForm", "tabindex" => "2", "placeholder" => Yii::t('PollsModule.widgets_views_pollForm', "Possible answers (one per line)")]); ?>
     <div class="checkbox">
         <label>
-            <?= Html::checkbox("allowMultiple", "", array('id' => "contentForm_allowMultiple", 'class' => 'checkbox contentForm', "tabindex" => "4")); ?> <?php echo Yii::t('PollsModule.widgets_views_pollForm', 'Allow multiple answers per user?'); ?>
+            <?= Html::checkbox("allowMultiple", "", ['id' => "contentForm_allowMultiple", 'class' => 'checkbox contentForm', "tabindex" => "4"]); ?> <?= Yii::t('PollsModule.widgets_views_pollForm', 'Allow multiple answers per user?'); ?>
         </label>
     </div>
-
 </div>
 ```
 
@@ -245,14 +250,13 @@ Example:
 
 public function actionCreate()
 {
-    $poll = new Poll();
-    $poll->question = Yii::$app->request->post('question');
-    $poll->answersText = Yii::$app->request->post('answersText');
-    $poll->allow_multiple = Yii::$app->request->post('allowMultiple', 0);
+    $model = new MyModel();
+    $model->question = Yii::$app->request->post('question');
+    $model->answersText = Yii::$app->request->post('answersText');
+    $model->allow_multiple = Yii::$app->request->post('allowMultiple', 0);
 
-    return \humhub\modules\polls\widgets\WallCreateForm::create($poll);
+    return \mymodule\widgets\WallCreateForm::create($model);
 }
-
 
 ```
 
@@ -264,7 +268,7 @@ e.g.
 
 ```php
 
-<?php echo \humhub\modules\polls\widgets\WallCreateForm::widget(array('contentContainer' => $contentContainer)); ?>
+<?= \humhub\modules\polls\widgets\WallCreateForm::widget(array('contentContainer' => $contentContainer)); ?>
 
 ```
 

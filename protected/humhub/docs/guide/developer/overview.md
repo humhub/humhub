@@ -6,9 +6,9 @@ The modular nature of the HumHub platform allows you to add new features or chan
 custom modules.
 
 Other languages used throughout the platform, besides PHP, are JavaScript, HTML, SQL and CSS/Less. 
-HumHub is based on the Model-View-Controller (MVC) pattern and uses frontend technologies such as [jQuery](https://jquery.com/), [Bootstrap](http://getbootstrap.com/) and [Less](http://lesscss.org/).
+HumHub is based on the [Model-View-Controller (MVC)](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) pattern and uses frontend technologies such as [jQuery](https://jquery.com/), [Bootstrap](http://getbootstrap.com/) and [Less](http://lesscss.org/).
 
-In this guide, you will find all the necessary information to customize your HumHub installation and implement your own modules.
+In this guide you will find all the necessary information to customize your HumHub installation and implement your own modules.
 
 As HumHub is based on the [Yii 2.0 PHP Framework](http://www.yiiframework.com/) make sure you're also familiar with the basic concepts of this framework:
 

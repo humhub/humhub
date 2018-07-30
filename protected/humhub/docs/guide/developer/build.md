@@ -17,12 +17,10 @@ Call the following commands in your humhub root directory:
 
 ## Build Assets
 
-HumHub uses Yiis build in mechanism for compressing and combining assets as javascript or stylesheet files in combination with grunt.
+HumHub uses Yii`s build-in mechanism for compressing and combining assets as javascript or stylesheet files in combination with grunt.
+Those compressed assets are only used when running in [production mode](admin-installation.md#disable-errors-debugging) and in [acceptance tests](testing.md).
 
 Your compressed files will be saved under `/humhub/js/all-*.js` respectively `static/css/all-*.css`.
-
-> Note: HumHub will only use the compressed assets if operated in [production mode](admin-installation.md#disable-errors-debugging), otherwise
-all assets will be served seperatly.
 
 ### Grunt Asset Built
 

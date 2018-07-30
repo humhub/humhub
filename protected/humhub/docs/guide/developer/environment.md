@@ -15,7 +15,7 @@ External Modules Directory
 -----------------
 
 Custom modules can also be located outside of the default HumHub `modules` directory by
-setting the `moduleAutoloadPaths` parameter in your `protected/config/common.php` configuration. This separation can
+adding a path to the `moduleAutoloadPaths` array parameter in your `protected/config/common.php` configuration. This separation can
 be useful while developing custom modules.
 
 ```php
@@ -29,8 +29,10 @@ return [
 Yii Debug Module
 ----------------
 
-Add the following block to your local web configuration `protected/config/web.php` in order
-to enable the [Yii's debug Module](http://www.yiiframework.com/doc-2.0/ext-debug-index.html).
+You may want to enable the [Yii's debug Module](http://www.yiiframework.com/doc-2.0/ext-debug-index.html) for detailed
+request and query debugging.
+ 
+Just add the following block to your local web configuration `protected/config/web.php`:
 
 ```php
 return [
@@ -50,4 +52,4 @@ return [
 Developer Tools Module
 -------------------
 
-The [devtools Module](https://github.com/humhub/humhub-modules-devtools) provides useful showcases of widgets and a Module generator based on [Gii](https://www.yiiframework.com/doc/guide/2.0/en/start-gii).
+The [devtools Module](https://github.com/humhub/humhub-modules-devtools) provides some useful showcases of widgets and a Module generator based on [Gii](https://www.yiiframework.com/doc/guide/2.0/en/start-gii).

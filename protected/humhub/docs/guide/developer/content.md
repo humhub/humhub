@@ -57,7 +57,7 @@ public function actionEdit($id = null) {
 }
 ```
 
-## Implement Custom ContentActiveRecords
+## Content and ContentActiveRecords
 
 Just like other [ActiveRecords](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record) `ContentActiveRecord` classes should be put under the `yourModule/models` namespace of your module.
 Beside the basic `ActiveRecord` features as `validation` and `attributeLabels` your `ContentContainerActiveRecord` class should at least implement the following fields and methods:
@@ -99,7 +99,7 @@ class MyModel extends ContentActiveRecord
 }
 ```
 
-## Instantiating a ContentContainerActiveRecord:
+### Instantiating a ContentContainerActiveRecord:
 
 You can instantiate your `ContentContainerActiveRecord` as follows:
 
@@ -139,7 +139,7 @@ $model = $content->getModel();
 > Note: You won't have to worry about instantiating or saving the underlying content record, since this is handled within
 the ContentContainerActiveRecord class automatically.
 
-## Use of ActiveQueryContent:
+### Use of ActiveQueryContent:
 
 The `Content` class furthermore provides some extended [ActiveQuery](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record#querying-data) capabilities.
 Calling [[\humhub\modules\content\components\ContentActiveRecord::find()|ContentActiveRecord::find()]] will return a [[\humhub\modules\content\components\ActiveQueryContent]] instance with additional methods to filter specific content entries:
@@ -169,7 +169,7 @@ There are the following user related scopes available:
 - `USER_RELATED_SCOPE_FOLLOWED_USERS` = Content related to the users followed user profiles
 - `USER_RELATED_SCOPE_OWN_PROFILE` = Content related to the users own profile
 
-## Move Content (since v1.3)
+### Move Content (since v1.3)
 
 In case your content should be movable to other spaces you'll have to enable the [[\humhub\modules\content\components\ContentActiveRecord::canMove|ContentActiveRecord::canMove]] flag.
 For complex content-types you may want to overwrite the [[\humhub\modules\content\components\ContentActiveRecord::afterMove()|ContentActiveRecord::afterMove()]] function.
@@ -185,13 +185,13 @@ public function afterMove($container = null)
 }
 ```
 
-## Silent Content Creation
+### Silent Content Creation
 
 By default, the creation of a content entry triggers an activity and notifications for space subscribers.
 This behaviour can be deactivated by setting the [[\humhub\modules\content\components\ContentActiveRecord::silentContentCreation|ContentActiveRecord::silentContentCreation]]
 to `true`. This setting can for example be used for sub content-types which are not of high interest.
 
-## Content Visibility
+### Content Visibility
 
 The content visibility specifies who is be allowed to view the content. When instantiating a new `ContentActiveRecord` without [a predefined visibility](#instantiating-a-contentcontaineractiverecord)
 the underlying content will adapt the default content visibility of its `ContentContainerActiveRecord`.
@@ -230,7 +230,7 @@ if(!$model->content->canView()) {
 
 > Info: Private spaces can not create public content.
 
-## Content Write Permission
+### Content Write Permission
 
 By default users can edit a content if one of the following conditions defined in `Content::canEdit()` are met:
 
@@ -271,7 +271,9 @@ class Example extends ContentContainerActiveRecord
 
 >Info: For more information about permissions, please see the [Permission Section](module-permissions.md).
 
-## Content Url
+### Other content features
+
+#### Content Url
 
 By default the url returned by `Content::getUrl()` links to the space or profile stream with active `contentId` filter.
 If you want to change this behaviour and for example rather link to a content-type specific detail view of your content, you can
@@ -290,9 +292,7 @@ Retrieve the content url:
 $url = $model->content->getUrl();
 ```
 
-## Other content features
-
-### Pin content
+#### Pin content
 
 The default space stream supports the pinning of content, which will load the pinned entries at the top of the
 stream. Normally you won't need to call the pin/unpin methods by yourself, since this is part of the default stream
@@ -308,7 +308,7 @@ $model->content->isPinned();
 $model->content->canPin();
 ```
 
-### Archive content
+#### Archive content
 
 Archived content is by default excluded from the streams. As with the pin logic, you won't have to handle this by yourself.
 
@@ -396,10 +396,6 @@ This will add the required cguid parameter to your request.
 
 See the [Use of ContentContainerModule](modules.md#use-of-container-module) section.
 
-## Content Streams
-
-See the [Stream](stream.md) section
-
 ## Content addons
 
 TBD
@@ -407,3 +403,7 @@ TBD
 - Always linked to particual Content, inherits access rules from it
 - Examples: Like, File, Comment
 - Can be nested (e.g. Container -> Content -> Addon (Comment) -> Addon (Like)
+
+## Content Streams
+
+See the [Stream](stream.md) section

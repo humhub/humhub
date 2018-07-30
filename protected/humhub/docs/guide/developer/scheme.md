@@ -42,7 +42,7 @@ You can manually execute new migrations by the following commands:
 php yii migrate/up --inclueModuleMigrations=1
 ```
 
-or grunt 
+or by grunt 
 
 ```
 grunt migrate-up
