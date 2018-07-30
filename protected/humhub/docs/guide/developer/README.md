@@ -10,7 +10,6 @@ Getting Started
 Module Developement
 ---------------
 * [Getting Started](modules.md)
-* [Database and Models](modules.md)
 * [Module Migration Guide](modules-migrate.md)
 * [Asset Management](assets.md)
 * [Change core behavior](module-change-behavior.md)
@@ -19,11 +18,11 @@ Module Developement
 
 Basic Concepts
 ------------------
+* [Database and Models](models.md)
 * [Content](content.md)
 * [Streams](stream.md)
 * [Events](events.md)
 * [Settings and Configuration](settings.md)
-* [Models / Database](models.md)
 * [Permissions](permissions.md)
 * [Notifications](notifications.md)
 * [Activities](activities.md)
