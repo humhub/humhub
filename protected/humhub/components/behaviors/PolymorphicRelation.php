@@ -139,7 +139,7 @@ class PolymorphicRelation extends Behavior
 
         try {
             $primaryKeyNames = $className::primaryKey();
-            if (count($primaryKey) !== 1) {
+            if (count($primaryKeyNames) !== 1) {
                 Yii::error('Could not load polymorphic relation! Only one primary key is supported!');
                 return null;
             }
