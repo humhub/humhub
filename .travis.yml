@@ -57,7 +57,7 @@ after_failure:
   #- ls
   #- curl --upload-file ./user.acceptance.AccountCest.testBaseAccountSettings.fail.png https://transfer.sh/fail.png
   #- cat user.acceptance.AccountCest.testBaseAccountSettings.fail.html
-  #- cd ../../runtime/logs
+  - cd ../../runtime/logs
+  - cat app.log
   #- ls
-  #- cat app.log
-    
+
