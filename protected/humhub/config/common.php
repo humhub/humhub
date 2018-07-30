@@ -13,7 +13,7 @@ Yii::setAlias('@themes', '@webroot/themes');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.3.0-beta.2',
+    'version' => '1.3.0-beta.3',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue', 'humhub\modules\ui\view\bootstrap\ThemeLoader'],
     'sourceLanguage' => 'en',
