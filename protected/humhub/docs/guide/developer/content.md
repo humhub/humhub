@@ -7,14 +7,14 @@ Before you keep reading, make sure you are familiar with the following Yii conce
  - [Yii ActiveRecords](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record)
  - [Yii Controller](https://www.yiiframework.com/doc/guide/2.0/en/structure-controllers)
 
-## Introduction
+## Content and ContentActiveRecords
 
 [[humhub\modules\content\models\Content|Content]] entries are the base of HumHub content-types as `Posts`, `Polls` and `Wiki Pages`. `Content` entries reside in the
 `content` table and are always related to a specific [[\humhub\modules\content\components\ContentActiveRecord|ContentActiveRecord]] by a polymorphic relation defined in the `object_model`
-and `object_class` columns of the `content` table.
+and `object_id` columns of the `content` table.
 
 While the `ContentActiveRecord` holds the actual data as texts and content-type related settings,
-the underlying `Content` class also provides:
+the underlying `Content` class provides:
 
 - **Permission** checks as `canEdit()`, `canView()`
 - **ContentContainer** access
@@ -57,8 +57,6 @@ public function actionEdit($id = null) {
 }
 ```
 
-## Content and ContentActiveRecords
-
 Just like other [ActiveRecords](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record) `ContentActiveRecord` classes should be put under the `yourModule/models` namespace of your module.
 Beside the basic `ActiveRecord` features as `validation` and `attributeLabels` your `ContentContainerActiveRecord` class should at least implement the following fields and methods:
 
@@ -99,7 +97,7 @@ class MyModel extends ContentActiveRecord
 }
 ```
 
-### Instantiating a ContentContainerActiveRecord:
+### Use of ContentContainerActiveRecords
 
 You can instantiate your `ContentContainerActiveRecord` as follows:
 
@@ -139,7 +137,7 @@ $model = $content->getModel();
 > Note: You won't have to worry about instantiating or saving the underlying content record, since this is handled within
 the ContentContainerActiveRecord class automatically.
 
-### Use of ActiveQueryContent:
+### Use of ActiveQueryContent
 
 The `Content` class furthermore provides some extended [ActiveQuery](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record#querying-data) capabilities.
 Calling [[\humhub\modules\content\components\ContentActiveRecord::find()|ContentActiveRecord::find()]] will return a [[\humhub\modules\content\components\ActiveQueryContent]] instance with additional methods to filter specific content entries:
@@ -323,7 +321,7 @@ $model->content->canArchive();
 
 ```
 
-## ContentContainer
+## ContentContainer and ContentContainerActiveRecords
 
 [[humhub\modules\content\models\ContentContainer|ContentContainers]] in HumHub are used to assign `Content` entries to a specific
 container like a `User Account` or `Space`. Similar to `Content` and `ContentActiveRecords`, `ContentContainer` entries can be seen as an abstraction
@@ -332,7 +330,7 @@ is related to one `ContentContainerActiveRecord` (Space or User). In practice yo
 
 Each container is assigned with an unique `guid`, which beside others is used in controllers to identify the context of its actions.
 
-The `ContentContainerActiveRecord` of a content can be accessed as follows 
+The `ContentContainerActiveRecord` can be accessed as follows: 
 
 ```php
 $news = News::findOne(['id' => $id]);
@@ -346,7 +344,7 @@ There are two types of `ContentContainerActiveRecords`:
 
 ![Application Layers](images/contentContainerClassDiag.jpg)
 
-> Note: It's not supported to create custom ContentContainerActiveRecord classes.
+> Note: HumHub does not support custom container types.
 
 ## ContentContainerController
 
