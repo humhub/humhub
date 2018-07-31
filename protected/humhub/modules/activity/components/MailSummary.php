@@ -134,6 +134,7 @@ class MailSummary extends Component
     protected function getActivities()
     {
         $stream = new DashboardStreamAction('stream', Yii::$app->controller);
+        $stream->activity = true;
         $stream->limit = $this->maxActivityCount;
         $stream->mode = DashboardStreamAction::MODE_ACTIVITY;
         $stream->user = $this->user;

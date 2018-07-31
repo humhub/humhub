@@ -27,6 +27,10 @@ abstract class Filter extends Model
     public abstract function apply();
 
     public function init() {
+        if (Yii::$app->request->isConsoleRequest) {
+            return;
+        }
+
         if($this->autoLoad === static::AUTO_LOAD_ALL) {
             $this->load(Yii::$app->request->get());
             $this->load(Yii::$app->request->post());
