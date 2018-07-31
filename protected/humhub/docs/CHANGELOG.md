@@ -5,6 +5,8 @@ HumHub Change Log
 -----------------------------
 
 - Enh: Added `PolymorphicRelation::strict` to throw exceptions when accessing invalid polymorphic relations
+- Fix: Mail summaries not correctly triggered by cron
+
 
 1.3.0-beta.3  (July 30, 2018)
 -----------------------------
