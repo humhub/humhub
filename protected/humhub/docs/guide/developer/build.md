@@ -1,19 +1,19 @@
 HumHub Build
 ============
 
-## Setup
+HumHub provides some [grunt](https://gruntjs.com/) tasks to ease the execution of some console commands. This guide describes how to setup
+the grunt tool and use the available commands.
 
- 1. Install NPM
- 2. Install Grunt (http://gruntjs.com/getting-started)
- 3. call `npm update` in humhub root
+## Grunt Setup
 
-> Note: Since symlinks are not supported in some virtual machine shared folders the update command should be called from the host.
+ - [Install Node.js](https://nodejs.org/en/download/package-manager/)
+ - [Install Grunt CLI](https://gruntjs.com/using-the-cli)
+ 
+```
+npm install -g grunt-cli
+```
 
-## Setup grunt dependencies
-
-Call the following commands in your humhub root directory:
- - `npm update`
- - `npm install grunt --save-dev`
+ - call `npm install` in your HumHub root
 
 ## Build Assets
 
@@ -21,6 +21,8 @@ HumHub uses Yii`s build-in mechanism for compressing and combining assets as jav
 Those compressed assets are only used when running in [production mode](admin-installation.md#disable-errors-debugging) and in [acceptance tests](testing.md).
 
 Your compressed files will be saved under `/humhub/js/all-*.js` respectively `static/css/all-*.css`.
+
+> Note: Only [[humhub\assets\AppAsset]] dependencies are compressed.
 
 ### Grunt Asset Built
 
@@ -40,11 +42,17 @@ grunt build-assets
 php yii asset humhub/config/assets.php humhub/config/assets-prod.php
 ```
 
-> Info: More information is available in the [Yii Asset Guide](http://www.yiiframework.com/doc-2.0/guide-structure-assets.html#combining-compressing-assets).
+> Info: Detailed information is available in the [Yii Asset Guide](http://www.yiiframework.com/doc-2.0/guide-structure-assets.html#combining-compressing-assets).
 
 ## Build Community Theme
 
-To rebuild the community themes  `theme.css` file you can execute one of the following commands:
+- Install [Less](http://lesscss.org/usage/)
+
+```
+npm install less -g
+```
+
+To rebuild the community themes `theme.css` file you can execute one of the following commands:
 
 ```
 lessc -x themes/HumHub/less/build.less themes/HumHub/css/theme.css
@@ -56,6 +64,15 @@ or with grunt:
 grunt build-theme
 ```
 
+to build another theme within the `@humhub/themes` directory run:
+
+```
+grunt build-theme --name=MyTheme
+```
+
 ### Other Grunt Tasks
+
  - `grunt build-search` Rebuild your [Search Index](../admin/search.md)
+ - `grunt migrate-up` Runs all missing core and module [migrations](models.md#scheme-updates)
+ - `grunt migrate-create --name=my_migration` Creates a new [migration](models.md#scheme-updates) within the `@humhub/migrations` directory
 
