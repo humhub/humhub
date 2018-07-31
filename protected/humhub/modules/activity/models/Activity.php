@@ -54,6 +54,7 @@ class Activity extends ContentActiveRecord
         return [
             [
                 'class' => PolymorphicRelation::class,
+                'strict' => true,
                 'mustBeInstanceOf' => [
                     ActiveRecord::class,
                 ]

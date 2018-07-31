@@ -51,6 +51,7 @@ class Notification extends \humhub\components\ActiveRecord
                 'class' => PolymorphicRelation::class,
                 'classAttribute' => 'source_class',
                 'pkAttribute' => 'source_pk',
+                'strict' => true,
                 'mustBeInstanceOf' => [
                     \yii\db\ActiveRecord::class,
                 ],

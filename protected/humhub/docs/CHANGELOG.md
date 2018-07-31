@@ -1,6 +1,11 @@
 HumHub Change Log
 =================
 
+1.3.0
+-----------------------------
+
+- Enh: Added `PolymorphicRelation::strict` to throw exceptions when accessing invalid polymorphic relations
+
 1.3.0-beta.3  (July 30, 2018)
 -----------------------------
 
