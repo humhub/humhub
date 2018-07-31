@@ -88,7 +88,7 @@ section.
 
 ### Uninstall Module
 
-`Uninstalling` a module means removing it from the àutoload path.
+`Uninstalling` a module means removing it from the autoload path.
 
 > Warning: You should never delete an enabled module folder manually without disabling it first.
 

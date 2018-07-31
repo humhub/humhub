@@ -106,6 +106,6 @@ public static function onIntegrityCheck($event)
 }
 ```
 
-## Create a ActiveRecord
+## ActiveRecord
 
 HumHub uses Yii's [ActiveRecords](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) as database access layer.

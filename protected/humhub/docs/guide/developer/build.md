@@ -2,7 +2,7 @@ HumHub Build
 ============
 
 HumHub provides some [grunt](https://gruntjs.com/) tasks to ease the execution of some console commands. This guide describes how to setup
-the grunt tool and use the available commands.
+the grunt and use the available commands.
 
 ## Grunt Setup
 
@@ -20,11 +20,11 @@ npm install -g grunt-cli
 HumHub uses Yii`s build-in mechanism for compressing and combining assets as javascript or stylesheet files in combination with grunt.
 Those compressed assets are only used when running in [production mode](admin-installation.md#disable-errors-debugging) and in [acceptance tests](testing.md).
 
-Your compressed files will be saved under `/humhub/js/all-*.js` respectively `static/css/all-*.css`.
+Your production assets are saved under `/humhub/js/all-*.js` respectively `static/css/all-*.css`.
 
 > Note: Only [[humhub\assets\AppAsset]] dependencies are compressed.
 
-### Grunt Asset Built
+- Grunt Asset Built
 
 The simples way to build your production assets is using the following grunt task:
 
@@ -32,7 +32,7 @@ The simples way to build your production assets is using the following grunt tas
 grunt build-assets
 ```
 
-### Manual Asset Built
+- Manual Asset Built
 
 1. Delete the content of your `static/assets` directory.
 2. Delete the old compressed file `static/js/all-*.js` and `static/css/all-*.css`
@@ -52,13 +52,7 @@ php yii asset humhub/config/assets.php humhub/config/assets-prod.php
 npm install less -g
 ```
 
-To rebuild the community themes `theme.css` file you can execute one of the following commands:
-
-```
-lessc -x themes/HumHub/less/build.less themes/HumHub/css/theme.css
-```
-
-or with grunt:
+- Grunt theme build
 
 ```
 grunt build-theme
@@ -68,6 +62,12 @@ to build another theme within the `@humhub/themes` directory run:
 
 ```
 grunt build-theme --name=MyTheme
+```
+
+- Manual theme build
+
+```
+lessc -x themes/HumHub/less/build.less themes/HumHub/css/theme.css
 ```
 
 ### Other Grunt Tasks
