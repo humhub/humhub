@@ -5,7 +5,9 @@ HumHub Change Log
 -----------------------------
 
 - Enh: Added `PolymorphicRelation::strict` to throw exceptions when accessing invalid polymorphic relations
+- Fix: Mail summaries not correctly triggered by cron
 - Fix: Click to topics lead on streams without topic filter throws javascript error. (https://github.com/humhub/humhub-modules-polls/issues/49)
+
 
 1.3.0-beta.3  (July 30, 2018)
 -----------------------------
