@@ -12,7 +12,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\base\Behavior;
 use yii\console\Exception;
-use humhub\modules\search\interfaces\Searchable;
+use humhub\modules\search\interfaces\Searchable as SearchableInterface
 
 /**
  * Searchable Behavior
@@ -36,7 +36,7 @@ class Searchable extends Behavior
     public function afterSave($event)
     {
 
-        if ($this->owner instanceof Searchable) {
+        if ($this->owner instanceof SearchableInterface) {
             Yii::$app->search->update($this->owner);
         } else {
             throw new Exception('Owner of HSearchableBehavior must be implement interface ISearchable');
@@ -45,7 +45,7 @@ class Searchable extends Behavior
 
     public function afterDelete($event)
     {
-        if ($this->owner instanceof Searchable) {
+        if ($this->owner instanceof SearchableInterface) {
             Yii::$app->search->delete($this->owner);
         } else {
             throw new Exception('Owner of HSearchableBehavior must be implement interface ISearchable');
