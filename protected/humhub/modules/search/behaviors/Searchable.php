@@ -12,7 +12,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\base\Behavior;
 use yii\console\Exception;
-use humhub\modules\search\interfaces\Searchable as SearchableInterface
+use humhub\modules\search\interfaces\Searchable as SearchableInterface;
 
 /**
  * Searchable Behavior
