@@ -294,12 +294,12 @@ Event configuration:
 [
     'class' => \humhub\modules\stream\models\WallStreamQuery::class,
     'event' =>  \humhub\modules\stream\models\WallStreamQuery::EVENT_BEFORE_FILTER,
-    'callback' => ['david\humhub\modules\demo\Events', 'onStreamFilterBeforeFilter'],
+    'callback' => ['\humhub\modules\demo\Events', 'onStreamFilterBeforeFilter'],
 ],
 [
     'class' => \humhub\modules\stream\widgets\WallStreamFilterNavigation::class,
     'event' =>  \humhub\modules\stream\widgets\WallStreamFilterNavigation::EVENT_BEFORE_RUN,
-    'callback' => ['david\humhub\modules\demo\Events', 'onStreamFilterBeforeRun'],
+    'callback' => ['\humhub\modules\demo\Events', 'onStreamFilterBeforeRun'],
 ],
 ```
 
@@ -350,7 +350,6 @@ class Events extends \yii\base\Object
 OriginatorStreamFilter.php
 
 ```php
-
 class OriginatorStreamFilter extends StreamQueryFilter
 {
 
