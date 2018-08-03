@@ -46,10 +46,19 @@ use yii\helpers\Url;
  */
 class AbstractRichTextEditor extends JsInputWidget
 {
+    const LAYOUT_BLOCK = 'block';
+
+    const LAYOUT_INLINE = 'inline';
+
     /**
      * @var string richtext feature preset e.g: 'markdown', 'normal', 'full'
      */
     public $preset;
+
+    /**
+     * @var string defines the style/layout of the richtext
+     */
+    public $layout = self::LAYOUT_BLOCK;
 
     /**
      * Can be used to overwrite the default placeholder.
@@ -131,14 +140,9 @@ class AbstractRichTextEditor extends JsInputWidget
      */
     public $label = false;
 
-    /**
-     * @var [] renderer class definition
-     */
-    public static $renderer;
-
-    /**
-     * @inhertidoc
-     */
+        /**
+         * @inhertidoc
+         */
     public function run()
     {
         $inputOptions = $this->getInputAttributes();
@@ -159,6 +163,11 @@ class AbstractRichTextEditor extends JsInputWidget
 
         return $input . $richText . $this->prepend();
     }
+
+    /**
+     * @var [] renderer class definition
+     */
+    public static $renderer;
 
     /**
      * This method can be overwritten in order to prepend content after the actual rich text content.

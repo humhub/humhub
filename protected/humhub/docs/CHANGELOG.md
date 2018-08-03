@@ -9,7 +9,8 @@ HumHub Change Log
 - Fix: Click to topics lead on streams without topic filter throws javascript error. (https://github.com/humhub/humhub-modules-polls/issues/49)
 - Fix: Existing files may cause NULL pointer exception
 - Fix: Newly created profile fields cannot be updated
-
+- Enh: Added `AbstractRichTextEditor::layout` in order to change richtext style
+- Enh: Added `block` type RichText for non focus menu style
 
 1.3.0-beta.3  (July 30, 2018)
 -----------------------------

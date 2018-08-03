@@ -23,6 +23,7 @@ $submitUrl = Url::to(['/comment/comment/edit', 'id' => $comment->id, 'contentMod
         <div class="comment-create-input-group">
             <?= $form->field($comment, 'message')->widget(RichTextField::class, [
                 'id' => 'comment_input_'.$comment->id,
+                'layout' => RichTextField::LAYOUT_INLINE,
                 'placeholder' => Yii::t('CommentModule.views_edit', 'Edit your comment...'),
                 'focus' => true
             ])->label(false) ?>

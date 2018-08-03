@@ -23,6 +23,7 @@ $submitUrl = Url::to(['/comment/comment/post']);
     <div class="comment-create-input-group">
         <?= RichTextField::widget([
             'id' => 'newCommentForm_' . $id,
+            'layout' => RichTextField::LAYOUT_INLINE,
             'pluginOptions' => ['maxHeight' => '300px'],
             'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'),
             'name' => 'message'
