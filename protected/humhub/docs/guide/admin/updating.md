@@ -5,7 +5,7 @@ Manual Update
 new version.
 For each version there will be a themeing and module migration guide available:
 - [Theme Migration Guide](../theme/migrate.md)
-- [Module Migration Guide](../developer/migration-guide.md)
+- [Module Migration Guide](../developer/modules-migrate.md)
  
 > Additional update notes for older versions:
 > - [Update from 1.2 or below](updating-130.md)

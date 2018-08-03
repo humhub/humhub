@@ -6,7 +6,7 @@ Updating to 1.3
 
 1.) Please check following guides if you're using custom modules or themes:
 - [Theme Migration Guide](../theme/migrate.md)
-- [Module Migration Guide](../developer/migration-guide.md)
+- [Module Migration Guide](../developer/modules-migrate.md)
 
 
 2.) This release changes the existing cron jobs. 
