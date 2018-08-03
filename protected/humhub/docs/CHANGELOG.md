@@ -1,8 +1,11 @@
 HumHub Change Log
 =================
 
-1.3.0
------------------------------
+
+1.3.0  (August 3, 2018)
+-----------------------
+
+> Warning: Please read the [Update Guide](http://docs.humhub.org/admin-updating-130.html) before updating!
 
 - Enh: Added `PolymorphicRelation::strict` to throw exceptions when accessing invalid polymorphic relations
 - Fix: Mail summaries not correctly triggered by cron
@@ -11,6 +14,7 @@ HumHub Change Log
 - Fix: Newly created profile fields cannot be updated
 - Enh: Added `AbstractRichTextEditor::layout` in order to change richtext style
 - Enh: Added `block` type RichText for non focus menu style
+
 
 1.3.0-beta.3  (July 30, 2018)
 -----------------------------
