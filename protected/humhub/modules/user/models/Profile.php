@@ -247,7 +247,7 @@ class Profile extends ActiveRecord
      */
     public static function columnExists($name)
     {
-        Yii::$app->getDb()->getSchema()->refresh(self::tableName());
+        Yii::$app->getDb()->getSchema()->refreshTableSchema(self::tableName());
         $table = Yii::$app->getDb()->getSchema()->getTableSchema(self::tableName(), true);
         $columnNames = $table->getColumnNames();
 
