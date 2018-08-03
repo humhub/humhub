@@ -66,8 +66,8 @@ class PolymorphicRelation extends Behavior
             $this->owner->getAttribute($this->pkAttribute)
         );
 
-        if($this->strict && !$object && !empty($this->classAttribute) &&  !empty($this->pkAttribute)) {
-            throw new IntegrityException('Call to an inconsistent polymorphic relation detected on '.get_class($this->owner).' ('.$this->classAttribute.' : '.$this->pkAttribute.')');
+        if ($this->strict && !$object && !empty($this->classAttribute) && !empty($this->pkAttribute)) {
+            throw new IntegrityException('Call to an inconsistent polymorphic relation detected on ' . get_class($this->owner) . ' (' . $this->classAttribute . ' : ' . $this->pkAttribute . ')');
         }
 
         if ($object !== null && $this->validateUnderlyingObjectType($object)) {
@@ -138,7 +138,7 @@ class PolymorphicRelation extends Behavior
         try {
             $class = new ReflectionClass($className);
         } catch (ReflectionException $e) {
-            Yii::error('Could not load polymorphic relation! Class (' . $e->getMessage() . ')');
+            Yii::error('Could not load polymorphic relation! Class: ' . $className . ' (' . $e->getMessage() . ')');
             return null;
         }
 
