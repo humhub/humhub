@@ -1,13 +1,13 @@
 <?php
 return array (
   'Administrators' => '',
-  'Color' => '',
+  'Color' => '色',
   'Created At' => '作成',
   'Created By' => '作成者',
-  'Default content visibility' => '',
+  'Default content visibility' => 'コンテンツの見え方',
   'Description' => '説明',
-  'Homepage' => '',
-  'Homepage (Guests)' => '',
+  'Homepage' => 'ホームページ',
+  'Homepage (Guests)' => 'ホームページ（ゲスト）',
   'Join Policy' => 'ポリシーに参加',
   'Members' => 'メンバー',
   'Moderators' => '',
