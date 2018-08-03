@@ -35,7 +35,7 @@ Javascript API
  * [Modules](javascript-index.md)
  * [Actions](javascript-actions.md)
  * [Components and Widgets](javascript-components.md)
- * [Additions](javascript-components.md)
+ * [Additions](javascript-uiadditions.md)
  * [Client](javascript-client.md)
 
 Advanced Topics
