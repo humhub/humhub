@@ -17,6 +17,7 @@ abstract class Filter extends Model
     const AUTO_LOAD_GET = 0;
     const AUTO_LOAD_POST = 1;
     const AUTO_LOAD_ALL = 2;
+
     /**
      * @var string can be used to overwrite the default formName used by [[load()]]
      */

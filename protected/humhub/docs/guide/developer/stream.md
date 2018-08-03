@@ -267,8 +267,119 @@ Place the Form widget above the Stream widget in your view.
 e.g.
 
 ```php
-
 <?= \humhub\modules\polls\widgets\WallCreateForm::widget(array('contentContainer' => $contentContainer)); ?>
-
 ```
 
+## Stream Filter (sinve v1.3)
+
+Since HumHub v1.3 you are able to extend the stream filter by listening to 
+
+- `\humhub\modules\stream\models\WallStreamQuery::EVENT_BEFORE_FILTER` to add the filter to the query
+- `humhub\modules\stream\widgets\WallStreamFilterNavigation::EVENT_BEFORE_RUN`
+
+The [[humhub\modules\stream\widgets\WallStreamFilterNavigation]] class is of type [[ humhub\modules\ui\filter\widgets\FilterNavigation]].
+A `Filternavigation` consists of `filterPanels` and `filterBlocks`. The `WallStreamFilterNavigation` navigation for example contains three `filterPanels`
+
+- `WallStreamFilterNavigation::PANEL_POSITION_LEFT`
+- `WallStreamFilterNavigation::PANEL_POSITION_CENTER`
+- `WallStreamFilterNavigation::PANEL_POSITION_RIGHT`
+
+and multiple `filterBlocks` containing the actual filters assigned to a specific panel and sorted by a `sortOrder`.
+
+The following example adds a `originator` filter to the wall stream:
+
+Event configuration:
+
+```php
+[
+    'class' => \humhub\modules\stream\models\WallStreamQuery::class,
+    'event' =>  \humhub\modules\stream\models\WallStreamQuery::EVENT_BEFORE_FILTER,
+    'callback' => ['\humhub\modules\demo\Events', 'onStreamFilterBeforeFilter'],
+],
+[
+    'class' => \humhub\modules\stream\widgets\WallStreamFilterNavigation::class,
+    'event' =>  \humhub\modules\stream\widgets\WallStreamFilterNavigation::EVENT_BEFORE_RUN,
+    'callback' => ['\humhub\modules\demo\Events', 'onStreamFilterBeforeRun'],
+],
+```
+
+Event handlers:
+
+
+```php
+class Events extends \yii\base\Object
+{
+    const FILTER_BLOCK_ORIGINATOR = 'originator';
+    const FILTER_ORIGINATOR = 'originator';
+    
+    public static function onStreamFilterBeforeRun($event)
+    {
+        /** @var $wallFilterNavigation WallStreamFilterNavigation */
+        $wallFilterNavigation = $event->sender;
+    
+        // Add a new filter block to the last filter panel
+        $wallFilterNavigation->addFilterBlock(static::FILTER_BLOCK_ORIGINATOR, [
+            'title' => 'Originator',
+            'sortOrder' => 300
+        ], WallStreamFilterNavigation::PANEL_POSITION_RIGHT);
+    
+        // Add a filter of type PickerFilterInput to the new filter block
+        $wallFilterNavigation->addFilter([
+            'id' => static::FILTER_ORIGINATOR,
+            'class' => PickerFilterInput::class,
+            'picker' => UserPickerField::class,
+            'category' => 'originators',
+            'pickerOptions' => [
+                'id' => 'stream-user-picker',
+                'itemKey' => 'id',
+                'name' => 'stream-user-picker'
+            ]], static::FILTER_BLOCK_ORIGINATOR);
+    }
+    
+    public static function onStreamFilterBeforeFilter($event)
+    {
+        /** @var $streamQuery WallStreamQuery */
+        $streamQuery = $event->sender;
+    
+        // Add a new filterHandler to WallStreamQuery
+        $streamQuery->filterHandlers[] = OriginatorStreamFilter::class;
+    }
+}
+```
+
+OriginatorStreamFilter.php
+
+```php
+class OriginatorStreamFilter extends StreamQueryFilter
+{
+
+    public $originators = [];
+
+    public function rules() {
+        return [
+            [['originators'], 'safe']
+        ];
+    }
+
+    public function apply()
+    {
+        if(empty($this->originators)) {
+            return;
+        }
+
+        if($this->originators instanceof User) {
+            $this->originators = [$this->originators->id];
+        } else if(!is_array($this->originators)) {
+            $this->originators = [$this->originators];
+        }
+
+        $this->query->joinWith('contentContainer');
+
+        if (count($this->originators) === 1) {
+            $this->query->andWhere(["user.guid" => $this->originators[0]]);
+        } else if (!empty($this->originators)) {
+            $this->query->andWhere(['IN', 'user.guid', $this->originators]);
+        }
+    }
+}
+```

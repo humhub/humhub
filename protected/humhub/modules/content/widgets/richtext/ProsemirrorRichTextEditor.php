@@ -38,6 +38,15 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
         'class' => ProsemirrorRichText::class
     ];
 
+    public function init()
+    {
+        if($this->menuClass === static::MENU_CLASS_PLAIN) {
+            $this->exclude[] = 'resizeNav';
+        }
+
+        parent::init();
+    }
+
     /**
      * @inheritdoc
      */

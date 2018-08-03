@@ -95,8 +95,8 @@ The following list shows an overview of most of the events available in the HumH
 - Stream:
   - `Stream::EVENT_BEFORE_RUN`
   - `Stream::EVENT_AFTER_RUN`
-- StreamFilter:
-  - `StreamFilter::EVENT_BEFORE_FILTER`
+- StreamQuery:
+  - `StreamQuery::EVENT_BEFORE_FILTER`
 - BaseClient:
   - `BaseClient::EVENT_UPDATE_USER`
   - `BaseClient::EVENT_CREATE_USER`
