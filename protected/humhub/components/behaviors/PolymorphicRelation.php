@@ -135,6 +135,10 @@ class PolymorphicRelation extends Behavior
      */
     public static function loadActiveRecord($className, $primaryKey)
     {
+        if (empty($className) || empty($primaryKey)) {
+            return null;
+        }
+
         try {
             $class = new ReflectionClass($className);
         } catch (ReflectionException $e) {
