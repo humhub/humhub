@@ -7,6 +7,7 @@
 
 namespace humhub\components\bootstrap;
 
+use humhub\components\Application;
 use Yii;
 use yii\base\BootstrapInterface;
 
@@ -19,7 +20,23 @@ class ModuleAutoLoader implements BootstrapInterface
 {
     const CACHE_ID = 'module_configs';
 
+    /**
+     * Bootstrap method to be called during application bootstrap stage.
+     * @param Application $app the application currently running
+     * @throws \yii\base\InvalidConfigException
+     */
     public function bootstrap($app)
+    {
+        $modules = self::locateModules();
+
+        Yii::$app->moduleManager->registerBulk($modules);
+    }
+
+    /**
+     * Find available modules
+     * @return array|bool|mixed
+     */
+    public static function locateModules()
     {
         $modules = Yii::$app->cache->get(self::CACHE_ID);
 
@@ -45,6 +62,6 @@ class ModuleAutoLoader implements BootstrapInterface
             Yii::$app->cache->set(self::CACHE_ID, $modules);
         }
 
-        Yii::$app->moduleManager->registerBulk($modules);
+        return $modules;
     }
 }
