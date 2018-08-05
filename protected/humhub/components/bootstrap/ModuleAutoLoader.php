@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -43,9 +42,7 @@ class ModuleAutoLoader implements BootstrapInterface
                     }
                 }
             }
-            if (!YII_DEBUG) {
-                Yii::$app->cache->set(self::CACHE_ID, $modules);
-            }
+            Yii::$app->cache->set(self::CACHE_ID, $modules);
         }
 
         Yii::$app->moduleManager->registerBulk($modules);
