@@ -46,6 +46,9 @@ class ModuleAutoLoaderTest extends Unit
      */
     protected $tester;
 
+    /**
+     * Assert that locateModules find all core modules
+     */
     public function testCoreModuleLoading()
     {
         $modules = array_column(
@@ -54,12 +57,12 @@ class ModuleAutoLoaderTest extends Unit
         );
 
         /* assert that every core module is found by module loader. expected result of array_diff is an empty array. */
-        $this->assertEmpty(
-            array_diff(self::EXPECTED_CORE_MODULES, $modules),
-            'expected core modules are not resolved by auto loader.'
-        );
+        $this->assertEmpty(array_diff(self::EXPECTED_CORE_MODULES, $modules), 'expected core modules are not resolved by auto loader.');
     }
 
+    /**
+     * Test that an invalid path for module loading leads to an exception
+     */
     public function testInvalidModulePath()
     {
         array_push(Yii::$app->params['moduleAutoloadPaths'], '/dev/null');
@@ -71,5 +74,38 @@ class ModuleAutoLoaderTest extends Unit
         }
 
         array_pop(Yii::$app->params['moduleAutoloadPaths']);
+    }
+
+    /**
+     * Test module loading by path
+     * @dataProvider dataModuleLoadingByPath
+     */
+    public function testModuleLoadingByPath($path, $count)
+    {
+        $this->assertCount($count, ModuleAutoLoader::findModulesByPath($path));
+    }
+
+    /**
+     * Return test cases for module loading by path
+     * @return array
+     */
+    public function dataModuleLoadingByPath()
+    {
+        return [
+            ['@humhub/modules', count(self::EXPECTED_CORE_MODULES)],
+            ['@humhub/invalid', 0],
+            ['@invalid/folder', 0]
+        ];
+    }
+
+    /**
+     * Assert that locateModules and findModules return the same list of modules
+     */
+    public function testLocateAndFindModules()
+    {
+        $this->assertEquals(
+            ModuleAutoLoader::locateModules(),
+            ModuleAutoLoader::findModules(Yii::$app->params['moduleAutoloadPaths'])
+        );
     }
 }
