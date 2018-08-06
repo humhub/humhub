@@ -10,6 +10,7 @@ namespace humhub\components\bootstrap;
 use humhub\components\Application;
 use Yii;
 use yii\base\BootstrapInterface;
+use yii\helpers\FileHelper;
 
 /**
  * ModuleAutoLoader automatically searches for config.php files in module folder an executes them.
@@ -19,6 +20,7 @@ use yii\base\BootstrapInterface;
 class ModuleAutoLoader implements BootstrapInterface
 {
     const CACHE_ID = 'module_configs';
+    const CONFIGURATION_FILE = 'config.php';
 
     /**
      * Bootstrap method to be called during application bootstrap stage.
@@ -63,5 +65,48 @@ class ModuleAutoLoader implements BootstrapInterface
         }
 
         return $modules;
+    }
+
+    /**
+     * Find all modules with configured paths
+     * @param array $paths
+     * @return array
+     */
+    public static function findModules($paths)
+    {
+        $folders = [];
+        foreach ($paths as $path) {
+            $folders = array_merge($folders, self::findModulesByPath($path));
+        }
+
+        $modules = [];
+        foreach ($folders as $folder) {
+            try {
+                /** @noinspection PhpIncludeInspection */
+                $modules[$folder] = require $folder . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
+            } catch (\Exception $e) {
+                Yii::error($e);
+            }
+        }
+
+        return $modules;
+    }
+
+    /**
+     * Find all directories with a configuration file inside
+     * @param string $path
+     * @return array
+     */
+    public static function findModulesByPath($path)
+    {
+        $hasConfigurationFile = function ($path) {
+            return is_file($path . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE);
+        };
+
+        try {
+            return FileHelper::findDirectories(Yii::getAlias($path, true), ['filter' => $hasConfigurationFile]);
+        } catch (yii\base\InvalidArgumentException $e) {
+            return [];
+        }
     }
 }
