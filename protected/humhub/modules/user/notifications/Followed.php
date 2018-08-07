@@ -11,6 +11,7 @@ namespace humhub\modules\user\notifications;
 use Yii;
 use yii\bootstrap\Html;
 use humhub\modules\notification\components\BaseNotification;
+use yii\db\IntegrityException;
 
 /**
  * FollowNotification is fired to all users that are being
@@ -39,9 +40,14 @@ class Followed extends BaseNotification
 
     /**
      * @inheritdoc
+     * @throws IntegrityException
      */
     public function getUrl()
     {
+        if ($this->originator === null) {
+            throw new IntegrityException('Originator cannot be null.');
+        }
+
         return $this->originator->getUrl();
     }
 
