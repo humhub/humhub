@@ -13,7 +13,7 @@ return array (
   'Delete column' => 'Kolom verwijderen',
   'Delete row' => 'Rij verwijderen',
   'Delete table' => 'Tabel verwijderen',
-  'Flags' => '',
+  'Flags' => 'Vlaggen',
   'Food & Drink' => 'Eten & drinken',
   'Height' => 'Hoogte',
   'Horizontal rule' => 'Horizontale lijn',

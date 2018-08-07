@@ -21,7 +21,7 @@ return array (
   'Group Manager' => 'Groepsmanager',
   'Groups' => 'Groepen',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Als deze optie niet is geselecteerd, wordt het eigendom van de spaties overgedragen aan uw account.',
-  'Impersonate' => '',
+  'Impersonate' => 'Imiteren ( wordt deze gebruiker)',
   'Last login' => 'Laatste aanmelding',
   'List pending registrations' => 'Lijst met in behandeling zijnde registraties',
   'Manage group: {groupName}' => 'Beheer groep: {groupName}',
