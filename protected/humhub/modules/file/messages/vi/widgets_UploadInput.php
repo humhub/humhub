@@ -18,6 +18,5 @@
  */
 return [
     'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
-    'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Trường upload chỉ cho phép tối đa  {n,plural,=1{# file} khác{# files}}.
-',
+    'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Trường upload chỉ cho phép tối đa {n,plural,=1{# file} other{# files}}.',
 ];

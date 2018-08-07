@@ -7,6 +7,7 @@ HumHub Change Log
 
 - Fix: Complete table cache flush on profile field update
 - Fix: Improved handling of inconsistent notifications
+- Fix: vietnamese translation syntax error
 
 
 1.3.0  (August 3, 2018)
