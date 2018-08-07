@@ -2,6 +2,13 @@ HumHub Change Log
 =================
 
 
+1.3.1  (Unreleased)
+-------------------
+
+- Fix: Complete table cache flush on profile field update
+- Fix: Improved handling of inconsistent notifications
+
+
 1.3.0  (August 3, 2018)
 -----------------------
 

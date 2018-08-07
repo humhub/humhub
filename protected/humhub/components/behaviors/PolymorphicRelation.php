@@ -15,7 +15,7 @@ use Yii;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;
-use Yii\db\IntegrityException;
+use yii\db\IntegrityException;
 
 /**
  * PolymorphicRelations behavior provides simple support for polymorphic relations in ActiveRecords.

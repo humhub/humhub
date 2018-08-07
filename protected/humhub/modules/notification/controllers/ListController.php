@@ -11,6 +11,7 @@ namespace humhub\modules\notification\controllers;
 use humhub\components\Controller;
 use humhub\modules\notification\models\Notification;
 use Yii;
+use yii\db\IntegrityException;
 
 /**
  * ListController
@@ -105,8 +106,15 @@ class ListController extends Controller
 
         $update['notifications'] = [];
         foreach ($unnotified as $notification) {
+
             if ($includeContent && Yii::$app->getModule('notification')->settings->user()->getInherit('enable_html5_desktop_notifications', true)) {
-                $update['notifications'][] = $notification->getBaseModel()->text();
+                try {
+                    $update['notifications'][] = $notification->getBaseModel()->text();
+                } catch (IntegrityException $ex) {
+                    $notification->delete();
+                    Yii::warning('Deleted inconsistent notification with id ' . $notification->id . '. ' . $ex->getMessage());
+                    continue;
+                }
             }
             $notification->desktop_notified = 1;
             $notification->update();
