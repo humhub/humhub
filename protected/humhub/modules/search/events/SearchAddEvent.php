@@ -8,13 +8,15 @@
 
 namespace humhub\modules\search\events;
 
+use yii\base\Event;
+
 /**
  * This event is used when an object is added to search index
  *
  * @author luke
  * @since 0.21
  */
-class SearchAddEvent extends \yii\base\Event
+class SearchAddEvent extends Event
 {
 
     /**
