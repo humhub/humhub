@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -48,17 +47,18 @@ class PolymorphicRelation extends Behavior
     /**
      * @var mixed the cached object
      */
-    private $_cached = null;
+    private $cached = null;
 
     /**
      * Returns the Underlying Object
      *
      * @return mixed
+     * @throws IntegrityException
      */
     public function getPolymorphicRelation()
     {
-        if ($this->_cached !== null) {
-            return $this->_cached;
+        if ($this->cached !== null) {
+            return $this->cached;
         }
 
         $object = static::loadActiveRecord(
@@ -71,7 +71,7 @@ class PolymorphicRelation extends Behavior
         }
 
         if ($object !== null && $this->validateUnderlyingObjectType($object)) {
-            $this->_cached = $object;
+            $this->cached = $object;
             return $object;
         }
 
@@ -86,7 +86,7 @@ class PolymorphicRelation extends Behavior
     public function setPolymorphicRelation($object)
     {
         if ($this->validateUnderlyingObjectType($object)) {
-            $this->_cached = $object;
+            $this->cached = $object;
             if ($object instanceof \yii\db\ActiveRecord) {
                 $this->owner->setAttribute($this->classAttribute, $object->className());
                 $this->owner->setAttribute($this->pkAttribute, $object->getPrimaryKey());
@@ -99,7 +99,7 @@ class PolymorphicRelation extends Behavior
      */
     public function resetPolymorphicRelation()
     {
-        $this->_cached = null;
+        $this->cached = null;
     }
 
     /**
