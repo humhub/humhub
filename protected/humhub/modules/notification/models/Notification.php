@@ -7,6 +7,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\db\Expression;
+use yii\db\IntegrityException;
 
 /**
  * This is the model class for table "notification".
@@ -114,27 +115,34 @@ class Notification extends \humhub\components\ActiveRecord
      */
     public function getBaseModel($params = [])
     {
-        if (class_exists($this->class)) {
-            $params['source'] = $this->getPolymorphicRelation();
-            $params['originator'] = $this->originator;
-            $params['groupCount'] = $this->group_user_count;
-            if ($this->group_count > 1) {
-                // Make sure we're loaded the latest notification record
-                $params['record'] = self::find()
-                    ->orderBy(['seen' => SORT_ASC, 'created_at' => SORT_DESC])
-                    ->andWhere(['class' => $this->class, 'user_id' => $this->user_id, 'group_key' => $this->group_key])
-                    ->one();
-                $params['originator'] = $params['record']->originator;
-
-            } else {
-                $params['record'] = $this;
-            }
-
-            $object = new $this->class;
-            Yii::configure($object, $params);
-            return $object;
+        if (class_exists($this->class) === false) {
+            return null;
         }
-        return null;
+
+        try {
+            $params['source'] = $this->getPolymorphicRelation();
+        } catch (IntegrityException $e) {
+            return null;
+        }
+
+        $params['originator'] = $this->originator;
+        $params['groupCount'] = $this->group_user_count;
+
+        if ($this->group_count > 1) {
+            // Make sure we're loaded the latest notification record
+            $params['record'] = self::find()
+                ->orderBy(['seen' => SORT_ASC, 'created_at' => SORT_DESC])
+                ->andWhere(['class' => $this->class, 'user_id' => $this->user_id, 'group_key' => $this->group_key])
+                ->one();
+            $params['originator'] = $params['record']->originator;
+        } else {
+            $params['record'] = $this;
+        }
+
+        $object = new $this->class;
+        Yii::configure($object, $params);
+
+        return $object;
     }
 
     /**
