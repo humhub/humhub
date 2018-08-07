@@ -2,8 +2,12 @@ HumHub Change Log
 =================
 
 
-1.3.1  (Unreleased)
--------------------
+1.3.1  (August 7, 2018)
+-----------------------
+
+> Warning: Please read the [Update Guide](http://docs.humhub.org/admin-updating-130.html) before updating from 1.2.x!
+
+> Note: A full list of changes is available here: [Changelog](https://github.com/humhub/humhub/blob/v1.3.1/protected/humhub/docs/CHANGELOG.md)
 
 - Fix: Complete table cache flush on profile field update
 - Fix: Improved handling of inconsistent notifications
