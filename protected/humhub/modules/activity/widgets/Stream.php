@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\modules\activity\widgets;
 
 /**
@@ -12,11 +11,12 @@ class Stream extends ActivityStreamViewer
 {
     public function init()
     {
-        if($this->streamAction == '/dashboard/dashboard/stream') {
+        if ($this->streamAction == '/dashboard/dashboard/stream') {
             $this->streamAction = '/dashboard/dashboard/activity-stream';
-        } elseif($this->streamAction === '/space/space/stream') {
+        } elseif ($this->streamAction === '/space/space/stream') {
             $this->streamAction = '/activity/stream/stream';
         }
+
         parent::init();
     }
 

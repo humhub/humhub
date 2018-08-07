@@ -10,11 +10,11 @@ use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
 use humhub\widgets\TimeAgo;
-
+use yii\helpers\Url;
 ?>
 
 <?php if ($clickable) : ?>
-<a href="<?= \yii\helpers\Url::to(['/activity/link', 'id' => $record->id])?>">
+<a href="<?= Url::to(['/activity/link', 'id' => $record->id])?>">
 <?php endif; ?>
     <li class="activity-entry" data-stream-entry data-action-component="activity.ActivityStreamEntry" data-content-key="<?= $record->content->id ?>">
         <div class="media">
@@ -44,12 +44,14 @@ use humhub\widgets\TimeAgo;
             <div class="media-body text-break">
 
                 <!-- Show content -->
-                <?= $content; ?><br>
+                <?= $content; ?>
+                <br>
 
                 <!-- show time -->
                 <?= TimeAgo::widget(['timestamp' => $record->content->created_at]); ?>
             </div>
         </div>
     </li>
-<?php if ($clickable) : ?></a>
+<?php if ($clickable) : ?>
+</a>
 <?php endif; ?>
