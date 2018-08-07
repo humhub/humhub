@@ -8,6 +8,8 @@
 
 namespace humhub\modules\search\events;
 
+use yii\base\Event;
+
 /**
  * This event is used to collect additional search attributes for a record.
  *
@@ -17,7 +19,7 @@ namespace humhub\modules\search\events;
  * @author luke
  * @since 1.2.3
  */
-class SearchAttributesEvent extends \yii\base\Event
+class SearchAttributesEvent extends Event
 {
 
     /**

@@ -9,13 +9,15 @@
 namespace humhub\modules\search;
 
 use Yii;
+use yii\base\BaseObject;
+use yii\helpers\Console;
 
 /**
  * Description of SearchModuleEvents
  *
  * @author luke
  */
-class Events extends \yii\base\BaseObject
+class Events extends BaseObject
 {
 
     public static function onTopMenuRightInit($event)
@@ -35,14 +37,13 @@ class Events extends \yii\base\BaseObject
     public static function onHourlyCron($event)
     {
         $controller = $event->sender;
-        $controller->stdout("Optimizing search index... ");
+        $controller->stdout('Optimizing search index...');
         Yii::$app->search->optimize();
-        $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
+        $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
     }
 
     public static function onConsoleApplicationInit($event)
     {
-
         $application = $event->sender;
         $application->controllerMap['search'] = commands\SearchController::class;
     }
