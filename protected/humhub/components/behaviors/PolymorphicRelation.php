@@ -67,7 +67,7 @@ class PolymorphicRelation extends Behavior
         );
 
         if ($this->strict && !$object && !empty($this->classAttribute) && !empty($this->pkAttribute)) {
-            throw new IntegrityException('Call to an inconsistent polymorphic relation detected on ' . get_class($this->owner) . ' (' . $this->classAttribute . ' : ' . $this->pkAttribute . ')');
+            throw new IntegrityException('Call to an inconsistent polymorphic relation detected on ' . get_class($this->owner) . ' (' . $this->owner->getAttribute($this->classAttribute) . ':' . $this->owner->getAttribute($this->pkAttribute) . ')');
         }
 
         if ($object !== null && $this->validateUnderlyingObjectType($object)) {
