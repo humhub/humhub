@@ -56,9 +56,6 @@ redirect_stderr=true
 stdout_logfile=<INSERT HUMHUB PATH HERE>/protected/runtime/logs/yii-queue-worker.log
 ```
 
-
-
-
 Queue Driver
 ------------
 
