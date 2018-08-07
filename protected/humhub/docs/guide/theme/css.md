@@ -2,7 +2,6 @@
 
 Since HumHub 1.2 it is recommended to use the `theme.less` and `variables.less` files to define your custom theme styles and build your `theme.css` file by compiling the `build.less` file.
 
-
 ## Create custom LESS file
 
 The `build.less` will automatically import all required **.less** files of your HumHub project and your theme less files in the following order:
@@ -18,6 +17,34 @@ If you wish to overwrite default theme variables as text and background colors, 
 
 > Info: All variables defined in `variables.less` can also be accessed in your views by calling `Yii::$app->view->theme->variable('myVariable');`, and are used in the mail views by default.
 
+## Parent themes
+
+Since HumHub 1.3 you can define a `@baseTheme` variable in order to specify a parent theme. Using this technique both theme css will be loaded in your views. 
+In case your parent theme includes new changes they will automatically be available without rebuilding your child theme. 
+Another advantage of this technique is, that you don't have to copy the parent themes view files unless you require changes in those views. 
+
+The theme component will try to find a view in the following order:
+
+ - Child theme view
+ - Parent theme view
+ - Core theme view
+ 
+You can add the parent theme by adding following line to your `less/variables.less` file.
+
+For themes based on the standard community edition theme:
+
+```less
+@baseTheme: "HumHub";
+```
+
+For Enterprise Edition based themes:
+
+```less
+@baseTheme: "enterprise";
+```
+
+After adding the line you can delete all unmodified files from your themes `/views` folder.
+The views will be automatically loaded from the specified base theme.
 
 ## Compile CSS package
 

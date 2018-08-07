@@ -13,25 +13,8 @@ Please remove following lines from the file `yourtheme/views/layouts/head.php`:
 
 ## Parent themes
 
-To ease theme creation and later updates you can now specify a theme from which your theme is derived.
-
-You can add the parent theme by adding following line to your `less/variables.less` file.
-
-For themes based on the standard community edition theme:
-
-```less
-@baseTheme: "HumHub";
-```
-
-For Enterprise Edition based themes:
-
-```less
-@baseTheme: "enterprise";
-```
-
-After adding the line you can delete all unmodified files from your themes `/views` folder.
-The views will be automatically loaded from the specified base theme.
-
+Please refer to the  [Parent themes section](css.md#parent-themes) for more information about the new `@baseTheme` variable.
+Using this technique will ease the update process of your custom theme.
 
 ## Space & Profile Layouts and header
 
