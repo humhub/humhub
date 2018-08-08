@@ -43,7 +43,7 @@ script:
 
 after_failure:
 - cd ../../
-- find humhub/ -type d -name "_output" -exec zip -r --exclude="*.gitignore" humhub-travis-${TRAVIS_JOB_NUMBER}.zip {} +
-- zip -ur humhub-travis-${TRAVIS_JOB_NUMBER}.zip runtime/logs
-- curl --upload-file ./humhub-travis-${TRAVIS_JOB_NUMBER}.zip https://transfer.sh/humhub-travis-${TRAVIS_JOB_NUMBER}.zip
-- rm humhub-travis-${TRAVIS_JOB_NUMBER}.zip
+- find humhub/ -type d -name "_output" -exec zip -r --exclude="*.gitignore" failure.zip {} +
+- zip -ur failure.zip runtime/logs
+- curl --upload-file ./failure.zip https://transfer.sh/humhub-travis-${TRAVIS_JOB_NUMBER}.zip
+- rm failure.zip
