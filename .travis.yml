@@ -39,7 +39,7 @@ before_script:
 script:
 - cd protected/humhub/tests
 - php ../../vendor/bin/codecept build
-- php ../../vendor/bin/codecept run --env travis --coverage --coverage-xml
+- php ../../vendor/bin/codecept run --env travis
 
 after_failure:
 - cd ../../
