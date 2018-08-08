@@ -1,42 +1,30 @@
 actor: Tester
-#coverage:
-#    #c3_url: http://localhost:8080/index-test.php/
-#    enabled: true
-#    #remote: true
-#    #remote_config: '../tests/codeception.yml'
-#    white_list:
-#        include:
-#            - ../models/*
-#            - ../controllers/*
-#            - ../commands/*
-#            - ../mail/*
-#    blacklist:
-#        include:
-#            - ../assets/*
-#            - ../config/*
-#            - ../runtime/*
-#            - ../vendor/*
-#            - ../views/*
-#            - ../web/*
-#            - ../tests/*
-paths:
-    tests: codeception
-    log: codeception/_output
-    data: codeception/_data
-    helpers: codeception/_support
-    envs: config/env
-include:
-  - ../modules/*/tests
-  
-settings:
-    bootstrap: _bootstrap.php
-    suite_class: \PHPUnit_Framework_TestSuite
-    memory_limit: 1024M
-    log: true
-    colors: true
 config:
-    # the entry script URL (with host info) for functional and acceptance tests
-    # PLEASE ADJUST IT TO THE ACTUAL ENTRY SCRIPT URL
-    test_entry_url: http://localhost:8080/index-test.php
+  test_entry_url: "http://localhost:8080/index-test.php"
+coverage:
+  enabled: true
+  include:
+  - ../commands/*
+  - ../compat/*
+  - ../components/*
+  - ../controllers/*
+  - ../events/*
+  - ../libs/*
+  - ../models/*
 extensions:
-    enabled: [tests\codeception\_support\HumHubExtension]
+  enabled:
+  - tests\codeception\_support\HumHubExtension
+include:
+- ../modules/*/tests
+paths:
+  data: codeception/_data
+  envs: config/env
+  helpers: codeception/_support
+  log: codeception/_output
+  tests: codeception
+settings:
+  bootstrap: _bootstrap.php
+  colors: true
+  log: true
+  memory_limit: 1024M
+  suite_class: \PHPUnit_Framework_TestSuite
