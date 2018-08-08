@@ -43,4 +43,5 @@ script:
 
 after_failure:
 - find protected/humhub/ -type d -name "_output" -exec zip -r --exclude="*.gitignore" humhub-travis-${TRAVIS_JOB_NUMBER}.zip {} +
+- zip -ur humhub-travis-${TRAVIS_JOB_NUMBER}.zip protected/runtime/logs
 - curl --upload-file ./humhub-travis-${TRAVIS_JOB_NUMBER}.zip https://transfer.sh/humhub-travis-${TRAVIS_JOB_NUMBER}.zip
