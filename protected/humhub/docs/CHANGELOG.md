@@ -1,6 +1,11 @@
 HumHub Change Log
 =================
 
+1.3.2  (Unreleased)
+-----------------------
+
+- Fix #3241: Profile header space count invalid
+
 
 1.3.1  (August 7, 2018)
 -----------------------
