@@ -8,11 +8,6 @@ curl -s -L -o chromedriver_linux64.zip https://chromedriver.storage.googleapis.c
     && unzip -o -d $HOME chromedriver_linux64.zip \
 	&& chmod +x $HOME/chromedriver
 
-# Install composer package
-if [ ${TRAVIS_BRANCH} = "v1.2" ]; then
-    composer global require fxp/composer-asset-plugin
-fi
-
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
