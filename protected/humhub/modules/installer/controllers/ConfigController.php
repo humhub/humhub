@@ -8,12 +8,14 @@
 
 namespace humhub\modules\installer\controllers;
 
-use Yii;
 use humhub\components\Controller;
+use humhub\modules\queue\driver\Sync;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Group;
+use humhub\modules\user\models\Password;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\base\InvalidConfigException;
 
 /**
  * ConfigController allows inital configuration of humhub.
@@ -78,6 +80,7 @@ class ConfigController extends Controller
      */
     public function actionIndex()
     {
+
         if (Yii::$app->settings->get('name') == "") {
             Yii::$app->settings->set('name', "HumHub");
         }
@@ -297,6 +300,14 @@ class ConfigController extends Controller
 
                 if ($usersGroup !== null) {
                     $usersGroup->addUser($userModel2);
+                }
+
+                // Switch to Sync queue while setting up example contents
+                // This is required to avoid sending e-mail notifications for sample data
+                try {
+                    Yii::$app->set('queue', new Sync());
+                } catch (InvalidConfigException $e) {
+                    Yii::error('Could not switch queue: ' . $e->getMessage());
                 }
 
                 // Switch Identity
