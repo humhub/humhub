@@ -23,9 +23,6 @@ cache:
   directories:
   - $HOME/.composer/cache
 
-before_install:
-- echo $TRAVIS_PHP_VERSION
-
 install:
 - .travis/install-dependencies.sh
 - .travis/setup-humhub.sh
