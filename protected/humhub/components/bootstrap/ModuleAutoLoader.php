@@ -105,7 +105,7 @@ class ModuleAutoLoader implements BootstrapInterface
         };
 
         try {
-            return FileHelper::findDirectories(Yii::getAlias($path, true), ['filter' => $hasConfigurationFile]);
+            return FileHelper::findDirectories(Yii::getAlias($path, true), ['filter' => $hasConfigurationFile, 'recursive' => false]);
         } catch (yii\base\InvalidArgumentException $e) {
             return [];
         }
