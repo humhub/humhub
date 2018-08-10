@@ -8,7 +8,10 @@
  * @var int|null $delayedJobs
  * @var int|null $doneJobs
  * @var int|null $reservedJobs
+ * @var boolean $canClearQueue
  */
+
+use humhub\widgets\Button;
 
 if (empty($lastRunHourly)) {
     $lastRunHourly = "<span style='color:red'>" . Yii::t('AdminModule.information', 'Never') . "</span>";
@@ -39,6 +42,13 @@ if (empty($lastRunDaily)) {
     <div class="col-md-6">
         <div class="panel">
             <div class="panel-heading">
+                <?php if ($canClearQueue): ?>
+                    <?= Button::danger('Clear queue')
+                        ->link(['background-jobs', 'clearQueue' => 1])
+                        ->options(['data-method' => 'POST'])
+                        ->xs()->right();
+                    ?>
+                <?php endif; ?>
                 <?= Yii::t('AdminModule.information', '<strong>Queue</strong> Status'); ?>
             </div>
             <div class="panel-body">
@@ -61,6 +71,7 @@ if (empty($lastRunDaily)) {
                 <strong><?= Yii::t('AdminModule.information', 'Done'); ?></strong><br/>
                 <?= $doneJobs ?><br/>
                 <br/>
+
             </div>
         </div>
     </div>

@@ -8,6 +8,7 @@ HumHub Change Log
 - Fix: Disabled Notification E-Mails for installation sample contents
 - Fix: No e-mail summary immediately after installation
 - Enh: Added queuing for search updates of commments
+- Enh: Added queue clear option at Administration - Information
 
 
 1.3.1  (August 7, 2018)
