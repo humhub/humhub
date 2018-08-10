@@ -7,6 +7,8 @@ HumHub Change Log
 - Fix #3241: Profile header space count invalid
 - Fix: Disabled Notification E-Mails for installation sample contents
 - Fix: No e-mail summary immediately after installation
+- Enh: Added queuing for search updates of commments
+
 
 1.3.1  (August 7, 2018)
 -----------------------

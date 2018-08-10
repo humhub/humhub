@@ -8,11 +8,11 @@
 
 namespace humhub\modules\content;
 
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\modules\search\jobs\DeleteDocument;
-use humhub\modules\search\jobs\UpdateDocument;
-use humhub\modules\user\events\UserEvent;
 use humhub\modules\search\interfaces\Searchable;
+use humhub\modules\search\libs\SearchHelper;
+use humhub\modules\user\events\UserEvent;
 use Yii;
 use yii\base\BaseObject;
 
@@ -98,7 +98,7 @@ class Events extends BaseObject
             'object' => $event->sender->object,
             'seperator' => '&nbsp;&middot;&nbsp;',
             'template' => '<div class="wall-entry-controls">{content}</div>',
-                ], ['sortOrder' => 10]
+        ], ['sortOrder' => 10]
         );
     }
 
@@ -124,12 +124,9 @@ class Events extends BaseObject
      */
     public static function onContentActiveRecordSave($event)
     {
-        if ($event->sender instanceof Searchable) {
-            Yii::$app->queue->push(new UpdateDocument([
-                'activeRecordClass' => get_class($event->sender),
-                'primaryKey' => $event->sender->id
-            ]));
-        }
+        /** @var ContentActiveRecord $record */
+        $record = $event->sender;
+        SearchHelper::queueUpdate($record);
     }
 
     /**
@@ -139,12 +136,9 @@ class Events extends BaseObject
      */
     public static function onContentActiveRecordDelete($event)
     {
-        if ($event->sender instanceof Searchable) {
-            Yii::$app->queue->push(new DeleteDocument([
-                'activeRecordClass' => get_class($event->sender),
-                'primaryKey' => $event->sender->id
-            ]));
-        }
+        /** @var ContentActiveRecord $record */
+        $record = $event->sender;
+        SearchHelper::queueDelete($record);
     }
 
 }
