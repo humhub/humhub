@@ -9,6 +9,7 @@ HumHub Change Log
 - Fix: No e-mail summary immediately after installation
 - Enh: Added queuing for search updates of commments
 - Enh: Added queue clear option at Administration - Information
+- Enh: Improved support of languages unsupported Yii2 
 
 
 1.3.1  (August 7, 2018)

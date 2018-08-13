@@ -8,8 +8,8 @@
 
 namespace humhub\components\i18n;
 
-use Yii;
 use humhub\models\forms\ChooseLanguage;
+use Yii;
 use yii\base\InvalidParamException;
 
 /**
@@ -24,6 +24,15 @@ class I18N extends \yii\i18n\I18N
      * @var string path which contains message overwrites
      */
     public $messageOverwritePath = '@config/messages';
+
+    /**
+     * Languages which are not supported by Yii.
+     * To overwrite this languages, a language file called "humhub.yii.php"
+     * needs to be placed in the messages folder.
+     *
+     * @var array list of languages
+     */
+    public $unsupportedYiiLanguages = ['an'];
 
     /**
      * Automatically sets the current locale and time zone
@@ -99,7 +108,7 @@ class I18N extends \yii\i18n\I18N
      */
     public function setDefaultLocale()
     {
-        $this->setLocale( Yii::$app->settings->get('defaultLanguage'));
+        $this->setLocale(Yii::$app->settings->get('defaultLanguage'));
         $this->fixLocaleCodes();
     }
 
@@ -134,6 +143,10 @@ class I18N extends \yii\i18n\I18N
 
         if ($language == 'nb_no' && $category == 'yii') {
             $language = 'nb-NO';
+        }
+
+        if ($category === 'yii' && in_array($language, $this->unsupportedYiiLanguages)) {
+            $category = 'humhub.yii';
         }
 
         return parent::translate($category, $message, $params, $language);
