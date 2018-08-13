@@ -1,15 +1,18 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
 use yii\db\Migration;
 
 class m171025_142030_queue_update extends Migration
 {
-
     public $tableName = '{{%queue}}';
 
     public function safeUp()
     {
-        $this->dropTable($this->tableName);
         $this->createTable($this->tableName, [
             'id' => $this->primaryKey(),
             'channel' => $this->string()->notNull(),
@@ -34,19 +37,4 @@ class m171025_142030_queue_update extends Migration
 
         return false;
     }
-
-    /*
-      // Use up()/down() to run migration code without a transaction.
-      public function up()
-      {
-
-      }
-
-      public function down()
-      {
-      echo "m171025_142030_queue_update cannot be reverted.\n";
-
-      return false;
-      }
-     */
 }
