@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Actions' => '',
     'Add new user' => 'Přidat nového uživatele',
     'Overview' => 'Přehled',
     'Send invite' => 'Poslat pozvánku',

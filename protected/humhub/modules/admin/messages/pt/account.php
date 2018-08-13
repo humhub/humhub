@@ -19,4 +19,5 @@
 return [
     'All the personal data of this user will be irrevocably deleted.' => '',
     'The user is the owner of these spaces:' => '',
+    'This user owns no spaces.' => '',
 ];

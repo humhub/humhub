@@ -18,6 +18,7 @@
  */
 return [
     'Base URL needs to begin with http:// or https://' => '',
+    'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
     'About' => 'Informació',
     'Add purchased module by licence key' => 'Afegir mòdul adquirit per clau de llicència',
     'Admin' => 'Administrador',

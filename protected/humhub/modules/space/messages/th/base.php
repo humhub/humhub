@@ -35,6 +35,8 @@ return [
     'Public (Registered users only)' => '',
     'Settings' => '',
     'Space' => '',
+    'User invitations have been added to the queue' => '',
+    'User memberships have been added to the queue' => '',
     'Visible for all (members and guests)' => '',
     '{count} members' => '',
     'Default' => 'ค่าปกติ',

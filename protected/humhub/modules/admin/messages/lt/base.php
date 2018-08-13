@@ -23,6 +23,7 @@ return [
     'Back to user overview' => '',
     'Base URL needs to begin with http:// or https://' => '',
     'Cronjobs' => '',
+    'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
     'Invite' => '',
     'Invited by' => '',
     'OEmbed providers' => '',

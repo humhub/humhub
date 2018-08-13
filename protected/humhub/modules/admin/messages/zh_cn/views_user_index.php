@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Actions' => '',
     'Add new user' => '增加新用户',
     'Overview' => '概览',
     'Send invite' => '发送邀请',

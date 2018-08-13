@@ -22,7 +22,6 @@ return [
     'Delete' => '',
     'Edit' => '',
     'Please type at least {count} characters' => '',
-    'The current main HumHub database name is ' => '',
     '<strong>Confirm</strong> Action' => '<strong>Potvrdi</strong> akciju',
     '<strong>Latest</strong> updates' => '<strong>Zadnje</strong> ažuriranje',
     '<strong>Mail</strong> summary' => '<strong>Mail</strong> sažetak',

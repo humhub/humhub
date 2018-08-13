@@ -33,6 +33,8 @@ return [
     'Public (Members only)' => '',
     'Public (Registered users only)' => '',
     'Space' => '',
+    'User invitations have been added to the queue' => '',
+    'User memberships have been added to the queue' => '',
     'Visible for all (members and guests)' => '',
     '{count} members' => '',
     'Default' => 'الإفتراضي',

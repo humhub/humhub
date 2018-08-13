@@ -30,6 +30,7 @@ return [
     'Cronjobs' => '',
     'Design' => '',
     'Groups' => '',
+    'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
     'Invite' => '',
     'Invited by' => '',
     'Logging' => '',

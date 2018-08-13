@@ -22,6 +22,8 @@ return [
     'Moderator:' => '',
     'Name' => '',
     'Owner:' => '',
+    'User invitations have been added to the queue' => '',
+    'User memberships have been added to the queue' => '',
     '{count} members' => '',
     '<strong>Space</strong> followers' => '<strong>空间</strong> 关注者',
     'Default' => '默认',

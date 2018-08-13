@@ -27,7 +27,6 @@ return [
     'Select Me' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
-    'The current main HumHub database name is ' => '',
     'Time Zone' => '',
     '<strong>Confirm</strong> Action' => '<strong>Xác nhận</strong> Hành động',
     '<strong>Latest</strong> updates' => 'Cập nhật <strong>mới nhất</strong>',

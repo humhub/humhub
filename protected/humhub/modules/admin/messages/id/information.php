@@ -22,6 +22,7 @@ return [
     'About HumHub' => '',
     'Background Jobs' => '',
     'Database' => '',
+    'Database migration results:' => '',
     'Delayed' => '',
     'Done' => '',
     'Driver' => '',
@@ -30,7 +31,10 @@ return [
     'Never' => '',
     'Please refer to the documentation to setup the cronjobs and queue workers.' => '',
     'Prerequisites' => '',
+    'Queue successfully cleared.' => '',
     'Reserved' => '',
+    'Search index rebuild in progress.' => '',
+    'The current main HumHub database name is ' => '',
     'Waiting' => '',
     'Logging' => 'Masuk',
 ];

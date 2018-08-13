@@ -31,7 +31,6 @@ return [
     'Select Me' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
-    'The current main HumHub database name is ' => '',
     'Time Zone' => '',
     'Toggle comment menu' => '',
     'Toggle panel menu' => '',

@@ -19,6 +19,8 @@
 return [
     'Archived' => '',
     'Name' => '',
+    'User invitations have been added to the queue' => '',
+    'User memberships have been added to the queue' => '',
     '{count} members' => '',
     '<strong>Space</strong> followers' => '<strong>Témakör</strong> követők',
     'Administrator:' => 'Adminisztrátor:',
