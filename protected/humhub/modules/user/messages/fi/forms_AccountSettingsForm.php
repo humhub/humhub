@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Hide introduction tour panel on dashboard' => '',
-    'Language' => '',
-    'Profile visibility' => '',
-    'Tags' => '',
-    'TimeZone' => '',
+    'Hide introduction tour panel on dashboard' => 'Piilota esittelypaneeli työpöydältä',
+    'Language' => 'Kieli',
+    'Profile visibility' => 'Profiilin näkyvyys',
+    'Tags' => 'Tägit',
+    'TimeZone' => 'Aikavyöhyke',
 ];

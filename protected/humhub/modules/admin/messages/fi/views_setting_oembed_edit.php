@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add OEmbed provider' => '',
-    'Back to overview' => '',
-    'Delete' => '',
-    'Edit OEmbed provider' => '',
-    'Save' => '',
-    'Url Prefix without http:// or https:// (e.g. youtube.com)' => '',
-    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => '',
+    'Add OEmbed provider' => 'Lisää OEmbed palveluntarjoaja',
+    'Back to overview' => 'Takaisin',
+    'Edit OEmbed provider' => 'Muokkaa OEmbedia palveluntarjoajaa',
+    'Url Prefix without http:// or https:// (e.g. youtube.com)' => 'Url-etuliite ilman http:// tai https:// (esim. youtube.com)',
+    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Käytä %url% URL-osoitteen paikkamerkkinä. Muotoilun on oltava JSON. (esimerkiksi http://www.youtube.com/oembed?url=%url%&format=json)',
+    'Delete' => 'Poista',
+    'Save' => 'Tallenna',
 ];

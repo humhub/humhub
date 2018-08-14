@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Your e-mail address has been successfully changed to {email}.' => '',
+    'Your e-mail address has been successfully changed to {email}.' => 'Sähköpostiosoitteesi on muutettu onnistuneesti. Uusi osoitteesi on {email}.',
 ];

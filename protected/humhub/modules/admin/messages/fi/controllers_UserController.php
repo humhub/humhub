@@ -17,12 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add Groups...' => '',
-    'Delete' => '',
-    'Disabled' => '',
-    'Enabled' => '',
-    'Save' => '',
-    'Select Groups' => '',
-    'Unapproved' => '',
-    'User not found!' => '',
+    'Add Groups...' => 'Lisää ryhmiä...',
+    'Select Groups' => 'Valitse ryhmä',
+    'Become this user' => 'Tule täksi käyttäjäksi',
+    'Delete' => 'Poista',
+    'Disabled' => 'Pois päältä',
+    'Enabled' => 'Päällä',
+    'Save' => 'Tallenna',
+    'Unapproved' => 'Ei hyväksytty',
+    'User not found!' => 'Käyttäjää ei löytynyt!',
+    'You cannot delete yourself!' => 'Et voi poistaa itseäsi!',
 ];

@@ -17,5 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Members</strong>' => '',
+    '<strong>Members</strong>' => '<strong>Jäsenet</strong>',
+    'Access denied - You cannot invite members!' => 'Pääsy kielletty - Et voi kutsua jäseniä!',
 ];

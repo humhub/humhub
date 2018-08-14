@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Friendship' => '',
-    'Receive Notifications for Friendship Request and Approval events.' => '',
+    'Friendship' => 'Kaveri',
+    'Receive Notifications for Friendship Request and Approval events.' => 'Saa ilmoituket ystävyyden pyyntö- ja hyväksyntätapahtumista.',
 ];

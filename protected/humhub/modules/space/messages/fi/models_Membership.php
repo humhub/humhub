@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Created At' => '',
-    'Created By' => '',
-    'Last Visit' => '',
-    'Originator User ID' => '',
-    'Request Message' => '',
-    'Status' => '',
-    'Updated At' => '',
-    'Updated By' => '',
+    'Created At' => 'Luotu',
+    'Created By' => 'Luonut',
+    'Last Visit' => 'Viimeisin vierailu',
+    'Originator User ID' => 'Luojan käuttäjä ID',
+    'Request Message' => 'Viesti',
+    'Status' => 'Tila',
+    'Updated At' => 'Päivitetty',
+    'Updated By' => 'Päivittänyt',
 ];

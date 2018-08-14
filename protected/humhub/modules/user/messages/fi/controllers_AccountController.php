@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid link! Please make sure that you entered the entire url.' => '',
-    'Save profile' => '',
-    'The entered e-mail address is already in use by another user.' => '',
+    'Invalid link! Please make sure that you entered the entire url.' => 'Linkki ei toimi! Varmista, että syötit koko URL-osoitteen.',
+    'Save profile' => 'Tallenna profiili',
+    'The entered e-mail address is already in use by another user.' => 'Sähköpostiosoite on käytössä jo jollain toisella käyttäjällä',
 ];

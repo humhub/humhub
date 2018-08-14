@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Account</strong> settings' => '',
-    'Modules' => '',
-    'Profile' => '',
-    'Security' => '',
-    'Settings' => '',
+    '<strong>Account</strong> settings' => '<strong>Asetukset</strong>',
+    'Modules' => 'Laajennukset',
+    'Profile' => 'Profiili',
+    'Security' => 'Suojaus',
+    'Settings' => 'Asetukset',
 ];

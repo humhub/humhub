@@ -17,15 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '[Deleted]' => '',
-    '{displayNames} commented {contentTitle}' => '',
-    '{displayNames} commented {contentTitle} in space {space}' => '',
-    '{displayNames} commented {contentTitle}.' => '',
-    '{displayNames} just commented your {contentTitle}' => '',
-    '{displayNames} just commented your {contentTitle} in space {space}' => '',
-    '{displayName} commented {contentTitle}' => '',
-    '{displayName} commented {contentTitle} in space {space}' => '',
-    '{displayName} commented {contentTitle}.' => '',
-    '{displayName} just commented your {contentTitle}' => '',
-    '{displayName} just commented your {contentTitle} in space {space}' => '',
+    '{displayNames} commented {contentTitle}' => '{displayNames} kommentoivat {contentTitle}',
+    '{displayNames} commented {contentTitle} in space {space}' => '{displayNames} kommentoivat {contentTitle} sivulla {space}',
+    '{displayNames} commented {contentTitle}.' => '{displayNames} kommentoivat {contentTitle}.',
+    '{displayNames} just commented your {contentTitle}' => '{displayNames} komentoivat juuri julkaisua {contentTitle}',
+    '{displayNames} just commented your {contentTitle} in space {space}' => '{displayNames} komentoivat juuri julkaisua {contentTitle} sivulla {space}',
+    '{displayName} commented {contentTitle}' => '{displayName} kommentoi {contentTitle}',
+    '{displayName} commented {contentTitle} in space {space}' => '{displayName} komentoi {contentTitle} sivulla {space}',
+    '{displayName} commented {contentTitle}.' => '{displayName} kommentoi {contentTitle}',
+    '{displayName} just commented your {contentTitle}' => '{displayName} kommentoi juuri julkaisua {contentTitle}',
+    '{displayName} just commented your {contentTitle} in space {space}' => '{displayName} kommentoi juuri julkaisua {contentTitle} sivulla {space}',
 ];

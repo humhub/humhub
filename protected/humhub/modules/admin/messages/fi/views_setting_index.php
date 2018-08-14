@@ -17,13 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Confirm</strong> image deletion' => '',
-    'Dashboard' => '',
-    'Delete' => '',
-    'E.g. http://example.com/humhub' => '',
-    'Friendship' => '',
-    'New users will automatically be added to these space(s).' => '',
-    'Save' => '',
-    'Wall entry layout' => '',
-    'You\'re using no logo at the moment. Upload your logo now.' => '',
+    '<strong>Confirm</strong> image deletion' => '<strong>Vahvista</strong> kuvan poistaminen',
+    'E.g. http://example.com/humhub' => 'Esim. http://example.fi/intra',
+    'Friendship' => 'Kaveri tila',
+    'New users will automatically be added to these space(s).' => 'Uudet käyttäjät lisätään automaattisesti tälle sivulle.',
+    'Wall entry layout' => 'Seinän asettelu',
+    'You\'re using no logo at the moment. Upload your logo now.' => 'Et käytä tällä hetkellä logoa. Lataa logo nyt.',
+    'Dashboard' => 'Etusivu',
+    'Delete' => 'Poista',
+    'Save' => 'Tallenna',
 ];

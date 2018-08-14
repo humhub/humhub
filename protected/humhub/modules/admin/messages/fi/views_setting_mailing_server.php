@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'SMTP Options' => '',
-    'Save' => '',
+    'SMTP Options' => 'SMTP Asetukset',
+    'Save' => 'Tallenna',
 ];

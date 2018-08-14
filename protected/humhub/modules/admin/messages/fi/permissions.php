@@ -17,16 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Access Admin Information' => '',
-    'Can access the \'Administration -> Information\' section.' => '',
-    'Can manage modules within the \'Administration ->  Modules\' section.' => '',
-    'Can manage spaces within the \'Administration -> Spaces\' section (create/edit/delete).' => '',
-    'Can manage user- space- and general-settings.' => '',
-    'Can manage users and groups' => '',
-    'Can manage users and user profiles.' => '',
-    'Manage Groups' => '',
-    'Manage Modules' => '',
-    'Manage Settings' => '',
-    'Manage Spaces' => '',
-    'Manage Users' => '',
+    'Access Admin Information' => 'Pääsy hallinta tietoihin',
+    'Can access the \'Administration -> Information\' section.' => 'Pääsy \'Hallintapaneeli -> Tiedot\' osioon.',
+    'Can manage spaces within the \'Administration -> Spaces\' section (create/edit/delete).' => 'Voi hallita sivuja kohdasta \'Hallintapaneeli -> Sivut\' (luoda/muokata/poistaa).',
+    'Can manage user- space- and general-settings.' => 'Voi muuttaa käyttäjä- sivu- ja muita yleisiä-asetuksia.',
+    'Can manage users and groups' => 'Voi hallita ryhmiä',
+    'Can manage users and user profiles.' => 'Voi hallita käyttäjä ja käyttäjien profiileja.',
+    'Can manage modules within the \'Administration ->  Modules\' section.' => 'Voi hallita laajennuksia \'Hallintapaneeli ->  Laajennukset\' kohdasta.',
+    'Manage Groups' => 'Hallita Ryhmiä',
+    'Manage Modules' => 'Hallita Laajennuksia',
+    'Manage Settings' => 'Muuttaa Asetuksia',
+    'Manage Spaces' => 'Hallita Sivuja',
+    'Manage Users' => 'Hallita Käyttäjiä',
 ];

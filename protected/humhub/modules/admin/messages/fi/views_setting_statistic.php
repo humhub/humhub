@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Save' => '',
-    'You can add an statistics HTML code snippet - which will added to all rendered pages.' => '',
+    'You can add an statistics HTML code snippet - which will added to all rendered pages.' => 'Voit lisätä tilasto HTML-koodinpätkän - joka lisätään kaikkiin renderoituihin sivuihin.',
+    'Save' => 'Tallenna',
 ];

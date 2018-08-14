@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Hello {displayName},' => '',
-    'New user needs approval' => '',
-    'Please click on the link below to view request:' => '',
-    'a new user {displayName} needs approval.' => '',
+    'Hello {displayName},' => 'Hei {displayName}',
+    'New user needs approval' => 'Uusi käyttäjä tarvitsee hyväksynnän',
+    'Please click on the link below to view request:' => 'Klikkaa alla olevaa linkkiä nähdäksesi pyyntö:',
+    'a new user {displayName} needs approval.' => 'uusi käyttäjä {displayName} tarvitsee hyväksynnän.',
 ];

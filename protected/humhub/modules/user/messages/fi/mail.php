@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Click here to create an account:' => '',
-    '{username} invited you to join "{space}" on {name}.' => '',
-    '{username} invited you to {name}.' => '',
+    'Click here to create an account:' => 'Napsauta tätä, jos haluat luoda tilin:',
+    '{username} invited you to join "{space}" on {name}.' => '{username} kutsui sinut liittymään "{space}" {name}.',
+    '{username} invited you to {name}.' => '{username} kutsui sinut {name}',
 ];

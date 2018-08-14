@@ -17,5 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Users has been invited.' => '',
+    'User has become a member.' => 'Käyttäjä on liitynyt sivulle.',
+    'User has been invited.' => 'Käyttäjä on kutsuttu sivulle.',
+    'User has not been invited.' => 'Käyttäjää ei ole kutsuttu.',
 ];

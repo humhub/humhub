@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Registered users only' => '',
-    'Save' => '',
-    'Visible for all (also unregistered users)' => '',
+    'Registered users only' => 'Vain rekisteröityneet käyttäjät',
+    'Visible for all (also unregistered users)' => 'Näkyy kaikille (myös rekisteröimätömille)',
+    'Save' => 'Tallenna',
 ];

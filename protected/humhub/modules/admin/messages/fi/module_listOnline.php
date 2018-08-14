@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Installed' => '',
-    'No modules found!' => '',
-    'No purchased modules found!' => '',
-    'Register' => '',
-    'Search' => '',
-    'Third-party' => '',
-    'search for available modules online' => '',
+    'Installed' => 'Asennettu',
+    'No modules found!' => 'Laajennusta ei löytynyt',
+    'No purchased modules found!' => 'Ei ostettuja laajennuksia!',
+    'Register' => 'Reksiteröidy',
+    'Third-party' => 'Kolmanen osapuolen',
+    'search for available modules online' => 'etsiä laajennuksia verkosta',
+    'Search' => 'Hae',
 ];

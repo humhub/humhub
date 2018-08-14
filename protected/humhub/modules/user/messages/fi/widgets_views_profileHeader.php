@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Something</strong> went wrong' => '',
-    'Followers' => '',
-    'Following' => '',
-    'Friends' => '',
-    'Ok' => '',
-    'Spaces' => '',
+    '<strong>Something</strong> went wrong' => '<strong>Jokin</strong> meni vikaan',
+    'Followers' => 'Seuraajat',
+    'Following' => 'Seuraa',
+    'Friends' => 'Kaverit',
+    'Ok' => 'Ok',
+    'Spaces' => 'Sivut ',
 ];

@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Register now and participate!' => '',
-    'Sign up now' => '',
-    'You got an invite' => '',
-    'You\'ve been invited to join {space} on {appName}' => '',
-    'invited you to join {name}.' => '',
-    'invited you to join {space} on {name}.' => '',
+    'Register now and participate!' => 'Rekisteröidy nyt ja liity!',
+    'Sign up now' => 'Rekisteröidy nyt',
+    'You got an invite' => 'Sinulle on kutsu',
+    'You\'ve been invited to join {space} on {appName}' => 'Sinut on kutsuttu liittymään {space} {appName}',
+    'invited you to join {name}.' => 'kutsui sinut liittymään {name}',
+    'invited you to join {space} on {name}.' => 'kutsui sinut liittymään {space} {name}.',
 ];

@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Allow other selection' => '',
-    'Comma separated country codes, e.g. DE,EN,AU' => '',
-    'One option per line. Key=>Value Format (e.g. yes=>Yes)' => '',
-    'Please select:' => '',
-    'Possible values' => '',
-    'Select field options' => '',
-    'Supported ISO3166 country codes' => '',
-    'This will add an additional input element for custom values' => '',
+    'Allow other selection' => 'Salli muu valinta',
+    'Comma separated country codes, e.g. DE,EN,AU' => 'Erota maakoodit pilkulla, esim. Fi,SV,EN',
+    'One option per line. Key=>Value Format (e.g. yes=>Yes)' => 'Yksi vaihtoehto riviä kohden. Key=>Value Format (esim. kyllä=>Kyllä)',
+    'Please select:' => 'Valitse:',
+    'Possible values' => 'Mahdolliset arvot',
+    'Select field options' => 'Valitse kenttäasetukset',
+    'Supported ISO3166 country codes' => 'Tuetut ISO3166-maakoodit',
+    'This will add an additional input element for custom values' => 'Tämä lisää lisämuotoisen elementin mukautettuja arvoja varten',
 ];

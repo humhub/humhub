@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Contents' => '',
-    'Whenever a new content (e.g. post) has been created.' => '',
+    'Contents' => 'Sisältö',
+    'Whenever a new content (e.g. post) has been created.' => 'Aina kun uusi sisältö (esim. Viesti) on luotu.',
 ];

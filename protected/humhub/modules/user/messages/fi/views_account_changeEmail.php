@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Save' => '',
-    'Your current E-mail address is <b>{email}</b>. You can change your current E-mail address here.' => '',
+    'Your current E-mail address is <b>{email}</b>. You can change your current E-mail address here.' => 'Nykyinen sähköpostiosoitteesi on <b>{email}</b>. Voit muuttaa nykyisen sähköpostiosoitettasi täältä.',
+    'Save' => 'Tallenna',
 ];

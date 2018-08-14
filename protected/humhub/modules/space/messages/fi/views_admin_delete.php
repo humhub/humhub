@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Are you sure, that you want to delete this space? All published content will be removed!' => '',
-    'Delete' => '',
-    'Please provide your password to continue!' => '',
+    'Are you sure, that you want to delete this space? All published content will be removed!' => 'Oletko varma, että haluat poistaa tämän sivun? Kaikki julkaistu sisältö poistetaan!',
+    'Delete' => 'Poista',
+    'Please provide your password to continue!' => 'Anna salasanasi jatkaaksesi!',
 ];

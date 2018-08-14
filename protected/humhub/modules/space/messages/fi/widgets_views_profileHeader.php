@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Something</strong> went wrong' => '',
-    'Followers' => '',
-    'Members' => '',
+    '<strong>Something</strong> went wrong' => '<strong>Jokin</strong> meni vikaan',
+    'Followers' => 'Seuraajat',
+    'Members' => 'Jäsenet',
     'Ok' => '',
-    'Posts' => '',
+    'Posts' => 'Julkaisut',
 ];

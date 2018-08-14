@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add a member to notify' => '',
-    'Content visibility' => '',
-    'Make private' => '',
-    'Make public' => '',
-    'Notify members' => '',
-    'Public' => '',
-    'This space is archived.' => '',
+    'Add a member to notify' => 'Lisää käyttäjä jolle ilmoitetaan',
+    'Content visibility' => 'Sisällön näkyvyys',
+    'Make private' => 'Piilota',
+    'Make public' => 'Julkaise',
+    'Notify members' => 'Ilmoita jäsenille',
+    'Public' => 'Julkinen',
+    'This space is archived.' => 'Tämä sivu on arkistoitu.',
 ];

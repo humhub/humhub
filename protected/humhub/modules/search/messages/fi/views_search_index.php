@@ -17,14 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Search </strong> results' => '',
-    'Advanced search settings' => '',
-    'All' => '',
-    'Content' => '',
-    'Search for user, spaces and content' => '',
-    'Search only in certain spaces:' => '',
-    'Spaces' => '',
-    'Specify space' => '',
-    'Users' => '',
-    'Your search returned no matches.' => '',
+    '<strong>Search </strong> results' => '<strong>Haun</strong> tulokset',
+    'Advanced search settings' => 'Kehittyneet haku asetukset',
+    'All' => 'Kaikki',
+    'Content' => 'Sisältö',
+    'Search for user, spaces and content' => 'Etsi käyttäjää, sivuja ja sisältöä',
+    'Search only in certain spaces:' => 'Hae vain tietyiltä sivuilta',
+    'Specify space' => 'Määritä sivu',
+    'Users' => 'Käyttäjät',
+    'Your search returned no matches.' => 'Haku ei tuottanut tuloksia',
+    'Spaces' => 'Sivut',
 ];

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Cancel Edit' => '',
-    'Edit' => '',
+    'Cancel Edit' => 'Peruuta Muokkaus',
+    'Edit' => 'Muokkaa',
 ];

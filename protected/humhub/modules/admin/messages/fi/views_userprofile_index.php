@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add new category' => '',
-    'Add new field' => '',
-    'Here you can create or edit profile categories and fields.' => '',
-    'Manage profile attributes' => '',
+    'Add new category' => 'Lisää uusi luokka',
+    'Add new field' => 'Lisää uusi kenttä',
+    'Here you can create or edit profile categories and fields.' => 'Täällä voit luoda tai muokata profiililuokkia ja kenttiä.',
+    'Manage profile attributes' => 'Hallitse profiilien ominaisuuksia',
 ];

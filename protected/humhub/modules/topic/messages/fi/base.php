@@ -17,13 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Confirm</strong> topic deletion' => '',
-    '<strong>Edit</strong> Topic' => '',
-    '<strong>Manage</strong> Topics' => '',
-    '<strong>Topic</strong> Overview' => '',
-    'Add Topic' => '',
-    'Do you really want to delete this topic?' => '',
-    'Topic' => '',
-    'Topic has been deleted!' => '',
-    'Topics' => '',
+    '<strong>Confirm</strong> topic deletion' => '<strong>Vahvista</strong> poistaminen',
+    '<strong>Edit</strong> Topic' => '<strong>Muokkaa</strong> 
+Aihetta',
+    '<strong>Manage</strong> Topics' => '<strong>Hallitse</strong> Aihette',
+    '<strong>Topic</strong> Overview' => '<strong>Aiheen</strong> Yleiskatsaus',
+    'Add Topic' => 'Lisää aihe',
+    'Do you really want to delete this topic?' => 'Haluatko todella poistaa tämän aiheen',
+    'Topic' => 'Aihe',
+    'Topic has been deleted!' => 'Aihe on poistettu',
+    'Topics' => 'Aiheet',
 ];

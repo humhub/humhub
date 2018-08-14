@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Create new space' => '',
-    'My spaces' => '',
-    'No member or following spaces found.' => '',
-    'No result found for the given filter.' => '',
-    'Search' => '',
-    'Search for spaces' => '',
-    'To search for other spaces, type at least {count} characters.' => '',
+    'No member or following spaces found.' =>  'Sivulta ei löytynyt hakemaasi jäsentä tai seuraajaa.',
+    'No result found for the given filter.' => 'Ei tulosta annetusta suodattimesta.',
+    'Search for spaces' => 'Hae sivuilta',
+    'To search for other spaces, type at least {count} characters.' => 'Kirjoita vähintään {count} kirjanta.',
+    'Create new space' => 'Lisää uusi sivu',
+    'My spaces' => 'Sivut',
+    'Search' => 'Hae',
 ];

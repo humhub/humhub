@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Advanced' => '',
-    'Basic' => '',
-    'General' => '',
-    'Permissions' => '',
+    'Advanced' => 'Lisäasetukset',
+    'Basic' => 'Tiedot',
+    'General' => 'Yleinen',
+    'Permissions' => 'Käyttöoikeudet',
 ];

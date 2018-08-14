@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Notification</strong> Settings' => '',
-    'In this view, you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => '',
-    'Notifications are sent directly to your users to inform them about new activities in your network.' => '',
-    'Notifications are sent instantly to you to inform you about new activities in your network.' => '',
-    'Reset to defaults' => '',
-    'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.' => '',
-    '{displayName} and {displayName2}' => '',
-    '{displayName} and {number} others' => '',
+    '<strong>Notification</strong> Settings' => '<strong>Ilmoitus</strong> Asetukset',
+    'In this view, you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'Tässä näkymässä voit määrittää käyttäjien oletusasetukset. Käyttäjät voivat korvata nämä asetukset tilin asetussivullaan.',
+    'Notifications are sent directly to your users to inform them about new activities in your network.' => 'Ilmoitukset lähetetään suoraan käyttäjille, heille ilmoitetaan intran uusista taphtumista.',
+    'Notifications are sent instantly to you to inform you about new activities in your network.' => 'Ilmoitukset lähetetään välittömästi sinulle uusista intran uusista taphtumista.',
+    'Reset to defaults' => 'Palauta oletusasetukset',
+    'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.' => 'Tässä näkymässä voit määrittää ilmoitusasetukset valitsemalla haluamasi tavoitteet tietyille ilmoitusluokille.',
+    '{displayName} and {displayName2}' => '{displayName} ja {displayName2}',
+    '{displayName} and {number} others' => '{displayName} ja {number} muut',
 ];

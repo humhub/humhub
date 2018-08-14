@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'The requested content is not valid or was removed!' => '',
+    'The requested content is not valid or was removed!' => 'Pyydetty sisältö ei ole voimassa tai se on poistettu!',
 ];

@@ -17,13 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Allowed file extensions' => '',
-    'Convert command not found!' => '',
     'Got invalid image magick response! - Correct command?' => '',
     'Hide file info (name, size) for images on wall' => '',
     'Image Magick convert command (optional)' => '',
     'Maximum preview image height (in pixels, optional)' => '',
     'Maximum preview image width (in pixels, optional)' => '',
-    'Maximum upload file size (in MB)' => '',
     'Use X-Sendfile for File Downloads' => '',
+    'Allowed file extensions' => 'Tillåtna filtyper',
+    'Convert command not found!' => 'Konverteringskommando hittades inte!',
+    'Maximum upload file size (in MB)' => 'Maximal filstorlek för uppladdning (i MB)',
 ];

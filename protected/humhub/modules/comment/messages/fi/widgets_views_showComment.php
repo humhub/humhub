@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Confirm</strong> comment deleting' => '',
-    'Cancel' => '',
-    'Cancel Edit' => '',
-    'Comment has been deleted' => '',
-    'Delete' => '',
-    'Do you really want to delete this comment?' => '',
-    'Edit' => '',
-    'Read full comment...' => '',
+    'Cancel Edit' => 'Peruuta Muokkaus',
+    'Comment has been deleted' => 'Kommentti on poistettu',
+    'Edit' => 'Muokkaa',
+    'Read full comment...' => 'Lue koko kommentti',
+    '<strong>Confirm</strong> comment deleting' => '<strong>Vahvista</strong> kommentin poistaminen',
+    'Cancel' => 'Peruuta',
+    'Delete' => 'Poista',
+    'Do you really want to delete this comment?' => 'Haluatko varmasti poistaa tämän kommentin?',
 ];

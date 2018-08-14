@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add new provider' => '',
-    'Currently no provider active!' => '',
-    'Enabled OEmbed providers' => '',
+    'Add new provider' => 'Lisää uusi palveluntarjoajat',
+    'Currently no provider active!' => 'Tällä hetkellä palveluntarjoaja ei ole aktiivinen!',
+    'Enabled OEmbed providers' => 'Ota käyttöön OEmbed palveluntarjoaja',
 ];

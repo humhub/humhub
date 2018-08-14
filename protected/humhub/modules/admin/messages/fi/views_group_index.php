@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Manage groups' => '',
-    'Members' => '',
+    'Actions' => 'Toiminnot',
+    'Manage groups' => 'Hallitse ryhmiä',
+    'Members' => 'Jäsenet',
 ];

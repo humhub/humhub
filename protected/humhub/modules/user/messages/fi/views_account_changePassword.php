@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Save' => '',
-    'Your current password can be changed here.' => '',
+    'Your current password can be changed here.' => 'Voit vaihtaa salasanasi täällä.',
+    'Save' => 'Tallenna',
 ];

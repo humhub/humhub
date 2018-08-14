@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Confirm</strong> image deleting' => '',
-    'Cancel' => '',
-    'Delete' => '',
-    'Delete profile banner' => '',
-    'Do you really want to delete your title image?' => '',
+    '<strong>Confirm</strong> image deleting' => '<strong>Vahvista</strong> kuvan poistaminen',
+    'Delete profile banner' => 'Poista kansikuvasi',
+    'Do you really want to delete your title image?' => 'Haluatko varmasti poistaa kansikuvasi?',
+    'Cancel' => 'Peruuta',
+    'Delete' => 'Poista',
 ];

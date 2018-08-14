@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Group not found!' => '',
-    'Group user not found!' => '',
-    'No value found!' => '',
-    'User is already a member of this group.' => '',
+    'Group user not found!' => 'Ryhmän käyttäjää ei löytynyt!',
+    'No value found!' => 'Arvoa ei löytynyt!',
+    'User is already a member of this group.' => 'Käyttäjä on jo tässä ryhmässä',
+    'Group not found!' => 'Ryhmää ei löytynyt!',
 ];

@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Mark all as seen' => '',
-    'Notifications' => '',
-    'Open the notification dropdown menu' => '',
-    'Show all notifications' => '',
-    'There are no notifications yet.' => '',
+    'Mark all as seen' => 'Merkitse kaikki luetuiksi',
+    'Notifications' => 'Ilmoitukset',
+    'Open the notification dropdown menu' => 'Avaa ilmoitusten pudotusvalikko',
+    'Show all notifications' => 'Näytä kaikki ilmoitukset',
+    'There are no notifications yet.' => 'Ei yhteen uutta ilmoitusta.',
 ];

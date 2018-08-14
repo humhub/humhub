@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'This space is archived.' => '',
-    'What\'s on your mind?' => '',
+    'This space is archived.' => 'Tämä sivu on arkistoitu.',
+    'What\'s on your mind?' => 'Mitä sinulla on mielessä?',
 ];

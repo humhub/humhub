@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'See online:' => '',
-    'see online' => '',
-    'via' => '',
+    'See online:' => 'Näytä verkossa:',
+    'via' => 'kautta',
+    'see online' => 'näytä verkossa',
 ];

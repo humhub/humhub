@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Sign up' => '',
-    'Welcome to %appName%' => '',
-    'Welcome to %appName%. Please click on the button below to proceed with your registration.' => '',
+    'Sign up' => 'Rekistyröidy',
+    'Welcome to %appName%. Please click on the button below to proceed with your registration.' => 'Tervetuloa %appName%:iin. Napsauta alla olevaa painiketta jatkaaksesi rekisteröintiasi.',
+    'Welcome to %appName%' => 'Tervetuloa %appName%',
 ];

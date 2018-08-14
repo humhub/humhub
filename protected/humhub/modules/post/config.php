@@ -5,10 +5,10 @@ use humhub\modules\post\Events;
 
 return [
     'id' => 'post',
-    'class' => \humhub\modules\post\Module::class,
+    'class' => \humhub\modules\post\Module::className(),
     'isCoreModule' => true,
     'events' => [
-        [IntegrityController::class, IntegrityController::EVENT_ON_RUN, [Events::class, 'onIntegrityCheck']],
+        [IntegrityController::className(), IntegrityController::EVENT_ON_RUN, [Events::className(), 'onIntegrityCheck']],
     ]
 ];
 ?>

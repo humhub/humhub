@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Notification</strong> Overview' => '',
-    'Apply' => '',
-    'Filter' => '',
-    'Mark all as seen' => '',
-    'Module Filter' => '',
-    'No notifications found!' => '',
+    '<strong>Notification</strong> Overview' => '<strong>Ilmoituksen</strong> Yleiskatsaus',
+    'Apply' => 'Hyväksy',
+    'Filter' => 'Suofatin',
+    'Mark all as seen' => 'Merkitse kaikki luetuiksi',
+    'Module Filter' => 'Laajennus Suodatin',
+    'No notifications found!' => 'Ilmoituksia ei löytynyt!',
 ];

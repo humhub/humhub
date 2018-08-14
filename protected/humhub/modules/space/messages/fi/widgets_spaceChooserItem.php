@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'This space is archived' => '',
-    'You are a member of this space' => '',
-    'You are following this space' => '',
+    'This space is archived' => 'Tämä sivu on arkistoitu',
+    'You are a member of this space' => 'Olet tämän sivun jäsen',
+    'You are following this space' => 'Seuraat tätä sivua',
 ];

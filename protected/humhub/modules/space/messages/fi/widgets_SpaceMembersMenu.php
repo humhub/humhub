@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Members' => '',
-    'Owner' => '',
-    'Pending Approvals' => '',
-    'Pending Invites' => '',
+    'Members' => 'Jäsenet',
+    'Owner' => 'Omistaja',
+    'Pending Approvals' => 'Odottaa hyväksyntää',
+    'Pending Invites' => 'Odottavat kutsut',
 ];

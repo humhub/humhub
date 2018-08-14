@@ -17,15 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Birthday' => '',
-    'Checkbox' => '',
-    'Checkbox List' => '',
-    'Country' => '',
-    'Date' => '',
-    'Datetime' => '',
-    'Markdown' => '',
-    'Number' => '',
-    'Select List' => '',
-    'Text' => '',
-    'Text Area' => '',
+    'Birthday' => 'Syntymäpäivä',
+    'Checkbox' => 'Valintaruutu',
+    'Checkbox List' => 'Valintaruusun luettelo',
+    'Country' => 'Maa',
+    'Date' => 'Päivämäärä',
+    'Datetime' => 'Päivämääräaika',
+    'Markdown' => 'Ninnanalennus',
+    'Number' => 'Numero',
+    'Select List' => 'Valitse luettelo',
+    'Text' => 'Teksi',
+    'Text Area' => 'Tekstikenttä',
 ];

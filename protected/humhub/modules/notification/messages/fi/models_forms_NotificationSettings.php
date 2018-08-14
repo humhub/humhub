@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Allow desktop notifications by default.' => '',
-    'Receive \'New Content\' Notifications for the following spaces' => '',
-    'Receive desktop notifications when you are online.' => '',
+    'Allow desktop notifications by default.' => 'Salli työpöytä ilmoitukset oletuksena.',
+    'Receive \'New Content\' Notifications for the following spaces' => 'Vastaanota \"Uudet Sisältö\" Ilmoitukset seuraavilta sivuilta',
+    'Receive desktop notifications when you are online.' => 'Vastaanota työpöytäilmoituksia, kun olet verkossa.',
 ];

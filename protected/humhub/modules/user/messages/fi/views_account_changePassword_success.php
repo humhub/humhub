@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Your password has been successfully changed!' => '',
+    'Your password has been successfully changed!' => 'Salasanasi on onnistuneesti vaihdettu!',
 ];

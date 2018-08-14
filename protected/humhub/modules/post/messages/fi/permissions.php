@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Allow others to create new posts on your profile page' => '',
-    'Allows the user to create posts' => '',
-    'Create post' => '',
+    'Allow others to create new posts on your profile page' => 'Salli muiden julkasta sinun aikajanallesi',
+    'Allows the user to create posts' => 'Salli käyttäjän luoda julkaisuja',
+    'Create post' => 'Luo julkaisu',
 ];

@@ -17,15 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Advanced Settings' => '',
+    'Advanced Settings' => 'Lisäasetukset',
     'Appearance Settings' => '',
-    'General' => '',
-    'General Settings' => '',
+    'General' => 'Yleiset',
+    'General Settings' => 'Yleiset Asetukset',
     'Here you can configurate the registration behaviour and additinal user settings of your social network.' => '',
     'Here you can configure basic settings of your social network.' => '',
     'LDAP' => '',
-    'Notification Settings' => '',
+    'Notification Settings' => 'Ilmoitus asetukset',
     'These settings refer to advanced topics of your social network.' => '',
     'These settings refer to the appearance of your social network.' => '',
-    'User Settings' => '',
+    'User Settings' => 'Käyttäjä Asetukset',
 ];

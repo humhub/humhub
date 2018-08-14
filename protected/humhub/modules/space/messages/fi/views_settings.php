@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Security</strong> settings' => '',
-    '<strong>Space</strong> settings' => '',
-    'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.' => '',
+    '<strong>Security</strong> settings' => '<strong>Suojaus</strong> asetukset',
+    '<strong>Space</strong> settings' => '<strong>Sivun</strong> asetukset',
+    'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.' => 'Käyttöoikeudet on määritetty eri käyttäjärooleille. Voit muokata lupaa valitsemalla käyttäjänrooli, jota haluat muokata ja muuttaa käyttäjien rooleja.',
 ];

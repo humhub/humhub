@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Can add new topics' => '',
-    'Can edit and remove topics' => '',
+    'Can add new topics' => 'Voi luoda aiheita',
+    'Can edit and remove topics' => 'Voi muokata ja poistaa aiheita',
 ];

@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Communication' => '',
-    'General' => '',
-    'Social bookmarks' => '',
+    'Communication' => 'Viestintä',
+    'General' => 'Yleiset',
+    'Social bookmarks' => 'Sosiaaliset verkostot',
 ];

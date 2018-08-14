@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Following' => '',
-    'Mentionings' => '',
-    'Receive Notifications when someone is following you.' => '',
-    'Receive Notifications when someone mentioned you in a post.' => '',
+    'Following' => 'Seuraa',
+    'Mentionings' => 'Maininnat',
+    'Receive Notifications when someone is following you.' => 'Vastaanota ilmoituksia, kun joku seuraa sinua.',
+    'Receive Notifications when someone mentioned you in a post.' => 'Vastaanota ilmoituksia, kun joku mainitsee sinut jossakin julkaisussa.',
 ];

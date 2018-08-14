@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add Space' => '',
-    'No spaces found for the given query' => '',
-    'Select {n,plural,=1{space} other{spaces}}' => '',
-    'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}' => '',
+    'Add Space' => 'Lisää Sivu',
+    'No spaces found for the given query' => 'Sivuja ei löytynyt annetulla haulla',
+    'Select {n,plural,=1{space} other{spaces}}' => 'Valitse {n,plural,=1{space} other{spaces}}',
+    'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}' => 'Tämän kenttä maksimi on {n,plural,=1{#space} muut{# spaces}}',
 ];

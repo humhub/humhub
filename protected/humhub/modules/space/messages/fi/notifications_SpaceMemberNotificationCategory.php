@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Receive Notifications of Space Membership events.' => '',
-    'Space Membership' => '',
+    'Receive Notifications for Space Approval and Invite events.' => 'Vastaanota ilmoituksia sivuille hyväksymisistä ja pyynöistä',
+    'Space Membership' => 'Sivun jäsenyys',
 ];

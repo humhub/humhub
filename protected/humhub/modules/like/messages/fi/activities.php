@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Likes' => '',
-    'Whenever someone likes something (e.g. a post or comment).' => '',
+    'Likes' => 'Tykkäykset',
+    'Whenever someone likes something (e.g. a post or comment).' => 'Aina kun joku haluaa jotain (esim. Viesti tai kommentti).',
 ];

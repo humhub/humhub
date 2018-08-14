@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Create</strong> new space' => '',
-    'Advanced access settings' => '',
-    'Next' => '',
-    'Space name' => '',
-    'space description' => '',
+    'Advanced access settings' => 'Lisäasetukset',
+    'Next' => 'Seuraava',
+    'Space name' => 'Sivun nimi',
+    '<strong>Create</strong> new space' => '<strong>Luo</strong> uusi sivu',
+    'space description' => 'sivun kuvaus ',
 ];

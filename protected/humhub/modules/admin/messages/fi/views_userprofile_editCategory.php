@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Create new profile category' => '',
-    'Delete' => '',
-    'Edit profile category' => '',
-    'Save' => '',
+    'Create new profile category' => 'Luo uusi profiililuokka',
+    'Edit profile category' => 'Muokkaa profiililuokkaa',
+    'Delete' => 'Poista',
+    'Save' => 'Tallenna',
 ];

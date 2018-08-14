@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayNames} likes your {contentTitle}.' => '',
-    '{displayNames} likes {contentTitle}.' => '',
-    '{displayName} likes your {contentTitle}.' => '',
-    '{displayName} likes {contentTitle}.' => '',
+    '{displayNames} likes your {contentTitle}.' => '{displayNames} tykkäävät kohteesta {contentTitle}.',
+    '{displayNames} likes {contentTitle}.' => '{displayNames} tykkäävät {contentTitle}.',
+    '{displayName} likes your {contentTitle}.' => '{displayName} tykkää kohteesta {contentTitle}.',
+    '{displayName} likes {contentTitle}.' => '{displayName} tykkää {contentTitle}.',
 ];

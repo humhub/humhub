@@ -17,13 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'As owner of this space you can transfer this role to another administrator in space.' => '',
-    'Remove from space' => '',
-    'Show all' => '',
-    'Space owner' => '',
-    'The url contains illegal characters!' => '',
-    'Transfer ownership' => '',
-    'e.g. example for {baseUrl}/s/example' => '',
-    'the default start page of this space for members' => '',
-    'the default start page of this space for visitors' => '',
+    'As owner of this space you can transfer this role to another administrator in space.' => 'Tämän tilan omistajana voit siirtää tämän tehtävän toiselle ylläpitäjälle tällä sivulla.',
+    'Space owner' => 'Sivun omistaja',
+    'The url contains illegal characters!' => 'linkki sisältää laittomia merkkejä!',
+    'Transfer ownership' => 'Siirrä omistajuus',
+    'e.g. example for {baseUrl}/s/example' => 'esim. esimerkki {baseUrl} esimerkille',
+    'the default start page of this space for members' => 'Sivu joka näkyy jäsenille ensimmäisenä',
+    'the default start page of this space for visitors' => 'Sivu joka näkyy vierailioille ensimmäisenä',
 ];

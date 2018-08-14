@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invites' => '',
-    'New user by e-mail (comma separated)' => '',
-    'User \'{username}\' is already a member of this space!' => '',
-    'User \'{username}\' is already an applicant of this space!' => '',
-    'User not found!' => '',
-    '{email} is already registered!' => '',
-    '{email} is not valid!' => '',
+    'User \'{username}\' is already a member of this space!' => 'Käyttäjä \'{username}\' on jo tämän sivun jäsen!',
+    'User \'{username}\' is already an applicant of this space!' => 'Käyttäjä \'{username}\' on jo tämän sivun hakija!',
+    'Invites' => 'Pyynnöt',
+    'New user by e-mail (comma separated)' => 'Uusi käyttäjä sähköpostilla (erota pilkulla)',
+    'User not found!' => 'Käyttäjää ei lyötynyt',
+    '{email} is already registered!' => '{email} on jo rekisteröitynyt!',
+    '{email} is not valid!' => '{email} ei ole pätevä!',
 ];

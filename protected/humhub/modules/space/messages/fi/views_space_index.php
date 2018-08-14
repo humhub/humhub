@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<b>This space is still empty!</b>' => '',
-    '<b>This space is still empty!</b><br>Start by posting something here...' => '',
-    '<b>You are not member of this space and there is no public content, yet!</b>' => '',
+    '<b>This space is still empty!</b>' => '<b>Tämä sivu on edelleen tyhjä!</b>',
+    '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>Tämä sivu on vielä tyhjä!</b><br>Kirjoita jotain...',
+    '<b>You are not member of this space and there is no public content, yet!</b>' => '<b>Et ole tämän sivun jäsen eikä julkista sisältöä vielä ole!</b>',
 ];

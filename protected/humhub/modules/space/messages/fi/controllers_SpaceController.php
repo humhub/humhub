@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'As owner you cannot revoke your membership!' => '',
-    'Could not request membership!' => '',
-    'Sorry, you are not allowed to leave this space!' => '',
-    'There is no pending invite!' => '',
-    'This action is only available for workspace members!' => '',
-    'This user is already a member of this space.' => '',
-    'This user is not a member of this space.' => '',
-    'You are not allowed to join this space!' => '',
+    'As owner you cannot revoke your membership!' => 'Sivun omistajana et voi lähteä sivulta!',
+    'Could not request membership!' => 'Et voi pyytää jäsenyyttä!',
+    'Sorry, you are not allowed to leave this space!' => 'Valitettavasti et saa jättää tätä sivua!',
+    'There is no pending invite!' => 'Ei odottavia pyyntöjä!',
+    'This action is only available for workspace members!' => 'Tämä toiminto on käytettävissä vain sivun jäsenille!',
+    'This user is already a member of this space.' => 'Tämä käyttäjä on jo jäsen tällä sivulla.',
+    'This user is not a member of this space.' => 'Tämä käyttäjä ei ole tämän sivun jäsen.',
+    'You are not allowed to join this space!' => 'Sinä et voi liityä tälle sivulle!',
 ];

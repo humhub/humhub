@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Permalink</strong> to this post' => '',
-    'Permalink' => '',
+    '<strong>Permalink</strong> to this post' => '<strong>Pysyvä</strong> linkki tähän viestiin',
+    'Permalink' => 'Kopioi linkki',
 ];

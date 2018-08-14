@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid icon.' => '',
-    'Select icon' => '',
+    'Invalid icon.' => 'Virheellinen kuvake.',
+    'Select icon' => 'Valitse kuvake',
 ];

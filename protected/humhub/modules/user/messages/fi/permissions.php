@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Allows access to your about page with personal information' => '',
-    'View your about page' => '',
+    'Allows access to your about page with personal information' => 'Antaa pääsyn sivusi tietoja osioon',
+    'View your about page' => 'Katso tietoja sivusi',
 ];

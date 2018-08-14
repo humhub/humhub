@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Displaying {count} entries per page.' => '',
-    'Flush entries' => '',
-    'Total {count} entries found.' => '',
+    'Displaying {count} entries per page.' => 'Näytetään {count} tulosta sivua kohden',
+    'Flush entries' => 'Poista kohteet',
+    'Total {count} entries found.' => 'Yhteensä {count} tulosta löytyi.',
 ];

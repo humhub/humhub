@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Account Request for \'{displayName}\' has been approved.' => '',
-    'Account Request for \'{displayName}\' has been declined.' => '',
-    'User not found!' => '',
+    'Account Request for \'{displayName}\' has been approved.' => 'Käyttäjän \'{displayName}\' pyynto on hyväksytty.',
+    'Account Request for \'{displayName}\' has been declined.' => 'Käyttäjän \'{displayName}\' pyyntö on evätty.',
+    'User not found!' => 'Käyttäjää ei löytynyt',
 ];
