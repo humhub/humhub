@@ -11,6 +11,7 @@ HumHub Change Log
 - Enh: Added queue clear option at Administration - Information
 - Enh: Improved support of languages unsupported Yii2 
 - Enh: Added Amharic language support
+- Enh: Added Finnish language support
 
 
 1.3.1  (August 7, 2018)
