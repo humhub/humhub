@@ -19,6 +19,7 @@ $submitUrl = $post->content->container->createUrl('/post/post/edit', ['id' => $p
         <div class="post-richtext-input-group">
             <?= $form->field($post, 'message')->widget(RichTextField::class, [
                 'id' => 'post_input_'. $post->id,
+                'layout' => RichTextField::LAYOUT_INLINE,
                 'pluginOptions' => ['maxHeight' => '300px'],
                 'placeholder' => Yii::t('PostModule.views_edit', 'Edit your post...')
             ])->label(false) ?>
