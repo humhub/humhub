@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Remove from space' => '',
+    'Show all' => '',
     'As owner of this space you can transfer this role to another administrator in space.' => 'Tämän tilan omistajana voit siirtää tämän tehtävän toiselle ylläpitäjälle tällä sivulla.',
     'Space owner' => 'Sivun omistaja',
     'The url contains illegal characters!' => 'linkki sisältää laittomia merkkejä!',

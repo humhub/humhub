@@ -17,13 +17,20 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'All your personal data will be irrevocably deleted.' => '',
+    'Are you sure that you want to delete your account?' => '',
+    'Delete account' => '',
+    'Enter your password to continue' => '',
+    'Not registered users' => '',
+    'You are currently the owner of following spaces:' => '',
+    'You must transfer ownership or delete these spaces before you can delete your account.' => '',
+    'Your account cannot be deleted!' => '',
     '<strong>Modify</strong> your profile image' => '<strong>Vaihda</strong> profiili kuva',
     '<strong>Modify</strong> your title image' => '<strong>Vaihda</strong> kansikuvaasi',
     '<strong>Security</strong> settings' => '<strong>Suojaus</strong> your',
     '<strong>User</strong> settings' => '<strong>Profiili</strong> asetukset',
     '<strong>Your</strong> profile' => '<strong>Profiili</strong>',
     'E-Mail Summaries' => 'Sähköposti Yhteenvedot',
-    'Not registered users' => '',
     'Notifications' => 'Ilmoitukset',
     'Other users' => 'Muut Käyttäjät',
     'Users' => 'Käyttäjät',

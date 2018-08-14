@@ -18,5 +18,4 @@
  */
 return [
     'Space Settings' => 'Sivujen Asetukset',
-    'Save' => 'Tallenna',
 ];

@@ -17,6 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Name' => '',
+    'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '',
+    'Your new password must not be equal your current password!' => '',
     'Basic Settings' => 'Asetukset',
     'Change Email' => 'Vaihda sähköpostiosoite',
     'Change Password' => 'Vaihda salasana',
@@ -28,6 +31,7 @@ return [
     'Crop profile image' => 'Rajaa profiilikuva',
     'Current Password' => 'Nykyinen salasana',
     'Currently in use' => 'Käytössä tällä hetkellä',
+    'Delete' => 'Poista',
     'Delete Account' => 'Poista tili',
     'Delete profile image' => 'Poista profiilikuva',
     'Disconnect account' => 'Kirjaudu ulos',
@@ -42,6 +46,7 @@ return [
     'New password' => 'Uusi salasana',
     'No users found.' => 'Käyttäjää ei löytynyt',
     'Notifications' => 'Ilmoitukset',
+    'Password' => 'Salasana',
     'Profile' => 'Profiili',
     'Security' => 'Suojaus',
     'Settings' => 'Asetukset',
@@ -51,12 +56,8 @@ return [
     'Upload profile banner' => 'Lataa kansikuva',
     'Upload profile image' => 'Lataa profiilikuva',
     'User' => 'Käyttäjä',
-    'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '',
     'You\'re not registered.' => 'Et ole rekisteröitynyt.',
     'Your account is disabled!' => 'Tilisi on suljettu',
     'Your account is not approved yet!' => 'Tiliäsi ei ole hyväksytty vielä',
-    'Your new password must not equal your current password!' => 'Uusi salasanasi ei voi olla sama kuin nyinen salasanasi',
     'or' => 'Tai',
-    'Delete' => 'Poista',
-    'Password' => 'Salasana',
 ];

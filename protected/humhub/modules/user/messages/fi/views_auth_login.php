@@ -18,15 +18,14 @@
  */
 return [
     '<strong>Join</strong> the network' => '',
-    '<strong>Please</strong> sign in' => '<strong>Kirjaudu sisään</strong>',
     '<strong>Sign</strong> up' => '',
-    'Create a new one.' => 'Luo uusi salasana',
     'Don\'t have an account? Join the network by entering your e-mail address.' => '',
-    'Forgot your password?' => 'Unohditko salasanasi?',
     'If you\'re already a member, please login with your username/email and password.' => '',
+    'Register' => '',
+    '<strong>Please</strong> sign in' => '<strong>Kirjaudu sisään</strong>',
+    'Forgot your password?' => 'Unohditko salasanasi?',
     'Login' => 'Kirjaudu sisään',
     'Please login with your username/email and password.' => 'Kirjaudu sisään jotta pääset käyttämään intraa. <a href="http://www.vaajanvalppaat.fi/">Tästä pääset taikaisin nettisivulle</a>',
-    'Register' => '',
     'Remember me' => 'Muista minut',
     'Sign in' => 'Kirjaudu sisään',
     'email' => 'Sähkäposti',

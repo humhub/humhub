@@ -18,7 +18,5 @@
  */
 return [
     'Create new group' => 'Luo uusi ryhmä',
-    'Members' => 'Jäsenet',
-    'Permissions' => 'Käyttöoikeudet',
     'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'Käyttäjiä voidaan siirtää eri ryhmiin (esim. Johtajat, tarpojat  jne.) Ja tiettyihin rooleihin kuten johtajiin ja ryhmäläisiin',
 ];

@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Allows the user to create private content' => '',
+    'Create private content' => '',
     'Allows the user to create public content' => 'Salli käyttäjien luoda julkista sisältöä',
     'Allows the user to invite new members to the space' => 'Anna käyttäjien kutsua uusia jäseniä sivulle',
     'Can create hidden (private) spaces.' => 'Voi luoda piilotettuja (yksityisiä) sivuja.',

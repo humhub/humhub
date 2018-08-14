@@ -18,5 +18,4 @@
  */
 return [
     '<strong>Members</strong>' => '<strong>Jäsenet</strong>',
-    'Access denied - You cannot invite members!' => 'Pääsy kielletty - Et voi kutsua jäseniä!',
 ];

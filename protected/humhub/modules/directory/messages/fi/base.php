@@ -17,6 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Access directory' => '',
+    'Can access the directory section.' => '',
+    'No spaces found!' => '',
     '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Kukaan ei ole kirjoittanut mitään.</b><br> Kirjoita jotain ...',
     '<b>There are no profile posts yet!</b>' => '<b>Täällä ei ole vielä mitään!</b>',
     '<strong>Directory</strong> menu' => '<strong>Hakemisto</strong>',
@@ -36,11 +39,12 @@ return [
     'Members' => 'Jäsenet',
     'Most members' => 'Eniten jäseniä',
     'No members found!' => 'Käyttäjää ei lyötynyt',
-    'No spaces found!' => '',
     'Online right now' => 'Paikkalla tällä hetkellä',
     'Private spaces' => 'Yksityiset sivut',
+    'Search' => 'Hae',
     'See all' => 'Katso kaikki',
     'Send invite' => 'Lähetä kutsu',
+    'Spaces' => 'Sivut',
     'This group has no members yet.' => 'Tässä ryhmässä ei ole vielä jäseniä',
     'Top Group' => 'Paras Ryhmä',
     'Total groups' => 'Ryhmiä yhteensä',
@@ -51,6 +55,4 @@ return [
     'search for members' => 'Hae käyttäjiä',
     'search for spaces' => 'Hae sivuja',
     'show all members' => 'Näytä kaikki käyttäjät',
-    'Search' => 'Hae',
-    'Spaces' => 'Sivut',
 ];

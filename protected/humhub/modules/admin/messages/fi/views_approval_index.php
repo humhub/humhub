@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Actions' => 'Toiminnot',
     'Pending user approvals' => 'Odottavat käyttäjien hyväksynnät',
     'The following list contains all pending sign-ups and invites.' => 'Luettelo sisältää kaikki vireillä olevat kirjautumiset ja kutsut.',
     'The following list contains all registered users awaiting an approval.' => 'Luettelossa on kaikki rekisteröityneet käyttäjät, jotka odottavat hyväksyntää.',

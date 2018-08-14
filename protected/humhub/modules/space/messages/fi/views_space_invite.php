@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Add users without invitation' => '',
+    'Select all registered users' => '',
     '<strong>Invite</strong> members' => '<strong>Kutsu</strong> jäseniä',
     'Done' => 'Tehty',
     'Email addresses' => 'Sähköpostiosoitteet',

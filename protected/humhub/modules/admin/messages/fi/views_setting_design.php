@@ -18,10 +18,10 @@
  */
 return [
     'Alphabetical' => '',
+    'Fixed format (dd/mm/yyyy) - Example: {example}' => '',
     'Auto format based on user language - Example: {example}' => 'Automaatiseti perustuen kieleen - Example: {example}',
     'Firstname Lastname (e.g. John Doe)' => 'Etunimi Sukunimi (esim. Essi Esimerkki)',
-    'Fixed format (mm/dd/yyyy) - Example: {example}' => 'Formaatti (pp/kk/vvvv) - Esimerkiksi: {example}',
     'Last visit' => 'Viimeisin käynti',
-    'Username (e.g. john)' => 'Käyttäjänimi (esim. essi.esimerkki)',
     'Save' => 'Tallenna',
+    'Username (e.g. john)' => 'Käyttäjänimi (esim. essi.esimerkki)',
 ];

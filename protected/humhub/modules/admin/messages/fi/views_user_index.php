@@ -19,12 +19,8 @@
 return [
     'Actions' => 'Toimet',
     'Add new user' => 'Lisää uusi käyttäjä',
-    'Group Manager' => 'Johtaja',
-    'Last login' => 'Viimeinen kirjautuminen',
     'Overview' => 'Yleiskatsaus',
     'Send invite' => 'Lähetä kutsu',
     'Settings' => 'Asetukset',
-    'This overview contains a list of each registered user with actions to view, edit and delete users.' => 'Tällä voit tarkastelella, muokkata ja poistaa kayttäjiä.',
     'Users' => 'Käyttäjät',
-    'never' => 'ei koskaan',
 ];

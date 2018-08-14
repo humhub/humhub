@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Can manage (e.g. archive, stick, move or delete) arbitrary content' => '',
     'Allows the user to add comments' => 'Anna käyttäjän lisätä kommentteja',
-    'Can manage (e.g. archive, stick or delete) arbitrary content' => 'Voi hallita (esimerkiksi arkistoida, pitää tai poistaa) mielivaltaisen sisällön',
     'Create comment' => 'Luo kommentit',
     'Manage content' => 'Hallitse sisältöä',
 ];

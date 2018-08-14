@@ -17,6 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Space has been archieved' => '',
+    'Space has been unarchieved' => '',
+    'Whenever a space is archieved.' => '',
+    'Whenever a space is unarchieved.' => '',
     'Space member joined' => 'Jäsen liityi sivulle',
     'Space member left' => 'Jäsen lähti sivulta',
     'Whenever a member leaves one of your spaces.' => 'Aina kun joku jättää jonkin sivun',

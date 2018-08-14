@@ -17,13 +17,22 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Archived' => '',
+    'Name' => '',
+    'User invitations have been added to the queue' => '',
+    'User memberships have been added to the queue' => '',
+    '{count} members' => '',
     '<strong>Space</strong> followers' => 'Sivun Seuraajat',
     'Administrator:' => 'Ylläpitäjä',
     'Default' => 'Oletus',
+    'Everyone can enter' => 'Kaikki voivat liityä',
+    'Invite and request' => 'Kutsu ja pyyntö',
     'Moderator:' => 'Johtaja',
     'No spaces found.' => 'Sivua ei löytynyt',
+    'Only by invite' => 'Pelkästään kutsu',
     'Owner:' => 'Omistaja',
     'Private' => 'Yksityinen',
+    'Private (Invisible)' => 'Yksityinen (Piilotettu)',
     'Public' => 'Julkinen',
     'Public (Members & Guests)' => 'Julkinen (Kaikki)',
     'Public (Members only)' => 'Julkinen (Intran Jäsenet)',
@@ -31,10 +40,4 @@ return [
     'Settings' => 'Asetukset',
     'Space' => 'Sivu',
     'Visible for all (members and guests)' => 'Näkyvä kaikkille (jäsenet & vieraat)',
-    'Could not delete user who is a space owner! Name of Space: {spaceName}' => 'Käyttäjä, joka on sivun omistaja, ei voi poistaa! Sivun nimi: {spaceName}',
-    'Everyone can enter' => 'Kaikki voivat liityä',
-    'Invite and request' => 'Kutsu ja pyyntö',
-    'Only by invite' => 'Pelkästään kutsu',
-    'Private (Invisible)' => 'Yksityinen (Piilotettu)',
-    'Public (Visible)' => 'Julkinen (Näkyvä)',
 ];

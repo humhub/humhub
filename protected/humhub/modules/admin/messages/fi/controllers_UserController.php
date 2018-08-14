@@ -18,13 +18,11 @@
  */
 return [
     'Add Groups...' => 'Lisää ryhmiä...',
-    'Select Groups' => 'Valitse ryhmä',
-    'Become this user' => 'Tule täksi käyttäjäksi',
     'Delete' => 'Poista',
     'Disabled' => 'Pois päältä',
     'Enabled' => 'Päällä',
     'Save' => 'Tallenna',
+    'Select Groups' => 'Valitse ryhmä',
     'Unapproved' => 'Ei hyväksytty',
     'User not found!' => 'Käyttäjää ei löytynyt!',
-    'You cannot delete yourself!' => 'Et voi poistaa itseäsi!',
 ];

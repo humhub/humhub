@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'You were added to Space {spaceName}' => '',
+    '{displayName} changed your role to {roleName} in the space {spaceName}.' => '',
     '{displayName} accepted your invite for the space {spaceName}' => '{displayName} hyväksyi liitymispyyntösi sivulle {spaceName}',
     '{displayName} approved your membership for the space {spaceName}' => '{displayName} hyväksyi jäsenpyyntösi sivulle {spaceName}',
     '{displayName} declined your invite for the space {spaceName}' => '{displayName} hylkäsi liitymispyyntösi sivulle {spaceName}',
