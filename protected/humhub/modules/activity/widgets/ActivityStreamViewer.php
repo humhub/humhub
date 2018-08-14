@@ -1,17 +1,15 @@
 <?php
-
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
+ * @license https://www.humhub.org/licences
  */
 
 namespace humhub\modules\activity\widgets;
 
+use humhub\modules\stream\widgets\StreamViewer;
 use Yii;
 use yii\helpers\Url;
-use humhub\modules\stream\widgets\StreamViewer;
-use humhub\modules\stream\actions\Stream as StreamAction;
 
 /**
  * ActivityStreamWidget shows an stream/wall of activities inside a sidebar.
@@ -22,15 +20,21 @@ use humhub\modules\stream\actions\Stream as StreamAction;
  */
 class ActivityStreamViewer extends StreamViewer
 {
-    public $id = 'activityStream';
+    /**
+     * @inheritDoc
+     */
+    public function __construct(array $config = [])
+    {
+        $defaults = [
+            'id' => 'activityStream',
+            'view' => 'activityStream',
+            'streamAction' => '/activity/stream/stream',
+            'jsWidget' => 'activity.ActivityStream',
+            'options' => ['class' => 'panel-body']
+        ];
 
-    public $view = 'activityStream';
-
-    public $streamAction = '/activity/stream/stream';
-
-    public $init = true;
-
-    public $jsWidget = 'activity.ActivityStream';
+        parent::__construct(array_merge($defaults, $config));
+    }
 
     public function getData()
     {
@@ -48,5 +52,4 @@ class ActivityStreamViewer extends StreamViewer
 
         return Url::to(array_merge([$this->streamAction]));
     }
-
 }
