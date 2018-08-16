@@ -12,6 +12,7 @@ HumHub Change Log
 - Enh: Improved support of languages unsupported Yii2 
 - Enh: Added Amharic language support
 - Enh: Added Finnish language support
+- Enh: Added dashboard warning for admins if cron jobs not working
 
 
 1.3.1  (August 7, 2018)

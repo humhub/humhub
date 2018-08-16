@@ -36,6 +36,8 @@ class Events extends \yii\base\BaseObject
                 ]);
             }
         }
+
+        $event->sender->addWidget(widgets\IncompleteSetupWarning::class, [], ['sortOrder' => 1]);
     }
 
     /**

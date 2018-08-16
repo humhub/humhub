@@ -54,6 +54,8 @@ class CronController extends Controller
         $this->runHourly();
         $this->runDaily();
 
+        Yii::$app->settings->set('cronLastRun', time());
+
         Yii::$app->mutex->release(static::MUTEX_ID);
         return ExitCode::OK;
     }
