@@ -110,8 +110,8 @@ class InformationController extends Controller
         $canClearQueue = false;
         if ($queue instanceof MySQL) {
             $canClearQueue = true;
-            $queue->clear();
             if (Yii::$app->request->isPost && Yii::$app->request->get('clearQueue') == 1) {
+                $queue->clear();
                 $this->view->setStatusMessage('success', Yii::t('AdminModule.information', 'Queue successfully cleared.'));
             }
         }
