@@ -32,7 +32,7 @@ class IncompleteSetupWarning extends Widget
      */
     public function run()
     {
-        if (Yii::$app->user->isAdmin()) {
+        if (!Yii::$app->user->isAdmin()) {
             return;
         }
 
@@ -42,6 +42,7 @@ class IncompleteSetupWarning extends Widget
         if (!$module->showDashboardIncompleteSetupWarning) {
             return;
         }
+
 
         $problems = $this->getProblems();
 
@@ -80,6 +81,7 @@ class IncompleteSetupWarning extends Widget
      */
     protected function checkQueue()
     {
+
         // Only for database queue
         if (Yii::$app->queue instanceof Queue) {
             /** @var Queue $queue */
@@ -93,6 +95,7 @@ class IncompleteSetupWarning extends Widget
                 ->andWhere(['channel' => $queue->channel, 'reserved_at' => null])
                 ->andWhere('[[pushed_at]] <= :time - delay', [':time' => $time])
                 ->one($queue->db);
+
 
             if (is_array($counter) && $counter['jobCount'] > 0) {
                 return false;
