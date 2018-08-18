@@ -13,6 +13,8 @@ HumHub Change Log
 - Enh: Added Amharic language support
 - Enh: Added Finnish language support
 - Enh: Added dashboard warning for admins if cron jobs not working
+- Fix: Queue worker problem with spaces in PHP binary path
+
 
 
 1.3.1  (August 7, 2018)
