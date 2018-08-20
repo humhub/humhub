@@ -14,6 +14,7 @@ HumHub Change Log
 - Enh: Added Finnish language support
 - Enh: Added dashboard warning for admins if cron jobs not working
 - Fix: Queue worker problem with spaces in PHP binary path
+- Fix: Comment buttons overlap editor text
 
 
 
