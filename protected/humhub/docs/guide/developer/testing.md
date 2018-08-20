@@ -46,7 +46,7 @@ CREATE DATABASE `humhub_test` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 Configure the database connection for your test environment in `@humhub/tests/config/common.php`:
 
- ```
+```
     'components' => [
 	    'db' => [
 	    'dsn' => 'mysql:host=localhost;dbname=humhub_test',
