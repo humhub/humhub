@@ -44,6 +44,8 @@ The following privilege are required for the HumHub database user:
 
 Further Requirements
 --------
-Some hoster block certain PHP function, please make sure your environment allows the execution of:
+Some hosts block certain PHP function, please make sure your environment allows the execution of:
 
  - `set_time_limit()`
+ - `escapeshellcmd()`
+ 

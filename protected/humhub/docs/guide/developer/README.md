@@ -14,6 +14,7 @@ Module Developement
 * [Module Migration Guide](modules-migrate.md)
 * [Change core behavior](module-change-behavior.md)
 * [Embedded Themes](embedded-themes.md)
+* [Testing](testing.md)
 
 Basic Concepts
 ------------------

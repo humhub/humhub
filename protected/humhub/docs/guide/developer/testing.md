@@ -5,18 +5,18 @@ Testing
 
 Testing in Humhub/Yii extends the paradigm of unit testing by functional and acceptance tests. 
 
-**Acceptance tests** simulate actual users actions on a browser. Therefore acceptance tests are the most bulletproof way
-to make sure your code works as expected. By means of acceptance tests you do not only test your backend code but also
-your javascript frontend potentially on different browsers.  The downside of acceptance tests is the long execution time, and a more complex implementation.
-Implement acceptance tests for general UI tests, ideally access all views and test Javascript based views.
+**Acceptance tests** simulate actual user actions on a browser. By means of acceptance tests you can test your backend code as well as
+your javascript frontend, potentially on different browsers. The downside of acceptance tests is the longer execution time, 
+and a more complex implementation. Implement acceptance tests for general UI tests, ideally access all views and test Javascript based views.
 
-**Functional tests** are similar to acceptance tests, with the difference that functional tests are not operated on an actual browser
-and do not execute any javascript. Functional tests allow easy testing of customized http requests and also allow direct access of
-application logic. This can be handy if you require some sort of state for your tests like specific settings etc. 
+**Functional tests** are similar to acceptance tests, with the difference that functional tests do not run on an actual browser
+and do not execute any javascript. Functional tests allow easy testing of customized HTTP requests, forms and also allow direct access of
+application logic as database or the `Yii` application object. This can be handy if you require a specific application sate 
+as specific settings for a test.  
 Write functional tests in order to test your controllers, forms and controller access for different configurations settings.
 
-**Unit tests** are ideal for [white box testing](https://en.wikipedia.org/wiki/White-box_testing) and is the quickest way of
-writing low level tests for specific classes or components. Implement unit tests
+**Unit tests** are ideal for [white box testing](https://en.wikipedia.org/wiki/White-box_testing) and is the fastest way of
+writing low level tests for specific classes or components. Implement unit tests for testing single components and classes.
 
 HumHub uses [Codeception](http://codeception.com/) as testing framework.
 
@@ -45,7 +45,6 @@ CREATE DATABASE `humhub_test` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 - Configure database access:
 
 Configure the database connection for your test environment in `@humhub/tests/config/common.php`:
-
 
  ```
     'components' => [
@@ -225,5 +224,5 @@ php -S localhost:8080
 Run your acceptance test:
 
 ```
-codecept run acceptance`
+codecept run acceptance
 ```
