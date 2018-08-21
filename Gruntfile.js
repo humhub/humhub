@@ -22,11 +22,11 @@ module.exports = function (grunt) {
                 command: function() {
                     let rm = isWin() ? 'del' : 'rm';
                     let sep = cmdSep();
-                    let delAssets = isWin() ? 'cd static\\assets & rd . /q /s & cd ../..' : `${rm} -rf static/assets/*`;
+                    let delAssets = isWin() ? '(For /D %i in (static\\assets\\*.*) do (rmdir %i /S /Q))' : `${rm} -rf static/assets/*/`;
                     let dirSep = isWin() ? "\\" : '/';
                     let jsFile = `static${dirSep}js${dirSep}all-*.js`;
                     let cssFile = `static${dirSep}css${dirSep}all-*.css`;
-                    return `${rm} ${jsFile} ${sep()} ${rm} ${cssFile} ${sep} ${delAssets} ${sep} cd protected ${sep} php yii asset humhub/config/assets.php humhub/config/assets-prod.php`;
+                    return `${rm} ${jsFile} ${sep} ${rm} ${cssFile} ${sep} ${delAssets} ${sep} cd protected ${sep} php yii asset humhub/config/assets.php humhub/config/assets-prod.php`;
                 }
             },
             buildSearch: {
