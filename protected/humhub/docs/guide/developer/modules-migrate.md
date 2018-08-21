@@ -30,7 +30,7 @@ The base controller attributes `autoCheckContainerAccess` and `hideSidebar` are 
 
 ### Queuing 
 
-The queuing is now moved into an own module `humhub\modues\queue`.
+Queue related classes has been moved into an own module `humhub\modues\queue`.
 The existing `humhub\components\queue\ActiveJob` is declared as deprecated and will be removed in 1.4.
 
 ### Partial user deletion (Soft Delete)

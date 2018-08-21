@@ -19,6 +19,7 @@ Module Developement
 Basic Concepts
 ------------------
 * [Database and Models](models.md)
+* [Users](modules-users.md)
 * [Content](content.md)
 * [Streams](stream.md)
 * [Events](events.md)

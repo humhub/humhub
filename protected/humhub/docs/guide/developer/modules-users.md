@@ -1,6 +1,42 @@
 Users
 =====
 
+User Component
+---------------------
+
+The [[\humhub\modules\user\component\User]] component can be accessed by `Yii::$app->user` and beside others provides the following
+features:
+
+- Access the [user identity](#user-identity) of the currently logged in user:
+- Check for guest user or guest mode activation:
+
+```php
+if(Yii::$app->user->isGuest) {
+    //...
+}
+
+if(Yii::$app->user->isGuestAccessEnabled()) {
+    //...
+}
+```
+- Check global [global permissions](permissions.md#group-permissions)
+- Check for system admin:
+
+```php
+Yii::$app->user->isAdmin()
+```
+
+User Identity
+---------------------
+
+The user identity of the current logged in user can be accessed by `Yii::$app->user->identity` and in case for non guest
+users will return a [[\humhub\modules\user\models\User]] instance.
+
+The user profile can be accessed by `Yii::$app->user->identity->profile` see [[\humhub\modules\user\models\Profile]]
+
+> Note: `Yii::$app->user->identity` may returns `null` in case of guest users. Keep this in mind for guest accessible parts
+of your code.
+
 Deleting Users 
 ---------------------
 

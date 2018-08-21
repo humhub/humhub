@@ -281,12 +281,14 @@ public function getAccessRules()
 ## Guest Access
 
 Since HumHub can also be operated in guest mode, you have to consider that a call to `Yii::$app->user->getIdentity()` may return a `null` value.
-Therefore you should either block guest access within your module controllers (see [Controller Access](#controller-access-permission)) or add a check for
+Therefore you should either block guest access in your controllers (see [Controller Access](#controller-access-permission)) or add a check for
 `Yii::$app->user->isGuest` before accessing your user identity. 
+
+See the [User Section](modules-users.md) for more information and examples about how to use the user component.
 
 > Note: Global controllers (non ContentContainerController) should be protected by `StrictAccess`
 
-> Note: You also should hide view components as buttons and menus which are not accessible by guest users.
+> Note: Remember to hide view components as buttons and menus which are not accessible by guest users.
 
 > Note: If the guest mode is active, guest users are allowed to access public content.
 

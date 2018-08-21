@@ -75,4 +75,4 @@ lessc -x themes/HumHub/less/build.less themes/HumHub/css/theme.css
  - `grunt build-search` Rebuild your [Search Index](../admin/search.md)
  - `grunt migrate-up` Runs all missing core and module [migrations](models.md#scheme-updates)
  - `grunt migrate-create --name=my_migration` Creates a new [migration](models.md#scheme-updates) within the `@humhub/migrations` directory
-
+ - `grunt test` and `grunt testServer` [Testing Guide](testing.md)

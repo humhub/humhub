@@ -200,14 +200,14 @@ $maxValue = Yii::$app->getModule('mymodule')->maxValue;
 
 While module class level configurations are handy for values which are not changed that often, 
 you may should consider using [Settings and Configurations](settings.md) in combination with the `Module::getConfigUrl()`
-to implement a admin configuration.
+to implement an admin configuration.
 
 #### Module Settings
 
-The `Module::getConfigUrl()` can be used to set a module configuration view. Once this function is implemented an `Configure`
+The `Module::getConfigUrl()` can be used to set a module configuration view. Once this function is implemented a `Configure`
 button will be added to your module within the module overview section.
 
-The controller handling your configuration should extend [[humhub\modules\admin\components\Controller]].
+Your config controller should extend [[humhub\modules\admin\components\Controller]].
 Refer to the [Settings and Configurations](settings.md) in order to learn how to save global or container related settings.
 
 [ContentContainerModules](#use-of-contentcontainermodule) provide a `getContentContainerConfigUrl()` function respectively.
