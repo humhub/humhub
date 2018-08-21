@@ -2,7 +2,7 @@
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
+ * @license https://www.humhub.org/licences
  */
 
 use humhub\components\Migration;
