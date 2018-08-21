@@ -131,11 +131,23 @@ cd protected/humhub/tests/
 codecept run
 ```
 
+or 
+
+```
+grunt test
+```
+
 ### Run core module test
 
 ```
 cd protected/humhub/modules/user/tests
 codecept run
+```
+
+or
+
+```
+grunt test --module=user
 ```
 
 ### Run specific suite
@@ -145,16 +157,36 @@ cd protected/humhub/modules/user/tests
 codecept run unit
 ```
 
+or
+
+```
+grunt test --module=user --suite=unit
+```
+
 ### Run single test file
 
 ```
-codecept run codeception/acceptance/TestCest
+cd protected/humhub/modules/user/tests
+codecept run codeception/unit/FollowTest
+```
+
+or
+
+```
+grunt test --module=user --path=unit/FollowTest
 ```
 
 ### Run single test function
 
 ```
-codecept run codeception/acceptance/TestCest:testFunction
+cd protected/humhub/modules/user/tests
+codecept run codeception/unit/FollowTest:testFollowUser
+```
+
+or
+
+```
+grunt test --module=user --path=unit/FollowTest:testFollowUser
 ```
 
 ### Run non core module tests
@@ -221,8 +253,16 @@ cd /myhumHubInstallation
 php -S localhost:8080
 ```
 
+or
+
+```
+grunt test-server
+```
+
 Run your acceptance test:
 
 ```
 codecept run acceptance
 ```
+
+> Note: The `grunt test` command only works for core tests.

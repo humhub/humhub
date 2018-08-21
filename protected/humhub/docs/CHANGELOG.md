@@ -15,6 +15,8 @@ HumHub Change Log
 - Enh: Added dashboard warning for admins if cron jobs not working
 - Fix: Queue worker problem with spaces in PHP binary path
 - Fix: Comment buttons overlap editor text
+- Enh: Added windows support for grunt tasks
+- Enh: Added `grunt test-server` and `grunt test`
 
 
 
