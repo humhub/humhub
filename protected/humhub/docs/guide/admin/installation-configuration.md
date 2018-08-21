@@ -41,16 +41,16 @@ The asynchronous job-runner can also be executed manually as follows:
 
 **Example CronTab configuration:**
 
-These Cronjobs can be runned together if you're not using any other job-runner (like Supervisor or Systemd):
+These Cronjobs can be run together if you're not using any other job-runner (like Supervisor or Systemd):
 
 ```
 * * * * * /usr/bin/php /path/to/humhub/protected/yii queue/run >/dev/null 2>&1
 * * * * * /usr/bin/php /path/to/humhub/protected/yii cron/run >/dev/null 2>&1
 ```
 
-> Warning: These two cron jobs are only **both required** if there is no other job worker configured. See [Asynchronous Tasks](asynchronous-tasks.md) for more details. Please also note that aditionnal job-workers can be configured **only in dedicated environments, not shared hostings**.
+> Warning: These two cron jobs are only **both required** if there is no other worker configured. See [Asynchronous Tasks](asynchronous-tasks.md) for more details. Please also note that additional job-workers can be configured **only in dedicated environments, not shared hostings**.
 
-In case you've configured a job-worker (like Supervisor or Systemd), only the main Cronjob should be running in paralel of the job-runner, so:
+In case you've configured a job-worker (like Supervisor or Systemd), only the main Cronjob should be running paralel to the job-runner, so:
 
 ```
 * * * * * /usr/bin/php /path/to/humhub/protected/yii cron/run >/dev/null 2>&1
