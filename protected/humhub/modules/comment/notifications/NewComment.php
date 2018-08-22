@@ -42,7 +42,7 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
     public function hasMentioning(User $user)
     {
         return \humhub\modules\notification\models\Notification::find()->where([
-            'class' => \humhub\modules\user\notifications\Mentioned::className(),
+            'class' => \humhub\modules\user\notifications\Mentioned::class,
             'user_id' => $user->id,
             'source_class' => $this->source->className(),
             'source_pk' => $this->source->getPrimaryKey()])->count() > 0;
@@ -55,7 +55,7 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
     {
         // Check if there is also a mention notification, so skip this notification
         if (\humhub\modules\notification\models\Notification::find()->where([
-            'class' => \humhub\modules\user\notifications\Mentioned::className(),
+            'class' => \humhub\modules\user\notifications\Mentioned::class,
             'user_id' => $user->id,
             'source_class' => $this->source->className(),
             'source_pk' => $this->source->getPrimaryKey()])->count() > 0) {
@@ -117,7 +117,7 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
 
     private function getGroupTitle()
     {
-        
+
         $user = $this->record->user;
         $contentRecord = $this->getCommentedRecord();
         $contentInfo = $this->getContentInfo($this->getCommentedRecord());

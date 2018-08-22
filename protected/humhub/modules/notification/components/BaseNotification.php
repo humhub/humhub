@@ -218,6 +218,10 @@ abstract class BaseNotification extends SocialActivity
      */
     public function saveRecord(User $user)
     {
+        if (!$this->validate()) {
+            return false;
+        }
+
         $notification = new Notification([
             'user_id' => $user->id,
             'class' => static::class,
@@ -240,9 +244,12 @@ abstract class BaseNotification extends SocialActivity
                 static::class . ' ' .
                 print_r($notification->getErrors(), true)
             );
+            return false;
         }
 
         $this->record = $notification;
+
+        return true;
     }
 
     /**
@@ -322,7 +329,8 @@ abstract class BaseNotification extends SocialActivity
             ->where(['source_class' => $this->record->source_class, 'source_pk' => $this->record->source_pk, 'user_id' => $this->record->user_id])
             ->andWhere(['!=', 'seen', '1']);
         foreach ($similarNotifications->all() as $notification) {
-            $notification->getClass()->markAsSeen();
+            /* @var $notification Notification */
+            $notification->getBaseModel()->markAsSeen();
         }
     }
 
@@ -343,7 +351,7 @@ abstract class BaseNotification extends SocialActivity
      * Renders the Notificaiton for the given notification target.
      * Subclasses are able to use custom renderer for different targets by overwriting this function.
      *
-     * @param NotificationTarger $target
+     * @param BaseTarget $target
      * @return string render result
      */
     public function render(BaseTarget $target = null)

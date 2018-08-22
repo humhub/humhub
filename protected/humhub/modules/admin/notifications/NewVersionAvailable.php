@@ -32,6 +32,16 @@ class NewVersionAvailable extends BaseNotification
     /**
      * @inheritdoc
      */
+    public $requireOriginator = false;
+
+    /**
+     * @inheritdoc
+     */
+    public $requireSource = false;
+
+    /**
+     * @inheritdoc
+     */
     public function getUrl()
     {
         return Url::to(['/admin/information/about']);

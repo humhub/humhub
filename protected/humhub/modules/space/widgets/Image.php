@@ -53,7 +53,7 @@ class Image extends Widget
     public $linkOptions = [];
 
     /**
-     * @var string show tooltip with further information about the user (Only available when link is true)
+     * @var string show tooltip with further information about the space (Only available when link is true)
      * @since 1.3
      */
     public $showTooltip = false;
@@ -112,6 +112,7 @@ class Image extends Widget
         if ($this->showTooltip) {
             $this->linkOptions['data-toggle'] = 'tooltip';
             $this->linkOptions['data-placement'] = 'top';
+            $this->linkOptions['data-html'] = 'true';
             $this->linkOptions['data-original-title'] = ($this->tooltipText) ? $this->tooltipText : Html::encode($this->space->name);
             Html::addCssClass($this->linkOptions, 'tt');
         }

@@ -91,7 +91,7 @@ class FileHandlerCollection extends \yii\base\Component
 
         foreach ($types as $type) {
             $handlers = array_merge($handlers, Yii::createObject([
-                        'class' => self::class,
+                        'class' => static::class,
                         'file' => $file,
                         'type' => $type
                     ])->handlers);

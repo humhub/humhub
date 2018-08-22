@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Can manage (e.g. archive, stick, move or delete) arbitrary content' => '',
     'Allows the user to add comments' => 'Kullanıcı yorum eklemesi için izin verir',
-    'Can manage (e.g. archive, stick or delete) arbitrary content' => 'Rastgele içerikleri yönetebilir (ör. arşivleyebilir, sabitleyebilir veya silebilirsiniz)',
     'Create comment' => 'Yorum oluşturma',
     'Manage content' => 'İçeriği yönetin',
 ];

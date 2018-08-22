@@ -92,7 +92,7 @@ use humhub\modules\user\widgets\AuthChoice;
 </div>
 
 <script type="text/javascript">
-    $(document).on('ready pjax:success', function () {
+    $(document).on('humhub:ready', function () {
         $('#login_username').focus();
 
     });

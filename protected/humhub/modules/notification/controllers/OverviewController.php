@@ -8,11 +8,13 @@
 
 namespace humhub\modules\notification\controllers;
 
-use Yii;
+use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
-use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\models\forms\FilterForm;
+use humhub\modules\notification\models\Notification;
+use Yii;
 use yii\data\Pagination;
+use yii\db\IntegrityException;
 
 /**
  * ListController
@@ -31,7 +33,7 @@ class OverviewController extends Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => AccessControl::class,
             ]
         ];
     }
@@ -57,9 +59,9 @@ class OverviewController extends Controller
             $query->andFilterWhere(['not in', 'class', $filterForm->getExcludeClassFilter()]);
         } else {
             return $this->render('index', [
-                        'filterForm' => $filterForm,
-                        'pagination' => null,
-                        'notifications' => $notifications
+                'filterForm' => $filterForm,
+                'pagination' => null,
+                'notifications' => $notifications
             ]);
         }
 
@@ -74,13 +76,20 @@ class OverviewController extends Controller
         $query->offset($pagination->offset)->limit($pagination->limit);
 
         foreach ($query->all() as $notificationRecord) {
-            $notifications[] = $notificationRecord->getClass();
+            /* @var $notificationRecord \humhub\modules\notification\models\Notification */
+
+            try {
+                $notifications[] = $notificationRecord->getBaseModel();
+            } catch (IntegrityException $ex) {
+                $notificationRecord->delete();
+                Yii::warning('Deleted inconsistent notification with id ' . $notificationRecord->id . '. ' . $ex->getMessage());
+            }
         }
 
         return $this->render('index', [
-                    'notifications' => $notifications,
-                    'filterForm' => $filterForm,
-                    'pagination' => $pagination
+            'notifications' => $notifications,
+            'filterForm' => $filterForm,
+            'pagination' => $pagination
         ]);
     }
 

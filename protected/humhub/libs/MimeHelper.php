@@ -40,6 +40,7 @@ class MimeHelper
         // Excel
         'xls' => self::ICON_EXCEL,
         'xlsx' => self::ICON_EXCEL,
+        'xlsb' => self::ICON_EXCEL,
         'ods' => self::ICON_EXCEL,
         // Powerpoint
         'ppt' => self::ICON_POWERPOINT,

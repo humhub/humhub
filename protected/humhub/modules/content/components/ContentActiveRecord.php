@@ -11,6 +11,7 @@ namespace humhub\modules\content\components;
 use humhub\modules\content\models\Movable;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
+use humhub\modules\user\behaviors\Followable;
 use humhub\widgets\Link;
 use humhub\modules\user\models\User;
 use Yii;
@@ -51,7 +52,7 @@ use yii\helpers\Html;
  * Note: If the underlying Content record cannot be saved or validated an Exception will thrown.
  *
  * @property Content $content
- * @mixin \humhub\modules\user\behaviors\Followable
+ * @mixin Followable
  * @property User $createdBy
  * @author Luke
  */
@@ -164,7 +165,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     public function init()
     {
         parent::init();
-        $this->attachBehavior('FollowableBehavior', \humhub\modules\user\behaviors\Followable::className());
+        $this->attachBehavior('FollowableBehavior', Followable::class);
     }
 
     /**
@@ -201,7 +202,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function getContentName()
     {
-        return $this->className();
+        return static::class;
     }
 
     /**
@@ -434,7 +435,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function getContent()
     {
-        return $this->hasOne(Content::className(), ['object_id' => 'id'])
+        return $this->hasOne(Content::class, ['object_id' => 'id'])
             ->andWhere(['content.object_model' => static::getObjectModel()]);
     }
 

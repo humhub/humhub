@@ -56,9 +56,6 @@ redirect_stderr=true
 stdout_logfile=<INSERT HUMHUB PATH HERE>/protected/runtime/logs/yii-queue-worker.log
 ```
 
-
-
-
 Queue Driver
 ------------
 
@@ -73,7 +70,7 @@ To enable this driver you need to add following block to your local configuratio
         // ...
 
         'queue' => [
-            'class' => 'humhub\components\queue\driver\MySQL',
+            'class' => 'humhub\modules\queue\driver\MySQL',
         ],
         
         // ...
@@ -94,7 +91,7 @@ To enable this driver you need to add following block to your local configuratio
         // ...
 
         'queue' => [
-            'class' => 'humhub\components\queue\driver\Redis',
+            'class' => 'humhub\modules\queue\driver\Redis',
         ],
         
         // ...
@@ -103,3 +100,6 @@ To enable this driver you need to add following block to your local configuratio
 
 ```
 
+### Sync and Instant Queue
+
+The [[humhub\components\queue\driver\Sync]] and [[humhub\components\queue\driver\Instant]] queues are used in test and development environments without cron jobs.

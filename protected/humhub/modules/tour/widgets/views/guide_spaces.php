@@ -7,7 +7,7 @@ $this->context->loadResources($this);
 <script type="text/javascript">
 
     var gotoProfile = false;
-    $(document).on('ready', function () {
+    $(document).one('humhub:ready', function () {
         // Create a new tour
         var spacesTour = new Tour({
             storage: false,

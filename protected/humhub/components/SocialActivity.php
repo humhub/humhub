@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\libs\Helpers;
 use humhub\modules\content\models\Content;
 use Yii;
@@ -44,11 +45,23 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     public $originator;
 
     /**
+     * @var bool ensure originator existence
+     * @since 1.3
+     */
+    public $requireOriginator = true;
+
+    /**
      * The source instance which created this activity
      *
      * @var \yii\db\ActiveRecord
      */
     public $source;
+
+    /**
+     * @var bool ensure source existence
+     * @since 1.3
+     */
+    public $requireSource = true;
 
     /**
      * @var string the module id which this activity belongs to (required)
@@ -363,6 +376,23 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     }
 
     /**
+     * Validates the existence of required attributes
+     *
+     * @return bool
+     */
+    public function validate() {
+        if (empty($this->source) && $this->requireSource) {
+            return false;
+        }
+
+        if (empty($this->originator) && $this->requireOriginator) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Serializes the $source and $originator fields.
      *
      * @see ActiveRecord::serialize() for the serialization of your $source
@@ -372,9 +402,18 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
      */
     public function serialize()
     {
+        $sourceClass = null;
+        $sourcePk = null;
+
+        if ($this->source) {
+            $sourceClass = get_class($this->source);
+            $sourcePk = $this->source->getPrimaryKey();
+        }
+
         return serialize([
-            'source' => $this->source,
-            'originator' => $this->originator
+            'sourceClass' => $sourceClass,
+            'sourcePk' => $sourcePk,
+            'originator_id' => $this->originator->id
         ]);
     }
 
@@ -389,7 +428,25 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         $this->init();
         $unserializedArr = unserialize($serialized);
-        $this->from($unserializedArr['originator']);
-        $this->about($unserializedArr['source']);
+
+        if(isset($unserializedArr['originator_id'])) {
+            $user = User::findOne(['id' => $unserializedArr['originator_id']]);
+            if ($user !== null) {
+                $this->from($user);
+            }
+        }
+
+        // Temporary for 1.3.0-beta.2 to 1.3.0-beta.3 updates with existing queue record
+        if (isset($unserializedArr['source'])) {
+            $this->about($unserializedArr['source']);
+        }
+
+        if (!empty($unserializedArr['sourceClass']) && !empty($unserializedArr['sourcePk'])) {
+            $source = PolymorphicRelation::loadActiveRecord($unserializedArr['sourceClass'], $unserializedArr['sourcePk']);
+            if ($source !== null) {
+                $this->about($source);
+            }
+        }
+
     }
 }

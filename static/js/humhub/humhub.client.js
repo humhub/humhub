@@ -24,7 +24,7 @@ humhub.module('client', function (module, require, $) {
                 dataType = 'json';
             } else if (responseType && responseType.indexOf('html') > -1) {
                 dataType = 'html';
-            } else {
+            } else if(!this.isAbort()){
                 console.error('unable to determine dataType from response, this may cause problems.');
             }
         }
@@ -37,6 +37,10 @@ humhub.module('client', function (module, require, $) {
             this[dataType] = this.response;
         }
     };
+
+    Response.prototype.isAbort = function () {
+        return this.textStatus == "abort";
+    }
     
     Response.prototype.header = function (key) {
         return this.xhr.getResponseHeader(key);

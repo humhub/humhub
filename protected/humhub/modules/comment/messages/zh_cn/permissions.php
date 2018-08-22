@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Can manage (e.g. archive, stick, move or delete) arbitrary content' => '',
     'Allows the user to add comments' => '允许用户评论',
-    'Can manage (e.g. archive, stick or delete) arbitrary content' => '可以管理（如归档，粘贴或删除）任意内容',
     'Create comment' => '创建评论',
     'Manage content' => '管理内容',
 ];

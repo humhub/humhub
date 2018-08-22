@@ -40,7 +40,7 @@ class CreateController extends Controller
     {
         return [
             'acl' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
             ]
         ];
     }

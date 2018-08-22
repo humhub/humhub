@@ -8,12 +8,14 @@
 
 namespace humhub\modules\notification;
 
+use humhub\components\Event;
+use humhub\modules\user\models\User;
 use Yii;
 use humhub\modules\notification\models\Notification;
 
 /**
  * Events provides callbacks for all defined module events.
- * 
+ *
  * @author luke
  */
 class Events extends \yii\base\BaseObject
@@ -22,19 +24,22 @@ class Events extends \yii\base\BaseObject
     /**
      * On User delete, also delete all posts
      *
-     * @param type $event
+     * @param Event $event
      */
     public static function onUserDelete($event)
     {
-        foreach (Notification::findAll(['user_id' => $event->sender->id]) as $notification) {
+        /** @var User $user */
+        $user = $event->sender;
+
+        foreach (Notification::findAll(['user_id' => $user->id]) as $notification) {
             $notification->delete();
         }
 
-        foreach (Notification::findAll(['originator_user_id' => $event->sender->id]) as $notification) {
+        foreach (Notification::findAll(['originator_user_id' => $user->id]) as $notification) {
             $notification->delete();
         }
 
-        foreach (Notification::findAll(['source_class' => \humhub\modules\user\models\User::className(), 'source_pk' => $event->sender->id]) as $notification) {
+        foreach (Notification::findAll(['source_class' => User::class, 'source_pk' => $user->id]) as $notification) {
             $notification->delete();
         }
 
@@ -66,6 +71,7 @@ class Events extends \yii\base\BaseObject
         $integrityChecker->showTestHeadline("Notification Module (" . Notification::find()->count() . " entries)");
 
         foreach (Notification::find()->joinWith(['space', 'user'])->each() as $notification) {
+            /** @var Notification $notification */
 
             // Check if Space still exists
             if ($notification->space_id != "" && $notification->space == null) {
@@ -108,6 +114,14 @@ class Events extends \yii\base\BaseObject
                     $notification->delete();
                 }
             }
+
+            if (!empty($notification->originator_user_id) && $notification->originator === null) {
+                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid originator!")) {
+                    $notification->delete();
+                }
+            }
+
+
         }
     }
 
@@ -139,11 +153,11 @@ class Events extends \yii\base\BaseObject
             'source_pk' => $event->sender->getPrimaryKey(),
         ]);
     }
-    
+
     public static function onLayoutAddons($event)
     {
         if(Yii::$app->request->isPjax) {
-            $event->sender->addWidget(widgets\UpdateNotificationCount::className());
+            $event->sender->addWidget(widgets\UpdateNotificationCount::class);
         }
     }
 

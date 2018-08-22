@@ -1,30 +1,30 @@
 HumHub Build
 ============
 
-## Setup
+HumHub provides some [grunt](https://gruntjs.com/) tasks to ease the execution of some console commands. This guide describes how to setup
+the grunt and use the available commands.
 
- 1. Install NPM
- 2. Install Grunt (http://gruntjs.com/getting-started)
- 3. call `npm update` in humhub root
+## Grunt Setup
 
-> Note: Since symlinks are not supported in some virtual machine shared folders the update command should be called from the host.
+ - [Install Node.js](https://nodejs.org/en/download/package-manager/)
+ - [Install Grunt CLI](https://gruntjs.com/using-the-cli)
+ 
+```
+npm install -g grunt-cli
+```
 
-## Setup grunt dependencies
-
-Call the following commands in your humhub root directory:
- - `npm update`
- - `npm install grunt --save-dev`
+ - call `npm install` in your HumHub root
 
 ## Build Assets
 
-HumHub uses Yiis build in mechanism for compressing and combining assets as javascript or stylesheet files in combination with grunt.
+HumHub uses Yii`s build-in mechanism for compressing and combining assets as javascript or stylesheet files in combination with grunt.
+Those compressed assets are only used when running in [production mode](admin-installation.md#disable-errors-debugging) and in [acceptance tests](testing.md).
 
-Your compressed files will be saved under `/humhub/js/all-*.js` respectively `static/css/all-*.css`.
+Your production assets are saved under `/humhub/js/all-*.js` respectively `static/css/all-*.css`.
 
-> Note: HumHub will only use the compressed assets if operated in [production mode](admin-installation.md#disable-errors-debugging), otherwise
-all assets will be served seperatly.
+> Note: Only [[humhub\assets\AppAsset]] dependencies are compressed.
 
-### Grunt Asset Built
+- Grunt Asset Built
 
 The simples way to build your production assets is using the following grunt task:
 
@@ -32,7 +32,7 @@ The simples way to build your production assets is using the following grunt tas
 grunt build-assets
 ```
 
-### Manual Asset Built
+- Manual Asset Built
 
 1. Delete the content of your `static/assets` directory.
 2. Delete the old compressed file `static/js/all-*.js` and `static/css/all-*.css`
@@ -42,22 +42,37 @@ grunt build-assets
 php yii asset humhub/config/assets.php humhub/config/assets-prod.php
 ```
 
-> Info: More information is available in the [Yii Asset Guide](http://www.yiiframework.com/doc-2.0/guide-structure-assets.html#combining-compressing-assets).
+> Info: Detailed information is available in the [Yii Asset Guide](http://www.yiiframework.com/doc-2.0/guide-structure-assets.html#combining-compressing-assets).
 
 ## Build Community Theme
 
-To rebuild the community themes  `theme.css` file you can execute one of the following commands:
+- Install [Less](http://lesscss.org/usage/)
 
 ```
-lessc -x themes/HumHub/less/build.less themes/HumHub/css/theme.css
+npm install less -g
 ```
 
-or with grunt:
+- Grunt theme build
 
 ```
 grunt build-theme
 ```
 
-### Other Grunt Tasks
- - `grunt build-search` Rebuild your [Search Index](../admin/search.md)
+to build another theme within the `@humhub/themes` directory run:
 
+```
+grunt build-theme --name=MyTheme
+```
+
+- Manual theme build
+
+```
+lessc -x themes/HumHub/less/build.less themes/HumHub/css/theme.css
+```
+
+### Other Grunt Tasks
+
+ - `grunt build-search` Rebuild your [Search Index](../admin/search.md)
+ - `grunt migrate-up` Runs all missing core and module [migrations](models.md#scheme-updates)
+ - `grunt migrate-create --name=my_migration` Creates a new [migration](models.md#scheme-updates) within the `@humhub/migrations` directory
+ - `grunt test` and `grunt testServer` [Testing Guide](testing.md)

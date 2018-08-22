@@ -153,7 +153,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         if ($insert) {
             $contentContainer = new ContentContainer;
             $contentContainer->guid = $this->guid;
-            $contentContainer->class = $this->className();
+            $contentContainer->class = static::class;
             $contentContainer->pk = $this->getPrimaryKey();
             if ($this instanceof User) {
                 $contentContainer->owner_user_id = $this->id;
@@ -177,7 +177,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     {
         ContentContainer::deleteAll([
             'pk' => $this->getPrimaryKey(),
-            'class' => $this->className()
+            'class' => static::class
         ]);
 
         parent::afterDelete();
@@ -192,10 +192,10 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function getContentContainerRecord()
     {
         if ($this->hasAttribute('contentcontainer_id')) {
-            return $this->hasOne(ContentContainer::className(), ['id' => 'contentcontainer_id']);
+            return $this->hasOne(ContentContainer::class, ['id' => 'contentcontainer_id']);
         }
 
-        return $this->hasOne(ContentContainer::className(), ['pk' => 'id'])
+        return $this->hasOne(ContentContainer::class, ['pk' => 'id'])
             ->andOnCondition(['class' => $this->className()]);
     }
 

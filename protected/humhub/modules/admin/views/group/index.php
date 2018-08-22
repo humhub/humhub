@@ -6,7 +6,7 @@ use humhub\widgets\GridView;
 ?>
 <div class="panel-body">
     <div class="pull-right">
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.views_groups_index', "Create new group"), Url::to(['edit']), ['class' => 'btn btn-sm btn-success']); ?>
+        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.views_groups_index', 'Create new group'), Url::to(['edit']), ['class' => 'btn btn-sm btn-success']); ?>
     </div>
     
     <h4><?= Yii::t('AdminModule.views_group_index', 'Manage groups'); ?></h4>
@@ -39,12 +39,19 @@ use humhub\widgets\GridView;
             ],
             [
                 'class' => \humhub\libs\ActionColumn::class,
-                'actions' => [
-                    Yii::t('AdminModule.user', 'Settings') => ['edit'],
-                    '---',
-                    Yii::t('AdminModule.user', "Permissions") => ['manage-permissions'],
-                    Yii::t('AdminModule.user', "Members") => ['manage-group-users'],
-                ]
+                'actions' => function($group, $key, $index) {
+                    /* @var $group \humhub\modules\user\models\Group */
+                    if($group->is_admin_group && !Yii::$app->user->isAdmin()) {
+                        return [];
+                    }
+
+                    return  [
+                        Yii::t('AdminModule.user', 'Settings') => ['edit'],
+                        '---',
+                        Yii::t('AdminModule.user', 'Permissions') => ['manage-permissions'],
+                        Yii::t('AdminModule.user', 'Members') => ['manage-group-users'],
+                    ];
+                }
             ],
         ],
     ]);

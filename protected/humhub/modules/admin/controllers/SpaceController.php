@@ -48,7 +48,7 @@ class SpaceController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => [ManageSpaces::className(), ManageSettings::className()]],
+            ['permissions' => [ManageSpaces::class, ManageSettings::class]],
         ];
     }
 

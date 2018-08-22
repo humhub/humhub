@@ -1,28 +1,122 @@
 HumHub Change Log
 =================
 
+1.3.2  (Unreleased)
+-----------------------
 
-1.3.0-beta.2  (Unreleased)
---------------------------
+- Fix #3241: Profile header space count invalid
+- Fix: Disabled Notification E-Mails for installation sample contents
+- Fix: No e-mail summary immediately after installation
+- Enh: Added queuing for search updates of commments
+- Enh: Added queue clear option at Administration - Information
+- Enh: Improved support of languages unsupported Yii2 
+- Enh: Added Amharic language support
+- Enh: Added Finnish language support
+- Enh: Added dashboard warning for admins if cron jobs not working
+- Fix: Queue worker problem with spaces in PHP binary path
+- Fix: Comment buttons overlap editor text
+- Enh: Added windows support for grunt tasks
+- Enh: Added `grunt test-server` and `grunt test`
+
+
+
+1.3.1  (August 7, 2018)
+-----------------------
+
+> Warning: Please read the [Update Guide](http://docs.humhub.org/admin-updating-130.html) before updating from 1.2.x!
+
+> Note: A full list of changes is available here: [Changelog](https://github.com/humhub/humhub/blob/v1.3.1/protected/humhub/docs/CHANGELOG.md)
+
+- Fix: Complete table cache flush on profile field update
+- Fix: Improved handling of inconsistent notifications
+- Fix: Vietnamese translation syntax error
+
+
+1.3.0  (August 3, 2018)
+-----------------------
+
+> Warning: Please read the [Update Guide](http://docs.humhub.org/admin-updating-130.html) before updating!
+
+- Enh: Added `PolymorphicRelation::strict` to throw exceptions when accessing invalid polymorphic relations
+- Fix: Mail summaries not correctly triggered by cron
+- Fix: Click to topics lead on streams without topic filter throws javascript error. (https://github.com/humhub/humhub-modules-polls/issues/49)
+- Fix: Existing files may cause NULL pointer exception
+- Fix: Newly created profile fields cannot be updated
+- Enh: Added `AbstractRichTextEditor::layout` in order to change richtext style
+- Enh: Added `block` type RichText for non focus menu style
+
+
+1.3.0-beta.3  (July 30, 2018)
+-----------------------------
+
+- Fix: prevent user serialization for SocialActivity
+- Fix: wrong return value for `Content::move()`
+- Fix: space archive activity wrong originator assignment
+- Fix: suppress "unable to determine dataType" error for aborted xhr requests
+- Enh: added `FunctionalTester::loginBySpaceUserGroup()` and `FunctionalTest::assertSpaceAccessStatus()` for ACL testing
+- Fix #2721 delete space button not visible for system admin
+- Enh: added `humhub\modules\space\behaviors\SpaceModelMembership::canDelete()`
+- Fix #3221: Popover Space title "&" to "&amp;"
+- Fix invalid translation syntax used in croatian language
+- Enh added highligh.js as ui addition
+- Fix: ui.addition.applyTo with filter ignores first filter index
+- Fix: introduction tour not working
+- Chng: Moved static js dependencies from `static/resources` into `static/js`
+- Fix: Comment edit cancel edit context item not shown
+- Fix  #2700: Prevent GroupManager access to system admin group management
+- Enh: Styled user deletion view
+- Fixed: Space and User Admin Filterbar padding
+- Fix: Source serialization of Notification ActiveJob
+- Enh: Added 'requireSource' & 'requireOriginator' flags in SocialActivities
+
+
+1.3.0-beta.2  (July 18, 2018)
+-----------------------------
+
+Please read the [Update Guide](http://docs.humhub.org/beta/admin-updating-130.html) before updating!
+
+> If you're using the sources directly from GitHub, you need to build the required assets manually. Please see the chapter [Build production assets](http://docs.humhub.org/dev-environment.html#build-production-assets) for more details.
+
 - Enh: Added CounterSet Widget to handle Space/Profile header statistic counts
 - Fix: UI addition mutation observer interfering with new rich-text mutation logic
 - Fix: ThemeLoader publishes assets on CLI requests
 - Enh: Add possibility to delete an invitation [#2980](https://github.com/humhub/humhub/issues/2980)
 - Enh: Moved search index tasks (add, update & delete) into asynchronous tasks
 - Enh: Added search index rebuild button
-- Fix #3200 wall stream scroll not working after single entry load request
+- Fix #3200: wall stream scroll not working after single entry load request
 - Fix added missing required validation of target space for move content feature
 - Enh: Added `humhub.modules.stream.StreamState.firstRequest` in order to determine the initial request
-- Fix #3204 invalid russian translation in module overview
-- Fix #3169 post markdown not stripped in mails and activities
-- Fix #3157 invalid use of relative space target link in MailContentEntry widget 
+- Fix #3204: invalid russian translation in module overview
+- Fix #3169: post markdown not stripped in mails and activities
+- Fix #3157: invalid use of relative space target link in MailContentEntry widget 
 - Fix force invite not working on space creation
 - Enh: Enable invite all instead of force membership in case force invite checkbox is not selected
-- Fix prevent MembersAdded activity when using force space membership
-- Enh added `humhub.modules.ui.picker.Picker.disable()` in order to disable/enable userpicker fields
-- Enh topic labels now redirect to space stream with active topic filter if clicked outside of space stream
-- Fix #3123 unbalanced html tags leads to broken comment after load more
-- Fix #3211 escaped html rendered on space list modal
+- Fix: prevent MembersAdded activity when using force space membership
+- Enh: added `humhub.modules.ui.picker.Picker.disable()` in order to disable/enable userpicker fields
+- Enh: topic labels now redirect to space stream with active topic filter if clicked outside of space stream
+- Fix: #3123: unbalanced html tags leads to broken comment after load more
+- Fix: #3211: escaped html rendered on space list modal
+- Fix: invalid userpicker translation syntax in czech language
+- Fix: added missing layout-snippet-container class in space and profile layout
+- Fix: move profile content not possible
+- Fix: Stream wall scroll event not detached on pjax call
+- Fix: Error thrown for empty url links in `humhub\libs\Markdown` when used in console environment
+- Fix: UserUrlRule double User model import
+- Fix: Skip soft delete validation
+- Fix: Added user dn to ldap attributes on login
+- Enh: Added Twig template engine for usage in modules
+- Enh: Added id data attribute on contentcontainer links
+- Fix: Wrong permission check on force invite check
+- Fix: Space homepage doesn't allow custom pages on first position
+- Enh: Added integrity check for notification originator
+- Enh: Use of new richtext version 1.0.4 see https://github.com/humhub/humhub-prosemirror/blob/master/docs/CHANGELOG.md 
+- Enh: Added max-height for post/comment/edit richtext
+- Enh: Richtext style enhancements (dashed selection)
+- Fix: Upload preview for comments not cleared after submit
+- Fix: Profile/Space image upload not working after full page reloads
+- Fix: File upload errors not handled by richtext
+- Enh: Removed built and compressed assets from GitHub sources
+
 
 1.3.0-beta.1  (July 4, 2018)
 ----------------------------

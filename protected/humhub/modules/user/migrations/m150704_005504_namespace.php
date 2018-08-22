@@ -18,8 +18,8 @@ class m150704_005504_namespace extends Migration
         $this->update('profile_field', ['field_type_class' => 'humhub\modules\user\models\fieldtype\Select'], ['field_type_class' => 'ProfileFieldTypeSelect']);
         $this->update('profile_field', ['field_type_class' => 'humhub\modules\user\models\fieldtype\TextArea'], ['field_type_class' => 'ProfileFieldTypeTextArea']);
 
-        $this->renameClass('User', User::className());
-        $this->renameClass('UserFollow', User::className());
+        $this->renameClass('User', User::class);
+        $this->renameClass('UserFollow', User::class);
     }
 
     public function down()

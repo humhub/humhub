@@ -45,7 +45,7 @@ class AuthController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
             'external' => [
-                'class' => AuthAction::className(),
+                'class' => AuthAction::class,
                 'successCallback' => [$this, 'onAuthSuccess'],
             ],
         ];

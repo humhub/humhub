@@ -271,7 +271,7 @@ class ContentTag extends ActiveRecord
             return null;
         }
 
-        return $this->hasOne(ContentTag::className(), ['id' => 'parent_id']);
+        return $this->hasOne(ContentTag::class, ['id' => 'parent_id']);
     }
 
     /**

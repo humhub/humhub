@@ -100,8 +100,12 @@ class Mailer extends \yii\swiftmailer\Mailer
      */
     public function isRecipientSurpressed($email)
     {
-        if (in_array($email, $this->surpressedRecipients)) {
-            return true;
+        $email = strtolower($email);
+
+        foreach ($this->surpressedRecipients as $surpressed) {
+            if (strpos($email, $surpressed) !== false) {
+                return true;
+            }
         }
 
         return false;

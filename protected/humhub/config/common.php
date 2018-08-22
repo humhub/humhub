@@ -13,7 +13,7 @@ Yii::setAlias('@themes', '@webroot/themes');
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.3.0-beta.1',
+    'version' => '1.3.2-dev',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue', 'humhub\modules\ui\view\bootstrap\ThemeLoader'],
     'sourceLanguage' => 'en',
@@ -81,6 +81,10 @@ $config = [
                     'basePath' => '@humhub/messages'
                 ],
                 'widgets_views_markdownEditor' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@humhub/messages'
+                ],
+                'humhub.yii' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@humhub/messages'
                 ],
@@ -197,6 +201,8 @@ $config = [
             'lv' => 'Latvijas',
             'sl' => 'Slovenščina',
             'hr' => 'Hrvatski',
+            'am' => 'አማርኛ',
+            'fi' => 'suomalainen',
         ],
         'ldap' => [
             // LDAP date field formats

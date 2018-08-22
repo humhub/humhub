@@ -22,6 +22,7 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\db\Query;
 use yii\web\HttpException;
 
 /**
@@ -81,16 +82,16 @@ class UserController extends Controller
         $showPendingRegistrations = (Invite::find()->count() > 0 && Yii::$app->user->can([new ManageUsers(), new ManageGroups()]));
 
         return $this->render('list', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
-                    'showPendingRegistrations' => $showPendingRegistrations
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'showPendingRegistrations' => $showPendingRegistrations
         ]);
     }
 
     /**
      * Edits a user
-     *
-     * @return type
+     * @return string
+     * @throws HttpException
      */
     public function actionEdit()
     {
@@ -133,17 +134,20 @@ class UserController extends Controller
                     ],
                     'isVisible' => Yii::$app->user->can(new ManageGroups())
                 ],
-                'status' => [
-                    'type' => 'dropdownlist',
-                    'class' => 'form-control',
-                    'items' => [
-                        User::STATUS_ENABLED => Yii::t('AdminModule.controllers_UserController', 'Enabled'),
-                        User::STATUS_DISABLED => Yii::t('AdminModule.controllers_UserController', 'Disabled'),
-                        User::STATUS_NEED_APPROVAL => Yii::t('AdminModule.controllers_UserController', 'Unapproved'),
-                    ],
-                ]
             ],
         ];
+
+        if(Yii::$app->user->isAdmin() || !$user->isSystemAdmin()) {
+            $definition['elements']['User']['elements']['status'] = [
+                'type' => 'dropdownlist',
+                'class' => 'form-control',
+                'items' => [
+                    User::STATUS_ENABLED => Yii::t('AdminModule.controllers_UserController', 'Enabled'),
+                    User::STATUS_DISABLED => Yii::t('AdminModule.controllers_UserController', 'Disabled'),
+                    User::STATUS_NEED_APPROVAL => Yii::t('AdminModule.controllers_UserController', 'Unapproved'),
+                ],
+            ];
+        }
 
         // Add Profile Form
         $definition['elements']['Profile'] = array_merge(['type' => 'form'], $profile->getFormDefinition());
@@ -155,12 +159,16 @@ class UserController extends Controller
                 'label' => Yii::t('AdminModule.controllers_UserController', 'Save'),
                 'class' => 'btn btn-primary',
             ],
-            'delete' => [
+
+        ];
+
+        if(Yii::$app->user->isAdmin() || !$user->isSystemAdmin()) {
+            $definition['buttons']['delete'] = [
                 'type' => 'submit',
                 'label' => Yii::t('AdminModule.controllers_UserController', 'Delete'),
                 'class' => 'btn btn-danger',
-            ],
-        ];
+            ];
+        }
 
         $form = new HForm($definition);
         $form->models['User'] = $user;
@@ -178,8 +186,8 @@ class UserController extends Controller
         }
 
         return $this->render('edit', [
-                    'hForm' => $form,
-                    'user' => $user
+            'hForm' => $form,
+            'user' => $user
         ]);
     }
 
@@ -202,17 +210,30 @@ class UserController extends Controller
     public function actionDelete($id)
     {
         $user = User::findOne(['id' => $id]);
-        if ($user == null) {
-            throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
-        } elseif (Yii::$app->user->id == $id) {
+
+        $this->checkGroupAccess($user);
+
+        if (Yii::$app->user->id === $id) {
             throw new HttpException(400, Yii::t('AdminModule.user', 'You cannot delete yourself!'));
         }
+
         $model = new UserDeleteForm(['user' => $user]);
         if ($model->load(Yii::$app->request->post()) && $model->performDelete()) {
             $this->view->info(Yii::t('AdminModule.user', 'User deletion process queued.'));
             return $this->redirect(['list']);
         }
         return $this->render('delete', ['model' => $model]);
+    }
+
+    public function checkGroupAccess(User $user = null)
+    {
+        if(!$user) {
+            throw new HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
+        }
+
+        if($user->isSystemAdmin() && !Yii::$app->user->isAdmin()) {
+            throw new HttpException(403);
+        }
     }
 
     /**
@@ -252,9 +273,8 @@ class UserController extends Controller
         $this->forcePostRequest();
 
         $user = User::findOne(['id' => $id]);
-        if ($user === null) {
-            throw new HttpException(404);
-        }
+
+        $this->checkGroupAccess($user);
 
         $user->status = User::STATUS_DISABLED;
         $user->save();
@@ -274,9 +294,8 @@ class UserController extends Controller
         $this->forcePostRequest();
 
         $user = User::findOne(['id' => $id]);
-        if ($user === null) {
-            throw new HttpException(404);
-        }
+
+        $this->checkGroupAccess($user);
 
         if (!static::canImpersonate($user)) {
             throw new HttpException(403);
@@ -344,28 +363,28 @@ class UserController extends Controller
             'language',
             'time_zone',
             [
-                'class' => DateTimeColumn::className(),
+                'class' => DateTimeColumn::class,
                 'attribute' => 'created_at',
             ],
             'created_by',
             [
-                'class' => DateTimeColumn::className(),
+                'class' => DateTimeColumn::class,
                 'attribute' => 'updated_at',
             ],
             'updated_by',
             [
-                'class' => DateTimeColumn::className(),
+                'class' => DateTimeColumn::class,
                 'attribute' => 'last_login',
             ],
             'authclient_id',
             'visibility',
         ];
 
-        $profileColumns = (new \yii\db\Query())
-                ->select(['CONCAT(\'profile.\', internal_name)'])
-                ->from(ProfileField::tableName())
-                ->orderBy(['profile_field_category_id' => SORT_ASC, 'sort_order' => SORT_ASC])
-                ->column();
+        $profileColumns = (new Query())
+            ->select(['CONCAT(\'profile.\', internal_name)'])
+            ->from(ProfileField::tableName())
+            ->orderBy(['profile_field_category_id' => SORT_ASC, 'sort_order' => SORT_ASC])
+            ->column();
 
         return array_merge($userColumns, $profileColumns);
     }

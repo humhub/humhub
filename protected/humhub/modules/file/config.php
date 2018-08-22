@@ -11,7 +11,7 @@ use humhub\components\ActiveRecord;
 
 return [
     'id' => 'file',
-    'class' => Module::className(),
+    'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
         ['class' => WallEntryAddons::class, 'event' => WallEntryAddons::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryAddonInit']],

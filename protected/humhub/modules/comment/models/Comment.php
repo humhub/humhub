@@ -12,11 +12,13 @@ use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\comment\activities\NewComment;
 use humhub\modules\comment\live\NewComment as NewCommentLive;
 use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\post\models\Post;
 use humhub\modules\search\interfaces\Searchable;
+use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -71,9 +73,9 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         return [
             [
-                'class' => PolymorphicRelation::className(),
+                'class' => PolymorphicRelation::class,
                 'mustBeInstanceOf' => [
-                    ActiveRecord::className(),
+                    ActiveRecord::class,
                 ]
             ]
         ];
@@ -168,8 +170,10 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      */
     protected function updateContentSearch()
     {
-        if ($this->getCommentedRecord() instanceof Searchable) {
-            Yii::$app->search->update($this->getCommentedRecord());
+        /** @var ContentActiveRecord $content */
+        $contentRecord = $this->getCommentedRecord();
+        if ($contentRecord !== null) {
+            SearchHelper::queueUpdate($contentRecord);
         }
     }
 

@@ -51,9 +51,9 @@ class Like extends ContentAddonActiveRecord
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
+                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
                 'mustBeInstanceOf' => [
-                    \yii\db\ActiveRecord::className(),
+                    \yii\db\ActiveRecord::class,
                 ]
             ]
         ];

@@ -8,12 +8,11 @@
 
 namespace humhub\modules\topic\controllers;
 
-
 use humhub\widgets\ModalClose;
-use Yii;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\permissions\ManageTopics;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\HttpException;
 
@@ -31,11 +30,11 @@ class ManageController extends ContentContainerController
     {
         $model = new Topic($this->contentContainer);
 
-        if($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->view->saved();
         }
 
-        if($model->hasErrors()) {
+        if ($model->hasErrors()) {
             $this->view->error($model->getFirstError('name'));
         }
 
@@ -60,8 +59,8 @@ class ManageController extends ContentContainerController
     {
         $this->forcePostRequest();
 
-        $topic = Topic::findOne($id);
-        if($topic) {
+        $topic = Topic::findOne(['id' => $id]);
+        if ($topic) {
             $topic->delete();
             return ['success' => true, 'message' => Yii::t('TopicModule.base', 'Topic has been deleted!')];
         }
@@ -71,13 +70,13 @@ class ManageController extends ContentContainerController
 
     public function actionEdit($id)
     {
-        $topic = Topic::findOne($id);
+        $topic = Topic::findOne(['id' => $id]);
 
-        if(!$topic) {
+        if (!$topic) {
             throw new HttpException(404);
         }
 
-        if($topic->load(Yii::$app->request->post()) && $topic->save()) {
+        if ($topic->load(Yii::$app->request->post()) && $topic->save()) {
             return ModalClose::widget([
                 'saved' => true,
                 'reload' => true

@@ -8,8 +8,7 @@
 
 namespace humhub\modules\content\widgets\richtext;
 
-use humhub\widgets\InputWidget;
-use Yii;
+use humhub\modules\ui\form\widgets\JsInputWidget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -45,12 +44,21 @@ use yii\helpers\Url;
  * @author Julian Harrer <julian.harrer@humhub.com>
  * @since 1.3
  */
-class AbstractRichTextEditor extends InputWidget
+class AbstractRichTextEditor extends JsInputWidget
 {
+    const LAYOUT_BLOCK = 'block';
+
+    const LAYOUT_INLINE = 'inline';
+
     /**
      * @var string richtext feature preset e.g: 'markdown', 'normal', 'full'
      */
     public $preset;
+
+    /**
+     * @var string defines the style/layout of the richtext
+     */
+    public $layout = self::LAYOUT_BLOCK;
 
     /**
      * Can be used to overwrite the default placeholder.
@@ -132,14 +140,9 @@ class AbstractRichTextEditor extends InputWidget
      */
     public $label = false;
 
-    /**
-     * @var [] renderer class definition
-     */
-    public static $renderer;
-
-    /**
-     * @inhertidoc
-     */
+        /**
+         * @inhertidoc
+         */
     public function run()
     {
         $inputOptions = $this->getInputAttributes();
@@ -160,6 +163,11 @@ class AbstractRichTextEditor extends InputWidget
 
         return $input . $richText . $this->prepend();
     }
+
+    /**
+     * @var [] renderer class definition
+     */
+    public static $renderer;
 
     /**
      * This method can be overwritten in order to prepend content after the actual rich text content.
@@ -192,9 +200,9 @@ class AbstractRichTextEditor extends InputWidget
 
         if ($this->label === true && $this->model != null) {
             return Html::activeLabel($this->model, $this->attribute, ['class' => 'control-label']);
-        } else {
-            return $this->label;
         }
+
+        return $this->label;
     }
 
     /**
@@ -203,8 +211,8 @@ class AbstractRichTextEditor extends InputWidget
      * This function will call [[RichText::output()]] with given richtext settings and `edit = true`.
      *
      * @param $content
-     * @param array $params
      * @return string
+     * @internal param array $params
      */
     protected function editOutput($content)
     {

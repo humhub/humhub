@@ -45,7 +45,7 @@ $categories = $user->profile->getProfileFieldCategories();
                                     </div>
                                 <?php else: ?>
                                     <div class="col-sm-9">
-                                        <?php if ($field->field_type_class == MarkdownEditor::className()): ?>
+                                        <?php if ($field->field_type_class == MarkdownEditor::class): ?>
                                             <p class="form-control-static" style="min-height: 0 !important;padding-top:0;">
                                                 <?= MarkdownView::widget(['markdown' => $field->getUserValue($user, false)]); ?>
                                             </p>

@@ -73,9 +73,12 @@ class NotificationManager
                 continue;
             }
 
-            $notification->saveRecord($user);
-            foreach ($this->getTargets($user) as $target) {
-                $target->send($notification, $user);
+            if ($notification->saveRecord($user)) {
+                foreach ($this->getTargets($user) as $target) {
+                    $target->send($notification, $user);
+                }
+            } else {
+                Yii::debug('Could not store notification '.get_class($notification). ' for user '. $user->id);
             }
 
             $processed[] = $user->id;

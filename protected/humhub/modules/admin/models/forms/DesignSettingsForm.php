@@ -11,7 +11,6 @@ namespace humhub\modules\admin\models\forms;
 use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
-use humhub\components\Theme;
 use humhub\libs\LogoImage;
 use humhub\libs\DynamicConfig;
 use humhub\modules\ui\view\helpers\ThemeHelper;

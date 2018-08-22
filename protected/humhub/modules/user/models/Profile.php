@@ -8,7 +8,9 @@
 
 namespace humhub\modules\user\models;
 
+use humhub\modules\user\authclient\AuthClientHelpers;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "profile".
@@ -46,7 +48,7 @@ use Yii;
  * @property string $url_twitter
  * @property User $user
  */
-class Profile extends \yii\db\ActiveRecord
+class Profile extends ActiveRecord
 {
 
     /**
@@ -87,7 +89,7 @@ class Profile extends \yii\db\ActiveRecord
         // Get synced attributes if user is set
         $syncAttributes = [];
         if ($this->user !== null) {
-            $syncAttributes = \humhub\modules\user\authclient\AuthClientHelpers::getSyncAttributesByUser($this->user);
+            $syncAttributes = AuthClientHelpers::getSyncAttributesByUser($this->user);
         }
 
         foreach (ProfileField::find()->all() as $profileField) {
@@ -163,12 +165,13 @@ class Profile extends \yii\db\ActiveRecord
             /** @var ProfileField $profileField */
             $labels = array_merge($labels, $profileField->getFieldType()->getLabels());
         }
+
         return $labels;
     }
 
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     /**
@@ -181,7 +184,7 @@ class Profile extends \yii\db\ActiveRecord
 
         $syncAttributes = [];
         if ($this->user !== null) {
-            $syncAttributes = \humhub\modules\user\authclient\AuthClientHelpers::getSyncAttributesByUser($this->user);
+            $syncAttributes = AuthClientHelpers::getSyncAttributesByUser($this->user);
         }
 
         $safeAttributes = $this->safeAttributes();
@@ -244,8 +247,10 @@ class Profile extends \yii\db\ActiveRecord
      */
     public static function columnExists($name)
     {
+        Yii::$app->getDb()->getSchema()->refreshTableSchema(self::tableName());
         $table = Yii::$app->getDb()->getSchema()->getTableSchema(self::tableName(), true);
         $columnNames = $table->getColumnNames();
+
         return (in_array($name, $columnNames));
     }
 
@@ -312,7 +317,8 @@ class Profile extends \yii\db\ActiveRecord
                 $this->setAttribute($name, '');
             }
         }
-        if (!$this->save()) {
+
+        if (!$this->save(false)) {
             Yii::error('Could not soft delete profile!');
         }
     }

@@ -49,7 +49,7 @@ class ModuleController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => \humhub\modules\admin\permissions\ManageModules::className()]
+            ['permissions' => \humhub\modules\admin\permissions\ManageModules::class]
         ];
     }
 

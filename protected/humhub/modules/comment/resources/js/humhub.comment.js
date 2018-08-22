@@ -6,11 +6,7 @@ humhub.module('comment', function (module, require, $) {
     var loader = require('ui.loader');
     var additions = require('ui.additions');
 
-    var Form = function (node, options) {
-        Widget.call(this, node, options);
-    };
-
-    object.inherits(Form, Widget);
+    var Form = Widget.extend();
 
     Form.prototype.submit = function (evt) {
         var that = this;
@@ -66,7 +62,7 @@ humhub.module('comment', function (module, require, $) {
     };
 
     Form.prototype.getUpload = function () {
-        return Widget.instance(this.$.find('[name="files[]"]'));
+        return Widget.instance(this.$.find('.main_comment_upload'));
     };
 
     Form.prototype.getCommentsContainer = function () {
@@ -77,19 +73,16 @@ humhub.module('comment', function (module, require, $) {
         return this.$.find('textarea');
     };
 
-    var Comment = function (node) {
+    var Comment = Content.extend(function (node) {
         Content.call(this, node);
         additions.observe(this.$);
-    };
-
-    object.inherits(Comment, Content);
+    });
 
     Comment.prototype.edit = function (evt) {
         this.loader();
         var that = this;
         client.post(evt, {dataType: 'html'}).then(function (response) {
             that.$.find('.comment_edit_content').replaceWith(response.html);
-            that.getRichtext().focus();
             that.$.find('.comment-cancel-edit-link').show();
             that.$.find('.comment-edit-link').hide();
         }).finally(function () {

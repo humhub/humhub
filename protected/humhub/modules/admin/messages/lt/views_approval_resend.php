@@ -18,6 +18,6 @@
  */
 return [
     'Cancel' => '',
+    'Delete invitation' => '',
     'Send invitation email' => '',
-    'Send invitation email again?' => '',
 ];

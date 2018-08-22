@@ -27,6 +27,7 @@ use yii\base\Exception;
  * - updated_by
  * - updated_at
  *
+ * @property-read Content $content
  * @author Lucas Bartholemy <lucas@bartholemy.com>
  * @package humhub.components
  * @since 0.5
@@ -133,7 +134,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function canRead()
     {
-        return $this->content->canRead(Yii::$app->user->id);
+        return $this->content->canView();
     }
 
     /**

@@ -8,6 +8,8 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\modules\friendship\models\Friendship;
+use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
 use humhub\modules\ui\widgets\CounterSetItem;
 use humhub\modules\ui\widgets\CounterSet;
 use humhub\modules\user\models\User;
@@ -59,9 +61,14 @@ class ProfileHeaderCounterSet extends CounterSet
             ]);
         }
 
+        $spaceMembershipCount = Membership::getUserSpaceQuery($this->user)
+            ->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE])
+            ->andWhere(['space.status' => Space::STATUS_ENABLED])
+            ->count();
+
         $this->counters[] = new CounterSetItem([
             'label' => Yii::t('UserModule.widgets_views_profileHeader', 'Spaces'),
-            'value' => $this->user->getFollowingCount(User::class),
+            'value' => $spaceMembershipCount,
             'url' => Url::to(['/user/profile/space-membership-list', 'container' => $this->user]),
             'linkOptions' => ['data-target' => '#globalModal']
         ]);

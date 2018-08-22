@@ -85,7 +85,8 @@ class AppAsset extends AssetBundle
         'humhub\assets\ClipboardJsAsset',
         'humhub\assets\ImagesLoadedAsset',
         'humhub\assets\SocketIoAsset',
-        'humhub\assets\OpenSansAsset'
+        'humhub\assets\OpenSansAsset',
+        'humhub\assets\HighlightJsAsset',
     ];
 
     /**

@@ -27,7 +27,6 @@ return [
     'Invalid request method!' => '',
     'Module is not enabled on this content container!' => '',
     'Please type at least {count} characters' => '',
-    'The current main HumHub database name is ' => '',
     'Toggle comment menu' => '',
     'Toggle panel menu' => '',
     'Toggle post menu' => '',

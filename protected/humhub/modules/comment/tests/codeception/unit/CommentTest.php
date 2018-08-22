@@ -18,14 +18,14 @@ class CommentTest extends HumHubDbTestCase
         
         $comment = new Comment([
             'message' => 'User2 comment!',
-            'object_model' => Post::className(),
+            'object_model' => Post::class,
             'object_id' => 11
         ]);
 
         $comment->save();
 
         $this->assertMailSent(1, 'Comment Notification Mail sent');
-        $this->assertEqualsLastEmailSubject('Sara Tester just commented your post "User 2 Space 2 Post Private" in space Space 2');
+        $this->assertEqualsLastEmailSubject('Sara Tester commented post "User 2 Space 2 Post Private" in space Space 2');
         $this->assertNotEmpty($comment->id);
         $this->assertNotEmpty($comment->content->getPolymorphicRelation()->getFollowers(null, true, true));
         

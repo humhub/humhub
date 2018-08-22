@@ -9,15 +9,12 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
     var object = require('util').object;
     var client = require('client');
     var Widget = require('ui.widget').Widget;
+    var additions = require('ui.additions');
 
     var MarkdownEditor = prosemirror.MarkdownEditor;
     var MentionProvider = prosemirror.MentionProvider;
 
-    var RichTextEditor = function(node, options) {
-        Widget.call(this, node, options);
-    };
-
-    object.inherits(RichTextEditor, Widget);
+    var RichTextEditor = Widget.extend();
 
     RichTextEditor.component = 'humhub-ui-richtexteditor';
 
@@ -50,8 +47,10 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
             setTimeout($.proxy(this.disable, this), 50);
         }
 
+        //var options = $.extend({}, this.options, {exclude: ['blockquote', 'bullet_list', 'strong', 'code', 'code_block', 'em', 'image', 'list_item', 'ordered_list', 'heading', 'link', 'clipboard']});
+
         this.editor = new MarkdownEditor(this.$, this.options);
-        $content = this.$.find('[data-ui-richtext]').text();
+        var $content = this.$.find('[data-ui-richtext]').text();
         this.editor.init($content);
 
         if(this.options.focus) {
@@ -91,11 +90,7 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
 
     };
 
-    var RichText = function(node, options) {
-        Widget.call(this, node, options);
-    };
-
-    object.inherits(RichText, Widget);
+    var RichText = Widget.extend();
 
     RichText.component = 'humhub-ui-richtext';
 
@@ -104,6 +99,7 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         if(!this.options.edit) {
             this.editor = new MarkdownEditor(this.$, this.options);
             this.$.html(this.editor.render());
+            additions.applyTo(this.$, {filter: ['highlightCode']});
         }
 
         // See https://github.com/ProseMirror/prosemirror/issues/432

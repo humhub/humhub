@@ -41,7 +41,7 @@ class ContentContainerSetting extends \yii\db\ActiveRecord
             [['value'], 'string'],
             [['module_id', 'name'], 'string', 'max' => 50],
             [['module_id', 'contentcontainer_id', 'name'], 'unique', 'targetAttribute' => ['module_id', 'contentcontainer_id', 'name'], 'message' => 'The combination of Module ID, Contentcontainer ID and Name has already been taken.'],
-            [['contentcontainer_id'], 'exist', 'skipOnError' => true, 'targetClass' => ContentContainer::className(), 'targetAttribute' => ['contentcontainer_id' => 'id']],
+            [['contentcontainer_id'], 'exist', 'skipOnError' => true, 'targetClass' => ContentContainer::class, 'targetAttribute' => ['contentcontainer_id' => 'id']],
         ];
     }
 
@@ -64,7 +64,7 @@ class ContentContainerSetting extends \yii\db\ActiveRecord
      */
     public function getContentcontainer()
     {
-        return $this->hasOne(ContentContainer::className(), ['id' => 'contentcontainer_id']);
+        return $this->hasOne(ContentContainer::class, ['id' => 'contentcontainer_id']);
     }
 
 }

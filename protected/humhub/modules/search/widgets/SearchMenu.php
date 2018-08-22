@@ -8,12 +8,12 @@
 
 namespace humhub\modules\search\widgets;
 
-
+use yii\base\Widget;
 
 /**
  * SearchMenu Widget for TopMenu
  */
-class SearchMenu extends \yii\base\Widget
+class SearchMenu extends Widget
 {
 
     /**

@@ -24,7 +24,6 @@ return [
     'Please type at least {count} characters' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
-    'The current main HumHub database name is ' => '',
     '<strong>Confirm</strong> Action' => '<strong>Confirmar</strong> Acción',
     '<strong>Latest</strong> updates' => '<strong>Últimas</strong> actualizaciones',
     '<strong>Mail</strong> summary' => '<strong>Resumen</strong> de Correo',

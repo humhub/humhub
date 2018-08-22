@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'About' => '',
     'Add purchased module by licence key' => '',
     'Admin' => '',
     'Approval' => '',
@@ -31,6 +30,7 @@ return [
     'Design' => '',
     'Files' => '',
     'Groups' => '',
+    'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
     'Invite' => '',
     'Invited by' => '',
     'Logging' => '',
@@ -46,6 +46,7 @@ return [
     'User posts' => '',
     'Userprofiles' => '',
     'Users' => '',
+    'About' => 'Om',
     'Administration' => 'Administration',
     'Spaces' => 'Nätverk ',
 ];

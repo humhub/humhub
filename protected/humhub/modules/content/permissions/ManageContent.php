@@ -61,6 +61,6 @@ class ManageContent extends \humhub\libs\BasePermission
      */
     public function getDescription()
     {
-        return Yii::t('CommentModule.permissions', 'Can manage (e.g. archive, stick or delete) arbitrary content');
+        return Yii::t('CommentModule.permissions', 'Can manage (e.g. archive, stick, move or delete) arbitrary content');
     }
 }

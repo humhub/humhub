@@ -9,7 +9,8 @@ $this->context->loadResources($this);
     var gotoSpace = false;
 
 
-    $(document).on('ready', function () {
+    $(document).one('humhub:ready', function () {
+
         // Create a new tour
         var interfaceTour = new Tour({
             storage: false,

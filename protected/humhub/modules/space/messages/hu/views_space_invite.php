@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add all registered users' => '',
-    'Add users to Space without inviting them' => '',
+    'Add users without invitation' => '',
+    'Select all registered users' => '',
     'To invite users to this space, please type their names below to find and pick them.' => '',
     'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.' => '',
     '<strong>Invite</strong> members' => 'Tagok <strong>meghívása</strong>',

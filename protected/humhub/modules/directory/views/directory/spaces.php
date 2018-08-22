@@ -2,15 +2,17 @@
 /* @var $this \yii\web\View */
 /* @var $keyword string */
 /* @var $spaces humhub\modules\space\models\Space[] */
+
 /* @var $pagination yii\data\Pagination */
 
-use yii\helpers\Html;
-use yii\helpers\Url;
 use humhub\libs\Helpers;
-use humhub\widgets\LinkPager;
+use humhub\libs\Html;
+use humhub\modules\directory\widgets\SpaceTagList;
 use humhub\modules\space\widgets\FollowButton;
 use humhub\modules\space\widgets\Image;
-use humhub\modules\directory\widgets\SpaceTagList;
+use humhub\widgets\LinkPager;
+use yii\helpers\Url;
+
 ?>
 <div class="panel panel-default">
 
@@ -52,17 +54,27 @@ use humhub\modules\directory\widgets\SpaceTagList;
                         ?>
                     </div>
 
-                    <?= Image::widget(['space' => $space, 'width' => 50, 'htmlOptions' => ['class' => 'media-object'], 'link' => true, 'linkOptions' => ['class' => 'pull-left']]); ?>
+                    <?= Image::widget([
+                        'space' => $space, 'width' => 50,
+                        'htmlOptions' => [
+                            'class' => 'media-object',
+                            'data-contentcontainer-id' => $space->contentcontainer_id
+                        ],
+                        'linkOptions' => ['class' => 'pull-left'],
+                        'link' => true,
+                    ]); ?>
 
                     <?php if ($space->isMember()): ?>
                         <i class="fa fa-user space-member-sign tt" data-toggle="tooltip" data-placement="top" title=""
                            data-original-title="<?= Yii::t('DirectoryModule.base', 'You are a member of this space'); ?>"></i>
-                       <?php endif; ?>
+                    <?php endif; ?>
 
                     <div class="media-body">
-                        <h4 class="media-heading"><a href="<?= $space->getUrl(); ?>"><?= Html::encode($space->name); ?></a>
+                        <h4 class="media-heading">
+                            <?= Html::containerLink($space); ?>
                             <?php if ($space->isArchived()) : ?>
-                                <span class="label label-warning"><?= Yii::t('ContentModule.widgets_views_label', 'Archived'); ?></span>
+                                <span
+                                    class="label label-warning"><?= Yii::t('ContentModule.widgets_views_label', 'Archived'); ?></span>
                             <?php endif; ?>
                         </h4>
 

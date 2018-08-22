@@ -9,7 +9,7 @@
 namespace humhub\modules\ui\filter\widgets;
 
 use humhub\widgets\JsWidget;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 
 /**
  * This widget is used to render the filter navigation of a stream and is mainly used within [[StreamViewer]] widgets.
@@ -203,7 +203,7 @@ abstract class FilterNavigation extends JsWidget
     public function addFilter($filter, $blockId = null)
     {
         if(!isset($filter['id'])) {
-            throw new InvalidParamException('Filter without filter id given!');
+            throw new InvalidArgumentException('Filter without filter id given!');
         }
 
         if (isset($this->filters[$filter['id']]) || !$this->isAllowedFilter($filter['id'])) {

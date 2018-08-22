@@ -1,8 +1,0 @@
-.inline-print-media form {
-	border: 5px solid #000;
-}
-@media print  {
-	.inline-print-media form {
-		border: 5px dotted #000;
-	}
-}

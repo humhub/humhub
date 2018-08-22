@@ -1,59 +1,46 @@
 language: php
+sudo: required
+
+services:
+- mysql
+
+addons:
+  chrome: stable
+
+git:
+  depth: 3
 
 php:
-  - 5.6
-  - 7.0
-  - 7.1
-  - 7.2
+- 5.6
+- 7.0
+- 7.1
+- 7.2
 
 matrix:
   fast_finish: true
 
-dist: trusty
-
-sudo: required
-addons:
-  chrome: stable
-
-# cache vendor dirs
 cache:
   directories:
-    - $HOME/.composer/cache
-
-services: mysql
-
-before_install:
-  - wget https://chromedriver.storage.googleapis.com/2.40/chromedriver_linux64.zip
-  - unzip -d $HOME chromedriver_linux64.zip
-  - $HOME/chromedriver --url-base=/wd/hub &
+  - $HOME/.composer/cache
 
 install:
-  # Run Composer update
-  - travis_retry composer self-update && composer --version
-  - travis_retry composer install --prefer-dist --no-interaction
-  - |
-    mysql -e 'CREATE DATABASE `humhub_test` CHARACTER SET utf8 COLLATE utf8_general_ci;'
-    cd $TRAVIS_BUILD_DIR/protected/humhub/tests
-    php codeception/bin/yii migrate/up --includeModuleMigrations=1 --interactive=0
-    php codeception/bin/yii installer/auto
-    php codeception/bin/yii search/rebuild
-    php ../../vendor/bin/codecept build
+- .travis/install-dependencies.sh
+- .travis/setup-humhub.sh
+
+before_script:
+- $HOME/chromedriver --url-base=/wd/hub &
+- php --server 127.0.0.1:8080 --docroot ${TRAVIS_BUILD_DIR} &>/dev/null &
+- sleep 5
+- curl --fail --head http://127.0.0.1:8080/index-test.php
 
 script:
-  - |
-    cd $TRAVIS_BUILD_DIR
-    php -S 127.0.0.1:8080 &> /dev/null &
-  - sleep 5
-  - curl --fail http://127.0.0.1:8080/index-test.php
-  - |
-    cd $TRAVIS_BUILD_DIR/protected/humhub/tests
-    php ../../vendor/bin/codecept run --env travis
+- cd protected/humhub/tests
+- php ../../vendor/bin/codecept build
+- php ../../vendor/bin/codecept run --env travis
+
 after_failure:
-  #- cd ../modules/user/tests/codeception/_output/
-  #- ls
-  #- curl --upload-file ./user.acceptance.AccountCest.testBaseAccountSettings.fail.png https://transfer.sh/fail.png
-  #- cat user.acceptance.AccountCest.testBaseAccountSettings.fail.html
-  #- cd ../../runtime/logs
-  #- ls
-  #- cat app.log
-    
+- cd ../../
+- find humhub/ -type d -name "_output" -exec zip -r --exclude="*.gitignore" failure.zip {} +
+- zip -ur failure.zip runtime/logs
+- curl --upload-file ./failure.zip https://transfer.sh/humhub-travis-${TRAVIS_JOB_NUMBER}.zip
+- rm failure.zip

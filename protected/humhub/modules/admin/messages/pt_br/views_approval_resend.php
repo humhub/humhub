@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Cancel' => '',
-    'Send invitation email' => '',
-    'Send invitation email again?' => '',
+    'Delete invitation' => '',
+    'Cancel' => 'Cancelar',
+    'Send invitation email' => 'Enviar email de convite',
 ];

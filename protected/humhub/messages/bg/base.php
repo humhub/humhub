@@ -63,7 +63,6 @@ return [
     'Some files could not be uploaded:' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
-    'The current main HumHub database name is ' => '',
     'The date has to be in the past.' => '',
     'The file has been deleted.' => '',
     'The requested resource could not be found.' => '',

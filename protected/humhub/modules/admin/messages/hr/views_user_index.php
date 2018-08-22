@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Actions' => '',
     'Add new user' => 'Dodaj novog korisnika',
     'Overview' => 'Pregled',
     'Send invite' => 'Pošalji poziv',

@@ -263,7 +263,7 @@ class ZendLuceneSearch extends Search
                 $guestContentQuery = new Boolean();
                 $guestContentQuery->addSubquery(new QueryTerm(new Term(self::DOCUMENT_VISIBILITY_PUBLIC, 'visibility')), true);
                 $guestContentQuery->addSubquery(new QueryTerm(new Term(self::DOCUMENT_TYPE_CONTENT, 'type')), true);
-                $guestContentQuery->addSubquery(new QueryTerm(new Term(Space::className(), 'containerModel')), true);
+                $guestContentQuery->addSubquery(new QueryTerm(new Term(Space::class, 'containerModel')), true);
                 $guestSpaceListQuery = new MultiTerm();
                 foreach (Space::find()->where(['visibility' => Space::VISIBILITY_ALL])->all() as $space) {
                     $guestSpaceListQuery->addTerm(new Term($space->id, 'containerPk'));
@@ -285,7 +285,7 @@ class ZendLuceneSearch extends Search
                 //--- Private Space Content
                 $privateSpaceContentQuery = new Boolean();
                 $privateSpaceContentQuery->addSubquery(new QueryTerm(new Term(self::DOCUMENT_VISIBILITY_PRIVATE, 'visibility')), true);
-                $privateSpaceContentQuery->addSubquery(new QueryTerm(new Term(Space::className(), 'containerModel')), true);
+                $privateSpaceContentQuery->addSubquery(new QueryTerm(new Term(Space::class, 'containerModel')), true);
                 $privateSpacesListQuery = new MultiTerm();
 
                 foreach (Membership::getUserSpaceIds() as $spaceId) {
@@ -301,7 +301,7 @@ class ZendLuceneSearch extends Search
         if (count($options['limitSpaces']) > 0) {
 
             $spaceBaseQuery = new Boolean();
-            $spaceBaseQuery->addSubquery(new QueryTerm(new Term(Space::className(), 'containerModel')), true);
+            $spaceBaseQuery->addSubquery(new QueryTerm(new Term(Space::class, 'containerModel')), true);
             $spaceIdQuery = new MultiTerm();
             foreach ($options['limitSpaces'] as $space) {
                 $spaceIdQuery->addTerm(new Term($space->id, 'containerPk'));

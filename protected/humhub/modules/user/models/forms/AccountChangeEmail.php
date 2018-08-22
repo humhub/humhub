@@ -39,11 +39,11 @@ class AccountChangeEmail extends \yii\base\Model
         $rules = [
             ['newEmail', 'required'],
             ['newEmail', 'email'],
-            ['newEmail', 'unique', 'targetAttribute' => 'email', 'targetClass' => User::className(), 'message' => '{attribute} "{value}" is already in use!'],
+            ['newEmail', 'unique', 'targetAttribute' => 'email', 'targetClass' => User::class, 'message' => '{attribute} "{value}" is already in use!'],
         ];
 
         if (CheckPasswordValidator::hasPassword()) {
-            $rules[] = ['currentPassword', CheckPasswordValidator::className()];
+            $rules[] = ['currentPassword', CheckPasswordValidator::class];
             $rules[] = ['currentPassword', 'required'];
         }
 

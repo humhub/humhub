@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -8,9 +7,14 @@
 
 namespace humhub\components\behaviors;
 
+use Exception;
+use ReflectionClass;
+use ReflectionException;
 use Yii;
 use yii\base\Behavior;
-use yii\db\Exception;
+use yii\db\ActiveRecord;
+use yii\db\BaseActiveRecord;
+use yii\db\IntegrityException;
 
 /**
  * PolymorphicRelations behavior provides simple support for polymorphic relations in ActiveRecords.
@@ -31,6 +35,11 @@ class PolymorphicRelation extends Behavior
     public $pkAttribute = 'object_id';
 
     /**
+     * @var boolean if set to true an exception is thrown if `object_model` and `object_id` is set but does not exist
+     */
+    public $strict = false;
+
+    /**
      * @var array the related object needs to be a "instanceof" at least one of these given classnames
      */
     public $mustBeInstanceOf = [];
@@ -38,47 +47,32 @@ class PolymorphicRelation extends Behavior
     /**
      * @var mixed the cached object
      */
-    private $_cached = null;
+    private $cached = null;
 
     /**
      * Returns the Underlying Object
      *
      * @return mixed
+     * @throws IntegrityException
      */
     public function getPolymorphicRelation()
     {
-        if ($this->_cached !== null) {
-            return $this->_cached;
+        if ($this->cached !== null) {
+            return $this->cached;
         }
 
+        $object = static::loadActiveRecord(
+            $this->owner->getAttribute($this->classAttribute),
+            $this->owner->getAttribute($this->pkAttribute)
+        );
 
-        $className = $this->owner->getAttribute($this->classAttribute);
-
-        if ($className == "") {
-            return null;
+        if ($this->strict && !$object && !empty($this->classAttribute) && !empty($this->pkAttribute)) {
+            throw new IntegrityException('Call to an inconsistent polymorphic relation detected on ' . get_class($this->owner) . ' (' . $this->owner->getAttribute($this->classAttribute) . ':' . $this->owner->getAttribute($this->pkAttribute) . ')');
         }
 
-        if (!class_exists($className)) {
-            Yii::error("Underlying object class " . $className . " not found!");
-            return null;
-        }
-
-        if (!method_exists($className, 'tableName')) {
-            // Avoids failures when running integrity checks etc.
-            return null;
-        }
-
-        try {
-            $tableName = $className::tableName();
-            $object = $className::find()->where([$tableName . '.id' => $this->owner->getAttribute($this->pkAttribute)])->one();
-
-            if ($object !== null && $this->validateUnderlyingObjectType($object)) {
-                $this->_cached = $object;
-                return $object;
-            }
-        } catch (\Exception $e) {
-            // Avoid failures when running integrity checks etc.
-            Yii::error($e);
+        if ($object !== null && $this->validateUnderlyingObjectType($object)) {
+            $this->cached = $object;
+            return $object;
         }
 
         return null;
@@ -92,7 +86,7 @@ class PolymorphicRelation extends Behavior
     public function setPolymorphicRelation($object)
     {
         if ($this->validateUnderlyingObjectType($object)) {
-            $this->_cached = $object;
+            $this->cached = $object;
             if ($object instanceof \yii\db\ActiveRecord) {
                 $this->owner->setAttribute($this->classAttribute, $object->className());
                 $this->owner->setAttribute($this->pkAttribute, $object->getPrimaryKey());
@@ -105,7 +99,7 @@ class PolymorphicRelation extends Behavior
      */
     public function resetPolymorphicRelation()
     {
-        $this->_cached = null;
+        $this->cached = null;
     }
 
     /**
@@ -127,7 +121,48 @@ class PolymorphicRelation extends Behavior
         }
 
         Yii::error('Got invalid underlying object type! (' . $object->className() . ')');
-        
+
         return false;
+    }
+
+
+    /**
+     * Loads an active record based on classname and primary key.
+     *
+     * @param $className
+     * @param $primaryKey
+     * @return null|ActiveRecord
+     */
+    public static function loadActiveRecord($className, $primaryKey)
+    {
+        if (empty($className) || empty($primaryKey)) {
+            return null;
+        }
+
+        try {
+            $class = new ReflectionClass($className);
+        } catch (ReflectionException $e) {
+            Yii::error('Could not load polymorphic relation! Class: ' . $className . ' (' . $e->getMessage() . ')');
+            return null;
+        }
+
+        if (!$class->isSubclassOf(BaseActiveRecord::class)) {
+            Yii::error('Could not load polymorphic relation! Class (Class is no ActiveRecord: ' . $className . ')');
+            return null;
+        }
+
+        try {
+            $primaryKeyNames = $className::primaryKey();
+            if (count($primaryKeyNames) !== 1) {
+                Yii::error('Could not load polymorphic relation! Only one primary key is supported!');
+                return null;
+            }
+
+            return $className::findOne([$primaryKeyNames[0] => $primaryKey]);
+        } catch (Exception $ex) {
+            Yii::error('Could not load polymorphic relation! Error: "' . $ex->getMessage());
+        }
+
+        return null;
     }
 }

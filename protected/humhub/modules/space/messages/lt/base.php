@@ -27,6 +27,8 @@ return [
     'Owner:' => '',
     'Private' => '',
     'Space' => '',
+    'User invitations have been added to the queue' => '',
+    'User memberships have been added to the queue' => '',
     '{count} members' => '',
     'Everyone can enter' => 'Dalyvauti gali visi',
     'Invite and request' => 'Pakviesti',

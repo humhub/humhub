@@ -112,7 +112,7 @@ class Birthday extends BaseType
         // Add validation for birthdate
         $rules[] = [
             $this->profileField->internal_name,
-            \humhub\libs\DbDateValidator::className(),
+            \humhub\libs\DbDateValidator::class,
             'format' => 'medium',
             'convertToFormat' => 'Y-m-d',
             'max' => time(),

@@ -6,11 +6,11 @@ The modular nature of the HumHub platform allows you to add new features or chan
 custom modules.
 
 Other languages used throughout the platform, besides PHP, are JavaScript, HTML, SQL and CSS/Less. 
-HumHub is based on the Model-View-Controller (MVC) pattern and uses frontend technologies such as [jQuery](https://jquery.com/), [Bootstrap](http://getbootstrap.com/) and [Less](http://lesscss.org/).
+HumHub is based on the [Model-View-Controller (MVC)](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) pattern and uses frontend technologies such as [jQuery](https://jquery.com/), [Bootstrap](http://getbootstrap.com/) and [Less](http://lesscss.org/).
 
-In this guide, you will find all the necessary information to customize your HumHub installation and implement your own modules.
+In this guide you will find all the necessary information to customize your HumHub installation and implement your own modules.
 
-As HumHub is based on the [Yii 2.0 PHP Framework](http://www.yiiframework.com/) make sure you're also familiar with the basic concepts this framework:
+As HumHub is based on the [Yii 2.0 PHP Framework](http://www.yiiframework.com/) make sure you're also familiar with the basic concepts of this framework:
 
 - [The Definitive Guide to Yii 2.0](http://www.yiiframework.com/doc-2.0/guide-index.html) 
 
@@ -49,15 +49,18 @@ and consists of the following core modules:
  - **live:**  Used for frontend live updates
  - **notification:**  User Notifications
  - **post:**  Simple user-post related functionality
+ - **queue:** Queue drivers and interfaces
  - **search:**  Luceene Search Module
  - **space:**  Space related functionality
  - **stream:**  Content streams and walls
+ - **topic:** Topics are used to categorize and filter content
  - **tour:**  HumHub user-guide
+ - **ui:** Base ui components as widgets and theme logic
  - **user:**  Basic user module
  
- ### Application structure
+### Application structure
  
- ```
+```
   assets/               - contains published asset files
   protected/            - protected files as sources, modules, configuration etc.
   protected/config      - dynamic and user configuration
@@ -68,4 +71,4 @@ and consists of the following core modules:
   static/               - static asset files as production assets core javascript/less files etc.
   themes/               - contains standalone themes (not bundled within a module)
   uploads/              - uploaded files profile images etc.
- ```
+```

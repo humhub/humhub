@@ -11,7 +11,7 @@ namespace humhub\modules\content\widgets;
 use humhub\libs\Html;
 use Yii;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\widgets\BasePickerField;
+use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\content\models\ContentTag;
 
 /**
@@ -20,7 +20,7 @@ use humhub\modules\content\models\ContentTag;
  *
  * @package humhub\modules\content\widgets
  */
-class ContentTagPicker extends BasePickerField
+class ContentTagPicker extends BasePicker
 {
     /**
      * @var string tagClass

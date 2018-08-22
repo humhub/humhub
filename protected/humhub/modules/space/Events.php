@@ -66,7 +66,7 @@ class Events extends BaseObject
     public static function onConsoleApplicationInit($event)
     {
         $application = $event->sender;
-        $application->controllerMap['space'] = commands\SpaceController::className();
+        $application->controllerMap['space'] = commands\SpaceController::class;
     }
 
     /**

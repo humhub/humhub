@@ -1,5 +1,9 @@
 <?php 
 use yii\helpers\Html;
+
+/* @var $label string */
+/* @var $input string */
+
 ?>
 
 <?= Html::beginTag('span', $options) ?>

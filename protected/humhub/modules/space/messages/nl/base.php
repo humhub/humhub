@@ -17,15 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Archived' => '',
-    'Name' => '',
-    '{count} members' => '',
+    'User invitations have been added to the queue' => '',
+    'User memberships have been added to the queue' => '',
     '<strong>Space</strong> followers' => '<strong>Ruimte</strong> volgers',
     'Administrator:' => 'Beheerder:',
+    'Archived' => 'Gearchiveerd',
     'Default' => 'Standaard',
     'Everyone can enter' => 'Iedereen kan lid worden',
     'Invite and request' => 'Uitnodigen en aanvragen',
     'Moderator:' => 'Moderator:',
+    'Name' => 'Naam',
     'No spaces found.' => 'Geen ruimtes gevonden',
     'Only by invite' => 'Alleen door uitnodiging',
     'Owner:' => 'Eigenaar:',
@@ -38,4 +39,5 @@ return [
     'Settings' => 'Instellingen',
     'Space' => 'Ruimte',
     'Visible for all (members and guests)' => 'Zichtbaar voor iedereen (leden en gasten)',
+    '{count} members' => '{count} leden',
 ];

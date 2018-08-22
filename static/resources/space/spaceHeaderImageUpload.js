@@ -4,7 +4,7 @@
  * TODO: Create API module merge with profileHeaderImage logic...
  * 
  */
-$(document).on('ready pjax:success', function () {
+$(document).on('humhub:ready', function () {
     'use strict';
 
     $('.fileupload').each(function () {
@@ -127,7 +127,7 @@ function resetProfileImage(json) {
     $('.image-upload-buttons').hide();
 }
 
-$(document).on('ready pjax:success', function () {
+$(document).on('humhub:ready', function () {
 
     // override standard drag and drop behavior
     $(document).off('drop.humhub dragover.humhub').on('drop.humhub dragover.humhub', function (e) {

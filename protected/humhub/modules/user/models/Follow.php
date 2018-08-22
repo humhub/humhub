@@ -65,9 +65,9 @@ class Follow extends \yii\db\ActiveRecord
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
+                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
                 'mustBeInstanceOf' => [
-                    \yii\db\ActiveRecord::className(),
+                    \yii\db\ActiveRecord::class,
                 ]
             ]
         ];
@@ -118,12 +118,12 @@ class Follow extends \yii\db\ActiveRecord
             $this->trigger(Follow::EVENT_FOLLOWING_REMOVED, new FollowEvent(['user' => $this->user, 'target' => $this->getTarget()]));
 
             // ToDo: Handle this via event of User Module
-            if ($this->object_model == User::className()) {
+            if ($this->object_model == User::class) {
                 $notification = new \humhub\modules\user\notifications\Followed();
                 $notification->originator = $this->user;
                 $notification->delete($this->getTarget());
 
-                foreach (Activity::findAll(['object_model' => $this->className(), 'object_id' => $this->id]) as $activity) {
+                foreach (Activity::findAll(['object_model' => static::class, 'object_id' => $this->id]) as $activity) {
                     $activity->delete();
                 }
             }
@@ -133,7 +133,7 @@ class Follow extends \yii\db\ActiveRecord
 
     public function getUser()
     {
-        return $this->hasOne(\humhub\modules\user\models\User::className(), ['id' => 'user_id']);
+        return $this->hasOne(\humhub\modules\user\models\User::class, ['id' => 'user_id']);
     }
 
     public function getTarget()

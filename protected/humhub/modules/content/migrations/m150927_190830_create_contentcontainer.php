@@ -32,7 +32,7 @@ class m150927_190830_create_contentcontainer extends Migration
         foreach ($spaces->each() as $space) {
             $this->insertSilent('contentcontainer', [
                 'guid' => $space['guid'],
-                'class' => humhub\modules\space\models\Space::className(),
+                'class' => humhub\modules\space\models\Space::class,
                 'pk' => $space['id'],
                 'owner_user_id' => $space['created_by'],
                 'wall_id' => $space['wall_id'],
@@ -44,7 +44,7 @@ class m150927_190830_create_contentcontainer extends Migration
         foreach ($users->each() as $user) {
             $this->insertSilent('contentcontainer', [
                 'guid' => $user['guid'],
-                'class' => \humhub\modules\user\models\User::className(),
+                'class' => \humhub\modules\user\models\User::class,
                 'pk' => $user['id'],
                 'owner_user_id' => $user['id'],
                 'wall_id' => $user['wall_id'],

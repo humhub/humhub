@@ -8,11 +8,11 @@
 
 namespace humhub\libs;
 
+use cebe\markdown\GithubMarkdown;
 use yii\helpers\Url;
-use humhub\libs\Html;
 use humhub\modules\file\models\File;
 
-class Markdown extends \cebe\markdown\GithubMarkdown
+class Markdown extends GithubMarkdown
 {
     protected function handleInternalUrls($url)
     {
@@ -46,7 +46,10 @@ class Markdown extends \cebe\markdown\GithubMarkdown
             $internalLink = true;
         }
 
-        return Html::a($this->renderAbsy($block['text']), Html::decode($block['url']), [
+
+        $url = (empty($block['url'])) ? $baseUrl : $block['url'];
+
+        return Html::a($this->renderAbsy($block['text']), Html::decode($url), [
             'target' => ($internalLink) ? '_self' : '_blank'
         ]);
     }
@@ -76,6 +79,8 @@ class Markdown extends \cebe\markdown\GithubMarkdown
 
     /**
      * Renders a code block
+     * @param $block
+     * @return string
      */
     protected function renderCode($block)
     {
@@ -88,6 +93,8 @@ class Markdown extends \cebe\markdown\GithubMarkdown
      * "Dirty" hacked LinkTrait
      *
      * Try to allow also wiki urls with whitespaces etc.
+     * @param $markdown
+     * @return array|bool
      */
     protected function parseLinkOrImage($markdown)
     {

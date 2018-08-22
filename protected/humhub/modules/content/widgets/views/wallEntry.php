@@ -1,13 +1,13 @@
 <?php
 
 use humhub\libs\Html;
-use humhub\widgets\TimeAgo;
-use humhub\modules\space\models\Space;
-use humhub\modules\user\widgets\Image as UserImage;
-use humhub\modules\content\widgets\WallEntryControls;
-use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\content\widgets\WallEntryAddons;
+use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\content\widgets\WallEntryLabels;
+use humhub\modules\space\models\Space;
+use humhub\modules\space\widgets\Image as SpaceImage;
+use humhub\modules\user\widgets\Image as UserImage;
+use humhub\widgets\TimeAgo;
 use yii\helpers\Url;
 
 /* @var $object \humhub\modules\content\models\Content */
@@ -19,7 +19,6 @@ use yii\helpers\Url;
 ?>
 
 
-
 <div class="panel panel-default wall_<?= $object->getUniqueId(); ?>">
     <div class="panel-body">
 
@@ -28,17 +27,17 @@ use yii\helpers\Url;
             <div class="stream-entry-loader"></div>
 
             <!-- start: show wall entry options -->
-            <?php if($renderControls) : ?>
+            <?php if ($renderControls) : ?>
                 <ul class="nav nav-pills preferences">
                     <li class="dropdown ">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-label="<?= Yii::t('base', 'Toggle stream entry menu'); ?>" aria-haspopup="true">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
+                           aria-label="<?= Yii::t('base', 'Toggle stream entry menu'); ?>" aria-haspopup="true">
                             <i class="fa fa-angle-down"></i>
                         </a>
 
-
-                            <ul class="dropdown-menu pull-right">
-                                <?= WallEntryControls::widget(['object' => $object, 'wallEntryWidget' => $wallEntryWidget]); ?>
-                            </ul>
+                        <ul class="dropdown-menu pull-right">
+                            <?= WallEntryControls::widget(['object' => $object, 'wallEntryWidget' => $wallEntryWidget]); ?>
+                        </ul>
                     </li>
                 </ul>
             <?php endif; ?>
@@ -48,7 +47,7 @@ use yii\helpers\Url;
             UserImage::widget([
                 'user' => $user,
                 'width' => 40,
-                'htmlOptions' => ['class' => 'pull-left']
+                'htmlOptions' => ['class' => 'pull-left','data-contentcontainer-id' => $user->contentcontainer_id]
             ]);
             ?>
 
@@ -59,7 +58,7 @@ use yii\helpers\Url;
                     'width' => 20,
                     'htmlOptions' => ['class' => 'img-space'],
                     'link' => 'true',
-                    'linkOptions' => ['class' => 'pull-left'],
+                    'linkOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $container->contentcontainer_id],
                 ]);
                 ?>
             <?php endif; ?>
@@ -74,7 +73,7 @@ use yii\helpers\Url;
                         </span>
                     <?php endif; ?>
 
-                    <div class="pull-right <?= ($renderControls) ? 'labels' : ''?>">
+                    <div class="pull-right <?= ($renderControls) ? 'labels' : '' ?>">
                         <?= WallEntryLabels::widget(['object' => $object]); ?>
                     </div>
                 </div>
@@ -84,7 +83,8 @@ use yii\helpers\Url;
                     </a>
                     <?php if ($updatedAt !== null) : ?>
                         &middot;
-                        <span class="tt" title="<?= Yii::$app->formatter->asDateTime($updatedAt); ?>"><?= Yii::t('ContentModule.base', 'Updated'); ?></span>
+                        <span class="tt"
+                              title="<?= Yii::$app->formatter->asDateTime($updatedAt); ?>"><?= Yii::t('ContentModule.base', 'Updated'); ?></span>
                     <?php endif; ?>
                 </div>
             </div>
@@ -95,7 +95,7 @@ use yii\helpers\Url;
             </div>
 
             <!-- wall-entry-addons class required since 1.2 -->
-            <?php if($renderAddons) : ?>
+            <?php if ($renderAddons) : ?>
                 <div class="stream-entry-addons clearfix">
                     <?= WallEntryAddons::widget($addonOptions); ?>
                 </div>

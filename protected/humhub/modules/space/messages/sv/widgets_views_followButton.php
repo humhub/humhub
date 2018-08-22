@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Follow' => '',
-  'Unfollow' => '',
+  'Follow' => 'Följ',
+  'Unfollow' => 'Sluta följ',
 );

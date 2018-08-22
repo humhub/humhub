@@ -2,7 +2,7 @@
 
 return [
     'id' => 'stream',
-    'class' => \humhub\modules\stream\Module::className(),
+    'class' => \humhub\modules\stream\Module::class,
     'isCoreModule' => true,
 ];
 ?>

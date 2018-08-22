@@ -4,8 +4,8 @@ return array (
   'Cancel' => 'Annuler',
   'Cancel Edit' => 'Annuler la modification',
   'Comment has been deleted' => 'Le commentaire a été supprimé.',
-  'Delete' => 'Effacer',
+  'Delete' => 'Supprimer',
   'Do you really want to delete this comment?' => 'Souhaitez-vous vraiment supprimer ce commentaire ?',
-  'Edit' => 'Editer',
+  'Edit' => 'Modifier',
   'Read full comment...' => 'Lire le commentaire complet...',
 );

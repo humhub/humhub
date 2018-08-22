@@ -79,7 +79,7 @@ class ProfileField extends ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(ProfileFieldCategory::className(), ['id' => 'profile_field_category_id']);
+        return $this->hasOne(ProfileFieldCategory::class, ['id' => 'profile_field_category_id']);
     }
 
     /**
@@ -148,7 +148,7 @@ class ProfileField extends ActiveRecord
         if ($this->_fieldType != null)
             return $this->_fieldType;
 
-        if ($this->field_type_class != "" && Helpers::CheckClassType($this->field_type_class, fieldtype\BaseType::className())) {
+        if ($this->field_type_class != "" && Helpers::CheckClassType($this->field_type_class, fieldtype\BaseType::class)) {
             $type = $this->field_type_class;
             $this->_fieldType = new $type;
             $this->_fieldType->setProfileField($this);

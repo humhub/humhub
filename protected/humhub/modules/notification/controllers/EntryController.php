@@ -44,7 +44,7 @@ class EntryController extends Controller
             throw new HttpException(404, Yii::t('NotificationModule.error','The requested content is not valid or was removed!'));
         }
 
-        $notification = $notificationModel->getClass();
+        $notification = $notificationModel->getBaseModel();
 
         if ($notification->markAsSeenOnClick) {
             $notification->markAsSeen();

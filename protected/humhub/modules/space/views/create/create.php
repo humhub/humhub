@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\modules\space\widgets\SpaceNameColorInput;

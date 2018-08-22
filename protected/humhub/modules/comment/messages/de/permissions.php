@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Can manage (e.g. archive, stick, move or delete) arbitrary content' => '',
     'Allows the user to add comments' => 'Dem Benutzer erlauben, Kommentare zu erstellen',
-    'Can manage (e.g. archive, stick or delete) arbitrary content' => 'Kann beliebige Inhalte verwalten (z.B. archivieren, anheften oder löschen)',
     'Create comment' => 'Kommentar erstellen',
     'Manage content' => 'Inhalte verwalten',
 ];

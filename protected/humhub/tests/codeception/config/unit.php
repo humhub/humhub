@@ -4,7 +4,7 @@
  * Application configuration for unit tests
  */
 $testConfig = [
-
+    'class' => 'humhub\components\Application',
     'components' => [
         'request' => [
             'cookieValidationKey' => 'test'

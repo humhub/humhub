@@ -25,6 +25,8 @@ return [
     'No spaces found.' => '',
     'Owner:' => '',
     'Space' => '',
+    'User invitations have been added to the queue' => '',
+    'User memberships have been added to the queue' => '',
     '{count} members' => '',
     'Default' => 'Standard',
     'Everyone can enter' => 'Alle kan komme ind',

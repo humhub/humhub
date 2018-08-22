@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Can manage (e.g. archive, stick or delete) arbitrary content' => '',
+    'Can manage (e.g. archive, stick, move or delete) arbitrary content' => '',
     'Manage content' => '',
     'Allows the user to add comments' => 'اجازه دادن به كاربر ها براي نظر دادن',
     'Create comment' => 'نظر دادن',

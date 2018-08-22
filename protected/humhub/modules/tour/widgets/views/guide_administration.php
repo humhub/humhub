@@ -6,7 +6,7 @@ $this->context->loadResources($this);
 ?>
 <script type="text/javascript">
     
-    $( document ).ready(function() {
+    $( document ).one('humhub:ready', function() {
         // Create a new tour
         var administrationTour = new Tour({
             storage: false,

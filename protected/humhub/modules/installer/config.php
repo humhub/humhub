@@ -2,7 +2,7 @@
 
 return [
     'id' => 'installer',
-    'class' => humhub\modules\installer\Module::className(),
+    'class' => humhub\modules\installer\Module::class,
     'isCoreModule' => true,
 ];
 ?>

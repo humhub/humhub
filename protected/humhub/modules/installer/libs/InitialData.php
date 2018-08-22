@@ -34,6 +34,9 @@ class InitialData
         Yii::$app->settings->set('displayNameFormat', '{profile.firstname} {profile.lastname}');
         Yii::$app->settings->set('horImageScrollOnMobile', true);
 
+        // Avoid immediate cron run after installation
+        Yii::$app->settings->set('cronLastDailyRun', time());
+
         // Authentication
         Yii::$app->getModule('user')->settings->set('auth.ldap.refreshUsers', '1');
         Yii::$app->getModule('user')->settings->set('auth.needApproval', '0');
@@ -66,6 +69,10 @@ class InitialData
 
         // Notification
         Yii::$app->getModule('notification')->settings->set('enable_html5_desktop_notifications', 0);
+
+        // Avoid warning direct after installation
+        Yii::$app->settings->set('cronLastRun', time());
+
 
         // Add Categories
         $cGeneral = new ProfileFieldCategory;
@@ -100,7 +107,7 @@ class InitialData
         $field->title = 'First name';
         $field->sort_order = 100;
         $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->ldap_attribute = 'givenName';
         $field->is_system = 1;
         $field->required = 1;
@@ -117,7 +124,7 @@ class InitialData
         $field->title = 'Last name';
         $field->sort_order = 200;
         $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->ldap_attribute = 'sn';
         $field->show_at_registration = 1;
         $field->required = 1;
@@ -133,7 +140,7 @@ class InitialData
         $field->sort_order = 300;
         $field->ldap_attribute = 'title';
         $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->maxLength = 50;
@@ -145,7 +152,7 @@ class InitialData
         $field->title = 'Gender';
         $field->sort_order = 300;
         $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Select::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Select::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->options = "male=>Male\nfemale=>Female\ncustom=>Custom";
@@ -157,7 +164,7 @@ class InitialData
         $field->title = 'Street';
         $field->sort_order = 400;
         $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->maxLength = 150;
@@ -170,7 +177,7 @@ class InitialData
         $field->sort_order = 500;
         $field->profile_field_category_id = $cGeneral->id;
         $field->is_system = 1;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         if ($field->save()) {
             $field->fieldType->maxLength = 10;
             $field->fieldType->save();
@@ -181,7 +188,7 @@ class InitialData
         $field->title = 'City';
         $field->sort_order = 600;
         $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
@@ -193,7 +200,7 @@ class InitialData
         $field->title = 'Country';
         $field->sort_order = 700;
         $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\CountrySelect::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\CountrySelect::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->save();
@@ -205,7 +212,7 @@ class InitialData
         $field->title = 'State';
         $field->sort_order = 800;
         $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
@@ -217,7 +224,7 @@ class InitialData
         $field->title = 'Birthday';
         $field->sort_order = 900;
         $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Birthday::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Birthday::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->save();
@@ -228,7 +235,7 @@ class InitialData
         $field->title = 'About';
         $field->sort_order = 900;
         $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\TextArea::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\TextArea::class;
         $field->is_system = 1;
         if ($field->save()) {
             #$field->fieldType->maxLength = 100;
@@ -241,7 +248,7 @@ class InitialData
         $field->title = 'Phone Private';
         $field->sort_order = 100;
         $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
@@ -253,7 +260,7 @@ class InitialData
         $field->title = 'Phone Work';
         $field->sort_order = 200;
         $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
@@ -265,7 +272,7 @@ class InitialData
         $field->title = 'Mobile';
         $field->sort_order = 300;
         $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
@@ -277,7 +284,7 @@ class InitialData
         $field->title = 'Fax';
         $field->sort_order = 400;
         $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
@@ -289,7 +296,7 @@ class InitialData
         $field->title = 'Skype Nickname';
         $field->sort_order = 500;
         $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
@@ -301,7 +308,7 @@ class InitialData
         $field->title = 'MSN';
         $field->sort_order = 600;
         $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->maxLength = 100;
@@ -314,7 +321,7 @@ class InitialData
         $field->title = 'XMPP Jabber Address';
         $field->sort_order = 800;
         $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->validator = 'email';
@@ -326,7 +333,7 @@ class InitialData
         $field->title = 'Url';
         $field->sort_order = 100;
         $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
@@ -338,7 +345,7 @@ class InitialData
         $field->title = 'Facebook URL';
         $field->sort_order = 200;
         $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
@@ -350,7 +357,7 @@ class InitialData
         $field->title = 'LinkedIn URL';
         $field->sort_order = 300;
         $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
@@ -362,7 +369,7 @@ class InitialData
         $field->title = 'Xing URL';
         $field->sort_order = 400;
         $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
@@ -374,7 +381,7 @@ class InitialData
         $field->title = 'Youtube URL';
         $field->sort_order = 500;
         $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
@@ -386,7 +393,7 @@ class InitialData
         $field->title = 'Vimeo URL';
         $field->sort_order = 600;
         $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
@@ -398,7 +405,7 @@ class InitialData
         $field->title = 'Flickr URL';
         $field->sort_order = 700;
         $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
@@ -410,7 +417,7 @@ class InitialData
         $field->title = 'MySpace URL';
         $field->sort_order = 800;
         $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
@@ -422,7 +429,7 @@ class InitialData
         $field->title = 'Google+ URL';
         $field->sort_order = 900;
         $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->validator = 'url';
@@ -434,7 +441,7 @@ class InitialData
         $field->title = 'Twitter URL';
         $field->sort_order = 1000;
         $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::className();
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
         if ($field->save()) {
             $field->fieldType->validator = 'url';

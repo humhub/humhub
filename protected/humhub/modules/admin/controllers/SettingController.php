@@ -10,7 +10,6 @@ namespace humhub\modules\admin\controllers;
 
 use Yii;
 use humhub\libs\Helpers;
-use humhub\libs\ThemeHelper;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\Log;
@@ -60,7 +59,7 @@ class SettingController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => \humhub\modules\admin\permissions\ManageSettings::className()]
+            ['permissions' => \humhub\modules\admin\permissions\ManageSettings::class]
         ];
     }
 

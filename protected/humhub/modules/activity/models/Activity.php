@@ -10,10 +10,10 @@ namespace humhub\modules\activity\models;
 
 use Yii;
 use yii\base\Exception;
+use yii\db\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\activity\components\ActivityWebRenderer;
 use humhub\components\behaviors\PolymorphicRelation;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "activity".
@@ -53,9 +53,10 @@ class Activity extends ContentActiveRecord
     {
         return [
             [
-                'class' => PolymorphicRelation::className(),
+                'class' => PolymorphicRelation::class,
+                'strict' => true,
                 'mustBeInstanceOf' => [
-                    ActiveRecord::className(),
+                    ActiveRecord::class,
                 ]
             ]
         ];

@@ -53,7 +53,6 @@ return [
     'Settings' => '',
     'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',
     'User deletion process queued.' => '',
-    'User not found!' => '',
     'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => '',
     'View profile' => '',
     'You cannot delete yourself!' => '',

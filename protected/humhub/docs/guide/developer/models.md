@@ -1,45 +1,67 @@
-(TBD:getPublishedUrl)Database and Models
-====================
+Database and Models
+=================
+
+This guide describes how to setup and update your modules database scheme. All database installation and update scripts will reside in
+your modules `migration` directory.
 
 ## Conventions
 
-- prefix your tables with the module id. e.g. example_foo
-- singular table names
-- use underscorce in fieldnames/attributes e.g. user_id
+- **prefix** your tables with the module id. e.g. `example_foo`
+- **singular** table names
+- use **underscorce** in fieldnames andattributes e.g. `user_id`
 
-## ActiveRecord (Model)
+## Initial Migration
 
-To be able to provide persistent data a module has to implement model class derived from [[humhub\components\ActiveRecord]].
-Yii follows the concept of rich models, which means a model class can contain content in form of attributes as well as domain logic.
-More information about the use of ActiveRecords is available in the [Yii2 guide](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html).
+Once you've a concept of your database scheme ready and want to start prototyping, you'll need to create an initial [migration](https://www.yiiframework.com/doc/guide/2.0/en/db-migrations#creating-migrations).
 
-> Info: [[humhub\components\ActiveRecord]] is derived from [[yii\db\ActiveRecord]] and provides some automatic attribute settings as `created_by` and `crated_at` if the underlying table contains these fields.
+The following command executed in the `protected` directory will create a new migration into the `protected/humhub/migrations` folder:
 
-## Migrations
+```
+php yii migrate/create mymodule_inital
+```
 
-See Yii 2.0 guide for more details about migrations [http://www.yiiframework.com/doc-2.0/guide-db-migrations.html](http://www.yiiframework.com/doc-2.0/guide-db-migrations.html).
+which resembles the following grunt command executed within the `root` of your installation:
 
-HumHub provides an enhanced Migration class [[humhub\components\Migration]] which provides the ability to rename class files. This is required because HumHub also stores some class names in database for Polymorphic relations.
+```
+grunt migrate-create --name=mymodule_inital
+```
 
-#### Usage
+Just copy the resulting migration from the `protected/humhub/migrations` into your modules `migration` folder and add your scheme setup.
+Please refer to the [Yii Migration Guide](https://www.yiiframework.com/doc/guide/2.0/en/db-migrations#creating-migrations) for more information about
+how to use the `Migration` guide.
 
-- Create a module migration
-	`> php yii migrate/create example --migrationPath='@app/modules/polls/migrations'`
-- Execute module migration
-	`> php yii migrate/up --migrationPath='@app/modules/polls/migrations'`
-- Execute all migrations (including enabled modules)
-	`> php yii migrate/up --includeModuleMigrations=1`
+Your table names should be prefixed with your unique module id like `mymodule_entry`.
 
-#### Uninstall
+> Info: The [[humhub\components\Migration]] class provides some additional helper functions.
 
-There is a special migration file called 'uninstall.php' - which is executed after the module is uninstalled.
-Use this drop created tables & columns.
+> Tip: Since a `Migration::safeUp()` uses transactions you should consider splitting your migration files into multiple migrations.
 
-Example file: *migrations/uninstall.php*
+> Note: Only data manipulation queries can be rolled back in case a migration script fails.
 
-```php
-<?php
+## Scheme Updates
 
+In order to provide scheme updates for new versions, just follow the same steps as in the [Initial Migration](#initial-migration) section.
+
+You can manually execute new migrations by the following commands:
+
+```
+php yii migrate/up --inclueModuleMigrations=1
+```
+
+or by grunt 
+
+```
+grunt migrate-up
+```
+
+Missing migrations are also executed when accessing `Administration -> Information -> Database`.
+
+## Uninstall Migration
+
+Your module should also privde an `uninstall.php` file.
+The uninstall migration is by default executed within your `Module::disable()` logic method and should look like:
+
+```
 use yii\db\Migration;
 
 class uninstall extends Migration
@@ -47,10 +69,8 @@ class uninstall extends Migration
 
     public function up()
     {
-
-        $this->dropTable('poll');
-        $this->dropTable('poll_answer');
-        $this->dropTable('poll_answer_user');
+        $this->dropTable('mymodule_entry');
+        $this->dropTable('mymodule_entry_user');
     }
 
     public function down()
@@ -62,9 +82,9 @@ class uninstall extends Migration
 }
 ```
 
-## Data Integrity
+## Integrity Check
 
-The integrity checker is a command which validates and if necessary repairs the application database.
+The integrity check is a command which validates and if necessary repairs the application database.
 
 If you want to add own checking methods for your module to it, you can intercept the [[humhub\controllers\IntegrityController::EVENT_ON_RUN]] event.
 
@@ -85,3 +105,7 @@ public static function onIntegrityCheck($event)
     }
 }
 ```
+
+## ActiveRecord
+
+HumHub uses Yii's [ActiveRecords](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) as database access layer.

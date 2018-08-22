@@ -63,7 +63,7 @@ class Push extends BaseDriver
     {
         parent::init();
 
-        $this->redis = Instance::ensure($this->redis, Connection::className());
+        $this->redis = Instance::ensure($this->redis, Connection::class);
 
         if (empty($this->jwtKey)) {
             throw new InvalidConfigException('Push driver JWT key is not specified.');

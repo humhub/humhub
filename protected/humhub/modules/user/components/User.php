@@ -110,7 +110,7 @@ class User extends \yii\web\User
     public function canChangePassword()
     {
         foreach ($this->getAuthClients() as $authClient) {
-            if ($authClient->className() == Password::className()) {
+            if ($authClient->className() == Password::class) {
                 return true;
             }
         }

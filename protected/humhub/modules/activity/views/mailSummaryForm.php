@@ -10,14 +10,14 @@
 /* @var $form humhub\widgets\ActiveForm */
 
 use humhub\libs\Html;
-use humhub\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use humhub\modules\space\widgets\SpacePickerField;
 ?>
 
 <?php $form = ActiveForm::begin(); ?>
 <?= $form->field($model, 'interval')->dropDownList($model->getIntervals()); ?>
 <?= $form->field($model, 'limitSpacesMode')->radioList($model->getLimitSpaceModes()); ?>
-<?= $form->field($model, 'limitSpaces')->widget(SpacePickerField::className(), [])->label(false); ?>
+<?= $form->field($model, 'limitSpaces')->widget(SpacePickerField::class, [])->label(false); ?>
 <?= $form->field($model, 'activities')->checkboxList($model->getActivitiesArray(), [
 	'labelOptions' => [
 		'encode' => false

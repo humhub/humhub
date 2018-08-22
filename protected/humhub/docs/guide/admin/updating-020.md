@@ -2,7 +2,7 @@ Updating to 0.20
 ================
 > NOTE: This guide only affects updates from HumHub 0.11.2 or lower to HumHub 0.20
 
-1. Before you run an update please check, if your installed modules and themes are compatible with your targeted version. If not, you can follow the [Theme Migration Guide](../theme/migrate.md) and [Module Migration Guide](../developer/migration-guide.md) to make everything ready for the new version.
+1. Before you run an update please check, if your installed modules and themes are compatible with your targeted version. If not, you can follow the [Theme Migration Guide](../theme/migrate.md) and [Module Migration Guide](../developer/modules-migrate.md) to make everything ready for the new version.
 
 2. Backup your data:
 	- Backup the whole HumHub installation folder from your webroot

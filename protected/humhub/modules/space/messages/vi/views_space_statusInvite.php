@@ -17,8 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'The request to add users has been added to the queue' => '',
-    'User has become a member.' => 'User đã trở thành thành viên.',
-    'User has been invited.' => 'User đã được mời.',
-    'User has not been invited.' => 'User chưa được mời.',
+    'Users has been invited.' => '',
 ];

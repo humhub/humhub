@@ -19,13 +19,13 @@ class m160220_013525_contentcontainer_id extends Migration
 
         // Set content container for space content
         $this->update('content', [
-            'contentcontainer_id' => new Expression('(SELECT id FROM contentcontainer WHERE class=:spaceModel AND pk=space_id)', [':spaceModel' => \humhub\modules\space\models\Space::className()])
+            'contentcontainer_id' => new Expression('(SELECT id FROM contentcontainer WHERE class=:spaceModel AND pk=space_id)', [':spaceModel' => \humhub\modules\space\models\Space::class])
                 ], ['IS NOT', 'space_id', new Expression('NULL')]
         );
 
         // Set content container for user content
         $this->update('content', [
-            'contentcontainer_id' => new Expression('(SELECT id FROM contentcontainer WHERE class=:userModel AND pk=user_id)', [':userModel' => \humhub\modules\user\models\User::className()])
+            'contentcontainer_id' => new Expression('(SELECT id FROM contentcontainer WHERE class=:userModel AND pk=user_id)', [':userModel' => \humhub\modules\user\models\User::class])
                 ], ['IS', 'space_id', new Expression('NULL')]
         );
 

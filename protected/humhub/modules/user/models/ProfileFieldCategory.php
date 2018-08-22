@@ -98,7 +98,7 @@ class ProfileFieldCategory extends ActiveRecord
 
     public function getFields()
     {
-        $query = $this->hasMany(ProfileField::className(), ['profile_field_category_id' => 'id']);
+        $query = $this->hasMany(ProfileField::class, ['profile_field_category_id' => 'id']);
         $query->orderBy('sort_order');
         return $query;
     }

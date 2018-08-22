@@ -31,7 +31,7 @@ class PermaController extends Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => \humhub\components\behaviors\AccessControl::class,
                 'guestAllowedActions' => ['index', 'wall-entry']
             ]
         ];

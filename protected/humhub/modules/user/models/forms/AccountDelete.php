@@ -44,7 +44,7 @@ class AccountDelete extends Model
 
         return [
             ['currentPassword', 'required'],
-            ['currentPassword', CheckPasswordValidator::className(), 'user' => $this->user],
+            ['currentPassword', CheckPasswordValidator::class, 'user' => $this->user],
         ];
     }
 

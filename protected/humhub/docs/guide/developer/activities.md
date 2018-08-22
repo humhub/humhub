@@ -1,16 +1,21 @@
 Activities
 ==========
 
-Activity instances are created for special events in the context of a [[humhub\modules\content\models\ContentContainer|ContentContainer]] like the creation of new content.
+Activity instances are created for special events in the context of a [[humhub\modules\content\models\ContentContainer|ContentContainer]] like the creation of content.
 
-Contrary to notifications - activities are always bound to a [[humhub\modules\content\models\ContentContainer|ContentContainer]], so they are not especially linked against a user or a given set of them.
-Besides the link to the [[humhub\modules\content\models\ContentContainer|ContentContainer]] - an activity can also be assigned with a Content or ContentAddon and automatically inherits some content attributes such as visiblity.
+Contrary to notifications - activities are always bound to a [[humhub\modules\content\models\ContentContainer|ContentContainer]], and are not targeted for specific users.
+Besides the relation to the `ContentContainer` - an activity can also be assigned with a Content or ContentAddon and automatically inherits some content properties such as `visibility`.
+
+Similar to [notifications](notifications.md) activities can be related to an `originator` user and a `source` object. 
+The activity will adopt some properties as the `visibility` in cas of `Content` or `ContentAddon` sources.
 
 ## Implement a Custom Activity
 
 ### Create Class & View
 
-Create a folder ** activities ** in your module and a new class ** SomethingHappend ** 
+Your custom activites should reside in your modules `activities` directory.
+
+Example activity:
 
 ```php
 <?php
@@ -30,9 +35,9 @@ class SomethingHappend extends BaseActivity
 ?>
 ```
 
-By default activity views should be located inside a subfolder named ** views ** where your activity class is located (e.g. /modules/examples/activities/views/).
+By default activity views should be located inside a `activities/views` directory (e.g. `mymodule/activities/views/`).
 
-Example view file ** somethingHappend.php **:
+Example view file **somethingHappend.php**:
 
 ```php
 <?php
@@ -45,23 +50,10 @@ echo Yii::t('ExampleModule.views_notifications_newLike', "%someUser% did somethi
 ?>
 ```
 
-If you require a different view for mails, you have to create a  ** mail ** folder in your views directory.  
+If you require a different view for mails, you have to  add a view with the same view name to the `activities/views/mail` directory.  
 
-### Save an Activity
+### Activity creation
 
 ```php
-$activity = new \johndoe\example\activities\NewLike();
-
-// Link to a ContentContainer, Content or ContentAddon 
-$activity->source = $this;
-
-// User which trigged this Activity - in case of Content/ContentAddon the Creator will be automatically set.
-$activity->originator = $user;
-
-$activity->create();
+SomethingHappend::instance()->from($user)->about($this)->create();
 ```
-
-
-### Delete
-
-TBD

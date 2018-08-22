@@ -30,7 +30,7 @@ class TourController extends \humhub\components\Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'class' => \humhub\components\behaviors\AccessControl::class,
             ]
         ];
     }

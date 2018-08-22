@@ -1,6 +1,7 @@
 <?php
 namespace humhub\modules\user\models\forms;
 
+use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\GroupUser;
@@ -10,7 +11,7 @@ use humhub\modules\user\models\GroupUser;
  *
  * @author buddha
  */
-class EditGroupForm extends \humhub\modules\user\models\Group
+class EditGroupForm extends Group
 {
 
     public $managerGuids = [];

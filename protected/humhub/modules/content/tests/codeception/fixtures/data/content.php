@@ -33,7 +33,10 @@ return [
     ['id' => '9', 'guid' => 'e0acdc54-13c8-4778-adc1-7302e3243e29', 'object_model' => 'humhub\modules\post\models\Post', 'object_id' => '9', 'visibility' => '1', 'pinned' => '0', 'archived' => '0', 'contentcontainer_id' => 4, 'created_at' => '2014-08-08 05:36:05', 'created_by' => '3', 'updated_at' => '2014-08-08 05:36:05', 'updated_by' => '3', 'stream_channel' => 'default'],
 
     // Posts to Space 2 of User 2  (Public & Private)
-    ['id' => '10', 'guid' => 'e0acdc54-13c8-4778-adc1-7302e3243e30', 'object_model' => 'humhub\modules\post\models\Post', 'object_id' => '10', 'visibility' => '1', 'pinned' => '0', 'archived' => '0', 'contentcontainer_id' => 5, 'created_at' => '2014-08-08 05:36:05', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:05', 'updated_by' => '1', 'stream_channel' => 'default'],
-    ['id' => '11', 'guid' => 'e0acdc54-13c8-4778-adc1-7302e3243e31', 'object_model' => 'humhub\modules\post\models\Post', 'object_id' => '11', 'visibility' => '0', 'pinned' => '0', 'archived' => '0', 'contentcontainer_id' => 5, 'created_at' => '2014-08-08 05:36:05', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:05', 'updated_by' => '1', 'stream_channel' => 'default'],
-       
+    ['id' => '10', 'guid' => 'e0acdc54-13c8-4778-adc1-7302e3243e30', 'object_model' => 'humhub\modules\post\models\Post', 'object_id' => '10', 'visibility' => '1', 'pinned' => '0', 'archived' => '0', 'contentcontainer_id' => 5, 'created_at' => '2014-08-08 05:36:05', 'created_by' => '2', 'updated_at' => '2014-08-08 05:36:05', 'updated_by' => '2', 'stream_channel' => 'default'],
+    ['id' => '11', 'guid' => 'e0acdc54-13c8-4778-adc1-7302e3243e31', 'object_model' => 'humhub\modules\post\models\Post', 'object_id' => '11', 'visibility' => '0', 'pinned' => '0', 'archived' => '0', 'contentcontainer_id' => 5, 'created_at' => '2014-08-08 05:36:05', 'created_by' => '2', 'updated_at' => '2014-08-08 05:36:05', 'updated_by' => '2', 'stream_channel' => 'default'],
+
+    ['id' => '12', 'guid' => 'e0acdc54-13c8-4778-adc1-7302e3243e32', 'object_model' => 'humhub\modules\post\models\Post', 'object_id' => '12', 'visibility' => '1', 'pinned' => '0', 'archived' => '0', 'contentcontainer_id' => 5, 'created_at' => '2014-08-08 05:36:05', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:05', 'updated_by' => '1', 'stream_channel' => 'default'],
+    ['id' => '13', 'guid' => 'e0acdc54-13c8-4778-adc1-7302e3243e33', 'object_model' => 'humhub\modules\post\models\Post', 'object_id' => '13', 'visibility' => '0', 'pinned' => '0', 'archived' => '0', 'contentcontainer_id' => 5, 'created_at' => '2014-08-08 05:36:05', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:05', 'updated_by' => '1', 'stream_channel' => 'default'],
+
  ];

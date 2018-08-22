@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'All the personal data of this user will be irrevocably deleted.' => '',
-    'The user is the owner of these spaces:' => '',
+    'This user owns no spaces.' => '',
+    'All the personal data of this user will be irrevocably deleted.' => 'Toutes les données de cet utilisateur seront irrévocablement supprimées.',
+    'The user is the owner of these spaces:' => 'Cet utilisateur est le propriétaire de ces espaces:',
 ];

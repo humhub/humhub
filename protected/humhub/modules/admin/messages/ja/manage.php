@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Advanced' => '',
+  'Advanced' => '高度',
   'Basic' => '基本',
-  'General' => '',
-  'Permissions' => '',
+  'General' => '一般',
+  'Permissions' => '権限',
 );

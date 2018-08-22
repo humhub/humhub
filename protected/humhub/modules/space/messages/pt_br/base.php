@@ -17,15 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Archived' => '',
-    'Name' => '',
-    '{count} members' => '',
+    'User invitations have been added to the queue' => '',
+    'User memberships have been added to the queue' => '',
     '<strong>Space</strong> followers' => 'Seguidores do <strong>espaço</strong>',
     'Administrator:' => 'Administrador:',
+    'Archived' => 'Arquivado',
     'Default' => 'Padrão',
     'Everyone can enter' => 'Todo mundo pode entrar',
     'Invite and request' => 'Convide e solicite',
     'Moderator:' => 'Moderador:',
+    'Name' => 'Nome',
     'No spaces found.' => 'Nenhum espaço encontrado.',
     'Only by invite' => 'Só por convite',
     'Owner:' => 'Dono:',
@@ -38,4 +39,5 @@ return [
     'Settings' => 'Configurações',
     'Space' => 'Espaço',
     'Visible for all (members and guests)' => 'Visível para todos (membros e convidados)',
+    '{count} members' => '{count} membros',
 ];

@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Can manage (e.g. archive, stick, move or delete) arbitrary content' => '',
     'Allows the user to add comments' => 'Sta gebruikers toe om reacties achter te laten',
-    'Can manage (e.g. archive, stick or delete) arbitrary content' => 'Kan willekeurige content beheren (bijv. vastmaken, archiveren, verwijderen)',
     'Create comment' => 'Maak reactie',
     'Manage content' => 'Content beheren',
 ];

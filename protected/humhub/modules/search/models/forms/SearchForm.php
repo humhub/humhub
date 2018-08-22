@@ -50,9 +50,9 @@ class SearchForm extends Model
         // Unset unnecessary search options
         unset($options['model'], $options['type'], $options['page'], $options['pageSize']);
 
-        $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['model' => User::className()]));
+        $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['model' => User::class]));
         $totals[self::SCOPE_USER] = $searchResultSetCount->total;
-        $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['model' => Space::className()]));
+        $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['model' => Space::class]));
         $totals[self::SCOPE_SPACE] = $searchResultSetCount->total;
 
         $searchResultSetCount = Yii::$app->search->find($keyword, array_merge($options, ['type' => Search::DOCUMENT_TYPE_CONTENT]));

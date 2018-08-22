@@ -137,7 +137,7 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
 
                     <div class="row">
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'birthday')->widget(yii\jui\DatePicker::className(), ['dateFormat' => Yii::$app->formatter->dateInputFormat, 'clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
+                            <?php echo $form->field($user->profile, 'birthday')->widget(yii\jui\DatePicker::class, ['dateFormat' => Yii::$app->formatter->dateInputFormat, 'clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
                         </div>
                         <div class="col-md-6">
                             <br><br>

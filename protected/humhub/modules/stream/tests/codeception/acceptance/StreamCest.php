@@ -54,7 +54,7 @@ class StreamCest
 
         $I->createPost('This is my stream test post!');
 
-        $newEntrySelector = '[data-content-key="12"]';
+        $newEntrySelector = '[data-content-key="14"]';
 
         $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my stream test post', '.wall-entry');
@@ -112,7 +112,7 @@ class StreamCest
 
         $I->createPost('This is my first stream test post!');
 
-        $newEntrySelector = '[data-content-key="12"]';
+        $newEntrySelector = '[data-content-key="14"]';
 
         $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my first stream test post', '.wall-entry');
@@ -121,7 +121,7 @@ class StreamCest
 
         $I->createPost('This is my second stream test post!');
 
-        $newEntrySelector2 = '[data-content-key="14"]';
+        $newEntrySelector2 = '[data-content-key="16"]';
         $I->waitForElementVisible($newEntrySelector2);
         $I->expectTo('my new post beeing the latest entry');
         $I->waitForText('This is my second stream test post', null, '.s2_streamContent div:nth-child(1)');
@@ -150,12 +150,13 @@ class StreamCest
     {
         $I->amUser();
         $I->amOnSpace2();
+
         $I->wantToTest('the edit post mechanism');
         $I->amGoingTo('create a new post and delete it afterwards');
 
         $I->createPost('This is my first stream test post!');
 
-        $newEntrySelector = '[data-content-key="12"]';
+        $newEntrySelector = '[data-content-key="14"]';
 
         $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my first stream test post', '.wall-entry');
@@ -233,30 +234,40 @@ class StreamCest
         $I->amOnSpace2();
 
 
+        $I->amGoingTo('filter the stream for involved posts.');
+        $I->expect('not to see any posts since I did not participate in any posts yet.');
+
         $I->waitForElementVisible('.wall-stream-filter-head');
         $I->click('Filter', '.wall-stream-filter-head');
         $I->waitForElementVisible('[data-filter-id="entry_userinvolved"]');
         $I->click('[data-filter-id="entry_userinvolved"]');
         $I->waitForText('No matches with your selected filters!');
 
+        $I->amGoingTo('create a new post.');
+        $I->expectTo('see my new post in the stream after creation.');
+
         $I->createPost('Involved Post.');
         $I->wait(1);
         $I->dontSee('No matches with your selected filters!');
 
-        $I->amGoingTo('Reset filter');
+        $I->amGoingTo('reset the filter and comment another post');
+
         $I->click('Filter', '.wall-stream-filter-head');
         $I->waitForElementVisible('[data-filter-id="entry_userinvolved"]');
         $I->click('[data-filter-id="entry_userinvolved"]');
 
-
-        $postSelector = '[data-content-key="10"]';
+        $postSelector = '[data-content-key="13"]';
         $I->waitForElementVisible($postSelector);
 
         $I->click('Comment', $postSelector);
         $I->waitForElementVisible($postSelector.' .comment-container', null );
-        $I->fillField('[data-content-key="10"] .comment_create .humhub-ui-richtext', 'My Comment');
-        $I->click('Send', '[data-content-key="10"] .comment_create');
-        $I->waitForText('My Comment', null, '[data-content-key="10"] .comment');
+        $I->fillField($postSelector.' .comment_create .humhub-ui-richtext', 'My Comment');
+        $I->click('Send', $postSelector.' .comment_create');
+        $I->waitForText('My Comment', null, $postSelector.' .comment');
+
+
+        $I->amGoingTo('reactivate the involved filter.');
+        $I->expectTo('see the commented post after the stream reload.');
 
 //        $I->scrollTop();
         $I->click('Filter', '.wall-stream-filter-head');
@@ -265,8 +276,8 @@ class StreamCest
         $I->wait(1);
         $I->waitForText('Involved Post.');
 
-        $I->seeElement('[data-content-key="10"]');
-        $I->seeElement('[data-content-key="12"]');
+        $I->seeElement('[data-content-key="13"]');
+        $I->seeElement('[data-content-key="14"]');
     }
 
     /**
@@ -296,7 +307,7 @@ class StreamCest
         $I->see('POST2', '.s2_streamContent > [data-stream-entry]:nth-of-type(4)');
         $I->see('POST1', '.s2_streamContent > [data-stream-entry]:nth-of-type(5)');
 
-        $post4Selector = '[data-stream-entry][data-content-key="18"]';
+        $post4Selector = '[data-stream-entry][data-content-key="20"]';
 
         $I->click('Comment', $post4Selector);
         $I->fillField($post4Selector . ' [contenteditable]', 'My Comment!');

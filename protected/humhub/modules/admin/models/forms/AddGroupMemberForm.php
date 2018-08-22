@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use Yii;
 use yii\base\Model;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
@@ -23,13 +24,13 @@ class AddGroupMemberForm extends Model
 
     /**
      * GroupId selection array of the form.
-     * @var type
+     * @var array
      */
     public $userGuids;
 
     /**
      * User model object
-     * @var type
+     * @var integer
      */
     public $groupId;
 
@@ -54,30 +55,25 @@ class AddGroupMemberForm extends Model
     }
 
     /**
-     * Sets the user data and intitializes the from selection
-     * @param type $user
-     */
-    public function setUser($group)
-    {
-        //Set form user and current group settings
-        $this->group = $group;
-    }
-
-    /**
      * Aligns the given group selection with the db
-     * @return boolean
+     * @return bool
+     * @throws HttpException
      */
     public function save()
     {
         $group = $this->getGroup();
 
-        if($group == null) {
+        if (!$group) {
             throw new HttpException(404, Yii::t('AdminModule.models_form_AddGroupMemberForm', 'Group not found!'));
+        }
+
+        if($group->is_admin_group && !Yii::$app->user->isAdmin()) {
+            throw new HttpException(403);
         }
 
         foreach ($this->userGuids as $userGuid) {
             $user = User::findIdentityByAccessToken($userGuid);
-            if($user != null) {
+            if ($user) {
                $group->addUser($user);
             }
         }
@@ -87,6 +83,6 @@ class AddGroupMemberForm extends Model
 
     public function getGroup()
     {
-        return Group::findOne($this->groupId);
+        return Group::findOne(['id' => $this->groupId]);
     }
 }

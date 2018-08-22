@@ -42,7 +42,7 @@ abstract class NotificationCategory extends BaseObject
     {
         parent::init();
         if (!$this->id) {
-            throw new InvalidConfigException('NotificationCategories have to define an id property, which is not the case for "' . self::class . '"');
+            throw new InvalidConfigException('NotificationCategories have to define an id property, which is not the case for "' . static::class . '"');
         }
     }
 

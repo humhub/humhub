@@ -35,7 +35,7 @@ class Live extends \humhub\components\ActiveRecord
             [['contentcontainer_id', 'visibility', 'created_at'], 'integer'],
             [['serialized_data', 'created_at'], 'required'],
             [['serialized_data'], 'string'],
-            [['contentcontainer_id'], 'exist', 'skipOnError' => true, 'targetClass' => ContentContainer::className(), 'targetAttribute' => ['contentcontainer_id' => 'id']],
+            [['contentcontainer_id'], 'exist', 'skipOnError' => true, 'targetClass' => ContentContainer::class, 'targetAttribute' => ['contentcontainer_id' => 'id']],
         ];
     }
 
@@ -44,7 +44,7 @@ class Live extends \humhub\components\ActiveRecord
      */
     public function getContentcontainer()
     {
-        return $this->hasOne(Contentcontainer::className(), ['id' => 'contentcontainer_id']);
+        return $this->hasOne(Contentcontainer::class, ['id' => 'contentcontainer_id']);
     }
 
 }

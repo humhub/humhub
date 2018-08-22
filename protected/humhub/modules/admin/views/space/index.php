@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use humhub\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use humhub\modules\admin\widgets\SpaceGridView;
 use humhub\modules\admin\grid\SpaceActionColumn;
 use humhub\modules\admin\grid\SpaceTitleColumn;
@@ -27,7 +27,7 @@ use humhub\modules\admin\models\SpaceSearch;
             </span>
         </div>     
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4"  style="padding-left:0px">
         <?= Html::activeDropDownList($searchModel, 'visibility', SpaceSearch::getVisibilityAttributes(), ['class' => 'form-control', 'onchange' => 'this.form.submit()']); ?>
     </div>
 </div>

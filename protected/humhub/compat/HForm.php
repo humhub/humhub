@@ -8,8 +8,8 @@
 
 namespace humhub\compat;
 
-use humhub\widgets\MarkdownField;
-use humhub\widgets\MultiSelectField;
+use humhub\modules\ui\form\widgets\MultiSelect;
+use humhub\modules\ui\form\widgets\Markdown;
 use Yii;
 
 /**
@@ -247,7 +247,7 @@ class HForm extends \yii\base\Component
                         }
                         return $field;
                     case 'multiselectdropdown':
-                        return MultiSelectField::widget([
+                        return MultiSelect::widget([
                             'form' => $this->form,
                             'model' => $model,
                             'attribute' => $name,
@@ -289,7 +289,7 @@ class HForm extends \yii\base\Component
 
                         $yearRange = isset($definition['yearRange']) ? $definition['yearRange'] : (date('Y') - 100) . ":" . (date('Y') + 100);
 
-                        return $this->form->field($model, $name)->widget(\yii\jui\DatePicker::className(), [
+                        return $this->form->field($model, $name)->widget(\yii\jui\DatePicker::class, [
                             'dateFormat' => $format,
                             'clientOptions' => [
                                 'changeYear' => true,
@@ -307,7 +307,7 @@ class HForm extends \yii\base\Component
                             $options['readonly'] = $options['readOnly'];
                             unset($options['readOnly']);
                         }
-                        $returnField = $this->form->field($model, $name)->widget(MarkdownField::class, $options);
+                        $returnField = $this->form->field($model, $name)->widget(Markdown::class, $options);
                         return $returnField;
                     default:
                         return "Field Type " . $definition['type'] . " not supported by Compat HForm";

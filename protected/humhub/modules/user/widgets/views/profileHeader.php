@@ -176,9 +176,9 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
                         humhub\modules\user\widgets\ProfileHeaderControls::widget([
                             'user' => $user,
                             'widgets' => [
-                                [\humhub\modules\user\widgets\ProfileEditButton::className(), ['user' => $user], []],
-                                [\humhub\modules\user\widgets\UserFollowButton::className(), ['user' => $user], []],
-                                [\humhub\modules\friendship\widgets\FriendshipButton::className(), ['user' => $user], []],
+                                [\humhub\modules\user\widgets\ProfileEditButton::class, ['user' => $user], []],
+                                [\humhub\modules\user\widgets\UserFollowButton::class, ['user' => $user], []],
+                                [\humhub\modules\friendship\widgets\FriendshipButton::class, ['user' => $user], []],
                             ]
                         ]);
                         ?>

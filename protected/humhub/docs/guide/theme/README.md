@@ -12,6 +12,7 @@ Getting started
 Migration
 ---------
 * [Foreword](migrate.md)
+* [Version 1.3](migrate-1.3.md)
 * [Version 1.2](migrate-1.2.md)
 * [Version 1.1](migrate-1.1.md)
 * [Version 1.0](migrate-1.0.md)

@@ -30,7 +30,7 @@ class AccountRecoverPassword extends Model
             ['email', 'email'],
             ['email', 'canRecoverPassword'],
             ['verifyCode', 'captcha', 'captchaAction' => '/user/auth/captcha'],
-            ['email', 'exist', 'targetClass' => User::className(), 'targetAttribute' => 'email', 'message' => Yii::t('UserModule.forms_AccountRecoverPasswordForm', '{attribute} "{value}" was not found!')],
+            ['email', 'exist', 'targetClass' => User::class, 'targetAttribute' => 'email', 'message' => Yii::t('UserModule.forms_AccountRecoverPasswordForm', '{attribute} "{value}" was not found!')],
         ];
     }
 

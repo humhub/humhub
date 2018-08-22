@@ -12,22 +12,22 @@ use humhub\commands\CronController;
 
 return [
     'id' => 'admin',
-    'class' => \humhub\modules\admin\Module::className(),
+    'class' => \humhub\modules\admin\Module::class,
     'isCoreModule' => true,
     'events' => [
         [
-            'class' => Sidebar::className(),
+            'class' => Sidebar::class,
             'event' => Sidebar::EVENT_INIT,
             'callback' => [
-                Events::className(),
+                Events::class,
                 'onDashboardSidebarInit'
             ]
         ],
         [
-            'class' => CronController::className(),
+            'class' => CronController::class,
             'event' => CronController::EVENT_ON_DAILY_RUN,
             'callback' => [
-                Events::className(),
+                Events::class,
                 'onCronDailyRun'
             ]
         ],
@@ -35,7 +35,7 @@ return [
             'class' => 'humhub\components\console\Application',
             'event' => 'onInit',
             'callback' => [
-                Events::className(),
+                Events::class,
                 'onConsoleApplicationInit'
             ]
         ],

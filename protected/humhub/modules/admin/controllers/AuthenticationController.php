@@ -52,7 +52,7 @@ class AuthenticationController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => ManageSettings::className()]
+            ['permissions' => ManageSettings::class]
         ];
     }
 

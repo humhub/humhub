@@ -10,7 +10,7 @@ namespace humhub\modules\user\authclient;
 
 use Yii;
 use yii\base\Component;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 
 /**
  * Extended AuthClient collection with event support
@@ -56,12 +56,12 @@ class Collection extends Component
     /**
      * @param string $id service id.
      * @return ClientInterface auth client instance.
-     * @throws InvalidParamException on non existing client request.
+     * @throws InvalidArgumentException on non existing client request.
      */
     public function getClient($id, $load = true)
     {
         if (!array_key_exists($id, $this->_clients)) {
-            throw new InvalidParamException("Unknown auth client '{$id}'.");
+            throw new InvalidArgumentException("Unknown auth client '{$id}'.");
         }
         if (!is_object($this->_clients[$id]) && $load) {
             $this->_clients[$id] = $this->createClient($id, $this->_clients[$id]);

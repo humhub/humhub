@@ -17,6 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Members</strong>' => '',
-    'Access denied - You cannot invite members!' => '',
+    '<strong>Members</strong>' => '<strong>メンバー</strong>',
 ];

@@ -32,11 +32,23 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
     /**
      * @var string defines the editor style, which will be added as class attribute
      */
-    public $menuClass = self::MENU_CLASS_FOCUS;
+    public $menuClass;
 
     public static  $renderer = [
         'class' => ProsemirrorRichText::class
     ];
+
+    public function init()
+    {
+        if($this->layout === static::LAYOUT_BLOCK) {
+            $this->exclude[] = 'resizeNav';
+            $this->menuClass = static::MENU_CLASS_PLAIN;
+        } else {
+            $this->menuClass = static::MENU_CLASS_FOCUS;
+        }
+
+        parent::init();
+    }
 
     /**
      * @inheritdoc

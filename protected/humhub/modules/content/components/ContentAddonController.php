@@ -86,7 +86,7 @@ class ContentAddonController extends Controller
             throw new HttpException(500, 'Model & ID parameter required!');
         }
 
-        Helpers::CheckClassType($modelClass, [ContentAddonActiveRecord::className(), ContentActiveRecord::className()]);
+        Helpers::CheckClassType($modelClass, [ContentAddonActiveRecord::class, ContentActiveRecord::class]);
         $target = $modelClass::findOne(['id' => $pk]);
 
         if ($target === null) {
@@ -100,7 +100,7 @@ class ContentAddonController extends Controller
             $this->parentContent = $target;
         }
 
-        if (!$this->parentContent->content->canRead()) {
+        if (!$this->parentContent->content->canView()) {
             throw new HttpException(403, 'Access denied!');
         }
 
@@ -119,7 +119,7 @@ class ContentAddonController extends Controller
      */
     public function loadContentAddon($className, $pk)
     {
-        if (!Helpers::CheckClassType($className, ContentAddonActiveRecord::className())) {
+        if (!Helpers::CheckClassType($className, ContentAddonActiveRecord::class)) {
             throw new Exception("Given className is not a content addon model!");
         }
 

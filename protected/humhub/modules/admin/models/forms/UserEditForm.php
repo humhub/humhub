@@ -2,15 +2,18 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\modules\user\models\GroupUser;
 use Yii;
+use humhub\modules\user\models\User;
 use humhub\modules\user\models\Group;
+use humhub\modules\admin\permissions\ManageGroups;
 
 /**
  * Description of UserEditForm
  *
  * @author buddha
  */
-class UserEditForm extends \humhub\modules\user\models\User
+class UserEditForm extends User
 {
     /**
      * GroupId selection array of the form.
@@ -54,7 +57,16 @@ class UserEditForm extends \humhub\modules\user\models\User
      */
     public function attributeLabels()
     {
-        return array_merge(parent::attributeLabels(), ['groupSelection' => 'Groups']);
+        return array_merge(parent::attributeLabels(), ['groupSelection' => $this->getGroupLabel()]);
+    }
+
+    public function getGroupLabel()
+    {
+        if(!Yii::$app->user->isAdmin() && $this->isSystemAdmin()) {
+            return Yii::t('AdminModule.base', 'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)');
+        }
+
+        return Yii::t('AdminModule.base', 'Groups');
     }
 
     /**
@@ -63,11 +75,15 @@ class UserEditForm extends \humhub\modules\user\models\User
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if(Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageGroups())) {
+        if (Yii::$app->user->can(new ManageGroups())) {
             //Check old group selection and remove non selected groups
-            foreach($this->currentGroups as $userGroup) {
-                if(!$this->isInGroupSelection($userGroup)) {
-                    $this->getGroupUsers()->where(['group_id' => $userGroup->id])->one()->delete();
+            foreach ($this->currentGroups as $userGroup) {
+                if (!$this->isInGroupSelection($userGroup)) {
+                    /* @var $groupUser GroupUser */
+                    $groupUser = $this->getGroupUsers()->where(['group_id' => $userGroup->id])->one();
+                    if(!$groupUser->group->is_admin_group || Yii::$app->user->isAdmin()) {
+                        $groupUser->delete();
+                    }
                 }
             }
 
@@ -76,7 +92,11 @@ class UserEditForm extends \humhub\modules\user\models\User
             //Add all new selectedGroups to the given user
             foreach ($this->groupSelection as $groupId) {
                 if (!$this->isCurrentlyMemberOf($groupId)) {
-                    Group::findOne($groupId)->addUser($this);
+                    /* @var $group Group */
+                    $group = Group::findOne(['id' => $groupId]);
+                    if(!$group->is_admin_group || Yii::$app->user->isAdmin()) {
+                        $group->addUser($this);
+                    }
                 }
             }
         }
@@ -86,7 +106,7 @@ class UserEditForm extends \humhub\modules\user\models\User
 
     /**
      * Checks if the given group (id or model object) is contained in the form selection
-     * @param type $groupId groupId or Group model object
+     * @param integer $groupId groupId or Group model object
      * @return boolean true if contained in selection else false
      */
     private function isInGroupSelection($groupId)
@@ -99,7 +119,7 @@ class UserEditForm extends \humhub\modules\user\models\User
 
     /**
      * Checks if the user is member of the given group (id or model object)
-     * @param type $groupId $groupId groupId or Group model object
+     * @param integer $groupId $groupId groupId or Group model object
      * @return boolean true if user is member else false
      */
     private function isCurrentlyMemberOf($groupId)
@@ -117,12 +137,12 @@ class UserEditForm extends \humhub\modules\user\models\User
     /**
      * Returns an id => groupname array representation of the given $groups array.
      * @param array $groups array of Group models
-     * @return type array in form of id => groupname
+     * @return array in form of id => groupname
      */
     public static function getGroupItems($groups = null)
     {
-        if($groups == null) {
-            $groups = \humhub\modules\user\models\Group::find()->all();
+        if(!$groups) {
+            $groups = (Yii::$app->user->isAdmin()) ? Group::find()->all() :  Group::findAll(['is_admin_group' => '0']) ;
         }
 
         $result = [];

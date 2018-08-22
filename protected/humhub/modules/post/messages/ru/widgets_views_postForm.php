@@ -18,5 +18,5 @@
  */
 return [
     'This space is archived.' => '',
-    'What\'s on your mind?' => 'О чём вы думаете?',
+    'What\'s on your mind?' => 'Есть о чем рассказать?',
 ];

@@ -424,7 +424,7 @@ class ControllerAccess extends BaseObject
      */
     public function validatePostRequest()
     {
-        return Yii::$app->request->method == 'POST';
+        return Yii::$app->request->isPost;
     }
 
     /**

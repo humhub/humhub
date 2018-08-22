@@ -17,15 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Archived' => '',
-    'Name' => '',
-    '{count} members' => '',
+    'User invitations have been added to the queue' => '',
+    'User memberships have been added to the queue' => '',
     '<strong>Space</strong> followers' => '<strong>Nätverks</strong> följare',
     'Administrator:' => 'Administratör:',
+    'Archived' => 'Arkiverad',
     'Default' => 'Default',
     'Everyone can enter' => 'Vem som helst kan gå med',
     'Invite and request' => 'Inbjudan och begäran',
     'Moderator:' => 'Moderator:',
+    'Name' => 'Namn',
     'No spaces found.' => 'Inga nätverk funna',
     'Only by invite' => 'Endast via inbjudan',
     'Owner:' => 'Ägare',
@@ -38,4 +39,5 @@ return [
     'Settings' => 'Inställningar',
     'Space' => 'Nätverk',
     'Visible for all (members and guests)' => 'Synlig för alla (medlemmar & gäster)',
+    '{count} members' => '{count} medlemmar',
 ];

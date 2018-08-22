@@ -51,7 +51,6 @@ return [
     'Some files could not be uploaded:' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
-    'The current main HumHub database name is ' => '',
     'The file has been deleted.' => '',
     'The requested resource could not be found.' => '',
     'The space has been archived.' => '',

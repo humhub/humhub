@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\modules\content\permissions\ManageContent;
 use Yii;
 
 /**
@@ -55,6 +54,7 @@ class MoveContentLink extends WallEntryControlLink
      */
     public function preventRender()
     {
-        return !$this->model->isOwner() && !$this->model->content->container->can(ManageContent::class);
+        // We show the move content link in case the user is generally allowed to move content within the container not considering other move content checks.
+        return !$this->model->content->checkMovePermission();
     }
 }

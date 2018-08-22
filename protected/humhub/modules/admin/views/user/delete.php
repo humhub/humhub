@@ -4,14 +4,16 @@ use yii\helpers\Url;
 use humhub\libs\Html;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\space\widgets\Image as SpaceImage;
-use humhub\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 /* @var $model \yii\base\Model */
 ?>
 <div class="panel-body">
     <h4><?= Yii::t('AdminModule.user', 'Confirm user deletion'); ?></h4>
     <br>
+
     <p><strong><?= Yii::t('AdminModule.user', 'Are you sure that you want to delete following user?'); ?></strong></p>
+    <div class="well">
 
     <div class="media">
         <div class="media-left" style="padding-right:6px">
@@ -22,11 +24,13 @@ use humhub\widgets\ActiveForm;
             <?= Html::encode($model->user->email) ?>
         </div>
     </div>    
-    <br />
-    <p><?= Yii::t('AdminModule.account', 'All the personal data of this user will be irrevocably deleted.'); ?></p>
+    <hr>
+        <p><i class="fa fa-exclamation-triangle" style="color: <?= $this->theme->variable('danger')?>"></i> &nbsp;<?= Yii::t('AdminModule.account', 'All the personal data of this user will be irrevocably deleted.'); ?></p>
+
     <?php if (count($model->getOwningSpaces()) !== 0): ?>
-        <br />
-        <p><?= Yii::t('AdminModule.account', 'The user is the owner of these spaces:'); ?></p>
+
+        <p><b><?= Yii::t('AdminModule.account', 'The user is the owner of these spaces:'); ?></b></p>
+
         <?php foreach ($model->getOwningSpaces() as $space): ?>
             <div class="media">
                 <div class="media-left" style="padding-right:6px">
@@ -38,8 +42,10 @@ use humhub\widgets\ActiveForm;
                 </div>
             </div>    
         <?php endforeach; ?>
-        <br />
+    <?php else: ?>
+        <p><?= Yii::t('AdminModule.account', 'This user owns no spaces.'); ?></p>
     <?php endif; ?>
+    </div>
 
     <br />
     <?php $form = ActiveForm::begin(); ?>

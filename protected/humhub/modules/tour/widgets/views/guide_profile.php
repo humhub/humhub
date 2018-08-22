@@ -9,7 +9,7 @@ $this->context->loadResources($this);
 
     var gotoAdministration = false;
 
-    $(document).on('ready', function () {
+    $(document).one('humhub:ready', function () {
         // Create a new tour
         var profileTour = new Tour({
             storage: false,
