@@ -60,8 +60,8 @@ class Migration extends \yii\db\Migration
         ";
 
         Yii::$app->db->createCommand($updateSql, [
-            ':likeModelClass' => Like::class(),
-            ':likedActivityClass' => Liked::class()
+            ':likeModelClass' => Like::class,
+            ':likedActivityClass' => Liked::class
         ])->execute();
     }
 
