@@ -9,7 +9,7 @@
 namespace humhub\components;
 
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\helpers\FileHelper;
 use yii\web\AssetBundle;
 
