@@ -49,8 +49,8 @@ class ContentContainerModule extends Module
      * public function getContentContainerTypes()
      * {
      *      return [
-     *          User::class(),
-     *          Space::class()
+     *          User::class,
+     *          Space::class
      *      ];
      * }
      * ~~~
