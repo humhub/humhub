@@ -337,7 +337,7 @@ class BaseMenu extends Widget
             $url = Url::to($url);
         }
 
-        Event::on(static::class(), static::EVENT_RUN, function ($event) use ($url) {
+        Event::on(static::class, static::EVENT_RUN, function ($event) use ($url) {
             $event->sender->setInactive($url);
         });
     }
