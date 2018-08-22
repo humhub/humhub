@@ -151,7 +151,7 @@ class SpreadsheetExport extends Component
             if ($this->formatter === null) {
                 $this->formatter = Yii::$app->getFormatter();
             } else {
-                $this->formatter = Instance::ensure($this->formatter, Formatter::class());
+                $this->formatter = Instance::ensure($this->formatter, Formatter::class);
             }
         }
 
@@ -181,7 +181,7 @@ class SpreadsheetExport extends Component
                 $column = $this->createDataColumn($column);
             } else {
                 $column = Yii::createObject(array_merge([
-                    'class' => DataColumn::className(),
+                    'class' => DataColumn::class,
                     'grid' => $this,
                 ], $column));
             }
@@ -224,7 +224,7 @@ class SpreadsheetExport extends Component
 
         /** @var DataColumn $column */
         $column = Yii::createObject([
-            'class' => DataColumn::class(),
+            'class' => DataColumn::class,
             'grid' => $this,
             'attribute' => $matches[1],
             'format' => isset($matches[3]) ? $matches[3] : 'text',
@@ -244,7 +244,7 @@ class SpreadsheetExport extends Component
     {
         /** @var ExportResult $result */
         $result = Yii::createObject(array_merge([
-            'class' => ExportResult::className(),
+            'class' => ExportResult::class,
         ], $this->resultConfig));
 
         $spreadsheet = $result->newSpreadsheet();
