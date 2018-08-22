@@ -9,6 +9,8 @@
 namespace humhub\components;
 
 use Yii;
+use humhub\modules\like\models\Like;
+use humhub\modules\like\activities\Liked;
 
 /**
  * Migration is the base class for representing a database migration.
@@ -58,8 +60,8 @@ class Migration extends \yii\db\Migration
         ";
 
         Yii::$app->db->createCommand($updateSql, [
-            ':likeModelClass' => \humhub\modules\like\models\Like::className(),
-            ':likedActivityClass' => \humhub\modules\like\activities\Liked::className()
+            ':likeModelClass' => Like::class(),
+            ':likedActivityClass' => Liked::class()
         ])->execute();
     }
 
