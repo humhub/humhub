@@ -8,7 +8,7 @@
 
 namespace humhub\libs;
 
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\base\Exception;
 
 /**
@@ -147,7 +147,7 @@ class Helpers
      */
     public static function getBytesOfIniValue($valueString)
     {
-        if ($valueString === null || $valueString === "") {
+        if ($valueString === null || $valueString === '') {
             return 0;
         }
 
