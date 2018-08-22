@@ -10,12 +10,13 @@ namespace humhub\components;
 
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
-use Yii;
-use yii\helpers\Json;
 use humhub\models\Setting;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\content\models\ContentContainerSetting;
+use humhub\commands\MigrateController;
+use Yii;
+use yii\helpers\Json;
 use yii\web\AssetBundle;
 use yii\web\HttpException;
 
@@ -48,7 +49,7 @@ class Module extends \yii\base\Module
 
         // Set settings component
         $this->set('settings', [
-            'class' => SettingsManager::className(),
+            'class' => SettingsManager::class(),
             'moduleId' => $this->id
         ]);
     }
@@ -82,7 +83,7 @@ class Module extends \yii\base\Module
             return $info['description'];
         }
 
-        return "";
+        return '';
     }
 
     /**
@@ -98,7 +99,7 @@ class Module extends \yii\base\Module
             return $info['version'];
         }
 
-        return "1.0";
+        return '1.0';
     }
 
     /**
@@ -112,7 +113,7 @@ class Module extends \yii\base\Module
         $url = $this->getPublishedUrl('/module_image.png');
 
         if ($url == null) {
-            $url = Yii::getAlias("@web-static/img/default_module.jpg");
+            $url = Yii::getAlias('@web-static/img/default_module.jpg');
         }
 
         return $url;
@@ -279,7 +280,7 @@ class Module extends \yii\base\Module
     {
         $migrationPath = $this->basePath . '/migrations';
         if (is_dir($migrationPath)) {
-            \humhub\commands\MigrateController::webMigrateUp($migrationPath);
+            MigrateController::webMigrateUp($migrationPath);
         }
     }
 
@@ -316,7 +317,7 @@ class Module extends \yii\base\Module
      */
     public function getConfigUrl()
     {
-        return "";
+        return '';
     }
 
     /**
