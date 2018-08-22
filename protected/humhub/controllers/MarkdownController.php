@@ -29,7 +29,7 @@ class MarkdownController extends Controller
     {
         return [
             'acl' => [
-                'class' => AccessControl::class(),
+                'class' => AccessControl::class,
             ]
         ];
     }
