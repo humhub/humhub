@@ -136,8 +136,8 @@ class UserSearch extends User
 
                 $query->andWhere([
                     '=',
-                    new Expression("DATE(last_login)"),
-                    new Expression("DATE(:last_login)", [':last_login' => $last_login])
+                    new Expression('DATE(last_login)'),
+                    new Expression('DATE(:last_login)', [':last_login' => $last_login])
                 ]);
             } catch (InvalidArgumentException $e) {
                 // do not change the query if the date is wrong formatted
