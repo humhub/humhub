@@ -19,6 +19,7 @@ use Yii;
 use yii\helpers\Json;
 use yii\web\AssetBundle;
 use yii\web\HttpException;
+use yii\db\Exception;
 
 /**
  * Base Class for Modules / Extensions
@@ -49,7 +50,7 @@ class Module extends \yii\base\Module
 
         // Set settings component
         $this->set('settings', [
-            'class' => SettingsManager::class(),
+            'class' => SettingsManager::class,
             'moduleId' => $this->id
         ]);
     }
@@ -250,7 +251,7 @@ class Module extends \yii\base\Module
             $migration = new \uninstall;
             try {
                 $migration->up();
-            } catch (\yii\db\Exception $ex) {
+            } catch (\Exception $ex) {
                 Yii::error($ex);
             }
             ob_get_clean();
