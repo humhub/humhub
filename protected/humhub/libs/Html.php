@@ -9,7 +9,7 @@
 namespace humhub\libs;
 
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
