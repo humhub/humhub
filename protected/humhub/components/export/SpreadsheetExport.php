@@ -151,9 +151,10 @@ class SpreadsheetExport extends Component
             if ($this->formatter === null) {
                 $this->formatter = Yii::$app->getFormatter();
             } else {
-                $this->formatter = Instance::ensure($this->formatter, Formatter::className());
+                $this->formatter = Instance::ensure($this->formatter, Formatter::class());
             }
         }
+
         return $this->formatter;
     }
 
@@ -223,7 +224,7 @@ class SpreadsheetExport extends Component
 
         /** @var DataColumn $column */
         $column = Yii::createObject([
-            'class' => DataColumn::className(),
+            'class' => DataColumn::class(),
             'grid' => $this,
             'attribute' => $matches[1],
             'format' => isset($matches[3]) ? $matches[3] : 'text',
