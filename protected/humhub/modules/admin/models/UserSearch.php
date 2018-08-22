@@ -11,7 +11,10 @@ namespace humhub\modules\admin\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\base\InvalidArgumentException;
+use yii\db\Expression;
 use humhub\modules\user\models\User;
+use humhub\libs\DateHelper;
 
 /**
  * Description of UserSearch
@@ -129,14 +132,14 @@ class UserSearch extends User
 
         if ($this->getAttribute('last_login') != "") {
             try {
-                $last_login = \humhub\libs\DateHelper::parseDateTime($this->getAttribute('last_login'));
+                $last_login = DateHelper::parseDateTime($this->getAttribute('last_login'));
 
                 $query->andWhere([
                     '=',
-                    new \yii\db\Expression("DATE(last_login)"),
-                    new \yii\db\Expression("DATE(:last_login)", [':last_login' => $last_login])
+                    new Expression("DATE(last_login)"),
+                    new Expression("DATE(:last_login)", [':last_login' => $last_login])
                 ]);
-            } catch (InvalidParamException $e) {
+            } catch (InvalidArgumentException $e) {
                 // do not change the query if the date is wrong formatted
             }
         }
