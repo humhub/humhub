@@ -148,6 +148,28 @@ class ContentTagTest extends HumHubDbTestCase
         $this->assertEquals(2, TestTag::find()->count());
     }
 
+    public function testDeleteAll()
+    {
+        $space2 = Space::findOne(2);
+        $this->assertTrue($this->createTestTag('testTag1'));
+        $this->assertTrue($this->createTestTag('testTag2'));
+        $this->assertTrue($this->createTestTag('testTag3', $space2));
+        $this->assertTrue($this->createTestTag('testTag4', $space2));
+
+        $this->assertTrue($this->createOtherTestTag('testTagA'));
+        $this->assertTrue($this->createOtherTestTag('testTagB'));
+        $this->assertTrue($this->createOtherTestTag('testTagC', $space2));
+
+        $this->assertEquals(4, count(TestTag::findAll(null)));
+        $this->assertEquals(3, count(TestTagSameModule::findAll(null)));
+
+        $count = TestTagSameModule::deleteAll();
+        $this->assertEquals(3, $count);
+
+        $this->assertEquals(4, count(TestTag::findAll(null)));
+        $this->assertEquals(0, count(TestTagSameModule::findAll(null)));
+    }
+
     public function testContentDeletion()
     {
         $content = Content::findOne(1);
@@ -254,6 +276,4 @@ class ContentTagTest extends HumHubDbTestCase
         $tag = new TestTagOtherModule($container, $name);
         return $tag->save();
     }
-
-
 }

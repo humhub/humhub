@@ -513,6 +513,7 @@ class ContentTag extends ActiveRecord
     /**
      * Deletes all tags by module id
      * @param ContentContainerActiveRecord|int $contentContainer
+     * @return int the number of rows deleted
      */
     public static function deleteByModule($contentContainer = null)
     {
@@ -520,15 +521,16 @@ class ContentTag extends ActiveRecord
 
         if($contentContainer) {
             $container_id = $contentContainer instanceof ContentContainerActiveRecord ? $contentContainer->contentcontainer_id : $contentContainer;
-            static::deleteAll(['module_id' => $instance->module_id, 'contentcontainer_id' => $container_id]);
+            return static::deleteAll(['module_id' => $instance->module_id, 'contentcontainer_id' => $container_id]);
         } else {
-            static::deleteAll(['module_id' => $instance->module_id]);
+            return static::deleteAll(['module_id' => $instance->module_id]);
         }
     }
 
     /**
      * Deletes all tags by type
      * @param ContentContainerActiveRecord|int $contentContainer
+     * @return int the number of rows deleted
      */
     public static function deleteByType($contentContainer = null)
     {
@@ -536,10 +538,57 @@ class ContentTag extends ActiveRecord
 
         if($contentContainer) {
             $container_id = $contentContainer instanceof ContentContainerActiveRecord ? $contentContainer->contentcontainer_id : $contentContainer;
-            static::deleteAll(['type' => $instance->type, 'contentcontainer_id' => $container_id]);
+            return static::deleteAll(['type' => $instance->type, 'contentcontainer_id' => $container_id]);
         } else {
-            static::deleteAll(['type' => $instance->type]);
+            return static::deleteAll(['type' => $instance->type]);
         }
+    }
+
+    /**
+     * In case this function is not called on the base ContentTag function, it will ensure to that at least either a
+     * 'module_id' or 'type' condition is given to prevent deleting all content tags.
+     *
+     * If no 'module_id' or 'type' condition is given this function will automatically add a 'type' condition.
+     *
+     * @since 1.3.2
+     */
+    public static function deleteAll($condition = null, $params = [])
+    {
+        if(static::class === ContentTag::class) {
+            return parent::deleteAll($condition, $params);
+        }
+
+        $instance = new static();
+        if(empty($condition)) {
+            $condition = ['type' => $instance->type];
+        } else if(!empty($condition) && !isset($condition['module_id']) && !isset($condition['type'])) {
+            $condition['type'] = $instance->type;
+        }
+
+        return parent::deleteAll($condition, $params);
+    }
+
+    /**
+     * Searches for all content tags of this type.
+     *
+     * @param $condition
+     * @since 1.3.2
+     * @return ActiveRecord[]
+     */
+    public static function findAll($condition)
+    {
+        if (static::class === ContentTag::class) {
+            return parent::findAll($condition);
+        }
+
+        $instance = new static();
+        if(empty($condition)) {
+            $condition = ['type' => $instance->type];
+        } else {
+            $condition['type'] = $instance->type;
+        }
+
+        return parent::findAll($condition);
     }
 
     /**
