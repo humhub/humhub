@@ -13,8 +13,14 @@ class m171015_155102_contentcontainer_module extends Migration
             'module_state' => $this->smallInteger(),
         ]);
         $this->addPrimaryKey('pk_contentcontainer_module', 'contentcontainer_module', ['contentcontainer_id', 'module_id']);
-        $this->addForeignKey('fk_contentcontainer', 'contentcontainer_module', 'contentcontainer_id', 'contentcontainer', 'id', 'CASCADE', 'CASCADE');
-        
+
+        try {
+            $this->addForeignKey('fk_contentcontainer', 'contentcontainer_module', 'contentcontainer_id', 'contentcontainer', 'id', 'CASCADE', 'CASCADE');
+        } catch (\Exception $ex) {
+            Yii::error('Could not create foreign key for content container module table!');
+        }
+
+
         $sqlInsert = 'INSERT INTO contentcontainer_module (contentcontainer_id, module_id, module_state) ';
         $this->db->createCommand($sqlInsert . 'SELECT space.contentcontainer_id, module_id, state FROM space_module LEFT JOIN space ON space_module.space_id=space.id WHERE space.id IS NOT NULL')->execute();
         $this->db->createCommand($sqlInsert . 'SELECT user.contentcontainer_id, module_id, state FROM user_module LEFT JOIN user ON user_module.user_id=user.id WHERE user.id IS NOT NULL')->execute();
@@ -28,7 +34,6 @@ class m171015_155102_contentcontainer_module extends Migration
             }
         }
 
-
         $rows = (new \yii\db\Query())->select("*")->from('user_module')->where('user_id IS NULL OR user_id=0')->all();
         foreach ($rows as $row) {
             $reflect = new ReflectionClass(\humhub\modules\user\models\User::class);
@@ -37,7 +42,7 @@ class m171015_155102_contentcontainer_module extends Migration
                 $module->settings->set('moduleManager.defaultState.' . $reflect->getShortName(), $row['state']);
             }
         }
-        
+
         $this->dropTable('user_module');
         $this->dropTable('space_module');
     }
