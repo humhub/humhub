@@ -15,6 +15,7 @@ use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
+use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
@@ -52,7 +53,7 @@ use yii\helpers\Url;
  * @mixin GUID
  * @since 0.5
  */
-class Content extends ContentDeprecated implements Movable
+class Content extends ContentDeprecated implements Movable, ContentOwner
 {
 
     /**
@@ -391,6 +392,7 @@ class Content extends ContentDeprecated implements Movable
 
     /**
      * {@inheritdoc}
+     * @throws \Throwable
      */
     public function move(ContentContainerActiveRecord $container = null, $force = false)
     {
@@ -401,7 +403,9 @@ class Content extends ContentDeprecated implements Movable
                 $this->setContainer($container);
                 if ($this->save()) {
                     ContentTag::deleteContentRelations($this, false);
-                    $this->getModel()->afterMove();
+                    $model = $this->getModel();
+                    $model->populateRelation('content', $this);
+                    $model->afterMove($container);
                 }
             });
         }
@@ -784,5 +788,29 @@ class Content extends ContentDeprecated implements Movable
     public function updateStreamSortTime()
     {
         $this->updateAttributes(['stream_sort_date' => new \yii\db\Expression('NOW()')]);
+    }
+
+    /**
+     * @returns \humhub\modules\content\models\Content content instance of this content owner
+     */
+    public function getContent()
+    {
+        return $this;
+    }
+
+    /**
+     * @returns string name of the content like 'comment', 'post'
+     */
+    public function getContentName()
+    {
+        return $this->getModel()->getContentName();
+    }
+
+    /**
+     * @returns string short content description
+     */
+    public function getContentDescription()
+    {
+        return $this->getModel()->getContentDescription();
     }
 }

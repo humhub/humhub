@@ -17,6 +17,8 @@ HumHub Change Log
 - Fix: Comment buttons overlap editor text
 - Enh: Added windows support for grunt tasks
 - Enh: Added `grunt test-server` and `grunt test`
+- Chng: `humhub\modules\content\models\Content` now implements `humhub\modules\content\interfaces\ContentOwner`
+- Fix: Target container not available in `humhub\modules\content\components\ContentActiveRecord:afterMove()`
 
 
 
