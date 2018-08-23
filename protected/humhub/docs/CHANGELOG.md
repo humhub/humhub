@@ -19,6 +19,9 @@ HumHub Change Log
 - Enh: Added `grunt test-server` and `grunt test`
 - Chng: `humhub\modules\content\models\Content` now implements `humhub\modules\content\interfaces\ContentOwner`
 - Fix: Target container not available in `humhub\modules\content\components\ContentActiveRecord:afterMove()`
+- Chng: `humhub\modules\topic\models\Topic::attach` now accepts `humhub\modules\content\interfaces\ContentOwner` instances
+- Fix: Richtext without focusMenu on small devices overlaps previous sibling
+- Enh: Added random default color to `humhub\modules\ui\form\widgets\ColorPicker`
 
 
 

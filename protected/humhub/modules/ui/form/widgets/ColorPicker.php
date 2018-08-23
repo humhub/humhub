@@ -8,6 +8,7 @@
 
 namespace humhub\modules\ui\form\widgets;
 
+use Colors\RandomColor;
 use humhub\modules\ui\form\widgets\JsInputWidget;
 
 /**
@@ -35,12 +36,22 @@ class ColorPicker extends JsInputWidget
     public $attribute = 'color';
 
     /**
+     * @var bool If set to true, a random color will be set as default
+     */
+    public $randomDefault = true;
+
+    /**
      * @inheritdoc
      */
     public function init()
     {
         if (!empty($this->field)) {
             $this->attribute = $this->field;
+        }
+
+        if($this->hasModel() && !$this->getValue() && $this->randomDefault) {
+            $attr = $this->attribute;
+            $this->model->$attr = RandomColor::one(['luminosity' => 'dark']);
         }
     }
 
