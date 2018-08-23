@@ -465,6 +465,7 @@ class SpaceModelMembership extends Behavior
      *
      * @param integer $userId of User to Remove
      * @return bool
+     * @throws \yii\base\InvalidConfigException
      */
     public function removeMember($userId = '')
     {

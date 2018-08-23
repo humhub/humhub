@@ -502,10 +502,7 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
     /**
      * {@inheritdoc}
      */
-    public function afterMove(ContentContainerActiveRecord $container = null)
-    {
-        // TODO: Implement afterMove() method.
-    }
+    public function afterMove(ContentContainerActiveRecord $container = null){/* Nothing to do */}
 
     /**
      * Unarchives the content object
