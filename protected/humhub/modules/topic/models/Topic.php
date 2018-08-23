@@ -8,6 +8,7 @@
 
 namespace humhub\modules\topic\models;
 
+use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\stream\helpers\StreamHelper;
 use humhub\modules\content\models\Content;
 use humhub\modules\topic\permissions\AddTopic;
@@ -56,8 +57,10 @@ class Topic extends ContentTag
      * @param Content $content target content
      * @param int[]|int|Topic|Topic[] $topics either a single or array of topics or topic Ids to add.
      */
-    public static function attach(Content $content, $topics)
+    public static function attach(ContentOwner $contentOwner, $topics)
     {
+        $content = $contentOwner->getContent();
+
         /* @var $result static[] */
         $result = [];
 
