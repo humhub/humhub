@@ -44,6 +44,7 @@ class JSONResponse
     public function content($content)
     {
         $this->result['content'] = $content;
+
         return $this;
     }
 
