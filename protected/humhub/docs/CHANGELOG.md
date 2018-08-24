@@ -25,6 +25,9 @@ HumHub Change Log
 - Chng: `humhub\modules\content\models\ContentTag:deleteAll()` and `humhub\modules\content\models\ContentTag:findAll()` now respect the tag type condition by default- Fix: Space admin user remove broken
 - Fix: Space admin user remove broken
 - Fix: Invalid "Member since" date in space administration
+- Fix: Suprressed stream entry button not rendered.
+- Fix: Author stream filter not working.
+- Chng: Use of relative urls in richtext files/images
 
 
 1.3.1  (August 7, 2018)

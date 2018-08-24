@@ -280,7 +280,7 @@ humhub.module('stream.Stream', function (module, require, $) {
         }
 
         return promise.then(function () {
-            that.$.trigger('humhub:stream:afterAddEntries', [request.response, request, $result]);
+            that.trigger('humhub:stream:afterAddEntries', [request.response, request, $result]);
             return request;
         });
     };

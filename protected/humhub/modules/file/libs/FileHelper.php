@@ -126,6 +126,7 @@ class FileHelper extends \yii\helpers\FileHelper
             'mimeIcon' => MimeHelper::getMimeIconClassByExtension(self::getExtension($file->file_name)),
             'size_format' => Yii::$app->formatter->asShortSize($file->size, 1),
             'url' => $file->getUrl(),
+            'relUrl' => $file->getUrl(null, false),
             'openLink' => FileHelper::createLink($file),
             'thumbnailUrl' => $thumbnailUrl
         ];

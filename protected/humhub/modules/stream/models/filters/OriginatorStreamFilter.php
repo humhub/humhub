@@ -24,11 +24,15 @@ class OriginatorStreamFilter extends StreamQueryFilter
     }
 
     public function init() {
-        $this->originators = $this->streamQuery->originator;
+        parent::init();
+        if($this->streamQuery->originator) {
+            $this->originators = [$this->streamQuery->originator];
+        }
     }
 
     public function apply()
     {
+
         if(empty($this->originators)) {
             return;
         }
