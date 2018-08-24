@@ -17,6 +17,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
+use humhub\components\Module;
 use Yii;
 
 /**
@@ -302,14 +303,14 @@ class NotificationManager
         }, $spaces);
 
         // Update non selected membership spaces
-        \humhub\modules\space\models\Membership::updateAll(['send_notifications' => 0], [
+        Membership::updateAll(['send_notifications' => 0], [
             'and',
             ['user_id' => $user->id],
             ['not in', 'space_id', $spaceIds]
         ]);
 
         // Update non selected following spaces
-        \humhub\modules\user\models\Follow::updateAll(['send_notifications' => 0], [
+        Follow::updateAll(['send_notifications' => 0], [
             'and',
             ['user_id' => $user->id],
             ['object_model' => Space::class],
@@ -421,7 +422,7 @@ class NotificationManager
     {
         $result = [];
         foreach (Yii::$app->moduleManager->getModules(['includeCoreModules' => true]) as $module) {
-            if ($module instanceof \humhub\components\Module && $module->hasNotifications()) {
+            if ($module instanceof Module && $module->hasNotifications()) {
                 $result = array_merge($result, $this->createNotifications($module->getNotifications()));
             }
         }
