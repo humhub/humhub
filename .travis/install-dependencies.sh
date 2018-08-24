@@ -3,9 +3,6 @@
 # -e = exit when one command returns != 0, -v print each command before executing
 set -ev
 
-# Install travis cli
-gem install travis -v 1.8.9 --no-rdoc --no-ri
-
 # Install chomedriver
 curl -s -L -o chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip \
     && unzip -o -d $HOME chromedriver_linux64.zip \
@@ -13,7 +10,7 @@ curl -s -L -o chromedriver_linux64.zip https://chromedriver.storage.googleapis.c
 
 # Install node
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-sudo apt-get install -y nodejs
+sudo apt-get install -y nodejs curl
 
 # Update npm
 npm install -g npm@latest
