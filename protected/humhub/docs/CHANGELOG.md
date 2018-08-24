@@ -22,7 +22,9 @@ HumHub Change Log
 - Chng: `humhub\modules\topic\models\Topic::attach` now accepts `humhub\modules\content\interfaces\ContentOwner` instances
 - Fix: Richtext without focusMenu on small devices overlaps previous sibling
 - Enh: Added random default color to `humhub\modules\ui\form\widgets\ColorPicker`
-- Chng: `humhub\modules\content\models\ContentTag:deleteAll()` and `humhub\modules\content\models\ContentTag:findAll()` now respect the tag type condition by default
+- Chng: `humhub\modules\content\models\ContentTag:deleteAll()` and `humhub\modules\content\models\ContentTag:findAll()` now respect the tag type condition by default- Fix: Space admin user remove broken
+- Fix: Space admin user remove broken
+
 
 1.3.1  (August 7, 2018)
 -----------------------

@@ -28,7 +28,7 @@ use yii\helpers\Html;
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                     </span>
-                </div>     
+                </div>
             </div>
             <div class="col-md-4">
                 <?= Html::activeDropDownList($searchModel, 'group_id', MembershipSearch::getRoles($space), ['class' => 'form-control', 'onchange' => 'this.form.submit()']); ?>
@@ -100,10 +100,12 @@ use yii\helpers\Html;
                             'update' => function ($url, $model) {
                                 return false;
                             },
-                            'delete' => function ($url, $model) {
-                                return Html::a('<i class="fa fa-times"></i>', '#', [
+                            'delete' => function ($url, $model) use($space) {
+                                $url = ['/space/manage/member/remove', 'userGuid' => $model->user->guid, 'container' => $space];
+                                return Html::a('<i class="fa fa-times"></i>', $url, [
                                             'title' => Yii::t('SpaceModule.manage', 'Remove from space'),
                                             'class' => 'btn btn-danger btn-xs tt',
+                                            'data-method' => 'POST',
                                             'data-confirm' => 'Are you really sure?'
                                 ]);
                             }
