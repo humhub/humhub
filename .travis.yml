@@ -6,6 +6,9 @@ addons:
   chrome: stable
 git:
   depth: 3
+cache:
+  directories:
+  - $HOME/.composer/cache
 php:
 - 5.6
 - 7.0
@@ -13,9 +16,11 @@ php:
 - 7.2
 matrix:
   fast_finish: true
-cache:
-  directories:
-  - $HOME/.composer/cache
+jobs:
+  include:
+  - stage: deploy
+    name: "Trigger build for external modules"
+    script: .travis/trigger-modules.sh
 install:
 - .travis/install-dependencies.sh
 - .travis/setup-humhub.sh
@@ -31,8 +36,6 @@ script:
 - cd ../../../
 after_failure:
 - .travis/upload-failure.sh
-after_success:
-- .travis/trigger-modules.sh
 env:
   global:
     secure: EGSE10Ya3jf7+CVwOo2L2iTySqpCKN64VpfeXKnmwy/gPzqfGq7p+Rjc5w7E0AGQgRCUmuw6QB+oyg32qlutW8ZzS7JHtnJTWOR8kkzrkpFohDVCFNOBofn4ckd1h64MWcLoF1otNa2GQAZBT/sgdE7HxmEnbCdqESZPEGQ/Q3I=

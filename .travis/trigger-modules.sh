@@ -3,8 +3,8 @@
 # -e = exit when one command returns != 0, -v print each command before executing
 set -ev
 
-# only trigger related modules for php 7.2 || early exit when pull request || early exit when not master
-if [ "${TRAVIS_PHP_VERSION}" != "7.2" ] || [ "${TRAVIS_PULL_REQUEST}" != "false" ] || [ "${TRAVIS_BRANCH}" != "master" ]; then
+# early exit when pull request || early exit when not master
+if [ "${TRAVIS_PULL_REQUEST}" != "false" ] || [ "${TRAVIS_BRANCH}" != "master" ]; then
     exit 0;
 fi
 
