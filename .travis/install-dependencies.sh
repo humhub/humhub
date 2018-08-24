@@ -10,7 +10,7 @@ curl -s -L -o chromedriver_linux64.zip https://chromedriver.storage.googleapis.c
 
 # Install node
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-sudo apt-get install -y nodejs curl
+sudo apt-get install -y nodejs
 
 # Update npm
 npm install -g npm@latest
