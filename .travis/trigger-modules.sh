@@ -16,6 +16,6 @@ if [ ${TRAVIS_BRANCH} = "master" ] && [ ${TRAVIS_PULL_REQUEST} = "false" ]; then
         -H 'Authorization: token '${AUTH_TOKEN} \
         -H 'Content-Type: application/json' \
         -H 'Travis-API-Version: 3' \
-        -d '{"request":{"branch":"master","config":{"env":{"matrix":["HUMHUB_VERSION=master"]}}}}'
+        -d '{"request":{"branch":"master","config":{"env":{"global":["HUMHUB_PATH=/opt/humhub"],"matrix":["HUMHUB_VERSION=master"]}}}}'
 
 fi
