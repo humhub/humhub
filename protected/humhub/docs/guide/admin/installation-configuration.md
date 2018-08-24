@@ -39,6 +39,8 @@ The asynchronous job-runner can also be executed manually as follows:
 > /usr/bin/php /path/to/humhub/protected/yii queue/run
 ```
 
+> Note: If you on a **shared hosting environment**, you may need to add the `--isolated=0` option to the `queue/run`. e.g. /usr/bin/php /path/to/humhub/protected/yii queue/run  
+
 **Example CronTab configuration:**
 
 These Cronjobs can be run together if you're not using any other job-runner (like Supervisor or Systemd):
@@ -57,6 +59,8 @@ In case you've configured a job-worker (like Supervisor or Systemd), only the ma
 ```
 
 > Note: Please see the [Cron Job Section](cron-jobs.md) for more information about the configuration of cron jobs.
+
+
 
 
 URL Rewriting (Optional)
