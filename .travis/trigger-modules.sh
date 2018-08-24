@@ -3,9 +3,6 @@
 # -e = exit when one command returns != 0, -v print each command before executing
 set -ev
 
-# change to build directory
-cd ${TRAVIS_BUILD_DIR}
-
 # build only when branch master and no pull request
 if [ ${TRAVIS_BRANCH} = "master" ] && [ ${TRAVIS_PULL_REQUEST} = "false" ]; then
 

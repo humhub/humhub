@@ -28,6 +28,7 @@ script:
 - 'cd protected/humhub/tests'
 - 'php ../../vendor/bin/codecept build'
 - 'php ../../vendor/bin/codecept run --env travis'
+- cd ../../../
 after_failure:
 - .travis/upload-failure.sh
 after_success:
