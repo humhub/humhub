@@ -57,7 +57,7 @@ use yii\helpers\Html;
                                 return Yii::t('SpaceModule.views_admin_members', '-');
                             }
 
-                            return TimeAgo::widget(['timestamp' => $data->last_visit]);
+                            return TimeAgo::widget(['timestamp' => $data->created_at]);
                         }
                     ],
                     [

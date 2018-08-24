@@ -24,6 +24,7 @@ HumHub Change Log
 - Enh: Added random default color to `humhub\modules\ui\form\widgets\ColorPicker`
 - Chng: `humhub\modules\content\models\ContentTag:deleteAll()` and `humhub\modules\content\models\ContentTag:findAll()` now respect the tag type condition by default- Fix: Space admin user remove broken
 - Fix: Space admin user remove broken
+- Fix: Invalid "Member since" date in space administration
 
 
 1.3.1  (August 7, 2018)
