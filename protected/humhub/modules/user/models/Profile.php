@@ -55,7 +55,7 @@ class Profile extends ActiveRecord
     /**
      * @since 1.3.2
      */
-    const SCENARIO_EDIT_ADMIN = 'edit_admin';
+    const SCENARIO_EDIT_ADMIN = 'editAdmin';
     const SCENARIO_REGISTRATION = 'registration';
     const SCENARIO_EDIT_PROFILE = 'editProfile';
 
