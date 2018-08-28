@@ -51,6 +51,15 @@ use yii\db\ActiveRecord;
 class Profile extends ActiveRecord
 {
 
+
+    /**
+     * @since 1.3.2
+     */
+    const SCENARIO_EDIT_ADMIN = 'edit_admin';
+    const SCENARIO_REGISTRATION = 'registration';
+    const SCENARIO_EDIT_PROFILE = 'editProfile';
+
+
     /**
      * @inheritdoc
      */
@@ -82,9 +91,9 @@ class Profile extends ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['editAdmin'] = [];
-        $scenarios['registration'] = [];
-        $scenarios['editProfile'] = [];
+        $scenarios[static::SCENARIO_EDIT_ADMIN] = [];
+        $scenarios[static::SCENARIO_REGISTRATION] = [];
+        $scenarios[static::SCENARIO_EDIT_PROFILE] = [];
 
         // Get synced attributes if user is set
         $syncAttributes = [];
@@ -95,14 +104,14 @@ class Profile extends ActiveRecord
         foreach (ProfileField::find()->all() as $profileField) {
             // Some fields consist of multiple field definitions (e.g. Birthday)
             foreach ($profileField->fieldType->getFieldFormDefinition() as $fieldName => $definition) {
-                $scenarios['editAdmin'][] = $fieldName;
+                $scenarios[static::SCENARIO_EDIT_ADMIN][] = $fieldName;
 
                 if ($profileField->editable && !in_array($profileField->internal_name, $syncAttributes)) {
-                    $scenarios['editProfile'][] = $fieldName;
+                    $scenarios[static::SCENARIO_EDIT_PROFILE][] = $fieldName;
                 }
 
                 if ($profileField->show_at_registration) {
-                    $scenarios['registration'][] = $fieldName;
+                    $scenarios[static::SCENARIO_REGISTRATION][] = $fieldName;
                 }
             }
         }
