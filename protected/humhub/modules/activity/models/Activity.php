@@ -22,6 +22,9 @@ use humhub\components\behaviors\PolymorphicRelation;
  * @property string $class
  * @property string $module
  * @property string $object_model
+ * @property integer $object_id
+ *
+ * @mixin PolymorphicRelation
  */
 class Activity extends ContentActiveRecord
 {
@@ -128,6 +131,7 @@ class Activity extends ContentActiveRecord
      *
      * @see \humhub\modules\activity\components\BaseActivity::$source
      * @return mixed
+     * @throws \yii\db\IntegrityException
      */
     public function getSource()
     {

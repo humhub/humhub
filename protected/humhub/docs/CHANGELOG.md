@@ -28,6 +28,8 @@ HumHub Change Log
 - Fix: Suprressed stream entry button not rendered.
 - Fix: Author stream filter not working.
 - Chng: Use of relative urls in richtext files/images
+- Fix: Permalink better handling of deleted content
+- Fix: Activity exception on integrity check
 
 
 1.3.1  (August 7, 2018)

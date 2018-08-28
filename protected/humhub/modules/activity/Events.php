@@ -15,6 +15,7 @@ use Yii;
 use yii\base\BaseObject;
 use yii\base\Event;
 use yii\db\ActiveRecord;
+use yii\db\IntegrityException;
 
 /**
  * Events provides callbacks to handle events.
@@ -86,11 +87,16 @@ class Events extends BaseObject
 
         // Loop over all comments
         foreach (Activity::find()->each() as $a) {
+            /** @var Activity $a */
 
             // Check for object_model / object_id
-            if ($a->object_model != '' && $a->object_id != '' && $a->getSource() === null) {
-                if ($integrityController->showFix('Deleting activity id ' . $a->id . ' without existing target! (' . $a->object_model . ')')) {
-                    $a->delete();
+            if ($a->object_model != '' && $a->object_id != '') {
+                try {
+                    $source = $a->getSource();
+                } catch (IntegrityException $ex) {
+                    if ($integrityController->showFix('Deleting activity id ' . $a->id . ' without existing target! (' . $a->object_model . ')')) {
+                        $a->delete();
+                    }
                 }
             }
 
