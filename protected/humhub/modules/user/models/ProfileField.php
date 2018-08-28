@@ -69,6 +69,7 @@ class ProfileField extends ActiveRecord
             [['ldap_attribute', 'translation_category'], 'string', 'max' => 255],
             ['internal_name', 'checkInternalName'],
             ['internal_name', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9_]/', 'message' => Yii::t('UserModule.models_ProfileField', 'Only alphanumeric characters allowed!')],
+            ['internal_name', 'match', 'pattern' => '/[a-zA-Z]/', 'message' => Yii::t('UserModule.models_ProfileField', 'Must contain at least one character.')],
             ['field_type_class', 'checkType'],
             [['description'], 'safe'],
         ];
@@ -228,7 +229,7 @@ class ProfileField extends ActiveRecord
                         'class' => 'form-control',
                     ],
                 ]
-        ]];
+            ]];
 
         // Field Type and Internal Name cannot be changed for existing records
         // So disable these fields.
