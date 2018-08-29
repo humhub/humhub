@@ -33,5 +33,12 @@ cd protected
 php yii migrate/up --includeModuleMigrations=1
 ```
 
+5. Update installed marketplace modules
+
+```
+cd protected
+php yii module/update-all
+```
+
 
 
