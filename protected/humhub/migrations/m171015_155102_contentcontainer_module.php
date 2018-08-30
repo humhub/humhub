@@ -22,8 +22,8 @@ class m171015_155102_contentcontainer_module extends Migration
 
 
         $sqlInsert = 'INSERT INTO contentcontainer_module (contentcontainer_id, module_id, module_state) ';
-        $this->db->createCommand($sqlInsert . 'SELECT space.contentcontainer_id, module_id, state FROM space_module LEFT JOIN space ON space_module.space_id=space.id WHERE space.id IS NOT NULL')->execute();
-        $this->db->createCommand($sqlInsert . 'SELECT user.contentcontainer_id, module_id, state FROM user_module LEFT JOIN user ON user_module.user_id=user.id WHERE user.id IS NOT NULL')->execute();
+        $this->db->createCommand($sqlInsert . 'SELECT space.contentcontainer_id, module_id, state FROM space_module LEFT JOIN space ON space_module.space_id=space.id WHERE space.id IS NOT NULL AND space.contentcontainer_id IS NOT NULL')->execute();
+        $this->db->createCommand($sqlInsert . 'SELECT user.contentcontainer_id, module_id, state FROM user_module LEFT JOIN user ON user_module.user_id=user.id WHERE user.id IS NOT NULL AND user.contentcontainer_id IS NOT NULL')->execute();
 
         $rows = (new \yii\db\Query())->select("*")->from('space_module')->where('space_id IS NULL OR space_id=0')->all();
         foreach ($rows as $row) {
