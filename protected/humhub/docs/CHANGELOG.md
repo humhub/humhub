@@ -32,6 +32,7 @@ HumHub Change Log
 - Fix: Activity exception on integrity check
 - Fix: Ensure profile field "internal name" contains at least one character
 - Fix: Do not allow user self deletion via admin section
+- Fix: Refactored ActiveQueryContent::contentTag method, added method parameter
 
 
 1.3.1  (August 7, 2018)
