@@ -9,9 +9,8 @@
 namespace humhub\modules\space\modules\manage\components;
 
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\admin\permissions\ManageSpaces;
-use Yii;
-use yii\web\HttpException;
+use humhub\modules\content\components\ContentContainerControllerAccess;
+use humhub\modules\space\models\Space;
 
 /**
  * Default Space Manage Controller
@@ -24,7 +23,7 @@ class Controller extends ContentContainerController
     protected function getAccessRules() {
         return [
             ['login'],
-            ['permission' => [ManageSpaces::class]]
+            [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN]]
         ];
     }
 }

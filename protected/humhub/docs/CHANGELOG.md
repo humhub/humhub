@@ -36,6 +36,7 @@ HumHub Change Log
 - Fix: Richtext prompt not removed on pjax load
 - Enh: Added `humhub\modules\content\widgets\richtext\ProsemirrorRichText::parseOutput` for pre render parsing
 - Enh: Added `humhub.modules.file.getFileUrl` and `humhub.modules.file.filterFileUrl` for file guid based url handling
+- Fix: `humhub\modules\space\modules\manage\components\Controller` only accessible by system admins
 
 
 
