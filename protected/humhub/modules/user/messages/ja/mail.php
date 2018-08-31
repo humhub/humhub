@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Click here to create an account:' => '登録はコチラをクリックして！',
-  '{username} invited you to join "{space}" on {name}.' => '',
-  '{username} invited you to {name}.' => '',
+  'Click here to create an account:' => 'リンク先でアカウントを作成できます',
+  '{username} invited you to join "{space}" on {name}.' => '{username} はあなたを "{space}" に招待しました {name}.',
+  '{username} invited you to {name}.' => '{username} はあなたを招待しました {name}.',
 );

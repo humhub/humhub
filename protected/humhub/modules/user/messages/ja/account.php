@@ -17,5 +17,5 @@ return array (
   'You are currently the owner of following spaces:' => '',
   'You must transfer ownership or delete these spaces before you can delete your account.' => '',
   'Your account cannot be deleted!' => 'あなたのアカウントは削除できません',
-  'Your friends' => '',
+  'Your friends' => 'あなたのフレンズ',
 );

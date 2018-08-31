@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Invalid content id given!' => 'ID de conteúdo informado inválido!',
+  'Invalid content id given!' => 'Informado ID de conteúdo inválido!',
 );

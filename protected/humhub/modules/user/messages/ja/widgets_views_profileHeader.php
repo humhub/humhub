@@ -1,9 +1,9 @@
 <?php
 return array (
   '<strong>Something</strong> went wrong' => '',
-  'Followers' => '',
-  'Following' => '',
-  'Friends' => '',
+  'Followers' => 'フォロワー',
+  'Following' => 'フォロー',
+  'Friends' => 'フレンズ',
   'Ok' => 'はい',
   'Spaces' => 'スペース',
 );

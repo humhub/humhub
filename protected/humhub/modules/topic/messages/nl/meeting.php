@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Add Topics' => 'Voeg thema toe',
-  'Manage Topics' => ' Thema beheren',
+  'Add Topics' => 'Voeg rubriek toe',
+  'Manage Topics' => 'Rubrieken beheren',
 );

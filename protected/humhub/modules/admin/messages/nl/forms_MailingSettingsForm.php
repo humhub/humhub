@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Allow Self-Signed Certificates?' => 'Laat zelfondertekende certificaten toe?',
+  'Allow Self-Signed Certificates?' => 'Sta zelfondertekende certificaten toe?',
   'E-Mail sender address' => 'E-mailadres afzender',
   'E-Mail sender name' => 'Naam van afzender',
   'Encryption' => 'Encryptie',

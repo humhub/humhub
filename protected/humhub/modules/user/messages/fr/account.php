@@ -15,7 +15,7 @@ return array (
   'Other users' => 'Autres',
   'Users' => 'Utilisateurs',
   'You are currently the owner of following spaces:' => 'Vous êtes actuellement le propriétaire des espaces suivants :',
-  'You must transfer ownership or delete these spaces before you can delete your account.' => '',
+  'You must transfer ownership or delete these spaces before you can delete your account.' => 'Vous devez transférer l\'appartenance de ces espaces ou supprimer ceux-ci avant de pouvoir supprimer votre compte.',
   'Your account cannot be deleted!' => 'Votre compte ne peut être supprimé.',
   'Your friends' => 'Mes amis',
 );

@@ -4,6 +4,6 @@ return array (
   'Content' => 'inhoud',
   'Content Type' => 'Inhoudstype',
   'Sorting' => 'Sorteer',
-  'Topic' => 'Thema',
+  'Topic' => 'Rubriek',
   'Visibility' => 'Zichtbaarheid',
 );

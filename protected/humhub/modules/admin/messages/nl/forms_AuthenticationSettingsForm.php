@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Allow limited access for non-authenticated users (guests)' => 'Sta beperkte toegang voor niet-ingelogde gebruikers toe (gasten)',
+  'Allow limited access for non-authenticated users (guests)' => 'Sta beperkte toegang voor niet-ingelogde gebruikers  (gasten) toe',
   'Anonymous users can register' => 'Anonieme gebruikers kunnen registreren',
   'Default content of the registration approval email' => 'Standaard inhoud van de e-mail voor registratie goedkeuring',
   'Default content of the registration denial email' => 'Standaard inhoud van de e-mail voor registratie afwijzing',
