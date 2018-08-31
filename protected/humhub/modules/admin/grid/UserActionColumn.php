@@ -26,6 +26,8 @@ class UserActionColumn extends ActionColumn
      */
     protected function renderDataCellContent($model, $key, $index)
     {
+        /** @var User $model */
+
         $actions = [];
         if ($model->status == User::STATUS_SOFT_DELETED) {
             $actions[Yii::t('AdminModule.user', 'Permanently delete')] = ['delete'];
@@ -39,7 +41,9 @@ class UserActionColumn extends ActionColumn
                 } elseif ($model->status == User::STATUS_ENABLED) {
                     $actions[Yii::t('AdminModule.user', 'Disable')] = ['disable', 'linkOptions' => ['data-method' => 'post', 'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure that you want to disable this user?')]];
                 }
-                $actions[Yii::t('base', 'Delete')] = ['delete'];
+                if (!$model->isCurrentUser()) {
+                    $actions[Yii::t('base', 'Delete')] = ['delete'];
+                }
             }
 
 

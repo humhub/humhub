@@ -31,6 +31,7 @@ HumHub Change Log
 - Fix: Permalink better handling of deleted content
 - Fix: Activity exception on integrity check
 - Fix: Ensure profile field "internal name" contains at least one character
+- Fix: Do not allow user self deletion via admin section
 
 
 1.3.1  (August 7, 2018)

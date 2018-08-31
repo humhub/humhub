@@ -137,7 +137,7 @@ class UserController extends Controller
             ],
         ];
 
-        if(Yii::$app->user->isAdmin() || !$user->isSystemAdmin()) {
+        if (Yii::$app->user->isAdmin() || !$user->isSystemAdmin()) {
             $definition['elements']['User']['elements']['status'] = [
                 'type' => 'dropdownlist',
                 'class' => 'form-control',
@@ -162,12 +162,14 @@ class UserController extends Controller
 
         ];
 
-        if(Yii::$app->user->isAdmin() || !$user->isSystemAdmin()) {
-            $definition['buttons']['delete'] = [
-                'type' => 'submit',
-                'label' => Yii::t('AdminModule.controllers_UserController', 'Delete'),
-                'class' => 'btn btn-danger',
-            ];
+        if (Yii::$app->user->isAdmin() || !$user->isSystemAdmin()) {
+            if (!$user->isCurrentUser()) {
+                $definition['buttons']['delete'] = [
+                    'type' => 'submit',
+                    'label' => Yii::t('AdminModule.controllers_UserController', 'Delete'),
+                    'class' => 'btn btn-danger',
+                ];
+            }
         }
 
         $form = new HForm($definition);
@@ -213,7 +215,7 @@ class UserController extends Controller
 
         $this->checkGroupAccess($user);
 
-        if (Yii::$app->user->id === $id) {
+        if ($user->isCurrentUser()) {
             throw new HttpException(400, Yii::t('AdminModule.user', 'You cannot delete yourself!'));
         }
 
@@ -227,11 +229,11 @@ class UserController extends Controller
 
     public function checkGroupAccess(User $user = null)
     {
-        if(!$user) {
+        if (!$user) {
             throw new HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
         }
 
-        if($user->isSystemAdmin() && !Yii::$app->user->isAdmin()) {
+        if ($user->isSystemAdmin() && !Yii::$app->user->isAdmin()) {
             throw new HttpException(403);
         }
     }
