@@ -47,6 +47,10 @@ class CoreJsConfig extends Widget
                             'url' => Url::to(['/file/file/upload']),
                             'deleteUrl' => Url::to(['/file/file/delete'])
                         ],
+                        'url' => [
+                            'download' =>  Url::to(['/file/file/download',  'download' => true, 'guid' => '-guid-'], true),
+                            'load' =>  Url::to(['/file/file/download', 'guid' => '-guid-'],  true)
+                        ],
                         'text' => [
                             'error.upload' => Yii::t('base', 'Some files could not be uploaded:'),
                             'error.unknown' => Yii::$app->user->isAdmin() ?
