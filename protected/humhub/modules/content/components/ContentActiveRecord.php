@@ -139,7 +139,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * `$model = new MyContent($space1, ['myField' => 'value']);`
      *
      * @param array|ContentContainerActiveRecord $contentContainer either the configuration or contentcontainer
-     * @param int $visibility
+     * @param int|array $visibility
      * @param array $config
      */
     public function __construct($contentContainer = [], $visibility = null, $config = [])
