@@ -194,7 +194,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      * @param $id
      * @param int $limit
      *
-     * @return array|mixed|\yii\db\ActiveRecord[]
+     * @return Comment[] the comments
      */
     public static function GetCommentsLimited($model, $id, $limit = 2)
     {

@@ -53,6 +53,8 @@ use yii\base\Exception;
  * @property integer $visibility
  * @property integer $contentcontainer_id
  * @property Profile $profile
+ *
+ * @property string $displayName
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
 {

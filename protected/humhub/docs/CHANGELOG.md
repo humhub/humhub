@@ -37,7 +37,7 @@ HumHub Change Log
 - Enh: Added `humhub\modules\content\widgets\richtext\ProsemirrorRichText::parseOutput` for pre render parsing
 - Enh: Added `humhub.modules.file.getFileUrl` and `humhub.modules.file.filterFileUrl` for file guid based url handling
 - Fix: `humhub\modules\space\modules\manage\components\Controller` only accessible by system admins
-
+- Enh: Added scheme paramter to Content::getUrl method
 
 
 1.3.1  (August 7, 2018)

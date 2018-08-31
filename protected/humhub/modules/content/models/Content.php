@@ -25,6 +25,7 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
+use yii\db\IntegrityException;
 use yii\helpers\Url;
 
 /**
@@ -493,7 +494,7 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
      */
     public function checkMovePermission(ContentContainerActiveRecord $container = null)
     {
-        if(!$container) {
+        if (!$container) {
             $container = $this->container;
         }
         return $this->getModel()->isOwner() || Yii::$app->user->can(ManageUsers::class) || $container->can(ManageContent::class);
@@ -502,7 +503,10 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
     /**
      * {@inheritdoc}
      */
-    public function afterMove(ContentContainerActiveRecord $container = null){/* Nothing to do */}
+    public function afterMove(ContentContainerActiveRecord $container = null)
+    {
+        // Nothing to do
+    }
 
     /**
      * Unarchives the content object
@@ -526,14 +530,20 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
      * e.g. in case there is no wall entry available for this content.
      *
      * @since 0.11.1
+     * @param boolean $scheme
+     * @return string the URL
      */
-    public function getUrl()
+    public function getUrl($scheme = false)
     {
-        if (method_exists($this->getPolymorphicRelation(), 'getUrl')) {
-            return $this->getPolymorphicRelation()->getUrl();
+        try {
+            if (method_exists($this->getPolymorphicRelation(), 'getUrl')) {
+                return $this->getPolymorphicRelation()->getUrl($scheme);
+            }
+        } catch (IntegrityException $e) {
+            Yii::error($e->getMessage(), 'content');
         }
 
-        return Url::toRoute(['/content/perma', 'id' => $this->id]);
+        return Url::toRoute(['/content/perma', 'id' => $this->id], $scheme);
     }
 
     /**
@@ -662,7 +672,7 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
 
         if ($user === null) {
             $user = Yii::$app->user->getIdentity();
-        } else if(!($user instanceof User)) {
+        } else if (!($user instanceof User)) {
             $user = User::findOne(['id' => $user]);
         }
 
@@ -728,7 +738,7 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
     {
         if (!$user && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
-        } else if(! $user instanceof User) {
+        } else if (!$user instanceof User) {
             $user = User::findOne(['id' => $user]);
         }
 
