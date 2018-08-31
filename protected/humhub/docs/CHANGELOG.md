@@ -34,6 +34,8 @@ HumHub Change Log
 - Fix: Do not allow user self deletion via admin section
 - Fix: Refactored ActiveQueryContent::contentTag method, added method parameter
 - Fix: Richtext prompt not removed on pjax load
+- Enh: Added `humhub\modules\content\widgets\richtext\ProsemirrorRichText::parseOutput` for pre render parsing
+- Enh: Added `humhub.modules.file.getFileUrl` and `humhub.modules.file.filterFileUrl` for file guid based url handling
 
 
 

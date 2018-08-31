@@ -443,6 +443,25 @@ humhub.module('file', function (module, require, $) {
         });
     };
 
+    var getFileUrl = function(guid, download) {
+        var tmpl = download ? module.config.url.download : module.config.url.load;
+        return tmpl.replace('-guid-', guid);
+    };
+
+    var filterFileUrl = function(url, download) {
+        var result = {
+            url: url,
+            guid: null
+        };
+
+        if(url.indexOf('file-guid:') === 0 || url.indexOf('file-guid-') === 0) {
+            result.guid = url.substr(10, url.length);
+            result.url = humhub.modules.file.getFileUrl(result.guid, download);
+        }
+
+        return result;
+    };
+
     var _delete = function (file) {
         var options = {
             url: module.config.upload.deleteUrl,
@@ -455,8 +474,8 @@ humhub.module('file', function (module, require, $) {
     };
 
     Preview.template = {
-        root: '<ul class="files" style="list-style:none; margin:0;padding:0px;"></ul>',
-        file_edit: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{name}<span class="file_upload_remove_link" data-ui-loader> <i class="fa fa-times-circle"></i>&nbsp;</span></li>',
+        root: '<ul class="files" style="list-style:none; margin:0;padding:0"></ul>',
+        file_edit: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{name}&nbsp;&nbsp;<span class="file_upload_remove_link" data-ui-loader><i class="fa fa-trash-o"></i>&nbsp;</span></li>',
         file: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content"><span class="{highlight}">{openLink}</span><span class="time file-fileInfo" style="padding-right: 20px;"> - {size_format}</span></li>',
         file_image: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content {highlight}">{openLink}<span class="time file-fileInfo" style="padding-right: 20px;"> - {size_format}</span></li>',
         popover: '<img alt="{name}" src="{thumbnailUrl}" />'
@@ -488,6 +507,8 @@ humhub.module('file', function (module, require, $) {
         init: init,
         actionUpload: upload,
         Upload: Upload,
-        Preview: Preview
+        Preview: Preview,
+        getFileUrl: getFileUrl,
+        filterFileUrl: filterFileUrl
     });
 });
