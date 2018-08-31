@@ -140,6 +140,7 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         initOnPjaxLoad: true,
         unload: function(pjax) {
             $('.humhub-richtext-provider').remove();
+            $('.ProseMirror-prompt').remove();
         },
         RichTextEditor: RichTextEditor,
         RichText: RichText,
