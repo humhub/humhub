@@ -53,6 +53,8 @@ use yii\base\InvalidArgumentException;
  */
 abstract class AbstractRichText extends JsWidget
 {
+    const PRESET_DOCUMENT = 'document';
+
     /**
      * @event Event an event raised after the post-process phase of the rich text.
      */
