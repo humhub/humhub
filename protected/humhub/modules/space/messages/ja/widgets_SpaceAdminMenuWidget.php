@@ -8,7 +8,7 @@ return array (
   'Modules' => 'モジュール',
   'Receive Notifications for new content' => '通知を受け取る',
   'Security' => 'セキュリティ',
-  'Show posts on dashboard' => '',
+  'Show posts on dashboard' => 'ダッシュボードにも表示する',
   'This option will hide new content from this space at your dashboard' => 'このオプションを選ぶと、あなたのダッシュボードにこのスペースが表示されません',
   'This option will show new content from this space at your dashboard' => 'このオプションを選ぶと、あなたのダッシュボードにこのスペースが表示されます',
 );

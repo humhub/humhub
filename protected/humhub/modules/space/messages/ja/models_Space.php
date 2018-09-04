@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Administrators' => '',
+  'Administrators' => '管理者',
   'Color' => '色',
   'Created At' => '作成',
   'Created By' => '作成者',
