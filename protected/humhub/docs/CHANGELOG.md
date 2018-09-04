@@ -39,6 +39,7 @@ HumHub Change Log
 - Fix: `humhub\modules\space\modules\manage\components\Controller` only accessible by system admins
 - Enh: Added scheme parameter to Content::getUrl method
 - Enh: Added `ui.richtext.prosemirror.config.link.validate` to intercept link input validation
+- Chng: Updated `humhub.prosemirror` dependency to 1.9
 
 
 1.3.1  (August 7, 2018)
