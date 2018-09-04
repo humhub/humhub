@@ -32,12 +32,13 @@ class DefaultController extends Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
-    {
-        $result = parent::getAccessRules();
-        $result[] =  [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_OWNER], 'actions' => ['archive', 'unarchive', 'delete']];
-        $result[] =  [ContentContainerControllerAccess::RULE_POST => ['archive', 'unarchive']];
-        return $result;
+    protected function getAccessRules() {
+        return [
+            ['login'],
+            [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN], 'actions' => ['index', 'advanced']],
+            [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_OWNER], 'actions' => ['archive', 'unarchive', 'delete']],
+            [ContentContainerControllerAccess::RULE_POST => ['archive', 'unarchive']]
+        ];
     }
 
     /**
