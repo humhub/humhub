@@ -5,13 +5,16 @@ This guide describes the base configurations required to operate a HumHub enviro
 
 > NOTE: Before going to production, see also the [Security Chapter](security.md)
 
+
 E-Mails
 -------
 
-Depending on your environment you are using, you may want to specify a local or remote SMTP Server.
+Depending on your hosting environment, you may want to specify a local or remote SMTP Server.
 The mail-server settings can be configured under `Administration -> Mailing -> Server Settings`.
 
 By default, the [PHP Mail Transport](http://php.net/manual/en/mail.setup.php) is used.
+
+Perhaps, you should consider a dedicated SMTP service, like SendGrid, Postmark, Amazon SES or Mailgun.
 
 
 CronJobs and Asynchronous Job Processing (v1.3+)
@@ -39,11 +42,11 @@ The asynchronous job-runner can also be executed manually as follows:
 > /usr/bin/php /path/to/humhub/protected/yii queue/run
 ```
 
-> Note: If you on a **shared hosting environment**, you may need to add the `--isolated=0` option to the `queue/run`. e.g. /usr/bin/php /path/to/humhub/protected/yii queue/run  
+> Note: If you're on a **shared hosting environment**, you may need to add the `--isolated=0` option to the `queue/run`. e.g. `/usr/bin/php /path/to/humhub/protected/yii queue/run --isolated=0`
 
 **Example CronTab configuration:**
 
-These Cronjobs can be run together if you're not using any other job-runner (like Supervisor or Systemd):
+These Cronjobs can be run together if you're **not** using any other job-runner _(like Supervisor or Systemd)_:
 
 ```
 * * * * * /usr/bin/php /path/to/humhub/protected/yii queue/run >/dev/null 2>&1
@@ -52,15 +55,13 @@ These Cronjobs can be run together if you're not using any other job-runner (lik
 
 > Warning: These two cron jobs are only **both required** if there is no other worker configured. See [Asynchronous Tasks](asynchronous-tasks.md) for more details. Please also note that additional job-workers can be configured **only in dedicated environments, not shared hostings**.
 
-In case you've configured a job-worker (like Supervisor or Systemd), only the main Cronjob should be running paralel to the job-runner, so:
+In case you've configured a job-worker _(like Supervisor or Systemd)_, only the main Cronjob should be running paralel to the job-runner, so:
 
 ```
 * * * * * /usr/bin/php /path/to/humhub/protected/yii cron/run >/dev/null 2>&1
 ```
 
 > Note: Please see the [Cron Job Section](cron-jobs.md) for more information about the configuration of cron jobs.
-
-
 
 
 URL Rewriting (Optional)
