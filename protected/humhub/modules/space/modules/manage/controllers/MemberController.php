@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\controllers;
 
+use humhub\modules\content\components\ContentContainerControllerAccess;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\space\models\Space;
@@ -28,12 +29,13 @@ class MemberController extends Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
-    {
-        $result = parent::getAccessRules();
-        $result[] = ['userGroup' => [Space::USERGROUP_OWNER], 'actions' => ['change-owner']];
-
-        return $result;
+    protected function getAccessRules() {
+        return [
+            ['login'],
+            [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN], 'actions' => [
+                'index', 'pending-invitations', 'pending-approvals', 'reject-applicant', 'approve-applicant', 'remove']],
+            [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_OWNER], 'actions' => ['change-owner']]
+        ];
     }
 
     /**

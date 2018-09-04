@@ -31,7 +31,6 @@ class ManageMembersCest
         $I->assertSpaceAccessFalse(Space::USERGROUP_ADMIN, '/space/manage/member/change-owner');
         $I->assertSpaceAccessTrue(Space::USERGROUP_OWNER, '/space/manage/member/change-owner');
 
-
         $I->amAdmin();
         $I->amOnSpace4('/space/manage/member/change-owner', [], ['ChangeOwnerForm[ownerId]' => 2]);
         $I->seeSuccessResponseCode();
@@ -41,6 +40,20 @@ class ManageMembersCest
         if(!$space->ownerUser->id === 2) {
             $I->see('Change owner did not work');
         }
+    }
 
+    public function testApprovalAccess(FunctionalTester $I)
+    {
+        $I->assertSpaceAccessFalse(Space::USERGROUP_MEMBER, '/space/manage/member/pending-invitations');
+        $I->assertSpaceAccessFalse(Space::USERGROUP_USER, '/space/manage/member/pending-invitations');
+        $I->assertSpaceAccessFalse(Space::USERGROUP_MODERATOR, '/space/manage/member/pending-invitations');
+        $I->assertSpaceAccessTrue(Space::USERGROUP_ADMIN, '/space/manage/member/pending-invitations');
+        $I->assertSpaceAccessTrue(Space::USERGROUP_OWNER, '/space/manage/member/pending-invitations');
+
+        $I->assertSpaceAccessFalse(Space::USERGROUP_MEMBER, '/space/manage/member/pending-approvals');
+        $I->assertSpaceAccessFalse(Space::USERGROUP_USER, '/space/manage/member/pending-approvals');
+        $I->assertSpaceAccessFalse(Space::USERGROUP_MODERATOR, '/space/manage/member/pending-approvals');
+        $I->assertSpaceAccessTrue(Space::USERGROUP_ADMIN, '/space/manage/member/pending-approvals');
+        $I->assertSpaceAccessTrue(Space::USERGROUP_OWNER, '/space/manage/member/pending-approvals');
     }
 }

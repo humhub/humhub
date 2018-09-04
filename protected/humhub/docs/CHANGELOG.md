@@ -38,6 +38,7 @@ HumHub Change Log
 - Enh: Added `humhub.modules.file.getFileUrl` and `humhub.modules.file.filterFileUrl` for file guid based url handling
 - Fix: `humhub\modules\space\modules\manage\components\Controller` only accessible by system admins
 - Enh: Added scheme parameter to Content::getUrl method
+- Enh: Added `ui.richtext.prosemirror.config.link.validate` to intercept link input validation
 
 
 1.3.1  (August 7, 2018)

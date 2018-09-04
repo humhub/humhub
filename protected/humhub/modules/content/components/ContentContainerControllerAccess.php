@@ -64,21 +64,6 @@ class ContentContainerControllerAccess extends StrictAccess
     }
 
     /**
-     * Verifies the 'userGroup' rule which requires the given $user to be in the given userGroup setting array.
-     * @return bool
-     */
-    public function validateUserGroupRule($rule)
-    {
-        $userGroup = $this->contentContainer->getUserGroup($this->user);
-
-        if(!in_array($userGroup, $rule[self::RULE_USER_GROUP_ONLY])) {
-            return false;
-        }
-
-        return false;
-    }
-
-    /**
      * @return bool verifies 'spaceOnly' rules
      */
     public function validateSpaceOnlyRule()
