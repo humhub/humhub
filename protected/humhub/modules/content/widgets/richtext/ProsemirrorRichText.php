@@ -214,19 +214,19 @@ class ProsemirrorRichText extends AbstractRichText
 
             if(!$contentContainer || !$contentContainer->getPolymorphicRelation()) {
                 // If no user or space was found we leave out the url in the non edit mode.
-                return $edit ?  '['.Html::encode($match[1]).'](mention:'.$match[3].' "'.$match[4].'")' : $notFoundResult;
+                return $edit ?  '['.$match[1].'](mention:'.$match[3].' "'.$match[4].'")' : $notFoundResult;
             }
 
             $container = $contentContainer->getPolymorphicRelation();
 
             if($container instanceof User) {
                 return $container->isActive()
-                    ?  '['.Html::encode($container->getDisplayName()).'](mention:'.$container->guid.' "'.$container->getUrl().'")'
+                    ?  '['.$container->getDisplayName().'](mention:'.$container->guid.' "'.$container->getUrl().'")'
                     : $notFoundResult;
             }
 
             if($container instanceof Space) {
-                return '['.Html::encode($container->name).'](mention:'.$container->guid.' "'.$container->getUrl().'")';
+                return '['.$container->name.'](mention:'.$container->guid.' "'.$container->getUrl().'")';
             }
 
             return '';

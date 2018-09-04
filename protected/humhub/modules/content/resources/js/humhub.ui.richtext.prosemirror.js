@@ -27,6 +27,9 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
             mention: {
                 provider: new HumHubMentionProvider(module.config.mention)
             },
+            link: {
+              validate: module.config.validate
+            },
             emoji: module.config.emoji,
             oembed: module.config.oembed,
             translate: function(key) {
