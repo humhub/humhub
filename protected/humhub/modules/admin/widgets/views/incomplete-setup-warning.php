@@ -1,8 +1,9 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
+ * @license https://www.humhub.org/en/licences
  */
 
 use humhub\libs\Html;
@@ -30,7 +31,7 @@ use humhub\modules\admin\widgets\IncompleteSetupWarning;
         </ul>
         <br />
         <?php if (Yii::$app->user->isAdmin()): ?>
-            <?= Html::a(Yii::t('AdminModule.base', 'Open documentation'), 'http://docs.humhub.org', ['class' => 'btn btn-danger', 'target' => '_blank']); ?>
+            <?= Html::a(Yii::t('AdminModule.base', 'Open documentation'), 'http://docs.humhub.org/admin-installation-configuration.html#cronjobs-and-asynchronous-job-processing-v13', ['class' => 'btn btn-danger', 'target' => '_blank']); ?>
         <?php endif; ?>
     </div>
 </div>
