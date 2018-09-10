@@ -1,10 +1,11 @@
 HumHub Change Log
 =================
 
-1.3.3  (Unreleased)
+1.3.3  Unreleased
 --------------------------
+
 - Fix: img overflow in markdown view
-- Fix: pt_br translation
+- Fix: img overflow in markdown view
 
 1.3.2  (September 4, 2018)
 --------------------------
