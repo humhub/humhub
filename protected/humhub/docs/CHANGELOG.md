@@ -5,6 +5,7 @@ HumHub Change Log
 --------------------------
 
 - Fix: img overflow in markdown view
+- Fix: pt_br translation
 
 1.3.2  (September 4, 2018)
 --------------------------
