@@ -55,6 +55,55 @@ numprocs=4
 redirect_stderr=true
 stdout_logfile=<INSERT HUMHUB PATH HERE>/protected/runtime/logs/yii-queue-worker.log
 ```
+Replace the user `www-data` with the user of your http server if needed.
+
+***Using systemd***
+
+If systemd is installed on the system, a systemd timer could be an alternative to a cronjob.
+
+This approach requires two files: `humhub.service` and `humhub.timer`. Create these two files in `/etc/systemd/system/`.
+
+`humhub.service` should look like this:
+
+```
+[Unit]
+Description=HumHub Queue Worker
+
+[Service]
+User=www-data
+ExecStart=/usr/bin/php <INSERT HUMHUB PATH HERE>/protected/yii queue/listen --verbose=1 --color=0
+
+[Install]
+WantedBy=basic.target
+```
+
+Replace the user `www-data` with the user of your http server if needed.
+
+`humhub.timer` should look like this:
+
+```
+[Unit]
+Description=Run HumHub Queue Workers every minute
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=1min
+Unit=humhub.service
+
+[Install]
+WantedBy=timers.target
+```
+
+The important parts in the timer-unit are `OnBootSec` and `OnUnitActiveSec`.
+`OnBootSec` will start the timer 1 minute after boot, otherwise you would have to start it manually after every boot.
+`OnUnitActiveSec` will set a 1 minute timer after the service-unit was last activated.
+
+Now all that is left is to start and enable the timer by running these commands:
+
+```
+systemctl start humhub.timer
+systemctl enable humhub.timer
+```
 
 Queue Driver
 ------------
