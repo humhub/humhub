@@ -6,6 +6,7 @@ HumHub Change Log
 
 - Fix: img overflow in markdown view
 - Enh: Added console command to list and change themes
+- Enh: Improved theme parent lookup performance
 
 
 1.3.2  (September 4, 2018)
