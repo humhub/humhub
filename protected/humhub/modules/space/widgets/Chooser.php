@@ -22,7 +22,7 @@ class Chooser extends Widget
     {
         $spaceInfo = [];
         $spaceInfo['guid'] = $space->guid;
-        $spaceInfo['title'] = Html::encode($space->name);
+        $spaceInfo['title'] = $space->name;
         $spaceInfo['tags'] = Html::encode($space->tags);
         $spaceInfo['image'] = Image::widget(['space' => $space, 'width' => 24]);
         $spaceInfo['link'] = $space->getUrl();
