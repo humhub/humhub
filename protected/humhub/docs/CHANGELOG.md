@@ -7,6 +7,9 @@ HumHub Change Log
 - Fix: img overflow in markdown view
 - Enh: Added console command to list and change themes
 - Enh: Improved theme parent lookup performance
+- Enh: Added auto file attachment in `humhub\modules\content\widgets\richtext\ProsemirrorRichTextProcessor`
+- Fix: z-index issue with fixed richtext menu
+- Fix #3294: space picker encoding
 
 
 1.3.2  (September 4, 2018)

@@ -9,6 +9,7 @@
 namespace humhub\modules\content\widgets\richtext;
 
 
+use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use yii\base\BaseObject;
@@ -41,12 +42,21 @@ abstract class AbstractRichTextProcessor extends BaseObject
         $result = [];
         $this->parseOembed();
 
-        if($this->record instanceof ContentAddonActiveRecord || $this->record instanceof ContentAddonActiveRecord) {
+        if($this->record instanceof ContentActiveRecord || $this->record instanceof ContentAddonActiveRecord) {
             $result['mentioning'] = $this->parseMentioning();
+        }
+
+        if($this->record instanceof ActiveRecord) {
+            $this->parseFiles();
         }
 
         return $result;
     }
+
+    /**
+     * This function can be used to parse file-guid based links e.g. for auto attachment.
+     */
+    public function parseFiles() {}
 
     /**
      * This function is called while processing the Richtext content and will parse the given text for urls and preloads the oembed result.
