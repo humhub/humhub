@@ -213,7 +213,7 @@ class Notification extends \humhub\components\ActiveRecord
      *
      * @param integer $from notification id which was the last loaded entry.
      * @param int $limit count of results.
-     * @return array|\yii\db\ActiveRecord[]
+     * @return Notification[]
      * @since 1.2
      */
     public static function loadMore($from = 0, $limit = 6)

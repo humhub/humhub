@@ -10,7 +10,9 @@ HumHub Change Log
 - Enh: Added auto file attachment in `humhub\modules\content\widgets\richtext\ProsemirrorRichTextProcessor`
 - Fix: z-index issue with fixed richtext menu
 - Fix #3294: space picker encoding
-
+- Chng: Prevent `ActiveRecord::save()` call in `humhub\modules\file\components\FileManager::attach` 
+- Fix: Added additional notification validation
+- Fix: Notification previews contains new line
 
 1.3.2  (September 4, 2018)
 --------------------------

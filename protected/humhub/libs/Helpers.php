@@ -33,7 +33,7 @@ class Helpers
         }
         $text = str_replace('<br />', '', $text);
 
-        return($text);
+        return trim($text);
     }
 
     public static function trimText($text, $length)
@@ -47,7 +47,7 @@ class Helpers
         }
         $text = str_replace('<br />', '', $text);
 
-        return($text);
+        return trim($text);
     }
 
     /*     *
