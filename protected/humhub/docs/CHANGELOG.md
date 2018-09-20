@@ -16,6 +16,7 @@ HumHub Change Log
 - Enh: Allow urls in array form in homeUrl configuration
 - Fix: Javascript `humhub.modules.util.object.extend` not working on older Safari version
 - Enh: Enable usage of `humhub\modules\content\widgets\PermaLink` outside of `humhub.modules.content.Content` components.
+- Fix #3302 smiley are not render into last activity module and email 
 
 1.3.2  (September 4, 2018)
 --------------------------
