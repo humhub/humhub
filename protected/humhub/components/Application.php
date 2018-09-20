@@ -52,7 +52,7 @@ class Application extends \yii\web\Application
     public function getHomeUrl()
     {
         if ($this->_homeUrl === null) {
-            throw new Exception('Home URL not defined!');
+            return Url::to(['/dashboard/dashboard']);
         } elseif (is_array($this->_homeUrl)) {
             return Url::to($this->_homeUrl);
         } else {

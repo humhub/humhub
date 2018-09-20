@@ -13,6 +13,8 @@ HumHub Change Log
 - Chng: Prevent `ActiveRecord::save()` call in `humhub\modules\file\components\FileManager::attach` 
 - Fix: Added additional notification validation
 - Fix: Notification previews contains new line
+- Enh: Allow urls in array form in homeUrl configuration
+
 
 1.3.2  (September 4, 2018)
 --------------------------
