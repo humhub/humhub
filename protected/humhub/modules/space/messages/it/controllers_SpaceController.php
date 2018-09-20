@@ -7,5 +7,5 @@ return array (
   'This action is only available for workspace members!' => 'Questa azione è disponibile solo per i membri del workspace!',
   'This user is already a member of this space.' => 'Questo utente è già membro di questo spazio.',
   'This user is not a member of this space.' => 'Questo utente non è membro di questo spazio.',
-  'You are not allowed to join this space!' => 'Non puoi aggiungerti a questo space!',
+  'You are not allowed to join this space!' => 'Non puoi aggiungerti a questo spazio!',
 );

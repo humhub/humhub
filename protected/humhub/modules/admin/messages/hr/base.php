@@ -17,7 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Warning</strong> incomplete setup!' => '',
     'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
+    'Open documentation' => '',
+    'The cron job for the background jobs (queue) does not seem to work properly.' => '',
+    'The cron job for the regular tasks (cron) does not seem to work properly.' => '',
     'About' => 'U vezi',
     'Add purchased module by licence key' => 'Dodajte kupljeni modul licenčnim ključem',
     'Admin' => 'Admin',

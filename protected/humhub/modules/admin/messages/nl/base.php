@@ -1,5 +1,6 @@
 <?php
 return array (
+  '<strong>Warning</strong> incomplete setup!' => '<strong>Waarschuwing</ strong> onvolledige installatie!',
   'About' => 'Over',
   'Add purchased module by licence key' => 'Aangeschafte module toevoegen met de licentie code',
   'Admin' => 'Beheerder',
@@ -22,6 +23,7 @@ return array (
   'Mailing' => 'Mailen',
   'Modules' => 'Modules',
   'OEmbed providers' => 'OEmbed providers',
+  'Open documentation' => 'Open documentatie',
   'Pending user registrations' => 'Wachtende gebruikersregistraties',
   'Proxy' => 'Proxy',
   'Security' => 'Beveiliging',
@@ -29,6 +31,8 @@ return array (
   'Sign up' => 'Registreer',
   'Spaces' => 'Ruimtes',
   'Statistics' => 'Statistieken',
+  'The cron job for the background jobs (queue) does not seem to work properly.' => 'De cron-taak voor de achtergrondtaken (wachtrij) lijkt niet goed te werken.',
+  'The cron job for the regular tasks (cron) does not seem to work properly.' => 'De cron-taak voor de reguliere taken (cron) lijkt niet goed te werken.',
   'User posts' => 'Gebruiker posts',
   'Userprofiles' => 'Gebruikerprofielen',
   'Users' => 'Gebruikers',

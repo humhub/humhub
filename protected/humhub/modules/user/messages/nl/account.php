@@ -1,12 +1,12 @@
 <?php
 return array (
   '<strong>Modify</strong> your profile image' => '<strong>Wijzig</strong> mijn profiel-afbeelding',
-  '<strong>Modify</strong> your title image' => '<strong>Wijzig</strong> mijn titel afbeelding',
+  '<strong>Modify</strong> your title image' => '<strong>Wijzig</strong> mijn titel-afbeelding',
   '<strong>Security</strong> settings' => '<strong>Privacy</strong> instellingen',
   '<strong>User</strong> settings' => '<strong>Gebruiker</strong> instellingen',
   '<strong>Your</strong> profile' => '<strong>Mijn</strong> profiel',
   'All your personal data will be irrevocably deleted.' => 'Al uw persoonlijke gegevens worden permanent verwijderd.',
-  'Are you sure that you want to delete your account?' => 'Weet je zeker dat u uw account wilt verwijderen?',
+  'Are you sure that you want to delete your account?' => 'Weet u zeker dat u uw account wilt verwijderen?',
   'Delete account' => 'Account verwijderen',
   'E-Mail Summaries' => 'E-mail samenvattingen',
   'Enter your password to continue' => 'Voer uw wachtwoord in om door te gaan',

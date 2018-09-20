@@ -1,6 +1,6 @@
 <?php
 return array (
-  'About' => 'Over',
+  'About' => 'Over mij',
   'Birthday' => 'Geboortedatum',
   'City' => 'Stad',
   'Country' => 'Land',

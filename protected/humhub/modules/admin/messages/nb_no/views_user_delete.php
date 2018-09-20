@@ -1,6 +1,6 @@
 <?php
 return array (
-  'All created contents of this user will be <b>deleted</b>.' => '',
+  'All created contents of this user will be <b>deleted</b>.' => 'Alt innhold fra denne brukeren vil blis <b>slettet</b>',
   'Are you sure you want to delete this user?' => 'Er du sikker på at du vil slette denne brukeren?',
   'Cancel' => 'Avbryt',
   'Confirm user deletion' => 'Bekreft sletting av brukeren',

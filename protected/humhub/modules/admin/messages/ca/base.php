@@ -17,8 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Warning</strong> incomplete setup!' => '',
     'Base URL needs to begin with http:// or https://' => '',
     'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
+    'Open documentation' => '',
+    'The cron job for the background jobs (queue) does not seem to work properly.' => '',
+    'The cron job for the regular tasks (cron) does not seem to work properly.' => '',
     'About' => 'Informació',
     'Add purchased module by licence key' => 'Afegir mòdul adquirit per clau de llicència',
     'Admin' => 'Administrador',

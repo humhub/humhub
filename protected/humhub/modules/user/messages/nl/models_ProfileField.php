@@ -13,6 +13,7 @@ return array (
   'Invalid field type!' => 'Ongeldig veldtype!',
   'LDAP Attribute' => 'LDAP Attribuut',
   'Module' => 'Module',
+  'Must contain at least one character.' => 'Moet ten minste één teken bevatten.',
   'Only alphanumeric characters allowed!' => 'Alleen alfanumerieke karakters zijn toegestaan!',
   'Profile Field Category' => 'Profiel Veld Categorie',
   'Required' => 'Verplicht',

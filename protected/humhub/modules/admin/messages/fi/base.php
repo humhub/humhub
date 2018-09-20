@@ -1,9 +1,10 @@
 <?php
 return array (
+  '<strong>Warning</strong> incomplete setup!' => '<strong>Varoitus</strong> ongelma havaittu!',
   'About' => 'Tietoja',
   'Add purchased module by licence key' => 'Lisää lisäosa tuotekoodilla',
   'Admin' => 'Admin',
-  'Administration' => 'Hallintapaneeli',
+  'Administration' => 'Hallinta',
   'Approval' => 'Hyväksyminen',
   'Authentication' => 'Todennus',
   'Back to overview' => 'Takaisin',
@@ -22,6 +23,7 @@ return array (
   'Mailing' => 'Postitus',
   'Modules' => 'Laajenukset',
   'OEmbed providers' => 'OEmbed palveluntarjoajat',
+  'Open documentation' => 'Avaa ohjeet',
   'Pending user registrations' => 'Odottaa rekisteröitymistä',
   'Proxy' => 'Proxy',
   'Security' => 'Turvallisuus',
@@ -29,6 +31,8 @@ return array (
   'Sign up' => 'Rekistöidy',
   'Spaces' => 'Sivut',
   'Statistics' => 'Tilastot',
+  'The cron job for the background jobs (queue) does not seem to work properly.' => 'Ajastetuissa tehtävissä (queue) havaittiin olavan ongelmia.',
+  'The cron job for the regular tasks (cron) does not seem to work properly.' => 'Ajastetuissa tehtävissä (corn) havaittiin olavan ongelmia.',
   'User posts' => 'Käyttäjien sivut',
   'Userprofiles' => 'Käyttäjä profiili',
   'Users' => 'Käyttäjät',

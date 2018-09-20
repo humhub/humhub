@@ -17,13 +17,17 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Warning</strong> incomplete setup!' => '',
     'Back to user overview' => '',
     'Base URL needs to begin with http:// or https://' => '',
     'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
     'Invite' => '',
     'Invited by' => '',
+    'Open documentation' => '',
     'Pending user registrations' => '',
     'Sign up' => '',
+    'The cron job for the background jobs (queue) does not seem to work properly.' => '',
+    'The cron job for the regular tasks (cron) does not seem to work properly.' => '',
     'About' => 'Информация',
     'Add purchased module by licence key' => 'Добавить ключ для приобретённого модуля',
     'Admin' => 'Администратор',

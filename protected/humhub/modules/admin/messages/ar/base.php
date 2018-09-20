@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Warning</strong> incomplete setup!' => '',
     'Add purchased module by licence key' => '',
     'Admin' => '',
     'Approval' => '',
@@ -35,11 +36,14 @@ return [
     'Logging' => '',
     'Mailing' => '',
     'OEmbed providers' => '',
+    'Open documentation' => '',
     'Pending user registrations' => '',
     'Proxy' => '',
     'Self test' => '',
     'Sign up' => '',
     'Statistics' => '',
+    'The cron job for the background jobs (queue) does not seem to work properly.' => '',
+    'The cron job for the regular tasks (cron) does not seem to work properly.' => '',
     'User posts' => '',
     'Userprofiles' => '',
     'Users' => '',

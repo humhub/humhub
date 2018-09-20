@@ -5,7 +5,7 @@ return array (
   'Default language' => 'Lingua predefinita',
   'Default space' => 'Spazio predefinito',
   'Default stream content order' => 'Ordine per il contenuto streaming predefinito',
-  'Enable user friendship system' => 'Abilita sistema amicizia utenti',
+  'Enable user friendship system' => 'Abilita sistema di amicizia per gli utenti',
   'Horizontal scrolling images on a mobile device' => 'Scorrimento orizzontale delle immagini per dispositivi mobile',
   'Invalid space' => 'Spazio non valido',
   'Logo upload' => 'Carica Logo',

@@ -28,6 +28,7 @@ return [
     'Invalid field type!' => '',
     'LDAP Attribute' => '',
     'Module' => '',
+    'Must contain at least one character.' => '',
     'Only alphanumeric characters allowed!' => '',
     'Profile Field Category' => '',
     'Required' => '',

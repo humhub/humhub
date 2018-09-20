@@ -9,5 +9,5 @@ return array (
   'Spaces' => 'Områder',
   'Specify space' => 'Spesifisér område',
   'Users' => 'Brukere',
-  'Your search returned no matches.' => 'Dit søk ga ingen treff.',
+  'Your search returned no matches.' => 'Ditt søk ga ingen treff.',
 );
