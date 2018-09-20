@@ -14,6 +14,7 @@ HumHub Change Log
 - Fix: Added additional notification validation
 - Fix: Notification previews contains new line
 - Enh: Allow urls in array form in homeUrl configuration
+- Fix: Javascript `humhub.modules.util.object.extend` not working on older Safari version
 
 
 1.3.2  (September 4, 2018)
