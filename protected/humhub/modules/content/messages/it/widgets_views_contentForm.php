@@ -4,7 +4,7 @@ return array (
   'Content visibility' => 'Visibilità dei contenuti',
   'Make private' => 'Rendi privato',
   'Make public' => 'Rendi pubblico',
-  'Notify members' => 'Notifica partecipanti',
+  'Notify members' => 'Notifica i partecipanti',
   'Public' => 'Pubblico',
   'This space is archived.' => 'Questo spazio è archiviato.',
 );

@@ -14,7 +14,7 @@ return array (
   'This content type can\'t be moved due to a missing module-id setting.' => 'Dit inhoudstype kan niet worden verplaatst vanwege een ontbrekende module-ID-instelling.',
   'This content type can\'t be moved.' => 'Dit inhoudstype kan niet worden verplaatst.',
   'This space is not visible!' => 'Deze ruimte is niet zichtbaar!',
-  'Topics' => 'Thema',
+  'Topics' => 'Rubriek',
   'Updated' => 'Bijgewerkt',
   'You do not have the permission to move this content to the given space.' => 'U bent niet gemachtigd om deze inhoud naar de opgegeven ruimte te verplaatsen.',
   'You do not have the permission to move this content.' => 'U bent niet gemachtigd om deze inhoud  te verplaatsen.',

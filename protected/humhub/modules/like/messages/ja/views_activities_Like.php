@@ -1,4 +1,4 @@
 <?php
 return array (
-  '{userDisplayName} likes {contentTitle}' => '{userDisplayName}さんが {contentTitle} に「いいね！」と言っています',
+  '{userDisplayName} likes {contentTitle}' => '{userDisplayName}さんが「いいね！」を {contentTitle} につけました。',
 );

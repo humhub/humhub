@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Searchable' => 'Доступно для поиска',
+    'Must contain at least one character.' => '',
     'Created at' => 'Создано в',
     'Created by' => 'Создано пользователем',
     'Description' => 'Описание',
@@ -34,6 +34,7 @@ return [
     'Only alphanumeric characters allowed!' => 'Допустимы только  алфавитно-цифровые символы',
     'Profile Field Category' => 'Категория профиля',
     'Required' => 'Обязательное',
+    'Searchable' => 'Доступно для поиска',
     'Show at registration' => 'Показывать при регистрации',
     'Sort order' => 'Порядок сортировки',
     'Title' => 'Заголовок',

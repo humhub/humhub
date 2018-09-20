@@ -19,6 +19,6 @@ return array (
   'Updated by' => 'Aggiornato da',
   'Users' => 'Persone',
   'Visibility' => 'Visibilità',
-  'You cannot create private visible spaces!' => 'Non puoi creare space privati invisibili!',
-  'You cannot create public visible spaces!' => 'Non puoi creare space pubblici visibili!',
+  'You cannot create private visible spaces!' => 'Non puoi creare spazi privati visibili!',
+  'You cannot create public visible spaces!' => 'Non puoi creare spazi pubblici visibili!',
 );

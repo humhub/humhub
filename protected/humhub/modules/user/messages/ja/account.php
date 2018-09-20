@@ -14,8 +14,8 @@ return array (
   'Notifications' => '通知',
   'Other users' => 'その他のユーザー',
   'Users' => 'ユーザー',
-  'You are currently the owner of following spaces:' => '',
-  'You must transfer ownership or delete these spaces before you can delete your account.' => '',
+  'You are currently the owner of following spaces:' => 'あなたは下記のスペースの管理人です。',
+  'You must transfer ownership or delete these spaces before you can delete your account.' => 'あなたはスペース管理者を移譲するか、スペースを削除しないと、アカウントを削除できません。',
   'Your account cannot be deleted!' => 'あなたのアカウントは削除できません',
   'Your friends' => 'あなたのフレンズ',
 );

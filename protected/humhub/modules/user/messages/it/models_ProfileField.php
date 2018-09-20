@@ -13,6 +13,7 @@ return array (
   'Invalid field type!' => 'Tipo di campo non valido!',
   'LDAP Attribute' => 'Attributo LDAP',
   'Module' => 'Modulo',
+  'Must contain at least one character.' => 'Deve contenere almeno un carattere.',
   'Only alphanumeric characters allowed!' => 'Sono permessi solo caratteri alfanumerici!',
   'Profile Field Category' => 'Categoria del campo del profilo',
   'Required' => 'Richiesto',
