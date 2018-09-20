@@ -35,48 +35,56 @@ class ListController extends Controller
 
     /**
      * Returns a List of all notifications for an user
+     * @throws \Throwable
      */
     public function actionIndex()
     {
-        Yii::$app->response->format = 'json';
-
         $notifications = Notification::loadMore(Yii::$app->request->get('from', 0));
         $lastEntryId = 0;
 
         $output = "";
         foreach ($notifications as $notification) {
             try {
-                $output .= $notification->getBaseModel()->render();
+                $baseModel = $notification->getBaseModel();
+
+                if (!$baseModel->validate()) {
+                    throw new IntegrityException('Invalid base model found for notification');
+                }
+
+                $output .= $baseModel->render();
                 $lastEntryId = $notification->id;
                 $notification->desktop_notified = 1;
                 $notification->update();
+            } catch (IntegrityException $ie) {
+                $notification->delete();
+                Yii::warning('Deleted inconsistent notification with id ' . $notification->id . '. ' . $ie->getMessage());
             } catch (\Exception $e) {
                 Yii::error('Could not display notification: ' . $notification->id . '(' . $e . ')');
             }
         }
 
-        return [
+        $this->asJson([
             'newNotifications' => Notification::findUnseen()->count(),
             'lastEntryId' => $lastEntryId,
             'output' => $output,
             'counter' => count($notifications)
-        ];
+        ]);
     }
 
     /**
      * Marks all notifications as seen
+     * @throws \yii\web\HttpException
      */
     public function actionMarkAsSeen()
     {
         $this->forcePostRequest();
 
-        Yii::$app->response->format = 'json';
         $count = Notification::updateAll(['seen' => 1], ['user_id' => Yii::$app->user->id]);
 
-        return [
+        return $this->asJson( [
             'success' => true,
             'count' => $count
-        ];
+        ]);
     }
 
     /**
@@ -86,9 +94,7 @@ class ListController extends Controller
      */
     public function actionGetUpdateJson()
     {
-        Yii::$app->response->format = 'json';
-
-        return $this->getUpdates();
+        return $this->asJson(self::getUpdates());
     }
 
     /**
@@ -96,7 +102,10 @@ class ListController extends Controller
      * - Number of new / unread notification
      * - Notification Output for new HTML5 Notifications
      *
+     * @param bool $includeContent weather or not to include the actual notification content
      * @return string JSON String
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public static function getUpdates($includeContent = true)
     {
@@ -109,7 +118,13 @@ class ListController extends Controller
 
             if ($includeContent && Yii::$app->getModule('notification')->settings->user()->getInherit('enable_html5_desktop_notifications', true)) {
                 try {
-                    $update['notifications'][] = $notification->getBaseModel()->text();
+                    $baseModel = $notification->getBaseModel();
+
+                    if($baseModel->validate()) {
+                        $update['notifications'][] = $baseModel;
+                    } else {
+                        throw new IntegrityException('Invalid base model found for notification');
+                    }
                 } catch (IntegrityException $ex) {
                     $notification->delete();
                     Yii::warning('Deleted inconsistent notification with id ' . $notification->id . '. ' . $ex->getMessage());

@@ -16,6 +16,7 @@ use Yii;
 /**
  * Class View
  *
+ * @property Theme $theme the Theme component
  * @inheritdoc
  */
 class View extends \yii\web\View

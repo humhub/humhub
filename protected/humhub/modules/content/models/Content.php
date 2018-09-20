@@ -50,6 +50,7 @@ use yii\helpers\Url;
  * @property integer $contentcontainer_id;
  * @property ContentContainerActiveRecord $container
  * @property User $createdBy
+ * @property User $updatedBy
  * @mixin PolymorphicRelation
  * @mixin GUID
  * @since 0.5

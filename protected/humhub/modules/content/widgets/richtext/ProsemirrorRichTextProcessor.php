@@ -10,6 +10,7 @@ namespace humhub\modules\content\widgets\richtext;
 
 
 use humhub\models\UrlOembed;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\user\models\Mentioning;
 
 /**
@@ -44,6 +45,23 @@ class ProsemirrorRichTextProcessor extends AbstractRichTextProcessor
         foreach ($matches as $match) {
             if(isset($match[3])) {
                 $result = array_merge($result, Mentioning::mention($match[3], $this->record));
+            }
+        }
+
+        return $result;
+    }
+
+    public function parseFiles()
+    {
+        $result = [];
+        $matches = ProsemirrorRichText::scanLinkExtension($this->text, 'file-guid');
+        foreach ($matches as $match) {
+            if(isset($match[3])) {
+                try {
+                    $this->record->fileManager->attach($match[3]);
+                } catch (\Exception $e) {
+                    Yii::error($e);
+                }
             }
         }
 

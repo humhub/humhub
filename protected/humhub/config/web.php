@@ -9,7 +9,6 @@
 $config = [
     'id' => 'humhub',
     'bootstrap' => ['humhub\components\bootstrap\LanguageSelector'],
-    'homeUrl' => ['/dashboard/dashboard'],
     'defaultRoute' => '/home',
     'layoutPath' => '@humhub/views/layouts',
     'components' => [

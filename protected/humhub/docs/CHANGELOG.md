@@ -1,6 +1,22 @@
 HumHub Change Log
 =================
 
+1.3.3  Unreleased
+--------------------------
+
+- Fix: img overflow in markdown view
+- Enh: Added console command to list and change themes
+- Enh: Improved theme parent lookup performance
+- Enh: Added auto file attachment in `humhub\modules\content\widgets\richtext\ProsemirrorRichTextProcessor`
+- Fix: z-index issue with fixed richtext menu
+- Fix #3294: space picker encoding
+- Chng: Prevent `ActiveRecord::save()` call in `humhub\modules\file\components\FileManager::attach` 
+- Fix: Added additional notification validation
+- Fix: Notification previews contains new line
+- Enh: Allow urls in array form in homeUrl configuration
+- Fix: Javascript `humhub.modules.util.object.extend` not working on older Safari version
+
+
 1.3.2  (September 4, 2018)
 --------------------------
 

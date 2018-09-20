@@ -263,9 +263,10 @@ class AcceptanceTester extends \Codeception\Actor
     /**
      * Selects $userName for a given userPicker. Note this implementation will
      * just take the first result found for the given username.
-     * 
-     * @param type $id
-     * @param type $userName
+     *
+     * @param $selector
+     * @param string $userName
+     * @throws Exception
      */
     public function selectUserFromPicker($selector, $userName)
     {

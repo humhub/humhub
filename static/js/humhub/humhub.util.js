@@ -150,7 +150,12 @@ humhub.module('util', function(module, require, $) {
             var extendableClass = options.init || function() {};
 
             if(options.name) {
-                Object.defineProperty(extendableClass, "name", { value: options.name});
+                try {
+                    Object.defineProperty(extendableClass, "name", { value: options.name});
+                } catch(e) {
+                    console.warn('Could not overwrite extendable name property', e);
+                }
+
             }
 
             extendableClass.extend = function(init, name) {

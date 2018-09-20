@@ -17,6 +17,10 @@ use yii\helpers\Html;
 
 class TopicLabel extends Label
 {
+    /**
+     * @param Topic $topic
+     * @return $this
+     */
     public static function forTopic(Topic $topic)
     {
         $link = Link::withAction('', 'topic.addTopic')->options(['data-topic-id' => $topic->id, 'data-topic-url' => $topic->getUrl()]);
