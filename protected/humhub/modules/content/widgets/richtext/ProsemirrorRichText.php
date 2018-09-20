@@ -193,7 +193,7 @@ class ProsemirrorRichText extends AbstractRichText
             $result =  $match[0];
 
             if(isset($match[1])) {
-                $result = isset(EmojiMap::MAP[$match[1]]) ?  EmojiMap::MAP[$match[1]] : $result;
+                $result = array_key_exists($match[1], EmojiMap::MAP) ?  EmojiMap::MAP[$match[1]] : $result;
             }
 
             return $result;
