@@ -15,7 +15,7 @@ HumHub Change Log
 - Fix: Notification previews contains new line
 - Enh: Allow urls in array form in homeUrl configuration
 - Fix: Javascript `humhub.modules.util.object.extend` not working on older Safari version
-
+- Enh: Enable usage of `humhub\modules\content\widgets\PermaLink` outside of `humhub.modules.content.Content` components.
 
 1.3.2  (September 4, 2018)
 --------------------------

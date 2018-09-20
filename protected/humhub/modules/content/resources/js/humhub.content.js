@@ -109,6 +109,10 @@ humhub.module('content', function (module, require, $) {
     };
 
     Content.prototype.permalink = function (evt) {
+        permalink(evt);
+    };
+
+    var permalink = function(evt) {
         var options = module.config.modal.permalink;
         options.permalink = evt.$trigger.data('content-permalink');
 
@@ -146,6 +150,7 @@ humhub.module('content', function (module, require, $) {
     module.export({
         Content: Content,
         templates: templates,
+        permalink: permalink,
         submitMove: submitMove
     });
 });
