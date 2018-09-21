@@ -8,11 +8,11 @@
 
 namespace humhub\modules\space\jobs;
 
-use Yii;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\notifications\UserAddedNotification;
 use humhub\modules\user\models\User;
+use Yii;
 use yii\base\Exception;
 
 class AddUsersToSpaceJob extends ActiveJob
@@ -70,7 +70,7 @@ class AddUsersToSpaceJob extends ActiveJob
         if ($this->allUsers) {
             foreach (User::find()->active()->batch() as $users) {
                 $this->addUsers($users);
-            };
+            }
         } else {
             $this->addUsers($this->userIds);
         }
