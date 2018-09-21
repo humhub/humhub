@@ -11,7 +11,7 @@ namespace humhub\components\access;
 use humhub\libs\BasePermission;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\base\BaseObject;
 use yii\web\Controller;
 

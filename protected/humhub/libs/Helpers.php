@@ -8,7 +8,7 @@
 
 namespace humhub\libs;
 
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\base\Exception;
 
 /**

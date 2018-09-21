@@ -49,8 +49,8 @@ class ContentContainerModule extends Module
      * public function getContentContainerTypes()
      * {
      *      return [
-     *          User::className(),
-     *          Space::className()
+     *          User::class,
+     *          Space::class
      *      ];
      * }
      * ~~~
@@ -158,7 +158,7 @@ class ContentContainerModule extends Module
      * @param string $containerClass optional filter to specific container class
      * @return array of content container instances
      */
-    public function getEnabledContentContainers($containerClass = "")
+    public function getEnabledContentContainers($containerClass = '')
     {
         return [];
     }

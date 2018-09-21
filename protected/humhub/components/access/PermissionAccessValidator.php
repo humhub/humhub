@@ -9,7 +9,7 @@
 namespace humhub\components\access;
 
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 
 class PermissionAccessValidator extends ActionAccessValidator
 {
@@ -27,7 +27,7 @@ class PermissionAccessValidator extends ActionAccessValidator
             return $this->verifyPermission($rule[$this->name], $rule);
         }
 
-        throw new InvalidParamException('Invalid permission rule provided for action ' . $this->action);
+        throw new InvalidArgumentException('Invalid permission rule provided for action ' . $this->action);
     }
 
     /**

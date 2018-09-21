@@ -9,7 +9,7 @@
 namespace humhub\components\access;
 
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\base\BaseObject;
 
 /**

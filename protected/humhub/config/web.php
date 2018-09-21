@@ -13,14 +13,14 @@ $config = [
     'layoutPath' => '@humhub/views/layouts',
     'components' => [
         'request' => [
-            'class' => 'humhub\components\Request',
+            'class' => humhub\components\Request::class,
         ],
         'response' => [
-            'class' => 'humhub\components\Response',
+            'class' => humhub\components\Response::class,
         ],
         'user' => [
-            'class' => 'humhub\modules\user\components\User',
-            'identityClass' => 'humhub\modules\user\models\User',
+            'class' => humhub\modules\user\components\User::class,
+            'identityClass' => humhub\modules\user\models\User::class,
             'enableAutoLogin' => true,
             'authTimeout' => 1400,
             'loginUrl' => ['/user/auth/login']
@@ -29,7 +29,7 @@ $config = [
             'errorAction' => '/error/index',
         ],
         'session' => [
-            'class' => 'humhub\modules\user\components\Session',
+            'class' => humhub\modules\user\components\Session::class,
         ],
     ],
     'modules' => [],
