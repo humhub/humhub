@@ -20,6 +20,8 @@ HumHub Change Log
 - Fix: Space head count includes disabled user
 - Fix: Broken picker image alignment (acs-ferreira)
 - Fix: File handling in upgrade path between 1.0.x and 1.3.x 
+- Chng: Updated `humhub-prosemirror-richtext` to v1.0.10
+
 
 1.3.2  (September 4, 2018)
 --------------------------

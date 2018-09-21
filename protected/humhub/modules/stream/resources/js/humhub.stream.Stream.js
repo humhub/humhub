@@ -5,7 +5,7 @@
  *
  */
 
-/**do
+/**
  * Core module for managing Streams and StreamItems
  * @type Function
  */
