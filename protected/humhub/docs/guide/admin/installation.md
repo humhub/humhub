@@ -6,7 +6,7 @@ This guide describes the installation of the HumHub package, which can be downlo
 dependencies and external libraries and can directly be installed.
  
 It's also possible to install and build HumHub manually by cloning our [Git Repository](https://github.com/humhub/humhub).
-Please see the [Developer Installation](../developer/git-installation.md) for more details.
+Please see the [Developer Installation](../developer/environment.md) for more details.
 
 Database Setup
 --------
@@ -55,5 +55,3 @@ Web Installer
 Open the installation guide in your browser (e.g. [http://localhost/humhub](http://localhost/humhub))
 
 > Note: Don't forget to proceed with the [Configuration](installation-configuration.md) chapter after the installation.
-
-
