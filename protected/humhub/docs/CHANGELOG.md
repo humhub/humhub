@@ -18,6 +18,8 @@ HumHub Change Log
 - Enh: Enable usage of `humhub\modules\content\widgets\PermaLink` outside of `humhub.modules.content.Content` components.
 - Fix #3302 smiley are not render into last activity module and email 
 - Fix: Space head count includes disabled user
+- Fix: Broken picker image alignment (acs-ferreira)
+- Fix: File handling in upgrade path between 1.0.x and 1.3.x 
 
 1.3.2  (September 4, 2018)
 --------------------------
