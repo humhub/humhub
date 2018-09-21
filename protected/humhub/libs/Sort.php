@@ -8,7 +8,6 @@
 
 namespace humhub\libs;
 
-
 class Sort
 {
     public static function sort(&$arr, $field = 'sortOrder')

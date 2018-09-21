@@ -61,8 +61,9 @@ class Helpers
 
     public static function arrayCompVal($a, $b)
     {
-        if (!is_array($a) || !is_array($b))
+        if (!is_array($a) || !is_array($b)) {
             return false;
+        }
         sort($a);
         sort($b);
 
@@ -147,7 +148,7 @@ class Helpers
      */
     public static function getBytesOfIniValue($valueString)
     {
-        if ($valueString === null || $valueString === "") {
+        if ($valueString === null || $valueString === '') {
             return 0;
         }
 
@@ -222,15 +223,18 @@ class Helpers
      */
     public static function same($a, $b)
     {
-        if (!is_string($a) || !is_string($b))
+        if (!is_string($a) || !is_string($b)) {
             return false;
+        }
         $mb = function_exists('mb_strlen');
         $length = $mb ? mb_strlen($a, '8bit') : strlen($a);
-        if ($length !== ($mb ? mb_strlen($b, '8bit') : strlen($b)))
+        if ($length !== ($mb ? mb_strlen($b, '8bit') : strlen($b))) {
             return false;
+        }
         $check = 0;
-        for ($i = 0; $i < $length; $i += 1)
+        for ($i = 0; $i < $length; $i += 1) {
             $check |= (ord($a[$i]) ^ ord($b[$i]));
+        }
 
         return $check === 0;
     }

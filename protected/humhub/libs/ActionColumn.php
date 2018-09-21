@@ -9,6 +9,7 @@
 namespace humhub\libs;
 
 use yii\grid\Column;
+use yii\helpers\Url;
 use humhub\libs\Html;
 
 /**
@@ -99,6 +100,6 @@ class ActionColumn extends Column
             $url[$this->modelIdAttribute] = $model->getAttribute($this->modelIdAttribute);
         }
 
-        return \yii\helpers\Url::to($url);
+        return Url::to($url);
     }
 }

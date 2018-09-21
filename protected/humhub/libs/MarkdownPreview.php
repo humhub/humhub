@@ -10,6 +10,7 @@ namespace humhub\libs;
 
 use cebe\markdown\block\CodeTrait;
 use cebe\markdown\block\HeadlineTrait;
+use cebe\markdown\Parser;
 
 /**
  * MarkdownPreview generates a plain text (no HTML) of markdown.
@@ -17,7 +18,7 @@ use cebe\markdown\block\HeadlineTrait;
  *
  * @since 0.11.1
  */
-class MarkdownPreview extends \cebe\markdown\Parser
+class MarkdownPreview extends Parser
 {
     use HeadlineTrait;
 
@@ -146,11 +147,11 @@ REGEXP;
     {
         $result = '';
 
-        if(isset($block['text']) && isset($block['text'][0]) && isset($block['text'][0][1])) {
+        if (isset($block['text']) && isset($block['text'][0]) && isset($block['text'][0][1])) {
             $result = $block['text'][0][1];
         }
 
-        if(!empty($result) && isset($block['url']) && strrpos($block['url'], 'mention:') === 0) {
+        if (!empty($result) && isset($block['url']) && strrpos($block['url'], 'mention:') === 0) {
             $result = '@'.$result;
         }
 
