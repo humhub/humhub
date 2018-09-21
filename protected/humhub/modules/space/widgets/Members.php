@@ -57,7 +57,7 @@ class Members extends Widget
      */
     protected function getUserQuery()
     {
-        $query = Membership::getSpaceMembersQuery($this->space)->visible();
+        $query = Membership::getSpaceMembersQuery($this->space)->active()->visible();
         $query->limit($this->maxMembers);
         $query->orderBy(new Expression('FIELD(space_membership.group_id, "' . Space::USERGROUP_OWNER . '", "' . Space::USERGROUP_MODERATOR . '", "' . Space::USERGROUP_MEMBER . '")'));
 

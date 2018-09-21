@@ -492,6 +492,17 @@ class Space extends ContentContainerActiveRecord implements Searchable
         return Wall::widget(['space' => $this]);
     }
 
+    /**
+     * Returns all Membership relations with status = STATUS_MEMBER.
+     *
+     * Be aware that this function will also include disabled users, in order to only include active and visible users use:
+     *
+     * ```
+     * Membership::getSpaceMembersQuery($this->space)->active()->visible()->count()
+     * ```
+     *
+     * @return \yii\db\ActiveQuery
+     */
     public function getMemberships()
     {
         $query = $this->hasMany(Membership::class, ['space_id' => 'id']);
