@@ -61,6 +61,7 @@ class Module extends \humhub\components\Module
 
     /**
      * @var int maximum username length
+     * @since 1.3
      */
     public $maximumUsernameLength = 50;
 
