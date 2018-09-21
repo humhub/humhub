@@ -119,7 +119,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             [['visibility'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'checkVisibility'],
             [['url'], 'unique', 'skipOnEmpty' => 'true'],
-            [['guid', 'name', 'url'], 'string', 'max' => 45, 'min' => 2],
+            [['guid', 'name', 'url'], 'string', 'max' => Yii::$app->getModule('space')->maximumSpaceUrlLength, 'min' => Yii::$app->getModule('space')->minimumSpaceUrlLength],
             [['url'], UrlValidator::class],
         ];
 
