@@ -166,7 +166,6 @@ class DynamicConfig extends BaseObject
         }
         $config['components']['mailer'] = $mail;
 
-
         // Remove old theme/view stuff
         unset($config['components']['view']);
         unset($config['components']['mailer']['view']);

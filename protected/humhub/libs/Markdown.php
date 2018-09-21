@@ -17,7 +17,7 @@ class Markdown extends GithubMarkdown
     protected function handleInternalUrls($url)
     {
         // Handle urls to file
-        if (substr($url, 0, 10) === "file-guid-") {
+        if (substr($url, 0, 10) === 'file-guid-') {
             $guid = str_replace('file-guid-', '', $url);
             $file = File::findOne(['guid' => $guid]);
             if ($file !== null) {
@@ -45,7 +45,6 @@ class Markdown extends GithubMarkdown
         if (substr($block['url'], 0, 1) == '/' || substr($block['url'], 0, strlen($baseUrl)) == $baseUrl) {
             $internalLink = true;
         }
-
 
         $url = (empty($block['url'])) ? $baseUrl : $block['url'];
 
