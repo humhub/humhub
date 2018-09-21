@@ -9,7 +9,7 @@
 namespace humhub\components\access;
 
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\base\BaseObject;
 
 /**
@@ -133,7 +133,7 @@ abstract class AccessValidator extends BaseObject
         }
 
         if (!is_array($actions) && !is_string($actions)) {
-            throw new InvalidParamException('Invalid rule provided!');
+            throw new InvalidArgumentException('Invalid rule provided!');
         }
 
         $actions = is_string($actions) ? [$actions] : $actions;

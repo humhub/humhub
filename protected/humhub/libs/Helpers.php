@@ -8,7 +8,7 @@
 
 namespace humhub\libs;
 
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\base\Exception;
 
 /**
@@ -152,7 +152,7 @@ class Helpers
         }
 
         if ($valueString === false) {
-            throw new InvalidParamException('Your configuration option of ini_get function does not exist.');
+            throw new InvalidArgumentException('Your configuration option of ini_get function does not exist.');
         }
 
         switch (substr($valueString, -1)) {

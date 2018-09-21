@@ -8,10 +8,9 @@
 
 namespace humhub\components\access;
 
-use humhub\libs\BasePermission;
-use humhub\modules\user\models\User;
 use Yii;
-use yii\base\InvalidParamException;
+use humhub\modules\user\models\User;
+use yii\base\InvalidArgumentException;
 use yii\base\BaseObject;
 use yii\web\Controller;
 
@@ -364,7 +363,7 @@ class ControllerAccess extends BaseObject
             ]);
         }
 
-        throw new InvalidParamException('Invalid validator settings given for rule '.$ruleName);
+        throw new InvalidArgumentException('Invalid validator settings given for rule '.$ruleName);
     }
 
     /**

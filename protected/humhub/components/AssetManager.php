@@ -9,7 +9,7 @@
 namespace humhub\components;
 
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\helpers\FileHelper;
 use yii\web\AssetBundle;
 
@@ -48,7 +48,7 @@ class AssetManager extends \yii\web\AssetManager
             $path = Yii::getAlias($bundle->sourcePath);
 
             if (!is_string($path) || ($src = realpath($path)) === false) {
-                throw new InvalidParamException("The file or directory to be published does not exist: $path");
+                throw new InvalidArgumentException("The file or directory to be published does not exist: $path");
             }
 
             if (is_file($src)) {

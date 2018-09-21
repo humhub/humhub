@@ -9,7 +9,7 @@
 namespace humhub\libs;
 
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
@@ -106,7 +106,7 @@ class Html extends \yii\bootstrap\Html
             }
             return static::a(static::encode($container->displayName), $container->getUrl(), $options);
         } else {
-            throw new InvalidParamException('Content container type not supported!');
+            throw new InvalidArgumentException('Content container type not supported!');
         }
     }
 }

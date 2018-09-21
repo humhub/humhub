@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\models;
 
+use yii\base\InvalidArgumentException;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -136,7 +137,7 @@ class UserSearch extends User
                     new \yii\db\Expression("DATE(last_login)"),
                     new \yii\db\Expression("DATE(:last_login)", [':last_login' => $last_login])
                 ]);
-            } catch (InvalidParamException $e) {
+            } catch (InvalidArgumentException $e) {
                 // do not change the query if the date is wrong formatted
             }
         }

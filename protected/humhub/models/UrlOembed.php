@@ -8,7 +8,7 @@
 
 namespace humhub\models;
 
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\db\ActiveRecord;
@@ -122,7 +122,7 @@ class UrlOembed extends ActiveRecord
                     if (isset($data['html']) && isset($data['type']) && ($data['type'] === "video" || $data['type'] === 'rich' || $data['type'] === 'photo')) {
                         $html = "<div data-guid='".uniqid('oembed-')."' data-richtext-feature class='oembed_snippet' data-url='" . Html::encode($url) . "'>" . $data['html'] . "</div>";
                     }
-                } catch (InvalidParamException $ex) {
+                } catch (InvalidArgumentException $ex) {
                     Yii::warning($ex->getMessage());
                 }
             }

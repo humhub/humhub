@@ -8,9 +8,9 @@
 
 namespace humhub\components\i18n;
 
-use humhub\models\forms\ChooseLanguage;
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
+use humhub\models\forms\ChooseLanguage;
 
 /**
  * I18N provides features related with internationalization (I18N) and localization (L10N).
@@ -55,7 +55,7 @@ class I18N extends \yii\i18n\I18N
     public function setUserLocale($user)
     {
         if ($user === null) {
-            throw new InvalidParamException('User cannot be null!');
+            throw new InvalidArgumentException('User cannot be null!');
         }
 
         if (!empty($user->language)) {

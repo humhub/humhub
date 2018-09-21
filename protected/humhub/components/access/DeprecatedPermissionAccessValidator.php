@@ -16,9 +16,6 @@
 namespace humhub\components\access;
 
 
-use Yii;
-use yii\base\InvalidParamException;
-
 class DeprecatedPermissionAccessValidator extends PermissionAccessValidator
 {
     public $name = 'permissions';
