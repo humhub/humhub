@@ -11,7 +11,7 @@ namespace humhub\modules\queue;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\Event;
-use yii\queue\ErrorEvent;
+use yii\queue\ExecEvent;
 use yii\queue\PushEvent;
 use humhub\modules\queue\jobs\CleanupExclusiveJobs;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
@@ -39,9 +39,9 @@ class Events extends BaseObject
     /**
      * Callback for errors while queue execution
      *
-     * @param ErrorEvent $event
+     * @param ExecEvent $event
      */
-    public static function onQueueError(ErrorEvent $event)
+    public static function onQueueError(ExecEvent $event)
     {
         /* @var $exception \Expection */
         $exception = $event->error;
