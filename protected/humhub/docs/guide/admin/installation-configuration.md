@@ -42,7 +42,7 @@ The asynchronous job-runner can also be executed manually as follows:
 > /usr/bin/php /path/to/humhub/protected/yii queue/run
 ```
 
-> Note: If you're on a **shared hosting environment**, you may need to add the `--isolated=0` option to the `queue/run`. e.g. `/usr/bin/php /path/to/humhub/protected/yii queue/run --isolated=0`
+> Note: If you're on a **shared hosting environment**, you may need to add the `--isolate=0` option to the `queue/run`. e.g. `/usr/bin/php /path/to/humhub/protected/yii queue/run --isolate=0`
 
 **Example CronTab configuration:**
 
