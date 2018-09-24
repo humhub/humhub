@@ -1,8 +1,8 @@
 HumHub Change Log
 =================
 
-1.3.3  Unreleased
---------------------------
+1.3.3  (September 24, 2018)
+---------------------------
 
 - Fix: img overflow in markdown view
 - Enh: Added console command to list and change themes
@@ -21,6 +21,7 @@ HumHub Change Log
 - Fix: Broken picker image alignment (acs-ferreira)
 - Fix: File handling in upgrade path between 1.0.x and 1.3.x 
 - Chng: Updated `humhub-prosemirror-richtext` to v1.0.10
+- Fix: File handling in upgrade path between 1.0.x and 1.3.x 
 
 
 1.3.2  (September 4, 2018)
