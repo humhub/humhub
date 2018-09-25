@@ -78,5 +78,5 @@ return array (
   'Unsubscribe' => 'Afmelden',
   'Upload' => 'Upload',
   'Upload file' => 'Upload bestand',
-  'You are not allowed to run this action.' => 'U mag deze actie niet uitvoeren..',
+  'You are not allowed to run this action.' => 'U mag deze actie niet uitvoeren.',
 );

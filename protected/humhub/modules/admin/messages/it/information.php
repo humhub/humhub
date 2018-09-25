@@ -4,8 +4,8 @@ return array (
   '<strong>Queue</strong> Status' => 'Stato <strong>Attività in background</strong>',
   'About HumHub' => 'Informazioni su HumHub',
   'Background Jobs' => 'Attività in background',
-  'Database' => 'Base dati',
-  'Database migration results:' => 'Risultato della migrazione della base dati:',
+  'Database' => 'Database',
+  'Database migration results:' => 'Risultato della migrazione del database:',
   'Delayed' => 'Posticipato',
   'Done' => 'Fatto',
   'Driver' => 'Driver',
@@ -18,6 +18,6 @@ return array (
   'Queue successfully cleared.' => 'Coda svuotata correttamente',
   'Reserved' => 'Riservato',
   'Search index rebuild in progress.' => 'Ricostruzione indice di ricerca in corso.',
-  'The current main HumHub database name is ' => 'La base dati Humhub si chiama:',
+  'The current main HumHub database name is ' => 'Il database principale di Humhub si chiama:',
   'Waiting' => 'In attesa',
 );
