@@ -9,6 +9,7 @@
 namespace humhub\modules\ui\view\components;
 
 use humhub\assets\AppAsset;
+use humhub\libs\BaseSettingsManager;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
 use yii\base\Theme as BaseTheme;
@@ -220,7 +221,7 @@ class Theme extends BaseTheme
             return $this->parents;
         }
 
-        if ($this->isActive()) {
+        if ($this->isActive() && BaseSettingsManager::isDatabaseInstalled()) {
             $this->parents = static::getActiveParents();
         }
 
@@ -234,7 +235,10 @@ class Theme extends BaseTheme
                 foreach ($this->parents as $theme) {
                     $parentPaths[] = $theme->getBasePath();
                 }
-                Yii::$app->settings->setSerialized('themeParents', $parentPaths);
+
+                if (BaseSettingsManager::isDatabaseInstalled()) {
+                    Yii::$app->settings->setSerialized('themeParents', $parentPaths);
+                }
             }
 
         }

@@ -1,6 +1,13 @@
 HumHub Change Log
 =================
 
+
+1.3.4  (September 25, 2018)
+---------------------------
+
+- Fix: Theme parent lookup cache causes installer crash
+
+
 1.3.3  (September 24, 2018)
 ---------------------------
 
