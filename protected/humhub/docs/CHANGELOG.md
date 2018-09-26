@@ -1,6 +1,10 @@
 HumHub Change Log
 =================
 
+1.3.5  (September 25, 2018)
+---------------------------
+
+- Fix: Serialization of notifications without originator fails
 
 1.3.4  (September 25, 2018)
 ---------------------------

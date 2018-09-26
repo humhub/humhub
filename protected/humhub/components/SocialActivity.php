@@ -410,10 +410,12 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
             $sourcePk = $this->source->getPrimaryKey();
         }
 
+        $originatorId = ($this->originator != null) ? $this->originator->id : null;
+
         return serialize([
             'sourceClass' => $sourceClass,
             'sourcePk' => $sourcePk,
-            'originator_id' => $this->originator->id
+            'originator_id' => $originatorId
         ]);
     }
 
