@@ -17,5 +17,6 @@ modules:
   config:
     WebDriver:
       url: 'http://localhost:8080/'
+      window_size: maximize
       browser: chrome
       port: 4444

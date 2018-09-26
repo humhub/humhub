@@ -131,7 +131,7 @@ class MailSummary extends Component
      *
      * @return \humhub\modules\activity\models\Activity[] the activities
      */
-    protected function getActivities()
+    public function getActivities()
     {
         $stream = new DashboardStreamAction('stream', Yii::$app->controller);
         $stream->activity = true;
