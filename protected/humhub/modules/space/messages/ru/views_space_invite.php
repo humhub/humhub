@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add users without invitation' => '',
-    'Select all registered users' => '',
+    'Add users without invitation' => 'Добавить пользователей без приглашения',
+    'Select all registered users' => 'Выбрать всех зарегистрированных пользователей',
     '<strong>Invite</strong> members' => '<strong>Пригласить</strong> пользователей',
     'Done' => 'Выполнено',
     'Email addresses' => 'Адреса электронной почты',

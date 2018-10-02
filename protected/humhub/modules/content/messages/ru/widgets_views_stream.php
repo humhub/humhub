@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Include archived content' => '',
-    'Only private content' => '',
-    'Only public content' => '',
-    'With file attachments' => '',
+    'Include archived content' => 'Включить архивированный контент',
+    'Only private content' => 'Только приватный контент',
+    'Only public content' => 'Только публичный контент',
+    'With file attachments' => 'С прикреплёнными файлами',
     'Back to stream' => 'Вернуться в ленту',
     'Created by me' => 'Созданные мной',
     'Creation time' => 'Время создания',

@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'The comment must not be empty!' => '',
+    'The comment must not be empty!' => 'Комментарий не должен быть пустым!',
 ];

@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You are not allowed to comment.' => '',
+    'You are not allowed to comment.' => 'Вы не можете комментировать.',
     'Access denied!' => 'Доступ запрещен!',
     'Insufficent permissions!' => 'Недостаточно прав!',
 ];

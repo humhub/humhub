@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You were added to Space {spaceName}' => '',
-    '{displayName} changed your role to {roleName} in the space {spaceName}.' => '',
+    'You were added to Space {spaceName}' => 'Вы были добавлены в Пространство {spaceName}',
+    '{displayName} changed your role to {roleName} in the space {spaceName}.' => '{displayName} изменил(а) вашу роль на {roleName} в пространстве {spaceName}.',
     '{displayName} accepted your invite for the space {spaceName}' => '{displayName} принял ваше приглашение на вступление в пространство {spaceName}',
     '{displayName} approved your membership for the space {spaceName}' => '{displayName} подтвердил ваше участие в пространстве {spaceName}',
     '{displayName} declined your invite for the space {spaceName}' => '{displayName} отменил ваше приглашение на вступление в пространство {spaceName}',

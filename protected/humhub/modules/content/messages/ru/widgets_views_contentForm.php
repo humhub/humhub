@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Content visibility' => '',
-    'This space is archived.' => '',
+    'Content visibility' => 'Видимость контента',
+    'This space is archived.' => 'Это пространство архивировано',
     'Add a member to notify' => 'Добавить участника для уведомления',
     'Make private' => 'Сделать приватным',
     'Make public' => 'Сделать публичным',

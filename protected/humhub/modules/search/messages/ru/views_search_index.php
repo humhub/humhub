@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Specify space' => '',
+    'Specify space' => 'Укажите пространство',
     '<strong>Search </strong> results' => '<strong>Поиск </strong> результатов',
     'Advanced search settings' => 'Настройки расширенного поиска',
     'All' => 'Все',
