@@ -19,6 +19,6 @@
 return [
     'Add topic' => 'Добавить тему',
     'No topics found for the given query' => 'Не найдено ни одной темы для данного запроса',
-    'Select {n,plural,=1{topic} other{topics}}' => 'Выберите {n, plural, = 1 {topic} other {topics}}',
-    'This field only allows a maximum of {n,plural,=1{# topic} other{# topics}}' => 'Это поле допускает максимум {n,plural,=1{# topic} other{# topics}}',
+    'Select {n,plural,=1{topic} other{topics}}' => '',
+    'This field only allows a maximum of {n,plural,=1{# topic} other{# topics}}' => '',
 ];
