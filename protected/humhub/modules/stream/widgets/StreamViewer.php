@@ -11,7 +11,6 @@ namespace humhub\modules\stream\widgets;
 use Yii;
 use yii\base\Exception;
 use yii\helpers\Url;
-use humhub\modules\stream\actions\Stream;
 use humhub\modules\topic\models\Topic;
 use humhub\widgets\JsWidget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -32,7 +31,7 @@ class StreamViewer extends JsWidget
     /**
      * @var string the path to Stream Action to use
      */
-    public $streamAction = "";
+    public $streamAction = '';
 
     /**
      * @since 1.1
@@ -60,24 +59,27 @@ class StreamViewer extends JsWidget
     /**
      * @var string the message when stream is empty and filters are active
      */
-    public $messageStreamEmptyWithFilters = "";
+    public $messageStreamEmptyWithFilters = '';
 
     /**
      * 
      * @var string the CSS Class(es) for empty stream error with enabled filters
      */
-    public $messageStreamEmptyWithFiltersCss = "";
+    public $messageStreamEmptyWithFiltersCss = '';
 
     /**
      * @var string the message when stream is empty
      */
-    public $messageStreamEmpty = "";
+    public $messageStreamEmpty = '';
 
     /**
      * @var string the CSS Class(es) for message when stream is empty
      */
-    public $messageStreamEmptyCss = "";
+    public $messageStreamEmptyCss = '';
 
+    /**
+     * @inheritdoc
+     */
     public $jsWidget = 'stream.wall.WallStream';
 
     /**
@@ -101,15 +103,13 @@ class StreamViewer extends JsWidget
      */
     public function init()
     {
-        if ($this->streamAction == "") {
-            throw new Exception('You need to set the streamAction attribute to use this widget!');
-        }
+        parent::init();
 
         // Setup default messages
-        if ($this->messageStreamEmpty == "") {
+        if ($this->messageStreamEmpty === '') {
             $this->messageStreamEmpty = Yii::t('ContentModule.widgets_views_stream', 'Nothing here yet!');
         }
-        if ($this->messageStreamEmptyWithFilters == "") {
+        if ($this->messageStreamEmptyWithFilters === '') {
             $this->messageStreamEmptyWithFilters = Yii::t('ContentModule.widgets_views_stream', 'No matches with your selected filters!');
         }
     }
@@ -163,11 +163,13 @@ class StreamViewer extends JsWidget
      */
     public function run()
     {
+        if ($this->streamAction === '') {
+            throw new Exception('You need to set the streamAction attribute to use this widget!');
+        }
+
         $filterNav = ($this->showFilters && !empty($this->streamFilterNavigation)) ? call_user_func($this->streamFilterNavigation.'::widget', [
             'definition' => $this->filters
         ]) : '';
-
-
 
         return $this->render($this->view, [
                 'filterNav' => $filterNav,
