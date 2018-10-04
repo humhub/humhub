@@ -8,12 +8,9 @@
 
 namespace humhub\modules\stream\widgets;
 
-use Codeception\Exception\ConfigurationException;
 use Yii;
-use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\helpers\Url;
-use humhub\modules\stream\actions\Stream;
 use humhub\modules\topic\models\Topic;
 use humhub\widgets\JsWidget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
