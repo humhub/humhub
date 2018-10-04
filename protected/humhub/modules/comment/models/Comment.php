@@ -120,13 +120,15 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      * @param bool $insert
      * @param array $changedAttributes
      * @return bool
+     * @throws Exception
      */
     public function afterSave($insert, $changedAttributes)
     {
         $this->flushCache();
-
-        // Creating activity
-        NewComment::instance()->about($this)->save();
+        
+        if($insert) {
+            NewComment::instance()->about($this)->create();
+        }
 
         // Handle mentioned users
         // Execute before NewCommentNotification to avoid double notification when mentioned.

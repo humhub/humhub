@@ -8,6 +8,7 @@ HumHub Change Log
 - Fix: Hide unapproved member activities
 - Fix #3313: Unable to deny invitation to private space
 - Fix: Added missing `parent::init()` to `humhub\modules\stream\widgets\StreamViewer`
+- Fix: Comment edit triggers new activity
 
 
 1.3.4  (September 25, 2018)
