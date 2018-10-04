@@ -13,6 +13,7 @@ Server Requirements
 
 Required PHP Extensions
 -----------------------
+* PHP GD Extension (With JPEG and PNG support)
 * PHP CUrl  Extension (w/ SSL Support) <https://secure.php.net/manual/en/curl.setup.php>
 * PHP Multibyte String Support <https://secure.php.net/manual/en/mbstring.setup.php> 
 * PHP PDO MySQL Extension (https://secure.php.net/manual/en/ref.pdo-mysql.php)

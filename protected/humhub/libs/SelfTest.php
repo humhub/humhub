@@ -58,7 +58,6 @@ class SelfTest
 
         // Checks GD Extension
         $title = 'PHP - GD Extension';
-
         if (function_exists('gd_info')) {
             $checks[] = [
                 'title' => Yii::t('base', $title),
@@ -69,6 +68,36 @@ class SelfTest
                 'title' => Yii::t('base', $title),
                 'state' => 'ERROR',
                 'hint' => 'Install GD Extension'
+            ];
+        }
+
+        // Checks GD JPEG Extension
+        $title = 'PHP - GD Extension - JPEG Support';
+        if (function_exists('imageCreateFromJpeg')) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Install GD Extension - JPEG Support'
+            ];
+        }
+
+        // Checks GD PNG Extension
+        $title = 'PHP - GD Extension - PNG Support';
+        if (function_exists('imageCreateFromPng')) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Install GD Extension - PNG Support'
             ];
         }
 
