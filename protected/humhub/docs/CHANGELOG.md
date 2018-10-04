@@ -7,6 +7,7 @@ HumHub Change Log
 - Fix: Serialization of notifications without originator fails
 - Fix: Hide unapproved member activities
 - Fix #3313: Unable to deny invitation to private space
+- Fix: Added missing `parent::init()` to `humhub\modules\stream\widgets\StreamViewer`
 
 
 1.3.4  (September 25, 2018)
