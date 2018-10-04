@@ -40,9 +40,9 @@ class MembershipController extends ContentContainerController
     {
         return [
             ['permission' => [InviteUsers::class], 'actions' => ['invite']],
+            [ContentContainerControllerAccess::RULE_LOGGED_IN_ONLY => ['revoke-membership']],
             [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_MEMBER],
                 'actions' => [
-                    'revoke-membership',
                     'revoke-notifications',
                     'receive-notifications',
                     'search-invite',
