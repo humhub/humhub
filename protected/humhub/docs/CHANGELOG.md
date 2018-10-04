@@ -1,6 +1,12 @@
 HumHub Change Log
 =================
 
+1.3.5  (Unreleased)
+---------------------------
+
+- Fix: Serialization of notifications without originator fails
+- Fix: Hide unapproved member activities
+
 
 1.3.4  (September 25, 2018)
 ---------------------------
