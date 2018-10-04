@@ -9,6 +9,7 @@ HumHub Change Log
 - Fix #3313: Unable to deny invitation to private space
 - Fix: Added missing `parent::init()` to `humhub\modules\stream\widgets\StreamViewer`
 - Fix: Added PHP GD extension to the requirements (docs and selftest)
+- Fix: Comment edit triggers new activity
 
 
 1.3.4  (September 25, 2018)
