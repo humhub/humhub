@@ -191,7 +191,6 @@ humhub.module('client', function (module, require, $) {
     };
 
     var ajax = function (url, cfg, originalEvent) {
-
         // support for ajax(url, event) and ajax(path, successhandler);
         if (cfg instanceof $.Event) {
             originalEvent = cfg;
@@ -211,9 +210,9 @@ humhub.module('client', function (module, require, $) {
             var errorHandler = cfg.error;
             var error = function (xhr, textStatus, errorThrown) {
                 var response = new Response(xhr, url, textStatus, cfg.dataType).setError(errorThrown);
-
                 if (response.status == 302) {
                     _redirect(xhr);
+                    return;
                 }
 
                 if (errorHandler && object.isFunction(errorHandler)) {

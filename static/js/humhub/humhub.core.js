@@ -3,13 +3,17 @@
  * This namespace provides the following functions:
  * 
  * module - for adding modules to this namespace and initializing them
- * 
- * @type @exp;humhub|@call;humhub.core_L4|Function
+ *
+ * @namespace
  */
 var humhub = humhub || (function ($) {
+
+    /** @module humhub **/
+
     /**
      * Contains the modules namespace e.g. modules.ui.modal
      * @type object
+     * @namespace humhub.modules
      */
     var modules = {};
 
@@ -33,56 +37,74 @@ var humhub = humhub || (function ($) {
     var pjaxInitModules = [];
 
     /**
-     * Adds a module to the namespace. And initializes after dom is ready.
+     * Adds a module to the humhub.modules namespace.
      * 
-     * The id can be provided either as 
+     * The module id can be provided either as
      * 
      * - full namespace humhub.modules.ui.modal
-     * - or module.ui.modal
+     * - or modules.ui.modal
      * - or short ui.modal
      * 
      * Usage:
-     * 
+     *
+     * ```
      * humhub.module('ui.modal', function(module, require, $) {...});
+     * ```
+     *
+     * This would create an empty ui namespace (if not already created before) register the given module `ui.modal`.
      * 
-     * This would create an empty ui namespace (if not already created before) and 
-     * initializes the given module. 
-     * 
-     * The module can export functions and properties by
-     * using either 
-     * 
+     * The module can export functions and properties by using:
+     *
+     * ```
      * module.myFunction = function() {...} 
-     * ...
-     * 
+     *
      * or 
      * 
      * module.export({
-     *  myFunction: function() {...},
-     *  ...
+     *  myFunction: function() {...}
      * });
+     * ```
      * 
      * The export function can be called as often as needed (but should be called once at the end of the module).
+     * Its also possible to export single classes e.g.:
+     *
+     * ```
+     * humhub.module('my.LoaderWidget', function(module, require, $) {
+     *    var LoaderWidget = function() {...}
+     *
+     *    module.export = LoaderWidget;
+     * });
+     * ```
      * 
-     * A module can provide an init function, which is called automatically  after the document is ready.
+     * A module can provide an `init` function, which by default is only called after the first initialization
+     * e.g. after a full page load when the document is ready or when loaded by means of ajax ajax.
+     * In case a modules `init` function need to be called also after each `pjax` request, the modules `initOnPjaxLoad` has to be
+     * set to `true`:
+     *
+     * ```
+     * module.initOnPjaxLoad = true;
+     * ```
      * 
      * Dependencies:
      * 
-     * The core modules are initialized in a specific order to provide the needed
-     * dependencies for each module. The order is given by the order of module calls
-     * and in case of core modules configured in the API's AssetBundle. 
+     * The core modules are initialized in a specific order to provide the required dependencies for each module.
+     * The order is given by the order of module calls and in case of core modules configured in the API's AssetBundle.
      * 
      * A module can be received by using the required function within a module function.
      * You can either depend on a module at initialisation time or within your functions or
      * use the lazy flag of the require function.
      * 
      * Usage:
-     * 
+     *
+     * ```
      * var modal = require('ui.modal');
      * 
      * or lazy require
      * 
      * var modal = require('ui.modal', true);
-     * 
+     * ````
+     * @function module:humhub.module
+     * @access public
      * @param {string} id the namespaced id
      * @param {function} moduleFunction
      * @returns {undefined}
@@ -138,15 +160,18 @@ var humhub = humhub || (function ($) {
     };
 
     /**
-     * This function is used to resolve namespaces for receiving module instances
-     * or classes.
+     * This function is used to resolve namespaces and receive module instances or single classes.
      * 
      * For the module humhub.modules.ui.modal you can search:
-     * 
+     *
+     * ```
      * require('ui.modal');
      * require('modules.ui.modal');
      * require('humhub.modules.ui.modal');
-     * 
+     * ```
+     *
+     * @function module:humhub.require
+     * @access public
      * @param {type} moduleId
      * @param {boolean} lazy - can be set to require modules which are not yet created.
      * @returns object - the module instance if already initialized else undefined
@@ -216,10 +241,22 @@ var humhub = humhub || (function ($) {
     };
 
     /**
-     * Config implementation
+     * Manages the state and access of module configurations.
+     *
+     * @module config
      */
     var config = modules['config'] = {
         id: 'config',
+        /**
+         * Searches for a given configuration key for a given module.
+         *
+         * @function module:config.get
+         * @access public
+         * @param {string} module module id
+         * @param {string} key configuration key
+         * @param {*} defaultVal default return type
+         * @returns {*}
+         */
         get: function (module, key, defaultVal) {
             if (arguments.length === 1) {
                 return this.module(module);
@@ -228,6 +265,15 @@ var humhub = humhub || (function ($) {
                 return (_isDefined(result)) ? result : defaultVal;
             }
         },
+
+        /**
+         * Returns the whole configuration object of a module
+         *
+         * @function module:config.module
+         * @access public
+         * @param {string} module
+         * @returns {*}
+         */
         module: function (module) {
             module = (module.id) ? module.id : module;
             module = _cutModulePrefix(module);
@@ -236,9 +282,28 @@ var humhub = humhub || (function ($) {
             }
             return this[module];
         },
+
+        /**
+         * Determines if a given configuration value is true
+         *
+         * @function module:config.is
+         * @access public
+         * @param {boolean} defaultVal
+         * @returns {boolean}
+         */
         is: function (module, key, defaultVal) {
             return this.get(module, key, defaultVal) === true;
         },
+
+        /**
+         * Sets a given configuration value
+         *
+         * @function module:config.set
+         * @access public
+         * @param {string} moduleId
+         * @param {string} key
+         * @param {*} value
+         */
         set: function (moduleId, key, value) {
             //Moduleid with multiple values
             if (arguments.length === 1) {
@@ -254,24 +319,81 @@ var humhub = humhub || (function ($) {
         }
     };
 
+    /**
+     * Global event handling.
+     *
+     * @module event
+     **/
     var event = modules['event'] = {
         events: $({}),
+        /**
+         * Removes a given event handler.
+         *
+         * @function module:event.off
+         * @access public
+         * @param events
+         * @param selector
+         * @param handler
+         * @returns {module:event}
+         */
         off: function (events, selector, handler) {
             this.events.off(events, selector, handler);
             return this;
         },
+
+        /**
+         * Registers an event handler.
+         *
+         * @function module:event.on
+         * @access public
+         * @param event
+         * @param selector
+         * @param data
+         * @param handler
+         * @returns {module:event}
+         */
         on: function (event, selector, data, handler) {
             this.events.on(event, selector, data, handler);
             return this;
         },
+
+        /**
+         * Triggers a global event.
+         *
+         * @function module:event.trigger
+         * @access public
+         * @param eventType
+         * @param extraParameters
+         * @returns {module:event}
+         */
         trigger: function (eventType, extraParameters) {
             this.events.trigger(eventType, extraParameters);
             return this;
         },
+
+        /**
+         * Registers a event handler which is only executed once.
+         *
+         * @function module:event.one
+         * @access public
+         * @param event
+         * @param selector
+         * @param data
+         * @param handler
+         * @returns {module:event}
+         */
         one: function (event, selector, data, handler) {
             this.events.one(event, selector, data, handler);
             return this;
         },
+
+        /**
+         * Creates a sub event manager and appends it to a given target object.
+         *
+         * @function module:event.sub
+         * @access public
+         * @param {Object} target
+         */
         sub: function (target) {
             target.events = $({});
             target.on = $.proxy(event.on, target);
@@ -280,16 +402,29 @@ var humhub = humhub || (function ($) {
             target.trigger = $.proxy(event.trigger, target);
             target.triggerCondition = $.proxy(event.triggerCondition, target);
         },
+
+        /**
+         * Triggers an given event and returns weather or not the events `preventDefaults()` was called.
+         *
+         * Supports the following cases:
+         *
+         * ```
+         * event.triggerCondition('testevent');
+         * event.triggerCondition('testevent', ['asdf']);
+         * event.triggerCondition('#test', 'testevent');
+         * event.triggerCondition('#test', 'testevent', ['asdf']);
+         * ```
+         *
+         * @function module:event.triggerCondition
+         * @access public
+         * @param target
+         * @param event
+         * @param extraParameters
+         * @returns {*}
+         */
         triggerCondition: function (target, event, extraParameters) {
             var $target;
-            /**
-             * Supports the following cases:
-             * 
-             * event.triggerCondition('testevent');
-             * event.triggerCondition('testevent', ['asdf']);
-             * event.triggerCondition('#test', 'testevent');
-             * event.triggerCondition('#test', 'testevent', ['asdf']);
-             */
+
             switch (arguments.length) {
                 case 1:
                     $target = this.events;
@@ -429,6 +564,60 @@ var humhub = humhub || (function ($) {
 
     var polyfill = function() {
         objectAssignPolyfill();
+        arrayIncludesPolyfill();
+    };
+
+    var arrayIncludesPolyfill = function() {
+        if (!Array.prototype.includes) {
+            Object.defineProperty(Array.prototype, 'includes', {
+                value: function(searchElement, fromIndex) {
+
+                    if (this == null) {
+                        throw new TypeError('"this" is null or not defined');
+                    }
+
+                    // 1. Let O be ? ToObject(this value).
+                    var o = Object(this);
+
+                    // 2. Let len be ? ToLength(? Get(O, "length")).
+                    var len = o.length >>> 0;
+
+                    // 3. If len is 0, return false.
+                    if (len === 0) {
+                        return false;
+                    }
+
+                    // 4. Let n be ? ToInteger(fromIndex).
+                    //    (If fromIndex is undefined, this step produces the value 0.)
+                    var n = fromIndex | 0;
+
+                    // 5. If n ≥ 0, then
+                    //  a. Let k be n.
+                    // 6. Else n < 0,
+                    //  a. Let k be len + n.
+                    //  b. If k < 0, let k be 0.
+                    var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
+
+                    function sameValueZero(x, y) {
+                        return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y));
+                    }
+
+                    // 7. Repeat, while k < len
+                    while (k < len) {
+                        // a. Let elementK be the result of ? Get(O, ! ToString(k)).
+                        // b. If SameValueZero(searchElement, elementK) is true, return true.
+                        if (sameValueZero(o[k], searchElement)) {
+                            return true;
+                        }
+                        // c. Increase k by 1.
+                        k++;
+                    }
+
+                    // 8. Return false
+                    return false;
+                }
+            });
+        }
     };
 
     var objectAssignPolyfill = function() {

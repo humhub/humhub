@@ -25,4 +25,8 @@ $config = yii\helpers\ArrayHelper::merge(
     require(__DIR__ . '/protected/humhub/tests/codeception/config/acceptance.php')
 );
 
+require_once './protected/vendor/codeception/codeception/autoload.php';
+
+include './protected/humhub/tests/c3.php';
+
 (new humhub\components\Application($config))->run();

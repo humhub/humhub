@@ -12,6 +12,9 @@ HumHub Change Log
 - Fix: Comment edit triggers new activity
 - Fix: Fixed typo from `MailSummary::INTERVAL_HOURY` to `MailSummary::INTERVAL_HOURLY`
 - Enh: Added `humhub.modules.ui.filter.TextInput` and related `humhub\modules\ui\filter\widgets\TextFilterInput`
+- Enh: Enable `data-action-keypress` by default
+- Enh: Added `preventDefault` argument to `humhub.modules.action.bindAction` to disable prevent default behaviour for action events
+
 
 
 1.3.4  (September 25, 2018)
