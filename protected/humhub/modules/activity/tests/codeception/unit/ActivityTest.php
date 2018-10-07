@@ -3,7 +3,6 @@
 namespace humhub\modules\activity\tests\codeception\unit;
 
 use humhub\modules\activity\models\Activity;
-use humhub\modules\notification\models\Notification;
 use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
@@ -58,10 +57,10 @@ class ActivityTestTest extends HumHubDbTestCase
     {
         $post = Post::findOne(['id' => 1]);
         $activity = activities\TestActivity::instance()->about($post)->create();
-        $this->assertEquals($post->content->created_by, $activity->record->content-created_by);
+        $this->assertEquals($post->content->created_by, $activity->record->content->created_by);
 
-        $notification = Notification::findOne(['id' => $activity->record->id]);
+        $activity = Activity::findOne(['id' => $activity->record->id]);
 
-        $this->assertEquals($post->content->created_by, $notification->getBaseModel()->originator);
+        $this->assertEquals($post->content->created_by, $activity->getActivityBaseClass()->originator->id);
     }
 }

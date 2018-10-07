@@ -90,6 +90,8 @@ abstract class BaseActivity extends SocialActivity
         }
 
         $this->saveModelInstance();
+
+        return $this;
     }
 
     /**
