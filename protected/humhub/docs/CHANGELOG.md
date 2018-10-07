@@ -10,6 +10,7 @@ HumHub Change Log
 - Fix: Added missing `parent::init()` to `humhub\modules\stream\widgets\StreamViewer`
 - Fix: Added PHP GD extension to the requirements (docs and selftest)
 - Fix: Comment edit triggers new activity
+- Fix: Fixed typo from `MailSummary::INTERVAL_HOURY` to `MailSummary::INTERVAL_HOURLY`
 
 
 1.3.4  (September 25, 2018)

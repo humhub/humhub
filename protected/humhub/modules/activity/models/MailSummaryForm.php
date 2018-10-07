@@ -117,7 +117,7 @@ class MailSummaryForm extends Model
     {
         return [
             MailSummary::INTERVAL_NONE => Yii::t('ActivityModule.base', 'Never'),
-            MailSummary::INTERVAL_HOURY => Yii::t('ActivityModule.base', 'Hourly'),
+            MailSummary::INTERVAL_HOURLY => Yii::t('ActivityModule.base', 'Hourly'),
             MailSummary::INTERVAL_DAILY => Yii::t('ActivityModule.base', 'Daily'),
             MailSummary::INTERVAL_WEEKLY => Yii::t('ActivityModule.base', 'Weekly'),
         ];

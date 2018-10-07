@@ -3,6 +3,7 @@
 namespace humhub\modules\activity\tests\codeception\unit;
 
 use humhub\modules\activity\models\Activity;
+use humhub\modules\notification\models\Notification;
 use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
@@ -32,7 +33,7 @@ class ActivityTestTest extends HumHubDbTestCase
         // Test Activity Record
         $this->assertNotNull($activity->record, 'BaseActivity Record not null');
         
-        $activity->save();
+        $activity->create();
         
         $record = Activity::findOne(['class' => activities\TestActivity::class]);
         $this->assertEquals($record->module, 'test');
@@ -51,5 +52,16 @@ class ActivityTestTest extends HumHubDbTestCase
         $this->assertEquals($testActivity->getContent()->id, $post->content->id, 'Compare activity content with source content.');
         
         $this->assertEquals($testActivity->getContentContainer()->id, $post->content->container->id, 'Activity::getContentContainer content');
+    }
+
+    public function testCreateActivityAboutOnly()
+    {
+        $post = Post::findOne(['id' => 1]);
+        $activity = activities\TestActivity::instance()->about($post)->create();
+        $this->assertEquals($post->content->created_by, $activity->record->content-created_by);
+
+        $notification = Notification::findOne(['id' => $activity->record->id]);
+
+        $this->assertEquals($post->content->created_by, $notification->getBaseModel()->originator);
     }
 }
