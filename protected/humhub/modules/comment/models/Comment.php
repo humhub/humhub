@@ -110,8 +110,13 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      */
     public function flushCache()
     {
-        Yii::$app->cache->delete('commentCount_' . $this->object_model . '_' . $this->object_id);
-        Yii::$app->cache->delete('commentsLimited_' . $this->object_model . '_' . $this->object_id);
+        static::flushCommentCache($this->object_model, $this->object_id);
+    }
+
+    public static function flushCommentCache($model, $id)
+    {
+        Yii::$app->cache->delete('commentCount_' . $model . '_' . $id);
+        Yii::$app->cache->delete('commentsLimited_' . $model . '_' . $id);
     }
 
     /**
@@ -126,7 +131,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         $this->flushCache();
 
         // Creating activity
-        NewComment::instance()->about($this)->save();
+        NewComment::instance()->about($this)->create();
 
         // Handle mentioned users
         // Execute before NewCommentNotification to avoid double notification when mentioned.
