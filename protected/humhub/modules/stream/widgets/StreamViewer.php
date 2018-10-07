@@ -9,9 +9,8 @@
 namespace humhub\modules\stream\widgets;
 
 use Yii;
-use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\helpers\Url;
-use humhub\modules\stream\actions\Stream;
 use humhub\modules\topic\models\Topic;
 use humhub\widgets\JsWidget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -98,11 +97,12 @@ class StreamViewer extends JsWidget
 
     /**
      * @inheritdoc
+     * @throws InvalidConfigException
      */
     public function init()
     {
         if ($this->streamAction == "") {
-            throw new Exception('You need to set the streamAction attribute to use this widget!');
+            throw new InvalidConfigException('You need to set the streamAction attribute to use this widget!');
         }
 
         // Setup default messages
@@ -112,6 +112,8 @@ class StreamViewer extends JsWidget
         if ($this->messageStreamEmptyWithFilters == "") {
             $this->messageStreamEmptyWithFilters = Yii::t('ContentModule.widgets_views_stream', 'No matches with your selected filters!');
         }
+
+        parent::init();
     }
 
     public function getData()

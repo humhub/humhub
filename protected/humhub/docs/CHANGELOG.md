@@ -1,10 +1,16 @@
 HumHub Change Log
 =================
 
-1.3.5  (September 25, 2018)
+1.3.5  (Unreleased)
 ---------------------------
 
 - Fix: Serialization of notifications without originator fails
+- Fix: Hide unapproved member activities
+- Fix #3313: Unable to deny invitation to private space
+- Fix: Added missing `parent::init()` to `humhub\modules\stream\widgets\StreamViewer`
+- Fix: Added PHP GD extension to the requirements (docs and selftest)
+- Fix: Comment edit triggers new activity
+
 
 1.3.4  (September 25, 2018)
 ---------------------------

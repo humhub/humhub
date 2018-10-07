@@ -55,6 +55,7 @@ abstract class AbstractRichTextProcessor extends BaseObject
 
     /**
      * This function can be used to parse file-guid based links e.g. for auto attachment.
+     * @since v1.3.3
      */
     public function parseFiles() {}
 
