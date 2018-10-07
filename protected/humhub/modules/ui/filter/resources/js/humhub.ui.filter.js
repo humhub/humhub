@@ -18,6 +18,10 @@ humhub.module('ui.filter', function(module, require, $) {
     FilterInput.prototype.toggle = function() { /* Abstract function */ };
     FilterInput.prototype.isActive = function() { /* Abstract function */ };
 
+    FilterInput.prototype.inputChange = function(evt) {
+        this.filter.triggerChange(evt);
+    };
+
     FilterInput.prototype.getId = function() {
         return this.$.data('filter-id');
     };
@@ -36,6 +40,35 @@ humhub.module('ui.filter', function(module, require, $) {
 
     FilterInput.prototype.getCategory = function() {
         return this.$.data('filter-category') || this.getId();
+    };
+
+    var TextInput = FilterInput.extend(function($node, filter) {
+        FilterInput.call(this, $node, filter);
+        this.delay = object.defaultValue(this.$.data('filter-input-delay'), 500);
+    });
+
+    TextInput.prototype.inputChange = function(evt) {
+        if (evt.keyCode === 13) {
+            evt.preventDefault();
+        }
+
+        if (this.getValue() !== this.lastValue) {
+            this.lastValue = this.getValue();
+            if (this.request) {
+                clearTimeout(this.request);
+            }
+
+            var that = this;
+            this.request = setTimeout(function() {that.filter.triggerChange()}, this.delay);
+        }
+    };
+
+    TextInput.prototype.getValue = function() {
+        return this.$.val();
+    };
+
+    TextInput.prototype.isActive = function() {
+        return this.getValue() && this.getValue().length
     };
 
     var CheckBoxInput = FilterInput.extend(function($node, filter) {
@@ -124,6 +157,7 @@ humhub.module('ui.filter', function(module, require, $) {
         'checkbox': CheckBoxInput,
         'radio': RadioInput,
         'picker': PickerInput,
+        'text': TextInput
     };
 
     var addFilterType = function(key, inputClass) {
@@ -142,13 +176,26 @@ humhub.module('ui.filter', function(module, require, $) {
     };
 
     Filter.prototype.inputChange = function(evt) {
-        this.triggerChange();
+        var filterInput = this.getFilterInput(evt.$trigger);
+        if(filterInput) {
+            filterInput.inputChange(evt);
+        } else {
+            this.triggerChange();
+        }
     };
 
     Filter.prototype.getFilterInput = function($input) {
+        var instance = $input.data('filter-input-instance');
+
+        if(instance) {
+            return instance;
+        }
+
         var FilterType = filterTypes[Filter.getFilterType($input)];
         if(FilterType) {
-            return  new FilterType($input, this);
+            instance =  new FilterType($input, this);
+            $input.data('filter-input-instance', instance);
+            return instance;
         }
 
         return null;
@@ -245,8 +292,8 @@ humhub.module('ui.filter', function(module, require, $) {
     };
 
     module.export({
-       Filter: Filter,
-       FilterInput: FilterInput,
-       addFilterType: addFilterType
+        Filter: Filter,
+        FilterInput: FilterInput,
+        addFilterType: addFilterType
     });
 });

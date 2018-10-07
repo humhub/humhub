@@ -11,6 +11,7 @@ HumHub Change Log
 - Fix: Added PHP GD extension to the requirements (docs and selftest)
 - Fix: Comment edit triggers new activity
 - Fix: Fixed typo from `MailSummary::INTERVAL_HOURY` to `MailSummary::INTERVAL_HOURLY`
+- Enh: Added `humhub.modules.ui.filter.TextInput` and related `humhub\modules\ui\filter\widgets\TextFilterInput`
 
 
 1.3.4  (September 25, 2018)
