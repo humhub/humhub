@@ -15,6 +15,7 @@ HumHub Change Log
 - Enh: Enable `data-action-keypress` by default
 - Enh: Added `preventDefault` argument to `humhub.modules.action.bindAction` to disable prevent default behaviour for action events
 - Fix: Fix bootstrap-datepicker.en.min.js 404 (Not Found)
+- Fix: Comment form files not cleared
 
 
 1.3.4  (September 25, 2018)

@@ -82,6 +82,7 @@ humhub.module('content.form', function(module, require, $) {
         this.resetSettingInputs();
         this.setDefaultVisibility();
         this.resetFilePreview();
+        this.resetFileUpload();
 
         $('#public').attr('checked', false);
         $('#contentFormBody').find('.humhub-ui-richtext').trigger('clear');
@@ -95,7 +96,17 @@ humhub.module('content.form', function(module, require, $) {
     };
 
     CreateForm.prototype.resetFilePreview = function() {
-        Widget.instance($('#contentFormFiles_preview')).reset();
+        var preview = Widget.instance($('#contentFormFiles_preview'));
+        if(preview) {
+            preview.reset();
+        }
+    };
+
+    CreateForm.prototype.resetFileUpload = function() {
+        var upload = Widget.instance($('#contentForm_message-file-upload'));
+        if(upload) {
+            upload.reset();
+        }
     };
 
     CreateForm.prototype.handleError = function(response) {
