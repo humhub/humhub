@@ -14,7 +14,7 @@ HumHub Change Log
 - Enh: Added `humhub.modules.ui.filter.TextInput` and related `humhub\modules\ui\filter\widgets\TextFilterInput`
 - Enh: Enable `data-action-keypress` by default
 - Enh: Added `preventDefault` argument to `humhub.modules.action.bindAction` to disable prevent default behaviour for action events
-
+- Fix: Fix bootstrap-datepicker.en.min.js 404 (Not Found)
 
 
 1.3.4  (September 25, 2018)
