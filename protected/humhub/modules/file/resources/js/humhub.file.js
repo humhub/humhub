@@ -133,6 +133,7 @@ humhub.module('file', function (module, require, $) {
     Upload.prototype.reset = function () {
         this.fileCount = 0;
         this.$form.find('input[name="' + this.options.name + '"]').remove();
+        this.$form.find('input[name="' + this.options.uploadSubmitName + '"]').remove();
         if (this.preview) {
             this.preview.reset();
         }
@@ -143,14 +144,22 @@ humhub.module('file', function (module, require, $) {
     };
 
     Upload.prototype.initPreview = function () {
+        var $preview;
+
         if (this.$.data('upload-preview')) {
-            this.preview = Preview.instance(this.$.data('upload-preview'));
+            $preview = $(this.$.data('upload-preview'));
+        } else {
+            $preview = $('#'+this.$.attr('id')+'_preview');
+        }
+
+        if($preview.length) {
+            this.preview = Preview.instance($preview);
             if (this.preview.setSource) {
                 this.preview.setSource(this);
             } else {
                 this.preview.source = this;
             }
-            
+
             // Get current file count form preview component.
             if(object.isFunction(this.preview.getFileCount)) {
                 this.fileCount = this.preview.getFileCount();
@@ -166,7 +175,15 @@ humhub.module('file', function (module, require, $) {
     };
 
     Upload.prototype.initProgress = function () {
-        this.progress = Progress.instance(this.$.data('upload-progress'));
+        var $progress;
+
+        if(this.$.data('upload-progress')) {
+            $progress = $(this.$.data('upload-progress'));
+        } else {
+            $progress = $('#'+this.$.attr('id')+'_progress');
+        }
+
+        this.progress = Progress.instance($progress);
     };
 
     Upload.prototype.initFileUpload = function () {
