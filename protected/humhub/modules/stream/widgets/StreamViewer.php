@@ -101,9 +101,7 @@ class StreamViewer extends JsWidget
      */
     public function init()
     {
-        if ($this->streamAction == "") {
-            throw new InvalidConfigException('You need to set the streamAction attribute to use this widget!');
-        }
+        parent::init();
 
         // Setup default messages
         if ($this->messageStreamEmpty == "") {
@@ -112,8 +110,6 @@ class StreamViewer extends JsWidget
         if ($this->messageStreamEmptyWithFilters == "") {
             $this->messageStreamEmptyWithFilters = Yii::t('ContentModule.widgets_views_stream', 'No matches with your selected filters!');
         }
-
-        parent::init();
     }
 
     public function getData()
@@ -162,14 +158,17 @@ class StreamViewer extends JsWidget
 
     /**
      * @inheritdoc
+     * @throws InvalidConfigException
      */
     public function run()
     {
+        if (empty($this->streamAction)) {
+            throw new InvalidConfigException('You need to set the streamAction attribute to use this widget!');
+        }
+
         $filterNav = ($this->showFilters && !empty($this->streamFilterNavigation)) ? call_user_func($this->streamFilterNavigation.'::widget', [
             'definition' => $this->filters
         ]) : '';
-
-
 
         return $this->render($this->view, [
                 'filterNav' => $filterNav,
