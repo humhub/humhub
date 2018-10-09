@@ -16,6 +16,8 @@ HumHub Change Log
 - Enh: Added `preventDefault` argument to `humhub.modules.action.bindAction` to disable prevent default behaviour for action events
 - Fix: Fix bootstrap-datepicker.en.min.js 404 (Not Found)
 - Fix: Comment form files not cleared
+- Enh: Added `humhub\modules\file\models\isAssignedTo($record)` argument in order to check if a File is attached to a specific record
+- Fix: rich-text mobile view wrong min-height calculation
 
 
 1.3.4  (September 25, 2018)
