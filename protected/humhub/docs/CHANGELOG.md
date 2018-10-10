@@ -1,7 +1,7 @@
 HumHub Change Log
 =================
 
-1.3.5  (Unreleased)
+1.3.5  (October 10, 2018)
 ---------------------------
 
 - Fix: Serialization of notifications without originator fails
@@ -23,6 +23,7 @@ HumHub Change Log
 - Fix comment scroll overflows button
 - Fix widgetAction events case issue
 - Added `humhub.modules.util.string.capitalizeFirstLetter` and `lowerCaseFirstLetter`
+
 
 1.3.4  (September 25, 2018)
 ---------------------------
