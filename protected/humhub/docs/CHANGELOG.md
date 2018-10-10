@@ -19,6 +19,7 @@ HumHub Change Log
 - Enh: Added `humhub\modules\file\models\isAssignedTo($record)` argument in order to check if a File is attached to a specific record
 - Fix: rich-text mobile view wrong min-height calculation
 - Fix #3314: layout container width differences
+- Fix #3315: Exception on first login with ldap
 
 
 1.3.4  (September 25, 2018)
