@@ -91,10 +91,9 @@ use yii\helpers\Html;
  */
 class Upload extends Widget
 {
-    /**
-     * @var string upload input widget id
-     */
-    public $id;
+    const DEFAULT_SUBMIT_NAME = 'fileList[]';
+    const DEFAULT_UPLOAD_NAME = 'files[]';
+    const DEFAULT_ATTRIBUTE_NAME = 'files';
 
     /**
      * @var Model the model the file array should be
@@ -109,7 +108,7 @@ class Upload extends Widget
     /**
      * @var string upload input name
      */
-    public $name = 'files[]';
+    public $name;
 
     /**
      * @var string defines the input name of file items attached to the form after the upload
@@ -141,7 +140,7 @@ class Upload extends Widget
      * @return static
      * @throws \yii\base\InvalidConfigException
      */
-    public static function model($model, $attribute = 'files', $cfg = [])
+    public static function forModel($model, $attribute = self::DEFAULT_ATTRIBUTE_NAME, $cfg = [])
     {
         return static::create(array_merge($cfg, ['model' => $model, 'attribute' => $attribute]));
     }
@@ -155,7 +154,7 @@ class Upload extends Widget
      * @return static
      * @throws \yii\base\InvalidConfigException
      */
-    public static function name($submitName, $uploadName, $cfg = [])
+    public static function withName($submitName = self::DEFAULT_SUBMIT_NAME, $uploadName = self::DEFAULT_UPLOAD_NAME, $cfg = [])
     {
         return static::create(array_merge($cfg, ['submitName' => $submitName, 'name' => $uploadName]));
     }
@@ -186,6 +185,26 @@ class Upload extends Widget
         if($this->max === true) {
             $this->max = Yii::$app->getModule('content')->maxAttachedFiles;
         }
+    }
+
+    /**
+     * @param string
+     * @return $this
+     */
+    public function submitName($submitName = self::DEFAULT_SUBMIT_NAME)
+    {
+        $this->submitName = $submitName;
+        return $this;
+    }
+
+    /**
+     * @param string
+     * @return $this
+     */
+    public function uploadName($uploadName = self::DEFAULT_UPLOAD_NAME)
+    {
+        $this->name = $uploadName;
+        return $this;
     }
 
     /**

@@ -48,9 +48,9 @@ humhub.module('ui.widget', function(module, require, $) {
         // Bind dom events to widget events actions.
         $.each(this.options, function(key, value) {
             if(string.startsWith(key, 'widgetAction')) {
-                var eventType = string.cutPrefix(key, 'widgetAction').toLowerCase();
-                that.$.on(eventType+'.humhub:widget:events', function() {
-                    that.fire(eventType);
+                var eventType = string.lowerCaseFirstLetter(string.cutPrefix(key, 'widgetAction'));
+                that.$.on(eventType+'.humhub:widget:events '+eventType.toLowerCase+'.humhub:widget:events', function() {
+                    that.fire(eventType, null, false);
                 });
             }
         });

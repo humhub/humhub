@@ -203,6 +203,10 @@ class UploadInput extends JsWidget
 
             $files = Yii::$app->request->post($postSubmit);
 
+            if(!$files) {
+                return [];
+            }
+
             if(!is_array($files)) {
                 $files = [$files];
             }
