@@ -37,7 +37,7 @@ return array (
   'This overview contains a list of each registered user with actions to view, edit and delete users.' => 'Cet écran affiche la liste de tous les utilisateurs enregistrés et les commandes pour voir, modifier et supprimer des utilisateurs.',
   'User deletion process queued.' => 'Suppression de l\'utilisateur en cours.',
   'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'En utilisant cette option, toutes contribution (e.g contenus, commentaires, ou j\'aime) de cet utilisateur serra supprimé définitivement. ',
-  'View profile' => 'Voir le profile',
+  'View profile' => 'Voir le profil',
   'You cannot delete yourself!' => 'Vous ne pouvez vous supprimer vous même !',
   'never' => 'jamais',
 );

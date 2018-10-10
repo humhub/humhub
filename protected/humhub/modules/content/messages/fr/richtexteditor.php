@@ -22,7 +22,7 @@ return array (
   'Insert column after' => 'Insérer une colonne après',
   'Insert column before' => 'Insérer une colonne avant',
   'Insert horizontal rule' => 'Insérer une ligne horizontale',
-  'Insert image' => 'Insérer l\'image',
+  'Insert image' => 'Insérer une image',
   'Insert row after' => 'Insérer une ligne après',
   'Insert row before' => 'Insérer une ligne avant',
   'Insert table' => 'Insérer une table',
