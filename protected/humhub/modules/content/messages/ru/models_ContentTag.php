@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Tag' => '',
-    'The given name is already in use.' => '',
+    'Tag' => 'Ярлык',
+    'The given name is already in use.' => 'Данное имя уже используется.',
 ];

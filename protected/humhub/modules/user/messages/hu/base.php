@@ -15,7 +15,7 @@ return array (
   'Delete Account' => 'Fiók törlése',
   'Delete profile image' => 'Profilkép törlése',
   'Disconnect account' => 'Fiók szétkapcsolása',
-  'E-Mail is already in use! - Try forgot password.' => '',
+  'E-Mail is already in use! - Try forgot password.' => 'Email már használatban van! Próbáld meg az elfelejtett jelszót.',
   'Email' => 'Email',
   'General' => 'Általános',
   'Here you can connect to external service provider for using external services like a single sign on authentication.' => '',
