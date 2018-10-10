@@ -17,13 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Confirm</strong> topic deletion' => '',
-    '<strong>Edit</strong> Topic' => '',
-    '<strong>Manage</strong> Topics' => '',
-    '<strong>Topic</strong> Overview' => '',
-    'Add Topic' => '',
-    'Do you really want to delete this topic?' => '',
-    'Topic' => '',
-    'Topic has been deleted!' => '',
-    'Topics' => '',
+    '<strong>Confirm</strong> topic deletion' => '<strong>Подтверждение</strong> удаления темы',
+    '<strong>Edit</strong> Topic' => '<strong>Изменение</strong> Темы',
+    '<strong>Manage</strong> Topics' => '<strong>Управление</strong> Темами',
+    '<strong>Topic</strong> Overview' => '<strong>Тема</strong> Обзор',
+    'Add Topic' => 'Добавить Тему',
+    'Do you really want to delete this topic?' => 'Вы уверены, что хотите удалить тему?',
+    'Topic' => 'Тема',
+    'Topic has been deleted!' => 'Тема была удалена!',
+    'Topics' => 'Темы',
 ];

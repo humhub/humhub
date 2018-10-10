@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Contents' => '',
-    'Whenever a new content (e.g. post) has been created.' => '',
+    'Contents' => 'Содержание',
+    'Whenever a new content (e.g. post) has been created.' => 'Всякий раз, когда создается новый контент (например, пост).',
 ];

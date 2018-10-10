@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Users has been invited.' => '',
+    'Users has been invited.' => 'Пользователи были приглашены.',
 ];

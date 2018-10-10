@@ -18,7 +18,7 @@
  */
 return [
     'Open the notification dropdown menu' => '',
-    'Show all notifications' => '',
+    'Show all notifications' => 'Показать все уведомления',
     'Mark all as seen' => 'Пометить как прочитанное',
     'Notifications' => 'Уведомления',
     'There are no notifications yet.' => 'Пока нет уведомлений.',
