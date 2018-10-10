@@ -220,10 +220,20 @@ humhub.module('comment', function (module, require, $) {
         });
     };
 
+    var scrollActive = function(evt) {
+        evt.$trigger.parent().addClass('scrollActive')
+    };
+
+    var scrollInactive = function(evt) {
+        evt.$trigger.parent().removeClass('scrollActive');
+    };
+
     module.export({
         init: init,
         Comment: Comment,
         Form: Form,
+        scrollActive: scrollActive,
+        scrollInactive: scrollInactive,
         showAll: showAll,
         showMore: showMore,
         toggleComment: toggleComment

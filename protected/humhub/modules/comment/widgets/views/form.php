@@ -26,7 +26,11 @@ $submitUrl = Url::to(['/comment/comment/post']);
             'layout' => RichTextField::LAYOUT_INLINE,
             'pluginOptions' => ['maxHeight' => '300px'],
             'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'),
-            'name' => 'message'
+            'name' => 'message',
+            'events' => [
+                'scroll-active' => 'comment.scrollActive',
+                'scroll-inactive' => 'comment.scrollInactive'
+            ]
         ]); ?>
 
         <div class="comment-buttons">
