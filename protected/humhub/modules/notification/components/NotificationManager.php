@@ -64,6 +64,7 @@ class NotificationManager
     public function sendBulk(BaseNotification $notification, $userQuery)
     {
         $processed = [];
+        /** @var User $user */
         foreach ($userQuery->each() as $user) {
 
             if ($notification->suppressSendToOriginator && $notification->isOriginator($user)) {
@@ -71,6 +72,10 @@ class NotificationManager
             }
 
             if (in_array($user->id, $processed)) {
+                continue;
+            }
+
+            if ($user->status != User::STATUS_ENABLED) {
                 continue;
             }
 
