@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ab0519aaab9316c7e13fcb134ad8b179",
-    "content-hash": "a327ad5900c5d79d65d2fba92d89b795",
+    "hash": "61be65de1816248e0396cb748b17fe24",
+    "content-hash": "20fc7d5ac78d51f333d8012029d4ad8d",
     "packages": [
         {
             "name": "bower-asset/animate.css",
@@ -2517,10 +2517,10 @@
         },
         {
             "name": "npm-asset/humhub-prosemirror-richtext",
-            "version": "1.0.11",
+            "version": "1.0.12",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-1.0.11.tgz",
+                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-1.0.12.tgz",
                 "reference": null,
                 "shasum": null
             },

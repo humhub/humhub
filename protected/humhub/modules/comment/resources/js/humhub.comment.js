@@ -221,11 +221,11 @@ humhub.module('comment', function (module, require, $) {
     };
 
     var scrollActive = function(evt) {
-        evt.$trigger.parent().addClass('scrollActive')
+        evt.$trigger.closest('.comment-create-input-group').addClass('scrollActive')
     };
 
     var scrollInactive = function(evt) {
-        evt.$trigger.parent().removeClass('scrollActive');
+        evt.$trigger.closest('.comment-create-input-group').removeClass('scrollActive');
     };
 
     module.export({
