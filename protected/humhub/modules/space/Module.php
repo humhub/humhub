@@ -43,6 +43,18 @@ class Module extends \humhub\components\Module
     public $disableFollow = false;
 
     /**
+     * @var int maximum space url length
+     * @since 1.3
+     */
+    public $maximumSpaceUrlLength = 45;
+
+    /**
+     * @var int minimum space url length
+     * @since 1.3
+     */
+    public $minimumSpaceUrlLength = 2;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
