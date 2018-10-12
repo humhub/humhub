@@ -1,6 +1,12 @@
 HumHub Change Log
 =================
 
+
+1.3.6  (Unreleased)
+---------------------------
+- Enh: Added maximum username length & maximum/minimum space url length (rekollekt)
+
+
 1.3.6  (October 11, 2018)
 ---------------------------
 - Fix: Richtext loses mark state
