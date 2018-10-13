@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Allows the user to create private content' => '',
-    'Create private content' => '',
-    'Allows the user to create public content' => 'Разрешить пользователям создавать публичный контент',
-    'Allows the user to invite new members to the space' => 'Разрешает пользователям приглашать других  в пространство',
+    'Allows the user to create private content' => 'Разрешает пользователю создавать закрытый контент',
+    'Create private content' => 'Создание приватного контента',
+    'Allows the user to create public content' => 'Разрешает пользователю создавать публичный контент',
+    'Allows the user to invite new members to the space' => 'Разрешает пользователю приглашать других в пространство',
     'Can create hidden (private) spaces.' => 'Можно создавать скрытые (приватные) пространства.',
     'Can create public visible spaces. (Listed in directory)' => 'Можно создавать публичные пространства.',
     'Create private space' => 'Создать приватное пространство',

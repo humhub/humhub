@@ -16,6 +16,18 @@ body {
   }
 }
 
+@media (max-width: 920px) {
+  body {
+    padding-top: 115px;
+  }
+}
+
+@media (min-width:768px) and (max-width:920px) {
+  body {
+    padding-top: 120px;
+  }
+}
+
 a:hover {
   text-decoration: none;
 }
@@ -41,15 +53,33 @@ hr {
   position: inherit;
 }
 
-.layout-nav-container {
+.layout-content-container, .layout-nav-container {
   padding: 0 10px 0 15px;
 }
 
-.layout-content-container {
-  padding: 0 10px;
-}
 .layout-sidebar-container{
-  padding: 0 15px 0 10px;
+  padding: 0 15px 0 5px;
+}
+
+@media (max-width:768px){
+  .layout-nav-container {
+    .left-navigation {
+      margin-bottom:0px;
+    }
+  }
+
+  .layout-nav-container, .layout-content-container {
+    padding: 0px 15px;
+  }
+}
+
+@media (min-width:768px) and (max-width:920px) {
+  #topbar-first, #topbar-second{
+    .container {
+      padding-left:10px;
+      padding-right:20px;
+    }
+  }
 }
 
 

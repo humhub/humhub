@@ -3,7 +3,7 @@ return array (
   'All created contents of this user will be <b>deleted</b>.' => '',
   'Are you sure you want to delete this user?' => '',
   'Cancel' => 'Avbryt',
-  'Confirm user deletion' => '',
-  'Delete user' => '',
+  'Confirm user deletion' => 'Bekräfta radering',
+  'Delete user' => 'Radera användare',
   'If this user is owner of some spaces, <b>you</b> will automatically become owner of these spaces.' => '',
 );

@@ -1,25 +1,85 @@
 /**
- * Thid module can be used by humhub sub modules for registering handlers and serves as core module for executing actions triggered in the gui.
+ * This module can be used by humhub sub modules for registering handlers and serves as core module for executing actions triggered in the gui.
  * A module can either register global handler by using the registerHandler functions or use the component mechanism.
+ *
+ * @namespace humhub.modules.action
  */
 humhub.module('action', function(module, require, $) {
+
+    /** @module action **/
+
     var _handler = {};
     var object = require('util').object;
     var string = require('util').string;
     var loader = require('ui.loader');
     var modal = require('ui.modal', true);
 
+    /**
+     * Used for non blocked actions.
+     *
+     * @constant module:action~BLOCK_NONE
+     * @type {string}
+     */
     var BLOCK_NONE = 'none';
+
+    /**
+     * Used for synchronous blocking of actions.
+     *
+     * @constant module:action~BLOCK_NONE
+     * @type {string}
+     */
     var BLOCK_SYNC = 'sync';
+
+    /**
+     * Used for asynchronous action blocking.
+     *
+     * @constant module:action~BLOCK_NONE
+     * @type {string}
+     */
     var BLOCK_ASYNC = 'async';
+
+    /**
+     * Used for manual action blocking.
+     *
+     * @constant module:action~BLOCK_NONE
+     * @type {string}
+     */
     var BLOCK_MANUAL = 'manual';
 
     var DATA_COMPONENT = 'action-component';
     
     var processes = {};
 
+    /**
+     * Base class for all action based components and widgets.
+     *
+     * This class uses the `object.extendable` feature which enables classes to be extended by calling:
+     *
+     * ```
+     * var Widget = Component.extend();
+     *
+     * or with custom init logic
+     *
+     * var Widget = Component.extend(function(node, options) {
+     *    Component.call(this, node, options);
+     *    //...
+     * });
+     * ```
+     *
+     * @class module:action.Component
+     * @property {jQuery} $
+     */
     var Component = object.extendable({
         name: 'Component',
+
+        /**
+         * Initializes the component and appends the component instance to the node as `data-component`.
+         * Sub classes should call the parent constructor if providing an own `init` function.
+         *
+         * @function module:action.Component.init
+         * @param {jQuery|Node} node
+         * @param {array} options
+         */
         init: function(node, options) {
             if(!node) {
                 return;
@@ -49,6 +109,14 @@ humhub.module('action', function(module, require, $) {
         }).join(',');
     };
 
+    /**
+     * Searches for the given data setting and forwards the search call to the parent component if not found.
+     *
+     * @function module:action.Component.data
+     * @param {string} dataSuffix
+     * @param {*} defaultValue
+     * @returns {*}
+     */
     Component.prototype.data = function(dataSuffix, defaultValue) {
         var result = this.$.data(dataSuffix);
         if(!result) {
@@ -60,15 +128,38 @@ humhub.module('action', function(module, require, $) {
         return object.defaultValue(result, defaultValue);
     };
 
+    /**
+     * Sets the given data setting to the root node.
+     *
+     * @function module:action.Component.setData
+     * @param {string} key
+     * @param {string} value
+     */
     Component.prototype.setData = function(key, value) {
         this.$.data(key, value);
     };
 
+    /**
+     * Searches for a parent component.
+     *
+     * @function module:action.Component.parent
+     * @returns {Component}
+     */
     Component.prototype.parent = function() {
         var $parent = this.$.parent().closest(Component._selector);
         return Component.closest($parent);
     };
 
+    /**
+     * Searches for component by means of a given dom selector. If includeSelf is set to true
+     * the Component itself is included if it matches the given selector.
+     *
+     * @function module:action.Component.find
+     * @param {jQuery|Node}node
+     * @param {string} selector
+     * @param {boolean} includeSelf
+     * @returns {Component[]}
+     */
     Component.find = function(node, selector, includeSelf) {
         var result = [];
         var $node = (node instanceof $) ? node : $(node);
@@ -87,29 +178,51 @@ humhub.module('action', function(module, require, $) {
         return result;
     };
 
+    /**
+     * Returns child components which do match the given dom selector.
+     *
+     * @function module:action.Component.children
+     * @param {string} selector
+     * @returns {Component[]}
+     */
     Component.prototype.children = function(selector) {
         return Component.find(this.$, selector);
     };
 
+    /**
+     * @param action
+     * @returns {boolean}
+     * @deprecated
+     */
     Component.prototype.hasAction = function(action) {
         return this.actions().indexOf(action) >= 0;
     };
 
+    /**
+     * @returns {boolean}
+     * @deprecated
+     */
     Component.prototype.actions = function() {
         return [];
     };
 
-    Component.prototype.trigger = function() {
-        return this.$.trigger();
+    /**
+     * Triggers a given evt on the root node.
+     *
+     * @returns {jQuery} root
+     */
+    Component.prototype.trigger = function(eventType, extraParameters) {
+        return this.$.trigger(eventType, extraParameters);
     };
 
 
     /**
      * Finds the closest component of the given node (including the node itself).
-     * 
-     * @param {type} node
-     * @param {type} options
-     * @returns {undefined}
+     *
+     * @function module:action.Component.closest
+     * @param {jQuery|Node} node
+     * @param {Array} options
+     * @returns {Component}
      */
     Component.closest = function(node, options) {
         //Determine closest component node (parent or or given node)
@@ -154,9 +267,11 @@ humhub.module('action', function(module, require, $) {
 
     /**
      * Creates a component instance out of the given node.
-     * @param {type} node
-     * @param {type} options
-     * @returns {undefined}
+     *
+     * @function module:action.Component.instance
+     * @param {jQuery|Node} node
+     * @param {Array} options
+     * @returns {Component}
      */
     Component.instance = function(node, options) {
         //Determine closest component node (parent or or given node)
@@ -241,6 +356,7 @@ humhub.module('action', function(module, require, $) {
             //Binding default action types
             this.bindAction(document, 'click', '[data-action-click]');
             this.bindAction(document, 'change', '[data-action-change]');
+            this.bindAction(document, 'keypress', '[data-action-keypress]', false);
         }
 
         updateBindings();
@@ -254,7 +370,8 @@ humhub.module('action', function(module, require, $) {
      * 
      * The handler can access additional event information through the argument event.
      * The this object within the handler will be the trigger of the event.
-     * 
+     *
+     * @function module:action.registerHandler
      * @param {string} id handler id should contain the module namespace
      * @param {function} handler function with one event argument
      * @returns {undefined}
@@ -291,7 +408,7 @@ humhub.module('action', function(module, require, $) {
      * ActionBinding instances are used to store the binding settings and handling
      * binding events.
      * 
-     * @param {type} cfg
+     * @param {type} options
      * @returns {humhub_action_L5.ActionBinding}
      */
     var ActionBinding = function(options) {
@@ -303,6 +420,7 @@ humhub.module('action', function(module, require, $) {
         this.event = options.event;
         this.selector = options.selector;
         this.directHandler = options.directHandler;
+        this.preventDefault = options.preventDefault
     };
 
     /**
@@ -310,17 +428,17 @@ humhub.module('action', function(module, require, $) {
      * 
      * This handler searches for a valid action handler, by checking the following handler types in the given order:
      * 
-     *  - Direct-ActionHandler is called if a directHandler was given when binding the action.
-     *  - Component-ActionHandler is called if $trigger is part of a component and the component handler can be resolved
-     *  - Global-ActionHandler is called if we find a handler in the _handler array. See registerHandler
-     *  - Namespace-ActionHandler is called if we can resolve an action by namespace e.g: data-action-click="myModule.myAction"
+     *  - **Direct-ActionHandler** is called if a directHandler was given when binding the action.
+     *  - **Component-ActionHandler** is called if $trigger is part of a component and the component handler can be resolved
+     *  - **Global-ActionHandler** is called if we find a handler in the _handler array. See registerHandler
+     *  - **Namespace-ActionHandler** is called if we can resolve an action by namespace e.g: data-action-click="myModule.myAction"
      * 
      * Once triggered the handler can be blocked to prevent multiple click events. The block logic can be configured by setting
      * the data-action-block or more specific data-action-<eventType>-block on the $trigger node. The following block values are available:
      * 
-     *  - 'none': No blocking at all
-     *  - 'sync': Synchronous blocking, the block will be removed after the actionhandler was executed.
-     *  - 'async': Asynchronous the block has to be manually removed by calling event.finish.
+     *  - `none`: No blocking at all
+     *  - `sync`: Synchronous blocking, the block will be removed after the actionhandler was executed.
+     *  - `async`: Asynchronous the block has to be manually removed by calling event.finish.
      *  
      *  If the action is provided with an url or is an submit action (data-action-submit or type="submit") the block value is set to 'async' by default,
      *  otherwise its set to 'sync'.
@@ -345,7 +463,7 @@ humhub.module('action', function(module, require, $) {
             processes[this.data($trigger, 'process')] = $trigger;
         }
 
-        if(options.originalEvent) {
+        if(this.preventDefault !== false && options.originalEvent) {
             options.originalEvent.preventDefault();
         }
 
@@ -573,32 +691,43 @@ humhub.module('action', function(module, require, $) {
 
 
     /**
-     * Binds an delegate wrapper event handler to the parent node. This is used to detect action handlers like 
-     * data-action-click events and map the call to either a stand alone handler or a content
+     * Binds a delegate wrapper event handler to the parent node. This is used to detect action handlers like
+     * `data-action-click` events and map the call to either a stand alone handler or a content
      * action handler. The trigger of a contentAction has to be contained in a data-content-base node.
      * 
      * This function uses the jQuery event delegation:
-     * 
+     *
+     * ```
      *  $(parent).on(type, selector, function(){...});
+     * ```
      * 
      * This assures the event binding for dynamic content (ajax content etc..)
-     * 
-     * @see {@link humhub.modules.content.handleAction}
+     *
+     * @function module:action.bindAction
      * @param {Node|jQuery} parent - the event target
      * @param {string} type - event type e.g. click, change,...
      * @param {string} selector - jQuery selector 
-     * @param {string} selector - jQuery selector 
+     * @param {function} directHandler
+     * @param {boolean} preventDefault
      */
-    var bindAction = function(parent, type, selector, directHandler) {
+    var bindAction = function(parent, type, selector, directHandler, preventDefault) {
         parent = parent || document;
         var $parent = (parent instanceof $) ? parent : $(parent);
         var actionEvent = type + '.humhub-action';
+
+        if(object.isBoolean(directHandler)) {
+            preventDefault = directHandler;
+            directHandler = null;
+        }
+
+        preventDefault = object.isDefined(preventDefault) ? preventDefault : true;
 
         var actionBinding = new ActionBinding({
             parent: parent,
             type: type,
             event: actionEvent,
             selector: selector,
+            preventDefault: preventDefault,
             directHandler: directHandler
         });
 
@@ -606,7 +735,10 @@ humhub.module('action', function(module, require, $) {
         actionBindings.push(actionBinding);
 
         $parent.off(actionEvent).on(actionEvent, selector, function(evt) {
-            evt.preventDefault();
+            var test = evt.isDefaultPrevented();
+            if(preventDefault) {
+                evt.preventDefault();
+            }
             var $this = $(this);
             
             // Get sure we don't call the handler twice if the event was already handled by the directly attached handler.
@@ -632,10 +764,11 @@ humhub.module('action', function(module, require, $) {
      * event to $trigger.
      * 
      * e.g manually trigger a custom data-action-done action of an ui component.
-     * 
-     * @param {type} $trigger
-     * @param {type} type
-     * @param {type} originalEvent
+     *
+     * @function module:action.trigger
+     * @param {jQuery} $trigger
+     * @param {string} type
+     * @param {Array} options
      * @returns {undefined}
      */
     var trigger = function($trigger, type, options) {

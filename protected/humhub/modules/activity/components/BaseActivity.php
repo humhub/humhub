@@ -77,10 +77,11 @@ abstract class BaseActivity extends SocialActivity
      * Creates an activity model and determines the contentContainer/visibility
      *
      * @throws \yii\base\Exception
+     * @return static
      */
     public function create()
     {
-        if ($this->moduleId == '') {
+        if (empty($this->moduleId)) {
             throw new InvalidConfigException('No moduleId given!');
         }
 
@@ -89,6 +90,8 @@ abstract class BaseActivity extends SocialActivity
         }
 
         $this->saveModelInstance();
+
+        return $this;
     }
 
     /**

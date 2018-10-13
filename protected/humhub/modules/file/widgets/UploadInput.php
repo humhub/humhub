@@ -3,7 +3,9 @@
 namespace humhub\modules\file\widgets;
 
 use Yii;
+use yii\base\Model;
 use yii\helpers\Html;
+use humhub\modules\file\models\File;
 use humhub\widgets\JsWidget;
 
 /**
@@ -53,15 +55,27 @@ class UploadInput extends JsWidget
     public $attribute;
 
     /**
-     * Can be used to overwrite the default result input name files[] with a model
-     * bound attribute formName.
-     * 
+     * Name of the upload input field default files[].
+     *
      * @var string 
      */
-    public $name;
+    public $name = 'files[]';
+
+    /**
+     * Will automatically add posted files with the given $submitName to the form as hidden input.
+     *
+     * This sometimes is required for forms with backend validation. Note in case of a successful submission the files
+     * will also be added if the form is included visible in the resulting view.
+     *
+     * @var bool
+     * @since 1.3.5
+     */
+    public $postState = false;
     
     /**
-     * Defines the input name of the submitted array field containing the result guids.
+     * Defines the input name of attached file list items.
+     *
+     * If no model is given the default name is `fileList[]`
      * 
      * @var string 
      */
@@ -132,16 +146,83 @@ class UploadInput extends JsWidget
     public $multiple = true;
 
     /**
-     * @var bool defines if the file should be attached to the given §model right after upload
+     * @var bool defines if the file should be attached to the given §model right after upload, note this only works for
+     * already existing models
      */
     public $attach = true;
+
+    public function init()
+    {
+        parent::init();
+
+        if(!$this->submitName) {
+            $this->submitName = ($this->model && $this->attribute) ? $this->model->formName() . '[' . $this->attribute . ']' : self::DEFAULT_FORM_NAME;
+            if(!$this->single) {
+                $this->submitName .= '[]';
+            }
+        }
+    }
 
     /**
      * Draws the Upload Button output.
      */
     public function run()
     {
-        return Html::input('file', 'files[]', null, $this->getOptions());
+        $result = Html::input('file', $this->name, null, $this->getOptions());
+
+        if($this->postState) {
+            foreach (static::getSubmittedFiles($this->model, $this->attribute, $this->submitName) as $file) {
+                $result .= Html::hiddenInput($this->submitName, $file->guid);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns submitted files for the given settings, either bei fetching them directly from the
+     * request in case of form-name based uploads or from the model in case of model based uploads.
+     *
+     * @param $model Model
+     * @param $attribute string
+     * @param $submitName string
+     * @return array
+     * @since 1.3.5
+     */
+    public static function getSubmittedFiles($model, $attribute, $submitName)
+    {
+        $files = [];
+        if($model && $attribute) {
+            $files = Html::getAttributeValue($model, $attribute);
+        } else if($submitName) {
+            $postSubmit = $submitName;
+
+            if(static::endsWith('[]', $postSubmit)) {
+                $postSubmit = substr($postSubmit, 0, -2);
+            }
+
+            $files = Yii::$app->request->post($postSubmit);
+
+            if(!$files) {
+                return [];
+            }
+
+            if(!is_array($files)) {
+                $files = [$files];
+            }
+        }
+
+        $result = [];
+        foreach ($files as $file) {
+            $result[] = is_string($file) ? File::findOne(['guid' => $file]) : $file;
+        }
+
+        return $result;
+    }
+
+    private static function endsWith($needle, $haystack)
+    {
+        return substr($haystack, -strlen($needle)) === $needle;
     }
 
     public function getAttributes()
@@ -155,15 +236,6 @@ class UploadInput extends JsWidget
     public function getData()
     {
         $formSelector = ($this->form instanceof \yii\widgets\ActiveForm) ? '#' + $this->form->getId() : $this->form;
-        
-        if($this->submitName) {
-            $submitName = $this->submitName;
-        } else {
-            $submitName = ($this->model && $this->attribute) ? $this->model->formName() . '[' . $this->attribute . ']' : self::DEFAULT_FORM_NAME;
-            if(!$this->single) {
-                $submitName .= '[]';
-            }
-        }
 
         $result = [
             'upload-url' => $this->url,
@@ -172,7 +244,7 @@ class UploadInput extends JsWidget
             'upload-preview' => $this->preview,
             'upload-form' => $formSelector,
             'upload-single' => $this->single,
-            'upload-submit-name' => $submitName,
+            'upload-submit-name' => $this->submitName,
             'upload-hide-in-stream' => $this->hideInStream ? '1' : null
         ];
 
@@ -180,7 +252,7 @@ class UploadInput extends JsWidget
             $result['upload-hide-in-stream'] = '1';
         }
         
-        if ($this->model && $this->attach) {
+        if ($this->model instanceof \yii\db\ActiveRecord && $this->attach) {
             $result['upload-model'] = $this->model->className();
             $result['upload-model-id'] = $this->model->getPrimaryKey();
         }

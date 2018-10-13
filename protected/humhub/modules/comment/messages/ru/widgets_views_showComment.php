@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Cancel Edit' => '',
-    'Comment has been deleted' => '',
-    'Read full comment...' => '',
+    'Cancel Edit' => 'Отменить Изменение',
+    'Comment has been deleted' => 'Комментарий был удалён.',
+    'Read full comment...' => 'Прочитать полный комментарий...',
     '<strong>Confirm</strong> comment deleting' => '<strong>Подтвердите</strong> удаление комментария',
     'Cancel' => 'Отменить',
     'Delete' => 'Удалить',

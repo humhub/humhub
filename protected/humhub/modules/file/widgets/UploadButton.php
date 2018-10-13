@@ -43,7 +43,7 @@ class UploadButton extends UploadInput
      * @var type 
      */
     public $label = false;
-     
+
     /**
      * Draws the Upload Button output.
      */

@@ -1,5 +1,24 @@
 actor: Tester
 namespace: content
+coverage:
+    c3_url: 'http://localhost:8080/index-test.php'
+    enabled: true
+    remote: false
+    include:
+    - ../activities/*
+    - ../components/*
+    - ../controllers/*
+    - ../helpers/*
+    - ../interfaces/*
+    - ../live/*
+    - ../models/*
+    - ../notifications/*
+    - ../permissions/*
+    - ../views/*
+    - ../widgets/*
+    - ../Events.php
+    - ../Module.php
+
 settings:
     bootstrap: _bootstrap.php
     suite_class: \PHPUnit_Framework_TestSuite

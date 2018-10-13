@@ -8,6 +8,9 @@
 
 namespace humhub\modules\comment\models;
 
+use Yii;
+use yii\base\Exception;
+use yii\db\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\comment\activities\NewComment;
 use humhub\modules\comment\live\NewComment as NewCommentLive;
@@ -17,19 +20,14 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\post\models\Post;
-use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use Yii;
-use yii\base\Exception;
-use yii\base\InvalidConfigException;
-use yii\db\ActiveRecord;
+
 
 /**
  * This is the model class for table "comment".
  *
- * The followings are the available columns in table 'comment':
  * @property integer $id
  * @property string $message
  * @property integer $object_id
@@ -110,8 +108,13 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      */
     public function flushCache()
     {
-        Yii::$app->cache->delete('commentCount_' . $this->object_model . '_' . $this->object_id);
-        Yii::$app->cache->delete('commentsLimited_' . $this->object_model . '_' . $this->object_id);
+        static::flushCommentCache($this->object_model, $this->object_id);
+    }
+
+    public static function flushCommentCache($model, $id)
+    {
+        Yii::$app->cache->delete('commentCount_' . $model . '_' . $id);
+        Yii::$app->cache->delete('commentsLimited_' . $model . '_' . $id);
     }
 
     /**
@@ -120,13 +123,15 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      * @param bool $insert
      * @param array $changedAttributes
      * @return bool
+     * @throws Exception
      */
     public function afterSave($insert, $changedAttributes)
     {
         $this->flushCache();
-
-        // Creating activity
-        NewComment::instance()->about($this)->save();
+        
+        if($insert) {
+            NewComment::instance()->about($this)->create();
+        }
 
         // Handle mentioned users
         // Execute before NewCommentNotification to avoid double notification when mentioned.

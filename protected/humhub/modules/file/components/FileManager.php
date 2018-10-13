@@ -56,6 +56,10 @@ class FileManager extends Component
                 continue;
             }
 
+            if($file->isAssignedTo($this->record)) {
+                continue;
+            }
+
             if ($file->isAssigned() && !$steal) {
                 Yii::warning('Attempted to steal file: ' . $file->guid);
                 continue;

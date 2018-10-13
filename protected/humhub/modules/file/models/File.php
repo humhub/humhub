@@ -8,8 +8,8 @@
 
 namespace humhub\modules\file\models;
 
+use humhub\components\ActiveRecord;
 use Yii;
-use yii\web\UploadedFile;
 use yii\helpers\Url;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
@@ -168,13 +168,23 @@ class File extends FileCompat
     }
 
     /**
-     * Checks if this file record is assigned and used by record
+     * Checks if this file record is already attached to record.
      *
      * @return boolean is whether in use or not
      */
     public function isAssigned()
     {
         return ($this->object_model != "");
+    }
+
+    /**
+     * Checks if this file is attached to the given record
+     * @param ActiveRecord $record
+     * @return bool
+     */
+    public function isAssignedTo(ActiveRecord $record)
+    {
+        return $this->object_model === get_class($record) && $this->object_id === $record->getPrimaryKey();
     }
 
     /**

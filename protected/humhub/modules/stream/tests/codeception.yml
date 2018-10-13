@@ -1,5 +1,15 @@
 actor: Tester
 namespace: stream
+coverage:
+    c3_url: 'http://localhost:8080/index-test.php'
+    enabled: true
+    remote: false
+    include:
+    - ../actions/*
+    - ../helpers/*
+    - ../models/*
+    - ../widgets/*
+    - ../Module.php
 settings:
     bootstrap: _bootstrap.php
     suite_class: \PHPUnit_Framework_TestSuite

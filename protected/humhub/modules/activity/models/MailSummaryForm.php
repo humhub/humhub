@@ -117,7 +117,7 @@ class MailSummaryForm extends Model
     {
         return [
             MailSummary::INTERVAL_NONE => Yii::t('ActivityModule.base', 'Never'),
-            MailSummary::INTERVAL_HOURY => Yii::t('ActivityModule.base', 'Hourly'),
+            MailSummary::INTERVAL_HOURLY => Yii::t('ActivityModule.base', 'Hourly'),
             MailSummary::INTERVAL_DAILY => Yii::t('ActivityModule.base', 'Daily'),
             MailSummary::INTERVAL_WEEKLY => Yii::t('ActivityModule.base', 'Weekly'),
         ];
@@ -159,10 +159,12 @@ class MailSummaryForm extends Model
 
         $this->interval = $settingsManager->get('mailSummaryInterval');
         $this->limitSpacesMode = $settingsManager->get('mailSummaryLimitSpacesMode');
-        $this->limitSpaces = explode(',', $settingsManager->get('mailSummaryLimitSpaces'));
+        $mailSummaryLimitSpaces = $settingsManager->get('mailSummaryLimitSpaces');
+        $this->limitSpaces = (!empty($mailSummaryLimitSpaces)) ? explode(',', $mailSummaryLimitSpaces) : [];
 
         // Since we store only disabled activities, we need to enable the difference
-        $suppressedActivities = explode(',', $settingsManager->get('mailSummaryActivitySuppress'));
+        $mailSummaryActivitySuppress = $settingsManager->get('mailSummaryActivitySuppress');
+        $suppressedActivities = (!empty($mailSummaryActivitySuppress)) ? explode(',', $mailSummaryActivitySuppress) : [];
         $this->activities = array_diff(array_keys($this->getActivitiesArray()), $suppressedActivities);
 
         return true;

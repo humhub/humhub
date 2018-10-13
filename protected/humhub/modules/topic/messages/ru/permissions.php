@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Can add new topics' => '',
-    'Can edit and remove topics' => '',
+    'Can add new topics' => 'Возможность создавать новые темы',
+    'Can edit and remove topics' => 'Возможность изменять и удалять темы',
 ];

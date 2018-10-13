@@ -1,8 +1,52 @@
 HumHub Change Log
 =================
 
-1.3.3  Unreleased
---------------------------
+
+1.3.6  (Unreleased)
+---------------------------
+- Enh: Added maximum username length & maximum/minimum space url length (rekollekt)
+
+
+1.3.6  (October 11, 2018)
+---------------------------
+- Fix: Richtext loses mark state
+- Fix: New comment scroll behavior not used in edit comment
+- Chng: Updated `humhub-prosemirror-richtext` to v1.0.12
+- Fix #3322: Disabled users still receive emails notifications
+
+
+1.3.5  (October 10, 2018)
+---------------------------
+
+- Fix: Serialization of notifications without originator fails
+- Fix: Hide unapproved member activities
+- Fix #3313: Unable to deny invitation to private space
+- Fix: Added missing `parent::init()` to `humhub\modules\stream\widgets\StreamViewer`
+- Fix: Added PHP GD extension to the requirements (docs and selftest)
+- Fix: Comment edit triggers new activity
+- Fix: Fixed typo from `MailSummary::INTERVAL_HOURY` to `MailSummary::INTERVAL_HOURLY`
+- Enh: Added `humhub.modules.ui.filter.TextInput` and related `humhub\modules\ui\filter\widgets\TextFilterInput`
+- Enh: Enable `data-action-keypress` by default
+- Enh: Added `preventDefault` argument to `humhub.modules.action.bindAction` to disable prevent default behaviour for action events
+- Fix: Fix bootstrap-datepicker.en.min.js 404 (Not Found)
+- Fix: Comment form files not cleared
+- Enh: Added `humhub\modules\file\models\isAssignedTo($record)` argument in order to check if a File is attached to a specific record
+- Fix: rich-text mobile view wrong min-height calculation
+- Fix #3314: layout container width differences
+- Fix #3315: Exception on first login with ldap
+- Fix comment scroll overflows button
+- Fix widgetAction events case issue
+- Added `humhub.modules.util.string.capitalizeFirstLetter` and `lowerCaseFirstLetter`
+
+
+1.3.4  (September 25, 2018)
+---------------------------
+
+- Fix: Theme parent lookup cache causes installer crash
+
+
+1.3.3  (September 24, 2018)
+---------------------------
 
 - Fix: img overflow in markdown view
 - Enh: Added console command to list and change themes
@@ -20,6 +64,9 @@ HumHub Change Log
 - Fix: Space head count includes disabled user
 - Fix: Broken picker image alignment (acs-ferreira)
 - Fix: File handling in upgrade path between 1.0.x and 1.3.x 
+- Chng: Updated `humhub-prosemirror-richtext` to v1.0.10
+- Fix: File handling in upgrade path between 1.0.x and 1.3.x 
+
 
 1.3.2  (September 4, 2018)
 --------------------------

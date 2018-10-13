@@ -1,9 +1,6 @@
-/**
- *  
- * @param {type} param1
- * @param {type} param2
- */
 humhub.module('ui.status', function (module, require, $) {
+
+    /** @module ui/status **/
 
     var event = require('event');
     var log = require('log');
@@ -34,6 +31,9 @@ humhub.module('ui.status', function (module, require, $) {
     var AUTOCLOSE_SUCCESS = 2000;
     var AUTOCLOSE_WARN = 10000;
 
+    /**
+     * @class StatusBar
+     */
     var StatusBar = function () {
         this.$ = $(SELECTOR_ROOT);
     };

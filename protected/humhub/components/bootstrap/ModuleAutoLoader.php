@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -8,8 +7,10 @@
 
 namespace humhub\components\bootstrap;
 
+use humhub\components\Application;
 use Yii;
 use yii\base\BootstrapInterface;
+use yii\helpers\FileHelper;
 
 /**
  * ModuleAutoLoader automatically searches for config.php files in module folder an executes them.
@@ -19,8 +20,26 @@ use yii\base\BootstrapInterface;
 class ModuleAutoLoader implements BootstrapInterface
 {
     const CACHE_ID = 'module_configs';
+    const CONFIGURATION_FILE = 'config.php';
 
+    /**
+     * Bootstrap method to be called during application bootstrap stage.
+     * @param Application $app the application currently running
+     * @throws \yii\base\InvalidConfigException
+     */
     public function bootstrap($app)
+    {
+        $modules = self::locateModules();
+
+        Yii::$app->moduleManager->registerBulk($modules);
+    }
+
+    /**
+     * Find available modules
+     * @deprecated 1.3 replace call for locateModules with findModules and handle caching outside of method (e.g. in boostrap)
+     * @return array|bool|mixed
+     */
+    public static function locateModules()
     {
         $modules = Yii::$app->cache->get(self::CACHE_ID);
 
@@ -43,11 +62,52 @@ class ModuleAutoLoader implements BootstrapInterface
                     }
                 }
             }
-            if (!YII_DEBUG) {
-                Yii::$app->cache->set(self::CACHE_ID, $modules);
+            Yii::$app->cache->set(self::CACHE_ID, $modules);
+        }
+
+        return $modules;
+    }
+
+    /**
+     * Find all modules with configured paths
+     * @param array $paths
+     * @return array
+     */
+    public static function findModules($paths)
+    {
+        $folders = [];
+        foreach ($paths as $path) {
+            $folders = array_merge($folders, self::findModulesByPath($path));
+        }
+
+        $modules = [];
+        foreach ($folders as $folder) {
+            try {
+                /** @noinspection PhpIncludeInspection */
+                $modules[$folder] = require $folder . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
+            } catch (\Exception $e) {
+                Yii::error($e);
             }
         }
 
-        Yii::$app->moduleManager->registerBulk($modules);
+        return $modules;
+    }
+
+    /**
+     * Find all directories with a configuration file inside
+     * @param string $path
+     * @return array
+     */
+    public static function findModulesByPath($path)
+    {
+        $hasConfigurationFile = function ($path) {
+            return is_file($path . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE);
+        };
+
+        try {
+            return FileHelper::findDirectories(Yii::getAlias($path, true), ['filter' => $hasConfigurationFile, 'recursive' => false]);
+        } catch (yii\base\InvalidArgumentException $e) {
+            return [];
+        }
     }
 }

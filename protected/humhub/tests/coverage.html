@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+            crossorigin="anonymous"></script>
+    <style>
+        iframe {
+            border:0px;
+            width:100%;
+        }
+
+        h1.coverage-test-title {
+            font-size: 20px;
+            cursor: pointer;
+            background-color:silver;
+            border-radius:4px;
+            padding-left:5px;
+        }
+
+        /* Absolute Center Spinner */
+        .loading {
+            position: fixed;
+            z-index: 999;
+            height: 2em;
+            width: 2em;
+            overflow: show;
+            margin: auto;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+
+        /* Transparent Overlay */
+        .loading:before {
+            content: '';
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white ;
+        }
+
+        /* :not(:required) hides these rules from IE9 and below */
+        .loading:not(:required) {
+            /* hide "loading..." text */
+            font: 0/0 a;
+            color: transparent;
+            text-shadow: none;
+            background-color: transparent;
+            border: 0;
+        }
+
+        .loading:not(:required):after {
+            content: '';
+            display: block;
+            font-size: 10px;
+            width: 1em;
+            height: 1em;
+            margin-top: -0.5em;
+            -webkit-animation: spinner 1500ms infinite linear;
+            -moz-animation: spinner 1500ms infinite linear;
+            -ms-animation: spinner 1500ms infinite linear;
+            -o-animation: spinner 1500ms infinite linear;
+            animation: spinner 1500ms infinite linear;
+            border-radius: 0.5em;
+            -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+            box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+        }
+
+        /* Animation */
+
+        @-webkit-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+        @-moz-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+        @-o-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <script>
+        $(function() {
+
+            var modules = ['Activity', 'Admin', 'Comment', 'Content', 'Dashboard', 'Directory',
+                'File', 'Friendship', 'Installer', 'Like', 'Live', 'Notification', 'Post',
+                'Queue', 'Search', 'Space', 'Stream', 'Topic', 'Tour', 'UI', 'User'];
+
+            var promises = [];
+
+            modules.forEach(function(module) {
+                promises.push(new Promise(function(resolve, reject) {
+                    var $iframe = $('<iframe>').attr({src: '../modules/'+module.toLocaleLowerCase()+'/tests/codeception/_output/coverage/index.html'});
+                    $iframe[0].onload = function() {
+                        resolve();
+                    };
+                    $('body').append('<h1 class="coverage-test-title">'+module+'</h1>');
+                    var $div = $('<div class="coverage-result">');
+                    $div.append($iframe);
+                    $('body').append($div);
+                }));
+            });
+
+            $('.coverage-test-title').on('click', function() {
+                $(this).next('.coverage-result').toggle();
+            });
+
+            Promise.all(promises).then(function() {
+                $('iframe').each(function() {
+                    var title = $(this).contents().find('title').text();
+                    if(title.indexOf('404') >= 0) {
+                        var $title = $(this).parent().prev('.coverage-test-title');
+                        $title.text($title.text()+' (Not Found)');
+                        $(this).replaceWith('<div style="display:none">Not found!</div>');
+                    } else {
+                        var $iframeContent = $(this).contents();
+                        var td = $iframeContent.find('tbody').find('tr:first').children('td').eq(2);
+                        var $title = $(this).parent().prev('.coverage-test-title');
+                        $title.text($title.text()+' '+$(td).text());
+                        $(this).height($iframeContent.outerHeight());
+                        $(this).parent().hide();
+                    }
+                });
+                $('.loading').hide();
+            });
+        });
+
+        var loadError = function() {
+            alert('asdf');
+        }
+    </script>
+</head>
+<body>
+<div class="loading">Loading&#8230;</div>
+</body>
+</html>

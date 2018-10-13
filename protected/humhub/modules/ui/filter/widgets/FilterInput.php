@@ -57,7 +57,7 @@ class FilterInput extends Widget
     public $multiple = false;
 
     /**
-     * @var string sets an identifyer for this input type and is added as data-filter-type
+     * @var string sets an identifier for this input type and is added as data-filter-type
      */
     public $type;
 

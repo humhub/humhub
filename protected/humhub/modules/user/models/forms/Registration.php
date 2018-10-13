@@ -8,14 +8,14 @@
 
 namespace humhub\modules\user\models\forms;
 
+use humhub\compat\HForm;
+use humhub\modules\user\models\Group;
+use humhub\modules\user\models\GroupUser;
+use humhub\modules\user\models\Password;
+use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\ArrayHelper;
-use humhub\compat\HForm;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\Group;
-use humhub\modules\user\models\Profile;
-use humhub\modules\user\models\Password;
-use humhub\modules\user\models\GroupUser;
 
 /**
  * Description of Registration
@@ -173,11 +173,11 @@ class Registration extends HForm
             $groupFieldType = "hidden";
             $defaultUserGroup = $groupModels[0]->id;
         }
-        
-        if(!$defaultUserGroup && empty($groupModels)) {
+
+        if (!$defaultUserGroup && empty($groupModels)) {
             $groupFieldType = "hidden";
         }
-        
+
         return [
             'type' => 'form',
             'elements' => [
@@ -254,6 +254,8 @@ class Registration extends HForm
             // Save User Profile
             $this->models['Profile']->user_id = $this->models['User']->id;
             $this->models['Profile']->save();
+
+            $this->models['User']->populateRelation('profile', $this->models['Profile']);
 
             if ($this->models['GroupUser']->validate()) {
                 $this->models['GroupUser']->user_id = $this->models['User']->id;

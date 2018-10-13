@@ -4,7 +4,7 @@ return array (
   'Remove from space' => 'Ta bort från nätverk',
   'Show all' => 'Visa alla',
   'Space owner' => 'Ägare av nätverk',
-  'The url contains illegal characters!' => 'Url:en innehåller ogiltliga tecken!',
+  'The url contains illegal characters!' => 'Url innehåller ogiltliga tecken!',
   'Transfer ownership' => 'Flytta ägarskap',
   'e.g. example for {baseUrl}/s/example' => '',
   'the default start page of this space for members' => '',

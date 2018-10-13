@@ -19,7 +19,7 @@ class Yii extends \yii\BaseYii
  * Used for properties that are identical for both WebApplication and ConsoleApplication
  * @property-read \humhub\components\ModuleManager $moduleManager
  * @property-read \humhub\components\i18n\I18N $i18n
- * @property-read  \humhub\components\mail\Mailer $mailer
+ * @property-read \humhub\components\mail\Mailer $mailer
  * @property-read \humhub\modules\ui\view\components\View $view
  * @property-read \humhub\components\SettingsManager $settings
  * @property-read \humhub\modules\notification\components\NotificationManager $notification

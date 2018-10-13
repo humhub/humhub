@@ -32,7 +32,7 @@ class Events extends BaseObject
      */
     public static function onCronHourlyRun($event)
     {
-        Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_HOURY]));
+        Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_HOURLY]));
     }
 
     /**

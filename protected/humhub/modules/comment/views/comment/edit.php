@@ -24,8 +24,13 @@ $submitUrl = Url::to(['/comment/comment/edit', 'id' => $comment->id, 'contentMod
             <?= $form->field($comment, 'message')->widget(RichTextField::class, [
                 'id' => 'comment_input_'.$comment->id,
                 'layout' => RichTextField::LAYOUT_INLINE,
+                'pluginOptions' => ['maxHeight' => '300px'],
                 'placeholder' => Yii::t('CommentModule.views_edit', 'Edit your comment...'),
-                'focus' => true
+                'focus' => true,
+                'events' => [
+                    'scroll-active' => 'comment.scrollActive',
+                    'scroll-inactive' => 'comment.scrollInactive'
+                ]
             ])->label(false) ?>
 
             <div class="comment-buttons">

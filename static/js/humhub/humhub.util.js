@@ -223,6 +223,21 @@ humhub.module('util', function(module, require, $) {
             }
             return val.indexOf(suffix, val.length - suffix.length) !== -1;
         },
+        capitalizeFirstLetter: function capitalizeFirstLetter(s) {
+            if(!s || !s.length) {
+                return s;
+            }
+
+            return s.charAt(0).toUpperCase() + s.slice(1);
+        },
+        lowerCaseFirstLetter: function capitalizeFirstLetter(s) {
+            if(!s || !s.length) {
+                return s;
+            }
+
+            return s.charAt(0).toLowerCase() + s.slice(1);
+        },
+
         /* @deptecated use encode */
         htmlEncode: function(value) {
             return $('<div/>').text(value).html();

@@ -1,6 +1,6 @@
 <?php
 return array (
-  'As owner of this space you can transfer this role to another administrator in space.' => 'Come proprietario di questo Space puoi trasferirne la proprietà ad un altro amministratore dello spazio. ',
+  'As owner of this space you can transfer this role to another administrator in space.' => 'Come proprietario di questo spazio puoi trasferirne la proprietà ad un altro amministratore dello spazio. ',
   'Remove from space' => 'Rimuovi dallo spazio',
   'Show all' => 'Mostra tutti',
   'Space owner' => 'Proprietario dello Spazio',
