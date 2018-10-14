@@ -30,7 +30,7 @@
                                         <td valign="top">
                                             <table border="0" cellspacing="0" cellpadding="0" align="left">
                                                 <tr>
-                                                    <td style="font-size: 18px; line-height: 22px; font-family:Open Sans, Arial, Tahoma, Helvetica, sans-serif; font-weight:300; text-align:left;">
+                                                    <td style="font-size: 18px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; font-weight:300; text-align:left;">
                                                         <span style="color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
                                                             <a href="#" style="text-decoration: none; color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
                                                                 <?= Yii::t('base', '<strong>Mail</strong> summary'); ?>

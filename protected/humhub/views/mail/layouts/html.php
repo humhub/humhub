@@ -16,7 +16,7 @@ use yii\helpers\Html;
         <meta name="format-detection" content="telephone=no"/>
 
         <title><?php echo Html::encode(Yii::$app->name); ?></title>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,100,400,600' rel='stylesheet' type='text/css'>
+        <link href=<?= Yii::$app->view->theme->variable('mail-font-url', 'http://fonts.googleapis.com/css?family=Open+Sans:300,100,400,600') ?> rel='stylesheet' type='text/css'>
             <style type="text/css">
 
                 <?php $defaultBackground =  Yii::$app->view->theme->variable('background-color-main', '#fff') ?>
@@ -519,7 +519,7 @@ use yii\helpers\Html;
             <?php $this->head() ?>
     </head>
 
-    <body style="font-size:12px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; background-color:<?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>; ">
+    <body style="font-size:12px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; background-color: <?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;">
         <?php $this->beginBody() ?>
 
         <!--start 100% wrapper (white background) -->
@@ -559,7 +559,7 @@ use yii\helpers\Html;
                                                                             <td style="text-align:center;">
                                                                                 <span style="text-decoration: none; color:<?= Yii::$app->view->theme->variable('text-color-contrast', '#ffffff') ?>;">
                                                                                     <a href="<?php echo Url::to(['/'], true); ?>"
-                                                                                        style="font-size: 18px; line-height: 27px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-contrast', '#ffffff') ?>; font-weight:600; text-align:left;">
+                                                                                        style="text-decoration: none; font-size: 18px; line-height: 27px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#ffffff') ?>; font-weight: 700; text-align: left;">
                                                                                             <?php echo Html::encode(Yii::$app->name); ?>
                                                                                     </a>
                                                                                 </span>
@@ -684,7 +684,7 @@ use yii\helpers\Html;
                                                         <table align="center" border="0" cellspacing="0" cellpadding="0" class="container2">
 
                                                             <tr>
-                                                                <td align="center" valign="top" style="font-size: 11px;  line-height: 18px; font-weight:300; text-align: center; font-family:Open Sans,Arail,Tahoma, Helvetica, Arial, sans-serif;">
+                                                                <td align="center" valign="top" style="font-size: 11px; line-height: 18px; font-weight:300; text-align: center; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>;">
 
                                                                     <?php if (isset(Yii::$app->view->params['showUnsubscribe']) && Yii::$app->view->params['showUnsubscribe'] === true) : ?>
                                                                         <?php $url = (isset(Yii::$app->view->params['unsubscribeUrl'])) ? Yii::$app->view->params['unsubscribeUrl'] : \yii\helpers\Url::to(['/notification/user'], true) ?>

@@ -24,7 +24,7 @@ use yii\helpers\Html;
                                             <!-- start button -->
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
-                                                    <td width="auto"  align="center" valign="middle" height="28" style=" background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>; background-clip: padding-box; font-size:26px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center; font-weight: 300; padding-left:18px; padding-right:18px; ">
+                                                    <td width="auto"  align="center" valign="middle" height="28" style="background-color: <?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>; background-clip: padding-box; font-size: 26px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; text-align: center; font-weight: 300; padding-left: 18px; padding-right: 18px; ">
                                                         <span style="color: <?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
                                                             <?= Yii::t('UserModule.views_mails_RecoverPassword', '<strong>Password</strong> recovery'); ?>
                                                         </span>
@@ -82,7 +82,7 @@ use yii\helpers\Html;
                                                 <!--end space height -->
 
                                                 <tr>
-                                                    <td  style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left; ">
+                                                    <td  style="font-size: 14px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; color: <?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight: 300; text-align: left; ">
 
                                                         <?php echo Yii::t('UserModule.views_mails_RecoverPassword', 'Hello {displayName}', ['{displayName}' => Html::encode($user->displayName)]); ?>
                                                         <br><br>
@@ -112,7 +112,7 @@ use yii\helpers\Html;
                                             <!-- start button -->
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
-                                                    <td width="auto"  align="center" valign="middle" height="32" style=" background-color:<?= $this->theme->variable('primary'); ?>;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; text-align:center;  color:#ffffff; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
+                                                    <td width="auto"  align="center" valign="middle" height="32" style=" background-color: <?= $this->theme->variable('primary'); ?>; border-radius: 5px; background-clip: padding-box; font-size: 14px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; text-align: center; color: #ffffff; font-weight: 600; padding-left: 30px; padding-right: 30px; padding-top: 5px; padding-bottom: 5px;">
 
                                                         <span style="color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300;">
                                                             <a href="<?= $linkPasswordReset; ?>" style="text-decoration: none; color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300;">

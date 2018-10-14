@@ -64,9 +64,9 @@ use yii\helpers\Html;
                                                                align="left">
 
                                                             <tr>
-                                                                <td style="font-size: 13px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:left; ">
+                                                                <td style="font-size: 13px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; color:#555555; font-weight:300; text-align:left; ">
                                                                     <!-- prevent content overflow -->
-                                                                    <div style="width:480px;overflow:hidden;text-overflow:ellipsis;font-size: 13px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:300; text-align:left;">
+                                                                    <div style="width:480px;overflow:hidden;text-overflow:ellipsis;font-size: 13px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; color:#555555; font-weight:300; text-align:left;">
                                                                         <!-- content output-->
                                                                         <?= $content; ?>
 
