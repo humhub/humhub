@@ -2,9 +2,10 @@ HumHub Change Log
 =================
 
 
-1.3.6  (Unreleased)
+1.3.7  (Unreleased)
 ---------------------------
 - Enh: Added maximum username length & maximum/minimum space url length (rekollekt)
+- Fix: Error message during database installation
 
 
 1.3.6  (October 11, 2018)
