@@ -7,6 +7,7 @@ HumHub Change Log
 - Enh: Added maximum username length & maximum/minimum space url length (rekollekt)
 - Fix: Error message during database installation
 - Enh: "Powered by" message handling by widget
+- Enh: Add less options for mail font url/family (@rekollekt)
 
 
 1.3.6  (October 11, 2018)
