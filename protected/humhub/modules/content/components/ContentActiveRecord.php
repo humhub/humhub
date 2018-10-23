@@ -12,7 +12,6 @@ use humhub\modules\content\models\Movable;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\user\behaviors\Followable;
-use humhub\widgets\Link;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
@@ -23,7 +22,6 @@ use humhub\modules\content\permissions\ManageContent;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\interfaces\ContentOwner;
-use yii\helpers\Html;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
@@ -226,7 +224,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * }
      * ```
      *
-     * @param array $result
+     * @param array $labels
      * @param bool $includeContentName
      * @return Label[]|\string[] content labels used for example in wallentrywidget
      */
@@ -249,6 +247,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
         }
 
         foreach (Topic::findByContent($this->content)->all() as $topic) {
+            /** @var $topic Topic */
             $labels[] = TopicLabel::forTopic($topic);
         }
 
@@ -273,7 +272,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      *
      * @since 1.2.1
      * @see ContentActiveRecord::$managePermission
-     * @return null|object
+     * @return null|object|string
      */
     public function getManagePermission()
     {
@@ -393,8 +392,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function afterDelete()
     {
-
-        $content = Content::findOne(['object_id' => $this->id, 'object_model' => static::getObjectModel()]);
+        $content = Content::findOne(['object_id' => $this->getPrimaryKey(), 'object_model' => static::getObjectModel()]);
         if ($content !== null) {
             $content->delete();
         }
@@ -493,5 +491,3 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function afterMove(ContentContainerActiveRecord $container = null) {}
 }
-
-?>
