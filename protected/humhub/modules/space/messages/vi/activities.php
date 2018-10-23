@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Space has been archieved' => '',
-    'Space has been unarchieved' => '',
-    'Whenever a space is archieved.' => '',
-    'Whenever a space is unarchieved.' => '',
+    'Space has been archived' => '',
+    'Space has been unarchived' => '',
+    'Whenever a space is archived.' => '',
+    'Whenever a space is unarchived.' => '',
     'Space member joined' => 'Thành viên đã tham gia KGLV',
     'Space member left' => 'Thành viên rời khỏi KGLV',
     'Whenever a member leaves one of your spaces.' => 'Khi nào một thành viên rời một trong những KGLV của bạn.',

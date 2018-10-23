@@ -17,12 +17,12 @@ use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
  *
  * @author luke
  */
-class SpaceArchieved extends BaseActivity implements ConfigurableActivityInterface
+class SpaceUnArchived extends BaseActivity implements ConfigurableActivityInterface
 {
     /**
      * @inheritdoc
      */
-    public $viewName = 'spaceArchieved';
+    public $viewName = 'spaceUnArchieved';
 
     /**
      * @inheritdoc
@@ -43,7 +43,7 @@ class SpaceArchieved extends BaseActivity implements ConfigurableActivityInterfa
      */
     public function getTitle()
     {
-        return Yii::t('SpaceModule.activities', 'Space has been archieved');
+        return Yii::t('SpaceModule.activities', 'Space has been unarchived');
     }
 
     /**
@@ -51,6 +51,6 @@ class SpaceArchieved extends BaseActivity implements ConfigurableActivityInterfa
      */
     public function getDescription()
     {
-        return Yii::t('SpaceModule.activities', 'Whenever a space is archieved.');
+        return Yii::t('SpaceModule.activities', 'Whenever a space is unarchived.');
     }
 }

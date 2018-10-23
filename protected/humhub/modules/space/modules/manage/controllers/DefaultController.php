@@ -17,8 +17,8 @@ use humhub\modules\space\widgets\Menu;
 use humhub\modules\space\widgets\Chooser;
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\DeleteForm;
-use humhub\modules\space\activities\SpaceArchieved;
-use humhub\modules\space\activities\SpaceUnArchieved;
+use humhub\modules\space\activities\SpaceArchived;
+use humhub\modules\space\activities\SpaceUnArchived;
 use yii\helpers\Url;
 
 /**
@@ -87,8 +87,8 @@ class DefaultController extends Controller
         $space = $this->getSpace();
         $space->archive();
 
-        // Create Activity when the space in archieved
-        SpaceArchieved::instance()->from(Yii::$app->user->getIdentity())->about($space->owner)->save();
+        // Create Activity when the space in archived
+        SpaceArchived::instance()->from(Yii::$app->user->getIdentity())->about($space->owner)->save();
 
         return $this->asJson( [
             'success' => true,
@@ -105,7 +105,7 @@ class DefaultController extends Controller
         $space->unarchive();
 
         // Create Activity when the space in unarchieved
-        SpaceUnArchieved::instance()->from(Yii::$app->user->getIdentity())->about($space->owner)->save();
+        SpaceUnArchived::instance()->from(Yii::$app->user->getIdentity())->about($space->owner)->save();
 
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = 'json';

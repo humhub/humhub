@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Space has been archieved' => '',
-    'Space has been unarchieved' => '',
-    'Whenever a space is archieved.' => '',
-    'Whenever a space is unarchieved.' => '',
+    'Space has been archived' => '',
+    'Space has been unarchived' => '',
+    'Whenever a space is archived.' => '',
+    'Whenever a space is unarchived.' => '',
     'Space member joined' => 'Se ha unido un nuevo miembro a este espacio',
     'Space member left' => 'Un miembro ha abandonado este espacio',
     'Whenever a member leaves one of your spaces.' => 'Cuando un miembro abandona uno de sus espacios.',
