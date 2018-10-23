@@ -8,6 +8,7 @@ HumHub Change Log
 - Fix: Error message during database installation
 - Enh: "Powered by" message handling by widget
 - Enh: Add less options for mail font url/family (@rekollekt)
+- Fix: Fixed typo in space (un-)archived activities
 
 
 1.3.6  (October 11, 2018)
