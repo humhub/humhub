@@ -415,7 +415,11 @@ humhub.module('stream.Stream', function (module, require, $) {
 
         this.$.find('.streamMessage').remove();
 
-        if (!hasEntries) {
+        if(!hasEntries && this.isShowSingleEntry()) {
+            // e.g. after content deletion in single entry stream
+            var that = this;
+            setTimeout(function() {that.init()}, 50);
+        } else if (!hasEntries) {
             this.onEmptyStream();
         } else if (this.isShowSingleEntry()) {
             this.onSingleEntryStream();
@@ -426,16 +430,18 @@ humhub.module('stream.Stream', function (module, require, $) {
 
     Stream.prototype.hasFilter = function (filter) {
         return this.filter.hasFilter(filter);
-    }
+    };
 
     Stream.prototype.onEmptyStream = function () {
         var hasActiveFilters = this.hasActiveFilters();
         this.$.find('.streamMessage').remove();
 
-        this.$content.append(string.template(this.static('templates').streamMessage, {
-            message: (hasActiveFilters) ? this.options.streamEmptyFilterMessage : this.options.streamEmptyMessage,
-            cssClass: (hasActiveFilters) ? this.options.streamEmptyFilterClass : this.options.streamEmptyClass,
-        }));
+        if(!this.isShowSingleEntry()) {
+            this.$content.append(string.template(this.static('templates').streamMessage, {
+                message: (hasActiveFilters) ? this.options.streamEmptyFilterMessage : this.options.streamEmptyMessage,
+                cssClass: (hasActiveFilters) ? this.options.streamEmptyFilterClass : this.options.streamEmptyClass,
+            }));
+        }
 
         if(!hasActiveFilters) {
             this.filter.hide();
