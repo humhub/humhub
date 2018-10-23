@@ -10,6 +10,7 @@ HumHub Change Log
 - Enh: Add less options for mail font url/family (@rekollekt)
 - Fix: Fixed typo in space (un-)archived activities
 - Enh: Removed ErrorEvent which will be removed in yii-queue 3.0 (@acs-ferreira)
+- Enh: Added config option to remove "user profile posts" entry from directory navigation
 
 
 1.3.6  (October 11, 2018)
