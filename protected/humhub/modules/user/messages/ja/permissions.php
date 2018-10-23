@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Allows access to your about page with personal information' => '',
-  'View your about page' => 'あなたのページを閲覧する',
+  'Allows access to your about page with personal information' => '他のユーザーが、あなたのプロフィールページを閲覧できるようにする',
+  'View your about page' => 'あなたのページの閲覧許可',
 );

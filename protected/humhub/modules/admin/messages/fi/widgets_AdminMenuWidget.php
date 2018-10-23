@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => '<strong>Hallintapaneeli</strong>',
-  'Advanced' => 'Kehittyneet',
+  'Advanced' => 'Edistyneet',
   'Appearance' => 'Ulkomuoto',
   'Caching' => 'Välimuisti',
   'E-Mail summaries' => 'Sähköposti yhteenvedot',
