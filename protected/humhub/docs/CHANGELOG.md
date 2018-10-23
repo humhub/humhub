@@ -9,6 +9,7 @@ HumHub Change Log
 - Enh: "Powered by" message handling by widget
 - Enh: Add less options for mail font url/family (@rekollekt)
 - Fix: Fixed typo in space (un-)archived activities
+- Enh: Removed ErrorEvent which will be removed in yii-queue 3.0 (@acs-ferreira)
 
 
 1.3.6  (October 11, 2018)
