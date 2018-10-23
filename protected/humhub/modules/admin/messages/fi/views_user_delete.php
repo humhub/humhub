@@ -5,5 +5,5 @@ return array (
   'Cancel' => 'Peruuta',
   'Confirm user deletion' => 'Vahvista käyttäjän poistaminen',
   'Delete user' => 'Poista käyttäjä',
-  'If this user is owner of some spaces, <b>you</b> will automatically become owner of these spaces.' => 'Jos tämä käyttäjä omistaa joitakin sivuja, <b>sinä</b> tulee automaattisesti niiden sivujen omistajaksi.',
+  'If this user is owner of some spaces, <b>you</b> will automatically become owner of these spaces.' => 'Jos tämä käyttäjä omistaa joitakin sivuja, <b>sinä</b> tulee sinusta automaattisesti niiden sivujen omistajaksi.',
 );
