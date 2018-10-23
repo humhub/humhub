@@ -2,8 +2,9 @@ HumHub Change Log
 =================
 
 
-1.3.7  (Unreleased)
+1.3.7  (October 23, 2018)
 ---------------------------
+
 - Enh: Added maximum username length & maximum/minimum space url length (rekollekt)
 - Fix: Error message during database installation
 - Enh: "Powered by" message handling by widget
@@ -12,10 +13,12 @@ HumHub Change Log
 - Enh: Removed ErrorEvent which will be removed in yii-queue 3.0 (@acs-ferreira)
 - Enh: Added config option to remove "user profile posts" entry from directory navigation
 - Fix #2912: Deleting single stream item does not reload stream
+- Fix: Updated blueimp/jQuery-File-Upload to 2.94.1
 
 
 1.3.6  (October 11, 2018)
 ---------------------------
+
 - Fix: Richtext loses mark state
 - Fix: New comment scroll behavior not used in edit comment
 - Chng: Updated `humhub-prosemirror-richtext` to v1.0.12
