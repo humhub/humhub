@@ -3,6 +3,7 @@
 use humhub\widgets\FooterMenu;
 use yii\helpers\Url;
 use yii\helpers\Html;
+use humhub\widgets\PoweredBy;
 
 ?>
 
@@ -696,7 +697,7 @@ use yii\helpers\Html;
 
                                                                     <span style="text-decoration: none; color:<?= $soft2Color ?>;">
                                                                         <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_EMAIL]); ?>
-                                                                        Powered by <a href="http://www.humhub.org"  style="text-decoration: none; color: <?= $soft2Color ?>;">HumHub</a>
+                                                                        <?= PoweredBy::widget(['linkOptions' => ['style' => 'text-decoration:none;color:'.$soft2Color]]); ?>
                                                                     </span>
 
                                                                 </td>
