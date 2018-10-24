@@ -23,12 +23,7 @@ You should also delete the `index-test.php` file in your HumHub root directory i
 Protected Directories
 ---------------------
 
-Make sure the following directories are not accessible by web:
-
-- protected
-- uploads/file
-
-> Info: By default these folders are protected with a ".htaccess" file.
+Please make sure you followed the directory permissions described in the [Installation Guide](installation.md#file-permissions)!
 
 Limit User Access
 -----------------

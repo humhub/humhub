@@ -35,7 +35,7 @@ After the download, extract the package into the `htdocs` folder of your webserv
 File Permissions
 ----------------------------
 
-Make sure the following directories and files are writable by the webserver:
+Make sure the following directories and files are **writable** by the webserver:
 
 - /assets
 - /protected/config/
@@ -43,10 +43,25 @@ Make sure the following directories and files are writable by the webserver:
 - /protected/runtime
 - /uploads/*
 
-The following files need to be executable:
+The following files need to be **executable**:
 
  - /protected/yii
  - /protected/yii.bat
+ 
+### !Important Protected Directories
+ 
+ Make sure the following directories are **not accessible by web**:
+ 
+ > Info: By default the following two folders are protected with a ".htaccess" file.
+ 
+ - /protected
+ - /uploads/file
+ 
+ Make sure files in the following directory are **not executable**:
+ 
+ - /uploads
+ - /assets
+ - /static
 
 
 Web Installer
