@@ -5,6 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\widgets\PoweredBy;
 use yii\helpers\Html;
 
 ?>
@@ -15,7 +16,7 @@ use yii\helpers\Html;
             <?php foreach ($items as $item): ?>
                 <?= Html::a($item['label'], $item['url']); ?>&nbsp;&middot;&nbsp;
             <?php endforeach; ?>
-            Powered by <?= Html::a('HumHub', 'https://humhub.org'); ?>&nbsp;
+            <?= PoweredBy::widget(); ?>
         </small>
     </div>
     <br/>

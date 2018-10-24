@@ -165,20 +165,21 @@ class WallStreamFilterNavigation extends FilterNavigation
     {
         $this->addFilter([
             'id' => DefaultStreamFilter::FILTER_INVOLVED,
-            'title' => Yii::t('ContentModule.widgets_views_stream', 'Where I´m involved'),
-            'sortOrder' => 100], static::FILTER_BLOCK_BASIC);
+            'title' => Yii::t('ContentModule.widgets_views_stream', 'Where I\'m involved'),
+            'sortOrder' => 100
+        ], static::FILTER_BLOCK_BASIC);
 
         $this->addFilter([
             'id' => DefaultStreamFilter::FILTER_MINE,
             'title' => Yii::t('ContentModule.widgets_views_stream', 'Created by me'),
             'sortOrder' => 200
-        ],static::FILTER_BLOCK_BASIC);
+        ], static::FILTER_BLOCK_BASIC);
 
         $this->addFilter([
             'id' => DefaultStreamFilter::FILTER_FILES,
             'title' => Yii::t('ContentModule.widgets_views_stream', 'With file attachments'),
             'sortOrder' => 300
-        ],static::FILTER_BLOCK_BASIC);
+        ], static::FILTER_BLOCK_BASIC);
     }
 
     protected function initVisibilityFilters()
@@ -190,7 +191,7 @@ class WallStreamFilterNavigation extends FilterNavigation
             'multiple' => true,
             'title' => Yii::t('ContentModule.widgets_views_stream', 'Only public content'),
             'sortOrder' => 100
-        ],static::FILTER_BLOCK_VISIBILITY);
+        ], static::FILTER_BLOCK_VISIBILITY);
 
         $this->addFilter([
             'id' => static::FILTER_VISIBILITY_PRIVATE,
@@ -199,13 +200,13 @@ class WallStreamFilterNavigation extends FilterNavigation
             'multiple' => true,
             'title' => Yii::t('ContentModule.widgets_views_stream', 'Only private content'),
             'sortOrder' => 200
-        ],static::FILTER_BLOCK_VISIBILITY);
+        ], static::FILTER_BLOCK_VISIBILITY);
 
         $this->addFilter([
             'id' => static::FILTER_ARCHIVED,
             'title' =>  Yii::t('ContentModule.widgets_views_stream', 'Include archived content'),
             'sortOrder' => 200
-        ],static::FILTER_BLOCK_VISIBILITY);
+        ], static::FILTER_BLOCK_VISIBILITY);
     }
 
     protected function initSortFilters()
@@ -248,7 +249,8 @@ class WallStreamFilterNavigation extends FilterNavigation
                 'id' => 'stream-topic-picker',
                 'name' => 'stream-topic-picker',
                 'addOptions' => false
-            ]],static::FILTER_BLOCK_TOPIC);
+            ]
+        ], static::FILTER_BLOCK_TOPIC);
     }
 
     private function initContentTypeFilter()
@@ -261,7 +263,8 @@ class WallStreamFilterNavigation extends FilterNavigation
             'pickerOptions' => [
                 'id' => 'stream_filter_content_type',
                 'name' => 'filter_content_type'
-            ]],static::FILTER_BLOCK_CONTENT_TYPE);
+            ]
+        ], static::FILTER_BLOCK_CONTENT_TYPE);
     }
 
     private function initOriginatorFilter()
@@ -275,7 +278,8 @@ class WallStreamFilterNavigation extends FilterNavigation
                 'id' => 'stream-user-picker',
                 'itemKey' => 'id',
                 'name' => 'stream-user-picker'
-            ]], static::FILTER_BLOCK_ORIGINATORS);
+            ]
+        ], static::FILTER_BLOCK_ORIGINATORS);
     }
 
     public function getAttributes()

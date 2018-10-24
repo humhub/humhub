@@ -6,6 +6,7 @@
  */
 
 use yii\helpers\Html;
+use humhub\widgets\PoweredBy;
 
 $i = 0;
 ?>
@@ -22,7 +23,7 @@ $i = 0;
                 <?php endif; ?>
 
             <?php endforeach; ?>
-            &middot; Powered&nbsp;by&nbsp;<?= Html::a('HumHub', 'https://humhub.org'); ?>&nbsp;
+            &middot; <?= PoweredBy::widget(); ?>
         </small>
     </div>
     <br />

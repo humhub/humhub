@@ -8,6 +8,7 @@
 
 namespace humhub\modules\directory\widgets;
 
+use humhub\modules\directory\Module;
 use Yii;
 use yii\helpers\Url;
 
@@ -26,6 +27,9 @@ class Menu extends \humhub\widgets\BaseMenu
 
     public function init()
     {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('directory');
+
         $this->addItemGroup([
             'id' => 'directory',
             'label' => Yii::t('DirectoryModule.base', '<strong>Directory</strong> menu'),
@@ -58,13 +62,15 @@ class Menu extends \humhub\widgets\BaseMenu
             'isActive' => (Yii::$app->controller->action->id == "spaces"),
         ]);
 
-        $this->addItem([
-            'label' => Yii::t('DirectoryModule.base', 'User profile posts'),
-            'group' => 'directory',
-            'url' => Url::to(['/directory/directory/user-posts']),
-            'sortOrder' => 400,
-            'isActive' => (Yii::$app->controller->action->id == "user-posts"),
-        ]);
+        if ($module->showUserProfilePosts) {
+            $this->addItem([
+                'label' => Yii::t('DirectoryModule.base', 'User profile posts'),
+                'group' => 'directory',
+                'url' => Url::to(['/directory/directory/user-posts']),
+                'sortOrder' => 400,
+                'isActive' => (Yii::$app->controller->action->id == "user-posts"),
+            ]);
+        }
 
         parent::init();
     }

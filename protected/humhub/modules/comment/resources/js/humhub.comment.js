@@ -221,7 +221,7 @@ humhub.module('comment', function (module, require, $) {
     };
 
     var scrollActive = function(evt) {
-        evt.$trigger.closest('.comment-create-input-group').addClass('scrollActive')
+        evt.$trigger.closest('.comment-create-input-group').addClass('scrollActive');
     };
 
     var scrollInactive = function(evt) {

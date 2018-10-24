@@ -51,6 +51,12 @@ class Module extends \humhub\components\Module
     public $guestAccess = true;
 
     /**
+     * @var bool show menu entry for user profile posts on directory
+     */
+    public $showUserProfilePosts = true;
+
+
+    /**
      * @return bool checks if the current user can access the directory
      */
     public function canAccess()
