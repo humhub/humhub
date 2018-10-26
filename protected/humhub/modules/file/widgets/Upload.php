@@ -1,9 +1,9 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: kingb
- * Date: 08.10.2018
- * Time: 17:27
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\file\widgets;
@@ -163,7 +163,7 @@ class Upload extends Widget
      * Static initializer
      *
      * @param array $cfg
-     * @return static
+     * @return static|object
      * @throws \yii\base\InvalidConfigException
      */
     public static function create($cfg = [])
@@ -178,12 +178,16 @@ class Upload extends Widget
     public function init()
     {
         parent::init();
-        if(!$this->id) {
+        if (!$this->id) {
             $this->id = $this->getId(true);
         }
 
-        if($this->max === true) {
-            $this->max = Yii::$app->getModule('content')->maxAttachedFiles;
+        if ($this->max === true) {
+            /** @var \humhub\modules\content\Module $contentModule */
+            $contentModule = Yii::$app->getModule('content');
+            if ($contentModule !== null) {
+                $this->max = $contentModule->maxAttachedFiles;
+            }
         }
     }
 
