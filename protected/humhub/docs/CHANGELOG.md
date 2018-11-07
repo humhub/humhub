@@ -2,6 +2,13 @@ HumHub Change Log
 =================
 
 
+
+1.3.8  (Unreleased)
+---------------------------
+
+- Fix #3359: Weekly summary e-mails are not sent in default configuration
+
+
 1.3.7  (October 23, 2018)
 ---------------------------
 
