@@ -8,7 +8,6 @@
 
 namespace humhub\assets;
 
-
 use yii\web\AssetBundle;
 
 class HighlightJsAsset extends AssetBundle
@@ -16,20 +15,15 @@ class HighlightJsAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $basePath = '@webroot-static';
+    public $sourcePath = '@bower/highlightjs';
 
     /**
      * @inheritdoc
      */
-    public $baseUrl = '@web-static';
+    public $js = ['highlight.pack.min.js'];
 
     /**
      * @inheritdoc
      */
-    public $js = ['js/highlight.js/highlight.pack.js'];
-
-    /**
-     * @inheritdoc
-     */
-    public $css = ['js/highlight.js/styles/github.css'];
+    public $css = ['styles/github.css'];
 }
