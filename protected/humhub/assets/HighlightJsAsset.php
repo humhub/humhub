@@ -15,7 +15,7 @@ class HighlightJsAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/highlightjs';
+    public $sourcePath = '@bower/highlightjs-official';
 
     /**
      * @inheritdoc
