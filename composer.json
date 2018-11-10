@@ -22,7 +22,7 @@
         "bower-asset/caret.js": "0.2.2",
         "bower-asset/clipboard.js": "*",
         "bower-asset/fontawesome": "^4.7.0",
-        "bower-asset/highlightjs-official": "^9.13.0",
+        "bower-asset/highlight-js": "^9.13.0",
         "bower-asset/html5shiv": "^3.7",
         "bower-asset/imagesloaded": "*",
         "bower-asset/jPlayer": "2.9.*",
