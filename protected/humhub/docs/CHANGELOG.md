@@ -8,6 +8,7 @@ HumHub Change Log
 
 - Fix #3359: Weekly summary e-mails are not sent in default configuration
 - Fix: Space module permission configuration of non installed space modules visible in permission grid
+- Fix #3365: Legacy richtext emojis not parsed in richtext preview
 
 
 1.3.7  (October 23, 2018)
