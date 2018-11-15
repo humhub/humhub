@@ -11,6 +11,7 @@ namespace humhub\modules\content\components;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\content\models\ContentContainerPermission;
 use humhub\libs\BasePermission;
+use Yii;
 
 /**
  * @inheritdoc
@@ -42,7 +43,7 @@ class ContentContainerPermissionManager extends PermissionManager
      */
     protected function getModulePermissions(\yii\base\Module $module)
     {
-        if ($module instanceof \humhub\components\Module) {
+        if ($module instanceof \humhub\components\Module && (Yii::$app->moduleManager->isCoreModule($module->id) || $this->contentContainer->isModuleEnabled($module->id))) {
             return $module->getPermissions($this->contentContainer);
         }
         return [];

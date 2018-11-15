@@ -245,6 +245,21 @@ class ModuleManager extends Component
     }
 
     /**
+     * Returns weather or not the given module id belongs to an core module.
+     *
+     * @return bool
+     * @since 1.3.8
+     */
+    public function isCoreModule($id)
+    {
+        if(!$this->hasModule($id)) {
+            return false;
+        }
+
+        return (in_array(get_class($this->getModule($id)), $this->coreModules));
+    }
+
+    /**
      * Returns a module instance by id
      *
      * @param string $id Module Id
