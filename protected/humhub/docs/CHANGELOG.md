@@ -8,6 +8,7 @@ HumHub Change Log
 
 - Fix #3359: Weekly summary e-mails are not sent in default configuration
 - Fix #3365: Legacy richtext emojis not parsed in richtext preview
+- Fix: Friendship button adds additional spaces
 
 
 1.3.7  (October 23, 2018)
