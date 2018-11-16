@@ -43,7 +43,7 @@ class ContentContainerPermissionManager extends PermissionManager
      */
     protected function getModulePermissions(\yii\base\Module $module)
     {
-        if ($module instanceof \humhub\components\Module && (Yii::$app->moduleManager->isCoreModule($module->id) || $this->contentContainer->isModuleEnabled($module->id))) {
+        if ($module instanceof \humhub\components\Module) {
             return $module->getPermissions($this->contentContainer);
         }
         return [];
