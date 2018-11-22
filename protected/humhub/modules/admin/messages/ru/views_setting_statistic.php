@@ -18,5 +18,5 @@
  */
 return [
     'Save' => 'Сохранить',
-    'You can add statistic HTML code snippets - that are added to all rendered pages.' => ''
+    'You can add statistic HTML code snippets - that are added to all rendered pages.' => 'Вы можете добавить статистические фрагменты кода HTML, которые добавляются ко всем отображаемым страницам.'
 ];
