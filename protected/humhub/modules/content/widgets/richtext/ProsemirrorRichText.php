@@ -189,11 +189,12 @@ class ProsemirrorRichText extends AbstractRichText
 
     protected function toUTF8Emoji($text)
     {
-        return preg_replace_callback('/:(([A-Za-z0-9])+):/', function($match)  {
+        // Note the ; was used in the legacy editor
+        return preg_replace_callback('/[:|;](([A-Za-z0-9])+)[:|;]/', function($match)  {
             $result =  $match[0];
 
             if(isset($match[1])) {
-                $result = array_key_exists($match[1], EmojiMap::MAP) ?  EmojiMap::MAP[$match[1]] : $result;
+                $result = array_key_exists(strtolower($match[1]), EmojiMap::MAP) ?  EmojiMap::MAP[strtolower($match[1])] : $result;
             }
 
             return $result;

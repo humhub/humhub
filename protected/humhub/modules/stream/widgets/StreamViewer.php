@@ -77,6 +77,9 @@ class StreamViewer extends JsWidget
      */
     public $messageStreamEmptyCss = "";
 
+    /**
+     * @inheritdoc
+     */
     public $jsWidget = 'stream.wall.WallStream';
 
     /**
