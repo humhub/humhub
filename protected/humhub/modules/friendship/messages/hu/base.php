@@ -4,7 +4,7 @@ return array (
   '<strong>Pending</strong> friend requests' => '<strong>Függő</strong> felkérések',
   '<strong>Sent</strong> friend requests' => '<strong>Elküldött</strong> felkérések',
   'Accept Friend Request' => 'Barát felkérés elfogadása',
-  'Actions' => '',
+  'Actions' => 'Műveletek',
   'Add Friend' => 'Barát hozzáadása',
   'Cancel friend request' => 'Barát felkérés visszavonása',
   'Deny friend request' => 'Barát felkérés tiltása',

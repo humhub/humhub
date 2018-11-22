@@ -5,7 +5,7 @@ return array (
   'Default language' => 'デフォルト言語',
   'Default space' => 'デフォルトのスペース',
   'Default stream content order' => 'デフォルトのストリームコンテンツ順序',
-  'Enable user friendship system' => '',
+  'Enable user friendship system' => 'ユーザーフレンドシップシステムを有効にする',
   'Horizontal scrolling images on a mobile device' => 'モバイル端末では画像を横スクロールにする',
   'Invalid space' => '無効なスペース',
   'Logo upload' => 'ロゴの更新',

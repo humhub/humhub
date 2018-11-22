@@ -1,6 +1,6 @@
 <?php
 return array (
   '<strong>Profile</strong> menu' => '<strong>Profil</strong> menü',
-  'About' => '',
+  'About' => 'Rólam',
   'Stream' => 'Folyam',
 );

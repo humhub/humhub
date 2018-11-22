@@ -1,4 +1,4 @@
 <?php
 return array (
-  '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!' => '<b>Még nincs mit áttekintened!</b><br />Posztolj valamit a profilodon, vagy lépj be valamelyik közösségbe!',
+  '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!' => '<b>Még nincs mit áttekinteni!</b><br />Hozz létre egy bejegyzést a profilodban, vagy lépj be valamelyik témakörbe!',
 );

@@ -9,6 +9,6 @@ return array (
   'Your lastname' => 'Vezetékneved',
   'Your mobild phone number' => 'Mobiltelefon számod',
   'Your phone number at work' => 'Munkahelyi számod',
-  'Your skills, knowledge and experience (comma seperated)' => '',
+  'Your skills, knowledge and experience (comma seperated)' => 'Ismereteid, tudásod és tapasztalataid (vesszővel elválasztva)',
   'Your title or position' => 'Titulusod vagy pozíciód',
 );
