@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You can add statistic HTML code snippets - that are added to all rendered pages.' => '',
+    'You can add statistic HTML code snippets - that are added to all rendered pages.' => '您可以添加統計HTML代碼段 - 添加到所有呈現的頁面。',
     'Save' => '保存',
 ];
