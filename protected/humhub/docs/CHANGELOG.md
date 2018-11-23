@@ -10,6 +10,7 @@ HumHub Change Log
 - Fix #3365: Legacy richtext emojis not parsed in richtext preview
 - Fix: Friendship button adds additional spaces
 - Fix: SpaceController::actionHome throws 403 Http error for guests
+- Added: NGINX documentations.
 
 
 1.3.7  (October 23, 2018)
