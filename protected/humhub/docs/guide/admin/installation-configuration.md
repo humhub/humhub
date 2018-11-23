@@ -83,7 +83,34 @@ return [
         ],
     ]
 ];
-```  
+```
+NGINX URL Rewriting (URL Rewriting is required!)
+------------------------
+Add the following lines to your server's configuration block (`/etc/nginx/nginx.conf` or the `/absolute/path/to/nginx.conf`):
+```nginx
+# nginx configuration
+
+location ~ 403 {
+  rewrite ^(.*)$ ^/?\.(?!/well-known/acme-challenge/[\w-]{43}$) redirect;
+}
+
+location ~ /\.well-known/acme-challenge/[0-9a-zA-Z_-]+$ {
+}
+
+location / {
+  if ($query_string ~ "^r=content(/|%2)perma&id=([0-9]*)$"){
+    rewrite ^/index\.php$ /$request_uri/content/perma/?id=%2 redirect;
+  }
+  if (-e $request_filename){
+    rewrite .? /$env_base/index.php break;
+  }
+
+# Media: images, icons, video, audio
+location ~* \.(?:jpg|jpeg|gif|png|ico|svg|mp4|ogg|webm)$ {
+  expires 1M;
+  add_header Cache-Control "public";
+}
+```
 
 Further Configuration Options
 ------------------------
