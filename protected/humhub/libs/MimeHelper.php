@@ -36,6 +36,7 @@ class MimeHelper
         // Word
         'doc' => self::ICON_WORD,
         'docx' => self::ICON_WORD,
+        'docm' => self::ICON_WORD,
         'odt' => self::ICON_WORD,
         // Excel
         'xls' => self::ICON_EXCEL,
