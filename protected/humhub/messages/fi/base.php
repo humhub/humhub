@@ -3,7 +3,7 @@ return array (
   '<strong>Confirm</strong> Action' => '<strong>Vahvista</strong> Toiminto',
   '<strong>Latest</strong> updates' => '<strong>Viimeismmät</strong> päivitykset',
   '<strong>Mail</strong> summary' => '<strong>Ilmoitukset</strong>',
-  'Account settings' => 'Käyttäjä asetukset',
+  'Account settings' => 'Asetukset',
   'Add:' => 'Lisää:',
   'Administration' => 'Hallinta',
   'Allow' => 'Salli',

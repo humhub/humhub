@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Send' => 'Beküldés',
+  'Send' => 'Mehet',
   'Write a new comment...' => 'Új hozzászólás...',
 );

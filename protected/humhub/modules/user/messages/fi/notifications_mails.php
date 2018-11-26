@@ -1,4 +1,4 @@
 <?php
 return array (
-  'View Online' => 'Katso tästä!',
+  'View Online' => 'Näytä selaimessa',
 );

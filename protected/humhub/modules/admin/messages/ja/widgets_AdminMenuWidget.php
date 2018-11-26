@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Administration</strong> menu' => '<strong>Administration</strong> 管理メニュー',
+  '<strong>Administration</strong> menu' => '<strong>管理</strong> 管理メニュー',
   'Advanced' => '高度',
   'Appearance' => '外観',
   'Caching' => 'キャッシュ',
@@ -11,7 +11,7 @@ return array (
   'Logs' => 'ログ',
   'Modules' => 'モジュール',
   'Notifications' => '通知',
-  'OEmbed' => '',
+  'OEmbed' => 'OEmbed',
   'Proxy' => 'プロキシ',
   'Settings' => '設定',
   'Spaces' => 'スペース',

@@ -1,9 +1,9 @@
 <?php
 return array (
-  '<strong>Modify</strong> your profile image' => '<strong>Vaihda</strong> profiili kuva',
+  '<strong>Modify</strong> your profile image' => '<strong>Vaihda</strong> profiilikuva',
   '<strong>Modify</strong> your title image' => '<strong>Vaihda</strong> kansikuvaasi',
-  '<strong>Security</strong> settings' => '<strong>Suojaus</strong> your',
-  '<strong>User</strong> settings' => '<strong>Profiili</strong> asetukset',
+  '<strong>Security</strong> settings' => '<strong>Suojaus</strong>',
+  '<strong>User</strong> settings' => '<strong>Asetukset</strong>',
   '<strong>Your</strong> profile' => '<strong>Profiili</strong>',
   'All your personal data will be irrevocably deleted.' => 'Kaikki henkilötietosi poistetaan.',
   'Are you sure that you want to delete your account?' => 'Oletko varma että haluat poistaa käyttäjätilisi?',
@@ -15,7 +15,7 @@ return array (
   'Other users' => 'Muut Käyttäjät',
   'Users' => 'Käyttäjät',
   'You are currently the owner of following spaces:' => 'Omistat tällä hetkellä seuraavat sivut:',
-  'You must transfer ownership or delete these spaces before you can delete your account.' => 'Sinun pitää siirtä omistamiesi sivujen ',
+  'You must transfer ownership or delete these spaces before you can delete your account.' => 'Sinun pitää siirtä omistamiesi sivujen',
   'Your account cannot be deleted!' => 'Sinun käyttäjää ei voi poistaa!',
   'Your friends' => 'Kaverit',
 );

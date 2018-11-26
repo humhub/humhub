@@ -19,8 +19,8 @@ return array (
   'Public (Registered users only)' => 'Nyilvános (csak regisztrált felhasználóknak)',
   'Settings' => 'Beállítások',
   'Space' => 'Közösség',
-  'User invitations have been added to the queue' => '',
-  'User memberships have been added to the queue' => '',
+  'User invitations have been added to the queue' => 'A felhasználó meghívása várólistára került',
+  'User memberships have been added to the queue' => 'A tagság kezdeményezése várólistára került',
   'Visible for all (members and guests)' => 'Mindenkinek látható (tagok és vendégek)',
   '{count} members' => '{count} tag',
 );

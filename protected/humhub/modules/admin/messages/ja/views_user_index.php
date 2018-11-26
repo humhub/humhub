@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Actions' => '',
+  'Actions' => 'アクション',
   'Add new user' => 'ユーザー追加',
   'Overview' => '概要',
-  'Send invite' => 'SNSの招待を送る',
+  'Send invite' => '招待を送る',
   'Settings' => '設定',
   'Users' => 'ユーザー',
 );

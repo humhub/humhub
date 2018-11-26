@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Submit' => 'Beküldés',
+  'Submit' => 'Mehet',
 );

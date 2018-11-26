@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Open</strong> file' => '<strong>Fájl</strong> megnyitása',
-  'Could not find requested file variant!' => 'A kért fájl variáns nem található!',
+  'Could not find requested file variant!' => 'A kért fájl variánsa nem található!',
   'Could not find requested file!' => 'A kért fájl nem található!',
   'Created by:' => 'Létrehozta:',
   'Download' => 'Letöltés',
