@@ -8,9 +8,10 @@
 
 namespace humhub\modules\user\widgets;
 
-use Yii;
+use humhub\modules\ui\menu\widgets\LeftNavigation;
 use humhub\modules\user\models\User;
 use humhub\modules\user\permissions\ViewAboutPage;
+use Yii;
 
 /**
  * ProfileMenuWidget shows the (usually left) navigation on user profiles.
@@ -24,7 +25,7 @@ use humhub\modules\user\permissions\ViewAboutPage;
  * @since 0.5
  * @author Luke
  */
-class ProfileMenu extends \humhub\widgets\BaseMenu
+class ProfileMenu extends LeftNavigation
 {
 
     /**
@@ -32,25 +33,17 @@ class ProfileMenu extends \humhub\widgets\BaseMenu
      */
     public $user;
 
-    /**
-     * @inheritdoc
-     */
-    public $template = "@humhub/widgets/views/leftNavigation";
 
     /**
      * @inheritdoc
      */
     public function init()
     {
-        $this->addItemGroup([
-            'id' => 'profile',
-            'label' => Yii::t('UserModule.widgets_ProfileMenuWidget', '<strong>Profile</strong> menu'),
-            'sortOrder' => 100,
-        ]);
+
+        $this->panelTitle = Yii::t('UserModule.widgets_ProfileMenuWidget', '<strong>Profile</strong> menu');
 
         $this->addItem([
             'label' => Yii::t('UserModule.widgets_ProfileMenuWidget', 'Stream'),
-            'group' => 'profile',
             'icon' => '<i class="fa fa-bars"></i>',
             'url' => $this->user->createUrl('//user/profile/home'),
             'sortOrder' => 200,
@@ -60,7 +53,6 @@ class ProfileMenu extends \humhub\widgets\BaseMenu
         if ($this->user->permissionManager->can(new ViewAboutPage())) {
             $this->addItem([
                 'label' => Yii::t('UserModule.widgets_ProfileMenuWidget', 'About'),
-                'group' => 'profile',
                 'icon' => '<i class="fa fa-info-circle"></i>',
                 'url' => $this->user->createUrl('//user/profile/about'),
                 'sortOrder' => 300,

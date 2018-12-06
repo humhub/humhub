@@ -8,85 +8,82 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\ui\menu\MenuEntry;
+use humhub\modules\ui\menu\widgets\LeftNavigation;
+use humhub\modules\ui\widgets\Icon;
 use Yii;
-use yii\helpers\Url;
 
 /**
- * Description of AdminMenu
+ * AdminMenu
  *
  * @author luke
  */
-class AdminMenu extends \humhub\widgets\BaseMenu
+class AdminMenu extends LeftNavigation
 {
 
-    public $template = "@humhub/widgets/views/leftNavigation";
-    public $type = "adminNavigation";
+    /**
+     * @inheritdoc
+     */
     public $id = "admin-menu";
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
-        $this->addItemGroup([
-            'id' => 'admin',
-            'label' => \Yii::t('AdminModule.widgets_AdminMenuWidget', '<strong>Administration</strong> menu'),
-            'sortOrder' => 100,
-        ]);
+        $this->panelTitle = Yii::t('AdminModule.widgets_AdminMenuWidget', '<strong>Administration</strong> menu');
 
-        $this->addItem([
-            'label' => \Yii::t('AdminModule.widgets_AdminMenuWidget', 'Users'),
-            'url' => Url::toRoute(['/admin/user']),
-            'icon' => '<i class="fa fa-user"></i>',
-            'sortOrder' => 200,
-            'isActive' => (\Yii::$app->controller->module && \Yii::$app->controller->module->id == 'admin' && (Yii::$app->controller->id == 'user' || Yii::$app->controller->id == 'group' || Yii::$app->controller->id == 'approval' || Yii::$app->controller->id == 'authentication' || Yii::$app->controller->id == 'user-profile' || Yii::$app->controller->id == 'pending-registrations')),
-            'isVisible' => Yii::$app->user->can([
-                new \humhub\modules\admin\permissions\ManageUsers(),
-                new \humhub\modules\admin\permissions\ManageSettings(),
-                new \humhub\modules\admin\permissions\ManageGroups()
-            ]),
-        ]);
+        $entry = new MenuEntry();
+        $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Users'));
+        $entry->setUrl(['/admin/user']);
+        $entry->setIcon(new Icon(['name' => 'user']));
+        $entry->setSortOrder(200);
+        $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && (Yii::$app->controller->id == 'user' || Yii::$app->controller->id == 'group' || Yii::$app->controller->id == 'approval' || Yii::$app->controller->id == 'authentication' || Yii::$app->controller->id == 'user-profile' || Yii::$app->controller->id == 'pending-registrations')));
+        $entry->setIsVisible(Yii::$app->user->can([
+            new \humhub\modules\admin\permissions\ManageUsers(),
+            new \humhub\modules\admin\permissions\ManageSettings(),
+            new \humhub\modules\admin\permissions\ManageGroups()
+        ]));
+        $this->addEntry($entry);
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Spaces'),
-            'id' => 'spaces',
-            'url' => Url::toRoute('/admin/space'),
-            'icon' => '<i class="fa fa-inbox"></i>',
-            'sortOrder' => 400,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'space'),
-            'isVisible' => Yii::$app->user->can([
-                new \humhub\modules\admin\permissions\ManageSpaces(),
-                new \humhub\modules\admin\permissions\ManageSettings(),
-            ]),
-        ]);
+        $entry = new MenuEntry();
+        $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Spaces'));
+        $entry->setUrl(['/admin/space']);
+        $entry->setIcon(new Icon(['name' => 'inbox']));
+        $entry->setSortOrder(400);
+        $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'space'));
+        $entry->setIsVisible(Yii::$app->user->can([
+            new \humhub\modules\admin\permissions\ManageSpaces(),
+            new \humhub\modules\admin\permissions\ManageSettings(),
+        ]));
+        $this->addEntry($entry);
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Modules'),
-            'id' => 'modules',
-            'url' => Url::toRoute('/admin/module'),
-            'icon' => '<i class="fa fa-rocket"></i>',
-            'sortOrder' => 500,
-            'newItemCount' => 0,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'module'),
-            'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageModules())
-        ]);
+        $entry = new MenuEntry();
+        $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Modules'));
+        $entry->setUrl(['/admin/module']);
+        $entry->setIcon(new Icon(['name' => 'rocket']));
+        $entry->setSortOrder(500);
+        $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'module'));
+        $entry->setIsVisible(Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageModules()));
+        $this->addEntry($entry);
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Settings'),
-            'url' => Url::toRoute('/admin/setting'),
-            'icon' => '<i class="fa fa-gears"></i>',
-            'sortOrder' => 600,
-            'newItemCount' => 0,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'setting'),
-            'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageSettings())
-        ]);
+        $entry = new MenuEntry();
+        $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Settings'));
+        $entry->setUrl(['/admin/setting']);
+        $entry->setIcon(new Icon(['name' => 'gears']));
+        $entry->setSortOrder(600);
+        $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'setting'));
+        $entry->setIsVisible(Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageSettings()));
+        $this->addEntry($entry);
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Information'),
-            'url' => Url::toRoute('/admin/information'),
-            'icon' => '<i class="fa fa-info-circle"></i>',
-            'sortOrder' => 10000,
-            'newItemCount' => 0,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'information'),
-            'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\SeeAdminInformation())
-        ]);
+        $entry = new MenuEntry();
+        $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Information'));
+        $entry->setUrl(['/admin/information']);
+        $entry->setIcon(new Icon(['name' => 'info-circle']));
+        $entry->setSortOrder(1000);
+        $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'information'));
+        $entry->setIsVisible(Yii::$app->user->can(new \humhub\modules\admin\permissions\SeeAdminInformation()));
+        $this->addEntry($entry);
 
         parent::init();
     }
@@ -108,12 +105,6 @@ class AdminMenu extends \humhub\widgets\BaseMenu
         return parent::run();
     }
 
-    public function addItem($item)
-    {
-        $item['group'] = 'admin';
-
-        parent::addItem($item);
-    }
 
     public static function canAccess()
     {
@@ -123,19 +114,19 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             Yii::$app->session->set('user.canSeeAdminSection', $canSeeAdminSection);
         }
 
-		return $canSeeAdminSection;
+        return $canSeeAdminSection;
     }
 
     private static function checkNonAdminAccess()
     {
         $adminMenu = new self();
-        foreach($adminMenu->items as $item) {
-            if(isset($item['isVisible']) && $item['isVisible']) {
+        foreach ($adminMenu->items as $item) {
+            if (isset($item['isVisible']) && $item['isVisible']) {
                 return true;
             }
         }
 
-		return false;
+        return false;
     }
 
 }

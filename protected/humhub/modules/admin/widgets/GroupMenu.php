@@ -8,20 +8,19 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\ui\menu\widgets\SubTabMenu;
 use Yii;
 use yii\helpers\Url;
 
 /**
  * Group Administration Menu
  */
-class GroupMenu extends \humhub\widgets\BaseMenu
+class GroupMenu extends SubTabMenu
 {
 
     /**
      * @inheritdoc
      */
-    public $template = "@humhub/widgets/views/subTabMenu";
-
     public function init()
     {
         $this->addItem([
@@ -32,14 +31,6 @@ class GroupMenu extends \humhub\widgets\BaseMenu
         ]);
 
         parent::init();
-    }
-
-    public function run()
-    {
-        if(count($this->getItemGroups()) > 1) {
-            return parent::run();
-        }
-        return '';
     }
 
 }

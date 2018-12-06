@@ -8,7 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
-use humhub\widgets\BaseMenu;
+use humhub\modules\ui\menu\widgets\TabMenu;
 use Yii;
 
 /**
@@ -16,16 +16,17 @@ use Yii;
  *
  * @author Luke
  */
-class SecurityTabMenu extends BaseMenu
+class SecurityTabMenu extends TabMenu
 {
-
-    public $template = '@humhub/widgets/views/tabMenu';
 
     /**
      * @var \humhub\modules\space\models\Space
      */
     public $space;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->addItem([

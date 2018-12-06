@@ -8,6 +8,7 @@
 
 namespace humhub\modules\friendship\widgets;
 
+use humhub\modules\ui\menu\widgets\TabMenu;
 use Yii;
 use yii\helpers\Url;
 use humhub\modules\friendship\models\Friendship;
@@ -15,18 +16,13 @@ use humhub\modules\friendship\models\Friendship;
 /**
  * Account Settings Tab Menu
  */
-class ManageMenu extends \humhub\widgets\BaseMenu
+class ManageMenu extends TabMenu
 {
 
     /**
      * @var \humhub\modules\user\models\User
      */
     public $user;
-
-    /**
-     * @inheritdoc
-     */
-    public $template = "@humhub/widgets/views/tabMenu";
 
     /**
      * @inheritdoc

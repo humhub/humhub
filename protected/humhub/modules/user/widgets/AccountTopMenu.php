@@ -8,16 +8,16 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\ui\menu\widgets\Menu;
 use Yii;
 use yii\helpers\Url;
-use humhub\widgets\BaseMenu;
 
 /**
  * AccountTopMenu Widget
  *
  * @author luke
  */
-class AccountTopMenu extends BaseMenu
+class AccountTopMenu extends Menu
 {
 
     /**

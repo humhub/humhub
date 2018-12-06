@@ -8,19 +8,15 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\ui\menu\widgets\SubTabMenu;
 use Yii;
 use yii\helpers\Url;
 
 /**
  * Group Administration Menu
  */
-class GroupManagerMenu extends \humhub\widgets\BaseMenu
+class GroupManagerMenu extends SubTabMenu
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $template = "@humhub/widgets/views/subTabMenu";
 
     /**
      * @var \humhub\modules\user\models\Group

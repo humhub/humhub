@@ -10,17 +10,14 @@ namespace humhub\modules\admin\widgets;
 
 use Yii;
 use yii\helpers\Url;
+use humhub\modules\ui\menu\widgets\SubTabMenu;
 
 /**
  * Authentication Settings Menu
  */
-class AdvancedSettingMenu extends \humhub\widgets\BaseMenu
+class AdvancedSettingMenu extends SubTabMenu
 {
 
-    /**
-     * @inheritdoc
-     */
-    public $template = "@humhub/widgets/views/subTabMenu";
 
     /**
      * @inheritdoc

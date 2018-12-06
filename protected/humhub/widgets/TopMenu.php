@@ -8,6 +8,7 @@
 
 namespace humhub\widgets;
 
+use humhub\modules\ui\menu\widgets\Menu;
 use Yii;
 use humhub\modules\user\components\User;
 
@@ -17,18 +18,19 @@ use humhub\modules\user\components\User;
  * @since 0.5
  * @author Luke
  */
-class TopMenu extends BaseMenu
+class TopMenu extends Menu
 {
+
+    /**
+     * @inheritdoc
+     */
+    public $id = 'top-menu-nav';
 
     /**
      * @inheritdoc
      */
     public $template = 'topNavigation';
 
-    /**
-     * @inheritdoc
-     */
-    public $id = 'top-menu-nav';
 
     /**
      * @inheritdoc
@@ -42,5 +44,7 @@ class TopMenu extends BaseMenu
             $this->template = '';
         }
     }
+
+
 
 }

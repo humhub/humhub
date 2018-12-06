@@ -8,20 +8,19 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\ui\menu\widgets\TabMenu;
 use Yii;
 use yii\helpers\Url;
 
 /**
  * Group Administration Menu
  */
-class SettingsMenu extends \humhub\widgets\BaseMenu
+class SettingsMenu extends TabMenu
 {
 
     /**
      * @inheritdoc
      */
-    public $template = "@humhub/widgets/views/tabMenu";
-
     public function init()
     {
         $canEditSettings = Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageSettings());

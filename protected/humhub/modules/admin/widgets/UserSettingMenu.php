@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\ui\menu\widgets\TabMenu;
 use Yii;
 use yii\helpers\Url;
 
@@ -16,12 +17,12 @@ use yii\helpers\Url;
  *
  * @author Basti
  */
-class UserSettingMenu extends \humhub\widgets\BaseMenu
+class UserSettingMenu extends TabMenu
 {
 
-    public $template = "@humhub/widgets/views/tabMenu";
-    public $type = "adminUserSettingNavigation";
-
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->addItem([

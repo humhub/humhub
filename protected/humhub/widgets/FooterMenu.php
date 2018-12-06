@@ -8,13 +8,15 @@
 
 namespace humhub\widgets;
 
+use humhub\modules\ui\menu\widgets\Menu;
+
 /**
  * FooterMenu displays a footer navigation for pages e.g. Imprint
  *
  * @since 1.2.6
  * @author Luke
  */
-class FooterMenu extends BaseMenu
+class FooterMenu extends Menu
 {
     const LOCATION_ACCOUNT_MENU = 'account_menu';
     const LOCATION_LOGIN = 'login';
@@ -59,14 +61,11 @@ class FooterMenu extends BaseMenu
     /**
      * @inheritdoc
      */
-    public function run()
+    protected function getViewParams()
     {
-        $this->trigger(self::EVENT_RUN);
-
-        return $this->render($this->template, [
-            'items' => $this->getItems(),
-            'location' => $this->location,
-            'numItems' => count($this->getItems())
-        ]);
+        $params = parent::getViewParams();
+        $params['location'] = $this->location;
+        return $params;
     }
+
 }

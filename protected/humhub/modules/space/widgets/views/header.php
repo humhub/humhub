@@ -181,10 +181,7 @@ if ($space->isAdmin()) {
                                 ['sortOrder' => 30]]
                         ]]);
                         ?>
-                        <?= HeaderControlsMenu::widget([
-                            'space' => $space,
-                            'template' => '@humhub/widgets/views/dropdownNavigation'
-                        ]);
+                        <?= HeaderControlsMenu::widget(['space' => $space]);
                         ?>
                     </div>
                 </div>

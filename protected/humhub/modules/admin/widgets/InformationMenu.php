@@ -8,20 +8,19 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\ui\menu\widgets\TabMenu;
 use Yii;
 use yii\helpers\Url;
 
 /**
  * Group Administration Menu
  */
-class InformationMenu extends \humhub\widgets\BaseMenu
+class InformationMenu extends TabMenu
 {
 
     /**
      * @inheritdoc
      */
-    public $template = "@humhub/widgets/views/tabMenu";
-
     public function init()
     {
         $this->addItem([

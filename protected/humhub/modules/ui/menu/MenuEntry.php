@@ -73,7 +73,7 @@ class MenuEntry extends BaseObject
      * @var string optional badge (e.g. new item count) not supported by all templates
      */
     protected $badgeText;
-    
+
     /**
      * Renders the link tag for this menu entry
      *

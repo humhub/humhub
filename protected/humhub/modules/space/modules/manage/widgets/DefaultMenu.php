@@ -8,24 +8,25 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
-use humhub\widgets\BaseMenu;
 use Yii;
+use humhub\modules\ui\menu\widgets\TabMenu;
 
 /**
  * Space Administration Menu
  *
  * @author Luke
  */
-class DefaultMenu extends BaseMenu
+class DefaultMenu extends TabMenu
 {
-
-    public $template = '@humhub/widgets/views/tabMenu';
 
     /**
      * @var \humhub\modules\space\models\Space
      */
     public $space;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->addItem([

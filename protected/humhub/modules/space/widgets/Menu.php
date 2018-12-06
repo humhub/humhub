@@ -8,9 +8,9 @@
 
 namespace humhub\modules\space\widgets;
 
-use humhub\widgets\BaseMenu;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
+use humhub\modules\ui\menu\widgets\LeftNavigation;
 use Yii;
 use yii\base\Exception;
 
@@ -18,15 +18,17 @@ use yii\base\Exception;
  * The Main Navigation for a space. It includes the Modules the Stream
  *
  * @author Luke
- * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
-class Menu extends BaseMenu
+class Menu extends LeftNavigation
 {
+
     /** @var Space */
     public $space;
-    public $template = '@humhub/widgets/views/leftNavigation';
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         if ($this->space === null && Yii::$app->controller instanceof ContentContainerController && Yii::$app->controller->contentContainer instanceof Space) {
@@ -36,14 +38,11 @@ class Menu extends BaseMenu
         if ($this->space === null) {
             throw new Exception('Could not instance space menu without space!');
         }
-        
+
         $this->id = 'navigation-menu-space-' . $this->space->getUniqueId();
 
-        $this->addItemGroup([
-            'id' => 'modules',
-            'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', '<strong>Space</strong> menu'),
-            'sortOrder' => 100,
-        ]);
+
+        $this->panelTitle = Yii::t('SpaceModule.widgets_SpaceMenuWidget', '<strong>Space</strong> menu');
 
         $this->addItem([
             'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', 'Stream'),
@@ -61,9 +60,8 @@ class Menu extends BaseMenu
      * Searches for urls of modules which are activated for the current space
      * and offer an own site over the space menu.
      * The urls are associated with a module label.
-     * 
-     * Returns an array of urls with associated module labes for modules 
-     * @param type $space
+     *
+     * Returns an array of urls with associated module labes for modules
      */
     public static function getAvailablePages()
     {
@@ -79,7 +77,7 @@ class Menu extends BaseMenu
 
     /**
      * Returns space default / homepage
-     * 
+     *
      * @return string|null the url to redirect or null for default home
      */
     public static function getDefaultPageUrl($space)
@@ -102,7 +100,7 @@ class Menu extends BaseMenu
 
     /**
      * Returns space default / homepage
-     * 
+     *
      * @return string|null the url to redirect or null for default home
      */
     public static function getGuestsDefaultPageUrl($space)

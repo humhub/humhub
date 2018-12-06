@@ -8,26 +8,25 @@
 
 namespace humhub\modules\admin\widgets;
 
-use Yii;
-use yii\helpers\Url;
 use humhub\modules\admin\models\UserApprovalSearch;
-use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\user\models\Invite;
-use humhub\widgets\BaseMenu;
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\ui\menu\widgets\TabMenu;
+use Yii;
+use yii\helpers\Url;
 
 /**
  * User Administration Menu
  *
  * @author Basti
  */
-class UserMenu extends BaseMenu
+class UserMenu extends TabMenu
 {
 
-    public $template = '@humhub/widgets/views/tabMenu';
-    public $type = 'adminUserSubNavigation';
-
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->addItem([
@@ -81,7 +80,7 @@ class UserMenu extends BaseMenu
             'sortOrder' => 500,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group'),
             'isVisible' => Yii::$app->user->can(
-                    new ManageGroups()
+                new ManageGroups()
             )
         ]);
 

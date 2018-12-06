@@ -8,19 +8,15 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\ui\menu\widgets\TabMenu;
 use Yii;
 use yii\helpers\Url;
 
 /**
  * Account Settings Tab Menu
  */
-class AccountSettingsMenu extends \humhub\widgets\BaseMenu
+class AccountSettingsMenu extends TabMenu
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $template = "@humhub/widgets/views/tabMenu";
 
     /**
      * @inheritdoc
@@ -49,8 +45,9 @@ class AccountSettingsMenu extends \humhub\widgets\BaseMenu
 
     /**
      * Returns optional authclients
-     * 
+     *
      * @return \yii\authclient\ClientInterface[]
+     * @throws \yii\base\InvalidConfigException
      */
     protected function getSecondaryAuthProviders()
     {

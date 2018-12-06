@@ -8,24 +8,18 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
-use humhub\widgets\BaseMenu;
-use humhub\modules\space\modules\manage\models\MembershipSearch;
-use humhub\modules\space\models\Membership;
 use Yii;
+use humhub\modules\space\models\Membership;
+use humhub\modules\space\modules\manage\models\MembershipSearch;
+use humhub\modules\ui\menu\widgets\TabMenu;
 
 /**
  * MemberMenu is a tabbed menu for space member administration
  *
  * @author Basti
  */
-class MemberMenu extends BaseMenu
+class MemberMenu extends TabMenu
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $template = '@humhub/widgets/views/tabMenu';
-
     /**
      * @var \humhub\modules\space\models\Space
      */
@@ -46,7 +40,7 @@ class MemberMenu extends BaseMenu
 
         if ($this->countPendingInvites() != 0) {
             $this->addItem([
-                'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Pending Invites') . '&nbsp;&nbsp;<span class="label label-danger">'.$this->countPendingInvites().'</span>',
+                'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Pending Invites') . '&nbsp;&nbsp;<span class="label label-danger">' . $this->countPendingInvites() . '</span>',
                 'url' => $this->space->createUrl('/space/manage/member/pending-invitations'),
                 'sortOrder' => 200,
                 'isActive' => (Yii::$app->controller->action->id == 'pending-invitations'),
@@ -54,7 +48,7 @@ class MemberMenu extends BaseMenu
         }
         if ($this->countPendingApprovals() != 0) {
             $this->addItem([
-                'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Pending Approvals'). '&nbsp;&nbsp;<span class="label label-danger">'.$this->countPendingApprovals().'</span>',
+                'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Pending Approvals') . '&nbsp;&nbsp;<span class="label label-danger">' . $this->countPendingApprovals() . '</span>',
                 'url' => $this->space->createUrl('/space/manage/member/pending-approvals'),
                 'sortOrder' => 300,
                 'isActive' => (Yii::$app->controller->action->id == 'pending-approvals'),
@@ -76,7 +70,7 @@ class MemberMenu extends BaseMenu
 
     /**
      * Returns the number of currently invited users
-     * 
+     *
      * @return int currently invited members
      */
     protected function countPendingInvites()
@@ -90,7 +84,7 @@ class MemberMenu extends BaseMenu
 
     /**
      * Returns the number of currently pending approvals
-     * 
+     *
      * @return int currently pending approvals
      */
     protected function countPendingApprovals()

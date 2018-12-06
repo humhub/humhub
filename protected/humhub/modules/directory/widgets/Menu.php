@@ -8,35 +8,30 @@
 
 namespace humhub\modules\directory\widgets;
 
-use humhub\modules\directory\Module;
 use Yii;
 use yii\helpers\Url;
-
-use humhub\modules\directory\models\User;
+use humhub\modules\directory\Module;
+use humhub\modules\ui\menu\widgets\LeftNavigation;
 
 /**
- * Directory Menu
+ * Directory module navigation
  *
  * @since 0.21
  * @author Luke
  */
-class Menu extends \humhub\widgets\BaseMenu
+class Menu extends LeftNavigation
 {
-
-    public $template = "@humhub/widgets/views/leftNavigation";
-
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('directory');
 
-        $this->addItemGroup([
-            'id' => 'directory',
-            'label' => Yii::t('DirectoryModule.base', '<strong>Directory</strong> menu'),
-            'sortOrder' => 100,
-        ]);
+        $this->panelTitle = Yii::t('DirectoryModule.base', '<strong>Directory</strong> menu');
 
-        if (Yii::$app->getModule('directory')->isGroupListingEnabled()) {
+        if ($module->isGroupListingEnabled()) {
             $this->addItem([
                 'label' => Yii::t('DirectoryModule.base', 'Groups'),
                 'group' => 'directory',
