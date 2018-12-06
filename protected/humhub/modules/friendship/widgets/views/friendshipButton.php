@@ -7,8 +7,6 @@ use humhub\modules\friendship\models\Friendship;
 /* @var $user \humhub\modules\user\models\User */
 /* @var $friendshipState string */
 ?>
-
-
 <?php if ($friendshipState === Friendship::STATE_FRIENDS) : ?>
     <div class="btn-group">
         <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -19,7 +17,7 @@ use humhub\modules\friendship\models\Friendship;
         </ul>
     </div>
 <?php elseif ($friendshipState === Friendship::STATE_NONE) : ?>
-    <?= Html::a('<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;' . Yii::t("FriendshipModule.base", "Add Friend"), Url::to(['/friendship/request/add', 'userId' => $user->id]), ['class' => 'btn btn-info', 'data-method' => 'POST', 'data-ui-loader' => '']); ?>
+<?= Html::a('<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;' . Yii::t("FriendshipModule.base", "Add Friend"), Url::to(['/friendship/request/add', 'userId' => $user->id]), ['class' => 'btn btn-info', 'data-method' => 'POST', 'data-ui-loader' => '']); ?>
 <?php elseif ($friendshipState === Friendship::STATE_REQUEST_RECEIVED) : ?>
     <div class="btn-group">
         <?= Html::a(Yii::t("FriendshipModule.base", "Accept Friend Request"), Url::to(['/friendship/request/add', 'userId' => $user->id]), ['class' => 'btn btn-success', 'data-method' => 'POST', 'data-ui-loader' => '']); ?>

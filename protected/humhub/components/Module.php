@@ -48,7 +48,7 @@ class Module extends \yii\base\Module
 
         // Set settings component
         $this->set('settings', [
-            'class' => SettingsManager::className(),
+            'class' => SettingsManager::class,
             'moduleId' => $this->id
         ]);
     }
@@ -321,7 +321,10 @@ class Module extends \yii\base\Module
 
     /**
      * Returns a list of permission objects this module provides.
-     * If a ContentContainer is provided, the method should only return applicable permissions in content container context.
+     *
+     * If a content container is provided, the method should only return applicable permissions for the given container.
+     * This function should also make sure the module is installed on the given container in case the permission
+     * only affects installed features.
      *
      * @since 0.21
      * @param \humhub\modules\content\components\ContentContainerActiveRecord $contentContainer optional contentcontainer

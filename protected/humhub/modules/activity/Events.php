@@ -43,7 +43,7 @@ class Events extends BaseObject
     public static function onCronDailyRun($event)
     {
         Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_DAILY]));
-        if (date('N') == Yii::$app->getModule('activity')->weeklySummaryDay) {
+        if (date('w') == Yii::$app->getModule('activity')->weeklySummaryDay) {
             Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_WEEKLY]));
         }
     }

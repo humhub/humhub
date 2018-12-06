@@ -11,6 +11,7 @@ namespace humhub\modules\content\components;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\content\models\ContentContainerPermission;
 use humhub\libs\BasePermission;
+use Yii;
 
 /**
  * @inheritdoc
