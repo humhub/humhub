@@ -62,7 +62,7 @@ class Menu extends Widget
     {
         foreach ($this->entries as $i => $e) {
             if ($e === $entry) {
-                unset($entry[$i]);
+                unset($this->entries[$i]);
                 return true;
             }
         }
