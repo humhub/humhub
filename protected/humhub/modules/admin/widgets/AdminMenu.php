@@ -19,6 +19,8 @@ use yii\helpers\Url;
 class AdminMenu extends \humhub\widgets\BaseMenu
 {
 
+    const SESSION_CAN_SEE_ADMIN_SECTION = 'user.canSeeAdminSection';
+
     public $template = "@humhub/widgets/views/leftNavigation";
     public $type = "adminNavigation";
     public $id = "admin-menu";
@@ -117,13 +119,18 @@ class AdminMenu extends \humhub\widgets\BaseMenu
 
     public static function canAccess()
     {
-        $canSeeAdminSection = Yii::$app->session->get('user.canSeeAdminSection');
+        $canSeeAdminSection = Yii::$app->session->get(static::SESSION_CAN_SEE_ADMIN_SECTION);
         if ($canSeeAdminSection == null) {
             $canSeeAdminSection = Yii::$app->user->isAdmin() ? true : self::checkNonAdminAccess();
-            Yii::$app->session->set('user.canSeeAdminSection', $canSeeAdminSection);
+            Yii::$app->session->set(static::SESSION_CAN_SEE_ADMIN_SECTION, $canSeeAdminSection);
         }
 
 		return $canSeeAdminSection;
+    }
+
+    public static function reset()
+    {
+        Yii::$app->session->remove(static::SESSION_CAN_SEE_ADMIN_SECTION);
     }
 
     private static function checkNonAdminAccess()
