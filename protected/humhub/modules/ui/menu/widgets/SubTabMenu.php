@@ -14,7 +14,7 @@ namespace humhub\modules\ui\menu\widgets;
  * @sicne 1.4
  * @package humhub\modules\ui\menu\widgets
  */
-class SubTabMenu extends Menu
+abstract class SubTabMenu extends Menu
 {
     /**
      * @var string the title of the panel

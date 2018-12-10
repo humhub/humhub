@@ -20,7 +20,7 @@ use yii\web\View;
  * @since 1.4
  * @package humhub\modules\ui\widgets
  */
-class Menu extends Widget
+abstract class Menu extends Widget
 {
     /**
      * @event MenuEvent an event raised before running the navigation widget.

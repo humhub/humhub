@@ -14,7 +14,7 @@ namespace humhub\modules\ui\menu\widgets;
  * @since 1.4
  * @package humhub\modules\ui\menu\widgets
  */
-class TabMenu extends Menu
+abstract class TabMenu extends Menu
 {
     /**
      * @inheritdoc

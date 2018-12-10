@@ -14,7 +14,7 @@ namespace humhub\modules\ui\menu\widgets;
  * @since 1.4
  * @package humhub\modules\ui\menu\widgets
  */
-class DropDownMenu extends Menu
+abstract class DropDownMenu extends Menu
 {
     /**
      * @var string the label of the dropdown button

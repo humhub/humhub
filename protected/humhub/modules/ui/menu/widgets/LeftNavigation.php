@@ -14,7 +14,7 @@ namespace humhub\modules\ui\menu\widgets;
  * @since 1.4
  * @package humhub\modules\ui\menu\widgets
  */
-class LeftNavigation extends Menu
+abstract class LeftNavigation extends Menu
 {
     /**
      * @var string the title of the panel
