@@ -22,7 +22,7 @@ class JqueryTimeAgoAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/jquery-timeago';
+    public $sourcePath = '@npm/timeago';
 
     /**
      * @inheritdoc

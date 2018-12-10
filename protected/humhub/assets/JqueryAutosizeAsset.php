@@ -21,7 +21,7 @@ class JqueryAutosizeAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/autosize';
+    public $sourcePath = '@npm/jquery-autosize';
 
     /**
      * @inheritdoc

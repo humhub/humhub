@@ -21,7 +21,7 @@ class OpenSansAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/open-sans-fontface';
+    public $sourcePath = '@npm/open-sans-fontface';
 
     /**
      * @inheritdoc
