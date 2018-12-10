@@ -83,7 +83,10 @@
             "php": "5.6"
         },
         "vendor-dir": "protected/vendor",
-        "sort-packages": true
+        "sort-packages": true,
+        "fxp-asset": {
+            "enabled": false
+        }
     },
     "scripts": {
         "post-create-project-cmd": [
