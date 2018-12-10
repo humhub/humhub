@@ -14,6 +14,7 @@ use humhub\modules\ui\menu\events\MenuEvent;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\widgets\TopMenu;
 use Yii;
+use yii\base\Event;
 use yii\helpers\Url;
 
 /**
@@ -28,22 +29,21 @@ class Events
      * TopMenu init event callback
      *
      * @see TopMenu
-     * @param MenuEvent $event
+     * @param Event $event
      */
     public static function onTopMenuInit($event)
     {
+        /** @var TopMenu $topMenu */
         $topMenu = $event->sender;
 
         $entry = new MenuEntry();
 
-        $entry->id = 'dashboard';
-        $entry->label = Yii::t('DashboardModule.base', 'Dashboard');
-        $entry->url = Url::to(['/dashboard/dashboard']);
-        $entry->icon = new Icon(['name' => 'tachometer']);
-        $entry->sortOrder = 100;
-        $entry->isActive = function () {
-            return (Yii::$app->controller->module && Yii::$app->controller->module->id === 'dashboard');
-        };
+        $entry->setId('dashboard');
+        $entry->setLabel(Yii::t('DashboardModule.base', 'Dashboard'));
+        $entry->setUrl(['/dashboard/dashboard']);
+        $entry->setIcon(new Icon(['name' => 'tachometer']));
+        $entry->setSortOrder(100);
+        $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id === 'dashboard'));
 
         $topMenu->addEntry($entry);
     }
