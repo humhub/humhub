@@ -22,7 +22,7 @@ class NProgressAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/nprogress';
+    public $sourcePath = '@npm/nprogress';
 
     /**
      * @inheritdoc
