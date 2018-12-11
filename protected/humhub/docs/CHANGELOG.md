@@ -5,7 +5,8 @@ HumHub Change Log
 ---------------------------
 
 - Fix: StreamSuppressedQuery with limit = 2 throws query not executed exception
-- Fix #3378: Update user in search index when group memberships changes 
+- Fix #3378: Update user in search index when group memberships changes
+- Fix: Space un-archived activity view path broken
 
 
 1.3.8  (December 10, 2018)
