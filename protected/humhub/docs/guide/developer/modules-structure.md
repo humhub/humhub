@@ -51,11 +51,11 @@ return [
 
 > Note: Do not execute any code in the `config.php` since the result will be cached!
 
-### Base class `Module.php`
+## Base class `Module.php`
 
 See chapter [Base Class](modules-base-class.md) for an introduction of module base classes.
 
-### Meta data `module.json`
+## Meta data `module.json`
 
 The `module.json` file holds basic meta data which is used for example by the marketplace.
 
