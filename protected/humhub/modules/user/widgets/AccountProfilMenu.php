@@ -34,6 +34,15 @@ class AccountProfilMenu extends \humhub\widgets\BaseMenu
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'edit'),
         ]);
 
+        if (Yii::$app->user->canChangeUsername()) {
+            $this->addItem([
+                'label' => Yii::t('UserModule.base', 'Change Username'),
+                'url' => Url::toRoute(['/user/account/change-username']),
+                'sortOrder' => 200,
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && (Yii::$app->controller->action->id == 'change-username' || Yii::$app->controller->action->id == 'change-username-validate')),
+            ]);
+        }
+
         if (Yii::$app->user->canChangeEmail()) {
             $this->addItem([
                 'label' => Yii::t('UserModule.base', 'Change Email'),

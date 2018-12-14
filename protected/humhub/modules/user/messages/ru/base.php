@@ -33,6 +33,7 @@ return [
     'Your account is not approved yet!' => '',
     'Your new password must not be equal your current password!' => '',
     'Basic Settings' => 'Основные настройки',
+    'Change Username' => 'Сменить имя пользователя',
     'Change Email' => 'Сменить e-mail',
     'Change Password' => 'Сменить пароль',
     'Confirm new password' => 'Подтвердить пароль',
