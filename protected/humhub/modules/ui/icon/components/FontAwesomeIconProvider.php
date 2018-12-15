@@ -1,5 +1,5 @@
 <?php
-namespace humhub\modules\ui\icon;
+namespace humhub\modules\ui\icon\components;
 
 use humhub\libs\Html;
 use humhub\modules\ui\icon\widgets\Icon;
@@ -10,7 +10,7 @@ use humhub\modules\ui\icon\widgets\Icon;
  *
  * @since 1.4
  */
-class FontAwesomeIconFactory implements IconFactory
+class FontAwesomeIconProvider implements IconProvider
 {
 
     /**
@@ -116,5 +116,13 @@ class FontAwesomeIconFactory implements IconFactory
             default:
                 return null;
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getNames()
+    {
+        return Icon::$names;
     }
 }

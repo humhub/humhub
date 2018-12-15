@@ -1,13 +1,33 @@
 <?php
 namespace humhub\modules\ui\icon\widgets;
 
-use humhub\modules\ui\icon\FontAwesomeIconFactory;
-use humhub\modules\ui\icon\IconFactory;
+use humhub\modules\ui\icon\components\IconProvider;
 use Yii;
+use humhub\modules\ui\icon\components\IconFactory;
 
 /**
- * Icon abstraction
+ * The Icon widget is used as abstraction layer for rendering icons.
  *
+ * This class only holds the icon definition as icon name, size and color and will forward the
+ * actual rendering to an IconProvider through an IconFactory.
+ *
+ * It is possible to define own IconProvider, see [[IconFactory]]
+ *
+ * Usage:
+ *
+ * ```php
+ * // Simple Icon
+ * Icon::get('myIcon');
+ *
+ * // Icon with color definition
+ * Icon::get('myIcon', ['color' => 'danger']);
+ *
+ * // Use another icon lib
+ * Icon::get('myIcon', ['lib' => 'myIconLib']);
+ * ```
+ *
+ * @see IconFactory
+ * @see IconProvider
  * @since 1.4
  */
 class Icon extends \humhub\components\Widget
@@ -25,6 +45,9 @@ class Icon extends \humhub\components\Widget
     const SIZE_9x = '9x';
     const SIZE_10x = '10x';
 
+    /**
+     * @var array contains all available names which should be supported by the main icon provider
+     */
     public static $names = [
         'adjust',
         'adn',
@@ -610,11 +633,6 @@ class Icon extends \humhub\components\Widget
     ];
 
     /**
-     * @var IconFactory
-     */
-    private static $iconFactory;
-
-    /**
      * @var string icon name
      */
     public $name;
@@ -666,20 +684,35 @@ class Icon extends \humhub\components\Widget
     public $color;
 
     /**
-     * @return IconFactory
-     * @throws \yii\base\InvalidConfigException
+     * @var string explicitly define a icon library, if not defined the default icon provider is used
      */
-    protected static function getFactory()
-    {
-        if(!static::$iconFactory) {
-            static::$iconFactory = (isset(Yii::$app->params['iconFactory']))
-                ? Yii::createObject(Yii::$app->params['iconFactory'])
-                : new FontAwesomeIconFactory();
-        }
+    public $lib;
 
-        return static::$iconFactory;
-    }
 
+    /**
+     * Can be used to get an Icon instance from an unknown format.
+     *
+     * The following formats are  supported:
+     *
+     * ```php
+     * // Will just return the given $instance
+     * Icon::get($instance);
+     *
+     * // Will overwrite the instance configuration and return the given $instane
+     * Icon::get($instance, $someOptions);
+     *
+     *
+     * // Will create an instance with the given icon name and options
+     * Icon::get('tasks', $someOptoins);
+     *
+     *
+     * // Will create an instance from the given options array
+     * Icon::get(['name' => 'tasks', color => 'success']);
+     * ```
+     * @param $icon
+     * @param array $options
+     * @return Icon|null|object
+     */
     public static function get($icon, $options = [])
     {
         if($icon instanceof static) {
@@ -690,10 +723,25 @@ class Icon extends \humhub\components\Widget
         } else if(is_array($icon)) {
             return new Icon($icon);
         }
+
+        return null;
     }
 
     /**
-     * @return mixed|string
+     * Returns all supported icon names of a provider-
+     *
+     * @param null $providerId
+     * @return string[]
+     * @see IconFactory::getNames()
+     * @throws \yii\base\InvalidConfigException
+     */
+    public static function getNames($providerId = null)
+    {
+        return IconFactory::getInstance()->getNames($providerId);
+    }
+
+    /**
+     * @inheritdoc
      * @throws \yii\base\InvalidConfigException
      */
     public function run()
@@ -732,17 +780,26 @@ class Icon extends \humhub\components\Widget
             }
         }
 
-        return static::getFactory()->render($this);
+        return IconFactory::getInstance()->render($this);
     }
 
     /**
+     * Renders a icon list e.g.:
+     *
+     * ```php
+     * Icon::renderList([
+     *     ['tasks' => 'First list item', 'options' => ['color' => 'success']],
+     *     ['book' => 'First second item', 'options' => ['color' => 'danger']]
+     * ])
+     * ```
+     *
      * @param $listDefinition
      * @return mixed
      * @throws \yii\base\InvalidConfigException
      */
     public static function renderList($listDefinition)
     {
-        return static::getFactory()->renderList($listDefinition);
+        return IconFactory::getInstance()->renderList($listDefinition);
     }
 
     /**
@@ -751,15 +808,15 @@ class Icon extends \humhub\components\Widget
      */
     public function __toString()
     {
-        $result = $this::widget($this->getWidgetOptions());
+        $result = $this::widget($this->asArray());
 
         return $result ? $result : '';
     }
 
     /**
-     * @return array all options required for rendering the widget
+     * @return [] array representation of this icon
      */
-    public function getWidgetOptions()
+    public function asArray()
     {
         return [
             'id' => $this->id,
@@ -773,6 +830,7 @@ class Icon extends \humhub\components\Widget
             'border' => $this->border,
             'style' => $this->style,
             'color' => $this->color,
+            'lib' => $this->lib
         ];
     }
 

@@ -28,6 +28,10 @@ use yii\web\JsExpression;
  */
 class IconPicker extends Select2
 {
+    /**
+     * @var string optional icon provider id
+     */
+    public $lib;
 
     /**
      * @inheritdoc
@@ -68,13 +72,13 @@ class IconPicker extends Select2
      */
     protected function populateIconList()
     {
-        foreach ($this->getIcons() as $icon) {
+        foreach ($this->getIconNames() as $icon) {
             $title = $icon;
             if (substr($title, 0, 3) === 'fa-') {
                 $title = substr($title, 3);
             }
 
-            $this->data[$icon] = Icon::get($icon) . '&nbsp;&nbsp;' . $title;
+            $this->data[$icon] = Icon::get(['name' => $icon, 'lib' => $this->lib]) . '&nbsp;&nbsp;' . $title;
         }
     }
 
@@ -83,9 +87,9 @@ class IconPicker extends Select2
      *
      * @return array a list of icons
      */
-    public function getIcons()
+    public function getIconNames()
     {
-        return Icon::$names;
+        return Icon::getNames($this->lib);
     }
 
 }
