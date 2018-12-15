@@ -8,7 +8,7 @@
 
 namespace humhub\modules\ui\menu;
 
-use humhub\modules\ui\widgets\Icon;
+use humhub\modules\ui\icon\widgets\Icon;
 use yii\base\BaseObject;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
@@ -114,11 +114,11 @@ class MenuEntry extends BaseObject
     }
 
     /**
-     * @param $icon Icon the icon
+     * @param $icon Icon|string the icon instance or icon name
      */
     public function setIcon($icon)
     {
-        $this->icon = $icon;
+        $this->icon = Icon::get($icon);
     }
 
     /**

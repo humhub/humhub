@@ -7,7 +7,7 @@ HumHub Change Log (DEVELOP)
 
 - Enh: GroupPermissionManager - allow to query users by given permission
 - Enh: Automatic migrate DB collations from utf8 to utf8mb4
-- Enh: Added Icon widget as wrapper class 
+- Enh: Added Icon abstraction layer
 
 
 

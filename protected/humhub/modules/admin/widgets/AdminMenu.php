@@ -8,9 +8,9 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\widgets\LeftNavigation;
-use humhub\modules\ui\widgets\Icon;
 use Yii;
 
 /**
@@ -36,7 +36,7 @@ class AdminMenu extends LeftNavigation
         $entry = new MenuEntry();
         $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Users'));
         $entry->setUrl(['/admin/user']);
-        $entry->setIcon(new Icon(['name' => 'user']));
+        $entry->setIcon('user');
         $entry->setSortOrder(200);
         $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && (Yii::$app->controller->id == 'user' || Yii::$app->controller->id == 'group' || Yii::$app->controller->id == 'approval' || Yii::$app->controller->id == 'authentication' || Yii::$app->controller->id == 'user-profile' || Yii::$app->controller->id == 'pending-registrations')));
         $entry->setIsVisible(Yii::$app->user->can([
@@ -49,7 +49,7 @@ class AdminMenu extends LeftNavigation
         $entry = new MenuEntry();
         $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Spaces'));
         $entry->setUrl(['/admin/space']);
-        $entry->setIcon(new Icon(['name' => 'inbox']));
+        $entry->setIcon('inbox');
         $entry->setSortOrder(400);
         $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'space'));
         $entry->setIsVisible(Yii::$app->user->can([
@@ -61,7 +61,7 @@ class AdminMenu extends LeftNavigation
         $entry = new MenuEntry();
         $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Modules'));
         $entry->setUrl(['/admin/module']);
-        $entry->setIcon(new Icon(['name' => 'rocket']));
+        $entry->setIcon('rocket');
         $entry->setSortOrder(500);
         $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'module'));
         $entry->setIsVisible(Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageModules()));
@@ -70,7 +70,7 @@ class AdminMenu extends LeftNavigation
         $entry = new MenuEntry();
         $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Settings'));
         $entry->setUrl(['/admin/setting']);
-        $entry->setIcon(new Icon(['name' => 'gears']));
+        $entry->setIcon('gears');
         $entry->setSortOrder(600);
         $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'setting'));
         $entry->setIsVisible(Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageSettings()));
@@ -79,7 +79,7 @@ class AdminMenu extends LeftNavigation
         $entry = new MenuEntry();
         $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Information'));
         $entry->setUrl(['/admin/information']);
-        $entry->setIcon(new Icon(['name' => 'info-circle']));
+        $entry->setIcon('info-circle');
         $entry->setSortOrder(1000);
         $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'information'));
         $entry->setIsVisible(Yii::$app->user->can(new \humhub\modules\admin\permissions\SeeAdminInformation()));
