@@ -1,8 +1,9 @@
 <?php
 namespace humhub\modules\ui\icon\widgets;
 
-use humhub\modules\ui\icon\components\IconProvider;
 use Yii;
+use humhub\libs\Html;
+use humhub\modules\ui\icon\components\IconProvider;
 use humhub\modules\ui\icon\components\IconFactory;
 
 /**
@@ -674,9 +675,9 @@ class Icon extends \humhub\components\Widget
     public $ariaHidden = false;
 
     /**
-     * @var string|[] additional style
+     * @var array
      */
-    public $style;
+    public $htmlOptions = [];
 
     /**
      * @var string css color
@@ -741,6 +742,25 @@ class Icon extends \humhub\components\Widget
     }
 
     /**
+     * Renders a icon list e.g.:
+     *
+     * ```php
+     * Icon::renderList([
+     *     ['tasks' => 'First list item', 'options' => ['color' => 'success']],
+     *     ['book' => 'First second item', 'options' => ['color' => 'danger']]
+     * ])
+     * ```
+     *
+     * @param $listDefinition
+     * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     */
+    public static function renderList($listDefinition)
+    {
+        return IconFactory::getInstance()->renderList($listDefinition);
+    }
+
+    /**
      * @inheritdoc
      * @throws \yii\base\InvalidConfigException
      */
@@ -780,37 +800,116 @@ class Icon extends \humhub\components\Widget
             }
         }
 
+        if($this->id) {
+            $this->htmlOptions['id'] = $this->id;
+        }
+
         return IconFactory::getInstance()->render($this);
     }
 
     /**
-     * Renders a icon list e.g.:
-     *
-     * ```php
-     * Icon::renderList([
-     *     ['tasks' => 'First list item', 'options' => ['color' => 'success']],
-     *     ['book' => 'First second item', 'options' => ['color' => 'danger']]
-     * ])
-     * ```
-     *
-     * @param $listDefinition
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @param $size string
+     * @return $this
      */
-    public static function renderList($listDefinition)
+    public function size($size)
     {
-        return IconFactory::getInstance()->renderList($listDefinition);
+        $this->size = $size;
+        return $this;
     }
 
     /**
-     * @return string
-     * @throws \Exception
+     * @param bool $active
+     * @return $this
      */
-    public function __toString()
+    public function fixedWith($active = true)
     {
-        $result = $this::widget($this->asArray());
+        $this->fixedWidth = $active;
+        return $this;
+    }
 
-        return $result ? $result : '';
+    /**
+     * @param bool $active
+     * @return $this
+     */
+    public function listItem($active = true)
+    {
+        $this->listItem;
+        return $this;
+    }
+
+    /**
+     * @param bool $active
+     * @return $this
+     */
+    public function right($active = true)
+    {
+        if($active) {
+            $this->left(false);
+        }
+
+        $this->right = $active;
+        return $this;
+    }
+
+    /**
+     * @param bool $active
+     * @return $this
+     */
+    public function left($active = true)
+    {
+        if($active) {
+            $this->right(false);
+        }
+
+        $this->left = $active;
+        return $this;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function ariaHidden($active = true)
+    {
+        $this->ariaHidden = $active;
+        return $this;
+    }
+
+    /**
+     * @param bool $active
+     * @return $this
+     */
+    public function border($active = true)
+    {
+        $this->border = $active;
+        return $this;
+    }
+
+    /**
+     * @param string|array $style
+     */
+    public function style($style)
+    {
+        Html::addCssStyle($this->htmlOptions, $style);
+        return $this;
+    }
+
+    /**
+     * @param string $color
+     */
+    public function color($color)
+    {
+        $this->color = $color;
+        return $this;
+    }
+
+    /**
+     * @param $lib
+     * @return $this
+     */
+    public function lib($lib)
+    {
+        $this->lib = $lib;
+        return $this;
     }
 
     /**
@@ -828,10 +927,20 @@ class Icon extends \humhub\components\Widget
             'left' => $this->left,
             'ariaHidden' => $this->ariaHidden,
             'border' => $this->border,
-            'style' => $this->style,
+            'htmlOptions' => $this->htmlOptions,
             'color' => $this->color,
             'lib' => $this->lib
         ];
     }
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function __toString()
+    {
+        $result = $this::widget($this->asArray());
+
+        return $result ? $result : '';
+    }
 }
