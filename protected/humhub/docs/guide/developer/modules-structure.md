@@ -59,6 +59,19 @@ See chapter [Base Class](modules-base-class.md) for an introduction of module ba
 
 The `module.json` file holds basic meta data which is used for example by the marketplace.
 
+Available attributes:
+
+- **id** - The module ID
+- **name** - The modules name
+- **description** - A short module description
+- **keywords** - (Array) Some keywords 
+- **screenshots** - (Array) Some screenshots for the marketplace, those should reside in the `resourcesPath` of your module.
+- **version** - Current module version
+- **humhub** - HumHub requirements
+    - **minVersion** - The minimum HumHub core version this module is compatible with.
+    - **maxVersion** - The maximum HumHub core version this module is compatible with.
+
+
 Example `module.php` file:
 
 ```json
@@ -75,15 +88,21 @@ Example `module.php` file:
 }
 ```
 
-- **id** - The module ID
-- **name** - The modules name
-- **description** - A short module description
-- **keywords** - Array of significant keywords
-- **screenshots** - Some screenshots for the marketplace, those should reside in the `resourcesPath` of your module.
-- **version** - Current module version
-- **minVersion** - Defines the minimum HumHub core version this module version is compatible with.
-
 > Warning: You should align the `minVersion` of your module when using new features and test your modules on all supported versions.
+
+## Documentation
+
+The documentation files of the module must be located in the folder 'docs'.
+
+The following table shows the default files.
+
+| File | Required | Description |
+| --- | --- | --- |
+| README.md | Yes | A description and overview of the features |
+| MANUAL.md | No | Information on how to use this module |
+| CHANGELOG.md | Yes | A file which contains a curated, chronologically ordered list of changes for each version |
+| LICENCE.md | No | Licencing information including the licence |
+
 
 ## Extended structure example
 
