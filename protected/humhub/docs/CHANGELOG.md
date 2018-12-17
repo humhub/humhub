@@ -8,6 +8,7 @@ HumHub Change Log
 - Fix #3378: Update user in search index when group memberships changes
 - Fix: Space un-archived activity view path broken
 - Enh: Accepting module README.md files in 'docs' directory
+- Fix: Include user profile posts option in dashboard stream broken
 
 
 1.3.8  (December 10, 2018)
