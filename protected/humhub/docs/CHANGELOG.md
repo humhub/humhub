@@ -7,6 +7,7 @@ HumHub Change Log
 - Fix: StreamSuppressedQuery with limit = 2 throws query not executed exception
 - Fix #3378: Update user in search index when group memberships changes
 - Fix: Space un-archived activity view path broken
+- Enh: Accepting module README.md files in 'docs' directory
 
 
 1.3.8  (December 10, 2018)
