@@ -238,7 +238,7 @@ class AuthClientHelpers
         $attributes = [];
 
         foreach (self::getAuthClientsByUser($user) as $authClient) {
-        	if ($authClient instanceof interfaces\SyncAttributes) {
+            if ($authClient instanceof interfaces\SyncAttributes) {
                 $attributes = array_merge($attributes, $authClient->getSyncAttributes());
             }
         }

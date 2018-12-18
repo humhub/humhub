@@ -38,7 +38,7 @@ class AccountChangeUsername extends User
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_CHANGE_USERNAME] = ['username', 'currentPassword'];        
+        $scenarios[self::SCENARIO_CHANGE_USERNAME] = ['username', 'currentPassword'];
         return $scenarios;
     }
 
@@ -49,7 +49,7 @@ class AccountChangeUsername extends User
     {        
         $rules = parent::rules();
 
-        $rules = array_merge($rules, [                       
+        $rules = array_merge($rules, [
             ['username', UsernameValidator::class],
             ['username', 'trim']
         ]);
@@ -71,6 +71,5 @@ class AccountChangeUsername extends User
             'currentPassword' => Yii::t('UserModule.forms_AccountChangeUsernameForm', 'Current password'),
             'username' => Yii::t('UserModule.forms_AccountChangeUsernameForm', 'New username'),
         ];
-    }       
-
+    }
 }

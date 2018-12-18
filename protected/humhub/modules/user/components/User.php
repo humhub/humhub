@@ -148,7 +148,7 @@ class User extends \yii\web\User
     }
 
 
-	/**
+    /**
      * Determines if this user is able to delete his account.
      * @return boolean
      */

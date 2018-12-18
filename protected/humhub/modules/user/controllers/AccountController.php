@@ -356,7 +356,7 @@ class AccountController extends BaseAccountController
             $user->username = $model->username;
             $user->save();
             $this->view->saved();
-			return $this->render('changeUsernameValidate', ['newUsername' => $model->username]);
+            return $this->render('changeUsernameValidate', ['newUsername' => $model->username]);
         }
 
         return $this->render('changeUsername', ['model' => $model]);

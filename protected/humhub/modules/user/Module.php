@@ -72,7 +72,7 @@ class Module extends \humhub\components\Module
     public $minimumUsernameLength = 4;
 
     /**
-     * @var string pattern for username validation     
+     * @var string pattern for username validation
      */
     public $usernameValidationPattern = '/^[a-z0-9-_]+$/';
 
