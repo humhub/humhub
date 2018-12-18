@@ -9,6 +9,7 @@ HumHub Change Log
 - Fix: Space un-archived activity view path broken
 - Enh: Accepting module README.md files in 'docs' directory
 - Fix: Include user profile posts option in dashboard stream broken
+- Fix: Check SoftDeleted user state in ControllerAccess
 
 
 1.3.8  (December 10, 2018)
