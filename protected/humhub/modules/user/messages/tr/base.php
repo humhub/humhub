@@ -34,6 +34,7 @@ return [
     'Your account is not approved yet!' => '',
     'Your new password must not be equal your current password!' => '',
     'Basic Settings' => 'Temel Ayarlar',
+    'Change Username' => '',
     'Change Email' => 'E-posta Değiştir',
     'Change Password' => 'Şifre Değiştir',
     'Confirm new password' => 'Yeni şifreyi onayla',

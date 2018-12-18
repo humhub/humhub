@@ -72,6 +72,16 @@ class Module extends \humhub\components\Module
     public $minimumUsernameLength = 4;
 
     /**
+     * @var string pattern for username validation     
+     */
+    public $usernameValidationPattern = '/^[a-z0-9-_]+$/';
+
+    /**
+     * @var string error text for username validation
+     */
+    public $usernameValidationErrorText = 'Username can contain only lowercase letters, numbers, hyphens and underscores!';
+
+    /**
      * @var callable a callback that returns the user displayName
      * @since 1.2
      */

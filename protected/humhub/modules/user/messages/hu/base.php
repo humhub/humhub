@@ -1,6 +1,7 @@
 <?php
 return array (
   'Basic Settings' => 'Általános beállitások',
+  'Change Username' => '',
   'Change Email' => 'Email változtatás',
   'Change Password' => 'Jelszó változtatás',
   'Confirm new password' => 'Új jelszó megerősítése',

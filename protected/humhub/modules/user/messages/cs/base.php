@@ -25,6 +25,7 @@ return [
     'Upload profile banner' => '',
     'Your new password must not be equal your current password!' => '',
     'Basic Settings' => 'Základní nastavení',
+    'Change Username' => '',
     'Change Email' => 'Změnit e-mailovou adresu',
     'Change Password' => 'Změnit heslo',
     'Confirm new password' => 'Potvrďte nové heslo',

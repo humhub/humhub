@@ -21,9 +21,12 @@ class UsernameValidator extends Validator
      * @inheritdoc
      */
     public function validateAttribute($model, $attribute)
-    {        
-        if (!preg_match('/^[a-z0-9-_]+$/', $model->$attribute)) {
-            $this->addError($model, $attribute, Yii::t('UserModule.usernameError', 'Username can contain only lowercase letters, numbers, hyphens and underscores!'));
+    {
+        /* @var $userModule \humhub\modules\user\Module */
+        $userModule = Yii::$app->getModule('user');
+
+        if (!preg_match($userModule->usernameValidationPattern, $model->$attribute)) {
+            $this->addError($model, $attribute, !empty($userModule->usernameValidationErrorText) ? $userModule->usernameValidationErrorText : Yii::t('UserModule.components_UsernameValidator', 'Username can contain only lowercase letters, numbers, hyphens and underscores!'));
         }
     }
 }

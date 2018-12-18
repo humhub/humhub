@@ -1,6 +1,7 @@
 <?php
 return array (
   'Basic Settings' => '基本設定',
+  'Change Username' => '',
   'Change Email' => 'メールの変更',
   'Change Password' => 'パスワードを変更する',
   'Confirm new password' => '新しいパスワードを再入力',

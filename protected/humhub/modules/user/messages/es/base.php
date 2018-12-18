@@ -19,6 +19,7 @@
 return [
     'Name' => '',
     'Basic Settings' => 'Ajustes básicos',
+    'Change Username' => '',
     'Change Email' => 'Cambiar correo',
     'Change Password' => 'Cambiar clave',
     'Confirm new password' => 'Confirmar clave',

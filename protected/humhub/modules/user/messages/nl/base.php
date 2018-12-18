@@ -1,6 +1,7 @@
 <?php
 return array (
   'Basic Settings' => 'Basisinstellingen',
+  'Change Username' => '',
   'Change Email' => 'Verander e-mail',
   'Change Password' => 'Verander wachtwoord',
   'Confirm new password' => 'Bevestig nieuw wachtwoord',

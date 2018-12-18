@@ -1,94 +1,76 @@
 <?php
 
-	/**
-	 * @link https://www.humhub.org/
-	 * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
-	 * @license https://www.humhub.com/licences
-	 */
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
-	namespace humhub\modules\user\models\forms;
+namespace humhub\modules\user\models\forms;
 
-	use Yii;
-	use yii\helpers\Url;
-	use humhub\modules\user\models\User;
-	use humhub\modules\user\components\CheckPasswordValidator;
-	use humhub\modules\user\components\UsernameValidator;
+use Yii;
+use yii\helpers\Url;
+use humhub\modules\user\models\User;
+use humhub\modules\user\components\CheckPasswordValidator;
+use humhub\modules\user\components\UsernameValidator;
 
-	/**
-	 * Form Model for username change
-	 *
-	 * @since 0.5
-	 */
-	class AccountChangeUsername extends \yii\base\Model
-	{
+/**
+ * Form Model for username change
+ *
+ * @since 0.5
+ */
+class AccountChangeUsername extends User
+{
+    const SCENARIO_CHANGE_USERNAME = 'change_username';
+    /**
+     * @var string the users password
+     */
+    public $currentPassword;
 
-		/**
-		 * @var string the users password
-		 */
-		public $currentPassword;
+    /**
+     * @var string the users new username
+     */
+    public $username;
 
-		/**
-		 * @var string the users new username
-		 */
-		public $newUsername;
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_CHANGE_USERNAME] = ['username', 'currentPassword'];        
+        return $scenarios;
+    }
 
-		/**
-		 * @inheritdoc
-		 */
-		public function rules()
-		{
-			/* @var $userModule \humhub\modules\user\Module */
-        	$userModule = Yii::$app->getModule('user');
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {        
+        $rules = parent::rules();
 
-			$rules = [
-				['newUsername', 'required'],
-				['newUsername', 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
-				['newUsername', 'unique', 'targetAttribute' => 'username', 'targetClass' => User::class, 'message' => '{attribute} "{value}" is already in use!'],				
-				['newUsername', UsernameValidator::class],
-				['newUsername', 'trim']
-			];
+        $rules = array_merge($rules, [                       
+            ['username', UsernameValidator::class],
+            ['username', 'trim']
+        ]);
 
-			if (CheckPasswordValidator::hasPassword()) {
-				$rules[] = ['currentPassword', CheckPasswordValidator::class];
-				$rules[] = ['currentPassword', 'required'];
-			}
+        if (CheckPasswordValidator::hasPassword()) {
+            $rules[] = ['currentPassword', CheckPasswordValidator::class];
+            $rules[] = ['currentPassword', 'required'];
+        }
 
-			return $rules;
-		}
+        return $rules;
+    }
 
-		/**
-		 * @inheritdoc
-		 */
-		public function attributeLabels()
-		{
-			return [
-				'currentPassword' => Yii::t('UserModule.forms_AccountChangeUsernameForm', 'Current password'),
-				'newUsername' => Yii::t('UserModule.forms_AccountChangeUsernameForm', 'New Username'),
-			];
-		}
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'currentPassword' => Yii::t('UserModule.forms_AccountChangeUsernameForm', 'Current password'),
+            'username' => Yii::t('UserModule.forms_AccountChangeUsernameForm', 'New username'),
+        ];
+    }       
 
-		/**
-		 * Sends Change Username
-		 */
-		public function sendChangeUsername($approveUrl = '')
-		{
-			$user = Yii::$app->user->getIdentity();
-
-			$token = md5(Yii::$app->settings->get('secret') . $user->guid . $this->newUsername);
-
-			$mail = Yii::$app->mailer->compose([
-												   'html' => '@humhub/modules/user/views/mails/ChangeUsername',
-												   'text' => '@humhub/modules/user/views/mails/plaintext/ChangeUsername'
-											   ], [
-												   'user' => $user,
-												   'newUsername' => $this->newUsername,
-												   'approveUrl' => Url::to([empty($approveUrl) ? "/user/account/change-username-validate" : $approveUrl, 'username' => $this->newUsername, 'token' => $token], true),
-											   ]);
-			$mail->setTo($user->email);
-			$mail->setSubject(Yii::t('UserModule.forms_AccountChangeUsernameForm', 'Username change'));
-			$mail->send();
-
-			return true;
-		}
-
-	}
+}

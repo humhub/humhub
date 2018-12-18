@@ -32,6 +32,7 @@ return [
     'Your account is not approved yet!' => '',
     'Your new password must not be equal your current password!' => '',
     'Basic Settings' => 'Podstawowe ustawienia',
+    'Change Username' => '',
     'Change Email' => 'Zmień adres e-mail',
     'Change Password' => 'Zmień hasło',
     'Confirm new password' => 'Potwierdź nowe hasło',

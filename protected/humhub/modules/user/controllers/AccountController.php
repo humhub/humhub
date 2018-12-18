@@ -334,60 +334,35 @@ class AccountController extends BaseAccountController
         return $this->render('changeEmailValidate', ['newEmail' => $email]);
     }
 
-	/**
-	 * Change users current username
-	 */
-	public function actionChangeUsername()
-	{
-		if (!Yii::$app->user->canChangeUsername()) {
-			throw new HttpException(500, 'Change Username is not allowed');
-		}
-
-		$model = new \humhub\modules\user\models\forms\AccountChangeUsername;
-
-		if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeUsername()) {
-            $this->view->warn(Yii::t('UserModule.controllers_AccountController', 'Changing the username can make some links unusable, for example old links to the profile.'));
-			return $this->render('changeUsername_success', ['model' => $model]);
-		}
-
-		return $this->render('changeUsername', ['model' => $model]);
-	}
-
-
     /**
-     * After the user validated his new username
-     *
+     * Change users current username
      */
-    public function actionChangeUsernameValidate()
+    public function actionChangeUsername()
     {
         if (!Yii::$app->user->canChangeUsername()) {
             throw new HttpException(500, 'Change Username is not allowed');
         }
 
-        $token = Yii::$app->request->get('token');
-        $username = Yii::$app->request->get('username');
+        $model = new \humhub\modules\user\models\forms\AccountChangeUsername;
+        $model->scenario = \humhub\modules\user\models\forms\AccountChangeUsername::SCENARIO_CHANGE_USERNAME;
 
-        $user = Yii::$app->user->getIdentity();
-
-        // Check if Token is valid
-        if (md5(Yii::$app->settings->get('secret') . $user->guid . $username) != $token) {
-            throw new HttpException(404, Yii::t('UserModule.controllers_AccountController', 'Invalid link! Please make sure that you entered the entire url.'));
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            // Check if username is in use, e.g. by other user
+            $usernameAvailablyCheck = \humhub\modules\user\models\User::findOne(['username' => $model->username]);
+            if ($usernameAvailablyCheck != null) {
+                throw new HttpException(404, Yii::t('UserModule.controllers_AccountController', 'The entered username is already in use by another user.'));
+            }
+            $user = Yii::$app->user->getIdentity();
+            $user->username = $model->username;
+            $user->save();
+            $this->view->saved();
+			return $this->render('changeUsernameValidate', ['newUsername' => $model->username]);
         }
 
-        // Check if username is in use, e.g. by other user
-        $usernameAvailablyCheck = \humhub\modules\user\models\User::findOne(['username' => $username]);
-        if ($usernameAvailablyCheck != null) {
-            throw new HttpException(404, Yii::t('UserModule.controllers_AccountController', 'The entered username is already in use by another user.'));
-        }
-
-        $user->username = $username;
-        $user->save();
-
-        return $this->render('changeUsernameValidate', ['newUsername' => $username]);
+        return $this->render('changeUsername', ['model' => $model]);
     }
 
-
-	/**
+    /**
      * Change users current password
      */
     public function actionChangePassword()

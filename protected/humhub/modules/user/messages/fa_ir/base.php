@@ -33,6 +33,7 @@ return [
     'Your account is not approved yet!' => '',
     'Your new password must not be equal your current password!' => '',
     'Basic Settings' => 'تنظيمات پايه',
+    'Change Username' => '',
     'Change Email' => 'تغيير ايميل',
     'Change Password' => 'تغيير پسورد',
     'Confirm new password' => 'تاييد پسورد جديد',

@@ -1,6 +1,7 @@
 <?php
 return array (
   'Basic Settings' => 'Asetukset',
+  'Change Username' => '',
   'Change Email' => 'Vaihda sähköpostiosoite',
   'Change Password' => 'Vaihda salasana',
   'Confirm new password' => 'Vahvista uusi salasana',

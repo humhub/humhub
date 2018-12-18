@@ -1,8 +1,8 @@
 <?php
 
-use \humhub\compat\CHtml;
+use yii\helpers\Html;
 ?>
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
-    <?php echo Yii::t('UserModule.views_account_changeEmailValidate', 'Your username has been successfully changed to {username}.', ['{username}' => CHtml::encode($newUsername)]); ?>
+    <?= Yii::t('UserModule.views_account_changeUsername', 'Your username has been successfully changed to {username}.', ['{username}' => Html::encode($newUsername)]); ?>
 <?php $this->endContent(); ?>
 
