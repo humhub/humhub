@@ -46,7 +46,7 @@ class AccountChangeUsername extends User
      * @inheritdoc
      */
     public function rules()
-    {        
+    {
         $rules = parent::rules();
 
         $rules = array_merge($rules, [
