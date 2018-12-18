@@ -62,14 +62,20 @@ The `module.json` file holds basic meta data which is used for example by the ma
 Available attributes:
 
 - **id** - The module ID
+- **version** - The module version. This must follow the format of X.Y.Z. (Required)
 - **name** - The modules name
 - **description** - A short module description
-- **keywords** - (Array) Some keywords 
-- **screenshots** - (Array) Some screenshots for the marketplace, those should reside in the `resourcesPath` of your module.
-- **version** - Current module version
 - **humhub** - HumHub requirements
     - **minVersion** - The minimum HumHub core version this module is compatible with.
     - **maxVersion** - The maximum HumHub core version this module is compatible with.
+- **keywords** - (Array) Some keywords 
+- **screenshots** - (Array) Some screenshots for the marketplace, those should reside in the `resourcesPath` of your module.
+- **homepage** - An URL to the website of the module. (Optional)
+- **authors** - (Array) The authors of the module. (Optional)
+	- **name** - The author's name.
+	- **email** - The author's email address.
+	- **homepage** - An URL to the author's website.
+	- **role** -  The author's role (e.g. developer or translator)
 
 
 Example `module.php` file:
@@ -77,14 +83,29 @@ Example `module.php` file:
 ```json
 {
     "id": "example",
+    "version": "1.0",
     "name": "My Example Module",
     "description": "My testing module.",
+    "humhub": {
+        "minVersion": "1.2",
+		"maxVersion": "2.0"
+    },
     "keywords": ["my", "cool", "module"],
     "screenshots": ["assets/screen_1.jpg"],
-    "version": "1.0",
-    "humhub": {
-        "minVersion": "1.2"
-    }
+	"homepage": "https://www.example.com",
+    "authors": [
+        {
+            "name": "Tom Coder",
+            "email": "tc@example.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Sarah Mustermann",
+            "email": "sm@example.com",
+            "homepage": "http://example.com",
+            "role": "Translator"
+        }
+    ]	
 }
 ```
 
