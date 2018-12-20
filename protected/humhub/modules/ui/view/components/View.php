@@ -11,6 +11,7 @@ namespace humhub\modules\ui\view\components;
 use humhub\libs\Html;
 use humhub\widgets\CoreJsConfig;
 use humhub\widgets\LayoutAddons;
+use yii\helpers\ArrayHelper;
 use Yii;
 
 /**
@@ -25,7 +26,6 @@ class View extends \yii\web\View
      * the id of the sidebar block
      */
     const BLOCK_SIDEBAR = 'sidebar';
-
 
     private $_pageTitle;
 
@@ -67,7 +67,7 @@ class View extends \yii\web\View
         }
 
         if (isset($this->jsConfig[$module])) {
-            $this->jsConfig[$module] = yii\helpers\ArrayHelper::merge($this->jsConfig[$module], $params);
+            $this->jsConfig[$module] = ArrayHelper::merge($this->jsConfig[$module], $params);
         } else {
             $this->jsConfig[$module] = $params;
         }
@@ -171,7 +171,7 @@ class View extends \yii\web\View
      */
     protected function renderHeadHtml()
     {
-        return (!Yii::$app->request->isAjax) ? Html::csrfMetaTags() . parent::renderHeadHtml() : parent::renderHeadHtml();
+        return (!Yii::$app->request->isAjax) ? parent::registerCsrfMetaTags() . parent::renderHeadHtml() : parent::renderHeadHtml();
     }
 
     public function setStatusMessage($type, $message)
