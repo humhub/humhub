@@ -10,6 +10,7 @@ HumHub Change Log
 - Enh: Accepting module README.md files in 'docs' directory
 - Fix: Include user profile posts option in dashboard stream broken
 - Fix: Check SoftDeleted user state in ControllerAccess
+- Fix: Removed database charset configuration in dynamic config
 
 
 1.3.8  (December 10, 2018)
