@@ -26,7 +26,6 @@ return [
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '',
     'Your account is not approved yet!' => '',
     'Basic Settings' => 'Configuración basica',
-    'Change Username' => '',
     'Change Email' => 'Cambiar correu-e',
     'Change Password' => 'Cambiar clau',
     'Confirm new password' => 'Confirmar a nueva clau',

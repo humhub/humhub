@@ -1,7 +1,6 @@
 <?php
 return array (
   'Basic Settings' => 'Standardinnstillinger',
-  'Change Username' => '',
   'Change Email' => 'Endre e-post',
   'Change Password' => 'Bytt passord',
   'Confirm new password' => 'Bekreft nytt passord',

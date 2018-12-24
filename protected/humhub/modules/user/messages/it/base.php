@@ -1,7 +1,6 @@
 <?php
 return array (
   'Basic Settings' => 'Impostazioni base',
-  'Change Username' => '',
   'Change Email' => 'Modifica email',
   'Change Password' => 'Modifica password',
   'Confirm new password' => 'Conferma nuova password',

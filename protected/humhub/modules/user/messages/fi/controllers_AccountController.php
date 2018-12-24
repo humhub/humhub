@@ -19,6 +19,5 @@
 return [
     'Invalid link! Please make sure that you entered the entire url.' => 'Linkki ei toimi! Varmista, että syötit koko URL-osoitteen.',
     'Save profile' => 'Tallenna profiili',
-    'The entered username is already in use by another user.' => '',
     'The entered e-mail address is already in use by another user.' => 'Sähköpostiosoite on käytössä jo jollain toisella käyttäjällä',
 ];

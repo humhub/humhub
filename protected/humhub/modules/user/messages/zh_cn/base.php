@@ -30,7 +30,6 @@ return [
     'Your account is not approved yet!' => '',
     'Your new password must not be equal your current password!' => '',
     'Basic Settings' => '基础设置',
-    'Change Username' => '',
     'Change Email' => '修改邮箱',
     'Change Password' => '修改密码',
     'Confirm new password' => '确认新密码',

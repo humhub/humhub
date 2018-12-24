@@ -8,7 +8,7 @@ $userModule = Yii::$app->getModule('user');
 
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
     <div class="help-block">
-         <?= Yii::t('UserModule.views_account_changeUsername', 'Your current username is <b>{username}</b>. You can change your current username here.', ['username' => Html::encode(Yii::$app->user->getIdentity()->username)]); ?>
+            <?= Yii::t('UserModule.views_account_changeUsername', 'Your current username is <b>{username}</b>. You can change your current username here.', ['username' => Html::encode(Yii::$app->user->getIdentity()->username)]); ?>
           <div class="alert alert-warning"><?= Yii::t('UserModule.views_account_changeUsername', 'Note: Changing your username will invalidate old profile links (not including mentionings)'); ?></div>
     </div>
     <?php $form = ActiveForm::begin(); ?>

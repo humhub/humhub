@@ -18,7 +18,6 @@
  */
 return [
     'Basic Settings' => '',
-    'Change Username' => '',
     'Change Email' => '',
     'Change Password' => '',
     'Confirm new password' => '',

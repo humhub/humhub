@@ -19,7 +19,6 @@
 return [
     'Name' => '',
     'Basic Settings' => 'Osnovne postavke',
-    'Change Username' => '',
     'Change Email' => 'Promijeni E-mail',
     'Change Password' => 'Promijeni Zaporku',
     'Confirm new password' => 'Kreiraj novu zaporku',

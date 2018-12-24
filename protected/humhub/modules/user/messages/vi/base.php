@@ -20,7 +20,6 @@ return [
     'Name' => '',
     'Your new password must not be equal your current password!' => '',
     'Basic Settings' => 'Thiết lập cơ bản',
-    'Change Username' => '',
     'Change Email' => 'Đổi Email',
     'Change Password' => 'Đổi mật khẩu',
     'Confirm new password' => 'Xác nhận mật khẩu mới',
