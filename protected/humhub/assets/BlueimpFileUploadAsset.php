@@ -21,7 +21,7 @@ class BlueimpFileUploadAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/blueimp-file-upload/js';
+    public $sourcePath = '@npm/blueimp-file-upload/js';
 
     /**
      * @inheritdoc
