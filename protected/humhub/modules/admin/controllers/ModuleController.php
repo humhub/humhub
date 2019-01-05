@@ -9,15 +9,16 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\components\Module;
-use Yii;
-use yii\web\HttpException;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\libs\OnlineModuleManager;
-use humhub\modules\content\components\ContentContainerModule;
-use humhub\modules\user\models\User;
-use humhub\modules\space\models\Space;
 use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
+use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\components\ContentContainerModuleManager;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\base\Exception;
+use yii\web\HttpException;
 
 /**
  * Module Controller controls all third party modules in a humhub installation.
@@ -199,7 +200,7 @@ class ModuleController extends Controller
 
         try {
             $module->publishAssets(true);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             Yii::error($e);
         }
 
@@ -280,22 +281,28 @@ class ModuleController extends Controller
     /**
      * Returns more information about an installed module.
      *
-     * @throws CHttpException
+     * @return string
+     * @throws HttpException
      */
     public function actionInfo()
     {
 
         $moduleId = Yii::$app->request->get('moduleId');
-        $module = Yii::$app->moduleManager->getModule($moduleId);
+        try {
+            $module = Yii::$app->moduleManager->getModule($moduleId);
+        } catch (Exception $e) {
+            throw new HttpException(404, 'Module not found!');
+        }
 
         if ($module == null) {
             throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
         }
 
         $readmeMd = "";
-        $readmeMdFile = $module->getBasePath() . DIRECTORY_SEPARATOR . 'README.md';
-        if (file_exists($readmeMdFile)) {
-            $readmeMd = file_get_contents($readmeMdFile);
+        if (file_exists($module->getBasePath() . DIRECTORY_SEPARATOR . 'README.md')) {
+            $readmeMd = file_get_contents($module->getBasePath() . DIRECTORY_SEPARATOR . 'README.md');
+        } elseif (file_exists($module->getBasePath() . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . 'README.md')) {
+            $readmeMd = file_get_contents($module->getBasePath() . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . 'README.md');
         }
 
         return $this->renderAjax('info', ['name' => $module->getName(), 'description' => $module->getDescription(), 'content' => $readmeMd]);

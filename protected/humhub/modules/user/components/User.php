@@ -11,6 +11,7 @@ namespace humhub\modules\user\components;
 use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\Password;
 use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
+use humhub\modules\user\events\UserEvent;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\db\Expression;
@@ -22,6 +23,8 @@ use yii\db\Expression;
  */
 class User extends \yii\web\User
 {
+
+    const EVENT_BEFORE_SWITCH_IDENTITY = 'beforeSwitchIdentity';
 
     /**
      * @var ClientInterface[] the users authclients
@@ -189,6 +192,15 @@ class User extends \yii\web\User
     public static function isGuestAccessEnabled()
     {
         return (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess'));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function switchIdentity($identity, $duration = 0)
+    {
+        $this->trigger(self::EVENT_BEFORE_SWITCH_IDENTITY, new UserEvent(['user' => $identity]));
+        parent::switchIdentity($identity, $duration);
     }
 
 }

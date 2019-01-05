@@ -9,7 +9,9 @@ namespace humhub\modules\user\components;
 
 use humhub\components\Module;
 use humhub\libs\BasePermission;
+use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupPermission;
+use humhub\modules\user\models\User as UserModel;
 use Yii;
 use yii\base\Component;
 use yii\base\Module as BaseModule;
@@ -54,7 +56,7 @@ class PermissionManager extends Component
      */
     public function can($permission, $params = [], $allowCaching = true)
     {
-        
+
         if (is_array($permission)) {
             // compatibility for old 'all' param
             $verifyAll = $this->isVerifyAll($params);
@@ -70,11 +72,11 @@ class PermissionManager extends Component
         } elseif ($allowCaching) {
             $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
             $key = $permission->getId();
-            
+
             if (!isset($this->_access[$key])) {
                 $this->_access[$key] = $this->verify($permission);
             }
-            
+
             return $this->_access[$key];
         } else {
             $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
@@ -257,10 +259,10 @@ class PermissionManager extends Component
     protected function getGroupStateRecord($groupId, BasePermission $permission)
     {
         return $this->getQuery()->andWhere([
-                    'group_id' => $groupId,
-                    'module_id' => $permission->getModuleId(),
-                    'permission_id' => $permission->getId()
-                ])->one();
+            'group_id' => $groupId,
+            'module_id' => $permission->getModuleId(),
+            'permission_id' => $permission->getId()
+        ])->one();
     }
 
     /**
@@ -367,6 +369,28 @@ class PermissionManager extends Component
             ];
         }
         return $permissions;
+    }
+
+
+    /**
+     * Returns a query for users which are granted given permission
+     *
+     * @since 1.3.8
+     * @param BasePermission $permission
+     * @return ActiveQueryUser
+     */
+    public static function findUsersByPermission($permission)
+    {
+        $pm = new static;
+
+        $allowedGroupIds = [];
+        foreach (Group::find()->all() as $group) {
+            if ($pm->getGroupState($group, $permission) == BasePermission::STATE_ALLOW) {
+                $allowedGroupIds[] = $group->id;
+            }
+        }
+
+        return UserModel::find()->joinWith('groupUsers')->andWhere(['IN', 'group_user.group_id', $allowedGroupIds]);
     }
 
 }
