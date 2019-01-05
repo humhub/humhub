@@ -81,9 +81,9 @@ use yii\helpers\Html;
                                                                         <?php if ($url != "") : ?>
                                                                             <!-- START: CONTENT LINK -->
                                                                             <span
-                                                                                style="text-decoration: none; color: #7191a8;"> - <a
+                                                                                style="text-decoration: none; color: <?= $this->theme->variable('primary'); ?>;"> - <a
                                                                                     href="<?= $url; ?>"
-                                                                                    style="text-decoration: none; color: #7191a8; "><?= Yii::t('ActivityModule.views_activityLayoutMail', 'see online'); ?></a></span>
+                                                                                    style="text-decoration: none; color: <?= $this->theme->variable('primary'); ?>; "><?= Yii::t('ActivityModule.views_activityLayoutMail', 'see online'); ?></a></span>
                                                                             <!-- END: CONTENT LINK -->
                                                                         <?php endif; ?>
                                                                     </div>

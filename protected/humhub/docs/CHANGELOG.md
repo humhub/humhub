@@ -1,15 +1,28 @@
 HumHub Change Log
 =================
 
+1.3.9  (Unreleased)
+---------------------------
+
+- Fix: StreamSuppressedQuery with limit = 2 throws query not executed exception
+- Fix #3378: Update user in search index when group memberships changes
+- Fix: Space un-archived activity view path broken
+- Enh: Accepting module README.md files in 'docs' directory
+- Fix: Include user profile posts option in dashboard stream broken
+- Fix: Check SoftDeleted user state in ControllerAccess
+- Fix: Removed database charset configuration in dynamic config
 
 
-1.3.8  (Unreleased)
+1.3.8  (December 10, 2018)
 ---------------------------
 
 - Fix #3359: Weekly summary e-mails are not sent in default configuration
 - Fix #3365: Legacy richtext emojis not parsed in richtext preview
 - Fix: Friendship button adds additional spaces
 - Fix: SpaceController::actionHome throws 403 Http error for guests
+- Enh: New `humhub\modules\user\components\User::EVENT_BEFORE_SWITCH_IDENTITY`
+- Fix: Administration menu item visible after user impersonation
+- Enh: Added PermissionManager findUsersByPermission feature
 
 
 1.3.7  (October 23, 2018)

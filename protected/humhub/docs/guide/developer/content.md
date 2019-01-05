@@ -392,7 +392,7 @@ This will add the required cguid parameter to your request.
 
 ## ContentContainerModule
 
-See the [Use of ContentContainerModule](modules.md#use-of-container-module) section.
+See the [Use of ContentContainerModule](modules-base-class.md#use-of-contentcontainermodule) section.
 
 ## Content addons
 

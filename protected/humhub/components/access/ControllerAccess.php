@@ -441,7 +441,9 @@ class ControllerAccess extends BaseObject
      */
     public function validateDisabledUser()
     {
-        return $this->isGuest() || $this->user->status !== User::STATUS_DISABLED;
+        return $this->isGuest() ||
+            ($this->user->status !== User::STATUS_DISABLED &&
+            $this->user->status !== User::STATUS_SOFT_DELETED);
     }
 
     /**
