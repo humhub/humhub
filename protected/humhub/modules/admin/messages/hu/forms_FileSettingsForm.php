@@ -8,5 +8,5 @@ return array (
   'Maximum preview image height (in pixels, optional)' => 'Maximális előnézeti képmagasság (képpontban, opcionális)',
   'Maximum preview image width (in pixels, optional)' => 'Maximális előnézeti képszélesség (képpontban, opcionális)',
   'Maximum upload file size (in MB)' => 'Legnagyobb feltöltési fájlméret (MB)',
-  'Use X-Sendfile for File Downloads' => 'Az X-Sendfile használata a fájlok letöltéséhez',
+  'Use X-Sendfile for File Downloads' => 'Az X-Sendfile használata fájlok letöltéséhez',
 );

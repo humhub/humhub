@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Group not found!' => 'Nem találtam a csoportot!',
+  'Group not found!' => 'Csoport nem található!',
 );

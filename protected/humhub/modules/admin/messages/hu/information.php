@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>CronJob</strong> Status' => '<strong>Időzített feladatok (CronJob)</strong> státusza',
-  '<strong>Queue</strong> Status' => '<strong>Queue</strong> státusza',
+  '<strong>CronJob</strong> Status' => '<strong>Cron-feladatok</strong> státusza',
+  '<strong>Queue</strong> Status' => '<strong>Várakozási sor</strong> státusza',
   'About HumHub' => 'A HumHub-ról',
   'Background Jobs' => 'Háttérmunkák',
   'Database' => 'Adatbázis',

@@ -2,7 +2,7 @@
 return array (
   '
 Module successfully disabled!
-' => 'A modul sikeresen letiltva!',
+' => 'A modul sikeresen lekapcsolva!',
   '
 Module successfully enabled!
 ' => 'A modul sikeresen bekapcsolva!',
@@ -15,5 +15,5 @@ Module successfully enabled!
   'Module not found or activated!
 ' => 'A modul nem található vagy nincs aktiválva!',
   'Module not found!
-' => 'A modul nem található',
+' => 'A modul nem található!',
 );

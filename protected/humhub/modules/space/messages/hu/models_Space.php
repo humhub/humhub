@@ -19,6 +19,6 @@ return array (
   'Updated by' => 'Frissítette',
   'Users' => 'Felhasználók',
   'Visibility' => 'Láthatóság',
-  'You cannot create private visible spaces!' => 'Nem hozhatsz létre privát témaköröket!',
-  'You cannot create public visible spaces!' => 'Nem hozhatsz létre nyilvános témaköröket!',
+  'You cannot create private visible spaces!' => 'Nem hozhatsz létre privát közösségeket!',
+  'You cannot create public visible spaces!' => 'Nem hozhatsz létre nyilvános közösségeket!',
 );

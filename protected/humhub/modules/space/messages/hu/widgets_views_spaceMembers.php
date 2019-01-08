@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>New</strong> member request' => '<strong>Új</strong> tagság kérelmek',
-  '<strong>Space</strong> members' => '<strong>Témakör</strong> tagok',
+  '<strong>New</strong> member request' => '<strong>Új</strong> tagságkérelmek',
+  '<strong>Space</strong> members' => 'A c<strong>közösség</strong> tagjai',
   'Show all' => 'Összes mutatása',
 );

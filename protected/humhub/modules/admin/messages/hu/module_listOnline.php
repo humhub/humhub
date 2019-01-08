@@ -2,7 +2,7 @@
 return array (
   'Installed' => 'Installálva',
   'No modules found!' => 'Nincsenek modulok!',
-  'No purchased modules found!' => 'Nincs megvásárolt modul!',
+  'No purchased modules found!' => 'Nem található megvásárolt modul!',
   'Register' => 'Regisztráció',
   'Search' => 'Keresés',
   'Third-party' => 'Harmadik féltől származó',
