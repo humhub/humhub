@@ -8,7 +8,7 @@ function togglePanelUp($id) {
         $('#' + $id + ' .panel-expand').show();
         $('#' + $id).addClass('panel-collapsed');
 
-        $.cookie('pm_' + $id, 'collapsed', 5*365);
+        localStorage.setItem('pm_' + $id, 'collapsed');
     });
 }
 
@@ -22,7 +22,7 @@ function togglePanelDown($id) {
         $('#' + $id + ' .panel-collapse').show();
         $('#' + $id).removeClass('panel-collapsed');
 
-        $.cookie('pm_' + $id, 'expanded', 5*365);
+        localStorage.removeItem('pm_' + $id);
     });
 }
 
@@ -30,17 +30,9 @@ function togglePanelDown($id) {
  * Check and change current panel state, if necessary
  */
 function checkPanelMenuCookie($id) {
-
-    // check if cookie exists
-    if ($.cookie('pm_' + $id) == undefined) {
-
-        // if not, create new cookie with current panel state
-        $.cookie('pm_' + $id, 'expanded', 5*365);
-    } else if ($.cookie('pm_' + $id) == 'collapsed') {
-
-       // collapse panel, if cookie is 'collapsed'
+    // checks if panel's saved state in LocalStorage is collapsed
+    if (localStorage.getItem('pm_' + $id) === 'collapsed') {
        $('#' + $id + ' .panel-body').css({
-            overflow: 'hidden',
             display: 'none'
         });
 
@@ -48,7 +40,5 @@ function checkPanelMenuCookie($id) {
         $('#' + $id + ' .panel-collapse').hide();
         $('#' + $id + ' .panel-expand').show();
         $('#' + $id).addClass('panel-collapsed');
-
     }
 }
-

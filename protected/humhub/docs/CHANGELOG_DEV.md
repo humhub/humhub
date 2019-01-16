@@ -13,6 +13,4 @@ HumHub Change Log (DEVELOP)
 - Chng: Removed `atwho` asset and dependency
 - Cnng: Removed old IE support
 - Fix #2946: Use Yii2 default timezone handling
-
-
-
+- Enh: use LocalStorage in panel menu
