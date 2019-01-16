@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Password has to contain two uppercase letters.' => '',
+    'Password needs to be at least 8 characters long.' => '',
     'Crop profile background' => '',
     'Crop profile image' => '',
     'Delete profile image' => '',

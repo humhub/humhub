@@ -6,4 +6,12 @@
  * @see http://docs.humhub.org/dev-environment.html
  */
 return [
+    'modules' => [
+        'user' => [
+            'passwordStrength' => [
+                '/^(.*?[A-Z]){2,}.*$/' => 'Password has to contain two uppercase letters.',
+                '/^.{8,}$/' => 'Password needs to be at least 8 characters long.',
+            ]
+        ]
+    ]
 ];

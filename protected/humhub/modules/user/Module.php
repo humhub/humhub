@@ -96,6 +96,11 @@ class Module extends \humhub\components\Module
     public $softDeleteKeepProfileFields = ['firstname', 'lastname'];
 
     /**
+     * @var array defines empty additional rules for password validation
+     */
+    public $passwordStrength = [];
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)

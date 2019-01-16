@@ -1,5 +1,7 @@
 <?php
 return array (
+  'Password has to contain two uppercase letters.' => '',
+  'Password needs to be at least 8 characters long.' => '',
   'Basic Settings' => 'Általános beállitások',
   'Change Email' => 'Email változtatás',
   'Change Password' => 'Jelszó változtatás',

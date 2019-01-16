@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use Yii;
+use yii\base\ErrorException;
 use yii\db\ActiveRecord;
 use yii\base\Exception;
 use yii\db\Expression;
@@ -50,6 +51,11 @@ class Password extends ActiveRecord
                 $this->defaultAlgorithm = 'sha512';
             }
         }
+        $userModule = Yii::$app->getModule('user');
+
+        if (isset($userModule->passwordStrength)) {
+            Yii::$app->passwordAdditionalRules = $userModule->passwordStrength;
+        }
     }
 
     public function beforeSave($insert)
@@ -75,6 +81,9 @@ class Password extends ActiveRecord
         return [
             [['newPassword', 'newPasswordConfirm'], 'required', 'on' => 'registration'],
             [['newPassword', 'newPasswordConfirm'], 'string', 'min' => 5, 'max' => 255],
+            [['newPassword', 'newPasswordConfirm'], function ($attribute, $params) {
+                $this->validateAdvancedPasswordRules($attribute, $params);
+            }],
             [['user_id'], 'integer'],
             [['password', 'salt'], 'string'],
             [['created_at'], 'safe'],
@@ -186,6 +195,23 @@ class Password extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    private function validateAdvancedPasswordRules($attribute, $params)
+    {
+        $additionalRules = Yii::$app->passwordAdditionalRules;
+        if (is_array($additionalRules)) {
+            foreach ($additionalRules as $pattern => $message) {
+                try {
+                    preg_match($pattern, $this->$attribute, $matches);
+                    if (! count($matches)) {
+                        $this->addError($attribute, Yii::t('UserModule.base', $message));
+                    }
+                } catch (\Exception $exception) {
+                    throw new ErrorException("Wrong regexp in additional password rules. Target: '{$pattern}'");
+                }
+            }
+        }
     }
 
 }
