@@ -54,7 +54,7 @@ class Password extends ActiveRecord
         $userModule = Yii::$app->getModule('user');
 
         if (isset($userModule->passwordStrength)) {
-            Yii::$app->passwordAdditionalRules = $userModule->passwordStrength;
+            Yii::$app->params['passwordAdditionalRules'] = $userModule->passwordStrength;
         }
     }
 
@@ -199,7 +199,7 @@ class Password extends ActiveRecord
 
     private function validateAdvancedPasswordRules($attribute, $params)
     {
-        $additionalRules = Yii::$app->passwordAdditionalRules;
+        $additionalRules = Yii::$app->params['passwordAdditionalRules'];
         if (is_array($additionalRules)) {
             foreach ($additionalRules as $pattern => $message) {
                 try {

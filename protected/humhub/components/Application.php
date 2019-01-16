@@ -29,11 +29,6 @@ class Application extends \yii\web\Application
     private $_homeUrl = null;
 
     /**
-     * @var array additional password validation rules
-     */
-    public $passwordAdditionalRules = [];
-
-    /**
      * @inheritdoc
      */
     public function bootstrap()
