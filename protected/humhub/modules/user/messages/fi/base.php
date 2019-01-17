@@ -1,8 +1,5 @@
 <?php
-
-return [
-    'Password has to contain two uppercase letters.' => '',
-    'Password needs to be at least 8 characters long.' => '',
+return array (
     'Basic Settings' => 'Asetukset',
     'Change Email' => 'Vaihda sähköpostiosoite',
     'Change Password' => 'Vaihda salasana',
@@ -46,4 +43,4 @@ return [
     'Your account is not approved yet!' => 'Tiliäsi ei ole hyväksytty vielä',
     'Your new password must not be equal your current password!' => 'Uusi salasanasi ei saa olla sama kuin nykyinen salasanasi!',
     'or' => 'tai',
-];
+);

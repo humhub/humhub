@@ -51,11 +51,6 @@ class Password extends ActiveRecord
                 $this->defaultAlgorithm = 'sha512';
             }
         }
-        $userModule = Yii::$app->getModule('user');
-
-        if (isset($userModule->passwordStrength)) {
-            Yii::$app->params['passwordAdditionalRules'] = $userModule->passwordStrength;
-        }
     }
 
     public function beforeSave($insert)
@@ -199,13 +194,17 @@ class Password extends ActiveRecord
 
     private function validateAdvancedPasswordRules($attribute, $params)
     {
-        $additionalRules = Yii::$app->params['passwordAdditionalRules'];
-        if (is_array($additionalRules)) {
+        $userModule = Yii::$app->getModule('user');
+        $additionalRules = $userModule->getPasswordStrength();
+        if (is_array($additionalRules) && ! empty($additionalRules)) {
             foreach ($additionalRules as $pattern => $message) {
+                $errorMessage = $userModule->isCustomPasswordStrength() ?
+                    Yii::t('UserModule.custom', $message) :
+                    Yii::t('UserModule.base', $message);
                 try {
                     preg_match($pattern, $this->$attribute, $matches);
                     if (! count($matches)) {
-                        $this->addError($attribute, Yii::t('UserModule.base', $message));
+                        $this->addError($attribute, $errorMessage);
                     }
                 } catch (\Exception $exception) {
                     throw new ErrorException("Wrong regexp in additional password rules. Target: '{$pattern}'");

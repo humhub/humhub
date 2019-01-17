@@ -1,8 +1,5 @@
 <?php
-
-return [
-    'Password has to contain two uppercase letters.' => '',
-    'Password needs to be at least 8 characters long.' => '',
+return array (
     'Basic Settings' => 'Général',
     'Change Email' => 'Modifier l\'e-mail',
     'Change Password' => 'Modifier le mot de passe',
@@ -46,4 +43,4 @@ return [
     'Your account is not approved yet!' => 'Votre compte n\'est pas encore approuvé.',
     'Your new password must not be equal your current password!' => 'Votre nouveau mot de passe ne peut être le même que celui défini actuellement.',
     'or' => 'ou',
-];
+);
