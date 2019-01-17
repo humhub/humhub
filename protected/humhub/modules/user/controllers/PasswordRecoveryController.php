@@ -47,7 +47,7 @@ class PasswordRecoveryController extends Controller
     public function actionIndex()
     {
         $model = new AccountRecoverPassword();
-
+        Yii::$app->params['enablePjax'] = false;
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->recover()) {
             if (Yii::$app->request->isAjax) {
                 return $this->renderAjax('success_modal', ['model' => $model]);

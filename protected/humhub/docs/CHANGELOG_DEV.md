@@ -12,6 +12,7 @@ HumHub Change Log (DEVELOP)
 - Chng: Removed `jquery-placeholder` asset and dependency
 - Chng: Removed `atwho` asset and dependency
 - Cnng: Removed old IE support
+- Fix: Fixed bug with wrong dashboard template after redirect from password recovery screen (Baleks) 
 
 
 

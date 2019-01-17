@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
+
 ?>
 <?php if ($place == "topMenu") : ?>
     <?php if ($logo->hasImage()) : ?>
@@ -15,7 +17,7 @@ use yii\helpers\Html;
 
 <?php if ($place == "login") : ?>
     <?php if ($logo->hasImage()) : ?>
-        <a href="<?= Yii::$app->homeUrl; ?>">
+        <a href="<?= Yii::$app->user->isGuest ? Yii::$app->homeUrl : Url::to(['/user/account/change-password']); ?>">
             <img class="img-rounded" src="<?= $logo->getUrl(); ?>" id="img-logo" alt="<?= Yii::t('base', 'Logo of {appName}', ['appName' => Html::encode(Yii::$app->name)]) ?>"/>
         </a>
         <br>
