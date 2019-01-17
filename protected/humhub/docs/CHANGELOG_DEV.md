@@ -13,6 +13,7 @@ HumHub Change Log (DEVELOP)
 - Chng: Removed `atwho` asset and dependency
 - Cnng: Removed old IE support
 - Fix #2946: Use Yii2 default timezone handling
+- Chng #2164: Removed MSN & Google+ social bookmarks during setup
 
 
 
