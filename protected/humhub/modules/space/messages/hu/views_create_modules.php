@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Add <strong>Modules</strong>' => 'Modulok <strong>hozzáadása</strong>',
+  'Add <strong>Modules</strong>' => '<strong>Modulok</strong> hozzáadása',
 );

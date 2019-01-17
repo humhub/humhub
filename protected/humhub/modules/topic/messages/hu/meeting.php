@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Add Topics' => 'Téma hozzáadása',
-  'Manage Topics' => 'Téma kezelése',
+  'Add Topics' => 'Témák hozzáadása',
+  'Manage Topics' => 'Témák kezelése',
 );

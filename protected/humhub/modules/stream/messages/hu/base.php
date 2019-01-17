@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Show {i} more.' => 'Még {i} megjelenítése.',
+  'Show {i} more.' => 'Több {i} megjelenítése.',
 );

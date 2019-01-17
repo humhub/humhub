@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Confirm</strong> image deletion' => 'Kép törlésének <strong> megerősítése  strong&gt;</strong>',
+  '<strong>Confirm</strong> image deletion' => 'Kép törlésének <strong>megerősítése</strong>',
   'Dashboard' => 'Áttekintés',
   'Delete' => 'Törlés',
   'E.g. http://example.com/humhub' => 'Pl. http://example.com/humhub',

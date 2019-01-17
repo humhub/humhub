@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Receive Notifications of Space Membership events.' => 'Értesítések fogadása a közösség tagsági eseményekről.',
-  'Space Membership' => 'Közösség tagság',
+  'Receive Notifications of Space Membership events.' => 'Értesítések fogadása a közösségbeli tagsági eseményekről.',
+  'Space Membership' => 'Közösségbeli tagság',
 );

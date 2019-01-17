@@ -1,5 +1,5 @@
 <?php
 return array (
-  '<strong>Modify</strong> space image' => 'A témakör képének <strong>módosítása</strong>',
+  '<strong>Modify</strong> space image' => 'A közösség képének <strong>módosítása</strong>',
   'Close' => 'Bezár',
 );

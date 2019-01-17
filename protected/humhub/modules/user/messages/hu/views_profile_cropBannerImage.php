@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Modify</strong> your title image' => '<strong>Háttérképed</strong> szerkesztése',
+  '<strong>Modify</strong> your title image' => '<strong>Borítóképed</strong> szerkesztése',
   'Close' => 'Bezár',
   'Save' => 'Mentés',
 );

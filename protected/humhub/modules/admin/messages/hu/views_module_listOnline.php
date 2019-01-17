@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Modules</strong> directory' => '<strong>Modules</strong> directory
+  '<strong>Modules</strong> directory' => '<strong>Modulok</strong> könyvtár
 
 Buy (%price%)
 
@@ -27,5 +27,5 @@ No compatible module version found!',
   'Latest version:' => 'Legújabb verzió:',
   'Licence Key:' => 'Termékkulcs:',
   'More info' => 'További információk',
-  'No compatible module version found!' => 'Nem talált kompatibilis modulverziót!',
+  'No compatible module version found!' => 'Nem található kompatibilis modulverzió!',
 );

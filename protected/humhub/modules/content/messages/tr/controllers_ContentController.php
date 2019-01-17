@@ -7,6 +7,6 @@ return array (
   'Maximum number of pinned items reached!
 
 You can pin to top only two items at once.
-To however pin this item, unpin another before!' => '',
+To however pin this item, unpin another before!' => 'Sabitlenmiş maksimum içerik sayısına ulaşıldı! Aynı anda sadece iki içeriği sabitleyebilirsiniz. Ancak bu içeriği sabitlemek için, daha önce bir tane daha ayırın!',
   'This action is disabled!' => 'Bu eylem devre dışı!',
 );
