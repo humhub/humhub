@@ -254,7 +254,28 @@ humhub.module('notification', function (module, require, $) {
         module.menu = NotificationDropDown.instance('#notification_widget');
     };
 
+    var handleFilterChanges = function () {
+        var filterForm = $("#notification_overview_filter");
+        filterForm.on('click', 'label', function(evt) {
+            evt.preventDefault();
+            var checkbox = $(this).children().first();
+            checkbox.prop("checked", !checkbox.prop( "checked"));
+            filterForm.submit();
+        });
+    };
+
+    var fetchFilteredNotifications = function () {
+        if(client.pjax.isActive()) {
+            $("#notification_overview_filter").on('submit', function (evt) {
+                evt.preventDefault();
+                $.pjax.submit(evt, '#layout-content');
+            });
+        }
+    };
+
     var initOverviewPage = function () {
+        handleFilterChanges();
+        fetchFilteredNotifications();
         if ($('#notification_overview_list').length) {
             if (!$('#notification_overview_list li.new').length) {
                 $('#notification_overview_markseen').hide();

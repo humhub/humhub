@@ -41,7 +41,6 @@ use yii\helpers\Url;
                     <div style="padding-left: 5px;">
                         <?= $form->field($filterForm, 'categoryFilter')->checkboxList($filterForm->getCategoryFilterSelection())->label(false); ?>
                     </div>
-                    <button class="btn btn-primary btn-xm" type="submit" data-ui-loader><?= Yii::t('NotificationModule.views_overview_index', 'Apply'); ?></button>
                     <?php ActiveForm::end(); ?>
                 </div>
             </div>
