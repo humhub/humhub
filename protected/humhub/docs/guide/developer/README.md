@@ -47,5 +47,6 @@ Advanced Topics
 * [Search](search.md)
 * [Security](security.md)
 * [Console Application](console.md)
+* [Oembed Providers](oembed.md)
 
 

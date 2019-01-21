@@ -213,12 +213,8 @@ class UrlOembed extends ActiveRecord
      */
     public static function getProviders()
     {
-        $providers = Yii::$app->settings->get('oembedProviders');
-        if ($providers != '') {
-            return Json::decode($providers);
-        }
-
-        return [];
+        $userModule = Yii::$app->getModule('user');
+        return $userModule->getOembedProviders();
     }
 
     /**
