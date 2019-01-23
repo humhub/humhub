@@ -11,6 +11,7 @@ HumHub Change Log
 - Fix: Include user profile posts option in dashboard stream broken
 - Fix: Check SoftDeleted user state in ControllerAccess
 - Fix: Removed database charset configuration in dynamic config
+- Fix: User soft deletion membership cache overwrite
 
 
 1.3.8  (December 10, 2018)

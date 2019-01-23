@@ -397,7 +397,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function softDelete()
     {
         // Delete spaces which are owned by this user.
-        foreach (MembershipHelper::getOwnSpaces($this) as $space) {
+        foreach (MembershipHelper::getOwnSpaces($this, false) as $space) {
             $space->delete();
         }
 
