@@ -50,6 +50,8 @@ use yii\helpers\Url;
                             &middot; <?= Html::a(Yii::t('AdminModule.views_module_list', 'Uninstall'), Url::to(['/admin/module/remove', 'moduleId' => $moduleId]), ['data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.views_module_list', 'Are you sure? *ALL* module related data and files will be lost!')]); ?>
                         <?php endif; ?>
 
+                        &middot; <?= Html::a(Yii::t('AdminModule.views_module_list', 'Restrict installation'), Url::to(['/admin/module/restrict-installation', 'moduleId' => $moduleId]), ['data-target' => '#globalModal']); ?>
+
                         &middot; <?= Html::a(Yii::t('AdminModule.views_module_list', 'More info'), Url::to(['/admin/module/info', 'moduleId' => $moduleId]), ['data-target' => '#globalModal']); ?>
 
                     </div>

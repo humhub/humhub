@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\space\models\Space;
 use ReflectionClass;
 use Yii;
 use humhub\modules\content\models\ContentContainerModuleState;
@@ -154,8 +155,10 @@ class ContentContainerModuleManager extends \yii\base\Component
 
         foreach (Yii::$app->moduleManager->getModules() as $id => $module) {
             if ($module instanceof ContentContainerModule && Yii::$app->hasModule($module->id) &&
-                    $module->hasContentContainerType($this->contentContainer->className())) {
-                $this->_available[$module->id] = $module;
+                $module->hasContentContainerType($this->contentContainer->className())) {
+                    if ($this->canInstallModule(Yii::$app->user, $module)) {
+                        $this->_available[$module->id] = $module;
+                    }
             }
         }
 
@@ -217,6 +220,64 @@ class ContentContainerModuleManager extends \yii\base\Component
         } else {
             return (int) $state;
         }
+    }
+
+    /**
+     * Sets the restrict installation state for a module based on the contentcontainer class
+     *
+     * @param string $class the class name (e.g. Space or User)
+     * @param string $id the module id
+     * @param int $state the state
+     */
+    public static function setRestrictInstallationState($class, $id, $state)
+    {
+        $reflect = new ReflectionClass($class);
+        Yii::$app->getModule($id)->settings->set('moduleManager.restrictInstallationState.' . $reflect->getShortName(), $state);
+    }
+
+    /**
+     * Returns the module restrict installation state for for a given contentcontainer class
+     *
+     * @param string $class the class name (e.g. Space or User)
+     * @param string $id the module id
+     * @return int|null the default state or null when no default state is defined
+     */
+    public static function getRestrictInstallationState($class, $id)
+    {
+        $reflect = new ReflectionClass($class);
+        $state = Yii::$app->getModule($id)->settings->get('moduleManager.restrictInstallationState.' . $reflect->getShortName());
+
+        if ($state === null) {
+            return null;
+        } else {
+            return (int) $state;
+        }
+    }
+
+    /**
+     * Checks if current module available to install
+     * @param $user
+     * @param $module
+     * @return bool
+     */
+    protected function canInstallModule($user, $module)
+    {
+        $restrictInstallation = self::getRestrictInstallationState($this->contentContainer->className(), $module->id);
+        if ($restrictInstallation) {
+            return false;
+        }
+        if (! $module->settings->get('installation_only_for_admins')) {
+            return true;
+        }
+        if ($user->isAdmin()) {
+            return true;
+        }
+        if ($this->contentContainer instanceof Space) {
+            if ($this->contentContainer->isAdmin($user->id)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

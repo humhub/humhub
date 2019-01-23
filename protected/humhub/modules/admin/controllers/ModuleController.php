@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\components\Module;
+use humhub\modules\admin\models\forms\ModuleRestrictInstallationForm;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\admin\components\Controller;
@@ -339,6 +340,30 @@ class ModuleController extends Controller
         }
 
         return $this->renderAjax('setAsDefault', ['module' => $module, 'model' => $model]);
+    }
+
+    /**
+     * Sets setting for installation restriction
+     *
+     */
+    public function actionRestrictInstallation()
+    {
+        $moduleId = Yii::$app->request->get('moduleId');
+        $module = Yii::$app->moduleManager->getModule($moduleId);
+
+        if ($module == null) {
+            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+        }
+
+        $model = new ModuleRestrictInstallationForm();
+        $model->initFormData($module);
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->saveFormData($module);
+            return $this->renderModalClose();
+        }
+
+        return $this->renderAjax('restrictInstallation', ['module' => $module, 'model' => $model]);
     }
 
     public function getOnlineModuleManager()
