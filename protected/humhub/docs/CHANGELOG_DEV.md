@@ -12,6 +12,6 @@ HumHub Change Log (DEVELOP)
 - Chng: Removed `jquery-placeholder` asset and dependency
 - Chng: Removed `atwho` asset and dependency
 - Cnng: Removed old IE support
-
+- Enh: Implemented data sharing as live data between tabs using local storage (Baleks)
 
 

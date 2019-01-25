@@ -70,6 +70,7 @@ class Poll extends BaseDriver
     {
         return [
             'type' => 'humhub.modules.live.poll.PollClient',
+            'handler' => 'humhub.modules.live.tabs.TabsController',
             'options' => [
                 'url' => Url::to(['/live/poll']),
                 'initTime' => time(),

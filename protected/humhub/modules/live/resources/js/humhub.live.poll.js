@@ -10,9 +10,13 @@ humhub.module('live.poll', function (module, require, $) {
 
     var DEFAULT_IDLE_INTERVAL = 20;
 
-    var PollClient = function (options) {
+    var PollClient = function (options, handler) {
         if (!options) {
             module.log.error('Could not initialize PollClient. No options given!');
+            return;
+        }
+        if (!handler) {
+            module.log.error('Could not initialize PollClient. No tabs handler given!');
             return;
         }
         this.options = options;
@@ -21,6 +25,7 @@ humhub.module('live.poll', function (module, require, $) {
         this.options.idleFactor = options.idleFactor || DEFAULT_IDLE_FACTOR;
         this.options.idleInterval = options.idleDelay || DEFAULT_IDLE_INTERVAL;
         this.options.initTime = options.initTime || Date.now();
+        this.handler = handler;
         this.init();
     };
 
@@ -35,8 +40,12 @@ humhub.module('live.poll', function (module, require, $) {
         this.handle = $.proxy(this.handleUpdate, this);
         this.lastTs = this.options.initTime;
         
-        
         var that = this;
+
+        this.handler.updateFromLocalStorage = function (payload) {
+            that.handle(payload);
+        };
+
         $(document).on('mousemove keydown mousedown touchstart', function () {
             that.delay = that.options.minInterval;
 
@@ -69,9 +78,11 @@ humhub.module('live.poll', function (module, require, $) {
      */
     PollClient.prototype.update = function () {
         this.timeout = setTimeout(this.call, this.getDelay());
-        client.get(this.getCallOptions())
+        if (this.handler.isMaster) {
+            client.get(this.getCallOptions())
                 .then(this.handle)
                 .catch(_handleUpdateError);
+        }
     };
 
     /**
@@ -90,6 +101,9 @@ humhub.module('live.poll', function (module, require, $) {
      * Handles the live update response.
      */
     PollClient.prototype.handleUpdate = function (response) {
+        if (this.handler.isMaster) {
+            this.handler.broadcast(response);
+        }
         this.lastTs = response.queryTime;
         
         if(!object.isObject(response.events)) {

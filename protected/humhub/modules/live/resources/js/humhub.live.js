@@ -11,7 +11,8 @@ humhub.module('live', function (module, require, $) {
         try {
             var clientType = require(module.config.client.type);
             if (clientType) {
-                liveClient = new clientType(module.config.client.options);
+                var tabsHandler = require(module.config.client.handler);
+                liveClient = new clientType(module.config.client.options, new tabsHandler());
             } else {
                 module.log.warn("Invalid live client configuration detected, live client could not be initialized.", module.config);
             }

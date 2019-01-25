@@ -18,6 +18,7 @@ class LiveAsset extends AssetBundle
         'js/humhub.live.js',
         'js/humhub.live.poll.js',
         'js/humhub.live.push.js',
+        'js/humhub.live.tabs.js',
     ];
     
     public $publishOptions = [
