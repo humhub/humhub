@@ -10,7 +10,7 @@
         <div class="modal-body">
 
             <p>
-                <?= Yii::t('AdminModule.views_module_restrictInstallation', 'Here you can sett up module restriction installation settings.'); ?>
+                <?= Yii::t('AdminModule.views_module_restrictInstallation', 'Here you can set up module restriction installation settings.'); ?>
             </p>
 
             <br>
