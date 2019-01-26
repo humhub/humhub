@@ -21,7 +21,7 @@ If yes, please describe the impact and migration path for existing applications:
 
 - [ ] It's submitted to the `develop` branch, _not_ the `master` branch if no hotfix
 - [ ] When resolving a specific issue, it's referenced in the PR's title (e.g. `Fix #xxx[,#xxx]`, where "xxx" is the Github issue number)
-- [ ] All tests are passingp
+- [ ] All tests are passing
 - [ ] New/updated tests are included
 - [ ] Changelog was modified
 
