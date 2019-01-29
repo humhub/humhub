@@ -12,6 +12,8 @@ HumHub Change Log (DEVELOP)
 - Chng: Removed `jquery-placeholder` asset and dependency
 - Chng: Removed `atwho` asset and dependency
 - Cnng: Removed old IE support
-- Chng: Added an option for setting of password strength configuration (Baleks)
+- Fix #2946: Use Yii2 default timezone handling
+- Chng #2164: Removed MSN & Google+ social bookmarks during setup
+- Enh: Added a user module configuration for setting password strength rules (Baleks)
 
 
