@@ -15,5 +15,5 @@ HumHub Change Log (DEVELOP)
 - Fix #2946: Use Yii2 default timezone handling
 - Chng #2164: Removed MSN & Google+ social bookmarks during setup
 - Enh: Added a user module configuration for setting password strength rules (Baleks)
-
+- Fix #3103 Password recovery links pjax layout issue
 
