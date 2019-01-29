@@ -46,8 +46,10 @@ We take security very seriously, and we're continuously improving the security f
 
 Password Strength Configuration
 -------------------------------
+
 HumHub provides an option for adding of additional validation rules for user password during registration using regular expressions. 
 Additional password validation rules can be configured, by changing applications parameters withing the **protected/config/common.php** configuration 
+
 ```php
 return [
     'modules' => [
@@ -60,7 +62,8 @@ return [
     ]
 ];
 ```
+
 Key should be a valid regular expression, and value - error message.
 To localize error message you have to define a new message file with the following path pattern:
 
-`protected/config/messages/<language>/UserModule.custom.php`
+`protected/humhub/messages/<language>/custom.php`

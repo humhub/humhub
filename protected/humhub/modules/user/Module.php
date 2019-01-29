@@ -104,8 +104,7 @@ class Module extends \humhub\components\Module
      * @var array defines default additional rules for password validation
      */
     private $defaultPasswordStrength = [
-        '/^(.*?[A-Z]){2,}.*$/' => 'Password has to contain two uppercase letters.',
-        '/^.{8,}$/' => 'Password needs to be at least 8 characters long.',
+        '/^.{5,255}$/' => 'Password needs to be at least 8 characters long.',
     ];
 
     /**

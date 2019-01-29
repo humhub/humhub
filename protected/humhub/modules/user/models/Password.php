@@ -84,7 +84,6 @@ class Password extends ActiveRecord
             [['algorithm'], 'string', 'max' => 20],
             [['currentPassword'], CheckPasswordValidator::class, 'on' => 'changePassword'],
             [['newPassword', 'newPasswordConfirm', 'currentPassword'], 'required', 'on' => 'changePassword'],
-            [['newPassword', 'newPasswordConfirm'], 'string', 'min' => 5, 'max' => 255, 'on' => 'changePassword'],
             [['newPassword'], 'unequalsCurrentPassword', 'on' => 'changePassword'],
             [['newPasswordConfirm'], 'compare', 'compareAttribute' => 'newPassword', 'on' => ['registration', 'changePassword']],
         ];
