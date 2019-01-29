@@ -26,13 +26,13 @@ class AuthAction extends \yii\authclient\AuthAction
      * @param StandaloneAuthClient $client
      * @return response
      */
-    public function auth($client)
+    public function auth($client, $authUrlParams = [])
     {
         if ($client instanceof StandaloneAuthClient) {
             return $client->authAction($this);
         }
 
-        return parent::auth($client);
+        return parent::auth($client, $authUrlParams);
     }
 
     /**
