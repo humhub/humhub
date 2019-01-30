@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Downloading & Installing Modules...' => 'İndirilen modüller yükleniyor...',
+  'Downloading & Installing Modules...' => 'Modülleri İndirme ve Yükleme ...',
 );

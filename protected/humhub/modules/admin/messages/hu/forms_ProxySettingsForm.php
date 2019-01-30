@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Enabled' => '',
-  'No Proxy Hosts' => '',
-  'Password' => '',
-  'Port' => '',
-  'Server' => '',
+  'Enabled' => 'Bekacsolva',
+  'No Proxy Hosts' => 'Nincsenek proxy hosztok',
+  'Password' => 'Jelszó',
+  'Port' => 'Port',
+  'Server' => 'Szerver',
   'User' => 'Felhasználó',
 );

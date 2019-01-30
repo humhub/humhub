@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Add user' => 'További címzettek',
+  'Add user' => 'További felhasználók hozzáadása',
 );

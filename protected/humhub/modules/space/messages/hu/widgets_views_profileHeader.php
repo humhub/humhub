@@ -1,8 +1,8 @@
 <?php
 return array (
   '<strong>Something</strong> went wrong' => '<strong>Hiba</strong> történt',
-  'Followers' => 'Követő',
-  'Members' => 'Tag',
+  'Followers' => 'Követők',
+  'Members' => 'Tagok',
   'Ok' => 'Rendben',
-  'Posts' => 'Hozzászólások',
+  'Posts' => 'Bejegyzések',
 );

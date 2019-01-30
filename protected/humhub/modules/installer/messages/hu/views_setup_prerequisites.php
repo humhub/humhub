@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>System</strong> Check' => '<strong>Rendszer</strong> Ellenőrzés',
-  'Check again' => 'Ellenőrzés ismét',
-  'Congratulations! Everything is ok and ready to start over!' => 'Gratulálunk! Minden rendben van és készen állsz, hogy elindulj!',
+  '<strong>System</strong> Check' => '<strong>Rendszer</strong> ellenőrzése',
+  'Check again' => 'Ismételt ellenőrzés',
+  'Congratulations! Everything is ok and ready to start over!' => 'Gratulálunk! Minden rendben, készen állsz az indulásra!',
   'Next' => 'Következő',
-  'This overview shows all system requirements of HumHub.' => 'Ez az áttekintő, azt mutatja, hogy milyen rendszerkövetelményei vannak a HumHub-nak.',
+  'This overview shows all system requirements of HumHub.' => 'Ez az áttekintés a HumHub rendszerkövetelményeit mutatja.',
 );

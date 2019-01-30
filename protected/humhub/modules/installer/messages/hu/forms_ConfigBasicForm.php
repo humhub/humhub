@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Name of your network' => 'A közösséged neve',
+  'Name of your network' => 'Hálózatod neve',
 );

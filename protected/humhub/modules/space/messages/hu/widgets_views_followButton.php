@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Follow' => 'Követ',
+  'Follow' => 'Követés',
   'Unfollow' => 'Követés visszavonása',
 );

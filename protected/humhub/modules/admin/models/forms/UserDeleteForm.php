@@ -102,7 +102,7 @@ class UserDeleteForm extends Model
         }
 
         // Handle owned spaces by the deleted user
-        $ownedSpaces = MembershipHelper::getOwnSpaces($this->user);
+        $ownedSpaces = MembershipHelper::getOwnSpaces($this->user, false);
         if (count($ownedSpaces) !== 0 && empty($this->deleteSpaces)) {
             foreach ($ownedSpaces as $space) {
                 $space->addMember(Yii::$app->user->id);

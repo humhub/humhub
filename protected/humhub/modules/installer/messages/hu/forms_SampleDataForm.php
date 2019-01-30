@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Set up example content (recommended)' => 'Állítson be, példa tartalmakat (javasolt)',
+  'Set up example content (recommended)' => 'Állíts be példa-tartalmakat (ajánlott)',
 );

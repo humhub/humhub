@@ -26,16 +26,17 @@ class MembershipHelper
      * Returns an array of spaces where the given user is owner.
      * 
      * @param User|null $user the user or null for current user
+     * @param boolean $useCache use cached result if available
      * @return Space[] the list of spaces
      */
-    public static function getOwnSpaces(User $user = null)
+    public static function getOwnSpaces(User $user = null, $useCache = true)
     {
         if ($user === null) {
             $user = Yii::$app->user->getIdentity();
         }
 
         $spaces = [];
-        foreach (Membership::GetUserSpaces($user->id) as $space) {
+        foreach (Membership::GetUserSpaces($user->id, $useCache) as $space) {
             if ($space->isSpaceOwner($user->id)) {
                 $spaces[] = $space;
             }

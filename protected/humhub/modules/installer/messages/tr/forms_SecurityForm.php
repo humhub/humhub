@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Allow access for non-registered users to public content (guest access)' => 'Kayıtlı olmayan kullanıcılar için erişim izni. (Misafir erişimi)',
-  'Allow friendships between members' => 'Üyeler arasında arkadaşlık',
-  'External users can register (show registration form on login)' => 'Harici kullanıcı kayıt olabilir. (Girişte kayıt formu gösterilecek)',
-  'Newly registered users have to be activated by an admin first' => 'Yeni kayıt olan kullanıcılar ilk olarak yönetici tarafından aktive edilecek.',
-  'Registered members can invite new users via email' => 'Kayıtlı üyeler e-posta yoluyla yeni kullanıcıları davet edebilir',
+  'Allow access for non-registered users to public content (guest access)' => 'Kayıtlı olmayan kullanıcıların herkese açık içeriğe erişmesine izin ver (misafir erişimi)',
+  'Allow friendships between members' => 'Üyeler arasında arkadaşlıklara izin ver',
+  'External users can register (show registration form on login)' => 'Harici kullanıcılar kayıt olabilir (girişte kayıt formunu göster)',
+  'Newly registered users have to be activated by an admin first' => 'Yeni kayıtlı kullanıcılar önce bir yönetici tarafından aktif hale getirilmelidir',
+  'Registered members can invite new users via email' => 'Kayıtlı üyeler yeni kullanıcıları e-postayla davet edebilir',
 );

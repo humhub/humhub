@@ -43,21 +43,22 @@ In practice your model data is usually loaded into your model from a `post` requ
 
 ```php
 public function actionEdit($id = null) {
-    $news = empty($id) ? new News() :  News::findeOne['id' => $id];
+    $news = empty($id) ? new News() :  News::findeOne(['id' => $id]);
     
     if(!$news->content->canEdit()) {
         throw new HttpException(403);
     }
     
     if($news->load(Yii::$app->request->post() && $news->save()) {
-        $this->view->saved()        
+        $this->view->saved();        
+        return $this->render('view', ['news' => $news]);
     }
     
     return $this->render('edit', ['news' => $news]);
 }
 ```
 
-Just like other [ActiveRecords](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record) `ContentActiveRecord` classes should be put under the `yourModule/models` namespace of your module.
+Just like other [ActiveRecords](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record) `ContentActiveRecord` classes should be put under the `models` namespace of your module.
 Beside the basic `ActiveRecord` features as `validation` and `attributeLabels` your `ContentContainerActiveRecord` class should at least implement the following fields and methods:
 
 - `moduleId` - id of the related module
@@ -67,7 +68,7 @@ Beside the basic `ActiveRecord` features as `validation` and `attributeLabels` y
 ```php
 namespace mymodule\models;
 
-use humhub\modules\content\components\ContentActiveRecord
+use humhub\modules\content\components\ContentActiveRecord;
 
 class MyModel extends ContentActiveRecord
 {
@@ -104,7 +105,6 @@ You can instantiate your `ContentContainerActiveRecord` as follows:
 ```php
 // Only provide an array of attributes
 $model = new MyModel(['some_field' => $field]);
-
 
 // Instantiate my model by providing only content-container, the default visibility of the space will be used
 $model = new MyModel($someSpace);
@@ -267,7 +267,7 @@ class Example extends ContentContainerActiveRecord
 }
 ```
 
->Info: For more information about permissions, please see the [Permission Section](module-permissions.md).
+> Info: For more information about permissions, please see the [Permission Section](module-permissions.md).
 
 ### Other content features
 
@@ -392,7 +392,7 @@ This will add the required cguid parameter to your request.
 
 ## ContentContainerModule
 
-See the [Use of ContentContainerModule](modules.md#use-of-container-module) section.
+See the [Use of ContentContainerModule](modules-base-class.md#use-of-contentcontainermodule) section.
 
 ## Content addons
 

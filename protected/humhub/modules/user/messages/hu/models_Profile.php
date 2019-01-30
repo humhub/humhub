@@ -1,6 +1,6 @@
 <?php
 return array (
-  'About' => 'Leírás',
+  'About' => 'Rólunk',
   'Birthday' => 'Születésnap',
   'City' => 'Város',
   'Country' => 'Ország',
@@ -28,7 +28,7 @@ return array (
   'Twitter URL' => 'Twitter URL',
   'Url' => 'Webcím (URL)',
   'Vimeo URL' => 'Vimeo URL',
-  'XMPP Jabber Address' => 'XMPP Jabber',
+  'XMPP Jabber Address' => 'XMPP Jabber cím',
   'Xing URL' => 'Xing URL',
   'YouTube URL' => 'YouTube URL',
   'Zip' => 'Irányítószám',

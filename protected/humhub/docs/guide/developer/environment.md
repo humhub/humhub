@@ -5,6 +5,7 @@ This guide describes some recommended settings of your development environment.
 
 ## Quick Notes
 
+- Make sure you are using a Git/Composer HumHub installation installation as described below.
 - Make sure the `debug` mode is enabled (default), see [Enable Production Mode](../admin/security.md#enable-production-mode)
 - Disable caching under `Administration -> Settings -> Advanced -> Caching -> None`
 - Use file based mailing `Administration -> Settings -> Advanced -> E-Mail`

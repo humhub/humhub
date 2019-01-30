@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Pin to top' => 'Felülre rögzítés',
-  'Unpin' => 'Felülre rögzítés megszüntetése',
+  'Pin to top' => 'Rögzítés felülre',
+  'Unpin' => 'Rögzítés megszüntetése',
 );

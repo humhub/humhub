@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Invalid content id given!' => 'Érvénytelen a megadott tartalom azonososító!',
+  'Invalid content id given!' => 'A megadott tartalomazonosító érvénytelen!',
 );

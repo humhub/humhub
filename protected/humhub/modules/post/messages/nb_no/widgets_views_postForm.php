@@ -1,5 +1,5 @@
 <?php
 return array (
   'This space is archived.' => 'Dette området er arkivert.',
-  'What\'s on your mind?' => 'Hva tenker du på?',
+  'What\'s on your mind?' => 'Klikk her for å lage en nyhet.',
 );

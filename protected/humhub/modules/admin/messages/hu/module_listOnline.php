@@ -1,10 +1,10 @@
 <?php
 return array (
-  'Installed' => '',
-  'No modules found!' => '',
-  'No purchased modules found!' => '',
-  'Register' => '',
+  'Installed' => 'Installálva',
+  'No modules found!' => 'Nincsenek modulok!',
+  'No purchased modules found!' => 'Nem található megvásárolt modul!',
+  'Register' => 'Regisztráció',
   'Search' => 'Keresés',
-  'Third-party' => '',
-  'search for available modules online' => '',
+  'Third-party' => 'Harmadik féltől származó',
+  'search for available modules online' => 'Modulok keresése online',
 );

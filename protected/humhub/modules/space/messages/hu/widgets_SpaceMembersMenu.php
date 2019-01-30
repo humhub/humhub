@@ -2,6 +2,6 @@
 return array (
   'Members' => 'Tagok',
   'Owner' => 'Tulajdonos',
-  'Pending Approvals' => 'Függő engedélyezések',
-  'Pending Invites' => 'Függő meghívások',
+  'Pending Approvals' => 'Függőben lévő engedélyezések',
+  'Pending Invites' => 'Függőben lévő meghívások',
 );
