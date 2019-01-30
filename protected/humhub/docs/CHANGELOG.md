@@ -12,6 +12,7 @@ HumHub Change Log
 - Fix: Check SoftDeleted user state in ControllerAccess
 - Fix: Removed database charset configuration in dynamic config
 - Fix: User soft deletion membership cache overwrite
+- Fix #3422 Stream suppressed loading logic loads unnecessary stream entries
 
 
 1.3.8  (December 10, 2018)
