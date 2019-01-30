@@ -5,8 +5,9 @@ HumHub provides a powerful modular platform based on the [Yii2 Framework](http:/
 The modular nature of the HumHub platform allows you to add new features or change existing core features by means of
 custom modules.
 
-Other languages used throughout the platform, besides PHP, are JavaScript, HTML, SQL and CSS/Less. 
-HumHub is based on the [Model-View-Controller (MVC)](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) pattern and uses frontend technologies such as [jQuery](https://jquery.com/), [Bootstrap](http://getbootstrap.com/) and [Less](http://lesscss.org/).
+Other languages used throughout the platform, besides **PHP**, are **JavaScript**, **HTML**, **SQL** and **CSS/Less**. 
+HumHub is based on the [Model-View-Controller (MVC)](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) 
+pattern and uses frontend technologies such as [jQuery](https://jquery.com/), [Bootstrap](http://getbootstrap.com/) and [Less](http://lesscss.org/).
 
 In this guide you will find all the necessary information to customize your HumHub installation and implement your own modules.
 
@@ -36,12 +37,12 @@ HumHub extends several Yii base components such as:
 
 and consists of the following core modules:
 
- - **activity:**  User/Space activities
+ - **activity:** Assambles social network activities
  - **admin:**  Responsible for admin/configuration related issues
  - **comment:**  Content addon for commenting
  - **content:**  Base module for all content types (Post,Wiki,...) 
  - **dashboard:**  Dashboard related functionality
- - **directory:**  Directory related functionality
+ - **directory:**  User/Space/Group directory
  - **file:**  Basic file module for accessing the filesystem
  - **friendship:**  User friendship module
  - **installer:**  HumHub installer module
@@ -58,7 +59,7 @@ and consists of the following core modules:
  - **ui:** Base ui components as widgets and theme logic
  - **user:**  Basic user module
  
-### Application structure
+### Core directories
  
 ```
   assets/               - contains published asset files

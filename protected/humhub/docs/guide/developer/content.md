@@ -321,7 +321,7 @@ $model->content->canArchive();
 
 ```
 
-## ContentContainer and ContentContainerActiveRecords
+## ContentContainer
 
 [[humhub\modules\content\models\ContentContainer|ContentContainers]] in HumHub are used to assign `Content` entries to a specific
 container like a `User Account` or `Space`. Similar to `Content` and `ContentActiveRecords`, `ContentContainer` entries can be seen as an abstraction
