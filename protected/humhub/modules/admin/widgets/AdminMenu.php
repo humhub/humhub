@@ -96,20 +96,16 @@ class AdminMenu extends LeftNavigation
     /**
      * @inheritdoc
      */
-    public function run()
+    public function addItem($entryArray)
     {
-        // Workaround for modules with no admin menu permission support.
-        if (!Yii::$app->user->isAdmin()) {
-            foreach ($this->items as $key => $item) {
-                if (!isset($item['isVisible'])) {
-                    unset($this->items[$key]);
-                }
-            }
+        $entry = MenuLink::createByArray($entryArray);
+
+        if(!isset($entryArray['isVisible'])) {
+            $entry->setIsVisible(Yii::$app->user->isAdmin());
         }
 
-        return parent::run();
+        $this->addEntry($entry);
     }
-
 
     public static function canAccess()
     {
@@ -124,14 +120,7 @@ class AdminMenu extends LeftNavigation
 
     private static function checkNonAdminAccess()
     {
-        $adminMenu = new self();
-        foreach ($adminMenu->items as $item) {
-            if (isset($item['isVisible']) && $item['isVisible']) {
-                return true;
-            }
-        }
-
-        return false;
+        return Yii::$app->user->can([ManageGroups::class, ManageModules::class, ManageSettings::class, ManageUsers::class, SeeAdminInformation::class]);
     }
 
 }

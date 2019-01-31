@@ -9,6 +9,7 @@
 namespace humhub\modules\ui\menu\widgets;
 
 use humhub\components\Event;
+use humhub\libs\Sort;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\JsWidget;
@@ -96,12 +97,22 @@ abstract class Menu extends JsWidget
     {
         return [
             'menu' => $this,
-            'entries' => $this->entries,
+            'entries' => $this->getSortedEntries(),
             'options' => $this->getOptions(),
             // Deprecated
             'items' => $this->getItems(),
             'numItems' => count($this->getItems())
         ];
+    }
+
+    /**
+     * Sorts the entry list by sortOrder and returns the sorted entry list.
+     *
+     * @return MenuEntry[]
+     */
+    public function getSortedEntries()
+    {
+        return Sort::sort($this->entries);
     }
 
     /**
@@ -230,19 +241,37 @@ abstract class Menu extends JsWidget
      * Returns all entries filtered by $type. If no $type filter is given all entries
      * are returned.
      *
+     * If $filterVisible is set, only visible entries will be returned
+     *
      * @param null|string $type
+     * @param bool $filterVisible
      * @return MenuEntry[]
      */
-    public function getEntries($type = null)
+    public function getEntries($type = null, $filterVisible = false)
     {
         $result = [];
-        foreach ($this->entries as $entry) {
-            if(!$type || get_class($entry) === $type || is_subclass_of($entry, $type)) {
+        foreach ($this->getSortedEntries() as $entry) {
+            if((!$filterVisible || $entry->isVisible()) && (!$type || get_class($entry) === $type || is_subclass_of($entry, $type))) {
                 $result[] = $entry;
             }
         }
 
         return $result;
+    }
+
+    /**
+     * @param null $type
+     * @param bool $filterVisible
+     * @return MenuEntry|null
+     */
+    public function getFirstEntry($type = null, $filterVisible = false)
+    {
+        $entries = $this->getEntries($type, $filterVisible);
+        if(count($entries)) {
+            return $entries[0];
+        }
+
+        return null;
     }
 
     /**

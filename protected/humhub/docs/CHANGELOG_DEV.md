@@ -16,4 +16,7 @@ HumHub Change Log (DEVELOP)
 - Chng #2164: Removed MSN & Google+ social bookmarks during setup
 - Enh: Added a user module configuration for setting password strength rules (Baleks)
 - Fix #3103 Password recovery links pjax layout issue
-
+- Chng: New Menu and MenuEntry rendering
+- Enh: Added Icon abstraction `humhub\modules\ui\icon\widgets\Icon`
+- Enh: Added `humhub\libs\Html::addPjaxPrevention()` for link options
+- Enh: Added obj support for `humhub\libs\Sort`

@@ -12,6 +12,7 @@ use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\widgets\Menu;
 use humhub\libs\Html;
 use humhub\widgets\Link;
+use Yii;
 use yii\helpers\Url;
 
 /**
@@ -60,7 +61,7 @@ class MenuLink extends MenuEntry
      * @param array $extraHtmlOptions
      * @return string the Html link
      */
-    public function render($extraHtmlOptions = [])
+    public function renderEntry($extraHtmlOptions = [])
     {
         if($this->link) {
             return $this->link.'';

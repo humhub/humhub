@@ -49,7 +49,7 @@ abstract class MenuEntry extends BaseObject
     protected $isActive = false;
 
     /**
-     * Renders the entry html, this function should respect [[htmlOptions]] array by calling [[getHtmlOptions()]] and passing
+     * Renders the entry html, this template function should respect [[htmlOptions]] array by calling [[getHtmlOptions()]] and passing
      * the $extraHtmlOptions array as for example:
      *
      * ```php
@@ -61,7 +61,21 @@ abstract class MenuEntry extends BaseObject
      * @param array $extraHtmlOptions
      * @return string the Html link
      */
-    abstract public function render($extraHtmlOptions = []);
+    abstract protected function renderEntry($extraHtmlOptions = []);
+
+    /**
+     * Public accessible render function responsible for rendering this entry.
+     *
+     * @param array $extraHtmlOptions
+     * @return string
+     */
+    public function render($extraHtmlOptions = []) {
+        if(!$this->isVisible) {
+            return '';
+        }
+
+        return $this->renderEntry($extraHtmlOptions);
+    }
 
     /**
      * @return boolean is active
