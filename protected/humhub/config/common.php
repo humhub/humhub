@@ -88,6 +88,10 @@ $config = [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@humhub/messages'
                 ],
+                'custom' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@humhub/messages'
+                ],
             ],
         ],
         'formatter' => [

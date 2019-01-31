@@ -21,7 +21,7 @@ class JqueryColorAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/jquery-color';
+    public $sourcePath = '@npm/jquery-color';
 
     /**
      * @inheritdoc

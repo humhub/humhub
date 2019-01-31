@@ -21,7 +21,7 @@ class JqueryCookieAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/jquery.cookie';
+    public $sourcePath = '@npm/jquery.cookie';
 
     /**
      * @inheritdoc

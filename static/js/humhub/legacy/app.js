@@ -40,4 +40,4 @@ function parseHtml(htmlString) {
  * 
  * @deprecated 1.2
  */
-$.fn.format = function (options) {;}
+$.fn.format = function (options) {}

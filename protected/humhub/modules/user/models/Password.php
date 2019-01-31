@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use Yii;
+use yii\base\ErrorException;
 use yii\db\ActiveRecord;
 use yii\base\Exception;
 use yii\db\Expression;
@@ -74,14 +75,15 @@ class Password extends ActiveRecord
     {
         return [
             [['newPassword', 'newPasswordConfirm'], 'required', 'on' => 'registration'],
-            [['newPassword', 'newPasswordConfirm'], 'string', 'min' => 5, 'max' => 255],
+            [['newPassword', 'newPasswordConfirm'], function ($attribute, $params) {
+                $this->validateAdvancedPasswordRules($attribute, $params);
+            }],
             [['user_id'], 'integer'],
             [['password', 'salt'], 'string'],
             [['created_at'], 'safe'],
             [['algorithm'], 'string', 'max' => 20],
             [['currentPassword'], CheckPasswordValidator::class, 'on' => 'changePassword'],
             [['newPassword', 'newPasswordConfirm', 'currentPassword'], 'required', 'on' => 'changePassword'],
-            [['newPassword', 'newPasswordConfirm'], 'string', 'min' => 5, 'max' => 255, 'on' => 'changePassword'],
             [['newPassword'], 'unequalsCurrentPassword', 'on' => 'changePassword'],
             [['newPasswordConfirm'], 'compare', 'compareAttribute' => 'newPassword', 'on' => ['registration', 'changePassword']],
         ];
@@ -186,6 +188,27 @@ class Password extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    private function validateAdvancedPasswordRules($attribute, $params)
+    {
+        $userModule = Yii::$app->getModule('user');
+        $additionalRules = $userModule->getPasswordStrength();
+        if (is_array($additionalRules) && ! empty($additionalRules)) {
+            foreach ($additionalRules as $pattern => $message) {
+                $errorMessage = $userModule->isCustomPasswordStrength() ?
+                    Yii::t('UserModule.custom', $message) :
+                    Yii::t('UserModule.base', $message);
+                try {
+                    preg_match($pattern, $this->$attribute, $matches);
+                    if (! count($matches)) {
+                        $this->addError($attribute, $errorMessage);
+                    }
+                } catch (\Exception $exception) {
+                    throw new ErrorException("Wrong regexp in additional password rules. Target: '{$pattern}'");
+                }
+            }
+        }
     }
 
 }

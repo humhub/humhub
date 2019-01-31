@@ -22,7 +22,7 @@ class BootstrapMarkdownAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/bootstrap-markdown';
+    public $sourcePath = '@npm/bootstrap-markdown';
 
     /**
      * @inheritdoc

@@ -21,7 +21,7 @@ class JqueryNiceScrollAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/jquery-nicescroll';
+    public $sourcePath = '@npm/jquery.nicescroll';
 
     /**
      * @inheritdoc
