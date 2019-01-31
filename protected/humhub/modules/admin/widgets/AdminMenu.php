@@ -68,6 +68,7 @@ class AdminMenu extends LeftNavigation
             'url' => ['/admin/module'],
             'icon' => 'rocket',
             'sortOrder' => 500,
+            'htmlOptions' => ['class' => 'modules'],
             'isActive' => MenuLink::isActiveState('admin', 'module'),
             'isVisible' => Yii::$app->user->can(ManageModules::class)
         ]));
