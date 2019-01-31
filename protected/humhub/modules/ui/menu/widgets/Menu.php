@@ -9,8 +9,9 @@
 namespace humhub\modules\ui\menu\widgets;
 
 use humhub\components\Event;
-use humhub\components\Widget;
 use humhub\modules\ui\menu\MenuEntry;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\JsWidget;
 use yii\helpers\Url;
 use yii\web\View;
 
@@ -20,17 +21,17 @@ use yii\web\View;
  * @since 1.4
  * @package humhub\modules\ui\widgets
  */
-abstract class Menu extends Widget
+abstract class Menu extends JsWidget
 {
+    /**
+     * @inheritdocs
+     */
+    public $jsWidget = 'ui.navigation.Navigation';
+
     /**
      * @event MenuEvent an event raised before running the navigation widget.
      */
     const EVENT_RUN = 'run';
-
-    /**
-     * @var string dom element id
-     */
-    public $id;
 
     /**
      * @var string template view file of the navigation
@@ -96,7 +97,7 @@ abstract class Menu extends Widget
         return [
             'menu' => $this,
             'entries' => $this->entries,
-
+            'options' => $this->getOptions(),
             // Deprecated
             'items' => $this->getItems(),
             'numItems' => count($this->getItems())
@@ -104,10 +105,30 @@ abstract class Menu extends Widget
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getData()
+    {
+        return [
+            'menu-id' => $this->id
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAttributes()
+    {
+        return [
+            'class' => 'panel panel-default left-navigation'
+        ];
+    }
+
+    /**
      * Returns the first entry with the given URL
      *
      * @param $url string|array the url or route
-     * @return MenuEntry
+     * @return MenuLink
      */
     public function getEntryByUrl($url)
     {
@@ -116,6 +137,10 @@ abstract class Menu extends Widget
         }
 
         foreach ($this->entries as $entry) {
+            if(!$entry instanceof MenuLink) {
+                continue;
+            }
+
             if ($entry->getUrl() === $url) {
                 return $entry;
             }
@@ -143,10 +168,10 @@ abstract class Menu extends Widget
      *
      * @param MenuEntry $entry
      */
-    public function setEntryActive($entry)
+    public function setEntryActive(MenuEntry $entry)
     {
-        foreach ($this->entries as $e) {
-            $e->setIsActive(($entry->getUrl() === $e->getUrl()));
+        foreach ($this->entries as $currentEntry) {
+            $currentEntry->setIsActive(($currentEntry->compare($entry)));
         }
     }
 
@@ -157,12 +182,12 @@ abstract class Menu extends Widget
      */
 
     /**
-     * @deprecated
+     * @deprecated since 1.4
      * @param array $entryArray
      */
     public function addItem($entryArray)
     {
-        $entry = MenuEntry::createByArray($entryArray);
+        $entry = MenuLink::createByArray($entryArray);
         $this->addEntry($entry);
     }
 
@@ -176,7 +201,7 @@ abstract class Menu extends Widget
     }
 
     /**
-     * @deprecated
+     * @deprecated since 1.4
      * @return array the item group
      */
     public function getItemGroups()
@@ -187,20 +212,52 @@ abstract class Menu extends Widget
     }
 
     /**
-     * @deprecated
+     * @deprecated since 1.4
      * @return array the menu items as array list
      */
     public function getItems($group = '')
     {
         $items = [];
         foreach ($this->entries as $entry) {
-            $items[] = $entry->toArray();
+            if($entry instanceof MenuLink) {
+                $items[] = $entry->toArray();
+            }
         }
         return $items;
     }
 
     /**
-     * @deprecated
+     * Returns all entries filtered by $type. If no $type filter is given all entries
+     * are returned.
+     *
+     * @param null|string $type
+     * @return MenuEntry[]
+     */
+    public function getEntries($type = null)
+    {
+        $result = [];
+        foreach ($this->entries as $entry) {
+            if(!$type || get_class($entry) === $type || is_subclass_of($entry, $type)) {
+                $result[] = $entry;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Checks if this menu contains multiple entries of the given $type, or at all if no $type filter is given.
+     *
+     * @param null $type
+     * @return bool
+     */
+    public function hasMultipleEntries($type = null)
+    {
+        return count($this->getEntries($type)) > 1;
+    }
+
+    /**
+     * @deprecated since 1.4
      */
     public function setActive($url)
     {
@@ -211,7 +268,7 @@ abstract class Menu extends Widget
     }
 
     /**
-     * @deprecated
+     * @deprecated since 1.4
      */
     public function setInactive($url)
     {
@@ -222,7 +279,7 @@ abstract class Menu extends Widget
     }
 
     /**
-     * @deprecated
+     * @deprecated since 1.4
      */
     public static function markAsActive($url)
     {
@@ -232,7 +289,7 @@ abstract class Menu extends Widget
     }
 
     /**
-     * @deprecated
+     * @deprecated since 1.4
      */
     public static function markAsInactive($url)
     {
@@ -242,19 +299,21 @@ abstract class Menu extends Widget
     }
 
     /**
-     * @deprecated
+     * @deprecated since 1.4
      * @return array the menu entry as array
      */
     public function getActive()
     {
-        $entry = $this->getActiveEntry();
-        if ($entry) {
-            return $entry->toArray();
+        $activeEntry = $this->getActiveEntry();
+        if ($activeEntry && $activeEntry instanceof MenuLink) {
+            return $activeEntry->toArray();
         }
+
+        return null;
     }
 
     /**
-     * @deprecated
+     * @deprecated since 1.4
      * @param $url string the URL or route
      */
     public function deleteItemByUrl($url)
@@ -266,7 +325,7 @@ abstract class Menu extends Widget
     }
 
     /**
-     * @deprecated
+     * @deprecated since 1.4
      */
     public static function setViewState()
     {

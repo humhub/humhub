@@ -9,6 +9,7 @@
 namespace humhub\modules\space\modules\manage\widgets;
 
 use Yii;
+use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
 
 /**
@@ -29,19 +30,19 @@ class DefaultMenu extends TabMenu
      */
     public function init()
     {
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.manage', 'Basic'),
             'url' => $this->space->createUrl('/space/manage/default/index'),
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->id == 'default' && Yii::$app->controller->action->id == 'index'),
-        ]);
+            'isActive' => MenuLink::isActiveState(null, 'default', 'index')
+        ]));
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.manage', 'Advanced'),
             'url' => $this->space->createUrl('/space/manage/default/advanced'),
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->id == 'default' && Yii::$app->controller->action->id == 'advanced'),
-        ]);
+            'isActive' => MenuLink::isActiveState(null, 'default', 'advanced')
+        ]));
 
         parent::init();
     }

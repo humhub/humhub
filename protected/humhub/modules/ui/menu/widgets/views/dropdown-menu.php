@@ -1,11 +1,14 @@
 <?php
 
+use humhub\libs\Html;
+
 /* @var $this \humhub\components\View */
-/* @var $menu \humhub\modules\ui\menu\widgets\DropDownMenu */
+/* @var $menu \humhub\modules\ui\menu\widgets\DropdownMenu */
 /* @var $entries \humhub\modules\ui\menu\MenuEntry[] */
+/* @var $options [] */
 ?>
 
-<div class="btn-group dropdown-navigation">
+<?= Html::beginTag('div', $options)?>
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="true">
 
@@ -16,8 +19,8 @@
     <ul class="dropdown-menu pull-right">
         <?php foreach ($entries as $entry) : ?>
             <li>
-                <?= $entry->renderLinkTag() ?>
+                <?= $entry->render() ?>
             </li>
         <?php endforeach; ?>
     </ul>
-</div>
+<?= Html::endTag('div')?>

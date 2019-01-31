@@ -8,41 +8,25 @@
 
 namespace humhub\modules\ui\menu;
 
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\ui\menu\widgets\Menu;
+use Yii;
 use yii\base\BaseObject;
 use yii\bootstrap\Html;
-use yii\helpers\Url;
 
 /**
  * Class MenuEntry
  *
- * A menu entry represents a link inside a navigation.
+ * An abstract menu entry class. Subclasses need to extend the [[render()]] function.
  *
  * @since 1.4
  * @see Menu
- * @package humhub\modules\ui\widgets
  */
-class MenuEntry extends BaseObject
+abstract class MenuEntry extends BaseObject
 {
     /**
-     * @var string the label of the menu entry
+     * @var string menu entry identifier (optional)
      */
-    protected $label;
-
-    /**
-     * @var string|array the url or route
-     */
-    protected $url;
-
-    /**
-     * @var bool mark this entry as active
-     */
-    protected $isActive = false;
-
-    /**
-     * @var Icon the icon
-     */
-    protected $icon;
+    protected $id;
 
     /**
      * @var int the sort order
@@ -50,19 +34,9 @@ class MenuEntry extends BaseObject
     protected $sortOrder;
 
     /**
-     * @var string menu entry identifier (optional)
-     */
-    protected $id;
-
-    /**
      * @var array additional html options for the link HTML tag
      */
     protected $htmlOptions = [];
-
-    /**
-     * @var bool use PJAX link if possible
-     */
-    protected $pjaxEnabled = true;
 
     /**
      * @var bool
@@ -70,81 +44,24 @@ class MenuEntry extends BaseObject
     protected $isVisible = true;
 
     /**
-     * @var string optional badge (e.g. new item count) not supported by all templates
+     * @var bool mark this entry as active
      */
-    protected $badgeText;
+    protected $isActive = false;
 
     /**
-     * Renders the link tag for this menu entry
+     * Renders the entry html, this function should respect [[htmlOptions]] array by calling [[getHtmlOptions()]] and passing
+     * the $extraHtmlOptions array as for example:
      *
-     * @param $htmlOptions array additional html options for the link tag
+     * ```php
+     *
+     * return Html::a($label, $url, $this->getHtmlOptions($extraHtmlOptions));
+     *
+     * ```
+     *
+     * @param array $extraHtmlOptions
      * @return string the Html link
      */
-    public function renderLinkTag($htmlOptions = [])
-    {
-        return Html::a(
-            $this->getIcon() . ' ' . $this->getLabel(),
-            $this->getUrl(),
-            $this->getHtmlOptions($htmlOptions)
-        );
-    }
-
-    /**
-     * @param $label string the label
-     */
-    public function setLabel($label)
-    {
-        $this->label = $label;
-    }
-
-    /**
-     * @return string the label
-     */
-    public function getLabel()
-    {
-        return $this->label;
-    }
-
-    /**
-     * @return Icon the icon
-     */
-    public function getIcon()
-    {
-        return $this->icon;
-    }
-
-    /**
-     * @param $icon Icon|string the icon instance or icon name
-     */
-    public function setIcon($icon)
-    {
-        $this->icon = Icon::get($icon);
-    }
-
-    /**
-     * Sets the URL
-     *
-     * @param $url array|string
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-    }
-
-    /**
-     * Returns the URL
-     *
-     * @param bool $asString return the URL as string
-     * @return array|string
-     */
-    public function getUrl($asString = true)
-    {
-        if ($asString) {
-            return Url::to($this->url);
-        }
-
-        return $this->url;
-    }
+    abstract public function render($extraHtmlOptions = []);
 
     /**
      * @return boolean is active
@@ -164,18 +81,66 @@ class MenuEntry extends BaseObject
 
     /**
      * @param $state boolean
+     * @return static
      */
     public function setIsActive($state)
     {
         $this->isActive = $state;
+        return $this;
     }
 
     /**
+     * Activates this MenuEntry in case the given moduleId, controllerId and actionId matches the current request.
+     * @param string $moduleId controller module id
+     * @param array|string $controllerIds controller id
+     * @param array|string $actionIds action id
+     * @return static
+     */
+    public function setIsActiveState($moduleId, $controllerIds = [], $actionIds = [])
+    {
+
+        $this->isActive = static::isActiveState($moduleId,$controllerIds,$actionIds);
+        return $this;
+    }
+
+    public static function isActiveState($moduleId = null, $controllerIds = [], $actionIds = [])
+    {
+         if($moduleId && (!Yii::$app->controller->module || Yii::$app->controller->module->id !== $moduleId)) {
+            return false;
+        }
+
+        if(empty($controllerIds) && empty($actionIds)) {
+            return true;
+        }
+
+        if($controllerIds && !is_array($controllerIds)) {
+            $controllerIds = [$controllerIds];
+        }
+
+        if(!empty($controllerIds) && !in_array(Yii::$app->controller->id, $controllerIds)) {
+            return false;
+        }
+
+        if($actionIds && !is_array($actionIds)) {
+            $actionIds = [$actionIds];
+        }
+
+        if(!empty($actionIds) && !in_array(Yii::$app->controller->action->id, $actionIds)) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
      * @param $id string the id
+     * @return static
      */
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -187,50 +152,47 @@ class MenuEntry extends BaseObject
     }
 
     /**
+     * Compares this entry with the given entry
+     * @param MenuEntry $entry
+     * @return bool
+     */
+    public function compare(MenuEntry $entry)
+    {
+        return !empty($this->getId()) && $this->getId() === $entry->getId();
+    }
+
+    /**
      * Returns the Html options for the menu entry link tag.
      *
-     * @param $extraOptions array additional options to merge
      * @return array
      */
     public function getHtmlOptions($extraOptions = [])
     {
         $options = $this->htmlOptions;
 
-        if (isset($extraOptions['class']) && isset($options['class'])) {
+        if(isset($extraOptions['class'])) {
             Html::addCssClass($options, $extraOptions['class']);
-        } elseif (isset($extraOptions['class'])) {
-            $options['class'] = $extraOptions['class'];
+        }
+
+        if(isset($extraOptions['style'])) {
+            Html::addCssStyle($options, $extraOptions['style']);
         }
 
         if ($this->isActive) {
             Html::addCssClass($options, 'active');
         }
 
-        return $options;
+        return array_merge($extraOptions, $options);
     }
 
     /**
      * @param array $htmlOptions
+     * @return static
      */
     public function setHtmlOptions($htmlOptions)
     {
         $this->htmlOptions = $htmlOptions;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPjaxEnabled()
-    {
-        return $this->pjaxEnabled;
-    }
-
-    /**
-     * @param bool $pjaxEnabled
-     */
-    public function setPjaxEnabled($pjaxEnabled)
-    {
-        $this->pjaxEnabled = $pjaxEnabled;
+        return $this;
     }
 
     /**
@@ -243,26 +205,12 @@ class MenuEntry extends BaseObject
 
     /**
      * @param bool $isVisible
+     * @return static
      */
     public function setIsVisible($isVisible)
     {
         $this->isVisible = $isVisible;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBadgeText()
-    {
-        return $this->badgeText;
-    }
-
-    /**
-     * @param string $badgeText
-     */
-    public function setBadgeText($badgeText)
-    {
-        $this->badgeText = $badgeText;
+        return $this;
     }
 
     /**
@@ -275,75 +223,11 @@ class MenuEntry extends BaseObject
 
     /**
      * @param int $sortOrder
+     * @return static
      */
     public function setSortOrder($sortOrder)
     {
         $this->sortOrder = $sortOrder;
+        return $this;
     }
-
-    /**
-     * Creates MenuEntry by old and deprecated array structure
-     *
-     * @deprecated since 1.4
-     * @param $item
-     * @return MenuEntry
-     */
-    public static function createByArray($item)
-    {
-        $entry = new static;
-
-        if (isset($item['id'])) {
-            $entry->id = $item['id'];
-        }
-
-        if (isset($item['label'])) {
-            $entry->label = $item['label'];
-        }
-
-        if (isset($item['icon'])) {
-            $entry->icon = $item['icon'];
-        }
-
-        if (isset($item['url'])) {
-            $entry->url = $item['url'];
-        }
-
-        if (isset($item['sortOrder'])) {
-            $entry->sortOrder = $item['sortOrder'];
-        }
-
-        if (isset($item['isActive'])) {
-            $entry->isActive = $item['isActive'];
-        }
-
-        if (isset($item['htmlOptions'])) {
-            $entry->isActive = $item['htmlOptions'];
-        }
-
-        return $entry;
-    }
-
-    /**
-     * Returns the MenuEntry as array structure
-     *
-     * @deprecated since 1.4
-     * @return array the menu entry array representation
-     */
-    public function toArray()
-    {
-        if (!isset($this->htmlOptions['class'])) {
-            $this->htmlOptions['class'] = '';
-        }
-
-        return [
-            'label' => $this->label,
-            'id' => $this->id,
-            'icon' => $this->icon,
-            'url' => $this->url,
-            'sortOrder' => $this->sortOrder,
-            'isActive' => $this->isActive,
-            'htmlOptions' => $this->htmlOptions
-        ];
-    }
-
 }

@@ -14,7 +14,7 @@ namespace humhub\modules\ui\menu\widgets;
  * @sicne 1.4
  * @package humhub\modules\ui\menu\widgets
  */
-abstract class SubTabMenu extends Menu
+abstract class SubTabMenu extends TabMenu
 {
     /**
      * @var string the title of the panel
@@ -25,5 +25,15 @@ abstract class SubTabMenu extends Menu
      * @inheritdoc
      */
     public $template = '@ui/menu/widgets/views/sub-tab-menu.php';
+
+    /**
+     * @inheritdoc
+     */
+    public function getAttributes()
+    {
+        return [
+            'class' => 'nav nav-tabs tab-sub-menu'
+        ];
+    }
 
 }

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\SubTabMenu;
 use Yii;
 use yii\helpers\Url;
@@ -23,18 +24,19 @@ class AuthenticationMenu extends SubTabMenu
      */
     public function init()
     {
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.setting', 'General'),
-            'url' => Url::toRoute(['/admin/authentication']),
+            'url' => ['/admin/authentication'],
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'authentication' && Yii::$app->controller->action->id == 'index'),
-        ]);
-        $this->addItem([
+            'isActive' => MenuLink::isActiveState('admin', 'authentication', 'index'),
+        ]));
+
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.setting', "LDAP"),
-            'url' => Url::toRoute(['/admin/authentication/authentication-ldap']),
+            'url' => ['/admin/authentication/authentication-ldap'],
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'authentication' && Yii::$app->controller->action->id == 'authentication-ldap'),
-        ]);
+            'isActive' => MenuLink::isActiveState('admin', 'authentication', 'authentication-ldap'),
+        ]));
 
         parent::init();
     }

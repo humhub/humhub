@@ -1,16 +1,19 @@
 <?php
 
+use humhub\libs\Html;
+
 /* @var $this \humhub\components\View */
-/* @var $menu \humhub\modules\ui\menu\widgets\TabMenu */
+/* @var $menu \humhub\modules\ui\menu\widgets\DropdownMenu */
 /* @var $entries \humhub\modules\ui\menu\MenuEntry[] */
+/* @var $options [] */
 ?>
 
-<div class="tab-menu">
+<?= Html::beginTag('div', $options)?>
     <ul class="nav nav-tabs">
         <?php foreach ($entries as $entry): ?>
             <li <?php if ($entry->getIsActive()): ?>class="active"<?php endif; ?>>
-                <?= $entry->renderLinkTag() ?>
+                <?= $entry->render() ?>
             </li>
         <?php endforeach; ?>
     </ul>
-</div>
+<?= Html::endTag('div')?>

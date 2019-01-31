@@ -1,14 +1,17 @@
 <?php
 
+use humhub\libs\Html;
+
 /* @var $this \humhub\components\View */
-/* @var $menu \humhub\modules\ui\menu\widgets\SubTabMenu */
+/* @var $menu \humhub\modules\ui\menu\widgets\DropdownMenu */
 /* @var $entries \humhub\modules\ui\menu\MenuEntry[] */
+/* @var $options [] */
 ?>
 
-<ul id="tabs" class="nav nav-tabs tab-sub-menu">
+<?= Html::beginTag('ul', $options)?>
     <?php foreach ($entries as $entry): ?>
-        <li>
-            <?= $entry->renderLinkTag() ?>
+        <li <?php if ($entry->getIsActive()): ?>class="active"<?php endif; ?>>
+            <?= $entry->render() ?>
         </li>
     <?php endforeach; ?>
-</ul>
+<?= Html::endTag('ul')?>

@@ -8,10 +8,15 @@
 
 namespace humhub\modules\admin\widgets;
 
-use humhub\modules\ui\icon\widgets\Icon;
-use humhub\modules\ui\menu\MenuEntry;
-use humhub\modules\ui\menu\widgets\LeftNavigation;
 use Yii;
+use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\admin\permissions\ManageSpaces;
+use humhub\modules\admin\permissions\SeeAdminInformation;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\LeftNavigation;
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\admin\permissions\ManageGroups;
 
 /**
  * AdminMenu
@@ -33,57 +38,57 @@ class AdminMenu extends LeftNavigation
     {
         $this->panelTitle = Yii::t('AdminModule.widgets_AdminMenuWidget', '<strong>Administration</strong> menu');
 
-        $entry = new MenuEntry();
-        $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Users'));
-        $entry->setUrl(['/admin/user']);
-        $entry->setIcon('user');
-        $entry->setSortOrder(200);
-        $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && (Yii::$app->controller->id == 'user' || Yii::$app->controller->id == 'group' || Yii::$app->controller->id == 'approval' || Yii::$app->controller->id == 'authentication' || Yii::$app->controller->id == 'user-profile' || Yii::$app->controller->id == 'pending-registrations')));
-        $entry->setIsVisible(Yii::$app->user->can([
-            new \humhub\modules\admin\permissions\ManageUsers(),
-            new \humhub\modules\admin\permissions\ManageSettings(),
-            new \humhub\modules\admin\permissions\ManageGroups()
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Users'),
+            'url' => ['/admin/user'],
+            'icon' => 'user',
+            'sortOrder' => 200,
+            'isActive' => MenuLink::isActiveState('admin', ['user', 'group', 'approval', 'authentication', 'user-profile', 'pending-registrations']),
+            'isVisible' => Yii::$app->user->can([
+                ManageUsers::class,
+                ManageSettings::class,
+                ManageGroups::class
+            ])
         ]));
-        $this->addEntry($entry);
 
-        $entry = new MenuEntry();
-        $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Spaces'));
-        $entry->setUrl(['/admin/space']);
-        $entry->setIcon('inbox');
-        $entry->setSortOrder(400);
-        $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'space'));
-        $entry->setIsVisible(Yii::$app->user->can([
-            new \humhub\modules\admin\permissions\ManageSpaces(),
-            new \humhub\modules\admin\permissions\ManageSettings(),
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Spaces'),
+            'url' => ['/admin/space'],
+            'icon' => 'inbox',
+            'sortOrder' => 400,
+            'isActive' => MenuLink::isActiveState('admin', 'space'),
+            'isVisible' => Yii::$app->user->can([
+                ManageSpaces::class,
+                ManageSettings::class
+            ])
         ]));
-        $this->addEntry($entry);
 
-        $entry = new MenuEntry();
-        $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Modules'));
-        $entry->setUrl(['/admin/module']);
-        $entry->setIcon('rocket');
-        $entry->setSortOrder(500);
-        $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'module'));
-        $entry->setIsVisible(Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageModules()));
-        $this->addEntry($entry);
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Modules'),
+            'url' => ['/admin/module'],
+            'icon' => 'rocket',
+            'sortOrder' => 500,
+            'isActive' => MenuLink::isActiveState('admin', 'module'),
+            'isVisible' => Yii::$app->user->can(ManageModules::class)
+        ]));
 
-        $entry = new MenuEntry();
-        $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Settings'));
-        $entry->setUrl(['/admin/setting']);
-        $entry->setIcon('gears');
-        $entry->setSortOrder(600);
-        $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'setting'));
-        $entry->setIsVisible(Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageSettings()));
-        $this->addEntry($entry);
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Settings'),
+            'url' => ['/admin/setting'],
+            'icon' => 'gears',
+            'sortOrder' => 600,
+            'isActive' => MenuLink::isActiveState('admin', 'setting'),
+            'isVisible' => Yii::$app->user->can(ManageSettings::class)
+        ]));
 
-        $entry = new MenuEntry();
-        $entry->setLabel(Yii::t('AdminModule.widgets_AdminMenuWidget', 'Information'));
-        $entry->setUrl(['/admin/information']);
-        $entry->setIcon('info-circle');
-        $entry->setSortOrder(1000);
-        $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'information'));
-        $entry->setIsVisible(Yii::$app->user->can(new \humhub\modules\admin\permissions\SeeAdminInformation()));
-        $this->addEntry($entry);
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Information'),
+            'url' => ['/admin/information'],
+            'icon' => 'info-circle',
+            'sortOrder' => 1000,
+            'isActive' => MenuLink::isActiveState('admin', 'information'),
+            'isVisible' => Yii::$app->user->can(SeeAdminInformation::class)
+        ]));
 
         parent::init();
     }

@@ -8,9 +8,9 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\modules\ui\menu\widgets\TabMenu;
 use Yii;
-use yii\helpers\Url;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\TabMenu;
 
 /**
  * Account Settings Tab Menu
@@ -23,39 +23,36 @@ class AccountProfilMenu extends TabMenu
      */
     public function init()
     {
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.base', 'General'),
-            'url' => Url::toRoute(['/user/account/edit']),
+            'url' => ['/user/account/edit'],
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'edit'),
-        ]);
+            'isActive' => MenuLink::isActiveState('user', 'account', 'edit')
+        ]));
 
-        if (Yii::$app->user->canChangeEmail()) {
-            $this->addItem([
-                'label' => Yii::t('UserModule.base', 'Change Email'),
-                'url' => Url::toRoute(['/user/account/change-email']),
-                'sortOrder' => 200,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && (Yii::$app->controller->action->id == 'change-email' || Yii::$app->controller->action->id == 'change-email-validate')),
-            ]);
-        }
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('UserModule.base', 'Change Email'),
+            'url' => ['/user/account/change-email'],
+            'sortOrder' => 200,
+            'isActive' => MenuLink::isActiveState('user', 'account', ['change-email', 'change-email-validate']),
+            'isVisible' => Yii::$app->user->canChangeEmail()
+        ]));
 
-        if (Yii::$app->user->canChangePassword()) {
-            $this->addItem([
-                'label' => Yii::t('UserModule.base', 'Change Password'),
-                'url' => Url::toRoute(['/user/account/change-password']),
-                'sortOrder' => 300,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'change-password'),
-            ]);
-        }
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('UserModule.base', 'Change Password'),
+            'url' => ['/user/account/change-password'],
+            'sortOrder' => 300,
+            'isActive' => MenuLink::isActiveState('user', 'account', 'change-password'),
+            'isVisible' => Yii::$app->user->canChangePassword()
+        ]));
 
-        if (Yii::$app->user->canDeleteAccount()) {
-            $this->addItem([
-                'label' => Yii::t('UserModule.base', 'Delete Account'),
-                'url' => Url::toRoute(['/user/account/delete']),
-                'sortOrder' => 400,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'delete'),
-            ]);
-        }
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('UserModule.base', 'Delete Account'),
+            'url' => ['/user/account/delete'],
+            'sortOrder' => 400,
+            'isActive' => MenuLink::isActiveState('user', 'account', 'delete'),
+            'isVisible' => Yii::$app->user->canDeleteAccount()
+        ]));
 
         parent::init();
     }

@@ -8,9 +8,9 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\modules\ui\menu\widgets\TabMenu;
 use Yii;
-use yii\helpers\Url;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\TabMenu;
 
 /**
  * Account Settings Tab Menu
@@ -20,25 +20,26 @@ class AccountSettingsMenu extends TabMenu
 
     /**
      * @inheritdoc
+     * @throws \yii\base\InvalidConfigException
      */
     public function init()
     {
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.base', 'Basic Settings'),
-            'url' => Url::toRoute(['/user/account/edit-settings']),
+            'url' => ['/user/account/edit-settings'],
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'edit-settings'),
-        ]);
+            'isActive' => MenuLink::isActiveState('user', 'account', 'edit-settings')
+        ]));
 
-        if (count($this->getSecondaryAuthProviders()) != 0) {
-            $this->addItem([
-                'label' => Yii::t('UserModule.base', 'Connected Accounts'),
-                'url' => Url::toRoute(['/user/account/connected-accounts']),
-                'sortOrder' => 300,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'connected-accounts'),
-            ]);
-        }
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('UserModule.base', 'Connected Accounts'),
+            'url' => ['/user/account/connected-accounts'],
+            'sortOrder' => 300,
+            'isActive' => MenuLink::isActiveState('user', 'account', 'connected-accounts'),
+            'isVisible' => count($this->getSecondaryAuthProviders()) !== 0
+        ]));
+
 
         parent::init();
     }

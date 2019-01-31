@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\SubTabMenu;
 use Yii;
 use yii\helpers\Url;
@@ -17,19 +18,17 @@ use yii\helpers\Url;
  */
 class GroupMenu extends SubTabMenu
 {
-
     /**
      * @inheritdoc
      */
     public function init()
     {
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.views_user_index', 'Overview'),
-            'url' => Url::toRoute(['/admin/group/index']),
+            'url' => ['/admin/group/index'],
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group' && Yii::$app->controller->action->id == 'index'),
-        ]);
-
+            'isActive' => MenuLink::isActiveState('admin', 'group', 'index'),
+        ]));
         parent::init();
     }
 

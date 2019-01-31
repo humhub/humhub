@@ -8,7 +8,7 @@
 
 namespace humhub\modules\dashboard;
 
-use humhub\modules\ui\menu\MenuEntry;
+use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\TopMenu;
 use Yii;
 use yii\base\Event;
@@ -32,16 +32,14 @@ class Events
         /** @var TopMenu $topMenu */
         $topMenu = $event->sender;
 
-        $entry = new MenuEntry();
-
-        $entry->setId('dashboard');
-        $entry->setLabel(Yii::t('DashboardModule.base', 'Dashboard'));
-        $entry->setUrl(['/dashboard/dashboard']);
-        $entry->setIcon('tachometer');
-        $entry->setSortOrder(100);
-        $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id === 'dashboard'));
-
-        $topMenu->addEntry($entry);
+        $topMenu->addEntry(new MenuLink([
+            'id' => 'dashboard',
+            'label' => Yii::t('DashboardModule.base', 'Dashboard'),
+            'url' => ['/dashboard/dashboard'],
+            'icon' => 'tachometer',
+            'sortOrder' => 100,
+            'isActive' => MenuLink::isActiveState('dashboard')
+        ]));
     }
 
 }

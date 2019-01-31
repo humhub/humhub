@@ -15,7 +15,7 @@
     "require": {
         "php": ">=5.6.0",
         "npm-asset/animate.css": "*",
-	"npm-asset/jquery-autosize": "1.*",
+        "npm-asset/jquery-autosize": "1.*",
         "npm-asset/bluebird": "^3.3.5",
         "npm-asset/blueimp-file-upload": "9.24.*",
         "npm-asset/bootstrap-markdown": "2.10.*",

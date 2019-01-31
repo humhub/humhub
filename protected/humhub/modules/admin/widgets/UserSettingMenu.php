@@ -8,9 +8,9 @@
 
 namespace humhub\modules\admin\widgets;
 
-use humhub\modules\ui\menu\widgets\TabMenu;
 use Yii;
-use yii\helpers\Url;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\TabMenu;
 
 /**
  * User Administration Menu
@@ -25,18 +25,19 @@ class UserSettingMenu extends TabMenu
      */
     public function init()
     {
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.views_setting_authentication', 'General'),
-            'url' => Url::toRoute(['/admin/setting/authentication']),
+            'url' => ['/admin/setting/authentication'],
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'settings' && Yii::$app->controller->action->id == 'authentication'),
-        ]);
-        $this->addItem([
+            'isActive' => MenuLink::isActiveState('admin', 'settings', 'authentication'),
+        ]));
+
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.views_setting_authentication', 'LDAP'),
-            'url' => Url::toRoute(['/admin/setting/authentication-ldap']),
+            'url' => ['/admin/setting/authentication-ldap'],
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'settings' && Yii::$app->controller->action->id == 'authentication-ldap'),
-        ]);
+            'isActive' => MenuLink::isActiveState('admin', 'settings', 'authentication-ldap'),
+        ]));
 
         parent::init();
     }

@@ -9,7 +9,7 @@ use yii\helpers\Html;
 
 <?php foreach ($entries as $entry) : ?>
     <li class="visible-md visible-lg <?php if ($entry->getIsActive()): ?>active<?php endif; ?>">
-        <?= Html::a($entry->getIcon() . "<br />" . $entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions()); ?>
+        <?= Html::a($entry->getIcon() . '<br />' . $entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions()); ?>
     </li>
 <?php endforeach; ?>
 
@@ -22,7 +22,7 @@ use yii\helpers\Html;
     <ul class="dropdown-menu">
         <?php foreach ($entries as $entry) : ?>
             <li class="<?php if ($entry->getIsActive()): ?>active<?php endif; ?>">
-                <?= $entry->renderLinkTag(); ?>
+                <?= $entry->render(); ?>
             </li>
         <?php endforeach; ?>
     </ul>

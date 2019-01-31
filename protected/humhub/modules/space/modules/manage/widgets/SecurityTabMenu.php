@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
+use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
 use Yii;
 
@@ -29,19 +30,19 @@ class SecurityTabMenu extends TabMenu
      */
     public function init()
     {
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.manage', 'General'),
             'url' => $this->space->createUrl('/space/manage/security'),
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->id == 'security' && Yii::$app->controller->action->id == 'index'),
-        ]);
+            'isActive' => MenuLink::isActiveState(null, 'security', 'index'),
+        ]));
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.manage', 'Permissions'),
             'url' => $this->space->createUrl('/space/manage/security/permissions'),
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->id == 'security' && Yii::$app->controller->action->id == 'permissions'),
-        ]);
+            'isActive' => MenuLink::isActiveState(null, 'security', 'permissions'),
+        ]));
 
         parent::init();
     }

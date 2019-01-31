@@ -9,6 +9,7 @@
 namespace humhub\modules\space\modules\manage\widgets;
 
 use Yii;
+use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\modules\ui\menu\widgets\TabMenu;
@@ -31,37 +32,37 @@ class MemberMenu extends TabMenu
     public function init()
     {
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Members'),
             'url' => $this->space->createUrl('/space/manage/member/index'),
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->action->id == 'index' && Yii::$app->controller->id === 'member'),
-        ]);
+            'isActive' => MenuLink::isActiveState(null, 'member', 'index')
+        ]));
 
         if ($this->countPendingInvites() != 0) {
-            $this->addItem([
+            $this->addEntry(new MenuLink([
                 'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Pending Invites') . '&nbsp;&nbsp;<span class="label label-danger">' . $this->countPendingInvites() . '</span>',
                 'url' => $this->space->createUrl('/space/manage/member/pending-invitations'),
                 'sortOrder' => 200,
-                'isActive' => (Yii::$app->controller->action->id == 'pending-invitations'),
-            ]);
+                'isActive' => MenuLink::isActiveState(null, 'member', 'pending-invitations')
+            ]));
         }
         if ($this->countPendingApprovals() != 0) {
-            $this->addItem([
+            $this->addEntry(new MenuLink([
                 'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Pending Approvals') . '&nbsp;&nbsp;<span class="label label-danger">' . $this->countPendingApprovals() . '</span>',
                 'url' => $this->space->createUrl('/space/manage/member/pending-approvals'),
                 'sortOrder' => 300,
-                'isActive' => (Yii::$app->controller->action->id == 'pending-approvals'),
-            ]);
+                'isActive' => MenuLink::isActiveState(null, 'member', 'pending-approvals')
+            ]));
         }
 
         if ($this->space->isSpaceOwner()) {
-            $this->addItem([
+            $this->addEntry(new MenuLink([
                 'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Owner'),
                 'url' => $this->space->createUrl('/space/manage/member/change-owner'),
                 'sortOrder' => 500,
-                'isActive' => (Yii::$app->controller->action->id == 'change-owner'),
-            ]);
+                'isActive' => MenuLink::isActiveState(null, 'member', 'change-owner')
+            ]));
         }
 
 

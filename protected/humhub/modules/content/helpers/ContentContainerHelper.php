@@ -20,13 +20,14 @@ use humhub\modules\content\components\ContentContainerController;
 class ContentContainerHelper
 {
     /**
+     * @param string|null $type type filter available since 1.4
      * @return ContentContainerActiveRecord|null currently active container from app context.
      */
-    public static function getCurrent()
+    public static function getCurrent($type = null)
     {
         $controller = Yii::$app->controller;
         if($controller instanceof ContentContainerController) {
-            return $controller->contentContainer;
+            return (!$type || get_class($controller->contentContainer) === $type) ? $controller->contentContainer : null;
         }
 
         return null;
