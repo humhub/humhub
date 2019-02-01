@@ -44,6 +44,10 @@ The asynchronous job-runner can also be executed manually as follows:
 
 > Note: If you're on a **shared hosting environment**, you may need to add the `--isolate=0` option to the `queue/run`. e.g. `/usr/bin/php /path/to/humhub/protected/yii queue/run --isolate=0`
 
+If your environment provides a command-line specific build of `php`, often called `php-cli`, you may want to use that instead of `php` as it will have a cleaner output. On some hosts, the `php` command might be setup to discard the command-line parameters to console, in which case you must use `php-cli` to make the cron jobs work.
+
+To assist in troubleshooting cron issues, you can pipe the output of each cron job to a specific file by adding something like `>/path/to/file.log 2>&1` at the end of the cron job instead of `>/dev/null 2>&1`. Then you can look at the contents of the file to see what was printed. If an error is occurring when running the cron job, you will see it there, otherwise the file will be empty or have some stats. The modification time of the file informs you of the last time the cron job ran. You can thus use this to figure out whether or not the cron job is running successfully and on schedule.
+
 **Example CronTab configuration:**
 
 These Cronjobs can be run together if you're **not** using any other job-runner _(like Supervisor or Systemd)_:
