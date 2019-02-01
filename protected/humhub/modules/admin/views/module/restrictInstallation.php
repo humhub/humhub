@@ -17,18 +17,20 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <div class="radio">
-                        <label>
-                            <?= $form->checkBox($model, 'onlyForSpaces'); ?>
-                            <?= Yii::t('AdminModule.views_module_restrictInstallation', 'Only for spaces'); ?>
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <?= $form->checkBox($model, 'onlyForProfiles'); ?>
-                            <?= Yii::t('AdminModule.views_module_restrictInstallation', 'Only for profiles'); ?>
-                        </label>
-                    </div>
+                    <?php if (! $adminOnly) : ?>
+                        <div class="radio">
+                            <label>
+                                <?= $form->checkBox($model, 'onlyForSpaces'); ?>
+                                <?= Yii::t('AdminModule.views_module_restrictInstallation', 'Only for spaces'); ?>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <?= $form->checkBox($model, 'onlyForProfiles'); ?>
+                                <?= Yii::t('AdminModule.views_module_restrictInstallation', 'Only for profiles'); ?>
+                            </label>
+                        </div>
+                    <?php endif; ?>
                     <div class="radio">
                         <label>
                             <?= $form->checkBox($model, 'onlyForAdmins'); ?>

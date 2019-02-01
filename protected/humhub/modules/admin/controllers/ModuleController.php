@@ -357,13 +357,17 @@ class ModuleController extends Controller
 
         $model = new ModuleRestrictInstallationForm();
         $model->initFormData($module);
-
+        if (! $module instanceof ContentContainerModule) {
+            $adminOnly = true;
+        } else {
+            $adminOnly = ! ($module->hasContentContainerType(Space::class) && $module->hasContentContainerType(User::class));
+        }
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->saveFormData($module);
             return $this->renderModalClose();
         }
 
-        return $this->renderAjax('restrictInstallation', ['module' => $module, 'model' => $model]);
+        return $this->renderAjax('restrictInstallation', ['module' => $module, 'model' => $model, 'adminOnly' => $adminOnly]);
     }
 
     public function getOnlineModuleManager()
