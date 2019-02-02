@@ -20,3 +20,4 @@ HumHub Change Log (DEVELOP)
 - Enh: Added Icon abstraction `humhub\modules\ui\icon\widgets\Icon`
 - Enh: Added `humhub\libs\Html::addPjaxPrevention()` for link options
 - Enh: Added obj support for `humhub\libs\Sort`
+- Enh: Reorganized WallEntry context menu
