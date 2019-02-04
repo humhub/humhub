@@ -49,11 +49,6 @@ class BaseImage extends Widget
     public $imageOptions = [];
 
     /**
-     * @var int number of characters used in the acronym (for spaces only)
-     */
-    public $acronymCount = 2;
-
-    /**
      * @inheritdoc
      */
     public function init()

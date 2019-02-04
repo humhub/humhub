@@ -14,12 +14,18 @@ class ContainerImageSet extends BaseImage
     /**
      * @var int the width of the hidden image
      */
-    public $hiddenImageWidth = 50;
+    public $hiddenImageWidth = 24;
 
     /**
      * @var int the height of the hidden image
      */
     public $hiddenImageHeight = null;
+
+    /**
+     * @var int number of characters used in the acronym (for spaces only)
+     */
+    public $acronymCount = 2;
+
 
     public function init()
     {

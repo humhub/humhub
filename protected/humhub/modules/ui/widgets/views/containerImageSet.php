@@ -15,53 +15,52 @@ humhub\modules\ui\assets\UiImageSetAsset::register($this);
             if ($item instanceof Space) {
                 echo SpaceImage::widget(array_merge($options, ['space' => $item]));
             } else if ($item instanceof User) {
+                unset($options['acronymCount']);
                 echo UserImage::widget(array_merge($options, ['user' => $item]));
             }
         }
         ?>
-    </div>
-
-    <?php
-        if (count($hiddenItems) > 0) {
-            $top = $options['height'] * 0.5 - 10;
-            $right = $options['width'] * 0.5 - 10;
-    ?>
-            <span class="ui-imageset-show-more tt" style="top: <?= $top ?>px; right: <?= $right ?>px;" data-toggle="tooltip" data-placement="top" data-original-title="Show more">+</span>
-
+        <?php if (count($hiddenItems) > 0) : ?>
+            <div class="ui-imageset-show-more tt img-rounded"
+                 style="width: <?= $options['width'] ?>px; height: <?= $options['height'] ?>px;"
+                 data-toggle="tooltip"
+                 data-placement="top"
+                 data-original-title="Show more"
+            ><?= count($hiddenItems) ?>+
+            </div>
             <div class="ui-imageset-hidden-items">
-            <?php
-            foreach ($hiddenItems as $item) {
-                ?>
-                <div>
-                    <?php
-                    if ($item instanceof Space) {
-                        echo SpaceImage::widget(array_merge($options, [
-                            'space' => $item,
-                            'width' => $hiddenItemsOptions['width'],
-                            'height' => $hiddenItemsOptions['height'],
-                            'showTooltip' => false
-                        ]));
-                    } else if ($item instanceof User) {
-                        echo UserImage::widget(array_merge($options, [
-                            'user' => $item,
-                            'width' => $hiddenItemsOptions['width'],
-                            'height' => $hiddenItemsOptions['height'],
-                            'showTooltip' => false
-                        ]));
-                    }
-                    $itemDisplayName = ' - ' . $item->getDisplayName();
-                    if ($options['link']) {
-                        echo Html::a($itemDisplayName, $item->getUrl(), $options['linkOptions']);
-                    } else {
-                        echo Html::tag('span', $itemDisplayName, $options['htmlOptions']);
-                    }
-                    ?>
-                </div>
                 <?php
-            }
-            ?>
-        </div>
-    <?php
-        }
-    ?>
+                foreach ($hiddenItems as $item) : ?>
+                    <div class="hidden-item">
+                        <?php
+                        if ($item instanceof Space) {
+                            echo SpaceImage::widget(array_merge($options, [
+                                'space' => $item,
+                                'width' => $hiddenItemsOptions['width'],
+                                'height' => $hiddenItemsOptions['height'],
+                                'showTooltip' => false
+                            ]));
+                        } else if ($item instanceof User) {
+                            echo UserImage::widget(array_merge($options, [
+                                'user' => $item,
+                                'width' => $hiddenItemsOptions['width'],
+                                'height' => $hiddenItemsOptions['height'],
+                                'showTooltip' => false
+                            ]));
+                        }
+                        if ($options['link']) {
+                            echo '<span class="display-name-link">';
+                            echo Html::a($item->getDisplayName(), $item->getUrl(), $options['linkOptions']);
+                            echo '</span>';
+                        } else {
+                            echo '<span class="display-name-text">';
+                            echo Html::tag('span', $item->getDisplayName(), $options['htmlOptions']);
+                            echo '</span>';
+                        }
+                        ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
 </div>

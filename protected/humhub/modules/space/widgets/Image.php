@@ -22,6 +22,12 @@ class Image extends BaseImage
     public $space;
 
     /**
+     * @var int number of characters used in the acronym
+     */
+    public $acronymCount = 2;
+
+
+    /**
      * @inheritdoc
      */
     public function run()
