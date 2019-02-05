@@ -96,36 +96,6 @@ class Module extends \humhub\components\Module
      */
     public $softDeleteKeepProfileFields = ['firstname', 'lastname'];
 
-    public $advancedOembedProviders = [];
-
-    public function getOembedProviders()
-    {
-        $providers = Yii::$app->settings->get('oembedProviders');
-        $providers = ($providers != '') ? Json::decode($providers) : [];
-        if ($this->validAdvancedOembedProviders()) {
-            if ($this->advancedOembedProviders['override']) {
-                $providers = $this->advancedOembedProviders['providers'];
-            } else {
-                foreach ($this->advancedOembedProviders['providers'] as $url => $endpoint) {
-                    $providers[$url] = $endpoint;
-                }
-            }
-            return $providers;
-        } else {
-            return $providers;
-        }
-    }
-
-    private function validAdvancedOembedProviders()
-    {
-        if (! empty($this->advancedOembedProviders) &&
-            isset($this->advancedOembedProviders['providers']) &&
-            isset($this->advancedOembedProviders['override'])) {
-            return true;
-        }
-        return false;
-    }
-
     /**
      * @inheritdoc
      */

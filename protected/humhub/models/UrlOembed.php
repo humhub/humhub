@@ -8,6 +8,7 @@
 
 namespace humhub\models;
 
+use humhub\events\OembedFetchEvent;
 use yii\base\InvalidArgumentException;
 use yii\helpers\Html;
 use yii\helpers\Json;
@@ -22,6 +23,7 @@ use Yii;
  */
 class UrlOembed extends ActiveRecord
 {
+    const FETCH = 'fetch';
 
     /**
      * @inheritdoc
@@ -64,6 +66,12 @@ class UrlOembed extends ActiveRecord
      */
     public static function GetOEmbed($url)
     {
+        $oembedFetchEvent = new OembedFetchEvent(['url' => $url]);
+        (new UrlOembed())->trigger(static::FETCH, $oembedFetchEvent);
+        if ($result = $oembedFetchEvent->getResult()) {
+            return $result;
+        }
+
         $url = trim($url);
 
         // Check if the given URL has OEmbed Support
@@ -105,17 +113,18 @@ class UrlOembed extends ActiveRecord
      *
      * @param string $url
      *
+     * @param string $customProviderUrl
      * @return string
      */
-    public static function loadUrl($url)
+    public static function loadUrl($url, $customProviderUrl = '')
     {
         $urlOembed = new UrlOembed();
         $urlOembed->url = $url;
         $html = '';
-
-        if ($urlOembed->getProviderUrl() != '') {
+        $providerUrl = $customProviderUrl != '' ? $customProviderUrl : $urlOembed->getProviderUrl();
+        if ($providerUrl != '') {
             // Build OEmbed Preview
-            $jsonOut = UrlOembed::fetchUrl($urlOembed->getProviderUrl());
+            $jsonOut = UrlOembed::fetchUrl($providerUrl);
             if ($jsonOut != ''  && $jsonOut != 'Unauthorized') {
                 try {
                     $data = Json::decode($jsonOut);
@@ -213,8 +222,12 @@ class UrlOembed extends ActiveRecord
      */
     public static function getProviders()
     {
-        $userModule = Yii::$app->getModule('user');
-        return $userModule->getOembedProviders();
+        $providers = Yii::$app->settings->get('oembedProviders');
+        if ($providers != '') {
+            return Json::decode($providers);
+        }
+
+        return [];
     }
 
     /**

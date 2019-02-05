@@ -18,15 +18,6 @@ use Yii;
  */
 class OembedController extends Controller
 {
-    const OEMBED_INIT_EVENT = 'oembed_init';
-
-    public function init()
-    {
-        parent::init();
-
-        $this->trigger(self::OEMBED_INIT_EVENT);
-    }
-
     /**
      * @inheritdoc
      */
