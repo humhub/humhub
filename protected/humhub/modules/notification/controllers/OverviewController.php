@@ -12,6 +12,7 @@ use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
 use humhub\modules\notification\models\forms\FilterForm;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\widgets\OverviewWidget;
 use Yii;
 use yii\data\Pagination;
 use yii\db\IntegrityException;
@@ -43,16 +44,8 @@ class OverviewController extends Controller
      */
     public function actionIndex()
     {
-        if (Yii::$app->user->isGuest) {
-            return Yii::$app->user->loginRequired();
-        }
-
-        $pageSize = static::PAGINATION_PAGE_SIZE;
         $notifications = [];
-
-        $filterForm = new FilterForm();
-        $filterForm->load(Yii::$app->request->get());
-
+        $filterForm = $this->initFilterForm('GET');
         $query = Notification::findGrouped();
 
         if ($filterForm->hasFilter()) {
@@ -66,15 +59,66 @@ class OverviewController extends Controller
         }
 
         $countQuery = clone $query;
-        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize]);
-
-        //Reset pagegination after new filter set
-        if (Yii::$app->request->post()) {
-            $pagination->setPage(0);
-        }
-
+        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => static::PAGINATION_PAGE_SIZE]);
         $query->offset($pagination->offset)->limit($pagination->limit);
 
+        $this->prepareNotifications($query, $notifications);
+
+        return $this->render('index', [
+            'notifications' => $notifications,
+            'filterForm' => $filterForm,
+            'pagination' => $pagination
+        ]);
+    }
+
+    public function actionReload()
+    {
+        $notifications = [];
+        $filterForm = $this->initFilterForm('POST');
+
+        $query = Notification::findGrouped();
+
+        if ($filterForm->hasFilter()) {
+            $query->andFilterWhere(['not in', 'class', $filterForm->getExcludeClassFilter()]);
+        } else {
+            return OverviewWidget::widget(['notifications' => $notifications, 'pagination' => null]);
+        }
+
+        $countQuery = clone $query;
+        $pagination = new Pagination([
+            'totalCount' => $countQuery->count(),
+            'pageSize' => static::PAGINATION_PAGE_SIZE,
+            'route' => '/notification/overview/index',
+            'params' => Yii::$app->request->post()
+        ]);
+        $pagination->setPage(0);
+        $query->offset($pagination->offset)->limit($pagination->limit);
+        $this->prepareNotifications($query, $notifications);
+
+        return OverviewWidget::widget(['notifications' => $notifications, 'pagination' => $pagination]);
+    }
+
+    private function initFilterForm($type)
+    {
+        if (Yii::$app->user->isGuest) {
+            return Yii::$app->user->loginRequired();
+        }
+
+        $filterForm = new FilterForm();
+        switch ($type) {
+            case 'GET' :
+                $filterForm->load(Yii::$app->request->get());
+                break;
+            case 'POST' :
+                $filterForm->load(Yii::$app->request->post());
+                break;
+        }
+
+        return $filterForm;
+    }
+
+    private function prepareNotifications($query, & $notifications)
+    {
         foreach ($query->all() as $notificationRecord) {
             /* @var $notificationRecord \humhub\modules\notification\models\Notification */
 
@@ -92,12 +136,5 @@ class OverviewController extends Controller
                 Yii::warning('Deleted inconsistent notification with id ' . $notificationRecord->id . '. ' . $ex->getMessage());
             }
         }
-
-        return $this->render('index', [
-            'notifications' => $notifications,
-            'filterForm' => $filterForm,
-            'pagination' => $pagination
-        ]);
     }
-
 }
