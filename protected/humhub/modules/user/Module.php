@@ -9,7 +9,6 @@
 namespace humhub\modules\user;
 
 use Yii;
-use yii\helpers\Json;
 
 /**
  * User Module
