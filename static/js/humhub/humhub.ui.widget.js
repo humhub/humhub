@@ -89,7 +89,9 @@ humhub.module('ui.widget', function (module, require, $) {
             that.fire('afterReload', [response]);
             return response;
         }).catch(function(err) {
-            module.log.error(err, true);
+            if(err.errorThrown !== 'abort') {
+                module.log.error(err, true);
+            }
         }).finally(function() {
             that.loader(false);
         });
