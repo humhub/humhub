@@ -138,7 +138,7 @@ public static function onCreateSomeWidget($event)
 ### Append widget content
 
 In some cases you may want to append or otherwise manipulate the output of a widget. For this use-case you can listen to the
-[[yii\base\Widget::EVENT_AFTER_RUN]] event. The following example appends the output of `MyWidgetToAppend` to the result of
+[yii\base\Widget::EVENT_AFTER_RUN](https://www.yiiframework.com/doc/api/2.0/yii-base-widget#EVENT_AFTER_RUN-detail) event. The following example appends the output of `MyWidgetToAppend` to the result of
 `SomeWidgetIWantToExtend`:
 
 **config.php:**

@@ -267,7 +267,7 @@ class Example extends ContentContainerActiveRecord
 }
 ```
 
->Info: For more information about permissions, please see the [Permission Section](module-permissions.md).
+> Info: For more information about permissions, please see the [Permission Section](module-permissions.md).
 
 ### Other content features
 
@@ -400,7 +400,7 @@ TBD
 
 - Always linked to particual Content, inherits access rules from it
 - Examples: Like, File, Comment
-- Can be nested (e.g. Container -> Content -> Addon (Comment) -> Addon (Like)
+- Can be nested (e.g. `Container -> Content -> Addon (Comment) -> Addon (Like)`)
 
 ## Content Streams
 

@@ -27,19 +27,19 @@ The new stream javascript rewrite requires some additional data-* attributes, wh
 
 Please check the following files for changes, in case your theme does overwrite those files:
 
-- protected/humhub/modules/stream/widget/views/stream.php
-- protected/humhub/modules/content/views/layouts/wallEntry.php
+- `protected/humhub/modules/stream/widget/views/stream.php`
+- `protected/humhub/modules/content/views/layouts/wallEntry.php`
 
 The same applies to the activity stream:
 
-- protected/humhub/modules/activity/widget/views/activityStream.php
-- protected/humhub/modules/activity/views/layouts/web.php
+- `protected/humhub/modules/activity/widget/views/activityStream.php`
+- `protected/humhub/modules/activity/views/layouts/web.php`
 
 ## Legacy Themes
 
 Old themes, should check the following file for changes:
 
-- humhub/themes/HumHub/css/theme.deprecated.less
+- `humhub/themes/HumHub/css/theme.deprecated.less`
 
 > Note: This file will not be maintained in the future.
 
@@ -56,11 +56,13 @@ humhub module with an `init` function for your initialization logic.
 
 You can also disable pjax by using the following configuration param in your `protected/config/common.php`:
 
+```php 
 return [
     'params' => [
         'enablePjax' => false,
     ]
 ]
+```
 
 > Note: Since pjax provides a major performance boost, you should consider merging your Theme to the new pjax logic.
 
@@ -76,44 +78,44 @@ The old **ekko lighbox** was replaced by the [blueimp ](https://blueimp.github.i
 does overwrite a view with gallery images, you'll have to use the new **data-ui-gallery** attribute instead of the
 **data-toggle** and **data-gallery** attributes. Please check the following files:
 
-- modules/file/widgets/views/showFiles.php
-- modules/space/widgets/views/header.php
-- modules/tour/views/tour/welcome.php
-- modules/user/widgets/views/profileHeader.php
+- `modules/file/widgets/views/showFiles.php`
+- `modules/space/widgets/views/header.php`
+- `modules/tour/views/tour/welcome.php`
+- `modules/user/widgets/views/profileHeader.php`
 
 ## JS Rewrite: 
 
 The JS Rewrite removed many inline script blocks from views and uses the new Javascript Module System with data-* attributes. Many UI Components and Widget had been rewritten.
 
 - **General Rewrite**:
-    - modules/like/widget/views/likeLink.php 
-    - modules/admin/views/setting/design.php 
-    - modules/space/views/create/invite.php
-    - modules/space/views/membership/invite.php
-    - modules/comment/widget/views/showComment.php
-    - modules/files/widget/views/showFiles.php
-    - modules/post/widget/views/post.php
+    - `modules/like/widget/views/likeLink.php` 
+    - `modules/admin/views/setting/design.php` 
+    - `modules/space/views/create/invite.php`
+    - `modules/space/views/membership/invite.php`
+    - `modules/comment/widget/views/showComment.php`
+    - `modules/files/widget/views/showFiles.php`
+    - `modules/post/widget/views/post.php`
 - **Richtext rewrite**:
-    - modules/comment/widget/views/form.php
-    - modules/comment/views/comment/edit.php
-    - modules/post/views/post/edit.php
-    - modules/post/widget/views/form.php
+    - `modules/comment/widget/views/form.php`
+    - `modules/comment/views/comment/edit.php`
+    - `modules/post/views/post/edit.php`
+    - `modules/post/widget/views/form.php`
 - **UserPicker rewrite**:
-    - modules/admin/views/group/edit.php
-    - modules/admin/views/group/members.php
-    - modules/content/widgets/views/wallCreateContentForm.php
+    - `modules/admin/views/group/edit.php`
+    - `modules/admin/views/group/members.php`
+    - `modules/content/widgets/views/wallCreateContentForm.php`
 - **TabbedForm**:
-    - modules/admin/views/user/add.php 
-    - modules/admin/views/user/edit.php 
-    - modules/user/views/account/_userProfileLayout.php 
-    - modules/user/views/account/_userSettingsLayout.php 
+    - `modules/admin/views/user/add.php` 
+    - `modules/admin/views/user/edit.php` 
+    - `modules/user/views/account/_userProfileLayout.php` 
+    - `modules/user/views/account/_userSettingsLayout.php` 
 - **Space Picker**
-    - modules/admin/views/group/edit.php
-    - modules/admin/views/setting/basic.php
-    - modules/search/views/search/index.php
+    - `modules/admin/views/group/edit.php`
+    - `modules/admin/views/setting/basic.php`
+    - `modules/search/views/search/index.php`
 - **Refactored**:
-    - modules/search/views/search/index.php 
+    - `modules/search/views/search/index.php` 
 - **Pjax**
-    - modules/tour/widgets/views/tourPanel.php
+    - `modules/tour/widgets/views/tourPanel.php`
 - **Notification**:
-   - modules/notification/widget/views/overview.php
+   - `modules/notification/widget/views/overview.php`

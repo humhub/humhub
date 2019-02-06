@@ -66,7 +66,6 @@ client.get(evt).then(...);
 
 // Provide action event and additional ajax options
 client.get(evt, {...}).then(...);
-
 ```
 
 The `submit` function requires either an form selector, form jquery node or an action event as first argument.
@@ -136,7 +135,6 @@ return [
     'enablePjax' => false
   ]
 ]
-
 ```
 
 ##### Disable Pjax for specific links

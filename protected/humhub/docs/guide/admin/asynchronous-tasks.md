@@ -44,7 +44,7 @@ Supervisor is a process monitoring tool for Linux. It automatically starts, moni
 
 Example configuration (e.g. /etc/supervisor/conf.d/humhub.conf):
 
-```conf
+```
 [program:humhub-workers]
 process_name=%(program_name)s_%(process_num)02d
 command=/usr/bin/php <INSERT HUMHUB PATH HERE>/protected/yii queue/listen --verbose=1 --color=0
@@ -151,4 +151,4 @@ To enable this driver you need to add following block to your local configuratio
 
 ### Sync and Instant Queue
 
-The [[humhub\components\queue\driver\Sync]] and [[humhub\components\queue\driver\Instant]] queues are used in test and development environments without cron jobs.
+The [[humhub\modules\queue\driver\Sync]] and [[humhub\modules\queue\driver\Instant]] queues are used in test and development environments without cron jobs.
