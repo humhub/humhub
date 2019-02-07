@@ -14,6 +14,7 @@ HumHub Change Log
 - Fix: User soft deletion membership cache overwrite
 - Fix #3422 Stream suppressed loading logic loads unnecessary stream entries
 - Fix: "Back to home" button in registration broken with user approvals and guest mode activated
+- Fix #1683 #553: Added link to show/edit users awaiting admin approval
 
 
 1.3.8  (December 10, 2018)
