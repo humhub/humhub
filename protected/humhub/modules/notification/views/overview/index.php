@@ -3,6 +3,9 @@
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 
+/* @var $overview string */
+/* @var $filterForm */
+
 ?>
 <div class="container">
     <div class="row">
@@ -15,10 +18,7 @@ use yii\helpers\Url;
                     </a> 
                 </div>
                 <div class="panel-body">
-                        <?= \humhub\modules\notification\widgets\OverviewWidget::widget([
-                                'notifications' => $notifications, 
-                                'pagination' => $pagination
-                        ]) ?>
+                    <?= $overview ?>
                 </div>
             </div>
         </div>

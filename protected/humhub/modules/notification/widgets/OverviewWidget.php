@@ -32,8 +32,11 @@ class OverviewWidget extends JsWidget implements Reloadable
         ]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getReloadUrl()
     {
-        return Url::to(['/notification/overview/reload']);
+        return ['/notification/overview/index'];
     }
 }

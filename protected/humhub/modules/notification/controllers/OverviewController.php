@@ -8,13 +8,14 @@
 
 namespace humhub\modules\notification\controllers;
 
-use humhub\components\behaviors\AccessControl;
+use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\notification\models\forms\FilterForm;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\widgets\OverviewWidget;
 use Yii;
 use yii\data\Pagination;
+use yii\db\ActiveQuery;
 use yii\db\IntegrityException;
 
 /**
@@ -30,103 +31,95 @@ class OverviewController extends Controller
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    public function getAccessRules()
     {
         return [
-            'acl' => [
-                'class' => AccessControl::class,
-            ]
+            [ControllerAccess::RULE_LOGGED_IN_ONLY]
         ];
     }
 
     /**
-     * Returns a List of all notifications for the session user
+     * @param bool $reload if the request is a reload request
+     * @return string
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
-    public function actionIndex()
+    public function actionIndex($reload = false)
     {
-        $notifications = [];
-        $filterForm = $this->initFilterForm('GET');
-        $query = Notification::findGrouped();
+        $filterForm = $this->loadFilterForm($reload);
 
-        if ($filterForm->hasFilter()) {
-            $query->andFilterWhere(['not in', 'class', $filterForm->getExcludeClassFilter()]);
-        } else {
-            return $this->render('index', [
-                'filterForm' => $filterForm,
-                'pagination' => null,
-                'notifications' => $notifications
-            ]);
+        if(!$filterForm->hasFilter()) {
+            return $this->renderOverview($filterForm);
         }
 
+        $query = $filterForm->createQuery();
+
+        $notifications = $this->prepareNotifications($query->all());
+
+        $overview = OverviewWidget::widget([
+            'notifications' => $notifications,
+            'pagination' => $this->preparePagination($query)
+        ]);
+
+        return $reload ? $overview : $this->render('index', [
+            'overview' => $overview,
+            'filterForm' => $filterForm,
+        ]);
+    }
+
+    /**
+     * Creates a pagination instance from the given $query
+     *
+     * @param $query ActiveQuery
+     * @return Pagination
+     */
+    private function preparePagination($query)
+    {
         $countQuery = clone $query;
         $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => static::PAGINATION_PAGE_SIZE]);
         $query->offset($pagination->offset)->limit($pagination->limit);
+        return $pagination;
 
-        $this->prepareNotifications($query, $notifications);
-
-        return $this->render('index', [
-            'notifications' => $notifications,
-            'filterForm' => $filterForm,
-            'pagination' => $pagination
-        ]);
     }
 
-    public function actionReload()
+    /**
+     * Loads the filters from the request into the form
+     *
+     * @param bool $reload
+     * @return FilterForm
+     */
+    private function loadFilterForm($reload = false)
     {
-        $notifications = [];
-        $filterForm = $this->initFilterForm('POST');
-
-        $query = Notification::findGrouped();
-
-        if ($filterForm->hasFilter()) {
-            $query->andFilterWhere(['not in', 'class', $filterForm->getExcludeClassFilter()]);
-        } else {
-            return OverviewWidget::widget(['notifications' => $notifications, 'pagination' => null]);
-        }
-
-        $countQuery = clone $query;
-        $pagination = new Pagination([
-            'totalCount' => $countQuery->count(),
-            'pageSize' => static::PAGINATION_PAGE_SIZE,
-            'route' => '/notification/overview/index',
-            'params' => Yii::$app->request->post()
-        ]);
-        $pagination->setPage(0);
-        $query->offset($pagination->offset)->limit($pagination->limit);
-        $this->prepareNotifications($query, $notifications);
-
-        return OverviewWidget::widget(['notifications' => $notifications, 'pagination' => $pagination]);
-    }
-
-    private function initFilterForm($type)
-    {
-        if (Yii::$app->user->isGuest) {
-            return Yii::$app->user->loginRequired();
-        }
-
         $filterForm = new FilterForm();
-        switch ($type) {
-            case 'GET' :
-                $filterForm->load(Yii::$app->request->get());
-                break;
-            case 'POST' :
-                $filterForm->load(Yii::$app->request->post());
-                break;
+
+        if($reload) {
+            $filterForm->load(Yii::$app->request->post());
+        } else {
+            $filterForm->load(Yii::$app->request->get());
         }
 
         return $filterForm;
     }
 
-    private function prepareNotifications($query, & $notifications)
+    /**
+     * Validates given notifications and returns a list of notification models of all valid notifications.
+     *
+     * @param $notifications Notification[]
+     * @return array
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    private function prepareNotifications($notifications)
     {
-        foreach ($query->all() as $notificationRecord) {
+        $result = [];
+        foreach ($notifications as $notificationRecord) {
             /* @var $notificationRecord \humhub\modules\notification\models\Notification */
 
             try {
                 $baseModel = $notificationRecord->getBaseModel();
 
                 if($baseModel->validate()) {
-                    $notifications[] = $baseModel;
+                    $result[] = $baseModel;
                 } else {
                     throw new IntegrityException('Invalid base model found for notification');
                 }
@@ -136,5 +129,6 @@ class OverviewController extends Controller
                 Yii::warning('Deleted inconsistent notification with id ' . $notificationRecord->id . '. ' . $ex->getMessage());
             }
         }
+        return $result;
     }
 }
