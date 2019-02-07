@@ -153,6 +153,7 @@ class AcceptanceTester extends \Codeception\Actor
         }
 
         $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->wait(1);
         $this->click('#status-bar .status-bar-close');
         $this->waitForElementNotVisible('#status-bar');
     }
@@ -166,6 +167,7 @@ class AcceptanceTester extends \Codeception\Actor
             $this->see($text, '#status-bar');
         }
         $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->wait(1);
         $this->click('#status-bar .status-bar-close');
         $this->waitForElementNotVisible('#status-bar');
     }
@@ -180,6 +182,7 @@ class AcceptanceTester extends \Codeception\Actor
         }
 
         $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->wait(1);
         $this->click('#status-bar .status-bar-close');
         $this->waitForElementNotVisible('#status-bar');
     }
