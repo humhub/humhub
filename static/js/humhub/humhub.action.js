@@ -357,6 +357,7 @@ humhub.module('action', function(module, require, $) {
             this.bindAction(document, 'click', '[data-action-click]');
             this.bindAction(document, 'change', '[data-action-change]');
             this.bindAction(document, 'keypress', '[data-action-keypress]', false);
+            this.bindAction(document, 'keydown', '[data-action-keydown]', false);
         }
 
         updateBindings();
