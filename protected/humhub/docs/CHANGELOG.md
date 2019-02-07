@@ -13,6 +13,7 @@ HumHub Change Log
 - Fix: Removed database charset configuration in dynamic config
 - Fix: User soft deletion membership cache overwrite
 - Fix #3422 Stream suppressed loading logic loads unnecessary stream entries
+- Fix: "Back to home" button in registration broken with user approvals and guest mode activated
 
 
 1.3.8  (December 10, 2018)
