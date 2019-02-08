@@ -17,6 +17,8 @@ HumHub Change Log
 - Fix #1683 #553: Added link to show/edit users awaiting admin approval
 - Fix: TextFilterInput uses `keypress` event instead of `keydown`
 - Fix #3452: Soft deleted user remain in other users as friends
+- Fix #3170: Wrong cancel invitation mail handling
+- Enh: Added `humhub\modules\space\models\Membership::isCurrentUser()`
 
 
 1.3.8  (December 10, 2018)
