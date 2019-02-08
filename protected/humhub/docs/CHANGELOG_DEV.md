@@ -19,5 +19,6 @@ HumHub Change Log (DEVELOP)
 - Enh: Added `humhub.ui.widget.Widget.loader()` for default loader functionality
 - Enh: Added `humhub.ui.widget.Widget.reload()` in combination with `humhub\widgets\Reloadable` interface
 - Enh: Implemented an auto loading mechanism for notification filters (Baleks)
+- Enh: Added an option for added additional or override existing OEmbed providers (Baleks)
 
 
