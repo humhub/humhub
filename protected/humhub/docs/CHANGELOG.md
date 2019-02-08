@@ -19,6 +19,8 @@ HumHub Change Log
 - Fix #3452: Soft deleted user remain in other users as friends
 - Fix #3170: Wrong cancel invitation mail handling
 - Enh: Added `humhub\modules\space\models\Membership::isCurrentUser()`
+- Enh: Added `humhub\widgets\Link::post()` for `data-method="POST` requests
+- Fix: Use `humhub\modules\user\components\ActiveQueryUser::active()` on UserPicker fillquery by default
 
 
 1.3.8  (December 10, 2018)

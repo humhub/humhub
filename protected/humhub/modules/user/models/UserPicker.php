@@ -15,29 +15,30 @@ use humhub\modules\user\models\UserFilter;
  */
 class UserPicker
 {
-    
+
     /**
      * Creates a json user array used in the userpicker js frontend.
      * The $cfg is used to specify the filter values the following values are available:
-     * 
+     *
      * query - (ActiveQuery) The initial query which is used to append additional filters. - default = User Friends if friendship module is enabled else User::find()
-     * 
+     *
      * active - (boolean) Specifies if only active user should be included in the result - default = true
-     * 
+     *
      * maxResults - (int) The max number of entries returned in the array - default = 10
-     * 
+     *
      * keyword - (string) A keyword which filters user by username, firstname, lastname, email and title
-     * 
+     *
      * permission - (BasePermission) An additional permission filter
-     * 
+     *
      * fillQuery - (ActiveQuery) Can be used to fill the result array if the initial query does not return the maxResults, these results will have a lower priority
-     * 
+     *
      * fillUser - (boolean) When set to true and no fillQuery is given the result is filled with User::find() results
-     * 
+     *
      * disableFillUser - Specifies if the results of the fillQuery should be disabled in the userpicker results - default = true
-     * 
+     *
      * @param type $cfg filter configuration
      * @return type json representation used by the userpicker
+     * @throws \Throwable
      */
     public static function filter($cfg = null)
     {
@@ -70,7 +71,7 @@ class UserPicker
         if(count($user) < $cfg['maxResult'] && (isset($cfg['fillQuery']) || $cfg['fillUser']) ) {
             
             //Filter out users by means of the fillQuery or default the fillQuery
-            $fillQuery = (isset($cfg['fillQuery'])) ? $cfg['fillQuery'] : UserFilter::find();
+            $fillQuery = (isset($cfg['fillQuery'])) ? $cfg['fillQuery'] : UserFilter::find()->active();
             UserFilter::addKeywordFilter($fillQuery, $cfg['keyword'], ($cfg['maxResult'] - count($user)));
             $fillQuery->andFilterWhere(['not in', 'id', self::getUserIdArray($user)]);
             $fillUser = $fillQuery->all();
