@@ -22,12 +22,17 @@ class OembedFetchEvent extends Event
         $this->setResult();
     }
 
-    public function setResult()
+    public function setResult($result = null)
     {
+        if($result) {
+            $this->result = $result;
+            return;
+        }
+
         $urlOembed = UrlOembed::findOne(['url' => $this->url]);
         if ($urlOembed !== null) {
             $this->result =  trim(preg_replace('/\s+/', ' ', $urlOembed->preview));
-        } else {
+        } else if($this->providers) {
             $this->result =  trim(preg_replace('/\s+/', ' ', UrlOembed::loadUrl($this->url, $this->getProviderUrl())));
         }
     }
