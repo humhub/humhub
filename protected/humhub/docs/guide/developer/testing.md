@@ -11,9 +11,8 @@ and a more complex implementation. Implement acceptance tests for general UI tes
 
 **Functional tests** are similar to acceptance tests, with the difference that functional tests do not run on an actual browser
 and do not execute any javascript. Functional tests allow easy testing of customized HTTP requests, forms and also allow direct access of
-application logic as database or the `Yii` application object. This can be handy if you require a specific application sate 
-as specific settings for a test.  
-Write functional tests in order to test your controllers, forms and controller access for different configurations settings.
+application logic as database or the `Yii` application context. This can be handy if you require a specific application sate 
+as specific settings for a test. Write functional tests in order to test your controllers, forms and controller access for different configurations settings.
 
 **Unit tests** are ideal for [white box testing](https://en.wikipedia.org/wiki/White-box_testing) and is the fastest way of
 writing low level tests for specific classes or components. Implement unit tests for testing single components and classes.
