@@ -1,18 +1,22 @@
 <?php
 
+use humhub\widgets\TimeAgo;
+
 /** @var \humhub\modules\user\models\User $originator */
 /** @var \humhub\modules\space\models\Space $space */
 /** @var \humhub\modules\notification\models\Notification $record */
 /** @var boolean $isNew */
 /** @var string $content */
+/** @var string $url */
+/** @var string $relativeUrl */
 
 ?>
 <li class="<?php if ($isNew) : ?>new<?php endif; ?>" data-notification-id="<?= $record->id ?>">
-    <a href="<?= $url; ?>">
+    <a href="<?= isset($relativeUrl) ? $relativeUrl : $url; ?>">
         <div class="media">
 
             <!-- show user image -->
-            <?php if ($originator !== null): ?>
+            <?php if ($originator): ?>
                 <img class="media-object img-rounded pull-left"
                      data-src="holder.js/32x32" alt="32x32"
                      style="width: 32px; height: 32px;"
@@ -20,11 +24,11 @@
                  <?php endif; ?>
 
             <!-- show space image -->
-            <?php if ($space !== null) : ?>
+            <?php if ($space) : ?>
                 <img class="media-object img-rounded img-space pull-left"
                      data-src="holder.js/20x20" alt="20x20"
                      style="width: 20px; height: 20px;"
-                     src="<?php echo $space->getProfileImage()->getUrl(); ?>">
+                     src="<?= $space->getProfileImage()->getUrl(); ?>">
                  <?php endif; ?>
 
             <!-- show content -->
@@ -32,8 +36,10 @@
 
                 <?= $content; ?>
 
-                <br> <?php echo humhub\widgets\TimeAgo::widget(['timestamp' => $record->created_at]); ?> 
-                <?php if ($isNew) : ?> <span class="label label-danger"><?= Yii::t('NotificationModule.views_notificationLayout', 'New'); ?></span><?php endif; ?>
+                <br> <?= TimeAgo::widget(['timestamp' => $record->created_at]); ?>
+                <?php if ($isNew) : ?>
+                    <span class="label label-danger"><?= Yii::t('NotificationModule.views_notificationLayout', 'New'); ?></span>
+                <?php endif; ?>
             </div>
 
         </div>

@@ -21,6 +21,7 @@ HumHub Change Log
 - Enh: Added `humhub\modules\space\models\Membership::isCurrentUser()`
 - Enh: Added `humhub\widgets\Link::post()` for `data-method="POST` requests
 - Fix: Use `humhub\modules\user\components\ActiveQueryUser::active()` on UserPicker fillquery by default
+- Added `relativeUrl` to notification view parameter
 
 
 1.3.8  (December 10, 2018)

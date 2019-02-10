@@ -133,6 +133,7 @@ abstract class BaseNotification extends SocialActivity
 
         $result = [
             'url' => Url::to(['/notification/entry', 'id' => $this->record->id], true),
+            'relativeUrl' => Url::to(['/notification/entry', 'id' => $this->record->id], false),
             'date' => $date,
             'isNew' => !$this->record->seen,
         ];
