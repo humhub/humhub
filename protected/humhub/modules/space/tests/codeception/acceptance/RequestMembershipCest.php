@@ -39,7 +39,7 @@ class RequestMembershipCest
         $I->see('Hi, I want to join this space.', '.panel-danger');
         $I->click('Accept', '.panel-danger');
 
-        $I->waitForElementNotVisible('.panel-danger');
+        $I->wait(1);
 
         $I->amUser1(true);
 
