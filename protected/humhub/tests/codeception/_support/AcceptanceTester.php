@@ -20,7 +20,6 @@ use yii\helpers\Url;
  */
 class AcceptanceTester extends \Codeception\Actor
 {
-
     use _generated\AcceptanceTesterActions;
 
     public $guestAccessAllowed = false;
@@ -207,6 +206,7 @@ class AcceptanceTester extends \Codeception\Actor
     public function logout()
     {
         $this->clickAccountDropDown();
+        $this->wait(1);
         $this->click('Logout');
         if(!$this->guestAccessAllowed) {
             $this->waitForElementVisible('#login-form');
@@ -255,12 +255,15 @@ class AcceptanceTester extends \Codeception\Actor
         $this->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839a');
     }
 
-    public function seeInNotifications($text)
+    public function seeInNotifications($text, $click = false)
     {
         $this->click('.notifications .fa-bell');
         $this->waitForText('Notifications', 5, '.notifications');
         $this->waitForText($text, 5, '.notifications');
-        $this->click('.notifications');
+
+        if($click) {
+            $this->click($text,'.notifications');
+        }
     }
 
     /**

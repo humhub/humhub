@@ -16,9 +16,9 @@ class InviteCest
      * @param AcceptanceTester $I
      * @throws \Exception
      */
-    public function testUserInvite(AcceptanceTester $I)
+    public function testDashboardInviteByMail(AcceptanceTester $I)
     {
-        $I->wantTo('Ensure that invite form works.');
+        $I->wantTo('ensure that inviting external users by mail form works.');
 
         $I->amUser();
         DirectoryMemberPage::openBy($I);
