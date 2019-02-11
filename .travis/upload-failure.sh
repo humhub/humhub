@@ -12,8 +12,12 @@ find humhub/ -type d -name "_output" -exec zip -r --exclude="*.gitignore" failur
 # add logs to failure.zip
 zip -ur failure.zip runtime/logs || true
 
+zip -ur failure.zip /tmp/phpserver.log || true
+
 # upload file
 curl --upload-file ./failure.zip https://transfer.sh/humhub-travis-${TRAVIS_JOB_NUMBER}.zip
+curl --upload-file ./failure.zip https://transfer.sh/humhub-travis-${TRAVIS_JOB_NUMBER}.zip
+
 
 # delete zip
 rm failure.zip
