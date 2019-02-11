@@ -21,7 +21,7 @@ class m171025_142030_queue_update extends Migration
 
         $this->createTable($this->tableName, [
             'id' => $this->primaryKey(),
-            'channel' => $this->string()->notNull(),
+            'channel' => $this->string(50)->notNull(),
             'job' => $this->binary()->notNull(),
             'pushed_at' => $this->integer()->notNull(),
             'ttr' => $this->integer()->notNull(),
