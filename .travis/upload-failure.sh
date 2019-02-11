@@ -16,7 +16,6 @@ zip -ur failure.zip /tmp/phpserver.log || true
 
 # upload file
 curl --upload-file ./failure.zip https://transfer.sh/humhub-travis-${TRAVIS_JOB_NUMBER}.zip
-curl --upload-file ./failure.zip https://transfer.sh/humhub-travis-${TRAVIS_JOB_NUMBER}.zip
 
 
 # delete zip
