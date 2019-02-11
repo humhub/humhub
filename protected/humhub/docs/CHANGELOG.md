@@ -22,6 +22,7 @@ HumHub Change Log
 - Enh: Added `humhub\widgets\Link::post()` for `data-method="POST` requests
 - Fix: Use `humhub\modules\user\components\ActiveQueryUser::active()` on UserPicker fillquery by default
 - Added `relativeUrl` to notification view parameter
+- Fix #3335: Queue migration broken on some database configurations
 
 
 1.3.8  (December 10, 2018)
