@@ -76,7 +76,7 @@ use humhub\modules\user\widgets\AuthChoice;
 
                         <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email')]); ?>
                         <?php if ($invite->showCaptureInRegisterForm()) : ?>
-                            <div><?= Yii::t('UserModule.views_auth_login', "Please enter the letters from the image."); ?></div>
+                            <div><?= Yii::t('UserModule.views_auth_login', 'Please enter the letters from the image.'); ?></div>
                             <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
                             'captchaAction' => 'auth/captcha',
                         ])->label(false); ?>

@@ -75,7 +75,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
                 <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
                 <?php if ($invite->showCaptureInRegisterForm()) : ?>
                     <div id="registration-form-captcha" style="display: none;">
-                        <div><?= Yii::t('UserModule.views_auth_login', "Please enter the letters from the image."); ?></div>
+                        <div><?= Yii::t('UserModule.views_auth_login', 'Please enter the letters from the image.'); ?></div>
 
                         <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
                             'captchaAction' => 'auth/captcha',
