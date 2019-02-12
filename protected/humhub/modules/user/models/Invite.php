@@ -118,7 +118,7 @@ class Invite extends ActiveRecord
             $existingInvite->delete();
         }
 
-        if ($this->allowSelfInvite() && $this->validate() && $this->save(false)) {
+        if ($this->allowSelfInvite() && $this->save()) {
             $this->sendInviteMail();
             return true;
         }
