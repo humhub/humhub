@@ -76,8 +76,18 @@ class ZendLuceneSearch extends Search
 
         // Add Meta Data fields
         foreach ($this->getMetaInfoArray($obj) as $fieldName => $fieldValue) {
-            $doc->addField(Field::keyword($fieldName, $fieldValue));
+
+            if ($fieldName === 'contentTags') {
+                // ContentTags needs to be tokenized
+                // TODO: Find better approch for meta info field types
+                $doc->addField(Field::Text($fieldName, $fieldValue));
+            } else {
+                $doc->addField(Field::keyword($fieldName, $fieldValue));
+            }
         }
+
+
+
 
         // Add provided search infos
         foreach ($attributes as $key => $val) {

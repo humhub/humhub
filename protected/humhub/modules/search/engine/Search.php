@@ -12,6 +12,7 @@ use Yii;
 use yii\base\Component;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
@@ -129,6 +130,12 @@ abstract class Search extends Component
             } else {
                 $meta['visibility'] = self::DOCUMENT_VISIBILITY_PRIVATE;
             }
+
+            $meta['contentTags'] = implode(', ', array_map(function(ContentTag $tag) {
+                Yii::error("Tag: ". $tag->name);
+                return $tag->name;
+            }, $obj->content->tags));
+
         } elseif ($meta['type'] == self::DOCUMENT_TYPE_SPACE && $obj->visibility == Space::VISIBILITY_NONE) {
             $meta['visibility'] = self::DOCUMENT_VISIBILITY_PRIVATE;
         } else {

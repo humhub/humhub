@@ -24,6 +24,7 @@ HumHub Change Log
 - Added `relativeUrl` to notification view parameter
 - Fix #3335: Queue migration broken on some database configurations
 - Enh: Added new admin setting "Include captcha in registration form"
+- Enh: Added contentTags to the search index
 
 
 1.3.8  (December 10, 2018)
