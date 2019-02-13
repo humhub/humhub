@@ -14,6 +14,7 @@ class InviteCest
     /**
      * @param AcceptanceTester $I
      * @throws \Exception
+     * @skip
      */
     public function testSpaceUserInviteAccept(AcceptanceTester $I)
     {
