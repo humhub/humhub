@@ -1,8 +1,8 @@
 HumHub Change Log
 =================
 
-1.3.9  (Unreleased)
----------------------------
+1.3.9  (February 13, 2019)
+--------------------------
 
 - Fix: StreamSuppressedQuery with limit = 2 throws query not executed exception
 - Fix #3378: Update user in search index when group memberships changes
