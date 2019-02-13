@@ -127,7 +127,7 @@ class ModuleManager extends Component
 
         // Check mandatory config options
         if (!isset($config['class']) || !isset($config['id'])) {
-            throw new InvalidConfigException('Module configuration requires an id and class attribute!');
+            throw new InvalidConfigException('Module configuration requires an id and class attribute: '.$basePath);
         }
 
         $isCoreModule = (isset($config['isCoreModule']) && $config['isCoreModule']);
