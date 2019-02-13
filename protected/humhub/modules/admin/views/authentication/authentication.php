@@ -15,6 +15,8 @@ use humhub\models\Setting;
 
     <?= $form->field($model, 'internalAllowAnonymousRegistration')->checkbox(); ?>
 
+    <?= $form->field($model, 'showCaptureInRegisterForm')->checkbox(); ?>
+
     <?= $form->field($model, 'internalUsersCanInvite')->checkbox(); ?>
 
     <?= $form->field($model, 'internalRequireApprovalAfterRegistration')->checkbox(); ?>

@@ -1,5 +1,6 @@
 <?php
 
+use yii\captcha\Captcha;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use humhub\modules\user\widgets\AuthChoice;
@@ -74,6 +75,12 @@ use humhub\modules\user\widgets\AuthChoice;
                         <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
                         <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => Yii::t('UserModule.views_auth_login', 'email')]); ?>
+                        <?php if ($invite->showCaptureInRegisterForm()) : ?>
+                            <div><?= Yii::t('UserModule.views_auth_login', 'Please enter the letters from the image.'); ?></div>
+                            <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
+                            'captchaAction' => 'auth/captcha',
+                        ])->label(false); ?>
+                        <?php endif; ?>
                         <hr>
 
                         <a href="#" class="btn btn-primary" data-ui-loader data-action-click="ui.modal.submit" data-action-url="<?= Url::to(['/user/auth/login']) ?>">

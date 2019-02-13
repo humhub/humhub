@@ -30,6 +30,7 @@ use yii\helpers\Url;
  * @property string $language
  * @property string $firstname
  * @property string $lastname
+ * @property string $captcha
  */
 class Invite extends ActiveRecord
 {
@@ -37,6 +38,8 @@ class Invite extends ActiveRecord
     const SOURCE_SELF = 'self';
     const SOURCE_INVITE = 'invite';
     const TOKEN_LENGTH = 12;
+
+    public $captcha;
 
     /**
      * @inheritdoc
@@ -62,6 +65,7 @@ class Invite extends ActiveRecord
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'unique', 'targetClass' => User::class, 'message' => Yii::t('UserModule.base', 'E-Mail is already in use! - Try forgot password.')],
+            [['captcha'], 'captcha', 'captchaAction' => 'user/auth/captcha'],
         ];
     }
 
@@ -72,6 +76,10 @@ class Invite extends ActiveRecord
     {
         $scenarios = parent::scenarios();
         $scenarios['invite'] = ['email'];
+
+        if ($this->showCaptureInRegisterForm()) {
+            $scenarios['invite'][] = 'captcha';
+        }
 
         return $scenarios;
     }
@@ -110,7 +118,7 @@ class Invite extends ActiveRecord
             $existingInvite->delete();
         }
 
-        if ($this->allowSelfInvite() && $this->validate() && $this->save()) {
+        if ($this->allowSelfInvite() && $this->save()) {
             $this->sendInviteMail();
             return true;
         }
@@ -219,4 +227,8 @@ class Invite extends ActiveRecord
         return (Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration'));
     }
 
+    public function showCaptureInRegisterForm()
+    {
+        return (Yii::$app->getModule('user')->settings->get('auth.showCaptureInRegisterForm'));
+    }
 }
