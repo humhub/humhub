@@ -23,6 +23,7 @@ HumHub Change Log
 - Fix: Use `humhub\modules\user\components\ActiveQueryUser::active()` on UserPicker fillquery by default
 - Added `relativeUrl` to notification view parameter
 - Fix #3335: Queue migration broken on some database configurations
+- Enh: Added new admin setting "Include captcha in registration form"
 
 
 1.3.8  (December 10, 2018)
