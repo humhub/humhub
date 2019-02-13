@@ -9,6 +9,6 @@ return array (
   'Receive Notifications for new content' => 'Benachrichtigungen über neue Inhalte empfangen',
   'Security' => 'Sicherheit',
   'Show posts on dashboard' => 'Beiträge in der Übersicht anzeigen',
-  'This option will hide new content from this space at your dashboard' => 'Mit dieser Option werden neue Inhalte in der Übersicht dieses Space nicht angezeigt',
-  'This option will show new content from this space at your dashboard' => 'Mit dieser Option werden neue Inhalte in der Übersicht dieses Space angezeigt',
+  'This option will hide new content from this space at your dashboard' => 'Diese Option blendet neue Inhalte aus diesem Space in Deiner Übersicht aus.',
+  'This option will show new content from this space at your dashboard' => 'Diese Option zeigt neue Inhalte aus diesem Space in Deiner Übersicht an.',
 );

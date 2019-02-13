@@ -5,7 +5,7 @@ return array (
   '<strong>Manage</strong> Topics' => 'Themen <strong>verwalten</strong>',
   '<strong>Topic</strong> Overview' => '<strong>Themen</strong> Übersicht',
   'Add Topic' => 'Thema hinzufügen',
-  'Do you really want to delete this topic?' => 'Möchten Sie dieses Thema wirklich löschen?',
+  'Do you really want to delete this topic?' => 'Möchtest Du dieses Thema wirklich löschen?',
   'Topic' => 'Thema',
   'Topic has been deleted!' => 'Thema wurde gelöscht!',
   'Topics' => 'Themen',
