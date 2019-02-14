@@ -132,7 +132,6 @@ abstract class Search extends Component
             }
 
             $meta['contentTags'] = implode(', ', array_map(function(ContentTag $tag) {
-                Yii::error("Tag: ". $tag->name);
                 return $tag->name;
             }, $obj->content->tags));
 

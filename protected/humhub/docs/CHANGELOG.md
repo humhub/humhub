@@ -1,6 +1,11 @@
 HumHub Change Log
 =================
 
+1.3.10  (Unreleased)
+---------------------------
+- Fix: Removed ContentTag logging in search update
+
+
 1.3.9  (February 13, 2019)
 --------------------------
 
