@@ -168,7 +168,7 @@ your `SimpleWidget.prototype.init` function.
 ### Reloadable JsWidgets
 
 Often you want to reload your widget in order to update parts of your view. This can be achieved by implementing the
-[[humhub\widget\Reloadable]] interface and providing a reload-url in your `getReloadUrl()` as in the following example
+[[humhub\widgets\Reloadable]] interface and providing a reload-url in your `getReloadUrl()` as in the following example
 
 ```php
 class ReloadableWidget extends JsWidget implements Reloadable
@@ -177,7 +177,7 @@ class ReloadableWidget extends JsWidget implements Reloadable
     
     public function getReloadUrl()
     {
-      return ['/mymodule/widget/reload', 'id' => $this->modle->id];
+      return ['/mymodule/widget/reload', 'id' => $this->id];
     }
 }
 ```

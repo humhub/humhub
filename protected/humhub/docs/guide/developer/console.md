@@ -33,14 +33,13 @@ public static function onConsoleApplicationInit($event) {
     $application = $event->sender;
     $application->controllerMap['translation'] = commands\TranslationController::className();
 }
-
 ```
 
 ## Integrity Checker
 
 The integrity checker is a command which validates and if necessary repairs the application database.
 
-If you want to add own checking methods for your module to it, you can intercept the [[humhub\controllers\IntegrityController::EVENT_ON_RUN]] event.
+If you want to add own checking methods for your module to it, you can intercept the [[humhub\commands\IntegrityController::EVENT_ON_RUN]] event.
 
 Example callback implementation:
 
