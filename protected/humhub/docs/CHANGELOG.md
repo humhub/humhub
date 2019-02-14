@@ -4,6 +4,7 @@ HumHub Change Log
 1.3.10  (Unreleased)
 ---------------------------
 - Fix: Removed ContentTag logging in search update
+- Fix: Added "utf8mb4" character set support to database requirements
 
 
 1.3.9  (February 13, 2019)
