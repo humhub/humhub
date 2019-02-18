@@ -50,11 +50,11 @@ humhub\modules\ui\assets\UiImageSetAsset::register($this);
                         }
                         if ($options['link']) {
                             echo '<span class="display-name-link">';
-                            echo Html::a($item->getDisplayName(), $item->getUrl(), $options['linkOptions']);
+                            echo Html::a(Html::encode($item->getDisplayName()), $item->getUrl(), $options['linkOptions']);
                             echo '</span>';
                         } else {
                             echo '<span class="display-name-text">';
-                            echo Html::tag('span', $item->getDisplayName(), $options['htmlOptions']);
+                            echo Html::tag('span', Html::encode($item->getDisplayName()), $options['htmlOptions']);
                             echo '</span>';
                         }
                         ?>

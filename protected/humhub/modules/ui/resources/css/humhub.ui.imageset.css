@@ -28,7 +28,7 @@
     background-color: #fff;
     border-radius: 0 0 5px 5px;
     display: none;
-    width: 100%;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.175)
 }
 .ui-imageset-hidden-items .hidden-item {
     border-left: 3px solid transparent;
