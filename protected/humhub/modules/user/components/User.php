@@ -132,6 +132,19 @@ class User extends \yii\web\User
     }
 
     /**
+     * Determines if this user is able to change his username.
+     * @return boolean
+     */
+    public function canChangeUsername()
+    {
+        if (in_array('username', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()))) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Determines if this user is able to delete his account.
      * @return boolean
      */
