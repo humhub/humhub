@@ -27,7 +27,7 @@ use yii\helpers\Url;
                            data-action-click="content.container.disableModule" 
                            data-action-url="<?= Url::to(['/user/account/disable-module', 'moduleId' => $module->id]) ?>" data-reload="1"
                            data-action-confirm="<?= Yii::t('UserModule.views_account_editModules', 'Are you really sure? *ALL* module data for your profile will be deleted!') ?>"
-                           class="btn btn-sm btn-primary disable" data-ui-loader>
+                           class="btn btn-sm btn-primary disable disable-module-<?= $module->id ?>" data-ui-loader>
                                <?= Yii::t('UserModule.views_account_editModules', 'Disable') ?>
                         </a>
                     <?php endif; ?>
@@ -38,7 +38,7 @@ use yii\helpers\Url;
 
                     <a href="#" style="<?= $user->isModuleEnabled($module->id) ? 'display:none' : '' ?>"
                        data-action-click="content.container.enableModule" data-action-url="<?= Url::to(['/user/account/enable-module', 'moduleId' => $module->id]) ?>" data-reload="1"
-                       class="btn btn-sm btn-primary enable" data-ui-loader>
+                       class="btn btn-sm btn-primary enable enable-module-<?= $module->id ?>" data-ui-loader>
                         <?= Yii::t('UserModule.views_account_editModules', 'Enable') ?>
                     </a>
 

@@ -32,6 +32,7 @@ Once you created an own theme folder, you need to enable it in the administratio
 
 This overview shows a complete theme folder structure including own less and view files.
 
+```
     /themes/
         /mytheme/                       - My Theme Name
             /css/                       - Your theme css files (optional)
@@ -51,3 +52,4 @@ This overview shows a complete theme folder structure including own less and vie
                     /widgets/           - Links to /someModule/widgets/views/
                         someWidget.php  - Overwritten widget view
                 /widgets/               - Links to /protected/widget/views
+```

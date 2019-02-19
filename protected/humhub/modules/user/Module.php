@@ -96,6 +96,18 @@ class Module extends \humhub\components\Module
     public $softDeleteKeepProfileFields = ['firstname', 'lastname'];
 
     /**
+     * @var array defines empty additional rules for password validation
+     */
+    public $passwordStrength = [];
+
+    /**
+     * @var array defines default additional rules for password validation
+     */
+    private $defaultPasswordStrength = [
+        '/^.{5,255}$/' => 'Password needs to be at least 8 characters long.',
+    ];
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
@@ -125,4 +137,22 @@ class Module extends \humhub\components\Module
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getPasswordStrength()
+    {
+        if (empty($this->passwordStrength)) {
+            $this->passwordStrength = $this->defaultPasswordStrength;
+        }
+        return $this->passwordStrength;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isCustomPasswordStrength()
+    {
+        return $this->defaultPasswordStrength !== $this->getPasswordStrength();
+    }
 }

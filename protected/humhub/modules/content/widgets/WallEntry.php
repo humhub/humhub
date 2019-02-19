@@ -71,6 +71,7 @@ class WallEntry extends Widget
      * The wall entry layout to use
      * 
      * @var string
+     * @deprecated since 1.4 use [[widgetLayout]] instead
      */
     public $wallEntryLayout = "@humhub/modules/content/widgets/views/wallEntry.php";
 
@@ -129,22 +130,15 @@ class WallEntry extends Widget
     /**
      * @inheritdoc
      */
-    public static function widget($config = [])
+    public function init()
     {
-        ob_start();
-        ob_implicit_flush(false);
-        try {
-            /* @var $widget Widget */
-            $config['class'] = get_called_class();
-            $widget = Yii::createObject($config);
-            $out = $widget->render($widget->wallEntryLayout, $widget->getWallEntryViewParams());
-        } catch (\Exception $e) {
-            ob_end_clean();
-            throw $e;
+        // Compatibility layer
+        parent::init();
+        if(empty($this->widgetLayout)) {
+            $this->widgetLayout = $this->wallEntryLayout;
         }
-
-        return ob_get_clean() . $out;
     }
+
 
     /**
      * Returns the edit url to edit the content (if supported)
@@ -216,16 +210,23 @@ class WallEntry extends Widget
 
     /**
      * Renders the wall entry output 
-     * 
+     *
+     * Note this function does not call
+     *
      * @return string the output
      * @throws \Exception
+     * @deprecated since 1.4
      */
     public function renderWallEntry()
     {
         ob_start();
         ob_implicit_flush(false);
         try {
-            $out = $this->render($this->wallEntryLayout, $this->getWallEntryViewParams());
+            $out = '';
+            if($this->beforeRun()) {
+                $result = $this->render($this->widgetLayout, $this->getLayoutViewParams());
+                $out = $this->afterRun($result);
+            }
         } catch (\Exception $e) {
             ob_end_clean();
             throw $e;
@@ -235,9 +236,18 @@ class WallEntry extends Widget
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getLayoutViewParams()
+    {
+        return $this->getWallEntryViewParams();
+    }
+
+    /**
      * Returns the view paramters for the wall entry layout
      * 
      * @return array the view parameter array
+     * @deprecated since 1.4 use [[getLayoutViewParams()]] instead
      */
     public function getWallEntryViewParams()
     {

@@ -38,7 +38,7 @@ Save a serialized setting:
 $value = $module->settings->setSerialized($key, [['complex' => 'value']])
 ```
 
-> Note `setSerialized` will use `Json::encode()` to serialize.
+> Note: `setSerialized` will use `Json::encode()` to serialize.
 
 **Delete setting:**
 
