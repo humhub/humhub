@@ -8,6 +8,9 @@
 
 namespace humhub\modules\stream\widgets;
 
+use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserPickerField;
 use Yii;
 use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
@@ -184,23 +187,31 @@ class WallStreamFilterNavigation extends FilterNavigation
 
     protected function initVisibilityFilters()
     {
-        $this->addFilter([
-            'id' => static::FILTER_VISIBILITY_PUBLIC,
-            'class' => RadioFilterInput::class,
-            'radioGroup' => 'visibility',
-            'multiple' => true,
-            'title' => Yii::t('ContentModule.widgets_views_stream', 'Only public content'),
-            'sortOrder' => 100
-        ], static::FILTER_BLOCK_VISIBILITY);
+        $container = ContentContainerHelper::getCurrent();
 
-        $this->addFilter([
-            'id' => static::FILTER_VISIBILITY_PRIVATE,
-            'class' => RadioFilterInput::class,
-            'radioGroup' => 'visibility',
-            'multiple' => true,
-            'title' => Yii::t('ContentModule.widgets_views_stream', 'Only private content'),
-            'sortOrder' => 200
-        ], static::FILTER_BLOCK_VISIBILITY);
+        // Private spaces do not have public content
+        if($container && $container->canAccessPrivateContent()
+            && ($container instanceof User
+                || ($container instanceof Space && $container->visibility != Space::VISIBILITY_NONE))) {
+
+            $this->addFilter([
+                'id' => static::FILTER_VISIBILITY_PUBLIC,
+                'class' => RadioFilterInput::class,
+                'radioGroup' => 'visibility',
+                'multiple' => true,
+                'title' => Yii::t('ContentModule.widgets_views_stream', 'Only public content'),
+                'sortOrder' => 100
+            ], static::FILTER_BLOCK_VISIBILITY);
+
+            $this->addFilter([
+                'id' => static::FILTER_VISIBILITY_PRIVATE,
+                'class' => RadioFilterInput::class,
+                'radioGroup' => 'visibility',
+                'multiple' => true,
+                'title' => Yii::t('ContentModule.widgets_views_stream', 'Only private content'),
+                'sortOrder' => 200
+            ], static::FILTER_BLOCK_VISIBILITY);
+        }
 
         $this->addFilter([
             'id' => static::FILTER_ARCHIVED,

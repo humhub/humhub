@@ -4,7 +4,8 @@ HumHub Change Log
 1.3.10  (Unreleased)
 ---------------------------
 - Fix: Removed ContentTag logging in search update
-- Fix #2567 https://github.com/humhub/humhub/issues/2567
+- Fix #2567 No results in directory search containing single quote ( ' )
+- Fix #3468 Private space stream contains public content filter 
 
 
 1.3.9  (February 13, 2019)
