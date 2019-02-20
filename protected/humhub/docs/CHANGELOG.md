@@ -6,7 +6,7 @@ HumHub Change Log
 - Fix: Removed ContentTag logging in search update
 - Fix #2567 No results in directory search containing single quote ( ' )
 - Fix #3468 Private space stream contains public content filter 
-
+- Fix #3473 Captcha validation breaks invite by mail
 
 1.3.9  (February 13, 2019)
 --------------------------
