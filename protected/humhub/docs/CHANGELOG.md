@@ -7,6 +7,7 @@ HumHub Change Log
 - Fix #2567 No results in directory search containing single quote ( ' )
 - Fix #3468 Private space stream contains public content filter 
 - Fix #3473 Captcha validation breaks invite by mail
+- Enh: `data-action-confirm` now works on non action based links in combination with `data-action-method`
 
 1.3.9  (February 13, 2019)
 --------------------------

@@ -360,8 +360,40 @@ humhub.module('action', function(module, require, $) {
             this.bindAction(document, 'keydown', '[data-action-keydown]', false);
         }
 
+        // Handles data-action-confirm non action based links links
+        $(document).on('click', '[href][data-action-confirm]', function(evt) {
+            var $this = $(this);
+
+            // Make sure we are not intercepting an action based link
+            var data =  $this.data();
+            for(var key in data) {
+                if(string.startsWith(key, 'action') && !string.startsWith(key, 'actionConfirm') && !string.startsWith(key, 'actionMethod')) {
+                    return;
+                }
+            }
+
+            evt.preventDefault();
+
+            modal.confirm($this).then(function(confirmed) {
+                if(confirmed) {
+                    var client =  require('client');
+                    var url = $this.attr('href');
+                    var method = $this.data('action-method') || 'GET';
+                    if(method.toLocaleUpperCase() === 'POST') {
+                        return $this.is('[data-pjax-prevent]') ? client.submit({url:url}) : client.pjax.post({url: url}) ;
+                    } else {
+                        return $this.is('[data-pjax-prevent]') ?  (document.location = url) : client.pjax.redirect(url);
+                    }
+
+                }
+            }).finally(function() {
+                loader.reset($this);
+            });
+        });
+
         updateBindings();
     };
+
 
     /**
      * Registers a given handler with the given id.
