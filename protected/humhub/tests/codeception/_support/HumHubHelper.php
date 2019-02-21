@@ -29,9 +29,15 @@ class HumHubHelper extends Module
         $re = [];
         preg_match('/registration&token=3D(.*)"/', $mail, $re);
 
-        $this->assertNotEmpty($re[1]);
+        if(!isset($re[1])) {
+            preg_match('/registration&token=(.*)/', $mail, $re);
+        }
 
-        return $re[1];
+        if(!isset($re[1])) {
+            $this->assertTrue(false, 'Invite token not found');
+        }
+
+        return trim($re[1]);
     }
 
     public function inviteUserByEmail($email) {
