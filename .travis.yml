@@ -23,6 +23,7 @@ jobs:
     name: "Trigger build for external modules"
     install: skip
     script: .travis/trigger-modules.sh
+    if: fork = false
 install:
 - .travis/install-dependencies.sh
 - .travis/setup-humhub.sh
