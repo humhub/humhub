@@ -11,6 +11,7 @@ HumHub Change Log
 - Enh: `grunt test` now uses the composer codeception version instead of a global executable
 - Enh: `grunt test` supports an additional `--env` option in order to set the codeception environment
 - Fix: Absolute url generation in tests not working
+- Enh: Added `HumHubHelper:fetchinviteToken()` in order to fetch invite tokens from emails in functional tests
 
 1.3.9  (February 13, 2019)
 --------------------------
