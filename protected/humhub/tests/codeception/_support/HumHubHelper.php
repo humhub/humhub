@@ -15,7 +15,12 @@ class HumHubHelper extends Module
 {
 
     protected $config = [];
-    
+
+    public function _before(\Codeception\TestInterface $test)
+    {
+        Yii::$app->getUrlManager()->setScriptUrl('/index-test.php');
+    }
+
     public function inviteUserByEmail($email) {
         $this->getModule('Yii2')->_loadPage('POST', '/user/invite', ['Invite[emails]' => $email]);
     }

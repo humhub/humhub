@@ -8,6 +8,9 @@ HumHub Change Log
 - Fix #3468 Private space stream contains public content filter 
 - Fix #3473 Captcha validation breaks invite by mail
 - Enh: `data-action-confirm` now works on non action based links in combination with `data-action-method`
+- Enh: `grunt test` now uses the composer codeception version instead of a global executable
+- Enh: `grunt test` supports an additional `--env` option in order to set the codeception environment
+- Fix: Absolute url generation in tests not working
 
 1.3.9  (February 13, 2019)
 --------------------------
