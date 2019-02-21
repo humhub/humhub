@@ -3,6 +3,8 @@
 namespace tests\codeception\_support;
 
 use humhub\components\bootstrap\ModuleAutoLoader;
+use humhub\components\Module;
+use humhub\tests\codeception\fixtures\ModulesEnabledFixture;
 use Yii;
 use yii\base\Event;
 use yii\db\ActiveRecord;
@@ -77,6 +79,13 @@ class HumHubDbTestCase extends Unit
     protected function initModules()
     {
         $cfg = \Codeception\Configuration::config();
+
+        $modules = array_map(function(Module $module) {
+            return $module->id;
+        },  Yii::$app->moduleManager->getModules());
+
+        Yii::$app->moduleManager->disableModules($modules);
+
         if (!empty($cfg['humhub_modules'])) {
             Yii::$app->moduleManager->enableModules($cfg['humhub_modules']);
         }

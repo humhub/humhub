@@ -66,6 +66,12 @@ class HumHubHelper extends Module
     }*/
 
     public function initModules() {
+        $modules = array_map(function(Module $module) {
+            return $module->id;
+        },  Yii::$app->moduleManager->getModules());
+
+        Yii::$app->moduleManager->disableModules($modules);
+
         if(!empty($this->config['modules'])) {
             foreach($this->config['modules'] as $moduleId) {
                 $module = Yii::$app->moduleManager->getModule($moduleId);
