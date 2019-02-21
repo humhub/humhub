@@ -21,6 +21,19 @@ class HumHubHelper extends Module
         Yii::$app->getUrlManager()->setScriptUrl('/index-test.php');
     }
 
+    public function fetchInviteToken($mail) {
+        if($mail instanceof \yii\mail\MessageInterface) {
+            $mail = $mail->toString();
+        }
+
+        $re = [];
+        preg_match('/registration&token=3D(.*)"/', $mail, $re);
+
+        $this->assertNotEmpty($re[1]);
+
+        return $re[1];
+    }
+
     public function inviteUserByEmail($email) {
         $this->getModule('Yii2')->_loadPage('POST', '/user/invite', ['Invite[emails]' => $email]);
     }
