@@ -27,7 +27,7 @@ class HumHubHelper extends Module
         }
 
         $re = [];
-        preg_match('/registration&token=3D([a-zA-Z0-9]*)"/', $mail, $re);
+        preg_match('/registration&token=3D([a-zA-Z0-9]*)/', $mail, $re);
 
         if(!isset($re[1])) {
             preg_match('/registration&token=([a-zA-Z0-9]*)/', $mail, $re);
