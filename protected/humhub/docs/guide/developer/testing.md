@@ -35,6 +35,9 @@ Information about how to write tests with codeception are available here:
 composer global require "codeception/codeception=2.0.*" "codeception/specify=*" "codeception/verify=*"
 ```
 
+> Note: Instead of a global codeception installation you can also use the version fetched by composer 
+`protected/vendor/codeception/codeception`. The composer version is used when running the tests with grunt.
+
 - Create a test database:
 
 ```
@@ -123,6 +126,9 @@ return [
 
 ## Run Tests:
 
+In order to run a test you can either use the conventional `codecept` command which requires a global installation,
+or the `grunt test` command. The `grunt test` command currently only works for core module tests.
+
 ### Run all core tests:
 
 ```
@@ -136,7 +142,7 @@ or
 grunt test
 ```
 
-### Run core module test
+### Run single core module test
 
 ```
 cd protected/humhub/modules/user/tests
