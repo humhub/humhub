@@ -203,7 +203,7 @@ $config = [
             'sl' => 'Slovenščina',
             'hr' => 'Hrvatski',
             'am' => 'አማርኛ',
-            'fi' => 'suomalainen',
+            'fi' => 'Suomi',
         ],
         'ldap' => [
             // LDAP date field formats
