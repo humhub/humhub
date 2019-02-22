@@ -1,5 +1,9 @@
 HumHub Change Log
 =================
+1.3.11  (Unreleased)
+---------------------------
+- Fix: Disabled module notification category visible in notification settings.
+- Enh: Added `ModuleManager::getEnabledModules()`
 
 1.3.10  (February 22, 2019)
 ---------------------------
