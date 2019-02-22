@@ -263,7 +263,11 @@ class AcceptanceTester extends \Codeception\Actor
 
         if($click) {
             $this->click($text,'.notifications');
+            $this->wait(2);
+        } else {
+            $this->click('.notifications .fa-bell');
         }
+
     }
 
     /**

@@ -14,7 +14,6 @@ class RequestMembershipCest
     /**
      * @param AcceptanceTester $I
      * @throws \Exception
-     * @skip
      */
     public function testRequestMembershipAccept(AcceptanceTester $I)
     {

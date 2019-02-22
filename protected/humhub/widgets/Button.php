@@ -200,6 +200,13 @@ class Button extends BootstrapComponent
             $this->htmlOptions['data-ui-loader'] = '';
         }
 
+        // Workaround since data-method handler prevents confirm or other action handlers from being executed.
+        if(isset($this->htmlOptions['data-action-confirm']) && isset($this->htmlOptions['data-method'])) {
+            $method = $this->htmlOptions['data-method'];
+            $this->htmlOptions['data-method'] = null;
+            $this->htmlOptions['data-action-method'] = $method;
+        }
+
         if ($this->_link) {
             $href = isset($this->htmlOptions['href']) ? $this->htmlOptions['href'] : null;
             return Html::a($this->getText(), $href, $this->htmlOptions);
