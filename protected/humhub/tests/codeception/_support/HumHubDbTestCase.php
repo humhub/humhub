@@ -80,12 +80,6 @@ class HumHubDbTestCase extends Unit
     {
         $cfg = \Codeception\Configuration::config();
 
-        $modules = array_map(function(Module $module) {
-            return $module->id;
-        },  Yii::$app->moduleManager->getModules());
-
-        Yii::$app->moduleManager->disableModules($modules);
-
         if (!empty($cfg['humhub_modules'])) {
             Yii::$app->moduleManager->enableModules($cfg['humhub_modules']);
         }

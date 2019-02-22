@@ -27,10 +27,9 @@ class HumHubHelper extends Module
         }
 
         $mail = preg_replace('/([\r\n=])*/', '', $mail);
-        $mail = preg_replace('/---Powered by HumHub/', ' ', $mail);
-        
+
         $re = [];
-        preg_match('/registration&token3D([A-Za-z0-9_-]+)/', $mail, $re);
+        preg_match('/registration&token3D([A-Za-z0-9_-]{12})/', $mail, $re);
 
         if(!isset($re[1])) {
             $this->assertTrue(false, 'Invite token not found');
