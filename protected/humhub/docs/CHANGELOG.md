@@ -4,6 +4,7 @@ HumHub Change Log
 ---------------------------
 - Fix: Disabled module notification category visible in notification settings.
 - Enh: Added `ModuleManager::getEnabledModules()`
+- Enh: `LikeAsset` is now part of `AppAsset` and does not need further registration
 
 1.3.10  (February 22, 2019)
 ---------------------------
