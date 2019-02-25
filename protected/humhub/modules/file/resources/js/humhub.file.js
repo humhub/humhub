@@ -359,6 +359,7 @@ humhub.module('file', function (module, require, $) {
     };
 
     Preview.prototype.add = function (file) {
+        file.name = string.encode(file.name);
         file.galleryId = this.$.attr('id') + '_file_preview_gallery';
         var template = this.getTemplate(file);
         
