@@ -5,8 +5,9 @@ HumHub Change Log
 - Fix: Disabled module notification category visible in notification settings.
 - Enh: Added `ModuleManager::getEnabledModules()`
 - Enh: `LikeAsset` is now part of `AppAsset` and does not need further registration
-- Fix: Reflective XSS in file post upload (thanks to **Rubal Jain** for testing and reporting)
+- Fix (CVE-2019-9093) and (CVE-2019-9094): Reflective XSS in file post upload and cfiles upload (thanks to **Rubal Jain** for testing and reporting)
 - Enh: Added further upload file name validation
+- Enh: Added `ContentContainerModuleManager::flushCache()`
 
 1.3.10  (February 22, 2019)
 ---------------------------
