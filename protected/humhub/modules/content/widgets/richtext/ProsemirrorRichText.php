@@ -182,7 +182,8 @@ class ProsemirrorRichText extends AbstractRichText
      */
     protected function renderMinimal() {
         $parser = new Markdown();
-        $result = strip_tags($parser->parse($this->text));
+        $result = preg_replace('/\\\\\n/',  '', $this->text);
+        $result = strip_tags($parser->parse($result));
         $result = $this->toUTF8Emoji($result);
         return ($this->maxLength > 0) ? Helpers::truncateText($result, $this->maxLength) : $result;
     }
