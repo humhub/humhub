@@ -9,6 +9,8 @@ HumHub Change Log
 - Enh: Added further upload file name validation
 - Enh: Added `ContentContainerModuleManager::flushCache()`
 - Fix: Bootstrap modal blocks richtext prompt focus
+- Fix: Richtext images with dimension setting not attached
+- Fix: `Stream::renderEntry()` overwrite does not work
 
 
 1.3.10  (February 22, 2019)
