@@ -8,6 +8,8 @@ HumHub Change Log
 - Fix (CVE-2019-9093) and (CVE-2019-9094): Reflective XSS in file post upload and cfiles upload (thanks to **Rubal Jain** for testing and reporting)
 - Enh: Added further upload file name validation
 - Enh: Added `ContentContainerModuleManager::flushCache()`
+- Fix: Bootstrap modal blocks richtext prompt focus
+
 
 1.3.10  (February 22, 2019)
 ---------------------------

@@ -581,6 +581,10 @@ humhub.module('ui.modal', function (module, require, $) {
                     return true;
                 }
 
+                if($target.closest('.ProseMirror-prompt').length) {
+                    return true;
+                }
+
                 // Allow stacking of modals
                 if ($target.closest('.modal.in').length) {
                     return true;
