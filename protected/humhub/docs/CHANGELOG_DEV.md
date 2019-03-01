@@ -22,5 +22,6 @@ HumHub Change Log (DEVELOP)
 - Enh: Added an option for added additional or override existing OEmbed providers (Baleks)
 - Fix: WallEntry::EVENT_AFTER_RUN event not triggered
 - Enh: Added `humhub\components\Widget::widgetLayout`
+- Enh: Moved 'Default spaces' setting from Basic settings to Space settings (Baleks)
 
 
