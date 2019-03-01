@@ -201,6 +201,10 @@ class ModuleController extends \yii\console\Controller
      */
     public function actionDisable($moduleId)
     {
+        if (! $this->confirm(Yii::t('AdminModule.console', 'All {moduleId} module content will be deleted. Continue?', ['moduleId' => $moduleId]), false)) {
+            return 1;
+        }
+
         $this->stdout(Yii::t('AdminModule.console', "--- Disable module: {moduleId} ---\n\n", ['moduleId' => $moduleId]), Console::BOLD);
 
         /** @var Module $module */
