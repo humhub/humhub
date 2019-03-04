@@ -33,7 +33,7 @@ class DashboardContent extends Widget
 
         echo StreamViewer::widget([
             'streamAction' => '//dashboard/dashboard/stream',
-            'showFilters' => false,
+            'showFilters' => true,
             'messageStreamEmpty' => $messageStreamEmpty
         ]);
     }

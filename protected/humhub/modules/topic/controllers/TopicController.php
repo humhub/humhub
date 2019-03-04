@@ -10,14 +10,15 @@ namespace humhub\modules\topic\controllers;
 
 
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\content\models\Content;
-use humhub\modules\topic\models\forms\ContentTopicsForm;
 use humhub\modules\topic\widgets\TopicPicker;
-use Yii;
-use yii\web\HttpException;
 
 class TopicController extends ContentContainerController
 {
+    /**
+     * @inheritdoc
+     */
+    public $requireContainer = false;
+
     /**
      * @inheritdoc
      */
