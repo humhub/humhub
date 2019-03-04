@@ -17,6 +17,13 @@ use yii\bootstrap\ActiveForm;
 
 <?php $form = ActiveForm::begin(['id' => 'space-settings-form']); ?>
 
+<?= humhub\modules\space\widgets\SpacePickerField::widget([
+    'form' => $form,
+    'model' => $model,
+    'attribute' => 'defaultSpaceGuid',
+    'selection' => $model->defaultSpaces
+])?>
+
 <?= $form->field($model, 'defaultVisibility')->dropDownList($visibilityOptions) ?>
 
 <?= $form->field($model, 'defaultJoinPolicy')->dropDownList($joinPolicyOptions, ['disabled' => $model->defaultVisibility == 0]) ?>
