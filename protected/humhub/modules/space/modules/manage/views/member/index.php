@@ -52,7 +52,7 @@ use yii\helpers\Html;
                         'attribute' => 'created_at',
                         'format' => 'raw',
                         'value' =>
-                        function ($data) use (&$groups) {
+                        function ($data) {
                             if ($data->created_at == '') {
                                 return Yii::t('SpaceModule.views_admin_members', '-');
                             }
@@ -71,6 +71,19 @@ use yii\helpers\Html;
 
                             return TimeAgo::widget(['timestamp' => $data->last_visit]);
                         }
+                    ],
+                    [
+                        'label' => Yii::t('SpaceModule.views_admin_members', 'Invited By'),
+                        'attribute' => 'originator',
+                        'format' => 'raw',
+                        'value' =>
+                            function ($data) {
+                                if (is_null($data->originator)) {
+                                    return Yii::t('SpaceModule.views_admin_members', '-');
+                                }
+
+                                return Html::a(HTML::encode($data->originator->getDisplayName()), $data->originator->getUrl());
+                            }
                     ],
                     [
                         'label' => Yii::t('SpaceModule.views_admin_members', 'Role'),
