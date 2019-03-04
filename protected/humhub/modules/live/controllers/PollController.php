@@ -8,6 +8,7 @@
 
 namespace humhub\modules\live\controllers;
 
+use humhub\modules\notification\models\Notification;
 use Yii;
 use yii\db\Expression;
 use yii\base\Exception;
@@ -84,7 +85,8 @@ class PollController extends Controller
 
         foreach ($this->buildLookupQuery($lastQueryTime)->all() as $live) {
             $liveEvent = $this->unserializeEvent($live->serialized_data);
-            if ($liveEvent !== null && $this->checkVisibility($liveEvent)) {
+            $desktopNotified = Notification::findOne(['id' => $liveEvent->notificationId])->desktop_notified;
+            if ($liveEvent !== null && $this->checkVisibility($liveEvent) && !$desktopNotified) {
                 $results['events'][$live->id] = $liveEvent->getData();
             }
         }
