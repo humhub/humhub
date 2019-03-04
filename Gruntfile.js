@@ -41,7 +41,7 @@ module.exports = function (grunt) {
             testRun: {
                 command: function() {
                     let sep = cmdSep();
-                    let moduleName = grunt.option('module') || null;
+                    let moduleName = grunt.option('module') || grunt.option('m') ||  null;
                     let doBuild = grunt.option('build') || false;
                     let base = process.cwd();
 
