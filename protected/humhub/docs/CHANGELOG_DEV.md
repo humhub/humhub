@@ -23,5 +23,6 @@ HumHub Change Log (DEVELOP)
 - Fix: WallEntry::EVENT_AFTER_RUN event not triggered
 - Enh: Added `humhub\components\Widget::widgetLayout`
 - Enh: Moved 'Default spaces' setting from Basic settings to Space settings (Baleks)
-
+- Enh: Add inviter name to Space Admin Member section (Baleks) 
+- Fix #3463 Changed 'Deny Invite' to 'Decline Invite' for space invites (Baleks)
 
