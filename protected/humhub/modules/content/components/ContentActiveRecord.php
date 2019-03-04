@@ -312,6 +312,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      *
      * @param array $params optional parameters for WallEntryWidget
      * @return string
+     * @throws \Exception
      */
     public function getWallOut($params = [])
     {
@@ -413,6 +414,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * @param null $user
      * @return bool
      * @since 1.3
+     * @throws \Throwable
      */
     public function isOwner($user = null)
     {

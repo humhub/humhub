@@ -14,6 +14,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\widgets\JsWidget;
 use yii\base\InvalidArgumentException;
+use yii\db\ActiveRecord;
 
 /**
  * AbstractRichText serves as the base class for rich text implementations.

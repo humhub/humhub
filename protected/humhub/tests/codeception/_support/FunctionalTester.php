@@ -281,7 +281,6 @@ class FunctionalTester extends \Codeception\Actor
         $space = Space::findOne(['guid' => $guid]);
         $space->enableModule($moduleId);
         Yii::$app->moduleManager->flushCache();
-        \humhub\modules\space\models\Module::flushCache();
     }
 
 }

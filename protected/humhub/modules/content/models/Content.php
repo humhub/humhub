@@ -719,9 +719,11 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
      * @param $permission
      * @param array $params
      * @param bool $allowCaching
+     * @return bool
+     * @throws Exception
+     * @throws \yii\base\InvalidConfigException
      * @see PermissionManager::can()
      * @since 1.2.1
-     * @return bool
      */
     public function can($permission, $params = [], $allowCaching = true)
     {
@@ -734,6 +736,8 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
      * @since 1.1
      * @param User|integer $user
      * @return boolean can view this content
+     * @throws Exception
+     * @throws \Throwable
      */
     public function canView($user = null)
     {
