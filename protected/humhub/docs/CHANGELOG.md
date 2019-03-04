@@ -12,6 +12,7 @@ HumHub Change Log
 - Fix: Richtext images with dimension setting not attached
 - Fix: `Stream::renderEntry()` overwrite does not work
 - Fix: Removed markdown line breaks from richtext preview
+- Fix: WallEntry of global content throws error
 
 
 1.3.10  (February 22, 2019)
