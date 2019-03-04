@@ -22,5 +22,5 @@ HumHub Change Log (DEVELOP)
 - Enh: Added an option for added additional or override existing OEmbed providers (Baleks)
 - Fix: WallEntry::EVENT_AFTER_RUN event not triggered
 - Enh: Added `humhub\components\Widget::widgetLayout`
-
+- Fix: #3347: Fixed searching members in space and users with white space in full name (Baleks)
 
