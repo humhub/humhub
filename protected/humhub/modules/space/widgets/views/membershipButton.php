@@ -21,7 +21,7 @@ if ($membership === null) {
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
-            <li><?= Html::a(Yii::t('SpaceModule.widgets_views_membershipButton', 'Deny Invite'), $space->createUrl('/space/membership/revoke-membership'), ['data-method' => 'POST']); ?></li>
+            <li><?= Html::a(Yii::t('SpaceModule.widgets_views_membershipButton', 'Decline Invite'), $space->createUrl('/space/membership/revoke-membership'), ['data-method' => 'POST']); ?></li>
         </ul>
     </div>
     <?php
