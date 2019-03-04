@@ -14,6 +14,7 @@ HumHub Change Log
 - Fix: Removed markdown line breaks from richtext preview
 - Fix: WallEntry of global content throws error
 - Fix: `ActivityAsset` does not depend on `StreamAsset`
+- Fix: Uploaded png preview files lose transparency
 
 
 1.3.10  (February 22, 2019)
