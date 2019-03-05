@@ -15,7 +15,7 @@ HumHub Change Log
 - Fix: WallEntry of global content throws error
 - Fix: `ActivityAsset` does not depend on `StreamAsset`
 - Fix: Uploaded png preview files lose transparency
-
+- Fix: Modal options `backdrop` and `keyboard` deactivation has no effect
 
 1.3.10  (February 22, 2019)
 ---------------------------
