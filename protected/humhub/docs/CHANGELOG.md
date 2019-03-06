@@ -1,6 +1,7 @@
 HumHub Change Log
 =================
-1.3.11  (Unreleased)
+
+1.3.11  (March 06, 2019)
 ---------------------------
 - Fix: Disabled module notification category visible in notification settings.
 - Enh: Added `ModuleManager::getEnabledModules()`
@@ -16,6 +17,7 @@ HumHub Change Log
 - Fix: `ActivityAsset` does not depend on `StreamAsset`
 - Fix: Uploaded png preview files lose transparency
 - Fix: Modal options `backdrop` and `keyboard` deactivation has no effect
+
 
 1.3.10  (February 22, 2019)
 ---------------------------
