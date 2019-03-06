@@ -710,7 +710,17 @@ use humhub\widgets\PoweredBy;
                                                                 </td>
                                                             </tr>
                                                             <!-- end space -->
+                                                            <tr style="display: none;">
+                                                                <td>
+                                                                    <p>
+                                                                        HumHub is a free social network software and framework built to give you the tools to make communication and collaboration easy and successful.
 
+                                                                        It's lightweight, powerful and comes with an user-friendly interface. With HumHub you can create your own customized social network, social intranet or huge social enterprise application that really fits your needs.
+
+                                                                        Boost your business, support your customers, teach your students or organize your football club. It's on you.
+                                                                    </p>
+                                                                </td>
+                                                            </tr>
                                                         </table>
 
                                                     </td>
