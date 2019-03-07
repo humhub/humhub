@@ -33,12 +33,6 @@ class AuthenticationMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'authentication' && Yii::$app->controller->action->id == 'index'),
         ]);
-        $this->addItem([
-            'label' => Yii::t('AdminModule.setting', "LDAP"),
-            'url' => Url::toRoute(['/admin/authentication/authentication-ldap']),
-            'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'authentication' && Yii::$app->controller->action->id == 'authentication-ldap'),
-        ]);
 
         parent::init();
     }

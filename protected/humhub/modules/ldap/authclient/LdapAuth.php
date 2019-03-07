@@ -2,16 +2,24 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\authclient;
 
-use humhub\modules\user\libs\LdapHelper;
+use DateTime;
+use humhub\components\SettingsManager;
+use humhub\libs\StringHelper;
+use humhub\modules\ldap\helpers\LdapHelper;
+use humhub\modules\user\authclient\interfaces\ApprovalBypass;
+use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
+use humhub\modules\user\authclient\interfaces\PrimaryClient;
+use humhub\modules\user\authclient\interfaces\SyncAttributes;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use Zend\Ldap\Exception\LdapException;
 use Zend\Ldap\Ldap;
@@ -23,11 +31,11 @@ use Zend\Ldap\Node;
  * @todo create base ldap authentication, to bypass ApprovalByPass Interface
  * @since 1.1
  */
-class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, interfaces\SyncAttributes, interfaces\ApprovalBypass, interfaces\PrimaryClient
+class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, ApprovalBypass, PrimaryClient
 {
 
     /**
-     * @var \Zend\Ldap\Ldap
+     * @var Ldap
      */
     private $_ldap = null;
 
@@ -83,6 +91,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
     {
         parent::init();
 
+        /** @var SettingsManager $settings */
         $settings = Yii::$app->getModule('user')->settings;
 
         if ($this->idAttribute === null) {
@@ -111,15 +120,15 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
         }
 
         if ($this->userFilter === null) {
-            $this->userFilter = Yii::$app->getModule('user')->settings->get('auth.ldap.userFilter');
+            $this->userFilter = $settings->get('auth.ldap.userFilter');
         }
 
         if ($this->baseDn === null) {
-            $this->baseDn = Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn');
+            $this->baseDn = $settings->get('auth.ldap.baseDn');
         }
 
         if ($this->autoRefreshUsers === null) {
-            $this->autoRefreshUsers = (boolean)Yii::$app->getModule('user')->settings->get('auth.ldap.refreshUsers');
+            $this->autoRefreshUsers = (boolean) $settings->get('auth.ldap.refreshUsers');
         }
     }
 
@@ -181,7 +190,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
      * Try to find the user if authclient_id mapping is not set yet (legency)
      * or idAttribute is not specified.
      *
-     * @return type
+     * @return User
      */
     protected function getUserAuto()
     {
@@ -192,7 +201,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
         $query->where(['auth_mode' => $this->getId()]);
 
         if ($this->idAttribute !== null) {
-            $query->andWhere(['IS', 'authclient_id', new \yii\db\Expression('NULL')]);
+            $query->andWhere(['IS', 'authclient_id', new Expression('NULL')]);
         }
 
         $conditions = ['OR'];
@@ -259,14 +268,14 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
         }
 
         if (isset($normalized['objectguid'])) {
-            $normalized['objectguid'] = \humhub\libs\StringHelper::binaryToGuid($normalized['objectguid']);
+            $normalized['objectguid'] = StringHelper::binaryToGuid($normalized['objectguid']);
         }
 
         // Handle date fields (formats are specified in config)
         foreach ($normalized as $name => $value) {
             if (isset(Yii::$app->params['ldap']['dateFields'][$name]) && $value != '') {
                 $dateFormat = Yii::$app->params['ldap']['dateFields'][$name];
-                $date = \DateTime::createFromFormat($dateFormat, $value);
+                $date = DateTime::createFromFormat($dateFormat, $value);
 
                 if ($date !== false) {
                     $normalized[$name] = $date->format('Y-m-d 00:00:00');
@@ -304,6 +313,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
      * Returns Users LDAP Node
      *
      * @return Node the users ldap node
+     * @throws LdapException
      */
     protected function getUserNode()
     {
@@ -365,7 +375,7 @@ class ZendLdapClient extends BaseFormAuth implements interfaces\AutoSyncUsers, i
      *
      * @param \Zend\Ldap\Ldap $ldap
      */
-    public function setLdap(\Zend\Ldap\Ldap $ldap)
+    public function setLdap(Ldap $ldap)
     {
         $this->_ldap = $ldap;
     }

@@ -2,13 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\user\libs;
+namespace humhub\modules\ldap\helpers;
 
+use humhub\components\SettingsManager;
 use Yii;
+use Zend\Ldap\Ldap;
 
 /**
  * This class contains a lot of html helpers for the views
@@ -20,19 +22,22 @@ class LdapHelper
 
     public static function getLdapConnection()
     {
+        /** @var SettingsManager $settings */
+        $settings = Yii::$app->getModule('user')->settings;
+
         $options = [
-            'host' => Yii::$app->getModule('user')->settings->get('auth.ldap.hostname'),
-            'port' => Yii::$app->getModule('user')->settings->get('auth.ldap.port'),
-            'username' => Yii::$app->getModule('user')->settings->get('auth.ldap.username'),
-            'password' => Yii::$app->getModule('user')->settings->get('auth.ldap.password'),
-            'useStartTls' => (Yii::$app->getModule('user')->settings->get('auth.ldap.encryption') == 'tls'),
-            'useSsl' => (Yii::$app->getModule('user')->settings->get('auth.ldap.encryption') == 'ssl'),
+            'host' => $settings->get('auth.ldap.hostname'),
+            'port' => $settings->get('auth.ldap.port'),
+            'username' => $settings->get('auth.ldap.username'),
+            'password' => $settings->get('auth.ldap.password'),
+            'useStartTls' => ($settings->get('auth.ldap.encryption') == 'tls'),
+            'useSsl' => ($settings->get('auth.ldap.encryption') == 'ssl'),
             'bindRequiresDn' => true,
-            'baseDn' => Yii::$app->getModule('user')->settings->get('auth.ldap.baseDn'),
-            'accountFilterFormat' => Yii::$app->getModule('user')->settings->get('auth.ldap.loginFilter'),
+            'baseDn' => $settings->get('auth.ldap.baseDn'),
+            'accountFilterFormat' => $settings->get('auth.ldap.loginFilter'),
         ];
 
-        $ldap = new \Zend\Ldap\Ldap($options);
+        $ldap = new Ldap($options);
         $ldap->bind();
 
         return $ldap;
