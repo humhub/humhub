@@ -1,6 +1,11 @@
 HumHub Change Log
 =================
 
+1.3.12 (Unreleased)
+---------------------------
+- Enh: Use of new Richtext for About section
+- Chng: Force blank links in old markdown editor
+
 1.3.11  (March 06, 2019)
 ---------------------------
 - Fix: Disabled module notification category visible in notification settings.
