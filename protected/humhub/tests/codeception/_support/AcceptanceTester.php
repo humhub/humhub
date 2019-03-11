@@ -283,7 +283,7 @@ class AcceptanceTester extends \Codeception\Actor
         $select2Input = $selector . ' ~ span input';
         $this->fillField($select2Input, $userName);
         $this->waitForElementVisible('.select2-container--open');
-        $this->wait(3);
+        $this->waitForElementVisible('.select2-results__option.select2-results__option--highlighted');
         $this->see($userName, '.select2-container--open');
         $this->pressKey($select2Input, WebDriverKeys::ENTER);
     }
