@@ -42,10 +42,9 @@ class DisplayNameColumn extends BaseColumn
     {
         $user = $this->getUser($model);
 
-
         $badge = '';
-        if ($user->auth_mode == 'ldap') {
-            $badge = '&nbsp;<span class="badge">LDAP</span>';
+        if ($user->auth_mode !== 'local') {
+            $badge = '&nbsp;<span class="badge">'.$user->auth_mode.'</span>';
         }
         return '<div>' . Html::encode($user->displayName) . $badge . '<br> ' .
                 '<small>' . Html::encode($user->username) . '</small></div>';
