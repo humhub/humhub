@@ -19,5 +19,4 @@ class Module extends \humhub\components\Module
      */
     public $controllerNamespace = 'humhub\modules\ldap\controllers';
 
-
 }

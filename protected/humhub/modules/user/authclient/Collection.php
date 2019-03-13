@@ -9,6 +9,7 @@
 namespace humhub\modules\user\authclient;
 
 use Yii;
+use yii\authclient\ClientInterface;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
 
@@ -84,7 +85,7 @@ class Collection extends Component
      * Sets a client by id and config
      *
      * @param string $id auth client id.
-     * @param array $config auth client instance configuration.
+     * @param array|ClientInterface $config auth client instance configuration.
      */
     public function setClient($id, $config)
     {
@@ -106,6 +107,7 @@ class Collection extends Component
      * @param string $id auth client id.
      * @param array $config auth client instance configuration.
      * @return ClientInterface auth client instance.
+     * @throws \yii\base\InvalidConfigException
      */
     protected function createClient($id, $config)
     {
@@ -122,17 +124,7 @@ class Collection extends Component
     protected function getDefaultClients()
     {
         $clients = [];
-
-        $clients['password'] = [
-            'class' => 'humhub\modules\user\authclient\Password'
-        ];
-
-        if (Yii::$app->getModule('user')->settings->get('auth.ldap.enabled')) {
-            $clients['ldap'] = [
-                'class' => 'humhub\modules\user\authclient\ZendLdapClient'
-            ];
-        }
-
+        $clients['password'] = ['class' => Password::class];
         return $clients;
     }
 

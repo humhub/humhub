@@ -7,6 +7,7 @@
 
 use humhub\modules\admin\widgets\AuthenticationMenu;
 use humhub\modules\ldap\Events;
+use humhub\modules\user\authclient\Collection;
 
 /** @noinspection MissedFieldInspection */
 return [
@@ -15,6 +16,7 @@ return [
     'isCoreModule' => true,
     'events' => [
         [AuthenticationMenu::class, AuthenticationMenu::EVENT_INIT, [Events::class, 'onAuthenticationMenu']],
+        [Collection::class, Collection::EVENT_AFTER_CLIENTS_SET, [Events::class, 'onAuthClientCollectionSet']]
     ]
 ];
 ?>

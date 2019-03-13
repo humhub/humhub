@@ -61,7 +61,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'port')->textInput() ?>
     <?= $form->field($model, 'encryption')->dropDownList($model->encryptionTypes) ?>
     <?= $form->field($model, 'username')->textInput() ?>
-    <?= $form->field($model, 'password')->passwordInput() ?>
+    <?= $form->field($model, 'passwordField')->passwordInput() ?>
     <?= $form->field($model, 'baseDn')->textInput() ?>
     <?= $form->field($model, 'loginFilter')->textArea() ?>
     <?= $form->field($model, 'userFilter')->textArea() ?>

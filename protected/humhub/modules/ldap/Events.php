@@ -7,6 +7,9 @@
 
 namespace humhub\modules\ldap;
 
+use humhub\components\Event;
+use humhub\modules\ldap\models\LdapSettings;
+use humhub\modules\user\authclient\Collection;
 use Yii;
 use yii\base\BaseObject;
 use yii\helpers\Url;
@@ -19,7 +22,7 @@ use yii\helpers\Url;
 class Events extends BaseObject
 {
     /**
-     * @param $event
+     * @param $event Event
      */
     public static function onAuthenticationMenu($event)
     {
@@ -29,5 +32,21 @@ class Events extends BaseObject
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'ldap' && Yii::$app->controller->id == 'admin'),
         ]);
+    }
+
+    /**
+     * @param $event Event
+     */
+    public static function onAuthClientCollectionSet($event)
+    {
+        if (LdapSettings::isEnabled()) {
+
+            /** @var Collection $collection */
+            $collection = $event->sender;
+
+            $settings = new LdapSettings();
+            $settings->loadSaved();
+            $collection->setClient('ldap', $settings->getLdapAuth());
+        }
     }
 }

@@ -136,10 +136,6 @@ class Setting extends ActiveRecord
             return ['allowGuestAccess', 'user'];
         } elseif ($name == 'defaultUserGroup' && $moduleId == 'authentication_internal') {
             return ['auth.allowGuestAccess', 'user'];
-        } elseif ($name == 'enabled' && $moduleId == 'authentication_ldap') {
-            return ['auth.ldap.enabled', 'user'];
-        } elseif ($name == 'enabled' && $moduleId == 'authentication_ldap') {
-            return ['auth.ldap.enabled', 'user'];
         } elseif ($name == 'systemEmailAddress' && $moduleId == 'mailing') {
             return ['mailer.systemEmailAddress', 'user'];
         } elseif ($name == 'systemEmailName' && $moduleId == 'mailing') {

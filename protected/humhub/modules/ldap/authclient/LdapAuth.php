@@ -6,12 +6,12 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\user\authclient;
+namespace humhub\modules\ldap\authclient;
 
 use DateTime;
-use humhub\components\SettingsManager;
 use humhub\libs\StringHelper;
-use humhub\modules\ldap\helpers\LdapHelper;
+use humhub\modules\user\authclient\AuthClientHelpers;
+use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
 use humhub\modules\user\authclient\interfaces\PrimaryClient;
@@ -38,6 +38,61 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      * @var Ldap
      */
     private $_ldap = null;
+
+    /**
+     * @var string the auth client id
+     */
+    public $clientId = 'ldap';
+
+    /**
+     * The hostname of LDAP server that these options represent. This option is required.
+     *
+     * @var string
+     */
+    public $hostname;
+
+    /**
+     * The port on which the LDAP server is listening.
+     *
+     * @var int 389
+     */
+    public $port;
+
+    /**
+     * Whether or not the LDAP client should use SSL encrypted transport.
+     * The useSsl and useStartTls options are mutually exclusive, but useStartTls should be favored
+     * if the server and LDAP client library support it.
+     *
+     * @var boolean
+     */
+    public $useSsl = false;
+
+    /**
+     * Whether or not the LDAP client should use TLS (aka SSLv2) encrypted transport.
+     * A value of TRUE is strongly favored in production environments to prevent passwords from be transmitted in clear text.
+     *
+     * The default value is FALSE, as servers frequently require that a certificate be installed separately after installation.
+     * The useSsl and useStartTls options are mutually exclusive.
+     * The useStartTls option should be favored over useSsl but not all servers support this newer mechanism.
+     *
+     * @var boolean
+     */
+    public $useStartTls = false;
+
+    /**
+     * The DN of the account used to perform account DN lookups.
+     * LDAP servers that require the username to be in DN form when performing the “bind” require this option.
+     *
+     * @var string
+     */
+    public $bindUsername;
+
+    /**
+     * The password of the account used to perform account DN lookups.
+     *
+     * @var string
+     */
+    public $bindPassword;
 
     /**
      * ID attribute to uniquely identify user.
@@ -68,6 +123,14 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     public $userFilter = null;
 
     /**
+     * The LDAP search filter used to search for accounts.
+     * This string is a printf()-style expression that must contain one ‘%s’ to accommodate the username.
+     *
+     * @var string the login filter
+     */
+    public $loginFilter = null;
+
+    /**
      * Automatically refresh user profiles on cron run
      *
      * @var boolean|null
@@ -91,45 +154,20 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     {
         parent::init();
 
-        /** @var SettingsManager $settings */
-        $settings = Yii::$app->getModule('user')->settings;
-
-        if ($this->idAttribute === null) {
-            $idAttribute = $settings->get('auth.ldap.idAttribute');
-            if (!empty($idAttribute)) {
-                $this->idAttribute = strtolower($idAttribute);
-            }
+        if (empty($this->idAttribute)) {
+            $this->idAttribute = null;
         }
+        $this->idAttribute = strtolower($this->idAttribute);
 
-        if ($this->usernameAttribute === null) {
-            $usernameAttribute = $settings->get('auth.ldap.usernameAttribute');
-            if (!empty($usernameAttribute)) {
-                $this->usernameAttribute = strtolower($usernameAttribute);
-            } else {
-                $this->usernameAttribute = 'samaccountname';
-            }
+        if (empty($this->usernameAttribute)) {
+            $this->usernameAttribute = 'samaccountname';
         }
+        $this->usernameAttribute = strtolower($this->usernameAttribute);
 
-        if ($this->emailAttribute === null) {
-            $emailAttribute = $settings->get('auth.ldap.emailAttribute');
-            if (!empty($emailAttribute)) {
-                $this->emailAttribute = strtolower($emailAttribute);
-            } else {
-                $this->emailAttribute = 'mail';
-            }
+        if (empty($this->emailAttribute)) {
+            $this->emailAttribute = 'mail';
         }
-
-        if ($this->userFilter === null) {
-            $this->userFilter = $settings->get('auth.ldap.userFilter');
-        }
-
-        if ($this->baseDn === null) {
-            $this->baseDn = $settings->get('auth.ldap.baseDn');
-        }
-
-        if ($this->autoRefreshUsers === null) {
-            $this->autoRefreshUsers = (boolean) $settings->get('auth.ldap.refreshUsers');
-        }
+        $this->emailAttribute = strtolower($this->emailAttribute);
     }
 
     /**
@@ -137,7 +175,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      */
     public function getId()
     {
-        return 'ldap';
+        return $this->clientId;
     }
 
     /**
@@ -145,7 +183,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      */
     protected function defaultName()
     {
-        return 'ldap';
+        return $this->clientId;
     }
 
     /**
@@ -153,7 +191,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      */
     protected function defaultTitle()
     {
-        return 'LDAP';
+        return 'LDAP (' . $this->clientId . ')';
     }
 
     /**
@@ -168,7 +206,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      * Find user based on ldap attributes
      *
      * @inheritdoc
-     * @see interfaces\PrimaryClient
+     * @see PrimaryClient
      * @return User the user
      */
     public function getUser()
@@ -360,11 +398,26 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      * Returns Zend LDAP
      *
      * @return \Zend\Ldap\Ldap
+     * @throws LdapException
      */
     public function getLdap()
     {
         if ($this->_ldap === null) {
-            $this->_ldap = LdapHelper::getLdapConnection();
+
+            $options = [
+                'host' => $this->hostname,
+                'port' => $this->port,
+                'username' => $this->bindUsername,
+                'password' => $this->bindPassword,
+                'useStartTls' => $this->useStartTls,
+                'useSsl' => $this->useSsl,
+                'bindRequiresDn' => true,
+                'baseDn' => $this->baseDn,
+                'accountFilterFormat' => $this->loginFilter,
+            ];
+
+            $this->_ldap = new Ldap($options);
+            $this->_ldap->bind();
         }
 
         return $this->_ldap;
@@ -403,7 +456,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      */
     public function syncUsers()
     {
-        if (!LdapHelper::isLdapEnabled() || !$this->autoRefreshUsers) {
+        if ($this->autoRefreshUsers !== true) {
             return;
         }
 
@@ -460,22 +513,11 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     }
 
     /**
-     * Checks if LDAP is supported
-     *
-     * @deprecated since version 1.2.3
-     * @return boolean is LDAP supported (drivers, modules)
-     */
-    public static function isLdapAvailable()
-    {
-        return LdapHelper::isLdapAvailable();
-    }
-
-    /**
      * @param array $normalizeUserAttributeMap normalize user attribute map.
      */
     public function setNormalizeUserAttributeMap($normalizeUserAttributeMap)
     {
-        // This method is called if an additional attribute mapping is specifed in the configuration file
+        // This method is called if an additional attribute mapping is specified in the configuration file
         // So automatically merge HumHub auto mapping with the given one
         $this->init(); // defaultNormalizeAttributeMap is available after init
         parent::setNormalizeUserAttributeMap(ArrayHelper::merge($this->defaultNormalizeUserAttributeMap(), $normalizeUserAttributeMap));
