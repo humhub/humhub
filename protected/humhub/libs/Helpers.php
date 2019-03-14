@@ -24,7 +24,9 @@ class Helpers
      * @param string $text - Text string you will shorten
      * @param integer $length - Count of characters to show
      *
-     * */
+     *
+     * @return string
+     */
     public static function truncateText($text, $length)
     {
         $length = abs((int) $length);

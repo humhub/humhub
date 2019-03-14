@@ -185,7 +185,7 @@ class ProsemirrorRichText extends AbstractRichText
         $result = preg_replace('/\\\\\n/',  '', $this->text);
         $result = strip_tags($parser->parse($result));
         $result = $this->toUTF8Emoji($result);
-        return ($this->maxLength > 0) ? Helpers::truncateText($result, $this->maxLength) : $result;
+        return  Html::encode(($this->maxLength > 0) ? Helpers::truncateText($result, $this->maxLength) : $result);
     }
 
     protected function toUTF8Emoji($text)
