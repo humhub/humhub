@@ -244,11 +244,11 @@ $models = MyModel::find()->userRelated([
 
 There are the following user related scopes available:
 
-- `USER_RELATED_SCOPE_OWN` Content created by the given user itself (`content.created_by`)
-- `USER_RELATED_SCOPE_SPACES` Content related to the users member spaces
-- `USER_RELATED_SCOPE_FOLLOWED_SPACES` = Content related to the users followed spaces
-- `USER_RELATED_SCOPE_FOLLOWED_USERS` = Content related to the users followed user profiles
-- `USER_RELATED_SCOPE_OWN_PROFILE` = Content related to the users own profile
+- _USER_RELATED_SCOPE_OWN_: Content created by the given user itself (`content.created_by`)
+- _USER_RELATED_SCOPE_SPACES_: Content related to the users member spaces
+- _USER_RELATED_SCOPE_FOLLOWED_SPACES_: Content related to the users followed spaces
+- _USER_RELATED_SCOPE_FOLLOWED_USERS_: Content related to the users followed user profiles
+- _USER_RELATED_SCOPE_OWN_PROFILE_: Content related to the users own profile
 
 ## Move Content
 
@@ -320,20 +320,23 @@ $model->content->canArchive();
 
 ## ContentContainerController
 
-When working with `Content` or other `ContentContainer` related data, your controller should extend the [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] class.
-A `ContentContainerController` will automatically search and instantiate a `ContentContainerActiveRecord` related to a `cguid` request parameter and provide additional features as:
+When working with Content or other ContentContainer related data, your controller should extend the
+ [[humhub\modules\content\components\ContentContainerController|ContentContainerController]] class.
+This controller will automatically search and instantiate a container instance related to the 
+`cguid` request parameter and provide additional features as:
 
 - Additional **access checks**
 - Default **layout selection** based on container type (User or Space)
 - Create **container URL's** for the given container
 
-By default a `ContentContainerController` will block requests without a given `cguid` request parameter. If you need to implement a controller which
-should be able to handle container related as well as global requests you'll have to set the `ContentContainerController::requireContainer` field to `false`.
+By default a ContentContainerController will block requests without a given `cguid` request parameter. 
+If you need to implement a controller which should be able to handle container related as well as global 
+requests you'll have to set the `ContentContainerController::requireContainer` field to `false`.
 
-In your controller logic you can access the `ContentContainerActiveRecord` within your controller by means of `$this->contentContainer`.
+In your controller logic you can access the related cotnainer by means of `$this->contentContainer`.
 
-You can even restrict the allowed `ContentContainerActiveRecord` types by setting the `ContentContainerController::validContentContainerClasses` array. This can be
-useful for example if your controller should only handle space related requests.
+You can even restrict the allowed container types by setting the `ContentContainerController::validContentContainerClasses` array. 
+This can be useful if your controller should only handle space or user related requests.
 
 ```php
 use humhub\modules\content\components\ContentContainerController;
@@ -348,7 +351,7 @@ class ExampleController extends ContentContainerController
 }
 ```
 
-Urls pointing to a `ContentContainerController` action should be created by using the `ContentContainerActiveRecord::createUrl()` function. 
+Urls pointing to a container action should be created by using the `ContentContainerActiveRecord::createUrl()` function. 
 This will add the required cguid parameter to your request.
 
 ```php
@@ -360,6 +363,12 @@ This will add the required cguid parameter to your request.
 
  // Within a ContentContainerController:
  $this->contentContainer->createUrl('/module/controller/action');
+```
+
+Another way of creating container urls is the following:
+
+```php
+$url = \yii\helpers\Url::to(['/some/route', 'container' => $space);
 ```
 
 ## Content addons
