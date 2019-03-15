@@ -37,6 +37,7 @@ class AdminController extends Controller
 
     /**
      * Configure Ldap authentication
+     *
      * @return string
      */
     public function actionIndex()
