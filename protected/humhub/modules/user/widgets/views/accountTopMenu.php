@@ -28,7 +28,7 @@ $userModel = Yii::$app->user->getIdentity();
 
                 <?php if ($this->context->showUserName): ?>
                     <div class="user-title pull-left hidden-xs">
-                        <strong><?= Html::encode($userModel->displayName); ?></strong><br/><span class="truncate"><?= Html::encode($userModel->profile->title); ?></span>
+                        <strong><?= Html::encode($userModel->displayName); ?></strong><br/><span class="truncate"><?= Html::encode($userModel->displayNameSub); ?></span>
                     </div>
                 <?php endif; ?>
 

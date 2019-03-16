@@ -78,6 +78,11 @@ class Module extends \humhub\components\Module
     public $displayNameCallback = null;
 
     /**
+     * @var callable a callback that returns the user displayName sub text
+     */
+    public $displayNameSubCallback = null;
+
+    /**
      * @var boolean defines if the user following is disabled or not.
      * @since 1.2 
      */
