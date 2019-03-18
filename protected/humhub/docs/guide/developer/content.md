@@ -7,57 +7,55 @@ Before you keep reading, make sure you are familiar with the following Yii conce
  - [Yii ActiveRecords](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record)
  - [Yii Controller](https://www.yiiframework.com/doc/guide/2.0/en/structure-controllers)
  
-Content models are a fundamental part of HumHub. The content concept allows the implementation of different types
-of content types and is responsible for managing the visibility and other unique content features which are described in
-the following sections.
+The content concept is a fundamental part of HumHub and allows the implementation of different types of content. 
+The core content module is responsible for managing the visibility and other content features which are described in the following section.
 
 ## ContentContainer
 
-As the name suggests, a ContentContainer in HumHub is as container for content instances. HumHub supports two different 
+As the name suggests, a ContentContainer in HumHub can be connected with content instances. HumHub supports two different 
 types of ContentContainer:
 
  - User
  - Space
 
-Content without ContentContainer relation are considered global.
+Content without a ContentContainer relation are considered global.
 
 ## Content and ContentActiveRecord 
 
 The [[\humhub\modules\content\components\ContentActiveRecord|ContentActiveRecord]] class serves as the base class for
-every conent type as for example Polls, Posts or Wiki pages. While the ContentActiveRecord implementation
+every content type as for example Polls, Posts or Wiki pages. While the ContentActiveRecord implementation
 describes the specific behavior of a content type, all ContentActiveRecord instances are related 
-to a [[humhub\modules\content\models\Content|Content]] record. The Content record holds general information 
-as:
+to a [[humhub\modules\content\models\Content|Content]] record which holds general content data as:
 
- - visiblity
+ - visibility
  - originator
  - creation date
  - updater
  - update date
  - ContentContainer relation
 
-The following section describes common configuration possibilities of ContentActiveRecord subclasses.+
-
-`ContentActiveRecord::autoFollow` flag is used to determine if the content originator should automatically follow
-this content after creation. In case the originator should not receive notifications for e.g. likes or comments, this
-flag should be set to false.
+The following section describes common configuration possibilities of ContentActiveRecord subclasses.
 
 `ContentActiveRecord::moduleId` should always be set with the related module id of your content record.
 
-`ContentActiveRecord::streamChannel` specifies a where or how this content is used. Activity content entries for example 
-make use an own stream channel and therefore are not included in the `default` wall stream channel. 
+`ContentActiveRecord::autoFollow` flag is used to determine whether or not the content originator should automatically follow
+this content after creation. In case the originator should not receive notifications for e.g. likes or comments by default, this
+flag should be set to false.
+
+`ContentActiveRecord::streamChannel` specifies the main context in which this type of content is used. 
+Activity content entries for example make use of an own stream channel and therefore are not included in the `default` wall stream channel. 
 In case you just want to exclude your content from the wall stream, set the stream channel to `null`. 
 This setting can also be changed by model updates in order to exclude the content only if some conditions are met.
+As with activities, this field can also be used to create own custom streams.
 
-`ContentActiveRecord::silentContentCreation` can be set to `false` if you want to prevent the creation of ContentCreated
+`ContentActiveRecord::silentContentCreation` can be set to `false` if you want to prevent the creation of `ContentCreated`
 notifications and activities for this type of content. Note, those activity records are only created when inserting
 the content record. Changing this setting afterwards won't have any effect.
 
-### Custom ContentActiveRecord class
+### Custom ContentActiveRecord
 
 Just like other [ActiveRecords](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record) `ContentActiveRecord` 
-classes should be put under the `models` namespace of your module.
-Beside the basic `ActiveRecord` features as `validation` and `attributeLabels` 
+classes should be put under the `models` namespace of your module. Beside the basic `ActiveRecord` features as `validation` and `attributeLabels` 
 your `ContentActiveRecord` class should at least implement the following fields and methods:
 
 - `moduleId` - id of the related module
@@ -142,7 +140,8 @@ the ContentActiveRecord class automatically.
 
 ## Content visibility
 
-The content visibility specifies who is be allowed to view the content. When instantiating a new `ContentActiveRecord` without [a predefined visibility](#instantiating-a-contentcontaineractiverecord)
+The content visibility specifies who will be allowed to view a content instance. 
+When instantiating a new `ContentActiveRecord` without [a predefined visibility](#contentactiverecord-usage)
 the underlying content will adapt the default content visibility of its `ContentContainerActiveRecord`.
 
 - `Private` content will only be visible for `Space Members` (Space) and `Friend Users` (Profile).
@@ -220,7 +219,7 @@ class Example extends ContentContainerActiveRecord
 
 > Info: Private spaces can not create public content.
 
-## Content Quieries
+## Content queries
 
 The `Content` class furthermore provides some extended [ActiveQuery](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record#querying-data) capabilities.
 Calling [[\humhub\modules\content\components\ContentActiveRecord::find()|ContentActiveRecord::find()]] will return a [[\humhub\modules\content\components\ActiveQueryContent]] instance with additional methods to filter specific content entries:
