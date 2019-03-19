@@ -139,6 +139,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * @param array|ContentContainerActiveRecord $contentContainer either the configuration or contentcontainer
      * @param int|array $visibility
      * @param array $config
+     * @throws Exception
      */
     public function __construct($contentContainer = [], $visibility = null, $config = [])
     {

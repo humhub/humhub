@@ -1,6 +1,14 @@
 HumHub Change Log
 =================
 
+1.3.12 (Unreleased)
+---------------------------
+- Enh: Use of new Richtext for About section
+- Chng: Force blank links in old markdown editor
+- Fix: Profile Markdown field files are not attached
+- Chng: Don't restrict`humhub\modules\file\components\FileManager::attach()` to `humhub\components\ActiveRecord`
+- Fix: Richtext preview new line backslash issue
+
 1.3.11  (March 06, 2019)
 ---------------------------
 - Fix: Disabled module notification category visible in notification settings.

@@ -181,11 +181,10 @@ class ProsemirrorRichText extends AbstractRichText
      * @return string truncated and stripped text
      */
     protected function renderMinimal() {
-        $parser = new Markdown();
-        $result = preg_replace('/\\\\\n/',  '', $this->text);
-        $result = strip_tags($parser->parse($result));
+        $result = preg_replace('/\\\\(\n|\r){1,2}/',  ' ', $this->text);
+        $result = strip_tags((new Markdown())->parse($result));
         $result = $this->toUTF8Emoji($result);
-        return ($this->maxLength > 0) ? Helpers::truncateText($result, $this->maxLength) : $result;
+        return  Html::encode(($this->maxLength > 0) ? Helpers::truncateText($result, $this->maxLength) : $result);
     }
 
     protected function toUTF8Emoji($text)
