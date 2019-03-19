@@ -49,4 +49,14 @@ class Events extends BaseObject
             $collection->setClient('ldap', $settings->getLdapAuth());
         }
     }
+
+    /**
+     * @param $event \yii\base\Event
+     */
+    public static function onConsoleApplicationInit($event)
+    {
+        $application = $event->sender;
+        $application->controllerMap['ldap'] = commands\LdapController::class;
+    }
+
 }

@@ -8,6 +8,9 @@
 
 namespace humhub\modules\ldap\helpers;
 
+use humhub\modules\ldap\authclient\LdapAuth;
+use Yii;
+
 /**
  * This class contains LDAP helpers
  *
@@ -17,7 +20,9 @@ class LdapHelper
 {
 
     /**
-     * Checks if LDAP is supported
+     * Checks if LDAP is supported by this environment.
+     *
+     * @return bool
      */
     public static function isLdapAvailable()
     {
@@ -30,6 +35,23 @@ class LdapHelper
         }
 
         return true;
+    }
+
+    /**
+     * Checks if at least one LDAP Authclient is enabled.
+     *
+     * @return bool
+     */
+    public static function isLdapEnabled()
+    {
+        foreach (Yii::$app->authClientCollection->getClients() as $authClient) {
+            if ($authClient instanceof LdapAuth) {
+                return true;
+            }
+        }
+
+        return false;
+
     }
 
 }

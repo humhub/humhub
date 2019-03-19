@@ -461,18 +461,12 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         }
 
         try {
-            $ldap = $this->getLdap();
-
-            $userCollection = $ldap->search($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB);
 
             $authClient = null;
             $ids = [];
-            foreach ($userCollection as $attributes) {
-                $authClient = clone $this;
-                $authClient->init();
-                $authClient->setUserAttributes($attributes);
-                $attributes = $authClient->getUserAttributes();
+            foreach ($this->getUserCollection() as $ldapEntry) {
 
+                $authClient = $this->getAuthClientInstance($ldapEntry);
                 $user = AuthClientHelpers::getUserByAuthClient($authClient);
                 if ($user === null) {
                     if (!AuthClientHelpers::createUser($authClient)) {
@@ -482,6 +476,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                     AuthClientHelpers::updateUser($authClient, $user);
                 }
 
+                $attributes = $authClient->getUserAttributes();
                 if (isset($attributes['authclient_id'])) {
                     $ids[] = $attributes['authclient_id'];
                 }
@@ -523,5 +518,26 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         parent::setNormalizeUserAttributeMap(ArrayHelper::merge($this->defaultNormalizeUserAttributeMap(), $normalizeUserAttributeMap));
     }
 
+    /**
+     * @return \Zend\Ldap\Collection
+     * @throws LdapException
+     */
+    public function getUserCollection()
+    {
+        return $this->getLdap()->search($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB);
+    }
 
+    /**
+     * @param $ldapEntry array
+     * @return LdapAuth
+     */
+    public function getAuthClientInstance($ldapEntry) {
+        $authClient = clone $this;
+        $authClient->init();
+        $authClient->setUserAttributes($ldapEntry);
+        // Init
+        $attributes = $authClient->getUserAttributes();
+
+        return $authClient;
+    }
 }
