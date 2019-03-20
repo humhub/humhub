@@ -10,6 +10,7 @@ namespace humhub\modules\ldap\commands;
 
 use Exception;
 use humhub\modules\ldap\authclient\LdapAuth;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\console\ExitCode;
@@ -47,8 +48,14 @@ class LdapController extends \yii\console\Controller
         $this->stdout("Port:\t\t" . $ldapAuthClient->port . "\n");
         $this->stdout("BaseDN:\t\t" . $ldapAuthClient->baseDn . "\n\n");
 
-        $this->stdout("LDAP connection successful!\n", Console::FG_GREEN);
-        $this->stdout("Found " . $userCount . " users.\n\n");;
+        $this->stdout("LDAP connection successful!\n\n", Console::FG_GREEN);
+
+        $activeUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => User::STATUS_ENABLED])->count();
+        $disabledUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => User::STATUS_DISABLED])->count();
+
+        $this->stdout("LDAP user count:\t\t" . $userCount . " users.\n");;
+        $this->stdout("HumHub user count (active):\t" . $activeUserCount . " users.\n");
+        $this->stdout("HumHub user count (disabled):\t" . $disabledUserCount . " users.\n\n");
 
         return ExitCode::OK;
     }
@@ -60,7 +67,7 @@ class LdapController extends \yii\console\Controller
      * @param string $id the auth client id (default: ldap)
      * @return int status code
      */
-    public function actionSyncUsers($id = 'ldap')
+    public function actionSync($id = 'ldap')
     {
         $this->stdout("*** LDAP User List for AuthClient ID: " . $id . "\n\n");
 
