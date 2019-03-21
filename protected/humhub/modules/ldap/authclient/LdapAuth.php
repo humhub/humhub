@@ -20,7 +20,7 @@ use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\db\Expression;
-use yii\helpers\ArrayHelper;
+use yii\helpers\VarDumper;
 use Zend\Ldap\Exception\LdapException;
 use Zend\Ldap\Ldap;
 use Zend\Ldap\Node;
@@ -382,10 +382,11 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
 
         try {
             $this->getLdap()->bind($userName, $this->login->password);
-            $dn = $this->getLdap()->getCanonicalAccountName($userName, Ldap::ACCTNAME_FORM_DN);
 
             // Rebind with administrative DN
             $this->getLdap()->bind();
+
+            $dn = $this->getLdap()->getCanonicalAccountName($userName, Ldap::ACCTNAME_FORM_DN);
 
             return $dn;
         } catch (LdapException $ex) {
@@ -469,8 +470,15 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                 $authClient = $this->getAuthClientInstance($ldapEntry);
                 $user = AuthClientHelpers::getUserByAuthClient($authClient);
                 if ($user === null) {
-                    if (!AuthClientHelpers::createUser($authClient)) {
-                        Yii::warning('Could not automatically create LDAP user  - check required attributes! (' . print_r($attributes, 1) . ')');
+                    $registration = AuthClientHelpers::createRegistration($authClient);
+                    if ($registration === null) {
+                        Yii::warning('Could not automatically create LDAP user  - No ID attribute!', 'ldap');
+                        continue;
+                    }
+
+                    if (!$registration->register($authClient)) {
+                        Yii::warning('Could not create LDAP user (' . $ldapEntry['dn'] . '). Error: '
+                            . VarDumper::dumpAsString($registration->getErrors()), 'ldap');
                     }
                 } else {
                     AuthClientHelpers::updateUser($authClient, $user);
@@ -491,19 +499,19 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                         // Enable disabled users that have been found in ldap
                         $user->status = User::STATUS_ENABLED;
                         $user->save();
-                        Yii::info('Enabled user' . $user->username . ' (' . $user->id . ') - found in LDAP!');
+                        Yii::info('Enabled user' . $user->username . ' (' . $user->id . ') - found in LDAP!', 'ldap');
                     } elseif (!$foundInLdap && $user->status !== User::STATUS_DISABLED) {
                         // Disable users that were not found in ldap
                         $user->status = User::STATUS_DISABLED;
                         $user->save();
-                        Yii::warning('Disabled user' . $user->username . ' (' . $user->id . ') - not found in LDAP!');
+                        Yii::warning('Disabled user' . $user->username . ' (' . $user->id . ') - not found in LDAP!', 'ldap');
                     }
                 }
             }
         } catch (\Zend\Ldap\Exception\LdapException $ex) {
-            Yii::error('Could not connect to LDAP instance: ' . $ex->getMessage());
+            Yii::error('Could not connect to LDAP instance: ' . $ex->getMessage(), 'ldap');
         } catch (\Exception $ex) {
-            Yii::error('An error occurred while user sync: ' . $ex->getMessage());
+            Yii::error('An error occurred while user sync: ' . $ex->getMessage(), 'ldap');
         }
     }
 
@@ -531,7 +539,8 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      * @param $ldapEntry array
      * @return LdapAuth
      */
-    public function getAuthClientInstance($ldapEntry) {
+    public function getAuthClientInstance($ldapEntry)
+    {
         $authClient = clone $this;
         $authClient->init();
         $authClient->setUserAttributes($ldapEntry);

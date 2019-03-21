@@ -248,7 +248,7 @@ class LdapSettings extends Model
             'baseDn' => $this->baseDn,
             'loginFilter' => $this->loginFilter,
             'userFilter' => $this->userFilter,
-            'autoRefreshUsers' => ($this->refreshUsers),
+            'autoRefreshUsers' => (boolean) $this->refreshUsers,
             'emailAttribute' => $this->emailAttribute,
             'usernameAttribute' => $this->usernameAttribute,
             'idAttribute' => $this->idAttribute

@@ -25,6 +25,39 @@ class LdapController extends \yii\console\Controller
 {
 
     /**
+     * @inheritdoc
+     */
+    public $defaultAction = 'list';
+
+    /**
+     * Lists configured LDAP auth clients
+     *
+     * @return int the exit code
+     */
+    public function actionList()
+    {
+        $this->stdout("*** Configured LDAP AuthClients \n\n");
+
+        $clients = [];
+        foreach (Yii::$app->authClientCollection->getClients(true) as $id => $client) {
+            if ($client instanceof LdapAuth) {
+                /** @var LdapAuth $client */
+                $clients[] = [$id, $client->getName() . ' (' . $client->getId() . ')', $client->hostname, $client->port, $client->baseDn];
+            }
+        }
+
+        try {
+            echo Table::widget(['headers' => ['AuthClient ID', 'Name (ClientId)', 'Host', 'Port', 'Base DN'], 'rows' => $clients]);
+        } catch (Exception $e) {
+            $this->stderr("Error: " . $e->getMessage() . "\n\n");
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
+        print "\n\n";
+
+    }
+
+    /**
      * Returns status information
      *
      * @param string $id the auth client id (default: ldap)
@@ -62,14 +95,14 @@ class LdapController extends \yii\console\Controller
 
 
     /**
-     * Synchronizes all ldap users if autoRefresh is enabled
+     * Synchronizes all ldap users (if autoRefresh is enabled)
      *
      * @param string $id the auth client id (default: ldap)
      * @return int status code
      */
     public function actionSync($id = 'ldap')
     {
-        $this->stdout("*** LDAP User List for AuthClient ID: " . $id . "\n\n");
+        $this->stdout("*** LDAP Sync for AuthClient ID: " . $id . "\n\n");
 
         try {
             $ldapAuthClient = $this->getAuthClient($id);
@@ -113,6 +146,50 @@ class LdapController extends \yii\console\Controller
 
             echo Table::widget(['headers' => ['ID', 'Username', 'E-Mail'], 'rows' => $users]);
 
+
+        } catch (Exception $ex) {
+            $this->stderr("Error: " . $ex->getMessage() . "\n\n");
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
+        return ExitCode::OK;
+    }
+
+    /**
+     * Map found users to given auth client.
+     *
+     * Useful if an existing authclient was renamed.
+     *
+     * @param string $id the auth client id (default: ldap)
+     * @return int status code
+     */
+    public function actionRemapAuthid($id)
+    {
+        $this->stdout("*** LDAP ReMap Users for AuthClient ID: " . $id . "\n\n");
+
+        $i = 0;
+        $m = 0;
+
+        try {
+            $newAuthClient = $this->getAuthClient($id);
+
+            foreach ($newAuthClient->getUserCollection() as $userEntry) {
+                $i++;
+
+                $authClient = $newAuthClient->getAuthClientInstance($userEntry);
+                $attributes = $authClient->getUserAttributes();
+
+                if (isset($attributes['id'])) {
+                    $user = User::findOne(['authclient_id' => $attributes['id']]);
+                    if ($user !== null) {
+                        $user->updateAttributes(['auth_mode' => $newAuthClient->getId()]);
+                        $m++;
+                    }
+                }
+            }
+
+            $this->stdout("Checked:\t" . $i . " users.\n");
+            $this->stdout("Remapped:\t" . $m . " users.\n");
 
         } catch (Exception $ex) {
             $this->stderr("Error: " . $ex->getMessage() . "\n\n");
