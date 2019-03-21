@@ -15,11 +15,13 @@ use Yii;
 use yii\base\InvalidArgumentException;
 use yii\console\ExitCode;
 use yii\console\widgets\Table;
+use yii\db\Expression;
 use yii\helpers\Console;
 use Zend\Ldap\Ldap;
 
 /**
  * Console tools for manage Ldap
+ * @method updateAttributes(array $array)
  */
 class LdapController extends \yii\console\Controller
 {
@@ -155,24 +157,42 @@ class LdapController extends \yii\console\Controller
         return ExitCode::OK;
     }
 
+
     /**
-     * Map found users to given auth client.
-     *
-     * Useful if an existing authclient was renamed.
+     * Clears the 'authclient_id' entries in the user table.
+     * Useful if the ldap ids changed.
      *
      * @param string $id the auth client id (default: ldap)
      * @return int status code
      */
-    public function actionRemapAuthid($id)
+    public function actionMappingClear($id)
+    {
+        $this->stdout("*** LDAP Flush user id mappings for AuthClient ID: " . $id . "\n\n");
+        User::updateAll(['authclient_id' => new Expression('NULL')], ['auth_mode' => $id]);
+
+        $this->stdout("Mappings cleared!\n");
+        return ExitCode::OK;
+    }
+
+
+    /**
+     * Rebuilds the authclient_id and auth_mode mappings in the user table
+     *
+     * @param string $id the auth client id (default: ldap)
+     * @return int status code
+     */
+    public function actionMappingRebuild($id)
     {
         $this->stdout("*** LDAP ReMap Users for AuthClient ID: " . $id . "\n\n");
 
         $i = 0;
         $m = 0;
+        $d = 0;
 
         try {
             $newAuthClient = $this->getAuthClient($id);
 
+            // Loop over users of this authclient
             foreach ($newAuthClient->getUserCollection() as $userEntry) {
                 $i++;
 
@@ -180,16 +200,40 @@ class LdapController extends \yii\console\Controller
                 $attributes = $authClient->getUserAttributes();
 
                 if (isset($attributes['id'])) {
-                    $user = User::findOne(['authclient_id' => $attributes['id']]);
+                    print "Skipped - No ID for: " . $attributes['dn'] . "\n";
+                    continue;
+                }
+
+                // Fix empty 'authclient_id' by e-mail
+                if (isset($attributes['email'])) {
+                    $user = User::find()->where(['email' => $attributes['email']])->andWhere(['IS', 'authclient_id', new Expression('NULL')])->one();
                     if ($user !== null) {
-                        $user->updateAttributes(['auth_mode' => $newAuthClient->getId()]);
-                        $m++;
+                        $user->updateAttributes(['authclient_id' => $attributes['id']]);
+                        $d++;
                     }
+                }
+
+                // Fix empty 'authclient_id' by username
+                if (isset($attributes['username'])) {
+                    $user = User::find()->where(['username' => $attributes['username']])->andWhere(['IS', 'authclient_id', new Expression('NULL')])->one();
+                    if ($user !== null) {
+                        $user->updateAttributes(['authclient_id' => $attributes['id']]);
+                        $d++;
+                    }
+                }
+
+                // Fix wrong/missing 'auth_mode' by authclient_id
+                $user = User::findOne(['authclient_id' => $attributes['id']]);
+                if ($user !== null && $user->auth_mode != $newAuthClient->getId()) {
+                    $user->updateAttributes(['auth_mode' => $newAuthClient->getId()]);
+                    $m++;
                 }
             }
 
+
             $this->stdout("Checked:\t" . $i . " users.\n");
-            $this->stdout("Remapped:\t" . $m . " users.\n");
+            $this->stdout("Remapped 'authclient_id' value:\t" . $d . " users.\n");
+            $this->stdout("Remapped 'auth_mode' value:\t" . $m . " users.\n");
 
         } catch (Exception $ex) {
             $this->stderr("Error: " . $ex->getMessage() . "\n\n");
