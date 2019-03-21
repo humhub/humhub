@@ -22,6 +22,16 @@ use humhub\modules\space\models\Space;
  */
 class Html extends \yii\bootstrap\Html
 {
+    /**
+     * @param string $content
+     * @param array $options
+     * @return string
+     */
+    public static function script($content, $options = [])
+    {
+        $options['nonce'] = 'test';
+        return parent::script( $content, $options);
+    }
 
     /**
      * Save button is a shortcut for the default submit button
