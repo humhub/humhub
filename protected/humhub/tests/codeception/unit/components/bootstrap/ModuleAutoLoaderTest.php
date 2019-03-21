@@ -39,6 +39,7 @@ class ModuleAutoLoaderTest extends Unit
         'tour',
         'ui',
         'user',
+        'ldap',
     ];
 
     /**

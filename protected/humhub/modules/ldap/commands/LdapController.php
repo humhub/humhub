@@ -199,7 +199,7 @@ class LdapController extends \yii\console\Controller
                 $authClient = $newAuthClient->getAuthClientInstance($userEntry);
                 $attributes = $authClient->getUserAttributes();
 
-                if (isset($attributes['id'])) {
+                if (!isset($attributes['id'])) {
                     print "Skipped - No ID for: " . $attributes['dn'] . "\n";
                     continue;
                 }
@@ -207,7 +207,7 @@ class LdapController extends \yii\console\Controller
                 // Fix empty 'authclient_id' by e-mail
                 if (isset($attributes['email'])) {
                     $user = User::find()->where(['email' => $attributes['email']])->andWhere(['IS', 'authclient_id', new Expression('NULL')])->one();
-                    if ($user !== null) {
+                    if ($user !== null && User::findOne(['authclient_id' => $attributes['id']]) === null) {
                         $user->updateAttributes(['authclient_id' => $attributes['id']]);
                         $d++;
                     }
@@ -216,7 +216,7 @@ class LdapController extends \yii\console\Controller
                 // Fix empty 'authclient_id' by username
                 if (isset($attributes['username'])) {
                     $user = User::find()->where(['username' => $attributes['username']])->andWhere(['IS', 'authclient_id', new Expression('NULL')])->one();
-                    if ($user !== null) {
+                    if ($user !== null && User::findOne(['authclient_id' => $attributes['id']]) === null) {
                         $user->updateAttributes(['authclient_id' => $attributes['id']]);
                         $d++;
                     }
