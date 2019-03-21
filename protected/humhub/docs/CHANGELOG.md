@@ -10,6 +10,7 @@ HumHub Change Log
 - Fix: Richtext preview new line backslash issue
 - Enh: Migrated LDAP features into own submodule
 - Enh: Added new LDAP command line tools
+- Fix: #3347: Fixed searching members in space and users with white space in full name (Baleks)
 
 
 1.3.11  (March 06, 2019)
