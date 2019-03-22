@@ -12,23 +12,23 @@ use humhub\modules\search\commands\SearchController;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\libs\SearchResult;
 use humhub\modules\search\libs\SearchResultSet;
-use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
-use ZendSearch\Lucene\Document;
-use ZendSearch\Lucene\Document\Field;
-use ZendSearch\Lucene\Lucene;
-use ZendSearch\Lucene\Search\Query\MultiTerm;
-use ZendSearch\Lucene\Index\Term;
-use ZendSearch\Lucene\Search\Query\Term as QueryTerm;
-use ZendSearch\Lucene\Search\Query\Wildcard;
-use ZendSearch\Lucene\Search\Query\Boolean;
-use ZendSearch\Lucene\Search\QueryParser;
-use ZendSearch\Lucene\Exception\RuntimeException;
+use humhub\modules\space\models\Space;
+use Yii;
+use yii\helpers\FileHelper;
+use yii\helpers\VarDumper;
 use ZendSearch\Lucene\Analysis\Analyzer\Analyzer;
 use ZendSearch\Lucene\Analysis\Analyzer\Common\Utf8Num\CaseInsensitive;
-use Yii;
-use yii\helpers\VarDumper;
-use yii\helpers\FileHelper;
+use ZendSearch\Lucene\Document;
+use ZendSearch\Lucene\Document\Field;
+use ZendSearch\Lucene\Exception\RuntimeException;
+use ZendSearch\Lucene\Index\Term;
+use ZendSearch\Lucene\Lucene;
+use ZendSearch\Lucene\Search\Query\Boolean;
+use ZendSearch\Lucene\Search\Query\MultiTerm;
+use ZendSearch\Lucene\Search\Query\Term as QueryTerm;
+use ZendSearch\Lucene\Search\Query\Wildcard;
+use ZendSearch\Lucene\Search\QueryParser;
 
 /**
  * ZendLucenceSearch Engine
@@ -87,8 +87,6 @@ class ZendLuceneSearch extends Search
         }
 
 
-
-
         // Add provided search infos
         foreach ($attributes as $key => $val) {
             if (is_array($val)) {
@@ -112,7 +110,7 @@ class ZendLuceneSearch extends Search
             $index->addDocument($doc);
             $index->commit();
         } catch (RuntimeException $e) {
-            Yii::error('Could not add document to search index. Error: '. $e->getMessage(), 'search');
+            Yii::error('Could not add document to search index. Error: ' . $e->getMessage(), 'search');
         }
     }
 
@@ -124,25 +122,31 @@ class ZendLuceneSearch extends Search
 
     public function delete(Searchable $obj)
     {
+        $this->deleteRecord($obj->className(), $obj->getPrimaryKey());
+    }
+
+
+    public function deleteRecord($className, $primaryKey)
+    {
         $index = $this->getIndex();
 
         $query = new MultiTerm();
-        $query->addTerm(new Term($obj->className(), 'model'), true);
-        $query->addTerm(new Term($obj->getPrimaryKey(), 'pk'), true);
+        $query->addTerm(new Term($className, 'model'), true);
+        $query->addTerm(new Term($primaryKey, 'pk'), true);
 
         $hits = $index->find($query);
         foreach ($hits as $hit) {
             try {
                 $index->delete($hit->id);
             } catch (RuntimeException $e) {
-                Yii::error('Could not delete document from search index. Error: '. $e->getMessage(), 'search');
+                Yii::error('Could not delete document from search index. Error: ' . $e->getMessage(), 'search');
             }
         }
 
         try {
             $index->commit();
         } catch (RuntimeException $e) {
-            Yii::error('Could not commit search index. Error: '. $e->getMessage(), 'search');
+            Yii::error('Could not commit search index. Error: ' . $e->getMessage(), 'search');
         }
     }
 
@@ -163,7 +167,7 @@ class ZendLuceneSearch extends Search
         $options = $this->setDefaultFindOptions($options);
 
         $index = $this->getIndex();
-        $keyword = str_replace(['*', '?', '_', '$', '-', '.', '\'', '+', '&&' ,'||' ,'!' ,'(', ')','{', '}', '[', ']', '^', '"', '~', ':', '\\'], ' ', mb_strtolower($keyword, 'utf-8'));
+        $keyword = str_replace(['*', '?', '_', '$', '-', '.', '\'', '+', '&&', '||', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', ':', '\\'], ' ', mb_strtolower($keyword, 'utf-8'));
 
         $query = $this->buildQuery($keyword, $options);
         if ($query === null) {

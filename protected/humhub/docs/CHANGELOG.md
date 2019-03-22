@@ -11,6 +11,7 @@ HumHub Change Log
 - Enh: Migrated LDAP features into own submodule
 - Enh: Added new LDAP command line tools
 - Fix: #3347: Fixed searching members in space and users with white space in full name (Baleks)
+- Fix: Deleted Records are not correctly removed from the search index
 
 
 1.3.11  (March 06, 2019)
