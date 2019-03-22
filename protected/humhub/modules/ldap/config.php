@@ -17,7 +17,7 @@ return [
     'isCoreModule' => true,
     'events' => [
         [AuthenticationMenu::class, AuthenticationMenu::EVENT_INIT, [Events::class, 'onAuthenticationMenu']],
-        [Collection::class, Collection::EVENT_AFTER_CLIENTS_SET, [Events::class, 'onAuthClientCollectionSet']],
+        [Collection::class, Collection::EVENT_BEFORE_CLIENTS_SET, [Events::class, 'onAuthClientCollectionSet']],
         [Application::class, Application::EVENT_ON_INIT, [Events::class, 'onConsoleApplicationInit']],
     ]
 ];

@@ -20,6 +20,7 @@ use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 use Zend\Ldap\Exception\LdapException;
 use Zend\Ldap\Ldap;
@@ -146,6 +147,11 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      * @var array of attributes which are synced with the user table
      */
     public $syncUserTableAttributes = ['username', 'email'];
+
+    /**
+     * @var int The value for network timeout when connect to the LDAP server.
+     */
+    public $networkTimeout = 30;
 
     /**
      * @inheritdoc
@@ -415,6 +421,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                 'bindRequiresDn' => true,
                 'baseDn' => $this->baseDn,
                 'accountFilterFormat' => $this->loginFilter,
+                'networkTimeout' => $this->networkTimeout,
             ];
 
             $this->_ldap = new Ldap($options);

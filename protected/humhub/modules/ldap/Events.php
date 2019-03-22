@@ -46,7 +46,7 @@ class Events extends BaseObject
 
             $settings = new LdapSettings();
             $settings->loadSaved();
-            $collection->setClient('ldap', $settings->getLdapAuth());
+            $collection->setClient('ldap', $settings->getLdapAuthDefinition());
         }
     }
 
