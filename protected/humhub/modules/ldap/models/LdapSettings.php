@@ -232,13 +232,14 @@ class LdapSettings extends Model
 
 
     /**
-     * Returns a configured LdapAuth instance
+     * Returns a configured LdapAuth class definition
      *
-     * @return LdapAuth
+     * @return array the LDAP Auth definition
      */
-    public function getLdapAuth()
+    public function getLdapAuthDefinition()
     {
-        return new LdapAuth([
+        return [
+            'class' => LdapAuth::class,
             'hostname' => $this->hostname,
             'port' => $this->port,
             'bindUsername' => $this->username,
@@ -252,7 +253,7 @@ class LdapSettings extends Model
             'emailAttribute' => $this->emailAttribute,
             'usernameAttribute' => $this->usernameAttribute,
             'idAttribute' => $this->idAttribute
-        ]);
+        ];
     }
 
     /**

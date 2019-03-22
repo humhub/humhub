@@ -23,6 +23,11 @@ class Collection extends Component
 {
 
     /**
+     * @event Event an event raised before the clients are set.
+     */
+    const EVENT_BEFORE_CLIENTS_SET = 'client_set_before';
+
+    /**
      * @event Event an event raised after the clients are set.
      */
     const EVENT_AFTER_CLIENTS_SET = 'client_set';
@@ -37,7 +42,8 @@ class Collection extends Component
      */
     public function setClients(array $clients)
     {
-        $this->_clients = array_merge($this->getDefaultClients(), $clients);
+        $this->trigger(self::EVENT_BEFORE_CLIENTS_SET);
+        $this->_clients = array_merge($this->getDefaultClients(), $clients, $this->_clients);
         $this->trigger(self::EVENT_AFTER_CLIENTS_SET);
     }
 
