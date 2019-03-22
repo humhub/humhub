@@ -12,6 +12,8 @@ HumHub Change Log
 - Enh: Added new LDAP command line tools
 - Fix: #3347: Fixed searching members in space and users with white space in full name (Baleks)
 - Fix: Deleted Records are not correctly removed from the search index
+- Fix: #3459 Notification counter increment after manual notification fetch
+- Fix: Notification count update does not respect notification group
 
 
 1.3.11  (March 06, 2019)

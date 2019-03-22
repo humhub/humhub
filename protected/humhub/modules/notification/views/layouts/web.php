@@ -1,6 +1,7 @@
 <?php
 
 use humhub\widgets\TimeAgo;
+use yii\helpers\Html;
 
 /** @var \humhub\modules\user\models\User $originator */
 /** @var \humhub\modules\space\models\Space $space */
@@ -11,7 +12,10 @@ use humhub\widgets\TimeAgo;
 /** @var string $relativeUrl */
 
 ?>
-<li class="<?php if ($isNew) : ?>new<?php endif; ?>" data-notification-id="<?= $record->id ?>">
+<li class="<?php if ($isNew) : ?>new<?php endif; ?>"
+    data-notification-id="<?= $record->id ?>"
+    data-notification-group="<?= !empty($record->baseModel->getGroupkey()) ? Html::encode(get_class($record->baseModel)).':'.Html::encode($record->baseModel->getGroupKey()) : '' ?>">
+
     <a href="<?= isset($relativeUrl) ? $relativeUrl : $url; ?>">
         <div class="media">
 
