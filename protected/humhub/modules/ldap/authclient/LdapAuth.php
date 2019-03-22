@@ -149,6 +149,11 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     public $syncUserTableAttributes = ['username', 'email'];
 
     /**
+     * @var int The value for network timeout when connect to the LDAP server.
+     */
+    public $networkTimeout = 30;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -416,6 +421,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                 'bindRequiresDn' => true,
                 'baseDn' => $this->baseDn,
                 'accountFilterFormat' => $this->loginFilter,
+                'networkTimeout' => $this->networkTimeout,
             ];
 
             $this->_ldap = new Ldap($options);
