@@ -14,7 +14,7 @@ HumHub Change Log
 - Fix: Deleted Records are not correctly removed from the search index
 - Fix: #3459 Notification counter increment after manual notification fetch
 - Fix: Notification count update does not respect notification group
-
+- Fix: API call to v1 deprecated use v2
 
 1.3.11  (March 06, 2019)
 ---------------------------
