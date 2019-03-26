@@ -7,8 +7,12 @@ namespace humhub\modules\notification\tests\codeception\unit\rendering\notificat
  *
  * @author buddha
  */
-class TestedMailViewNotification extends \humhub\modules\notification\components\BaseNotification
+class TestNotification extends \humhub\modules\notification\components\BaseNotification
 {
+    public $moduleId = 'notification';
+    public $requireOriginator = false;
+    public $requireSource = false;
+
     public function html()
     {
         return '<h1>TestedMailViewNotificationHTML</h1>';
