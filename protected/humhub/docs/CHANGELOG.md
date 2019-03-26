@@ -1,7 +1,7 @@
 HumHub Change Log
 =================
 
-1.3.12 (Unreleased)
+1.3.12  (March 26, 2019)
 ---------------------------
 - Enh: Use of new Richtext for About section
 - Chng: Force blank links in old markdown editor
