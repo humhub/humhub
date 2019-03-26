@@ -15,6 +15,7 @@ HumHub Change Log
 - Fix: #3459 Notification counter increment after manual notification fetch
 - Fix: Notification count update does not respect notification group
 - Fix: Change email form is restricted to max 45 characters. Changed to 150 (current DB restriction)
+- Fix: Footer menu renders redundant `<li>` end tag.
 
 
 1.3.11  (March 06, 2019)
