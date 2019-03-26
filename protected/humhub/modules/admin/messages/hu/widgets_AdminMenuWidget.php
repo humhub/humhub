@@ -3,7 +3,7 @@ return array (
   '<strong>Administration</strong> menu' => '<strong>Adminisztrációs</strong> menü',
   'Advanced' => 'Haladó',
   'Appearance' => 'Megjelenés',
-  'Caching' => 'gYORSÍTÓTÁRAZÁS',
+  'Caching' => 'Gyorsítótárazás',
   'E-Mail summaries' => 'Email összesítések',
   'Files' => 'Fájlok',
   'General' => 'Általános',
