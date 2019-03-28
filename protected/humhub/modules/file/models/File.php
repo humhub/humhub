@@ -159,6 +159,10 @@ class File extends FileCompat
             return $object->content->canEdit($userId);
         }
 
+        if($object !== null && $object instanceof ActiveRecord){
+            return $object->canDeleteFile();
+        }
+
         // File is not bound to an object
         if ($object == null) {
             return true;
