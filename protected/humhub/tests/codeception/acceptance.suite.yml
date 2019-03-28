@@ -19,3 +19,4 @@ modules:
       browser: chrome
       port: 4444
       restart: true
+      window_size: maximize

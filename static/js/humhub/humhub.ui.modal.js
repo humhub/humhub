@@ -294,6 +294,7 @@ humhub.module('ui.modal', function (module, require, $) {
             if (!this.$.data('bs.modal')) {
                 this.$.modal(this.options);
             } else {
+                this.set(this.options);
                 this.$.modal('show');
             }
             this.focus();
@@ -392,8 +393,8 @@ humhub.module('ui.modal', function (module, require, $) {
             this.getDialog().addClass('modal-dialog-'+this.options.size);
         }
 
-        this.options.backdrop = options.backdrop || true;
-        this.options.keyboard = options.keyboard || true;
+        this.options.backdrop = object.defaultValue(options.backdrop, true);
+        this.options.keyboard = object.defaultValue(options.keyboard, true);
 
         if (this.$.data('bs.modal')) {
             this.$.data('bs.modal').options = this.options;
@@ -578,6 +579,10 @@ humhub.module('ui.modal', function (module, require, $) {
 
                 var $parent = $(e.target.parentNode);
                 if ($parent.hasClass('cke_dialog_ui_input_select') || $parent.hasClass('cke_dialog_ui_input_text')) {
+                    return true;
+                }
+
+                if($target.closest('.ProseMirror-prompt').length) {
                     return true;
                 }
 

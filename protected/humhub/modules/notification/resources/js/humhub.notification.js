@@ -13,6 +13,9 @@ humhub.module('notification', function (module, require, $) {
     var view = require('ui.view');
     var user = require('user');
 
+    var notificationIds = [];
+    var notificationGroups = [];
+
     module.initOnPjaxLoad = true;
 
     var NotificationDropDown = function (node, options) {
@@ -22,7 +25,6 @@ humhub.module('notification', function (module, require, $) {
     object.inherits(NotificationDropDown, Widget);
 
     NotificationDropDown.prototype.init = function (update) {
-        
         this.isOpen = false;
         this.lastEntryLoaded = false;
         this.lastEntryId = 0;
@@ -33,10 +35,32 @@ humhub.module('notification', function (module, require, $) {
 
         var that = this;
         event.on('humhub:modules:notification:live:NewNotification', function (evt, events, update) {
-            var count = (that.$.data('notification-count')) ? parseInt(that.$.data('notification-count')) + events.length : events.length;
+            var filteredEvents = that.filterEvents(events);
+            var count = (that.$.data('notification-count')) ? parseInt(that.$.data('notification-count')) + filteredEvents.length : filteredEvents.length;
             that.updateCount(count);
             that.sendDesktopNotifications(events, update.lastSessionTime);
         });
+    };
+
+    NotificationDropDown.prototype.filterEvents = function (events) {
+        if(!events || !events.length) {
+            return;
+        }
+
+        var result = [];
+        events.forEach(function(event) {
+            if(notificationIds.indexOf(event.data.notificationId) < 0) {
+                var groupId = event.data.notificationGroup;
+
+                // We filter out group ids which were already handled
+                if(!groupId || !groupId.length || notificationGroups.indexOf(groupId) < 0) {
+                    result.push(event);
+                    notificationGroups.push(groupId);
+                }
+            }
+        });
+
+        return result;
     };
 
     NotificationDropDown.prototype.initDropdown = function () {
@@ -58,7 +82,7 @@ humhub.module('notification', function (module, require, $) {
         });
     };
 
-    NotificationDropDown.prototype.toggle = function (evt) {
+    NotificationDropDown.prototype.toggle = function () {
         // Always reset the loading settings so we reload the whole dropdown.
         this.lastEntryLoaded = false;
         this.lastEntryId = 0;
@@ -93,12 +117,31 @@ humhub.module('notification', function (module, require, $) {
         } else {
             this.lastEntryId = response.lastEntryId;
             this.$entryList.append(response.output);
+
             $('span.time').timeago();
         }
 
+        this.parseNotifications();
         this.updateCount(parseInt(response.newNotifications));
         this.lastEntryLoaded = (response.counter < 6);
         this.$entryList.fadeIn('fast');
+    };
+
+    NotificationDropDown.prototype.parseNotifications = function () {
+        this.$entryList.find('[data-notification-id]').each(function() {
+            var $this = $(this);
+            var id = $this.data('notificationId');
+
+            if(id && notificationIds.indexOf(id) < 0) {
+                notificationIds.push(id);
+            }
+
+            var groupId = $this.data('notificationGroup');
+
+            if(notificationGroups.indexOf(groupId) < 0) {
+                notificationGroups.push($this.data('notificationGroup'));
+            }
+        });
     };
 
     NotificationDropDown.prototype.updateCount = function ($count) {
@@ -195,6 +238,8 @@ humhub.module('notification', function (module, require, $) {
             $('#badge-notifications').hide();
             $('#mark-seen-link').hide();
             that.updateCount(0);
+            notificationIds = [];
+            notificationGroups = [];
         }).catch(function (e) {
             module.log.error(e, true);
         });

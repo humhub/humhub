@@ -9,6 +9,7 @@
 namespace humhub\modules\file\validators;
 
 use Yii;
+use humhub\modules\file\models\File;
 use humhub\modules\file\libs\ImageConverter;
 
 /**
@@ -59,10 +60,39 @@ class FileValidator extends \yii\validators\FileValidator
     }
 
     /**
+     * @inheritdoc
+     */
+    public function validateAttribute($model, $attribute)
+    {
+        $this->validateFileName($model, $attribute);
+        parent::validateAttribute($model, $attribute);
+    }
+
+    public function validateFileName($model, $attribute)
+    {
+        if($model instanceof File) {
+            $pattern = Yii::$app->moduleManager->getModule('file')->fileNameValidationPattern;
+
+            if(empty($pattern)) {
+                return;
+            }
+
+            if(preg_match($pattern, $model->file_name)) {
+                $this->addError($model, $attribute, Yii::t('FileModule.models_File', 'Invalid file name detected!'));
+            }
+
+            if(preg_match('/\.\w{2,3}\.\w{2,3}$/', $model->file_name)) {
+                $this->addError($model, $attribute, Yii::t('FileModule.models_File', 'Double file extensions are not allowed!'));
+            }
+        }
+    }
+
+    /**
      * Checks memory limit if GD is used for image conversions
-     * 
+     *
      * @param \yii\web\UploadedFile $file
-     * @return array|null 
+     * @return array|null
+     * @throws \yii\base\Exception
      */
     protected function checkMemoryLimit($file)
     {

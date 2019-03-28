@@ -19,6 +19,7 @@ use yii\db\Expression;
  * @property integer $source_pk
  * @property integer $space_id
  * @property integer $emailed
+ * @property string module
  * @property string $created_at
  * @property integer $desktop_notified
  * @property integer $originator_user_id

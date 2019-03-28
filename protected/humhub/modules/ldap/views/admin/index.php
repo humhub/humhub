@@ -1,52 +1,43 @@
 <?php
 /**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+/**
  * @var $this \yii\web\View
  * @var $enabled boolean
  * @var $errorMessage string
- * @var $model \humhub\modules\admin\models\forms\AuthenticationLdapSettingsForm
+ * @var $model \humhub\modules\ldap\models\LdapSettings
  * @var $userCount string
  */
 
-use humhub\models\Setting;
-use humhub\widgets\DataSaved;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 ?>
 
 <?php $this->beginContent('@admin/views/authentication/_authenticationLayout.php') ?>
+
 <div class="panel-body">
 
     <div class="help-block">
-        <?= Yii::t(
-            'AdminModule.views_setting_authentication_ldap',
-            'Specify your LDAP-backend used to fetch user accounts.'
-        ) ?>
+        <?= Yii::t('LdapModule.base', 'Specify your LDAP-backend used to fetch user accounts.') ?>
     </div>
     <br>
     <?php if ($enabled): ?>
         <?php if (!empty($errorMessage)): ?>
             <div class="alert alert-danger">
-                <?= Yii::t(
-                    'AdminModule.views_setting_authentication_ldap',
-                    'Status: Error! (Message: {message})',
-                    ['{message}' => $errorMessage]
-                ) ?>
+                <?= Yii::t('LdapModule.base', 'Status: Error! (Message: {message})', ['{message}' => $errorMessage]) ?>
             </div>
         <?php elseif ($userCount == 0): ?>
             <div class="alert alert-warning">
-                <?= Yii::t(
-                    'AdminModule.views_setting_authentication_ldap',
-                    'Status: Warning! (No users found using the ldap user filter!)'
-                ) ?>
+                <?= Yii::t('LdapModule.base', 'Status: Warning! (No users found using the ldap user filter!)') ?>
             </div>
         <?php else: ?>
             <div class="alert alert-success">
-                <?= Yii::t(
-                    'AdminModule.views_setting_authentication_ldap',
-                    'Status: OK! ({userCount} Users)',
-                    ['{userCount}' => $userCount]
-                ) ?>
+                <?= Yii::t('LdapModule.base', 'Status: OK! ({userCount} Users)', ['{userCount}' => $userCount]) ?>
             </div>
         <?php endif; ?>
     <?php endif; ?>
@@ -70,7 +61,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'port')->textInput() ?>
     <?= $form->field($model, 'encryption')->dropDownList($model->encryptionTypes) ?>
     <?= $form->field($model, 'username')->textInput() ?>
-    <?= $form->field($model, 'password')->passwordInput() ?>
+    <?= $form->field($model, 'passwordField')->passwordInput() ?>
     <?= $form->field($model, 'baseDn')->textInput() ?>
     <?= $form->field($model, 'loginFilter')->textArea() ?>
     <?= $form->field($model, 'userFilter')->textArea() ?>
@@ -80,12 +71,9 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'refreshUsers')->checkbox() ?>
     <hr>
 
-    <?= Html::submitButton(
-            Yii::t('AdminModule.views_setting_authentication_ldap', 'Save'),
-            ['class' => 'btn btn-primary', 'data-ui-loader' => '']
-    ) ?>
+    <?= Html::submitButton(Yii::t('base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
 
-    <?= DataSaved::widget() ?>
     <?php ActiveForm::end() ?>
 </div>
+
 <?php $this->endContent() ?>

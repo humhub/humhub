@@ -8,6 +8,13 @@
 
 namespace humhub\modules\notification\components;
 
+use Yii;
+use yii\base\InvalidConfigException;
+use yii\bootstrap\Html;
+use yii\db\Expression;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+use yii\mail\MessageInterface;
 use humhub\components\SocialActivity;
 use humhub\modules\notification\jobs\SendBulkNotification;
 use humhub\modules\notification\jobs\SendNotification;
@@ -16,13 +23,7 @@ use humhub\modules\notification\targets\BaseTarget;
 use humhub\modules\notification\targets\WebTarget;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
-use Yii;
-use yii\base\InvalidConfigException;
-use yii\bootstrap\Html;
-use yii\db\Expression;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
-use yii\mail\MessageInterface;
+
 
 /**
  * A BaseNotification class describes the behaviour and the type of a Notification.
@@ -34,6 +35,7 @@ use yii\mail\MessageInterface;
  *
  * This will send Notifications to different notification targets by using a queue.
  *
+ * @property Notification $record
  * @author luke
  */
 abstract class BaseNotification extends SocialActivity
@@ -131,6 +133,7 @@ abstract class BaseNotification extends SocialActivity
 
         $result = [
             'url' => Url::to(['/notification/entry', 'id' => $this->record->id], true),
+            'relativeUrl' => Url::to(['/notification/entry', 'id' => $this->record->id], false),
             'date' => $date,
             'isNew' => !$this->record->seen,
         ];
@@ -144,7 +147,8 @@ abstract class BaseNotification extends SocialActivity
      * Note: For compatibility reasons this method also allows to pass an array of user objects.
      * This support will removed in future versions.
      *
-     * @param ActiveQueryUser $query the user query
+     * @param ActiveQueryUser|array|User[] $query the user query
+     * @throws InvalidConfigException
      */
     public function sendBulk($query)
     {
@@ -174,6 +178,7 @@ abstract class BaseNotification extends SocialActivity
      * This function will not send notifications to the originator itself.
      *
      * @param User $user
+     * @throws InvalidConfigException
      */
     public function send(User $user)
     {
@@ -211,10 +216,11 @@ abstract class BaseNotification extends SocialActivity
     }
 
     /**
-     * Creates the an Notification instance of the current BaseNotification type for the
+     * Creates the Notification instance of the current BaseNotification type for the
      * given $user.
      *
      * @param User $user
+     * @return bool
      */
     public function saveRecord(User $user)
     {

@@ -151,4 +151,4 @@ To enable this driver you need to add following block to your local configuratio
 
 ### Sync and Instant Queue
 
-The [[humhub\components\queue\driver\Sync]] and [[humhub\components\queue\driver\Instant]] queues are used in test and development environments without cron jobs.
+The [[humhub\modules\queue\driver\Sync]] and [[humhub\modules\queue\driver\Instant]] queues are used in test and development environments without cron jobs.

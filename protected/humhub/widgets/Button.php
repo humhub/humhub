@@ -8,10 +8,8 @@
 
 namespace humhub\widgets;
 
-use humhub\components\Widget;
 use humhub\libs\Html;
 use Yii;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 /**
@@ -200,6 +198,13 @@ class Button extends BootstrapComponent
     {
         if ($this->_loader) {
             $this->htmlOptions['data-ui-loader'] = '';
+        }
+
+        // Workaround since data-method handler prevents confirm or other action handlers from being executed.
+        if(isset($this->htmlOptions['data-action-confirm']) && isset($this->htmlOptions['data-method'])) {
+            $method = $this->htmlOptions['data-method'];
+            $this->htmlOptions['data-method'] = null;
+            $this->htmlOptions['data-action-method'] = $method;
         }
 
         if ($this->_link) {

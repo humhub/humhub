@@ -243,6 +243,10 @@ class Registration extends HForm
      */
     public function register(\yii\authclient\ClientInterface $authClient = null)
     {
+        if (!$this->validate()) {
+            return false;
+        }
+
         $this->models['User']->language = Yii::$app->language;
         if ($this->enableUserApproval) {
             $this->models['User']->status = User::STATUS_NEED_APPROVAL;
@@ -352,4 +356,19 @@ class Registration extends HForm
         return $this->_groupUser;
     }
 
+
+    public function getErrors()
+    {
+        $errors = [];
+
+        if ($this->models['User']->hasErrors()) {
+            $errors = array_merge($errors, $this->models['User']->getErrors());
+        }
+
+        if ($this->models['Profile']->hasErrors()) {
+            $errors = array_merge($errors, $this->models['Profile']->getErrors());
+        }
+
+        return $errors;
+    }
 }

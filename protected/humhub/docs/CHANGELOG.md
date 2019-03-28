@@ -1,8 +1,64 @@
 HumHub Change Log
 =================
 
-1.3.9  (Unreleased)
+1.3.13  (Unreleased)
 ---------------------------
+- Enh: Added HomeUrl support to ConsoleApplication
+
+
+
+1.3.12  (March 26, 2019)
+---------------------------
+- Enh: Use of new Richtext for About section
+- Chng: Force blank links in old markdown editor
+- Fix: Profile Markdown field files are not attached
+- Chng: Don't restrict`humhub\modules\file\components\FileManager::attach()` to `humhub\components\ActiveRecord`
+- Fix: Richtext preview new line backslash issue
+- Enh: Migrated LDAP features into own submodule
+- Enh: Added new LDAP command line tools
+- Fix: #3347: Fixed searching members in space and users with white space in full name (Baleks)
+- Fix: Deleted Records are not correctly removed from the search index
+- Fix: #3459 Notification counter increment after manual notification fetch
+- Fix: Notification count update does not respect notification group
+- Fix: Change email form is restricted to max 45 characters. Changed to 150 (current DB restriction)
+- Fix: Footer menu renders redundant `<li>` end tag.
+
+
+1.3.11  (March 06, 2019)
+---------------------------
+- Fix: Disabled module notification category visible in notification settings.
+- Enh: Added `ModuleManager::getEnabledModules()`
+- Enh: `LikeAsset` is now part of `AppAsset` and does not need further registration
+- Fix (CVE-2019-9093) and (CVE-2019-9094): Reflective XSS in file post upload and cfiles upload (thanks to **Rubal Jain** for testing and reporting)
+- Enh: Added further upload file name validation
+- Enh: Added `ContentContainerModuleManager::flushCache()`
+- Fix: Bootstrap modal blocks richtext prompt focus
+- Fix: Richtext images with dimension setting not attached
+- Fix: `Stream::renderEntry()` overwrite does not work
+- Fix: Removed markdown line breaks from richtext preview
+- Fix: WallEntry of global content throws error
+- Fix: `ActivityAsset` does not depend on `StreamAsset`
+- Fix: Uploaded png preview files lose transparency
+- Fix: Modal options `backdrop` and `keyboard` deactivation has no effect
+
+
+1.3.10  (February 22, 2019)
+---------------------------
+- Fix: Removed ContentTag logging in search update
+- Fix #2567 No results in directory search containing single quote ( ' )
+- Fix #3468 Private space stream contains public content filter 
+- Fix #3473 Captcha validation breaks invite by mail
+- Enh: `data-action-confirm` now works on non action based links in combination with `data-action-method`
+- Enh: `grunt test` now uses the composer codeception version instead of a global executable
+- Enh: `grunt test` supports an additional `--env` option in order to set the codeception environment
+- Fix: Absolute url generation in tests not working
+- Enh: Added `HumHubHelper:fetchinviteToken()` in order to fetch invite tokens from emails in functional tests
+- Fix: Added "utf8mb4" character set support to database requirements
+- Fix: Finnish language name in language dropdown
+
+
+1.3.9  (February 13, 2019)
+--------------------------
 
 - Fix: StreamSuppressedQuery with limit = 2 throws query not executed exception
 - Fix #3378: Update user in search index when group memberships changes
@@ -13,6 +69,18 @@ HumHub Change Log
 - Fix: Removed database charset configuration in dynamic config
 - Fix: User soft deletion membership cache overwrite
 - Fix #3422 Stream suppressed loading logic loads unnecessary stream entries
+- Fix: "Back to home" button in registration broken with user approvals and guest mode activated
+- Fix #1683 #553: Added link to show/edit users awaiting admin approval
+- Fix: TextFilterInput uses `keypress` event instead of `keydown`
+- Fix #3452: Soft deleted user remain in other users as friends
+- Fix #3170: Wrong cancel invitation mail handling
+- Enh: Added `humhub\modules\space\models\Membership::isCurrentUser()`
+- Enh: Added `humhub\widgets\Link::post()` for `data-method="POST` requests
+- Fix: Use `humhub\modules\user\components\ActiveQueryUser::active()` on UserPicker fillquery by default
+- Added `relativeUrl` to notification view parameter
+- Fix #3335: Queue migration broken on some database configurations
+- Enh: Added new admin setting "Include captcha in registration form"
+- Enh: Added contentTags to the search index
 
 
 1.3.8  (December 10, 2018)

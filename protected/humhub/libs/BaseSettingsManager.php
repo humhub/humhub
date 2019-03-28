@@ -140,6 +140,8 @@ abstract class BaseSettingsManager extends Component
      * Deletes setting
      *
      * @param string $name
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function delete($name)
     {

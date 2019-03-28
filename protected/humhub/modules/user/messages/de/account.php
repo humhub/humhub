@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>Modify</strong> your profile image' => 'Profilbild <strong>bearbeiten</strong> ',
-  '<strong>Modify</strong> your title image' => 'Titelbild <strong>bearbeiten</strong> ',
+  '<strong>Modify</strong> your profile image' => 'Profilbild <strong>bearbeiten</strong>',
+  '<strong>Modify</strong> your title image' => 'Titelbild <strong>bearbeiten</strong>',
   '<strong>Security</strong> settings' => '<strong>Sicherheits</strong>-Einstellungen',
   '<strong>User</strong> settings' => '<strong>Benutzer</strong> Einstellungen',
   '<strong>Your</strong> profile' => '<strong>Dein</strong> Profil',
@@ -9,7 +9,7 @@ return array (
   'Are you sure that you want to delete your account?' => 'Bist Du sicher, dass Du Dein Benutzerkonto löschen möchtest?',
   'Delete account' => 'Benutzerkonto löschen',
   'E-Mail Summaries' => 'E-Mail-Zusammenfassung',
-  'Enter your password to continue' => 'Gebe Dein Passwort ein um fortzufahren',
+  'Enter your password to continue' => 'Gebe Dein Passwort ein, um fortzufahren',
   'Not registered users' => 'Keine registrierten Benutzer',
   'Notifications' => 'Benachrichtungen',
   'Other users' => 'Andere Benutzer',

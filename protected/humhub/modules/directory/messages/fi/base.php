@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Kukaan ei ole kirjoittanut mitään.</b><br> Kirjoita jotain ...',
+  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Kukaan ei ole kirjoittanut mitään.</b><br /> Kirjoita jotain ...',
   '<b>There are no profile posts yet!</b>' => '<b>Täällä ei ole vielä mitään!</b>',
   '<strong>Directory</strong> menu' => '<strong>Hakemisto</strong>',
   '<strong>Group</strong> members - {group}' => '<strong>Ryhmän</strong> jäsenet - {group}',
@@ -9,8 +9,8 @@ return array (
   '<strong>Member</strong> directory' => '<strong>Käyttäjä</strong> hakemisto',
   '<strong>Member</strong> stats' => '<strong>Käyttäjä</strong> tilastot',
   '<strong>New</strong> people' => '<strong>Uudet</strong> ihmiset',
-  '<strong>New</strong> spaces' => '<strong>Uudet</strong> sivut',
-  '<strong>Space</strong> directory' => '<strong>Sivujen</strong> hakemisto',
+  '<strong>New</strong> spaces' => '<strong>Uusimmat</strong> sivut',
+  '<strong>Space</strong> directory' => '<strong>Kaikki</strong> sivut',
   '<strong>Space</strong> stats' => '<strong>Sivujen</strong> tilastot',
   'Access directory' => 'Pääsy hakemistoon',
   'Average members' => 'Keskimääräärin jäseniä',

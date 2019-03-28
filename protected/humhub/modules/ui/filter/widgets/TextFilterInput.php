@@ -35,7 +35,7 @@ class TextFilterInput extends FilterInput
     {
         parent::prepareOptions();
 
-        $this->options['data-action-keypress'] = $this->changeAction;
+        $this->options['data-action-keydown'] = $this->changeAction;
         Html::addCssClass($this->options, 'form-control');
     }
 }

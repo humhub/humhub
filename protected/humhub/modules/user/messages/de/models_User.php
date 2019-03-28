@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Auth Mode' => 'Authentifizierungs-Verfahren',
+  'Auth Mode' => 'Auth-Verfahren',
   'Created at' => 'Erstellt am',
   'Created by' => 'Erstellt durch',
   'Default Space' => 'Standard-Space',
@@ -16,8 +16,8 @@ return array (
   'Space ID' => 'Space Id',
   'Status' => 'Status',
   'Tags' => 'Tags',
-  'Updated at' => 'Zuletzt geändert am',
-  'Updated by' => 'Zuletzt geändert durch',
+  'Updated at' => 'Geändert am',
+  'Updated by' => 'Geändert durch',
   'Username' => 'Benutzername',
   'Visibility' => 'Sichtbarkeit',
 );

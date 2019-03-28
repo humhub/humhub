@@ -8,7 +8,7 @@
 
 namespace humhub\libs;
 
-use humhub\modules\user\authclient\ZendLdapClient;
+use humhub\modules\ldap\helpers\LdapHelper;
 use Yii;
 
 /**
@@ -249,7 +249,7 @@ class SelfTest
         // Checks LDAP Extension
         $title = 'LDAP Support';
 
-        if (ZendLdapClient::isLdapAvailable()) {
+        if (LdapHelper::isLdapAvailable()) {
             $checks[] = [
                 'title' => Yii::t('base', $title),
                 'state' => 'OK'
