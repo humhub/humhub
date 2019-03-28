@@ -160,7 +160,7 @@ class File extends FileCompat
         }
 
         if($object !== null && $object instanceof ActiveRecord){
-            return $object->canDelete();
+            return $object->canDeleteFile();
         }
 
         // File is not bound to an object
