@@ -1,6 +1,12 @@
 HumHub Change Log
 =================
 
+1.3.13  (Unreleased)
+---------------------------
+- Enh: Added HomeUrl support to ConsoleApplication
+
+
+
 1.3.12  (March 26, 2019)
 ---------------------------
 - Enh: Use of new Richtext for About section
