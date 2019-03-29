@@ -68,6 +68,8 @@ abstract class Stream extends Action
     const MODE_NORMAL = 'normal';
     const MODE_ACTIVITY = 'activity';
 
+    const FROM_DASHBOARD = 'dashboard';
+
     /**
      * Maximum wall entries per request
      */
