@@ -1,7 +1,12 @@
 HumHub Change Log
 =================
 
-1.3.12 (Unreleased)
+1.3.13  (Unreleased)
+---------------------------
+- Enh: Added HomeUrl support to ConsoleApplication
+- Fix: API call to v1 deprecated use v2
+
+1.3.12  (March 26, 2019)
 ---------------------------
 - Enh: Use of new Richtext for About section
 - Chng: Force blank links in old markdown editor
@@ -14,7 +19,8 @@ HumHub Change Log
 - Fix: Deleted Records are not correctly removed from the search index
 - Fix: #3459 Notification counter increment after manual notification fetch
 - Fix: Notification count update does not respect notification group
-- Fix: API call to v1 deprecated use v2
+- Fix: Change email form is restricted to max 45 characters. Changed to 150 (current DB restriction)
+- Fix: Footer menu renders redundant `<li>` end tag.
 
 1.3.11  (March 06, 2019)
 ---------------------------
