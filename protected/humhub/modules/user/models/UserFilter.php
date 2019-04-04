@@ -168,9 +168,9 @@ class UserFilter extends User
      * Returns a subset of the given array containing all users of the given set
      * which are permitted. If the permission is null this method returns the
      * 
-     * @param type $users
-     * @param type $permission
-     * @return type
+     * @param $users
+     * @param $permission
+     * @return array
      */
     public static function filterByPermission($users, $permission)
     {

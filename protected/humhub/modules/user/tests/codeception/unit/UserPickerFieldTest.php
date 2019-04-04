@@ -15,4 +15,10 @@ class UserPickerFieldTest extends HumHubDbTestCase
         $picker = new UserPickerField(['itemKey' => 'id']);
         $this->assertEquals('id', $picker->itemKey);
     }
+
+    public function testDefaultRoute()
+    {
+        $picker = new UserPickerField();
+        $this->assertEquals('/user/search/json', $picker->defaultRoute);
+    }
 }
