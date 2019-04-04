@@ -283,7 +283,26 @@ class AccountController extends BaseAccountController
     }
 
     /**
-     * Change Current Password
+     * Change Current Username
+     */
+    public function actionChangeUsername()
+    {
+        if (!Yii::$app->user->canChangeUsername()) {
+            throw new HttpException(500, 'Change Username is not allowed');
+        }
+
+        $model = new \humhub\modules\user\models\forms\AccountChangeUsername;
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeUsername()) {
+            return $this->render('changeUsername_success', ['model' => $model]);
+        }
+
+        $this->view->warn(Yii::t('UserModule.controllers_AccountController', 'Changing the username can make some links unusable, for example old links to the profile.'));
+        return $this->render('changeUsername', ['model' => $model]);
+    }
+
+    /**
+     * Change Current E-mail
      */
     public function actionChangeEmail()
     {
