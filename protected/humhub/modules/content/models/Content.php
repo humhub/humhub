@@ -216,6 +216,7 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
 
     /**
      * @return bool checks if the given content allows content creation notifications and activities
+     * @throws IntegrityException
      */
     private function isMuted()
     {

@@ -116,7 +116,7 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
         if(this.options.data) {
             $.each(this.options.data, function(key, value) {
                 data[this.buildRequestDataKey(key)] = value;
-            })
+            });
         }
 
         $.each(this.stream.filter.getFilterMap(), function(key, value) {

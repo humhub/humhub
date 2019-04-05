@@ -3,7 +3,7 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\modules\user\models\User;
-use humhub\widgets\BasePickerField;
+use humhub\modules\ui\form\widgets\BasePicker;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -14,7 +14,7 @@ use yii\helpers\Url;
  * @since 1.2
  * @author buddha
  */
-class UserPickerField extends BasePickerField
+class UserPickerField extends BasePicker
 {
     /**
      * @inheritdoc
@@ -41,6 +41,7 @@ class UserPickerField extends BasePickerField
         if (empty($this->itemKey)) {
             $this->itemKey = 'guid';
         }
+        parent::init();
     }
 
     /**

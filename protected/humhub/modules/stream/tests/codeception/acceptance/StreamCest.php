@@ -7,6 +7,7 @@
 
 namespace stream\acceptance;
 
+use humhub\modules\content\models\Content;
 use stream\AcceptanceTester;
 
 class StreamCest
@@ -55,6 +56,7 @@ class StreamCest
         $I->createPost('This is my stream test post!');
 
         $newEntrySelector = '[data-content-key="14"]';
+
 
         $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my stream test post', '.wall-entry');
