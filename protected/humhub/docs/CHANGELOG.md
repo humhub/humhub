@@ -5,6 +5,7 @@ HumHub Change Log
 ---------------------------
 - Enh: Added HomeUrl support to ConsoleApplication
 - Fix: #2536 Incorrect log of "Attempt to steal file" due to faulty File::isAssignedTo() check
+- Fix: Wrong help block position in admin basic settings
 
 
 1.3.12  (March 26, 2019)
