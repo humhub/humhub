@@ -25,6 +25,7 @@ return [
     'Invalid request method!' => '',
     'Logo of {appName}' => '',
     'Please type at least {count} characters' => '',
+    'Powered by {name}' => '',
     'Profile dropdown' => '',
     'Profile image of {displayName}' => '',
     'Profile picture of {displayName}' => '',

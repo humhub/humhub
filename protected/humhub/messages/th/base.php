@@ -47,6 +47,7 @@ return [
     'No error information given.' => '',
     'Open' => '',
     'Please type at least {count} characters' => '',
+    'Powered by {name}' => '',
     'Profile dropdown' => '',
     'Profile image of {displayName}' => '',
     'Profile picture of {displayName}' => '',

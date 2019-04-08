@@ -22,6 +22,7 @@ return [
     'Delete' => '',
     'Edit' => '',
     'Please type at least {count} characters' => '',
+    'Powered by {name}' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
     '<strong>Confirm</strong> Action' => '<strong>Confirmar</strong> Acción',

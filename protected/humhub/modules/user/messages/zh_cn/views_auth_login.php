@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Please enter the letters from the image.' => '',
     'Please login with your username/email and password.' => '',
     '<strong>Join</strong> the network' => '<strong>加入</strong> 社交平台',
     '<strong>Please</strong> sign in' => '<strong>请</strong> 登录',

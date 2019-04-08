@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Powered by {name}' => '',
     '<strong>Confirm</strong> Action' => 'Aktion <strong>bestätigen</strong>
 ',
     '<strong>Latest</strong> updates' => '<strong>Letzte</strong> Aktualisierungen',

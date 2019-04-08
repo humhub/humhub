@@ -20,6 +20,7 @@ return [
     'Include archived content' => '',
     'Only private content' => '',
     'Only public content' => '',
+    'Where I\'m involved' => '',
     'With file attachments' => '',
     'Back to stream' => 'Povratak na stream',
     'Created by me' => 'Kreirao sam',
@@ -32,6 +33,5 @@ return [
     'The content has been archived.' => 'Sadržaj je arhiviran.',
     'The content has been deleted.' => 'Sadržaj je obrisan.',
     'The content has been unarchived.' => 'Sadržaj je dearhiviran.',
-    'Where I´m involved' => 'Gdje sam ja uključen',
     'Your last edit state has been saved!' => 'Vaše zadnje uređeno stanje je spremljeno!',
 ];

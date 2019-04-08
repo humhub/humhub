@@ -17,21 +17,21 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Include archived content' => 'Включить архивированный контент',
-    'Only private content' => 'Только приватный контент',
-    'Only public content' => 'Только публичный контент',
-    'With file attachments' => 'С прикреплёнными файлами',
+    'Where I\'m involved' => '',
     'Back to stream' => 'Вернуться в ленту',
     'Created by me' => 'Созданные мной',
     'Creation time' => 'Время создания',
     'Filter' => 'Фильтр',
+    'Include archived content' => 'Включить архивированный контент',
     'Last update' => 'Последнее обновление',
     'Load more' => 'Показать еще',
     'No matches with your selected filters!' => 'Ничего не найдено. Попробуйте изменить фильтры!',
     'Nothing here yet!' => 'Здесь ничего еще нет!',
+    'Only private content' => 'Только приватный контент',
+    'Only public content' => 'Только публичный контент',
     'The content has been archived.' => 'Содержимое заархивировано.',
     'The content has been deleted.' => 'Содержимое удалено.',
     'The content has been unarchived.' => 'Содержимое разархивировано.',
-    'Where I´m involved' => 'В которых я участвую',
+    'With file attachments' => 'С прикреплёнными файлами',
     'Your last edit state has been saved!' => 'Последнее состояние сохранено.',
 ];

@@ -22,6 +22,7 @@ return [
     'Default content of the registration denial email' => '',
     'Default user idle timeout, auto-logout (in seconds, optional)' => '',
     'Default user profile visibility' => '',
+    'Include captcha in registration form' => '',
     'Anonymous users can register' => 'Anonyma användare kan registrera sig',
     'Default user group for new users' => 'Standard grupp för nya användare',
     'Members can invite external users by email' => 'Användare kan bjuda in externa personer via e-post',

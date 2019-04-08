@@ -19,6 +19,7 @@
 return [
     'Default content of the registration approval email' => '',
     'Default content of the registration denial email' => '',
+    'Include captcha in registration form' => '',
     'Allow limited access for non-authenticated users (guests)' => 'Zezwól na ograniczony dostęp dla niezalogowanych użytkowników (gości)',
     'Anonymous users can register' => 'Anonimowi użytkownicy mogą rejestrować się ',
     'Default user group for new users' => 'Domyślna grupa użytkowników dla nowych użytkowników ',

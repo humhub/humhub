@@ -27,11 +27,11 @@ return [
     'The content has been archived.' => '',
     'The content has been deleted.' => '',
     'The content has been unarchived.' => '',
+    'Where I\'m involved' => '',
     'With file attachments' => '',
     'Your last edit state has been saved!' => '',
     'Created by me' => 'Criado por mim',
     'Creation time' => 'Hora de Criação',
     'Filter' => 'Filtro',
     'Last update' => 'Última atualização',
-    'Where I´m involved' => 'Onde estou envolvido',
 ];
