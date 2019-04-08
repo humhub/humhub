@@ -7,6 +7,7 @@ HumHub Change Log
 - Fix: #2536 Incorrect log of "Attempt to steal file" due to faulty File::isAssignedTo() check
 - Fix: Wrong help block position in admin basic settings
 - Chng: Removed yiisoft/yii2-apidoc dependency
+- Enh: Double file extension check is now optional and disabled by default
 
 
 1.3.12  (March 26, 2019)

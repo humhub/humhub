@@ -44,6 +44,11 @@ class Module extends \humhub\components\Module
     ];
 
     /**
+     * @var bool Prohibit uploads of files with double file extension.
+     */
+    public $denyDoubleFileExtensions = false;
+
+    /**
      * @var array of converter options
      */
     public $converterOptions = [];

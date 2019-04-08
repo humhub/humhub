@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\validators;
 
+use humhub\modules\file\Module;
 use Yii;
 use humhub\modules\file\models\File;
 use humhub\modules\file\libs\ImageConverter;
@@ -28,16 +29,28 @@ class FileValidator extends \yii\validators\FileValidator
     public $useDefaultExtensionRestriction = true;
 
     /**
+     * @var boolean deny double file extensions
+     */
+    public $denyDoubleFileExtensions;
+
+    /**
      * @inheritdoc
      */
     public function init()
     {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('file');
+
         if ($this->extensions === null && $this->useDefaultExtensionRestriction) {
-            $this->extensions = Yii::$app->getModule('file')->settings->get('allowedExtensions');
+            $this->extensions = $module->settings->get('allowedExtensions');
         }
 
         if ($this->maxSize === null) {
-            $this->maxSize = Yii::$app->getModule('file')->settings->get('maxFileSize');
+            $this->maxSize = $module->settings->get('maxFileSize');
+        }
+
+        if ($this->denyDoubleFileExtensions === null) {
+            $this->denyDoubleFileExtensions = $module->denyDoubleFileExtensions;
         }
 
         parent::init();
@@ -81,7 +94,7 @@ class FileValidator extends \yii\validators\FileValidator
                 $this->addError($model, $attribute, Yii::t('FileModule.models_File', 'Invalid file name detected!'));
             }
 
-            if(preg_match('/\.\w{2,3}\.\w{2,3}$/', $model->file_name)) {
+            if($this->denyDoubleFileExtensions && preg_match('/\.\w{2,3}\.\w{2,3}$/', $model->file_name)) {
                 $this->addError($model, $attribute, Yii::t('FileModule.models_File', 'Double file extensions are not allowed!'));
             }
         }
