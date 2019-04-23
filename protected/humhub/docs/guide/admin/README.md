@@ -25,6 +25,6 @@ Administration Topics
 * [Asynchronous Task Processing](asynchronous-tasks.md)
 * [Authentication and LDAP](authentication.md)
 * [Search System](search.md)
-* [Permission defaults](permission-defaults.md)
+* [Permission defaults](permissions.md)
 * [Translations](translations.md)
 * [Troubleshooting and Help](troubleshooting.md)
