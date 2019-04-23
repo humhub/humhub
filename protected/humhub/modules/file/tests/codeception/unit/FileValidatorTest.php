@@ -92,7 +92,7 @@ class FileValidatorTest extends HumHubDbTestCase
         /** @var Module $module */
         $module = Yii::$app->getModule('file');
         $module->denyDoubleFileExtensions = true;
-        $this->assertTrue($this->createFile("test.jpg.exe")->validate());
+        $this->assertFalse($this->createFile("test.jpg.exe")->validate());
 
     }
 
