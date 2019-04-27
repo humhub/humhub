@@ -2,6 +2,7 @@ actor: Tester
 config:
   test_entry_url: "http://localhost:8080/index-test.php"
 coverage:
+  c3_url: 'http://localhost:8080/index-test.php'
   enabled: true
   include:
   - ../commands/*

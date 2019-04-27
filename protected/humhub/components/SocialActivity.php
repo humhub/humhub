@@ -106,7 +106,9 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
      * Static initializer should be prefered over new initialization, since it makes use
      * of Yii::createObject dependency injection/configuration.
      *
+     * @param array $options
      * @return static
+     * @throws \yii\base\InvalidConfigException
      */
     public static function instance($options = [])
     {
