@@ -37,7 +37,7 @@ class TourCest
         $I->waitForElementVisible('#getting-started-panel');
         $I->see('Guide: Administration (Modules)', '#getting-started-panel');
 
-        $I->wait(1);
+        $I->wait(2);
         $I->click('Guide: Overview');
 
         $I->waitForElementVisible('.popover.tour');
