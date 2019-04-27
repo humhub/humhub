@@ -8,7 +8,7 @@ The action handler uses the `client` module for calling an url defined by `data-
 
 ###### View:
 
-```php
+```html
 <button data-action-click="example.myAction" data-action-url="<?= $myActionUrl ?>">Call my action!</button>
 ```
 
@@ -99,7 +99,7 @@ var someAction = function(evt) {
 - `$form`: In case your $trigger is of `type="submit"` or has a `data-action-submit` attribute, the action event will include a jquery instance of the sorrounding form or the form set by the $target.
 
 ###### View:
-```php
+```html
 <?php $form = ActiveForm::begin(); ?>
     <!-- ... Form Inputs ... -->
     <button type="submit" data-action-click="example.submit" data-action-url="<?= $url ?>">Submit</button>

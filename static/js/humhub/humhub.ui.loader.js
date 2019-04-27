@@ -88,28 +88,28 @@ humhub.module('ui.loader', function (module, require, $) {
         // TODO use div template instead of clone
         var $result = (cfg.span) ? $(module.template) : $(DEFAULT_LOADER_SELECTOR).clone().removeAttr('id').show();
 
-        if (cfg['cssClass']) {
-            $result.addClass(cfg['cssClass']);
+        if (cfg.cssClass) {
+            $result.addClass(cfg.cssClass);
         }
 
-        if (cfg['id']) {
-            $result.attr('id', cfg['id']);
+        if (cfg.id) {
+            $result.attr('id', cfg.id);
         }
 
-        if (cfg['css']) {
-            $result.css(cfg['css']);
+        if (cfg.style || cfg.css) {
+            $result.css(cfg.style || cfg.css);
         }
         
-        if($this && cfg['alignHeight']) {
+        if($this && cfg.alignHeight) {
             var height = $this.innerHeight();
             $result.css('height', height+'px');
             $result.css('line-height', (height / 2)+'px');
         }
 
-        if (cfg['position']) {
-            if (cfg['position'] === 'left') {
+        if (cfg.position) {
+            if (cfg.position === 'left') {
                 $result.find('.sk-spinner').css('margin', '0');
-            } else if (cfg['position'] === 'right') {
+            } else if (cfg.position === 'right') {
                 $result.find('.sk-spinner').css('margin', '0').addClass('pull-right');
                 $result.addClass('clearfix');
             }
@@ -117,17 +117,17 @@ humhub.module('ui.loader', function (module, require, $) {
 
         $skBounce = $result.find('.sk-bounce1, .sk-bounce2, .sk-bounce3');
 
-        if (cfg['itemCss']) {
-            $skBounce.css(cfg['itemCss']);
+        if (cfg.itemCss) {
+            $skBounce.css(cfg.itemCss);
         }
 
-        if (cfg['size']) {
-            var size = cfg['size'];
+        if (cfg.size) {
+            var size = cfg.size;
             $skBounce.css({'width': size, 'height': size});
         }
 
-        if (cfg['wrapper']) {
-            $result = $(cfg['wrapper']).append($result);
+        if (cfg.wrapper) {
+            $result = $(cfg.wrapper).append($result);
         }
 
         return $result;

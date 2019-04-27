@@ -219,6 +219,7 @@ humhub.module('client', function (module, require, $) {
                 var response = new Response(xhr, url, textStatus, cfg.dataType).setError(errorThrown);
                 if (response.status == 302) {
                     _redirect(xhr);
+                    resolve(response);
                     return;
                 }
 

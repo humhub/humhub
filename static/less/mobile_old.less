@@ -1,0 +1,467 @@
+/***********************************
+**      Humhub Mobile Design
+**          Version 1.0
+************************************/
+
+//
+// Mobile color variables
+// --------------------------------------------------
+@mobile-main-color: @primary;
+@mobile-color-white: #fff;
+@mobile-color-black: #000;
+@mobile-color-pale: darken( @mobile-color-white, 7% );
+@mobile-color-dark: lighten( @mobile-color-black,  18% );
+@mobile-color-btn-primary: @mobile-main-color;
+@mobile-color-btn-default: #51d56d;
+@mobile-background-white: #fff;
+@mobile-background-sidebar: #2d3340;
+
+//
+// Mobile mixins
+// --------------------------------------------------
+
+// Mixins: Display none
+.display-none() {
+	display: none;
+}
+
+// Mixins: Border none mixin
+.border-none() {
+	border: none;
+}
+
+// Mixins: Material shadow box
+.panel-shadow() {
+	box-shadow: 0 -1px 0 #e0e0e0,0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);
+}
+
+// Mixins: Button Primary
+.btn-primary {
+	background: @mobile-color-btn-primary;
+	&:hover {
+		background: darken( @mobile-color-btn-default, 20% );
+	}
+	&:focus {
+		background: darken( @mobile-color-btn-default, 20% );
+	}
+}
+
+// Mixins: Button default
+.btn-default {
+	background: @mobile-color-btn-default;
+	color: @mobile-color-white !important;
+	&:hover {
+		background: darken( @mobile-color-btn-default, 20% );
+	}
+	&:focus {
+		background: darken( @mobile-color-btn-default, 20% );
+	}
+}
+
+//
+// Mobile Community Topbar
+// --------------------------------------------------
+
+// Topbar: Community topbar DEFAULT styling - apply only to the community theme
+.topbar-community() {
+	background: @mobile-main-color;
+	.notifications .btn-group > a {
+		padding: 6px 12px 14px 12px;
+	}
+	.dropdown.account > a {
+		background-color: @mobile-main-color;
+		margin-top: 10px;
+	}
+	.nav >.account a {
+		color: @mobile-color-white;
+	}
+	.account .dropdown-menu {
+		color: @mobile-color-white;
+	}
+	.account .dropdown-menu {
+		background-color: @mobile-main-color;
+	}
+}
+
+// Topbar: Topbar material shadow box
+.topbar-shadow() {
+	box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
+}
+
+// Layout: Community top layout fixes
+.community-space-layout() {
+	margin-top: -20px !important
+}
+
+// Mixins: Like and comment button
+.like-comment-button() {
+	padding: 10px 41px;
+	margin-left: -12px;
+}
+
+// Mixins: Community Navbar horizontal scrolling
+.scroll-navbar() {
+	width: 100%;
+	display: inline !important;
+	white-space: nowrap;
+	float: left;
+	position: relative;
+	overflow-x: scroll !important;
+}
+
+//
+// Mobile Theme style.less
+// --------------------------------------------------
+
+// The mobile design will load when screen is less then 768px
+@responsive: ~"only screen and (max-width : 768px)";
+
+@media @responsive {
+
+	//
+	// Topbar:  styles
+	// --------------------------------------------------
+
+	p, .help-block {
+		overflow: auto;
+		white-space: normal;
+	}
+
+	// Login Page: The login page container
+	.login-container {
+		background-color: @mobile-background-white;
+		background-image: none;
+		#layout-content .panel-default {
+			box-shadow: none;
+		}
+		h1, h2 {
+			color: @mobile-color-black !important;
+		}
+		.panel > .panel-heading, .panel > .panel-body > p {
+			text-align: center;
+		}
+	}
+
+	// Topbar: Topbar styling
+	#topbar-first {
+		.topbar-community;		// Topbar mixins is used
+		.topbar-shadow;           // Shadow mixins is used
+		.border-none;
+		.menu-seperator, #user-account-image {
+			display: none;
+		}
+
+		// Topbar Icons: Removing background color from topbar icons
+		.btn-enter, .btn-group > a {
+			background-color: transparent;
+		}
+		.panel-danger {
+			border: none;
+		}
+
+		// Search: Removing border radius from the search form
+		.form-control.form-search {
+			border-radius: 0px;
+		}
+
+		//
+		.navigation-bars > li > a {
+			padding: 20px 20px 14px 20px !important;
+		}
+
+		// Topbar: Removing the topbar icons background color
+		.nav > li > a:hover,
+		.nav .open > a,
+		.nav > li.active,
+		.dropdown.account.open>a,
+		.dropdown.account>a:hover,
+		.dropdown.account.open>a:hover,
+		.btn-group>a:hover,
+		.btn-group.open>a,
+		.btn-group.open>a:hover {
+			background-color: transparent;
+		}
+
+		// Topbar: Added a 10px right margin to match the drawer left margin
+		.topbar-actions {
+			margin-right: 10px;
+		}
+
+		// Topbar: Ajusting the notifications button to full width
+		#dropdown-notifications .btn-default {
+			width: 100%;
+		}
+	}
+
+	//
+	// Mobile main content
+	// --------------------------------------------------
+
+	// Layout Container: Fixed the right padding
+	#layout-content-container {
+		padding-right: 0px;
+	}
+
+	// Layout Contents: Adjusting the contents to fit perfectly on mobile devices
+	#layout-content {
+		.list-group {
+			overflow: auto;
+			display: inline-block;
+			margin-top: 5px;
+		}
+
+		// Layout: Fixed padding issues in mobile devices
+		.container-fluid, .container {
+			padding-left: 7px;
+			padding-right: 22px;
+		}
+
+		// Layout Panel: Hidden the headings on mobile devices
+		.col-md-2 > .panel-default > .panel-heading,
+		.col-md-3 > .panel-default > .panel-heading {
+			display: none;
+		}
+
+		.controls-header {
+			padding-right: 6px;
+		}
+
+		// Layout: Adjust user profile and space image size
+		.profile-user-photo-container img, .image-upload-container .space-acronym {
+			width: 100px !important;
+			height: 100px !important;
+			margin-top: 35px;
+			font-size: 35.6px !important;
+		}
+
+		// Layout: Adjusting the profile data
+		.panel-profile .panel-profile-header .img-profile-data {
+			padding-left: 130px;
+			padding-top: 42px;
+			h1 {
+				font-size: 18px !important;
+			}
+		}
+
+		// Layout Panel: Panel shadow and border radius added
+		.panel {
+			margin-bottom: 8px;
+			.panel-shadow;
+			border-radius: 2px;
+		}
+
+		// Layout Panel: Fixes text overflow
+		.panel-default {
+			white-space: nowrap;
+		}
+
+		// Layout Form: Fixed width for form dropdown
+		.contentForm_options .open .dropdown-menu {
+			width: 155px;
+			li a {
+				white-space: normal;
+			}
+		}
+
+		// Layout Panel: Makes panel-default scrollable
+		.col-md-3 .panel-default, .col-md-2 .panel-default {
+			overflow-x: scroll;
+		}
+
+		.space-nav .space-module-entries {
+			display: block;
+		}
+
+		// Layout Comment: Fixed like & comment format
+		.likeLinkContainer, .wall-entry-controls > a {
+			.like-comment-button;
+		}
+
+		.form-control {
+			white-space: normal;
+			&:focus {
+				border-bottom: none;
+			}
+		}
+
+		// Layout Form: Native like form input design
+		.form-group {
+			input, select {
+				border-bottom: 1px solid @mobile-color-pale !important;
+				border-radius: 0px;
+			}
+			&:focus {
+				border-bottom: 2px solid @mobile-color-pale !important;
+			}
+		}
+
+		// Layout Comments: Comments section top maring fix
+		.comment-container {
+			margin-top: 24px;
+		}
+
+		// Layout Comments:
+		.comment-buttons {
+			.fileinput-button {
+				background: @mobile-main-color !important;
+				padding: 8px 7px 5px 7px;
+				margin-top: -2px;
+				border-radius: 2px 0px 0px 2px;
+				.fa {
+					color: @mobile-color-white;
+				}
+				&:hover {
+					background: darken( @mobile-main-color, 20% );
+				}
+			}
+		}
+
+		// Layout Comments: Send button design
+		.comment_create .btn-comment-submit,
+		.content_edit .btn-comment-submit {
+			margin-top: -2px;
+			padding: 6px 15px 10px 18px;
+			margin-right: -5px;
+			border-radius: 0px 2px 2px 0px;
+		}
+
+		// Layout Space: Space navigation
+		.space-nav {
+			.navbar-nav {
+				.scroll-navbar;
+				li {
+					margin-top: 10px;
+				}
+			}
+			.space-details {
+				.display-none !important;
+			}
+			> li {
+				.display-none;
+			}
+		}
+
+	}
+
+	// layout space: Space container
+	.space-layout-container {
+		.community-space-layout;        // space layout mixins is used
+	}
+
+	.media-list li:hover, .media-list li.selected {
+		border-left: none;
+	}
+
+	// Layout cols:
+	.col-md-1, .col-md-2, .col-md-3, .col-md-4,
+	.col-md-5, .col-md-6, .col-md-7, .col-md-8,
+	.col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+		padding-right: 0px;
+	}
+}
+
+// Wallstream:
+#wallstream {
+
+	.nav-pills.preferences {
+		right: 18px;
+	}
+}
+
+// Form:
+.form-control {
+	.border-none;
+	background: transparent;
+	&:focus {
+		border: none;
+		background: @mobile-background-white;
+	}
+}
+
+// Nav:
+.nav-pills {
+	.preferences .dropdown.open .dropdown-toggle,
+	.preferences .dropdown.open .dropdown-toggle:hover,
+	.dropdown-menu,
+	.nav-tabs .dropdown-menu,
+	.account .dropdown-menu {
+		background-color: @mobile-background-white;
+		box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
+	}
+
+	// Preferences:
+	.preferences .dropdown.open .dropdown-toggle,
+	.preferences .dropdown.open .dropdown-toggle:hover {
+		background-color: @mobile-main-color;
+	}
+
+	// Dropdown:
+	.dropdown-menu li,
+	.nav-tabs .dropdown-menu li,
+	.account .dropdown-menu li {
+		.border-none;
+	}
+
+	// Divider:
+	.dropdown-menu li.divider,
+	.nav-tabs .dropdown-menu li.divider,
+	.account .dropdown-menu li.divider {
+		background-color: @mobile-color-pale;
+	}
+
+	// Dropdown:
+	.dropdown-menu li a i,
+	.nav-tabs .dropdown-menu li a i {
+		display: none;
+	}
+}
+
+// Nav:
+.nav-pills .dropdown-menu li a,
+.nav-tabs .dropdown-menu li a,
+.account .dropdown-menu li a {
+	color: @mobile-color-black;
+}
+
+// Group Item:
+a.list-group-item:hover,
+a.list-group-item.active,
+a.list-group-item.active:hover,
+a.list-group-item.active:focus {
+	background: @mobile-main-color !important;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+	width: 300px;
+}
+
+.form-search:focus {
+	background: transparent;
+}
+
+// Nav:
+.nav-pills .dropdown-menu li:hover,
+.nav-tabs .dropdown-menu li:hover,
+.account .dropdown-menu li:hover,
+.nav-pills .dropdown-menu li.selected,
+.nav-tabs .dropdown-menu li.selected,
+.account .dropdown-menu li.selected {
+	border-left: none;
+	background-color: #f1f1f1 !important;
+}
+
+// Well: Darker well color
+.well {
+	background: darken( @mobile-background-white, 2% );
+}
+
+.space-nav .nav>li>a .fa {
+	display: none;
+}
+
+// Scrollbar: Hide Horizontal Scrolling Bar
+::-webkit-scrollbar {
+	height: 0px;
+}
+
+}

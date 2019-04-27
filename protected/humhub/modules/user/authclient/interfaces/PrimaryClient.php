@@ -11,7 +11,7 @@ namespace humhub\modules\user\authclient\interfaces;
 /**
  * PrimaryClient authclient interface
  * 
- * It's not possible to have to primary auth clients at the same time.
+ * It's not possible to have two primary auth clients at the same time.
  * E.g. LDAP and Password
  * 
  * @author luke

@@ -34,11 +34,20 @@ class AccountProfilMenu extends \humhub\widgets\BaseMenu
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'edit'),
         ]);
 
+        if (Yii::$app->user->canChangeUsername()) {
+            $this->addItem([
+                'label' => Yii::t('UserModule.base', 'Change Username'),
+                'url' => Url::toRoute(['/user/account/change-username']),
+                'sortOrder' => 200,
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'change-username'),
+            ]);
+        }
+
         if (Yii::$app->user->canChangeEmail()) {
             $this->addItem([
                 'label' => Yii::t('UserModule.base', 'Change Email'),
                 'url' => Url::toRoute(['/user/account/change-email']),
-                'sortOrder' => 200,
+                'sortOrder' => 300,
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && (Yii::$app->controller->action->id == 'change-email' || Yii::$app->controller->action->id == 'change-email-validate')),
             ]);
         }
@@ -47,7 +56,7 @@ class AccountProfilMenu extends \humhub\widgets\BaseMenu
             $this->addItem([
                 'label' => Yii::t('UserModule.base', 'Change Password'),
                 'url' => Url::toRoute(['/user/account/change-password']),
-                'sortOrder' => 300,
+                'sortOrder' => 400,
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'change-password'),
             ]);
         }
@@ -56,7 +65,7 @@ class AccountProfilMenu extends \humhub\widgets\BaseMenu
             $this->addItem([
                 'label' => Yii::t('UserModule.base', 'Delete Account'),
                 'url' => Url::toRoute(['/user/account/delete']),
-                'sortOrder' => 400,
+                'sortOrder' => 500,
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'delete'),
             ]);
         }

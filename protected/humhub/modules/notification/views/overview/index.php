@@ -3,6 +3,9 @@
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 
+/* @var $overview string */
+/* @var $filterForm */
+
 ?>
 <div class="container">
     <div class="row">
@@ -15,17 +18,7 @@ use yii\helpers\Url;
                     </a> 
                 </div>
                 <div class="panel-body">
-                    <ul id="notification_overview_list" class="media-list">
-                        <?php foreach ($notifications as $notification) : ?>
-                            <?= $notification->render(); ?>
-                        <?php endforeach; ?>
-                        <?php if (count($notifications) == 0) : ?>
-                            <?= Yii::t('NotificationModule.views_overview_index', 'No notifications found!'); ?>
-                        <?php endif; ?>
-                    </ul>
-                    <center>
-                        <?= ($pagination != null) ? \humhub\widgets\LinkPager::widget(['pagination' => $pagination]) : ''; ?>
-                    </center>
+                    <?= $overview ?>
                 </div>
             </div>
         </div>
@@ -41,7 +34,6 @@ use yii\helpers\Url;
                     <div style="padding-left: 5px;">
                         <?= $form->field($filterForm, 'categoryFilter')->checkboxList($filterForm->getCategoryFilterSelection())->label(false); ?>
                     </div>
-                    <button class="btn btn-primary btn-xm" type="submit" data-ui-loader><?= Yii::t('NotificationModule.views_overview_index', 'Apply'); ?></button>
                     <?php ActiveForm::end(); ?>
                 </div>
             </div>

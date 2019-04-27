@@ -70,7 +70,9 @@ php yii migrate/up --includeModuleMigrations=1 --interactive=0
 
 - Install test environment:
 
-`php yii installer/auto`
+```
+php yii installer/auto
+```
 
 - Set `HUMHUB_PATH` system variable
 
@@ -109,13 +111,9 @@ For running a test for a specific environment you'll have to set te `--env` argu
 Example for running all functional tests of a tasks module in a master environment:
 
 1. Create a file `@mymodule/tests/config/env/master/test.php` with the following content:
-
-```
-return [
-    'humhub_root' => '/pathToMasterBranch'
-];
-```
-
+        return [
+            'humhub_root' => '/pathToMasterBranch'
+        ];
 2. If needed set further HumHub settings in `tasks/tests/config/env/master/funtional.php`
 3. Run `codecept run functional --env master`
 

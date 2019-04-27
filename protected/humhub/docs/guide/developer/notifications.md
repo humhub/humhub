@@ -5,7 +5,7 @@ Notifications are used to inform one or a given set of users about a specific ev
 
 Custom notification classes are derived from [[humhub\modules\notification\components\BaseNotification]].
 A [[humhub\modules\notification\components\BaseNotification|BaseNotification]] usually is assigned with an
-`$originator` user instance and a `$source` instance, which connects the Notification with a Content or any other kind of [[yii\db\ActiveRecord]].
+`$originator` user instance and a `$source` instance, which connects the Notification with a Content or any other kind of [yii\db\ActiveRecord](https://www.yiiframework.com/doc/api/2.0/yii-db-activerecord).
 
 A Notification can be sent to a user by calling the `send()` or `sendBulk()` function. This will persist an [[humhub\modules\notification\models\Notification]] instance for each user and send out a notification to all allowed `NotificationTargets`.
 
@@ -70,7 +70,7 @@ echo Yii::t('SomethingHappend.views_notifications_somethingHappened', "%someUser
 After an event was triggered, you'll have to instantiate your custom `BaseNotification` and call its
 `send()` or `sendBulk()` function.
 
-A notification can optionally be assigned with a `$source` model instance (e.g. a post or comment related to the notification) which has to be derived from [[yii\db\ActiveRecord]].
+A notification can optionally be assigned with a `$source` model instance (e.g. a post or comment related to the notification) which has to be derived from [yii\db\ActiveRecord](https://www.yiiframework.com/doc/api/2.0/yii-db-activerecord).
 
 ```php
 // Sending to a single user

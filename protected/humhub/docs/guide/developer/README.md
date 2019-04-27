@@ -50,5 +50,6 @@ Advanced Topics
 * [Security](security.md)
 * [HumHub Build](build.md)
 * [Console Application](console.md)
+* [Oembed Providers](oembed.md)
 
 

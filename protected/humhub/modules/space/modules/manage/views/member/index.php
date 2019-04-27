@@ -52,7 +52,7 @@ use yii\helpers\Html;
                         'attribute' => 'created_at',
                         'format' => 'raw',
                         'value' =>
-                        function ($data) use (&$groups) {
+                        function ($data) {
                             if ($data->created_at == '') {
                                 return Yii::t('SpaceModule.views_admin_members', '-');
                             }

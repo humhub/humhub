@@ -50,7 +50,6 @@ class ProfileMenu extends \humhub\widgets\BaseMenu
 
         $this->addItem([
             'label' => Yii::t('UserModule.widgets_ProfileMenuWidget', 'Stream'),
-            'group' => 'profile',
             'icon' => '<i class="fa fa-bars"></i>',
             'url' => $this->user->createUrl('//user/profile/home'),
             'sortOrder' => 200,
@@ -60,7 +59,6 @@ class ProfileMenu extends \humhub\widgets\BaseMenu
         if ($this->user->permissionManager->can(new ViewAboutPage())) {
             $this->addItem([
                 'label' => Yii::t('UserModule.widgets_ProfileMenuWidget', 'About'),
-                'group' => 'profile',
                 'icon' => '<i class="fa fa-info-circle"></i>',
                 'url' => $this->user->createUrl('//user/profile/about'),
                 'sortOrder' => 300,

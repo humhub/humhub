@@ -317,28 +317,33 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function getWallOut($params = [])
     {
-        $wallEntryWidget = $this->getWallEntryWidget();
-        if ($wallEntryWidget !== null) {
-            Yii::configure($wallEntryWidget, $params);
-            return $wallEntryWidget->renderWallEntry();
+        if(!empty($this->wallEntryClass)) {
+            $params['contentObject'] = $this;
+            return call_user_func($this->wallEntryClass.'::widget', $params);
         }
+
         return "";
     }
 
     /**
-     * Returns the assigned wall entry widget instance
+     * Returns an instance of the assigned wall entry widget instance. This can be used to check matadata fields
+     * of the related widget.
      *
      * @return null|\humhub\modules\content\widgets\WallEntry for this class by wallEntryClass property , null will be
      * returned if this wallEntryClass is empty
      */
     public function getWallEntryWidget()
     {
+        if(empty($this->wallEntryClass)) {
+            return null;
+        }
+
         if (is_subclass_of($this->wallEntryClass, WallEntry::class) ) {
             $class = $this->wallEntryClass;
             $widget = new $class;
             $widget->contentObject = $this;
             return $widget;
-        } elseif(!empty($this->wallEntryClass)) {
+        } else {
             $class = $this->wallEntryClass;
             $widget = new $class;
             return $widget;

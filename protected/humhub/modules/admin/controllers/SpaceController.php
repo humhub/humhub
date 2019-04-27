@@ -102,11 +102,6 @@ class SpaceController extends Controller
     public function actionSettings()
     {
         $form = new SpaceSettingsForm;
-
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            $this->view->saved();
-        }
-
         $visibilityOptions = [];
 
         if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
@@ -125,6 +120,11 @@ class SpaceController extends Controller
         $contentVisibilityOptions = [
             Content::VISIBILITY_PRIVATE => Yii::t('SpaceModule.base', 'Private'),
             Content::VISIBILITY_PUBLIC => Yii::t('SpaceModule.base', 'Public')];
+
+        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
+            $this->view->saved();
+            return $this->redirect(['settings']);
+        }
 
         return $this->render('settings', [
                     'model' => $form,

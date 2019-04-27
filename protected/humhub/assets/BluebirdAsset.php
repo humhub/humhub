@@ -21,7 +21,7 @@ class BluebirdAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/bluebird';
+    public $sourcePath = '@npm/bluebird';
 
     /**
      * @inheritdoc
