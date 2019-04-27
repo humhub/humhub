@@ -43,4 +43,15 @@ class Link extends Button
         $this->pjax($pjax);
         return $this;
     }
+
+    public function target($target)
+    {
+        $this->htmlOptions['target'] = $target;
+        return $this;
+    }
+
+    public function blank()
+    {
+        return $this->target('_blank');
+    }
 }

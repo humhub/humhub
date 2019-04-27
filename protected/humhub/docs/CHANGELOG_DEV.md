@@ -27,4 +27,7 @@ HumHub Change Log (DEVELOP)
 - Enh: Moved 'Default spaces' setting from Basic settings to Space settings (Baleks)
 - Enh: Add inviter name to Space Admin Member section (Baleks) 
 - Fix #3463 Changed 'Deny Invite' to 'Decline Invite' for space invites (Baleks)
+- Enh: Responsive mobile view enhancements
+- Enh: Added `humhub\widgets\Link::target()` and `blank()`
+- Fix: `humhub.client` does not resolve promise 302 on redirects 
 
