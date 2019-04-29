@@ -11,7 +11,8 @@ HumHub Change Log
 - Fix: #3552 `humhub\modules\user\authclient\AuthAction:auth()` not compatible with `yii\authclient\AuthAction:auth()`
 - Fix: #3545 OEmbed fetch limit ignored
 - Enh: Added `humhub\libs\RestrictedCallException`
-
+- Chng: Switched from [bootstrap-tour](https://github.com/sorich87/bootstrap-tour) to [bootstrap-tourist](https://github.com/IGreatlyDislikeJavascript/bootstrap-tourist) due to incompatibility to bootstrap v3.4.1
+- Enh: Added `humhub.modules.tour` module for handling tour logic
 
 1.3.12  (March 26, 2019)
 ---------------------------

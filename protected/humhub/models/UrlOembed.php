@@ -176,7 +176,7 @@ class UrlOembed extends ActiveRecord
             }
 
             try {
-                if (!static::findExistingOembed($url)) {
+                if (!self::findExistingOembed($url)) {
                     static::loadUrl($url);
                 }
             } catch(RestrictedCallException $re) {
