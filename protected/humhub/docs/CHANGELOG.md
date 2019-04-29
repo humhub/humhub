@@ -8,6 +8,9 @@ HumHub Change Log
 - Fix: Wrong help block position in admin basic settings
 - Chng: Removed yiisoft/yii2-apidoc dependency
 - Enh: Double file extension check is now optional and disabled by default
+- Fix: #3552 `humhub\modules\user\authclient\AuthAction:auth()` not compatible with `yii\authclient\AuthAction:auth()`
+- Fix: #3545 OEmbed fetch limit ignored
+- Enh: Added `humhub\libs\RestrictedCallException`
 
 
 1.3.12  (March 26, 2019)

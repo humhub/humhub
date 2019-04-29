@@ -93,7 +93,7 @@ class RichTextCompatibilityParser
     {
         return preg_replace_callback('/(?<=^|\s)(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s\]\)\\"\'\<]{2,})(?=$|\s)/', function ($hit) {
             $url = $hit[0];
-            return UrlOembed::GetOEmbed($url) ? '[' . $url . '](oembed:' . $url . ')' : '[' . $url . '](' . $url . ')';
+            return UrlOembed::getOEmbed($url) ? '[' . $url . '](oembed:' . $url . ')' : '[' . $url . '](' . $url . ')';
         }, $text);
     }
 
