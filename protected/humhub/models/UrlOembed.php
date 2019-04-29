@@ -140,7 +140,7 @@ class UrlOembed extends ActiveRecord
             $url = trim($url);
 
             if (static::hasOEmbedSupport($url)) {
-                $urlOembed = static::findExistingOembed($url);
+                $urlOembed = self::findExistingOembed($url);
                 $result = $urlOembed ? $urlOembed->preview : self::loadUrl($url);
 
                 if(!empty($result)) {
@@ -225,7 +225,7 @@ class UrlOembed extends ActiveRecord
     protected static function loadUrl($url)
     {
         try {
-            $urlOembed = static::findExistingOembed($url);
+            $urlOembed = self::findExistingOembed($url);
 
             if(!$urlOembed) {
                 $urlOembed = new static(['url' => $url]);
