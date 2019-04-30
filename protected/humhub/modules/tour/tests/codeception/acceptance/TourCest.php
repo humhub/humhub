@@ -129,19 +129,4 @@ class TourCest
         $I->waitForElementVisible('#wallStream');
         $I->seeInCurrentUrl('dashboard');
     }
-
-    public function testNonAdminTour(AcceptanceTester $I)
-    {
-        $I->amAdmin();
-        $I->amOnRoute(['/admin/setting/basic']);
-
-        $I->click('.field-basicsettingsform-tour label');
-        $I->click('Save');
-        $I->seeSuccess();
-
-        $I->amUser1(true);
-        $I->amOnDashboard();
-        $I->seeElement('#getting-started-panel');
-        $I->dontSee('Guide: Administration (Modules)', '#getting-started-panel');
-    }
 }
