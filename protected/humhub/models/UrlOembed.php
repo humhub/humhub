@@ -140,7 +140,7 @@ class UrlOembed extends ActiveRecord
             $url = trim($url);
 
             if (static::hasOEmbedSupport($url)) {
-                $urlOembed = self::findExistingOembed($url);
+                $urlOembed = static::findExistingOembed($url);
                 $result = $urlOembed ? $urlOembed->preview : self::loadUrl($url);
 
                 if(!empty($result)) {
@@ -176,7 +176,7 @@ class UrlOembed extends ActiveRecord
             }
 
             try {
-                if (!self::findExistingOembed($url)) {
+                if (!static::findExistingOembed($url)) {
                     static::loadUrl($url);
                 }
             } catch(RestrictedCallException $re) {
@@ -194,7 +194,7 @@ class UrlOembed extends ActiveRecord
      * @return UrlOembed|null
      * @throws RestrictedCallException
      */
-    private static function findExistingOembed($url)
+    protected static function findExistingOembed($url)
     {
         if(array_key_exists($url, static::$cache)) {
             return static::$cache[$url];
@@ -225,7 +225,7 @@ class UrlOembed extends ActiveRecord
     protected static function loadUrl($url)
     {
         try {
-            $urlOembed = self::findExistingOembed($url);
+            $urlOembed = static::findExistingOembed($url);
 
             if(!$urlOembed) {
                 $urlOembed = new static(['url' => $url]);

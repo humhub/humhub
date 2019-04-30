@@ -35,7 +35,7 @@ class TourCest
         $I->click('Save and close', '#globalModal');
 
         $I->waitForElementVisible('#getting-started-panel');
-        $I->see('Guide: Administration (Modules)', '#getting-started-panel');
+        $I->see('Guide: Administration (Modules)');
 
         $I->wait(4);
         $I->click('Guide: Overview');
