@@ -15,6 +15,7 @@ HumHub Change Log
 - Enh: Added `humhub.modules.tour` module for handling tour logic
 - Fix: Added PHP 7.3 compatibility workaround for ZF2 ArrayObject
 - Fix: #3513 Profile schema cache not refreshed after adding new profile field
+- Fix: Removed Codeception files from HumHub packages builds due to possible XSS flaw (thanks to Kağan Eğlence)
 
 
 1.3.12  (March 26, 2019)
