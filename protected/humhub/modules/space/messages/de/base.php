@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Space</strong> followers' => '<strong>Space</strong> Follower',
+  '<strong>Space</strong> followers' => '<strong>Space</strong> Beobachter',
   'Administrator:' => 'Administrator:',
   'Archived' => 'Archiviert',
   'Default' => 'Standard',
