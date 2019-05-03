@@ -1,8 +1,9 @@
 HumHub Change Log
 =================
 
-1.3.13  (Unreleased)
----------------------------
+
+1.3.13  (May 3, 2019)
+----------------------
 - Enh: Added HomeUrl support to ConsoleApplication
 - Fix #2536: Incorrect log of "Attempt to steal file" due to faulty File::isAssignedTo() check
 - Fix: Wrong help block position in admin basic settings
