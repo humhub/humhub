@@ -37,8 +37,8 @@ class InstallController extends Controller
      */
     public function actionAuto()
     {
-        actionWriteSiteConfig();
-        actionCreateAdminAccount();
+        $this->actionWriteSiteConfig();
+        $this->actionCreateAdminAccount();
 
         return ExitCode::OK;
     }
