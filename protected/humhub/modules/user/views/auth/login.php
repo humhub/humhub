@@ -58,39 +58,6 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
 
     </div>
 
-    <br>
-
-    <?php if ($canRegister) : ?>
-        <div id="register-form"
-             class="panel panel-default animated bounceInLeft"
-             style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
-
-            <div class="panel-heading"><?= Yii::t('UserModule.views_auth_login', '<strong>Sign</strong> up') ?></div>
-
-            <div class="panel-body">
-
-                <p><?= Yii::t('UserModule.views_auth_login', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
-
-                <?php $form = ActiveForm::begin(['id' => 'invite-form']); ?>
-                <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
-                <?php if ($invite->showCaptureInRegisterForm()) : ?>
-                    <div id="registration-form-captcha" style="display: none;">
-                        <div><?= Yii::t('UserModule.views_auth_login', 'Please enter the letters from the image.'); ?></div>
-
-                        <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
-                            'captchaAction' => 'auth/captcha',
-                        ])->label(false);?>
-                    </div>
-                <?php endif; ?>
-                <hr>
-                <?= CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
-
-                <?php ActiveForm::end(); ?>
-            </div>
-        </div>
-
-    <?php endif; ?>
-
     <?= humhub\widgets\LanguageChooser::widget(); ?>
 </div>
 
@@ -104,22 +71,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
 <?php if ($model->hasErrors()) { ?>
         $('#login-form').removeClass('bounceIn');
         $('#login-form').addClass('shake');
-        $('#register-form').removeClass('bounceInLeft');
         $('#app-title').removeClass('fadeIn');
-<?php } ?>
-
-    // Shake panel after wrong validation
-<?php if ($invite->hasErrors()) { ?>
-        $('#register-form').removeClass('bounceInLeft');
-        $('#register-form').addClass('shake');
-        $('#login-form').removeClass('bounceIn');
-        $('#app-title').removeClass('fadeIn');
-<?php } ?>
-
-<?php if ($invite->showCaptureInRegisterForm()) { ?>
-    $('#register-email').on('focus', function () {
-        $('#registration-form-captcha').fadeIn(500);
-    });
 <?php } ?>
 
 </script>
