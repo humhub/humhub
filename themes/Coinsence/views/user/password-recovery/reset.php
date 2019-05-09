@@ -11,9 +11,10 @@ $this->pageTitle = Yii::t('UserModule.views_auth_resetPassword', 'Password reset
 
 <div class="content">
 
-    <div class="password-recovery-content col-md-4" id="password-recovery-form">
+    <div class="password-recovery-content col-xs-11" id="password-recovery-form">
 
         <h1><?= Yii::t('UserModule.views_auth_resetPassword', 'Change your password'); ?></h1>
+        <h5><?= Yii::t('UserModule.views_auth_resetPassword', 'Enter your new password'); ?></h5>
 
         <?php $form = CActiveForm::begin(['enableClientValidation'=>false]); ?>
 
@@ -39,3 +40,26 @@ $this->pageTitle = Yii::t('UserModule.views_auth_resetPassword', 'Password reset
     </div>
 
 </div>
+
+<script type="text/javascript">
+
+    $(function () {
+        // set cursor to email field
+        $('#new_password').focus();
+    });
+
+    const $password_toggler = $('<img>', {class: 'toggler', src: '<?= $this->theme->getBaseUrl(); ?>/img/eye.svg'});
+
+    $('input[type="password"]').each(function (index, elem) {
+        $(elem).parent().css('position', 'relative');
+        $(elem).parent().prepend($password_toggler.clone());
+    });
+
+    $('.form-group').on('click', '.toggler', function () {
+        const $password_field = $(this).siblings('input');
+        const is_password = $password_field.attr('type') === 'password';
+
+        $password_field.attr('type', is_password ? 'text': 'password');
+    });
+
+</script>

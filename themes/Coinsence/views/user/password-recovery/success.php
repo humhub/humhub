@@ -5,7 +5,7 @@ use yii\helpers\Url;
 $this->pageTitle = Yii::t('UserModule.views_auth_recoverPassword', 'Password recovery');
 ?>
 
-<a class="brand" href="/dashboard"><img src="http://coinsence.localhost/uploads/logo_image/logo.png?cacheId=0"></a>
+<a class="brand" href="/dashboard"><img src="<?= $this->theme->getBaseUrl(); ?>/img/slogan_black.png"></a>
 
 <div class="content">
 

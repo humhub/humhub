@@ -7,11 +7,11 @@ use humhub\compat\CActiveForm;
 $this->pageTitle = Yii::t('UserModule.views_auth_recoverPassword', 'Password recovery');
 ?>
 
-<a class="brand" href="/dashboard"><img src="http://coinsence.localhost/uploads/logo_image/logo.png?cacheId=0"></a>
+<a class="brand" href="/dashboard"><img src="<?= $this->theme->getBaseUrl(); ?>/img/slogan_black.png"></a>
 
 <div class="content">
 
-    <div class="password-recovery-content col-md-4" id="password-recovery-form">
+    <div class="password-recovery-content col-xs-11" id="password-recovery-form">
 
         <h1><?= Yii::t('UserModule.views_auth_recoverPassword', 'Forgot your password?'); ?></h1>
         <h5><?= Yii::t('UserModule.views_auth_recoverPassword', 'Just enter your e-mail address. We\'ll send you recovery instructions!'); ?></h5>
@@ -31,7 +31,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_recoverPassword', 'Password rec
             <?= $form->error($model, 'verifyCode'); ?>
         </div>
 
-        <div class="row">
+        <div class="links row">
             <div class="col-md-12">
                 <?= Html::submitButton(Yii::t('UserModule.views_auth_recoverPassword', 'Reset password'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
             </div>
@@ -45,3 +45,12 @@ $this->pageTitle = Yii::t('UserModule.views_auth_recoverPassword', 'Password rec
     </div>
 
 </div>
+
+<script type="text/javascript">
+
+    $(function () {
+        // set cursor to email field
+        $('#email_txt').focus();
+    });
+
+</script>

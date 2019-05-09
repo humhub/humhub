@@ -20,7 +20,31 @@
     position: absolute;
     top: 0;
     left: 0;
-    margin: 24px 0 0 24px;
+    margin: 36px 0 0 32px;
+
+    img {
+      height: 52px;
+    }
+
+    img.black {
+      display: none;
+    }
+
+    @media only screen and (max-width: 1365px) {
+
+      .bg {
+        display: none;
+      }
+
+      img.white {
+        display: none;
+      }
+
+      img.black {
+        display: block;
+      }
+
+    }
 
   }
 
@@ -37,9 +61,8 @@
       height: 100%;
       background-image: url("/themes/Coinsence/img/bg.png");
       background-repeat: no-repeat;
-      width: 498px;
       width: 701px;
-      background-size: 100%;
+      background-size: cover;
       background-position: 50% 50%;
 
     }
@@ -52,6 +75,11 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+
+      h1 + h5 {
+        margin-top: 12px;
+        margin-bottom: 64px;
+      }
 
       .field-login-rememberme {
         position: relative;
@@ -71,14 +99,50 @@
 
     }
 
+    .login-content {
+
+      .form-group:first-of-type {
+        margin-bottom: 30px;
+      }
+
+      .field-login-rememberme {
+        margin-bottom: 0;
+      }
+
+      .links button {
+        margin-top: 60px;
+      }
+
+    }
+
+    .register-content {
+      .links button {
+        margin-top: 46px;
+      }
+    }
+
     .create-account-content {
 
       text-align: center;
+
+      h1 + h5 {
+        margin-top: 24px;
+        margin-bottom: 40px;
+      }
 
       fieldset legend,
       label,
       .field-groupuser-group_id {
         display: none;
+      }
+
+      .form-group {
+        margin-bottom: 28px;
+      }
+
+      button {
+        margin-top: 12px;
+        margin-bottom: 0;
       }
 
     }
@@ -87,8 +151,22 @@
 
       text-align: center;
 
+      h1 + h5 {
+        margin-top: 20px;
+        margin-bottom: 44px;
+      }
+
+      .form-group {
+        margin-bottom: 28px;
+      }
+
       .captcha {
         text-align: left;
+      }
+
+      .btn {
+        margin-top: 25px;
+        margin-bottom: 15px;
       }
     }
 
@@ -96,46 +174,244 @@
       text-align: left;
     }
 
+    .toggler {
+      position: absolute;
+      right: 20px;
+      top: calc(60px / 2 - 16px / 2);
+      width: 26px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .labels {
+      position: absolute;
+      bottom: 30px;
+
+      h6 {
+        padding: 20px;
+        text-align: center;
+      }
+
+    }
+
+
+    /* Global rules */
+
+
+    h1, h5, h6, label, a, button, input {
+      font-family: 'Roboto', sans-serif;
+    }
+
+    h1, h5, h6, label {
+      color: @color-base;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 40px;
+      font-weight: bold;
+    }
+
+    h5 {
+      font-size: 16px;
+    }
+
+    h6 {
+      font-size: 14px;
+    }
+
+    label {
+      font-size: 16px;
+    }
+
+    a {
+      color: @color-link-base;
+
+      &:focus, &:active, &:hover {
+
+        color: @color-link-focused;
+
+      }
+
+    }
+
+    .btn {
+      font-weight: bold;
+      color: @color-button-base;
+      background-color: @color-button-bg;
+
+      &:focus, &:active, &:hover {
+
+        color: @color-button-base;
+        background-color: @color-button-focused-bg;
+
+      }
+    }
+
+    form {
+      max-width: 694px;
+      margin: auto;
+    }
+
+    .form-group {
+
+      &.has-error {
+
+        .form-control, .form-control:focus {
+
+          border: 1px solid @color-input-errored-border;
+
+        }
+
+      }
+
+      input.form-control {
+
+        height: 60px;
+        padding: 0 24px;
+        border: 1px solid @color-input-base-border;
+
+        font-size: 16px;
+        color: @color-base;
+
+        &:focus {
+
+          border: 1px solid @color-input-focused-border;
+
+        }
+
+      }
+
+      .regular-checkbox + .regular-checkbox-box {
+
+        padding: 11px;
+        margin-right: 8px;
+        border: 1px solid @color-checkbox-base-border;
+        cursor: pointer;
+
+      }
+
+      .regular-checkbox:checked + .regular-checkbox-box {
+
+        border: 1px solid @color-checkbox-focused-border;
+        background: @color-checkbox-focused-bg;
+
+      }
+
+      .regular-checkbox:checked + .regular-checkbox-box:after {
+
+        top: 0;
+        left: 4px;
+
+      }
+
+    }
+
+    .btn {
+
+      font-size: 18px;
+      padding: 20px 80px;
+      border-radius: 31px;
+      margin-bottom: 24px;
+
+    }
+
+    @media only screen and (min-width: 1366px) and (max-width: 1919px) {
+
+      .bg {
+        width: 498px;
+      }
+
+    }
+
+    @media only screen and (max-width: 1365px) {
+
+      .bg {
+        display: none;
+      }
+
+    }
+
+    @media only screen and (min-width: 768px) and (max-width: 1365px) {
+
+      // empty
+
+    }
+
+    @media only screen and (max-width: 767px) {
+
+      .login-content {
+
+        h1 + h5 {
+          margin-top: 10px;
+          margin-bottom: 38px;
+        }
+
+        .links .btn {
+          margin-top: 35px;
+        }
+
+      }
+
+      .register-content {
+
+        h1 + h5 {
+          margin-top: 10px;
+          margin-bottom: 38px;
+        }
+
+        .links .btn {
+          margin-top: 20px;
+        }
+
+      }
+
+      .password-recovery-content {
+
+        h1 + h5 {
+          margin-top: 10px;
+          margin-bottom: 38px;
+        }
+
+        .links .btn {
+          margin-top: 15px;
+        }
+
+      }
+
+
+
+
+      h1 {
+        font-size: 28px;
+      }
+
+      h5 {
+        font-size: 14px;
+      }
+
+      h6 {
+        font-size: 12px;
+      }
+
+      label {
+        font-size: 14px;
+      }
+
+      h1 + h5 {
+        padding: 0 38px;
+        text-align: center;
+      }
+
+      .btn {
+        font-size: 14px;
+        padding: 12px 56px;
+      }
+
+    }
+
   }
 
-  //background-color: @primary;
-  //background-image: linear-gradient(to right, @primary 0%, lighten(@primary, 10%) 50%, lighten(@primary, 10%) 100%), linear-gradient(to right, lighten(@primary, 5%) 0%, lighten(@primary, 25%) 51%, lighten(@primary, 20%) 100%);
-  //background-size: 100% 100%;
-  //position: relative;
-  //padding-top: 40px;
-  //
-  //.text {
-  //  color: #fff;
-  //  font-size: 12px;
-  //  margin-bottom: 15px;
-  //  a {
-  //    color: #fff;
-  //    text-decoration: underline;
-  //  }
-  //}
-  //.panel a {
-  //  color: @info;
-  //}
-  //h1,
-  //h2 {
-  //  color: #fff !important;
-  //}
-  //.panel {
-  //  box-shadow: 0 0 15px #627d92;
-  //  -moz-box-shadow: 0 0 15px #627d92;
-  //  -webkit-box-shadow: 0 0 15px #627d92;
-  //  .panel-heading,
-  //  .panel-body {
-  //    padding: 15px;
-  //  }
-  //}
-  //select {
-  //  color: @text-color-highlight;
-  //}
 }
 
-//#account-login-form {
-//  .form-group {
-//    margin-bottom: 10px;
-//  }
-//}
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700');

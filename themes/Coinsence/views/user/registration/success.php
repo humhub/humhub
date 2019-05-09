@@ -6,11 +6,11 @@ use yii\helpers\Url;
 $this->pageTitle = Yii::t('UserModule.views_auth_createAccount', 'Create Account');
 ?>
 
-<a class="brand" href="/dashboard"><img src="http://coinsence.localhost/uploads/logo_image/logo.png?cacheId=0"></a>
+<a class="brand" href="/dashboard"><img src="<?= $this->theme->getBaseUrl(); ?>/img/slogan_black.png"></a>
 
 <div class="content">
 
-    <div class="create-account-content col-md-4">
+    <div class="create-account-content col-md-8">
 
         <h1><?= Yii::t('UserModule.views_auth_createAccount_success', 'Your account has been successfully created!'); ?></h1>
 

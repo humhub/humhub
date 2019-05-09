@@ -13,3 +13,24 @@
 **/
 
 @prev-login: true;
+
+// Login variables
+
+@color-base: #1e1e1e;
+@color-accent: #28aa69;
+@color-errored: #ff8989;
+
+@color-input-base-border: lighten(@color-base, 75%);
+@color-input-focused-border: lighten(@color-accent, 15%);
+@color-input-errored-border: @color-errored;
+
+@color-checkbox-base-border: lighten(@color-base, 75%);
+@color-checkbox-focused-border: @color-accent;
+@color-checkbox-focused-bg: @color-accent;
+
+@color-link-base: @color-accent;
+@color-link-focused: darken(@color-accent, 10%);
+
+@color-button-base: white;
+@color-button-bg: @color-accent;
+@color-button-focused-bg: darken(@color-accent, 10%);

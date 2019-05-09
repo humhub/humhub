@@ -6,7 +6,8 @@ use yii\captcha\Captcha;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm; ?>
 
-<a class="brand" href="/dashboard"><img src="http://coinsence.localhost/uploads/logo_image/logo.png?cacheId=0"></a>
+<a class="brand" href="/dashboard"><img class="white" src="<?= $this->theme->getBaseUrl(); ?>/img/slogan_white.png"></a>
+<a class="brand" href="/dashboard"><img class="black" src="<?= $this->theme->getBaseUrl(); ?>/img/slogan_black.png"></a>
 
 <div class="content">
 
@@ -19,7 +20,7 @@ use yii\widgets\ActiveForm; ?>
 
         <div class="links row">
             <div class="col-md-12">
-                <a href="<?php echo \yii\helpers\Url::to(["/"]) ?>" data-pjax-prevent data-ui-loader class="btn btn-primary"><?php echo Yii::t('UserModule.views_auth_register_success', 'back to home') ?></a>
+                <a href="<?php echo \yii\helpers\Url::to(["/"]) ?>" data-pjax-prevent data-ui-loader class="btn"><?php echo Yii::t('UserModule.views_auth_register_success', 'back to home') ?></a>
             </div>
         </div>
 
