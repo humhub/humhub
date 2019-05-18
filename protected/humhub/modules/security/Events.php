@@ -8,10 +8,10 @@
 
 namespace humhub\modules\security;
 
+use humhub\controllers\ErrorController;
+use humhub\modules\security\models\SecuritySettings;
 use Yii;
 use yii\base\BaseObject;
-use yii\base\Event;
-use yii\helpers\Url;
 
 /**
  * Events provides callbacks to handle events.
@@ -21,38 +21,34 @@ use yii\helpers\Url;
  */
 class Events extends BaseObject
 {
-
-    /**
-     * @param $evt Event
-     */
-    public static function onAdvancedSettingsMenuInit($evt)
-    {
-        /* @var $menu \humhub\modules\admin\widgets\AdvancedSettingMenu */
-        $menu = $evt->sender;
-        $menu->addItem([
-            'label' => Yii::t('SecurityModule.base', 'Security'),
-            'url' => Url::toRoute(['/admin/setting/caching']),
-            'icon' => '<i class="fa fa-dashboard"></i>',
-            'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'security' && Yii::$app->controller->id == 'setting'),
-            'isVisible' => Yii::$app->user->isAdmin(),
-        ]);
-    }
-
     public static function onBeforeAction($evt)
     {
-        if(!Yii::$app->request->isAjax) {
-            /**
-             * https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/13246371/
-             */
-            $policy = static::isEdge() ?  "script-src 'self' 'nonce-test'" :  "script-src 'nonce-test'";
-            Yii::$app->response->headers->add('Content-Security-Policy', $policy);
+        $settings = new SecuritySettings();
+        if(!Yii::$app->controller instanceof ErrorController && !Yii::$app->request->isAjax) {
+            $settings->updateNonce();
+            static::setHeader(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY, $settings->getCSPHeader());
+            static::setHeader(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY_IE, $settings->getCSPHeader());
+        }
+
+        if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') {
+            static::setHeader(SecuritySettings::HEADER_STRICT_TRANSPORT_SECURITY, $settings->getHeader(SecuritySettings::HEADER_STRICT_TRANSPORT_SECURITY));
+        }
+
+        static::setHeader(SecuritySettings::HEADER_X_XSS_PROTECTION, $settings->getHeader(SecuritySettings::HEADER_X_XSS_PROTECTION));
+        static::setHeader(SecuritySettings::HEADER_X_CONTENT_TYPE, $settings->getHeader(SecuritySettings::HEADER_X_CONTENT_TYPE));
+        static::setHeader(SecuritySettings::HEADER_X_FRAME_OPTIONS, $settings->getHeader(SecuritySettings::HEADER_X_FRAME_OPTIONS));
+        static::setHeader(SecuritySettings::HEADER_X_PERMITTED_CROSS_DOMAIN_POLICIES, $settings->getHeader(SecuritySettings::HEADER_X_PERMITTED_CROSS_DOMAIN_POLICIES));
+        static::setHeader(SecuritySettings::HEADER_REFERRER_POLICY, $settings->getHeader(SecuritySettings::HEADER_REFERRER_POLICY));
+        static::setHeader(SecuritySettings::HEADER_PUBLIC_KEY_PINS, $settings->getHeader(SecuritySettings::HEADER_PUBLIC_KEY_PINS));
+    }
+
+    private static function setHeader($key, $value)
+    {
+        if($value) {
+            Yii::$app->response->headers->add($key, $value);
         }
     }
 
-    private static function isEdge()
-    {
-        return preg_match('/Edge/i',$_SERVER['HTTP_USER_AGENT']);
-    }
+
 
 }

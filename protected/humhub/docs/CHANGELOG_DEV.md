@@ -30,4 +30,6 @@ HumHub Change Log (DEVELOP)
 - Enh: Responsive mobile view enhancements
 - Enh: Added `humhub\widgets\Link::target()` and `blank()`
 - Fix: `humhub.client` does not resolve promise 302 on redirects 
+- Enh: Added new configurable security module with nonce script support
+- Chng: Updated jQuery version to 3.4.0
 

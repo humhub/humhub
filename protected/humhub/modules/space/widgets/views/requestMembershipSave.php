@@ -1,3 +1,6 @@
+<?php
+ use humhub\libs\Html;
+?>
 <div id="lightbox_requestWorkspace">
 
     <div class="panel panel_lightbox">
@@ -16,7 +19,7 @@
 
 </div>
 
-<script>
+<script <?= Html::nonce() ?>>
 
     $('#close_button_requestWorkspace').remove();
 

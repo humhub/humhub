@@ -1,8 +1,30 @@
-Javascript API
+Javascript
 =======
 
 Since version 1.2, HumHub provides a module based Javascript API within the `humhub` namespace.
-Instead of embeding inline script blocks into your view files, it's highly recommended to use the new module system for your modules frontend logic. 
+Instead of embeding inline script blocks into your view files, it's highly recommended to use the new module system for your modules frontend logic.
+
+
+**CSP Nonce Support**
+
+In order to be compatible with CSP nonce support, introduced with HumHub 1.4, you'll have to add a nonce attribute to all of your script blocks.
+The nonce attribute is automatically added to script blocks registered by [Asset Bundles](https://www.yiiframework.com/doc/guide/2.0/en/structure-assets#asset-bundles)
+or by `humhub\modules\ui\view\components\View::registerJs()`.
+
+As mentioned above you should avoid using inline scripts and instead store code in separated source files. If you need to use inline script blocks you can use one of the following:
+
+- `humhub\modules\ui\view\components\View::registerJs()` will automatically add the nonce attribute
+- `humhub\libs\Html::script()` will automatically add the nonce attribute
+- `humhub\libs\Html::beginTag()` will automatically add the nonce attribute
+- Or by using `\humhub\libs\Html::nonce()`:
+
+```
+<script <?= \humhub\libs\Html::nonce() ?>>
+    // ...
+</script>
+```
+
+> Note: In case your module for any reason does have CSP nonce support or any other security restriction, you should highlight this in your module description.
 
 ## Modules
 

@@ -2,7 +2,7 @@
 
 use humhub\widgets\FooterMenu;
 use yii\helpers\Url;
-use yii\helpers\Html;
+use humhub\libs\Html;
 use yii\bootstrap\ActiveForm;
 use humhub\modules\search\models\forms\SearchForm;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -138,7 +138,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
     <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_FULL_PAGE]); ?>
 </div>
 
-<script type="text/javascript">
+<script <?= Html::nonce() ?>>
 
     $(document).ready(function () {
         // set focus to input for seach field

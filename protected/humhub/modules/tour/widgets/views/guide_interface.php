@@ -5,7 +5,7 @@ use yii\helpers\Url;
 $this->context->loadResources($this);
 ?>
 
-<script type="text/javascript">
+<script <?= \humhub\libs\Html::nonce() ?>>
     var gotoSpace = false;
 
 

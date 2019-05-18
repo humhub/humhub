@@ -47,7 +47,7 @@ use yii\helpers\Html;
         <?= ModalButton::cancel(Yii::t('base', 'Close'))?>
     </div>
 
-<script type="text/javascript">
+<script <?= \humhub\libs\Html::nonce() ?>>
 
     // scroll to top of list
     $(".modal-body").animate({scrollTop: 0}, 200);

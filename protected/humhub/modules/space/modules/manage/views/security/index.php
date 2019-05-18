@@ -4,7 +4,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
 use humhub\widgets\DataSaved;
 use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
+use humhub\libs\Html;
 
 /* @var $model Space */
 ?>
@@ -47,7 +47,7 @@ use yii\helpers\Html;
     </div>
 </div>
 
-<script>
+<script <?= Html::nonce() ?>>
     $('#space-visibility').on('change', function() {
         if (this.value == 0) {
             $('#space-join_policy, #space-default_content_visibility').val('0').prop('disabled', true);

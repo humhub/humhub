@@ -98,7 +98,7 @@ use humhub\modules\user\widgets\AuthChoice;
 
 </div>
 
-<script type="text/javascript">
+<script <?= \humhub\libs\Html::nonce() ?>>
     $(document).on('humhub:ready', function () {
         $('#login_username').focus();
 

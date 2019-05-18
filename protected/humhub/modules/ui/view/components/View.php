@@ -133,7 +133,7 @@ class View extends \yii\web\View
      */
     public function registerJsFile($url, $options = [], $key = null)
     {
-        $options['nonce'] = 'test';
+        Html::setNonce($options);
         parent::registerJsFile($this->addCacheBustQuery($url), $options, $key);
     }
 

@@ -5,6 +5,7 @@ use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\modules\space\widgets\SpaceNameColorInput;
 use yii\helpers\Url;
+use humhub\libs\Html;
 
 /* @var $model \humhub\modules\space\models\Space */
 /* @var $visibilityOptions array */
@@ -44,7 +45,7 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
     <?php ActiveForm::end(); ?>
 <?php ModalDialog::end(); ?>
 
-<script>
+<script <?= Html::nonce() ?>>
 
     var $checkedVisibility = $('input[type=radio][name="Space[visibility]"]:checked');
     if ($checkedVisibility.length && $checkedVisibility[0].value == 0) {

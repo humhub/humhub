@@ -4,7 +4,7 @@ use yii\helpers\Url;
 
 $this->context->loadResources($this);
 ?>
-<script type="text/javascript">
+<script <?= \humhub\libs\Html::nonce() ?>>
     
     $( document ).one('humhub:ready', function() {
         // Create a new tour

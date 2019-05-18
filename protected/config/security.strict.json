@@ -1,0 +1,28 @@
+{
+  "headers": {
+    "Strict-Transport-Security": "max-age=31536000",
+    "X-XSS-Protection": "1; mode=block",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "deny",
+    "Referrer-Policy": "no-referrer-when-downgrade",
+    "X-Permitted-Cross-Domain-Policies":  "master-only"
+  },
+  "csp": {
+    "nonce": true,
+    "report-only": false,
+    "default-src": {
+      "self": true
+    },
+    "script-src": {
+      "self": true,
+      "unsafe-inline": true,
+      "unsafe-eval": false,
+      "report-sample": true
+    },
+    "style-src": {
+      "self": true,
+      "unsafe-inline": false
+    },
+    "upgrade-insecure-requests": true
+  }
+}

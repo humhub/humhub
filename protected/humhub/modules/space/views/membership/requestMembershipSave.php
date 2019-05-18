@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\space\widgets\MembershipButton;
+use humhub\libs\Html;
 ?>
 
 <div class="modal-dialog animated fadeIn">
@@ -26,6 +27,6 @@ use humhub\modules\space\widgets\MembershipButton;
         </div>
     </div>
 </div>
-<script>
+<script <?= Html::nonce() ?>>
     $('#requestMembershipButton').replaceWith('<?= MembershipButton::widget(['space' => $space]) ?>');
 </script>

@@ -43,7 +43,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_recoverPassword', 'Password rec
     </div>
 </div>
 
-<script type="text/javascript">
+<script <?= \humhub\libs\Html::nonce() ?>>
 
     $(function () {
         // set cursor to email field

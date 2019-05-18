@@ -60,7 +60,7 @@ $this->registerJs("initMarkdownEditor('" . $fieldId . "')");
  * into a modal. So we need to append MarkdownEditors modals later to body.
  */
 ?>
-<script id="markdownEditor_dialogs_<?php echo $fieldId; ?>" type="text/placeholder">
+<script <?= \humhub\libs\Html::nonce() ?> id="markdownEditor_dialogs_<?php echo $fieldId; ?>" type="text/placeholder">
     <div class="modal modal-top" id="addFileModal_<?php echo $fieldId; ?>" tabindex="-1" role="dialog" aria-labelledby="addImageModalLabel" style="z-index:99999" aria-hidden="true">
     <div class="modal-dialog">
     <div class="modal-content">
