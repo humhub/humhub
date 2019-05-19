@@ -110,7 +110,9 @@ class UserSearch extends User
                 ['like', 'user.username', $this->freeText],
                 ['like', 'user.email', $this->freeText],
                 ['like', 'profile.firstname', $this->freeText],
-                ['like', 'profile.lastname', $this->freeText]
+                ['like', 'profile.lastname', $this->freeText],
+                ['like', 'concat(profile.firstname, " ", profile.lastname)', $this->freeText],
+                ['like', 'concat(profile.lastname, " ", profile.firstname)', $this->freeText],
             ]);
 
             if (!empty($this->status)) {
@@ -126,6 +128,7 @@ class UserSearch extends User
         $query->andFilterWhere(['like', 'user.email', $this->email]);
         $query->andFilterWhere(['like', 'profile.firstname', $this->getAttribute('profile.firstname')]);
         $query->andFilterWhere(['like', 'profile.lastname', $this->getAttribute('profile.lastname')]);
+
 
 
         if ($this->getAttribute('last_login') != "") {

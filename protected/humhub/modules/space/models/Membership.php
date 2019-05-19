@@ -334,4 +334,15 @@ class Membership extends ActiveRecord
         return $query;
     }
 
+    /**
+     * Checks if the current logged in user is the related user of this membership record.
+     *
+     * @since 1.3.9
+     * @return bool
+     */
+    public function isCurrentUser()
+    {
+        return !Yii::$app->user->isGuest && Yii::$app->user->identity->id === $this->user_id;
+    }
+
 }

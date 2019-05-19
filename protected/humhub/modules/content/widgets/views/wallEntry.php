@@ -66,7 +66,7 @@ use yii\helpers\Url;
             <div class="media-body">
                 <div class="media-heading">
                     <?= Html::containerLink($user); ?>
-                    <?php if ($showContentContainer): ?>
+                    <?php if ($container && $showContentContainer): ?>
                         <span class="viaLink">
                             <i class="fa fa-caret-right" aria-hidden="true"></i>
                             <?= Html::containerLink($container); ?>

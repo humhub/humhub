@@ -89,6 +89,9 @@ class Activity extends ContentActiveRecord
      * Returns the related BaseActivity object of this Activity record.
      *
      * @return \humhub\modules\activity\components\BaseActivity
+     * @throws Exception
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\IntegrityException
      */
     public function getActivityBaseClass()
     {

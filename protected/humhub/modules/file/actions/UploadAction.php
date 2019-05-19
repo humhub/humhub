@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\actions;
 
+use humhub\libs\Html;
 use Yii;
 use yii\base\Action;
 use yii\web\UploadedFile;
@@ -135,7 +136,7 @@ class UploadAction extends Action
      */
     protected function getErrorResponse(File $file)
     {
-        $errorMessage = Yii::t('FileModule.actions_UploadAction', 'File {fileName} could not be uploaded!', ['fileName' => $file->file_name]);
+        $errorMessage = Yii::t('FileModule.actions_UploadAction', 'File {fileName} could not be uploaded!', ['fileName' => Html::encode($file->file_name)]);
 
         if ($file->getErrors()) {
             $errorMessage = $file->getErrors('uploadedFile');
@@ -144,8 +145,8 @@ class UploadAction extends Action
         return [
             'error' => true,
             'errors' => $errorMessage,
-            'name' => $file->file_name,
-            'size' => $file->size
+            'name' =>  Html::encode($file->file_name),
+            'size' =>  Html::encode($file->size)
         ];
     }
 

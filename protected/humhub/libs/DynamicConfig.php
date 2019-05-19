@@ -170,6 +170,10 @@ class DynamicConfig extends BaseObject
         unset($config['components']['view']);
         unset($config['components']['mailer']['view']);
 
+
+        // Cleanups
+        unset($config['components']['db']['charset']);
+
         $config['params']['config_created_at'] = time();
         $config['params']['horImageScrollOnMobile'] = Yii::$app->settings->get('horImageScrollOnMobile');
 

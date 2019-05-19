@@ -24,6 +24,7 @@ return [
     'Forgot your password?' => '',
     'If you\'re already a member, please login with your username/email and password.' => '',
     'Login' => '',
+    'Please enter the letters from the image.' => '',
     'Please login with your username/email and password.' => '',
     'Register' => '',
     'Remember me' => '',

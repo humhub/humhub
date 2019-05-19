@@ -7,6 +7,7 @@ return array (
   'Default user group for new users' => 'Standardgruppe für neue Benutzer',
   'Default user idle timeout, auto-logout (in seconds, optional)' => 'Zeitspanne, nach der ein Benutzer bei Untätigkeit automatisch abgemeldet wird (in Sekunden, optional)',
   'Default user profile visibility' => 'Standard Profilsichtbarkeit',
+  'Include captcha in registration form' => 'Captcha in das Registrierungsformular aufnehmen',
   'Members can invite external users by email' => 'Benutzer können neue Nutzer per E-Mail einladen',
   'Require group admin approval after registration' => 'Benötige Freigabe eines Gruppenadministrators nach Registrierung',
 );

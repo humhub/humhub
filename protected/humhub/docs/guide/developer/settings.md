@@ -10,11 +10,9 @@ The SettingsManager component is automatically added all to humhub\components\Mo
 
 ## Module settings
 
-Get desired module / application instance:
+Get desired module:
 
 ```php
-$module = Yii::$app;
-// or
 $module = Yii::$app->getModule('polls');
 // or
 $module = $controller->module;

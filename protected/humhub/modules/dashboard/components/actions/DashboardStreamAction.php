@@ -108,7 +108,7 @@ class DashboardStreamAction extends ActivityStreamAction
         // Automatic include user profile posts without required following
         if ($dashboardModule->autoIncludeProfilePosts == Module::STREAM_AUTO_INCLUDE_PROFILE_POSTS_ALWAYS || (
                 $dashboardModule->autoIncludeProfilePosts == Module::STREAM_AUTO_INCLUDE_PROFILE_POSTS_ADMIN_ONLY && Yii::$app->user->isAdmin())) {
-            $allUsers = (new Query())->select(["allusers.id"])->from('user allusers');
+            $allUsers = (new Query())->select(["allusers.contentcontainer_id"])->from('user allusers');
             $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($allUsers)[0];
         }
 

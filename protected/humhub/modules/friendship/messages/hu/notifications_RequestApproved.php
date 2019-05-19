@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Friendship Approved' => 'Barátság Elfogadva',
+  'Friendship Approved' => 'Ismerősnek jelölés elfogadva',
 );

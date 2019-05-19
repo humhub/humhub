@@ -152,7 +152,7 @@ In some cases you may want to append or otherwise manipulate the output of a wid
 **Events.php:**
 
 ```php
-public static function onCreateSomeWidget($event)
+public static function onSomeWidgetRun($event)
 {
     $event->result .= MyWidgetToAppend::widget();
 }

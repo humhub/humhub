@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\converter;
 
+use humhub\modules\file\libs\FileHelper;
 use Yii;
 use humhub\modules\file\models\File;
 use humhub\modules\file\libs\ImageConverter;
@@ -65,7 +66,7 @@ class PreviewImage extends BaseConverter
     protected function convert($fileName)
     {
         if (!is_file($this->file->store->get($fileName))) {
-            ImageConverter::Resize($this->file->store->get(), $this->file->store->get($fileName), $this->options);
+            ImageConverter::ResizeFile($this->file, $fileName, $this->options);
         }
 
         $this->imageInfo = @getimagesize($this->file->store->get($fileName));

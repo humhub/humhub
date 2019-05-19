@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Turn off notifications' => 'Nem kérek értesítést',
-  'Turn on notifications' => 'Kérek értesítést',
+  'Turn off notifications' => 'Nem kérek értesítéseket',
+  'Turn on notifications' => 'Kérek értesítéseket',
 );

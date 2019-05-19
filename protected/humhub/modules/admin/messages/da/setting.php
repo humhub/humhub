@@ -27,5 +27,4 @@ return [
     'These settings refer to the appearance of your social network.' => '',
     'User Settings' => '',
     'General' => 'Generelt',
-    'LDAP' => 'LDAP',
 ];

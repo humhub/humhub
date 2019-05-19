@@ -20,7 +20,6 @@ use yii\helpers\Url;
  */
 class AcceptanceTester extends \Codeception\Actor
 {
-
     use _generated\AcceptanceTesterActions;
 
     public $guestAccessAllowed = false;
@@ -153,6 +152,7 @@ class AcceptanceTester extends \Codeception\Actor
         }
 
         $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->wait(1);
         $this->click('#status-bar .status-bar-close');
         $this->waitForElementNotVisible('#status-bar');
     }
@@ -166,6 +166,7 @@ class AcceptanceTester extends \Codeception\Actor
             $this->see($text, '#status-bar');
         }
         $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->wait(1);
         $this->click('#status-bar .status-bar-close');
         $this->waitForElementNotVisible('#status-bar');
     }
@@ -180,6 +181,7 @@ class AcceptanceTester extends \Codeception\Actor
         }
 
         $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->wait(1);
         $this->click('#status-bar .status-bar-close');
         $this->waitForElementNotVisible('#status-bar');
     }
@@ -204,6 +206,7 @@ class AcceptanceTester extends \Codeception\Actor
     public function logout()
     {
         $this->clickAccountDropDown();
+        $this->wait(1);
         $this->click('Logout');
         if(!$this->guestAccessAllowed) {
             $this->waitForElementVisible('#login-form');
@@ -252,12 +255,19 @@ class AcceptanceTester extends \Codeception\Actor
         $this->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839a');
     }
 
-    public function seeInNotifications($text)
+    public function seeInNotifications($text, $click = false)
     {
         $this->click('.notifications .fa-bell');
         $this->waitForText('Notifications', 5, '.notifications');
         $this->waitForText($text, 5, '.notifications');
-        $this->click('.notifications');
+
+        if($click) {
+            $this->click($text,'.notifications');
+            $this->wait(2);
+        } else {
+            $this->click('.notifications .fa-bell');
+        }
+
     }
 
     /**
@@ -273,7 +283,7 @@ class AcceptanceTester extends \Codeception\Actor
         $select2Input = $selector . ' ~ span input';
         $this->fillField($select2Input, $userName);
         $this->waitForElementVisible('.select2-container--open');
-        $this->wait(3);
+        $this->waitForElementVisible('.select2-results__option.select2-results__option--highlighted');
         $this->see($userName, '.select2-container--open');
         $this->pressKey($select2Input, WebDriverKeys::ENTER);
     }

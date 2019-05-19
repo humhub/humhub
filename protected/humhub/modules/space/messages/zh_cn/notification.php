@@ -19,6 +19,7 @@
 return [
     'You were added to Space {spaceName}' => '',
     '{displayName} changed your role to {roleName} in the space {spaceName}.' => '',
+    '{displayName} revoked your invitation for the space {spaceName}' => '',
     '{displayName} accepted your invite for the space {spaceName}' => '{displayName} 接收了你加入空间 {spaceName} 的邀请',
     '{displayName} approved your membership for the space {spaceName}' => '{displayName} 通过了你加入空间 {spaceName} 的请求',
     '{displayName} declined your invite for the space {spaceName}' => '{displayName} 拒绝了你加入空间 {spaceName} 的邀请',

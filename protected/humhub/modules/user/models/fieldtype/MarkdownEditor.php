@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\modules\user\models\Profile;
 use Yii;
 
 /**
@@ -38,8 +39,8 @@ class MarkdownEditor extends BaseType
     public function save()
     {
         $columnName = $this->profileField->internal_name;
-        if (!\humhub\modules\user\models\Profile::columnExists($columnName)) {
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'TEXT');
+        if (!Profile::columnExists($columnName)) {
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName, 'TEXT');
             Yii::$app->db->createCommand($query)->execute();
         }
 

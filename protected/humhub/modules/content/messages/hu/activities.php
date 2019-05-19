@@ -1,5 +1,5 @@
 <?php
 return array (
   'Contents' => 'Tartalmak',
-  'Whenever a new content (e.g. post) has been created.' => 'Bármikor ha egy új tartalom (pl. bejegyzés) létre lett hozva.',
+  'Whenever a new content (e.g. post) has been created.' => 'Bármikor, amikor új tartalom (pl. bejegyzés) lett létrehozva.',
 );

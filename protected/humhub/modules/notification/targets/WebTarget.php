@@ -47,6 +47,7 @@ class WebTarget extends BaseTarget
 
         Yii::$app->live->send(new NewNotification([
             'notificationId' => $notification->record->id,
+            'notificationGroup' => ($notification->getGroupKey()) ? (get_class($notification).':'.$notification->getGroupKey()) : null,
             'contentContainerId' => $user->contentcontainer_id,
             'ts' => time(),
             'text' => $notification->text()

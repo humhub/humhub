@@ -20,6 +20,7 @@ return [
     'Include archived content' => '',
     'Only private content' => '',
     'Only public content' => '',
+    'Where I\'m involved' => '',
     'With file attachments' => '',
     'Back to stream' => 'Zpět na příspěvky',
     'Created by me' => 'Vytvořil(a) jsem',
@@ -32,6 +33,5 @@ return [
     'The content has been archived.' => 'Obsah archivován.',
     'The content has been deleted.' => 'Obsah smazán.',
     'The content has been unarchived.' => 'Obsah již není v archivu',
-    'Where I´m involved' => 'Jsem zmíněn(a)',
     'Your last edit state has been saved!' => 'Poslední úpravy uloženy.',
 ];

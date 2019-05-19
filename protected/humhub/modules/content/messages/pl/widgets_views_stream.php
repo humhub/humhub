@@ -24,6 +24,7 @@ return [
     'The content has been archived.' => '',
     'The content has been deleted.' => '',
     'The content has been unarchived.' => '',
+    'Where I\'m involved' => '',
     'With file attachments' => '',
     'Your last edit state has been saved!' => '',
     'Back to stream' => 'Powrót do strumienia',
@@ -33,5 +34,4 @@ return [
     'Last update' => 'Ostatnia aktualizacja',
     'No matches with your selected filters!' => 'Brak dopasowań dla wybranych filtrów!',
     'Nothing here yet!' => 'Nic tu nie ma!',
-    'Where I´m involved' => 'Gdzie jestem zaangażowany ',
 ];

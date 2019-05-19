@@ -25,7 +25,7 @@ interface StandaloneAuthClient
      * Custom auth action implementation
      * 
      * @param AuthAction $authAction
-     * @return Response response instance.
+     * @return \yii\web\Response response instance.
      */
     public function authAction($authAction);
 }

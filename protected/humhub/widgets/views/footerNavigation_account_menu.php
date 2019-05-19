@@ -21,7 +21,7 @@ $i = 0;
                     <small>
                         <?= $item['icon'] . ' ' . $item['label']; ?>
                     </small>
-                </a></li>
+                </a>
             </li>
         <?php endif; ?>
     <?php endforeach; ?>

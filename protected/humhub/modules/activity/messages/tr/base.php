@@ -3,7 +3,7 @@ return array (
   '<strong>E-Mail</strong> Summaries' => '<strong>E-posta</strong> Özetleri',
   'Activities' => 'Aktiviteler',
   'Daily' => 'Günlük',
-  'E-Mail Summaries' => 'E-posta Özetleri',
+  'E-Mail Summaries' => 'E-Posta Özetleri',
   'E-Mail summaries are sent to inform you about recent activities in the network.' => 'E-posta özetleri sosyal ağınızdaki son aktiviteleri bilgilendirmek amacıyla size gönderilir.',
   'E-Mail summaries are sent to users to inform them about recent activities in your network.' => 'E-posta özetleri sosyal ağınızdaki son aktiviteleri kullanıcıları bilgilendirmek amacıyla kendilerine gönderilir.',
   'Exclude spaces below from the mail summary' => 'E-posta özetinden aşağıdaki sayfaları çıkar',

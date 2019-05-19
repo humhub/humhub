@@ -20,6 +20,7 @@ return [
     '<strong>Join</strong> the network' => '',
     '<strong>Sign</strong> up' => '',
     'Don\'t have an account? Join the network by entering your e-mail address.' => '',
+    'Please enter the letters from the image.' => '',
     '<strong>Please</strong> sign in' => '<strong>Per favor</strong> inicia sesión',
     'Forgot your password?' => 'Has ixuplidau a tuya clau?',
     'If you\'re already a member, please login with your username/email and password.' => 'Si ya yes miembro, per favor inicia sesión con o tuyo nombre d\'usuario/correu-e y clau.',

@@ -1,6 +1,5 @@
 <?php
-
 return array (
-  'Checkbox field options' => '',
-    'Default value' => '',
+  'Checkbox field options' => 'Jelölőnégyzetet-mező opciók',
+  'Default value' => 'Alapértelmezett érték',
 );

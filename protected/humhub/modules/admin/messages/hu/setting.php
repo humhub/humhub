@@ -17,15 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Advanced Settings' => '',
-    'Appearance Settings' => '',
-    'General' => '',
-    'General Settings' => '',
-    'Here you can configurate the registration behaviour and additinal user settings of your social network.' => '',
-    'Here you can configure basic settings of your social network.' => '',
-    'LDAP' => '',
-    'Notification Settings' => '',
-    'These settings refer to advanced topics of your social network.' => '',
-    'These settings refer to the appearance of your social network.' => '',
-    'User Settings' => '',
+    'Advanced Settings' => 'Speciális beállítások',
+    'Appearance Settings' => 'Megjelenítési beállítások',
+    'General' => 'Általános',
+    'General Settings' => 'Általános beállítások',
+    'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'Itt konfigurálhatod közösségi hálózatod regisztrálói viselkedéssel kapcsolatos beállításait és további felhasználói beállításokat.',
+    'Here you can configure basic settings of your social network.' => 'Itt konfigurálhatod közösségi hálózatod alapbeállításait.',
+    'Notification Settings' => 'Értesítési beállítások',
+    'These settings refer to advanced topics of your social network.' => 'Ezek a beállítások közösségi hálózatod speciális témáira vonatkoznak.',
+    'These settings refer to the appearance of your social network.' => 'Ezek a beállítások közösségi hálózatod megjelenésére vonatkoznak.',
+    'User Settings' => 'Felhasználói beállítások',
 ];

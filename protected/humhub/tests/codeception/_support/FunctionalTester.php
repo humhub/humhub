@@ -254,6 +254,24 @@ class FunctionalTester extends \Codeception\Actor
 
     }
 
+    /**
+     * @return \tests\codeception\_pages\DirectoryPage
+     */
+    public function amOnDirectory()
+    {
+        return tests\codeception\_pages\DirectoryPage::openBy($this);
+    }
+
+    public function amOnProfile()
+    {
+        return tests\codeception\_pages\ProfilePage::openBy($this);
+    }
+
+    public function amOnDashboard()
+    {
+        tests\codeception\_pages\DashboardPage::openBy($this);
+    }
+
     public function enableModule($guid, $moduleId)
     {
         if(is_int($guid)) {
@@ -263,7 +281,6 @@ class FunctionalTester extends \Codeception\Actor
         $space = Space::findOne(['guid' => $guid]);
         $space->enableModule($moduleId);
         Yii::$app->moduleManager->flushCache();
-        \humhub\modules\space\models\Module::flushCache();
     }
 
 }

@@ -9,12 +9,21 @@
 use humhub\modules\dashboard\widgets\Sidebar;
 use humhub\modules\admin\Events;
 use humhub\commands\CronController;
+use humhub\modules\user\components\User;
 
 return [
     'id' => 'admin',
     'class' => \humhub\modules\admin\Module::class,
     'isCoreModule' => true,
     'events' => [
+        [
+            'class' => User::class,
+            'event' => User::EVENT_BEFORE_SWITCH_IDENTITY,
+            'callback' => [
+                Events::class,
+                'onSwitchUser'
+            ]
+        ],
         [
             'class' => Sidebar::class,
             'event' => Sidebar::EVENT_INIT,

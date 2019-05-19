@@ -95,7 +95,7 @@ class UrlRule extends BaseObject implements UrlRuleInterface
         if ($space !== null) {
             static::$spaceUrlMap[$space->guid] = ($space->url != '') ? $space->url : $space->guid;
         } else {
-            static::$spaceUrlMap[$space->guid] = null;
+            static::$spaceUrlMap[$guid] = null;
         }
 
         return static::$spaceUrlMap[$guid];

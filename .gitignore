@@ -24,7 +24,6 @@ uploads/profile_image/banner/*
 nbproject
 .idea/*
 .gitmodules
-.github
 
 themes/*
 !themes/HumHub

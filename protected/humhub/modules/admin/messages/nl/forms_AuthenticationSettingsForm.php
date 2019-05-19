@@ -7,6 +7,7 @@ return array (
   'Default user group for new users' => 'Standaard gebruikersgroep voor nieuwe gebruikers',
   'Default user idle timeout, auto-logout (in seconds, optional)' => 'Standaard gebruiker idle timeout - auto-uitloggen (in seconden, optioneel)',
   'Default user profile visibility' => 'Standaard zichtbaarheid gebruikersprofiel',
+  'Include captcha in registration form' => 'Inclusief captcha in inschrijfformulier',
   'Members can invite external users by email' => 'Leden kunnen externe gebruikers uitnodigen per email',
   'Require group admin approval after registration' => 'Goedkeuring door groep admin benodigd na registratie',
 );

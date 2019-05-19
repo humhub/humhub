@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use humhub\widgets\Link;
 ?>
 
 <div class="panel panel-danger">
@@ -25,8 +26,8 @@ use yii\helpers\Html;
                         <?= Html::encode($membership->request_message); ?><br>
 
                         <hr>
-                        <?= Html::a('Accept', $space->createUrl('/space/manage/member/approve-applicant', ['userGuid' => $user->guid]), ['data-method' => 'POST', 'class' => 'btn btn-success btn-sm']); ?>
-                        <?= Html::a('Decline', $space->createUrl('/space/manage/member/reject-applicant', ['userGuid' => $user->guid]), ['data-method' => 'POST', 'class' => 'btn btn-danger btn-sm']); ?>
+                        <?= Link::success(Yii::t('SpaceModule.widgets_views_spaceMembers', 'Accept'))->post($space->createUrl('/space/manage/member/approve-applicant', ['userGuid' => $user->guid]))->sm() ?>
+                        <?= Link::danger(Yii::t('SpaceModule.widgets_views_spaceMembers', 'Decline'))->post($space->createUrl('/space/manage/member/reject-applicant', ['userGuid' => $user->guid]))->sm() ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

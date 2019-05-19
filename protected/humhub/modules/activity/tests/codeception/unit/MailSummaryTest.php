@@ -12,6 +12,7 @@ namespace humhub\modules\activity\tests\codeception\unit;
 use Codeception\Module\Yii2;
 use humhub\modules\activity\components\MailSummary;
 use humhub\modules\activity\components\MailSummaryProcessor;
+use humhub\modules\activity\jobs\SendMailSummary;
 use humhub\modules\activity\models\MailSummaryForm;
 use humhub\modules\comment\activities\NewComment;
 use humhub\modules\comment\models\Comment;
@@ -26,7 +27,168 @@ use yii\swiftmailer\Message;
 
 class MailSummaryTest extends HumHubDbTestCase
 {
-    public function testMailSummaryDaylyProcessor()
+    public function testHourlyProcess()
+    {
+        $this->becomeUser('Admin');
+        (new MailSummaryForm(['interval' => MailSummary::INTERVAL_NONE]))->save();
+        (new MailSummaryForm([
+            'user' => User::findOne(['id' => 2]),
+            'interval' => MailSummary::INTERVAL_HOURLY,
+            'activities' => [ContentCreated::class]
+        ]))->save();
+
+        $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Daily Summary Test']);
+        $this->assertTrue($post->save());
+
+        MailSummaryProcessor::process(MailSummary::INTERVAL_HOURLY);
+
+        $this->assertMailSent(1);
+
+        /* @var $yiiModule Yii2 */
+        $yiiModule = $this->getModule('Yii2');
+
+        /* @var $mail Message */
+        $mail =  $yiiModule->grabLastSentEmail();
+        $this->assertArrayHasKey('user1@example.com', $mail->getTo());
+        $this->assertEquals('Latest news', $mail->getSubject());
+    }
+
+    public function testDailyProcess()
+    {
+        $this->becomeUser('Admin');
+        (new MailSummaryForm(['interval' => MailSummary::INTERVAL_NONE]))->save();
+        (new MailSummaryForm([
+            'user' => User::findOne(['id' => 2]),
+            'interval' => MailSummary::INTERVAL_DAILY,
+            'activities' => [ContentCreated::class]
+        ]))->save();
+
+        $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Daily Summary Test']);
+        $this->assertTrue($post->save());
+
+        MailSummaryProcessor::process(MailSummary::INTERVAL_DAILY);
+
+        $this->assertMailSent(1);
+
+        /* @var $yiiModule Yii2 */
+        $yiiModule = $this->getModule('Yii2');
+
+        /* @var $mail Message */
+        $mail =  $yiiModule->grabLastSentEmail();
+        $this->assertArrayHasKey('user1@example.com', $mail->getTo());
+        $this->assertEquals('Your daily summary', $mail->getSubject());
+    }
+
+    public function testWeeklyProcess()
+    {
+        $this->becomeUser('Admin');
+        (new MailSummaryForm(['interval' => MailSummary::INTERVAL_NONE]))->save();
+        (new MailSummaryForm([
+            'user' => User::findOne(['id' => 2]),
+            'interval' => MailSummary::INTERVAL_WEEKLY,
+            'activities' => [ContentCreated::class]
+        ]))->save();
+
+        $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Daily Summary Test']);
+        $this->assertTrue($post->save());
+
+        MailSummaryProcessor::process(MailSummary::INTERVAL_WEEKLY);
+
+        $this->assertMailSent(1);
+
+        /* @var $yiiModule Yii2 */
+        $yiiModule = $this->getModule('Yii2');
+
+        /* @var $mail Message */
+        $mail =  $yiiModule->grabLastSentEmail();
+        $this->assertArrayHasKey('user1@example.com', $mail->getTo());
+        $this->assertEquals('Your weekly summary', $mail->getSubject());
+    }
+
+    public function testNoneProcess()
+    {
+        $this->becomeUser('Admin');
+        (new MailSummaryForm(['interval' => MailSummary::INTERVAL_NONE]))->save();
+        (new MailSummaryForm([
+            'user' => User::findOne(['id' => 2]),
+            'interval' => MailSummary::INTERVAL_NONE,
+            'activities' => [ContentCreated::class]
+        ]))->save();
+
+        $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Daily Summary Test']);
+        $this->assertTrue($post->save());
+
+        MailSummaryProcessor::process(MailSummary::INTERVAL_NONE);
+
+        $this->assertMailSent(0);
+    }
+
+    public function testUserWithoutEmailProcessor()
+    {
+        $this->becomeUser('Admin');
+        (new MailSummaryForm(['interval' => MailSummary::INTERVAL_NONE]))->save();
+        (new MailSummaryForm([
+            'user' => User::findOne(['id' => 2]),
+            'interval' => MailSummary::INTERVAL_DAILY,
+            'activities' => [ContentCreated::class]
+        ]))->save();
+
+        $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Daily Summary Test']);
+        $this->assertTrue($post->save());
+
+        $user1 = User::findOne(['id' => 2]);
+        $user1->updateAttributes(['email' => null]);
+
+        MailSummaryProcessor::process(MailSummary::INTERVAL_DAILY);
+
+        $this->assertMailSent(0);
+    }
+
+    public function testProcessByJob()
+    {
+        $this->becomeUser('Admin');
+        (new MailSummaryForm(['interval' => MailSummary::INTERVAL_NONE]))->save();
+        (new MailSummaryForm([
+            'user' => User::findOne(['id' => 2]),
+            'interval' => MailSummary::INTERVAL_DAILY,
+            'activities' => [ContentCreated::class]
+        ]))->save();
+
+        $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Daily Summary Test']);
+        $this->assertTrue($post->save());
+
+        Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_DAILY]));
+
+        $this->assertMailSent(1);
+
+        /* @var $yiiModule Yii2 */
+        $yiiModule = $this->getModule('Yii2');
+
+        /* @var $mail Message */
+        $mail =  $yiiModule->grabLastSentEmail();
+        $this->assertArrayHasKey('user1@example.com', $mail->getTo());
+        $this->assertEquals('Your daily summary', $mail->getSubject());
+    }
+
+    public function testInvalidProcessByJob()
+    {
+        $this->becomeUser('Admin');
+        (new MailSummaryForm(['interval' => MailSummary::INTERVAL_NONE]))->save();
+        (new MailSummaryForm([
+            'user' => User::findOne(['id' => 2]),
+            'interval' => MailSummary::INTERVAL_DAILY,
+            'activities' => [ContentCreated::class]
+        ]))->save();
+
+        $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Daily Summary Test']);
+        $this->assertTrue($post->save());
+
+        Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_NONE]));
+
+        $this->assertMailSent(0);
+    }
+
+    public function testMailSummaryDailyProcessor()
     {
         $this->assertMailSent(0);
 
@@ -34,15 +196,7 @@ class MailSummaryTest extends HumHubDbTestCase
         $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Summary Test']);
         $this->assertTrue($post->save());
 
-        // Set Weekly Interval as default
         (new MailSummaryForm(['interval' => MailSummary::INTERVAL_NONE]))->save();
-
-        // Get sure no one receives a mail
-        /*MailSummaryProcessor::process(MailSummary::INTERVAL_DAILY);
-        MailSummaryProcessor::process(MailSummary::INTERVAL_WEEKLY);
-        MailSummaryProcessor::process(MailSummary::INTERVAL_HOURLY);
-
-        $this->assertMailSent(0);*/
 
         (new MailSummaryForm([
             'user' => User::findOne(['id' => 2]),
@@ -59,11 +213,11 @@ class MailSummaryTest extends HumHubDbTestCase
 
         /* @var $mail Message */
         $mail =  $yiiModule->grabLastSentEmail();
-        $test = $mail->getTo();
-
         $this->assertArrayHasKey('user1@example.com', $mail->getTo());
         $this->assertEquals('Your daily summary', $mail->getSubject());
     }
+
+
 
     public function testResetUserSettings()
     {

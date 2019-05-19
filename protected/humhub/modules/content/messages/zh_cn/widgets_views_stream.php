@@ -20,6 +20,7 @@ return [
     'Include archived content' => '',
     'Only private content' => '',
     'Only public content' => '',
+    'Where I\'m involved' => '',
     'With file attachments' => '',
     'Back to stream' => '返回动态',
     'Created by me' => '我创建的',
@@ -32,6 +33,5 @@ return [
     'The content has been archived.' => '内容已被归档。',
     'The content has been deleted.' => '内容已被删除。',
     'The content has been unarchived.' => '内容已被解除归档。',
-    'Where I´m involved' => '关系密切',
     'Your last edit state has been saved!' => '你的最新修改已被保存！',
 ];

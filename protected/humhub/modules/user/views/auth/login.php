@@ -1,5 +1,6 @@
 <?php
 
+use yii\captcha\Captcha;
 use \yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use \humhub\compat\CHtml;
@@ -72,6 +73,15 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
 
                 <?php $form = ActiveForm::begin(['id' => 'invite-form']); ?>
                 <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
+                <?php if ($invite->showCaptureInRegisterForm()) : ?>
+                    <div id="registration-form-captcha" style="display: none;">
+                        <div><?= Yii::t('UserModule.views_auth_login', 'Please enter the letters from the image.'); ?></div>
+
+                        <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
+                            'captchaAction' => 'auth/captcha',
+                        ])->label(false);?>
+                    </div>
+                <?php endif; ?>
                 <hr>
                 <?= CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
@@ -104,6 +114,12 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
         $('#register-form').addClass('shake');
         $('#login-form').removeClass('bounceIn');
         $('#app-title').removeClass('fadeIn');
+<?php } ?>
+
+<?php if ($invite->showCaptureInRegisterForm()) { ?>
+    $('#register-email').on('focus', function () {
+        $('#registration-form-captcha').fadeIn(500);
+    });
 <?php } ?>
 
 </script>

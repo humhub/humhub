@@ -36,11 +36,13 @@ class MimeHelper
         // Word
         'doc' => self::ICON_WORD,
         'docx' => self::ICON_WORD,
+        'docm' => self::ICON_WORD,
         'odt' => self::ICON_WORD,
         // Excel
         'xls' => self::ICON_EXCEL,
         'xlsx' => self::ICON_EXCEL,
         'xlsb' => self::ICON_EXCEL,
+        'xlsm' => self::ICON_EXCEL,
         'ods' => self::ICON_EXCEL,
         // Powerpoint
         'ppt' => self::ICON_POWERPOINT,

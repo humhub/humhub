@@ -351,7 +351,9 @@ humhub.module('stream.Stream', function (module, require, $) {
      */
     Stream.prototype._streamEntryAnimation = function (html, insert) {
         var that = this;
+
         return new Promise(function (resolve, reject) {
+
             var $html = $(html);
 
             // Filter out all script/links and text nodes
@@ -368,9 +370,11 @@ humhub.module('stream.Stream', function (module, require, $) {
             // apply additions to elements and fade them in.
             additions.applyTo($elements);
 
-            $elements.hide().css('opacity', 1).fadeIn('fast', function () {
-                that.onChange();
-                resolve();
+            $elements.imagesLoaded(function () {
+                $elements.hide().css('opacity', 1).fadeIn('fast', function () {
+                    that.onChange();
+                    resolve();
+                });
             });
         });
 

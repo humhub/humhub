@@ -11,6 +11,9 @@ Yii::setAlias('@humhub', '@app/humhub');
 Yii::setAlias('@config', '@app/config');
 Yii::setAlias('@themes', '@webroot/themes');
 
+// Workaround: PHP 7.3 compatible ZF2 ArrayObject class
+Yii::$classMap['Zend\Stdlib\ArrayObject'] = '@humhub/compat/ArrayObject.php';
+
 $config = [
     'name' => 'HumHub',
     'version' => '1.4-dev',
@@ -206,12 +209,12 @@ $config = [
             'sl' => 'Slovenščina',
             'hr' => 'Hrvatski',
             'am' => 'አማርኛ',
-            'fi' => 'suomalainen',
+            'fi' => 'Suomi',
         ],
         'ldap' => [
             // LDAP date field formats
             'dateFields' => [
-            //'birthday' => 'Y.m.d'
+                //'birthday' => 'Y.m.d'
             ],
         ],
         'formatter' => [
@@ -226,10 +229,10 @@ $config = [
             // Seconds before hide time from timeago date
             // Set to false to always display time
             'timeAgoHideTimeAfter' => 259200,
-        // Optional: Callback for TimageAgo FullDateFormat
-        //'timeAgoFullDateCallBack' => function($timestamp) {
-        //    return 'formatted';
-        //}
+            // Optional: Callback for TimageAgo FullDateFormat
+            //'timeAgoFullDateCallBack' => function($timestamp) {
+            //    return 'formatted';
+            //}
         ],
         'humhub' => [
             // Marketplace / New Version Check

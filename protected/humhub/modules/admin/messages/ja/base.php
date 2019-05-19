@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>Warning</strong> incomplete setup!' => '',
-  'About' => 'About',
+  '<strong>Warning</strong> incomplete setup!' => '<strong>警告 strong&gt;設定が不完全です！</strong>',
+  'About' => '約',
   'Add purchased module by licence key' => 'ライセンスキーを使ってモジュールを購入する',
   'Admin' => '管理',
   'Administration' => '管理',
@@ -22,7 +22,7 @@ return array (
   'Logging' => 'ログ',
   'Mailing' => 'メーリングリスト',
   'Modules' => 'モジュール',
-  'OEmbed providers' => '',
+  'OEmbed providers' => 'OEmbedプロバイダー',
   'Open documentation' => 'ドキュメントを見る',
   'Pending user registrations' => '保留中のユーザー登録',
   'Proxy' => 'プロキシ',

@@ -38,6 +38,7 @@ Kind Regards<br>
     public $defaultUserGroup;
     public $defaultUserIdleTimeoutSec;
     public $allowGuestAccess;
+    public $showCaptureInRegisterForm;
     public $defaultUserProfileVisibility;
     public $registrationApprovalMailContent;
     public $registrationDenialMailContent;
@@ -57,6 +58,7 @@ Kind Regards<br>
         $this->defaultUserGroup = $settingsManager->get('auth.defaultUserGroup');
         $this->defaultUserIdleTimeoutSec = $settingsManager->get('auth.defaultUserIdleTimeoutSec');
         $this->allowGuestAccess = $settingsManager->get('auth.allowGuestAccess');
+        $this->showCaptureInRegisterForm = $settingsManager->get('auth.showCaptureInRegisterForm');
         $this->defaultUserProfileVisibility = $settingsManager->get('auth.defaultUserProfileVisibility');
         $this->registrationApprovalMailContent = $settingsManager->get('auth.registrationApprovalMailContent', Yii::t('AdminModule.controllers_ApprovalController', self::defaultRegistrationApprovalMailContent));
         $this->registrationDenialMailContent = $settingsManager->get('auth.registrationDenialMailContent', Yii::t('AdminModule.controllers_ApprovalController', self::defaultRegistrationDenialMailContent));
@@ -68,7 +70,7 @@ Kind Regards<br>
     public function rules()
     {
         return [
-            [['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess'], 'boolean'],
+            [['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showCaptureInRegisterForm'], 'boolean'],
             ['defaultUserGroup', 'exist', 'targetAttribute' => 'id', 'targetClass' => \humhub\modules\user\models\Group::class],
             ['defaultUserProfileVisibility', 'in', 'range' => [1, 2]],
             ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
@@ -88,6 +90,7 @@ Kind Regards<br>
             'defaultUserGroup' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default user group for new users'),
             'defaultUserIdleTimeoutSec' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default user idle timeout, auto-logout (in seconds, optional)'),
             'allowGuestAccess' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Allow limited access for non-authenticated users (guests)'),
+            'showCaptureInRegisterForm' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Include captcha in registration form'),
             'defaultUserProfileVisibility' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default user profile visibility'),
             'registrationApprovalMailContent' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default content of the registration approval email'),
             'registrationDenialMailContent' => Yii::t('AdminModule.forms_AuthenticationSettingsForm', 'Default content of the registration denial email'),
@@ -112,6 +115,10 @@ Kind Regards<br>
 
         if ($settingsManager->get('auth.allowGuestAccess')) {
             $settingsManager->set('auth.defaultUserProfileVisibility', $this->defaultUserProfileVisibility);
+        }
+
+        if ($settingsManager->get('auth.anonymousRegistration')) {
+            $settingsManager->set('auth.showCaptureInRegisterForm', $this->showCaptureInRegisterForm);
         }
         
         if ($settingsManager->get('auth.needApproval')) {

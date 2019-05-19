@@ -59,7 +59,7 @@ humhub.module('ui.filter', function(module, require, $) {
             }
 
             var that = this;
-            this.request = setTimeout(function() {that.filter.triggerChange()}, this.delay);
+            this.request = setTimeout(function() {that.filter.triggerChange();}, this.delay);
         }
     };
 
@@ -106,7 +106,6 @@ humhub.module('ui.filter', function(module, require, $) {
     });
 
     RadioInput.prototype.toggle = function() {
-        var that = this;
         var wasActive = this.isActive();
 
         if(this.isActive() && this.isForce()) { // we can't deactivate forced radio fields

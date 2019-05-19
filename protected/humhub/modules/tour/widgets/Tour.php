@@ -2,6 +2,7 @@
 
 namespace humhub\modules\tour\widgets;
 
+use humhub\modules\tour\assets\TourAsset;
 use Yii;
 
 
@@ -41,6 +42,8 @@ class Tour extends \humhub\components\Widget
             return;
         }
 
+        TourAsset::register($this->view);
+
         // save current module and controller id's
         $currentModuleId = Yii::$app->controller->module->id;
         $currentControllerId = Yii::$app->controller->id;
@@ -54,15 +57,6 @@ class Tour extends \humhub\components\Widget
         } elseif ($currentModuleId == "admin" && $currentControllerId == "module") {
             return $this->render('guide_administration', []);
         }
-    }
-
-    /**
-     * load needed resources files
-     */
-    public function loadResources(\yii\web\View $view)
-    {
-        $view->registerJsFile('@web-static/js/tour/bootstrap-tour.min.js');
-        $view->registerCssFile('@web-static/js/tour/bootstrap-tour.min.css');
     }
 
 }
