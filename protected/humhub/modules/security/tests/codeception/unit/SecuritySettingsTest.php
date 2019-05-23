@@ -23,6 +23,7 @@ class SecuritySettingsTest extends HumHubDbTestCase
         $module = Yii::$app->getModule('security');
         $module->configPath = '@security/tests/codeception/data';
         SecuritySettings::flushCache();
+        Security::setNonce(null);
     }
 
     private function setConfigFile($file)
@@ -46,9 +47,10 @@ class SecuritySettingsTest extends HumHubDbTestCase
 
     public function testStrictConfig()
     {
+        $this->setConfigFile('security.strict.json');
         $settings = new SecuritySettings();
         $this->assertEquals('max-age=31536000', $settings->getHeader('Strict-Transport-Security'));
-        $this->assertEquals('1', $settings->getHeader('X-XSS-Protection'));
+        $this->assertEquals('1; mode=block', $settings->getHeader('X-XSS-Protection'));
         $this->assertEquals('nosniff', $settings->getHeader('X-Content-Type-Options'));
         $this->assertEquals('deny', $settings->getHeader('X-Frame-Options'));
     }
@@ -58,40 +60,17 @@ class SecuritySettingsTest extends HumHubDbTestCase
         $settings = new SecuritySettings();
         $this->assertTrue($settings->isNonceSupportActive());
 
+        $this->assertNull(Security::getNonce());
+
         // Create a new csp with nonce support
         $csp = $settings->getCSPHeader();
+
         $this->assertNotNull(Security::getNonce());
 
-        $this->assertEquals($csp, $settings->getCSPHeader(false));
-
-        $nonce = Security::getNonce();
-
-        $settings = new SecuritySettings();
-
-        // Make sure sure the nonce is only updated once a new csp was generated
-        $this->assertEquals($nonce, Security::getNonce());
-
-        $settings->getCSPHeader(true);
-        $this->assertNotEquals($nonce, Security::getNonce());
-    }
-
-    public function testNonceHtmlOutput()
-    {
-        $this->assertEmpty(Html::nonce());
-
-        $settings = new SecuritySettings();
-        $settings->getCSPHeader();
-
-        $nonce = Html::nonce();
-        $this->assertNotEmpty($nonce);
-
-        $csp = $settings->getCSPHeader(true);
-        $newNonce =  Html::nonce();
-        $this->assertNotEquals($nonce, $newNonce);
-
         $this->assertContains(Security::getNonce(), $csp);
-        $this->assertContains($newNonce, Html::beginTag('script'));
-        $this->assertContains($newNonce, Html::script('var a = test;'));
+
+        // Make sure the csp/nonce does not change
+        $this->assertEquals($csp, $settings->getCSPHeader());
     }
 
     public function testCustomCSPHeader()
@@ -101,7 +80,8 @@ class SecuritySettingsTest extends HumHubDbTestCase
         $this->assertEquals("default-src 'self'", $settings->getHeader('Content-Security-Policy'));
         $this->assertFalse($settings->isNonceSupportActive());
 
-        $this->assertNotNull($settings->getCSPHeader(true));
+        $this->assertEquals("default-src 'self'", $settings->getCSPHeader());
+        $this->assertEquals("testValue", $settings->getHeader("My-Test-Header"));
 
         $this->assertEmpty(Html::nonce());
         $this->assertEmpty(Security::getNonce());
@@ -115,6 +95,19 @@ class SecuritySettingsTest extends HumHubDbTestCase
         $this->assertFalse($settings->isNonceSupportActive());
 
         $this->assertNull($settings->getCSPHeader(true));
+
+        $this->assertEmpty(Html::nonce());
+        $this->assertEmpty(Security::getNonce());
+    }
+
+    public function testSingleReportOnly()
+    {
+        $this->setConfigFile('security.empty.json');
+        $settings = new SecuritySettings();
+        $this->assertNull($settings->getHeader('Content-Security-Policy'));
+        $this->assertFalse($settings->isNonceSupportActive());
+
+        $this->assertNull($settings->getCSPHeader());
 
         $this->assertEmpty(Html::nonce());
         $this->assertEmpty(Security::getNonce());

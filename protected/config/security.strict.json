@@ -10,18 +10,29 @@
   "csp": {
     "nonce": true,
     "report-only": false,
+    "report": false,
     "default-src": {
       "self": true
+    },
+    "img-src": {
+      "allow":["*"]
+    },
+    "font-src": {
+      "self": true
+    },
+    "style-src": {
+      "self": true,
+      "unsafe-inline": true
+    },
+    "object-src": {},
+    "frame-src": {
+      "allow":["*"]
     },
     "script-src": {
       "self": true,
       "unsafe-inline": true,
       "unsafe-eval": false,
       "report-sample": true
-    },
-    "style-src": {
-      "self": true,
-      "unsafe-inline": false
     },
     "upgrade-insecure-requests": true
   }

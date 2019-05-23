@@ -7,7 +7,7 @@
  */
 use humhub\modules\security\Events;
 use humhub\modules\security\Module;
-use humhub\modules\admin\widgets\AdvancedSettingMenu;
+use humhub\modules\user\controllers\AuthController;
 use yii\web\Controller;
 
 return [
@@ -15,7 +15,7 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
-        [AdvancedSettingMenu::class, AdvancedSettingMenu::EVENT_INIT, [Events::class, 'onAdvancedSettingsMenuInit']],
         [Controller::class, Controller::EVENT_BEFORE_ACTION, [Events::class, 'onBeforeAction']],
+        [AuthController::class, AuthController::EVENT_AFTER_LOGIN, [Events::class, 'onAfterLogin']],
     ],
 ];

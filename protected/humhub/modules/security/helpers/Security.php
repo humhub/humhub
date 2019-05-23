@@ -5,35 +5,81 @@ namespace humhub\modules\security\helpers;
 
 
 use Yii;
-use yii\base\InvalidArgumentException;
+use humhub\modules\security\models\SecuritySettings;
 
 class Security
 {
-    const HEADER_CONTENT_SECRUITY_POLICY = 'Content-Security-Policy';
-
-    const HEADER_X_CONTENT_TYPE_VALUE_NOSNIFF = 'nosniff';
-    const HEADER_X_XSS_PROTECTION = 'X-XSS-Protection';
-    const HEADER_X_CONTENT_TYPE = 'X-Content-Type-Options';
-    const HEADER_STRICT_TRANSPORT_SECURITY = 'Strict-Transport-Security';
-    const HEADER_STRICT_TRANSPORT_SECURITY_VALUE = 'max-age=31536000';
-    const HEADER_X_FRAME_OPTIONS = 'X-Frame-Options';
-
     const SESSION_KEY_NONCE = 'security-script-src-nonce';
 
-    public static function setNonce($nonce = null)
+    /**
+     * @throws \Exception
+     */
+    public static function applyHeader($withCsp = false)
     {
-        if($nonce !== null && !is_string($nonce)) {
-            throw new InvalidArgumentException('Invalid nonce value provided.');
+        $settings = new SecuritySettings();
+
+        // Make sure we only update nonces and set CSP Header in full page loads
+        if ($withCsp) {
+            $header = $settings->getCSPHeader();
+            foreach ($settings->getCSPHeaderKeys() as $key) {
+                static::setHeader($key, $header);
+            }
+
+            if($settings->hasSection('csp-report-only')) {
+                $reportOnlySettings = new SecuritySettings(['cspSection' => 'csp-report-only', 'forceReportOnly' => true]);
+                $header = $reportOnlySettings->getHeader(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY);
+                foreach ($reportOnlySettings->getCSPHeaderKeys() as $key) {
+                    static::setHeader($key, $header);
+                }
+            }
         }
 
-        Yii::$app->session->set(static::SESSION_KEY_NONCE, $nonce);
+        /*if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') {
+            static::setHeader(SecuritySettings::HEADER_STRICT_TRANSPORT_SECURITY, $settings->getHeader(SecuritySettings::HEADER_STRICT_TRANSPORT_SECURITY));
+        }*/
+
+        foreach ($settings->getHeaders() as $header => $value) {
+            if (!$settings->isCSPHeaderKey($header)) {
+                static::setHeader($header, $value);
+            }
+        }
+    }
+
+    private static function setHeader($key, $value)
+    {
+        if($value) {
+            Yii::$app->response->headers->add($key, $value);
+        }
     }
 
     /**
      * @return string
+     * @throws \Exception
      */
-    public static function getNonce()
+    private static function createNonce()
     {
-        return Yii::$app->session->get(static::SESSION_KEY_NONCE);
+        return base64_encode(\random_bytes(18));
+    }
+
+    public static function setNonce($nonce = null)
+    {
+        Yii::$app->session->set(static::SESSION_KEY_NONCE, $nonce);
+    }
+
+    /**
+     * @param bool $create creates a new nonce if none given
+     * @return string
+     * @throws \Exception
+     */
+    public static function getNonce($create = false)
+    {
+        $nonce = Yii::$app->session->get(static::SESSION_KEY_NONCE);
+
+        if($create && !$nonce) {
+            $nonce = static::createNonce();
+            static::setNonce($nonce);
+        }
+
+        return $nonce;
     }
 }

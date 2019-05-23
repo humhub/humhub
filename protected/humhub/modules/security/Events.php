@@ -9,7 +9,7 @@
 namespace humhub\modules\security;
 
 use humhub\controllers\ErrorController;
-use humhub\modules\security\models\SecuritySettings;
+use humhub\modules\security\helpers\Security;
 use Yii;
 use yii\base\BaseObject;
 
@@ -23,32 +23,17 @@ class Events extends BaseObject
 {
     public static function onBeforeAction($evt)
     {
-        $settings = new SecuritySettings();
-        if(!Yii::$app->controller instanceof ErrorController && !Yii::$app->request->isAjax) {
-            $settings->updateNonce();
-            static::setHeader(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY, $settings->getCSPHeader());
-            static::setHeader(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY_IE, $settings->getCSPHeader());
+        if(Yii::$app->request->isConsoleRequest) {
+            return;
         }
 
-        if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') {
-            static::setHeader(SecuritySettings::HEADER_STRICT_TRANSPORT_SECURITY, $settings->getHeader(SecuritySettings::HEADER_STRICT_TRANSPORT_SECURITY));
-        }
-
-        static::setHeader(SecuritySettings::HEADER_X_XSS_PROTECTION, $settings->getHeader(SecuritySettings::HEADER_X_XSS_PROTECTION));
-        static::setHeader(SecuritySettings::HEADER_X_CONTENT_TYPE, $settings->getHeader(SecuritySettings::HEADER_X_CONTENT_TYPE));
-        static::setHeader(SecuritySettings::HEADER_X_FRAME_OPTIONS, $settings->getHeader(SecuritySettings::HEADER_X_FRAME_OPTIONS));
-        static::setHeader(SecuritySettings::HEADER_X_PERMITTED_CROSS_DOMAIN_POLICIES, $settings->getHeader(SecuritySettings::HEADER_X_PERMITTED_CROSS_DOMAIN_POLICIES));
-        static::setHeader(SecuritySettings::HEADER_REFERRER_POLICY, $settings->getHeader(SecuritySettings::HEADER_REFERRER_POLICY));
-        static::setHeader(SecuritySettings::HEADER_PUBLIC_KEY_PINS, $settings->getHeader(SecuritySettings::HEADER_PUBLIC_KEY_PINS));
+        $withCSP = !Yii::$app->request->isAjax && !(Yii::$app->controller instanceof ErrorController);
+        Security::applyHeader($withCSP);
     }
 
-    private static function setHeader($key, $value)
+    public static function onAfterLogin($evt)
     {
-        if($value) {
-            Yii::$app->response->headers->add($key, $value);
-        }
+        // Make sure a new nonce is generated after login
+        Security::setNonce(null);
     }
-
-
-
 }

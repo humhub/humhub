@@ -3,12 +3,12 @@
     "Strict-Transport-Security": "max-age=31536000",
     "X-XSS-Protection": "1; mode=block",
     "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "deny",
     "Referrer-Policy": "no-referrer-when-downgrade",
-    "X-Permitted-Cross-Domain-Policies":  "master-only",
-    "X-Frame-Options": "sameorigin"
+    "X-Permitted-Cross-Domain-Policies":  "master-only"
   },
   "csp": {
-    "nonce": false,
+    "nonce": true,
     "report-only": false,
     "report": false,
     "default-src": {

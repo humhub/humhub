@@ -35,6 +35,7 @@ class SecuritySettings extends Model
     const HEADER_CONTENT_SECRUITY_POLICY = 'Content-Security-Policy';
     const HEADER_CONTENT_SECRUITY_POLICY_IE = 'X-Content-Security-Policy';
     const HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY = 'Content-Security-Policy-Report-Only';
+    const HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY_IE = 'X-Content-Security-Policy-Report-Only';
 
     const HEADER_X_CONTENT_TYPE = 'X-Content-Type-Options';
     const HEADER_X_XSS_PROTECTION = 'X-XSS-Protection';
@@ -54,7 +55,16 @@ class SecuritySettings extends Model
     /**
      * @var CSPBuilder
      */
-    private static $csp;
+    private $csp;
+
+    private $nonceAttached = false;
+
+    /**
+     * @var string defines the csp settings key
+     */
+    public $cspSection = 'csp';
+
+    public $forceReportOnly = false;
 
     /**
      * @inheritdoc
@@ -71,10 +81,7 @@ class SecuritySettings extends Model
     public static function flushCache()
     {
         static::$rules = null;
-        static::$csp = null;
-        Security::setNonce(null);
     }
-
 
     /**
      * @throws InvalidConfigException
@@ -88,11 +95,6 @@ class SecuritySettings extends Model
             static::$rules = Json::decode(file_get_contents($configFile));
         } catch (\Exception $e) {
             throw new InvalidConfigException(Yii::t('SecurityModule.error', 'Could not parse security file at {path}!', ['path' => $configFile]));
-        }
-
-        // Make sure we reset the nonce if nonce support was deactivated
-        if (!$this->isNonceSupportActive() && Security::getNonce()) {
-            $this->updateNonce();
         }
     }
 
@@ -115,32 +117,41 @@ class SecuritySettings extends Model
      */
     public function isNonceSupportActive()
     {
-        if (!static::$rules || !isset(static::$rules['csp']['nonce'])) {
+        if (!static::$rules || !isset(static::$rules[$this->cspSection]['nonce'])) {
             return false;
         }
 
-        return static::$rules['csp']['nonce'] === true;
+        return static::$rules[$this->cspSection]['nonce'] === true;
     }
 
     /**
      * Helper function for receiving the Content-Security-Policy header which is either generated from the `csp` section
      * of the security config if given, or may be defined in the `header` section of the configuration directly.
      *
-     * This function can be used to force a new nonce generation by setting the $updateNonce parameter to true.
      *
      * > Note: If the `csp` configuration section is given, the Content-Security-Policy of the `header` section will be ignored.
      *
-     * @param bool $updateNonce if true a new nonce will be generated, an existing nonce will be overwritten
      * @return null|string
      * @throws \Exception
      */
-    public function getCSPHeader($updateNonce = false)
+    public function getCSPHeader()
     {
-        if ($updateNonce) {
-            $this->updateNonce();
+        return $this->getHeader(static::HEADER_CONTENT_SECRUITY_POLICY);
+    }
+
+    public function getCSPHeaderKeys()
+    {
+        // If the `csp section is set to report-only`
+        if($this->isReportOnlyCSP()) {
+            return [static::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY, static::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY_IE];
         }
 
-        return $this->getHeader(static::HEADER_CONTENT_SECRUITY_POLICY);
+        return [static::HEADER_CONTENT_SECRUITY_POLICY, static::HEADER_CONTENT_SECRUITY_POLICY_IE];
+    }
+
+    public function isReportOnlyCSP()
+    {
+        return $this->forceReportOnly || (isset(static::$rules[$this->cspSection]['report-only']) && static::$rules[$this->cspSection]['report-only'] === true);
     }
 
     /**
@@ -150,18 +161,10 @@ class SecuritySettings extends Model
      */
     private function generateCsp()
     {
-        return static::$csp ? static::$csp->compile() : null;
+        return $this->csp ? $this->csp->compile() : null;
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function updateNonce()
-    {
-        Security::setNonce($this->isNonceSupportActive() ? static::$csp->nonce() : null);
-    }
-
-    private static function isEdge()
+    private function isEdge()
     {
         return false !== stripos($_SERVER['HTTP_USER_AGENT'], "Edge");
     }
@@ -177,10 +180,14 @@ class SecuritySettings extends Model
      */
     public function getHeader($header)
     {
-        if ($header === static::HEADER_CONTENT_SECRUITY_POLICY) {
-            // Make sure a nonce has been created, but do not update the nonce
-            if ($this->isNonceSupportActive() && !Security::getNonce()) {
-                $this->updateNonce();
+        if ($this->isCSPHeaderKey($header)) {
+
+            // Make sure a nonce has been created and attached
+            if(!$this->isNonceSupportActive() && !$this->isReportOnlyCSP()) {
+                Security::setNonce(null);
+            } elseif (!$this->nonceAttached ) {
+                $this->csp->nonce('script-src', Security::getNonce(true));
+                $this->nonceAttached = true;
             }
 
             $csp = $this->generateCsp();
@@ -196,16 +203,46 @@ class SecuritySettings extends Model
         return null;
     }
 
+    public function isCSPHeaderKey($header)
+    {
+        return in_array($header, [
+            static::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY,
+            static::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY_IE,
+            static::HEADER_CONTENT_SECRUITY_POLICY,
+            static::HEADER_CONTENT_SECRUITY_POLICY_IE], true);
+    }
+
+    public function getHeaders()
+    {
+        $result = [];
+        if (!isset(static::$rules['headers'])) {
+            return $result;
+        }
+
+        return static::$rules['headers'];
+    }
+
+    public function hasSection($section)
+    {
+        return isset(static::$rules[$section]);
+    }
+
     /**
      * Initializes a static CSPBuilder instance by means of the given `csp` configuration definition.
+     * @throws \Exception
      */
     private function initCSP()
     {
-        if (!static::$rules || !isset(static::$rules['csp'])) {
+        if (!static::$rules || !$this->hasSection($this->cspSection)) {
             return;
         }
 
-        static::$csp = CSPBuilder::fromArray(static::$rules['csp']);
-        static::$csp->setReportUri(Url::toRoute('/security/report/index'));
+        $this->csp = CSPBuilder::fromArray(static::$rules[$this->cspSection]);
+
+        if($this->isReportOnlyCSP() || (isset(static::$rules['report']) && static::$rules['report'] === true)) {
+            $this->csp->setReportUri(Url::toRoute('/security/report/index'));
+        }
     }
+
+
 }
