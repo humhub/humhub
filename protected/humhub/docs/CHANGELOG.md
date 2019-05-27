@@ -5,6 +5,7 @@ HumHub Change Log
 1.3.14  (Unreleased)
 ---------------------------
 - Fix: LinkedIn API call to v1 deprecated use v2 (@Felli)
+- Fix #3531: File module Fil: isAssignedTo method broken
 
 
 1.3.13  (May 3, 2019)
