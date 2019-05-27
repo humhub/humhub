@@ -13,7 +13,6 @@ coverage:
     - ../events/*
     - ../grid/*
     - ../jobs/*
-    - ../libs/*
     - ../models/*
     - ../notifications/*
     - ../permissions/*

@@ -25,4 +25,5 @@ return [
     '{displayName} declined your membership request for the space {spaceName}' => '',
     '{displayName} invited you to the space {spaceName}' => '',
     '{displayName} requests membership for the space {spaceName}' => '',
+    '{displayName} revoked your invitation for the space {spaceName}' => '',
 ];

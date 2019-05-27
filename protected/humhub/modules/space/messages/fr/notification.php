@@ -8,4 +8,5 @@ return array (
   '{displayName} declined your membership request for the space {spaceName}' => '{displayName} a refusé votre adhésion à l\'espace {spaceName}',
   '{displayName} invited you to the space {spaceName}' => '{displayName} vous a invité à rejoindre l\'espace {spaceName}',
   '{displayName} requests membership for the space {spaceName}' => '{displayName} a demandé l\'adhésion à l\'espace {spaceName}',
+  '{displayName} revoked your invitation for the space {spaceName}' => '{displayName} a annulé votre invitation à l\'espace {spaceName}',
 );

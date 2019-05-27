@@ -8,4 +8,5 @@ return array (
   '{displayName} declined your membership request for the space {spaceName}' => '{displayName} heeft uw verzoek voor de ruimte {spaceName} afgewezen',
   '{displayName} invited you to the space {spaceName}' => '{displayName} heeft uw uitgenodigd voor de ruimte {spaceName}',
   '{displayName} requests membership for the space {spaceName}' => '{displayName} wil lid worden van de ruimte {spaceName}',
+  '{displayName} revoked your invitation for the space {spaceName}' => '{displayName} heeft uw uitnodiging voor de spatie {spaceName} ingetrokken',
 );

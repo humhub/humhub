@@ -8,6 +8,7 @@
 
 namespace humhub\modules\tour\controllers;
 
+use humhub\modules\space\models\Membership;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\space\models\Space;
@@ -22,16 +23,10 @@ use humhub\modules\space\models\Space;
  */
 class TourController extends \humhub\components\Controller
 {
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
+    public function getAccessRules()
     {
         return [
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::class,
-            ]
+            ['login']
         ];
     }
 
@@ -42,18 +37,15 @@ class TourController extends \humhub\components\Controller
     {
 
         // get section parameter from completed tour
-        $section = Yii::$app->request->get('section');
+        $section = Yii::$app->request->post('section');
 
-        if (!in_array($section, Yii::$app->params['tour']['acceptableNames']))
+        if (!in_array($section, Yii::$app->params['tour']['acceptableNames'])) {
             return;
+        }
 
         // set tour status to seen for current user
         Yii::$app->getModule('tour')->settings->user()->set($section, 1);
     }
-
-    /*
-     * Update user settings for hiding tour panel on dashboard
-     */
 
     public function actionHidePanel()
     {
@@ -62,7 +54,10 @@ class TourController extends \humhub\components\Controller
     }
 
     /**
-     * This is a special case, because we need to find a space to start the tour
+     *  This is a special case, because we need to find a space to start the tour
+     *
+     * @return \yii\web\Response
+     * @throws HttpException
      */
     public function actionStartSpaceTour()
     {
@@ -70,7 +65,7 @@ class TourController extends \humhub\components\Controller
         $space = null;
 
         // Loop over all spaces where the user is member
-        foreach (\humhub\modules\space\models\Membership::getUserSpaces() as $space) {
+        foreach (Membership::getUserSpaces() as $space) {
             if ($space->isAdmin() && !$space->isArchived()) {
                 // If user is admin on this space, it´s the perfect match
                 break;

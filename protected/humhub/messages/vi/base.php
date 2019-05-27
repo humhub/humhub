@@ -24,6 +24,7 @@ return [
     'Export' => '',
     'Invalid request method!' => '',
     'Please type at least {count} characters' => '',
+    'Powered by {name}' => '',
     'Select Me' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',

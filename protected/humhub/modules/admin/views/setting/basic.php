@@ -34,10 +34,9 @@ use humhub\compat\CHtml;
         'selection' => $model->defaultSpaces
     ])?>
 
-    <?= $form->field($model, 'defaultStreamSort')->dropDownList($model->getDefaultStreamSortOptions()); ?>
-
     <p class="help-block"><?= Yii::t('AdminModule.views_setting_index', 'New users will automatically be added to these space(s).'); ?></p>
 
+    <?= $form->field($model, 'defaultStreamSort')->dropDownList($model->getDefaultStreamSortOptions()); ?>
 
     <strong><?= Yii::t('AdminModule.views_setting_index', 'Dashboard'); ?></strong>
     <br>

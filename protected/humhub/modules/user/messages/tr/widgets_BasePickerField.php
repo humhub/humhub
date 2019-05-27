@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Add more...' => 'Daha ekle...',
+  'Add more...' => 'Daha faslasını ekle...',
   'An unexpected error occurred while loading the result.' => '',
   'Load more' => 'Daha fazla yükle',
   'Please enter at least {n} character' => 'Lütfen en az {n} karakter giriniz',

@@ -20,6 +20,7 @@ return [
     'Include archived content' => '',
     'Only private content' => '',
     'Only public content' => '',
+    'Where I\'m involved' => '',
     'With file attachments' => '',
     'Back to stream' => 'Volver a Actividad',
     'Created by me' => 'Creado por mi',
@@ -32,6 +33,5 @@ return [
     'The content has been archived.' => 'Este contenido ha sido activado.',
     'The content has been deleted.' => 'Este contenido ha sido borrado.',
     'The content has been unarchived.' => 'Este contenido ha sido desarchivado.',
-    'Where I´m involved' => 'En los que estoy involucrado',
     'Your last edit state has been saved!' => 'Este contenido ha sido grabado.',
 ];

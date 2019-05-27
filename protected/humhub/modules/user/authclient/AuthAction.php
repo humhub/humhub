@@ -24,9 +24,9 @@ class AuthAction extends \yii\authclient\AuthAction
      * @inheritdoc
      * 
      * @param StandaloneAuthClient $client
-     * @return response
+     * @return \yii\web\Response response instance.
      */
-    public function auth($client)
+    public function auth($client,  $authUrlParams = [])
     {
         if ($client instanceof StandaloneAuthClient) {
             return $client->authAction($this);

@@ -1,10 +1,29 @@
 HumHub Change Log
 =================
 
-1.3.13  (Unreleased)
+
+1.3.14  (Unreleased)
 ---------------------------
+- Fix: LinkedIn API call to v1 deprecated use v2 (@Felli)
+
+
+1.3.13  (May 3, 2019)
+----------------------
 - Enh: Added HomeUrl support to ConsoleApplication
-- Fix: API call to v1 deprecated use v2
+- Fix #2536: Incorrect log of "Attempt to steal file" due to faulty File::isAssignedTo() check
+- Fix: Wrong help block position in admin basic settings
+- Chng: Removed yiisoft/yii2-apidoc dependency
+- Enh: Double file extension check is now optional and disabled by default
+- Fix #3552: `humhub\modules\user\authclient\AuthAction:auth()` not compatible with `yii\authclient\AuthAction:auth()`
+- Fix #3545: OEmbed fetch limit ignored
+- Enh: Added `humhub\libs\RestrictedCallException`
+- Chng: Switched from [bootstrap-tour](https://github.com/sorich87/bootstrap-tour) to [bootstrap-tourist](https://github.com/IGreatlyDislikeJavascript/bootstrap-tourist) due to incompatibility to bootstrap v3.4.1
+- Enh: Added `humhub.modules.tour` module for handling tour logic
+- Fix: Added PHP 7.3 compatibility workaround for ZF2 ArrayObject
+- Fix #3513: Profile schema cache not refreshed after adding new profile field
+- Fix: Removed Codeception files from HumHub packages builds due to possible XSS flaw (thanks to Kağan Eğlence)
+- Fix #3534: Mark ID Attribute in LDAP settings as required
+
 
 1.3.12  (March 26, 2019)
 ---------------------------
@@ -15,9 +34,9 @@ HumHub Change Log
 - Fix: Richtext preview new line backslash issue
 - Enh: Migrated LDAP features into own submodule
 - Enh: Added new LDAP command line tools
-- Fix: #3347: Fixed searching members in space and users with white space in full name (Baleks)
+- Fix #3347: Fixed searching members in space and users with white space in full name (Baleks)
 - Fix: Deleted Records are not correctly removed from the search index
-- Fix: #3459 Notification counter increment after manual notification fetch
+- Fix #3459: Notification counter increment after manual notification fetch
 - Fix: Notification count update does not respect notification group
 - Fix: Change email form is restricted to max 45 characters. Changed to 150 (current DB restriction)
 - Fix: Footer menu renders redundant `<li>` end tag.

@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\authclient;
 
+use Yii;
+
 /**
  * @inheritdoc
  */
@@ -35,14 +37,14 @@ class Google extends \yii\authclient\clients\Google
         return [
             'username' => 'displayName',
             'firstname' => function ($attributes) {
-                return $attributes['name']['givenName'];
+                return $attributes['given_name'];
             },
             'lastname' => function ($attributes) {
-                return $attributes['name']['familyName'];
+                return $attributes['family_name'];
             },
             'title' => 'tagline',
             'email' => function ($attributes) {
-                return $attributes['emails'][0]['value'];
+                return $attributes['email'];
             },
         ];
     }

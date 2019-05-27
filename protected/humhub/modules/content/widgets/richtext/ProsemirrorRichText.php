@@ -107,6 +107,11 @@ use humhub\models\UrlOembed;
 class ProsemirrorRichText extends AbstractRichText
 {
     /**
+     * @var int defines the maximum amount of oembeds allowed in a single richtext
+     */
+    public static $maxOembed = 10;
+
+    /**
      * @inheritdoc
      */
     public $jsWidget = 'ui.richtext.prosemirror.RichText';
@@ -149,9 +154,14 @@ class ProsemirrorRichText extends AbstractRichText
             $this->text = RichTextCompatibilityParser::parse($this->text);
         }
 
+        $oembedCount = 0;
         foreach (static::scanLinkExtension($this->text, 'oembed') as $match) {
-            if(isset($match[3])) {
-                $this->oembeds[$match[3]] = UrlOembed::GetOEmbed($match[3]);
+            if(isset($match[3]) && $oembedCount < static::$maxOembed) {
+                $oembedPreview =  UrlOembed::getOEmbed($match[3]);
+                if(!empty($oembedPreview)) {
+                    $oembedCount++;
+                    $this->oembeds[$match[3]] = $oembedPreview;
+                }
             }
         }
 

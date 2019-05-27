@@ -19,6 +19,7 @@
 return [
     'Default content of the registration approval email' => '',
     'Default content of the registration denial email' => '',
+    'Include captcha in registration form' => '',
     'Allow limited access for non-authenticated users (guests)' => '允许未验证的用户（访客）有限访问',
     'Anonymous users can register' => '任何人都能注册',
     'Default user group for new users' => '缺省用户组能注册',

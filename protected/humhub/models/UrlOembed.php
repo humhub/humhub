@@ -8,20 +8,65 @@
 
 namespace humhub\models;
 
-use yii\base\InvalidArgumentException;
+use humhub\libs\RestrictedCallException;
+use humhub\libs\UrlOembedClient;
+use humhub\libs\UrlOembedHttpClient;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\db\ActiveRecord;
 use Yii;
 
 /**
- * This is the model class for table "url_oembed".
+ * UrlOembed records hold already loaded oembed previews.
+ *
+ * This class is used to fetch and save oembed results by means of the [[preload()]] and [[getOEmbed()]] methods.
+ *
+ * [[preload()]] can be used to preload oembed results for a given text string.
+ *
+ * [[getOEmbed()]] can be used to fetch a single oembed record for a given Url.
+ *
+ * All successfull results of `preload()` or `getOEmbed()` will be cached and saved in the `url_oembed` table.
  *
  * @property string $url
  * @property string $preview
  */
 class UrlOembed extends ActiveRecord
 {
+    /**
+     * @var int Maximum amount of remote fetch calls per request
+     */
+    public static $maxUrlFetchLimit = 5;
+
+    /**
+     * @var int Maximum amount of local db fetch calls per request
+     */
+    public static $maxUrlLoadLimit = 100;
+
+    /**
+     * @var int Counter for remote fetch calls
+     */
+    protected static $urlsFetched = 0;
+
+    /**
+     * @var int Counter for local db fetch calls
+     */
+    protected static $urlsLoaded = 0;
+
+    /**
+     * @var array Internal request cache
+     */
+    protected static $cache = [];
+
+    /**
+     * @var UrlOembedClient
+     */
+    protected static $client;
+
+
+    /**
+     * @var array Allowed oembed types
+     */
+    public static $allowed_types = ['video', 'rich', 'photo'];
 
     /**
      * @inheritdoc
@@ -55,110 +100,204 @@ class UrlOembed extends ActiveRecord
     }
 
     /**
-     * Returns OEmbed Code for a given URL
-     * If no oembed code is found, null is returned
+     * Returns the OEmbed API Url if exists
+     *
+     * @return string|null
+     */
+    public function getProviderUrl()
+    {
+        foreach (static::getProviders() as $providerBaseUrl => $providerAPI) {
+            if (strpos($this->url, $providerBaseUrl) !== false) {
+                return str_replace("%url%", urlencode($this->url), $providerAPI);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Flushes internal caches and fetch counters
+     */
+    public static function flush()
+    {
+        static::$cache = [];
+        static::$urlsFetched = 0;
+        static::$urlsLoaded = 0;
+    }
+
+    /**
+     * Returns a OEmbed html string for a given $url or null in the following cases:
+     *
+     *  - There is no OEmbed provider available for the given url
+     *  - The OEmbed provider does not return a valid response
+     *  - A fetch counter restriction exceeded
      *
      * @param string $url
-     *
-     * @return null|string
+     * @return string|null
      */
-    public static function GetOEmbed($url)
+    public static function getOEmbed($url)
     {
-        $url = trim($url);
+        try {
+            $url = trim($url);
 
-        // Check if the given URL has OEmbed Support
-        if (UrlOembed::hasOEmbedSupport($url)) {
+            if (static::hasOEmbedSupport($url)) {
+                $urlOembed = static::findExistingOembed($url);
+                $result = $urlOembed ? $urlOembed->preview : self::loadUrl($url);
 
-            // Lookup Cached OEmebed Item from Database
-            $urlOembed = UrlOembed::findOne(['url' => $url]);
-            if ($urlOembed !== null) {
-                return trim(preg_replace('/\s+/', ' ', $urlOembed->preview));
-            } else {
-                return trim(preg_replace('/\s+/', ' ', self::loadUrl($url)));
+                if(!empty($result)) {
+                    return trim(preg_replace('/\s+/', ' ', $result));
+                }
             }
+        } catch(RestrictedCallException $re) {
+            Yii::warning($re);
         }
 
         return null;
     }
 
     /**
-     * Prebuilds oembeds for all urls in a given text
+     * Parses the given $text string for urls an saves new loaded OEmbed instances for.
      *
-     * @param string|array $text
+     * This method will only execute a remote fetch call if:
+     *
+     *  - There was a provider found for the given url
+     *  - The same url has not been fetched before
+     *  - The max fetch counters are not exceeded
+     *
+     * @param string $text
      */
     public static function preload($text)
     {
         preg_replace_callback('/http(.*?)(\s|$)/i', function ($match) {
 
-            $url = $match[0];
+            $url = trim($match[0]);
 
-            // Already looked up?
-            if (UrlOembed::findOne(['url' => $url]) !== null) {
+            if (!static::hasOEmbedSupport($url)) {
                 return;
             }
-            UrlOembed::loadUrl($url);
+
+            try {
+                if (!static::findExistingOembed($url)) {
+                    static::loadUrl($url);
+                }
+            } catch(RestrictedCallException $re) {
+                Yii::warning($re);
+            }
         }, $text);
     }
 
     /**
-     * Loads OEmbed Data from a given URL and writes them to the database
+     * Checks if there is an existing UrlOembed record for the given $url.
      *
-     * @param string $url
+     * > Note: Results will be cached for this request if an record was found.
      *
-     * @return string
+     * @param $url
+     * @return UrlOembed|null
+     * @throws RestrictedCallException
      */
-    public static function loadUrl($url)
+    protected static function findExistingOembed($url)
     {
-        $urlOembed = new UrlOembed();
-        $urlOembed->url = $url;
-        $html = '';
-
-        if ($urlOembed->getProviderUrl() != '') {
-            // Build OEmbed Preview
-            $jsonOut = UrlOembed::fetchUrl($urlOembed->getProviderUrl());
-            if ($jsonOut != ''  && $jsonOut != 'Unauthorized') {
-                try {
-                    $data = Json::decode($jsonOut);
-                    if (isset($data['html']) && isset($data['type']) && ($data['type'] === "video" || $data['type'] === 'rich' || $data['type'] === 'photo')) {
-                        $html = "<div data-guid='".uniqid('oembed-')."' data-richtext-feature class='oembed_snippet' data-url='" . Html::encode($url) . "'>" . $data['html'] . "</div>";
-                    }
-                } catch (InvalidArgumentException $ex) {
-                    Yii::warning($ex->getMessage());
-                }
-            }
+        if(array_key_exists($url, static::$cache)) {
+            return static::$cache[$url];
         }
 
-        if ($html != '') {
-            $urlOembed->preview = $html;
-            $urlOembed->save();
+        if(static::$urlsLoaded >= static::$maxUrlLoadLimit) {
+            throw new RestrictedCallException('Max url db load limit exceeded.');
         }
 
-        return $html;
+        static::$urlsLoaded++;
+
+        $record = static::findOne(['url' => $url]);
+
+        if($record) {
+            static::$cache[$url] = $record;
+        }
+
+        return $record;
     }
 
     /**
-     * Returns the OEmbed API Url if exists
+     * Fetches the oembed result for a given $url and saves an UrlOembed record to the database.
+     * A Remote fetch for new urls is only executed in case there is a related provider for the given url configured.
+     *
+     * @param string $url
+     * @return string|null
      */
-    public function getProviderUrl()
+    protected static function loadUrl($url)
     {
-        foreach (UrlOembed::getProviders() as $providerBaseUrl => $providerAPI) {
-            if (strpos($this->url, $providerBaseUrl) !== false) {
-                return str_replace("%url%", urlencode($this->url), $providerAPI);
+        try {
+            $urlOembed = static::findExistingOembed($url);
+
+            if(!$urlOembed) {
+                $urlOembed = new static(['url' => $url]);
             }
+
+            if(empty($urlOembed->getProviderUrl())) {
+                return null;
+            }
+
+
+            $data = static::fetchUrl($urlOembed->getProviderUrl());
+            $html = static::buildHtmlPreview($url, $data);
+
+            $urlOembed->preview = $html ?: '';
+            $urlOembed->save();
+
+            static::$cache[$url] = $urlOembed;
+            return $html;
+        } catch(RestrictedCallException $re) {
+            Yii::warning($re);
         }
-        return '';
+
+
+        return null;
     }
+
+    /**
+     * Builds the oembed preview html result in case the given $data array is valid.
+     *
+     * @param $url
+     * @param []|null $data
+     * @return string|null
+     */
+    protected static function buildHtmlPreview($url, $data = null)
+    {
+        if(static::validateOembedResponse($data)) {
+            return  Html::tag('div', $data['html'], [
+                'data' => [
+                    'guid' => uniqid('oembed-', true),
+                    'richtext-feature' => 1,
+                    'class' => 'oembed_snippet',
+                    'url' => Html::encode($url)
+                ]
+            ]);
+        }
+        return null;
+    }
+
+    /**
+     * Validates the given $data array.
+     *
+     * @param []|null $data
+     * @return bool
+     */
+    protected static function validateOembedResponse($data = null)
+    {
+        return !empty($data) &&
+            isset($data['html'], $data['type'])
+            && in_array($data['type'], static::$allowed_types, true);
+    }
+
+
 
     /**
      * Checks if a given URL Supports OEmbed
      *
      * @param string $url
-     *
      * @return boolean
      */
     public static function hasOEmbedSupport($url)
     {
-        foreach (UrlOembed::getProviders() as $providerBaseUrl => $providerAPI) {
+        foreach (static::getProviders() as $providerBaseUrl => $providerAPI) {
             if (strpos($url, $providerBaseUrl) !== false) {
                 return true;
             }
@@ -168,42 +307,45 @@ class UrlOembed extends ActiveRecord
     }
 
     /**
-     * Fetches a given URL and returns content
+     * Executes the remote fetch call in case the [$maxUrlFetchLimit] is not reached.
      *
      * @param string $url
-     *
-     * @return mixed|boolean
+     * @return array|null
+     * @throws RestrictedCallException
      */
-    public static function fetchUrl($url)
+    protected static function fetchUrl($url)
     {
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 15);
-
-        // Not available when open_basedir or safe_mode is set.
-        if (!function_exists('ini_get') || !ini_get('open_basedir') || !ini_get('safe_mode')) {
-            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        if(static::$urlsFetched >= static::$maxUrlFetchLimit) {
+            throw new RestrictedCallException('Max url fetch limit exceeded.');
         }
-        
-        if (Yii::$app->settings->get('proxy.enabled')) {
-            curl_setopt($curl, CURLOPT_PROXY, Yii::$app->settings->get('proxy.server'));
-            curl_setopt($curl, CURLOPT_PROXYPORT, Yii::$app->settings->get('proxy.port'));
-            curl_setopt($curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
-            curl_setopt($curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
-            if (defined('CURLOPT_PROXYUSERNAME')) {
-                curl_setopt($curl, CURLOPT_PROXYUSERNAME, Yii::$app->settings->get('proxy.user'));
-            }
-            if (defined('CURLOPT_PROXYPASSWORD')) {
-                curl_setopt($curl, CURLOPT_PROXYPASSWORD, Yii::$app->settings->get('proxy.password'));
-            }
-            if (defined('CURLOPT_NOPROXY')) {
-                curl_setopt($curl, CURLOPT_NOPROXY, Yii::$app->settings->get('proxy.noproxy'));
-            }
-        }
-        $return = curl_exec($curl);
-        curl_close($curl);
 
-        return $return;
+        static::$urlsFetched++;
+
+        return static::getClient()->fetchUrl($url);
+    }
+
+    /**
+     * Returns the UrlOembedClient responsible for fetching OEmbed results.
+     *
+     * @return UrlOembedClient
+     */
+    public static function getClient()
+    {
+        if(!static::$client) {
+            static::$client = new UrlOembedHttpClient();
+        }
+
+        return static::$client;
+    }
+
+    /**
+     * Sets the UrlOembedClient responsible for fetching OEmbed results.
+     *
+     * @param null $client
+     */
+    public static function setClient($client = null)
+    {
+        static::$client = $client;
     }
 
     /**
@@ -214,7 +356,7 @@ class UrlOembed extends ActiveRecord
     public static function getProviders()
     {
         $providers = Yii::$app->settings->get('oembedProviders');
-        if ($providers != '') {
+        if (!empty($providers)) {
             return Json::decode($providers);
         }
 

@@ -4,7 +4,9 @@ namespace tests\codeception\_support;
 
 use humhub\components\bootstrap\ModuleAutoLoader;
 use humhub\components\Module;
+use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
 use humhub\tests\codeception\fixtures\ModulesEnabledFixture;
+use humhub\tests\codeception\fixtures\UrlOembedFixture;
 use Yii;
 use yii\base\Event;
 use yii\db\ActiveRecord;
@@ -114,7 +116,8 @@ class HumHubDbTestCase extends Unit
     protected function getDefaultFixtures()
     {
         return [
-            'user' => ['class' => \humhub\modules\user\tests\codeception\fixtures\UserFullFixture::class],
+            'user' => ['class' => UserFullFixture::class],
+            'url_oembed' => ['class' => UrlOembedFixture::class],
             'group_permission' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture::class],
             'contentcontainer' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture::class],
             'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::class],

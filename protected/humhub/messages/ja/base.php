@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Confirm</strong> Action' => '<strong>確認</ strong> アクション',
+  '<strong>Confirm</strong> Action' => '<strong>確認 strong&gt; アクション</strong>',
   '<strong>Latest</strong> updates' => '<strong>最新</strong> 更新',
-  '<strong>Mail</strong> summary' => '<strong>メール</ strong> の概要',
+  '<strong>Mail</strong> summary' => '<strong>メール strong&gt; の概要</strong>',
   'Account settings' => 'アカウント設定',
   'Add:' => '追加:',
   'Administration' => '管理',
@@ -53,6 +53,7 @@ return array (
   'Open' => '開く',
   'Please type at least 3 characters' => '3 文字以上を入力してください',
   'Please type at least {count} characters' => '少なくとも {count} 文字が必要です',
+  'Powered by {name}' => '{name}によって供給',
   'Profile dropdown' => 'ドロップダウンプロフィール',
   'Profile image of {displayName}' => 'のプロフィール画像{displayName}',
   'Profile picture of {displayName}' => 'のプロフィール写真{displayName}',

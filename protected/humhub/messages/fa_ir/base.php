@@ -41,6 +41,7 @@ return [
     'My profile image' => '',
     'No error information given.' => '',
     'Please type at least {count} characters' => '',
+    'Powered by {name}' => '',
     'Profile dropdown' => '',
     'Profile image of {displayName}' => '',
     'Profile picture of {displayName}' => '',

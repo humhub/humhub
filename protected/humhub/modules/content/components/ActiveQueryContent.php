@@ -40,6 +40,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
      *
      * @param \humhub\modules\user\models\User $user
      * @return \humhub\modules\content\components\ActiveQueryContent
+     * @throws \Throwable
      */
     public function readable($user = null)
     {
