@@ -12,6 +12,7 @@ use humhub\modules\admin\models\forms\AuthenticationSettingsForm;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\user\models\Group;
 use Yii;
+use yii\helpers\Html;
 
 /**
  * ApprovalController handels new user approvals
@@ -71,7 +72,7 @@ class AuthenticationController extends Controller
 
         foreach (Group::find()->all() as $group) {
             if (!$group->is_admin_group) {
-                $groups[$group->id] = $group->name;
+                $groups[$group->id] = Html::encode($group->name);
             }
         }
 
