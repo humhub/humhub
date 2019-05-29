@@ -46,13 +46,7 @@ use yii\helpers\Html;
                         $moduleImageUrl = $module['moduleImageUrl'];
                     }
                     ?>
-                    <?php if (isset($module['showDisclaimer']) && $module['showDisclaimer'] == 1): ?>
-                        <small><a href="<?= Url::to(['thirdparty-disclaimer']); ?>" data-target="#globalModal">
-                                <span class="label label-warning pull-right">
-                                    <?= Yii::t('AdminModule.module_listOnline', 'Third-party'); ?>
-                                </span>
-                            </a></small>
-                    <?php endif; ?>
+
                     <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64" style="width: 64px; height: 64px;" src="<?= $moduleImageUrl; ?>">
 
                     <div class="media-body">
@@ -92,8 +86,8 @@ use yii\helpers\Html;
                                     style="color:red"><?= Yii::t('AdminModule.views_module_listOnline', 'No compatible module version found!'); ?></span>
                             <?php endif; ?>
                             &middot; <?= Html::a(Yii::t('AdminModule.views_module_listOnline', 'More info'), $module['marketplaceUrl'], ['target' => '_blank']); ?>
-                            <?php if (isset($module['showDisclaimer']) && $module['showDisclaimer'] == 1): ?>
-                                &middot; <?= Html::a(Yii::t('AdminModule.views_module_listOnline', 'Disclaimer'), Url::to(['thirdparty-disclaimer']), ['data-target' => '#globalModal']); ?>
+                            <?php if (!empty($module['showDisclaimer'])): ?>
+                                &middot; <?= Html::a(Yii::t('AdminModule.views_module_listOnline', 'Third-party'), Url::to(['thirdparty-disclaimer']), ['data-target' => '#globalModal']); ?>
                             <?php endif; ?>
                         </div>
                     </div>
