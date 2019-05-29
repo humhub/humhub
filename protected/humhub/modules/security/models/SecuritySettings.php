@@ -13,17 +13,20 @@ use humhub\modules\security\Module;
 
 
 /**
- * The SecuritySettings are used to load and parse the security config file.
+ * The SecuritySettings are used to load and parse a security config file.
  * The config file path is defined in the security module class.
  *
  * When initialized this class will load and cache the security rules from the config file and initialize
  * a Content-Security-Policy builder if the `csp` section of the config is defined.
  *
- * Usage:
+ * The security rules can contain the following sections:
  *
- * $settings = new SecuritySettings();
- * $xFrameOptionHeader = $settings->getHeader(SecuritySettings::HEADER_X_FRAME_OPTIONS);
- * $csp = $settings->getCspHeader();
+ * - `headers`: contains headers to be set
+ * - `csp`:  contains a csp configuration
+ * - `csp-report-only`: contains report only rules
+ *
+ * An instance of this class only manages the csp creation of a single csp section mentioned above. The active section
+ * can be set by setting the [[cspSection]]. By default the `csp` section is used.
  *
  * > Note: This class is not responsible for actually setting the header values
  *
@@ -46,9 +49,12 @@ class SecuritySettings extends Model
     const HEADER_X_PERMITTED_CROSS_DOMAIN_POLICIES = 'X-Permitted-Cross-Domain-Policies';
 
     const HEADER_PUBLIC_KEY_PINS = 'Public-Key-Pins';
+    const CACHE_KEY = 'security_rules';
+
+    const CSP_SECTION_REPORT_ONLY = 'csp-report-only';
 
     /**
-     * @var []
+     * @var [] static config cache
      */
     private static $rules;
 
@@ -57,25 +63,54 @@ class SecuritySettings extends Model
      */
     private $csp;
 
-    private $nonceAttached = false;
-
     /**
      * @var string defines the csp settings key
      */
     public $cspSection = 'csp';
 
-    public $forceReportOnly = false;
+    /**
+     * @var bool this flag avoids resetting the nonce to the csp
+     */
+    private $nonceAttached = false;
+
+    /**
+     * @return bool checks if any csp section has reporting enabled
+     */
+    public static function isReportingEnabled()
+    {
+        $instance = new static();
+        return $instance->isCspReportEnabled() ||
+            $instance->hasSection(static::CSP_SECTION_REPORT_ONLY);
+    }
 
     /**
      * @inheritdoc
      */
     public function init()
     {
-        if (!static::rules()) {
+        if (!static::$rules) {
             $this->loadRules();
         }
 
         $this->initCSP();
+    }
+
+    /**
+     * Initializes a static CSPBuilder instance by means of the given `csp` configuration definition.
+     *
+     * @throws \Exception
+     */
+    private function initCSP()
+    {
+        if (!static::$rules || !$this->hasSection($this->cspSection)) {
+            return;
+        }
+
+        $this->csp = CSPBuilder::fromArray(static::$rules[$this->cspSection]);
+
+        if($this->isCspReportEnabled()) {
+            $this->csp->setReportUri(Url::toRoute('/security/report/index'));
+        }
     }
 
     public static function flushCache()
@@ -89,10 +124,16 @@ class SecuritySettings extends Model
      */
     private function loadRules()
     {
+        static::$rules = Yii::$app->cache->get(static::CACHE_KEY);
+
+        if(static::$rules) {
+           return static::$rules;
+        }
         $configFile = $this->getConfigFilePath();
 
         try {
             static::$rules = Json::decode(file_get_contents($configFile));
+            Yii::$app->cache->set(static::CACHE_KEY, static::$rules);
         } catch (\Exception $e) {
             throw new InvalidConfigException(Yii::t('SecurityModule.error', 'Could not parse security file at {path}!', ['path' => $configFile]));
         }
@@ -139,6 +180,12 @@ class SecuritySettings extends Model
         return $this->getHeader(static::HEADER_CONTENT_SECRUITY_POLICY);
     }
 
+    /**
+     * Returns the header keys for the csp header, this are either report-only or normal csp header keys with respect of
+     * old browsers.
+     *
+     * @return array
+     */
     public function getCSPHeaderKeys()
     {
         // If the `csp section is set to report-only`
@@ -149,9 +196,19 @@ class SecuritySettings extends Model
         return [static::HEADER_CONTENT_SECRUITY_POLICY, static::HEADER_CONTENT_SECRUITY_POLICY_IE];
     }
 
+    /**
+     * Checks if the current csp section should be treated as report-only csp
+     *
+     * @return bool
+     */
     public function isReportOnlyCSP()
     {
-        return $this->forceReportOnly || (isset(static::$rules[$this->cspSection]['report-only']) && static::$rules[$this->cspSection]['report-only'] === true);
+        if(!$this->hasSection($this->cspSection)) {
+            return false;
+        }
+
+        return $this->cspSection === static::CSP_SECTION_REPORT_ONLY
+            || (isset(static::$rules[$this->cspSection]['report-only']) && static::$rules[$this->cspSection]['report-only'] === true);
     }
 
     /**
@@ -162,11 +219,6 @@ class SecuritySettings extends Model
     private function generateCsp()
     {
         return $this->csp ? $this->csp->compile() : null;
-    }
-
-    private function isEdge()
-    {
-        return false !== stripos($_SERVER['HTTP_USER_AGENT'], "Edge");
     }
 
     /**
@@ -203,6 +255,12 @@ class SecuritySettings extends Model
         return null;
     }
 
+    /**
+     * Checks if the given header key is a csp related key
+     *
+     * @param $header
+     * @return bool
+     */
     public function isCSPHeaderKey($header)
     {
         return in_array($header, [
@@ -212,6 +270,10 @@ class SecuritySettings extends Model
             static::HEADER_CONTENT_SECRUITY_POLICY_IE], true);
     }
 
+    /**
+     * Returns all headers in the `headers` section of the security configuration
+     * @return array
+     */
     public function getHeaders()
     {
         $result = [];
@@ -222,27 +284,22 @@ class SecuritySettings extends Model
         return static::$rules['headers'];
     }
 
+    /**
+     * Checks if the given section is present in the security configuration
+     *
+     * @param $section
+     * @return bool
+     */
     public function hasSection($section)
     {
         return isset(static::$rules[$section]);
     }
 
     /**
-     * Initializes a static CSPBuilder instance by means of the given `csp` configuration definition.
-     * @throws \Exception
+     * @return bool checks if reporting is enabled for on the active csp configuration section
      */
-    private function initCSP()
+    public function isCspReportEnabled()
     {
-        if (!static::$rules || !$this->hasSection($this->cspSection)) {
-            return;
-        }
-
-        $this->csp = CSPBuilder::fromArray(static::$rules[$this->cspSection]);
-
-        if($this->isReportOnlyCSP() || (isset(static::$rules['report']) && static::$rules['report'] === true)) {
-            $this->csp->setReportUri(Url::toRoute('/security/report/index'));
-        }
+        return $this->isReportOnlyCSP() || (isset(static::$rules['csp']['report']) && static::$rules['csp']['report'] === true);
     }
-
-
 }

@@ -100,16 +100,30 @@ class SecuritySettingsTest extends HumHubDbTestCase
         $this->assertEmpty(Security::getNonce());
     }
 
-    public function testSingleReportOnly()
+    public function testReportActive()
     {
-        $this->setConfigFile('security.empty.json');
+        $this->setConfigFile('security.report.json');
         $settings = new SecuritySettings();
-        $this->assertNull($settings->getHeader('Content-Security-Policy'));
-        $this->assertFalse($settings->isNonceSupportActive());
+        $this->assertTrue($settings->isCspReportEnabled());
+        $this->assertFalse($settings->isReportOnlyCSP());
+        $this->assertTrue(SecuritySettings::isReportingEnabled());
+    }
 
-        $this->assertNull($settings->getCSPHeader());
+    public function testReportOnlyActive()
+    {
+        $this->setConfigFile('security.reportonly1.json');
+        $settings = new SecuritySettings();
+        $this->assertTrue($settings->isCspReportEnabled());
+        $this->assertTrue($settings->isReportOnlyCSP());
+        $this->assertTrue(SecuritySettings::isReportingEnabled());
+    }
 
-        $this->assertEmpty(Html::nonce());
-        $this->assertEmpty(Security::getNonce());
+    public function testReportOnlyCSPSection()
+    {
+        $this->setConfigFile('security.reportonly2.json');
+        $settings = new SecuritySettings(['cspSection' => SecuritySettings::CSP_SECTION_REPORT_ONLY]);
+        $this->assertTrue($settings->isCspReportEnabled());
+        $this->assertTrue($settings->isReportOnlyCSP());
+        $this->assertTrue(SecuritySettings::isReportingEnabled());
     }
 }

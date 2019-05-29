@@ -136,6 +136,8 @@ a generated nonce.
 properly with your security configuration, please contact the module owner or refer to the module description. Also check the 
 [Developer Javascript Guide](../developer/javascript.md) for assuring nonce support of your custom modules.
 
+> Note: The security rules are cached, you may have to clear the cache in order to update the active rule configuration.
+
 Keep HumHub Up-To-Date 
 ---------------------------------------
 

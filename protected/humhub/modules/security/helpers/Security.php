@@ -25,8 +25,8 @@ class Security
                 static::setHeader($key, $header);
             }
 
-            if($settings->hasSection('csp-report-only')) {
-                $reportOnlySettings = new SecuritySettings(['cspSection' => 'csp-report-only', 'forceReportOnly' => true]);
+            if($settings->hasSection(SecuritySettings::CSP_SECTION_REPORT_ONLY)) {
+                $reportOnlySettings = new SecuritySettings(['cspSection' => SecuritySettings::CSP_SECTION_REPORT_ONLY]);
                 $header = $reportOnlySettings->getHeader(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY);
                 foreach ($reportOnlySettings->getCSPHeaderKeys() as $key) {
                     static::setHeader($key, $header);
