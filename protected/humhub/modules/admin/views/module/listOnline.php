@@ -51,10 +51,9 @@ use yii\helpers\Html;
 
                     <div class="media-body">
                         <h4 class="media-heading"><?= $module['name']; ?>
-                            <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>
-                                <small><span
-                                        class="label label-info"><?= Yii::t('AdminModule.module_listOnline', 'Installed'); ?>
-                                </small></span>
+                            <?php if (!empty($module['featured'])): ?>
+                                <i class="fa fa-star text-info" aria-hidden="true"></i>
+                                &nbsp;
                             <?php endif; ?>
                         </h4>
 
@@ -62,6 +61,12 @@ use yii\helpers\Html;
 
                         <div class="module-controls">
                             <?= Yii::t('AdminModule.views_module_listOnline', 'Latest version:'); ?> <?= $module['latestVersion']; ?>
+
+                            <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>
+                                &middot; <?= Yii::t('AdminModule.module_listOnline', 'Installed'); ?>
+                                </span>
+                            <?php endif; ?>
+
                             <?php if (isset($module['purchased']) && $module['purchased']) : ?>
                                 &nbsp; Purchased
                             <?php endif; ?>

@@ -7,6 +7,7 @@ HumHub Change Log
 - Fix: LinkedIn API call to v1 deprecated use v2 (@Felli)
 - Fix #3531: File module Fil: isAssignedTo method broken
 - Fix: Added missing admin group title encodings
+- Enh: Added featured module flag to marketplace view
 
 
 1.3.13  (May 3, 2019)
