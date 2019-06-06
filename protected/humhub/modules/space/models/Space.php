@@ -56,6 +56,9 @@ use Yii;
  * @property integer $contentcontainer_id
  * @property integer $default_content_visibility
  * @property string $color
+ * @property string dao_address
+ * @property string coin_address
+ * @property integer eth_status
  * @property User $ownerUser the owner of this space
  *
  * @mixin \humhub\components\behaviors\GUID
@@ -89,6 +92,10 @@ class Space extends ContentContainerActiveRecord implements Searchable
     // Model Scenarios
     const SCENARIO_CREATE = 'create';
     const SCENARIO_EDIT = 'edit';
+    // Ethereum status
+    const ETHEREUM_STATUS_DISABLED = 0;
+    const ETHEREUM_STATUS_IN_PROGRESS = 1;
+    const ETHEREUM_STATUS_ENABLED = 2;
 
     /**
      * @inheritdoc
