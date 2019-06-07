@@ -235,6 +235,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
                 // create DEFAULT & ISSUE Accounts
                 AssetHelper::initContentContainer($this);
                 AccountHelper::initContentContainer($this);
+
+                $this->updateAttributes(['eth_status' => self::ETHEREUM_STATUS_ENABLED]);
             };
         }
 
