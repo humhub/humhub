@@ -61,7 +61,7 @@
         "zendframework/zend-http": "*",
         "zendframework/zend-ldap": "^2.5",
         "ext-zip": "*",
-      "ext-json": "*"
+        "ext-json": "*"
     },
     "require-dev": {
         "codeception/codeception": "2.4.5",
