@@ -7,5 +7,5 @@ return array (
   'Request Message' => 'Verzoek bericht',
   'Status' => 'Status',
   'Updated At' => 'Aangepast op',
-  'Updated By' => 'Geüpdatet door',
+  'Updated By' => 'Bijgewerkt door',
 );
