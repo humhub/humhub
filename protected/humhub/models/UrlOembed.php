@@ -152,7 +152,7 @@ class UrlOembed extends ActiveRecord
                 $urlOembed = static::findExistingOembed($url);
                 $result = $urlOembed ? $urlOembed->preview : self::loadUrl($url);
 
-                if(!empty($result)) {
+                if (!empty($result)) {
                     return trim(preg_replace('/\s+/', ' ', $result));
                 }
             }
@@ -205,11 +205,11 @@ class UrlOembed extends ActiveRecord
      */
     protected static function findExistingOembed($url)
     {
-        if(array_key_exists($url, static::$cache)) {
+        if (array_key_exists($url, static::$cache)) {
             return static::$cache[$url];
         }
 
-        if(static::$urlsLoaded >= static::$maxUrlLoadLimit) {
+        if (static::$urlsLoaded >= static::$maxUrlLoadLimit) {
             throw new RestrictedCallException('Max url db load limit exceeded.');
         }
 
@@ -217,7 +217,7 @@ class UrlOembed extends ActiveRecord
 
         $record = static::findOne(['url' => $url]);
 
-        if($record) {
+        if ($record) {
             static::$cache[$url] = $record;
         }
 
@@ -237,12 +237,12 @@ class UrlOembed extends ActiveRecord
         try {
             $urlOembed = static::findExistingOembed($url);
 
-            if(!$urlOembed) {
+            if (!$urlOembed) {
                 $urlOembed = new static(['url' => $url]);
             }
 
             $providerUrl = $customProviderUrl != '' ? $customProviderUrl : $urlOembed->getProviderUrl();
-            if(empty($providerUrl)) {
+            if (empty($providerUrl)) {
                 return null;
             }
 
@@ -272,7 +272,7 @@ class UrlOembed extends ActiveRecord
      */
     protected static function buildHtmlPreview($url, $data = null)
     {
-        if(static::validateOembedResponse($data)) {
+        if (static::validateOembedResponse($data)) {
             return  Html::tag('div', $data['html'], [
                 'data' => [
                     'guid' => uniqid('oembed-', true),
@@ -326,7 +326,7 @@ class UrlOembed extends ActiveRecord
      */
     protected static function fetchUrl($url)
     {
-        if(static::$urlsFetched >= static::$maxUrlFetchLimit) {
+        if (static::$urlsFetched >= static::$maxUrlFetchLimit) {
             throw new RestrictedCallException('Max url fetch limit exceeded.');
         }
 
@@ -342,7 +342,7 @@ class UrlOembed extends ActiveRecord
      */
     public static function getClient()
     {
-        if(!static::$client) {
+        if (!static::$client) {
             static::$client = new UrlOembedHttpClient();
         }
 
