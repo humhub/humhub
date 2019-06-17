@@ -11,6 +11,7 @@ HumHub Change Log
 - Fix: Directory stats progress color (@Felli)
 - Fix #2724: Edited post does not display the space on dashboard
 - Fix #3533: Responsive design issues
+- Fix #3471: Display of Date Time Column in excel with empty/false value 
 
 
 1.3.13  (May 3, 2019)
