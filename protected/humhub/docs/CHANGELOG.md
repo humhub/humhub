@@ -8,7 +8,9 @@ HumHub Change Log
 - Fix #3531: File module Fil: isAssignedTo method broken
 - Fix: Added missing admin group title encodings
 - Enh: Added featured module flag to marketplace view
-- Fix: Loading Progress Color (@Felli)
+- Fix: Directory stats progress color (@Felli)
+- Fix #2724: Edited post does not display the space on dashboard
+
 
 1.3.13  (May 3, 2019)
 ----------------------
