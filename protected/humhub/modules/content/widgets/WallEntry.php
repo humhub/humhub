@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\dashboard\controllers\DashboardController;
+use humhub\modules\stream\actions\Stream;
 use Yii;
 use humhub\components\Widget;
 use humhub\modules\space\models\Space;
@@ -162,7 +164,11 @@ class WallEntry extends Widget
             return "";
         }
 
-        return $this->contentObject->content->container->createUrl($this->editRoute, ['id' => $this->contentObject->id]);
+        $params = ['id' => $this->contentObject->id];
+        if (Yii::$app->controller instanceof DashboardController) {
+            $params['from'] = Stream::FROM_DASHBOARD;
+        }
+        return $this->contentObject->content->container->createUrl($this->editRoute, $params);
     }
 
     /**
@@ -247,7 +253,9 @@ class WallEntry extends Widget
         $container = $content->container;
 
         // In case of e.g. dashboard, show contentContainer of this content
-        if (!Yii::$app->controller instanceof ContentContainerController && !($container instanceof User && $container->id == $user->id)) {
+        if (isset($this->controlsOptions['showContentContainer']) && !($container instanceof User && $container->id == $user->id)) {
+            $showContentContainer = $this->controlsOptions['showContentContainer'];
+        } elseif (!Yii::$app->controller instanceof ContentContainerController && !($container instanceof User && $container->id == $user->id)) {
             $showContentContainer = true;
         }
 

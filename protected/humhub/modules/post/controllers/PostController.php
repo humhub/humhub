@@ -12,6 +12,7 @@ use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\post\models\Post;
 use humhub\modules\post\permissions\CreatePost;
+use humhub\modules\stream\actions\Stream;
 use Yii;
 
 /**
@@ -37,8 +38,8 @@ class PostController extends ContentContainerController
     public function actionEdit()
     {
         $id = Yii::$app->request->get('id');
+        $from = Yii::$app->request->get('from', '');
 
-        $edited = false;
         $model = Post::findOne(['id' => $id]);
 
         if (!$model->content->canEdit()) {
@@ -49,14 +50,21 @@ class PostController extends ContentContainerController
             // Reload record to get populated updated_at field
             if ($model->validate() && $model->save()) {
                 $model = Post::findOne(['id' => $id]);
-                return $this->renderAjaxContent($model->getWallOut());
+                $options = [];
+                if ($from === Stream::FROM_DASHBOARD) {
+                    $options['controlsOptions'] = [
+                        'showContentContainer' => true
+                    ];
+                }
+                return $this->renderAjaxContent($model->getWallOut($options));
             } else {
                 Yii::$app->response->statusCode = 400;
             }
         }
 
         return $this->renderAjax('edit', [
-            'post' => $model
+            'post' => $model,
+            'from' => $from === Stream::FROM_DASHBOARD ? $from : null
         ]);
     }
 
