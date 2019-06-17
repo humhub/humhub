@@ -19,7 +19,8 @@ humhub\modules\directory\assets\DirectoryAsset::register($this);
             <strong><?= Yii::t('DirectoryModule.base', 'Total spaces'); ?></strong><br><br>
 
             <input id="spaces-total" class="knob" data-width="120" data-height="140" data-displayprevious="true" data-readOnly="true"
-                   data-fgcolor="<?= $this->theme->variable('primary'); ?>" data-skin="tron"
+                   data-fgcolor="<?= $this->theme->variable('primary'); ?>"
+                   data-skin="tron"
                    data-thickness=".2" value="<?= $statsCountSpaces; ?>"
                    data-max="<?= $statsCountSpaces; ?>"
                    style="font-size: 25px !important; margin-top: 44px !important;">
@@ -33,7 +34,7 @@ humhub\modules\directory\assets\DirectoryAsset::register($this);
             <input id="spaces-private" class="knob" data-width="120" data-height="140" data-displayprevious="true" data-readOnly="true"
                    data-fgcolor="<?= $this->theme->variable('primary'); ?>"
                    data-skin="tron"
-                   data-thickness=".2" value="<?php echo $statsCountSpacesHidden; ?>"
+                   data-thickness=".2" value="<?= $statsCountSpacesHidden; ?>"
                    data-max="<?= $statsCountSpaces; ?>"
                    style="font-size: 25px !important; margin-top: 44px !important;">
         </div>
@@ -41,7 +42,7 @@ humhub\modules\directory\assets\DirectoryAsset::register($this);
 
         <?php if (isset($statsSpaceMostMembers->name)) { ?>
             <div style="text-align: center;">
-                <strong><?php echo Yii::t('DirectoryModule.base', 'Most members'); ?>: </strong> <?= Html::encode($statsSpaceMostMembers->name); ?>
+                <strong><?= Yii::t('DirectoryModule.base', 'Most members'); ?>: </strong> <?= Html::encode($statsSpaceMostMembers->name); ?>
             </div>
         <?php } ?>
     </div>

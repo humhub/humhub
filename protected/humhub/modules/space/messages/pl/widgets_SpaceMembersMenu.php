@@ -2,6 +2,6 @@
 return array (
   'Members' => 'Członkowie',
   'Owner' => 'Właściciel',
-  'Pending Approvals' => '',
-  'Pending Invites' => '',
+  'Pending Approvals' => 'Oczekujące do zatwierdzenia',
+  'Pending Invites' => 'Oczekujące Zaproszenia',
 );

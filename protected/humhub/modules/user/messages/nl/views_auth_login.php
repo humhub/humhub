@@ -10,7 +10,7 @@ return array (
   'Please enter the letters from the image.' => 'Voer de letters uit de afbeelding in.',
   'Please login with your username/email and password.' => 'Meld u aan met uw gebruikersnaam / email en wachtwoord.',
   'Register' => 'Registreren',
-  'Remember me' => 'Onthoud me',
+  'Remember me' => 'Onthoud mij',
   'Sign in' => 'Aanmelden',
   'email' => 'e-mail',
   'password' => 'wachtwoord',

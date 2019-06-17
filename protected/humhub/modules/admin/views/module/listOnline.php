@@ -2,10 +2,12 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+
 ?>
 <div class="panel panel-default">
 
-    <div class="panel-heading"><?= Yii::t('AdminModule.views_module_listOnline', '<strong>Modules</strong> directory'); ?></div>
+    <div
+        class="panel-heading"><?= Yii::t('AdminModule.views_module_listOnline', '<strong>Modules</strong> directory'); ?></div>
     <?= $this->render('_header'); ?>
 
     <div class="panel-body">
@@ -38,7 +40,8 @@ use yii\helpers\Html;
 
             <?php foreach ($modules as $module): ?>
                 <hr>
-                <div class="media <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>module-installed<?php endif; ?>">
+                <div
+                    class="media <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>module-installed<?php endif; ?>">
 
                     <?php
                     $moduleImageUrl = Yii::getAlias('@web-static/img/default_module.jpg');
@@ -46,21 +49,15 @@ use yii\helpers\Html;
                         $moduleImageUrl = $module['moduleImageUrl'];
                     }
                     ?>
-                    <?php if (isset($module['showDisclaimer']) && $module['showDisclaimer'] == 1): ?>
-                        <small><a href="<?= Url::to(['thirdparty-disclaimer']); ?>" data-target="#globalModal">
-                                <span class="label label-warning pull-right">
-                                    <?= Yii::t('AdminModule.module_listOnline', 'Third-party'); ?>
-                                </span>
-                            </a></small>
-                    <?php endif; ?>
-                    <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64" style="width: 64px; height: 64px;" src="<?= $moduleImageUrl; ?>">
+
+                    <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
+                         style="width: 64px; height: 64px;" src="<?= $moduleImageUrl; ?>">
 
                     <div class="media-body">
                         <h4 class="media-heading"><?= $module['name']; ?>
-                            <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>
-                                <small><span
-                                        class="label label-info"><?= Yii::t('AdminModule.module_listOnline', 'Installed'); ?>
-                                </small></span>
+                            <?php if (!empty($module['featured'])): ?>
+                                <i class="fa fa-star text-info" aria-hidden="true"></i>
+                                &nbsp;
                             <?php endif; ?>
                         </h4>
 
@@ -68,6 +65,12 @@ use yii\helpers\Html;
 
                         <div class="module-controls">
                             <?= Yii::t('AdminModule.views_module_listOnline', 'Latest version:'); ?> <?= $module['latestVersion']; ?>
+
+                            <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>
+                                &middot; <?= Yii::t('AdminModule.module_listOnline', 'Installed'); ?>
+                                </span>
+                            <?php endif; ?>
+
                             <?php if (isset($module['purchased']) && $module['purchased']) : ?>
                                 &nbsp; Purchased
                             <?php endif; ?>
@@ -91,9 +94,11 @@ use yii\helpers\Html;
                                 &middot; <span
                                     style="color:red"><?= Yii::t('AdminModule.views_module_listOnline', 'No compatible module version found!'); ?></span>
                             <?php endif; ?>
-                            &middot; <?= Html::a(Yii::t('AdminModule.views_module_listOnline', 'More info'), $module['marketplaceUrl'], ['target' => '_blank']); ?>
-                            <?php if (isset($module['showDisclaimer']) && $module['showDisclaimer'] == 1): ?>
-                                &middot; <?= Html::a(Yii::t('AdminModule.views_module_listOnline', 'Disclaimer'), Url::to(['thirdparty-disclaimer']), ['data-target' => '#globalModal']); ?>
+                            &middot; <?= Html::a(Yii::t('AdminModule.views_module_listOnline', 'More info') .
+                                '&nbsp;<i class="fa fa-external-link" aria-hidden="true"></i>'
+                                , $module['marketplaceUrl'], ['target' => '_blank']); ?>
+                            <?php if (!empty($module['showDisclaimer'])): ?>
+                                &middot; <?= Html::a(Yii::t('AdminModule.views_module_listOnline', 'Third-party'), Url::to(['thirdparty-disclaimer']), ['data-target' => '#globalModal']); ?>
                             <?php endif; ?>
                         </div>
                     </div>

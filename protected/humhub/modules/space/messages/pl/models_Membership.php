@@ -2,10 +2,10 @@
 return array (
   'Created At' => 'Utworzona o',
   'Created By' => 'Utworzona przez',
-  'Last Visit' => '',
-  'Originator User ID' => '',
-  'Request Message' => '',
+  'Last Visit' => 'Ostatnia wizyta',
+  'Originator User ID' => 'ID oryginalnego Użytkownika',
+  'Request Message' => 'Wiadomość żądania',
   'Status' => 'Status',
-  'Updated At' => 'Zaktualizowana o ',
-  'Updated By' => '',
+  'Updated At' => 'Zaktualizowana o',
+  'Updated By' => 'Zaktualizowana przez',
 );
