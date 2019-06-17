@@ -68,6 +68,7 @@ class CreateController extends Controller
             if ($skip) {
                 return $this->htmlRedirect($model->getUrl());
             }
+
             return $this->actionModules($model->id);
         }
 
@@ -126,7 +127,11 @@ class CreateController extends Controller
         if (count($space->getAvailableModules()) == 0) {
             return $this->actionInvite($space);
         } else {
-            return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $space->getAvailableModules()]);
+            $availableModules = $space->getAvailableModules();
+            // unset xcoin from available modules list since it will automatically enabled
+            unset($availableModules['xcoin']);
+
+            return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $availableModules]);
         }
     }
 
@@ -139,7 +144,7 @@ class CreateController extends Controller
     {
         $space = ($space == null) ? Space::findOne(['id' => $spaceId]) : $space;
 
-        if(!$space) {
+        if (!$space) {
             throw new HttpException(404);
         }
 
