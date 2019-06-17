@@ -10,6 +10,7 @@ HumHub Change Log
 - Enh: Added featured module flag to marketplace view
 - Fix: Directory stats progress color (@Felli)
 - Fix #2724: Edited post does not display the space on dashboard
+- Fix #3533: Responsive design issues
 
 
 1.3.13  (May 3, 2019)
