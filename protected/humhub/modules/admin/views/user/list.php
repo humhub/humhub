@@ -32,7 +32,7 @@ use yii\widgets\ActiveForm;
 
     <br />
 
-    <?php $form = ActiveForm::begin(['method' => 'get']); ?>
+    <?php $form = ActiveForm::begin(['method' => 'get', 'action' => Url::to(['/admin/user/list'])]); ?>
     <div class="row">
         <div class="col-md-8">
             <div class="input-group">
