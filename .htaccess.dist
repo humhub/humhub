@@ -45,7 +45,7 @@
 
 # Caching schema
 <IfModule mod_headers.c>
-    <FilesMatch "\.(jpg|png|gif|css|js)$">
+    <FilesMatch "\.(jpg|png|gif|ico|svg|css|js|less)$">
         Header set Cache-Control "private, max-age=3600"
     </FilesMatch>
 </IfModule>
