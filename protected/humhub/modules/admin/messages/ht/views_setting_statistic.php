@@ -1,5 +1,5 @@
 <?php
 return array (
   'Save' => 'Sere',
-  'You can add an statistics HTML code snippet - which will added to all rendered pages.' => '',
+  'You can add a statistic code snippet (HTML) - which will be added to all rendered pages.' => '',
 );
