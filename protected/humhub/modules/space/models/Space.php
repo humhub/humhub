@@ -59,6 +59,7 @@ use Yii;
  * @property string dao_address
  * @property string coin_address
  * @property integer eth_status
+ * @property integer space_type
  * @property User $ownerUser the owner of this space
  *
  * @mixin \humhub\components\behaviors\GUID
@@ -96,6 +97,9 @@ class Space extends ContentContainerActiveRecord implements Searchable
     const ETHEREUM_STATUS_DISABLED = 0;
     const ETHEREUM_STATUS_IN_PROGRESS = 1;
     const ETHEREUM_STATUS_ENABLED = 2;
+    // Space type
+    const SPACE_TYPE_NORMAL = 0;
+    const SPACE_TYPE_FUNDING = 1;
 
     /**
      * @inheritdoc
