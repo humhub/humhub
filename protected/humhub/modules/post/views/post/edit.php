@@ -8,9 +8,14 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 use yii\bootstrap\ActiveForm;
 
 /* @var  $post \humhub\modules\post\models\Post */
+/* @var  $from string */
 /* @var  $submitUrl string */
 
-$submitUrl = $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]);
+$submitParams = ['id' => $post->id];
+if (! empty($from)) {
+    $submitParams['from'] = $from;
+}
+$submitUrl = $post->content->container->createUrl('/post/post/edit', $submitParams);
 
 ?>
 <div class="content content_edit" id="post_edit_<?= $post->id; ?>">

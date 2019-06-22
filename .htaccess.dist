@@ -13,7 +13,7 @@
     #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
     # prevent httpd from serving dotfiles (.htaccess, .svn, .git, etc.) - except let's encrypt challenge
-    RedirectMatch 403 ^/?\.(?!/well-known/acme-challenge/[\w-]{43}$)
+    RedirectMatch 403 ^/?\.(?!well-known/acme-challenge/[\w-]{43}$)
 
     # ensure permalink when url rewriting was enabled (index.php?r=content/perma&id=6 => /content/perma/?id=6
     RewriteCond %{QUERY_STRING} ^r=content(/|%2)perma&id=([0-9]*)$
@@ -45,7 +45,7 @@
 
 # Caching schema
 <IfModule mod_headers.c>
-    <FilesMatch "\.(jpg|png|gif|css|js)$">
+    <FilesMatch "\.(jpg|png|gif|ico|svg|css|js|less)$">
         Header set Cache-Control "private, max-age=3600"
     </FilesMatch>
 </IfModule>

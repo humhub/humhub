@@ -121,6 +121,9 @@ class Module extends \humhub\components\Module
         return [];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getName()
     {
         return Yii::t('UserModule.base', 'User');

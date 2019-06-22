@@ -35,7 +35,7 @@ use yii\bootstrap\Html;
         <tbody>
             <?php foreach ($model->categories() as $category): ?>
                 <tr>
-                    <td>
+                    <td class="notification-type">
                         <strong><?= $category->getTitle() ?></strong><br />
                         <?= $category->getDescription() ?>
                     </td>
