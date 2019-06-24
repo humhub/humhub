@@ -59,10 +59,6 @@ class AuthController extends Controller
         // Remove authClient from session - if already exists
         Yii::$app->session->remove('authClient');
 
-        if ($action->id == 'login') {
-            $this->enableCsrfValidation = false;
-        }
-
         return parent::beforeAction($action);
     }
 
