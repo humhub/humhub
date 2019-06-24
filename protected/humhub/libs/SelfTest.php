@@ -9,6 +9,7 @@
 namespace humhub\libs;
 
 use humhub\modules\ldap\helpers\LdapHelper;
+use humhub\modules\marketplace\Module;
 use Yii;
 
 /**
@@ -364,7 +365,9 @@ class SelfTest
         // Check Custom Modules Directory
         $title = 'Permissions - Module Directory';
 
-        $path = Yii::getAlias(Yii::$app->params['moduleMarketplacePath']);
+        /** @var Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+        $path = Yii::getAlias($marketplaceModule->modulesPath);
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => Yii::t('base', $title),

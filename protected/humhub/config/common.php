@@ -166,7 +166,6 @@ $config = [
         'databaseInstalled' => false,
         'dynamicConfigFile' => '@config/dynamic.php',
         'moduleAutoloadPaths' => ['@app/modules', '@humhub/modules'],
-        'moduleMarketplacePath' => '@app/modules',
         'availableLanguages' => [
             'en' => 'English (US)',
             'en_gb' => 'English (UK)',

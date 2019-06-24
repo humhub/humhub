@@ -39,14 +39,6 @@ return [
                 Events::class,
                 'onCronDailyRun'
             ]
-        ],
-        [
-            'class' => 'humhub\components\console\Application',
-            'event' => 'onInit',
-            'callback' => [
-                Events::class,
-                'onConsoleApplicationInit'
-            ]
-        ],
+        ]
     ],
 ];
