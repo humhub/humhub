@@ -6,8 +6,10 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\admin\libs;
+namespace humhub\modules\marketplace\components;
 
+use humhub\modules\admin\libs\HumHubAPI;
+use humhub\modules\marketplace\Module;
 use Yii;
 use yii\web\HttpException;
 use yii\base\Exception;
@@ -28,26 +30,32 @@ class OnlineModuleManager
     /**
      * Installs latest compatible module version
      *
-     * @param type $moduleId
+     * @param string $moduleId
+     * @throws Exception
+     * @throws HttpException
+     * @throws \yii\base\ErrorException
+     * @throws \yii\base\InvalidConfigException
      */
     public function install($moduleId)
     {
-        $modulePath = Yii::getAlias(Yii::$app->params['moduleMarketplacePath']);
+        /** @var Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+        $modulePath = Yii::getAlias($marketplaceModule->modulesPath);
 
         if (!is_writable($modulePath)) {
-            throw new HttpException(500, Yii::t('AdminModule.libs_OnlineModuleManager', 'Module directory %modulePath% is not writeable!', ['%modulePath%' => $modulePath]));
+            throw new Exception(Yii::t('MarketplaceModule.base', 'Module directory %modulePath% is not writeable!', ['%modulePath%' => $modulePath]));
         }
 
         $moduleInfo = $this->getModuleInfo($moduleId);
 
         if (!isset($moduleInfo['latestCompatibleVersion'])) {
-            throw new Exception(Yii::t('AdminModule.libs_OnlineModuleManager', 'No compatible module version found!'));
+            throw new Exception(Yii::t('MarketplaceModule.base', 'No compatible module version found!'));
         }
 
         $moduleDir = $modulePath . DIRECTORY_SEPARATOR . $moduleId;
         if (is_dir($moduleDir)) {
             $files = new \RecursiveIteratorIterator(
-                     new \RecursiveDirectoryIterator($moduleDir, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
+                new \RecursiveDirectoryIterator($moduleDir, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
             );
 
             foreach ($files as $fileinfo) {
@@ -78,7 +86,7 @@ class OnlineModuleManager
 
             file_put_contents($downloadTargetFileName, $response->getBody());
         } catch (Exception $ex) {
-            throw new HttpException('500', Yii::t('AdminModule.libs_OnlineModuleManager', 'Module download failed! (%error%)', ['%error%' => $ex->getMessage()]));
+            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Module download failed! (%error%)', ['%error%' => $ex->getMessage()]));
         }
 
         // Extract Package
@@ -89,10 +97,10 @@ class OnlineModuleManager
                 $zip->extractTo($modulePath);
                 $zip->close();
             } else {
-                throw new HttpException('500', Yii::t('AdminModule.libs_OnlineModuleManager', 'Could not extract module!'));
+                throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Could not extract module!'));
             }
         } else {
-            throw new HttpException('500', Yii::t('AdminModule.libs_OnlineModuleManager', 'Download of module failed!'));
+            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Download of module failed!'));
         }
 
         Yii::$app->moduleManager->flushCache();
@@ -102,7 +110,7 @@ class OnlineModuleManager
     /**
      * Updates a given module
      *
-     * @param HWebModule $module
+     * @param string $moduleId
      */
     public function update($moduleId)
     {

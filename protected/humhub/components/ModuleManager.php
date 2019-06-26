@@ -328,7 +328,7 @@ class ModuleManager extends Component
         }
 
         // Check is in dynamic/marketplace module folder
-        if (strpos($module->getBasePath(), Yii::getAlias(Yii::$app->params['moduleMarketplacePath'])) !== false) {
+        if (strpos($module->getBasePath(), Yii::getAlias(Yii::$app->getModule('marketplace')->modulesPath)) !== false) {
             return true;
         }
 

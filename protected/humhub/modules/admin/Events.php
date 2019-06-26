@@ -54,17 +54,6 @@ class Events extends \yii\base\BaseObject
     }
 
     /**
-     * On console application initialization
-     *
-     * @param \yii\base\Event $event
-     */
-    public static function onConsoleApplicationInit($event)
-    {
-        $application = $event->sender;
-        $application->controllerMap['module'] = commands\ModuleController::class;
-    }
-
-    /**
      * @param $event UserEvent
      */
     public static function onSwitchUser($event) {

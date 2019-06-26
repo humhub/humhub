@@ -34,11 +34,6 @@ class Module extends \humhub\components\Module
     public $isCoreModule = true;
 
     /**
-     * @var boolean is marketplace enabled?
-     */
-    public $marketplaceEnabled = true;
-
-    /**
      * @inheritdoc
      */
     public $resourcesPath = 'resources';

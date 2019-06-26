@@ -6,26 +6,29 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\admin\commands;
+namespace humhub\modules\marketplace\commands;
 
 use humhub\components\Module;
-use humhub\modules\admin\libs\OnlineModuleManager;
+use humhub\models\ModuleEnabled;
 use Yii;
+use yii\base\InvalidArgumentException;
+use yii\console\Controller;
 use yii\helpers\Console;
 
 /**
  * HumHub Module Managament
  *
+ * @property \humhub\modules\marketplace\Module $module
  * @package humhub.modules_core.admin.console
  * @since 0.5
  */
-class ModuleController extends \yii\console\Controller
+class MarketplaceController extends Controller
 {
 
     /**
      * Lists all installed and enabled modules.
      *
-     * @param array $args
+     * @throws \yii\base\Exception
      */
     public function actionList()
     {
@@ -43,14 +46,10 @@ class ModuleController extends \yii\console\Controller
 
     /**
      * Lists all online available modules.
-     *
-     * @param array $args
-     * @throws CHttpException
      */
     public function actionListOnline()
     {
-        $onlineModules = new OnlineModuleManager();
-        $modules = $onlineModules->getModules();
+        $modules = $this->module->onlineModuleManager->getModules();
 
         print "Online available modules: \n\n";
 
@@ -67,12 +66,14 @@ class ModuleController extends \yii\console\Controller
      * Installs a given module.
      *
      * @param string $moduleId
-     * @throws CHttpException
+     * @throws \yii\base\ErrorException
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\web\HttpException
      */
     public function actionInstall($moduleId)
     {
-        $onlineModules = new OnlineModuleManager();
-        $onlineModules->install($moduleId);
+        $this->module->onlineModuleManager->install($moduleId);
 
         print "\nModule " . $moduleId . " successfully installed!\n";
     }
@@ -81,6 +82,8 @@ class ModuleController extends \yii\console\Controller
      * Uninstalls a given module.
      *
      * @param string $moduleId
+     * @throws \yii\base\ErrorException
+     * @throws \yii\base\Exception
      */
     public function actionRemove($moduleId)
     {
@@ -100,9 +103,10 @@ class ModuleController extends \yii\console\Controller
     /**
      * Updates a module
      *
+     * @param string $moduleId
+     * @throws \yii\base\Exception
      * @todo Handle no marketplace modules
      *
-     * @param string $moduleId
      */
     public function actionUpdate($moduleId)
     {
@@ -113,8 +117,7 @@ class ModuleController extends \yii\console\Controller
         }
 
         // Look online for module
-        $onlineModules = new OnlineModuleManager();
-        $moduleInfo = $onlineModules->getModuleInfo($moduleId);
+        $moduleInfo = $this->module->onlineModuleManager->getModuleInfo($moduleId);
 
         if (!isset($moduleInfo['latestCompatibleVersion'])) {
             print "No compatible version for " . $moduleId . " found online!\n";
@@ -128,7 +131,7 @@ class ModuleController extends \yii\console\Controller
             return;
         }
 
-        $onlineModules->update($moduleId);
+        $this->module->onlineModuleManager->update($moduleId);
 
         print "Module " . $moduleId . " successfully updated!\n";
     }
@@ -144,7 +147,7 @@ class ModuleController extends \yii\console\Controller
         foreach ($installedModules as $moduleId => $className) {
             try {
                 $this->actionUpdate($moduleId);
-            } catch (\yii\base\InvalidArgumentException $ex) {
+            } catch (InvalidArgumentException $ex) {
                 print "Module " . $moduleId . " - Error: " . $ex->getMessage() . "\n";
             } catch (\Exception $ex) {
                 print "Module " . $moduleId . " - Error: " . $ex->getMessage() . "\n";
@@ -155,13 +158,12 @@ class ModuleController extends \yii\console\Controller
          * Looking up modules which are marked as installed but not loaded.
          * Try to get recent version online.
          */
-        foreach (\humhub\models\ModuleEnabled::getEnabledIds() as $moduleId) {
+        foreach (ModuleEnabled::getEnabledIds() as $moduleId) {
             if (!in_array($moduleId, array_keys($installedModules))) {
                 // Module seems to be installed - but cannot be loaded
                 // Try force re-install
                 try {
-                    $onlineModules = new OnlineModuleManager();
-                    $onlineModules->install($moduleId);
+                    $this->module->onlineModuleManager->install($moduleId);
                     print "Reinstalled: " . $moduleId . "\n";
                 } catch (\Exception $ex) {
 
@@ -178,18 +180,18 @@ class ModuleController extends \yii\console\Controller
      */
     public function actionEnable($moduleId)
     {
-        $this->stdout(Yii::t('AdminModule.console', "--- Enable module: {moduleId} ---\n\n", ['moduleId' => $moduleId]), Console::BOLD);
+        $this->stdout(Yii::t('MarketplaceModule.base', "--- Enable module: {moduleId} ---\n\n", ['moduleId' => $moduleId]), Console::BOLD);
 
         /** @var Module $module */
         $module = Yii::$app->moduleManager->getModule($moduleId);
         if ($module === null) {
-            $this->stdout(Yii::t('AdminModule.console', "Module not found!\n"), Console::FG_RED, Console::BOLD);
+            $this->stdout(Yii::t('MarketplaceModule.base', "Module not found!\n"), Console::FG_RED, Console::BOLD);
             return 1;
         }
 
         $module->enable();
 
-        $this->stdout(Yii::t('AdminModule.console', "\nModule successfully enabled!\n"), Console::FG_GREEN, Console::BOLD);
+        $this->stdout(Yii::t('MarketplaceModule.base', "\nModule successfully enabled!\n"), Console::FG_GREEN, Console::BOLD);
         return 0;
     }
 
@@ -201,22 +203,22 @@ class ModuleController extends \yii\console\Controller
      */
     public function actionDisable($moduleId)
     {
-        if (! $this->confirm(Yii::t('AdminModule.console', 'All {moduleId} module content will be deleted. Continue?', ['moduleId' => $moduleId]), false)) {
+        if (! $this->confirm(Yii::t('MarketplaceModule.base', 'All {moduleId} module content will be deleted. Continue?', ['moduleId' => $moduleId]), false)) {
             return 1;
         }
 
-        $this->stdout(Yii::t('AdminModule.console', "--- Disable module: {moduleId} ---\n\n", ['moduleId' => $moduleId]), Console::BOLD);
+        $this->stdout(Yii::t('MarketplaceModule.base', "--- Disable module: {moduleId} ---\n\n", ['moduleId' => $moduleId]), Console::BOLD);
 
         /** @var Module $module */
         $module = Yii::$app->moduleManager->getModule($moduleId);
         if ($module === null || !Yii::$app->hasModule($moduleId)) {
-            $this->stdout(Yii::t('AdminModule.console', "Module not found or activated!\n"), Console::FG_RED, Console::BOLD);
+            $this->stdout(Yii::t('MarketplaceModule.base', "Module not found or activated!\n"), Console::FG_RED, Console::BOLD);
             return 1;
         }
 
         $module->disable();
 
-        $this->stdout(Yii::t('AdminModule.console', "\nModule successfully disabled!\n"), Console::FG_GREEN, Console::BOLD);
+        $this->stdout(Yii::t('MarketplaceModule.base', "\nModule successfully disabled!\n"), Console::FG_GREEN, Console::BOLD);
         return 0;
     }
 
