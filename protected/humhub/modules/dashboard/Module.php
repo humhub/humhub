@@ -42,6 +42,6 @@ class Module extends \humhub\components\Module
      * @since 1.3.14
      * @var boolean hides the activities sidebar widget
      */
-    public $hideActivitySidebarWidget = true;
+    public $hideActivitySidebarWidget = false;
 
 }
