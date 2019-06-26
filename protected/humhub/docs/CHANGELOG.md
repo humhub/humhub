@@ -14,6 +14,7 @@ HumHub Change Log
 - Fix #3471: Display of Date Time Column in excel with empty/false value
 - Fix #3581: Search form with GET causes repeated sticking of url parameters (@Bhoft)
 - Enh: Added configuration option to hide Activity sidebar widget on dashboard
+- Fix #3570: en-GB language code Datepicker 404
 
 
 1.3.13  (May 3, 2019)
