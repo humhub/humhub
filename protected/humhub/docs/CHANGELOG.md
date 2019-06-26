@@ -15,6 +15,7 @@ HumHub Change Log
 - Fix #3581: Search form with GET causes repeated sticking of url parameters (@Bhoft)
 - Enh: Added configuration option to hide Activity sidebar widget on dashboard
 - Fix #3570: en-GB language code Datepicker 404
+- Fix #3584: "Array to string conversion" on some LDAP attributes
 
 
 1.3.13  (May 3, 2019)

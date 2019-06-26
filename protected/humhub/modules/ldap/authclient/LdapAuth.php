@@ -304,8 +304,10 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
 
         // Fix LDAP Attributes
         foreach ($attributes as $name => $value) {
-            if (is_array($value) && count($value) == 1 && $name != 'memberof') {
-                $normalized[$name] = $value[0];
+            if (is_array($value) && $name != 'memberof') {
+                if (isset($value[0])) {
+                    $normalized[$name] = $value[0];
+                }
             } else {
                 $normalized[$name] = $value;
             }
