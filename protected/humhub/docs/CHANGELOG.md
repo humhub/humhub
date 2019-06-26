@@ -2,6 +2,12 @@ HumHub Change Log
 =================
 
 
+1.3.15  (Unreleased)
+--------------------
+
+(no changed yet)
+
+
 1.3.14  (June 26, 2019)
 ------------------------
 - Fix: LinkedIn API call to v1 deprecated use v2 (@Felli)
