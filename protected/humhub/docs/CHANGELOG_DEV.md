@@ -30,4 +30,5 @@ HumHub Change Log (DEVELOP)
 - Enh: Responsive mobile view enhancements
 - Enh: Added `humhub\widgets\Link::target()` and `blank()`
 - Fix: `humhub.client` does not resolve promise 302 on redirects 
+- Enh: Separated marketplace methods into own submodule
 
