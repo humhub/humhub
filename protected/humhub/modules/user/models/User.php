@@ -25,6 +25,7 @@ use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\behaviors\ProfileController;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\events\UserEvent;
+use humhub\modules\user\Module;
 use humhub\modules\user\widgets\UserWall;
 use Yii;
 use yii\base\Exception;
@@ -55,6 +56,7 @@ use yii\web\IdentityInterface;
  * @property Profile $profile
  *
  * @property string $displayName
+ * @property string $displayNameSub
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
 {
@@ -548,8 +550,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getDisplayName()
     {
-        if (Yii::$app->getModule('user')->displayNameCallback !== null) {
-            return call_user_func(Yii::$app->getModule('user')->displayNameCallback, $this);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if ($module->displayNameCallback !== null) {
+            return call_user_func($module->displayNameCallback, $this);
         }
 
         $name = '';
@@ -567,6 +572,29 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         return $name;
     }
+
+    /**
+     * Returns the users display name sub text.
+     * Per default as sub text the 'title' profile attribute is used
+     *
+     * @return string the display name sub text
+     */
+    public function getDisplayNameSub()
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if ($module->displayNameSubCallback !== null) {
+            return call_user_func($module->displayNameSubCallback, $this);
+        }
+
+        if ($this->profile !== null && $this->profile->hasAttribute('title')) {
+            return $this->profile->title;
+        }
+
+        return '';
+    }
+
 
     /**
      * Checks if this user is the current logged in user.
