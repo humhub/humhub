@@ -2,8 +2,14 @@ HumHub Change Log
 =================
 
 
-1.3.14  (Unreleased)
----------------------------
+1.3.15  (Unreleased)
+--------------------
+
+(no changed yet)
+
+
+1.3.14  (June 26, 2019)
+------------------------
 - Fix: LinkedIn API call to v1 deprecated use v2 (@Felli)
 - Fix #3531: File module Fil: isAssignedTo method broken
 - Fix: Added missing admin group title encodings
@@ -13,6 +19,10 @@ HumHub Change Log
 - Fix #3533: Responsive design issues
 - Fix #3471: Display of Date Time Column in excel with empty/false value
 - Fix #3581: Search form with GET causes repeated sticking of url parameters (@Bhoft)
+- Enh: Added configuration option to hide Activity sidebar widget on dashboard
+- Fix #3570: en-GB language code Datepicker 404
+- Fix #3584: "Array to string conversion" on some LDAP attributes
+- Fix #3437: Composer warning for bower-asset/jPlayer
 
 
 1.3.13  (May 3, 2019)

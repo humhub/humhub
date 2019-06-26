@@ -11,6 +11,7 @@ namespace humhub\compat;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\components\FileManager;
+use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
 use Yii;
 use yii\helpers\Html;
@@ -294,7 +295,7 @@ class HForm extends \yii\base\Component
 
                         $yearRange = isset($definition['yearRange']) ? $definition['yearRange'] : (date('Y') - 100) . ":" . (date('Y') + 100);
 
-                        return $this->form->field($model, $name)->widget(\yii\jui\DatePicker::class, [
+                        return $this->form->field($model, $name)->widget(DatePicker::class, [
                             'dateFormat' => $format,
                             'clientOptions' => [
                                 'changeYear' => true,

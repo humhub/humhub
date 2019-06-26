@@ -10,7 +10,7 @@ namespace humhub\modules\dashboard;
 
 /**
  * Dashboard Module
- * 
+ *
  * @author Luke
  */
 class Module extends \humhub\components\Module
@@ -18,7 +18,7 @@ class Module extends \humhub\components\Module
 
     /**
      * Possible options to include profile posts into the dashboard stream
-     * 
+     *
      * Default/Null: Default, only include profile posts when user is followed
      * Always: Always include all user profile posts into dashboards
      * Admin Only: For admin users, always include all profile posts (without following)
@@ -33,8 +33,15 @@ class Module extends \humhub\components\Module
 
     /**
      * @since 1.2.4
-     * @var string profile 
+     * @var string profile
      */
     public $autoIncludeProfilePosts = null;
+
+
+    /**
+     * @since 1.3.14
+     * @var boolean hides the activities sidebar widget
+     */
+    public $hideActivitySidebarWidget = false;
 
 }

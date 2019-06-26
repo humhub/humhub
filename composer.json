@@ -58,7 +58,6 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "zendframework/zend-http": "*",
         "zendframework/zend-ldap": "^2.5",
-        "ext-json": "*",
         "ext-zip": "*"
     },
     "require-dev": {
