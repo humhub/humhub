@@ -10,6 +10,7 @@ namespace humhub\modules\directory\controllers;
 
 use humhub\modules\directory\components\UserPostsStreamAction;
 use humhub\modules\directory\components\Controller;
+use humhub\modules\directory\Module;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
@@ -22,13 +23,14 @@ use humhub\modules\directory\widgets\GroupStatistics;
 use yii\data\Pagination;
 use yii\base\Event;
 use Yii;
+use yii\web\HttpException;
 
 /**
  * Community/Directory Controller
  *
  * Shows all available users, group, spaces
  *
- * @package humhub.modules_core.directory.controllers
+ * @property Module $module
  * @since 0.5
  */
 class DirectoryController extends Controller
@@ -74,40 +76,36 @@ class DirectoryController extends Controller
 
     /**
      * Action for the members section of the directory
-     *
-     * @todo Dont pass lucene hits to view, build user array inside of action
      */
     public function actionMembers()
     {
-        $keyword = Yii::$app->request->get('keyword', '');
-        $page = (int) Yii::$app->request->get('page', 1);
-        $groupId = (int) Yii::$app->request->get('groupId', '');
+        $keyword = (string)Yii::$app->request->get('keyword');
 
+        $query = User::find()->visible()->search($keyword);
+
+        // Restrict to group
         $group = null;
+        $groupId = (int)Yii::$app->request->get('groupId');
         if ($groupId) {
             $group = Group::findOne(['id' => $groupId, 'show_at_directory' => 1]);
+            if ($group === null) {
+                throw new HttpException(404);
+            }
+            $query->isGroupMember($group);
         }
 
-        $searchOptions = [
-            'model' => User::class,
-            'page' => $page,
-            'pageSize' => $this->module->pageSize,
-        ];
 
-        if ($this->module->memberListSortField != '') {
-            $searchOptions['sortField'] = $this->module->memberListSortField;
+        $countQuery = clone $query;
+        $pagination = new Pagination(['totalCount' => $countQuery->count()]);
+
+        // Order
+        $query->joinWith('profile');
+        if (empty($this->module->memberListSortField) || $this->module->memberListSortField === 'lastname' || $this->module->memberListSortField === 'firstname') {
+            // Fallback to default value
+            $query->addOrderBy('profile.lastname');
+        } else {
+            $query->addOrderBy($this->module->memberListSortField);
         }
-
-        if ($group !== null) {
-            $searchOptions['filters'] = ['groups' => $group->id];
-        }
-
-        $searchResultSet = Yii::$app->search->find($keyword, $searchOptions);
-
-        $pagination = new Pagination([
-                    'totalCount' => $searchResultSet->total,
-                    'pageSize' => $searchResultSet->pageSize
-        ]);
 
         Event::on(Sidebar::class, Sidebar::EVENT_INIT, function ($event) {
             $event->sender->addWidget(NewMembers::class, [], ['sortOrder' => 10]);
@@ -115,11 +113,12 @@ class DirectoryController extends Controller
         });
 
         return $this->render('members', [
-                    'keyword' => $keyword,
-                    'group' => $group,
-                    'users' => $searchResultSet->getResultInstances(),
-                    'pagination' => $pagination
+            'keyword' => $keyword,
+            'group' => $group,
+            'users' => $query->offset($pagination->offset)->limit($pagination->limit)->all(),
+            'pagination' => $pagination
         ]);
+
     }
 
     /**
@@ -132,7 +131,7 @@ class DirectoryController extends Controller
     public function actionSpaces()
     {
         $keyword = Yii::$app->request->get('keyword', '');
-        $page = (int) Yii::$app->request->get('page', 1);
+        $page = (int)Yii::$app->request->get('page', 1);
 
         $searchResultSet = Yii::$app->search->find($keyword, [
             'model' => Space::class,
@@ -142,8 +141,8 @@ class DirectoryController extends Controller
         ]);
 
         $pagination = new Pagination([
-                'totalCount' => $searchResultSet->total,
-                'pageSize' => $searchResultSet->pageSize
+            'totalCount' => $searchResultSet->total,
+            'pageSize' => $searchResultSet->pageSize
         ]);
 
         Event::on(Sidebar::class, Sidebar::EVENT_INIT, function ($event) {
@@ -152,9 +151,9 @@ class DirectoryController extends Controller
         });
 
         return $this->render('spaces', [
-                    'keyword' => $keyword,
-                    'spaces' => $searchResultSet->getResultInstances(),
-                    'pagination' => $pagination,
+            'keyword' => $keyword,
+            'spaces' => $searchResultSet->getResultInstances(),
+            'pagination' => $pagination,
         ]);
     }
 
@@ -176,7 +175,7 @@ class DirectoryController extends Controller
         });
 
         return $this->render('groups', [
-                    'groups' => $groups,
+            'groups' => $groups,
         ]);
     }
 

@@ -447,7 +447,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function beforeSave($insert)
     {
         if ($insert) {
-
             if ($this->auth_mode == '') {
                 $passwordAuth = new PasswordAuth();
                 $this->auth_mode = $passwordAuth->getId();
