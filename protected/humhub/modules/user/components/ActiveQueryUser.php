@@ -78,11 +78,13 @@ class ActiveQueryUser extends ActiveQuery
      *
      * @param string|array $keywords
      * @param array|null $fields if empty all searchable profile fields will be used
+     *
+     * @return ActiveQueryUser the query
      */
     public function search($keywords, $fields = null)
     {
         if (empty($keywords)) {
-            return;
+            return $this;
         }
 
         if (empty($fields)) {
@@ -102,6 +104,8 @@ class ActiveQueryUser extends ActiveQuery
             }
             $this->andWhere(array_merge(['OR'], $conditions));
         }
+
+        return $this;
     }
 
     /**
@@ -123,12 +127,14 @@ class ActiveQueryUser extends ActiveQuery
      * Limits the query to a specified user group
      *
      * @param Group $group
+     * @return ActiveQueryUser the query
      */
     public function isGroupMember(Group $group)
     {
         $this->leftJoin('group_user', 'user.id=group_user.user_id');
         $this->andWhere(['group_user.group_id' => $group->id]);
 
+        return $this;
     }
 
 }
