@@ -5,7 +5,7 @@ HumHub Change Log
 1.3.15  (Unreleased)
 --------------------
 
-(no changed yet)
+- Fix #3587: New user tour broken on some template variants
 
 
 1.3.14  (June 26, 2019)
