@@ -8,13 +8,13 @@
 
 namespace humhub\modules\search\controllers;
 
+use humhub\modules\user\widgets\Image;
 use Yii;
 use yii\data\Pagination;
 use humhub\components\Controller;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\search\models\forms\SearchForm;
-use humhub\modules\space\widgets\Image;
 use humhub\modules\search\engine\Search;
 
 /**
@@ -102,30 +102,26 @@ class SearchController extends Controller
 
     /**
      * JSON Search interface for Mentioning
+     * @throws \Exception
      */
     public function actionMentioning()
     {
         Yii::$app->response->format = 'json';
-
         $results = [];
-        $keyword = Yii::$app->request->get('keyword', '');
 
-        $searchResultSet = Yii::$app->search->find($keyword, [
-            'model' => [User::class, Space::class],
-            'pageSize' => 10
-        ]);
+        $query = User::find()->visible()->search((string) Yii::$app->request->get('keyword'));
 
-        foreach ($searchResultSet->getResultInstances() as $container) {
+        foreach ($query->limit(10)->all() as $container) {
             $results[] = [
                 'guid' => $container->guid,
-                'type' => ($container instanceof Space) ? 's' : 'u',
+                'type' => 'u',
                 'name' => $container->getDisplayName(),
-                'image' => ($container instanceof Space) ? Image::widget(['space' => $container, 'width' => 20]) : "<img class='img-rounded' src='" . $container->getProfileImage()->getUrl() . "' height='20' width='20' alt=''>",
+                'image' => Image::widget(['user' => $container, 'width' => 20]),
                 'link' => $container->getUrl()
             ];
         };
 
-        return $results;
+        return $this->asJson($results);
     }
 
 }
