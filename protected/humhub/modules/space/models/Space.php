@@ -34,6 +34,9 @@ use humhub\modules\space\widgets\Wall;
 use humhub\modules\space\widgets\Members;
 use humhub\modules\xcoin\helpers\AccountHelper;
 use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\models\Account;
+use humhub\modules\xcoin\models\Asset;
+use humhub\modules\xcoin\models\Transaction;
 use Yii;
 
 /**
@@ -306,6 +309,18 @@ class Space extends ContentContainerActiveRecord implements Searchable
         foreach (Group::findAll(['space_id' => $this->id]) as $group) {
             $group->space_id = '';
             $group->save();
+        }
+
+
+        $spaceAsset = Asset::findOne(['space_id' => $this->id]);
+        Transaction::deleteAll(['asset_id' => $spaceAsset->id]);
+
+        $spaceAsset->delete();
+
+        // detach all space accounts
+        foreach (Account::findAll(['space_id' => $this->id]) as $account) {
+            $account->space_id = '';
+            $account->save();
         }
 
         return parent::beforeDelete();
