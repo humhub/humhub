@@ -13,6 +13,7 @@ use humhub\components\behaviors\AccessControl;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Chooser;
 use Yii;
+use yii\data\Pagination;
 
 /**
  * BrowseController
@@ -46,30 +47,31 @@ class BrowseController extends Controller
     {
         Yii::$app->response->format = 'json';
 
-        $keyword = Yii::$app->request->get('keyword', '');
-        $page = (int) Yii::$app->request->get('page', 1);
-        $limit = (int) Yii::$app->request->get('limit', Yii::$app->settings->get('paginationSize'));
+        $query = Space::find()->visible();
+        $query->search(Yii::$app->request->get('keyword'));
 
-        $searchResultSet = Yii::$app->search->find($keyword, [
-            'model' => Space::class,
-            'page' => $page,
-            'pageSize' => $limit
-        ]);
+        $countQuery = clone $query;
+        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSizeParam' => 'limit']);
 
-        return $this->prepareResult($searchResultSet);
+        $query->offset($pagination->offset)->limit($pagination->limit);
+
+        return $this->asJson($this->prepareResult($query->all()));
     }
 
-    protected function prepareResult($searchResultSet)
+    /**
+     * @param $spaces Space[] array of spaces
+     * @return array
+     */
+    protected function prepareResult($spaces)
     {
         $target = Yii::$app->request->get('target');
         
         $json = [];
         $withChooserItem = ($target === 'chooser');
-        foreach ($searchResultSet->getResultInstances() as $space) {
+        foreach ($spaces as $space) {
             $json[] = Chooser::getSpaceResult($space, $withChooserItem);
         }
 
         return $json;
     }
-
 }

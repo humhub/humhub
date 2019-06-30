@@ -47,14 +47,12 @@ class MoveController extends ContentContainerController
      * Returns a space list to move a given content to in json
      * It can be filtered by by keyword.
      */
-    public function actionSearch($contentId, $keyword, $page = 1)
+    public function actionSearch($contentId, $keyword)
     {
-        $limit = (int)Yii::$app->request->get('limit', Yii::$app->settings->get('paginationSize'));
-
-        $query = Space::find()->visible()->search($keyword)->limit($limit);
+        $query = Space::find()->visible()->search($keyword);
 
         $countQuery = clone $query;
-        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'page' => $page - 1]);
+        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSizeParam' => 'limit']);
 
         $content = Content::findOne(['id' => $contentId]);
 
