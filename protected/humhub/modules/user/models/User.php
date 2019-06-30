@@ -257,7 +257,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * @inheritdoc
      *
-     * @return ActiveQueryUser|object
+     * @return ActiveQueryUser
      */
     public static function find()
     {

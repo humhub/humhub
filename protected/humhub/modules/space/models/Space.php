@@ -14,6 +14,7 @@ use humhub\modules\search\jobs\DeleteDocument;
 use humhub\modules\search\jobs\UpdateDocument;
 use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\space\behaviors\SpaceController;
+use humhub\modules\space\components\ActiveQuerySpace;
 use humhub\modules\user\behaviors\Followable;
 use humhub\components\behaviors\GUID;
 use humhub\modules\content\components\behaviors\SettingsBehavior;
@@ -26,6 +27,7 @@ use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\activities\Created;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\Invite;
@@ -287,6 +289,16 @@ class Space extends ContentContainerActiveRecord implements Searchable
     }
 
     /**
+     * @inheritdoc
+     * @return ActiveQuerySpace
+     */
+    public static function find()
+    {
+        return new ActiveQuerySpace(get_called_class());
+    }
+
+
+    /**
      * Indicates that this user can join this workspace
      *
      * @param $userId User Id of User
@@ -345,8 +357,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
      * Checks if given user can invite people to this workspace
      * Note: use directly permission instead
      *
-     * @deprecated since version 1.1
      * @return boolean
+     * @deprecated since version 1.1
      */
     public function canInvite()
     {
@@ -358,8 +370,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
      * Shared Content is public and is visible also for non members of the space.
      * Note: use directly permission instead
      *
-     * @deprecated since version 1.1
      * @return boolean
+     * @deprecated since version 1.1
      */
     public function canShare()
     {
@@ -463,8 +475,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
     /**
      * Returns display name (title) of space
      *
-     * @since 0.11.0
      * @return string
+     * @since 0.11.0
      */
     public function getDisplayName()
     {
@@ -601,8 +613,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
     /**
      * Returns the default content visibility
      *
-     * @see Content
      * @return int the default visiblity
+     * @see Content
      */
     public function getDefaultContentVisibility()
     {

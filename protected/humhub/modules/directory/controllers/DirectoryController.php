@@ -94,7 +94,6 @@ class DirectoryController extends Controller
             $query->isGroupMember($group);
         }
 
-
         $countQuery = clone $query;
         $pagination = new Pagination(['totalCount' => $countQuery->count()]);
 
@@ -130,20 +129,13 @@ class DirectoryController extends Controller
      */
     public function actionSpaces()
     {
-        $keyword = Yii::$app->request->get('keyword', '');
-        $page = (int)Yii::$app->request->get('page', 1);
+        $keyword = (string)Yii::$app->request->get('keyword');
 
-        $searchResultSet = Yii::$app->search->find($keyword, [
-            'model' => Space::class,
-            'page' => $page,
-            'sortField' => ($keyword == '') ? 'title' : null,
-            'pageSize' => $this->module->pageSize,
-        ]);
+        $query = Space::find()->visible()->search($keyword);
+        $query->addOrderBy('space.name');
 
-        $pagination = new Pagination([
-            'totalCount' => $searchResultSet->total,
-            'pageSize' => $searchResultSet->pageSize
-        ]);
+        $countQuery = clone $query;
+        $pagination = new Pagination(['totalCount' => $countQuery->count()]);
 
         Event::on(Sidebar::class, Sidebar::EVENT_INIT, function ($event) {
             $event->sender->addWidget(NewSpaces::class, [], ['sortOrder' => 10]);
@@ -152,7 +144,7 @@ class DirectoryController extends Controller
 
         return $this->render('spaces', [
             'keyword' => $keyword,
-            'spaces' => $searchResultSet->getResultInstances(),
+            'spaces' => $query->offset($pagination->offset)->limit($pagination->limit)->all(),
             'pagination' => $pagination,
         ]);
     }

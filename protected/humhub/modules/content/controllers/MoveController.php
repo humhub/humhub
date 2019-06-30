@@ -17,6 +17,7 @@ use humhub\modules\content\models\forms\MoveContentForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Chooser;
 use Yii;
+use yii\data\Pagination;
 
 class MoveController extends ContentContainerController
 {
@@ -24,11 +25,11 @@ class MoveController extends ContentContainerController
     {
         $form = new MoveContentForm(['id' => $id]);
 
-        if(!$form->content) {
+        if (!$form->content) {
             throw new HttpException(404);
         }
 
-        if($form->load(Yii::$app->request->post()) && $form->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
             return $this->asJson([
                 'success' => true,
                 'id' => $id,
@@ -38,37 +39,31 @@ class MoveController extends ContentContainerController
         }
 
 
-
         return $this->renderAjax('moveModal', ['model' => $form]);
 
     }
 
     /**
-     * Returns a workspace list by json
-     *
+     * Returns a space list to move a given content to in json
      * It can be filtered by by keyword.
      */
     public function actionSearch($contentId, $keyword, $page = 1)
     {
-        $limit = (int) Yii::$app->request->get('limit', Yii::$app->settings->get('paginationSize'));
+        $limit = (int)Yii::$app->request->get('limit', Yii::$app->settings->get('paginationSize'));
 
-        $searchResultSet = Yii::$app->search->find($keyword, [
-            'model' => Space::class,
-            'page' => $page,
-            'pageSize' => $limit
-        ]);
+        $query = Space::find()->visible()->search($keyword)->limit($limit);
 
-        return $this->prepareResult($searchResultSet, Content::findOne(['id' => $contentId]));
-    }
+        $countQuery = clone $query;
+        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'page' => $page - 1]);
 
-    protected function prepareResult($searchResultSet, Content $content)
-    {
+        $content = Content::findOne(['id' => $contentId]);
+
         $json = [];
-        foreach ($searchResultSet->getResultInstances() as $space) {
+        foreach ($query->offset($pagination->offset)->limit($pagination->limit)->all() as $space) {
             $result = Chooser::getSpaceResult($space, false);
 
             $canMove = $content->canMove($space);
-            if($canMove !== true) {
+            if ($canMove !== true) {
                 $result['disabled'] = true;
                 $result['disabledText'] = $canMove;
             }
