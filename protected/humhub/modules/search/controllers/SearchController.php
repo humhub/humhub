@@ -100,28 +100,4 @@ class SearchController extends Controller
         ]);
     }
 
-    /**
-     * JSON Search interface for Mentioning
-     * @throws \Exception
-     */
-    public function actionMentioning()
-    {
-        Yii::$app->response->format = 'json';
-        $results = [];
-
-        $query = User::find()->visible()->search((string) Yii::$app->request->get('keyword'));
-
-        foreach ($query->limit(10)->all() as $container) {
-            $results[] = [
-                'guid' => $container->guid,
-                'type' => 'u',
-                'name' => $container->getDisplayName(),
-                'image' => Image::widget(['user' => $container, 'width' => 20]),
-                'link' => $container->getUrl()
-            ];
-        };
-
-        return $this->asJson($results);
-    }
-
 }
