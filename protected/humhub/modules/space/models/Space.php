@@ -312,15 +312,17 @@ class Space extends ContentContainerActiveRecord implements Searchable
         }
 
 
+        // delete space asset and its transactions
         $spaceAsset = Asset::findOne(['space_id' => $this->id]);
-        Transaction::deleteAll(['asset_id' => $spaceAsset->id]);
+        if ($spaceAsset) {
+            Transaction::deleteAll(['asset_id' => $spaceAsset->id]);
 
-        $spaceAsset->delete();
+            $spaceAsset->delete();
+        }
 
-        // detach all space accounts
+        // delete all space accounts
         foreach (Account::findAll(['space_id' => $this->id]) as $account) {
-            $account->space_id = '';
-            $account->save();
+            $account->delete();
         }
 
         return parent::beforeDelete();
