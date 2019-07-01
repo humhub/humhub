@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\modules\ui\widgets\SiteIcon;
 use Yii;
 use humhub\libs\Helpers;
 use humhub\models\UrlOembed;
@@ -98,6 +99,16 @@ class SettingController extends Controller
 
         Yii::$app->response->format = 'json';
         return [];
+    }
+
+    /**
+     * Delete Icon Image
+     */
+    public function actionDeleteIconImage()
+    {
+        $this->forcePostRequest();
+        SiteIcon::set(null);
+        return $this->asJson([]);
     }
 
     /**
