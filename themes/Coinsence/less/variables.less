@@ -13,24 +13,34 @@
 **/
 
 @prev-login: true;
+@prev-topbar: true;
 
 // Login variables
 
-@color-base: #1e1e1e;
-@color-accent: #28aa69;
-@color-errored: #ff8989;
+@login-color-base: #1e1e1e;
+@login-color-accent: #28aa69;
+@login-color-errored: #ff8989;
 
-@color-input-base-border: lighten(@color-base, 75%);
-@color-input-focused-border: lighten(@color-accent, 15%);
-@color-input-errored-border: @color-errored;
+@login-color-input-base-border: lighten(@login-color-base, 75%);
+@login-color-input-focused-border: lighten(@login-color-accent, 15%);
+@login-color-input-errored-border: @login-color-errored;
 
-@color-checkbox-base-border: lighten(@color-base, 75%);
-@color-checkbox-focused-border: @color-accent;
-@color-checkbox-focused-bg: @color-accent;
+@login-color-checkbox-base-border: lighten(@login-color-base, 75%);
+@login-color-checkbox-focused-border: @login-color-accent;
+@login-color-checkbox-focused-bg: @login-color-accent;
 
-@color-link-base: @color-accent;
-@color-link-focused: darken(@color-accent, 10%);
+@login-color-link-base: @login-color-accent;
+@login-color-link-focused: darken(@login-color-accent, 10%);
 
-@color-button-base: white;
-@color-button-bg: @color-accent;
-@color-button-focused-bg: darken(@color-accent, 10%);
+@login-color-button-base: white;
+@login-color-button-bg: @login-color-accent;
+@login-color-button-focused-bg: darken(@login-color-accent, 10%);
+
+// topbar variables
+
+@topbar-color-link-base: #202020;
+@topbar-color-label-danger: #ec4040;
+@topbar-color-search-btn-bg: #f9f9f9;
+@topbar-color-search-border: #e5e5e5;
+@topbar-color-bg: #fff;
+@topbar-color-border: #e8e8e8;
