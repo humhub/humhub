@@ -60,7 +60,7 @@ class Events extends Component
         $integrityController->showTestHeadline('Comment Module (' . Comment::find()->count() . ' entries)');
 
         // Loop over all comments
-        foreach (Comment::find()->all() as $c) {
+        foreach (Comment::find()->each() as $c) {
 
             // Check underlying record exists
             if ($c->source === null) {

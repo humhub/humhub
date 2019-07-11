@@ -52,7 +52,7 @@ class Events extends \yii\base\BaseObject
         $integrityController = $event->sender;
         $integrityController->showTestHeadline("Like (" . Like::find()->count() . " entries)");
 
-        foreach (Like::find()->all() as $like) {
+        foreach (Like::find()->each() as $like) {
             if ($like->source === null) {
                 if ($integrityController->showFix("Deleting like id " . $like->id . " without existing target!")) {
                     $like->delete();
