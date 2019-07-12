@@ -137,14 +137,14 @@
       z-index: 1001;
       border-width: 11px;
       left: 50%;
-      margin-left: -18px;
+      margin-left: -8px;
       border-top-width: 0;
       border-bottom-color: rgba(0, 0, 0, 0.15);
       top: -19px;
       z-index: 1035;
     }
     .dropdown-menu {
-      width: 350px;
+      width: 320px;
       margin-left: -148px;
       ul.media-list {
         max-height: 400px;
@@ -252,6 +252,17 @@
       color: @background3;
     }
   }
+  /* TODO: change directly .nav rules instead of adding below */
+  .account .dropdown-menu {
+    background-color: @topbar-color-menu-bg;
+  }
+  .account .dropdown-menu li {
+    border-left: 3px solid @topbar-color-menu-item-border;
+  }
+  .account .dropdown-menu li:hover {
+    background-color: @topbar-color-menu-item-hover-bg !important;
+    border-left: 3px solid @topbar-color-menu-item-hover-border;
+  }
   .dropdown.account > a,
   .dropdown.account.open > a,
   .dropdown.account > a:hover,
@@ -295,7 +306,7 @@
     form {
       margin: 10px;
     }
-    
+
     .search-reset {
       position: absolute;
       color: #BFBFBF;
