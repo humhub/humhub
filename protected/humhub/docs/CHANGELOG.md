@@ -7,6 +7,7 @@ HumHub Change Log
 
 - Fix #3587: New user tour broken on some template variants
 - Fix #3589: Reduced integrity check memory usage in Like/Comment module
+- Fix #3595: LDAP config file values ignored
 
 
 1.3.14  (June 26, 2019)
