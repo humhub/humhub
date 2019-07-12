@@ -18,7 +18,7 @@
   ul.nav > li > a {
     padding-top: 15px;
     padding-bottom: 15px;
-    line-height: 20px;
+    line-height: 16px;
   }
   .dropdown-footer {
     margin: 10px;
@@ -309,34 +309,45 @@
   }
 
   .nav > li > a {
-    padding: 7px 13px 4px;
+    padding: 7px 30px 4px;
     text-decoration: none;
     text-shadow: none;
-    font-weight: 600;
-    font-size: 10px;
-    min-height: 50px;
-    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    min-height: 53px;
+    text-transform: capitalize;
     text-align: center;
 
     /* vertical align text */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+    &,
+    .no-space {
+      /* vertical align text */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     &:hover,
     &:active,
     &:focus {
-      border-bottom: 3px solid @info;
-      background-color: @background-color-secondary;
-      color: @text-color-highlight;
+      border-bottom: 3px solid @topbar-color-icon-active;
+      background-color: @topbar-color-icon-bg;
+      color: @topbar-color-icon-active;
       text-decoration: none;
     }
     i {
-      margin-right: 6px;
-      font-size: 14px;
+      margin-right: 8px;
+      font-size: 22px;
     }
     .caret {
       border-top-color: @text-color-secondary;
     }
+  }
+
+  .nav > li > * {
+
+
   }
     
   .nav > li.active > a {
@@ -365,16 +376,24 @@
   .nav > li > a:hover,
   .nav .open > a,
   .nav > li.active {
-    border-bottom: 3px solid @info;
-    background-color: @background-color-secondary;
-    color: @text-color-highlight;
+    border-bottom: 3px solid @topbar-color-icon-active;
+    background-color: @topbar-color-icon-bg;
   }
   .nav > li:not(.active) > a:hover,
   .nav .open > a {
     min-height: 53px;
   }
-  .nav > li.active > a:hover {
+  .nav > li.active > a:hover,
+  .nav > li.active > a:focus
+  {
     border-bottom: none;
+  }
+  .nav > li.active > a,
+  .nav > li > a:hover {
+    color: @topbar-color-icon-active;
+    .caret {
+      border-top-color: @topbar-color-icon-active;
+    }
   }
   #space-menu-dropdown li > ul > li > a > .media .media-body p {
     color: @text-color-soft;
