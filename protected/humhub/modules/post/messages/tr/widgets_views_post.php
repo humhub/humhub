@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Collapse' => 'Başarısız',
+  'Collapse' => 'Gizle',
   'Read full post...' => 'Gönderinin tamamını oku...',
 );
