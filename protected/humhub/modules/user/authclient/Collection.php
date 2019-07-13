@@ -63,8 +63,9 @@ class Collection extends Component
 
     /**
      * @param string $id service id.
+     * @param bool $load
      * @return ClientInterface auth client instance.
-     * @throws InvalidArgumentException on non existing client request.
+     * @throws \yii\base\InvalidConfigException
      */
     public function getClient($id, $load = true)
     {
