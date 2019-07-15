@@ -24,7 +24,7 @@ class Module extends \humhub\components\Module
     public $isCoreModule = true;
 
 
-    public $themeColor = '';
+    public $themeColor = '#000';
 
 
     /**
