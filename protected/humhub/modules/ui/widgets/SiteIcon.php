@@ -9,6 +9,7 @@
 namespace humhub\modules\ui\widgets;
 
 use humhub\modules\file\libs\FileHelper;
+use humhub\modules\ui\view\components\View;
 use Imagine\Image\Box;
 use Yii;
 use humhub\components\Widget;
@@ -100,5 +101,24 @@ class SiteIcon extends Widget
     {
         $fileName = ($size === null) ? 'icon.png' : $size . 'x' . $size . '.png';
         return $fileName;
+    }
+
+
+    /**
+     * @param View $view
+     */
+    public static function registerMetaTags(View $view)
+    {
+        // Add Apple touch icons
+        // https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html
+        $view->registerLinkTag(['rel' => 'apple-touch-icon', 'href' => static::getUrl()]);
+        $view->registerLinkTag(['rel' => 'apple-touch-icon', 'href' => static::getUrl(152), 'sizes' => '152x152']);
+        $view->registerLinkTag(['rel' => 'apple-touch-icon', 'href' => static::getUrl(180), 'sizes' => '180x180']);
+        $view->registerLinkTag(['rel' => 'apple-touch-icon', 'href' => static::getUrl(167), 'sizes' => '167x167']);
+
+        // Chrome, Firefox & Co.
+        $view->registerLinkTag(['rel' => 'icon', 'href' => static::getUrl(192), 'sizes' => '192x192']);
+        $view->registerLinkTag(['rel' => 'icon', 'href' => static::getUrl(96), 'sizes' => '96x96']);
+        $view->registerLinkTag(['rel' => 'icon', 'href' => static::getUrl(32), 'sizes' => '32x32']);
     }
 }

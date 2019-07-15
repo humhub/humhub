@@ -9,6 +9,7 @@
 namespace humhub\modules\ui\view\components;
 
 use humhub\libs\Html;
+use humhub\modules\ui\widgets\SiteIcon;
 use humhub\widgets\CoreJsConfig;
 use humhub\widgets\LayoutAddons;
 use yii\helpers\ArrayHelper;
@@ -171,7 +172,12 @@ class View extends \yii\web\View
      */
     protected function renderHeadHtml()
     {
-        return (!Yii::$app->request->isAjax) ? parent::registerCsrfMetaTags() . parent::renderHeadHtml() : parent::renderHeadHtml();
+        if (!Yii::$app->request->isAjax) {
+            SiteIcon::registerMetaTags($this);
+            parent::registerCsrfMetaTags();
+        }
+
+        return parent::renderHeadHtml();
     }
 
     public function setStatusMessage($type, $message)
@@ -257,8 +263,8 @@ class View extends \yii\web\View
     /**
      * Writes the currently registered jsConfig entries and flushes the the config array.
      *
-     * @since v1.2
      * @param string $key see View::registerJs
+     * @since v1.2
      */
     protected function flushJsConfig($key = null)
     {
