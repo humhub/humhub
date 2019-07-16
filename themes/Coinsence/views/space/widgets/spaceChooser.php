@@ -11,7 +11,7 @@ use yii\helpers\Html;
 
 SpaceChooserAsset::register($this);
 
-$noSpaceView = '<div class="no-space"><i class="fa fa-dot-circle-o"></i>' . Yii::t('SpaceModule.widgets_views_spaceChooser', 'My spaces') . '<b class="caret"></b></div>';
+$noSpaceView = '<div class="no-space"><i class="fa fa-dot-circle-o"></i><b class="caret"></b></div>';
 
 $this->registerJsConfig('space.chooser', [
     'noSpace' => $noSpaceView,

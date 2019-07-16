@@ -35,6 +35,16 @@ use yii\helpers\Url; ?>
                     <?= \humhub\widgets\NotificationArea::widget(); ?>
                 </div>
 
+                <div class="spaces pull-right">
+                    <!-- load space chooser widget -->
+                    <?= \humhub\modules\space\widgets\Chooser::widget(); ?>
+<!--                    <div class="btn-group">-->
+<!--                        <a href="#" id="icon-notifications" data-action-click='toggle' aria-label="--><?//= Yii::t('NotificationModule.widgets_views_list', 'Open the notification dropdown menu')?><!--" data-toggle="dropdown" >-->
+<!--                            <i class="fa fa-dot-circle-o"></i>-->
+<!--                        </a>-->
+<!--                    </div>-->
+                </div>
+
                 <div class="search">
                     <?php $form = ActiveForm::begin(['action' => Url::to(['/search']), 'method' => 'GET']); ?>
                     <div class="form-group form-group-search">
@@ -54,9 +64,6 @@ use yii\helpers\Url; ?>
         <div id="topbar-second" class="topbar">
             <div class="container-o">
                 <ul class="nav" id="top-menu-nav">
-                    <!-- load space chooser widget -->
-                    <?= \humhub\modules\space\widgets\Chooser::widget(); ?>
-
                     <!-- load navigation from widget -->
                     <?= \humhub\widgets\TopMenu::widget(); ?>
                 </ul>
