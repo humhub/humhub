@@ -22,7 +22,7 @@ use yii\helpers\Url; ?>
 
         <!-- start: first top navigation bar -->
         <div id="topbar-first" class="topbar">
-            <div class="container-o">
+            <div class="container">
                 <div class="topbar-brand hidden-xs">
                     <?= \humhub\widgets\SiteLogo::widget(); ?>
                 </div>

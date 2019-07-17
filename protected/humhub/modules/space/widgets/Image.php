@@ -38,6 +38,11 @@ class Image extends Widget
     public $height = null;
 
     /**
+     * @var boolean do not hard-code size or not
+     */
+    public $auto = false;
+
+    /**
      * @var array html options for the generated tag
      */
     public $htmlOptions = [];
@@ -102,11 +107,15 @@ class Image extends Widget
         $imageHtmlOptions = $this->htmlOptions;
 
         $acronymHtmlOptions['class'] .= " space-profile-acronym-" . $this->space->id . " space-acronym";
-        $acronymHtmlOptions['style'] .= " background-color: " . $color . "; width: " . $this->width . "px; height: " . $this->height . "px;";
-        $acronymHtmlOptions['style'] .= " " . $this->getDynamicStyles($this->width);
+        $acronymHtmlOptions['style'] .= " background-color: " . $color . ";";
+        if ($this->auto === false) {
+            $acronymHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px;";
+            $acronymHtmlOptions['style'] .= " " . $this->getDynamicStyles($this->width);
+        }
 
         $imageHtmlOptions['class'] .= " space-profile-image-" . $this->space->id . " img-rounded profile-user-photo";
-        $imageHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px";
+        if ($this->auto === false)
+            $imageHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px";
         $imageHtmlOptions['alt'] = Html::encode($this->space->name);
 
         if ($this->showTooltip) {
