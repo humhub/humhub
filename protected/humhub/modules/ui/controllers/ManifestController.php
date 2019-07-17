@@ -38,7 +38,7 @@ class ManifestController extends Controller
     private function handlePwa()
     {
         $this->manifest['display'] = 'standalone';
-        $this->manifest['start_url'] = Url::home();
+        $this->manifest['start_url'] = Url::home(true);
         $this->manifest['short_name'] = Yii::$app->name;
         $this->manifest['name'] = Yii::$app->name;
         $this->manifest['background_color'] = $this->module->themeColor;
