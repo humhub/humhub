@@ -23,9 +23,16 @@ use yii\helpers\Url; ?>
         <!-- start: first top navigation bar -->
         <div id="topbar-first" class="topbar">
             <div class="container">
-                <div class="topbar-brand hidden-xs">
+
+                <div class="topbar-menu visible-xs-inline-block visible-sm-inline-block pull-left">
+                    <?= \humhub\widgets\TopMenu::widget(); ?>
+                </div>
+
+                <div class="topbar-brand">
                     <?= \humhub\widgets\SiteLogo::widget(); ?>
                 </div>
+
+                <div class="topbar-coins"></div>
 
                 <div class="topbar-actions pull-right">
                     <?= \humhub\modules\user\widgets\AccountTopMenu::widget(); ?>
@@ -38,14 +45,9 @@ use yii\helpers\Url; ?>
                 <div class="spaces pull-right">
                     <!-- load space chooser widget -->
                     <?= \humhub\modules\space\widgets\Chooser::widget(); ?>
-<!--                    <div class="btn-group">-->
-<!--                        <a href="#" id="icon-notifications" data-action-click='toggle' aria-label="--><?//= Yii::t('NotificationModule.widgets_views_list', 'Open the notification dropdown menu')?><!--" data-toggle="dropdown" >-->
-<!--                            <i class="fa fa-dot-circle-o"></i>-->
-<!--                        </a>-->
-<!--                    </div>-->
                 </div>
 
-                <div class="search">
+                <div class="search hidden-xs">
                     <?php $form = ActiveForm::begin(['action' => Url::to(['/search']), 'method' => 'GET']); ?>
                     <div class="form-group form-group-search">
                         <?= Html::textInput('SearchForm[keyword]', null, ['placeholder' => Yii::t('SearchModule.views_search_index', 'Search for user, spaces and content'),
@@ -61,8 +63,8 @@ use yii\helpers\Url; ?>
         <!-- end: first top navigation bar -->
 
         <!-- start: second top navigation bar -->
-        <div id="topbar-second" class="topbar">
-            <div class="container-o">
+        <div id="topbar-second" class="topbar visible-md visible-lg">
+            <div class="container">
                 <ul class="nav" id="top-menu-nav">
                     <!-- load navigation from widget -->
                     <?= \humhub\widgets\TopMenu::widget(); ?>
