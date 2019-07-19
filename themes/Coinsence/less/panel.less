@@ -198,6 +198,7 @@
         .entry {
             margin-left: 0;
             border-left: 1px solid @panel-profile-statistics-color-border;
+            border-bottom: 1px solid @panel-profile-statistics-color-border;
             padding: 13px 24px;
             text-align: center;
             font-size: 14px;
@@ -221,7 +222,7 @@
     animation-duration: 200ms;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
     .panel-profile-controls {
         padding-left: 0 !important;
         //padding-top: 50px;
@@ -257,6 +258,14 @@
         }
     }
 
+    .panel-profile .statistics .entry {
+        padding: 17px 20px;
+        font-size: 12px;
+        .count {
+            font-size: 20px;
+        }
+    }
+
 }
 
 @media (max-width: 587px) {
@@ -288,6 +297,14 @@
         .fileupload {
             height: 92px;
             width: 92px;
+        }
+    }
+
+    .panel-profile .statistics .entry {
+        padding: 19px 18px;
+        font-size: 10px;
+        .count {
+            font-size: 18px;
         }
     }
 }

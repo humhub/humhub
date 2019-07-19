@@ -32,19 +32,23 @@ use yii\helpers\Url; ?>
                     <?= \humhub\widgets\SiteLogo::widget(); ?>
                 </div>
 
-                <div class="topbar-coins"></div>
+                <div class="topbar-coins hidden-xs"></div>
 
-                <div class="topbar-actions pull-right">
+                <div class="topbar-actions pull-right hidden-xs">
                     <?= \humhub\modules\user\widgets\AccountTopMenu::widget(); ?>
                 </div>
 
-                <div class="notifications pull-right">
+                <div class="notifications pull-right hidden-xs">
                     <?= \humhub\widgets\NotificationArea::widget(); ?>
                 </div>
 
-                <div class="spaces pull-right">
+                <div class="spaces pull-right hidden-xs">
                     <!-- load space chooser widget -->
                     <?= \humhub\modules\space\widgets\Chooser::widget(); ?>
+                </div>
+
+                <div class="search-xs visible-xs pull-right">
+                    <?= \humhub\modules\search\widgets\SearchMenu::widget(); ?>
                 </div>
 
                 <div class="search hidden-xs">
