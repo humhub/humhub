@@ -32,7 +32,9 @@ use yii\helpers\Url; ?>
                     <?= \humhub\widgets\SiteLogo::widget(); ?>
                 </div>
 
-                <div class="topbar-coins hidden-xs"></div>
+                <div class="topbar-coins pull-right hidden-xs">
+                    <?= \humhub\modules\xcoin\widgets\AssetAmount::widget() ?>
+                </div>
 
                 <div class="topbar-actions pull-right hidden-xs">
                     <?= \humhub\modules\user\widgets\AccountTopMenu::widget(); ?>
