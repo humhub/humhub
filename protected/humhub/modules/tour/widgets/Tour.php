@@ -59,6 +59,14 @@ class Tour extends \humhub\components\Widget
         }
     }
 
+    /**
+     * @deprecated since 1.3.13
+     */
+    public function loadResources(\yii\web\View $view)
+    {
+        // Dummy for old template version
+    }
+
 }
 
 ?>
