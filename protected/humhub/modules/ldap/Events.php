@@ -40,13 +40,14 @@ class Events extends BaseObject
     public static function onAuthClientCollectionSet($event)
     {
         if (LdapSettings::isEnabled()) {
-
             /** @var Collection $collection */
             $collection = $event->sender;
 
             $settings = new LdapSettings();
             $settings->loadSaved();
-            $collection->setClient('ldap', $settings->getLdapAuthDefinition());
+
+            $configParams = (isset($event->parameters['clients']['ldap'])) ? $event->parameters['clients']['ldap'] : [];
+            $collection->setClient('ldap', array_merge($settings->getLdapAuthDefinition(), $configParams));
         }
     }
 

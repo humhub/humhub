@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\authclient;
 
+use humhub\libs\ParameterEvent;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\base\Component;
@@ -42,7 +43,7 @@ class Collection extends Component
      */
     public function setClients(array $clients)
     {
-        $this->trigger(self::EVENT_BEFORE_CLIENTS_SET);
+        $this->trigger(self::EVENT_BEFORE_CLIENTS_SET, new ParameterEvent(['clients' => $clients]));
         $this->_clients = array_merge($this->getDefaultClients(), $clients, $this->_clients);
         $this->trigger(self::EVENT_AFTER_CLIENTS_SET);
     }
@@ -62,8 +63,9 @@ class Collection extends Component
 
     /**
      * @param string $id service id.
+     * @param bool $load
      * @return ClientInterface auth client instance.
-     * @throws InvalidArgumentException on non existing client request.
+     * @throws \yii\base\InvalidConfigException
      */
     public function getClient($id, $load = true)
     {
