@@ -175,7 +175,7 @@ class View extends \yii\web\View
     {
         if (!Yii::$app->request->isAjax) {
             SiteIcon::registerMetaTags($this);
-            MobileAppHeader::registerMetatags($this);
+            MobileAppHeader::registerHeadTags($this);
             parent::registerCsrfMetaTags();
         }
 

@@ -23,11 +23,11 @@ class MobileAppHeader extends Widget
 {
 
     /**
-     * Registers mobile app related MetaTags
+     * Registers mobile app related Head Tags
      *
      * @param View $view
      */
-    public static function registerMetatags(View $view)
+    public static function registerHeadTags(View $view)
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('ui');;
@@ -42,6 +42,15 @@ class MobileAppHeader extends Widget
         $view->registerMetaTag(['name' => 'apple-mobile-web-app-status-bar-style', 'content' => $module->themeColor]);
 
         $view->registerLinkTag(['rel' => 'manifest', 'href' => Url::to(['/ui/manifest'])]);
+
+        $serviceWorkUrl = Url::to(['/ui/service-worker/index']);
+        $rootPath = Yii::getAlias('@web') . '/';
+        $view->registerJs(<<<JS
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('$serviceWorkUrl', { scope: '$rootPath' });
+            }
+JS
+            , View::POS_READY, 'serviceWorkerInit');
     }
 
 }
