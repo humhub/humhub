@@ -24,6 +24,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 use Zend\Ldap\Exception\LdapException;
 use Zend\Ldap\Ldap;
+use humhub\modules\ldap\components\ZendLdap;
 use Zend\Ldap\Node;
 
 /**
@@ -406,7 +407,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     /**
      * Returns Zend LDAP
      *
-     * @return \Zend\Ldap\Ldap
+     * @return ZendLdap
      * @throws LdapException
      */
     public function getLdap()
@@ -426,7 +427,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                 'networkTimeout' => $this->networkTimeout,
             ];
 
-            $this->_ldap = new Ldap($options);
+            $this->_ldap = new ZendLdap($options);
             $this->_ldap->bind();
         }
 
@@ -536,12 +537,12 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     }
 
     /**
-     * @return \Zend\Ldap\Collection
+     * @return array
      * @throws LdapException
      */
     public function getUserCollection()
     {
-        return $this->getLdap()->search($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB);
+        return $this->getLdap()->multiPageSearch($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB);
     }
 
     /**
