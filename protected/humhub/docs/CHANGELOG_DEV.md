@@ -32,3 +32,4 @@ HumHub Change Log (DEVELOP)
 - Fix: `humhub.client` does not resolve promise 302 on redirects 
 - Enh: Separated marketplace methods into own submodule
 - Enh: Added consistent user "sub" displayname handling
+- Enh: Added possibility to manage database settings via CLI
