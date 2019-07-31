@@ -20,7 +20,7 @@ return [
     'Access directory' => '',
     'Can access the directory section.' => '',
     'This group has no members yet.' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>هنوز کسی چیزی ننوشته‌است.</b> <b>شروع‌کننده باشی و یک مطلب پست کنید . . </b>',
+    '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>هنوز کسی چیزی ننوشته‌است.</b> <b>شروع‌کننده باشی و یک مطلب پست کنید . . </b>',
     '<b>There are no profile posts yet!</b>' => '<b>هنوز هیچ پست پروفایلی موجود نیست!</b>',
     '<strong>Directory</strong> menu' => 'منوی <strong>لیست‌ها</strong>',
     '<strong>Group</strong> members - {group}' => '<strong>{group} اعضاي گروه</strong>',

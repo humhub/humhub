@@ -37,7 +37,7 @@ return [
     'Total groups' => '',
     'Total spaces' => '',
     'Total users' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => 'لم يكتب أحد شيئاً بعد. <br> يمكنك البدء بنفسك و كتابة شيء ما...',
+    '<b>Nobody has written anything yet.</b><br>Post to get things started...' => 'لم يكتب أحد شيئاً بعد. <br> يمكنك البدء بنفسك و كتابة شيء ما...',
     '<strong>Directory</strong> menu' => 'قائمة الدليل',
     '<strong>Member</strong> Group Directory' => 'دليل مجموعات <strong>الأعضاء</strong>',
     '<strong>Member</strong> directory' => 'دليل الأعضاء',

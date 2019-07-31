@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Ingen har skrevet noe enda.</b><br />Start ved og poste ett innlegg...',
+  '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>Ingen har skrevet noe enda.</b><br />Start ved og poste ett innlegg...',
   '<b>There are no profile posts yet!</b>' => '<b>Det er ingen profil poster enda!</b>',
   '<strong>Directory</strong> menu' => '<strong>Innholds</strong> meny',
   '<strong>Group</strong> members - {group}' => '<strong>Gruppe</strong> brukere - {group}',

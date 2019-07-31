@@ -10,7 +10,7 @@ if (!Yii::$app->user->isGuest) {
 echo StreamViewer::widget([
     'streamAction' => '//directory/directory/stream',
     'messageStreamEmpty' => (!Yii::$app->user->isGuest) ?
-            Yii::t('DirectoryModule.base', '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...') :
+            Yii::t('DirectoryModule.base', '<b>Nobody has written anything yet.</b><br>Post to get things started...') :
             Yii::t('DirectoryModule.base', '<b>There are no profile posts yet!</b>'),
     'messageStreamEmptyCss' => (!Yii::$app->user->isGuest) ?
             'placeholder-empty-stream' :

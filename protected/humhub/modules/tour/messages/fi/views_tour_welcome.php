@@ -7,7 +7,7 @@ return array (
   'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.' => 'Olet ensimmäinen käyttäjä täällä... Jippii! Ole loistava esimerkki muille ja täytä profiiliasi.',
   'Your firstname' => 'Etunimesi',
   'Your lastname' => 'Sukunimesi',
-  'Your mobild phone number' => 'Puhelinnumerosi',
+  'Your mobile phone number' => 'Puhelinnumerosi',
   'Your phone number at work' => 'Työpuhelin numerosi',
   'Your skills, knowledge and experience (comma seperated)' => 'Taitosi, tietosi ja kokemuksesi (pilkulla erotettu)',
   'Your title or position' => 'Nimesi tai tehtäväsi',

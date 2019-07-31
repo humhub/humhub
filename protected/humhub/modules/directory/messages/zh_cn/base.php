@@ -20,7 +20,7 @@ return [
     'Access directory' => '',
     'Can access the directory section.' => '',
     'This group has no members yet.' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>没有人写的东西。</b> <br>开始写点什么',
+    '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>没有人写的东西。</b> <br>开始写点什么',
     '<b>There are no profile posts yet!</b>' => '<b>还没有个人文章！</b>',
     '<strong>Directory</strong> menu' => '目录菜单',
     '<strong>Group</strong> members - {group}' => '<strong>分组</strong> 成员 - {group}',
