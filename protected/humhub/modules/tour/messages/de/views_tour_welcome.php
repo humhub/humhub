@@ -7,7 +7,7 @@ return array (
   'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.' => 'Du bist hier der erste Benutzer... Yehaaa! Sei ein gutes Vorbild und vervollständige dein Profil,<br />so dass künftige Benutzer wissen, wer die Verantwortung trägt und an wen er sich wenden kann, wenn er Fragen hat.',
   'Your firstname' => 'Dein Vorname',
   'Your lastname' => 'Dein Nachname',
-  'Your mobild phone number' => 'Deine Mobilfunknummer',
+  'Your mobile phone number' => 'Deine Mobilfunknummer',
   'Your phone number at work' => 'Deine Geschäftsnummer',
   'Your skills, knowledge and experience (comma seperated)' => 'Deine Fähigkeiten, Kenntnisse und Erfahrungen (Komma getrennt)',
   'Your title or position' => 'Dein Titel oder Position',

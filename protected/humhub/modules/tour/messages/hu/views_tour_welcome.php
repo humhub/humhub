@@ -7,7 +7,7 @@ return array (
   'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.' => 'Te vagy itt az első felhasználó... Igeeen! Adj példát másoknak és töltsd ki a profilodat,<br /> hogy a jövőbeli felhasználók tudják, ki itt a legnagyobb kutya, és kihez  fordulhatnak, ha kérdéseik vannak.',
   'Your firstname' => 'Keresztneved',
   'Your lastname' => 'Vezetékneved',
-  'Your mobild phone number' => 'Mobiltelefon számod',
+  'Your mobile phone number' => 'Mobiltelefon számod',
   'Your phone number at work' => 'Munkahelyi számod',
   'Your skills, knowledge and experience (comma seperated)' => 'Ismereteid, tudásod és tapasztalataid (vesszővel elválasztva)',
   'Your title or position' => 'Titulusod vagy pozíciód',

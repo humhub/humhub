@@ -24,7 +24,7 @@ return [
     'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.' => '你是这里的第一个用户…哎哟不错哦！你就是一颗闪亮的星星，请完成你的配置，让后来的用户膜拜你吧。',
     'Your firstname' => '你的姓',
     'Your lastname' => '你的名',
-    'Your mobild phone number' => '你的手机号',
+    'Your mobile phone number' => '你的手机号',
     'Your phone number at work' => '你的工作电话',
     'Your skills, knowledge and experience (comma seperated)' => '你的技能，知识和经验(逗号分隔)',
     'Your title or position' => '你的标题位置',

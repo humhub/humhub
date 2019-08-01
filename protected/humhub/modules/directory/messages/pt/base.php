@@ -53,6 +53,6 @@ return [
     'search for members' => '',
     'search for spaces' => '',
     'show all members' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Ninguém escreveu nada ainda.</b><br>Seja o primeiro e escreva alguma coisa...',
+    '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>Ninguém escreveu nada ainda.</b><br>Seja o primeiro e escreva alguma coisa...',
     'Search' => 'Pesquisar',
 ];
