@@ -21,7 +21,6 @@ return [
     'No modules found!' => 'Laajennusta ei löytynyt',
     'No purchased modules found!' => 'Ei ostettuja laajennuksia!',
     'Register' => 'Reksiteröidy',
-    'Third-party' => 'Kolmanen osapuolen',
-    'search for available modules online' => 'etsiä laajennuksia verkosta',
     'Search' => 'Hae',
+    'search for available modules online' => 'etsiä laajennuksia verkosta',
 ];

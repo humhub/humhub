@@ -18,9 +18,9 @@
  */
 return [
     'Buy (%price%)' => '',
-    'Disclaimer' => '',
     'Installing module...' => '',
     'Licence Key:' => '',
+    'Third-party' => '',
     '<strong>Modules</strong> directory' => '<strong>Modules</strong> モジュールディレクトリ',
     'Install' => 'インストール',
     'Latest compatible version:' => '互換性のある最新バージョン：',

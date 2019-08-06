@@ -17,14 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Buy (%price%)' => '购买 (%price%)',
-    'Disclaimer' => '申明',
-    'Installing module...' => '安装模块...',
-    'Licence Key:' => '许可证密钥',
+    'Third-party' => '',
     '<strong>Modules</strong> directory' => '<strong>模块</strong> 目录',
+    'Buy (%price%)' => '购买 (%price%)',
     'Install' => '安装',
+    'Installing module...' => '安装模块...',
     'Latest compatible version:' => '最新兼容版本:',
     'Latest version:' => '最新版本:',
+    'Licence Key:' => '许可证密钥',
     'More info' => '更多信息',
     'No compatible module version found!' => '没有找到兼容的组件版本。',
 ];
