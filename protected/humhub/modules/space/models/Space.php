@@ -28,6 +28,7 @@ use humhub\modules\space\activities\Created;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\Invite;
@@ -579,7 +580,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         ];
 
         // Add guest groups if enabled
-        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
+        if (AuthHelper::isGuestAccessEnabled()) {
             $groups[self::USERGROUP_GUEST] = 'Guests';
         }
 

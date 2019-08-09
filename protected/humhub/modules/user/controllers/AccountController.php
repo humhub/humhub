@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\controllers;
 
+use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\user\components\BaseAccountController;
@@ -143,7 +144,7 @@ class AccountController extends BaseAccountController
     public function actionSecurity()
     {
         $groups = [];
-        $groupAccessEnabled = (boolean) Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess');
+        $groupAccessEnabled = AuthHelper::isGuestAccessEnabled();
 
         if (Yii::$app->getModule('friendship')->getIsEnabled()) {
             $groups[User::USERGROUP_FRIEND] = Yii::t('UserModule.account', 'Your friends');

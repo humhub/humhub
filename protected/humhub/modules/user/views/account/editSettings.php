@@ -1,6 +1,7 @@
 <?php
 
 use humhub\libs\TimezoneHelper;
+use humhub\modules\user\helpers\AuthHelper;
 use yii\widgets\ActiveForm;
 use \humhub\compat\CHtml;
 ?>
@@ -17,7 +18,7 @@ use \humhub\compat\CHtml;
 
 <?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(), ['data-ui-select2' => '']); ?>
 
-<?php if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')): ?>
+<?php if (AuthHelper::isGuestAccessEnabled()): ?>
 
     <?php
     echo $form->field($model, 'visibility')->dropDownList([

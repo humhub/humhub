@@ -8,6 +8,7 @@
 
 namespace humhub\components\access;
 
+use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use humhub\modules\user\models\User;
 use yii\base\InvalidArgumentException;
@@ -415,7 +416,7 @@ class ControllerAccess extends BaseObject
      */
     public function validateStrictMode()
     {
-        return !$this->isGuest() || Yii::$app->user->isGuestAccessEnabled();
+        return !$this->isGuest() || AuthHelper::isGuestAccessEnabled();
     }
 
     /**

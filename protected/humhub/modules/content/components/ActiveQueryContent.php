@@ -11,6 +11,7 @@ namespace humhub\modules\content\components;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\db\Expression;
@@ -76,7 +77,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
 
             // Created content of is always visible
             $conditionUser .= 'OR content.created_by=' . $user->id;
-        } elseif (Yii::$app->user->isGuestAccessEnabled()) {
+        } elseif (AuthHelper::isGuestAccessEnabled()) {
             $conditionSpace = 'space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1';
             $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
         } else {

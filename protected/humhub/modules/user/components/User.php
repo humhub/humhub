@@ -12,6 +12,7 @@ use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\Password;
 use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
 use humhub\modules\user\events\UserEvent;
+use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\db\Expression;
@@ -84,8 +85,8 @@ class User extends \yii\web\User
      * ```
      *
      * @param string|string[]|BasePermission $permission
-     * @see PermissionManager::can()
      * @return boolean
+     * @see PermissionManager::can()
      * @since 1.2
      */
     public function can($permission, $params = [], $allowCaching = true)
@@ -201,10 +202,11 @@ class User extends \yii\web\User
      * Checks if the system configuration allows access for guests
      *
      * @return boolean is guest access enabled and allowed
+     * @deprecated since 1.4
      */
     public static function isGuestAccessEnabled()
     {
-        return (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess'));
+        return AuthHelper::isGuestAccessEnabled();
     }
 
     /**

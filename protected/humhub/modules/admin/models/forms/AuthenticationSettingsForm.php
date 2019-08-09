@@ -31,7 +31,7 @@ Your account request has been declined.<br><br>
 
 Kind Regards<br>
 {AdminName}<br><br>';
-    
+
     public $internalAllowAnonymousRegistration;
     public $internalRequireApprovalAfterRegistration;
     public $internalUsersCanInvite;
@@ -120,17 +120,17 @@ Kind Regards<br>
         if ($settingsManager->get('auth.anonymousRegistration')) {
             $settingsManager->set('auth.showCaptureInRegisterForm', $this->showCaptureInRegisterForm);
         }
-        
+
         if ($settingsManager->get('auth.needApproval')) {
             if(empty($this->registrationApprovalMailContent) || (strcmp($this->registrationApprovalMailContent, Yii::t('AdminModule.controllers_ApprovalController', self::defaultRegistrationApprovalMailContent)) == 0)) {
                 $this->registrationApprovalMailContent = Yii::t('AdminModule.controllers_ApprovalController', self::defaultRegistrationApprovalMailContent);
-                $settingsManager->delete('auth.registrationApprovalMailContent');   
+                $settingsManager->delete('auth.registrationApprovalMailContent');
             } else {
                 $settingsManager->set('auth.registrationApprovalMailContent', $this->registrationApprovalMailContent);
             }
             if(empty($this->registrationDenialMailContent) || strcmp($this->registrationDenialMailContent, Yii::t('AdminModule.controllers_ApprovalController', self::defaultRegistrationDenialMailContent)) == 0) {
                 $this->registrationDenialMailContent = Yii::t('AdminModule.controllers_ApprovalController', self::defaultRegistrationDenialMailContent);
-                $settingsManager->delete('auth.registrationDenialMailContent');   
+                $settingsManager->delete('auth.registrationDenialMailContent');
             } else {
                 $settingsManager->set('auth.registrationDenialMailContent', $this->registrationDenialMailContent);
             }

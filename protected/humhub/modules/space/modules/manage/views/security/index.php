@@ -2,6 +2,7 @@
 
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
+use humhub\modules\user\helpers\AuthHelper;
 use humhub\widgets\DataSaved;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
@@ -26,7 +27,7 @@ use yii\helpers\Html;
             Space::VISIBILITY_NONE => Yii::t('SpaceModule.base', 'Private (Invisible)'),
             Space::VISIBILITY_REGISTERED_ONLY => Yii::t('SpaceModule.base', 'Public (Registered users only)')
         ];
-        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') == 1) {
+        if (AuthHelper::isGuestAccessEnabled()) {
             $visibilities[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Visible for all (members and guests)');
         }
         ?>

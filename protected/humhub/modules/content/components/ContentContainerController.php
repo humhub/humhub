@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\web\HttpException;
 use humhub\components\Controller;
@@ -103,7 +104,7 @@ class ContentContainerController extends Controller
         }
 
         // Directly redirect guests to login page - if guest access isn't enabled
-        if (Yii::$app->user->isGuest && Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') != 1) {
+        if (Yii::$app->user->isGuest && !AuthHelper::isGuestAccessEnabled()) {
             Yii::$app->user->loginRequired();
             return false;
         }
