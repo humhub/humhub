@@ -21,7 +21,6 @@ return [
     'No modules found!' => '',
     'No purchased modules found!' => '',
     'Register' => '',
-    'Third-party' => '',
     'search for available modules online' => '',
     'Search' => 'Buscar',
 ];

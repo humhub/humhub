@@ -19,7 +19,6 @@
 return [
     '<strong>Modules</strong> directory' => '',
     'Buy (%price%)' => '',
-    'Disclaimer' => '',
     'Install' => '',
     'Installing module...' => '',
     'Latest compatible version:' => '',
@@ -27,4 +26,5 @@ return [
     'Licence Key:' => '',
     'More info' => '',
     'No compatible module version found!' => '',
+    'Third-party' => '',
 ];

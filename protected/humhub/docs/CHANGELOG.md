@@ -9,6 +9,8 @@ HumHub Change Log
 - Fix #3589: Reduced integrity check memory usage in Like/Comment module
 - Fix #3595: LDAP config file values ignored
 - Fix #3598: Removed Google+ default profile field
+- Fix #3552: Updated to Yii - AuthClient 2.2+ library
+- Fix #3588: OEmbed CSS class not provided 
 
 
 1.3.14  (June 26, 2019)
