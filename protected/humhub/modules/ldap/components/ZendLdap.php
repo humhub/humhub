@@ -13,8 +13,6 @@ use Traversable;
 use Zend\Ldap\ErrorHandler;
 
 
-
-
 class ZendLdap extends Ldap
 {
     /**
@@ -88,11 +86,13 @@ class ZendLdap extends Ldap
         do {
             ldap_control_paged_result($resource, $pageSize, true, $cookie);
 
-
             $result = ldap_search($resource, $basedn, $filter,
                 $attributes
             );
             foreach (ldap_get_entries($resource, $result) as $item) {
+                if (!is_array($item))
+                    continue;
+
                 array_push($results, (array)$item);
             }
             ldap_control_paged_result_response($resource, $result, $cookie);
