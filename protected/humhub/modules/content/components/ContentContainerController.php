@@ -79,10 +79,6 @@ class ContentContainerController extends Controller
             }
         }
 
-        if ($this->requireContainer && $this->contentContainer === null) {
-            throw new HttpException(404, Yii::t('base', 'Could not find requested page.'));
-        }
-
         if ($this->validContentContainerClasses !== null) {
             if ($this->contentContainer === null || !in_array($this->contentContainer->className(), $this->validContentContainerClasses)) {
                 throw new HttpException(400);
@@ -107,6 +103,10 @@ class ContentContainerController extends Controller
         if (Yii::$app->user->isGuest && !AuthHelper::isGuestAccessEnabled()) {
             Yii::$app->user->loginRequired();
             return false;
+        }
+
+        if ($this->requireContainer && $this->contentContainer === null) {
+            throw new HttpException(404, Yii::t('base', 'Could not find requested page.'));
         }
 
         $this->checkModuleIsEnabled();

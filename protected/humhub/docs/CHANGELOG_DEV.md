@@ -33,3 +33,4 @@ HumHub Change Log (DEVELOP)
 - Enh: Separated marketplace methods into own submodule
 - Enh: Added consistent user "sub" displayname handling
 - Enh: Added possibility to manage database settings via CLI
+- Fix: Force redirect to login instead 404 when guest access is disabled (thanks to Security Research Team, Datafarm Co.,Ltd.) 
