@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>誰もまだ何かを書いていませんでした。</ b> <br>始めに何かを投稿してください...',
+  '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>誰もまだ何かを書いていませんでした。</ b> <br>始めに何かを投稿してください...',
   '<b>There are no profile posts yet!</b>' => '<b>プロフィール投稿はまだありません！</ b>',
   '<strong>Directory</strong> menu' => '<strong>ディレクトリ</strong> メニュー',
   '<strong>Group</strong> members - {group}' => '<strong>グループ</ strong>のメンバー - {group}',

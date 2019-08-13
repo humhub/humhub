@@ -56,6 +56,7 @@ class AdminController extends Controller
         if ($settings->enabled) {
             $enabled = true;
             try {
+                /** @var \humhub\modules\ldap\authclient\LdapAuth $ldapAuthClient */
                 $ldapAuthClient = Yii::createObject($settings->getLdapAuthDefinition());
                 $ldap = $ldapAuthClient->getLdap();
                 $userCount = $ldap->count($settings->userFilter, $settings->baseDn, Ldap::SEARCH_SCOPE_SUB);

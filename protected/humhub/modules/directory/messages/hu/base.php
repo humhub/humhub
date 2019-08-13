@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Még senki nem írt semmit.</b><br />Legyél te az első!',
+  '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>Még senki nem írt semmit.</b><br />Legyél te az első!',
   '<b>There are no profile posts yet!</b>' => '<b>Még nincsenek profilbejegyzések</b>',
   '<strong>Directory</strong> menu' => '<strong>Könyvtár</strong> menü',
   '<strong>Group</strong> members - {group}' => '<strong>csoport</strong> tagjai {group}',

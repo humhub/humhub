@@ -19,7 +19,6 @@
 return [
     'No purchased modules found!' => '',
     'Register' => '',
-    'Third-party' => '',
     'search for available modules online' => '',
     'Installed' => 'تم التنصيب',
     'No modules found!' => 'لا توجد موديولات!',

@@ -25,6 +25,7 @@ use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\behaviors\ProfileController;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\events\UserEvent;
+use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
 use humhub\modules\user\widgets\UserWall;
 use Yii;
@@ -452,7 +453,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
                 $this->auth_mode = $passwordAuth->getId();
             }
 
-            if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
+            if (AuthHelper::isGuestAccessEnabled()) {
                 // Set users profile default visibility to all
                 if (Yii::$app->getModule('user')->settings->get('auth.defaultUserProfileVisibility') == User::VISIBILITY_ALL) {
                     $this->visibility = User::VISIBILITY_ALL;

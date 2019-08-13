@@ -156,7 +156,7 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
                             <?php echo $form->field($user->profile, 'phone_work')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your phone number at work')]); ?>
                         </div>
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'mobile')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your mobild phone number')]); ?>
+                            <?php echo $form->field($user->profile, 'mobile')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your mobile phone number')]); ?>
                         </div>
                     </div>
 

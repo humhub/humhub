@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\behaviors;
 
+use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\base\Behavior;
 use yii\helpers\Json;
@@ -62,7 +63,7 @@ class SpaceController extends Behavior
     {
         $this->updateLastVisit();
 
-        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') && Yii::$app->user->isGuest && $this->space->visibility != Space::VISIBILITY_ALL) {
+        if (AuthHelper::isGuestAccessEnabled() && Yii::$app->user->isGuest && $this->space->visibility != Space::VISIBILITY_ALL) {
             throw new HttpException(401, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'You need to login to view contents of this space!'));
         }
 

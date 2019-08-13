@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Third-party' => '',
     'Installed' => 'Installeret',
     'No modules found!' => 'Ingen moduler fundet!',
     'No purchased modules found!' => 'Ingen købe moduler er fundet!',

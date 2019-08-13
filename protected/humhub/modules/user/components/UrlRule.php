@@ -60,22 +60,29 @@ class UrlRule extends BaseObject implements UrlRuleInterface
     public function parseRequest($manager, $request)
     {
         $pathInfo = $request->getPathInfo();
-        if (substr($pathInfo, 0, 2) == "u/") {
-            $parts = explode('/', $pathInfo, 3);
-            if (isset($parts[1])) {
-                $user = UserModel::find()->where(['username' => $parts[1]])->one();
-                if ($user !== null) {
-                    if (!isset($parts[2]) || $parts[2] == "") {
-                        $parts[2] = $this->defaultRoute;
-                    }
-                    $params = $request->get();
-                    $params['cguid'] = $user->guid;
-
-                    return [$parts[2], $params];
-                }
-            }
+        if (substr($pathInfo, 0, 2) !== 'u/') {
+            return false;
         }
-        return false;
+        $parts = explode('/', $pathInfo, 3);
+
+        // Check if username is provided
+        if (!isset($parts[1])) {
+            return false;
+        }
+
+        $user = UserModel::find()->where(['username' => $parts[1]])->one();
+        if ($user !== null) {
+            if (!isset($parts[2]) || $parts[2] == "") {
+                $parts[2] = $this->defaultRoute;
+            }
+            $params = $request->get();
+            $params['cguid'] = $user->guid;
+        } else {
+            // Allow controller to handle 404
+            $params['cguid'] = 'not found';
+        }
+
+        return [$parts[2], $params];
     }
 
     /**

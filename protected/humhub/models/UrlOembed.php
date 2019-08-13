@@ -156,7 +156,7 @@ class UrlOembed extends ActiveRecord
                     return trim(preg_replace('/\s+/', ' ', $result));
                 }
             }
-        } catch(RestrictedCallException $re) {
+        } catch (RestrictedCallException $re) {
             Yii::warning($re);
         }
 
@@ -188,7 +188,7 @@ class UrlOembed extends ActiveRecord
                 if (!static::findExistingOembed($url)) {
                     static::loadUrl($url);
                 }
-            } catch(RestrictedCallException $re) {
+            } catch (RestrictedCallException $re) {
                 Yii::warning($re);
             }
         }, $text);
@@ -255,7 +255,7 @@ class UrlOembed extends ActiveRecord
 
             static::$cache[$url] = $urlOembed;
             return $html;
-        } catch(RestrictedCallException $re) {
+        } catch (RestrictedCallException $re) {
             Yii::warning($re);
         }
 
@@ -273,13 +273,13 @@ class UrlOembed extends ActiveRecord
     protected static function buildHtmlPreview($url, $data = null)
     {
         if (static::validateOembedResponse($data)) {
-            return  Html::tag('div', $data['html'], [
+            return Html::tag('div', $data['html'], [
                 'data' => [
                     'guid' => uniqid('oembed-', true),
                     'richtext-feature' => 1,
-                    'class' => 'oembed_snippet',
                     'url' => Html::encode($url)
-                ]
+                ],
+                'class' => 'oembed_snippet',
             ]);
         }
         return null;
@@ -297,7 +297,6 @@ class UrlOembed extends ActiveRecord
             isset($data['html'], $data['type'])
             && in_array($data['type'], static::$allowed_types, true);
     }
-
 
 
     /**

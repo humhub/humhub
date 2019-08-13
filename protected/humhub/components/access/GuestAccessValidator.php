@@ -7,6 +7,7 @@
 
 namespace humhub\components\access;
 
+use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 
 class GuestAccessValidator extends AccessValidator
@@ -20,7 +21,7 @@ class GuestAccessValidator extends AccessValidator
      */
     public function run()
     {
-        if ($this->access->isGuest() && !Yii::$app->user->isGuestAccessEnabled()) {
+        if ($this->access->isGuest() && !AuthHelper::isGuestAccessEnabled()) {
             $this->code = 401;
             return false;
         }
