@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Disclaimer' => '',
+    'Third-party' => '',
     '<strong>Modules</strong> directory' => '<strong>Modul</strong> bibliotek',
     'Buy (%price%)' => 'Køb (%price%)',
     'Install' => 'Installer',
