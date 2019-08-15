@@ -96,6 +96,17 @@
 }
 
 .panel-profile {
+    position: relative;
+    &:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -10px;
+        width: 100%;
+        height: 1px;
+        background-color: @panel-color-bottom-bar;
+    }
+    margin-bottom: 20px;
     .panel-profile-header {
         position: relative;
         //border: 3px solid #fff;
@@ -193,25 +204,25 @@
     }
     .statistics {
         & > :last-child .entry {
-            border-right: 1px solid @panel-profile-statistics-color-border;
+            border-right: 1px solid @panel-color-profile-statistics-border;
         }
         .entry {
             margin-left: 0;
-            border-left: 1px solid @panel-profile-statistics-color-border;
-            border-bottom: 1px solid @panel-profile-statistics-color-border;
+            border-left: 1px solid @panel-color-profile-statistics-border;
+            border-top: 1px solid @panel-color-profile-statistics-border;
             padding: 13px 24px;
             text-align: center;
             font-size: 14px;
-            color: @panel-profile-statistics-color-text;
+            color: @panel-color-profile-statistics-text;
             .count {
                 font-weight: 700;
                 font-size: 24px;
-                color: @panel-profile-statistics-color-number;
+                color: @panel-color-profile-statistics-number;
             }
         }
     }
     .controls {
-        margin: 16px 30px 16px auto;
+        margin: 16px 60px 16px auto;
     }
 }
 
@@ -256,6 +267,10 @@
             height: 150px;
             width: 150px;
         }
+    }
+
+    .panel-profile .statistics > .entry:first-child {
+        border-left: none;
     }
 
     .panel-profile .statistics .entry {

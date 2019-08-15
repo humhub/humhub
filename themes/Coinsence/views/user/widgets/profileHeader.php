@@ -169,7 +169,6 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
         <div class="panel-profile-controls">
             <div class="row">
                 <div class="col-md-12">
-                    <?= ProfileHeaderCounterSet::widget(['user' => $user]); ?>
 
                     <div class="controls controls-header pull-right">
                         <?=
@@ -183,6 +182,9 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
                         ]);
                         ?>
                     </div>
+
+                    <?= ProfileHeaderCounterSet::widget(['user' => $user]); ?>
+
                 </div>
             </div>
         </div>

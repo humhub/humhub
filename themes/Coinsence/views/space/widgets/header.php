@@ -167,7 +167,6 @@ if ($space->isAdmin()) {
         <div class="panel-profile-controls">
             <div class="row">
                 <div class="col-md-12">
-                    <?= HeaderCounterSet::widget(['space' => $space]); ?>
 
                     <div class="controls controls-header pull-right">
                         <?= HeaderControls::widget(['widgets' => [
@@ -187,6 +186,9 @@ if ($space->isAdmin()) {
                         ]);
                         ?>
                     </div>
+
+                    <?= HeaderCounterSet::widget(['space' => $space]); ?>
+
                 </div>
             </div>
 
