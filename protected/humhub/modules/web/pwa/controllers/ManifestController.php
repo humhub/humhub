@@ -40,8 +40,8 @@ class ManifestController extends Controller
         $this->manifest['start_url'] = Url::home(true);
         $this->manifest['short_name'] = Yii::$app->name;
         $this->manifest['name'] = Yii::$app->name;
-#        $this->manifest['background_color'] = $this->module->themeColor;
-#        $this->manifest['theme_color'] = $this->module->themeColor;
+        $this->manifest['background_color'] = Yii::$app->view->theme->variable('primary');
+        $this->manifest['theme_color'] = Yii::$app->view->theme->variable('primary');
     }
 
     private function handleIcons()

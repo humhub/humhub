@@ -24,9 +24,6 @@ class Module extends \humhub\components\Module
     public $isCoreModule = true;
 
 
-    public $themeColor = '#000';
-
-
     /**
      * @inheritdoc
      */
