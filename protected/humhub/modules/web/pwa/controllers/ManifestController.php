@@ -1,12 +1,11 @@
 <?php
 
 
-namespace humhub\modules\ui\controllers;
-
+namespace humhub\modules\web\pwa\controllers;
 
 use humhub\components\Controller;
-use humhub\modules\ui\Module;
 use humhub\modules\ui\widgets\SiteIcon;
+use humhub\modules\web\Module;
 use Yii;
 use yii\helpers\Url;
 
@@ -41,8 +40,8 @@ class ManifestController extends Controller
         $this->manifest['start_url'] = Url::home(true);
         $this->manifest['short_name'] = Yii::$app->name;
         $this->manifest['name'] = Yii::$app->name;
-        $this->manifest['background_color'] = $this->module->themeColor;
-        $this->manifest['theme_color'] = $this->module->themeColor;
+#        $this->manifest['background_color'] = $this->module->themeColor;
+#        $this->manifest['theme_color'] = $this->module->themeColor;
     }
 
     private function handleIcons()
