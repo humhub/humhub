@@ -165,7 +165,7 @@ class LdapController extends \yii\console\Controller
      * @param string $id the auth client id (default: ldap)
      * @return int status code
      */
-    public function actionMappingClear($id)
+    public function actionMappingClear($id = 'ldap')
     {
         $this->stdout("*** LDAP Flush user id mappings for AuthClient ID: " . $id . "\n\n");
         User::updateAll(['authclient_id' => new Expression('NULL')], ['auth_mode' => $id]);
@@ -181,7 +181,7 @@ class LdapController extends \yii\console\Controller
      * @param string $id the auth client id (default: ldap)
      * @return int status code
      */
-    public function actionMappingRebuild($id)
+    public function actionMappingRebuild($id = 'ldap')
     {
         $this->stdout("*** LDAP ReMap Users for AuthClient ID: " . $id . "\n\n");
 
