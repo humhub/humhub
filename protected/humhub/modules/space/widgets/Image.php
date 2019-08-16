@@ -162,15 +162,15 @@ class Image extends Widget
 
         $fontSize = 44 * $elementWidth / 100;
         $padding = 18 * $elementWidth / 100;
-        $borderRadius = 4;
+        $borderRadius =  $elementWidth / 2;
 
-        if ($elementWidth < 140 && $elementWidth > 40) {
-            $borderRadius = 3;
-        }
-
-        if ($elementWidth < 35) {
-            $borderRadius = 2;
-        }
+//        if ($elementWidth < 140 && $elementWidth > 40) {
+//            $borderRadius = 3;
+//        }
+//
+//        if ($elementWidth < 35) {
+//            $borderRadius = 2;
+//        }
 
         return "font-size: " . $fontSize . "px; padding: " . $padding . "px 0; border-radius: " . $borderRadius . "px;";
     }
