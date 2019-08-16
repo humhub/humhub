@@ -12,6 +12,7 @@ HumHub Change Log
 - Fix #3552: Updated to Yii - AuthClient 2.2+ library
 - Fix #3588: OEmbed CSS class not provided
 - Fix #3609: LDAP paging control limits max. users
+- Fix #3618: Some LDAP CLI commands requires a authClientId parameter 
 
 
 1.3.14  (June 26, 2019)
