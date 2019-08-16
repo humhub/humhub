@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Open</strong> file' => '',
+  '<strong>Open</strong> file' => '<strong>Abrir</strong> fichero',
   'Could not find requested file variant!' => '¡No se pudo encontrar la variante del archivo solicitada!',
   'Could not find requested file!' => '¡No se pudo encontrar el archivo solicitado!',
   'Created by:' => 'Crado por:',
