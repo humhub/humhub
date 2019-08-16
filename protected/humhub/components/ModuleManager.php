@@ -139,7 +139,11 @@ class ModuleManager extends Component
             Yii::setAlias('@' . str_replace('\\', '/', $config['namespace']), $basePath);
         }
 
-        Yii::setAlias('@' . $config['id'], $basePath);
+        // Check if alias is not in use yet (e.g. don't register "web" module alias)
+        if (Yii::getAlias('@' . $config['id'], false) === false) {
+            Yii::setAlias('@' . $config['id'], $basePath);
+        }
+
         if (isset($config['aliases']) && is_array($config['aliases'])) {
             foreach ($config['aliases'] as $name => $value) {
                 Yii::setAlias($name, $value);
