@@ -10,7 +10,7 @@ namespace humhub\modules\admin\models\forms;
 
 use humhub\modules\file\Module;
 use humhub\modules\file\validators\ImageSquareValidator;
-use humhub\modules\ui\widgets\SiteIcon;
+use humhub\modules\web\pwa\widgets\SiteIcon;
 use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;

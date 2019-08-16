@@ -36,12 +36,13 @@ class ServiceWorkerController extends Controller
     {
         $this->baseJs .= <<<JS
             var CACHE = 'humhub-sw-cache';
+            var OFFLINE_PAGE_URL = '/offline.pwa.html';
         
             self.addEventListener('install', function (event) {
                 console.log('********** The service worker is being installed.');
     
                 // Store "Offline" page
-                var offlineRequest = new Request('/ui/offline');
+                var offlineRequest = new Request(OFFLINE_PAGE_URL);
                 event.waitUntil(
                     fetch(offlineRequest).then(function (response) {
                         return caches.open('offline').then(function (cache) {
@@ -67,7 +68,7 @@ JS;
                         fetch(request).catch(function (error) {
                         console.error('[onfetch] Failed. Serving cached offline fallback ' + error);
                         return caches.open('offline').then(function (cache) {
-                                return cache.match('/ui/offline');
+                                return cache.match(OFFLINE_PAGE_URL);
                             });
                         })
                     );

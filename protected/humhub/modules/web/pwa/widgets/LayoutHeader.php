@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\ui\widgets;
+namespace humhub\modules\web\pwa\widgets;
 
 use Yii;
 use yii\helpers\Url;
@@ -15,11 +15,11 @@ use humhub\modules\ui\Module;
 use humhub\modules\ui\view\components\View;
 
 /**
- * Class MobileAppHeader
+ * Class LayoutHeader
  *
  * @package humhub\modules\ui\widgets
  */
-class MobileAppHeader extends Widget
+class LayoutHeader extends Widget
 {
 
     /**
@@ -41,9 +41,9 @@ class MobileAppHeader extends Widget
         $view->registerMetaTag(['name' => 'apple-mobile-web-app-capable', 'content' => 'yes']);
         $view->registerMetaTag(['name' => 'apple-mobile-web-app-status-bar-style', 'content' => $module->themeColor]);
 
-        $view->registerLinkTag(['rel' => 'manifest', 'href' => Url::to(['/ui/manifest'])]);
+        $view->registerLinkTag(['rel' => 'manifest', 'href' => Url::to(['/web/pwa-manifest/index'])]);
 
-        $serviceWorkUrl = Url::to(['/ui/service-worker/index']);
+        $serviceWorkUrl = Url::to(['/web/service-worker/index']);
         $rootPath = Yii::getAlias('@web') . '/';
         $view->registerJs(<<<JS
             if ('serviceWorker' in navigator) {

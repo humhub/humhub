@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\ui\widgets\SiteIcon;
+use humhub\modules\web\pwa\widgets\SiteIcon;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use humhub\compat\CHtml;

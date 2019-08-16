@@ -4,7 +4,7 @@
 namespace humhub\modules\web\pwa\controllers;
 
 use humhub\components\Controller;
-use humhub\modules\ui\widgets\SiteIcon;
+use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\modules\web\Module;
 use Yii;
 use yii\helpers\Url;

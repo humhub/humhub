@@ -8,7 +8,7 @@
 
 namespace humhub\modules\admin\controllers;
 
-use humhub\modules\ui\widgets\SiteIcon;
+use humhub\modules\web\pwa\widgets\SiteIcon;
 use Yii;
 use humhub\libs\Helpers;
 use humhub\models\UrlOembed;

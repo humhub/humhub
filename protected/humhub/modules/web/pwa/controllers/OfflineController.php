@@ -17,6 +17,6 @@ class OfflineController extends Controller
 {
     public function actionIndex()
     {
-        return $this->renderPartial('index');
+        return $this->renderPartial('@humhub/modules/web/pwa/views/offline/index');
     }
 }

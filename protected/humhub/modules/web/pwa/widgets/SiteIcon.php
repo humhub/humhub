@@ -6,7 +6,7 @@
  */
 
 
-namespace humhub\modules\ui\widgets;
+namespace humhub\modules\web\pwa\widgets;
 
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\ui\view\components\View;

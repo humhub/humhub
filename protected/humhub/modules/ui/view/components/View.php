@@ -9,8 +9,8 @@
 namespace humhub\modules\ui\view\components;
 
 use humhub\libs\Html;
-use humhub\modules\ui\widgets\MobileAppHeader;
-use humhub\modules\ui\widgets\SiteIcon;
+use humhub\modules\web\pwa\widgets\LayoutHeader;
+use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\CoreJsConfig;
 use humhub\widgets\LayoutAddons;
 use yii\helpers\ArrayHelper;
@@ -175,7 +175,7 @@ class View extends \yii\web\View
     {
         if (!Yii::$app->request->isAjax) {
             SiteIcon::registerMetaTags($this);
-            MobileAppHeader::registerHeadTags($this);
+            LayoutHeader::registerHeadTags($this);
             parent::registerCsrfMetaTags();
         }
 
