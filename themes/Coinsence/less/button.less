@@ -125,6 +125,42 @@
   }
 }
 
+.btn-primary-i {
+  background: transparent;
+  color: @primary !important;
+  border: 1px solid @primary;
+  &:hover,
+  &:focus {
+    background: transparent;
+    color: darken(@primary, 5%) !important;
+    border: 1px solid darken(@primary, 5%);
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    background: transparent;
+    outline: 0;
+    color: darken(@primary, 5%);
+    border: 1px solid darken(@primary, 5%);
+  }
+}
+
+.btn-primary-i[disabled],
+.btn-primary-i.disabled {
+  background: transparent;
+  color: lighten(@primary, 5%);
+  &:hover,
+  &:focus {
+    background: transparent;
+    color: lighten(@primary, 5%);
+  }
+  &:active,
+  &.active {
+    background: transparent;
+    color: lighten(@primary, 5%) !important;
+  }
+}
+
 .btn-info {
   background: @info;
   color: @text-color-contrast !important;
@@ -150,6 +186,42 @@
   &:active,
   &.active {
     background: lighten(@info, 5%) !important;
+  }
+}
+
+.btn-info-i {
+  background: transparent;
+  color: @info !important;
+  border: 1px solid @info;
+  &:hover,
+  &:focus {
+    background: transparent;
+    color: darken(@info, 5%) !important;
+    border: 1px solid darken(@info, 5%);
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    background: transparent;
+    outline: 0;
+    color: darken(@info, 5%);
+    border: 1px solid darken(@info, 5%);
+  }
+}
+
+.btn-info-i[disabled],
+.btn-info-i.disabled {
+  background: transparent;
+  color: lighten(@info, 5%);
+  &:hover,
+  &:focus {
+    background: transparent;
+    color: lighten(@info, 5%);
+  }
+  &:active,
+  &.active {
+    background: transparent;
+    color: lighten(@info, 5%) !important;
   }
 }
 
