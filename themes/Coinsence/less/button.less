@@ -161,6 +161,44 @@
   }
 }
 
+.btn-primary-i-a {
+  background: @btn-primary-i-a-color-background;
+  color: @btn-primary-i-a-color-text !important;
+  border: 1px solid @btn-primary-i-a-color-border;
+  &:hover,
+  &:focus {
+    background: darken(@btn-primary-i-a-color-background, 5%) !important;
+    color: darken(@btn-primary-i-a-color-text, 5%) !important;
+    border: 1px solid darken(@btn-primary-i-a-color-border, 5%);
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    background: darken(@btn-primary-i-a-color-background, 5%) !important;
+    outline: 0;
+    color: darken(@btn-primary-i-a-color-text, 5%);
+    border: 1px solid darken(@btn-primary-i-a-color-border, 5%);
+  }
+}
+
+.btn-primary-i-a[disabled],
+.btn-primary-i-a.disabled {
+  background: darken(@btn-primary-i-a-color-background, 5%) !important;
+  color: lighten(@btn-primary-i-a-color-text, 5%);
+  border: 1px solid darken(@btn-primary-i-a-color-border, 5%);
+  &:hover,
+  &:focus {
+    background: transparent;
+    color: lighten(@btn-primary-i-a-color-text, 5%);
+  }
+  &:active,
+  &.active {
+    background: transparent;
+    color: lighten(@btn-primary-i-a-color-text, 5%) !important;
+    border: 1px solid darken(@btn-primary-i-a-color-border, 5%);
+  }
+}
+
 .btn-info {
   background: @info;
   color: @text-color-contrast !important;
