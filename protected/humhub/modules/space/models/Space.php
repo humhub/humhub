@@ -32,6 +32,11 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\Group;
 use humhub\modules\space\widgets\Wall;
 use humhub\modules\space\widgets\Members;
+use humhub\modules\xcoin\helpers\AccountHelper;
+use humhub\modules\xcoin\helpers\AssetHelper;
+use humhub\modules\xcoin\models\Account;
+use humhub\modules\xcoin\models\Asset;
+use humhub\modules\xcoin\models\Transaction;
 use Yii;
 
 /**
@@ -54,6 +59,10 @@ use Yii;
  * @property integer $contentcontainer_id
  * @property integer $default_content_visibility
  * @property string $color
+ * @property string dao_address
+ * @property string coin_address
+ * @property integer eth_status
+ * @property integer space_type
  * @property User $ownerUser the owner of this space
  *
  * @mixin \humhub\components\behaviors\GUID
@@ -87,6 +96,13 @@ class Space extends ContentContainerActiveRecord implements Searchable
     // Model Scenarios
     const SCENARIO_CREATE = 'create';
     const SCENARIO_EDIT = 'edit';
+    // Ethereum status
+    const ETHEREUM_STATUS_DISABLED = 0;
+    const ETHEREUM_STATUS_IN_PROGRESS = 1;
+    const ETHEREUM_STATUS_ENABLED = 2;
+    // Space type
+    const SPACE_TYPE_NORMAL = 0;
+    const SPACE_TYPE_FUNDING = 1;
 
     /**
      * @inheritdoc
@@ -217,6 +233,18 @@ class Space extends ContentContainerActiveRecord implements Searchable
             $activity->source = $this;
             $activity->originator = $user;
             $activity->create();
+
+            // Auto enable xcoin module if installed & create DEFAULT & ISSUE Accounts
+            if (Yii::$app->getModule('xcoin')) {
+                // enable xcoin module
+                $this->enableModule('xcoin');
+
+                // create DEFAULT & ISSUE Accounts
+                AssetHelper::initContentContainer($this);
+                AccountHelper::initContentContainer($this);
+
+                $this->updateAttributes(['eth_status' => self::ETHEREUM_STATUS_ENABLED]);
+            };
         }
 
         Yii::$app->cache->delete('userSpaces_' . $user->id);
@@ -283,6 +311,20 @@ class Space extends ContentContainerActiveRecord implements Searchable
             $group->save();
         }
 
+
+        // delete space asset and its transactions
+        $spaceAsset = Asset::findOne(['space_id' => $this->id]);
+        if ($spaceAsset) {
+            Transaction::deleteAll(['asset_id' => $spaceAsset->id]);
+
+            $spaceAsset->delete();
+        }
+
+        // delete all space accounts
+        foreach (Account::findAll(['space_id' => $this->id]) as $account) {
+            $account->delete();
+        }
+
         return parent::beforeDelete();
     }
 
@@ -345,8 +387,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
      * Checks if given user can invite people to this workspace
      * Note: use directly permission instead
      *
-     * @deprecated since version 1.1
      * @return boolean
+     * @deprecated since version 1.1
      */
     public function canInvite()
     {
@@ -358,8 +400,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
      * Shared Content is public and is visible also for non members of the space.
      * Note: use directly permission instead
      *
-     * @deprecated since version 1.1
      * @return boolean
+     * @deprecated since version 1.1
      */
     public function canShare()
     {
@@ -463,8 +505,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
     /**
      * Returns display name (title) of space
      *
-     * @since 0.11.0
      * @return string
+     * @since 0.11.0
      */
     public function getDisplayName()
     {
@@ -592,6 +634,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             if ($this->isSpaceOwner($user->id)) {
                 return self::USERGROUP_OWNER;
             }
+
             return $membership->group_id;
         } else {
             return self::USERGROUP_USER;
@@ -601,8 +644,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
     /**
      * Returns the default content visibility
      *
-     * @see Content
      * @return int the default visiblity
+     * @see Content
      */
     public function getDefaultContentVisibility()
     {
