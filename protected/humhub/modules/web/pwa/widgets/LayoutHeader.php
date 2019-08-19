@@ -9,6 +9,7 @@
 namespace humhub\modules\web\pwa\widgets;
 
 use Yii;
+use yii\base\WidgetEvent;
 use yii\helpers\Url;
 use humhub\components\Widget;
 use humhub\modules\ui\Module;
@@ -44,7 +45,12 @@ class LayoutHeader extends Widget
         $rootPath = Yii::getAlias('@web') . '/';
         $view->registerJs(<<<JS
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('$serviceWorkUrl', { scope: '$rootPath' });
+                navigator.serviceWorker.register('$serviceWorkUrl', { scope: '$rootPath' })
+                    .then(function (registration) {
+                        if (typeof afterServiceWorkerRegistration === "function") { 
+                            afterServiceWorkerRegistration(registration);
+                        }
+                    })
             }
 JS
             , View::POS_READY, 'serviceWorkerInit');

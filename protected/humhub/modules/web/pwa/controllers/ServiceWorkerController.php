@@ -52,6 +52,7 @@ class ServiceWorkerController extends Controller
                     })
                 );
             });
+
 JS;
     }
 
