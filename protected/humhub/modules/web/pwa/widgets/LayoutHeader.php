@@ -40,7 +40,7 @@ class LayoutHeader extends Widget
 
         $view->registerLinkTag(['rel' => 'manifest', 'href' => Url::to(['/web/pwa-manifest/index'])]);
 
-        $serviceWorkUrl = Url::to(['/web/service-worker/index']);
+        $serviceWorkUrl = Url::to(['/web/pwa-service-worker/index']);
         $rootPath = Yii::getAlias('@web') . '/';
         $view->registerJs(<<<JS
             if ('serviceWorker' in navigator) {
