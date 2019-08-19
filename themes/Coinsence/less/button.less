@@ -346,3 +346,36 @@
     background: lighten(@warning, 5%) !important;
   }
 }
+
+.btn-gradient-1 {
+  background: linear-gradient(to right, #3CBEEF, #28AA69);
+  color: #fff !important;
+  &:hover,
+  &:focus {
+    background: linear-gradient(to right, darken(#3CBEEF, 5%), darken(#28AA69, 5%));
+    color: darken(#fff, 5%) !important;
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    background: linear-gradient(to right, darken(#3CBEEF, 5%), darken(#28AA69, 5%));
+    outline: 0;
+    color: darken(#fff, 5%);
+  }
+}
+
+.btn-gradient-1[disabled],
+.btn-gradient-1.disabled {
+  background: linear-gradient(to right, #3CBEEF, #28AA69);
+  color: lighten(#fff, 5%);
+  &:hover,
+  &:focus {
+    background: linear-gradient(to right, lighten(#3CBEEF, 5%), lighten(#28AA69, 5%));
+    color: lighten(#fff, 5%);
+  }
+  &:active,
+  &.active {
+    background: linear-gradient(to right, darken(#3CBEEF, 5%), darken(#28AA69, 5%));
+    color: lighten(#fff, 5%) !important;
+  }
+}
