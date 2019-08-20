@@ -34,3 +34,7 @@ HumHub Change Log (DEVELOP)
 - Enh: Added consistent user "sub" displayname handling
 - Enh: Added possibility to manage database settings via CLI
 - Fix: Force redirect to login instead 404 when guest access is disabled (thanks to Security Research Team, Datafarm Co.,Ltd.) 
+- Enh: Added "web" submodule for web specific features (e.g. security headers or PWA)
+- Enh: Added Progressive Web App (PWA) support
+- Enh: Added integrated page icon handling
+
