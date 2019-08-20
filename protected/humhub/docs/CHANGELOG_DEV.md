@@ -37,4 +37,4 @@ HumHub Change Log (DEVELOP)
 - Enh: Added "web" submodule for web specific features (e.g. security headers or PWA)
 - Enh: Added Progressive Web App (PWA) support
 - Enh: Added integrated page icon handling
-
+- Enh: Updated to Yii 2.0.16

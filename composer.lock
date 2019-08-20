@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56dcf0aea619605774048a139be3d10b",
+    "content-hash": "b98345739ef94093c1b9bfe5c20fec57",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -50,16 +50,16 @@
         },
         {
             "name": "bower-asset/jquery",
-            "version": "3.2.1",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jquery/jquery-dist.git",
-                "reference": "77d2a51d0520d2ee44173afdf4e40a9201f5964e"
+                "reference": "9e8ec3d10fad04748176144f108d7355662ae75e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/77d2a51d0520d2ee44173afdf4e40a9201f5964e",
-                "reference": "77d2a51d0520d2ee44173afdf4e40a9201f5964e"
+                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/9e8ec3d10fad04748176144f108d7355662ae75e",
+                "reference": "9e8ec3d10fad04748176144f108d7355662ae75e"
             },
             "type": "bower-asset",
             "license": [
@@ -2061,10 +2061,10 @@
         },
         {
             "name": "npm-asset/clipboard-polyfill",
-            "version": "2.8.1",
+            "version": "2.8.6",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/clipboard-polyfill/-/clipboard-polyfill-2.8.1.tgz"
+                "url": "https://registry.npmjs.org/clipboard-polyfill/-/clipboard-polyfill-2.8.6.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -3106,24 +3106,24 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.15",
+            "version": "2.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "e8e5bc894e19cf1e37084106a122da7062d7b179"
+                "reference": "789de9783d41e6ca10fffc3644a43a764f79b399"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/e8e5bc894e19cf1e37084106a122da7062d7b179",
-                "reference": "e8e5bc894e19cf1e37084106a122da7062d7b179",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/789de9783d41e6ca10fffc3644a43a764f79b399",
+                "reference": "789de9783d41e6ca10fffc3644a43a764f79b399",
                 "shasum": ""
             },
             "require": {
                 "bower-asset/inputmask": "~3.2.2 | ~3.3.5",
-                "bower-asset/jquery": "3.2.*@stable | 3.1.*@stable | 2.2.*@stable | 2.1.*@stable | 1.11.*@stable | 1.12.*@stable",
+                "bower-asset/jquery": "3.3.*@stable | 3.2.*@stable | 3.1.*@stable | 2.2.*@stable | 2.1.*@stable | 1.11.*@stable | 1.12.*@stable",
                 "bower-asset/punycode": "1.3.*",
                 "bower-asset/yii2-pjax": "~2.0.1",
-                "cebe/markdown": "~1.0.0 | ~1.1.0",
+                "cebe/markdown": "~1.0.0 | ~1.1.0 | ~1.2.0",
                 "ext-ctype": "*",
                 "ext-mbstring": "*",
                 "ezyang/htmlpurifier": "~4.6",
@@ -3152,48 +3152,48 @@
             "authors": [
                 {
                     "name": "Qiang Xue",
+                    "role": "Founder and project lead",
                     "email": "qiang.xue@gmail.com",
-                    "homepage": "http://www.yiiframework.com/",
-                    "role": "Founder and project lead"
+                    "homepage": "http://www.yiiframework.com/"
                 },
                 {
                     "name": "Alexander Makarov",
+                    "role": "Core framework development",
                     "email": "sam@rmcreative.ru",
-                    "homepage": "http://rmcreative.ru/",
-                    "role": "Core framework development"
+                    "homepage": "http://rmcreative.ru/"
                 },
                 {
                     "name": "Maurizio Domba",
-                    "homepage": "http://mdomba.info/",
-                    "role": "Core framework development"
+                    "role": "Core framework development",
+                    "homepage": "http://mdomba.info/"
                 },
                 {
                     "name": "Carsten Brandt",
+                    "role": "Core framework development",
                     "email": "mail@cebe.cc",
-                    "homepage": "http://cebe.cc/",
-                    "role": "Core framework development"
+                    "homepage": "http://cebe.cc/"
                 },
                 {
                     "name": "Timur Ruziev",
+                    "role": "Core framework development",
                     "email": "resurtm@gmail.com",
-                    "homepage": "http://resurtm.com/",
-                    "role": "Core framework development"
+                    "homepage": "http://resurtm.com/"
                 },
                 {
                     "name": "Paul Klimov",
-                    "email": "klimov.paul@gmail.com",
-                    "role": "Core framework development"
+                    "role": "Core framework development",
+                    "email": "klimov.paul@gmail.com"
                 },
                 {
                     "name": "Dmitry Naumenko",
-                    "email": "d.naumenko.a@gmail.com",
-                    "role": "Core framework development"
+                    "role": "Core framework development",
+                    "email": "d.naumenko.a@gmail.com"
                 },
                 {
                     "name": "Boudewijn Vahrmeijer",
+                    "role": "Core framework development",
                     "email": "info@dynasource.eu",
-                    "homepage": "http://dynasource.eu",
-                    "role": "Core framework development"
+                    "homepage": "http://dynasource.eu"
                 }
             ],
             "description": "Yii PHP Framework Version 2",
@@ -3202,7 +3202,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2018-03-20T12:41:23+00:00"
+            "time": "2019-01-30T23:54:16+00:00"
         },
         {
             "name": "yiisoft/yii2-authclient",
@@ -4314,16 +4314,16 @@
         },
         {
             "name": "codeception/phpunit-wrapper",
-            "version": "6.0.16",
+            "version": "6.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/phpunit-wrapper.git",
-                "reference": "299e3aece31489ed962e6c39fe2fb6f3bbd2eb16"
+                "reference": "4394f87d6f2b18bf67cc9984845d0a3e257ccc9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/phpunit-wrapper/zipball/299e3aece31489ed962e6c39fe2fb6f3bbd2eb16",
-                "reference": "299e3aece31489ed962e6c39fe2fb6f3bbd2eb16",
+                "url": "https://api.github.com/repos/Codeception/phpunit-wrapper/zipball/4394f87d6f2b18bf67cc9984845d0a3e257ccc9f",
+                "reference": "4394f87d6f2b18bf67cc9984845d0a3e257ccc9f",
                 "shasum": ""
             },
             "require": {
@@ -4356,7 +4356,7 @@
                 }
             ],
             "description": "PHPUnit classes used by Codeception",
-            "time": "2019-02-26T20:47:56+00:00"
+            "time": "2019-08-18T15:48:56+00:00"
         },
         {
             "name": "codeception/specify",
