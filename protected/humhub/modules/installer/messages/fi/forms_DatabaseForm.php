@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Hostname' => 'Isännännimi',
+  'Hostname' => 'Isäntäpalvelin',
   'Name of Database' => 'Tietokannan nimi',
   'Password' => 'Salasana',
   'Username' => 'Käyttäjätunnus',
