@@ -51,6 +51,10 @@ class ManifestController extends Controller
 
     private function handleIcons()
     {
+        if (!file_exists(SiteIcon::getPath())) {
+            return;
+        }
+
         $this->manifest['icons'] = [];
 
         foreach ([48, 72, 96, 192, 512] as $size) {

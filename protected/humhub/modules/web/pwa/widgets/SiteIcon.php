@@ -91,7 +91,8 @@ class SiteIcon extends Widget
         return null;
     }
 
-    private static function getPath($size = null)
+
+    public static function getPath($size = null)
     {
         return static::$iconFolderUrl . DIRECTORY_SEPARATOR . static::getFileName($size);
     }
@@ -109,6 +110,10 @@ class SiteIcon extends Widget
      */
     public static function registerMetaTags(View $view)
     {
+        if (!file_exists(static::getPath())) {
+            return;
+        }
+
         // Add Apple touch icons
         // https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html
         $view->registerLinkTag(['rel' => 'apple-touch-icon', 'href' => static::getUrl()]);
