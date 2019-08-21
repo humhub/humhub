@@ -5,7 +5,7 @@ Requirements
 Server Requirements
 -------------------
 * Shell access (e.g. ssh) to server  
-* PHP 5.6 - 7.2.x  (PHP 7.2+ is supported since HumHub 1.3)
+* PHP 7.1+
 * MySQL (5.5 or later) or MariaDB with utf8mb4 character set support and InnoDB storage engine installed
 * A minimum 500 MB of free disk space
 * A minimum 64 MB of memory allocated to PHP

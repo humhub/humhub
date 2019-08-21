@@ -44,16 +44,22 @@ class SelfTest
         // Checks PHP Version
         $title = 'PHP - Version - ' . PHP_VERSION;
 
-        if (version_compare(PHP_VERSION, '5.6', '>=')) {
+        if (version_compare(PHP_VERSION, '7.1', '>=')) {
             $checks[] = [
                 'title' => Yii::t('base', $title),
                 'state' => 'OK'
+            ];
+        } elseif (version_compare(PHP_VERSION, '7.0', '>=')) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'Minimum Version 7.1'
             ];
         } else {
             $checks[] = [
                 'title' => Yii::t('base', $title),
                 'state' => 'ERROR',
-                'hint' => 'Minimum 5.6'
+                'hint' => 'Minimum Version 7.1'
             ];
         }
 

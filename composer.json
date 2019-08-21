@@ -13,7 +13,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=5.6.0",
+        "php": ">=7.0.0",
         "npm-asset/animate.css": "*",
 	    "npm-asset/jquery-autosize": "1.*",
         "npm-asset/bluebird": "^3.3.5",
@@ -77,7 +77,7 @@
     "config": {
         "process-timeout": 1800,
         "platform": {
-            "php": "5.6"
+            "php": "7.0"
         },
         "vendor-dir": "protected/vendor",
         "sort-packages": true,
