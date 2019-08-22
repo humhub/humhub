@@ -2,8 +2,8 @@ HumHub Change Log
 =================
 
 
-1.3.15  (Unreleased)
---------------------
+1.3.15  (August 22, 2019)
+-------------------------
 
 - Fix #3587: New user tour broken on some template variants
 - Fix #3589: Reduced integrity check memory usage in Like/Comment module
