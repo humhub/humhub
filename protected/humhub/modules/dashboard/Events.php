@@ -8,9 +8,10 @@
 
 namespace humhub\modules\dashboard;
 
+use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\TopMenu;
 use Yii;
-use yii\helpers\Url;
-use humhub\modules\dashboard\widgets\ShareWidget;
+use yii\base\Event;
 
 /**
  * Description of Events
@@ -21,23 +22,24 @@ class Events
 {
 
     /**
-     * On build of the TopMenu, check if module is enabled
-     * When enabled add a menu item
+     * TopMenu init event callback
      *
-     * @param type $event
+     * @see TopMenu
+     * @param Event $event
      */
     public static function onTopMenuInit($event)
     {
+        /** @var TopMenu $topMenu */
+        $topMenu = $event->sender;
 
-        // Is Module enabled on this workspace?
-        $event->sender->addItem([
-            'label' => Yii::t('DashboardModule.base', 'Dashboard'),
+        $topMenu->addEntry(new MenuLink([
             'id' => 'dashboard',
-            'icon' => '<i class="fa fa-tachometer"></i>',
-            'url' => Url::toRoute('/dashboard/dashboard'),
+            'label' => Yii::t('DashboardModule.base', 'Dashboard'),
+            'url' => ['/dashboard/dashboard'],
+            'icon' => 'tachometer',
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'dashboard'),
-        ]);
+            'isActive' => MenuLink::isActiveState('dashboard')
+        ]));
     }
 
 }

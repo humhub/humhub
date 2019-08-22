@@ -8,8 +8,11 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\modules\ui\menu\MenuLink;
 use Yii;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\widgets\AdminMenu;
+use yii\web\HttpException;
 
 /**
  * IndexController is the admin section start point.
@@ -39,9 +42,16 @@ class IndexController extends Controller
      */
     public function actionIndex()
     {
-        $adminMenu = new \humhub\modules\admin\widgets\AdminMenu();
+        $adminMenu = new AdminMenu();
 
-		return $this->redirect($adminMenu->items[0]['url']);
+        /* @var $firstVisible MenuLink */
+        $firstVisible = $adminMenu->getFirstEntry(MenuLink::class, true);
+
+        if(!$firstVisible) {
+            throw new HttpException(403);
+        }
+
+		return $this->redirect($firstVisible->getUrl());
     }
 
 }

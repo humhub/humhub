@@ -8,17 +8,21 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\ui\menu\DropdownDivider;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\Menu;
 use Yii;
 use yii\helpers\Url;
-use humhub\widgets\BaseMenu;
+use humhub\modules\admin\widgets\AdminMenu;
 
 /**
  * AccountTopMenu Widget
  *
  * @author luke
  */
-class AccountTopMenu extends BaseMenu
+class AccountTopMenu extends Menu
 {
+    public $id = 'account-top-menu';
 
     /**
      * @var boolean show user name
@@ -40,50 +44,54 @@ class AccountTopMenu extends BaseMenu
         }
 
         $user = Yii::$app->user->getIdentity();
-        $this->addItem([
+
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('base', 'My profile'),
-            'icon' => '<i class="fa fa-user"></i>',
+            'icon' => 'user',
             'url' => $user->createUrl('/user/profile/home'),
-            'sortOrder' => 100,
-        ]);
-        $this->addItem([
+            'sortOrder' => 100]));
+
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('base', 'Account settings'),
-            'icon' => '<i class="fa fa-edit"></i>',
+            'icon' => 'edit',
             'url' => Url::toRoute('/user/account/edit'),
             'sortOrder' => 200,
-        ]);
+        ]));
 
-        if (\humhub\modules\admin\widgets\AdminMenu::canAccess()) {
-            $this->addItem([
-                'label' => '---',
-                'url' => '#',
-                'sortOrder' => 300,
-            ]);
+        if (AdminMenu::canAccess()) {
+            $this->addEntry(new DropdownDivider(['sortOrder' => 300]));
 
-            $this->addItem([
+
+            $this->addEntry(new MenuLink([
                 'label' => Yii::t('base', 'Administration'),
-                'icon' => '<i class="fa fa-cogs"></i>',
+                'icon' => 'cogs',
                 'url' => Url::toRoute('/admin'),
                 'sortOrder' => 400,
-            ]);
+            ]));
         }
 
-        $this->addItem([
-            'label' => '---',
-            'url' => '#',
-            'sortOrder' => 600,
-        ]);
+        $this->addEntry(new DropdownDivider(['sortOrder' => 600]));
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('base', 'Logout'),
             'id' => 'account-logout',
-            'icon' => '<i class="fa fa-sign-out"></i>',
-            'pjax' => false,
+            'icon' => 'sign-out',
+            'pjaxEnabled' => false,
             'url' => Url::toRoute('/user/auth/logout'),
             'sortOrder' => 700,
-        ]);
+        ]));
 
         parent::init();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAttributes()
+    {
+        return [
+            'class' => 'nav'
+        ];
     }
 
 }

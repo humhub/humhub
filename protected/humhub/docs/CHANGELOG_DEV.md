@@ -5,8 +5,6 @@ HumHub Change Log (DEVELOP)
 1.4
 ---
 
-Warning: The minimum required PHP version is now 7.1 
-
 - Enh: GroupPermissionManager - allow to query users by given permission
 - Enh: Automatic migrate DB collations from utf8 to utf8mb4
 - Enh: Added Icon widget as wrapper class 
@@ -41,3 +39,8 @@ Warning: The minimum required PHP version is now 7.1
 - Enh: Added integrated page icon handling
 - Enh: Updated to Yii 2.0.16
 - Enh: Raised minimum PHP Version to 7.1
+- Chng: New Menu and MenuEntry rendering
+- Enh: Added Icon abstraction `humhub\modules\ui\icon\widgets\Icon`
+- Enh: Added `humhub\libs\Html::addPjaxPrevention()` for link options
+- Enh: Added obj support for `humhub\libs\Sort`
+- Enh: Reorganized WallEntry context menu

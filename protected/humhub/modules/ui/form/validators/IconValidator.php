@@ -9,6 +9,7 @@
 namespace humhub\modules\ui\form\validators;
 
 use humhub\modules\ui\form\widgets\IconPicker;
+use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\validators\Validator;
 
@@ -30,7 +31,7 @@ class IconValidator extends Validator
     {
         $iconPicker = new IconPicker(['model' => $model, 'attribute' => $attribute]);
 
-        if (!in_array($model->$attribute, $iconPicker->getIcons())) {
+        if (!in_array($model->$attribute, Icon::$names)) {
             $this->addError($model, $attribute, Yii::t('UiModule.form', 'Invalid icon.'));
         }
     }

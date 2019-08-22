@@ -31,6 +31,7 @@ Basic Concepts
 * [Activities](activities.md)
 * [File Handling](files.md)
 * [Widgets](widgets.md)
+* [Menus and Navigations](menus.md)
 * [Snippets](snippet.md)
 * [Internationalization](i18n.md)
 

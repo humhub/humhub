@@ -9,13 +9,14 @@
 namespace humhub\modules\friendship\widgets;
 
 use Yii;
-use yii\helpers\Url;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\TabMenu;
 use humhub\modules\friendship\models\Friendship;
 
 /**
  * Account Settings Tab Menu
  */
-class ManageMenu extends \humhub\widgets\BaseMenu
+class ManageMenu extends TabMenu
 {
 
     /**
@@ -26,36 +27,32 @@ class ManageMenu extends \humhub\widgets\BaseMenu
     /**
      * @inheritdoc
      */
-    public $template = "@humhub/widgets/views/tabMenu";
-
-    /**
-     * @inheritdoc
-     */
     public function init()
     {
         $friendCount = Friendship::getFriendsQuery($this->user)->count();
-        $this->addItem([
+
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('FriendshipModule.base', 'Friends') . ' (' . $friendCount . ')',
-            'url' => Url::toRoute(['/friendship/manage/list']),
+            'url' => ['/friendship/manage/list'],
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->id == 'manage' && Yii::$app->controller->action->id == 'list'),
-        ]);
+            'isActive' => MenuLink::isActiveState(null, 'manage', 'list')
+        ]));
 
         $receivedRequestsCount = Friendship::getReceivedRequestsQuery($this->user)->count();
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('FriendshipModule.base', 'Requests') . ' (' . $receivedRequestsCount . ')',
-            'url' => Url::toRoute(['/friendship/manage/requests']),
+            'url' => ['/friendship/manage/requests'],
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->id == 'manage' && Yii::$app->controller->action->id == 'requests'),
-        ]);
+            'isActive' => MenuLink::isActiveState(null, 'manage', 'requests')
+        ]));
 
         $sentRequestsCount = Friendship::getSentRequestsQuery($this->user)->count();
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('FriendshipModule.base', 'Sent requests') . ' (' . $sentRequestsCount . ')',
-            'url' => Url::toRoute(['/friendship/manage/sent-requests']),
+            'url' => ['/friendship/manage/sent-requests'],
             'sortOrder' => 300,
-            'isActive' => (Yii::$app->controller->id == 'manage' && Yii::$app->controller->action->id == 'sent-requests'),
-        ]);
+            'isActive' => MenuLink::isActiveState(null, 'manage', 'sent-requests')
+        ]));
 
         parent::init();
     }

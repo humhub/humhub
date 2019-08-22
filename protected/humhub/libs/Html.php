@@ -109,4 +109,9 @@ class Html extends \yii\bootstrap\Html
             throw new InvalidArgumentException('Content container type not supported!');
         }
     }
+
+    public static function addPjaxPrevention(&$options)
+    {
+        $options['data-pjax-prevent'] = 1;
+    }
 }
