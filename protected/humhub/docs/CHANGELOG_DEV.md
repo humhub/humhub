@@ -47,4 +47,6 @@ HumHub Change Log (DEVELOP)
 - Enh: Added new configurable security module with nonce script support
 - Chng: Updated jQuery version to 3.4.0
 - Enh: Added `humhub\modules\user\controllers\AuthController::EVENT_AFTER_LOGIN` triggered after login success response is rendered
+- Enh: Make sure embedded video controls are enabled
+
 
