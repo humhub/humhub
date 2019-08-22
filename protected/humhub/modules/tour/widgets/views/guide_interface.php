@@ -5,7 +5,7 @@ use yii\helpers\Url;
 /* @var $this \humhub\modules\ui\view\components\View */
 ?>
 
-<script type="text/javascript">
+<script <?= \humhub\libs\Html::nonce() ?>>
     $(document).one('humhub:ready', function () {
         humhub.require('tour').start(
             {

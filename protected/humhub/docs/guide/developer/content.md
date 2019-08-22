@@ -174,7 +174,7 @@ if(!$model->content->canView()) {
 }
 ```
 
-## Content edit permission
+### Content Write Permission
 
 By default users can edit a content if one of the following conditions defined in `Content::canEdit()` are met:
 

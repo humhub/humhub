@@ -57,7 +57,7 @@ use yii\helpers\Url;
 </div>
 
 <?php if ($showWelcome) : ?>
-    <script type="text/javascript">
+    <script <?= \humhub\libs\Html::nonce() ?>>
 
         $(document).on('humhub:ready', function () {
 

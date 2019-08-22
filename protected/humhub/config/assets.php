@@ -49,6 +49,9 @@ return [
                     'humhub\assets\JuiBootstrapBridgeAsset'
                 ]
             ],
+            'yii\web\JqueryAsset' => [
+                'sourcePath' => '@npm/jquery/dist',
+            ],
         ]
     ],
 ];

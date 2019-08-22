@@ -44,3 +44,7 @@ HumHub Change Log (DEVELOP)
 - Enh: Added `humhub\libs\Html::addPjaxPrevention()` for link options
 - Enh: Added obj support for `humhub\libs\Sort`
 - Enh: Reorganized WallEntry context menu
+- Enh: Added new configurable security module with nonce script support
+- Chng: Updated jQuery version to 3.4.0
+- Enh: Added `humhub\modules\user\controllers\AuthController::EVENT_AFTER_LOGIN` triggered after login success response is rendered
+

@@ -11,8 +11,6 @@ File Overview
 - **console.log** - Configuration used in Console Application only
 - **dynamic.php** - Dynamic generated configuration - do not edit manually!
 
-
-
 Configuration file loading order
 ---------------------------------
 
@@ -62,19 +60,28 @@ Your tracking code can be managed under `Administration -> Settings -> Advanced 
 In order to send the tracking code in case of pjax page loads as well as full page loads, you have to add the following to your statistics code by the example of google analytics:
 
 
-```javascript
-$(document).on('pjax:end', function() {
-    ga('set', 'location', window.location.href);
-    ga('send', 'pageview');
-});
+```twig
+<script nonce="{{ nonce }}">
+    $(document).on('pjax:end', function() {
+        ga('set', 'location', window.location.href);
+        ga('send', 'pageview');
+    });
+</script>
 ```
 
 or by using the old ga version:
 
-```javascript
-$(document).on('pjax:end', function() {
-    if( window._gaq ) {
-        _gaq.push(['_trackPageview', window.location.href]);
-    }
-});
+```twig
+<script nonce="{{ nonce }}">
+    $(document).on('pjax:end', function() {
+        if( window._gaq ) {
+            _gaq.push(['_trackPageview', window.location.href]);
+        }
+    });
+</script>
 ```
+
+Please see [Single Page Application Tracking](https://developers.google.com/analytics/devguides/collection/analyticsjs/single-page-applications)
+for more information about google analytics configuration in single page application environments.
+
+> Note: Since HumHub 1.4 you should add the `nonce="{{ nonce }}` attribute to your script tag in order to be compatible with [csp nonces](security.md#security-configuration)

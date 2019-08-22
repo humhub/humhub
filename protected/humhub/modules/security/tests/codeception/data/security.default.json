@@ -1,0 +1,26 @@
+{
+  "headers": {
+    "Strict-Transport-Security": "max-age=31536000",
+    "X-XSS-Protection": "1",
+    "X-Content-Type-Options": "nosniff"
+  },
+  "csp": {
+    "nonce": false,
+    "report-only": false,
+    "default-src": {
+      "self": true
+    },
+    "script-src": {
+      "allow": [],
+      "self": true,
+      "unsafe-inline": true,
+      "unsafe-eval": false,
+      "report-sample": true
+    },
+    "style-src": {
+      "self": true,
+      "unsafe-inline": true
+    },
+    "upgrade-insecure-requests": false
+  }
+}

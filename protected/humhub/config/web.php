@@ -12,6 +12,13 @@ $config = [
     'defaultRoute' => '/home',
     'layoutPath' => '@humhub/views/layouts',
     'components' => [
+        'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'sourcePath' => '@npm/jquery/dist',
+                ],
+            ],
+        ],
         'request' => [
             'class' => \humhub\components\Request::class,
         ],

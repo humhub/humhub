@@ -94,7 +94,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
     <?= humhub\widgets\LanguageChooser::widget(); ?>
 </div>
 
-<script type="text/javascript">
+<script <?= \humhub\libs\Html::nonce() ?>>
     $(function () {
         // set cursor to login field
         $('#login_username').focus();

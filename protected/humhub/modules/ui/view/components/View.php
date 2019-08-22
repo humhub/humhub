@@ -135,8 +135,91 @@ class View extends \yii\web\View
      */
     public function registerJsFile($url, $options = [], $key = null)
     {
+        Html::setNonce($options);
         parent::registerJsFile($this->addCacheBustQuery($url), $options, $key);
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function renderBodyBeginHtml()
+    {
+        $lines = [];
+        if (!empty($this->js[self::POS_BEGIN])) {
+            $lines[] = Html::script(implode("\n", $this->js[self::POS_BEGIN]));
+        }
+
+        $this->js[self::POS_BEGIN] = null;
+
+        return parent::renderBodyBeginHtml() . (empty($lines) ? '' : implode("\n", $lines));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function renderBodyEndHtml($ajaxMode)
+    {
+        $lines = [];
+
+        if (!empty($this->jsFiles[self::POS_END])) {
+            $lines[] = implode("\n", $this->jsFiles[self::POS_END]);
+        }
+
+        if ($ajaxMode) {
+            $scripts = [];
+            if (!empty($this->js[self::POS_END])) {
+                $scripts[] = implode("\n", $this->js[self::POS_END]);
+            }
+            if (!empty($this->js[self::POS_READY])) {
+                $scripts[] = implode("\n", $this->js[self::POS_READY]);
+            }
+            if (!empty($this->js[self::POS_LOAD])) {
+                $scripts[] = implode("\n", $this->js[self::POS_LOAD]);
+            }
+            if (!empty($scripts)) {
+                $lines[] = Html::script(implode("\n", $scripts));
+            }
+        } else {
+            if (!empty($this->js[self::POS_END])) {
+                $lines[] = Html::script(implode("\n", $this->js[self::POS_END]));
+            }
+            if (!empty($this->js[self::POS_READY])) {
+                $js = "jQuery(function ($) {\n" . implode("\n", $this->js[self::POS_READY]) . "\n});";
+                $lines[] = Html::script($js);
+            }
+            if (!empty($this->js[self::POS_LOAD])) {
+                $js = "jQuery(window).on('load', function () {\n" . implode("\n", $this->js[self::POS_LOAD]) . "\n});";
+                $lines[] = Html::script($js);
+            }
+        }
+
+        return empty($lines) ? '' : implode("\n", $lines);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function renderHeadHtml()
+    {
+
+
+        if (!Yii::$app->request->isAjax) {
+            SiteIcon::registerMetaTags($this);
+            LayoutHeader::registerHeadTags($this);
+            parent::registerCsrfMetaTags();
+        }
+
+        $lines = [];
+
+        if (!empty($this->js[self::POS_HEAD])) {
+            $lines[] = Html::script(implode("\n", $this->js[self::POS_HEAD]));
+        }
+
+        $this->js[self::POS_HEAD] = null;
+
+        return parent::renderHeadHtml(). (empty($lines) ? '' : implode("\n", $lines));
+    }
+
 
     /**
      * @inheritdoc
@@ -166,20 +249,6 @@ class View extends \yii\web\View
         }
 
         return $url;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function renderHeadHtml()
-    {
-        if (!Yii::$app->request->isAjax) {
-            SiteIcon::registerMetaTags($this);
-            LayoutHeader::registerHeadTags($this);
-            parent::registerCsrfMetaTags();
-        }
-
-        return parent::renderHeadHtml();
     }
 
     public function setStatusMessage($type, $message)

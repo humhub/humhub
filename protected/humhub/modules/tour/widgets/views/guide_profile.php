@@ -8,7 +8,7 @@ $isAmind = Yii::$app->user->isAdmin();
 $nextUrl = $isAmind ? Url::to(['/admin/module/list-online', 'tour' => 'true']) : '';
 ?>
 
-<script type="text/javascript">
+<script <?= \humhub\libs\Html::nonce() ?>>
     $(document).one('humhub:ready', function () {
         humhub.require('tour').start(
             {

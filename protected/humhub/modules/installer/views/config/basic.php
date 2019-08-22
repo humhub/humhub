@@ -1,7 +1,7 @@
 <?php
 
 use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
+use humhub\libs\Html;
 ?>
 <div id="name-form" class="panel panel-default animated fadeIn">
 
@@ -24,18 +24,18 @@ use humhub\compat\CHtml;
 
         <hr>
 
-        <?php echo CHtml::submitButton(Yii::t('InstallerModule.views_config_basic', 'Next'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+        <?php echo Html::submitButton(Yii::t('InstallerModule.views_config_basic', 'Next'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
         <?php CActiveForm::end(); ?>
     </div>
 </div>
 
-<script type="text/javascript">
+<script <?= Html::nonce() ?>>
 
     $(function () {
         // set cursor to email field
         $('#ConfigBasicForm_name').focus();
-    })
+    });
 
     // Shake panel after wrong validation
 <?php if ($model->hasErrors()) { ?>

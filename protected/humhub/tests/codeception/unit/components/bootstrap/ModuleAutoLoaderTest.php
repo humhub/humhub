@@ -40,6 +40,7 @@ class ModuleAutoLoaderTest extends Unit
         'ui',
         'user',
         'ldap',
+        'security',
     ];
 
     /**

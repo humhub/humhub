@@ -1,0 +1,9 @@
+{
+    "id": "security",
+    "name": "security",
+    "description": "Basic security module",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}
