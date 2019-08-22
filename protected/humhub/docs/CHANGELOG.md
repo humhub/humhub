@@ -2,8 +2,8 @@ HumHub Change Log
 =================
 
 
-1.3.15  (Unreleased)
---------------------
+1.3.15  (August 22, 2019)
+-------------------------
 
 - Fix #3587: New user tour broken on some template variants
 - Fix #3589: Reduced integrity check memory usage in Like/Comment module
@@ -13,6 +13,8 @@ HumHub Change Log
 - Fix #3588: OEmbed CSS class not provided
 - Fix #3609: LDAP paging control limits max. users
 - Fix #3618: Some LDAP CLI commands requires a authClientId parameter 
+- Fix #3625: If user is following a space of which he is also a member, it shows up twice under "my spaces"
+- Fix #3626: SimpleStream reloads unexpected
 
 
 1.3.14  (June 26, 2019)
