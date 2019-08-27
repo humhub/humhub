@@ -78,6 +78,35 @@ use yii\helpers\Url; ?>
             </div>
         </div>
         <!-- end: second top navigation bar -->
+        <div id="bottombar" class="bottombar visible-xs">
+            <div class="container">
+                <div class="home">
+                    <?= \yii\helpers\Html::a(
+                            '<i class="fa fa-home"></i>',
+                            ['/dashboard/dashboard'],
+                            Yii::$app->requestedRoute == "dashboard/dashboard" ? ['class' => 'active'] : []); ?>
+                </div>
+                <div class="notifications">
+                    <?= \yii\helpers\Html::a(
+                        '<i class="fa fa-bell"></i>',
+                        ['/notification/overview'],
+                        Yii::$app->requestedRoute == "notification/overview" ? ['class' => 'active'] : []); ?>
+                </div>
+                <div class="messages">
+                    <?= \yii\helpers\Html::a(
+                        '<i class="fa fa-envelope"></i>',
+                        ['/mail/mail/index'],
+                        Yii::$app->requestedRoute == "mail/mail/index" ? ['class' => 'active'] : []); ?>
+                </div>
+                <div class="spaces">
+                    <?= \yii\helpers\Html::a(
+                        '<i class="fa fa-dot-circle-o"></i>',
+                        ['/directory/spaces'],
+                        Yii::$app->requestedRoute == "directory/spaces" ? ['class' => 'active'] : []); ?>
+                </div>
+            </div>
+
+        </div>
 
         <?= $content; ?>
 

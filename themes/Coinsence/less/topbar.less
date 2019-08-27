@@ -468,6 +468,32 @@
   }
 }
 
+#bottombar {
+  position: fixed;
+  line-height: 54px;
+  width: 100%;
+  background-color: #fff;
+  bottom: 0;
+  z-index: 1030;
+  border-top: solid 1px #e8e8e8;
+
+  .container {
+
+    display: flex;
+    justify-content: space-between;
+    line-height: 54px;
+
+    & > * {
+      display: inline-block;
+    }
+
+    li {
+      list-style: none;
+    }
+
+  }
+}
+
 // max-width
 
 @media (max-width: 767px) {
@@ -478,6 +504,9 @@
   #topbar-first .topbar-brand {
     display: inline-block;
     float: inherit;
+  }
+  #layout-content {
+    margin-bottom: 54px;
   }
 }
 
