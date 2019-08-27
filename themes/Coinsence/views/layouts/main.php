@@ -79,7 +79,7 @@ use yii\helpers\Url; ?>
         </div>
         <!-- end: second top navigation bar -->
         <div id="bottombar" class="bottombar visible-xs">
-            <div class="container">
+            <div class="container links">
                 <div class="home">
                     <?= \yii\helpers\Html::a(
                             '<i class="fa fa-home"></i>',
@@ -107,6 +107,31 @@ use yii\helpers\Url; ?>
             </div>
 
         </div>
+
+        <script>
+            $('body').on('click', '#bottombar .links a' ,function () {
+                $('#bottombar .links a').removeClass('active');
+                setTimeout(function () {
+                    console.log(window.location.pathname);
+                    switch (window.location.pathname) {
+                        case '/dashboard':
+                            $('#bottombar .links .home a').removeClass('active').addClass('active');
+                            break;
+                        case '/notification/overview':
+                            $('#bottombar .links .notifications a').removeClass('active').addClass('active');
+                            break;
+                        case '/mail/mail/index':
+                            $('#bottombar .links .messages a').removeClass('active').addClass('active');
+                            break;
+                        case '/directory/spaces':
+                            $('#bottombar .links .spaces a').removeClass('active').addClass('active');
+                            break;
+                        default:
+                            break;
+                    }
+                })
+            });
+        </script>
 
         <?= $content; ?>
 
