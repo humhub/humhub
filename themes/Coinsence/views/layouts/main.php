@@ -32,11 +32,11 @@ use yii\helpers\Url; ?>
                     <?= \humhub\widgets\SiteLogo::widget(); ?>
                 </div>
 
-                <div class="topbar-coins pull-right hidden-xs">
+                <div class="topbar-coins pull-right">
                     <?= \humhub\modules\xcoin\widgets\AssetAmount::widget() ?>
                 </div>
 
-                <div class="topbar-actions pull-right hidden-xs">
+                <div class="topbar-actions pull-right">
                     <?= \humhub\modules\user\widgets\AccountTopMenu::widget(); ?>
                 </div>
 
@@ -47,10 +47,6 @@ use yii\helpers\Url; ?>
                 <div class="spaces pull-right hidden-xs">
                     <!-- load space chooser widget -->
                     <?= \humhub\modules\space\widgets\Chooser::widget(); ?>
-                </div>
-
-                <div class="search-xs visible-xs pull-right">
-                    <?= \humhub\modules\search\widgets\SearchMenu::widget(); ?>
                 </div>
 
                 <div class="search hidden-xs">
@@ -104,6 +100,9 @@ use yii\helpers\Url; ?>
                         ['/directory/spaces'],
                         Yii::$app->requestedRoute == "directory/spaces" ? ['class' => 'active'] : []); ?>
                 </div>
+                <div class="search-xs visible-xs pull-right">
+                    <?= \humhub\modules\search\widgets\SearchMenu::widget(); ?>
+                </div>
             </div>
 
         </div>
@@ -112,7 +111,6 @@ use yii\helpers\Url; ?>
             $('body').on('click', '#bottombar .links a' ,function () {
                 $('#bottombar .links a').removeClass('active');
                 setTimeout(function () {
-                    console.log(window.location.pathname);
                     switch (window.location.pathname) {
                         case '/dashboard':
                             $('#bottombar .links .home a').removeClass('active').addClass('active');

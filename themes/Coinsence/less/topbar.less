@@ -500,6 +500,14 @@
 
 // max-width
 
+@media (max-width: 991px) {
+  #topbar-first .navbar-brand > img {
+    width: 144px;
+    height: 36px;
+    margin: 8px 0;
+  }
+}
+
 @media (max-width: 767px) {
   .topbar {
     padding-left: 0;
@@ -509,16 +517,13 @@
     display: inline-block;
     float: inherit;
   }
+  #topbar-first .navbar-brand > img {
+    width: 110px;
+    height: auto;
+    margin: 10px 0;
+  }
   #layout-content {
     margin-bottom: 54px;
-  }
-}
-
-@media (max-width: 991px) {
-  #topbar-first .navbar-brand > img {
-    width: 144px;
-    height: 36px;
-    margin: 8px 0;
   }
 }
 
