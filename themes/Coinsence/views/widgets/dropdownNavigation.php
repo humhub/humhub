@@ -12,7 +12,7 @@
     <?php if (count($items) == 0) continue; ?>
 
     <div class="btn-group dropdown-navigation">
-        <button type="button" class="btn btn-default-i dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="true">
             <?php if ($group['label'] != "") {
                 echo $group['label'];

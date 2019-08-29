@@ -100,14 +100,18 @@ use yii\helpers\Url; ?>
                         ['/directory/spaces'],
                         Yii::$app->requestedRoute == "directory/spaces" ? ['class' => 'active'] : []); ?>
                 </div>
-                <div class="search-xs visible-xs pull-right">
-                    <?= \humhub\modules\search\widgets\SearchMenu::widget(); ?>
+                <div class="search">
+                    <?= \yii\helpers\Html::a(
+                        '<i class="fa fa-search"></i>',
+                        ['/search/search/index'],
+                        Yii::$app->requestedRoute == "search/search/index" ? ['class' => 'active'] : []); ?>
                 </div>
             </div>
 
         </div>
 
         <script>
+            $('body').off('click', '#bottombar .links a');
             $('body').on('click', '#bottombar .links a' ,function () {
                 $('#bottombar .links a').removeClass('active');
                 setTimeout(function () {
@@ -123,6 +127,9 @@ use yii\helpers\Url; ?>
                             break;
                         case '/directory/spaces':
                             $('#bottombar .links .spaces a').removeClass('active').addClass('active');
+                            break;
+                        case '/search':
+                            $('#bottombar .links .search a').removeClass('active').addClass('active');
                             break;
                         default:
                             break;

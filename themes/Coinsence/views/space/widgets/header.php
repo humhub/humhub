@@ -174,8 +174,8 @@ if ($space->isAdmin()) {
                             [MembershipButton::class, ['space' => $space], ['sortOrder' => 20]],
                             [FollowButton::class, [
                                 'space' => $space,
-                                'followOptions' => ['class' => 'btn btn-primary'],
-                                'unfollowOptions' => ['class' => 'btn btn-info']
+                                'followOptions' => ['class' => 'btn btn-default'],
+                                'unfollowOptions' => ['class' => 'btn btn-default']
                             ],
                                 ['sortOrder' => 30]]
                         ]]);

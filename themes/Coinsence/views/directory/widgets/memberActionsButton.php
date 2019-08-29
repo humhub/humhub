@@ -12,8 +12,8 @@ use yii\helpers\Url;
 
 UserFollowButton::widget([
     'user' => $user,
-    'followOptions' => ['class' => 'btn btn-primary-i btn-sm'],
-    'unfollowOptions' => ['class' => 'btn btn-info-i btn-sm']
+    'followOptions' => ['class' => 'btn btn-default btn-sm'],
+    'unfollowOptions' => ['class' => 'btn btn-default btn-sm']
 ]);
 ?>
 
@@ -22,9 +22,9 @@ UserFollowButton::widget([
 if (!Yii::$app->user->isGuest && !$user->isCurrentUser() && Yii::$app->getModule('friendship')->getIsEnabled()) {
     $friendShipState = Friendship::getStateForUser(Yii::$app->user->getIdentity(), $user);
     if ($friendShipState === Friendship::STATE_NONE) {
-        echo Html::a('<i class="fa fa-user-plus"></i>&nbsp;&nbsp;' . Yii::t("FriendshipModule.base", "Add Friend"), Url::to(['/friendship/request/add', 'userId' => $user->id]), ['class' => 'btn btn-primary btn-sm','data-ui-loader' => '', 'data-method' => 'POST']);
+        echo Html::a('<i class="fa fa-user-plus"></i>&nbsp;&nbsp;' . Yii::t("FriendshipModule.base", "Add Friend"), Url::to(['/friendship/request/add', 'userId' => $user->id]), ['class' => 'btn btn-default btn-sm','data-ui-loader' => '', 'data-method' => 'POST']);
     } elseif ($friendShipState === Friendship::STATE_FRIENDS) {
-        echo Html::a('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t("FriendshipModule.base", "Friends"), $user->getUrl(), ['class' => 'btn btn-info btn-sm', 'data-ui-loader' => '']);
+        echo Html::a('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t("FriendshipModule.base", "Friends"), $user->getUrl(), ['class' => 'btn btn-default btn-sm', 'data-ui-loader' => '']);
     }
 }
 ?>

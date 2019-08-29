@@ -39,35 +39,6 @@
 }
 
 .btn-default {
-  background: @default;
-  color: @text-color-secondary !important;
-  &:hover,
-  &:focus {
-    background: darken(@default, 2%);
-    text-decoration: none;
-    color: @text-color-secondary;
-  }
-  &:active,
-  &.active {
-    outline: 0;
-    background: darken(@default, 5%);
-  }
-}
-
-.btn-default[disabled],
-.btn-default.disabled {
-  background: lighten(@default, 2%);
-  &:hover,
-  &:focus {
-    background: lighten(@default, 2%);
-  }
-  &:active,
-  &.active {
-    background: lighten(@default, 2%);
-  }
-}
-
-.btn-default-i {
   background: @btn-default-color-background;
   color: @btn-default-color-text;
   border: 1px solid @btn-default-color-border;
@@ -84,8 +55,8 @@
   }
 }
 
-.btn-default-i[disabled],
-.btn-default-i.disabled {
+.btn-default[disabled],
+.btn-default.disabled {
   background: lighten(@btn-default-color-background, 2%);
   &:hover,
   &:focus {
@@ -94,6 +65,36 @@
   &:active,
   &.active {
     background: lighten(@btn-default-color-background, 2%);
+  }
+}
+
+.btn-default-i {
+  background: @btn-default-i-color-background;
+  color: @btn-default-i-color-text;
+  border: 1px solid @btn-default-i-color-border;
+  &:hover,
+  &:focus {
+    background: darken(@btn-default-i-color-background, 2%);
+    text-decoration: none;
+    color: @btn-default-i-color-text;
+  }
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@btn-default-i-color-background, 5%);
+  }
+}
+
+.btn-default-i[disabled],
+.btn-default-i.disabled {
+  background: lighten(@btn-default-i-color-background, 2%);
+  &:hover,
+  &:focus {
+    background: lighten(@btn-default-i-color-background, 2%);
+  }
+  &:active,
+  &.active {
+    background: lighten(@btn-default-i-color-background, 2%);
   }
 }
 
