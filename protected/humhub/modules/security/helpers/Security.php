@@ -4,6 +4,7 @@
 namespace humhub\modules\security\helpers;
 
 
+use humhub\models\Setting;
 use Yii;
 use humhub\modules\security\models\SecuritySettings;
 
@@ -73,6 +74,10 @@ class Security
      */
     public static function getNonce($create = false)
     {
+        if(!Setting::isInstalled()) {
+            return null;
+        }
+
         $nonce = Yii::$app->session->get(static::SESSION_KEY_NONCE);
 
         if($create && !$nonce) {

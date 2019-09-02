@@ -9,6 +9,7 @@
 namespace humhub\modules\security;
 
 use humhub\controllers\ErrorController;
+use humhub\models\Setting;
 use humhub\modules\security\helpers\Security;
 use Yii;
 use yii\base\BaseObject;
@@ -27,7 +28,7 @@ class Events extends BaseObject
             return;
         }
 
-        $withCSP = !Yii::$app->request->isAjax && !(Yii::$app->controller instanceof ErrorController);
+        $withCSP = !Yii::$app->request->isAjax && Setting::isInstalled() && !(Yii::$app->controller instanceof ErrorController);
         Security::applyHeader($withCSP);
     }
 
