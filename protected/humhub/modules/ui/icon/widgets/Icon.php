@@ -800,7 +800,7 @@ class Icon extends \humhub\components\Widget
             }
         }
 
-        if($this->id) {
+        if($this->getId(false)) {
             $this->htmlOptions['id'] = $this->id;
         }
 
@@ -918,7 +918,7 @@ class Icon extends \humhub\components\Widget
     public function asArray()
     {
         return [
-            'id' => $this->id,
+            'id' => $this->getId(false),
             'name' => $this->name,
             'size' => $this->size,
             'fixedWidth' => $this->fixedWidth,
