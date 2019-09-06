@@ -27,7 +27,10 @@ class TourAsset extends AssetBundle
      */
     public $sourcePath = '@tour/resources';
 
-    public $publishOptions = ['forceCopy' => true];
+    /**
+     * @inheritdoc
+     */
+    public $publishOptions = ['forceCopy' => false];
 
     /**
      * @inheritdoc

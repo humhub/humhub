@@ -8,7 +8,7 @@
 
 namespace humhub\modules\admin\widgets;
 
-use humhub\modules\security\helpers\Security;
+use humhub\modules\web\security\helpers\Security;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 use Yii;

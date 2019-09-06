@@ -54,7 +54,7 @@ class Tour extends \humhub\components\Widget
             return $this->render('guide_spaces', []);
         } elseif ($currentModuleId == "user" && $currentControllerId == "profile") {
             return $this->render('guide_profile', []);
-        } elseif ($currentModuleId == "admin" && $currentControllerId == "module") {
+        } elseif ($currentModuleId == "marketplace" && $currentControllerId == "browse") {
             return $this->render('guide_administration', []);
         }
     }

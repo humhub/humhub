@@ -8,7 +8,7 @@
 
 namespace humhub\libs;
 
-use humhub\modules\security\helpers\Security;
+use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\InvalidArgumentException;
 use humhub\modules\content\components\ContentContainerActiveRecord;

@@ -8,20 +8,15 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\ui\menu\widgets\TabMenu;
 use Yii;
 use yii\helpers\Url;
 
 /**
  * Module Menu
  */
-class ModuleMenu extends \humhub\widgets\BaseMenu
+class ModuleMenu extends TabMenu
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $template = "@humhub/widgets/views/tabMenu";
-
     /**
      * @inheritDoc
      */

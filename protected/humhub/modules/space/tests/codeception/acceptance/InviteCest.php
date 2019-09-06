@@ -58,9 +58,9 @@ class InviteCest
         $I->waitForText('Accept Invite', null, '.controls-header');
 
         $I->click('.dropdown-toggle', '.controls-header');
-        $I->waitForText('Deny Invite', null,'.controls-header');
-        $I->click('Deny Invite');
-        $I->waitForElementVisible('.dashboard.active');
+        $I->waitForText('Decline Invite', null,'.controls-header');
+        $I->click('Decline Invite');
+        $I->waitForElementVisible('[data-menu-id="dashboard"].active');
 
         $I->amUser1(true);
         $I->seeInNotifications('Sara Tester declined your invite for the space Space 2');

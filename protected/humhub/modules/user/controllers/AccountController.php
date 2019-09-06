@@ -8,13 +8,13 @@
 
 namespace humhub\modules\user\controllers;
 
+use humhub\modules\user\authclient\interfaces\PrimaryClient;
 use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\user\components\BaseAccountController;
 use humhub\modules\user\models\User;
-use humhub\modules\notification\models\forms\NotificationSettings;
-use humhub\modules\user\controllers\ImageController;
+use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\user\models\forms\AccountDelete;
 use humhub\modules\space\models\Membership;
@@ -51,6 +51,7 @@ class AccountController extends BaseAccountController
 
     /**
      * Redirect to current users profile
+     * @throws \Throwable
      */
     public function actionIndex()
     {
@@ -63,9 +64,11 @@ class AccountController extends BaseAccountController
 
     /**
      * Edit Users Profile
+     * @throws \Throwable
      */
     public function actionEdit()
     {
+        /** @var User $user */
         $user = Yii::$app->user->getIdentity();
         $user->profile->scenario = 'editProfile';
 
@@ -100,6 +103,7 @@ class AccountController extends BaseAccountController
      */
     public function actionEditSettings()
     {
+        /** @var User $user */
         $user = Yii::$app->user->getIdentity();
 
         $model = new \humhub\modules\user\models\forms\AccountSettings();
@@ -139,6 +143,7 @@ class AccountController extends BaseAccountController
     /**
      * Change Account
      *
+     * @throws \Exception
      * @todo Add Group
      */
     public function actionSecurity()
@@ -188,7 +193,7 @@ class AccountController extends BaseAccountController
         }
         $clients = [];
         foreach (Yii::$app->get('authClientCollection')->getClients() as $client) {
-            if (!$client instanceof humhub\modules\user\authclient\BaseFormAuth && !$client instanceof \humhub\modules\user\authclient\interfaces\PrimaryClient) {
+            if (!$client instanceof BaseFormAuth && !$client instanceof PrimaryClient) {
                 $clients[] = $client;
             }
         }
@@ -221,10 +226,16 @@ class AccountController extends BaseAccountController
         return $this->render('editModules', ['user' => $user, 'availableModules' => $availableModules]);
     }
 
+    /**
+     * @return array|AccountController|\yii\console\Response|\yii\web\Response
+     * @throws HttpException
+     * @throws \Throwable
+     */
     public function actionEnableModule()
     {
         $this->forcePostRequest();
 
+        /** @var User $user */
         $user = Yii::$app->user->getIdentity();
         $moduleId = Yii::$app->request->get('moduleId');
 
@@ -234,16 +245,21 @@ class AccountController extends BaseAccountController
 
         if (!Yii::$app->request->isAjax) {
             return $this->redirect(['/user/account/edit-modules']);
-        } else {
-            Yii::$app->response->format = 'json';
-            return ['success' => true];
         }
+
+        return $this->asJson( ['success' => true]);
     }
 
+    /**
+     * @return array|AccountController|\yii\console\Response|\yii\web\Response
+     * @throws HttpException
+     * @throws \Throwable
+     */
     public function actionDisableModule()
     {
         $this->forcePostRequest();
 
+        /** @var User $user */
         $user = Yii::$app->user->getIdentity();
         $moduleId = Yii::$app->request->get('moduleId');
 
@@ -437,6 +453,8 @@ class AccountController extends BaseAccountController
      * accounts settings.
      *
      * @return User the user
+     * @throws HttpException
+     * @throws \Throwable
      */
     public function getUser()
     {

@@ -634,7 +634,7 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
             return true;
         }
 
-        unset($this->tags);
+        $this->refresh();
 
         $contentRelation = new ContentTagRelation($this, $tag);
         return $contentRelation->save();
