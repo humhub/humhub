@@ -31,7 +31,6 @@ class AdminMenu extends LeftNavigation
      */
     const SESSION_CAN_SEE_ADMIN_SECTION = 'user.canSeeAdminSection';
 
-    public $template = "@humhub/widgets/views/leftNavigation";
     public $type = "adminNavigation";
     public $id = "admin-menu";
 
