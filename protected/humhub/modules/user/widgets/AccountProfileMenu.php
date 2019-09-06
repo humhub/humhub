@@ -15,7 +15,7 @@ use humhub\modules\ui\menu\widgets\TabMenu;
 /**
  * Account Settings Tab Menu
  */
-class AccountProfilMenu extends TabMenu
+class AccountProfileMenu extends TabMenu
 {
 
     /**
@@ -30,23 +30,14 @@ class AccountProfilMenu extends TabMenu
             'isActive' => MenuLink::isActiveState('user', 'account', 'edit')
         ]));
 
-        if (Yii::$app->user->canChangeUsername()) {
-            $this->addItem([
-                'label' => Yii::t('UserModule.base', 'Change Username'),
-                'url' => Url::toRoute(['/user/account/change-username']),
-                'sortOrder' => 200,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && Yii::$app->controller->action->id == 'change-username'),
-            ]);
-        }
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('UserModule.base', 'Change Username'),
+            'url' => ['/user/account/change-username'],
+            'sortOrder' => 200,
+            'isActive' => MenuLink::isActiveState('user', 'account', 'change-username'),
+            'isVisible' => Yii::$app->user->canChangeUsername()
+        ]));
 
-        if (Yii::$app->user->canChangeEmail()) {
-            $this->addItem([
-                'label' => Yii::t('UserModule.base', 'Change Email'),
-                'url' => Url::toRoute(['/user/account/change-email']),
-                'sortOrder' => 300,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'user' && Yii::$app->controller->id == 'account' && (Yii::$app->controller->action->id == 'change-email' || Yii::$app->controller->action->id == 'change-email-validate')),
-            ]);
-        }
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.base', 'Change Email'),
             'url' => ['/user/account/change-email'],
@@ -73,23 +64,4 @@ class AccountProfilMenu extends TabMenu
 
         parent::init();
     }
-
-    /**
-     * Returns optional authclients
-     *
-     * @return \yii\authclient\ClientInterface[]
-     * @throws \yii\base\InvalidConfigException
-     */
-    protected function getSecondoaryAuthProviders()
-    {
-        $clients = [];
-        foreach (Yii::$app->get('authClientCollection')->getClients() as $client) {
-            if (!$client instanceof \humhub\modules\user\authclient\BaseFormAuth && !$client instanceof \humhub\modules\user\authclient\interfaces\PrimaryClient) {
-                $clients[] = $client;
-            }
-        }
-
-        return $clients;
-    }
-
 }
