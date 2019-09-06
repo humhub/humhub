@@ -1,12 +1,12 @@
 <?php
 
 
-namespace humhub\modules\security\helpers;
+namespace humhub\modules\web\security\helpers;
 
 
 use humhub\models\Setting;
 use Yii;
-use humhub\modules\security\models\SecuritySettings;
+use humhub\modules\web\security\models\SecuritySettings;
 
 class Security
 {

@@ -8,10 +8,11 @@
 
 namespace humhub\modules\web;
 
+use Yii;
+use humhub\modules\web\security\controllers\ReportController;
 use humhub\modules\web\pwa\controllers\ManifestController;
 use humhub\modules\web\pwa\controllers\OfflineController;
 use humhub\modules\web\pwa\controllers\ServiceWorkerController;
-use Yii;
 
 /**
  * This module provides general web components.
@@ -27,12 +28,18 @@ class Module extends \humhub\components\Module
     public $isCoreModule = true;
 
     /**
+     * @var mixed web security settings
+     */
+    public $security;
+
+    /**
      * @inheritdoc
      */
     public $controllerMap = [
         'pwa-manifest' => ManifestController::class,
         'pwa-offline' => OfflineController::class,
-        'pwa-service-worker' => ServiceWorkerController::class
+        'pwa-service-worker' => ServiceWorkerController::class,
+        '/web/security/report' => ReportController::class
     ];
 
     /**

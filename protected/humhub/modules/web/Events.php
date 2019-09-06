@@ -8,6 +8,11 @@
 
 namespace humhub\modules\web;
 
+use Yii;
+use humhub\controllers\ErrorController;
+use humhub\models\Setting;
+use humhub\modules\web\security\helpers\Security;
+
 /**
  * Event Handling Callbacks
  *
@@ -15,5 +20,19 @@ namespace humhub\modules\web;
  */
 class Events
 {
+    public static function onBeforeAction($evt)
+    {
+        if(Yii::$app->request->isConsoleRequest) {
+            return;
+        }
 
+        $withCSP = !Yii::$app->request->isAjax && Setting::isInstalled() && !(Yii::$app->controller instanceof ErrorController);
+        Security::applyHeader($withCSP);
+    }
+
+    public static function onAfterLogin($evt)
+    {
+        // Make sure a new nonce is generated after login
+        Security::setNonce(null);
+    }
 }

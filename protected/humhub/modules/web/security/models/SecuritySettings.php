@@ -1,15 +1,15 @@
 <?php
 
-namespace humhub\modules\security\models;
+namespace humhub\modules\web\security\models;
 
-use humhub\modules\security\helpers\Security;
+use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\helpers\Json;
 use yii\helpers\Url;
-use humhub\modules\security\helpers\CSPBuilder;
-use humhub\modules\security\Module;
+use humhub\modules\web\security\helpers\CSPBuilder;
+use humhub\modules\web\security\Module;
 
 
 /**
@@ -30,7 +30,7 @@ use humhub\modules\security\Module;
  *
  * > Note: This class is not responsible for actually setting the header values
  *
- * @package humhub\modules\security\models
+ * @package humhub\modules\web\security\models
  * @since 1.4
  */
 class SecuritySettings extends Model
@@ -49,7 +49,6 @@ class SecuritySettings extends Model
     const HEADER_X_PERMITTED_CROSS_DOMAIN_POLICIES = 'X-Permitted-Cross-Domain-Policies';
 
     const HEADER_PUBLIC_KEY_PINS = 'Public-Key-Pins';
-    const CACHE_KEY = 'security_rules';
 
     const CSP_SECTION_REPORT_ONLY = 'csp-report-only';
 
@@ -88,10 +87,7 @@ class SecuritySettings extends Model
      */
     public function init()
     {
-        if (!static::$rules) {
-            $this->loadRules();
-        }
-
+        static::$rules = Yii::$app->getModule('web')->security;
         $this->initCSP();
     }
 
@@ -109,45 +105,8 @@ class SecuritySettings extends Model
         $this->csp = CSPBuilder::fromArray(static::$rules[$this->cspSection]);
 
         if($this->isCspReportEnabled()) {
-            $this->csp->setReportUri(Url::toRoute('/security/report/index'));
+            $this->csp->setReportUri(Url::toRoute('/web/security/report/index'));
         }
-    }
-
-    public static function flushCache()
-    {
-        static::$rules = null;
-    }
-
-    /**
-     * @throws InvalidConfigException
-     * @throws \Exception
-     */
-    private function loadRules()
-    {
-        static::$rules = Yii::$app->cache->get(static::CACHE_KEY);
-
-        if(static::$rules) {
-           return static::$rules;
-        }
-        $configFile = $this->getConfigFilePath();
-
-        try {
-            static::$rules = Json::decode(file_get_contents($configFile));
-            Yii::$app->cache->set(static::CACHE_KEY, static::$rules);
-        } catch (\Exception $e) {
-            throw new InvalidConfigException(Yii::t('SecurityModule.error', 'Could not parse security file at {path}!', ['path' => $configFile]));
-        }
-    }
-
-    /**
-     * @return bool|string
-     * @throws InvalidConfigException
-     */
-    private function getConfigFilePath()
-    {
-        /** @var $module Module */
-        $module = Yii::$app->getModule('security');
-        return $module->getConfigFilePath();
     }
 
     /**

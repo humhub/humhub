@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\security\helpers;
+namespace humhub\modules\web\security\helpers;
 
 use Psr\Http\Message\MessageInterface;
 
@@ -14,7 +14,7 @@ use Psr\Http\Message\MessageInterface;
  *  - Added rtrim to compile to remove tailing ;
  *  - Added report-sample support
  *
- * @package humhub\modules\security\helpers
+ * @package humhub\modules\web\security\helpers
  */
 class CSPBuilder
 {

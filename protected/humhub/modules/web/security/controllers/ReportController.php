@@ -1,9 +1,9 @@
 <?php
 
-namespace humhub\modules\security\controllers;
+namespace humhub\modules\web\security\controllers;
 
 use humhub\components\Controller;
-use humhub\modules\security\models\SecuritySettings;
+use humhub\modules\web\security\models\SecuritySettings;
 use Yii;
 
 class ReportController extends Controller
@@ -16,8 +16,6 @@ class ReportController extends Controller
     public function actionIndex()
     {
         Yii::$app->response->statusCode = 204;
-
-        $settings = new SecuritySettings();
 
         if(!SecuritySettings::isReportingEnabled()) {
             return;

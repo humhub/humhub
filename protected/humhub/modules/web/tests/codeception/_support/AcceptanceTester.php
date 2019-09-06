@@ -1,5 +1,5 @@
 <?php
-namespace security;
+namespace web;
 
 /**
  * Inherited Methods
@@ -16,10 +16,10 @@ namespace security;
  *
  * @SuppressWarnings(PHPMD)
 */
-class FunctionalTester extends \FunctionalTester
+class AcceptanceTester extends \AcceptanceTester
 {
-    use _generated\FunctionalTesterActions;
-    
+    use _generated\AcceptanceTesterActions;
+
    /**
     * Define custom actions here
     */

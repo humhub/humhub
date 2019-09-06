@@ -5,9 +5,9 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace security\acceptance;
+namespace web\acceptance;
 
-use security\AcceptanceTester;
+use web\AcceptanceTester;
 
 class NonceCest
 {

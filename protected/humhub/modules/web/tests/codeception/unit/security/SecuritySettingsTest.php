@@ -1,42 +1,20 @@
 <?php
 
-namespace tests\codeception\unit\modules\security\components;
+namespace tests\codeception\unit\modules\web\security;
 
+use web\WebSecurityTest;
 use Yii;
 use humhub\libs\Html;
-use humhub\modules\security\helpers\Security;
-use humhub\modules\security\Module;
-use humhub\modules\security\models\SecuritySettings;
-use tests\codeception\_support\HumHubDbTestCase;
+use humhub\modules\web\Module;
+use humhub\modules\web\security\helpers\Security;
+use humhub\modules\web\security\models\SecuritySettings;
+use yii\helpers\Json;
 
-class SecuritySettingsTest extends HumHubDbTestCase
+class SecuritySettingsTest extends WebSecurityTest
 {
-
-    /**
-     * @return Module
-     */
-    public function _before()
-    {
-        parent::_before();
-
-        /** @var $module Module */
-        $module = Yii::$app->getModule('security');
-        $module->configPath = '@security/tests/codeception/data';
-        SecuritySettings::flushCache();
-        Security::setNonce(null);
-    }
-
-    private function setConfigFile($file)
-    {
-        /** @var $module Module */
-        $module = Yii::$app->getModule('security');
-        $module->customConfigFile = $file;
-    }
-
     public function testDefaultConfig()
     {
-
-        $this->setConfigFile('doesnotexist.json');
+        $this->setConfigFile('security.default.json');
         $settings = new SecuritySettings();
         $this->assertEquals('max-age=31536000', $settings->getHeader('Strict-Transport-Security'));
         $this->assertEquals('1', $settings->getHeader('X-XSS-Protection'));
@@ -57,6 +35,7 @@ class SecuritySettingsTest extends HumHubDbTestCase
 
     public function testNonceConfig()
     {
+        $this->setConfigFile('security.strict.json');
         $settings = new SecuritySettings();
         $this->assertTrue($settings->isNonceSupportActive());
 

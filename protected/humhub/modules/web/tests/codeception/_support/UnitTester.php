@@ -1,5 +1,5 @@
 <?php
-namespace security;
+namespace web;
 
 /**
  * Inherited Methods
