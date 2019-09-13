@@ -2,6 +2,12 @@ HumHub Change Log
 =================
 
 
+1.3.16  (Unreleased)
+-------------------------
+
+- Fix #3647: GroupID field is not translatable in Registration Form
+
+
 1.3.15  (August 22, 2019)
 -------------------------
 
