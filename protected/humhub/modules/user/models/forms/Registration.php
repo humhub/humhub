@@ -182,6 +182,7 @@ class Registration extends HForm
             'type' => 'form',
             'elements' => [
                 'group_id' => [
+                    'label' => Yii::t('UserModule.controllers_AuthController', 'Group'),
                     'type' => $groupFieldType,
                     'class' => 'form-control',
                     'items' => ArrayHelper::map($groupModels, 'id', 'name'),
