@@ -105,7 +105,8 @@
 
 // mail send btn override
 
-.btn.btn-info[data-action-click-url*="/mail/mail"] {
+.btn[data-action-click-url*="/mail/mail"],
+.btn[href*="/mail/mail"] {
   background: @btn-default-color-background !important;
   color: @btn-default-color-text !important;
   border: 1px solid @btn-default-color-border !important;
@@ -122,8 +123,10 @@
   }
 }
 
-.btn.btn-info[data-action-click-url*="/mail/mail"][disabled],
-.btn.btn-info[data-action-click-url*="/mail/mail"].disabled {
+.btn[data-action-click-url*="/mail/mail"][disabled],
+.btn[data-action-click-url*="/mail/mail"].disabled,
+.btn[href*="/mail/mail"][disabled],
+.btn[href*="/mail/mail"].disabled {
   background: lighten(@btn-default-color-background, 2%) !important;
   &:hover,
   &:focus {
