@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
@@ -13,7 +14,7 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
         <div class="modal-header">
             <h4 class="modal-title"
                 id="myModalLabel">
-                    <?php echo Yii::t('TourModule.views_tour_welcome', 'Howdy <strong>%firstname%</strong>, thank you for using HumHub.', ['%firstname%' => $user->profile->firstname]); ?>
+                    <?php echo Yii::t('TourModule.views_tour_welcome', 'Howdy <strong>%firstname%</strong>, thank you for using %community%.', ['%firstname%' => $user->profile->firstname, '%community%' => Html::encode(Yii::$app->name)]); ?>
             </h4>
         </div>
         <div class="modal-body">

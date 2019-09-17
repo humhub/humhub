@@ -49,5 +49,6 @@ HumHub Change Log (DEVELOP)
 - Enh: Added `humhub\modules\user\controllers\AuthController::EVENT_AFTER_LOGIN` triggered after login success response is rendered
 - Enh: Make sure embedded video controls are enabled
 - Fix #3404 Richtext `Heading` text not translatable
+- Fix #3642 Welcome tour not using community name
 
 
