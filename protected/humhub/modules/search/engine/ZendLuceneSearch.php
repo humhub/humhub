@@ -200,6 +200,43 @@ class ZendLuceneSearch extends Search
         return $resultSet;
     }
 
+    // TODO: cleanup function from unnecessary variables
+    public function find_all($keyword, array $options)
+    {
+        $options = $this->setDefaultFindOptions($options);
+
+        $index = $this->getIndex();
+        $keyword = str_replace(['*', '?', '_', '$', '-', '.', '\'', '+', '&&', '||', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', ':', '\\'], ' ', mb_strtolower($keyword, 'utf-8'));
+
+        $query = $this->buildQuery($keyword, $options);
+        if ($query === null) {
+            return new SearchResultSet();
+        }
+
+        if (!isset($options['sortField']) || $options['sortField'] == '') {
+            $hits = new \ArrayObject($index->find($query));
+        } else {
+            $hits = new \ArrayObject($index->find($query, $options['sortField']));
+        }
+
+        $resultSet = new SearchResultSet();
+        $resultSet->total = count($hits);
+
+        $hits = new \LimitIterator($hits->getIterator());
+        foreach ($hits as $hit) {
+            $document = $hit->getDocument();
+
+            $result = new SearchResult();
+            $result->model = $document->getField('model')->getUtf8Value();
+            $result->pk = $document->getField('pk')->getUtf8Value();
+            $result->type = $document->getField('type')->getUtf8Value();
+
+            $resultSet->results[] = $result;
+        }
+
+        return $resultSet;
+    }
+
     /**
      * Returns the lucence search query
      *

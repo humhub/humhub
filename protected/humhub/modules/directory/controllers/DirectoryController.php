@@ -10,6 +10,8 @@ namespace humhub\modules\directory\controllers;
 
 use humhub\modules\directory\components\UserPostsStreamAction;
 use humhub\modules\directory\components\Controller;
+use humhub\modules\search\libs\SearchResult;
+use humhub\modules\search\libs\SearchResultSet;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
@@ -134,16 +136,70 @@ class DirectoryController extends Controller
         $keyword = Yii::$app->request->get('keyword', '');
         $page = (int) Yii::$app->request->get('page', 1);
 
-        $searchResultSet = Yii::$app->search->find($keyword, [
+//        $searchResultSet = Yii::$app->search->find($keyword, [
+//            'model' => Space::class,
+//            'page' => $page,
+//            'sortField' => ($keyword == '') ? 'title' : null,
+//            'pageSize' => $this->module->pageSize,
+//        ]);
+
+        $searchResultNoPaginationSet = Yii::$app->search->find_all($keyword, [
             'model' => Space::class,
-            'page' => $page,
             'sortField' => ($keyword == '') ? 'title' : null,
-            'pageSize' => $this->module->pageSize,
         ]);
 
+        $spacesCurrentUserInSearchResult = [];
+        $spacesCurrentUserNotInSearchResult = [];
+
+        foreach ($searchResultNoPaginationSet->getResultInstances() as $searchResultInstance) {
+
+            if ($searchResultInstance instanceof Space) {
+                if ($searchResultInstance->isMember()) {
+
+                    $result = new SearchResult();
+                    $result->type = 'space';
+                    $result->model = 'humhub\modules\space\models\Space';
+                    $result->pk = $searchResultInstance->id;
+
+                    $spacesCurrentUserInSearchResult[] = $result;
+                }
+                else {
+                    $result = new SearchResult();
+                    $result->type = 'space';
+                    $result->model = 'humhub\modules\space\models\Space';
+                    $result->pk = $searchResultInstance->id;
+
+                    $spacesCurrentUserNotInSearchResult[] = $result;
+                }
+            }
+
+        }
+
+        $searchResultSetSortedByMembership = array_merge($spacesCurrentUserInSearchResult, $spacesCurrentUserNotInSearchResult);
+
+        $hits = new \ArrayObject($searchResultSetSortedByMembership);
+
+        $resultSet = new SearchResultSet();
+        $resultSet->total = count($hits);
+        $resultSet->pageSize = $this->module->pageSize;
+        $resultSet->page = $page;
+
+        $hits = new \LimitIterator($hits->getIterator(), ($page - 1) * $this->module->pageSize, $this->module->pageSize);
+
+        foreach ($hits as $hit) {
+
+            $resultSet->results[] = $hit;
+
+        }
+
+//        $pagination = new Pagination([
+//                'totalCount' => $searchResultSet->total,
+//                'pageSize' => $searchResultSet->pageSize
+//        ]);
+
         $pagination = new Pagination([
-                'totalCount' => $searchResultSet->total,
-                'pageSize' => $searchResultSet->pageSize
+            'totalCount' => $resultSet->total,
+            'pageSize' => $resultSet->pageSize
         ]);
 
         Event::on(Sidebar::class, Sidebar::EVENT_INIT, function ($event) {
@@ -151,10 +207,16 @@ class DirectoryController extends Controller
             $event->sender->addWidget(SpaceStatistics::class, [], ['sortOrder' => 20]);
         });
 
+//        return $this->render('spaces', [
+//                    'keyword' => $keyword,
+//                    'spaces' => $searchResultSet->getResultInstances(),
+//                    'pagination' => $pagination,
+//        ]);
+
         return $this->render('spaces', [
-                    'keyword' => $keyword,
-                    'spaces' => $searchResultSet->getResultInstances(),
-                    'pagination' => $pagination,
+            'keyword' => $keyword,
+            'spaces' => $resultSet->getResultInstances(),
+            'pagination' => $pagination,
         ]);
     }
 

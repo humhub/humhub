@@ -76,36 +76,29 @@ use yii\helpers\Url; ?>
         <!-- end: second top navigation bar -->
         <div id="bottombar" class="bottombar visible-xs">
             <div class="container links">
-                <div class="home">
-                    <?= \yii\helpers\Html::a(
-                            '<i class="fa fa-home"></i>',
-                            ['/dashboard/dashboard'],
-                            Yii::$app->requestedRoute == "dashboard/dashboard" ? ['class' => 'active'] : []); ?>
-                </div>
-                <div class="notifications">
-                    <?= \yii\helpers\Html::a(
-                        '<i class="fa fa-bell"></i>',
-                        ['/notification/overview'],
-                        Yii::$app->requestedRoute == "notification/overview" ? ['class' => 'active'] : []); ?>
-                </div>
-                <div class="messages">
-                    <?= \yii\helpers\Html::a(
-                        '<i class="fa fa-envelope"></i>',
-                        ['/mail/mail/index'],
-                        Yii::$app->requestedRoute == "mail/mail/index" ? ['class' => 'active'] : []); ?>
-                </div>
-                <div class="spaces">
-                    <?= \yii\helpers\Html::a(
-                        '<i class="fa fa-dot-circle-o"></i>',
-                        ['/directory/spaces'],
-                        Yii::$app->requestedRoute == "directory/spaces" ? ['class' => 'active'] : []); ?>
-                </div>
-                <div class="search">
-                    <?= \yii\helpers\Html::a(
-                        '<i class="fa fa-search"></i>',
-                        ['/search/search/index'],
-                        Yii::$app->requestedRoute == "search/search/index" ? ['class' => 'active'] : []); ?>
-                </div>
+                <?= \yii\helpers\Html::a(
+                    '<i class="fa fa-home"></i>',
+                    ['/dashboard/dashboard'],
+                    Yii::$app->requestedRoute == "dashboard/dashboard" ? [ 'class' => ['active', 'home'] ] : ['class' => 'home']); ?>
+                <?= \yii\helpers\Html::a(
+                    '<i class="fa fa-bell"></i>',
+                    ['/notification/overview'],
+                    Yii::$app->requestedRoute == "notification/overview" ? [ 'class' => ['active', 'notifications'] ] : ['class' => 'notifications']); ?>
+                <?= \yii\helpers\Html::a(
+                    '<i class="fa fa-envelope"></i>',
+                    ['/mail/mail/index'],
+                    Yii::$app->requestedRoute == "mail/mail/index" ? ['class' => ['active', 'messages'] ] : ['class' => 'messages']); ?>
+
+                <?= \yii\helpers\Html::a(
+                    '<i class="fa fa-dot-circle-o"></i>',
+                    ['/directory/spaces'],
+                    Yii::$app->requestedRoute == "directory/spaces" ? [ 'class' => ['active', 'spaces'] ] : ['class' => 'spaces']); ?>
+
+
+                <?= \yii\helpers\Html::a(
+                    '<i class="fa fa-search"></i>',
+                    ['/search/search/index'],
+                    Yii::$app->requestedRoute == "search/search/index" ? [ 'class' => ['active', 'search'] ] : ['class' => 'search']); ?>
             </div>
 
         </div>
@@ -117,19 +110,19 @@ use yii\helpers\Url; ?>
                 setTimeout(function () {
                     switch (window.location.pathname) {
                         case '/dashboard':
-                            $('#bottombar .links .home a').removeClass('active').addClass('active');
+                            $('#bottombar .links .home').removeClass('active').addClass('active');
                             break;
                         case '/notification/overview':
-                            $('#bottombar .links .notifications a').removeClass('active').addClass('active');
+                            $('#bottombar .links .notifications').removeClass('active').addClass('active');
                             break;
                         case '/mail/mail/index':
-                            $('#bottombar .links .messages a').removeClass('active').addClass('active');
+                            $('#bottombar .links .messages').removeClass('active').addClass('active');
                             break;
                         case '/directory/spaces':
-                            $('#bottombar .links .spaces a').removeClass('active').addClass('active');
+                            $('#bottombar .links .spaces').removeClass('active').addClass('active');
                             break;
                         case '/search':
-                            $('#bottombar .links .search a').removeClass('active').addClass('active');
+                            $('#bottombar .links .search').removeClass('active').addClass('active');
                             break;
                         default:
                             break;
