@@ -616,7 +616,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      * @param \humhub\modules\user\models\User $user
      * @return boolean
      */
-    public function is(User $user)
+    public function is(User $user = null)
     {
         if (!$user) {
             return false;

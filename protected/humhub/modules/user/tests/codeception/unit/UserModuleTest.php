@@ -1,16 +1,11 @@
 <?php
 
-namespace tests\codeception\unit;
+namespace tests\codeception\unit\models;
 
-use humhub\commands\CronController;
-use humhub\commands\IntegrityController;
-use humhub\modules\user\Events;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use humhub\modules\user\permissions\ViewAboutPage;
 use tests\codeception\_support\HumHubDbTestCase;
-use Yii;
-use yii\base\Event;
 
 class UserModuleTest extends HumHubDbTestCase
 {
@@ -41,17 +36,5 @@ class UserModuleTest extends HumHubDbTestCase
         $this->assertEquals([
             '/^$/' => 'test'
         ], $module->getPasswordStrength());
-    }
-
-    public function testModuleEvents()
-    {
-        Yii::$app->search->rebuild();
-
-        Events::onIntegrityCheck((new Event([
-            'name' => IntegrityController::EVENT_ON_RUN,
-            'sender' => new IntegrityController('integrity', Yii::$app)])
-        ));
-
-        Events::onHourlyCron((new Event(['name' => CronController::EVENT_ON_HOURLY_RUN])));
     }
 }

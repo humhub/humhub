@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\codeception\unit\Models;
+namespace tests\codeception\unit\models;
 
 use humhub\modules\user\models\ProfileFieldCategory;
 use tests\codeception\_support\HumHubDbTestCase;

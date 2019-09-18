@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\codeception\unit\Models;
+namespace tests\codeception\unit\models;
 
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Invite;

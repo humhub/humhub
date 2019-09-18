@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\codeception\unit\Models;
+namespace tests\codeception\unit\models;
 
 use humhub\modules\user\models\fieldtype\Number;
 use humhub\modules\user\models\fieldtype\Text;
