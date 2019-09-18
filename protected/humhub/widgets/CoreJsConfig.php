@@ -8,6 +8,7 @@
 
 namespace humhub\widgets;
 
+use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Url;
@@ -219,6 +220,16 @@ class CoreJsConfig extends Widget
                         'text' => [
                             'readMore' => Yii::t('PostModule.widgets_views_post', 'Read full post...'),
                             'readLess' => Yii::t('PostModule.widgets_views_post', 'Collapse'),
+                        ]
+                    ],
+                    'ui.panel' => [
+                        'text' => [
+                            'expand' => Yii::t('base', 'Expand'),
+                            'collapse' => Yii::t('base', 'Collapse')
+                        ],
+                        'icon' => [
+                            'up' => Icon::get('minus-square')->asString(),
+                            'down' => Icon::get('plus-square')->asString(),
                         ]
                     ],
                     'content' => [

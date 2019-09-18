@@ -937,6 +937,15 @@ class Icon extends \humhub\components\Widget
      * @return string
      * @throws \Exception
      */
+    public function asString()
+    {
+        return $this->__toString();
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function __toString()
     {
         $result = $this::widget($this->asArray());
