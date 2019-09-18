@@ -6,11 +6,11 @@
 
 humhub.module('ui.panel', function(module, require, $) {
 
-    let Widget = require('ui.widget').Widget;
+    var Widget = require('ui.widget').Widget;
 
-    let PanelMenu = Widget.extend();
+    var PanelMenu = Widget.extend();
 
-    let STATE_COLLAPSED = 'collapsed';
+    var STATE_COLLAPSED = 'collapsed';
 
     PanelMenu.prototype.init = function() {
         this.$panel = this.$.closest('.panel');
@@ -31,22 +31,22 @@ humhub.module('ui.panel', function(module, require, $) {
     };
 
     PanelMenu.prototype.getKey = function() {
-        let panelId = this.$panel.attr('id');
+        var panelId = this.$panel.attr('id');
         return (!panelId || !panelId.length) ? null : 'pm_'+this.$panel.attr('id');
     };
 
     PanelMenu.prototype.checkToggleLinkState = function() {
-        let isCollapsed = this.$body.is(':visible');
+        var isCollapsed = this.$body.is(':visible');
 
-        let icon = (isCollapsed)
+        var icon = (isCollapsed)
             ? module.config.icon.up
             : module.config.icon.down;
 
-        let text = (isCollapsed)
+        var text = (isCollapsed)
             ? module.text('collapse')
             : module.text('expand');
 
-        let $collapseLink = this.$.find('.panel-collapse').html( icon + ' ' + text);
+        var $collapseLink = this.$.find('.panel-collapse').html( icon + ' ' + text);
 
         if(isCollapsed) {
             $collapseLink.addClass('panel-collapsed');
@@ -56,7 +56,7 @@ humhub.module('ui.panel', function(module, require, $) {
     };
 
     PanelMenu.prototype.toggle = function(evt) {
-        let that = this;
+        var that = this;
         if(this.$body.is(':visible')) {
             this.$body.slideUp("fast", function () {
                 localStorage.setItem(that.getKey(), STATE_COLLAPSED);
