@@ -13,6 +13,7 @@ HumHub Change Log (DEVELOP)
 - Chng: Removed `atwho` asset and dependency
 - Cnng: Removed old IE support
 - Fix #2946: Use Yii2 default timezone handling
+- Enh: use LocalStorage in panel menu
 - Chng #2164: Removed MSN & Google+ social bookmarks during setup
 - Enh: Added a user module configuration for setting password strength rules (Baleks)
 - Fix #3103 Password recovery links pjax layout issue
@@ -51,5 +52,3 @@ HumHub Change Log (DEVELOP)
 - Enh: Make sure embedded video controls are enabled
 - Fix #3404 Richtext `Heading` text not translatable
 - Fix #3642 Welcome tour not using community name
-
-
