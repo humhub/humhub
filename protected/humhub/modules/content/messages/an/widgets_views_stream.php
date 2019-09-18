@@ -23,6 +23,7 @@ return [
     'The content has been archived.' => '',
     'The content has been deleted.' => '',
     'The content has been unarchived.' => '',
+    'Where I\'m involved' => '',
     'With file attachments' => '',
     'Your last edit state has been saved!' => '',
     'Back to stream' => 'Tornar a l\'inicio',
@@ -33,5 +34,4 @@ return [
     'Load more' => 'Cargar mas',
     'No matches with your selected filters!' => 'No s\'ha trobau cosa con os filtros seleccionaus!',
     'Nothing here yet!' => 'Encara no i hai cosa aquí!',
-    'Where I´m involved' => 'An soi involucrau',
 ];

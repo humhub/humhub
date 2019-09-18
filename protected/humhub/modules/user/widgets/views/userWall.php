@@ -11,7 +11,7 @@ use humhub\modules\directory\widgets\UserTagList;
             <?= Image::widget(['user' => $user, 'width' => 40, 'htmlOptions' => ['class' => 'pull-left']]); ?>
             <div class="media-body">
                 <h4 class="media-heading"><?= Html::containerLink($user); ?></h4>
-                <h5><?php echo Html::encode($user->profile->title); ?></h5>
+                <h5><?= Html::encode($user->displayNameSub); ?></h5>
                 <?= UserTagList::widget(['user' => $user]); ?>
             </div>
         </div>

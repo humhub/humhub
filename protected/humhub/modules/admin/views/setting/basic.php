@@ -27,17 +27,7 @@ use humhub\compat\CHtml;
 
     <?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(true), ['data-ui-select2' => '']); ?>
 
-    <?= humhub\modules\space\widgets\SpacePickerField::widget([
-        'form' => $form,
-        'model' => $model,
-        'attribute' => 'defaultSpaceGuid',
-        'selection' => $model->defaultSpaces
-    ])?>
-
     <?= $form->field($model, 'defaultStreamSort')->dropDownList($model->getDefaultStreamSortOptions()); ?>
-
-    <p class="help-block"><?= Yii::t('AdminModule.views_setting_index', 'New users will automatically be added to these space(s).'); ?></p>
-
 
     <strong><?= Yii::t('AdminModule.views_setting_index', 'Dashboard'); ?></strong>
     <br>

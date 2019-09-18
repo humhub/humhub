@@ -15,6 +15,18 @@ if (version_compare(Yii::$app->version, '1.3', '>')) {
 }
 ```
 
+Migrate from 1.3 to 1.4
+-----------------------
+
+### CSP and Nonce support
+
+Please test your modules against the `security.strict.json` rules and mention possible incompatibilities in your module
+description.
+
+In order to support [CSP nonces](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src) 
+you should either completely avoid using inline scripts or use one of the techniques described 
+in the [Javascript Guide](javascript.md). Its furthermore recommended to avoid inline styles, as they may be restricted
+in the strict CSP rule in a future version as well.
 
 Migrate from 1.2 to 1.3
 -----------------------
@@ -30,7 +42,7 @@ The base controller attributes `autoCheckContainerAccess` and `hideSidebar` are 
 
 ### Queuing 
 
-Queue related classes has been moved into an own module `humhub\modues\queue`.
+Queue related classes has been moved into an own module `humhub\modules\queue`.
 The existing `humhub\components\queue\ActiveJob` is declared as deprecated and will be removed in 1.4.
 
 ### Partial user deletion (Soft Delete)
@@ -113,20 +125,12 @@ Please refer the new [File Handling](files.md) documentation section for more de
 - Moved file store content by attribute capabilities from File model to FileContent model
 - Created UploadAction/DownloadAction classes
 
-### Javascript API changes
-
-TBD
-
 #### Pjax + TopNavigation:
 Use
 
 public $topMenuRoute = '/dashboard/dashboard';
 
 within your controller for pjax topmenu support.
-
-### Asset Handling changes
-
-TBD
 
 
 Migrate from 1.0 to 1.1

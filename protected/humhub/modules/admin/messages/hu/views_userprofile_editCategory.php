@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Create new profile category' => '',
+  'Create new profile category' => 'Új profil-kategória létrehozása',
   'Delete' => 'Törlés',
-  'Edit profile category' => '',
+  'Edit profile category' => 'Profil-kategória szerkesztése',
   'Save' => 'Mentés',
 );

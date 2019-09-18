@@ -14,8 +14,8 @@ features:
 if(Yii::$app->user->isGuest) {
     //...
 }
-
-if(Yii::$app->user->isGuestAccessEnabled()) {
+use humhub\modules\user\helpers\AuthHelper;
+if(AuthHelper::isGuestAccessEnabled()) {
     //...
 }
 ```

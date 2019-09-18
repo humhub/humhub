@@ -9,18 +9,14 @@
 namespace humhub\modules\admin\widgets;
 
 use Yii;
-use yii\helpers\Url;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\SubTabMenu;
 
 /**
  * Group Administration Menu
  */
-class GroupManagerMenu extends \humhub\widgets\BaseMenu
+class GroupManagerMenu extends SubTabMenu
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $template = "@humhub/widgets/views/subTabMenu";
 
     /**
      * @var \humhub\modules\user\models\Group
@@ -32,24 +28,27 @@ class GroupManagerMenu extends \humhub\widgets\BaseMenu
      */
     public function init()
     {
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.user', 'Settings'),
-            'url' => Url::toRoute(['/admin/group/edit', 'id' => $this->group->id]),
+            'url' => ['/admin/group/edit', 'id' => $this->group->id],
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group' && Yii::$app->controller->action->id == 'edit'),
-        ]);
-        $this->addItem([
+            'isActive' => MenuLink::isActiveState('admin', 'group', 'edit')
+        ]));
+
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.user', "Permissions"),
-            'url' => Url::toRoute(['/admin/group/manage-permissions', 'id' => $this->group->id]),
+            'url' => ['/admin/group/manage-permissions', 'id' => $this->group->id],
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group' && Yii::$app->controller->action->id == 'manage-permissions'),
-        ]);
-        $this->addItem([
+            'isActive' => MenuLink::isActiveState('admin', 'group', 'manage-permissions')
+        ]));
+
+
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.user', "Members"),
-            'url' => Url::toRoute(['/admin/group/manage-group-users', 'id' => $this->group->id]),
+            'url' => ['/admin/group/manage-group-users', 'id' => $this->group->id],
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group' && Yii::$app->controller->action->id == 'manage-group-users'),
-        ]);
+            'isActive' => MenuLink::isActiveState('admin', 'group', 'manage-group-users')
+        ]));
 
         parent::init();
     }

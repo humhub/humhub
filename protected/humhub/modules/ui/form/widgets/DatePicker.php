@@ -74,8 +74,6 @@ class DatePicker extends BaseDatePicker
         /**
          * HUMHUB PATCH: Language Mapping + Prevent loading language files for all english based languages, since DatePickerLanguageAsset tries
          * to load a fallback language e.g. for `en-GB` -> 'en'.
-         *
-         *
          */
 
         echo $this->renderWidget() . "\n";

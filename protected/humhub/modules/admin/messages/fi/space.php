@@ -5,5 +5,5 @@ return array (
   'Manage members' => 'Hallitse käyttäjiä',
   'Manage modules' => 'Hallitse laajennuksia',
   'Open space' => 'Avaa sivu',
-  'Search by name, description, id or owner.' => 'Hae nimi, id tai omistaja.',
+  'Search by name, description, id or owner.' => 'Hae nimeä, ID:tä tai omistaja.',
 );

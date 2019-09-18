@@ -27,6 +27,7 @@ return [
     'Invalid request method!' => '',
     'Module is not enabled on this content container!' => '',
     'Please type at least {count} characters' => '',
+    'Powered by {name}' => '',
     'Toggle comment menu' => '',
     'Toggle panel menu' => '',
     'Toggle post menu' => '',

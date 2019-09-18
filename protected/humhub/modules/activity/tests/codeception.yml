@@ -13,7 +13,7 @@ settings:
 coverage:
   c3_url: 'http://localhost:8080/index-test.php'
   enabled: true
-  remote: false
+  remote: true
   include:
   - ../actions/*
   - ../controllers/*

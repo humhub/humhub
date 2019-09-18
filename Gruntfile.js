@@ -41,11 +41,16 @@ module.exports = function (grunt) {
             testRun: {
                 command: function() {
                     let sep = cmdSep();
-                    let moduleName = grunt.option('module') || null;
+                    let moduleName = grunt.option('module') || grunt.option('m') ||  null;
+                    let doBuild = grunt.option('build') || false;
+                    let base = process.cwd();
 
-                    let testPath = 'protected/humhub/tests';
+                    let codeceptPath = `${base}/protected/vendor/codeception/codeception/codecept`;
+                    let rootTestPath = `${base}/protected/humhub/tests`;
+
+                    let testPath = rootTestPath;
                     if(moduleName) {
-                        testPath = `protected/humhub/modules/${moduleName}/tests`;
+                        testPath = `${base}/protected/humhub/modules/${moduleName}/tests`;
                     }
 
                     let suite = grunt.option('suite') || null;
@@ -63,8 +68,14 @@ module.exports = function (grunt) {
 
                     let options = grunt.option('options') || '';
                     options += grunt.option('raw') ? ' --no-ansi' : '';
+                    options += grunt.option('env') ? ' --env '+ grunt.option('env') : '';
 
-                    return `cd ${testPath} ${sep} codecept run ${executionPath} ${options}`;
+
+                    let build =  `cd ${rootTestPath} ${sep} php ${codeceptPath} build`;
+
+                    let run = `cd ${testPath} ${sep} php ${codeceptPath} run ${executionPath} ${options}`;
+
+                    return doBuild ? `${build} ${sep} ${run}` : run;
                 }
             },
             buildTheme: {

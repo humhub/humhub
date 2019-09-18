@@ -14,7 +14,7 @@ class MailTargetRenderTest extends HumHubDbTestCase
 
     public function testDefaultView()
     {
-        $notification = notifications\TestedMailViewNotification::instance();
+        $notification = notifications\TestNotification::instance();
         $target = Yii::$app->notification->getTarget(MailTarget::class);
         $renderer = $target->getRenderer();
         $this->assertContains('<h1>TestedMailViewNotificationHTML</h1>', $renderer->render($notification));

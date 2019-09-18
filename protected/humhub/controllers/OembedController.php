@@ -36,7 +36,7 @@ class OembedController extends Controller
         $urls = Yii::$app->request->post('urls', []);
         $result = [];
         foreach ($urls as $url) {
-            $oembed = UrlOembed::GetOEmbed($url);
+            $oembed = UrlOembed::getOEmbed($url);
             if ($oembed) {
                 $result[$url] = $oembed;
             }

@@ -24,6 +24,7 @@ return [
     'The content has been archived.' => '',
     'The content has been deleted.' => '',
     'The content has been unarchived.' => '',
+    'Where I\'m involved' => '',
     'With file attachments' => '',
     'Your last edit state has been saved!' => '',
     'Back to stream' => 'Tilbage til stream',
@@ -33,5 +34,4 @@ return [
     'Last update' => 'Seneste opdatering',
     'No matches with your selected filters!' => 'Ingen findes med dit valgte filter!',
     'Nothing here yet!' => 'Ingenting her endnu!',
-    'Where I´m involved' => 'Hvor jeg er involveret',
 ];

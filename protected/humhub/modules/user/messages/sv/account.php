@@ -6,7 +6,7 @@ return array (
   '<strong>User</strong> settings' => '<strong>Användar</strong> inställningar',
   '<strong>Your</strong> profile' => '<strong>Din</strong> profil',
   'All your personal data will be irrevocably deleted.' => '',
-  'Are you sure that you want to delete your account?' => '',
+  'Are you sure that you want to delete your account?' => 'Är du säker på att du vill radera ditt konto?',
   'Delete account' => 'Ta bort konto',
   'E-Mail Summaries' => 'E-postsummeringar',
   'Enter your password to continue' => 'Ange ditt lösen för att fortsätta',
@@ -16,6 +16,6 @@ return array (
   'Users' => 'Användare',
   'You are currently the owner of following spaces:' => '',
   'You must transfer ownership or delete these spaces before you can delete your account.' => '',
-  'Your account cannot be deleted!' => '',
+  'Your account cannot be deleted!' => 'Ditt konto kan inte raderas!',
   'Your friends' => 'Dina vänner',
 );

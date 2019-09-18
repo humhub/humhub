@@ -1,0 +1,9 @@
+{
+  "headers": {
+    "Strict-Transport-Security": "max-age=31536000",
+    "X-XSS-Protection": "1",
+    "X-Content-Type-Options": "nosniff",
+    "Content-Security-Policy": "default-src 'self'",
+    "My-Test-Header": "testValue"
+  }
+}

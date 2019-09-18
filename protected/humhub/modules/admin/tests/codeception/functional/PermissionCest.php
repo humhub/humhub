@@ -29,7 +29,7 @@ class PermissionCest
         $I->see('You are not permitted to access this section.');
 
         $I->setGroupPermission(3, new SeeAdminInformation());
-        
+
         AdminPage::openBy($I);
         $I->expect('not to see permission denied message');
         $I->dontSee('You are not permitted to access this section.');
@@ -202,7 +202,7 @@ class PermissionCest
         $I->amOnPage(['/notification/admin/defaults']);
         $I->dontSee('You are not permitted to access this section.');
         $I->see('Notification Settings');
-        
+
         $I->amOnPage(['/activity/admin/defaults']);
         $I->dontSee('You are not permitted to access this section.');
         $I->see('E-Mail Summaries');
@@ -229,7 +229,7 @@ class PermissionCest
 
         $I->amOnPage(['/admin/module']);
         $I->expectTo('not to see permission denied message');
-        $I->see('Modules directory');
+        $I->see('Module administration');
 
         $I->dontSee('Users', '#admin-menu');
         $I->dontSee('Spaces', '#admin-menu');

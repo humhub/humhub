@@ -38,9 +38,9 @@ return array (
   'Upload profile image' => 'Ladda upp profilbild',
   'User' => 'Användare',
   'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '',
-  'You\'re not registered.' => '',
-  'Your account is disabled!' => '',
-  'Your account is not approved yet!' => '',
-  'Your new password must not be equal your current password!' => '',
+  'You\'re not registered.' => 'Du är inte registrerad',
+  'Your account is disabled!' => 'Ditt konto är Inaktiverat!',
+  'Your account is not approved yet!' => 'Ditt konto är inte godkänt än!',
+  'Your new password must not be equal your current password!' => 'Ditt nya lösenord kan inte vara samma som ditt nuvarande lösenord!',
   'or' => 'eller',
 );

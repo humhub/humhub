@@ -149,7 +149,7 @@ humhub.module('ui.loader', function (module, require, $) {
         // Added support for html5 inputs e.g. email validation
         $('input').on('invalid', function () {
             $(this).closest('form').find('[data-ui-loader]').each(function () {
-                reset(this);
+                setTimeout(reset, 10, this);
             });
         });
     };

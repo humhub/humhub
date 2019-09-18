@@ -22,7 +22,7 @@ use yii\helpers\Url;
     <?php \yii\widgets\ActiveForm::end(); ?>
 </div>
 
-<script>
+<script <?= Html::nonce() ?>>
 
     /**
      * Switcher for Sub Forms (FormField Type)

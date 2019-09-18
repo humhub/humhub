@@ -8,9 +8,13 @@
 
 namespace humhub\compat;
 
+use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\content\widgets\richtext\RichTextField;
+use humhub\modules\file\components\FileManager;
+use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
-use humhub\modules\ui\form\widgets\Markdown;
 use Yii;
+use yii\helpers\Html;
 
 /**
  * HForm - Yii1 compatible form generator
@@ -114,6 +118,8 @@ class HForm extends \yii\base\Component
 
             $this->primaryModel->save();
         }
+
+        (new FileManager(['record' => $this->primaryModel]))->attach(Yii::$app->request->post('fileList'));
 
         foreach ($this->models as $model) {
             if (!$model->save()) {
@@ -289,7 +295,7 @@ class HForm extends \yii\base\Component
 
                         $yearRange = isset($definition['yearRange']) ? $definition['yearRange'] : (date('Y') - 100) . ":" . (date('Y') + 100);
 
-                        return $this->form->field($model, $name)->widget(\yii\jui\DatePicker::class, [
+                        return $this->form->field($model, $name)->widget(DatePicker::class, [
                             'dateFormat' => $format,
                             'clientOptions' => [
                                 'changeYear' => true,
@@ -302,13 +308,12 @@ class HForm extends \yii\base\Component
                         ]);
                     case 'markdown':
                         $options['id'] = $name;
-                        if (isset($options['readOnly'])) {
-                            // Markdownfield's readyonly attribute is lower case
-                            $options['readonly'] = $options['readOnly'];
-                            unset($options['readOnly']);
+                        if (isset($options['readOnly']) && $options['readOnly']) {
+                            // TODO: Once the richtext supports readonly view remove this line
+                            return RichText::output(Html::getAttributeValue($model, $name));
                         }
-                        $returnField = $this->form->field($model, $name)->widget(Markdown::class, $options);
-                        return $returnField;
+
+                        return $this->form->field($model, $name)->widget(RichTextField::class, $options);;
                     default:
                         return "Field Type " . $definition['type'] . " not supported by Compat HForm";
                 }

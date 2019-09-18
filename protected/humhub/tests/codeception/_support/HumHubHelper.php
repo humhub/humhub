@@ -15,7 +15,29 @@ class HumHubHelper extends Module
 {
 
     protected $config = [];
-    
+
+    public function _before(\Codeception\TestInterface $test)
+    {
+        Yii::$app->getUrlManager()->setScriptUrl('/index-test.php');
+    }
+
+    public function fetchInviteToken($mail) {
+        if($mail instanceof \yii\mail\MessageInterface) {
+            $mail = $mail->toString();
+        }
+
+        $mail = preg_replace('/([\r\n=])*/', '', $mail);
+
+        $re = [];
+        preg_match('/registration&token3D([A-Za-z0-9_-]{12})/', $mail, $re);
+
+        if(!isset($re[1])) {
+            $this->assertTrue(false, 'Invite token not found');
+        }
+
+        return trim($re[1]);
+    }
+
     public function inviteUserByEmail($email) {
         $this->getModule('Yii2')->_loadPage('POST', '/user/invite', ['Invite[emails]' => $email]);
     }
@@ -48,6 +70,12 @@ class HumHubHelper extends Module
     }*/
 
     public function initModules() {
+        $modules = array_map(function(Module $module) {
+            return $module->id;
+        },  Yii::$app->moduleManager->getModules());
+
+        Yii::$app->moduleManager->disableModules($modules);
+
         if(!empty($this->config['modules'])) {
             foreach($this->config['modules'] as $moduleId) {
                 $module = Yii::$app->moduleManager->getModule($moduleId);

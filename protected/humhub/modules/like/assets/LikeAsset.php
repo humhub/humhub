@@ -18,12 +18,6 @@ use yii\web\AssetBundle;
  */
 class LikeAsset extends AssetBundle
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $jsOptions = ['position' => \yii\web\View::POS_END];
-
     /**
      * @inheritdoc
      */

@@ -8,73 +8,62 @@
 
 namespace humhub\modules\directory\widgets;
 
-use humhub\modules\directory\Module;
 use Yii;
-use yii\helpers\Url;
-
-use humhub\modules\directory\models\User;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\directory\Module;
+use humhub\modules\ui\menu\widgets\LeftNavigation;
 
 /**
- * Directory Menu
+ * Directory module navigation
  *
  * @since 0.21
  * @author Luke
  */
-class Menu extends \humhub\widgets\BaseMenu
+class Menu extends LeftNavigation
 {
-
-    public $template = "@humhub/widgets/views/leftNavigation";
-
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('directory');
 
-        $this->addItemGroup([
-            'id' => 'directory',
-            'label' => Yii::t('DirectoryModule.base', '<strong>Directory</strong> menu'),
-            'sortOrder' => 100,
-        ]);
+        $this->panelTitle = Yii::t('DirectoryModule.base', '<strong>Directory</strong> menu');
 
-        if (Yii::$app->getModule('directory')->isGroupListingEnabled()) {
-            $this->addItem([
+        if ($module->isGroupListingEnabled()) {
+            $this->addEntry(new MenuLink([
                 'label' => Yii::t('DirectoryModule.base', 'Groups'),
-                'group' => 'directory',
-                'url' => Url::to(['/directory/directory/groups']),
+                'url' => ['/directory/directory/groups'],
                 'sortOrder' => 100,
-                'isActive' => (Yii::$app->controller->action->id == "groups"),
-            ]);
+                'isActive' => MenuLink::isActiveState('directory', 'directory', 'groups')
+            ]));
         }
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('DirectoryModule.base', 'Members'),
-            'group' => 'directory',
-            'url' => Url::to(['/directory/directory/members']),
+            'url' => ['/directory/directory/members'],
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->action->id == "members"),
-        ]);
+            'isActive' => MenuLink::isActiveState('directory', 'directory', 'members')
+        ]));
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('DirectoryModule.base', 'Spaces'),
-            'group' => 'directory',
-            'url' => Url::to(['/directory/directory/spaces']),
+            'url' => ['/directory/directory/spaces'],
             'sortOrder' => 300,
-            'isActive' => (Yii::$app->controller->action->id == "spaces"),
-        ]);
+            'isActive' => MenuLink::isActiveState('directory', 'directory', 'spaces')
+        ]));
 
         if ($module->showUserProfilePosts) {
-            $this->addItem([
+            $this->addEntry(new MenuLink([
                 'label' => Yii::t('DirectoryModule.base', 'User profile posts'),
-                'group' => 'directory',
-                'url' => Url::to(['/directory/directory/user-posts']),
+                'url' => ['/directory/directory/user-posts'],
                 'sortOrder' => 400,
-                'isActive' => (Yii::$app->controller->action->id == "user-posts"),
-            ]);
+                'isActive' => MenuLink::isActiveState('directory', 'directory', 'user-posts')
+            ]));
         }
 
         parent::init();
     }
 
 }
-
-?>

@@ -20,6 +20,7 @@ return [
     'Include archived content' => '',
     'Only private content' => '',
     'Only public content' => '',
+    'Where I\'m involved' => '',
     'With file attachments' => '',
     'Back to stream' => 'Quay lại nhóm ',
     'Created by me' => 'Tạo bởi tôi',
@@ -32,6 +33,5 @@ return [
     'The content has been archived.' => 'Nội dung đã được đưa vào lưu trữ.',
     'The content has been deleted.' => 'Nội dung đã được xóa.',
     'The content has been unarchived.' => 'Nội dung đã được mở trở lại.',
-    'Where I´m involved' => 'Những nhóm tôi tham gia',
     'Your last edit state has been saved!' => 'Hành động sửa cuối cùng cảu bạn đã được lưu!',
 ];

@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\dashboard\controllers\DashboardController;
+use humhub\modules\stream\actions\Stream;
 use Yii;
 use humhub\components\Widget;
 use humhub\modules\space\models\Space;
@@ -156,7 +158,11 @@ class WallEntry extends Widget
             return "";
         }
 
-        return $this->contentObject->content->container->createUrl($this->editRoute, ['id' => $this->contentObject->id]);
+        $params = ['id' => $this->contentObject->id];
+        if (Yii::$app->controller instanceof DashboardController) {
+            $params['from'] = Stream::FROM_DASHBOARD;
+        }
+        return $this->contentObject->content->container->createUrl($this->editRoute, $params);
     }
 
     /**
@@ -184,12 +190,12 @@ class WallEntry extends Widget
             $this->addControl($result, [EditLink::class, ['model' => $this->contentObject, 'mode' => $this->editMode, 'url' => $this->getEditUrl()], ['sortOrder' => 200]]);
         }
 
-        $this->addControl($result, [VisibilityLink::class, ['contentRecord' => $this->contentObject], ['sortOrder' => 250]]);
-        $this->addControl($result, [NotificationSwitchLink::class, ['content' => $this->contentObject], ['sortOrder' => 300]]);
-        $this->addControl($result, [PermaLink::class, ['content' => $this->contentObject], ['sortOrder' => 400]]);
-        $this->addControl($result, [PinLink::class, ['content' => $this->contentObject], ['sortOrder' => 500]]);
-        $this->addControl($result, [MoveContentLink::class, ['model' => $this->contentObject], ['sortOrder' => 550]]);
-        $this->addControl($result, [ArchiveLink::class, ['content' => $this->contentObject], ['sortOrder' => 600]]);
+        $this->addControl($result, [PermaLink::class, ['content' => $this->contentObject], ['sortOrder' => 300]]);
+        $this->addControl($result, [VisibilityLink::class, ['contentRecord' => $this->contentObject], ['sortOrder' => 400]]);
+        $this->addControl($result, [NotificationSwitchLink::class, ['content' => $this->contentObject], ['sortOrder' => 500]]);
+        $this->addControl($result, [PinLink::class, ['content' => $this->contentObject], ['sortOrder' => 600]]);
+        $this->addControl($result, [MoveContentLink::class, ['model' => $this->contentObject], ['sortOrder' => 700]]);
+        $this->addControl($result, [ArchiveLink::class, ['content' => $this->contentObject], ['sortOrder' => 800]]);
 
         if(isset($this->controlsOptions['add'])) {
             foreach ($this->controlsOptions['add'] as $linkOptions) {
@@ -257,7 +263,9 @@ class WallEntry extends Widget
         $container = $content->container;
 
         // In case of e.g. dashboard, show contentContainer of this content
-        if (!Yii::$app->controller instanceof ContentContainerController && !($container instanceof User && $container->id == $user->id)) {
+        if (isset($this->controlsOptions['showContentContainer']) && !($container instanceof User && $container->id == $user->id)) {
+            $showContentContainer = $this->controlsOptions['showContentContainer'];
+        } elseif (!Yii::$app->controller instanceof ContentContainerController && !($container instanceof User && $container->id == $user->id)) {
             $showContentContainer = true;
         }
 

@@ -147,6 +147,7 @@ class CoreJsConfig extends Widget
                             "objects" => Yii::t('ContentModule.richtexteditor', "Objects"),
                             "symbols" => Yii::t('ContentModule.richtexteditor', "Symbols"),
                             "flags" => Yii::t('ContentModule.richtexteditor', "Flags"),
+                            "Heading" => Yii::t('ContentModule.richtexteditor', "Heading"),
                         ]
                     ],
                     'oembed' => [

@@ -24,6 +24,7 @@ return [
     'The content has been archived.' => '',
     'The content has been deleted.' => '',
     'The content has been unarchived.' => '',
+    'Where I\'m involved' => '',
     'With file attachments' => '',
     'Your last edit state has been saved!' => '',
     'Back to stream' => 'بازگشت به جریان',
@@ -33,5 +34,4 @@ return [
     'Last update' => 'آخرین به‌روزرسانی',
     'No matches with your selected filters!' => 'هیچ مورد هم‌خوان با فیلترهای انتخابی شما یافت نشد!',
     'Nothing here yet!' => 'هنوز چیزی این‌جا نیست!',
-    'Where I´m involved' => 'جایی که من درگیر هستم',
 ];

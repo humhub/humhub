@@ -28,7 +28,7 @@ return array (
   'Proxy' => 'Proxy',
   'Security' => 'Sicherheit',
   'Self test' => 'Selbsttest',
-  'Sign up' => 'Anmelden',
+  'Sign up' => 'Registrieren',
   'Spaces' => 'Spaces',
   'Statistics' => 'Statistiken',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'Der Cron-Job für die Hintergrundjobs (Queue) scheint nicht richtig zu funktionieren.',

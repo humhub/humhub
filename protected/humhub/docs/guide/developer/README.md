@@ -10,11 +10,13 @@ Getting Started
 Module Developement
 ---------------
 * [Introduction](modules.md)
-* [HumHub Build](build.md)
-* [Module Migration Guide](modules-migrate.md)
+* [Life Cycle](modules-lifecycle.md)
+* [Structure](modules-structure.md)
+* [Base Class](modules-base-class.md)
 * [Change core behavior](module-change-behavior.md)
 * [Embedded Themes](embedded-themes.md)
 * [Testing](testing.md)
+* [Migration Guide](modules-migrate.md)
 
 Basic Concepts
 ------------------
@@ -29,6 +31,7 @@ Basic Concepts
 * [Activities](activities.md)
 * [File Handling](files.md)
 * [Widgets](widgets.md)
+* [Menus and Navigations](menus.md)
 * [Snippets](snippet.md)
 * [Internationalization](i18n.md)
 
@@ -46,6 +49,7 @@ Advanced Topics
 * [Live Updates](live.md)
 * [Search](search.md)
 * [Security](security.md)
+* [HumHub Build](build.md)
 * [Console Application](console.md)
 * [Oembed Providers](oembed.md)
 

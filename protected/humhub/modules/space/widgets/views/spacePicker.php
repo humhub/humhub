@@ -14,7 +14,7 @@ foreach ($spaces as $space) {
 }
 ?>
 
-<script>
+<script <?= \humhub\libs\Html::nonce() ?>>
     $(function () {
         $('#<?= $inputId; ?>').spacepicker({
             inputId: '#<?= $inputId; ?>',

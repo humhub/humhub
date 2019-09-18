@@ -37,6 +37,7 @@ use yii\db\ActiveQuery;
  * @property string $ldap_attribute
  * @property string $translation_category
  * @property integer $is_system
+ * @property integer $searchable
  */
 class ProfileField extends ActiveRecord
 {

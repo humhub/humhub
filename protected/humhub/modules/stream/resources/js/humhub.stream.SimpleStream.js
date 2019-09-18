@@ -29,8 +29,11 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
         this.setFilter('entry_archived');
     });
 
-    SimpleStream.prototype.init = function () {
-        this.reloadEntry();
+    SimpleStream.prototype.onEmptyStream = function () {
+        var modal = Component.instance(this.$.closest('.modal'));;
+        if(modal) {
+            modal.close();
+        }
     };
 
     SimpleStream.prototype.reloadEntry = function (entry) {

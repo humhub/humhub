@@ -13,6 +13,7 @@ use humhub\libs\WidgetCreateEvent;
 
 /**
  * @inheritdoc
+ * @property-read \humhub\modules\ui\view\components\View $view
  */
 class Widget extends \yii\base\Widget
 {

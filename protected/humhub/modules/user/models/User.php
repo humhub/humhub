@@ -8,29 +8,31 @@
 
 namespace humhub\modules\user\models;
 
-use humhub\modules\search\interfaces\Searchable;
-use humhub\modules\search\events\SearchAddEvent;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\components\behaviors\SettingsBehavior;
+use humhub\components\behaviors\GUID;
 use humhub\modules\content\components\behaviors\CompatModuleManager;
+use humhub\modules\content\components\behaviors\SettingsBehavior;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\friendship\models\Friendship;
+use humhub\modules\search\events\SearchAddEvent;
+use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\jobs\DeleteDocument;
 use humhub\modules\search\jobs\UpdateDocument;
-use humhub\modules\space\models\Space;
 use humhub\modules\space\helpers\MembershipHelper;
-use humhub\modules\user\behaviors\ProfileController;
-use humhub\modules\user\behaviors\Followable;
-use humhub\modules\user\widgets\UserWall;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\authclient\Password as PasswordAuth;
+use humhub\modules\user\behaviors\Followable;
+use humhub\modules\user\behaviors\ProfileController;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\events\UserEvent;
-use humhub\components\behaviors\GUID;
+use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\Module;
+use humhub\modules\user\widgets\UserWall;
 use Yii;
-use yii\db\ActiveQuery;
-use yii\web\IdentityInterface;
-use yii\db\Expression;
 use yii\base\Exception;
+use yii\db\ActiveQuery;
+use yii\db\Expression;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "user".
@@ -55,6 +57,7 @@ use yii\base\Exception;
  * @property Profile $profile
  *
  * @property string $displayName
+ * @property string $displayNameSub
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
 {
@@ -142,9 +145,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],
-            [['email'], 'required', 'when' => function($model, $attribute) use ($userModule) {
-                    return $userModule->emailRequired;
-                }],
+            [['email'], 'required', 'when' => function ($model, $attribute) use ($userModule) {
+                return $userModule->emailRequired;
+            }],
             [['username'], 'unique'],
             [['guid'], 'unique'],
         ];
@@ -255,7 +258,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * @inheritdoc
      *
-     * @return ActiveQueryUser|object
+     * @return ActiveQueryUser
      */
     public static function find()
     {
@@ -330,8 +333,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function getManagerGroups()
     {
         return $this->hasMany(Group::class, ['id' => 'group_id'])
-            ->via('groupUsers', function($query) {
-                    $query->andWhere(['is_group_manager' => '1']);
+            ->via('groupUsers', function ($query) {
+                $query->andWhere(['is_group_manager' => '1']);
             });
     }
 
@@ -397,7 +400,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function softDelete()
     {
         // Delete spaces which are owned by this user.
-        foreach (MembershipHelper::getOwnSpaces($this) as $space) {
+        foreach (MembershipHelper::getOwnSpaces($this, false) as $space) {
             $space->delete();
         }
 
@@ -425,6 +428,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         Password::deleteAll(['user_id' => $this->id]);
         GroupUser::deleteAll(['user_id' => $this->id]);
         Session::deleteAll(['user_id' => $this->id]);
+        Friendship::deleteAll(['user_id' => $this->id]);
+        Friendship::deleteAll(['friend_user_id' => $this->id]);
 
         $this->updateAttributes([
             'email' => new Expression('NULL'),
@@ -443,13 +448,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function beforeSave($insert)
     {
         if ($insert) {
-
             if ($this->auth_mode == '') {
                 $passwordAuth = new PasswordAuth();
                 $this->auth_mode = $passwordAuth->getId();
             }
 
-            if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
+            if (AuthHelper::isGuestAccessEnabled()) {
                 // Set users profile default visibility to all
                 if (Yii::$app->getModule('user')->settings->get('auth.defaultUserProfileVisibility') == User::VISIBILITY_ALL) {
                     $this->visibility = User::VISIBILITY_ALL;
@@ -477,17 +481,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         // (e.g. not UserEditForm) for search rebuild
         $user = User::findOne(['id' => $this->id]);
 
-        if ($user->isVisible()) {
-            Yii::$app->queue->push(new UpdateDocument([
-                'activeRecordClass' => get_class($this),
-                'primaryKey' => $this->id
-            ]));
-        } else {
-            Yii::$app->queue->push(new DeleteDocument([
-                'activeRecordClass' => get_class($this),
-                'primaryKey' => $this->id
-            ]));
-        }
+        $this->updateSearch();
 
         if ($insert) {
             if ($this->status == User::STATUS_ENABLED) {
@@ -503,6 +497,27 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         parent::afterSave($insert, $changedAttributes);
+    }
+
+
+    /**
+     * Update user record in search index
+     *
+     * If the user is not visible, the user will be removed from the search index.
+     */
+    public function updateSearch()
+    {
+        if ($this->isVisible()) {
+            Yii::$app->queue->push(new UpdateDocument([
+                'activeRecordClass' => get_class($this),
+                'primaryKey' => $this->id
+            ]));
+        } else {
+            Yii::$app->queue->push(new DeleteDocument([
+                'activeRecordClass' => get_class($this),
+                'primaryKey' => $this->id
+            ]));
+        }
     }
 
     public function setUpApproved()
@@ -535,8 +550,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getDisplayName()
     {
-        if (Yii::$app->getModule('user')->displayNameCallback !== null) {
-            return call_user_func(Yii::$app->getModule('user')->displayNameCallback, $this);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if ($module->displayNameCallback !== null) {
+            return call_user_func($module->displayNameCallback, $this);
         }
 
         $name = '';
@@ -554,6 +572,29 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         return $name;
     }
+
+    /**
+     * Returns the users display name sub text.
+     * Per default as sub text the 'title' profile attribute is used
+     *
+     * @return string the display name sub text
+     */
+    public function getDisplayNameSub()
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if ($module->displayNameSubCallback !== null) {
+            return call_user_func($module->displayNameSubCallback, $this);
+        }
+
+        if ($this->profile !== null && $this->profile->hasAttribute('title')) {
+            return $this->profile->title;
+        }
+
+        return '';
+    }
+
 
     /**
      * Checks if this user is the current logged in user.
@@ -575,7 +616,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      * @param \humhub\modules\user\models\User $user
      * @return boolean
      */
-    public function is(User $user)
+    public function is(User $user = null)
     {
         if (!$user) {
             return false;
@@ -655,7 +696,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         ];
 
         // Add user group ids
-        $groupIds = array_map(function($group) {
+        $groupIds = array_map(function ($group) {
             return $group->id;
         }, $this->groups);
         $attributes['groups'] = $groupIds;
@@ -682,7 +723,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         // TODO: SHOW ONLY REAL MEMBERSHIPS
         return $this->hasMany(Space::class, ['id' => 'space_id'])
-                        ->viaTable('space_membership', ['user_id' => 'id']);
+            ->viaTable('space_membership', ['user_id' => 'id']);
     }
 
     /**

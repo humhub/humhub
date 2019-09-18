@@ -14,7 +14,7 @@ humhub.module('oembed', function(module, require, $) {
             var result = {};
             var requestUrls = [];
             urls.forEach(function(url) {
-                if(!cache[url]) {
+                if (!cache[url]) {
                     requestUrls.push(url);
                 } else {
                     result[url] = cache[url];
@@ -31,12 +31,12 @@ humhub.module('oembed', function(module, require, $) {
     var get = function(url) {
         var result = cache[url];
 
-        if(result) {
+        if (result) {
            return $(result);
         }
 
         var $dom =  $('[data-oembed="' + url + '"]');
-        if($dom.length) {
+        if ($dom.length) {
             return $dom.clone().show();
         }
     };

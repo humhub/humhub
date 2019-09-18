@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\content\models\Content;
+use humhub\libs\Html;
 use humhub\widgets\Button;
 use yii\bootstrap\ActiveForm;
 
@@ -17,6 +17,13 @@ use yii\bootstrap\ActiveForm;
 
 <?php $form = ActiveForm::begin(['id' => 'space-settings-form']); ?>
 
+<?= humhub\modules\space\widgets\SpacePickerField::widget([
+    'form' => $form,
+    'model' => $model,
+    'attribute' => 'defaultSpaceGuid',
+    'selection' => $model->defaultSpaces
+])?>
+
 <?= $form->field($model, 'defaultVisibility')->dropDownList($visibilityOptions) ?>
 
 <?= $form->field($model, 'defaultJoinPolicy')->dropDownList($joinPolicyOptions, ['disabled' => $model->defaultVisibility == 0]) ?>
@@ -27,7 +34,7 @@ use yii\bootstrap\ActiveForm;
 
 <?php ActiveForm::end(); ?>
 
-<script>
+<?= Html::beginTag('script'); ?>
     $('#spacesettingsform-defaultvisibility').on('change', function () {
         if (this.value == 0) {
             $('#spacesettingsform-defaultjoinpolicy, #spacesettingsform-defaultcontentvisibility').val('0').prop('disabled', true);
@@ -35,4 +42,4 @@ use yii\bootstrap\ActiveForm;
             $('#spacesettingsform-defaultjoinpolicy, #spacesettingsform-defaultcontentvisibility').val('0').prop('disabled', false);
         }
     });
-</script>
+<?= Html::endTag('script'); ?>

@@ -75,7 +75,7 @@ if ($linkOutput == 'button') {
     </div>
 </div>
 
-<script>
+<script <?= \humhub\libs\Html::nonce() ?>>
 
     $(function() {
         // Move modal to body

@@ -127,7 +127,7 @@ class ModuleManager extends Component
 
         // Check mandatory config options
         if (!isset($config['class']) || !isset($config['id'])) {
-            throw new InvalidConfigException('Module configuration requires an id and class attribute!');
+            throw new InvalidConfigException('Module configuration requires an id and class attribute: '.$basePath);
         }
 
         $isCoreModule = (isset($config['isCoreModule']) && $config['isCoreModule']);
@@ -139,7 +139,11 @@ class ModuleManager extends Component
             Yii::setAlias('@' . str_replace('\\', '/', $config['namespace']), $basePath);
         }
 
-        Yii::setAlias('@' . $config['id'], $basePath);
+        // Check if alias is not in use yet (e.g. don't register "web" module alias)
+        if (Yii::getAlias('@' . $config['id'], false) === false) {
+            Yii::setAlias('@' . $config['id'], $basePath);
+        }
+
         if (isset($config['aliases']) && is_array($config['aliases'])) {
             foreach ($config['aliases'] as $name => $value) {
                 Yii::setAlias($name, $value);
@@ -204,8 +208,10 @@ class ModuleManager extends Component
      *
      * - includeCoreModules: boolean, return also core modules (default: false)
      * - returnClass: boolean, return classname instead of module object (default: false)
+     * - enabled: boolean, returns only enabled modules (core modules only when combined with `includeCoreModules`)
      *
      * @return array
+     * @throws Exception
      */
     public function getModules($options = [])
     {
@@ -216,6 +222,13 @@ class ModuleManager extends Component
             // Skip core modules
             if (!isset($options['includeCoreModules']) || $options['includeCoreModules'] === false) {
                 if (in_array($class, $this->coreModules)) {
+                    continue;
+                }
+            }
+
+
+            if (isset($options['enabled']) && $options['enabled'] === true) {
+                if(!in_array($class, $this->coreModules) && !in_array($id, $this->enabledModules)) {
                     continue;
                 }
             }
@@ -234,6 +247,20 @@ class ModuleManager extends Component
     }
 
     /**
+     * Returns all enabled modules and supportes further options as [[getModules()]].
+     *
+     * @param array $options
+     * @return array
+     * @throws Exception
+     * @since 1.3.10
+     */
+    public function getEnabledModules($options = [])
+    {
+        $options['enabled'] = true;
+        return $this->getModules($options);
+    }
+
+    /**
      * Checks if a moduleId exists, regardless it's activated or not
      *
      * @param string $id
@@ -249,6 +276,7 @@ class ModuleManager extends Component
      *
      * @return bool
      * @since 1.3.8
+     * @throws Exception
      */
     public function isCoreModule($id)
     {
@@ -304,7 +332,7 @@ class ModuleManager extends Component
         }
 
         // Check is in dynamic/marketplace module folder
-        if (strpos($module->getBasePath(), Yii::getAlias(Yii::$app->params['moduleMarketplacePath'])) !== false) {
+        if (strpos($module->getBasePath(), Yii::getAlias(Yii::$app->getModule('marketplace')->modulesPath)) !== false) {
             return true;
         }
 

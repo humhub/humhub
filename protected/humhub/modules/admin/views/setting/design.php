@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\web\pwa\widgets\SiteIcon;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use humhub\compat\CHtml;
@@ -10,9 +11,15 @@ $this->registerJsConfig('admin', [
     'text' => [
         'confirm.deleteLogo.header' => Yii::t('AdminModule.views_setting_index', '<strong>Confirm</strong> image deletion'),
         'confirm.deleteLogo.body' => Yii::t('UserModule.views_setting_index', 'Do you really want to delete your logo image?'),
-        'confirm.deleteLogo.confirm' => Yii::t('AdminModule.views_setting_index', 'Delete')
+        'confirm.deleteLogo.confirm' => Yii::t('AdminModule.views_setting_index', 'Delete'),
+        'confirm.deleteIcon.header' => Yii::t('AdminModule.views_setting_index', '<strong>Confirm</strong> icon deletion'),
+        'confirm.deleteIcon.body' => Yii::t('UserModule.views_setting_index', 'Do you really want to delete your icon image?'),
+        'confirm.deleteIcon.confirm' => Yii::t('AdminModule.views_setting_index', 'Delete')
     ]
 ]);
+
+$iconUrl = SiteIcon::getUrl(140);
+
 ?>
 
 <div class="panel-body">
@@ -43,9 +50,9 @@ $this->registerJsConfig('admin', [
     <br>
     <?= $form->field($model, 'horImageScrollOnMobile')->checkbox(); ?>
 
-    <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
 
     <div class="well">
+        <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
         <div class="image-upload-container" id="logo-upload">
             <img class="img-rounded" id="logo-image" src="<?= ($logo->hasImage()) ? $logo->getUrl() : '' ?>" data-src="holder.js/140x140"
                  alt="<?= Yii::t('AdminModule.views_setting_index', "You're using no logo at the moment. Upload your logo now."); ?>"
@@ -57,6 +64,23 @@ $this->registerJsConfig('admin', [
                 <a id="admin-delete-logo-image" href="#" style="<?= ($logo->hasImage()) ? '' : 'display:none' ?>" class="btn btn-danger btn-sm"
                     data-action-click="admin.deletePageLogo"
                     data-action-url="<?= Url::to(['/admin/setting/delete-logo-image']) ?>" ><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="well">
+        <?= $form->field($model, 'icon')->fileInput(['id' => 'admin-icon-file-upload', 'data-action-change' => 'admin.changeIcon', 'style' => 'display: none', 'name' => 'icon[]']); ?>
+        <div class="image-upload-container" id="icon-upload">
+            <img class="img-rounded" id="icon-image" src="<?= $iconUrl ?>" data-src="holder.js/140x140"
+                 alt="<?= Yii::t('AdminModule.views_setting_index', "You're using no icon at the moment. Upload your logo now."); ?>"
+                 style="max-height: 40px;">
+
+            <div class="image-upload-buttons" id="icon-upload-buttons" style="display: block;">
+                <a id="admin-icon-upload-button" href="#"  class="btn btn-info btn-sm"><i class="fa fa-cloud-upload"></i></a>
+
+                <a id="admin-delete-icon-image" href="#" style="<?= ($logo->hasImage()) ? '' : 'display:none' ?>" class="btn btn-danger btn-sm"
+                   data-action-click="admin.deletePageIcon"
+                   data-action-url="<?= Url::to(['/admin/setting/delete-icon-image']) ?>" ><i class="fa fa-times"></i></a>
             </div>
         </div>
     </div>

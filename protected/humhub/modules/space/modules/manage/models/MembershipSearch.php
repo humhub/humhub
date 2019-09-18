@@ -76,7 +76,13 @@ class MembershipSearch extends Membership
     {
         $query = Membership::find();
         $query->andWhere(['space_membership.status' => $this->status]);
-        $query->joinWith(['user', 'user.profile']);
+        $query->joinWith([
+            'user',
+            'user.profile',
+            'originator' => function ($q) {
+                $q->from('user originator');
+            }
+        ]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -100,6 +106,10 @@ class MembershipSearch extends Membership
                 ],
                 'user.username',
                 'last_visit',
+                'originator' => [
+                    'asc' => ['originator.username' => SORT_ASC],
+                    'desc' => ['originator.username' => SORT_DESC],
+                ],
                 'created_at',
                 'group_id',
             ]
@@ -122,7 +132,9 @@ class MembershipSearch extends Membership
                 ['like', 'user.username', $this->freeText],
                 ['like', 'user.email', $this->freeText],
                 ['like', 'profile.firstname', $this->freeText],
-                ['like', 'profile.lastname', $this->freeText]
+                ['like', 'profile.lastname', $this->freeText],
+                ['like', 'concat(profile.firstname, " ", profile.lastname)', $this->freeText],
+                ['like', 'concat(profile.lastname, " ", profile.firstname)', $this->freeText],
             ]);
         }
         if (!empty($this->group_id)) {

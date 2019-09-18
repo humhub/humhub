@@ -7,6 +7,7 @@
 
 namespace stream\acceptance;
 
+use humhub\modules\content\models\Content;
 use stream\AcceptanceTester;
 
 class StreamCest
@@ -55,6 +56,7 @@ class StreamCest
         $I->createPost('This is my stream test post!');
 
         $newEntrySelector = '[data-content-key="14"]';
+
 
         $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my stream test post', '.wall-entry');
@@ -239,6 +241,7 @@ class StreamCest
 
         $I->waitForElementVisible('.wall-stream-filter-head');
         $I->click('Filter', '.wall-stream-filter-head');
+        $I->wait(1);
         $I->waitForElementVisible('[data-filter-id="entry_userinvolved"]');
         $I->click('[data-filter-id="entry_userinvolved"]');
         $I->waitForText('No matches with your selected filters!');
@@ -252,7 +255,6 @@ class StreamCest
 
         $I->amGoingTo('reset the filter and comment another post');
 
-        $I->click('Filter', '.wall-stream-filter-head');
         $I->waitForElementVisible('[data-filter-id="entry_userinvolved"]');
         $I->click('[data-filter-id="entry_userinvolved"]');
 
@@ -268,10 +270,7 @@ class StreamCest
 
         $I->amGoingTo('reactivate the involved filter.');
         $I->expectTo('see the commented post after the stream reload.');
-
-//        $I->scrollTop();
-        $I->click('Filter', '.wall-stream-filter-head');
-        $I->waitForElementVisible('[data-filter-id="entry_userinvolved"]');
+        
         $I->click('[data-filter-id="entry_userinvolved"]');
         $I->wait(1);
         $I->waitForText('Involved Post.');

@@ -47,12 +47,9 @@ class DeleteDocument extends ActiveJob implements ExclusiveJobInterface
      */
     public function run()
     {
-        $class = $this->activeRecordClass;
-        if (is_subclass_of($class, ActiveRecord::class)) {
-            $record = $class::findOne(['id' => $this->primaryKey]);
-            if ($record !== null && $record instanceof Searchable) {
-                Yii::$app->search->delete($record);
-            }
+        // Temporary check until offical search api change
+        if (method_exists(Yii::$app->search, 'deleteRecord')) {
+            Yii::$app->search->deleteRecord($this->activeRecordClass, $this->primaryKey);
         }
     }
 

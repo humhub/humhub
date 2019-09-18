@@ -22,7 +22,7 @@ return [
     'Can access the directory section.' => '',
     'Send invite' => '',
     'This group has no members yet.' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Kol kas niekas neparaše.</b><br>Būkite pirmas ir ką nors parašykite...',
+    '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>Kol kas niekas neparaše.</b><br>Būkite pirmas ir ką nors parašykite...',
     '<b>There are no profile posts yet!</b>' => '<b>Kol kas nėra profilio skelbimų!</b>',
     '<strong>Directory</strong> menu' => '<strong>Adresų knygos</strong> meniu',
     '<strong>Group</strong> stats' => '<strong>Grupės</strong> statistika',

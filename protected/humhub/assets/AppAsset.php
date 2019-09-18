@@ -76,6 +76,7 @@ class AppAsset extends AssetBundle
         'humhub\modules\topic\assets\TopicAsset',
         'humhub\modules\ui\filter\assets\FilterAsset',
         'humhub\modules\comment\assets\CommentAsset',
+        'humhub\modules\like\assets\LikeAsset',
         'humhub\assets\NProgressAsset',
         'humhub\assets\PagedownConverterAsset',
         'humhub\assets\ClipboardJsAsset',

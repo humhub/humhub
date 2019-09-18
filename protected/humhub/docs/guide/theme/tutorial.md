@@ -31,7 +31,7 @@ See: https://nodejs.org/en/download/
 Open the command console and execute:
 
 ```
-npm -g install less
+npm install less -g
 ```
 
 ### Modify theme colors

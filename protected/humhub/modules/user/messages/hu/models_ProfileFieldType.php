@@ -1,12 +1,12 @@
 <?php
 return array (
   'Birthday' => 'Születésnap',
-  'Checkbox' => '',
-  'Checkbox List' => 'Checkbox lista',
+  'Checkbox' => 'Jelölőnégyzet',
+  'Checkbox List' => 'Jelölőnégyzet lista',
   'Country' => 'Ország',
   'Date' => 'Dátum',
-  'Datetime' => '',
-  'Markdown' => '',
+  'Datetime' => 'Dátum/idő',
+  'Markdown' => 'Markdown',
   'Number' => 'Szám',
   'Select List' => 'Lista',
   'Text' => 'Szöveg',

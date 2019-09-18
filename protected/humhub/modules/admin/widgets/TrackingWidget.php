@@ -8,6 +8,9 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\web\security\helpers\Security;
+use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 use Yii;
 
 /**
@@ -24,7 +27,14 @@ class TrackingWidget extends \humhub\components\Widget
      */
     public function run()
     {
-        return Yii::$app->settings->get('trackingHtmlCode');
+        $trackingCode = Yii::$app->settings->get('trackingHtmlCode');
+
+        if(!$trackingCode) {
+            return '';
+        }
+
+        $twig = new Environment(new ArrayLoader(['trackingHtmlCode' => $trackingCode]));
+        return $twig->render('trackingHtmlCode', ['nonce' => Security::getNonce()]);
     }
 
 }

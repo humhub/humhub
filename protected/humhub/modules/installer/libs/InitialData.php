@@ -38,7 +38,6 @@ class InitialData
         Yii::$app->settings->set('cronLastDailyRun', time());
 
         // Authentication
-        Yii::$app->getModule('user')->settings->set('auth.ldap.refreshUsers', '1');
         Yii::$app->getModule('user')->settings->set('auth.needApproval', '0');
         Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', '1');
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInvite', '1');

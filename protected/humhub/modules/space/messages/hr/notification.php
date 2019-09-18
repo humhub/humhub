@@ -19,6 +19,7 @@
 return [
     'You were added to Space {spaceName}' => '',
     '{displayName} changed your role to {roleName} in the space {spaceName}.' => '',
+    '{displayName} revoked your invitation for the space {spaceName}' => '',
     '{displayName} accepted your invite for the space {spaceName}' => '{displayName} prihvatio vašu pozivnicu za prostor {spaceName}',
     '{displayName} approved your membership for the space {spaceName}' => '{displayName} odobrio vaše članstvo u prostoru {spaceName}',
     '{displayName} declined your invite for the space {spaceName}' => '{displayName} odbio je vašu pozivnicu za prostor {spaceName}',

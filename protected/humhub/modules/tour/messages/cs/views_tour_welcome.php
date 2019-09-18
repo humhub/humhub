@@ -7,7 +7,7 @@ return array (
   'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.' => 'Jste zde první uživatel  ... Yehaaa! Buďte světelným příkladem a doplňte svůj profil, aby budoucí uživatelé věděli, kdo je tady nejlepší a na koho se uživatelé mohou obrátit.',
   'Your firstname' => 'Jméno',
   'Your lastname' => 'Přijmení',
-  'Your mobild phone number' => 'Mobilní telefon',
+  'Your mobile phone number' => 'Mobilní telefon',
   'Your phone number at work' => 'Telefon do zaměstnání',
   'Your skills, knowledge and experience (comma seperated)' => 'Vaše dovednosti, zkušenosti atd...',
   'Your title or position' => 'Název Vaší pozice',

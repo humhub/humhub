@@ -2,7 +2,7 @@
 return array (
   '<strong>Login</strong> required' => '<strong>Logg inn</strong> påkrevd',
   'An internal server error occurred.' => 'En intern Server Feil',
-  'Guest mode not active, please login first.' => 'Gjeste modus er ikke aktivert, Vennligst logg på først.',
+  'Guest mode not active, please login first.' => 'Gjestemodus er ikke aktivert, Vennligst logg på først.',
   'Login required for this section.' => 'Pålogging er nødvendig for denne delen.',
   'You are not allowed to perform this action.' => 'Du har ikke lov til og gjøre denne handlingen.',
   'You are not permitted to access this section.' => 'Du har dessverre ikke tilgang til denne seksjonen',

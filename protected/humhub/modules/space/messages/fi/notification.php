@@ -8,4 +8,5 @@ return array (
   '{displayName} declined your membership request for the space {spaceName}' => '{displayName} hylkäsi jäsenpyyntösi sivulle {spaceName}',
   '{displayName} invited you to the space {spaceName}' => '{displayName} kutsui sinut sivulle {spaceName}',
   '{displayName} requests membership for the space {spaceName}' => '{displayName} pyysi sinua jäseneksi sivulle {spaceName}',
+  '{displayName} revoked your invitation for the space {spaceName}' => '{displayName} kumosi kutsun sivulla {spaceName}',
 );

@@ -47,7 +47,7 @@ use yii\helpers\Url;
             </li>
             <?php if (Yii::$app->user->isAdmin() == true) : ?>
                 <li class="<?php if ($administration == 1) : ?>completed<?php endif; ?>">
-                    <a href="<?php echo Url::to(['/admin/module/list-online', 'tour' => 'true']); ?>" data-pjax-prevent>
+                    <a href="<?php echo Url::to(['/marketplace/browse', 'tour' => 'true']); ?>" data-pjax-prevent>
                         <i class="fa fa-play-circle-o"></i><?php echo Yii::t('TourModule.widgets_views_tourPanel', '<strong>Guide:</strong> Administration (Modules)'); ?>
                     </a>
                 </li>
@@ -57,7 +57,7 @@ use yii\helpers\Url;
 </div>
 
 <?php if ($showWelcome) : ?>
-    <script type="text/javascript">
+    <script <?= \humhub\libs\Html::nonce() ?>>
 
         $(document).on('humhub:ready', function () {
 

@@ -12,6 +12,7 @@ humhub.module('ui.additions', function (module, require, $) {
     var richtext = require('ui.richtext', true);
 
     var _additions = {};
+    var _order = [];
 
     /**
      * Registers an addition for a given jQuery selector. There can be registered
@@ -30,6 +31,14 @@ humhub.module('ui.additions', function (module, require, $) {
                 'selector': selector,
                 'handler': handler
             };
+
+            if(options.after && _additions[options.after]) {
+                _order.splice(_order.indexOf(options.after) + 1, 0, id);
+            } else if(options.before &&  _additions[options.before]) {
+                _order.splice(_order.indexOf(options.before), 0, id);
+            } else {
+                _order.push(id);
+            }
 
             // Make sure additions registrated after humhub:ready also affect element
             if (humhub.initialized) {
@@ -50,9 +59,14 @@ humhub.module('ui.additions', function (module, require, $) {
         options = options || {};
 
         var $element = (element instanceof $) ? element : $(element);
-        $.each(_additions, function (id) {
+
+        $.each(_order, function (index, id) {
             // Only apply certain filter if filter option is set
-            if (options.filter && options.filter.indexOf(id) < 0) {
+            if ((options.filter && options.filter.indexOf(id) < 0) || (options.include && options.include.indexOf(id) < 0)) {
+                return;
+            }
+
+            if (options.exclude && options.exclude.indexOf(id) >= 0) {
                 return;
             }
 

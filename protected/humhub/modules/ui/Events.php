@@ -20,4 +20,5 @@ class Events
         $application = $event->sender;
         $application->controllerMap['theme'] = commands\ThemeController::class;
     }
+
 }

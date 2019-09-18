@@ -193,7 +193,7 @@ class BaseType extends Model
             throw new Exception('Could not save profile field!');
         }
         // Clear Database Schema
-        Yii::$app->getDb()->getSchema()->getTableSchema(Profile::tableName(), true);
+        Yii::$app->getDb()->getSchema()->refreshTableSchema(Profile::tableName());
 
         return true;
     }

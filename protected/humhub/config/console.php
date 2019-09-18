@@ -13,8 +13,8 @@ return [
     'controllerNamespace' => 'humhub\commands',
     'components' => [
         'user' => [
-            'class' => 'humhub\modules\user\components\User',
-            'identityClass' => 'humhub\modules\user\models\User',
+            'class' => \humhub\modules\user\components\User::class,
+            'identityClass' => \humhub\modules\user\models\User::class,
             'enableAutoLogin' => false,
             'enableSession' => false,
             'loginUrl' => ['/user/auth/login']

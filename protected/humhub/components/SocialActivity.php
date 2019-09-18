@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\libs\Helpers;
 use humhub\modules\content\models\Content;
@@ -105,7 +106,9 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
      * Static initializer should be prefered over new initialization, since it makes use
      * of Yii::createObject dependency injection/configuration.
      *
+     * @param array $options
      * @return static
+     * @throws \yii\base\InvalidConfigException
      */
     public static function instance($options = [])
     {
@@ -361,8 +364,10 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
      *
      *  If no $content is provided the contentPreview of $source is returned.
      *
-     * @param Content $content
+     * @param ContentOwner $content
+     * @param int $maxLength
      * @return string|null
+     * @throws Exception
      */
     public function getContentPreview(ContentOwner $content = null, $maxLength = 25)
     {

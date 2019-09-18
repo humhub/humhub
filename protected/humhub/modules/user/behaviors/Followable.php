@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\behaviors;
 
+use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
@@ -61,6 +62,8 @@ class Followable extends Behavior
 
         // User cannot follow himself
         if ($this->owner instanceof User && $this->owner->id == $userId) {
+            return false;
+        } elseif ($this->owner instanceof Space && $this->owner->isMember($userId)) {
             return false;
         }
 

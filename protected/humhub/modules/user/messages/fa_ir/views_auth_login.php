@@ -18,6 +18,7 @@
  */
 return [
     '<strong>Join</strong> the network' => '',
+    'Please enter the letters from the image.' => '',
     'Please login with your username/email and password.' => '',
     '<strong>Please</strong> sign in' => '<strong>لطقا</strong> واردشوید',
     '<strong>Sign</strong> up' => '<strong>عضو</strong> شوید',

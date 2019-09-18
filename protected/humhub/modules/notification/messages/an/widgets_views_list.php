@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Mark all as seen' => '',
+  'Mark all as seen' => 'Marcar tot como visto',
   'Notifications' => 'Notificacions',
   'Open the notification dropdown menu' => '',
   'Show all notifications' => 'Mostrar todas as notificacions',

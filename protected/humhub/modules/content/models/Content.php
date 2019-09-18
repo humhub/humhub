@@ -21,6 +21,7 @@ use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
@@ -216,6 +217,7 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
 
     /**
      * @return bool checks if the given content allows content creation notifications and activities
+     * @throws IntegrityException
      */
     private function isMuted()
     {
@@ -632,7 +634,7 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
             return true;
         }
 
-        unset($this->tags);
+        $this->refresh();
 
         $contentRelation = new ContentTagRelation($this, $tag);
         return $contentRelation->save();
@@ -719,9 +721,11 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
      * @param $permission
      * @param array $params
      * @param bool $allowCaching
+     * @return bool
+     * @throws Exception
+     * @throws \yii\base\InvalidConfigException
      * @see PermissionManager::can()
      * @since 1.2.1
-     * @return bool
      */
     public function can($permission, $params = [], $allowCaching = true)
     {
@@ -734,6 +738,8 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
      * @since 1.1
      * @param User|integer $user
      * @return boolean can view this content
+     * @throws Exception
+     * @throws \Throwable
      */
     public function canView($user = null)
     {
@@ -775,14 +781,14 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
      * This is the case if all of the following conditions are met:
      *
      *  - The content is public
-     *  - The `auth.allowGuestAccess` module setting is enabled
+     *  - The `auth.allowGuestAccess` setting is enabled
      *  - The space or profile visibility is set to VISIBILITY_ALL
      *
      * @return bool
      */
     public function checkGuestAccess()
     {
-        if (!$this->isPublic() || !Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
+        if (!$this->isPublic() || !AuthHelper::isGuestAccessEnabled()) {
             return false;
         }
 

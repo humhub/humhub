@@ -2,8 +2,7 @@
 
 use humhub\widgets\AjaxLinkPager;
 use humhub\widgets\ModalDialog;
-use yii\helpers\Html;
-use humhub\modules\space\widgets\Image;
+use humhub\libs\Html;
 
 /* @var $spaces \humhub\modules\space\models\Space[] */
 ?>
@@ -48,7 +47,7 @@ use humhub\modules\space\widgets\Image;
         </div>
 
     </div>
-    <script>
+    <script <?= Html::nonce() ?>>
 
         // scroll to top of list
         $(".modal-body").animate({scrollTop: 0}, 200);

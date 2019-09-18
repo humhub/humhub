@@ -152,9 +152,16 @@
             modules.forEach(function(module) {
                 promises.push(new Promise(function(resolve, reject) {
                     var $iframe = $('<iframe>').attr({src: '../modules/'+module.toLocaleLowerCase()+'/tests/codeception/_output/coverage/index.html'});
+
+                    var timeout = setTimeout(function() {
+                        resolve()
+                    }, 1000);
+
                     $iframe[0].onload = function() {
+                        clearTimeout(timeout);
                         resolve();
                     };
+
                     $('body').append('<h1 class="coverage-test-title">'+module+'</h1>');
                     var $div = $('<div class="coverage-result">');
                     $div.append($iframe);
@@ -174,11 +181,7 @@
                         $title.text($title.text()+' (Not Found)');
                         $(this).replaceWith('<div style="display:none">Not found!</div>');
                     } else {
-                        var $iframeContent = $(this).contents();
-                        var td = $iframeContent.find('tbody').find('tr:first').children('td').eq(2);
-                        var $title = $(this).parent().prev('.coverage-test-title');
-                        $title.text($title.text()+' '+$(td).text());
-                        $(this).height($iframeContent.outerHeight());
+                        $(this).height(800);
                         $(this).parent().hide();
                     }
                 });

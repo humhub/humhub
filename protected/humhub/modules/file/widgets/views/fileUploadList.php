@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use humhub\libs\Html;
 use yii\helpers\Url;
 use humhub\libs\MimeHelper;
 use humhub\modules\file\libs\FileHelper;
@@ -18,7 +18,7 @@ $this->registerJsVar('file_delete_url', Url::to(['/file/file/delete']));
 </div>
 
 
-<script>
+<script <?= Html::nonce() ?>>
 <?php foreach ($files as $file): ?>
         addToUploadList("<?php echo $uploaderId; ?>", "<?php echo $file->guid; ?>", "<?php echo Html::encode($file->file_name); ?>", "<?php echo MimeHelper::getMimeIconClassByExtension(FileHelper::getExtension($file->file_name)); ?>");
 <?php endforeach; ?>

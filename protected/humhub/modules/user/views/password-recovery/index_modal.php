@@ -46,7 +46,7 @@ use yii\captcha\Captcha;
     </div>
 </div>
 
-<script>
+<script <?= \humhub\libs\Html::nonce() ?>>
 <?php if ($model->hasErrors()) { ?>
     $('#password-recovery-form').removeClass('bounceIn');
     $('#password-recovery-form').addClass('shake');

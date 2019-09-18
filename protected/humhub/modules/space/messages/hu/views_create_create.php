@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Create</strong> new space' => '',
-  'Advanced access settings' => '',
+  '<strong>Create</strong> new space' => 'Új közösség <strong>létrehozása</strong>',
+  'Advanced access settings' => 'Speciális hozzáférési beállítások',
   'Next' => 'Következő',
-  'Space name' => '',
-  'space description' => '',
+  'Space name' => 'Közösség neve',
+  'space description' => 'Közösség leírása',
 );
