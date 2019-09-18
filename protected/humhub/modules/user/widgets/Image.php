@@ -8,9 +8,9 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\ui\widgets\BaseImage;
 use Yii;
 use humhub\libs\Html;
-use humhub\components\Widget;
 use humhub\modules\user\models\User;
 
 /**
@@ -19,65 +19,12 @@ use humhub\modules\user\models\User;
  * @since 1.2
  * @author Luke
  */
-class Image extends Widget
+class Image extends BaseImage
 {
-
     /**
      * @var \humhub\modules\user\models\User
      */
     public $user;
-
-    /**
-     * @var int the image width in pixcel
-     */
-    public $width = 50;
-
-    /**
-     * @var int the image height in pixel (optional)
-     */
-    public $height = null;
-
-    /**
-     * @var boolean add link to user profile
-     */
-    public $link = true;
-
-    /**
-     * @var array optional html options for the link tag
-     */
-    public $linkOptions = [];
-
-    /**
-     * @var array optional html options for the base tag
-     */
-    public $htmlOptions = [];
-
-    /**
-     * @var array optional html options for the image tag
-     */
-    public $imageOptions = [];
-
-    /**
-     * @var string show tooltip with further information about the user
-     */
-    public $showTooltip = false;
-
-    /**
-     * @var string the tooltip text (default is users display name)
-     */
-    public $tooltipText = null;
-
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        parent::init();
-
-        if ($this->height === null) {
-            $this->height = $this->width;
-        }
-    }
 
     /**
      * @inheritdoc
