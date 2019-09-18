@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\dashboard\controllers\DashboardController;
+use humhub\modules\stream\actions\Stream;
 use Yii;
 use humhub\components\Widget;
 use humhub\modules\space\models\Space;
@@ -71,6 +73,7 @@ class WallEntry extends Widget
      * The wall entry layout to use
      * 
      * @var string
+     * @deprecated since 1.4 use [[widgetLayout]] instead
      */
     public $wallEntryLayout = "@humhub/modules/content/widgets/views/wallEntry.php";
 
@@ -129,22 +132,15 @@ class WallEntry extends Widget
     /**
      * @inheritdoc
      */
-    public static function widget($config = [])
+    public function init()
     {
-        ob_start();
-        ob_implicit_flush(false);
-        try {
-            /* @var $widget Widget */
-            $config['class'] = get_called_class();
-            $widget = Yii::createObject($config);
-            $out = $widget->render($widget->wallEntryLayout, $widget->getWallEntryViewParams());
-        } catch (\Exception $e) {
-            ob_end_clean();
-            throw $e;
+        // Compatibility layer
+        parent::init();
+        if(empty($this->widgetLayout)) {
+            $this->widgetLayout = $this->wallEntryLayout;
         }
-
-        return ob_get_clean() . $out;
     }
+
 
     /**
      * Returns the edit url to edit the content (if supported)
@@ -162,7 +158,11 @@ class WallEntry extends Widget
             return "";
         }
 
-        return $this->contentObject->content->container->createUrl($this->editRoute, ['id' => $this->contentObject->id]);
+        $params = ['id' => $this->contentObject->id];
+        if (Yii::$app->controller instanceof DashboardController) {
+            $params['from'] = Stream::FROM_DASHBOARD;
+        }
+        return $this->contentObject->content->container->createUrl($this->editRoute, $params);
     }
 
     /**
@@ -190,12 +190,12 @@ class WallEntry extends Widget
             $this->addControl($result, [EditLink::class, ['model' => $this->contentObject, 'mode' => $this->editMode, 'url' => $this->getEditUrl()], ['sortOrder' => 200]]);
         }
 
-        $this->addControl($result, [VisibilityLink::class, ['contentRecord' => $this->contentObject], ['sortOrder' => 250]]);
-        $this->addControl($result, [NotificationSwitchLink::class, ['content' => $this->contentObject], ['sortOrder' => 300]]);
-        $this->addControl($result, [PermaLink::class, ['content' => $this->contentObject], ['sortOrder' => 400]]);
-        $this->addControl($result, [PinLink::class, ['content' => $this->contentObject], ['sortOrder' => 500]]);
-        $this->addControl($result, [MoveContentLink::class, ['model' => $this->contentObject], ['sortOrder' => 550]]);
-        $this->addControl($result, [ArchiveLink::class, ['content' => $this->contentObject], ['sortOrder' => 600]]);
+        $this->addControl($result, [PermaLink::class, ['content' => $this->contentObject], ['sortOrder' => 300]]);
+        $this->addControl($result, [VisibilityLink::class, ['contentRecord' => $this->contentObject], ['sortOrder' => 400]]);
+        $this->addControl($result, [NotificationSwitchLink::class, ['content' => $this->contentObject], ['sortOrder' => 500]]);
+        $this->addControl($result, [PinLink::class, ['content' => $this->contentObject], ['sortOrder' => 600]]);
+        $this->addControl($result, [MoveContentLink::class, ['model' => $this->contentObject], ['sortOrder' => 700]]);
+        $this->addControl($result, [ArchiveLink::class, ['content' => $this->contentObject], ['sortOrder' => 800]]);
 
         if(isset($this->controlsOptions['add'])) {
             foreach ($this->controlsOptions['add'] as $linkOptions) {
@@ -216,16 +216,23 @@ class WallEntry extends Widget
 
     /**
      * Renders the wall entry output 
-     * 
+     *
+     * Note this function does not call
+     *
      * @return string the output
      * @throws \Exception
+     * @deprecated since 1.4
      */
     public function renderWallEntry()
     {
         ob_start();
         ob_implicit_flush(false);
         try {
-            $out = $this->render($this->wallEntryLayout, $this->getWallEntryViewParams());
+            $out = '';
+            if($this->beforeRun()) {
+                $result = $this->render($this->widgetLayout, $this->getLayoutViewParams());
+                $out = $this->afterRun($result);
+            }
         } catch (\Exception $e) {
             ob_end_clean();
             throw $e;
@@ -235,9 +242,18 @@ class WallEntry extends Widget
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getLayoutViewParams()
+    {
+        return $this->getWallEntryViewParams();
+    }
+
+    /**
      * Returns the view paramters for the wall entry layout
      * 
      * @return array the view parameter array
+     * @deprecated since 1.4 use [[getLayoutViewParams()]] instead
      */
     public function getWallEntryViewParams()
     {
@@ -247,7 +263,9 @@ class WallEntry extends Widget
         $container = $content->container;
 
         // In case of e.g. dashboard, show contentContainer of this content
-        if (!Yii::$app->controller instanceof ContentContainerController && !($container instanceof User && $container->id == $user->id)) {
+        if (isset($this->controlsOptions['showContentContainer']) && !($container instanceof User && $container->id == $user->id)) {
+            $showContentContainer = $this->controlsOptions['showContentContainer'];
+        } elseif (!Yii::$app->controller instanceof ContentContainerController && !($container instanceof User && $container->id == $user->id)) {
             $showContentContainer = true;
         }
 

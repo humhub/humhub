@@ -57,8 +57,7 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
             <!-- show user name and title -->
             <div class="img-profile-data">
                 <h1><?= Html::encode($user->displayName); ?></h1>
-
-                <h2><?= Html::encode($user->profile->title); ?></h2>
+                <h2><?= Html::encode($user->displayNameSub); ?></h2>
             </div>
 
             <!-- check if the current user is the profile owner and can change the images -->

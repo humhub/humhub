@@ -184,6 +184,16 @@
   @import "richtext.less";
 }
 
+@prev-mobile: false;
+& when not(@prev-mobile) {
+  @import "mobile.less";
+}
+
+@prev-icon: false;
+& when not(@prev-icon) {
+  @import "icon.less";
+}
+
 @import "../css/select2Theme/build.less";
 
 // LEGACY/DEPRECATED User- & Space picker

@@ -9,61 +9,61 @@
 namespace humhub\modules\admin\widgets;
 
 use Yii;
-use yii\helpers\Url;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\TabMenu;
+use humhub\modules\admin\permissions\ManageSettings;
 
 /**
  * Group Administration Menu
  */
-class SettingsMenu extends \humhub\widgets\BaseMenu
+class SettingsMenu extends TabMenu
 {
 
     /**
      * @inheritdoc
      */
-    public $template = "@humhub/widgets/views/tabMenu";
-
     public function init()
     {
-        $canEditSettings = Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageSettings());
+        $canEditSettings = Yii::$app->user->can(ManageSettings::class);
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'General'),
-            'url' => Url::toRoute('/admin/setting/index'),
+            'url' => ['/admin/setting/index'],
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && Yii::$app->controller->action->id == 'basic'),
+            'isActive' => MenuLink::isActiveState('admin', 'setting', 'basic'),
             'isVisible' => $canEditSettings
-        ]);
+        ]));
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Appearance'),
-            'url' => Url::toRoute('/admin/setting/design'),
+            'url' => ['/admin/setting/design'],
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && Yii::$app->controller->action->id == 'design'),
+            'isActive' => MenuLink::isActiveState('admin', 'setting', 'design'),
             'isVisible' => $canEditSettings
-        ]);
+        ]));
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'E-Mail summaries'),
-            'url' => Url::toRoute('/activity/admin/defaults'),
+            'url' => ['/activity/admin/defaults'],
             'sortOrder' => 300,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'activity' && Yii::$app->controller->id == 'admin' && (Yii::$app->controller->action->id == 'defaults')),
+            'isActive' => MenuLink::isActiveState('activity', 'admin', 'defaults'),
             'isVisible' => $canEditSettings
-        ]);
+        ]));
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Notifications'),
-            'url' => Url::toRoute('/notification/admin/defaults'),
+            'url' => ['/notification/admin/defaults'],
             'sortOrder' => 400,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'notification' && Yii::$app->controller->id == 'admin' && (Yii::$app->controller->action->id == 'defaults')),
+            'isActive' => MenuLink::isActiveState('notification', 'admin', 'defaults'),
             'isVisible' => $canEditSettings
-        ]);
+        ]));
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Advanced'),
-            'url' => Url::toRoute('/admin/setting/advanced'),
+            'url' => ['/admin/setting/advanced'],
             'sortOrder' => 1000,
             'isVisible' => $canEditSettings
-        ]);
+        ]));
 
         parent::init();
     }

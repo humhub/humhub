@@ -24,6 +24,7 @@ return [
     'The content has been archived.' => '',
     'The content has been deleted.' => '',
     'The content has been unarchived.' => '',
+    'Where I\'m involved' => '',
     'With file attachments' => '',
     'Your last edit state has been saved!' => '',
     'Back to stream' => 'Grįžti į sieną',
@@ -33,5 +34,4 @@ return [
     'Last update' => 'Paskutiniai atnaujinimai',
     'No matches with your selected filters!' => 'Nerasta atitikimų su pasirinktais filtrais!',
     'Nothing here yet!' => 'Nieko nerasta!',
-    'Where I´m involved' => 'Aš dalyvauju',
 ];

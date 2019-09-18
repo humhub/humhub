@@ -53,6 +53,7 @@ return array (
   'Open' => 'Open',
   'Please type at least 3 characters' => 'Typ tenminste 3 tekens',
   'Please type at least {count} characters' => 'Typ ten minste {count} tekens',
+  'Powered by {name}' => 'Mogelijk gemaakt door {name}',
   'Profile dropdown' => 'Profiel keuzelijst',
   'Profile image of {displayName}' => 'Profielafbeelding van {displayName}',
   'Profile picture of {displayName}' => 'Profielafbeelding van {displayName}',

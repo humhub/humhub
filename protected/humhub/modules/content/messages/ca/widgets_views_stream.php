@@ -20,6 +20,7 @@ return [
     'Include archived content' => '',
     'Only private content' => '',
     'Only public content' => '',
+    'Where I\'m involved' => '',
     'With file attachments' => '',
     'Back to stream' => 'Torna a l\'activitat',
     'Created by me' => 'Creat per mi',
@@ -32,6 +33,5 @@ return [
     'The content has been archived.' => 'El contingut s\'ha arxivat.',
     'The content has been deleted.' => 'El contingut s\'ha eliminat.',
     'The content has been unarchived.' => 'El contingut s\'ha desarxivat.',
-    'Where I´m involved' => 'On estic involucrat',
     'Your last edit state has been saved!' => 'La seua última  edició de l\'estat s\'ha gravat!',
 ];

@@ -8,15 +8,14 @@
 
 namespace humhub\modules\space\widgets;
 
-use yii\base\Widget;
+use humhub\modules\ui\widgets\BaseImage;
 use yii\bootstrap\Html;
 
 /**
  * Return space image or acronym
  */
-class Image extends Widget
+class Image extends BaseImage
 {
-
     /**
      * @var \humhub\modules\space\models\Space
      */
@@ -27,59 +26,12 @@ class Image extends Widget
      */
     public $acronymCount = 2;
 
-    /**
-     * @var int the width of the image
-     */
-    public $width = 50;
-
-    /**
-     * @var int the height of the image
-     */
-    public $height = null;
-
-    /**
-     * @var array html options for the generated tag
-     */
-    public $htmlOptions = [];
-
-    /**
-     * @var boolean create link to the space
-     */
-    public $link = false;
-
-    /**
-     * @var array Html Options of the link
-     */
-    public $linkOptions = [];
-
-    /**
-     * @var string show tooltip with further information about the space (Only available when link is true)
-     * @since 1.3
-     */
-    public $showTooltip = false;
-
-    /**
-     * @var string the tooltip text (default is users display name)
-     * @since 1.3
-     */
-    public $tooltipText = null;
-
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        if ($this->height === null) {
-            $this->height = $this->width;
-        }
-    }
 
     /**
      * @inheritdoc
      */
     public function run()
     {
-
         if (!isset($this->linkOptions['href'])) {
             $this->linkOptions['href'] = $this->space->getUrl();
         }

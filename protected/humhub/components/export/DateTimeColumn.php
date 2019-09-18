@@ -30,6 +30,7 @@ class DateTimeColumn extends DataColumn
      */
     public function renderDataCellContent($model, $key, $index)
     {
-        return Date::PHPToExcel(parent::renderDataCellContent($model, $key, $index));
+        $value = Date::PHPToExcel(parent::renderDataCellContent($model, $key, $index));
+        return $value === false ? null : $value;
     }
 }

@@ -187,28 +187,31 @@ class ContentTagTest extends HumHubDbTestCase
     {
         $this->space = Space::findOne(['id' => 3]);
         $tag = new TestTag($this->space, 'test');
+
+        /** @var Content $content */
         $content = Content::findOne(1);
 
+        // Try add unsaved tag to content (should fail)
         try {
             $content->addTag($tag);
             $this->assertTrue(false);
         } catch(InvalidArgumentException $e) {
-            // Tag was not saved
             $this->assertTrue(true);
         }
 
         $this->assertTrue($tag->save());
 
+        // Try add tag without container relation (should fail)
         try {
             $content->addTag($tag);
             $this->assertTrue(false);
         } catch(InvalidArgumentException $e) {
-            // Tag assigned with invalid container_id
             $this->assertTrue(true);
         }
 
         $tag->contentcontainer_id = $content->contentcontainer_id;
 
+        // Try adding the same tag twice (should only be added once)
         $this->assertTrue($content->addTag($tag));
         $this->assertEquals(1, count($content->tags));
 
@@ -217,8 +220,9 @@ class ContentTagTest extends HumHubDbTestCase
 
 
         $tag2 = new TestTagSameModule($content->getContainer(), 'test2');
-        $tag2->save();
-        $content->addTag($tag2);
+        $this->assertTrue($tag2->save());
+
+        $this->assertTrue($content->addTag($tag2));
         $this->assertEquals(2, count($content->tags));
 
         $tag3 = new TestTagOtherModule($content->getContainer(), 'test3');

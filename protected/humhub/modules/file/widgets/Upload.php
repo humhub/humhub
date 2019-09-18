@@ -70,7 +70,7 @@ use yii\helpers\Html;
  *
  * ```
  * // Create initial upload component
- * $upload = Upload::model($model, $attribute);
+ * $upload = Upload::forModel($model, $attribute);
  *
  *
  * // Output upload button with additional settings

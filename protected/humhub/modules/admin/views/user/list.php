@@ -32,7 +32,7 @@ use yii\widgets\ActiveForm;
 
     <br />
 
-    <?php $form = ActiveForm::begin(['method' => 'get']); ?>
+    <?php $form = ActiveForm::begin(['method' => 'get', 'action' => Url::to(['/admin/user/list'])]); ?>
     <div class="row">
         <div class="col-md-8">
             <div class="input-group">
@@ -42,7 +42,7 @@ use yii\widgets\ActiveForm;
                 </span>
             </div>     
         </div>
-        <div class="col-md-4" style="padding-left:0px">
+        <div class="col-md-4 usersearch-statuses">
             <?= Html::activeDropDownList($searchModel, 'status', UserSearch::getStatusAttributes(), ['class' => 'form-control', 'onchange' => 'this.form.submit()']); ?>
         </div>
     </div>

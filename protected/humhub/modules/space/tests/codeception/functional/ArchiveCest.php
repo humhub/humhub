@@ -16,6 +16,7 @@ class ArchiveCest
 {
     public function testSpaceArchiveAccess(FunctionalTester $I)
     {
+        $I->assertSpaceAccessFalse(Space::USERGROUP_GUEST, '/space/manage/default/archive');
         $I->assertSpaceAccessFalse(Space::USERGROUP_MEMBER, '/space/manage/default/archive');
         $I->assertSpaceAccessFalse(Space::USERGROUP_USER, '/space/manage/default/archive');
         $I->assertSpaceAccessFalse(Space::USERGROUP_MODERATOR, '/space/manage/default/archive');

@@ -3,12 +3,13 @@
 namespace humhub\modules\activity\tests\codeception\unit;
 
 use humhub\modules\activity\models\Activity;
+use humhub\modules\activity\tests\codeception\activities\TestActivity;
 use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\post\models\Post;
 
-class ActivityTestTest extends HumHubDbTestCase
+class ActivityTest extends HumHubDbTestCase
 {
 
     use Specify;
@@ -18,7 +19,7 @@ class ActivityTestTest extends HumHubDbTestCase
         $this->becomeUser('User2');
         $post = Post::findOne(['id' => 1]);
         
-        $activity = activities\TestActivity::instance()->from(Yii::$app->user->getIdentity())->about($post);
+        $activity = TestActivity::instance()->from(Yii::$app->user->getIdentity())->about($post);
         
         // Test Originator
         $this->assertEquals($activity->originator->id, Yii::$app->user->getIdentity()->id, 'Originator id before save');
@@ -34,7 +35,7 @@ class ActivityTestTest extends HumHubDbTestCase
         
         $activity->create();
         
-        $record = Activity::findOne(['class' => activities\TestActivity::class]);
+        $record = Activity::findOne(['class' => TestActivity::class]);
         $this->assertEquals($record->module, 'test');
         $source = $record->getPolymorphicRelation();
        
@@ -56,7 +57,7 @@ class ActivityTestTest extends HumHubDbTestCase
     public function testCreateActivityAboutOnly()
     {
         $post = Post::findOne(['id' => 1]);
-        $activity = activities\TestActivity::instance()->about($post)->create();
+        $activity = TestActivity::instance()->about($post)->create();
         $this->assertEquals($post->content->created_by, $activity->record->content->created_by);
 
         $activity = Activity::findOne(['id' => $activity->record->id]);

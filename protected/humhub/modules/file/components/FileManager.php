@@ -66,7 +66,7 @@ class FileManager extends Component
             }
 
             $file->updateAttributes([
-                'object_model' => $this->record->className(),
+                'object_model' => get_class($this->record),
                 'object_id' => $this->record->getPrimaryKey(),
             ]);
         }
@@ -81,7 +81,7 @@ class FileManager extends Component
      */
     public function find()
     {
-        return File::find()->andWhere(['object_id' => $this->record->getPrimaryKey(), 'object_model' => $this->record->className()]);
+        return File::find()->andWhere(['object_id' => $this->record->getPrimaryKey(), 'object_model' =>  get_class($this->record)]);
     }
 
     /**

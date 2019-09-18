@@ -2,5 +2,5 @@
 return array (
   'Communication' => 'Kommunikáció',
   'General' => 'Általános',
-  'Social bookmarks' => 'Közösségi',
+  'Social bookmarks' => 'Közösségi könyvjelzők',
 );

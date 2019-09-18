@@ -1,6 +1,9 @@
 humhub.module('ui.navigation', function (module, require, $) {
 
     var event = require('event');
+    var Widget = require('ui.widget').Widget;
+
+    var Navigation = Widget.extend();
 
     var init = function () {
         module.initTopNav();
@@ -54,6 +57,7 @@ humhub.module('ui.navigation', function (module, require, $) {
         init: init,
         setActive: setActive,
         initTopNav: initTopNav,
-        setActiveItem: setActiveItem
+        setActiveItem: setActiveItem,
+        Navigation: Navigation
     });
 });

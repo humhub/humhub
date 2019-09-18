@@ -1,4 +1,6 @@
 <?php
+use humhub\libs\Html;
+
 /**
  * @var $hForm \humhub\compat\HForm
  * @see \humhub\modules\installer\controllers\ConfigController::actionAdmin()
@@ -15,12 +17,12 @@
         <hr/>
 
         <?php $form = \yii\widgets\ActiveForm::begin(['enableClientValidation' => false]); ?>
-        <?php echo $hForm->render($form); ?>
+        <?= $hForm->render($form); ?>
         <?php \yii\widgets\ActiveForm::end(); ?>
     </div>
 </div>
 
-<script type="text/javascript">
+<script <?= Html::nonce() ?>>
 
     $(function () {
         // set cursor to email field

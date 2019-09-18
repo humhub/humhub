@@ -29,7 +29,7 @@ return [
     // Asset bundle for compression output:
     'targets' => [
         'all' => [
-            'class' => 'yii\web\AssetBundle',
+            'class' => \yii\web\AssetBundle::class,
             'basePath' => '@webroot-static',
             'baseUrl' => '@web-static',
             'js' => 'js/all-{hash}.js',
@@ -48,6 +48,9 @@ return [
                     'yii\bootstrap\BootstrapAsset',
                     'humhub\assets\JuiBootstrapBridgeAsset'
                 ]
+            ],
+            'yii\web\JqueryAsset' => [
+                'sourcePath' => '@npm/jquery/dist',
             ],
         ]
     ],

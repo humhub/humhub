@@ -23,6 +23,7 @@ class Module extends \humhub\components\Module
      */
     public $isCoreModule = true;
 
+
     /**
      * @inheritdoc
      */

@@ -17,5 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Double file extensions are not allowed!' => '',
+    'Invalid file name detected!' => '',
     'Image dimensions are too big to be processed with current server memory limit!' => '图像尺寸太大，超出了当前服务器内存处理限制！',
 ];

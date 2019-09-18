@@ -14,7 +14,7 @@ return array (
   'The content has been archived.' => 'Der Inhalt wurde archiviert.',
   'The content has been deleted.' => 'Der Inhalt wurde gelöscht.',
   'The content has been unarchived.' => 'Der Inhalt wurde dearchiviert.',
-  'Where I´m involved' => 'Wo ich involviert bin',
+  'Where I\'m involved' => 'Wo ich involviert bin',
   'With file attachments' => 'Mit Dateianhängen',
   'Your last edit state has been saved!' => 'Dein letzter Bearbeitungsstand wurde gespeichert.',
 );

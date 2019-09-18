@@ -7,6 +7,7 @@ return array (
   'Default user group for new users' => 'Zadana korisnička grupa za nove korisnike',
   'Default user idle timeout, auto-logout (in seconds, optional)' => 'Zadani prekid isteka mirovanja korisnika, automatska odjava (u sekundama, opcija)',
   'Default user profile visibility' => 'Vidljivost zadanog profila korisnika',
+  'Include captcha in registration form' => 'Uključite captcha u obrazac za registraciju',
   'Members can invite external users by email' => 'Članovi mogu pozvati eksterne korisnike putem e-pošte',
   'Require group admin approval after registration' => 'Potrebna dozvola administratora grupe nakon registracije',
 );

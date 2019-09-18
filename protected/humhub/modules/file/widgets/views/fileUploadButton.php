@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use humhub\libs\Html;
 use yii\helpers\Url;
 
 $this->registerJsVar('fileuploader_error_modal_title', Yii::t('FileModule.widgets_FileUploadButtonWidget', '<strong>Upload</strong> error'));
@@ -37,7 +37,7 @@ $this->registerJsVar('fileuploader_error_modal_errormsg', Yii::t('FileModule.wid
            data-url="<?php echo Url::to(['/file/file/upload', 'objectModel' => $objectModel, 'objectId' => $objectId]); ?>" multiple>
 </span>
 
-<script>
+<script <?= Html::nonce() ?>>
     $(function () {
         'use strict';
         installUploader("<?php echo $uploaderId; ?>");

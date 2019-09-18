@@ -13,17 +13,18 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=5.6.0",
+        "php": ">=7.0.0",
         "npm-asset/animate.css": "*",
-	"npm-asset/jquery-autosize": "1.*",
+	    "npm-asset/jquery-autosize": "1.*",
         "npm-asset/bluebird": "^3.3.5",
         "npm-asset/blueimp-file-upload": "9.24.*",
         "npm-asset/bootstrap-markdown": "2.10.*",
         "npm-asset/clipboard-polyfill": "*",
         "npm-asset/font-awesome": "^4.7.0",
         "npm-asset/imagesloaded": "*",
-        "npm-asset/jPlayer": "2.9.*",
+        "npm-asset/jplayer": "2.9.*",
         "npm-asset/jquery-color": "*",
+        "npm-asset/jquery": "^3.4.0",
         "npm-asset/jquery-knob": "1.2.*",
         "npm-asset/jquery.nicescroll": "3.6.8",
         "npm-asset/timeago": "^1.6.3",
@@ -47,8 +48,8 @@
         "raoul2000/yii2-jcrop-widget": "*",
         "twig/twig": "^1.0",
         "xj/yii2-jplayer-widget": "*",
-        "yiisoft/yii2": "2.0.15",
-        "yiisoft/yii2-authclient": "~2.1.0",
+        "yiisoft/yii2": "2.0.16",
+        "yiisoft/yii2-authclient": "~2.2.0",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-httpclient": "~2.0.0",
         "yiisoft/yii2-imagine": "~2.1.0",
@@ -58,13 +59,12 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "zendframework/zend-http": "*",
         "zendframework/zend-ldap": "^2.5",
-        "ext-json": "*"
+        "ext-zip": "*"
     },
     "require-dev": {
         "codeception/codeception": "2.4.5",
         "codeception/specify": "~0.4 || ~1.0",
         "codeception/verify": "~0.4 || ~1.0",
-        "yiisoft/yii2-apidoc": "~2.1.0",
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0"
@@ -78,7 +78,7 @@
     "config": {
         "process-timeout": 1800,
         "platform": {
-            "php": "5.6"
+            "php": "7.0"
         },
         "vendor-dir": "protected/vendor",
         "sort-packages": true,

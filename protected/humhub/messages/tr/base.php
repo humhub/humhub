@@ -53,6 +53,7 @@ return array (
   'Open' => 'Aç',
   'Please type at least 3 characters' => 'Lütfen en az 3 karakter giriniz',
   'Please type at least {count} characters' => 'Lütfen en az {count} karakter girin',
+  'Powered by {name}' => '{name} tarafından desteklenmektedir',
   'Profile dropdown' => 'Profil menüsü',
   'Profile image of {displayName}' => 'Profil resmi {displayName}',
   'Profile picture of {displayName}' => 'Profil fotoğrafı {displayName}',

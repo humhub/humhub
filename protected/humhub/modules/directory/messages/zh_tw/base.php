@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '',
+    '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '',
     '<b>There are no profile posts yet!</b>' => '',
     '<strong>Directory</strong> menu' => '',
     '<strong>Group</strong> members - {group}' => '',

@@ -20,9 +20,8 @@ class DeleteSpaceCest
         $I->assertSpaceAccessFalse(Space::USERGROUP_MODERATOR, '/space/manage/default/delete');
         $I->assertSpaceAccessFalse(Space::USERGROUP_ADMIN, '/space/manage/default/delete');
         $I->assertSpaceAccessTrue(Space::USERGROUP_OWNER, '/space/manage/default/delete');
-        $space = $I->assertSpaceAccessStatus(Space::USERGROUP_OWNER, 302, '/space/manage/default/delete', [], ['DeleteForm[currentPassword]' => '123qwe']);
-        $I->amOnSpace($space);
-        $I->seeResponseCodeIs(404);
+        $I->assertSpaceAccessStatus(Space::USERGROUP_OWNER, 302, '/space/manage/default/delete', [], ['DeleteForm[currentPassword]' => '123qwe']);
+        $I->assertSpaceAccessFalse(Space::USERGROUP_OWNER, '/space/space');
     }
 
     public function testSystemAdminDeletion(FunctionalTester $I)

@@ -60,6 +60,7 @@ class NotificationManager
      *
      * @param \humhub\modules\notification\components\BaseNotification $notification
      * @param ActiveQueryUser $userQuery
+     * @throws \yii\base\InvalidConfigException
      */
     public function sendBulk(BaseNotification $notification, $userQuery)
     {
@@ -108,6 +109,7 @@ class NotificationManager
      *
      * @param User $user |null the user
      * @return BaseTarget[] the target
+     * @throws \yii\base\InvalidConfigException
      */
     public function getTargets(User $user = null)
     {
@@ -169,6 +171,7 @@ class NotificationManager
      *
      * @param Content $content
      * @return ActiveQueryUser
+     * @throws \yii\base\Exception
      */
     public function getFollowers(Content $content)
     {
@@ -382,6 +385,7 @@ class NotificationManager
      * Returns all available Notifications
      *
      * @return BaseNotification[]
+     * @throws \yii\base\Exception
      */
     public function getNotifications()
     {
@@ -422,11 +426,12 @@ class NotificationManager
     /**
      * Searches for all Notifications exported by modules.
      * @return type
+     * @throws \yii\base\Exception
      */
     protected function searchModuleNotifications()
     {
         $result = [];
-        foreach (Yii::$app->moduleManager->getModules(['includeCoreModules' => true]) as $module) {
+        foreach (Yii::$app->moduleManager->getEnabledModules(['includeCoreModules' => true]) as $module) {
             if ($module instanceof Module && $module->hasNotifications()) {
                 $result = array_merge($result, $this->createNotifications($module->getNotifications()));
             }

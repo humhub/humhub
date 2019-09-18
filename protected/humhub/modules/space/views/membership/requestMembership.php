@@ -1,6 +1,7 @@
 <?php
 
 use humhub\compat\CActiveForm;
+use humhub\libs\Html;
 ?>
 <div class="modal-dialog animated fadeIn">
     <div class="modal-content">
@@ -51,7 +52,7 @@ use humhub\compat\CActiveForm;
 </div>
 
 
-<script type="text/javascript">
+<script <?= Html::nonce() ?>>
 
     // set focus to input field
     $('#request-message').focus()

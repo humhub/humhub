@@ -38,7 +38,6 @@ class InitialData
         Yii::$app->settings->set('cronLastDailyRun', time());
 
         // Authentication
-        Yii::$app->getModule('user')->settings->set('auth.ldap.refreshUsers', '1');
         Yii::$app->getModule('user')->settings->set('auth.needApproval', '0');
         Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', '1');
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInvite', '1');
@@ -304,19 +303,6 @@ class InitialData
         }
 
         $field = new ProfileField();
-        $field->internal_name = "im_msn";
-        $field->title = 'MSN';
-        $field->sort_order = 600;
-        $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 100;
-            $field->fieldType->save();
-        }
-
-
-        $field = new ProfileField();
         $field->internal_name = "im_xmpp";
         $field->title = 'XMPP Jabber Address';
         $field->sort_order = 800;
@@ -416,18 +402,6 @@ class InitialData
         $field->internal_name = "url_myspace";
         $field->title = 'MySpace URL';
         $field->sort_order = 800;
-        $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->validator = 'url';
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "url_googleplus";
-        $field->title = 'Google+ URL';
-        $field->sort_order = 900;
         $field->profile_field_category_id = $cSocial->id;
         $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;

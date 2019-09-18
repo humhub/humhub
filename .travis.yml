@@ -10,10 +10,10 @@ cache:
   directories:
   - $HOME/.composer/cache
 php:
-- 5.6
 - 7.0
 - 7.1
 - 7.2
+- 7.3
 matrix:
   fast_finish: true
 jobs:
@@ -22,12 +22,13 @@ jobs:
     name: "Trigger build for external modules"
     install: skip
     script: .travis/trigger-modules.sh
+    if: fork = false
 install:
 - .travis/install-dependencies.sh
 - .travis/setup-humhub.sh
 script:
 - '$HOME/chromedriver --url-base=/wd/hub &'
-- 'php --server 127.0.0.1:8080 --docroot ${TRAVIS_BUILD_DIR} &>/dev/null &'
+- 'php --server 127.0.0.1:8080 --docroot ${TRAVIS_BUILD_DIR} &>/tmp/phpserver.log &'
 - 'sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php'
 - 'cd protected/humhub/tests'
 - 'php ../../vendor/bin/codecept build'

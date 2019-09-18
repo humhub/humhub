@@ -24,7 +24,7 @@ return [
     'See all' => '',
     'Send invite' => '',
     'This group has no members yet.' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Ningú ha publicat res encara.</b><br>Sigues el primer i publica alguna cosa...',
+    '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>Ningú ha publicat res encara.</b><br>Sigues el primer i publica alguna cosa...',
     '<strong>Directory</strong> menu' => '<strong>Menú</strong> del directori',
     '<strong>Group</strong> stats' => '<strong>Estadístiques</strong> de grups',
     '<strong>Member</strong> Group Directory' => '<strong>Directori</strong> de Grups i membres',

@@ -11,8 +11,6 @@ File Overview
 - **console.log** - Configuration used in Console Application only
 - **dynamic.php** - Dynamic generated configuration - do not edit manually!
 
-
-
 Configuration file loading order
 ---------------------------------
 
@@ -54,27 +52,6 @@ Available params:
 - `allowedLanguages` see the [Translations Section](translations.md)
 - `enablePjax` used to disable/enable pjax support (default true)
 
-## Overwrite default Permissions
-
-Default permission can be overwritten within `humhub/config/common.php` by means of the `defaultPermissions` params array.
-The following example overwrites the default permission of `humhub\modules\mymodule\permissions\MyPermission` for the 
-given groups.
-
-
-```
-return [
-    'params' => [
-        'defaultPermissions' => [
-            'humhub\modules\mymodule\permissions\MyPermission' => [
-                \humhub\modules\user\models\User::USERGROUP_SELF => \humhub\libs\BasePermission::STATE_ALLOW,
-                \humhub\modules\user\models\User::USERGROUP_USER => \humhub\libs\BasePermission::STATE_ALLOW,
-                \humhub\modules\user\models\User::USERGROUP_FRIEND => \humhub\libs\BasePermission::STATE_ALLOW,
-                \humhub\modules\user\models\User::USERGROUP_GUEST => \humhub\libs\BasePermission::STATE_ALLOW,
-            ],
-        ]
-    ]
-]
-```
 
 # Statistics/Tracking
 
@@ -83,19 +60,28 @@ Your tracking code can be managed under `Administration -> Settings -> Advanced 
 In order to send the tracking code in case of pjax page loads as well as full page loads, you have to add the following to your statistics code by the example of google analytics:
 
 
-```javascript
-$(document).on('pjax:end', function() {
-    ga('set', 'location', window.location.href);
-    ga('send', 'pageview');
-});
+```twig
+<script nonce="{{ nonce }}">
+    $(document).on('pjax:end', function() {
+        ga('set', 'location', window.location.href);
+        ga('send', 'pageview');
+    });
+</script>
 ```
 
 or by using the old ga version:
 
-```javascript
-$(document).on('pjax:end', function() {
-    if( window._gaq ) {
-        _gaq.push(['_trackPageview', window.location.href]);
-    }
-});
+```twig
+<script nonce="{{ nonce }}">
+    $(document).on('pjax:end', function() {
+        if( window._gaq ) {
+            _gaq.push(['_trackPageview', window.location.href]);
+        }
+    });
+</script>
 ```
+
+Please see [Single Page Application Tracking](https://developers.google.com/analytics/devguides/collection/analyticsjs/single-page-applications)
+for more information about google analytics configuration in single page application environments.
+
+> Note: Since HumHub 1.4 you should add the `nonce="{{ nonce }}` attribute to your script tag in order to be compatible with [csp nonces](security.md#security-configuration)

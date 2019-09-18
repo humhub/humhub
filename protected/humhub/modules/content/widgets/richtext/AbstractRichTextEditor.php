@@ -81,7 +81,7 @@ class AbstractRichTextEditor extends JsInputWidget
      *
      * @var string
      */
-    protected $mentioningRoute = "/search/search/mentioning";
+    protected $mentioningRoute = "/user/search/mentioning";
 
     /**
      * RichText plugin supported for this instance.

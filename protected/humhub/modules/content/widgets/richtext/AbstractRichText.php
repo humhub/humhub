@@ -14,6 +14,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\widgets\JsWidget;
 use yii\base\InvalidArgumentException;
+use yii\db\ActiveRecord;
 
 /**
  * AbstractRichText serves as the base class for rich text implementations.
@@ -170,7 +171,9 @@ abstract class AbstractRichText extends JsWidget
      * of the related [[ContentActiveRecord]].
      *
      * @param $text string RichText content
-     * @param ContentActiveRecord|ContentAddonActiveRecord $record
+     * @param ActiveRecord $record
+     * @return array
+     * @throws \yii\base\InvalidConfigException
      */
     public static function postProcess($text, $record)
     {
@@ -190,8 +193,9 @@ abstract class AbstractRichText extends JsWidget
 
     /**
      * @param $text string rich text content to be processed
-     * @param $record ContentActiveRecord|ContentAddonActiveRecord related model holding the rich text
+     * @param $record ActiveRecord related model holding the rich text
      * @return AbstractRichTextProcessor the related post-processor
+     * @throws \yii\base\InvalidConfigException
      */
     public static function getProcessor($text, $record)
     {
@@ -225,6 +229,7 @@ abstract class AbstractRichText extends JsWidget
      * @param $text string rich text content to be rendered
      * @param array $config rich text widget options
      * @return string render result
+     * @throws \Exception
      */
     public static function output($text, $config = [])
     {
@@ -241,6 +246,7 @@ abstract class AbstractRichText extends JsWidget
      * @param $maxLength int max length of the preview
      * @param array $config rich text widget options
      * @return string render result
+     * @throws \Exception
      */
     public static function preview($text, $maxLength = 0)
     {

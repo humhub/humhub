@@ -30,7 +30,7 @@ use yii\helpers\Html;
 
                             <div class="media-body">
                                 <h4 class="media-heading"><?= Html::encode($user->displayName); ?></h4>
-                                <h5><?= Html::encode($user->profile->title); ?></h5>
+                                <h5><?= Html::encode($user->displayNameSub); ?></h5>
                             </div>
                         </div>
                     </a>
@@ -47,7 +47,7 @@ use yii\helpers\Html;
         <?= ModalButton::cancel(Yii::t('base', 'Close'))?>
     </div>
 
-<script type="text/javascript">
+<script <?= \humhub\libs\Html::nonce() ?>>
 
     // scroll to top of list
     $(".modal-body").animate({scrollTop: 0}, 200);

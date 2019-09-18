@@ -6,5 +6,5 @@ return array (
   'Make public' => 'Fer publico',
   'Notify members' => 'Notificar miembros',
   'Public' => 'Publico',
-  'This space is archived.' => '',
+  'This space is archived.' => 'Iste espacio ye archivau.',
 );

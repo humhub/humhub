@@ -79,7 +79,14 @@ class FunctionalTester extends \Codeception\Actor
     public function assertSpaceAccessFalse($userGroup, $path, $params = [], $post = false)
     {
         $space = $this->loginBySpaceUserGroup($userGroup, $path, $params, $post);
-        $this->dontSeeResponseCodeIs(200);
+
+        if($userGroup === Space::USERGROUP_GUEST) {
+            $this->seeInCurrentUrl('auth');
+            $this->seeInCurrentUrl('login');
+        } else {
+            $this->dontSeeResponseCodeIs(200);
+        }
+
         $this->logout();
         return $space;
     }
@@ -116,16 +123,24 @@ class FunctionalTester extends \Codeception\Actor
                 $spaceId = 3;
                 $user = 'User1';
                 break;
-            case Space::USERGROUP_GUEST:
+            case Space::USERGROUP_USER:
                 $spaceId = 1;
                 $user = 'User1';
                 break;
+            case Space::USERGROUP_GUEST:
+                $this->logout();
+                $spaceId = 1;
+                break;
         }
 
-        $space = Space::findOne(['id' => $spaceId]);
+        if($spaceId) {
+            $space = Space::findOne(['id' => $spaceId]);
+        }
 
+        if($user) {
+            $this->amUser($user);
+        }
 
-        $this->amUser($user);
         $this->amOnSpace($space, $path, $params, $post);
         return $space;
     }
@@ -254,6 +269,24 @@ class FunctionalTester extends \Codeception\Actor
 
     }
 
+    /**
+     * @return \tests\codeception\_pages\DirectoryPage
+     */
+    public function amOnDirectory()
+    {
+        return tests\codeception\_pages\DirectoryPage::openBy($this);
+    }
+
+    public function amOnProfile()
+    {
+        return tests\codeception\_pages\ProfilePage::openBy($this);
+    }
+
+    public function amOnDashboard()
+    {
+        tests\codeception\_pages\DashboardPage::openBy($this);
+    }
+
     public function enableModule($guid, $moduleId)
     {
         if(is_int($guid)) {
@@ -263,7 +296,6 @@ class FunctionalTester extends \Codeception\Actor
         $space = Space::findOne(['guid' => $guid]);
         $space->enableModule($moduleId);
         Yii::$app->moduleManager->flushCache();
-        \humhub\modules\space\models\Module::flushCache();
     }
 
 }

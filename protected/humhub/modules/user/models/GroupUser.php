@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\search\libs\SearchHelper;
 
 /**
  * This is the model class for table "group_admin".
@@ -20,6 +21,8 @@ use humhub\components\ActiveRecord;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
+ * @property User $user
+ * @property Group $group
  */
 class GroupUser extends ActiveRecord
 {
@@ -82,16 +85,38 @@ class GroupUser extends ActiveRecord
             if ($this->group !== null && $this->group->space !== null) {
                 $this->group->space->addMember($this->user->id);
             }
+            if ($this->user !== null) {
+                $this->user->updateSearch();
+            }
         }
 
         parent::afterSave($insert, $changedAttributes);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        SearchHelper::queueUpdate($this->user);
+        parent::afterDelete();
+    }
+
+    /**
+     * Returns all Group relation
+     *
+     * @return \yii\db\ActiveQuery
+     */
     public function getGroup()
     {
         return $this->hasOne(Group::class, ['id' => 'group_id']);
     }
 
+    /**
+     * Returns all User relation
+     *
+     * @return \yii\db\ActiveQuery
+     */
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);

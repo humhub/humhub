@@ -107,6 +107,7 @@ class CronController extends Controller
      * Runs the daily cron jobs
      *
      * @param bool $force
+     * @throws \Exception
      */
     protected function runDaily($force = false)
     {

@@ -9,6 +9,7 @@
 namespace humhub\modules\installer\controllers;
 
 use humhub\components\Controller;
+use humhub\modules\marketplace\Module;
 use humhub\modules\queue\driver\Sync;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Group;
@@ -182,9 +183,10 @@ class ConfigController extends Controller
      */
     public function actionModules()
     {
-        // Only showed purchased modules
-        $marketplace = new \humhub\modules\admin\libs\OnlineModuleManager();
-        $modules = $marketplace->getModules(false);
+        /** @var Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+
+        $modules = $marketplaceModule->onlineModuleManager->getModules(false);
         foreach ($modules as $i => $module) {
             if (!isset($module['useCases']) || strpos($module['useCases'], Yii::$app->settings->get('useCase')) === false) {
                 unset($modules[$i]);
@@ -195,7 +197,7 @@ class ConfigController extends Controller
             $enableModules = Yii::$app->request->post('enableModules');
             if (is_array($enableModules)) {
                 foreach (array_keys($enableModules) as $moduleId) {
-                    $marketplace->install($moduleId);
+                    $marketplaceModule->onlineModuleManager->install($moduleId);
                     $module = Yii::$app->moduleManager->getModule($moduleId);
                     if ($module !== null) {
                         $module->enable();

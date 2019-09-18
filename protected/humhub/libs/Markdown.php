@@ -40,16 +40,12 @@ class Markdown extends GithubMarkdown
 
         $block['url'] = $this->handleInternalUrls($block['url']);
 
-        $internalLink = false;
         $baseUrl = Url::base(true);
-        if (substr($block['url'], 0, 1) == '/' || substr($block['url'], 0, strlen($baseUrl)) == $baseUrl) {
-            $internalLink = true;
-        }
 
         $url = (empty($block['url'])) ? $baseUrl : $block['url'];
 
         return Html::a($this->renderAbsy($block['text']), Html::decode($url), [
-            'target' => ($internalLink) ? '_self' : '_blank'
+            'target' => '_blank'
         ]);
     }
 
@@ -73,7 +69,7 @@ class Markdown extends GithubMarkdown
 
     protected function renderAutoUrl($block)
     {
-        return Html::a($block[1], $block[1]);
+        return Html::a($block[1], $block[1], ['target' => '_blank']);
     }
 
     /**

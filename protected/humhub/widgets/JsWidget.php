@@ -5,6 +5,7 @@ namespace humhub\widgets;
 use humhub\components\Widget;
 use humhub\libs\Html;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 /**
  * Description of JsWidget
@@ -111,7 +112,7 @@ class JsWidget extends Widget
 
     /**
      * Sets some default data options required by all widgets as the widget implementation
-     * and the widget evetns and initialization trigger.
+     * and the widget events and initialization trigger.
      */
     public function setDefaultOptions()
     {
@@ -132,6 +133,16 @@ class JsWidget extends Widget
 
         if (!empty($this->init)) {
             $this->options['data']['ui-init'] = $this->init;
+        }
+
+        if($this instanceof Reloadable) {
+            $reloadUrl = $this->getReloadUrl();
+
+            if(is_array($reloadUrl)) {
+                $reloadUrl['reload'] = true;
+            }
+
+            $this->options['data']['widget-reload-url'] = is_array($reloadUrl) ? Url::toRoute($reloadUrl) : $reloadUrl;
         }
     }
 

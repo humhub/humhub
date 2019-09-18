@@ -107,6 +107,11 @@ use humhub\models\UrlOembed;
 class ProsemirrorRichText extends AbstractRichText
 {
     /**
+     * @var int defines the maximum amount of oembeds allowed in a single richtext
+     */
+    public static $maxOembed = 10;
+
+    /**
      * @inheritdoc
      */
     public $jsWidget = 'ui.richtext.prosemirror.RichText';
@@ -149,9 +154,14 @@ class ProsemirrorRichText extends AbstractRichText
             $this->text = RichTextCompatibilityParser::parse($this->text);
         }
 
+        $oembedCount = 0;
         foreach (static::scanLinkExtension($this->text, 'oembed') as $match) {
-            if(isset($match[3])) {
-                $this->oembeds[$match[3]] = UrlOembed::GetOEmbed($match[3]);
+            if(isset($match[3]) && $oembedCount < static::$maxOembed) {
+                $oembedPreview =  UrlOembed::getOEmbed($match[3]);
+                if(!empty($oembedPreview)) {
+                    $oembedCount++;
+                    $this->oembeds[$match[3]] = $oembedPreview;
+                }
             }
         }
 
@@ -181,10 +191,10 @@ class ProsemirrorRichText extends AbstractRichText
      * @return string truncated and stripped text
      */
     protected function renderMinimal() {
-        $parser = new Markdown();
-        $result = strip_tags($parser->parse($this->text));
+        $result = preg_replace('/\\\\(\n|\r){1,2}/',  ' ', $this->text);
+        $result = strip_tags((new Markdown())->parse($result));
         $result = $this->toUTF8Emoji($result);
-        return ($this->maxLength > 0) ? Helpers::truncateText($result, $this->maxLength) : $result;
+        return  Html::encode(($this->maxLength > 0) ? Helpers::truncateText($result, $this->maxLength) : $result);
     }
 
     protected function toUTF8Emoji($text)
@@ -282,7 +292,7 @@ class ProsemirrorRichText extends AbstractRichText
      */
     protected static function getLinkExtensionPattern($extension = '[a-zA-Z]+')
     {
-        return '/(?<!\\\\)\[([^\]]*)\]\(('.$extension.'):{1}([^\)\s]*)(?:\s")?([^\)"]*)?(?:")?\)/is';
+        return '/(?<!\\\\)\[([^\]]*)\]\(('.$extension.'):{1}([^\)\s]*)(?:\s")?([^\)"]*)?(?:")?[^\)]*\)/is';
     }
 
     /**

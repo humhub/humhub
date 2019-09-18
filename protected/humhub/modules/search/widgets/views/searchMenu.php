@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Url;
+use humhub\libs\Html;
 ?>
 
 <li class="dropdown search-menu">
@@ -9,7 +10,7 @@ use yii\helpers\Url;
     </a>
 </li>
 
-<script>
+<script <?= Html::nonce() ?>>
     /**
      * Open search menu
      */

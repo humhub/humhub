@@ -24,7 +24,12 @@ class WebHelper extends Module
         include __DIR__.'/../acceptance/_bootstrap.php';
         $this->initModules();
     }
-    
+
+    public function _before(\Codeception\TestInterface $test)
+    {
+        Yii::$app->getUrlManager()->setScriptUrl('/index-test.php');
+    }
+
     /**
      * Initializes modules defined in @tests/codeception/config/test.config.php
      * Note the config key in test.config.php is modules and not humhubModules!

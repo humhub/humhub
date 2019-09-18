@@ -347,7 +347,7 @@ The trace level of your module can be configured by setting the `traceLevel` con
 
 ## Overwrite Module Behaviour
 
-You can overwrite the default module exports within your custom module by listening to the `beforeInit` function the target module.
+You can overwrite the default module exports within your custom module by listening to the `beforeInit` function of the target module.
 
 Within your example module:
 

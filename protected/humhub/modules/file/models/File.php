@@ -8,7 +8,7 @@
 
 namespace humhub\modules\file\models;
 
-use humhub\components\ActiveRecord;
+use yii\db\ActiveRecord;
 use Yii;
 use yii\helpers\Url;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -77,7 +77,7 @@ class File extends FileCompat
         return [
             [
                 'class' => \humhub\components\behaviors\PolymorphicRelation::class,
-                'mustBeInstanceOf' => [\humhub\components\ActiveRecord::class],
+                'mustBeInstanceOf' => [ActiveRecord::class],
             ],
             [
                 'class' => \humhub\components\behaviors\GUID::class,
@@ -184,13 +184,14 @@ class File extends FileCompat
      */
     public function isAssignedTo(ActiveRecord $record)
     {
-        return $this->object_model === get_class($record) && $this->object_id === $record->getPrimaryKey();
+        return $this->object_model === get_class($record) && $this->object_id == $record->getPrimaryKey();
     }
 
     /**
      * Returns the StorageManager
      *
      * @return \humhub\modules\file\components\StorageManager
+     * @throws \yii\base\InvalidConfigException
      */
     public function getStore()
     {

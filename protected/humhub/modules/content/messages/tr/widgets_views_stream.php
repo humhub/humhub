@@ -23,6 +23,7 @@ return [
     'The content has been archived.' => '',
     'The content has been deleted.' => '',
     'The content has been unarchived.' => '',
+    'Where I\'m involved' => '',
     'With file attachments' => '',
     'Your last edit state has been saved!' => '',
     'Back to stream' => 'Yayına dön',
@@ -33,5 +34,4 @@ return [
     'Load more' => 'Daha fazla yükle',
     'No matches with your selected filters!' => 'Seçili filtreler ile eşleşir.',
     'Nothing here yet!' => 'Burada henüz bir şey yok!',
-    'Where I´m involved' => 'Nerede gelişebilirim',
 ];

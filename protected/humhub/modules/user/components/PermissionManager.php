@@ -375,7 +375,7 @@ class PermissionManager extends Component
     /**
      * Returns a query for users which are granted given permission
      *
-     * @since 1.4
+     * @since 1.3.8
      * @param BasePermission $permission
      * @return ActiveQueryUser
      */

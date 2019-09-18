@@ -20,6 +20,7 @@ use humhub\modules\space\notifications\ApprovalRequestDeclined;
 use humhub\modules\space\notifications\Invite as InviteNotification;
 use humhub\modules\space\notifications\InviteAccepted;
 use humhub\modules\space\notifications\InviteDeclined;
+use humhub\modules\space\notifications\InviteRevoked;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
@@ -31,7 +32,7 @@ use yii\validators\EmailValidator;
 /**
  * SpaceModelMemberBehavior bundles all membership related methods of the Space model.
  *
- * @property Space $owner
+ * @property-read Space $owner
  * @author Lucas Bartholemy <lucas@bartholemy.com>
  */
 class SpaceModelMembership extends Behavior
@@ -40,7 +41,7 @@ class SpaceModelMembership extends Behavior
     private $_spaceOwner = null;
 
     /**
-     * Checks if given Userid is Member of this Space.
+     * Checks if given userId is Member of this Space.
      *
      * @param integer $userId
      * @return boolean
@@ -466,6 +467,7 @@ class SpaceModelMembership extends Behavior
      * @param integer $userId of User to Remove
      * @return bool
      * @throws \yii\base\InvalidConfigException
+     * @throws \Throwable
      */
     public function removeMember($userId = '')
     {
@@ -474,43 +476,92 @@ class SpaceModelMembership extends Behavior
         }
 
         $user = User::findOne(['id' => $userId]);
-
         $membership = $this->getMembership($userId);
+
+        if (!$membership) {
+            return true;
+        }
 
         if ($this->isSpaceOwner($userId)) {
             return false;
         }
 
-        if ($membership == null) {
-            return true;
-        }
+        Membership::getDb()->transaction(function($db) use ($membership, $user) {
+            foreach (Membership::findAll(['user_id' => $user->id, 'space_id' => $this->owner->id]) as $obsoleteMembership) {
+                $obsoleteMembership->delete();
+            }
 
-        foreach (Membership::findAll(['user_id' => $userId, 'space_id' => $this->owner->id]) as $membership) {
-            $membership->delete();
-        }
+            $this->handleRemoveMembershipEvent($membership, $user);
+        });
+    }
 
-        // If was member, create a activity for that
-        if ($membership->status == Membership::STATUS_MEMBER) {
-            $activity = new MemberRemoved();
-            $activity->source = $this->owner;
-            $activity->originator = $user;
-            $activity->create();
-
-            MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_REMOVED, new MemberEvent([
-                'space' => $this->owner, 'user' => $user
-            ]));
-        } elseif ($membership->status == Membership::STATUS_INVITED && $membership->originator !== null) {
-            // Was invited, but declined the request - inform originator
-            InviteDeclined::instance()
-                ->from($user)->about($this->owner)->send($membership->originator);
-        } elseif ($membership->status == Membership::STATUS_APPLICANT) {
-            ApprovalRequestDeclined::instance()
-                ->from(Yii::$app->user->getIdentity())->about($this->owner)->send($user);
-        }
-
+    /**
+     * Responsible for event,activity and notification handling in case of a space membership removal.
+     *
+     * @param Membership $membership
+     * @param User $user
+     * @throws Exception
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
+     */
+    private function handleRemoveMembershipEvent(Membership $membership, User $user)
+    {
+        // Get rid of old notifications
         ApprovalRequest::instance()->from($user)->about($this->owner)->delete();
+        InviteNotification::instance()->about($this->owner)->delete($user);
 
-        InviteNotification::instance()->from($this->owner)->delete($user);
+        switch ($membership->status) {
+            case Membership::STATUS_MEMBER:
+                return $this->handleCancelMemberEvent($user);
+            case Membership::STATUS_INVITED:
+                return $this->handleCancelInvitationEvent($membership, $user);
+            case Membership::STATUS_APPLICANT:
+                return $this->handleCancelApplicantEvent($membership, $user);
+        }
+    }
+
+    /**
+     * @param User $user
+     * @throws Exception
+     */
+    private function handleCancelMemberEvent(User $user)
+    {
+        MemberRemoved::instance()->about($this->owner)->from($user)->create();
+        MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_REMOVED,
+            new MemberEvent(['space' => $this->owner, 'user' => $user]));
+    }
+
+    /**
+     * Handles the cancellation of an invitation. An invitation can be declined by the invited user or canceled by a
+     * space admin.
+     *
+     * @param Membership $membership
+     * @param User $user
+     * @throws \yii\base\InvalidConfigException
+     */
+    private function handleCancelInvitationEvent(Membership $membership, User $user)
+    {
+        if ($membership->originator && $membership->isCurrentUser()) {
+            InviteDeclined::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($membership->originator);
+        } else if(Yii::$app->user->identity) {
+            InviteRevoked::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($user);
+        }
+    }
+
+    /**
+     * Handles the cancellation of an space application. An application can be canceled by the applicant himself or
+     * declined by an space admin.
+     *
+     * @param Membership $membership
+     * @param User $user
+     * @throws \yii\base\InvalidConfigException
+     */
+    private function handleCancelApplicantEvent(Membership $membership, User $user)
+    {
+        // Only send a declined notification if the user did not cancel the request himself.
+        if(Yii::$app->user->identity && !$membership->isCurrentUser()) {
+            ApprovalRequestDeclined::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($user);
+        }
     }
 
 }

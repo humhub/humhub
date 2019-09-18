@@ -101,6 +101,13 @@ humhub.module('client', function (module, require, $) {
         } else if (cfg instanceof $.Event) {
             originalEvent = cfg;
             cfg = {};
+        } else if($form.url) {
+            // Create a post form
+            $form = $('<form>', {
+                action:  $form.url,
+                method: 'post'
+            });
+            $form.appendTo('body');
         }
 
         cfg = cfg || {};
@@ -212,6 +219,7 @@ humhub.module('client', function (module, require, $) {
                 var response = new Response(xhr, url, textStatus, cfg.dataType).setError(errorThrown);
                 if (response.status == 302) {
                     _redirect(xhr);
+                    resolve(response);
                     return;
                 }
 

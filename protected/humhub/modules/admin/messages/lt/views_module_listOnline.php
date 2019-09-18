@@ -18,9 +18,9 @@
  */
 return [
     'Buy (%price%)' => '',
-    'Disclaimer' => '',
     'Installing module...' => '',
     'Licence Key:' => '',
+    'Third-party' => '',
     '<strong>Modules</strong> directory' => '<strong>Modulių</strong> katalogas',
     'Install' => 'Įdiegti',
     'Latest compatible version:' => 'Naujausia suderinta versija:',

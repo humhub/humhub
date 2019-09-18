@@ -1,0 +1,53 @@
+.ui-imageset-wrapper {
+    position: relative;
+}
+.ui-imageset-items {
+    display: flex;
+}
+.ui-imageset-items > * {
+    margin-right: 5px;
+}
+.ui-imageset-show-more {
+    background-color: #e2e2e2;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #555;
+}
+.ui-imageset-show-more:hover {
+    background-color: #6fdbe8;
+    border-color: #6fdbe8;
+    color: white;
+    cursor: pointer;
+}
+
+.ui-imageset-hidden-items {
+    position: absolute;
+    top: 100%;
+    background-color: #fff;
+    border-radius: 0 0 5px 5px;
+    display: none;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.175)
+}
+.ui-imageset-hidden-items .hidden-item {
+    border-left: 3px solid transparent;
+    padding: 5px;
+    display: flex;
+}
+.ui-imageset-hidden-items .hidden-item > .display-name-link {
+    flex-grow: 1;
+    padding-left: 5px;
+}
+.ui-imageset-hidden-items .hidden-item > .display-name-link > a {
+    display: inline-block;
+    width: 100%;
+}
+.ui-imageset-hidden-items .hidden-item > .display-name-text {
+    padding-left: 5px;
+    cursor: default;
+}
+.ui-imageset-hidden-items .hidden-item:hover {
+    background-color: #f7f7f7;
+    border-left: 3px solid #6fdbe8;
+}

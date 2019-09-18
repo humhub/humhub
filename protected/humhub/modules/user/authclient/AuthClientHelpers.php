@@ -8,10 +8,11 @@
 
 namespace humhub\modules\user\authclient;
 
-use Yii;
-use yii\authclient\ClientInterface;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
+use Yii;
+use yii\authclient\ClientInterface;
+use yii\helpers\VarDumper;
 
 /**
  * AuthClientHelper provides helper functions fo auth clients
@@ -71,8 +72,8 @@ class AuthClientHelpers
             if ($auth === null) {
                 $auth = new \humhub\modules\user\models\Auth([
                     'user_id' => $user->id,
-                    'source' => (string) $authClient->getId(),
-                    'source_id' => (string) $attributes['id'],
+                    'source' => (string)$authClient->getId(),
+                    'source_id' => (string)$attributes['id'],
                 ]);
 
                 $auth->save();
@@ -90,7 +91,7 @@ class AuthClientHelpers
     {
         Auth::deleteAll([
             'user_id' => $user->id,
-            'source' => (string) $authClient->getId()
+            'source' => (string)$authClient->getId()
         ]);
     }
 
@@ -130,12 +131,16 @@ class AuthClientHelpers
             }
 
             if (count($user->getDirtyAttributes()) !== 0 && !$user->save()) {
-                Yii::error('Could not update user attributes by AuthClient (UserId: ' . $user->id . ") - Error: " . print_r($user->getErrors(), 1));
+
+                Yii::warning('Could not update user (' . $user->id . '). Error: '
+                    . VarDumper::dumpAsString($user->getErrors()), 'user');
+
                 return false;
             }
 
             if (count($user->profile->getDirtyAttributes()) !== 0 && !$user->profile->save()) {
-                Yii::error('Could not update user attributes by AuthClient (UserId: ' . $user->id . ") - Error: " . print_r($user->profile->getErrors(), 1));
+                Yii::warning('Could not update user profile (' . $user->id . '). Error: '
+                    . VarDumper::dumpAsString($user->profile->getErrors()), 'user');
                 return false;
             }
         }
@@ -144,17 +149,17 @@ class AuthClientHelpers
     }
 
     /**
-     * Automatically creates user by auth client attributes
+     * Populates a Registration model with the information provided by the given AuthClient
      *
-     * @param \yii\authclient\BaseClient $authClient
-     * @return boolean success status
+     * @param ClientInterface $authClient
+     * @return bool|\humhub\modules\user\models\forms\Registration|null
      */
-    public static function createUser(ClientInterface $authClient)
+    public static function createRegistration(ClientInterface $authClient)
     {
         $attributes = $authClient->getUserAttributes();
 
         if (!isset($attributes['id'])) {
-            return false;
+            return null;
         }
 
         $registration = new \humhub\modules\user\models\forms\Registration();
@@ -170,7 +175,20 @@ class AuthClientHelpers
         $registration->getProfile()->setAttributes($attributes, false);
         $registration->getGroupUser()->setAttributes($attributes, false);
 
-        if ($registration->validate() && $registration->register($authClient)) {
+        return $registration;
+    }
+
+
+    /**
+     * Automatically creates user by auth client attributes
+     *
+     * @param \yii\authclient\BaseClient $authClient
+     * @return User the created user
+     */
+    public static function createUser(ClientInterface $authClient)
+    {
+        $registration = static::createRegistration($authClient);
+        if ($registration !== null && $registration->validate() && $registration->register($authClient)) {
             return $registration->getUser();
         }
 

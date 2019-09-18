@@ -17,11 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Third-party' => '',
     'Installed' => 'Zainstalowane',
     'No modules found!' => 'Nie znaleziono modułów!',
     'No purchased modules found!' => 'Nie znaleziono zakupionych modułów!',
     'Register' => 'Zarejestruj',
-    'Search' => 'Szukaj ',
+    'Search' => 'Szukaj',
     'search for available modules online' => 'szukaj dostępnych modułów online',
 ];

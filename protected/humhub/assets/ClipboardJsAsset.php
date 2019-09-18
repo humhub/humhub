@@ -26,7 +26,7 @@ class ClipboardJsAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $js = ['build/clipboard-polyfill.js'];
+    public $js = ['dist/clipboard-polyfill.js'];
 
     /**
      * @inheritdoc

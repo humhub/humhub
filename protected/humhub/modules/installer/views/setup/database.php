@@ -1,7 +1,7 @@
 <?php
 
 use humhub\compat\CActiveForm;
-use yii\helpers\Html;
+use humhub\libs\Html;
 
 ?>
 
@@ -61,7 +61,7 @@ use yii\helpers\Html;
     </div>
 </div>
 
-<script type="text/javascript">
+<script <?= Html::nonce() ?>>
 
     $(function () {
         // set cursor to email field

@@ -11,9 +11,8 @@ and a more complex implementation. Implement acceptance tests for general UI tes
 
 **Functional tests** are similar to acceptance tests, with the difference that functional tests do not run on an actual browser
 and do not execute any javascript. Functional tests allow easy testing of customized HTTP requests, forms and also allow direct access of
-application logic as database or the `Yii` application object. This can be handy if you require a specific application sate 
-as specific settings for a test.  
-Write functional tests in order to test your controllers, forms and controller access for different configurations settings.
+application logic as database or the `Yii` application context. This can be handy if you require a specific application sate 
+as specific settings for a test. Write functional tests in order to test your controllers, forms and controller access for different configurations settings.
 
 **Unit tests** are ideal for [white box testing](https://en.wikipedia.org/wiki/White-box_testing) and is the fastest way of
 writing low level tests for specific classes or components. Implement unit tests for testing single components and classes.
@@ -35,6 +34,9 @@ Information about how to write tests with codeception are available here:
 ```
 composer global require "codeception/codeception=2.0.*" "codeception/specify=*" "codeception/verify=*"
 ```
+
+> Note: Instead of a global codeception installation you can also use the version fetched by composer 
+`protected/vendor/codeception/codeception`. The composer version is used when running the tests with grunt.
 
 - Create a test database:
 
@@ -68,7 +70,9 @@ php yii migrate/up --includeModuleMigrations=1 --interactive=0
 
 - Install test environment:
 
-`php yii installer/auto`
+```
+php yii installer/auto
+```
 
 - Set `HUMHUB_PATH` system variable
 
@@ -107,13 +111,9 @@ For running a test for a specific environment you'll have to set te `--env` argu
 Example for running all functional tests of a tasks module in a master environment:
 
 1. Create a file `@mymodule/tests/config/env/master/test.php` with the following content:
-
-```
-return [
-    'humhub_root' => '/pathToMasterBranch'
-];
-```
-
+        return [
+            'humhub_root' => '/pathToMasterBranch'
+        ];
 2. If needed set further HumHub settings in `tasks/tests/config/env/master/funtional.php`
 3. Run `codecept run functional --env master`
 
@@ -123,6 +123,9 @@ return [
 `humhub_root` settings you want to use for this test run. 
 
 ## Run Tests:
+
+In order to run a test you can either use the conventional `codecept` command which requires a global installation,
+or the `grunt test` command. The `grunt test` command currently only works for core module tests.
 
 ### Run all core tests:
 
@@ -137,7 +140,7 @@ or
 grunt test
 ```
 
-### Run core module test
+### Run single core module test
 
 ```
 cd protected/humhub/modules/user/tests

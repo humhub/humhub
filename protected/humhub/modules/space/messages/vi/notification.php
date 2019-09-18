@@ -19,6 +19,7 @@
 return [
     'You were added to Space {spaceName}' => '',
     '{displayName} changed your role to {roleName} in the space {spaceName}.' => '',
+    '{displayName} revoked your invitation for the space {spaceName}' => '',
     '{displayName} accepted your invite for the space {spaceName}' => '{displayName} chấp nhận lời mời tham gia KGLV {spaceName} của bạn',
     '{displayName} approved your membership for the space {spaceName}' => '{displayName} đã duyệt quyền tham gia KGLV {spaceName} của bạn',
     '{displayName} declined your invite for the space {spaceName}' => '{displayName} từ chối lời mời tham gia KGLV {spaceName} của bạn',

@@ -22,7 +22,7 @@ class SpaceUnArchived extends BaseActivity implements ConfigurableActivityInterf
     /**
      * @inheritdoc
      */
-    public $viewName = 'spaceUnArchieved';
+    public $viewName = 'spaceUnArchived';
 
     /**
      * @inheritdoc

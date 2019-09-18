@@ -31,9 +31,9 @@ class Module extends \humhub\components\Module
     public $isCoreModule = true;
 
     /**
-     * @var string sort field (e.g. lastname) of member list (leave empty to sort by auto sort search)
+     * @var string sort field (e.g. lastname) of member list
      */
-    public $memberListSortField = '';
+    public $memberListSortField = 'profile.lastname';
 
     /**
      * @var int default page size for directory pages

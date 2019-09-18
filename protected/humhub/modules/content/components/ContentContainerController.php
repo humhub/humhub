@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\web\HttpException;
 use humhub\components\Controller;
@@ -78,10 +79,6 @@ class ContentContainerController extends Controller
             }
         }
 
-        if ($this->requireContainer && $this->contentContainer === null) {
-            throw new HttpException(404, Yii::t('base', 'Could not find requested page.'));
-        }
-
         if ($this->validContentContainerClasses !== null) {
             if ($this->contentContainer === null || !in_array($this->contentContainer->className(), $this->validContentContainerClasses)) {
                 throw new HttpException(400);
@@ -103,9 +100,13 @@ class ContentContainerController extends Controller
         }
 
         // Directly redirect guests to login page - if guest access isn't enabled
-        if (Yii::$app->user->isGuest && Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') != 1) {
+        if (Yii::$app->user->isGuest && !AuthHelper::isGuestAccessEnabled()) {
             Yii::$app->user->loginRequired();
             return false;
+        }
+
+        if ($this->requireContainer && $this->contentContainer === null) {
+            throw new HttpException(404, Yii::t('base', 'Could not find requested page.'));
         }
 
         $this->checkModuleIsEnabled();

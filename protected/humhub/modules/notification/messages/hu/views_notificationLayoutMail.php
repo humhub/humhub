@@ -1,4 +1,4 @@
 <?php
 return array (
-  'View online:' => 'Nézd online:',
+  'View online:' => 'Megtekintés online:',
 );

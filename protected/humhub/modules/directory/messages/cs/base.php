@@ -19,7 +19,7 @@
 return [
     'Access directory' => '',
     'Can access the directory section.' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Zatím zde nejsou žádné příspěvky.</b><br>Napište první...',
+    '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>Zatím zde nejsou žádné příspěvky.</b><br>Napište první...',
     '<b>There are no profile posts yet!</b>' => '<b>Zatím zde nejsou žádné příspěvky.</b>',
     '<strong>Directory</strong> menu' => '<strong>Menu</strong> adresáře',
     '<strong>Group</strong> members - {group}' => '<strong> Členové </strong> skupiny  - {group}',

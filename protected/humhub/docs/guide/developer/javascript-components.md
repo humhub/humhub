@@ -11,7 +11,7 @@ Components consist of a root node, which can be accessed by `this.$` within your
 
 ###### View:
 
-```php
+```html
 <div id="myComponent" data-action-component="example.MyComponent">
     <div class="message"></div>
     <button data-action-click="hello">Say Hi!</button>
@@ -46,7 +46,7 @@ After clicking the button of the previous example the `action` module will searc
 
 If you need the instance of your component, for example in another module, you can retrieve it by calling `Component.instance`:
 
-```Javascript
+```javascript
 humhub.module('example.two', function(module, require, $) {
     var Component = require('action').Component;
 
@@ -66,7 +66,7 @@ Components can be nested, which can be handy for example if you want to implemen
 
 ###### View:
 
-```php
+```html
 <div id="myComponent" data-action-component="example.mylist.List" data-some-setting="1">
     <div data-action-component="example.mylist.ListEntry" data-id="1" >...</div>
     <div data-action-component="example.mylist.ListEntry" data-id="2" >...</div>
@@ -75,7 +75,7 @@ Components can be nested, which can be handy for example if you want to implemen
 
 ###### Module:
 
-```Javascript
+```javascript
 humhub.module('example.mylist', function(module, require, $) {
     var object = require('util').object;
     var Component = require('action').Component;
@@ -132,7 +132,7 @@ A Widgets `init` function is called once the widget is created. A Widget is crea
 > Note: If you load a Widget by an ajax call, make sure to apply the `ui.additions` on your inserted dom nodes, otherwise the `data-ui-init` behavriour won't be recognized.
 
 ###### View:
-```php
+```html
 <div id="myWidget" data-ui-widget="example.MyWidget" data-ui-init="1" style="display:none">
     <!-- ... -->
 </div>
@@ -167,7 +167,7 @@ Your widgets option can be set by using `data-*` attributes on your Widgets root
 The Widgets `getDefaultOptions()` method can be used to define default Widget options.
 
 ###### View:
-```php
+```html
 <div id="myWidget" data-ui-widget="example.MyWidget" data-some-setting="0">
     <!-- ... -->
 </div>
@@ -213,7 +213,7 @@ TBD
 
 #### JsWidget class
 
-In order to implement a Yii widget responsible for rendering your widgets markup, you can implement a PHP class derivated of [[humhub\widgets\JSWidget]] as in the following examples.
+In order to implement a Yii widget responsible for rendering your widgets markup, you can implement a PHP class derivated of [[humhub\widgets\JsWidget]] as in the following examples.
 
 Here are some of the available attributes of the JSWidget class:
 

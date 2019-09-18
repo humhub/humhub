@@ -13,6 +13,7 @@ use humhub\libs\WidgetCreateEvent;
 
 /**
  * @inheritdoc
+ * @property-read \humhub\modules\ui\view\components\View $view
  */
 class Widget extends \yii\base\Widget
 {
@@ -26,6 +27,11 @@ class Widget extends \yii\base\Widget
      * @var bool if set to false this widget won't be rendered
      */
     public $render = true;
+
+    /**
+     * @var string defines an optional layout
+     */
+    public $widgetLayout;
 
     /**
      * Creates a widget instance and runs it.
@@ -54,7 +60,7 @@ class Widget extends \yii\base\Widget
             $widget = Yii::createObject($config);
             $out = '';
             if ($widget->beforeRun()) {
-                $result = $widget->run();
+                $result = (empty($widget->widgetLayout)) ?  $widget->run() : $widget->render($widget->widgetLayout, $widget->getLayoutViewParams()); ;
                 $out = $widget->afterRun($result);
             }
         } catch (\Exception $e) {
@@ -66,6 +72,20 @@ class Widget extends \yii\base\Widget
         }
 
         return ob_get_clean() . $out;
+    }
+
+    /**
+     * Returns an array of view parameter used if [[layout]] is set.
+     *
+     * By default the actual widget output created by [[run()]] is set as `content` param.
+     *
+     * @return array
+     */
+    public function getLayoutViewParams()
+    {
+        return [
+            'content' => $this->run()
+        ];
     }
 
     /**

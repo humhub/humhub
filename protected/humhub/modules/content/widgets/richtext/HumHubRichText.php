@@ -94,7 +94,7 @@ REGEXP;
 
             // Try use oembed
             if ($maxOembedCount > $oembedCount) {
-                $oembed = UrlOembed::GetOEmbed($match[0]);
+                $oembed = UrlOembed::getOEmbed($match[0]);
                 if ($oembed) {
                     $oembedCount++;
                     return $oembed;

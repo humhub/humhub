@@ -12,6 +12,7 @@
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\ModalDialog;
 use yii\bootstrap\ActiveForm;
+use humhub\libs\Html;
 
 $modal = ModalDialog::begin([
     'header' => Yii::t('SpaceModule.views_space_invite', '<strong>Invite</strong> members'),
@@ -69,10 +70,8 @@ $form = ActiveForm::begin([
             ]);
             ?>
 
-
-
-
             <?php if ($canManageMembers) : ?>
+                <br />
                 <?= $form
                     ->field($model, 'withoutInvite')
                     ->label(Yii::t('SpaceModule.views_space_invite',
@@ -102,7 +101,7 @@ $form = ActiveForm::begin([
             </div>
         <?php endif; ?>
 
-        <script>
+        <script <?= Html::nonce() ?>>
             $('#inviteform-allregisteredusers').on('change', function () {
                 var userPicker = humhub.modules.action.Component.instance('#space-invite-user-picker');
 

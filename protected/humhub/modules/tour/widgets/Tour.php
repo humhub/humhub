@@ -2,6 +2,7 @@
 
 namespace humhub\modules\tour\widgets;
 
+use humhub\modules\tour\assets\TourAsset;
 use Yii;
 
 
@@ -41,6 +42,8 @@ class Tour extends \humhub\components\Widget
             return;
         }
 
+        TourAsset::register($this->view);
+
         // save current module and controller id's
         $currentModuleId = Yii::$app->controller->module->id;
         $currentControllerId = Yii::$app->controller->id;
@@ -51,18 +54,17 @@ class Tour extends \humhub\components\Widget
             return $this->render('guide_spaces', []);
         } elseif ($currentModuleId == "user" && $currentControllerId == "profile") {
             return $this->render('guide_profile', []);
-        } elseif ($currentModuleId == "admin" && $currentControllerId == "module") {
+        } elseif ($currentModuleId == "marketplace" && $currentControllerId == "browse") {
             return $this->render('guide_administration', []);
         }
     }
 
     /**
-     * load needed resources files
+     * @deprecated since 1.3.13
      */
     public function loadResources(\yii\web\View $view)
     {
-        $view->registerJsFile('@web-static/js/tour/bootstrap-tour.min.js');
-        $view->registerCssFile('@web-static/js/tour/bootstrap-tour.min.css');
+        // Dummy for old template version
     }
 
 }

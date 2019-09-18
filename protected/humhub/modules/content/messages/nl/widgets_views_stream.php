@@ -14,7 +14,7 @@ return array (
   'The content has been archived.' => 'De inhoud is gearchiveerd.',
   'The content has been deleted.' => 'De inhoud is verwijderd.',
   'The content has been unarchived.' => 'De inhoud is uit het archief gehaald.',
-  'Where I´m involved' => 'Waar ik bij betrokken ben',
+  'Where I\'m involved' => 'Waar ik bij betrokken ben',
   'With file attachments' => 'Met bestandsbijlagen',
   'Your last edit state has been saved!' => 'Uw laatste bewerking is bewaard!',
 );

@@ -13,6 +13,7 @@ use humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture;
 use humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture;
 use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
 use humhub\tests\codeception\fixtures\SettingFixture;
+use humhub\tests\codeception\fixtures\UrlOembedFixture;
 use yii\test\FixtureTrait;
 use yii\test\InitDbFixture;
 
@@ -118,6 +119,7 @@ class DynamicFixtureHelper extends Module
     {
         return [
             'user' => ['class' => UserFullFixture::class],
+            'url_oembed' => ['class' => UrlOembedFixture::class],
             'group_permission' => ['class' => GroupPermissionFixture::class],
             'settings' => ['class' => SettingFixture::class],
             'space' => [ 'class' => SpaceFixture::class],

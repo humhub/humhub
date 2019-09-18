@@ -59,7 +59,7 @@ if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sa
 ```
 ### Read Files
  
-To read mapped files of an ActiveRecord, use the [humhub\modules\file\components\FileManager]] via [[humhub\components\ActiveRecords::getFileManager]].
+To read mapped files of an ActiveRecord, use the [[humhub\modules\file\components\FileManager]] via [[humhub\components\ActiveRecord::getFileManager]].
 
 ```php
 
@@ -82,13 +82,15 @@ Converters are used to create variants (e.g. different file formats or images si
 All converted files (variants) will be automatically stored with the original file.
 
 Example usage:
+
 ```php
+
 $file = \humhub\modules\file\models\File::findOne(['guid' => 'your file guid']);
 
 $previewImage = new \humhub\modules\file\converter\PreviewImage();
 if ($previewImage->applyFile($file)) {
-	// Can create preview of given file
-	echo $previewImage->getUrl();
+    // Can create preview of given file
+    echo $previewImage->getUrl();
 }
 ```
 

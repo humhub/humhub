@@ -11,6 +11,7 @@ namespace humhub\components\console;
 use humhub\libs\BaseSettingsManager;
 use Yii;
 use yii\console\Exception;
+use yii\helpers\Url;
 
 /**
  * Description of Application
@@ -24,6 +25,11 @@ class Application extends \yii\console\Application
      * @event ActionEvent an event raised on init of application.
      */
     const EVENT_ON_INIT = 'onInit';
+
+    /**
+     * @var string|array the homepage url
+     */
+    private $_homeUrl = null;
 
     /**
      * @inheritdoc
@@ -77,4 +83,27 @@ class Application extends \yii\console\Application
             'fixture' => 'yii\console\controllers\FixtureController',
         ];
     }
+
+    /**
+     * @return string the homepage URL
+     */
+    public function getHomeUrl()
+    {
+        if ($this->_homeUrl === null) {
+            return Url::to(['/dashboard/dashboard']);
+        } elseif (is_array($this->_homeUrl)) {
+            return Url::to($this->_homeUrl);
+        } else {
+            return $this->_homeUrl;
+        }
+    }
+
+    /**
+     * @param string|array $value the homepage URL
+     */
+    public function setHomeUrl($value)
+    {
+        $this->_homeUrl = $value;
+    }
+
 }

@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>ማንም ሰው እስካሁን ምንም ነገር አልፃፈም።</b><br>የሆነ ነገር በመለጠፍ ቀዳሚ ይሁኑ',
+  '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>ማንም ሰው እስካሁን ምንም ነገር አልፃፈም።</b><br>የሆነ ነገር በመለጠፍ ቀዳሚ ይሁኑ',
   '<b>There are no profile posts yet!</b>' => '<b>ምንም አይነት የግል ልጥፍ የለም!</b>',
   '<strong>Directory</strong> menu' => '<strong>የዝርዝር ማውጫ</strong> ማውጫ',
   '<strong>Group</strong> members - {group}' => 'የ<strong>ቡድን</strong> አባላት - {group}',

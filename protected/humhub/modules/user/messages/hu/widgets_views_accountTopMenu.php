@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Sign in / up' => 'Jelentkezz be / fel',
+  'Sign in / up' => 'Bejelentkezés/regisztráció',
 );

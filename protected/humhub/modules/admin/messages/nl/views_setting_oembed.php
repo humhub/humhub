@@ -1,6 +1,6 @@
 <?php
 return array (
   'Add new provider' => 'Nieuwe provider toevoegen',
-  'Currently no provider active!' => 'Er is geen provider actief op dit moment!',
-  'Enabled OEmbed providers' => 'OEmbed providers inschakelden.',
+  'Currently no provider active!' => 'Geen enkele provider is ingeschakeld!',
+  'Enabled OEmbed providers' => 'Ingeschakelde OEmbed providers',
 );

@@ -19,7 +19,8 @@ humhub\modules\directory\assets\DirectoryAsset::register($this);
             <strong><?= Yii::t('DirectoryModule.base', 'Total users'); ?></strong><br><br>
 
             <input id="user-total" class="knob" data-width="120" data-height="140" data-displayprevious="true" data-readOnly="true"
-                   data-fgcolor="<?= $this->theme->variable('primary'); ?>" data-skin="tron"
+                   data-fgcolor="<?= $this->theme->variable('primary'); ?>"
+                   data-skin="tron"
                    data-thickness=".2" value="<?= $statsTotalUsers; ?>"
                    data-max="<?= $statsTotalUsers; ?>"
                    style="font-size:25px !important; margin-top:44px !important;">

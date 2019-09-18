@@ -48,8 +48,8 @@ class WallEntryControls extends \humhub\widgets\BaseStack
      * 
      * [MyWidget::class, [...], [...]]
      * 
-     * @param type $menuItem
-     * @return type
+     * @param [] $menuItem
+     * @return array
      */
     protected function getWallEntryLinkDefinition($menuItem)
     {

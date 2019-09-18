@@ -22,6 +22,11 @@ class ManageModules extends BaseAdminPermission
      */
     protected $id = 'admin_manage_modules';
 
+    /**
+     * ManageModules constructor.
+     *
+     * @param array $config
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);

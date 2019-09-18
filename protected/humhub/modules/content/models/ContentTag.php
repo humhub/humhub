@@ -507,7 +507,7 @@ class ContentTag extends ActiveRecord
             $relation->delete();
         }
 
-        unset($content->tags);
+        $content->refresh();
     }
 
     /**

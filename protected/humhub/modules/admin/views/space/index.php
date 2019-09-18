@@ -7,6 +7,8 @@ use humhub\modules\admin\grid\SpaceActionColumn;
 use humhub\modules\admin\grid\SpaceTitleColumn;
 use humhub\modules\admin\grid\SpaceImageColumn;
 use humhub\modules\admin\models\SpaceSearch;
+use yii\helpers\Url;
+
 ?>
 
 <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.space', 'Add new space'), ['/space/create'], ['class' => 'btn btn-sm btn-success pull-right', 'data-target' => '#globalModal']); ?>
@@ -17,7 +19,7 @@ use humhub\modules\admin\models\SpaceSearch;
 </div>
 
 <br />
-<?php $form = ActiveForm::begin(['method' => 'get']); ?>
+<?php $form = ActiveForm::begin(['method' => 'get', 'action' => Url::to(['/admin/space'])]); ?>
 <div class="row">
     <div class="col-md-8">
         <div class="input-group">
@@ -27,7 +29,7 @@ use humhub\modules\admin\models\SpaceSearch;
             </span>
         </div>     
     </div>
-    <div class="col-md-4"  style="padding-left:0px">
+    <div class="col-md-4 spacesearch-visibilities">
         <?= Html::activeDropDownList($searchModel, 'visibility', SpaceSearch::getVisibilityAttributes(), ['class' => 'form-control', 'onchange' => 'this.form.submit()']); ?>
     </div>
 </div>

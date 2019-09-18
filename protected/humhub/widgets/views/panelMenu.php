@@ -23,7 +23,7 @@ $this->registerJsFile("@web-static/js/panelMenu.js", ['position' => yii\web\View
     </li>
 </ul>
 
-<script>
+<script <?= \humhub\libs\Html::nonce() ?>>
     $(function() {
         // check and set panel state from LocalStorage
         checkPanelMenuCookie('<?= $this->context->id; ?>');

@@ -111,12 +111,12 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
         }
 
         data[this.buildRequestDataKey('contentId')] = this.contentId;
-        data[this.buildRequestDataKey('suppressionOnly')] = this.suppressionsOnly;
+        data[this.buildRequestDataKey('suppressionsOnly')] = this.suppressionsOnly;
 
         if(this.options.data) {
             $.each(this.options.data, function(key, value) {
                 data[this.buildRequestDataKey(key)] = value;
-            })
+            });
         }
 
         $.each(this.stream.filter.getFilterMap(), function(key, value) {

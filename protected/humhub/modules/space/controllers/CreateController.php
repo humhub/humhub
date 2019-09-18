@@ -15,6 +15,7 @@ use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\models\forms\InviteForm;
 use Colors\RandomColor;
+use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\base\Exception;
 use yii\web\HttpException;
@@ -72,7 +73,7 @@ class CreateController extends Controller
         }
 
         $visibilityOptions = [];
-        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') && Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
+        if (AuthHelper::isGuestAccessEnabled() && Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
             $visibilityOptions[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Public (Members & Guests)');
         }
         if (Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {

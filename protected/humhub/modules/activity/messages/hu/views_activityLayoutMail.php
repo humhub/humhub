@@ -1,6 +1,6 @@
 <?php
 return array (
-  'See online:' => 'Online megnéz:',
-  'see online' => 'online megnéz',
-  'via' => 'via',
+  'See online:' => 'Online megtekintés:',
+  'see online' => 'online megtekint',
+  'via' => 'keresztül',
 );
