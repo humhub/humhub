@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Create new profile category' => 'Lag en ny bruker kategori',
+  'Create new profile category' => 'Lag en ny brukerkategori',
   'Delete' => 'Slett',
-  'Edit profile category' => 'Rediger bruker kategori',
+  'Edit profile category' => 'Rediger brukerkategori',
   'Save' => 'Lagre',
 );

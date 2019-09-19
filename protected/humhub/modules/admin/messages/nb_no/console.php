@@ -2,10 +2,10 @@
 return array (
   '
 Module successfully disabled!
-' => 'Modul er deaktivert',
+' => 'Modulen ble deaktivert!',
   '
 Module successfully enabled!
-' => 'Modulen er aktivert',
+' => 'Modulen ble aktivert!',
   '--- Disable module: {moduleId} ---
 
 ' => '--- Deaktiver modul: {moduleId} ---',
@@ -13,7 +13,7 @@ Module successfully enabled!
 
 ' => '--- Aktiver module: {moduleId} ---',
   'Module not found or activated!
-' => 'Modulen finnes ikke eller er ikke aktivert.',
+' => 'Modul ikke funnet eller er ikke aktivert!',
   'Module not found!
-' => 'Modulen finnes ikke.',
+' => 'Modul ikke funnet!',
 );

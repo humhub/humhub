@@ -7,6 +7,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\db\Expression;
+use yii\db\IntegrityException;
 
 /**
  * This is the model class for table "notification".
@@ -98,9 +99,9 @@ class Notification extends \humhub\components\ActiveRecord
 
     /**
      * Use getBaseModel instead.
-     * @deprecated since version 1.2 use [getBaseModel()] instead
      * @param array $params
      * @return \humhub\modules\notification\components\BaseNotification
+     * @deprecated since version 1.2 use [getBaseModel()] instead
      */
     public function getClass($params = [])
     {
@@ -112,11 +113,16 @@ class Notification extends \humhub\components\ActiveRecord
      *
      * @param array $params
      * @return \humhub\modules\notification\components\BaseNotification
+     * @throws IntegrityException
      */
     public function getBaseModel($params = [])
     {
         if (class_exists($this->class)) {
-            $params['source'] = $this->getPolymorphicRelation();
+            try {
+                $params['source'] = $this->getPolymorphicRelation();
+            } catch (IntegrityException $e) {
+                $params['source'] = null;
+            }
             $params['originator'] = $this->originator;
             $params['groupCount'] = $this->group_user_count;
             if ($this->group_count > 1) {
@@ -157,8 +163,8 @@ class Notification extends \humhub\components\ActiveRecord
     /**
      * Returns space of this notification
      *
-     * @deprecated since version 1.1
      * @return \yii\db\ActiveQuery
+     * @deprecated since version 1.1
      */
     public function getSpace()
     {
@@ -268,8 +274,8 @@ class Notification extends \humhub\components\ActiveRecord
      * if no User instance is provided.
      *
      * @param User $user
-     * @since 1.2
      * @return \yii\db\ActiveQuery
+     * @since 1.2
      */
     public static function findUnseen(User $user = null)
     {

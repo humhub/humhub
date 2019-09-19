@@ -7,5 +7,5 @@ return array (
   'Possible values' => 'Mulige verdier',
   'Select field options' => 'Velg feltvalg',
   'Supported ISO3166 country codes' => 'Støttede ISO3166 landskoder',
-  'This will add an additional input element for custom values' => 'Dette vil legge til et ekstra inndata element for tilpassede elementer.',
+  'This will add an additional input element for custom values' => 'Dette vil legge til et ekstra felt for egendefinerte verdier.',
 );

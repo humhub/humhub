@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Deleted invitation' => 'Slett invitasjon',
-  'Invite not found!' => 'Invitasjon ikke funnet.',
-  'Resend invitation email' => 'Send invitasjon på e-post',
+  'Deleted invitation' => 'Slettet invitasjon',
+  'Invite not found!' => 'Invitasjon ikke funnet!',
+  'Resend invitation email' => 'Send ny invitasjon på e-post',
 );

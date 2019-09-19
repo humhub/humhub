@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Maximum value' => 'Maks verdi',
-  'Minimum value' => 'Minimum verdi',
-  'Number field options' => 'Tallfelt innstillinger',
+  'Maximum value' => 'Maksimumsverdi',
+  'Minimum value' => 'Minimumsverdi',
+  'Number field options' => 'Tallfeltinnstillinger',
 );

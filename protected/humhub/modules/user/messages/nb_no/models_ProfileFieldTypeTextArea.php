@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Text area field options' => 'Tekstfeltvalg',
+  'Text area field options' => 'Tekstområdevalg',
 );

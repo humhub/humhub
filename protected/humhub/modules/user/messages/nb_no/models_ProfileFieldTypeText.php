@@ -1,10 +1,10 @@
 <?php
 return array (
   'Default value' => 'Standardverdi',
-  'Maximum length' => 'Maks lengde',
-  'Minimum length' => 'Minimum lengde',
-  'Regular Expression: Error message' => 'Regular Expression: Error message',
-  'Regular Expression: Validator' => 'Regular Expression: Validator',
+  'Maximum length' => 'Maksimal lengde',
+  'Minimum length' => 'Minimumslengde',
+  'Regular Expression: Error message' => 'Regulært uttrykk: Feilmelding',
+  'Regular Expression: Validator' => 'Regulært uttrykk: Validering',
   'Text Field Options' => 'Tekstfeltvalg',
   'Validator' => 'Validering',
 );

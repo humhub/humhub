@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Show {i} more.' => 'Vise {i} mer.',
+  'Show {i} more.' => 'Vis {i} flere.',
 );
