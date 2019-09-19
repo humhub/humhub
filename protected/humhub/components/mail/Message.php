@@ -16,11 +16,11 @@ namespace humhub\components\mail;
  */
 class Message extends \yii\swiftmailer\Message
 {
-    public function setSmimeSigner($signingCertificatePath, $signingPrivateKeyPath) 
+    public function setSmimeSigner($signingCertificatePath, $signingPrivateKeyPath, $signingOptions = PKCS7_DETACHED, $extraCerts = null)
 	{
 		$signer = \Swift_Signers_SMimeSigner::newInstance();
 
-		$signer->setSignCertificate($signingCertificatePath, $signingPrivateKeyPath);
+		$signer->setSignCertificate($signingCertificatePath, $signingPrivateKeyPath, $signingOptions, $extraCerts);
 
 		$this->getSwiftMessage()->attachSigner($signer);
 
