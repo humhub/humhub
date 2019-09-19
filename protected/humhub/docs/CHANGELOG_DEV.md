@@ -53,3 +53,4 @@ HumHub Change Log (DEVELOP)
 - Fix #3404 Richtext `Heading` text not translatable
 - Fix #3642 Welcome tour not using community name
 - Chng: Moved collapsible panel logic into own js module
+- Fix `humhub\modules\file\widgets\Upload::progress` config options not working

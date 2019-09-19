@@ -294,7 +294,7 @@ class Upload extends Widget
      */
     public function progress($cfg = [])
     {
-        $options = (isset($cfg['options'])) ? isset($cfg['options']) : [];
+        $options = (isset($cfg['options'])) ? $cfg['options'] : [];
         $options['id'] = $this->id.'_progress';
         $cfg['options'] = $options;
 
