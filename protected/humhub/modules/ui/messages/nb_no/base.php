@@ -1,4 +1,4 @@
 <?php
 return array (
-  'User Interface' => 'Bruker grensesnitt',
+  'User Interface' => 'Brukergrensesnitt',
 );

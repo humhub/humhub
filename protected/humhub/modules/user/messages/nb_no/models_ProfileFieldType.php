@@ -2,13 +2,13 @@
 return array (
   'Birthday' => 'Bursdag',
   'Checkbox' => 'Avkrysningsboks',
-  'Checkbox List' => 'Sjekkeboksliste',
+  'Checkbox List' => 'Liste med avkrysningsbokser',
   'Country' => 'Land',
   'Date' => 'Dato',
-  'Datetime' => 'Datetime',
+  'Datetime' => 'Dato/klokkeslett',
   'Markdown' => 'Markdown',
   'Number' => 'Tall',
   'Select List' => 'Select-boks',
   'Text' => 'Tekst',
-  'Text Area' => 'Tekstfelt',
+  'Text Area' => 'Tekstområde',
 );

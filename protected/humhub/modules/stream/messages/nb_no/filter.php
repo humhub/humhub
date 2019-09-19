@@ -2,7 +2,7 @@
 return array (
   'Author' => 'Forfatter',
   'Content' => 'Innhold',
-  'Content Type' => 'Innholds type',
+  'Content Type' => 'Innholdstype',
   'Sorting' => 'Sortering',
   'Topic' => 'Emne',
   'Visibility' => 'Synlighet',
