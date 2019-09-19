@@ -8,7 +8,10 @@
 
 namespace humhub\modules\comment\widgets;
 
-use humhub\modules\comment\models\Comment;
+use humhub\components\ActiveRecord;
+use humhub\components\Widget;
+use humhub\modules\comment\models\Comment as CommentModel;
+use humhub\modules\comment\Module;
 use Yii;
 
 /**
@@ -16,14 +19,14 @@ use Yii;
  *
  * @since 0.5
  */
-class CommentLink extends \yii\base\Widget
+class CommentLink extends Widget
 {
 
     const MODE_INLINE = 'inline';
     const MODE_POPUP = 'popup';
 
     /**
-     * Content Object
+     * @var ActiveRecord
      */
     public $object;
 
@@ -33,22 +36,26 @@ class CommentLink extends \yii\base\Widget
      * inline: Show comments on the same page with CommentsWidget (default)
      * popup: Open comments popup, display only link
      *
-     * @var type
+     * @var string
      */
     public $mode;
 
+
     /**
-     * Executes the widget.
+     * @inheritDoc
      */
     public function run()
     {
+
+        /** @var Module $module */
+        $module = Yii::$app->getModule('comment');
 
         if ($this->mode == "") {
             $this->mode = self::MODE_INLINE;
         }
 
-        if (!Yii::$app->getModule('comment')->canComment($this->object->content)) {
-            return;
+        if (!$module->canComment($this->object->content)) {
+            return '';
         }
 
         return $this->render('link', [
@@ -62,11 +69,11 @@ class CommentLink extends \yii\base\Widget
     /**
      * Returns count of existing comments
      *
-     * @return Int Comment Count
+     * @return Int the total amount of comments
      */
     public function getCommentsCount()
     {
-        return Comment::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey());
+        return CommentModel::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey());
     }
 
 }
