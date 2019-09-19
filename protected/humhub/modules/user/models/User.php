@@ -134,11 +134,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         return [
             [['username'], 'required'],
+            [['username'], 'unique'],
+            [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
+            [['username'], 'match', 'not' => true, 'pattern' => '![\x00-\x1f\x7f/]!', 'message' => Yii::t('UserModule.models_User', 'Username contains invalid characters.') ],
             [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
-            [['status', 'visibility'], 'integer'],
             [['tags'], 'string'],
             [['guid'], 'string', 'max' => 45],
-            [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
             [['time_zone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
@@ -148,7 +149,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['email'], 'required', 'when' => function ($model, $attribute) use ($userModule) {
                 return $userModule->emailRequired;
             }],
-            [['username'], 'unique'],
             [['guid'], 'unique'],
         ];
     }

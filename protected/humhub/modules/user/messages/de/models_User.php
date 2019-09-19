@@ -20,4 +20,5 @@ return array (
   'Updated by' => 'Geändert durch',
   'Username' => 'Benutzername',
   'Visibility' => 'Sichtbarkeit',
+  'Username contains invalid characters.' => 'Benutzername enthält ungültige Sonderzeichen.'
 );
