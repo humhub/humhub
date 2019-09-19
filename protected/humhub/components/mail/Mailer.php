@@ -71,8 +71,9 @@ class Mailer extends \yii\swiftmailer\Mailer
             $message->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
         }
 
-        if ($this->signingCertificatePath !== null && $this->signingPrivateKeyPath !== null)
+        if ($this->signingCertificatePath !== null && $this->signingPrivateKeyPath !== null) {
             $message->setSmimeSigner($this->signingCertificatePath, $this->signingPrivateKeyPath);
+        }
 
         return $message;
     }
