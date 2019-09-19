@@ -31,6 +31,27 @@ class Mailer extends \yii\swiftmailer\Mailer
      * @since 1.3
      */
     public $surpressedRecipients = ['david.roberts@example.com', 'sara.schuster@example.com'];
+    
+    /**
+     * @var string|null Path for the sigining certificate. If provided emails will be digitally signed before sending.
+     */
+    public $signingCertificatePath = null;
+
+    /**
+     * @var string|null Path for the sigining certificate private key. If provided emails will be digitally signed before sending.
+     */
+    public $signingPrivateKeyPath = null;
+    
+    /**
+     * @var string|null Path for extra sigining certificates (i.e. intermidiate certificates).
+     */
+    public $signingExtraCertsPath = null;
+
+    /**
+     * @var int Bitwise operator options for openssl_pkcs7_sign()     
+    */
+    public $signingOptions = PKCS7_DETACHED;
+
 
     /**
      * Creates a new message instance and optionally composes its body content via view rendering.
@@ -59,6 +80,11 @@ class Mailer extends \yii\swiftmailer\Mailer
         // Set HumHub default from values
         if (empty($message->getFrom())) {
             $message->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
+        }
+
+        if ($this->signingCertificatePath !== null && $this->signingPrivateKeyPath !== null) {
+            $message->setSmimeSigner($this->signingCertificatePath, $this->signingPrivateKeyPath, $this->signingOptions, $this->signingExtraCertsPath);
+
         }
 
         return $message;
