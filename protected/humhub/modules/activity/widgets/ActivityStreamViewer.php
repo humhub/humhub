@@ -40,7 +40,7 @@ class ActivityStreamViewer extends StreamViewer
     {
         return [
             'stream' => $this->getStreamUrl(),
-            'stream-empty-message' => Yii::t('ActivityModule.widgets_views_activityStream', 'There are no activities yet.'),
+            'stream-empty-message' => Yii::t('ActivityModule.base', 'There are no activities yet.'),
         ];
     }
 

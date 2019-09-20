@@ -72,7 +72,7 @@ use yii\helpers\Html;
 
                                                                         <!-- check if activity object has a space -->
                                                                         <?php if ($record->content->space !== null): ?>
-                                                                            (<?= Yii::t('ActivityModule.views_activityLayoutMail', 'via'); ?>
+                                                                            (<?= Yii::t('ActivityModule.base', 'via'); ?>
                                                                             <a href="<?= $record->content->space->createUrl('/space/space', [], true); ?>"
                                                                                style="text-decoration: none; color: #555555;">
                                                                                    <?= Html::encode($record->content->space->name); ?></a>)
@@ -83,7 +83,7 @@ use yii\helpers\Html;
                                                                             <span
                                                                                 style="text-decoration: none; color: <?= $this->theme->variable('primary'); ?>;"> - <a
                                                                                     href="<?= $url; ?>"
-                                                                                    style="text-decoration: none; color: <?= $this->theme->variable('primary'); ?>; "><?= Yii::t('ActivityModule.views_activityLayoutMail', 'see online'); ?></a></span>
+                                                                                    style="text-decoration: none; color: <?= $this->theme->variable('primary'); ?>; "><?= Yii::t('ActivityModule.base', 'see online'); ?></a></span>
                                                                             <!-- END: CONTENT LINK -->
                                                                         <?php endif; ?>
                                                                     </div>
