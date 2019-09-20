@@ -55,3 +55,4 @@ HumHub Change Log (DEVELOP)
 - Chng: Moved collapsible panel logic into own js module
 - Enh #3649: Provide a way to S/MIME sign e-mails (@ChadiRachid)
 - Fix `humhub\modules\file\widgets\Upload::progress` config options not working
+- Enh: More generic approach to determine themed view files
