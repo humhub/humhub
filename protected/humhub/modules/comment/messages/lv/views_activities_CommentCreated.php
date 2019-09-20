@@ -1,4 +1,4 @@
 <?php
 return array (
-  '%displayName% wrote a new comment ' => '%displayName% uzrakstīja jaunu komentāru',
+  '{displayName} wrote a new comment ' => '{displayName} uzrakstīja jaunu komentāru',
 );

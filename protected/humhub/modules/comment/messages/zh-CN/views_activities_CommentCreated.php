@@ -17,5 +17,5 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  '%displayName% wrote a new comment ' => '%displayName% 发表了一条新评论 ',
+  '{displayName} wrote a new comment ' => '{displayName} 发表了一条新评论 ',
 );

@@ -1,4 +1,4 @@
 <?php
 return array (
-  '%displayName% wrote a new comment ' => '%displayName% ha comentat ',
+  '{displayName} wrote a new comment ' => '{displayName} ha comentat ',
 );
