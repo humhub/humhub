@@ -36,6 +36,11 @@ class HeaderControlsMenu extends DropdownMenu
     /**
      * @inheritdoc
      */
+    public $id = 'space-header-controls-menu';
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
 
@@ -140,5 +145,4 @@ class HeaderControlsMenu extends DropdownMenu
 
         return parent::init();
     }
-
 }
