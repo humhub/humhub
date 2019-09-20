@@ -8,6 +8,7 @@ For each version there will be a themeing and module migration guide available:
 - [Module Migration Guide](../developer/modules-migrate.md)
  
 > Additional update notes for older versions:
+> - [Update from 1.3 or below](updating-140.md)
 > - [Update from 1.2 or below](updating-130.md)
 > - [Update from 0.20 or below](updating-020.md)
 

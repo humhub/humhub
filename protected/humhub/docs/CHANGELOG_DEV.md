@@ -56,4 +56,5 @@ HumHub Change Log (DEVELOP)
 - Enh #3649: Provide a way to S/MIME sign e-mails (@ChadiRachid)
 - Fix `humhub\modules\file\widgets\Upload::progress` config options not working
 - Enh: More generic approach to determine themed view files
+- Enh: Always use ISO 639-1 alpha-2 (and ISO 3166-2) language codes
 - Enh: Update Yii version to 2.0.27
