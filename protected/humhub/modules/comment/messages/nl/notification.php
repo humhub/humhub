@@ -1,5 +1,8 @@
 <?php
 return array (
+  'Comments' => 'Reacties',
+  'Receive Notifications when someone comments on my own or a following post.' => 'Meldingen ontvangen wanneer iemand op mijn eigen of een volgende bericht reageert.',
+  'View Online' => 'Bekijk online',
   '[Deleted]' => '[Verwijderd]',
   '{displayNames} commented {contentTitle}' => '{displayNames} reageerde op {contentTitle}',
   '{displayNames} commented {contentTitle} in space {space}' => '{displayNames} reageerde op {contentTitle} in ruimte {space}',

@@ -25,7 +25,7 @@ $submitUrl = Url::to(['/comment/comment/edit', 'id' => $comment->id, 'contentMod
                 'id' => 'comment_input_'.$comment->id,
                 'layout' => RichTextField::LAYOUT_INLINE,
                 'pluginOptions' => ['maxHeight' => '300px'],
-                'placeholder' => Yii::t('CommentModule.views_edit', 'Edit your comment...'),
+                'placeholder' => Yii::t('CommentModule.base', 'Edit your comment...'),
                 'focus' => true,
                 'events' => [
                     'scroll-active' => 'comment.scrollActive',

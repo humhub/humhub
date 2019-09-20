@@ -1,5 +1,8 @@
 <?php
 return array (
+  'Comments' => 'Yorumlar',
+  'Receive Notifications when someone comments on my own or a following post.' => '',
+  'View Online' => 'Çevrimiçi Görüntüle',
   '[Deleted]' => '',
   '{displayNames} commented {contentTitle}' => '{displayNames}, {contentTitle} yorumunu yaptı',
   '{displayNames} commented {contentTitle} in space {space}' => '',

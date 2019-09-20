@@ -1,5 +1,8 @@
 <?php
 return array (
+  'Comments' => 'Kommentit',
+  'Receive Notifications when someone comments on my own or a following post.' => 'Vastaanota ilmoitukset, kun joku kommentoi sinun tai jonkin toisen julkaisua.',
+  'View Online' => 'Näytä Verkossa',
   '[Deleted]' => '[Poistettu]',
   '{displayNames} commented {contentTitle}' => '{displayNames} kommentoivat {contentTitle}',
   '{displayNames} commented {contentTitle} in space {space}' => '{displayNames} kommentoivat {contentTitle} sivulla {space}',

@@ -1,5 +1,8 @@
 <?php
 return array (
+  'Comments' => 'Commenti',
+  'Receive Notifications when someone comments on my own or a following post.' => 'Ricevi Notifiche quando qualcuno commenta un articolo mio o uno che seguo.',
+  'View Online' => 'Vedi online',
   '[Deleted]' => '[Eliminato]',
   '{displayNames} commented {contentTitle}' => '{displayNames} hanno commentato {contentTitle}',
   '{displayNames} commented {contentTitle} in space {space}' => '{displayNames} hanno commentato {contentTitle} nello spazio {space}',

@@ -1,5 +1,8 @@
 <?php
 return array (
+  'Comments' => 'Kommentarer',
+  'Receive Notifications when someone comments on my own or a following post.' => 'Motta varsling når noen kommenterer på mitt innlegg eller følger et innlegg.',
+  'View Online' => 'Se online',
   '[Deleted]' => '[Slettet]',
   '{displayNames} commented {contentTitle}' => '{displayNames} kommenterte {contentTitle}',
   '{displayNames} commented {contentTitle} in space {space}' => '{displayNames} kommenterte {contentTitle} in gruppen {space}',

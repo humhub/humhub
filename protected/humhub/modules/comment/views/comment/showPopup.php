@@ -2,7 +2,7 @@
  use humhub\libs\Html;
 ?>
 
-<?php \humhub\widgets\ModalDialog::begin(['header' => Yii::t('CommentModule.views_comment_show', 'Comments')]) ?>
+<?php \humhub\widgets\ModalDialog::begin(['header' => Yii::t('CommentModule.base', 'Comments')]) ?>
     <div class="modal-body comment-container comment-modal-body" style="margin-top:0px">
         <div id="userlist-content">
             <div class="well well-small" id="comment_<?= $id; ?>">

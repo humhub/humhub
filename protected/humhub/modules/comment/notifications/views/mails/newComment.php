@@ -66,7 +66,7 @@
             humhub\widgets\mails\MailButtonList::widget(['buttons' => [
                 humhub\widgets\mails\MailButton::widget([
                     'url' => $url,
-                    'text' => Yii::t('CommentModule.notifications_mails', 'View Online')
+                    'text' => Yii::t('CommentModule.notification', 'View Online')
                 ])
             ]]);
             ?>

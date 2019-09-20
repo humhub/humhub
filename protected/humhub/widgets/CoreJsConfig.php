@@ -263,14 +263,14 @@ class CoreJsConfig extends Widget
                     'comment' => [
                         'modal' => [
                             'delteConfirm' => [
-                                'header' => Yii::t('CommentModule.widgets_views_showComment', '<strong>Confirm</strong> comment deleting'),
-                                'body' => Yii::t('CommentModule.widgets_views_showComment', 'Do you really want to delete this comment?'),
-                                'confirmText' => Yii::t('CommentModule.widgets_views_showComment', 'Delete'),
-                                'cancelText' => Yii::t('CommentModule.widgets_views_showComment', 'Cancel')
+                                'header' => Yii::t('CommentModule.base', '<strong>Confirm</strong> comment deleting'),
+                                'body' => Yii::t('CommentModule.base', 'Do you really want to delete this comment?'),
+                                'confirmText' => Yii::t('CommentModule.base', 'Delete'),
+                                'cancelText' => Yii::t('CommentModule.base', 'Cancel')
                             ]
                         ],
                         'text' => [
-                            'success.delete' => Yii::t('CommentModule.widgets_views_showComment', 'Comment has been deleted')
+                            'success.delete' => Yii::t('CommentModule.base', 'Comment has been deleted')
                         ]
                     ],
                     'space' => [

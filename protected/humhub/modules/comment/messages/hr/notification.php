@@ -1,5 +1,8 @@
 <?php
 return array (
+  'Comments' => 'Komentari',
+  'Receive Notifications when someone comments on my own or a following post.' => 'Primajte obavijesti kada netko napiše komentare na moj ili prateći post.',
+  'View Online' => 'Vidi Online',
   '[Deleted]' => '[Obrisano]',
   '{displayNames} commented {contentTitle}' => '{displayNames} komentirao je {contentTitle}',
   '{displayNames} commented {contentTitle} in space {space}' => '{displayNames} komentirao je {contentTitle} u prostoru {space}',

@@ -1,5 +1,8 @@
 <?php
 return array (
+  'Comments' => 'Kommentarer',
+  'Receive Notifications when someone comments on my own or a following post.' => 'Erhåll notis när någon kommenterar mina eller följda inlägg.',
+  'View Online' => 'Visa online',
   '[Deleted]' => '[Deleted]',
   '{displayNames} commented {contentTitle}' => '{displayNames} kommenterade {contentTitle}',
   '{displayNames} commented {contentTitle} in space {space}' => '{displayNames} kommenterade {contentTitle} i nätverket {space}',
