@@ -4,12 +4,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 ?>
-<?php if (count($installedModules) == 0): ?>
-    <br>
-    <div><?= Yii::t('AdminModule.module_list', 'No modules installed yet. Install some to enhance the functionality!'); ?></div>
-<?php endif; ?>
 
 <div class="panel-body">
+    <?php if (count($installedModules) == 0): ?>
+        <br>
+        <div><?= Yii::t('AdminModule.module_list', 'No modules installed yet. Install some to enhance the functionality!'); ?></div>
+    <?php endif; ?>
+
     <?php foreach ($installedModules as $moduleId => $module) : ?>
         <div class="media">
             <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
