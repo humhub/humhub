@@ -34,6 +34,26 @@ The menu system has been revised, is mostly downward compatible, but the old API
 
 Please adjust your module menus accordingly. More details can be found in the [Menu](menus.md) chapter of the developer documentation. 
 
+### Language codes
+
+Following language codes has been changed.
+
+If you're using any custom modules, please change the message directories accordingly.
+
+| Old language code| New language code |
+|----------|-------------|
+| en | en-US |
+| en_gb | en-GB |
+| pt_br | pt-BR |
+| nb_no | nb-NO |
+| nn_no | nn-NO |
+| zh_cn | zh-CN |
+| zh_tw | zh-TW |
+| fa_ir | fa-IR |
+
+
+
+
 Migrate from 1.2 to 1.3
 -----------------------
 

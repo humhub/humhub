@@ -30,10 +30,8 @@ class JqueryTimeAgoLocaleAsset extends AssetBundle
      */
     public $languageMapping = [
         'nb_no' => 'no',
-        'pt_br' => 'pt-br',
-        'zh_cn' => 'zh-CN',
-        'zh_tw' => 'zh-TW',
-        'fa_ir' => 'fa',
+        'pt-BR' => 'pt-br',
+        'fa-IR' => 'fa',
     ];
 
     /**

@@ -79,8 +79,7 @@ class ThemeViews extends Component
             $path = str_replace(Yii::getAlias($stripPath), '', $path);
         }
 
-        return $path;
-        #return $this->theme->getBasePath() . '/views/' . $path;
+        return $this->theme->getBasePath() . '/views/' . $path;
     }
 
 
