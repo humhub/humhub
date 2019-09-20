@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'Ei lupaa!',
   'Read full comment...' => 'Lue koko kommentti',
   'Send' => 'Lähetä',
-  'Show %count% more comments' => 'Näytä %count% lisää',
+  'Show {count} more comments' => 'Näytä {count} lisää',
   'Show all {total} comments.' => 'Näytä kaikki {total} kommenttia.',
   'The comment must not be empty!' => 'Komenttikenttä ei voi olla tyhjä!',
   'Write a new comment...' => 'Kirjoita uusi kommentti...',

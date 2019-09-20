@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'غیرمجاز!',
   'Read full comment...' => '',
   'Send' => 'ارسال',
-  'Show %count% more comments' => 'نمایش %count% نظر بیشتر',
+  'Show {count} more comments' => 'نمایش {count} نظر بیشتر',
   'Show all {total} comments.' => 'نمایش همه‌ی نظرات.',
   'The comment must not be empty!' => '',
   'Write a new comment...' => 'یک نظر جدید بنویسید. . .',

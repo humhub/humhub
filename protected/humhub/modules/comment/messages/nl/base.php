@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'Niet genoeg rechten!',
   'Read full comment...' => 'Lees het volledige bericht...',
   'Send' => 'Verstuur',
-  'Show %count% more comments' => 'Toon nog %count% reacties',
+  'Show {count} more comments' => 'Toon nog {count} reacties',
   'Show all {total} comments.' => 'Toon alle {total} reacties.',
   'The comment must not be empty!' => 'De opmerking mag niet leeg zijn!',
   'Write a new comment...' => 'Geef een nieuwe reactie...',

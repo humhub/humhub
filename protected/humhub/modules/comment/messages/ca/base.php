@@ -15,7 +15,7 @@ return array (
   'Insufficent permissions!' => 'No tens suficients privilegis!',
   'Read full comment...' => 'Llegir el comentari sencer',
   'Send' => 'Envia',
-  'Show %count% more comments' => 'Vore els següents %count% comentaris',
+  'Show {count} more comments' => 'Vore els següents {count} comentaris',
   'Show all {total} comments.' => 'Mostra tots els {total} comentaris.',
   'The comment must not be empty!' => '',
   'Write a new comment...' => 'Escriu un nou comentari...',

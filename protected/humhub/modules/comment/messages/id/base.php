@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'Izin tidak memadai!',
   'Read full comment...' => 'Baca full komentar..',
   'Send' => 'Kirim',
-  'Show %count% more comments' => 'Lihat %count% komentar lainnya',
+  'Show {count} more comments' => 'Lihat {count} komentar lainnya',
   'Show all {total} comments.' => 'Lihat semua {total} komentar.',
   'The comment must not be empty!' => '',
   'Write a new comment...' => 'Tulis komentar baru...',

@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'Nedovoljno dopuštenje!',
   'Read full comment...' => 'Pročitaj sve..',
   'Send' => 'Pošalji',
-  'Show %count% more comments' => 'Prikaži %count% više komentara',
+  'Show {count} more comments' => 'Prikaži {count} više komentara',
   'Show all {total} comments.' => 'Prikaži sve {total} komentare.',
   'The comment must not be empty!' => '',
   'Write a new comment...' => 'Napiši novi komentar...',

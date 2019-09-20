@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => '権限が不十分です！',
   'Read full comment...' => '',
   'Send' => '送信',
-  'Show %count% more comments' => '',
+  'Show {count} more comments' => '',
   'Show all {total} comments.' => '合計{total}コメントを、すべて表示します。',
   'The comment must not be empty!' => '',
   'Write a new comment...' => '新規コメントを書く...',

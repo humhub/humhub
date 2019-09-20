@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'Elégtelen jogosultságok!',
   'Read full comment...' => 'Az egész hozzászólás megtekintése...',
   'Send' => 'Mehet',
-  'Show %count% more comments' => 'Még %count% hozzászólás megjelenítése',
+  'Show {count} more comments' => 'Még {count} hozzászólás megjelenítése',
   'Show all {total} comments.' => 'Mind a(z) {total} hozzászólás megtekintése.',
   'The comment must not be empty!' => 'A hozzászólás nem lehet üres!',
   'Write a new comment...' => 'Új hozzászólás...',

@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'Otillräckliga rättigheter!',
   'Read full comment...' => 'Läs hela kommentaren...',
   'Send' => 'Skicka',
-  'Show %count% more comments' => 'Visa %count% fler kommentarer',
+  'Show {count} more comments' => 'Visa {count} fler kommentarer',
   'Show all {total} comments.' => 'Visa alla {total} kommentarer.',
   'The comment must not be empty!' => 'Kommentaren kan inte vara tom!',
   'Write a new comment...' => 'Skriv en ny kommentar...',

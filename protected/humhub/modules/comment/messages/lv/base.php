@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'Nepietiekamas tiesības!',
   'Read full comment...' => 'Lasīt visu komentāru...',
   'Send' => 'Sūtīt',
-  'Show %count% more comments' => 'Rādīt vēl %count% komentārus',
+  'Show {count} more comments' => 'Rādīt vēl {count} komentārus',
   'Show all {total} comments.' => 'Rādīt visus {total} komentārus.',
   'The comment must not be empty!' => '',
   'Write a new comment...' => 'Rakstīt jaunu komentāru...',

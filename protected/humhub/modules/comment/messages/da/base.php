@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'Manglende adgang',
   'Read full comment...' => '',
   'Send' => 'Send',
-  'Show %count% more comments' => 'Vis %count% yderligere kommentarer',
+  'Show {count} more comments' => 'Vis {count} yderligere kommentarer',
   'Show all {total} comments.' => 'Vis alle {total} kommentarer.',
   'The comment must not be empty!' => '',
   'Write a new comment...' => 'Skriv en ny kommentar...',

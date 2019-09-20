@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'Không đủ quyền!',
   'Read full comment...' => 'Đọc toàn bộ nội dung comment...',
   'Send' => 'Gửi',
-  'Show %count% more comments' => 'Hiển thị thêm %count% comments',
+  'Show {count} more comments' => 'Hiển thị thêm {count} comments',
   'Show all {total} comments.' => 'Hiển thị toàn bộ {total} comments.',
   'The comment must not be empty!' => '',
   'Write a new comment...' => 'Viết comment mới...',

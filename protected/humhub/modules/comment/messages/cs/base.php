@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'Nedostatečná oprávnění!',
   'Read full comment...' => 'Přečíst celý komentář',
   'Send' => 'Odeslat',
-  'Show %count% more comments' => 'Zobrazit dalších %count% komentářů',
+  'Show {count} more comments' => 'Zobrazit dalších {count} komentářů',
   'Show all {total} comments.' => 'Zobrazit všech {total} komentářů.',
   'The comment must not be empty!' => '',
   'Write a new comment...' => 'Napište komentář...',

@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'Недостаточно прав!',
   'Read full comment...' => 'Прочитать полный комментарий...',
   'Send' => 'Отправить',
-  'Show %count% more comments' => 'Показать %count% комментариев',
+  'Show {count} more comments' => 'Показать {count} комментариев',
   'Show all {total} comments.' => 'Показать все {total} комментарии',
   'The comment must not be empty!' => 'Комментарий не должен быть пустым!',
   'Write a new comment...' => 'Написать новый комментарий...',

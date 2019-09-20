@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'Yetersiz izinler!',
   'Read full comment...' => 'Yorumu tam okuyun ...',
   'Send' => 'Gönder',
-  'Show %count% more comments' => 'Daha %count% fazla yorum göster',
+  'Show {count} more comments' => 'Daha {count} fazla yorum göster',
   'Show all {total} comments.' => '{total} diğer yorumu gör',
   'The comment must not be empty!' => 'Yorum boş olmamalı!',
   'Write a new comment...' => 'Yeni bir yorum yaz...',

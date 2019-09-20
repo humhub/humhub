@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'Premisos insuficients!',
   'Read full comment...' => 'Leyer tot o comentario',
   'Send' => 'Ninviar',
-  'Show %count% more comments' => 'Veyer %count% comentarios mas',
+  'Show {count} more comments' => 'Veyer {count} comentarios mas',
   'Show all {total} comments.' => 'Veyer totz os {total} comentarios.',
   'The comment must not be empty!' => '',
   'Write a new comment...' => 'Escribir un nuevo comentario...',

@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => 'Neturite reikalingų leidimų!',
   'Read full comment...' => '',
   'Send' => 'Išsiųsti',
-  'Show %count% more comments' => 'Rodyti %count% daugiau komentarų',
+  'Show {count} more comments' => 'Rodyti {count} daugiau komentarų',
   'Show all {total} comments.' => 'Rodyti visus {total} komentarus.',
   'The comment must not be empty!' => '',
   'Write a new comment...' => 'Parašykite naują komentarą...',

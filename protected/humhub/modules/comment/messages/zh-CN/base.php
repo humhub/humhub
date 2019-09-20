@@ -14,7 +14,7 @@ return array (
   'Insufficent permissions!' => '权限不足！',
   'Read full comment...' => '阅读完整的评论...',
   'Send' => '发 送',
-  'Show %count% more comments' => '再展示 %count% 条评论',
+  'Show {count} more comments' => '再展示 {count} 条评论',
   'Show all {total} comments.' => '显示所有 {total} 条评论',
   'The comment must not be empty!' => '',
   'Write a new comment...' => '写新评论...',
