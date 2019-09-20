@@ -39,7 +39,7 @@ class SampleDataForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'sampleData' => Yii::t('InstallerModule.forms_SampleDataForm', 'Set up example content (recommended)'),
+            'sampleData' => Yii::t('InstallerModule.base', 'Set up example content (recommended)'),
         ];
     }
 
