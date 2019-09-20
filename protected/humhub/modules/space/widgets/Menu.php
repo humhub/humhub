@@ -28,6 +28,9 @@ class Menu extends LeftNavigation
     /** @var Space */
     public $space;
 
+    /** @var Space */
+    public $id = 'space-main-menu';
+
     /**
      * @inheritdoc
      */
@@ -40,8 +43,6 @@ class Menu extends LeftNavigation
         if (!$this->space) {
             throw new Exception('Could not instance space menu without space!');
         }
-
-        $this->id = 'navigation-menu-space-' . $this->space->getUniqueId();
 
         $this->panelTitle = Yii::t('SpaceModule.widgets_SpaceMenuWidget', '<strong>Space</strong> menu');
 
