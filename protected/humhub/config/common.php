@@ -5,6 +5,9 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
+use humhub\components\i18n\PhpMessageSource;
+
 Yii::setAlias('@webroot', realpath(__DIR__ . '/../../../'));
 Yii::setAlias('@app', '@webroot/protected');
 Yii::setAlias('@humhub', '@app/humhub');
@@ -72,27 +75,27 @@ $config = [
             'class' => \humhub\components\i18n\I18N::class,
             'translations' => [
                 'base' => [
-                    'class' => \yii\i18n\PhpMessageSource::class,
+                    'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
                 'security' => [
-                    'class' => \yii\i18n\PhpMessageSource::class,
+                    'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
                 'error' => [
-                    'class' => \yii\i18n\PhpMessageSource::class,
+                    'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
                 'widgets_views_markdownEditor' => [
-                    'class' => \yii\i18n\PhpMessageSource::class,
+                    'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
                 'humhub.yii' => [
-                    'class' => \yii\i18n\PhpMessageSource::class,
+                    'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
                 'custom' => [
-                    'class' => \yii\i18n\PhpMessageSource::class,
+                    'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
             ],
@@ -167,14 +170,14 @@ $config = [
         'dynamicConfigFile' => '@config/dynamic.php',
         'moduleAutoloadPaths' => ['@app/modules', '@humhub/modules'],
         'availableLanguages' => [
-            'en' => 'English (US)',
-            'en_gb' => 'English (UK)',
+            'en-US' => 'English (US)',
+            'en-GB' => 'English (UK)',
             'de' => 'Deutsch',
             'fr' => 'Français',
             'nl' => 'Nederlands',
             'pl' => 'Polski',
             'pt' => 'Português',
-            'pt_br' => 'Português do Brasil',
+            'pt-BR' => 'Português do Brasil',
             'es' => 'Español',
             'ca' => 'Català',
             'it' => 'Italiano',
@@ -185,17 +188,17 @@ $config = [
             'el' => 'Ελληνικά',
             'ja' => '日本語',
             'hu' => 'Magyar',
-            'nb_no' => 'Norsk bokmål',
-            'nn_no' => 'Nynorsk',
-            'zh_cn' => '中文(简体)',
-            'zh_tw' => '中文(台灣)',
+            'nb-NO' => 'Norsk bokmål',
+            'nn-NO' => 'Nynorsk',
+            'zh-CN' => '中文(简体)',
+            'zh-TW' => '中文(台灣)',
             'an' => 'Aragonés',
             'vi' => 'Tiếng Việt',
             'sv' => 'Svenska',
             'cs' => 'čeština',
             'da' => 'dansk',
             'uz' => 'Ўзбек',
-            'fa_ir' => 'فارسی',
+            'fa-IR' => 'فارسی',
             'bg' => 'български',
             'sk' => 'slovenčina',
             'ro' => 'română',
