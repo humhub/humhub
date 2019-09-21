@@ -46,7 +46,7 @@ return array (
   'Set as default' => 'قرار دادن به عنوان پیش‌فرض',
   'Spaces' => 'انجمن‌ها',
   'The HumHub developers provide no support for third-party modules and neighter give any guarantee about the suitability, functionality or security of this module.' => 'توسعه دهندگان هام هاب هیچگونه پشتیبانی برای ماژول های طراحی شده توسط دیگران هیچگونه گارانتی نمی دهند',
-  'Third-party' => '',
+  'Third-party' => 'چشم سوم',
   'Third-party disclaimer' => 'سلب مسئولیت در قبال توسعه دهندگان دیگر',
   'This module doesn\'t provide further informations.' => 'این ماژول اطلاعات بیشتری در اختیار نمی‌گذارد.',
   'Uninstall' => 'حذف',

@@ -17,9 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '-' => '',
     '<strong>Manage</strong> members' => '<strong>Quản lý</strong> members',
     'Actions' => 'Hành động',
     'Role' => 'Vai trò',
     'never' => 'không bao giờ',
+    '-' => '',
+    'Invited By' => '',
 ];

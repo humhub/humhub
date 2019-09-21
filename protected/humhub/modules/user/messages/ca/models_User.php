@@ -17,16 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Auth Mode' => '',
-    'Created by' => '',
-    'Default Space' => '',
-    'Email' => '',
-    'Last Login' => '',
-    'Manager' => '',
-    'Show At Directory' => '',
-    'Show At Registration' => '',
-    'Sort order' => '',
-    'Space ID' => '',
     'Created at' => 'Creat el',
     'Description' => 'Descripció',
     'Language' => 'Llengua',
@@ -37,4 +27,15 @@ return [
     'Updated by' => 'Actualitzat per',
     'Username' => 'Nom d\'usuari',
     'Visibility' => 'Visibilitat',
+    'Auth Mode' => '',
+    'Created by' => '',
+    'Default Space' => '',
+    'Email' => '',
+    'Last Login' => '',
+    'Manager' => '',
+    'Show At Directory' => '',
+    'Show At Registration' => '',
+    'Sort order' => '',
+    'Space ID' => '',
+    'Username contains invalid characters.' => '',
 ];

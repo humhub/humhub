@@ -15,7 +15,7 @@ return array (
   'Invalid Mime-Type' => 'Kiểu Mime không hợp lệ',
   'Invalid file name detected!' => '',
   'Last update by:' => '',
-  'Size:' => '',
+  'Size:' => 'Kích thước:',
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Trường upload chỉ cho phép tối đa {n,plural,=1{# file} other{# files}}.',
   'Upload files' => 'Upload files',

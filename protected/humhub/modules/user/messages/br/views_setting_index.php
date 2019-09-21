@@ -17,5 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Do you really want to delete your icon image?' => '',
     'Do you really want to delete your logo image?' => '',
 ];

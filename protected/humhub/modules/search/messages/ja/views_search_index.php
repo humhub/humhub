@@ -9,5 +9,5 @@ return array (
   'Spaces' => 'スペース',
   'Specify space' => '',
   'Users' => 'ユーザー',
-  'Your search returned no matches.' => '',
+  'Your search returned no matches.' => '何も検索できませんでした',
 );

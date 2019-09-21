@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Description' => 'Deskripsi',
+    'Language' => 'Bahasa',
     'Auth Mode' => '',
     'Created at' => '',
     'Created by' => '',
@@ -34,7 +36,6 @@ return [
     'Updated at' => '',
     'Updated by' => '',
     'Username' => '',
+    'Username contains invalid characters.' => '',
     'Visibility' => '',
-    'Description' => 'Deskripsi',
-    'Language' => 'Bahasa',
 ];

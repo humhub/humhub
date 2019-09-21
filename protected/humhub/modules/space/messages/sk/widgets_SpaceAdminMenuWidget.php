@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<i class="fa fa-cog"></i>' => '',
     'Cancel Membership' => '',
     'Don\'t receive notifications for new content' => '',
     'Hide posts on dashboard' => '',

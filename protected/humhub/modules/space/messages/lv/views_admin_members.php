@@ -17,9 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'never' => 'nekad',
     '-' => '',
     '<strong>Manage</strong> members' => '',
     'Actions' => '',
+    'Invited By' => '',
     'Role' => '',
-    'never' => 'nekad',
 ];

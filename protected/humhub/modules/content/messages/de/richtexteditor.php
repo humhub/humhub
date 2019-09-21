@@ -15,6 +15,7 @@ return array (
   'Delete table' => 'Tabelle löschen',
   'Flags' => 'Flaggen',
   'Food & Drink' => 'Essen und Trinken',
+  'Heading' => 'Überschrift',
   'Height' => 'Höhe',
   'Horizontal rule' => 'Horizontale Linie',
   'Image' => 'Bild',

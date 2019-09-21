@@ -1,8 +1,6 @@
 <?php
 return array (
-  'New Content' => '',
-  'Receive Notifications for new content you follow.' => '',
-  'View Online' => '',
+  'View Online' => 'オンラインで見る',
   '{displayName} created {contentTitle}.' => '',
   '{displayName} posted on your profile {contentTitle}.' => '',
   '{originator} just wrote {contentInfo}' => '',

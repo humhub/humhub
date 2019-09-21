@@ -17,15 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Auth Mode' => '',
-    'Created by' => '',
-    'Default Space' => '',
-    'Last Login' => '',
-    'Manager' => '',
-    'Show At Directory' => '',
-    'Show At Registration' => '',
-    'Sort order' => '',
-    'Space ID' => '',
     'Created at' => 'で作成',
     'Description' => '説明',
     'Email' => 'メール',
@@ -37,4 +28,14 @@ return [
     'Updated by' => '更新されました。',
     'Username' => 'ユーザー名',
     'Visibility' => '可視性',
+    'Auth Mode' => '',
+    'Created by' => '',
+    'Default Space' => '',
+    'Last Login' => '',
+    'Manager' => '',
+    'Show At Directory' => '',
+    'Show At Registration' => '',
+    'Sort order' => '',
+    'Space ID' => '',
+    'Username contains invalid characters.' => '',
 ];

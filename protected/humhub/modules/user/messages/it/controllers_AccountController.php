@@ -20,4 +20,5 @@ return [
     'Invalid link! Please make sure that you entered the entire url.' => 'Link non valido! Assicurati di aver inserito l\'intero URL.',
     'Save profile' => 'Salva il profilo',
     'The entered e-mail address is already in use by another user.' => 'La mail inserita è già stata utilizzata da un altro utente.',
+    'Changing the username can make some links unusable, for example old links to the profile.' => '',
 ];

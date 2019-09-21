@@ -6,7 +6,7 @@ return array (
   'Could not find requested file variant!' => '找不到请求的文件！',
   'Could not find requested file!' => '找不到请求的文件！',
   'Could not upload File:' => '不能上传文件：',
-  'Created by:' => '',
+  'Created by:' => '创建人',
   'Double file extensions are not allowed!' => '',
   'Download' => '',
   'File {fileName} could not be uploaded!' => '文件 {fileName} 不能被上传!',

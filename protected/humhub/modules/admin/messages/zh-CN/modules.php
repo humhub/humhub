@@ -46,7 +46,7 @@ return array (
   'Set as default' => '设置为默认',
   'Spaces' => '空间',
   'The HumHub developers provide no support for third-party modules and neighter give any guarantee about the suitability, functionality or security of this module.' => 'humhub开发商不对第三方模块的功能或安全提供任何保障。',
-  'Third-party' => '',
+  'Third-party' => '第三方',
   'Third-party disclaimer' => '第三方申明',
   'This module doesn\'t provide further informations.' => '该模块不能提供进一步的信息。',
   'Uninstall' => '卸载',

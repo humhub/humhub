@@ -6,7 +6,7 @@ return array (
   'Could not find requested file variant!' => '',
   'Could not find requested file!' => 'Prašomas failas nerastas!',
   'Could not upload File:' => 'Nepavyko įkelti failo:',
-  'Created by:' => '',
+  'Created by:' => 'Sukurta:',
   'Double file extensions are not allowed!' => '',
   'Download' => '',
   'File {fileName} could not be uploaded!' => '',

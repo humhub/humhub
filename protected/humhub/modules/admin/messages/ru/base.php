@@ -1,9 +1,9 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => 'Панель <strong>Администратора</strong>',
+  '<strong>Module </strong> administration' => '',
   '<strong>Warning</strong> incomplete setup!' => '',
   'About' => 'Информация',
-  'Add purchased module by licence key' => 'Добавить ключ для приобретённого модуля',
   'Admin' => 'Администратор',
   'Administration' => 'Администрирование',
   'Administrative group' => 'Административная группа',
@@ -24,7 +24,7 @@ return array (
   'Groups' => 'Группы',
   'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
   'Information' => 'Информация',
-  'Invite' => '',
+  'Invite' => 'Пригласить',
   'Invited by' => '',
   'Logging' => 'Аудит',
   'Logs' => '',
@@ -40,7 +40,7 @@ return array (
   'Security' => 'Безопасность',
   'Self test' => 'Самопроверка',
   'Settings' => 'Настройки',
-  'Sign up' => '',
+  'Sign up' => 'Зарегистрироваться',
   'Spaces' => 'Пространства',
   'Statistics' => 'Статистика',
   'The cron job for the background jobs (queue) does not seem to work properly.' => '',

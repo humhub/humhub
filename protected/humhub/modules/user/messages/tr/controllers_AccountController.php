@@ -20,4 +20,5 @@ return [
     'Invalid link! Please make sure that you entered the entire url.' => 'Geçersiz link! Lütfen url nin tamamını girdiğinizden emin olun.',
     'Save profile' => 'Profili kaydet',
     'The entered e-mail address is already in use by another user.' => 'Girdiğin mail adresi zaten başka bir kullanıcı tarafından kullanımda.',
+    'Changing the username can make some links unusable, for example old links to the profile.' => '',
 ];

@@ -14,6 +14,6 @@ return array (
   'Search by name, description, id or owner.' => '',
   'Settings' => '',
   'Space Settings' => '',
-  'Spaces' => '',
+  'Spaces' => '空間',
   'This overview contains a list of each space with actions to view, edit and delete spaces.' => '',
 );

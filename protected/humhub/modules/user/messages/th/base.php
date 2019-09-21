@@ -20,6 +20,7 @@ return [
     'Basic Settings' => '',
     'Change Email' => '',
     'Change Password' => '',
+    'Change Username' => '',
     'Confirm new password' => '',
     'Connect account' => '',
     'Connected Accounts' => '',

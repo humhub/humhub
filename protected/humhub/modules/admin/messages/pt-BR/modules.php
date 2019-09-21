@@ -46,7 +46,7 @@ return array (
   'Set as default' => 'Marcar como padrão',
   'Spaces' => 'Espaços',
   'The HumHub developers provide no support for third-party modules and neighter give any guarantee about the suitability, functionality or security of this module.' => 'Os desenvolvedores HumHub não fornecem suporte para módulos de terceiros ou qualquer garantia sobre a adequação, funcionalidade ou segurança deste módulo.',
-  'Third-party' => '',
+  'Third-party' => 'Terceiro',
   'Third-party disclaimer' => 'Aviso de Terceiro',
   'This module doesn\'t provide further informations.' => 'Este módulo não fornece maiores informações.',
   'Uninstall' => 'Desinstalar',

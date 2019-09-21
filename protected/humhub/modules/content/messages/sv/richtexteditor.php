@@ -15,6 +15,7 @@ return array (
   'Delete table' => 'Ta bort tabell',
   'Flags' => 'Flaggor',
   'Food & Drink' => '',
+  'Heading' => 'Rubrikstil',
   'Height' => 'Höjd',
   'Horizontal rule' => 'Linje',
   'Image' => 'Bild',

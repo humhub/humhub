@@ -1,7 +1,7 @@
 <?php
 return array (
   'Auth Mode' => '',
-  'Created at' => '',
+  'Created at' => 'Skapad',
   'Created by' => 'Skapad av',
   'Default Space' => '',
   'Description' => 'Beskrivning',
@@ -12,12 +12,13 @@ return array (
   'Name' => 'Namn',
   'Show At Directory' => '',
   'Show At Registration' => '',
-  'Sort order' => '',
+  'Sort order' => 'Sorteringsordning',
   'Space ID' => '',
-  'Status' => '',
+  'Status' => 'Status',
   'Tags' => 'Taggar',
-  'Updated at' => '',
-  'Updated by' => '',
+  'Updated at' => 'Uppdaterad',
+  'Updated by' => 'Uppdaterad av',
   'Username' => 'Användarnamn',
+  'Username contains invalid characters.' => '',
   'Visibility' => 'Synlighet',
 );

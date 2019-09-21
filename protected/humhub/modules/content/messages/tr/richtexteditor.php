@@ -15,6 +15,7 @@ return array (
   'Delete table' => '',
   'Flags' => 'Bayraklar',
   'Food & Drink' => '',
+  'Heading' => 'Başlık',
   'Height' => '',
   'Horizontal rule' => 'Yatay kural',
   'Image' => 'Resim',

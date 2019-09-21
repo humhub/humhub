@@ -3,7 +3,7 @@ return array (
   'Birthday' => 'Cumpleanyos',
   'Checkbox' => '',
   'Checkbox List' => '',
-  'Country' => '',
+  'Country' => 'País',
   'Date' => '',
   'Datetime' => '',
   'Markdown' => '',

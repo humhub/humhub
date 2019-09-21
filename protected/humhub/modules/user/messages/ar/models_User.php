@@ -17,6 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Created at' => 'تم النشر في',
+    'Description' => 'توضيج',
+    'Email' => 'البريد',
+    'Language' => 'اللغة',
+    'Tags' => 'الأوسمة',
+    'Updated at' => 'تم التحديث في',
+    'Updated by' => 'تم التحديث بواسطة',
+    'Username' => 'اسم المستخدم',
     'Auth Mode' => '',
     'Created by' => '',
     'Default Space' => '',
@@ -28,13 +36,6 @@ return [
     'Sort order' => '',
     'Space ID' => '',
     'Status' => '',
+    'Username contains invalid characters.' => '',
     'Visibility' => '',
-    'Created at' => 'تم النشر في',
-    'Description' => 'توضيج',
-    'Email' => 'البريد',
-    'Language' => 'اللغة',
-    'Tags' => 'الأوسمة',
-    'Updated at' => 'تم التحديث في',
-    'Updated by' => 'تم التحديث بواسطة',
-    'Username' => 'اسم المستخدم',
 ];

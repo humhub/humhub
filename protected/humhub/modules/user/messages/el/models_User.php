@@ -17,6 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Created at' => 'Δημιουργήθηκε στις',
+    'Created by' => 'Δημιουργήθηκε από',
+    'Description' => 'Περιγραφή',
+    'Language' => 'Γλώσσα',
+    'Name' => 'Όνομα',
+    'Tags' => 'Λέξεις κλειδιά',
+    'Updated at' => 'Ανανεώθηκε στις',
+    'Updated by' => 'Ανανεώθηκε από',
+    'Visibility' => 'Ορατότητα',
     'Auth Mode' => '',
     'Default Space' => '',
     'Email' => '',
@@ -28,13 +37,5 @@ return [
     'Space ID' => '',
     'Status' => '',
     'Username' => '',
-    'Created at' => 'Δημιουργήθηκε στις',
-    'Created by' => 'Δημιουργήθηκε από',
-    'Description' => 'Περιγραφή',
-    'Language' => 'Γλώσσα',
-    'Name' => 'Όνομα',
-    'Tags' => 'Λέξεις κλειδιά',
-    'Updated at' => 'Ανανεώθηκε στις',
-    'Updated by' => 'Ανανεώθηκε από',
-    'Visibility' => 'Ορατότητα',
+    'Username contains invalid characters.' => '',
 ];

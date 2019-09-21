@@ -2,4 +2,5 @@
 return array (
   'Account' => 'Conta',
   'Create account' => 'Criar conta',
+  'Group' => 'Grupo',
 );

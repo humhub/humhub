@@ -20,4 +20,5 @@ return [
     'Invalid link! Please make sure that you entered the entire url.' => 'Neteisinga nuoroda! Patikrinkite ar įvedėte pilną adresą (URL).',
     'Save profile' => 'Išsaugoti profilį',
     'The entered e-mail address is already in use by another user.' => 'Šis elektroninis paštaus jau yra naudojamas.',
+    'Changing the username can make some links unusable, for example old links to the profile.' => '',
 ];

@@ -17,9 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '-' => '',
     '<strong>Manage</strong> members' => '<strong>Spravovat</strong> členy',
     'Actions' => 'Akce',
     'Role' => 'Role',
     'never' => 'nikdy',
+    '-' => '',
+    'Invited By' => '',
 ];

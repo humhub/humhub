@@ -20,6 +20,6 @@ return [
     'Accept Invite' => '',
     'Become member' => '',
     'Cancel pending membership application' => '',
-    'Deny Invite' => '',
+    'Decline Invite' => '',
     'Request membership' => '',
 ];

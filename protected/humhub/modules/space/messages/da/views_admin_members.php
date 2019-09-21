@@ -17,9 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '-' => '',
-    'Actions' => '',
-    'Role' => '',
     '<strong>Manage</strong> members' => '<strong>Administrer</strong> brugere',
     'never' => 'aldrig',
+    '-' => '',
+    'Actions' => '',
+    'Invited By' => '',
+    'Role' => '',
 ];

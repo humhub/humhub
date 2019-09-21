@@ -17,7 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid link! Please make sure that you entered the entire url.' => '',
     'Save profile' => 'Αποθήκευση προφίλ',
     'The entered e-mail address is already in use by another user.' => 'Το e-mail που δηλώσατε είναι καταχωρημένο σε άλλο χρήστη.',
+    'Changing the username can make some links unusable, for example old links to the profile.' => '',
+    'Invalid link! Please make sure that you entered the entire url.' => '',
 ];

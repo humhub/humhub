@@ -22,4 +22,5 @@ return [
     'Actions' => 'Действия',
     'Role' => 'Роль',
     'never' => 'никогда',
+    'Invited By' => '',
 ];
