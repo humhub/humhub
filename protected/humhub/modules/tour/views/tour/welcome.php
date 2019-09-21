@@ -14,12 +14,12 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
         <div class="modal-header">
             <h4 class="modal-title"
                 id="myModalLabel">
-                    <?php echo Yii::t('TourModule.views_tour_welcome', 'Howdy <strong>%firstname%</strong>, thank you for using %community%.', ['%firstname%' => $user->profile->firstname, '%community%' => Html::encode(Yii::$app->name)]); ?>
+                    <?php echo Yii::t('TourModule.base', 'Howdy <strong>%firstname%</strong>, thank you for using %community%.', ['%firstname%' => $user->profile->firstname, '%community%' => Html::encode(Yii::$app->name)]); ?>
             </h4>
         </div>
         <div class="modal-body">
             <div class="text-center">
-                <?php echo Yii::t('TourModule.views_tour_welcome', 'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.'); ?>
+                <?php echo Yii::t('TourModule.base', 'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.'); ?>
                 <br><br>
                 <br>
             </div>
@@ -109,7 +109,7 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
 
                     </div>
                     <p class="help-block text-center"><i
-                            class="fa fa-arrow-up"></i><br><?php echo Yii::t('TourModule.views_tour_welcome', 'Drag a photo here or click to browse your files'); ?>
+                            class="fa fa-arrow-up"></i><br><?php echo Yii::t('TourModule.base', 'Drag a photo here or click to browse your files'); ?>
                     </p>
 
                 </div>
@@ -117,22 +117,22 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
                     <?php $form = ActiveForm::begin(); ?>
                     <div class="row">
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'firstname')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your firstname')]); ?>
+                            <?php echo $form->field($user->profile, 'firstname')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your firstname')]); ?>
                         </div>
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'lastname')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your lastname')]); ?>
+                            <?php echo $form->field($user->profile, 'lastname')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your lastname')]); ?>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <?php echo $form->field($user->profile, 'title')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your title or position')]); ?>
+                            <?php echo $form->field($user->profile, 'title')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your title or position')]); ?>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <?php echo $form->field($user, 'tags')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your skills, knowledge and experience (comma seperated)')]); ?>
+                            <?php echo $form->field($user, 'tags')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your skills, knowledge and experience (comma seperated)')]); ?>
                         </div>
                     </div>
 
@@ -142,7 +142,7 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
                         </div>
                         <div class="col-md-6">
                             <br><br>
-                            <?php echo $form->field($user->profile, 'birthday_hide_year')->checkbox(['label' => Yii::t('TourModule.views_tour_welcome', 'Hide my year of birth')]); ?>
+                            <?php echo $form->field($user->profile, 'birthday_hide_year')->checkbox(['label' => Yii::t('TourModule.base', 'Hide my year of birth')]); ?>
                         </div>
                     </div>
 
@@ -154,10 +154,10 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
 
                     <div class="row">
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'phone_work')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your phone number at work')]); ?>
+                            <?php echo $form->field($user->profile, 'phone_work')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your phone number at work')]); ?>
                         </div>
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'mobile')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your mobile phone number')]); ?>
+                            <?php echo $form->field($user->profile, 'mobile')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your mobile phone number')]); ?>
                         </div>
                     </div>
 
@@ -169,7 +169,7 @@ $this->registerJs("var profileImageUploaderUrl='" . Url::toRoute('/user/account/
 
                             <?php
                             echo \humhub\widgets\AjaxButton::widget([
-                                'label' => Yii::t('TourModule.views_tour_welcome', 'Save and close'),
+                                'label' => Yii::t('TourModule.base', 'Save and close'),
                                 'ajaxOptions' => [
                                     'type' => 'POST',
                                     'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
