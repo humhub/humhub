@@ -26,7 +26,7 @@ $submitUrl = $post->content->container->createUrl('/post/post/edit', $submitPara
                 'id' => 'post_input_'. $post->id,
                 'layout' => RichTextField::LAYOUT_INLINE,
                 'pluginOptions' => ['maxHeight' => '300px'],
-                'placeholder' => Yii::t('PostModule.views_edit', 'Edit your post...')
+                'placeholder' => Yii::t('PostModule.base', 'Edit your post...')
             ])->label(false) ?>
 
             <div class="comment-buttons">
