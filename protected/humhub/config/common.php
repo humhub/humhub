@@ -78,10 +78,6 @@ $config = [
                     'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
-                'security' => [
-                    'class' => PhpMessageSource::class,
-                    'basePath' => '@humhub/messages'
-                ],
                 'error' => [
                     'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'

@@ -34,7 +34,7 @@ class ImageSquareValidator extends \yii\validators\FileValidator
     {
         parent::init();
         if ($this->noSquaredImage === null) {
-            $this->noSquaredImage = Yii::t('yii', 'The uploaded image is not a squared.');
+            $this->noSquaredImage = Yii::t('FileModule.base', 'The uploaded image is not a squared.');
         }
 
     }
