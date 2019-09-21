@@ -42,7 +42,7 @@ $likedRecord = $viewable->getLikedReccord();
             <?=
             \humhub\widgets\mails\MailButtonList::widget([
                 'buttons' => [
-                    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('LikeModule.notificationss', 'View Online')])
+                    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('LikeModule.notifications', 'View Online')])
                 ]
             ])
             ?>
