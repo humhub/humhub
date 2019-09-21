@@ -4,7 +4,7 @@ return array (
   'Add link' => 'ማስፈንጠሪያ ያክሉ',
   'Bold' => 'ጉልህ',
   'Close' => 'ዝጋ',
-  'Code' => 'ሚስጥራዊ ምልክት',
+  'Code' => 'ኮድ',
   'Enter a url (e.g. http://example.com)' => 'url ያስገቡ (ምሳሌ፦ http://example.com)',
   'Heading' => 'ራስጌ',
   'Image' => 'ምስል',

@@ -18,7 +18,7 @@ return array (
   'Preview' => 'Förhandsgranska',
   'Quote' => 'Citera',
   'Target' => 'Mål',
-  'Title' => 'Rubrik',
+  'Title' => 'Titel',
   'Title of your link' => 'Länkrubrik',
   'URL/Link' => 'URL/länk',
   'Unordered List' => 'Punktlista',

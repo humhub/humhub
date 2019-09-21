@@ -13,6 +13,7 @@ return array (
   'Insert Image Hyperlink' => 'Pridėkite nuorodos nuotrauką',
   'Italic' => 'Kursyvas',
   'List' => 'Sarašas',
+  'Ordered List' => '',
   'Please wait while uploading...' => 'Palaukite, kol keliami duomenys',
   'Preview' => 'Peržiūra',
   'Quote' => 'Citata',
@@ -20,6 +21,7 @@ return array (
   'Title' => 'Pavadinimas',
   'Title of your link' => 'Jūsu nuorodos pavadinimas',
   'URL/Link' => 'URL/nuoroda',
+  'Unordered List' => '',
   'code text here' => 'Koduoti teksta',
   'emphasized text' => 'Pabrėžti tekstą',
   'enter image description here' => 'Įrašyti paveikslėlio apibūdinimą čia',
@@ -29,6 +31,4 @@ return array (
   'list text here' => 'Įrašyti tekstą čia',
   'quote here' => 'Cituoti čia',
   'strong text' => 'Paryškintas tekstas',
-  'Unordered List' => '',
-  'Ordered List' => '',
 );

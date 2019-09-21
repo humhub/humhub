@@ -3,7 +3,7 @@ return array (
   'Add image/file' => 'Új kép/fájl',
   'Add link' => 'Új link',
   'Bold' => 'Félkövér',
-  'Close' => 'Bezárás',
+  'Close' => 'Bezár',
   'Code' => 'Kód',
   'Enter a url (e.g. http://example.com)' => 'Írj be egy URL-t (pl. http://weboldal.hu)',
   'Heading' => 'Fejléc',

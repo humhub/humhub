@@ -18,7 +18,7 @@ return array (
   'Preview' => 'Preveyer',
   'Quote' => 'Comillas',
   'Target' => 'Obchectivo',
-  'Title' => 'Titulo',
+  'Title' => 'Titulek',
   'Title of your link' => 'Títol d\'o vinclo',
   'URL/Link' => 'URL/Vinclo',
   'Unordered List' => 'Lista desordenada',

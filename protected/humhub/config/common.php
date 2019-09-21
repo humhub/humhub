@@ -86,10 +86,6 @@ $config = [
                     'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
-                'widgets_views_markdownEditor' => [
-                    'class' => PhpMessageSource::class,
-                    'basePath' => '@humhub/messages'
-                ],
                 'humhub.yii' => [
                     'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'

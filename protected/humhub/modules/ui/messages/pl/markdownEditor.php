@@ -13,6 +13,7 @@ return array (
   'Insert Image Hyperlink' => 'Wstaw link obrazka',
   'Italic' => 'Kursywa',
   'List' => 'Lista',
+  'Ordered List' => 'Lista uporządkowana',
   'Please wait while uploading...' => 'Proszę czekać trwa przesyłanie pliku...',
   'Preview' => 'Podgląd',
   'Quote' => 'Cytat',
@@ -20,6 +21,7 @@ return array (
   'Title' => 'Tytuł',
   'Title of your link' => 'Tytuł twojego odnośnika',
   'URL/Link' => 'URL/Odnośnik',
+  'Unordered List' => 'Lista nieuporządkowana',
   'code text here' => 'tutaj wpisz kod',
   'emphasized text' => 'wyróżniony tekst',
   'enter image description here' => 'wpisz opis obrazka',
@@ -29,6 +31,4 @@ return array (
   'list text here' => 'tutaj wpisz listę',
   'quote here' => 'tutaj wpisz cytat',
   'strong text' => 'pogrubiony tekst',
-  'Unordered List' => 'Lista nieuporządkowana',
-  'Ordered List' => 'Lista uporządkowana',
 );

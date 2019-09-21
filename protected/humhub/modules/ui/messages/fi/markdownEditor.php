@@ -4,7 +4,7 @@ return array (
   'Add link' => 'Lisää linkki',
   'Bold' => 'Lihavointi',
   'Close' => 'Sulje',
-  'Code' => 'HTML',
+  'Code' => 'Koodi',
   'Enter a url (e.g. http://example.com)' => 'Syötä url (esim. https://esimerkki.fi)',
   'Heading' => 'Otsikko',
   'Image' => 'Kuva',

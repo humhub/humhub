@@ -13,6 +13,7 @@ return array (
   'Insert Image Hyperlink' => '이미지에 링크 삽입',
   'Italic' => '이탤릭',
   'List' => '리스트',
+  'Ordered List' => '',
   'Please wait while uploading...' => '업로드 중입니다. 잠시만 기다려주세요...',
   'Preview' => '미리보기',
   'Quote' => '인용',
@@ -20,6 +21,7 @@ return array (
   'Title' => '제목',
   'Title of your link' => '링크 제목',
   'URL/Link' => 'URL/링크',
+  'Unordered List' => '',
   'code text here' => '소스코드를 입력해주세요',
   'emphasized text' => '텍스트 강조',
   'enter image description here' => '이미지 설명을 입력해주세요',
@@ -29,6 +31,4 @@ return array (
   'list text here' => '여기에 리스트 내용을 입력해주세요',
   'quote here' => '여기에 인용할 내용을 입력해주세요',
   'strong text' => '굵은 텍스트',
-  'Unordered List' => '',
-  'Ordered List' => '',
 );

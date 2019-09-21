@@ -13,6 +13,7 @@ return array (
   'Insert Image Hyperlink' => 'هایپر لینک عکس را وارد کنید',
   'Italic' => 'Italic',
   'List' => 'لیست',
+  'Ordered List' => '',
   'Please wait while uploading...' => 'لطفا تا بارگذاری صبر کنید',
   'Preview' => 'پیش‌نمایش',
   'Quote' => 'نقل قول',
@@ -20,6 +21,7 @@ return array (
   'Title' => 'عنوان',
   'Title of your link' => 'عنوان لینک شما',
   'URL/Link' => 'آدرس/لینک',
+  'Unordered List' => '',
   'code text here' => 'متن را اینجا کد کنید',
   'emphasized text' => 'متن تاکیدشده',
   'enter image description here' => 'توضیحات عکی را اینجا وارد کنید',
@@ -29,6 +31,4 @@ return array (
   'list text here' => 'متن را اینجا لیست کنید',
   'quote here' => 'اینجا بیان کنید',
   'strong text' => 'متن پررنگ',
-  'Unordered List' => '',
-  'Ordered List' => '',
 );

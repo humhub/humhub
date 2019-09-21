@@ -18,7 +18,7 @@ return array (
   'Preview' => 'Pré-visualizar',
   'Quote' => 'Citar',
   'Target' => 'Alvo',
-  'Title' => 'Tìtulo',
+  'Title' => 'Título',
   'Title of your link' => 'Título do seu link',
   'URL/Link' => 'URL/Link',
   'Unordered List' => 'Lista não ordenada',

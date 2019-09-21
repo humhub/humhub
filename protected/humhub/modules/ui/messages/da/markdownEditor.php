@@ -13,6 +13,7 @@ return array (
   'Insert Image Hyperlink' => 'Indsæt Billede Hyperlink',
   'Italic' => 'Kursiv',
   'List' => 'Liste',
+  'Ordered List' => '',
   'Please wait while uploading...' => 'Vent venligst, uploader...',
   'Preview' => 'Forhåndsvisning',
   'Quote' => 'Citat',
@@ -20,6 +21,7 @@ return array (
   'Title' => 'Titel',
   'Title of your link' => 'Titel til dit link',
   'URL/Link' => 'URL/Link',
+  'Unordered List' => '',
   'code text here' => 'kode tekst her',
   'emphasized text' => 'understreget tekst',
   'enter image description here' => 'skriv billede beskrivelse her',
@@ -29,6 +31,4 @@ return array (
   'list text here' => 'liste tekst her',
   'quote here' => 'citat her',
   'strong text' => 'fed tekst',
-  'Unordered List' => '',
-  'Ordered List' => '',
 );

@@ -13,6 +13,7 @@ return array (
   'Insert Image Hyperlink' => 'Inserează Hiperlegătura Imaginii',
   'Italic' => 'Înclinat',
   'List' => 'Listă',
+  'Ordered List' => '',
   'Please wait while uploading...' => 'Te rugăm să aștepți până se încarcă...',
   'Preview' => 'Previzualizare',
   'Quote' => 'Citat',
@@ -20,6 +21,7 @@ return array (
   'Title' => 'Titlul',
   'Title of your link' => 'Titlul legăturii tale',
   'URL/Link' => 'URL/Legătură',
+  'Unordered List' => '',
   'code text here' => 'textul codului aici',
   'emphasized text' => 'text subliniat',
   'enter image description here' => 'introdu descrierea imaginii aici',
@@ -29,6 +31,4 @@ return array (
   'list text here' => 'textul listei aici',
   'quote here' => 'citatul aici',
   'strong text' => 'text îngroșat',
-  'Unordered List' => '',
-  'Ordered List' => '',
 );

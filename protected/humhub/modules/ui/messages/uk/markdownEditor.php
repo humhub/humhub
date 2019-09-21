@@ -13,6 +13,7 @@ return array (
   'Insert Image Hyperlink' => '',
   'Italic' => '',
   'List' => '',
+  'Ordered List' => '',
   'Please wait while uploading...' => '',
   'Preview' => '',
   'Quote' => '',
@@ -20,6 +21,7 @@ return array (
   'Title' => 'Заголовок',
   'Title of your link' => '',
   'URL/Link' => '',
+  'Unordered List' => '',
   'code text here' => '',
   'emphasized text' => '',
   'enter image description here' => '',
@@ -29,6 +31,4 @@ return array (
   'list text here' => '',
   'quote here' => '',
   'strong text' => '',
-  'Unordered List' => '',
-  'Ordered List' => '',
 );

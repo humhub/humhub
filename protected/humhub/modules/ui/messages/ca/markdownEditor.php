@@ -13,6 +13,7 @@ return array (
   'Insert Image Hyperlink' => 'Inserir Hipervincle d\'imatge',
   'Italic' => 'Cursiva',
   'List' => 'Llista',
+  'Ordered List' => '',
   'Please wait while uploading...' => 'Si us plau, espereu mentre es carreguen les dades ...',
   'Preview' => 'Previsualització',
   'Quote' => 'Cita',
@@ -20,6 +21,7 @@ return array (
   'Title' => 'Títol',
   'Title of your link' => 'Títol del teu enllaç',
   'URL/Link' => 'URL/Enllaç',
+  'Unordered List' => '',
   'code text here' => 'text del codi aquí',
   'emphasized text' => 'text subratllat',
   'enter image description here' => 'entra la descripció de l\'imatge aquí',
@@ -29,6 +31,4 @@ return array (
   'list text here' => 'text de la llista aquí',
   'quote here' => 'escriu la cita aquí',
   'strong text' => 'text en negreta',
-  'Unordered List' => '',
-  'Ordered List' => '',
 );

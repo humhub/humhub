@@ -18,7 +18,7 @@ return array (
   'Preview' => 'Náhled',
   'Quote' => 'Citace',
   'Target' => 'Cíl odkazu',
-  'Title' => 'Titulek',
+  'Title' => 'Název',
   'Title of your link' => 'Napište titulek odkazu',
   'URL/Link' => 'URL adresa/odkaz',
   'Unordered List' => 'Neřízený seznam',
