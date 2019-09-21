@@ -90,12 +90,12 @@ class NotificationSettings extends Model
     public function attributeLabels()
     {
         if ($this->user) {
-            $desktopNotificationLabel = Yii::t('NotificationModule.models_forms_NotificationSettings', 'Receive desktop notifications when you are online.');
+            $desktopNotificationLabel = Yii::t('NotificationModule.base', 'Receive desktop notifications when you are online.');
         } else {
-            $desktopNotificationLabel = Yii::t('NotificationModule.models_forms_NotificationSettings', 'Allow desktop notifications by default.');
+            $desktopNotificationLabel = Yii::t('NotificationModule.base', 'Allow desktop notifications by default.');
         }
         return [
-            'spaceGuids' => Yii::t('NotificationModule.models_forms_NotificationSettings', 'Receive \'New Content\' Notifications for the following spaces'),
+            'spaceGuids' => Yii::t('NotificationModule.base', 'Receive \'New Content\' Notifications for the following spaces'),
             'desktopNotifications' => $desktopNotificationLabel
         ];
     }

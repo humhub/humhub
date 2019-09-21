@@ -30,7 +30,7 @@ class Overview extends JsWidget
             'loadEntriesUrl' => Url::to(['/notification/list']),
             'sendDesktopNotifications' => boolval(Yii::$app->notification->getDesktopNoficationSettings(Yii::$app->user->getIdentity())),
             'text' =>  [
-                'placeholder' => Yii::t('NotificationModule.widgets_views_list', 'There are no notifications yet.')
+                'placeholder' => Yii::t('NotificationModule.base', 'There are no notifications yet.')
             ]
         ]);
 

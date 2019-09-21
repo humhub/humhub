@@ -42,7 +42,7 @@ class FilterForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'categoryFilter' => Yii::t('NotificationModule.views_overview_index', 'Module Filter'),
+            'categoryFilter' => Yii::t('NotificationModule.base', 'Module Filter'),
         ];
     }
 

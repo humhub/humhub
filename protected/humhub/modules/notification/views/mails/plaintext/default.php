@@ -3,5 +3,5 @@
 <?= $text; ?>
 
 
-<?= strip_tags(Yii::t('NotificationModule.views_notificationLayoutMail', 'View online:')); ?> <?php echo urldecode($url); ?>
+<?= strip_tags(Yii::t('NotificationModule.base', 'View online:')); ?> <?php echo urldecode($url); ?>
 <?php $this->endContent(); ?>

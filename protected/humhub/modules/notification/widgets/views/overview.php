@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 ?>
 <?= Html::beginTag('div', $options) ?>
-   <a href="#" id="icon-notifications" data-action-click='toggle' aria-label="<?= Yii::t('NotificationModule.widgets_views_list', 'Open the notification dropdown menu')?>" data-toggle="dropdown" >
+   <a href="#" id="icon-notifications" data-action-click='toggle' aria-label="<?= Yii::t('NotificationModule.base', 'Open the notification dropdown menu')?>" data-toggle="dropdown" >
         <i class="fa fa-bell"></i>
     </a>
     
@@ -16,10 +16,10 @@ use yii\helpers\Html;
     <!-- container for ajax response -->
     <ul id="dropdown-notifications" class="dropdown-menu">
         <li class="dropdown-header">
-            <div class="arrow"></div><?= Yii::t('NotificationModule.widgets_views_list', 'Notifications'); ?>
+            <div class="arrow"></div><?= Yii::t('NotificationModule.base', 'Notifications'); ?>
             <div class="dropdown-header-link">
                 <a id="mark-seen-link" data-action-click='markAsSeen' data-action-url="<?= Url::to(['/notification/list/mark-as-seen']); ?>">
-                    <?= Yii::t('NotificationModule.widgets_views_list', 'Mark all as seen'); ?>
+                    <?= Yii::t('NotificationModule.base', 'Mark all as seen'); ?>
                 </a>
             </div>
         </li>
@@ -30,7 +30,7 @@ use yii\helpers\Html;
         <li>
             <div class="dropdown-footer">
                 <a class="btn btn-default col-md-12" href="<?= Url::to(['/notification/overview']); ?>">
-                    <?= Yii::t('NotificationModule.widgets_views_list', 'Show all notifications'); ?>
+                    <?= Yii::t('NotificationModule.base', 'Show all notifications'); ?>
                 </a>
             </div>
         </li>
