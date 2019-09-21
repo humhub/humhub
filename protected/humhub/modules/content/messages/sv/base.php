@@ -23,6 +23,7 @@ return array (
   'Edit' => 'Ändra',
   'Filter' => 'Filtrera',
   'Include archived content' => '',
+  'Invalid content id given!' => 'Felaktigt content id angivet!',
   'Invalid request method!' => '',
   'Invalid space selection.' => 'Felaktigt nätverk.',
   'Last update' => 'Senast uppdaterad',

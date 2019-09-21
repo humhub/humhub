@@ -23,6 +23,7 @@ return array (
   'Edit' => 'Düzenle',
   'Filter' => 'Filtre',
   'Include archived content' => '',
+  'Invalid content id given!' => 'Geçersiz içerik kimliği!',
   'Invalid request method!' => 'Geçersiz istek yöntemi!',
   'Invalid space selection.' => 'Geçersiz mekan seçimi.',
   'Last update' => 'Son güncelleme',

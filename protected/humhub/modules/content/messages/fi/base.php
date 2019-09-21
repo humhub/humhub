@@ -23,6 +23,7 @@ return array (
   'Edit' => 'Muokkaa',
   'Filter' => 'Suodatin',
   'Include archived content' => 'Sisällytä arkistoitu sisältö',
+  'Invalid content id given!' => 'Virheellinen sisällön tunnus!',
   'Invalid request method!' => 'Virheellinen pyyntötapa!',
   'Invalid space selection.' => 'Väärä sivu valittu.',
   'Last update' => 'Äskettäin päivitetty',

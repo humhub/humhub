@@ -23,6 +23,7 @@ return array (
   'Edit' => 'Editar',
   'Filter' => 'Filtro',
   'Include archived content' => '',
+  'Invalid content id given!' => 'ID de conteniu invalida!',
   'Invalid request method!' => '',
   'Invalid space selection.' => '',
   'Last update' => 'Zaguera actualización',

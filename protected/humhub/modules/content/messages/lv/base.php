@@ -23,6 +23,7 @@ return array (
   'Edit' => 'Rediģēt',
   'Filter' => '',
   'Include archived content' => '',
+  'Invalid content id given!' => 'Norādīts kļūdains satura id!',
   'Invalid request method!' => 'Kļūdaina pieprasījuma metode!',
   'Invalid space selection.' => '',
   'Last update' => 'Pēdējais atjauninājums',

@@ -25,6 +25,7 @@ return array (
   'Edit' => 'Editar',
   'Filter' => 'Filtra',
   'Include archived content' => '',
+  'Invalid content id given!' => 'L\'identificador de contingut no és vàlid!',
   'Invalid request method!' => 'Petició invàlida',
   'Invalid space selection.' => '',
   'Last update' => 'Data d\'actualització',

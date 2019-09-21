@@ -23,6 +23,7 @@ return array (
   'Edit' => 'Modifica',
   'Filter' => 'Filtro',
   'Include archived content' => 'Includi contenuti archiviati',
+  'Invalid content id given!' => 'Il Content id fornito non è valido!',
   'Invalid request method!' => 'Metodo di richiesta non valido!',
   'Invalid space selection.' => 'Spazio selezionato non valido',
   'Last update' => 'Ultimo aggiornamento',

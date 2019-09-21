@@ -23,6 +23,7 @@ return array (
   'Edit' => 'Rediger',
   'Filter' => 'Filter',
   'Include archived content' => '',
+  'Invalid content id given!' => 'Ugyldigt indholds id oplyst!',
   'Invalid request method!' => '',
   'Invalid space selection.' => '',
   'Last update' => 'Seneste opdatering',

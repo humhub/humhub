@@ -23,6 +23,7 @@ return array (
   'Edit' => 'Szerkesztés',
   'Filter' => 'Szűrés',
   'Include archived content' => 'Vegye bele az archivált tartalmakat',
+  'Invalid content id given!' => 'A megadott tartalomazonosító érvénytelen!',
   'Invalid request method!' => 'Érvénytelen lekérési módszer!',
   'Invalid space selection.' => 'Érvénytelen közösségválasztás.',
   'Last update' => 'Utolsó frissítés dátuma',

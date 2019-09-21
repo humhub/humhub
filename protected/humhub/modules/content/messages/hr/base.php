@@ -23,6 +23,7 @@ return array (
   'Edit' => 'Uredi',
   'Filter' => 'Filter',
   'Include archived content' => '',
+  'Invalid content id given!' => 'Navedeni ID sadržaj nije valjan!',
   'Invalid request method!' => 'Nevažeći način zahtjeva!',
   'Invalid space selection.' => '',
   'Last update' => 'Zadnje ažuriranje',

@@ -23,6 +23,7 @@ return array (
   'Edit' => 'Chỉnh sửa',
   'Filter' => 'Lọc',
   'Include archived content' => '',
+  'Invalid content id given!' => 'ID nội dung không hợp lệ!',
   'Invalid request method!' => 'Phương thức request không hợp lệ!',
   'Invalid space selection.' => '',
   'Last update' => 'Cập nhật cuối cùng',

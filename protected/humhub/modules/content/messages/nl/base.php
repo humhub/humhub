@@ -23,6 +23,7 @@ return array (
   'Edit' => 'Bewerk',
   'Filter' => 'Filter',
   'Include archived content' => 'inclusief gearchiveerde inhoud',
+  'Invalid content id given!' => 'Content ID is ongeldig!',
   'Invalid request method!' => 'Ongeldige aanroep!',
   'Invalid space selection.' => 'Ongeldige ruimteselectie.',
   'Last update' => 'Laatste bijwerk datum',

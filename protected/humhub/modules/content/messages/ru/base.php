@@ -23,6 +23,7 @@ return array (
   'Edit' => 'Редактировать',
   'Filter' => 'Фильтр',
   'Include archived content' => 'Включить архивированный контент',
+  'Invalid content id given!' => 'Неправильный id контента',
   'Invalid request method!' => 'Неверный запрос',
   'Invalid space selection.' => '',
   'Last update' => 'Последнее обновление',

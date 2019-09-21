@@ -23,6 +23,7 @@ return array (
   'Edit' => 'Upravit',
   'Filter' => 'Filtr',
   'Include archived content' => '',
+  'Invalid content id given!' => 'Vloženo chybé ID obsahu',
   'Invalid request method!' => 'Neplatná metoda požadavku!',
   'Invalid space selection.' => '',
   'Last update' => 'Změněno',

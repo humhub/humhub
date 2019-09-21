@@ -23,6 +23,7 @@ return array (
   'Edit' => 'Rediger',
   'Filter' => 'Filter',
   'Include archived content' => 'Inkluder arkivert innhold',
+  'Invalid content id given!' => 'Ugyldig innholds-ID angitt!',
   'Invalid request method!' => 'Feil.',
   'Invalid space selection.' => 'Ugyldig valgt gruppe.',
   'Last update' => 'Siste oppdatering',

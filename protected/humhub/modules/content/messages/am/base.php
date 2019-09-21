@@ -23,6 +23,7 @@ return array (
   'Edit' => 'አርትዕ',
   'Filter' => 'አጣራ',
   'Include archived content' => 'በማህደር ላይ የተቀመጡ ይዘቶች ይካተቱ',
+  'Invalid content id given!' => 'የሰጡት የማያገለግል የይዘት መለያ ነው!',
   'Invalid request method!' => 'የተሳሳተ የጥያቄ ዘዴ ነው!',
   'Invalid space selection.' => 'የማያገለግል ምህዳር መርጠዋል።',
   'Last update' => 'የመጨረሻ ዝመና',

@@ -154,7 +154,7 @@ class ContentController extends Controller
         $this->forcePostRequest();
         $content = Content::findOne(['id' => Yii::$app->request->post('id')]);
         if (!$content) {
-            throw new HttpException(400, Yii::t('ContentController.base', 'Invalid content id given!'));
+            throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
         } elseif (!$content->canEdit()) {
             throw new HttpException(403);
         }
@@ -166,7 +166,7 @@ class ContentController extends Controller
     {
         $content = Content::findOne(['id' => $id]);
         if (!$content) {
-            throw new HttpException(400, Yii::t('ContentController.base', 'Invalid content id given!'));
+            throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
         } elseif (!$content->canView()) {
             throw new HttpException(403);
         }
@@ -187,7 +187,7 @@ class ContentController extends Controller
         $content = Content::findOne(['id' => $id]);
 
         if (!$content) {
-            throw new HttpException(400, Yii::t('ContentController.base', 'Invalid content id given!'));
+            throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
         } elseif (!$content->canEdit()) {
             throw new HttpException(403);
         } elseif ($content->isPrivate() && !$content->container->permissionManager->can(new CreatePublicContent())) {

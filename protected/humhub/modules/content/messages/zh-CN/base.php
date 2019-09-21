@@ -23,6 +23,7 @@ return array (
   'Edit' => '编辑',
   'Filter' => '筛选',
   'Include archived content' => '',
+  'Invalid content id given!' => '给出的内容ID无效！',
   'Invalid request method!' => '无效的请求方法！',
   'Invalid space selection.' => '',
   'Last update' => '最后更新',
