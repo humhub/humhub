@@ -204,6 +204,7 @@ $config = [
             'hr' => 'Hrvatski',
             'am' => 'አማርኛ',
             'fi' => 'suomalainen',
+            'he' => 'עברית'
         ],
         'ldap' => [
             // LDAP date field formats
