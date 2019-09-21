@@ -59,7 +59,7 @@ return array (
   'Your current password can be changed here.' => '',
   'Your e-mail address has been successfully changed to {email}.' => '',
   'Your friends' => 'Dina vänner',
-  'Your password has been successfully changed!' => '',
+  'Your password has been successfully changed!' => 'Ditt lösenord har blivit ändrat!',
   'Your username has been changed' => '',
   'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => '',
   '{attribute} "{value}" was not found!' => '{attribute} "{value}" kunde inte hittas!',

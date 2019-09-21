@@ -45,7 +45,7 @@ return array (
   'We’ve sent you an email containing a link that will allow you to reset your password.' => '',
   'Your email' => 'Eメールアドレス',
   'Your password' => 'あなたのパスワード',
-  'Your password has been successfully changed!' => '',
+  'Your password has been successfully changed!' => 'パスワードを変更しました。',
   'Your password is incorrect!' => 'パスワードが間違っています',
   'a new user {displayName} needs approval.' => '{displayName}さんが新規登録を希望していらっしゃいます。',
   'back to home' => 'ホームに戻る',

@@ -45,7 +45,7 @@ return array (
   'We’ve sent you an email containing a link that will allow you to reset your password.' => '',
   'Your email' => 'O tuyo correu-e',
   'Your password' => ' A tuya clau',
-  'Your password has been successfully changed!' => '',
+  'Your password has been successfully changed!' => 'A tuya clau s\'ha cambiau correctament!',
   'Your password is incorrect!' => ' ',
   'a new user {displayName} needs approval.' => '',
   'back to home' => '',
