@@ -6,7 +6,7 @@ return array (
   'Create post' => 'Utwórz wpis',
   'Edit your post...' => 'Edytuj swój post... ',
   'Read full post...' => 'Przeczytaj cały post... ',
-  'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'This space is archived.' => 'Ta strefa jest zarchiwizowana.',
+  'What\'s on your mind?' => 'Co ci chodzi po głowie?',
   'post' => 'Post ',
 );

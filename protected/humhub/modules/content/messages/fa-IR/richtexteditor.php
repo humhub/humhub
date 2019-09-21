@@ -15,6 +15,7 @@ return array (
   'Delete table' => '',
   'Flags' => '',
   'Food & Drink' => '',
+  'Heading' => 'تیتر',
   'Height' => '',
   'Horizontal rule' => '',
   'Image' => 'عکس',

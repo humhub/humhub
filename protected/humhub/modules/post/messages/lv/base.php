@@ -6,7 +6,7 @@ return array (
   'Create post' => '',
   'Edit your post...' => '',
   'Read full post...' => '',
-  'This space is archived.' => '',
+  'This space is archived.' => 'Šī vieta ir arhivēta.',
   'What\'s on your mind?' => '',
   'post' => 'ieraksts',
 );

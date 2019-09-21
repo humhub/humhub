@@ -6,7 +6,7 @@ return array (
   'Create post' => 'Mesaj oluştur',
   'Edit your post...' => 'Gönderini düzenle...',
   'Read full post...' => 'Gönderinin tamamını oku...',
-  'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'This space is archived.' => 'Bu alan arşivlenmektedir.',
+  'What\'s on your mind?' => 'Aklında neler var?',
   'post' => 'Gönderi',
 );

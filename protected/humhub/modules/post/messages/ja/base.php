@@ -7,6 +7,6 @@ return array (
   'Edit your post...' => 'あなたの投稿を編集...',
   'Read full post...' => '続きを読む...',
   'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'What\'s on your mind?' => '何を考えてる？',
   'post' => '投稿',
 );

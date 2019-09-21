@@ -6,7 +6,7 @@ return array (
   'Create post' => 'Bejegyzés létrehozása',
   'Edit your post...' => 'Bejegyzésed szerkesztése...',
   'Read full post...' => 'Teljes bejegyzés olvasása...',
-  'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'This space is archived.' => 'Ez egy archivált közösség',
+  'What\'s on your mind?' => 'Mi jár a fejedben?',
   'post' => 'bejegyzés',
 );

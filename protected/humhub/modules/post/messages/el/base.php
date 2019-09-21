@@ -7,6 +7,6 @@ return array (
   'Edit your post...' => '',
   'Read full post...' => 'Διάβασε ολόκληρη την ανάρτηση...',
   'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'What\'s on your mind?' => 'Τι έχεις στο μυαλό σου;',
   'post' => 'Ανάστηση',
 );

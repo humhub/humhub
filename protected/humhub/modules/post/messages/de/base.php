@@ -6,7 +6,7 @@ return array (
   'Create post' => 'Beitrag erstellen',
   'Edit your post...' => 'Bearbeite deinen Beitrag ...',
   'Read full post...' => 'Den ganzen Beitrag lesen...',
-  'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'This space is archived.' => 'Dieser Space ist archiviert.',
+  'What\'s on your mind?' => 'Was möchtest Du mitteilen?',
   'post' => 'Beitrag',
 );

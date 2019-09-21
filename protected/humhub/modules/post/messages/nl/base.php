@@ -6,7 +6,7 @@ return array (
   'Create post' => 'Bericht maken',
   'Edit your post...' => 'Bewerk uw bericht...',
   'Read full post...' => 'Lees volledig bericht...',
-  'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'This space is archived.' => 'Deze ruimte is gearchiveerd.',
+  'What\'s on your mind?' => 'Plaats een bericht',
   'post' => 'Bericht',
 );

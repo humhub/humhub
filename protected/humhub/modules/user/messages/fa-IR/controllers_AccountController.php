@@ -20,4 +20,5 @@ return [
     'Invalid link! Please make sure that you entered the entire url.' => 'لینک نامعتبر است! لطفا اطمینان حاصل‌کنید که آدرس به طور کامل وارد شود. ',
     'Save profile' => 'ذخیره‌ی پروفایل',
     'The entered e-mail address is already in use by another user.' => 'ایمیل وارد شده توسط یک کاربر دیگر در حال استفاده‌است.',
+    'Changing the username can make some links unusable, for example old links to the profile.' => '',
 ];

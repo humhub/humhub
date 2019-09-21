@@ -6,7 +6,7 @@ return array (
   'Create post' => 'Kreiraj objavu',
   'Edit your post...' => 'Uredi svoju objavu..',
   'Read full post...' => 'Pročitaj sve...',
-  'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'This space is archived.' => 'Prostor je arhiviran.',
+  'What\'s on your mind?' => 'Što vam je na umu?',
   'post' => 'objava',
 );

@@ -6,7 +6,7 @@ return array (
   'Create post' => 'Создание записей',
   'Edit your post...' => 'Отредактируйте свое сообщение...',
   'Read full post...' => 'Читать дальше...',
-  'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'This space is archived.' => 'Это пространство архивировано',
+  'What\'s on your mind?' => 'Есть о чем рассказать?',
   'post' => 'сообщение',
 );

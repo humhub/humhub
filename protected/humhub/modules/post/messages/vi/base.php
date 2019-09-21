@@ -6,7 +6,7 @@ return array (
   'Create post' => 'Tạo post',
   'Edit your post...' => 'Chỉnh sửa post của bạn...',
   'Read full post...' => 'Đọc toàn nội dung post...',
-  'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'This space is archived.' => 'Phòng làm việc này đã được đưa vào lưu trữ.',
+  'What\'s on your mind?' => 'Bạn đang nghĩ gì?',
   'post' => 'post',
 );

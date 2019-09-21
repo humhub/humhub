@@ -6,7 +6,7 @@ return array (
   'Create post' => 'Luo julkaisu',
   'Edit your post...' => 'Muokkaa julkaisuasi...',
   'Read full post...' => 'Lue koko julkaisu...',
-  'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'This space is archived.' => 'Tämä sivu on arkistoitu.',
+  'What\'s on your mind?' => 'Mitä sinulla on mielessä?',
   'post' => 'jukaisu',
 );

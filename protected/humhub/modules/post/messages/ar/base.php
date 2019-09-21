@@ -7,6 +7,6 @@ return array (
   'Edit your post...' => 'تحرير موضوعك...',
   'Read full post...' => 'قراءة الموضوع كاملاً...',
   'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'What\'s on your mind?' => 'ماذا يخطر ببالك؟',
   'post' => 'نشر',
 );

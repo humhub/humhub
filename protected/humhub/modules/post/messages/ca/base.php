@@ -6,7 +6,7 @@ return array (
   'Create post' => '',
   'Edit your post...' => 'Edita la teva publicació...',
   'Read full post...' => 'Llegeix la publicació sencera...',
-  'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'This space is archived.' => 'Aquest espai ha sigut arxivat',
+  'What\'s on your mind?' => 'Què et passa pel cap?',
   'post' => 'la publicació',
 );

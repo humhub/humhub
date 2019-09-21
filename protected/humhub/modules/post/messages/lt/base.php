@@ -7,6 +7,6 @@ return array (
   'Edit your post...' => 'Redaguokite savo skelbimą...',
   'Read full post...' => 'Perskaitykite visą skelbimą...',
   'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'What\'s on your mind?' => 'Ką turime omenyje?',
   'post' => 'Skelbimas',
 );

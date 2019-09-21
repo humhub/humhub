@@ -6,7 +6,7 @@ return array (
   'Create post' => '',
   'Edit your post...' => '',
   'Read full post...' => '',
-  'This space is archived.' => '',
+  'This space is archived.' => 'ይህ ምህዳር ማህደር ላይ ሰፍሯል',
   'What\'s on your mind?' => '',
   'post' => '',
 );

@@ -20,4 +20,5 @@ return [
     'Invalid link! Please make sure that you entered the entire url.' => '无效链接！请确保输入完整的URL',
     'Save profile' => '保存信息',
     'The entered e-mail address is already in use by another user.' => '输入的电子邮件地址已被使用',
+    'Changing the username can make some links unusable, for example old links to the profile.' => '',
 ];

@@ -7,6 +7,6 @@ return array (
   'Edit your post...' => 'Rediger dit opslag...',
   'Read full post...' => 'Læs det fulde opslag...',
   'This space is archived.' => '',
-  'What\'s on your mind?' => '',
+  'What\'s on your mind?' => 'Hvad har du på hjerte?',
   'post' => 'Opslag',
 );
