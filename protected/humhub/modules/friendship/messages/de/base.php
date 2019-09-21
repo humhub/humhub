@@ -10,6 +10,8 @@ return array (
   'Deny friend request' => 'Freundschaftsanfrage ablehnen',
   'Friends' => 'Freunde',
   'Friendship' => 'Freundschaft',
+  'Friendship Approved' => 'Freundschaftsanfrage bestätigt',
+  'Friendship Request' => 'Freundschaftsanfrage',
   'Requests' => 'Anfragen',
   'Sent requests' => 'Gesendete Anfragen',
   'Show all friends' => 'Zeige alle Freunde',

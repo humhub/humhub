@@ -10,6 +10,8 @@ return array (
   'Deny friend request' => '拒绝好友请求',
   'Friends' => '好友',
   'Friendship' => '好友',
+  'Friendship Approved' => '好友通过',
+  'Friendship Request' => '好友请求',
   'Requests' => '请求',
   'Sent requests' => '发送请求',
   'Show all friends' => '展示所有好友',

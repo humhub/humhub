@@ -10,6 +10,8 @@ return array (
   'Deny friend request' => 'İsteği Reddet',
   'Friends' => 'Arkadaşlar',
   'Friendship' => 'Arkadaşlık',
+  'Friendship Approved' => 'Arkadaşlık Onaylı',
+  'Friendship Request' => 'Arkadaşlık İsteği',
   'Requests' => 'İstekler',
   'Sent requests' => 'Gönderilen istekler',
   'Show all friends' => 'Tüm arkadaşları göster',

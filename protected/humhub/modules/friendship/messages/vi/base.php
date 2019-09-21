@@ -10,6 +10,8 @@ return array (
   'Deny friend request' => 'Từ chối yêu cầu kết bạn',
   'Friends' => 'Bạn',
   'Friendship' => 'Quan hệ bạn bè',
+  'Friendship Approved' => 'Yêu cầu kết bạn đươc chấp thuận',
+  'Friendship Request' => 'Yêu cầu kết bạn',
   'Requests' => 'Yêu cầu',
   'Sent requests' => 'Gửi yêu cầu',
   'Show all friends' => 'Hiện toàn bộ danh sách bạn',

@@ -10,6 +10,8 @@ return array (
   'Deny friend request' => 'Ismerősnek jelölés elutasítása',
   'Friends' => 'Ismerősök',
   'Friendship' => 'Ismertség',
+  'Friendship Approved' => 'Ismerősnek jelölés elfogadva',
+  'Friendship Request' => 'Ismerősnek jelölés',
   'Requests' => 'Jelölések',
   'Sent requests' => 'Elküldött jelölések',
   'Show all friends' => 'Összes ismerős mutatása',

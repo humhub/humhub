@@ -10,6 +10,8 @@ return array (
   'Deny friend request' => 'Odbaci zahtjev za prijateljstvom',
   'Friends' => 'Prijatelji',
   'Friendship' => 'Prijateljstvo',
+  'Friendship Approved' => 'Prihvaćeno prijateljstvo',
+  'Friendship Request' => 'Zahtjev za prijateljstvom',
   'Requests' => 'Zahtjevi',
   'Sent requests' => 'Poslani zahtjevi',
   'Show all friends' => 'Prikaži sve prijatelje',

@@ -10,6 +10,8 @@ return array (
   'Deny friend request' => 'Neka vänförfrågan',
   'Friends' => 'Vänner',
   'Friendship' => 'Vänskap',
+  'Friendship Approved' => 'Vänskapsförfrågan godkänd',
+  'Friendship Request' => 'Vänskapsförfrågan',
   'Requests' => 'Förfrågan',
   'Sent requests' => 'Förfrågan skickad',
   'Show all friends' => 'Visa alla vänner',

@@ -10,6 +10,8 @@ return array (
   'Deny friend request' => 'Odmítnout žádost',
   'Friends' => 'Přátelé',
   'Friendship' => 'Přátelství',
+  'Friendship Approved' => 'Přátelství schváleno',
+  'Friendship Request' => 'Žádosti o přátelství',
   'Requests' => 'Žádosti',
   'Sent requests' => 'Odeslat žádost',
   'Show all friends' => 'Zobrazit všechny přátelé',

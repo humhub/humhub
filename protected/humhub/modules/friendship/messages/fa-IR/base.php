@@ -10,6 +10,8 @@ return array (
   'Deny friend request' => 'نپذيرفتن درخواست دوستي',
   'Friends' => 'دوستان',
   'Friendship' => 'دوستي',
+  'Friendship Approved' => 'دوستي پذيرفته شد',
+  'Friendship Request' => 'درخواست دوستي',
   'Requests' => 'درخواست ها',
   'Sent requests' => 'درخواست هاي ارسال شده',
   'Show all friends' => 'نمايش تمام دوستان',
