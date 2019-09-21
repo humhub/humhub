@@ -258,11 +258,11 @@ class UploadInput extends JsWidget
         }
 
         $result['php-max-file-uploads'] = ini_get('max_file_uploads');
-        $result['php-max-file-uploads-message'] = Yii::t('FileModule.widgets_UploadInput', 'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.', ['n' => $result['php-max-file-uploads']]);
+        $result['php-max-file-uploads-message'] = Yii::t('FileModule.base', 'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.', ['n' => $result['php-max-file-uploads']]);
 
         if ($this->max) {
             $result['max-number-of-files'] = $this->max;
-            $result['max-number-of-files-message'] = Yii::t('FileModule.widgets_UploadInput', 'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.', ['n' => $this->max]);
+            $result['max-number-of-files-message'] = Yii::t('FileModule.base', 'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.', ['n' => $this->max]);
         }
         
         return $result;
