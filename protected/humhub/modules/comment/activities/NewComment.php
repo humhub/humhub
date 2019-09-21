@@ -35,7 +35,7 @@ class NewComment extends BaseActivity implements ConfigurableActivityInterface
      */
     public function getTitle()
     {
-        return Yii::t('CommentModule.activities', 'Comments');
+        return Yii::t('CommentModule.base', 'Comments');
     }
 
     /**
@@ -43,7 +43,7 @@ class NewComment extends BaseActivity implements ConfigurableActivityInterface
      */
     public function getDescription()
     {
-        return Yii::t('CommentModule.activities', 'Whenever a new comment was written.');
+        return Yii::t('CommentModule.base', 'Whenever a new comment was written.');
     }
 
 }
