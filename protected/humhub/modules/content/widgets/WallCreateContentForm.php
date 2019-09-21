@@ -55,7 +55,7 @@ class WallCreateContentForm extends Widget
     public function init()
     {
         if ($this->submitButtonText == "")
-            $this->submitButtonText = Yii::t('ContentModule.widgets_ContentFormWidget', 'Submit');
+            $this->submitButtonText = Yii::t('ContentModule.base', 'Submit');
 
         if ($this->contentContainer == null || !$this->contentContainer instanceof ContentContainerActiveRecord) {
             throw new HttpException(500, "No Content Container given!");

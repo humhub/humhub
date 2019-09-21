@@ -232,15 +232,15 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     public function getLabels($labels = [], $includeContentName = true)
     {
         if ($this->content->isPinned()) {
-            $labels[] = Label::danger(Yii::t('ContentModule.widgets_views_label', 'Pinned'))->icon('fa-map-pin')->sortOrder(100);
+            $labels[] = Label::danger(Yii::t('ContentModule.base', 'Pinned'))->icon('fa-map-pin')->sortOrder(100);
         }
 
         if($this->content->isArchived()) {
-            $labels[] = Label::warning(Yii::t('ContentModule.widgets_views_label', 'Archived'))->icon('fa-archive')->sortOrder(200);
+            $labels[] = Label::warning(Yii::t('ContentModule.base', 'Archived'))->icon('fa-archive')->sortOrder(200);
         }
 
         if ($this->content->isPublic()) {
-            $labels[] = Label::info(Yii::t('ContentModule.widgets_views_label', 'Public'))->icon('fa-globe')->sortOrder(300);
+            $labels[] = Label::info(Yii::t('ContentModule.base', 'Public'))->icon('fa-globe')->sortOrder(300);
         }
 
         if ($includeContentName) {

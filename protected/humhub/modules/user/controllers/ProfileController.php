@@ -91,7 +91,7 @@ class ProfileController extends ContentContainerController
     public function actionFollow()
     {
         if(Yii::$app->getModule('user')->disableFollow) {
-            throw new HttpException(403, Yii::t('ContentModule.controllers_ContentController', 'This action is disabled!'));
+            throw new HttpException(403, Yii::t('ContentModule.base', 'This action is disabled!'));
         }
         
         $this->forcePostRequest();

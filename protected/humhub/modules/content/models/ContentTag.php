@@ -123,7 +123,7 @@ class ContentTag extends ActiveRecord
 
     public static function getLabel()
     {
-        return Yii::t('ContentModule.models_ContentTag', 'Tag');
+        return Yii::t('ContentModule.base', 'Tag');
     }
 
     /**
@@ -174,7 +174,7 @@ class ContentTag extends ActiveRecord
         }
 
         if ($query->count() > 0) {
-            $this->addError('name', Yii::t('ContentModule.models_ContentTag', 'The given name is already in use.'));
+            $this->addError('name', Yii::t('ContentModule.base', 'The given name is already in use.'));
         }
     }
 

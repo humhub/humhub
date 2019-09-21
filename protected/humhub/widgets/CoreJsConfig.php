@@ -235,16 +235,16 @@ class CoreJsConfig extends Widget
                     'content' => [
                         'modal' => [
                             'permalink' => [
-                                'head' => Yii::t('ContentModule.widgets_views_permaLink', '<strong>Permalink</strong> to this post'),
+                                'head' => Yii::t('ContentModule.base', '<strong>Permalink</strong> to this post'),
                                 'info' => Yii::t('base', 'Copy to clipboard'),
                                 'buttonOpen' => Yii::t('base', 'Open'),
                                 'buttonClose' => Yii::t('base', 'Close'),
                             ],
                             'deleteConfirm' => [
-                                'header' => Yii::t('ContentModule.widgets_views_deleteLink', '<strong>Confirm</strong> post deletion'),
-                                'body' => Yii::t('ContentModule.widgets_views_deleteLink', 'Do you really want to delete this post? All likes and comments will be lost!'),
-                                'confirmText' => Yii::t('ContentModule.widgets_views_deleteLink', 'Delete'),
-                                'cancelText' => Yii::t('ContentModule.widgets_views_deleteLink', 'Cancel'),
+                                'header' => Yii::t('ContentModule.base', '<strong>Confirm</strong> post deletion'),
+                                'body' => Yii::t('ContentModule.base', 'Do you really want to delete this post? All likes and comments will be lost!'),
+                                'confirmText' => Yii::t('ContentModule.base', 'Delete'),
+                                'cancelText' => Yii::t('ContentModule.base', 'Cancel'),
                             ]
                         ],
                         'reloadUrl' => Url::to(['/content/content/reload']),
@@ -254,10 +254,10 @@ class CoreJsConfig extends Widget
                         'horizontalImageScrollOnMobile' => Yii::$app->settings->get('horImageScrollOnMobile'),
                         'defaultSort' => Yii::$app->getModule('stream')->settings->get('defaultSort', 'c'),
                         'text' => [
-                            'success.archive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been archived.'),
-                            'success.unarchive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unarchived.'),
-                            'success.delete' => Yii::t('ContentModule.widgets_views_stream', 'The content has been deleted.'),
-                            'info.editCancel' => Yii::t('ContentModule.widgets_views_stream', 'Your last edit state has been saved!'),
+                            'success.archive' => Yii::t('ContentModule.base', 'The content has been archived.'),
+                            'success.unarchive' => Yii::t('ContentModule.base', 'The content has been unarchived.'),
+                            'success.delete' => Yii::t('ContentModule.base', 'The content has been deleted.'),
+                            'info.editCancel' => Yii::t('ContentModule.base', 'Your last edit state has been saved!'),
                         ]
                     ],
                     'comment' => [

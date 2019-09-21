@@ -168,19 +168,19 @@ class WallStreamFilterNavigation extends FilterNavigation
     {
         $this->addFilter([
             'id' => DefaultStreamFilter::FILTER_INVOLVED,
-            'title' => Yii::t('ContentModule.widgets_views_stream', 'Where I\'m involved'),
+            'title' => Yii::t('ContentModule.base', 'Where I\'m involved'),
             'sortOrder' => 100
         ], static::FILTER_BLOCK_BASIC);
 
         $this->addFilter([
             'id' => DefaultStreamFilter::FILTER_MINE,
-            'title' => Yii::t('ContentModule.widgets_views_stream', 'Created by me'),
+            'title' => Yii::t('ContentModule.base', 'Created by me'),
             'sortOrder' => 200
         ], static::FILTER_BLOCK_BASIC);
 
         $this->addFilter([
             'id' => DefaultStreamFilter::FILTER_FILES,
-            'title' => Yii::t('ContentModule.widgets_views_stream', 'With file attachments'),
+            'title' => Yii::t('ContentModule.base', 'With file attachments'),
             'sortOrder' => 300
         ], static::FILTER_BLOCK_BASIC);
     }
@@ -199,7 +199,7 @@ class WallStreamFilterNavigation extends FilterNavigation
                 'class' => RadioFilterInput::class,
                 'radioGroup' => 'visibility',
                 'multiple' => true,
-                'title' => Yii::t('ContentModule.widgets_views_stream', 'Only public content'),
+                'title' => Yii::t('ContentModule.base', 'Only public content'),
                 'sortOrder' => 100
             ], static::FILTER_BLOCK_VISIBILITY);
 
@@ -208,14 +208,14 @@ class WallStreamFilterNavigation extends FilterNavigation
                 'class' => RadioFilterInput::class,
                 'radioGroup' => 'visibility',
                 'multiple' => true,
-                'title' => Yii::t('ContentModule.widgets_views_stream', 'Only private content'),
+                'title' => Yii::t('ContentModule.base', 'Only private content'),
                 'sortOrder' => 200
             ], static::FILTER_BLOCK_VISIBILITY);
         }
 
         $this->addFilter([
             'id' => static::FILTER_ARCHIVED,
-            'title' =>  Yii::t('ContentModule.widgets_views_stream', 'Include archived content'),
+            'title' =>  Yii::t('ContentModule.base', 'Include archived content'),
             'sortOrder' => 200
         ], static::FILTER_BLOCK_VISIBILITY);
     }
@@ -230,7 +230,7 @@ class WallStreamFilterNavigation extends FilterNavigation
             'category' => 'sort',
             'radioGroup' => 'sort',
             'force' => true,
-            'title' =>  Yii::t('ContentModule.widgets_views_stream', 'Creation time'),
+            'title' =>  Yii::t('ContentModule.base', 'Creation time'),
             'checked' => $defaultSorting === Stream::SORT_CREATED_AT,
             'value' => Stream::SORT_CREATED_AT,
             'sortOrder' => 100
@@ -239,7 +239,7 @@ class WallStreamFilterNavigation extends FilterNavigation
         $this->addFilter([
             'id' => static::FILTER_SORT_UPDATE,
             'class' => RadioFilterInput::class,
-            'title' =>  Yii::t('ContentModule.widgets_views_stream', 'Last update'),
+            'title' =>  Yii::t('ContentModule.base', 'Last update'),
             'category' => 'sort',
             'radioGroup' => 'sort',
             'force' => true,
