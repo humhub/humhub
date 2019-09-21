@@ -6,13 +6,13 @@ use humhub\widgets\GridView;
 ?>
 <div class="panel-body">
     <div class="pull-right">
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.views_groups_index', 'Create new group'), Url::to(['edit']), ['class' => 'btn btn-sm btn-success']); ?>
+        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Create new group'), Url::to(['edit']), ['class' => 'btn btn-sm btn-success']); ?>
     </div>
     
-    <h4><?= Yii::t('AdminModule.views_group_index', 'Manage groups'); ?></h4>
+    <h4><?= Yii::t('AdminModule.user', 'Manage groups'); ?></h4>
 
     <div class="help-block">
-        <?= Yii::t('AdminModule.views_groups_index', 'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.'); ?>
+        <?= Yii::t('AdminModule.user', 'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.'); ?>
     </div>
 </div>
 
@@ -30,7 +30,7 @@ use humhub\widgets\GridView;
             'description',
             [
                 'attribute' => 'members',
-                'label' => Yii::t('AdminModule.views_group_index', 'Members'),
+                'label' => Yii::t('AdminModule.user', 'Members'),
                 'format' => 'raw',
                 'options' => ['style' => 'text-align:center;'],
                 'value' => function ($data) {

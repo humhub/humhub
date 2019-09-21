@@ -25,7 +25,7 @@ class AdvancedSettingMenu extends SubTabMenu
     public function init()
     {
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Caching'),
+            'label' => Yii::t('AdminModule.base', 'Caching'),
             'url' => Url::toRoute(['/admin/setting/caching']),
             'icon' => 'dashboard',
             'sortOrder' => 100,
@@ -34,7 +34,7 @@ class AdvancedSettingMenu extends SubTabMenu
         ]));
 
          $this->addEntry(new MenuLink([
-             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Files'),
+             'label' => Yii::t('AdminModule.base', 'Files'),
              'url' => Url::toRoute('/admin/setting/file'),
              'icon' => 'file',
              'sortOrder' => 200,
@@ -43,7 +43,7 @@ class AdvancedSettingMenu extends SubTabMenu
          ]));
 
          $this->addEntry(new MenuLink([
-             'label' => Yii::t('AdminModule.views_setting_mailing', 'E-Mail'),
+             'label' => Yii::t('AdminModule.settings', 'E-Mail'),
              'url' => Url::toRoute(['/admin/setting/mailing-server']),
              'icon' => 'envelope',
              'sortOrder' => 250,
@@ -52,7 +52,7 @@ class AdvancedSettingMenu extends SubTabMenu
          ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Proxy'),
+            'label' => Yii::t('AdminModule.base', 'Proxy'),
             'url' => Url::toRoute('/admin/setting/proxy'),
             'icon' => 'sitemap',
             'sortOrder' => 300,
@@ -61,7 +61,7 @@ class AdvancedSettingMenu extends SubTabMenu
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Statistics'),
+            'label' => Yii::t('AdminModule.base', 'Statistics'),
             'url' => Url::toRoute('/admin/setting/statistic'),
             'icon' => 'bar-chart-o',
             'sortOrder' => 400,
@@ -70,7 +70,7 @@ class AdvancedSettingMenu extends SubTabMenu
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'OEmbed'),
+            'label' => Yii::t('AdminModule.base', 'OEmbed'),
             'url' => Url::toRoute('/admin/setting/oembed'),
             'icon' => 'cloud',
             'sortOrder' => 500,
@@ -79,7 +79,7 @@ class AdvancedSettingMenu extends SubTabMenu
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Logs'),
+            'label' => Yii::t('AdminModule.base', 'Logs'),
             'url' => Url::toRoute('/admin/setting/logs'),
             'icon' => 'terminal',
             'sortOrder' => 600,

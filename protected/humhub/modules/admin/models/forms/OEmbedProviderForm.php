@@ -34,8 +34,8 @@ class OEmbedProviderForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'prefix' => Yii::t('AdminModule.forms_OEmbedProviderForm', 'Url Prefix'),
-            'endpoint' => Yii::t('AdminModule.forms_OEmbedProviderForm', 'Endpoint Url'),
+            'prefix' => Yii::t('AdminModule.settings', 'Url Prefix'),
+            'endpoint' => Yii::t('AdminModule.settings', 'Endpoint Url'),
         ];
     }
 

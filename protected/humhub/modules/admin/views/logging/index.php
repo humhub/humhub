@@ -8,8 +8,8 @@ use humhub\compat\CHtml;
 
 ?>
 <div>
-    <?= Yii::t('AdminModule.views_logging_index', 'Total {count} entries found.', ["{count}" => $pagination->totalCount]); ?>
-    <span class="pull-right"><?= Yii::t('AdminModule.views_logging_index', 'Displaying {count} entries per page.', ["{count}" => $pagination->pageSize]); ?></span>
+    <?= Yii::t('AdminModule.information', 'Total {count} entries found.', ["{count}" => $pagination->totalCount]); ?>
+    <span class="pull-right"><?= Yii::t('AdminModule.information', 'Displaying {count} entries per page.', ["{count}" => $pagination->pageSize]); ?></span>
 </div>
 
 <hr>
@@ -46,7 +46,7 @@ use humhub\compat\CHtml;
 </ul>
 
 <?php if ($pagination->totalCount != 0): ?>
-    <div class="pull-right"><?= Html::a(Yii::t('AdminModule.views_logging_index', 'Flush entries'), ['flush'], ['class' => 'btn btn-danger', 'data-method' => 'post']); ?></div>
+    <div class="pull-right"><?= Html::a(Yii::t('AdminModule.information', 'Flush entries'), ['flush'], ['class' => 'btn btn-danger', 'data-method' => 'post']); ?></div>
 <?php endif; ?>
 
 <center>

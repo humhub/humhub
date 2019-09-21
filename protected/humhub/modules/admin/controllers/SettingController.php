@@ -121,7 +121,7 @@ class SettingController extends Controller
             Yii::$app->cache->flush();
             Yii::$app->assetManager->clear();
             Yii::$app->view->theme->variables->flushCache();
-            $this->view->success(Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
+            $this->view->success(Yii::t('AdminModule.settings', 'Saved and flushed cache'));
             return $this->redirect(['/admin/setting/caching']);
         }
 
@@ -301,7 +301,7 @@ class SettingController extends Controller
 
             $timeAgo = strtotime($form->logsDateLimit);
             Log::deleteAll(['<', 'log_time', $timeAgo]);
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.settings', 'Saved'));
             return $this->redirect([
                 '/admin/setting/logs'
             ]);

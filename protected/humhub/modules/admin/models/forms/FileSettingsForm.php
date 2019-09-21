@@ -55,13 +55,13 @@ class FileSettingsForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'imageMagickPath' => Yii::t('AdminModule.forms_FileSettingsForm', 'Image Magick convert command (optional)'),
-            'maxFileSize' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum upload file size (in MB)'),
-            'useXSendfile' => Yii::t('AdminModule.forms_FileSettingsForm', 'Use X-Sendfile for File Downloads'),
-            'maxPreviewImageWidth' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum preview image width (in pixels, optional)'),
-            'maxPreviewImageHeight' => Yii::t('AdminModule.forms_FileSettingsForm', 'Maximum preview image height (in pixels, optional)'),
-            'hideImageFileInfo' => Yii::t('AdminModule.forms_FileSettingsForm', 'Hide file info (name, size) for images on wall'),
-            'allowedExtensions' => Yii::t('AdminModule.forms_FileSettingsForm', 'Allowed file extensions'),
+            'imageMagickPath' => Yii::t('AdminModule.settings', 'Image Magick convert command (optional)'),
+            'maxFileSize' => Yii::t('AdminModule.settings', 'Maximum upload file size (in MB)'),
+            'useXSendfile' => Yii::t('AdminModule.settings', 'Use X-Sendfile for File Downloads'),
+            'maxPreviewImageWidth' => Yii::t('AdminModule.settings', 'Maximum preview image width (in pixels, optional)'),
+            'maxPreviewImageHeight' => Yii::t('AdminModule.settings', 'Maximum preview image height (in pixels, optional)'),
+            'hideImageFileInfo' => Yii::t('AdminModule.settings', 'Hide file info (name, size) for images on wall'),
+            'allowedExtensions' => Yii::t('AdminModule.settings', 'Allowed file extensions'),
         ];
     }
 
@@ -81,10 +81,10 @@ class FileSettingsForm extends \yii\base\Model
                 exec($this->$attribute . " --help", $returnIM);
 
                 if (strpos(implode("\n", $returnIM), "ImageMagick") === false) {
-                    $this->addError($attribute, Yii::t('AdminModule.forms_FileSettingsForm', "Got invalid image magick response! - Correct command?"));
+                    $this->addError($attribute, Yii::t('AdminModule.settings', "Got invalid image magick response! - Correct command?"));
                 }
             } else {
-                $this->addError($attribute, Yii::t('AdminModule.forms_FileSettingsForm', "Convert command not found!"));
+                $this->addError($attribute, Yii::t('AdminModule.settings', "Convert command not found!"));
             }
         }
     }

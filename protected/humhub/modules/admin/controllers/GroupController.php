@@ -198,14 +198,14 @@ class GroupController extends Controller
 
         if ($value === null) {
             throw new HttpException(400,
-                Yii::t('AdminModule.controllers_GroupController', 'No value found!')
+                Yii::t('AdminModule.user', 'No value found!')
             );
         }
 
         $groupUser = $group->getGroupUser(User::findOne(Yii::$app->request->post('userId')));
         if ($groupUser === null) {
             throw new HttpException(404,
-                Yii::t('AdminModule.controllers_GroupController', 'Group user not found!')
+                Yii::t('AdminModule.user', 'Group user not found!')
             );
         }
 
@@ -251,7 +251,7 @@ class GroupController extends Controller
             'query' => $query,
             'fillUser' => true,
             'fillUserQuery' => $group->getUsers(),
-            'disabledText' => Yii::t('AdminModule.controllers_GroupController',
+            'disabledText' => Yii::t('AdminModule.user',
                 'User is already a member of this group.'),
         ]);
 
@@ -263,7 +263,7 @@ class GroupController extends Controller
         $group = Group::findOne($id);
 
         if(!$group) {
-            throw new HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
+            throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));
         }
 
         return $this->asJson(UserPicker::filter([
@@ -277,7 +277,7 @@ class GroupController extends Controller
     public function checkGroupAccess($group)
     {
         if(!$group) {
-            throw new HttpException(404, Yii::t('AdminModule.controllers_GroupController', 'Group not found!'));
+            throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));
         }
 
         if($group->is_admin_group && !Yii::$app->user->isAdmin()) {

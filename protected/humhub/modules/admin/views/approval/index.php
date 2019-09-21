@@ -8,10 +8,10 @@ use humhub\modules\user\grid\DisplayNameColumn;
 ?>
 
 <div class="panel-body">
-    <h4><?= Yii::t('AdminModule.views_approval_index', 'Pending user approvals'); ?></h4>
+    <h4><?= Yii::t('AdminModule.user', 'Pending user approvals'); ?></h4>
 
     <div class="help-block">
-        <?= Yii::t('AdminModule.views_approval_index', 'The following list contains all registered users awaiting an approval.'); ?>
+        <?= Yii::t('AdminModule.user', 'The following list contains all registered users awaiting an approval.'); ?>
     </div>
 
     <?=

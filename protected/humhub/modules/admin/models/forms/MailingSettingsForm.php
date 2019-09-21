@@ -65,14 +65,14 @@ class MailingSettingsForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'systemEmailAddress' => Yii::t('AdminModule.forms_MailingSettingsForm', 'E-Mail sender address'),
-            'systemEmailName' => Yii::t('AdminModule.forms_MailingSettingsForm', 'E-Mail sender name'),
-            'transportType' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Mail Transport Type'),
-            'username' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Username'),
-            'password' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Password'),
-            'port' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Port number'),
-            'encryption' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Encryption'),
-            'allowSelfSignedCerts' => Yii::t('AdminModule.forms_MailingSettingsForm', 'Allow Self-Signed Certificates?'),
+            'systemEmailAddress' => Yii::t('AdminModule.settings', 'E-Mail sender address'),
+            'systemEmailName' => Yii::t('AdminModule.settings', 'E-Mail sender name'),
+            'transportType' => Yii::t('AdminModule.settings', 'Mail Transport Type'),
+            'username' => Yii::t('AdminModule.settings', 'Username'),
+            'password' => Yii::t('AdminModule.settings', 'Password'),
+            'port' => Yii::t('AdminModule.settings', 'Port number'),
+            'encryption' => Yii::t('AdminModule.settings', 'Encryption'),
+            'allowSelfSignedCerts' => Yii::t('AdminModule.settings', 'Allow Self-Signed Certificates?'),
         ];
     }
 

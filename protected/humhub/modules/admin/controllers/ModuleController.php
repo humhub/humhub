@@ -81,7 +81,7 @@ class ModuleController extends Controller
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+            throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
         }
 
         $module->enable();
@@ -103,7 +103,7 @@ class ModuleController extends Controller
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+            throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
         }
 
         $module->disable();
@@ -144,11 +144,11 @@ class ModuleController extends Controller
             $module = Yii::$app->moduleManager->getModule($moduleId);
 
             if ($module == null) {
-                throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+                throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
             }
 
             if (!is_writable($module->getBasePath())) {
-                throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Module path %path% is not writeable!', ['%path%' => $module->getPath()]));
+                throw new HttpException(500, Yii::t('AdminModule.modules', 'Module path %path% is not writeable!', ['%path%' => $module->getPath()]));
             }
 
             Yii::$app->moduleManager->removeModule($module->id);
@@ -174,7 +174,7 @@ class ModuleController extends Controller
         }
 
         if ($module == null) {
-            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+            throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
         }
 
         $readmeMd = "";
@@ -197,7 +197,7 @@ class ModuleController extends Controller
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+            throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
         }
         if (!$module instanceof ContentContainerModule) {
             throw new HttpException(500, 'Invalid module type!');

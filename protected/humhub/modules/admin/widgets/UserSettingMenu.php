@@ -26,14 +26,14 @@ class UserSettingMenu extends TabMenu
     public function init()
     {
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.views_setting_authentication', 'General'),
+            'label' => Yii::t('AdminModule.user', 'General'),
             'url' => ['/admin/setting/authentication'],
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('admin', 'settings', 'authentication'),
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.views_setting_authentication', 'LDAP'),
+            'label' => Yii::t('AdminModule.user', 'LDAP'),
             'url' => ['/admin/setting/authentication-ldap'],
             'sortOrder' => 200,
             'isActive' => MenuLink::isActiveState('admin', 'settings', 'authentication-ldap'),

@@ -37,7 +37,7 @@ use humhub\modules\space\widgets\SpacePickerField;
         ?>
     <?php endif; ?>
 
-    <strong><?= Yii::t('AdminModule.views_group_edit', 'Visibility'); ?></strong>
+    <strong><?= Yii::t('AdminModule.user', 'Visibility'); ?></strong>
     <br>
     <br>
     <?php if (!$group->is_admin_group): ?>
@@ -46,11 +46,11 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?= $form->field($group, 'show_at_directory')->checkbox(); ?>
     <?= $form->field($group, 'sort_order'); ?>
 
-    <?= CHtml::submitButton(Yii::t('AdminModule.views_group_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= CHtml::submitButton(Yii::t('AdminModule.user', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
     <?php
     if ($showDeleteButton) {
-        echo Html::a(Yii::t('AdminModule.views_group_edit', 'Delete'), Url::toRoute(['/admin/group/delete', 'id' => $group->id]), ['class' => 'btn btn-danger', 'data-method' => 'POST']);
+        echo Html::a(Yii::t('AdminModule.user', 'Delete'), Url::toRoute(['/admin/group/delete', 'id' => $group->id]), ['class' => 'btn btn-danger', 'data-method' => 'POST']);
     }
     ?>
 <?php ActiveForm::end(); ?>

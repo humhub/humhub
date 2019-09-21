@@ -39,10 +39,10 @@ class AdminMenu extends LeftNavigation
      */
     public function init()
     {
-        $this->panelTitle = Yii::t('AdminModule.widgets_AdminMenuWidget', '<strong>Administration</strong> menu');
+        $this->panelTitle = Yii::t('AdminModule.base', '<strong>Administration</strong> menu');
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Users'),
+            'label' => Yii::t('AdminModule.base', 'Users'),
             'url' => ['/admin/user'],
             'icon' => 'user',
             'sortOrder' => 200,
@@ -55,7 +55,7 @@ class AdminMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Spaces'),
+            'label' => Yii::t('AdminModule.base', 'Spaces'),
             'url' => ['/admin/space'],
             'icon' => 'inbox',
             'sortOrder' => 400,
@@ -67,7 +67,7 @@ class AdminMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Modules'),
+            'label' => Yii::t('AdminModule.base', 'Modules'),
             'url' => ['/admin/module'],
             'icon' => 'rocket',
             'sortOrder' => 500,
@@ -77,7 +77,7 @@ class AdminMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Settings'),
+            'label' => Yii::t('AdminModule.base', 'Settings'),
             'url' => ['/admin/setting'],
             'icon' => 'gears',
             'sortOrder' => 600,
@@ -86,7 +86,7 @@ class AdminMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Information'),
+            'label' => Yii::t('AdminModule.base', 'Information'),
             'url' => ['/admin/information'],
             'icon' => 'info-circle',
             'sortOrder' => 1000,

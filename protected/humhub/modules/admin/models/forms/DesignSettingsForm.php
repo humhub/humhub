@@ -78,14 +78,14 @@ class DesignSettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'theme' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Theme'),
-            'paginationSize' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Default pagination size (Entries per page)'),
-            'displayName' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Display Name (Format)'),
-            'spaceOrder' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Dropdown space order'),
-            'logo' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Logo upload'),
-            'icon' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Icon upload'),
-            'dateInputDisplayFormat' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Date input format'),
-            'horImageScrollOnMobile' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Horizontal scrolling images on a mobile device'),
+            'theme' => Yii::t('AdminModule.settings', 'Theme'),
+            'paginationSize' => Yii::t('AdminModule.settings', 'Default pagination size (Entries per page)'),
+            'displayName' => Yii::t('AdminModule.settings', 'Display Name (Format)'),
+            'spaceOrder' => Yii::t('AdminModule.settings', 'Dropdown space order'),
+            'logo' => Yii::t('AdminModule.settings', 'Logo upload'),
+            'icon' => Yii::t('AdminModule.settings', 'Icon upload'),
+            'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
+            'horImageScrollOnMobile' => Yii::t('AdminModule.settings', 'Horizontal scrolling images on a mobile device'),
         ];
     }
 

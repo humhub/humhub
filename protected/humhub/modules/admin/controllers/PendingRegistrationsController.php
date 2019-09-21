@@ -95,7 +95,7 @@ class PendingRegistrationsController extends Controller
         if (Yii::$app->request->isPost) {
             $invite->sendInviteMail();
             $this->view->success(Yii::t(
-                'AdminModule.controllers_PendingRegistrationsController',
+                'AdminModule.user',
                 'Resend invitation email'
             ));
             return $this->redirect(['index']);
@@ -117,7 +117,7 @@ class PendingRegistrationsController extends Controller
         if (Yii::$app->request->isPost) {
             $invite->delete();
             $this->view->success(Yii::t(
-                'AdminModule.controllers_PendingRegistrationsController',
+                'AdminModule.user',
                 'Deleted invitation'
             ));
             return $this->redirect(['index']);
@@ -164,7 +164,7 @@ class PendingRegistrationsController extends Controller
         $invite = Invite::findOne(['id' => $id]);
         if ($invite === null) {
             throw new HttpException(404, Yii::t(
-                'AdminModule.controllers_PendingRegistrationsController',
+                'AdminModule.user',
                 'Invite not found!'
             ));
         }
