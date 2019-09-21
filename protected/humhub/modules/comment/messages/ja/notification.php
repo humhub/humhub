@@ -1,6 +1,7 @@
 <?php
 return array (
   'Comments' => 'コメント',
+  'New Comment' => '',
   'Receive Notifications when someone comments on my own or a following post.' => '',
   'View Online' => 'オンラインで見る',
   '[Deleted]' => '',

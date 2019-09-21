@@ -1,6 +1,7 @@
 <?php
 return array (
   'Comments' => 'Yorumlar',
+  'New Comment' => 'Yeni Yorum',
   'Receive Notifications when someone comments on my own or a following post.' => '',
   'View Online' => 'Çevrimiçi Görüntüle',
   '[Deleted]' => '',

@@ -1,6 +1,7 @@
 <?php
 return array (
   'Comments' => 'Kommentarer',
+  'New Comment' => 'Ny kommentar',
   'Receive Notifications when someone comments on my own or a following post.' => 'Erhåll notis när någon kommenterar mina eller följda inlägg.',
   'View Online' => 'Visa online',
   '[Deleted]' => '[Deleted]',

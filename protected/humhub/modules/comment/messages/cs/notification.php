@@ -1,6 +1,7 @@
 <?php
 return array (
   'Comments' => 'Komentáře',
+  'New Comment' => 'Nový komentář',
   'Receive Notifications when someone comments on my own or a following post.' => 'Přijímat oznámení, když někdo komentuje své nebo ostatní příspěveky.',
   'View Online' => 'Zobrazit online',
   '[Deleted]' => '',

@@ -1,6 +1,7 @@
 <?php
 return array (
   'Comments' => 'Kommentit',
+  'New Comment' => 'Uusi Kommentti',
   'Receive Notifications when someone comments on my own or a following post.' => 'Vastaanota ilmoitukset, kun joku kommentoi sinun tai jonkin toisen julkaisua.',
   'View Online' => 'Näytä Verkossa',
   '[Deleted]' => '[Poistettu]',

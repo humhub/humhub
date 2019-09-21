@@ -1,6 +1,7 @@
 <?php
 return array (
   'Comments' => 'Hozzászólások',
+  'New Comment' => 'Új hozzászólás',
   'Receive Notifications when someone comments on my own or a following post.' => 'Értesítések fogadása, ha valaki hozzászólt egy bejegyzéshez, vagy követ egy bejegyzést.',
   'View Online' => 'Megtekintés az oldalon',
   '[Deleted]' => '[Törölt]',

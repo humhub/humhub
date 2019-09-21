@@ -1,6 +1,7 @@
 <?php
 return array (
   'Comments' => 'نظرات',
+  'New Comment' => '!نظر جديد',
   'Receive Notifications when someone comments on my own or a following post.' => '',
   'View Online' => '',
   '[Deleted]' => '',

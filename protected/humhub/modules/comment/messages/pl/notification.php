@@ -1,6 +1,7 @@
 <?php
 return array (
   'Comments' => 'Komentarze',
+  'New Comment' => 'Nowy Komentarz',
   'Receive Notifications when someone comments on my own or a following post.' => 'Otrzymuj powiadomienia gdy ktoś skomentuje Twój wpis lub wpis po nim.',
   'View Online' => 'Sprawdź Online',
   '[Deleted]' => '[Usunięto]',

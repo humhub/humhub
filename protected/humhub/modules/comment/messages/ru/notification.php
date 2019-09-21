@@ -1,6 +1,7 @@
 <?php
 return array (
   'Comments' => 'Комментарии',
+  'New Comment' => 'Новый комментарий',
   'Receive Notifications when someone comments on my own or a following post.' => '',
   'View Online' => '',
   '[Deleted]' => '[Удалено]',
