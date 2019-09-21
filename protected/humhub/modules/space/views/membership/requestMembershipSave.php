@@ -9,20 +9,20 @@ use humhub\libs\Html;
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
-                <?= Yii::t('SpaceModule.views_space_requestMembershipSave', "<strong>Request</strong> space membership"); ?>
+                <?= Yii::t('SpaceModule.baseSave', "<strong>Request</strong> space membership"); ?>
             </h4>
         </div>
         <div class="modal-body">
 
             <div class="text-center">
-                <?= Yii::t('SpaceModule.views_space_requestMembershipSave', 'Your request was successfully submitted to the space administrators.'); ?>
+                <?= Yii::t('SpaceModule.baseSave', 'Your request was successfully submitted to the space administrators.'); ?>
             </div>
 
         </div>
         <div class="modal-footer">
             <hr>
             <button type="button" class="btn btn-primary" data-dismiss="modal">
-                <?= Yii::t('SpaceModule.views_space_requestMembershipSave', 'Close'); ?>
+                <?= Yii::t('SpaceModule.baseSave', 'Close'); ?>
             </button>
         </div>
     </div>

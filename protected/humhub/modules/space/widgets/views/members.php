@@ -8,7 +8,7 @@ use humhub\modules\space\models\Space;
 
 <div class="panel panel-default members" id="space-members-panel">
     <?= PanelMenu::widget(['id' => 'space-members-panel']); ?>
-    <div class="panel-heading"><?= Yii::t('SpaceModule.widgets_views_spaceMembers', '<strong>Space</strong> members'); ?> (<?= $totalMemberCount ?>)</div>
+    <div class="panel-heading"><?= Yii::t('SpaceModule.base', '<strong>Space</strong> members'); ?> (<?= $totalMemberCount ?>)</div>
     <div class="panel-body">
         <?php foreach ($users as $user) : ?>
             <?php
@@ -42,7 +42,7 @@ use humhub\modules\space\models\Space;
 
         <?php if ($showListButton) : ?>
             <br>
-            <a href="<?= $urlMembersList; ?>" data-target="#globalModal" class="btn btn-default btn-sm"><?= Yii::t('SpaceModule.widgets_views_spaceMembers', 'Show all'); ?></a>
+            <a href="<?= $urlMembersList; ?>" data-target="#globalModal" class="btn btn-default btn-sm"><?= Yii::t('SpaceModule.base', 'Show all'); ?></a>
         <?php endif; ?>
 
     </div>

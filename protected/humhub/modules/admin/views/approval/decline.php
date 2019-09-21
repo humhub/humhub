@@ -22,7 +22,7 @@ use humhub\compat\CActiveForm;
         <?= $form->error($approveFormModel, 'message'); ?>
     </div>
     <hr>
-    <?= Html::submitButton(Yii::t('SpaceModule.approval_approveUserDecline', 'Send & decline'), ['class' => 'btn btn-danger', 'data-ui-loader' => ""]); ?>
+    <?= Html::submitButton(Yii::t('SpaceModule.manage', 'Send & decline'), ['class' => 'btn btn-danger', 'data-ui-loader' => ""]); ?>
     <a href="<?= Url::to(['index']); ?>" data-ui-loader  class="btn btn-primary"><?= Yii::t('AdminModule.user', 'Cancel'); ?></a>
 
     <?php CActiveForm::end(); ?>

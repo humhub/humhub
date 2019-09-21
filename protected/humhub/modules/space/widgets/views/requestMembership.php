@@ -3,9 +3,9 @@
     <div class="panel panel_lightbox">
         <div class="content content_innershadow">
 
-            <h2><?= Yii::t('SpaceModule.widgets_views_requestMembership', 'Request workspace membership'); ?></h2>
+            <h2><?= Yii::t('SpaceModule.base', 'Request workspace membership'); ?></h2>
 
-            <p><?= Yii::t('SpaceModule.widgets_views_requestMembership', 'Please shortly introduce yourself, to become a approved member of this workspace.'); ?></p>
+            <p><?= Yii::t('SpaceModule.base', 'Please shortly introduce yourself, to become a approved member of this workspace.'); ?></p>
             <br><br>
 
             <div class="form">
@@ -27,7 +27,7 @@
 
                 <div class="row_lightbox buttons">
 
-                    <?= CHtml::ajaxButton(Yii::t('SpaceModule.widgets_views_requestMembership', 'Send'), ['workspace/requestMembershipForm', 'guid'=> $workspace->guid], [
+                    <?= CHtml::ajaxButton(Yii::t('SpaceModule.base', 'Send'), ['workspace/requestMembershipForm', 'guid'=> $workspace->guid], [
                         'type' => 'POST',
                         'beforeSend' => 'function() {
                             jQuery("#loader_form_requestWorkspace").css("display", "block");
@@ -38,7 +38,7 @@
                     ], ['class' => 'input_button', 'id' => 'requestSubmit'.uniqid()]);
                     ?>
 
-                    <?= CHtml::link(Yii::t('SpaceModule.widgets_views_requestMembership', 'Cancel'), '#', ['onclick'=>'RequestWorkspacebox.close()', 'class' => 'button', 'style' => 'color: #fff;']); ?>
+                    <?= CHtml::link(Yii::t('SpaceModule.base', 'Cancel'), '#', ['onclick'=>'RequestWorkspacebox.close()', 'class' => 'button', 'style' => 'color: #fff;']); ?>
                     <div id="loader_form_requestWorkspace" class="loader_form"></div>
                     <div class="clearFloats"></div>
                 </div>

@@ -36,12 +36,12 @@ class SpacePickerField extends BasePicker
     {
         $result = parent::getData();
         $allowMultiple = $this->maxSelection !== 1;
-        $result['placeholder'] = Yii::t('SpaceModule.widgets_SpacePickerField', 'Select {n,plural,=1{space} other{spaces}}', ['n' => ($allowMultiple) ? 2 : 1]);
-        $result['placeholder-more'] = Yii::t('SpaceModule.widgets_SpacePickerField', 'Add Space');
-        $result['no-result'] = Yii::t('SpaceModule.widgets_SpacePickerField', 'No spaces found for the given query');
+        $result['placeholder'] = Yii::t('SpaceModule.chooser', 'Select {n,plural,=1{space} other{spaces}}', ['n' => ($allowMultiple) ? 2 : 1]);
+        $result['placeholder-more'] = Yii::t('SpaceModule.chooser', 'Add Space');
+        $result['no-result'] = Yii::t('SpaceModule.chooser', 'No spaces found for the given query');
 
         if ($this->maxSelection) {
-            $result['maximum-selected'] = Yii::t('SpaceModule.widgets_SpacePickerField', 'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}', ['n' => $this->maxSelection]);
+            $result['maximum-selected'] = Yii::t('SpaceModule.chooser', 'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}', ['n' => $this->maxSelection]);
         }
 
         return $result;

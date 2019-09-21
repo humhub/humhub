@@ -7,7 +7,7 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?= Yii::t('SpaceModule.views_admin_members', '<strong>Manage</strong> members'); ?>
+        <?= Yii::t('SpaceModule.manage', '<strong>Manage</strong> members'); ?>
     </div>
     <?= MemberMenu::widget(['space' => $space]); ?>
     <div class="panel-body">
@@ -24,7 +24,7 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                     'user.profile.lastname',
                     'request_message',
                     [
-                        'header' => Yii::t('SpaceModule.views_admin_members', 'Actions'),
+                        'header' => Yii::t('SpaceModule.manage', 'Actions'),
                         'class' => 'yii\grid\ActionColumn',
                         'buttons' => [
                             'view' => function() {

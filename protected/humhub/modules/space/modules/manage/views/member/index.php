@@ -15,7 +15,7 @@ use yii\helpers\Html;
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?= Yii::t('SpaceModule.views_admin_members', '<strong>Manage</strong> members'); ?>
+        <?= Yii::t('SpaceModule.manage', '<strong>Manage</strong> members'); ?>
     </div>
     <?= MemberMenu::widget(['space' => $space]); ?>
     <div class="panel-body">
@@ -54,7 +54,7 @@ use yii\helpers\Html;
                         'value' =>
                         function ($data) {
                             if ($data->created_at == '') {
-                                return Yii::t('SpaceModule.views_admin_members', '-');
+                                return Yii::t('SpaceModule.manage', '-');
                             }
 
                             return TimeAgo::widget(['timestamp' => $data->created_at]);
@@ -66,14 +66,14 @@ use yii\helpers\Html;
                         'value' =>
                         function ($data) use (&$groups) {
                             if (empty($data->last_visit)) {
-                                return Yii::t('SpaceModule.views_admin_members', 'never');
+                                return Yii::t('SpaceModule.manage', 'never');
                             }
 
                             return TimeAgo::widget(['timestamp' => $data->last_visit]);
                         }
                     ],
                     [
-                        'label' => Yii::t('SpaceModule.views_admin_members', 'Role'),
+                        'label' => Yii::t('SpaceModule.manage', 'Role'),
                         'class' => 'humhub\libs\DropDownGridColumn',
                         'attribute' => 'group_id',
                         'submitAttributes' => ['user_id'],

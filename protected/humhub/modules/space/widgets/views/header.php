@@ -84,10 +84,10 @@ if ($space->isAdmin()) {
                     <?= ModalConfirm::widget([
                         'uniqueID' => 'modal_bannerimagedelete',
                         'linkOutput' => 'a',
-                        'title' => Yii::t('SpaceModule.widgets_views_deleteBanner', '<strong>Confirm</strong> image deleting'),
-                        'message' => Yii::t('SpaceModule.widgets_views_deleteBanner', 'Do you really want to delete your title image?'),
-                        'buttonTrue' => Yii::t('SpaceModule.widgets_views_deleteBanner', 'Delete'),
-                        'buttonFalse' => Yii::t('SpaceModule.widgets_views_deleteBanner', 'Cancel'),
+                        'title' => Yii::t('SpaceModule.manage', '<strong>Confirm</strong> image deleting'),
+                        'message' => Yii::t('SpaceModule.manage', 'Do you really want to delete your title image?'),
+                        'buttonTrue' => Yii::t('SpaceModule.manage', 'Delete'),
+                        'buttonFalse' => Yii::t('SpaceModule.manage', 'Cancel'),
                         'linkContent' => '<i class="fa fa-times"></i>',
                         'cssClass' => 'btn btn-danger btn-sm',
                         'style' => $space->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
@@ -143,10 +143,10 @@ if ($space->isAdmin()) {
                     <?= ModalConfirm::widget([
                         'uniqueID' => 'modal_profileimagedelete',
                         'linkOutput' => 'a',
-                        'title' => Yii::t('SpaceModule.widgets_views_deleteImage', '<strong>Confirm</strong> image deleting'),
-                        'message' => Yii::t('SpaceModule.widgets_views_deleteImage', 'Do you really want to delete your profile image?'),
-                        'buttonTrue' => Yii::t('SpaceModule.widgets_views_deleteImage', 'Delete'),
-                        'buttonFalse' => Yii::t('SpaceModule.widgets_views_deleteImage', 'Cancel'),
+                        'title' => Yii::t('SpaceModule.manage', '<strong>Confirm</strong> image deleting'),
+                        'message' => Yii::t('SpaceModule.manage', 'Do you really want to delete your profile image?'),
+                        'buttonTrue' => Yii::t('SpaceModule.manage', 'Delete'),
+                        'buttonFalse' => Yii::t('SpaceModule.manage', 'Cancel'),
                         'linkContent' => '<i class="fa fa-times"></i>',
                         'cssClass' => 'btn btn-danger btn-sm',
                         'style' => $space->getProfileImage()->hasImage() ? '' : 'display: none;',
@@ -201,7 +201,7 @@ if ($space->isAdmin()) {
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">
-                    <?= Yii::t('SpaceModule.widgets_views_profileHeader', '<strong>Something</strong> went wrong'); ?>
+                    <?= Yii::t('SpaceModule.base', '<strong>Something</strong> went wrong'); ?>
                 </h4>
             </div>
             <div class="modal-body text-center">
@@ -209,7 +209,7 @@ if ($space->isAdmin()) {
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">
-                    <?= Yii::t('SpaceModule.widgets_views_profileHeader', 'Ok'); ?>
+                    <?= Yii::t('SpaceModule.base', 'Ok'); ?>
                 </button>
             </div>
         </div>

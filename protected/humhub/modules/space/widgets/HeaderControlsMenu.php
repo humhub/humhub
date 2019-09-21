@@ -59,21 +59,21 @@ class HeaderControlsMenu extends DropdownMenu
             ]));
 
             $this->addEntry(new MenuLink([
-                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Security'),
+                'label' => Yii::t('SpaceModule.manage', 'Security'),
                 'url' => $this->space->createUrl('/space/manage/security'),
                 'icon' => 'lock',
                 'sortOrder' => 200,
             ]));
 
             $this->addEntry(new MenuLink([
-                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Members'),
+                'label' => Yii::t('SpaceModule.manage', 'Members'),
                 'url' => $this->space->createUrl('/space/manage/member'),
                 'icon' => 'group',
                 'sortOrder' => 300
             ]));
 
             $this->addEntry(new MenuLink([
-                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Modules'),
+                'label' => Yii::t('SpaceModule.manage', 'Modules'),
                 'url' => $this->space->createUrl('/space/manage/module'),
                 'icon' => 'rocket',
                 'sortOrder' => 400,
@@ -87,7 +87,7 @@ class HeaderControlsMenu extends DropdownMenu
 
             if (!$membership->send_notifications) {
                 $this->addEntry(new MenuLink([
-                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Receive Notifications for new content'),
+                    'label' => Yii::t('SpaceModule.manage', 'Receive Notifications for new content'),
                     'url' => $this->space->createUrl('/space/membership/receive-notifications'),
                     'icon' => 'bell',
                     'sortOrder' => 600,
@@ -95,7 +95,7 @@ class HeaderControlsMenu extends DropdownMenu
                 ]));
             } else {
                 $this->addEntry(new MenuLink([
-                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Don\'t receive notifications for new content'),
+                    'label' => Yii::t('SpaceModule.manage', 'Don\'t receive notifications for new content'),
                     'url' => $this->space->createUrl('/space/membership/revoke-notifications'),
                     'icon' => 'bell-o',
                     'sortOrder' => 600,
@@ -105,7 +105,7 @@ class HeaderControlsMenu extends DropdownMenu
 
             if (!$this->space->isSpaceOwner() && $this->space->canLeave()) {
                 $this->addEntry(new MenuLink([
-                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Cancel Membership'),
+                    'label' => Yii::t('SpaceModule.manage', 'Cancel Membership'),
                     'url' => $this->space->createUrl('/space/membership/revoke-membership'),
                     'icon' => 'times',
                     'sortOrder' => 700,
@@ -115,7 +115,7 @@ class HeaderControlsMenu extends DropdownMenu
 
             if ($membership->show_at_dashboard) {
                 $this->addEntry(new MenuLink([
-                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Hide posts on dashboard'),
+                    'label' => Yii::t('SpaceModule.manage', 'Hide posts on dashboard'),
                     'url' => $this->space->createUrl('/space/membership/switch-dashboard-display', ['show' => 0]),
                     'icon' => 'eye-slash',
                     'sortOrder' => 800,
@@ -124,12 +124,12 @@ class HeaderControlsMenu extends DropdownMenu
                         'class' => 'tt',
                         'data-toggle' => 'tooltip',
                         'data-placement' => 'left',
-                        'title' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'This option will hide new content from this space at your dashboard')
+                        'title' => Yii::t('SpaceModule.manage', 'This option will hide new content from this space at your dashboard')
                     ]
                 ]));
             } else {
                 $this->addEntry(new MenuLink([
-                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Show posts on dashboard'),
+                    'label' => Yii::t('SpaceModule.manage', 'Show posts on dashboard'),
                     'url' => $this->space->createUrl('/space/membership/switch-dashboard-display', ['show' => 1]),
                     'icon' => 'fa-eye',
                     'sortOrder' => 800,
@@ -137,7 +137,7 @@ class HeaderControlsMenu extends DropdownMenu
                         'class' => 'tt',
                         'data-toggle' => 'tooltip',
                         'data-placement' => 'left',
-                        'title' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'This option will show new content from this space at your dashboard')
+                        'title' => Yii::t('SpaceModule.manage', 'This option will show new content from this space at your dashboard')
                     ]
                 ]));
             }

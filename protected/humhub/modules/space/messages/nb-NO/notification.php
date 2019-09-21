@@ -1,5 +1,10 @@
 <?php
 return array (
+  'Friendship' => 'Vennskap',
+  'Receive Notifications for Friendship Request and Approval events.' => 'Motta notifikasjon for venneforespørsler og hendelser.',
+  'Receive Notifications of Space Membership events.' => 'Motta varsler om gruppemedlemskaphendelser.',
+  'Space Membership' => 'Gruppemedlemskap',
+  'View Online' => 'Se online',
   'You were added to Space {spaceName}' => 'Du ble lagt til gruppen {spaceName}',
   '{displayName} accepted your invite for the space {spaceName}' => '{displayName} aksepterte din invitasjon til {spaceName}',
   '{displayName} approved your membership for the space {spaceName}' => '{displayName} godkjente ditt medlemskap til {spaceName}',

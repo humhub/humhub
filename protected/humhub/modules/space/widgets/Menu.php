@@ -44,10 +44,10 @@ class Menu extends LeftNavigation
             throw new Exception('Could not instance space menu without space!');
         }
 
-        $this->panelTitle = Yii::t('SpaceModule.widgets_SpaceMenuWidget', '<strong>Space</strong> menu');
+        $this->panelTitle = Yii::t('SpaceModule.base', '<strong>Space</strong> menu');
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', 'Stream'),
+            'label' => Yii::t('SpaceModule.base', 'Stream'),
             'url' => $this->space->createUrl('/space/space/home'),
             'icon' => 'fa-bars',
             'sortOrder' => 100,

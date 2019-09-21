@@ -64,11 +64,11 @@ class SpaceController extends Behavior
         $this->updateLastVisit();
 
         if (AuthHelper::isGuestAccessEnabled() && Yii::$app->user->isGuest && $this->space->visibility != Space::VISIBILITY_ALL) {
-            throw new HttpException(401, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'You need to login to view contents of this space!'));
+            throw new HttpException(401, Yii::t('SpaceModule.base', 'You need to login to view contents of this space!'));
         }
 
         if ($this->getMembership() === null && $this->space->visibility == Space::VISIBILITY_NONE && !Yii::$app->user->isAdmin()) {
-            throw new HttpException(404, Yii::t('SpaceModule.behaviors_SpaceControllerBehavior', 'Space is invisible!'));
+            throw new HttpException(404, Yii::t('SpaceModule.base', 'Space is invisible!'));
         }
 
         $this->owner->subLayout = "@humhub/modules/space/views/space/_layout";

@@ -83,8 +83,8 @@ class InviteForm extends Model
     public function attributeLabels()
     {
         return [
-            'invite' => Yii::t('SpaceModule.forms_SpaceInviteForm', 'Invites'),
-            'inviteExternal' => Yii::t('SpaceModule.forms_SpaceInviteForm', 'New user by e-mail (comma separated)'),
+            'invite' => Yii::t('SpaceModule.base', 'Invites'),
+            'inviteExternal' => Yii::t('SpaceModule.base', 'New user by e-mail (comma separated)'),
         ];
     }
 
@@ -185,7 +185,7 @@ class InviteForm extends Model
                 $user = User::findOne(['guid' => $userGuid]);
 
                 if ($user === null) {
-                    $this->addError($attribute, Yii::t('SpaceModule.forms_SpaceInviteForm', 'User not found!'));
+                    $this->addError($attribute, Yii::t('SpaceModule.base', 'User not found!'));
                     continue;
                 }
 
@@ -195,14 +195,14 @@ class InviteForm extends Model
                     $this->addError(
                         $attribute,
                         Yii::t(
-                            'SpaceModule.forms_SpaceInviteForm',
+                            'SpaceModule.base',
                             "User '{username}' is already a member of this space!",
                             ['username' => $user->getDisplayName()]
                         )
                     );
                     continue;
                 } elseif ($membership && $membership->status == Membership::STATUS_APPLICANT) {
-                    $this->addError($attribute, Yii::t('SpaceModule.forms_SpaceInviteForm',
+                    $this->addError($attribute, Yii::t('SpaceModule.base',
                         "User '{username}' is already an applicant of this space!",
                         ['username' => $user->getDisplayName()]));
                     continue;
@@ -235,14 +235,14 @@ class InviteForm extends Model
                 $validator = new EmailValidator();
                 if (!$validator->validate($email)) {
                     $this->addError($attribute,
-                        Yii::t('SpaceModule.forms_SpaceInviteForm', "{email} is not valid!", ["{email}" => $email]));
+                        Yii::t('SpaceModule.base', "{email} is not valid!", ["{email}" => $email]));
                     continue;
                 }
 
                 $user = User::findOne(['email' => $email]);
                 if ($user != null) {
                     $this->addError($attribute,
-                        Yii::t('SpaceModule.forms_SpaceInviteForm', "{email} is already registered!",
+                        Yii::t('SpaceModule.base', "{email} is already registered!",
                             ["{email}" => $email]));
                     continue;
                 }

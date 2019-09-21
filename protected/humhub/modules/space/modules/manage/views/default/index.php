@@ -11,7 +11,7 @@ use humhub\widgets\Button;
 <div class="panel panel-default">
     <div>
         <div class="panel-heading">
-            <?= Yii::t('SpaceModule.views_settings', '<strong>Space</strong> settings'); ?>
+            <?= Yii::t('SpaceModule.manage', '<strong>Space</strong> settings'); ?>
         </div>
     </div>
 
@@ -27,11 +27,11 @@ use humhub\widgets\Button;
 
         <?= $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
 
-        <?= Html::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+        <?= Html::submitButton(Yii::t('SpaceModule.manage', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
         <?= DataSaved::widget(); ?>
 
-        <?= Button::danger(Yii::t('SpaceModule.views_admin_edit', 'Delete'))->right()->link($model->createUrl('delete'))->visible($model->canDelete()) ?>
+        <?= Button::danger(Yii::t('SpaceModule.manage', 'Delete'))->right()->link($model->createUrl('delete'))->visible($model->canDelete()) ?>
 
         <?php ActiveForm::end(); ?>
     </div>

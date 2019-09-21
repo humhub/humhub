@@ -21,7 +21,7 @@ use raoul2000\jcrop\JCropWidget;
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
-                <?= Yii::t('SpaceModule.views_admin_cropImage', '<strong>Modify</strong> space image'); ?>
+                <?= Yii::t('SpaceModule.manage', '<strong>Modify</strong> space image'); ?>
             </h4>
         </div>
         <div class="modal-body">
@@ -75,7 +75,7 @@ use raoul2000\jcrop\JCropWidget;
             ?>
 
             <button type="button" class="btn btn-primary" data-dismiss="modal">
-                <?= Yii::t('SpaceModule.views_admin_cropImage', 'Close'); ?>
+                <?= Yii::t('SpaceModule.manage', 'Close'); ?>
             </button>
 
             <?= LoaderWidget::widget(['id' => 'crop-loader', 'cssClass' => 'loader-modal hidden']); ?>

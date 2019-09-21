@@ -13,7 +13,7 @@ use humhub\libs\Html;
 <div class="panel panel-default">
     <div>
         <div class="panel-heading">
-            <?= Yii::t('SpaceModule.views_settings', '<strong>Security</strong> settings'); ?>
+            <?= Yii::t('SpaceModule.manage', '<strong>Security</strong> settings'); ?>
         </div>
     </div>
 

@@ -16,11 +16,11 @@ echo Form::widget(['contentContainer' => $space]);
 
 $emptyMessage = '';
 if ($canCreatePosts) {
-    $emptyMessage = Yii::t('SpaceModule.views_space_index', '<b>This space is still empty!</b><br>Start by posting something here...');
+    $emptyMessage = Yii::t('SpaceModule.base', '<b>This space is still empty!</b><br>Start by posting something here...');
 } elseif ($isMember) {
-    $emptyMessage = Yii::t('SpaceModule.views_space_index', '<b>This space is still empty!</b>');
+    $emptyMessage = Yii::t('SpaceModule.base', '<b>This space is still empty!</b>');
 } else {
-    $emptyMessage = Yii::t('SpaceModule.views_space_index', '<b>You are not member of this space and there is no public content, yet!</b>');
+    $emptyMessage = Yii::t('SpaceModule.base', '<b>You are not member of this space and there is no public content, yet!</b>');
 }
 
 echo StreamViewer::widget([
