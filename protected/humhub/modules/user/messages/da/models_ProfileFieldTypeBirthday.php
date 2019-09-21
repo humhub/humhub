@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Hide age per default' => '',
-    '%y Years' => '%y År',
     'Birthday field options' => 'Fødselsdags felt muligheder',
+    'Hide age per default' => '',
 ];

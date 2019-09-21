@@ -18,4 +18,10 @@
  */
 return [
     'Like' => 'Gefällt mir',
+    ' likes this.' => '',
+    '<strong>Users</strong> who like this' => '',
+    'Unlike' => '',
+    'You' => '',
+    'You like this.' => '',
+    'and {count} more like this.' => '',
 ];

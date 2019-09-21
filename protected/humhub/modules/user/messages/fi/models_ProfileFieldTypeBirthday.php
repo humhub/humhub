@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '%y Years' => '%y Vuotta',
     'Birthday field options' => 'Syntymäpäiväkentän asetukset',
     'Hide age per default' => 'Piilota ikä oletusarvoisesti',
 ];
