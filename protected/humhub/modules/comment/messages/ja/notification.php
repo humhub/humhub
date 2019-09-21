@@ -2,7 +2,7 @@
 return array (
   'Comments' => 'コメント',
   'Receive Notifications when someone comments on my own or a following post.' => '',
-  'View Online' => '',
+  'View Online' => 'オンラインで見る',
   '[Deleted]' => '',
   '{displayNames} commented {contentTitle}' => '',
   '{displayNames} commented {contentTitle} in space {space}' => '',

@@ -6,7 +6,7 @@ return array (
   'Could not find requested file variant!' => '',
   'Could not find requested file!' => 'فایل درخواست‌شده یافت نشد!',
   'Could not upload File:' => 'فایل بارگذاری نشد:',
-  'Created by:' => '',
+  'Created by:' => 'ساخته‌شده توسط:',
   'Double file extensions are not allowed!' => '',
   'Download' => 'بارگيري',
   'File {fileName} could not be uploaded!' => '',

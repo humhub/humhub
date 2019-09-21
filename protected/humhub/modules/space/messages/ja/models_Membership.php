@@ -7,5 +7,5 @@ return array (
   'Request Message' => '',
   'Status' => 'ステータス',
   'Updated At' => '更新',
-  'Updated By' => '',
+  'Updated By' => '更新者',
 );

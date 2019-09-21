@@ -1,9 +1,9 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => '<strong>Administration</strong> menu',
+  '<strong>Module </strong> administration' => '',
   '<strong>Warning</strong> incomplete setup!' => '',
   'About' => 'Om',
-  'Add purchased module by licence key' => 'Tilføj købt modul med licens nøgle',
   'Admin' => 'Admin',
   'Administration' => 'Administration',
   'Administrative group' => '',
@@ -24,7 +24,7 @@ return array (
   'Groups' => 'Grupper',
   'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
   'Information' => '',
-  'Invite' => '',
+  'Invite' => 'Inviter',
   'Invited by' => '',
   'Logging' => 'Logging',
   'Logs' => '',
@@ -40,7 +40,7 @@ return array (
   'Security' => 'Sikkerhed',
   'Self test' => '',
   'Settings' => 'Indstillinger',
-  'Sign up' => '',
+  'Sign up' => 'Opret',
   'Spaces' => 'Sider',
   'Statistics' => 'Statistik',
   'The cron job for the background jobs (queue) does not seem to work properly.' => '',

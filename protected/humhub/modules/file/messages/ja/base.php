@@ -6,7 +6,7 @@ return array (
   'Could not find requested file variant!' => '',
   'Could not find requested file!' => '要求されたファイルが見つかりませんでした！',
   'Could not upload File:' => '',
-  'Created by:' => '',
+  'Created by:' => '作成者：',
   'Double file extensions are not allowed!' => '',
   'Download' => '',
   'File {fileName} could not be uploaded!' => '',

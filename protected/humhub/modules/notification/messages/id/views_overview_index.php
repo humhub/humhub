@@ -17,10 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Mark all as seen' => 'Tandai semua sudah dilihat',
     '<strong>Notification</strong> Overview' => '',
-    'Apply' => '',
     'Filter' => '',
     'Module Filter' => '',
     'No notifications found!' => '',
-    'Mark all as seen' => 'Tandai semua sudah dilihat',
 ];

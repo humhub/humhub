@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Apply' => 'Подтвердить',
     '<strong>Notification</strong> Overview' => 'Просмотр <strong>уведомлений</strong>',
     'Filter' => 'Фильтр',
     'Mark all as seen' => 'Пометить всё как прочитанное',

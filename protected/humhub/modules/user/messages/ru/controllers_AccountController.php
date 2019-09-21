@@ -20,4 +20,5 @@ return [
     'Invalid link! Please make sure that you entered the entire url.' => 'Некорректная ссылка! Убедитесь, что url по которому вы перешли - правильный.',
     'Save profile' => 'Сохранить профиль',
     'The entered e-mail address is already in use by another user.' => 'Введённый e-mail уже используется другим пользователем.',
+    'Changing the username can make some links unusable, for example old links to the profile.' => '',
 ];

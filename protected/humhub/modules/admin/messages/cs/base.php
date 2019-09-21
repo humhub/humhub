@@ -1,9 +1,9 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => '<strong>Menu</strong> administrace',
+  '<strong>Module </strong> administration' => '',
   '<strong>Warning</strong> incomplete setup!' => '',
   'About' => 'O mně',
-  'Add purchased module by licence key' => 'Vložit koupený modul pomocí licenčního klíče',
   'Admin' => 'Správce',
   'Administration' => 'Administrace',
   'Administrative group' => 'Administativné skupina',
@@ -24,7 +24,7 @@ return array (
   'Groups' => 'Skupiny',
   'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
   'Information' => 'Informace',
-  'Invite' => '',
+  'Invite' => 'Pozvat',
   'Invited by' => '',
   'Logging' => 'Protokol',
   'Logs' => 'Logy',
@@ -40,7 +40,7 @@ return array (
   'Security' => 'Zabezpečení',
   'Self test' => 'Vlastní test',
   'Settings' => 'Nastavení',
-  'Sign up' => '',
+  'Sign up' => 'Dokončit registraci',
   'Spaces' => 'prostor(y)',
   'Statistics' => 'Statistiky',
   'The cron job for the background jobs (queue) does not seem to work properly.' => '',

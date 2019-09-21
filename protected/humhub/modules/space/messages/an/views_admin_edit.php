@@ -6,5 +6,5 @@ return array (
   'Choose the security level for this workspace to define the visibleness.' => '',
   'Delete' => 'Eliminar',
   'Save' => 'Uložit',
-  'Unarchive' => '',
+  'Unarchive' => 'Quitar de l\'archivo',
 );

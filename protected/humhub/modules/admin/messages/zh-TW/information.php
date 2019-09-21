@@ -18,7 +18,7 @@ return array (
   'Last run (hourly):' => '',
   'Licences' => '',
   'Logging' => '',
-  'Never' => '',
+  'Never' => '從不',
   'Please refer to the documentation to setup the cronjobs and queue workers.' => '',
   'Prerequisites' => '',
   'Queue successfully cleared.' => '',

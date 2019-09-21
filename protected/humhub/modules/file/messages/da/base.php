@@ -6,7 +6,7 @@ return array (
   'Could not find requested file variant!' => '',
   'Could not find requested file!' => 'Kunne ikke finde den ønskede fil!',
   'Could not upload File:' => 'Kunne ikke uploade fil:',
-  'Created by:' => '',
+  'Created by:' => 'Oprettet af:',
   'Double file extensions are not allowed!' => '',
   'Download' => '',
   'File {fileName} could not be uploaded!' => '',

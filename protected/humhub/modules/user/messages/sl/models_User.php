@@ -36,5 +36,6 @@ return [
     'Updated at' => '',
     'Updated by' => '',
     'Username' => '',
+    'Username contains invalid characters.' => '',
     'Visibility' => '',
 ];

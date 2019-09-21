@@ -1,7 +1,7 @@
 <?php
 return array (
   'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '',
-  'Base DN' => '',
+  'Base DN' => 'Perus DN',
   'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => '',
   'E-Mail Address Attribute' => 'Sähköpostiosoitteen määrite',
   'Enable LDAP Support' => 'Ota LDAP-tuki käyttöön',
@@ -14,7 +14,7 @@ return array (
   'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;' => '',
   'Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => '',
   'Login Filter' => 'Kirjautumissuodatin',
-  'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => '',
+  'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'Ei muutettavissa oleva LDAP-attribuuttia, jolla käyttäjä tunnistetaan yksiselitteisesti hakemistosta. Jos tyhjä käyttäjä määritetään automaattisesti sähköpostiosoitteella tai käyttäjätunnuksella. Esimerkkejä: objectguid (ActiveDirectory) tai uidNumber (OpenLDAP)',
   'Password' => 'Salasana',
   'Port' => 'Portti',
   'Specify your LDAP-backend used to fetch user accounts.' => 'Määritä LDAP-backend, jota käytetään käyttäjätilijen hakemiseen.',

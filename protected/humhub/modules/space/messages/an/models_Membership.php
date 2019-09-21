@@ -6,6 +6,6 @@ return array (
   'Originator User ID' => '',
   'Request Message' => '',
   'Status' => '',
-  'Updated At' => '',
-  'Updated By' => '',
+  'Updated At' => 'Actualizau o',
+  'Updated By' => 'Actualizau per',
 );

@@ -17,13 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<i class="fa fa-cog"></i>' => '',
-    'Don\'t receive notifications for new content' => 'Не получать уведомления о новом контенте',
-    'Receive Notifications for new content' => 'Получать уведомления о новом контенте',
     'Cancel Membership' => 'Отменить участие',
+    'Don\'t receive notifications for new content' => 'Не получать уведомления о новом контенте',
     'Hide posts on dashboard' => 'Скрыть сообщения в панели "События"',
     'Members' => 'Участники',
     'Modules' => 'Модули',
+    'Receive Notifications for new content' => 'Получать уведомления о новом контенте',
     'Security' => 'Безопасность',
     'Show posts on dashboard' => 'Показать сообщение в панели "События"',
     'This option will hide new content from this space at your dashboard' => 'Эта опция будет скрывать новый контент данного пространства в панели "События"',

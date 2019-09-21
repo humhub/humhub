@@ -18,7 +18,7 @@ return array (
   'Last run (hourly):' => '',
   'Licences' => '',
   'Logging' => 'Inici de sessió',
-  'Never' => '',
+  'Never' => 'Mai',
   'Please refer to the documentation to setup the cronjobs and queue workers.' => '',
   'Prerequisites' => '',
   'Queue successfully cleared.' => '',

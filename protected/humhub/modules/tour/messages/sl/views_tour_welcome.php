@@ -19,7 +19,7 @@
 return [
     'Drag a photo here or click to browse your files' => '',
     'Hide my year of birth' => '',
-    'Howdy <strong>%firstname%</strong>, thank you for using HumHub.' => '',
+    'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => '',
     'Save and close' => '',
     'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.' => '',
     'Your firstname' => '',

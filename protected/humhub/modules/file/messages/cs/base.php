@@ -6,7 +6,7 @@ return array (
   'Could not find requested file variant!' => 'Nelze najít požadovanou variantu souboru!',
   'Could not find requested file!' => 'Požadovaný soubor nebyl nalezen!',
   'Could not upload File:' => 'Nebylo možné nahrát soubor:',
-  'Created by:' => '',
+  'Created by:' => 'Vytvořeno:',
   'Double file extensions are not allowed!' => '',
   'Download' => 'Stáhnout',
   'File {fileName} could not be uploaded!' => 'Soubor {fileName} nebyl nahrán!',

@@ -20,6 +20,7 @@ return [
     '-' => '',
     '<strong>Manage</strong> members' => '',
     'Actions' => '',
+    'Invited By' => '',
     'Role' => '',
     'never' => '',
 ];

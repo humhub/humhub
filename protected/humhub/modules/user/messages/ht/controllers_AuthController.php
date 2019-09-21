@@ -19,4 +19,5 @@
 return [
     'Account' => '',
     'Create account' => '',
+    'Group' => '',
 ];

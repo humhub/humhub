@@ -41,7 +41,7 @@ return array (
   'Self test' => '',
   'Settings' => '',
   'Sign up' => '',
-  'Spaces' => '',
+  'Spaces' => '空間',
   'Statistics' => '',
   'The cron job for the background jobs (queue) does not seem to work properly.' => '',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => '',

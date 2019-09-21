@@ -23,7 +23,7 @@ return array (
   'Edit' => '編集',
   'Filter' => 'フィルター',
   'Include archived content' => '',
-  'Invalid request method!' => '',
+  'Invalid request method!' => '無効なリクエスト方法です！',
   'Invalid space selection.' => '',
   'Last update' => '最後のアップデート',
   'Load more' => 'さらに読み込む',

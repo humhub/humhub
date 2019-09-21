@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Confirm</strong> image deleting' => '',
+  '<strong>Confirm</strong> image deleting' => '<strong>確認</strong> プロフィール画像の削除',
   'Cancel' => 'キャンセル',
   'Delete' => '削除',
   'Do you really want to delete your title image?' => '',

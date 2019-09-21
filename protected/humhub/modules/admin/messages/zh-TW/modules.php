@@ -44,7 +44,7 @@ return array (
   'Save' => '儲存',
   'Search' => '搜尋',
   'Set as default' => '',
-  'Spaces' => '',
+  'Spaces' => '空間',
   'The HumHub developers provide no support for third-party modules and neighter give any guarantee about the suitability, functionality or security of this module.' => '',
   'Third-party' => '',
   'Third-party disclaimer' => '',

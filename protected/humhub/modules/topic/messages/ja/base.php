@@ -8,5 +8,5 @@ return array (
   'Do you really want to delete this topic?' => '',
   'Topic' => 'トピック',
   'Topic has been deleted!' => '',
-  'Topics' => '',
+  'Topics' => 'トピックス（タグ付け）',
 );

@@ -2,7 +2,7 @@
 return array (
   '<strong>Open</strong> file' => '',
   '<strong>Upload</strong> error' => '',
-  'Close' => '',
+  'Close' => 'ዝጋ',
   'Could not find requested file variant!' => '',
   'Could not find requested file!' => '',
   'Could not upload File:' => '',

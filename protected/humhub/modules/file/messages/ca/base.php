@@ -6,7 +6,7 @@ return array (
   'Could not find requested file variant!' => 'No s\'ha trobat la variant de l\'arxiu sol·licitada.',
   'Could not find requested file!' => 'No es pot accedir a l\'arxiu sol·licitat!',
   'Could not upload File:' => 'No es pot pujar aquest arxiu:',
-  'Created by:' => '',
+  'Created by:' => 'Creat per:',
   'Double file extensions are not allowed!' => '',
   'Download' => 'Descarregar',
   'File {fileName} could not be uploaded!' => 'L\'arxiu {fileName} no s\'ha pogut carregar!',

@@ -18,7 +18,7 @@ return array (
   'Last run (hourly):' => '',
   'Licences' => 'Licences',
   'Logging' => 'Žurnalēšana',
-  'Never' => '',
+  'Never' => 'Nekad',
   'Please refer to the documentation to setup the cronjobs and queue workers.' => '',
   'Prerequisites' => 'Priekšnoteikumi',
   'Queue successfully cleared.' => '',

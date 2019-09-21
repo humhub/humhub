@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Changing the username can make some links unusable, for example old links to the profile.' => '',
     'Invalid link! Please make sure that you entered the entire url.' => '',
     'Save profile' => '',
     'The entered e-mail address is already in use by another user.' => '',

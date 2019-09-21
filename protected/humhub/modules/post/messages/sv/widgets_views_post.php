@@ -1,5 +1,5 @@
 <?php
 return array (
   'Collapse' => 'Minska',
-  'Read full post...' => '',
+  'Read full post...' => 'Läs hela inlägget...',
 );

@@ -17,9 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Delete' => 'Hapus',
+    'Modules' => 'Modul',
+    'Notifications' => 'Pemberitahuan',
+    'Security' => 'Security',
     'Basic Settings' => '',
     'Change Email' => '',
     'Change Password' => '',
+    'Change Username' => '',
     'Confirm new password' => '',
     'Connect account' => '',
     'Connected Accounts' => '',
@@ -56,8 +61,4 @@ return [
     'Your account is not approved yet!' => '',
     'Your new password must not be equal your current password!' => '',
     'or' => '',
-    'Delete' => 'Hapus',
-    'Modules' => 'Modul',
-    'Notifications' => 'Pemberitahuan',
-    'Security' => 'Security',
 ];

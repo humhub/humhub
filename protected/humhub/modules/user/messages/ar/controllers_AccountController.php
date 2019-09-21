@@ -22,4 +22,5 @@ return [
     'Save profile' => 'حفظ الحساب',
     'The entered e-mail address is already in use by another user.' => 'عنوان البريد الإلكتروني تم إدخاله مسبقاً قيد الاستخدام من قبل مستخدم آخر.
 ',
+    'Changing the username can make some links unusable, for example old links to the profile.' => '',
 ];

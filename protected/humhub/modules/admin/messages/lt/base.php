@@ -1,9 +1,9 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => '<strong>Administravimo</strong> meniu',
+  '<strong>Module </strong> administration' => '',
   '<strong>Warning</strong> incomplete setup!' => '',
   'About' => 'Apie',
-  'Add purchased module by licence key' => '',
   'Admin' => 'Administratorius',
   'Administration' => 'Administravimas',
   'Administrative group' => '',
@@ -24,7 +24,7 @@ return array (
   'Groups' => 'Grupės',
   'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
   'Information' => '',
-  'Invite' => '',
+  'Invite' => 'Pakviesti',
   'Invited by' => '',
   'Logging' => 'Prisijungimas',
   'Logs' => '',
@@ -40,7 +40,7 @@ return array (
   'Security' => '',
   'Self test' => '',
   'Settings' => 'Nustatymai',
-  'Sign up' => '',
+  'Sign up' => 'Registruotis',
   'Spaces' => 'Erdvės',
   'Statistics' => 'Statistika',
   'The cron job for the background jobs (queue) does not seem to work properly.' => '',

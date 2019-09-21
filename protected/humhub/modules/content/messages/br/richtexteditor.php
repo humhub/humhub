@@ -32,6 +32,7 @@ return [
     'Delete table' => '',
     'Flags' => '',
     'Food & Drink' => '',
+    'Heading' => '',
     'Height' => '',
     'Horizontal rule' => '',
     'Image' => '',
