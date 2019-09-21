@@ -41,10 +41,10 @@ class ProfileMenu extends LeftNavigation
     public function init()
     {
 
-        $this->panelTitle = Yii::t('UserModule.widgets_ProfileMenuWidget', '<strong>Profile</strong> menu');
+        $this->panelTitle = Yii::t('UserModule.profile', '<strong>Profile</strong> menu');
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.widgets_ProfileMenuWidget', 'Stream'),
+            'label' => Yii::t('UserModule.profile', 'Stream'),
             'icon' => 'bars',
             'url' => $this->user->createUrl('//user/profile/home'),
             'sortOrder' => 200,
@@ -53,7 +53,7 @@ class ProfileMenu extends LeftNavigation
 
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.widgets_ProfileMenuWidget', 'About'),
+            'label' => Yii::t('UserModule.profile', 'About'),
             'icon' => 'info-circle>',
             'url' => $this->user->createUrl('/user/profile/about'),
             'sortOrder' => 300,

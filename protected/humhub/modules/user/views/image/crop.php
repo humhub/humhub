@@ -48,7 +48,7 @@ use yii\helpers\Url;
         <div class="modal-footer">
             <?php
             echo \humhub\widgets\AjaxButton::widget([
-                'label' => Yii::t('UserModule.views_profile_cropBannerImage', 'Save'),
+                'label' => Yii::t('UserModule.profile', 'Save'),
                 'ajaxOptions' => [
                     'type' => 'POST',
                     'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
@@ -61,7 +61,7 @@ use yii\helpers\Url;
             ]);
             ?>
             <button type="button" class="btn btn-primary"
-                    data-dismiss="modal"><?php echo Yii::t('UserModule.views_profile_cropBannerImage', 'Close'); ?></button>
+                    data-dismiss="modal"><?php echo Yii::t('UserModule.profile', 'Close'); ?></button>
 
             <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'crop-loader', 'cssClass' => 'loader-modal hidden']); ?>
         </div>

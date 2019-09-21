@@ -58,7 +58,7 @@ class InviteController extends Controller
             }
             
             return ModalClose::widget([
-                'success' => Yii::t('UserModule.user', 'User has been invited.')
+                'success' => Yii::t('UserModule.base', 'User has been invited.')
             ]);
         }
 

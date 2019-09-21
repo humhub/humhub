@@ -62,17 +62,17 @@ class BaseType extends Model
     public function getFieldTypes()
     {
         $fieldTypes = array_merge([
-            Number::class => Yii::t('UserModule.models_ProfileFieldType', 'Number'),
-            Text::class => Yii::t('UserModule.models_ProfileFieldType', 'Text'),
-            TextArea::class => Yii::t('UserModule.models_ProfileFieldType', 'Text Area'),
-            Select::class => Yii::t('UserModule.models_ProfileFieldType', 'Select List'),
-            Date::class => Yii::t('UserModule.models_ProfileFieldType', 'Date'),
-            DateTime::class => Yii::t('UserModule.models_ProfileFieldType', 'Datetime'),
-            Birthday::class => Yii::t('UserModule.models_ProfileFieldType', 'Birthday'),
-            CountrySelect::class => Yii::t('UserModule.models_ProfileFieldType', 'Country'),
-            MarkdownEditor::class => Yii::t('UserModule.models_ProfileFieldType', 'Markdown'),
-            Checkbox::class => Yii::t('UserModule.models_ProfileFieldType', 'Checkbox'),
-            CheckboxList::class => Yii::t('UserModule.models_ProfileFieldType', 'Checkbox List'),
+            Number::class => Yii::t('UserModule.profile', 'Number'),
+            Text::class => Yii::t('UserModule.profile', 'Text'),
+            TextArea::class => Yii::t('UserModule.profile', 'Text Area'),
+            Select::class => Yii::t('UserModule.profile', 'Select List'),
+            Date::class => Yii::t('UserModule.profile', 'Date'),
+            DateTime::class => Yii::t('UserModule.profile', 'Datetime'),
+            Birthday::class => Yii::t('UserModule.profile', 'Birthday'),
+            CountrySelect::class => Yii::t('UserModule.profile', 'Country'),
+            MarkdownEditor::class => Yii::t('UserModule.profile', 'Markdown'),
+            Checkbox::class => Yii::t('UserModule.profile', 'Checkbox'),
+            CheckboxList::class => Yii::t('UserModule.profile', 'Checkbox List'),
         ], $this->fieldTypes);
 
         return $fieldTypes;

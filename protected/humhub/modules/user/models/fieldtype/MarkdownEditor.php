@@ -27,7 +27,7 @@ class MarkdownEditor extends BaseType
         return parent::getFormDefinition([
                     get_class($this) => [
                         'type' => 'form',
-                        'title' => Yii::t('UserModule.models_ProfileFieldTypeTextArea', 'Text area field options'),
+                        'title' => Yii::t('UserModule.profile', 'Text area field options'),
                         'elements' => [
                         ]
                     ]]);

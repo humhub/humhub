@@ -70,20 +70,20 @@ class UserPickerField extends BasePicker
         $allowMultiple = $this->maxSelection !== 1;
         $result['placeholder'] = ($this->placeholder != null)
             ? $this->placeholder
-            : Yii::t('UserModule.widgets_UserPickerField', 'Select {n,plural,=1{user} other{users}}',
+            : Yii::t('UserModule.chooser', 'Select {n,plural,=1{user} other{users}}',
                 ['n' => ($allowMultiple) ? 2 : 1]);
 
         if ($this->placeholder && !$this->placeholderMore) {
             $result['placeholder-more'] = $this->placeholder;
         } else {
             $result['placeholder-more'] = ($this->placeholderMore) ? $this->placeholderMore
-                : Yii::t('UserModule.widgets_UserPickerField', 'Add more...');
+                : Yii::t('UserModule.chooser', 'Add more...');
         }
 
-        $result['no-result'] = Yii::t('UserModule.widgets_UserPickerField', 'No users found for the given query.');
+        $result['no-result'] = Yii::t('UserModule.chooser', 'No users found for the given query.');
 
         if ($this->maxSelection) {
-            $result['maximum-selected'] = Yii::t('UserModule.widgets_UserPickerField',
+            $result['maximum-selected'] = Yii::t('UserModule.chooser',
                 'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.',
                 ['n' => $this->maxSelection]);
         }

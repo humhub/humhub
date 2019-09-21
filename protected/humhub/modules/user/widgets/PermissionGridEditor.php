@@ -61,7 +61,7 @@ class PermissionGridEditor extends GridView
             'layout' => "{items}\n{pager}",
             'columns' => [
                 [
-                    'label' => Yii::t('UserModule.widgets_PermissionGridEditor', 'Permission'),
+                    'label' => Yii::t('UserModule.base', 'Permission'),
                     'attribute' => 'title',
                     'content' => function($data) {
                         $module = Yii::$app->getModule($data['moduleId']);

@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 use \humhub\compat\CHtml;
 use humhub\modules\user\widgets\AuthChoice;
 
-$this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
+$this->pageTitle = Yii::t('UserModule.auth', 'Login');
 ?>
 
 <div class="container" style="text-align: center;">
@@ -16,7 +16,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
     <div class="panel panel-default animated bounceIn" id="login-form"
          style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
 
-        <div class="panel-heading"><?= Yii::t('UserModule.views_auth_login', '<strong>Please</strong> sign in'); ?></div>
+        <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Please</strong> sign in'); ?></div>
 
         <div class="panel-body">
 
@@ -30,9 +30,9 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
                 <?= AuthChoice::widget([]) ?>
             <?php else: ?>
                 <?php if ($canRegister) : ?>
-                    <p><?= Yii::t('UserModule.views_auth_login', "If you're already a member, please login with your username/email and password."); ?></p>
+                    <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password."); ?></p>
                 <?php else: ?>
-                    <p><?= Yii::t('UserModule.views_auth_login', "Please login with your username/email and password."); ?></p>
+                    <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password."); ?></p>
                 <?php endif; ?>
             <?php endif; ?>
 
@@ -44,11 +44,11 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
             <hr>
             <div class="row">
                 <div class="col-md-4">
-                    <?= CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
+                    <?= CHtml::submitButton(Yii::t('UserModule.auth', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
                 </div>
                 <div class="col-md-8 text-right">
                     <small>
-                        <a id="password-recovery-link" href="<?= Url::toRoute('/user/password-recovery'); ?>" data-pjax-prevent><br><?= Yii::t('UserModule.views_auth_login', 'Forgot your password?') ?></a>
+                        <a id="password-recovery-link" href="<?= Url::toRoute('/user/password-recovery'); ?>" data-pjax-prevent><br><?= Yii::t('UserModule.auth', 'Forgot your password?') ?></a>
                     </small>
                 </div>
             </div>
@@ -65,17 +65,17 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
              class="panel panel-default animated bounceInLeft"
              style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
 
-            <div class="panel-heading"><?= Yii::t('UserModule.views_auth_login', '<strong>Sign</strong> up') ?></div>
+            <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Sign</strong> up') ?></div>
 
             <div class="panel-body">
 
-                <p><?= Yii::t('UserModule.views_auth_login', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
+                <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
 
                 <?php $form = ActiveForm::begin(['id' => 'invite-form']); ?>
                 <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
                 <?php if ($invite->showCaptureInRegisterForm()) : ?>
                     <div id="registration-form-captcha" style="display: none;">
-                        <div><?= Yii::t('UserModule.views_auth_login', 'Please enter the letters from the image.'); ?></div>
+                        <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
 
                         <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
                             'captchaAction' => 'auth/captcha',
@@ -83,7 +83,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
                     </div>
                 <?php endif; ?>
                 <hr>
-                <?= CHtml::submitButton(Yii::t('UserModule.views_auth_login', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+                <?= CHtml::submitButton(Yii::t('UserModule.auth', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
                 <?php ActiveForm::end(); ?>
             </div>

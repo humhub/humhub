@@ -78,11 +78,11 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
                     echo \humhub\widgets\ModalConfirm::widget([
                         'uniqueID' => 'modal_bannerimagedelete',
                         'linkOutput' => 'a',
-                        'ariaLabel' => Yii::t('UserModule.widgets_views_deleteBanner', 'Delete profile banner'),
-                        'title' => Yii::t('UserModule.widgets_views_deleteBanner', '<strong>Confirm</strong> image deleting'),
-                        'message' => Yii::t('UserModule.widgets_views_deleteBanner', 'Do you really want to delete your title image?'),
-                        'buttonTrue' => Yii::t('UserModule.widgets_views_deleteBanner', 'Delete'),
-                        'buttonFalse' => Yii::t('UserModule.widgets_views_deleteBanner', 'Cancel'),
+                        'ariaLabel' => Yii::t('UserModule.base', 'Delete profile banner'),
+                        'title' => Yii::t('UserModule.base', '<strong>Confirm</strong> image deleting'),
+                        'message' => Yii::t('UserModule.base', 'Do you really want to delete your title image?'),
+                        'buttonTrue' => Yii::t('UserModule.base', 'Delete'),
+                        'buttonFalse' => Yii::t('UserModule.base', 'Cancel'),
                         'linkContent' => '<i class="fa fa-times"></i>',
                         'cssClass' => 'btn btn-danger btn-sm',
                         'style' => $user->getProfileBannerImage()->hasImage() ? '' : 'display: none;',
@@ -144,10 +144,10 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
                         'uniqueID' => 'modal_profileimagedelete',
                         'linkOutput' => 'a',
                         'ariaLabel' => Yii::t('UserModule.base', 'Delete profile image'),
-                        'title' => Yii::t('UserModule.widgets_views_deleteImage', '<strong>Confirm</strong> image deleting'),
-                        'message' => Yii::t('UserModule.widgets_views_deleteImage', 'Do you really want to delete your profile image?'),
-                        'buttonTrue' => Yii::t('UserModule.widgets_views_deleteImage', 'Delete'),
-                        'buttonFalse' => Yii::t('UserModule.widgets_views_deleteImage', 'Cancel'),
+                        'title' => Yii::t('UserModule.base', '<strong>Confirm</strong> image deleting'),
+                        'message' => Yii::t('UserModule.base', 'Do you really want to delete your profile image?'),
+                        'buttonTrue' => Yii::t('UserModule.base', 'Delete'),
+                        'buttonFalse' => Yii::t('UserModule.base', 'Cancel'),
                         'linkContent' => '<i class="fa fa-times"></i>',
                         'cssClass' => 'btn btn-danger btn-sm',
                         'style' => $user->getProfileImage()->hasImage() ? '' : 'display: none;',
@@ -196,14 +196,14 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"
-                    id="myModalLabel"><?php echo Yii::t('UserModule.widgets_views_profileHeader', '<strong>Something</strong> went wrong'); ?></h4>
+                    id="myModalLabel"><?php echo Yii::t('UserModule.profile', '<strong>Something</strong> went wrong'); ?></h4>
             </div>
             <div class="modal-body text-center">
 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary"
-                        data-dismiss="modal"><?php echo Yii::t('UserModule.widgets_views_profileHeader', 'Ok'); ?></button>
+                        data-dismiss="modal"><?php echo Yii::t('UserModule.profile', 'Ok'); ?></button>
             </div>
         </div>
     </div>

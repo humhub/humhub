@@ -160,7 +160,7 @@ class ProfileFieldModelTest extends HumHubDbTestCase
     public function testReturnTranslationCategory()
     {
         $model = ProfileField::findOne(['internal_name' => 'firstname']);
-        $this->assertEquals('UserModule.models_Profile', $model->getTranslationCategory());
+        $this->assertEquals('UserModule.profile', $model->getTranslationCategory());
 
         $model->load(['translation_category' => 'Category'], '');
         $this->assertEquals('Category', $model->getTranslationCategory());

@@ -44,11 +44,11 @@ class AccountSettings extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'tags' => Yii::t('UserModule.forms_AccountSettingsForm', 'Tags'),
-            'language' => Yii::t('UserModule.forms_AccountSettingsForm', 'Language'),
-            'show_introduction_tour' => Yii::t('UserModule.forms_AccountSettingsForm', 'Hide introduction tour panel on dashboard'),
-            'timeZone' => Yii::t('UserModule.forms_AccountSettingsForm', 'TimeZone'),
-            'visibility' => Yii::t('UserModule.forms_AccountSettingsForm', 'Profile visibility'),
+            'tags' => Yii::t('UserModule.account', 'Tags'),
+            'language' => Yii::t('UserModule.account', 'Language'),
+            'show_introduction_tour' => Yii::t('UserModule.account', 'Hide introduction tour panel on dashboard'),
+            'timeZone' => Yii::t('UserModule.account', 'TimeZone'),
+            'visibility' => Yii::t('UserModule.account', 'Profile visibility'),
         ];
     }
 

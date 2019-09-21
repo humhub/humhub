@@ -56,8 +56,8 @@ class AccountChangeEmail extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'currentPassword' => Yii::t('UserModule.forms_AccountChangeEmailForm', 'Current password'),
-            'newEmail' => Yii::t('UserModule.forms_AccountChangeEmailForm', 'New E-Mail address'),
+            'currentPassword' => Yii::t('UserModule.account', 'Current password'),
+            'newEmail' => Yii::t('UserModule.account', 'New E-Mail address'),
         ];
     }
 
@@ -79,7 +79,7 @@ class AccountChangeEmail extends \yii\base\Model
             'approveUrl' => Url::to([empty($approveUrl) ? "/user/account/change-email-validate" : $approveUrl, 'email' => $this->newEmail, 'token' => $token], true),
         ]);
         $mail->setTo($this->newEmail);
-        $mail->setSubject(Yii::t('UserModule.forms_AccountChangeEmailForm', 'E-Mail change'));
+        $mail->setSubject(Yii::t('UserModule.account', 'E-Mail change'));
         $mail->send();
 
         return true;

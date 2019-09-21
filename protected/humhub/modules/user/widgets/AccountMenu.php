@@ -27,10 +27,10 @@ class AccountMenu extends LeftNavigation
      */
     public function init()
     {
-        $this->panelTitle = Yii::t('UserModule.widgets_AccountMenuWidget', '<strong>Account</strong> settings');
+        $this->panelTitle = Yii::t('UserModule.account', '<strong>Account</strong> settings');
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Profile'),
+            'label' => Yii::t('UserModule.account', 'Profile'),
             'icon' => 'user',
             'url' => ['/user/account/edit'],
             'sortOrder' => 100,
@@ -54,7 +54,7 @@ class AccountMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Settings'),
+            'label' => Yii::t('UserModule.account', 'Settings'),
             'icon' => 'wrench',
             'url' => ['/user/account/edit-settings'],
             'sortOrder' => 110,
@@ -62,7 +62,7 @@ class AccountMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Security'),
+            'label' => Yii::t('UserModule.account', 'Security'),
             'icon' => 'lock',
             'url' => ['/user/account/security'],
             'sortOrder' => 115,
@@ -70,7 +70,7 @@ class AccountMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Modules'),
+            'label' => Yii::t('UserModule.account', 'Modules'),
             'icon' => 'rocket',
             'url' => ['/user/account/edit-modules'],
             'sortOrder' => 120,

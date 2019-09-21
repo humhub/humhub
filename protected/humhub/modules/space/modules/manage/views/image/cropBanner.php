@@ -21,7 +21,7 @@ use raoul2000\jcrop\JCropWidget;
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
-                <?= Yii::t('UserModule.views_profile_cropBannerImage', '<strong>Modify</strong> your title image'); ?>
+                <?= Yii::t('UserModule.profile', '<strong>Modify</strong> your title image'); ?>
             </h4>
         </div>
         <div class="modal-body">
@@ -60,7 +60,7 @@ use raoul2000\jcrop\JCropWidget;
         <div class="modal-footer">
 
             <?= AjaxButton::widget([
-                'label' => Yii::t('UserModule.views_profile_cropProfileImage', 'Save'),
+                'label' => Yii::t('UserModule.profile', 'Save'),
                 'ajaxOptions' => [
                     'type' => 'POST',
                     'beforeSend' => new JsExpression('function(){ setModalLoader(); }'),
@@ -74,7 +74,7 @@ use raoul2000\jcrop\JCropWidget;
             ?>
 
             <button type="button" class="btn btn-primary" data-dismiss="modal">
-                <?= Yii::t('UserModule.views_profile_cropBannerImage', 'Close'); ?>
+                <?= Yii::t('UserModule.profile', 'Close'); ?>
             </button>
 
             <?= LoaderWidget::widget(['id' => 'crop-loader', 'cssClass' => 'loader-modal hidden']); ?>

@@ -77,7 +77,7 @@ class AccountController extends BaseAccountController
         $definition['buttons'] = [
             'save' => [
                 'type' => 'submit',
-                'label' => Yii::t('UserModule.controllers_AccountController', 'Save profile'),
+                'label' => Yii::t('UserModule.account', 'Save profile'),
                 'class' => 'btn btn-primary'
             ],
         ];
@@ -314,7 +314,7 @@ class AccountController extends BaseAccountController
             return $this->render('changeUsername_success', ['model' => $model]);
         }
 
-        $this->view->warn(Yii::t('UserModule.controllers_AccountController', 'Changing the username can make some links unusable, for example old links to the profile.'));
+        $this->view->warn(Yii::t('UserModule.account', 'Changing the username can make some links unusable, for example old links to the profile.'));
         return $this->render('changeUsername', ['model' => $model]);
     }
 
@@ -353,13 +353,13 @@ class AccountController extends BaseAccountController
 
         // Check if Token is valid
         if (md5(Yii::$app->settings->get('secret') . $user->guid . $email) != $token) {
-            throw new HttpException(404, Yii::t('UserModule.controllers_AccountController', 'Invalid link! Please make sure that you entered the entire url.'));
+            throw new HttpException(404, Yii::t('UserModule.account', 'Invalid link! Please make sure that you entered the entire url.'));
         }
 
         // Check if E-Mail is in use, e.g. by other user
         $emailAvailablyCheck = \humhub\modules\user\models\User::findOne(['email' => $email]);
         if ($emailAvailablyCheck != null) {
-            throw new HttpException(404, Yii::t('UserModule.controllers_AccountController', 'The entered e-mail address is already in use by another user.'));
+            throw new HttpException(404, Yii::t('UserModule.account', 'The entered e-mail address is already in use by another user.'));
         }
 
         $user->email = $email;

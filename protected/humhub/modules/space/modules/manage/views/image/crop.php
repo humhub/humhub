@@ -61,7 +61,7 @@ use raoul2000\jcrop\JCropWidget;
         <div class="modal-footer">
 
             <?= AjaxButton::widget([
-                'label' => Yii::t('UserModule.views_profile_cropProfileImage', 'Save'),
+                'label' => Yii::t('UserModule.profile', 'Save'),
                 'ajaxOptions' => [
                     'type' => 'POST',
                     'beforeSend' => new JsExpression('function(){ setModalLoader(); }'),

@@ -104,7 +104,7 @@ class Registration extends HForm
             'save' => [
                 'type' => 'submit',
                 'class' => 'btn btn-primary',
-                'label' => Yii::t('UserModule.controllers_AuthController', 'Create account'),
+                'label' => Yii::t('UserModule.auth', 'Create account'),
             ],
         ];
     }
@@ -118,7 +118,7 @@ class Registration extends HForm
     {
         $form = [
             'type' => 'form',
-            'title' => Yii::t('UserModule.controllers_AuthController', 'Account'),
+            'title' => Yii::t('UserModule.auth', 'Account'),
             'elements' => [],
         ];
 
@@ -182,7 +182,7 @@ class Registration extends HForm
             'type' => 'form',
             'elements' => [
                 'group_id' => [
-                    'label' => Yii::t('UserModule.controllers_AuthController', 'Group'),
+                    'label' => Yii::t('UserModule.auth', 'Group'),
                     'type' => $groupFieldType,
                     'class' => 'form-control',
                     'items' => ArrayHelper::map($groupModels, 'id', 'name'),

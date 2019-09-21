@@ -28,7 +28,7 @@ use yii\helpers\Html;
                                                     <td width="auto"  align="center" valign="middle" height="28" style="background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>;background-clip: padding-box; font-size:26px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; text-align:center;  color:#a3a2a2; font-weight: 300; padding-left:18px; padding-right:18px; ">
 
                                                         <span style="color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
-                                                            <?= Yii::t('UserModule.views_mails_ChangeUsername', 'Your username has been changed'); ?>
+                                                            <?= Yii::t('UserModule.account', 'Your username has been changed'); ?>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -94,9 +94,9 @@ use yii\helpers\Html;
                                                 <tr>
                                                     <td  style="font-size: 14px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left; ">
 
-                                                        <?php echo Yii::t('UserModule.views_mails_ChangeUsername', 'Hello'); ?> <?php echo Html::encode($user->displayName); ?>,<br><br>
+                                                        <?php echo Yii::t('UserModule.account', 'Hello'); ?> <?php echo Html::encode($user->displayName); ?>,<br><br>
 
-                                                        <?php echo Yii::t('UserModule.views_mails_ChangeUsername', 'You have successfully changed your username.<br>Your new username is {newUsername}.', ['{newUsername}' => Html::encode($newUsername)]); ?>
+                                                        <?php echo Yii::t('UserModule.account', 'You have successfully changed your username.<br>Your new username is {newUsername}.', ['{newUsername}' => Html::encode($newUsername)]); ?>
 
                                                     </td>
                                                 </tr>

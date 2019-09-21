@@ -60,19 +60,19 @@ class CheckboxList extends BaseType
         return parent::getFormDefinition([
             get_class($this) => [
                 'type' => 'form',
-                'title' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Select field options'),
+                'title' => Yii::t('UserModule.profile', 'Select field options'),
                 'elements' => [
                     'options' => [
                         'type' => 'textarea',
-                        'label' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Possible values'),
+                        'label' => Yii::t('UserModule.profile', 'Possible values'),
                         'class' => 'form-control',
-                        'hint' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
+                        'hint' => Yii::t('UserModule.profile', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
                     ],
                     'allowOther' => [
                         'type' => 'checkbox',
-                        'label' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Allow other selection'),
+                        'label' => Yii::t('UserModule.profile', 'Allow other selection'),
                         'class' => 'form-control',
-                        'hint' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'This will add an additional input element for custom values')
+                        'hint' => Yii::t('UserModule.profile', 'This will add an additional input element for custom values')
                     ]
                 ]
             ]]);
