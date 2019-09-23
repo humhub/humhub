@@ -52,6 +52,18 @@ If you're using any custom modules, please change the message directories accord
 | fa_ir | fa-IR |
 
 
+### Removed deprecated methods
+
+The following deprecated method have been removed.
+ 
+**Content model**
+
+- canWrite()
+- canRead()
+- canDelete()
+- getSpace()
+- getUser()
+
 
 
 Migrate from 1.2 to 1.3

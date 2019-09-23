@@ -141,7 +141,7 @@ class File extends FileCompat
      * Checks if given file can deleted.
      *
      * If the file is not an instance of ContentActiveRecord or ContentAddonActiveRecord
-     * the file is readable for all unless there is method canWrite or canDelete implemented.
+     * the file is readable for all unless there is method canEdit or canDelete implemented.
      */
     public function canDelete($userId = null)
     {
@@ -149,8 +149,10 @@ class File extends FileCompat
 
         if ($object != null) {
             if ($object instanceof ContentAddonActiveRecord) {
-                return $object->canWrite($userId);
+                /** @var ContentAddonActiveRecord $object */
+                return $object->canEdit($userId);
             } elseif ($object instanceof ContentActiveRecord) {
+                /** @var ContentActiveRecord $object */
                 return $object->content->canEdit($userId);
             }
         }

@@ -41,7 +41,7 @@ class DownloadAction extends Action
     protected $variant;
 
     /**
-     * @var boolean force download response 
+     * @var boolean force download response
      */
     protected $download = false;
 
@@ -112,7 +112,7 @@ class DownloadAction extends Action
 
     /**
      * Loads the file by given guid
-     * 
+     *
      * @param string $guid
      * @return File the loaded file instance
      * @throws HttpException
@@ -124,7 +124,7 @@ class DownloadAction extends Action
         if ($file == null) {
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
         }
-        if (!$file->canRead()) {
+        if (!$file->canView()) {
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 
@@ -133,7 +133,7 @@ class DownloadAction extends Action
 
     /**
      * Loads a variant and verifies
-     * 
+     *
      * @param string $variant
      * @throws HttpException
      */
@@ -156,7 +156,7 @@ class DownloadAction extends Action
 
     /**
      * Returns the file module
-     * 
+     *
      * @return \humhub\modules\file\Module
      */
     protected function getModule()
@@ -166,7 +166,7 @@ class DownloadAction extends Action
 
     /**
      * Check if requested file exists
-     * 
+     *
      * @throws HttpException
      */
     protected function checkFileExists()
@@ -178,7 +178,7 @@ class DownloadAction extends Action
 
     /**
      * Returns the filename
-     * 
+     *
      * @return string
      */
     protected function getFileName()
@@ -204,8 +204,8 @@ class DownloadAction extends Action
 
     /**
      * Checks if XSendFile downloads are enabled
-     * 
-     * @return boolean 
+     *
+     * @return boolean
      */
     protected function useXSendFile()
     {
@@ -214,7 +214,7 @@ class DownloadAction extends Action
 
     /**
      * Returns the file path of the stored file
-     * 
+     *
      * @return string path to the saved file
      */
     protected function getStoredFilePath()

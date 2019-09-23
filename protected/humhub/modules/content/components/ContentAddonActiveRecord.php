@@ -11,6 +11,7 @@ namespace humhub\modules\content\components;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\Module;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
@@ -140,15 +141,43 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
     /**
      * Checks if this content addon can be changed
      *
+     * @deprecated since 1.4
      * @return boolean
      */
     public function canWrite()
     {
-        if ($this->created_by == Yii::$app->user->id) {
+        return $this->canEdit();
+    }
+
+    /**
+     * Checks if this record can be edited
+     *
+     * @param User|null $user the user
+     * @return boolean
+     * @since 1.4
+     */
+    public function canEdit(User $user = null)
+    {
+        if ($user === null && Yii::$app->user->isGuest) {
+            return false;
+        } elseif ($user === null) {
+            /** @var User $user */
+            try {
+                $user = Yii::$app->user->getIdentity();
+            } catch (\Throwable $e) {
+                Yii::error($e->getMessage());
+                return false;
+            }
+        }
+
+        if ($this->created_by == $user->id) {
             return true;
         }
 
-        if (Yii::$app->getModule('content')->adminCanEditAllContent && Yii::$app->user->isAdmin()) {
+        /** @var Module $contentModule */
+        $contentModule = Yii::$app->getModule('content');
+
+        if ($contentModule->adminCanEditAllContent && Yii::$app->user->isAdmin()) {
             return true;
         }
 

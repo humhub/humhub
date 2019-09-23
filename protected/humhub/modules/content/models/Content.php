@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\models;
 
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
@@ -56,7 +57,7 @@ use yii\helpers\Url;
  * @mixin GUID
  * @since 0.5
  */
-class Content extends ContentDeprecated implements Movable, ContentOwner
+class Content extends ActiveRecord implements Movable, ContentOwner
 {
 
     /**

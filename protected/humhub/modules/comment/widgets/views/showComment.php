@@ -11,7 +11,7 @@ use humhub\modules\like\widgets\LikeLink;
 /* @var $editUrl string */
 /* @var $loadUrl string */
 /* @var $user \humhub\modules\user\models\User */
-/* @var $canWrite bool */
+/* @var $canEdit bool */
 /* @var $canDelete bool */
 /* @var $createdAt string */
 /* @var $updatedAt string */
@@ -20,7 +20,7 @@ use humhub\modules\like\widgets\LikeLink;
 <div class="media" id="comment_<?= $comment->id; ?>"
      data-action-component="comment.Comment"
      data-content-delete-url="<?= $deleteUrl ?>">
-         <?php if ($canWrite || $canDelete) : ?>
+         <?php if ($canEdit || $canDelete) : ?>
         <div class="comment-entry-loader pull-right"></div>
         <ul class="nav nav-pills preferences">
             <li class="dropdown ">
@@ -29,7 +29,7 @@ use humhub\modules\like\widgets\LikeLink;
                 </a>
 
                 <ul class="dropdown-menu pull-right">
-                    <?php if ($canWrite): ?>
+                    <?php if ($canEdit): ?>
                         <li>
                             <a href="#" class="comment-edit-link" data-action-click="edit" data-action-url="<?= $editUrl ?>">
                                 <i class="fa fa-pencil"></i> <?= Yii::t('CommentModule.base', 'Edit') ?>
