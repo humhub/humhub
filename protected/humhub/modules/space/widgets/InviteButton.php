@@ -8,28 +8,32 @@
 
 namespace humhub\modules\space\widgets;
 
-use Yii;
+use humhub\modules\space\models\Space;
+use humhub\modules\space\permissions\InviteUsers;
 use yii\base\Widget;
-use yii\helpers\Html;
 
 /**
- * SpaceInviteButtonWidget
+ * InviteButton class
  *
  * @author luke
- * @package humhub.modules_core.space.widgets
  * @since 0.11
  */
 class InviteButton extends Widget
 {
-
+    /**
+     * @var Space
+     */
     public $space;
 
+    /**
+     * @inheritDoc
+     */
     public function run()
     {
-        if (!$this->space->canInvite()) {
+        if (!$this->space->getPermissionManager()->can(new InviteUsers())) {
             return;
         }
-        
+
         return $this->render('inviteButton', ['space' => $this->space]);
     }
 

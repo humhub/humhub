@@ -56,7 +56,7 @@ If you're using any custom modules, please change the message directories accord
 
 The following deprecated method have been removed.
  
-**Content model**
+**Content model -removed methods **
 
 - canWrite()
 - canRead()
@@ -64,7 +64,18 @@ The following deprecated method have been removed.
 - getSpace()
 - getUser()
 
+**Removed class**
 
+- humhub\modules\space\modules\manage\widgets\Menu
+
+**Space class - removed methods**
+
+- canInvite()
+- canShare()
+
+**Notification class - removed methods**
+
+- getSpace()
 
 Migrate from 1.2 to 1.3
 -----------------------
