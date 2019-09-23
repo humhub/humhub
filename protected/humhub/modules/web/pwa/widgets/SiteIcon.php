@@ -94,7 +94,7 @@ class SiteIcon extends Widget
 
     public static function getPath($size = null)
     {
-        return static::$iconFolderUrl . DIRECTORY_SEPARATOR . static::getFileName($size);
+        return Yii::getAlias(static::$iconFolderPath . DIRECTORY_SEPARATOR . static::getFileName($size));
     }
 
 
