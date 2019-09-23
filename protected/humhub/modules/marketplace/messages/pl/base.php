@@ -14,7 +14,7 @@ Module successfully enabled!
 ' => '--- Włącz moduł: {moduleId} ---',
   'Add purchased module by licence key' => 'Dodaj zakupiony moduł wprowadzając klucz licencyjny',
   'All modules are up to date!' => 'Wszystkie moduły są aktualne!',
-  'All {moduleId} module content will be deleted. Continue?' => '',
+  'All {moduleId} module content will be deleted. Continue?' => 'Całą zawartość modułu {moduleId} zostanie usunięta. Kontynuować?',
   'Available updates' => 'Dostępne aktualizacje',
   'Browse online' => 'Przeglądaj online',
   'Buy (%price%)' => 'Kup (%price%)',
@@ -28,7 +28,7 @@ Module successfully enabled!
   'Latest compatible version:' => 'Ostatnia kompatybilna wersja:',
   'Latest version:' => 'Ostatnia wersja:',
   'Licence Key:' => 'Klucz licencyjny:',
-  'Marketplace' => '',
+  'Marketplace' => 'Sklep aplikacji',
   'Module directory %modulePath% is not writeable!' => 'Katalog modułu %modulePath% nie jest zapisywalny!',
   'Module download failed! (%error%)' => 'Nie powiodło się pobieranie modułu! (%error%)',
   'Module not found or activated!
@@ -36,7 +36,7 @@ Module successfully enabled!
   'Module not found!
 ' => 'Moduł nie odnaleziony!',
   'More info' => 'Więcej informacji',
-  'No compatible module version found!' => 'Nie znaleziono kompatybilnej wersji modułu! ',
+  'No compatible module version found!' => 'Nie znaleziono kompatybilnej wersji modułu!',
   'No modules found!' => 'Nie znaleziono modułów!',
   'No purchased modules found!' => 'Nie znaleziono zakupionych modułów!',
   'Ok' => 'Ok',
