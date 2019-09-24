@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use Yii;
 use yii\base\InvalidArgumentException;
 use yii\base\Exception;
 
@@ -248,7 +249,7 @@ class Helpers
      * should be configured in dynamic.php like this: 'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
      *
      * This is mainly required for grouped notifications.
-     * 
+     *
      * @since 1.2.1
      * @param $event
      */
