@@ -60,3 +60,4 @@ HumHub Change Log (DEVELOP)
 - Enh: Update Yii version to 2.0.27
 - Enh: Reorganized translation method categories to reduce language files
 - Enh: Removed deprecated methods/classes since v1.1 - see migration guide for details
+- Enh: Show registration form captcha per default
