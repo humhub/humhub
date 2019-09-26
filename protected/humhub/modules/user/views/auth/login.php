@@ -94,10 +94,37 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
     <?= humhub\widgets\LanguageChooser::widget(); ?>
 </div>
 
+<style>
+#humhub-pw-show {
+    position:absolute;
+    top:0px;
+    right:2px;
+    padding:4px;
+    font-size:19px;
+    cursor:pointer;
+}
+</style>
+
 <script type="text/javascript">
+    function humhub_pw_click () {
+        var pw= $('#login_password');
+        var btn= $('#humhub-pw-show > i');
+        if (pw.attr('type')=='password') {
+            pw.attr('type', 'input');
+            btn.addClass('fa-eye-slash').removeClass('fa-eye');
+        } else {
+            pw.attr('type', 'password');
+            btn.addClass('fa-eye').removeClass('fa-eye-slash');
+        }
+    }
+
     $(function () {
         // set cursor to login field
         $('#login_username').focus();
+        // add show password button inside pw input
+        $('.field-login_password')
+            .css('position', 'relative')
+            .prepend('<div id="humhub-pw-show"><i class="fa fa-eye" onclick="humhub_pw_click(this)"></i></div>');
     });
 
     // Shake panel after wrong validation
@@ -123,5 +150,3 @@ $this->pageTitle = Yii::t('UserModule.views_auth_login', 'Login');
 <?php } ?>
 
 </script>
-
-
