@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\LinkPager;
 use yii\helpers\Html;
 ?>
 
@@ -8,13 +9,15 @@ use yii\helpers\Html;
         <?php foreach ($notifications as $notification) : ?>
             <?= $notification->render(); ?>
         <?php endforeach; ?>
-        <?php if (count($notifications) == 0) : ?>
+        <?php if (empty($notifications)) : ?>
             <?= Yii::t('NotificationModule.base', 'No notifications found!'); ?>
         <?php endif; ?>
     <?= Html::endTag('ul') ?>
-    <?= Html::beginTag('center') ?>
-        <?= ($pagination != null) ? \humhub\widgets\LinkPager::widget(['pagination' => $pagination]) : ''; ?>
-    <?= Html::endTag('center') ?>
+    <?php if (!empty($notifications)) : ?>
+        <?= Html::beginTag('center') ?>
+            <?= ($pagination != null) ? LinkPager::widget(['pagination' => $pagination]) : ''; ?>
+        <?= Html::endTag('center') ?>
+    <?php endif;?>
 <?= Html::endTag('div') ?>
 
 

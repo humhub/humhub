@@ -22,7 +22,7 @@ class FilterForm extends \yii\base\Model
 
     /**
      * Contains all notifications by modulenames
-     * @var type 
+     * @var type
      */
     public $notifications;
 
@@ -60,7 +60,7 @@ class FilterForm extends \yii\base\Model
 
     /**
      * Returns all Notifications classes of modules not selected in the filter
-     * 
+     *
      * @return type
      */
     public function getExcludeClassFilter()
@@ -123,7 +123,9 @@ class FilterForm extends \yii\base\Model
     public function createQuery()
     {
         $query = Notification::findGrouped();
-        $query->andFilterWhere(['not in', 'class', $this->getExcludeClassFilter()]);
+        if($this->hasFilter()) {
+            $query->andFilterWhere(['not in', 'class', $this->getExcludeClassFilter()]);
+        }
         return $query;
     }
 

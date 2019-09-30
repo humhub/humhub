@@ -48,18 +48,18 @@ class OverviewController extends Controller
     {
         $filterForm = $this->loadFilterForm($reload);
 
-        if(!$filterForm->hasFilter()) {
-            return $this->renderOverview($filterForm);
+        if($filterForm->hasFilter()) {
+            $query = $filterForm->createQuery();
+            $notifications = $this->prepareNotifications($query->all());
+            $overview = OverviewWidget::widget([
+                'notifications' => $notifications,
+                'pagination' => $this->preparePagination($query)
+            ]);
+        } else {
+            $overview = OverviewWidget::widget([
+                'notifications' => [],
+            ]);
         }
-
-        $query = $filterForm->createQuery();
-
-        $notifications = $this->prepareNotifications($query->all());
-
-        $overview = OverviewWidget::widget([
-            'notifications' => $notifications,
-            'pagination' => $this->preparePagination($query)
-        ]);
 
         return $reload ? $overview : $this->render('index', [
             'overview' => $overview,
