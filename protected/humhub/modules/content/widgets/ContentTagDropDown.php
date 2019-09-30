@@ -40,7 +40,7 @@ class ContentTagDropDown extends JsInputWidget
         }
 
         if (!$this->none && !$this->noneLabel) {
-            $this->noneLabel = Yii::t('ContentModule.widgets_ContentTagDropDown', 'None');
+            $this->noneLabel = Yii::t('ContentModule.base', 'None');
         }
     }
 

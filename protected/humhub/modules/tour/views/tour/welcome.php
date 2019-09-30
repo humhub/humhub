@@ -27,12 +27,12 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
         <div class="modal-header">
             <h4 class="modal-title"
                 id="myModalLabel">
-                    <?= Yii::t('TourModule.views_tour_welcome', 'Howdy <strong>%firstname%</strong>, thank you for using %community%.', ['%firstname%' => $user->profile->firstname, '%community%' => Html::encode(Yii::$app->name)]); ?>
+                    <?= Yii::t('TourModule.base', 'Howdy <strong>%firstname%</strong>, thank you for using %community%.', ['%firstname%' => $user->profile->firstname, '%community%' => Html::encode(Yii::$app->name)]); ?>
             </h4>
         </div>
         <div class="modal-body">
             <div class="text-center">
-                <?= Yii::t('TourModule.views_tour_welcome', 'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.'); ?>
+                <?= Yii::t('TourModule.base', 'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.'); ?>
                 <br><br>
                 <br>
             </div>
@@ -64,7 +64,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                     <p class="help-block text-center">
                         <?= Icon::get('arrow-up')?>
                         <br>
-                        <?= Yii::t('TourModule.views_tour_welcome', 'Drag a photo here or click to browse your files'); ?>
+                        <?= Yii::t('TourModule.base', 'Drag a photo here or click to browse your files'); ?>
                     </p>
 
                 </div>
@@ -72,22 +72,22 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                     <?php $form = ActiveForm::begin(); ?>
                     <div class="row">
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'firstname')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your firstname')]); ?>
+                            <?php echo $form->field($user->profile, 'firstname')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your firstname')]); ?>
                         </div>
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'lastname')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your lastname')]); ?>
+                            <?php echo $form->field($user->profile, 'lastname')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your lastname')]); ?>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <?php echo $form->field($user->profile, 'title')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your title or position')]); ?>
+                            <?php echo $form->field($user->profile, 'title')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your title or position')]); ?>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <?php echo $form->field($user, 'tags')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your skills, knowledge and experience (comma seperated)')]); ?>
+                            <?php echo $form->field($user, 'tags')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your skills, knowledge and experience (comma seperated)')]); ?>
                         </div>
                     </div>
 
@@ -97,7 +97,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                         </div>
                         <div class="col-md-6">
                             <br><br>
-                            <?php echo $form->field($user->profile, 'birthday_hide_year')->checkbox(['label' => Yii::t('TourModule.views_tour_welcome', 'Hide my year of birth')]); ?>
+                            <?php echo $form->field($user->profile, 'birthday_hide_year')->checkbox(['label' => Yii::t('TourModule.base', 'Hide my year of birth')]); ?>
                         </div>
                     </div>
 
@@ -109,10 +109,10 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
 
                     <div class="row">
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'phone_work')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your phone number at work')]); ?>
+                            <?php echo $form->field($user->profile, 'phone_work')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your phone number at work')]); ?>
                         </div>
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'mobile')->textInput(['placeholder' => Yii::t('TourModule.views_tour_welcome', 'Your mobile phone number')]); ?>
+                            <?php echo $form->field($user->profile, 'mobile')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your mobile phone number')]); ?>
                         </div>
                     </div>
 
@@ -121,7 +121,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                         <div class="col-md-12 text-right">
                             <hr>
                             <br>
-                            <?= ModalButton::submitModal(Url::to(['/tour/tour/welcome']), Yii::t('TourModule.views_tour_welcome', 'Save and close'))?>
+                            <?= ModalButton::submitModal(Url::to(['/tour/tour/welcome']), Yii::t('TourModule.base', 'Save and close'))?>
                         </div>
                     </div>
 

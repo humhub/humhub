@@ -54,7 +54,7 @@ class AccountDelete extends Model
     public function attributeLabels()
     {
         return [
-            'currentPassword' => Yii::t('UserModule.password', 'Your password'),
+            'currentPassword' => Yii::t('UserModule.auth', 'Your password'),
         ];
     }
 

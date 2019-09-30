@@ -15,6 +15,7 @@ return array (
   'Delete table' => 'Táblázat törlése',
   'Flags' => 'Megjelöltek',
   'Food & Drink' => 'Étel és Ital',
+  'Heading' => 'Fejléc',
   'Height' => 'Magasság',
   'Horizontal rule' => 'Horizontális szabály',
   'Image' => 'Kép',

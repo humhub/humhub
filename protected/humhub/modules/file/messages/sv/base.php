@@ -1,12 +1,23 @@
 <?php
 return array (
   '<strong>Open</strong> file' => '<strong>Öppna</strong> fil',
+  '<strong>Upload</strong> error' => '',
+  'Close' => 'Stäng',
   'Could not find requested file variant!' => '',
   'Could not find requested file!' => 'Den begärda filen hittades inte!',
+  'Could not upload File:' => '',
   'Created by:' => 'Skapad av:',
+  'Double file extensions are not allowed!' => '',
   'Download' => 'Ladda ner',
+  'File {fileName} could not be uploaded!' => 'Filen {fileName} kunde inte laddas upp!',
+  'Image dimensions are too big to be processed with current server memory limit!' => '',
   'Insufficient permissions!' => 'Otillräckliga rättigheter!',
   'Invalid Mime-Type' => '',
+  'Invalid file name detected!' => '',
   'Last update by:' => 'Senast uppdaterad av:',
   'Size:' => 'Storlek',
+  'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
+  'The uploaded image is not a squared.' => '',
+  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '',
+  'Upload files' => 'Ladda upp filer',
 );

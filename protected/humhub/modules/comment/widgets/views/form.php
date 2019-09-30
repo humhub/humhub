@@ -25,7 +25,7 @@ $submitUrl = Url::to(['/comment/comment/post']);
             'id' => 'newCommentForm_' . $id,
             'layout' => RichTextField::LAYOUT_INLINE,
             'pluginOptions' => ['maxHeight' => '300px'],
-            'placeholder' => Yii::t('CommentModule.widgets_views_form', 'Write a new comment...'),
+            'placeholder' => Yii::t('CommentModule.base', 'Write a new comment...'),
             'name' => 'message',
             'events' => [
                 'scroll-active' => 'comment.scrollActive',
@@ -43,7 +43,7 @@ $submitUrl = Url::to(['/comment/comment/post']);
                 'max' => Yii::$app->getModule('content')->maxAttachedFiles
             ]); ?>
 
-            <?= Button::defaultType(Yii::t('CommentModule.widgets_views_form', 'Send'))
+            <?= Button::defaultType(Yii::t('CommentModule.base', 'Send'))
                 ->cssClass('btn-comment-submit')
                 ->action('submit', $submitUrl)->submit()->sm() ?>
         </div>

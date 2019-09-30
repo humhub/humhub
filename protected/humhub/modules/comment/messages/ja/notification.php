@@ -17,6 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Comments' => 'コメント',
+    'View Online' => 'オンラインで見る',
+    'Receive Notifications when someone comments on my own or a following post.' => '',
     '[Deleted]' => '',
     '{displayNames} commented {contentTitle}' => '',
     '{displayNames} commented {contentTitle} in space {space}' => '',

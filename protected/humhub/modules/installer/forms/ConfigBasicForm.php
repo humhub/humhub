@@ -39,7 +39,7 @@ class ConfigBasicForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'name' => Yii::t('InstallerModule.forms_ConfigBasicForm', 'Name of your network'),
+            'name' => Yii::t('InstallerModule.base', 'Name of your network'),
         ];
     }
 

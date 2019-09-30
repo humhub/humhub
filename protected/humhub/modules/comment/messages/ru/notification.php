@@ -17,7 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Comments' => 'Комментарии',
     '[Deleted]' => '[Удалено]',
+    '{displayNames} commented {contentTitle}.' => '{displayNames} прокомментировал {contentTitle}.',
+    '{displayName} commented {contentTitle}.' => '{displayName} прокомментировал {contentTitle}.',
+    'Receive Notifications when someone comments on my own or a following post.' => '',
+    'View Online' => '',
     '{displayNames} commented {contentTitle}' => '',
     '{displayNames} commented {contentTitle} in space {space}' => '',
     '{displayNames} just commented your {contentTitle}' => '',
@@ -26,6 +31,4 @@ return [
     '{displayName} commented {contentTitle} in space {space}' => '',
     '{displayName} just commented your {contentTitle}' => '',
     '{displayName} just commented your {contentTitle} in space {space}' => '',
-    '{displayNames} commented {contentTitle}.' => '{displayNames} прокомментировал {contentTitle}.',
-    '{displayName} commented {contentTitle}.' => '{displayName} прокомментировал {contentTitle}.',
 ];

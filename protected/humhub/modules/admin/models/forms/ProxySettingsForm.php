@@ -50,12 +50,12 @@ class ProxySettingsForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'enabled' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Enabled'),
-            'server' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Server'),
-            'port' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Port'),
-            'user' => Yii::t('AdminModule.forms_ProxySettingsForm', 'User'),
-            'password' => Yii::t('AdminModule.forms_ProxySettingsForm', 'Password'),
-            'noproxy' => Yii::t('AdminModule.forms_ProxySettingsForm', 'No Proxy Hosts'),
+            'enabled' => Yii::t('AdminModule.settings', 'Enabled'),
+            'server' => Yii::t('AdminModule.settings', 'Server'),
+            'port' => Yii::t('AdminModule.settings', 'Port'),
+            'user' => Yii::t('AdminModule.settings', 'User'),
+            'password' => Yii::t('AdminModule.settings', 'Password'),
+            'noproxy' => Yii::t('AdminModule.settings', 'No Proxy Hosts'),
         ];
     }
 

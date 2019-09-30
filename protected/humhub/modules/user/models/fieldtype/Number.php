@@ -55,15 +55,15 @@ class Number extends BaseType
         return parent::getFormDefinition([
                     get_class($this) => [
                         'type' => 'form',
-                        'title' => Yii::t('UserModule.models_ProfileFieldTypeNumber', 'Number field options'),
+                        'title' => Yii::t('UserModule.profile', 'Number field options'),
                         'elements' => [
                             'maxValue' => [
-                                'label' => Yii::t('UserModule.models_ProfileFieldTypeNumber', 'Maximum value'),
+                                'label' => Yii::t('UserModule.profile', 'Maximum value'),
                                 'type' => 'text',
                                 'class' => 'form-control',
                             ],
                             'minValue' => [
-                                'label' => Yii::t('UserModule.models_ProfileFieldTypeNumber', 'Minimum value'),
+                                'label' => Yii::t('UserModule.profile', 'Minimum value'),
                                 'type' => 'text',
                                 'class' => 'form-control',
                             ],

@@ -112,7 +112,7 @@ class LikeController extends ContentAddonController
         ]);
         $query->orderBy('like.created_at DESC');
 
-        $title = Yii::t('LikeModule.controllers_LikeController', "<strong>Users</strong> who like this");
+        $title = Yii::t('LikeModule.base', "<strong>Users</strong> who like this");
 
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }

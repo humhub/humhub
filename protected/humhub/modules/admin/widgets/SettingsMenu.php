@@ -27,7 +27,7 @@ class SettingsMenu extends TabMenu
         $canEditSettings = Yii::$app->user->can(ManageSettings::class);
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'General'),
+            'label' => Yii::t('AdminModule.base', 'General'),
             'url' => ['/admin/setting/index'],
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('admin', 'setting', 'basic'),
@@ -35,7 +35,7 @@ class SettingsMenu extends TabMenu
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Appearance'),
+            'label' => Yii::t('AdminModule.base', 'Appearance'),
             'url' => ['/admin/setting/design'],
             'sortOrder' => 200,
             'isActive' => MenuLink::isActiveState('admin', 'setting', 'design'),
@@ -43,7 +43,7 @@ class SettingsMenu extends TabMenu
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'E-Mail summaries'),
+            'label' => Yii::t('AdminModule.base', 'E-Mail summaries'),
             'url' => ['/activity/admin/defaults'],
             'sortOrder' => 300,
             'isActive' => MenuLink::isActiveState('activity', 'admin', 'defaults'),
@@ -51,7 +51,7 @@ class SettingsMenu extends TabMenu
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Notifications'),
+            'label' => Yii::t('AdminModule.base', 'Notifications'),
             'url' => ['/notification/admin/defaults'],
             'sortOrder' => 400,
             'isActive' => MenuLink::isActiveState('notification', 'admin', 'defaults'),
@@ -59,7 +59,7 @@ class SettingsMenu extends TabMenu
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Advanced'),
+            'label' => Yii::t('AdminModule.base', 'Advanced'),
             'url' => ['/admin/setting/advanced'],
             'sortOrder' => 1000,
             'isVisible' => $canEditSettings

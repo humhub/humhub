@@ -17,7 +17,7 @@ ActivityAsset::register($this);
 <div class="panel panel-default panel-activities" id="panel-activities">
     <?= \humhub\widgets\PanelMenu::widget(['id' => 'panel-activities']); ?>
     <div class="panel-heading">
-        <?= Yii::t('ActivityModule.widgets_views_activityStream', '<strong>Latest</strong> activities'); ?>
+        <?= Yii::t('ActivityModule.base', '<strong>Latest</strong> activities'); ?>
     </div>
     <?= Html::beginTag('div', $options) ?>
     <ul id="activityContents" class="media-list activities" data-stream-content></ul>

@@ -4,7 +4,7 @@
 
 <?php $this->beginContent('@admin/views/layouts/main.php') ?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?= Yii::t('AdminModule.views_space_index', '<strong>Manage</strong> spaces'); ?></div>
+    <div class="panel-heading"><?= Yii::t('AdminModule.space', '<strong>Manage</strong> spaces'); ?></div>
     <?= \humhub\modules\admin\widgets\SpaceMenu::widget(); ?>
     <div class="panel-body">
         <?= $content ?>

@@ -91,11 +91,11 @@ class FileValidator extends \yii\validators\FileValidator
             }
 
             if(preg_match($pattern, $model->file_name)) {
-                $this->addError($model, $attribute, Yii::t('FileModule.models_File', 'Invalid file name detected!'));
+                $this->addError($model, $attribute, Yii::t('FileModule.base', 'Invalid file name detected!'));
             }
 
             if($this->denyDoubleFileExtensions && preg_match('/\.\w{2,3}\.\w{2,3}$/', $model->file_name)) {
-                $this->addError($model, $attribute, Yii::t('FileModule.models_File', 'Double file extensions are not allowed!'));
+                $this->addError($model, $attribute, Yii::t('FileModule.base', 'Double file extensions are not allowed!'));
             }
         }
     }
@@ -116,7 +116,7 @@ class FileValidator extends \yii\validators\FileValidator
         $convertableFileTypes = [image_type_to_mime_type(IMAGETYPE_PNG), image_type_to_mime_type(IMAGETYPE_GIF), image_type_to_mime_type(IMAGETYPE_JPEG)];
         if (in_array($file->type, $convertableFileTypes)) {
             if (!ImageConverter::allocateMemory($file->tempName, true)) {
-                return [Yii::t('FileModule.models_File', 'Image dimensions are too big to be processed with current server memory limit!'), []];
+                return [Yii::t('FileModule.base', 'Image dimensions are too big to be processed with current server memory limit!'), []];
             }
         }
 

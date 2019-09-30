@@ -87,7 +87,7 @@ class CommentController extends ContentAddonController
     public function actionPost()
     {
         if (Yii::$app->user->isGuest || !Yii::$app->getModule('comment')->canComment($this->parentContent->content)) {
-            throw new ForbiddenHttpException(Yii::t('CommentModule.controllers_CommentController',
+            throw new ForbiddenHttpException(Yii::t('CommentModule.base',
                 'You are not allowed to comment.')
             );
         }
@@ -114,8 +114,8 @@ class CommentController extends ContentAddonController
     {
         $this->loadContentAddon(Comment::class, Yii::$app->request->get('id'));
 
-        if (!$this->contentAddon->canWrite()) {
-            throw new HttpException(403, Yii::t('CommentModule.controllers_CommentController', 'Access denied!'));
+        if (!$this->contentAddon->canEdit()) {
+            throw new HttpException(403, Yii::t('CommentModule.base', 'Access denied!'));
         }
 
         if ($this->contentAddon->load(Yii::$app->request->post()) && $this->contentAddon->validate() && $this->contentAddon->save()) {
@@ -141,7 +141,7 @@ class CommentController extends ContentAddonController
         $this->loadContentAddon(Comment::class, Yii::$app->request->get('id'));
 
         if (!$this->contentAddon->canRead()) {
-            throw new HttpException(403, Yii::t('CommentModule.controllers_CommentController', 'Access denied!'));
+            throw new HttpException(403, Yii::t('CommentModule.base', 'Access denied!'));
         }
 
         return $this->renderAjaxContent(CommentWidget::widget(['comment' => $this->contentAddon]));
@@ -161,7 +161,7 @@ class CommentController extends ContentAddonController
             $this->contentAddon->delete();
             return ['success' => true];
         } else {
-            throw new HttpException(500, Yii::t('CommentModule.controllers_CommentController', 'Insufficent permissions!'));
+            throw new HttpException(500, Yii::t('CommentModule.base', 'Insufficent permissions!'));
         }
     }
 

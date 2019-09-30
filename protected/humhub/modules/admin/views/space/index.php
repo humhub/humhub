@@ -13,9 +13,9 @@ use yii\helpers\Url;
 
 <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.space', 'Add new space'), ['/space/create'], ['class' => 'btn btn-sm btn-success pull-right', 'data-target' => '#globalModal']); ?>
 
-<h4><?= Yii::t('AdminModule.views_space_index', 'Overview'); ?></h4>
+<h4><?= Yii::t('AdminModule.space', 'Overview'); ?></h4>
 <div class="help-block">
-    <?= Yii::t('AdminModule.views_space_index', 'This overview contains a list of each space with actions to view, edit and delete spaces.'); ?>
+    <?= Yii::t('AdminModule.space', 'This overview contains a list of each space with actions to view, edit and delete spaces.'); ?>
 </div>
 
 <br />

@@ -89,14 +89,14 @@ class Membership extends ActiveRecord
         return [
             'space_id' => 'Space ID',
             'user_id' => 'User ID',
-            'originator_user_id' => Yii::t('SpaceModule.models_Membership', 'Originator User ID'),
-            'status' => Yii::t('SpaceModule.models_Membership', 'Status'),
-            'request_message' => Yii::t('SpaceModule.models_Membership', 'Request Message'),
-            'last_visit' => Yii::t('SpaceModule.models_Membership', 'Last Visit'),
-            'created_at' => Yii::t('SpaceModule.models_Membership', 'Created At'),
-            'created_by' => Yii::t('SpaceModule.models_Membership', 'Created By'),
-            'updated_at' => Yii::t('SpaceModule.models_Membership', 'Updated At'),
-            'updated_by' => Yii::t('SpaceModule.models_Membership', 'Updated By'),
+            'originator_user_id' => Yii::t('SpaceModule.base', 'Originator User ID'),
+            'status' => Yii::t('SpaceModule.base', 'Status'),
+            'request_message' => Yii::t('SpaceModule.base', 'Request Message'),
+            'last_visit' => Yii::t('SpaceModule.base', 'Last Visit'),
+            'created_at' => Yii::t('SpaceModule.base', 'Created At'),
+            'created_by' => Yii::t('SpaceModule.base', 'Created By'),
+            'updated_at' => Yii::t('SpaceModule.base', 'Updated At'),
+            'updated_by' => Yii::t('SpaceModule.base', 'Updated By'),
             'can_leave' => 'Can Leave'
         ];
     }

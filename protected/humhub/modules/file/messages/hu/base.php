@@ -1,12 +1,23 @@
 <?php
 return array (
   '<strong>Open</strong> file' => 'Fájl <strong>megnyitása</strong>',
+  '<strong>Upload</strong> error' => '<strong>Feltöltési</strong> hiba',
+  'Close' => 'Bezár',
   'Could not find requested file variant!' => 'A kért fájl variáns nem található!',
   'Could not find requested file!' => 'A kért fájl nem található!',
+  'Could not upload File:' => 'A fájl feltöltése nem sikerült:',
   'Created by:' => 'Létrehozta:',
+  'Double file extensions are not allowed!' => '',
   'Download' => 'Letöltés',
+  'File {fileName} could not be uploaded!' => 'A {fileName} nem tölthető fel!',
+  'Image dimensions are too big to be processed with current server memory limit!' => 'A kép méretei túl nagyok a jelenlegi szerver memórialimitjével való feldolgozáshoz!',
   'Insufficient permissions!' => 'Elégtelen jogosultságok!',
   'Invalid Mime-Type' => 'Érvénytelen Mime-típus',
+  'Invalid file name detected!' => '',
   'Last update by:' => 'Utoljára frissítve:',
   'Size:' => 'Méret:',
+  'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Egyszerre, csak {n,plural,=1{# fájl} other{# fájlok}} feltöltését teszi lehetővé.',
+  'The uploaded image is not a squared.' => '',
+  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Ez a feltöltési mező maximum {n,plural,=1{# fájl} other{# fájlok}} feltöltését teszi lehetővé.',
+  'Upload files' => 'Fájlok feltöltése',
 );

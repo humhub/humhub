@@ -29,3 +29,10 @@ Remove Metatags:
 - application-name
 
 
+## View file mapping
+
+The automatic mapping of view files to modified files has been improved with a much more generic approach.
+More details can be found in the [Views](views.md) chapter of the theme documentation. 
+
+The old mapping will be available until at least version 1.5. But we recommend to upgrade your theme as soon as possible.
+

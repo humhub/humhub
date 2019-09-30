@@ -134,11 +134,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         return [
             [['username'], 'required'],
+            [['username'], 'unique'],
+            [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
+            [['username'], 'match', 'not' => true, 'pattern' => '![\x00-\x1f\x7f/]!', 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.') ],
             [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
-            [['status', 'visibility'], 'integer'],
             [['tags'], 'string'],
             [['guid'], 'string', 'max' => 45],
-            [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
             [['time_zone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
@@ -148,7 +149,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['email'], 'required', 'when' => function ($model, $attribute) use ($userModule) {
                 return $userModule->emailRequired;
             }],
-            [['username'], 'unique'],
             [['guid'], 'unique'],
         ];
     }
@@ -215,20 +215,20 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         return [
             'id' => 'ID',
             'guid' => 'Guid',
-            'status' => Yii::t('UserModule.models_User', 'Status'),
-            'username' => Yii::t('UserModule.models_User', 'Username'),
-            'email' => Yii::t('UserModule.models_User', 'Email'),
-            'profile.firstname' => Yii::t('UserModule.models_Profile', 'First name'),
-            'profile.lastname' => Yii::t('UserModule.models_Profile', 'Last name'),
-            'auth_mode' => Yii::t('UserModule.models_User', 'Auth Mode'),
-            'tags' => Yii::t('UserModule.models_User', 'Tags'),
-            'language' => Yii::t('UserModule.models_User', 'Language'),
-            'created_at' => Yii::t('UserModule.models_User', 'Created at'),
-            'created_by' => Yii::t('UserModule.models_User', 'Created by'),
-            'updated_at' => Yii::t('UserModule.models_User', 'Updated at'),
-            'updated_by' => Yii::t('UserModule.models_User', 'Updated by'),
-            'last_login' => Yii::t('UserModule.models_User', 'Last Login'),
-            'visibility' => Yii::t('UserModule.models_User', 'Visibility'),
+            'status' => Yii::t('UserModule.base', 'Status'),
+            'username' => Yii::t('UserModule.base', 'Username'),
+            'email' => Yii::t('UserModule.base', 'Email'),
+            'profile.firstname' => Yii::t('UserModule.profile', 'First name'),
+            'profile.lastname' => Yii::t('UserModule.profile', 'Last name'),
+            'auth_mode' => Yii::t('UserModule.base', 'Auth Mode'),
+            'tags' => Yii::t('UserModule.base', 'Tags'),
+            'language' => Yii::t('UserModule.base', 'Language'),
+            'created_at' => Yii::t('UserModule.base', 'Created at'),
+            'created_by' => Yii::t('UserModule.base', 'Created by'),
+            'updated_at' => Yii::t('UserModule.base', 'Updated at'),
+            'updated_by' => Yii::t('UserModule.base', 'Updated by'),
+            'last_login' => Yii::t('UserModule.base', 'Last Login'),
+            'visibility' => Yii::t('UserModule.base', 'Visibility'),
         ];
     }
 

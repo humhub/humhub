@@ -9,9 +9,7 @@ use humhub\libs\Html;
 ?>
 
 <?= Html::beginTag('div', $options)?>
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="true">
-
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
         <?= $menu->label ?>
         <span class="caret"></span>
    </button>

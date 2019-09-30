@@ -93,7 +93,7 @@ class ProfileFieldCategory extends ActiveRecord
             return $this->translation_category;
         }
 
-        return "UserModule.models_ProfileFieldCategory";
+        return "UserModule.profile";
     }
 
     public function getFields()
@@ -110,9 +110,9 @@ class ProfileFieldCategory extends ActiveRecord
      */
     private function translationOnly()
     {
-        Yii::t('UserModule.models_ProfileFieldCategory', 'General');
-        Yii::t('UserModule.models_ProfileFieldCategory', 'Communication');
-        Yii::t('UserModule.models_ProfileFieldCategory', 'Social bookmarks');
+        Yii::t('UserModule.profile', 'General');
+        Yii::t('UserModule.profile', 'Communication');
+        Yii::t('UserModule.profile', 'Social bookmarks');
     }
 
 }

@@ -7,6 +7,6 @@ use yii\helpers\Url;
 <li>
     <!-- load modal confirm widget -->
     <a  href="#" data-action-click="delete">
-           <i class="fa fa-trash-o"></i> <?= Yii::t('ContentModule.widgets_views_deleteLink', 'Delete') ?> 
+           <i class="fa fa-trash-o"></i> <?= Yii::t('ContentModule.base', 'Delete') ?> 
     </a>
 </li>

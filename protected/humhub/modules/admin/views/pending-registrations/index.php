@@ -14,7 +14,7 @@ use yii\helpers\Url;
 
     <div class="help-block">
         <?= Yii::t(
-            'AdminModule.views_approval_index',
+            'AdminModule.user',
             'The following list contains all pending sign-ups and invites.'
         ) ?>
     </div>
@@ -45,7 +45,7 @@ use yii\helpers\Url;
                 },
             ],
             [
-                'header' => Yii::t('AdminModule.views_user_index', 'Actions'),
+                'header' => Yii::t('AdminModule.user', 'Actions'),
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{resend} {delete}',
                 'buttons' => [

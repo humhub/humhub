@@ -58,10 +58,10 @@ class LikeLink extends \yii\base\Widget
             // if only one user likes
             if (count($likes) == 1) {
                 // output, if the current user is the only one
-                $userlist = Yii::t('LikeModule.widgets_views_likeLink', 'You like this.');
+                $userlist = Yii::t('LikeModule.base', 'You like this.');
             } else {
                 // output, if more users like this
-                $userlist .= Yii::t('LikeModule.widgets_views_likeLink', 'You'). "\n";
+                $userlist .= Yii::t('LikeModule.base', 'You'). "\n";
             }
         }
 
@@ -72,7 +72,7 @@ class LikeLink extends \yii\base\Widget
                 // check, if you liked
                 if ($likes[$i]->user->guid != Yii::$app->user->guid) {
                     // output, if an other user liked
-                    $userlist .= Html::encode($likes[$i]->user->displayName) . Yii::t('LikeModule.widgets_views_likeLink', ' likes this.');
+                    $userlist .= Html::encode($likes[$i]->user->displayName) . Yii::t('LikeModule.base', ' likes this.');
                 }
             } else {
 
@@ -85,7 +85,7 @@ class LikeLink extends \yii\base\Widget
                 // check if exists more user as limited
                 if ($i == $maxUser) {
                     // output with the number of not rendered users
-                    $userlist .= Yii::t('LikeModule.widgets_views_likeLink', 'and {count} more like this.', ['{count}' => (int)(count($likes) - $maxUser)]);
+                    $userlist .= Yii::t('LikeModule.base', 'and {count} more like this.', ['{count}' => (int)(count($likes) - $maxUser)]);
 
                     // stop the loop
                     break;

@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Login</strong> required' => 'Giriş Yapınız',
+  '<strong>Login</strong> required' => 'Oturum açınız',
   'An internal server error occurred.' => 'Sunucu hatası oluştu.',
   'Guest mode not active, please login first.' => 'Misafir modu aktif değil, lütfen önce giriş yapın.',
   'Login required for this section.' => 'Bu bölüm için giriş gerekli.',

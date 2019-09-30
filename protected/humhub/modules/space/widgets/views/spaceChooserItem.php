@@ -20,7 +20,7 @@ use yii\helpers\Html;
             <div class="media-body">
                 <strong class="space-name"><?= Html::encode($space->name); ?></strong>
                     <?= $badge ?>
-                <div data-message-count="<?= $updateCount; ?>" style="display: none;" class="badge badge-space messageCount pull-right tt" title="<?= Yii::t('SpaceModule.widgets_views_spaceChooserItem', '{n,plural,=1{# new entry} other{# new entries}} since your last visit', ['n' => $updateCount]); ?>">
+                <div data-message-count="<?= $updateCount; ?>" style="display: none;" class="badge badge-space messageCount pull-right tt" title="<?= Yii::t('SpaceModule.chooser', '{n,plural,=1{# new entry} other{# new entries}} since your last visit', ['n' => $updateCount]); ?>">
                     <?= $updateCount; ?>
                 </div>
                 <br>

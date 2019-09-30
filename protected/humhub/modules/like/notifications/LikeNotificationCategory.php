@@ -43,7 +43,7 @@ class LikeNotificationCategory extends NotificationCategory
      */
     public function getTitle()
     {
-        return Yii::t('LikeModule.notifications_LikeNotificationCategory', 'Likes');
+        return Yii::t('LikeModule.notifications', 'Likes');
     }
 
     /**
@@ -51,7 +51,7 @@ class LikeNotificationCategory extends NotificationCategory
      */
     public function getDescription()
     {
-        return Yii::t('LikeModule.notifications_LikeNotificationCategory', 'Receive Notifications when someone likes your content.');
+        return Yii::t('LikeModule.notifications', 'Receive Notifications when someone likes your content.');
     }
 
 }

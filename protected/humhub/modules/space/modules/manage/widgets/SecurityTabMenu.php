@@ -31,14 +31,14 @@ class SecurityTabMenu extends TabMenu
     public function init()
     {
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.manage', 'General'),
+            'label' => Yii::t('AdminModule.base', 'General'),
             'url' => $this->space->createUrl('/space/manage/security'),
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState(null, 'security', 'index'),
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.manage', 'Permissions'),
+            'label' => Yii::t('AdminModule.base', 'Permissions'),
             'url' => $this->space->createUrl('/space/manage/security/permissions'),
             'sortOrder' => 200,
             'isActive' => MenuLink::isActiveState(null, 'security', 'permissions'),

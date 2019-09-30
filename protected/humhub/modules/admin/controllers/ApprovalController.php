@@ -82,11 +82,11 @@ class ApprovalController extends Controller
         $user = User::findOne(['id' => (int) Yii::$app->request->get('id')]);
 
         if ($user == null)
-            throw new HttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
+            throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
 
         $model = new ApproveUserForm;
-        $model->subject = Yii::t('AdminModule.controllers_ApprovalController', "Account Request for '{displayName}' has been approved.", ['{displayName}' => Html::encode($user->displayName)]);
-        $model->message = strtr(Yii::$app->getModule('user')->settings->get('auth.registrationApprovalMailContent', Yii::t('AdminModule.controllers_ApprovalController', \humhub\modules\admin\models\forms\AuthenticationSettingsForm::defaultRegistrationApprovalMailContent)), [
+        $model->subject = Yii::t('AdminModule.user', "Account Request for '{displayName}' has been approved.", ['{displayName}' => Html::encode($user->displayName)]);
+        $model->message = strtr(Yii::$app->getModule('user')->settings->get('auth.registrationApprovalMailContent', Yii::t('AdminModule.user', \humhub\modules\admin\models\forms\AuthenticationSettingsForm::defaultRegistrationApprovalMailContent)), [
                     '{displayName}' => Html::encode($user->displayName),
                     '{loginURL}' => urldecode(Url::to(["/user/auth/login"], true)),
                     '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
@@ -112,11 +112,11 @@ class ApprovalController extends Controller
         $user = User::findOne(['id' => (int) Yii::$app->request->get('id')]);
 
         if ($user == null)
-            throw new HttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
+            throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
 
         $model = new ApproveUserForm;
-        $model->subject = Yii::t('AdminModule.controllers_ApprovalController', 'Account Request for \'{displayName}\' has been declined.', ['{displayName}' => Html::encode($user->displayName)]);
-        $model->message = strtr(Yii::$app->getModule('user')->settings->get('auth.registrationDenialMailContent', Yii::t('AdminModule.controllers_ApprovalController', \humhub\modules\admin\models\forms\AuthenticationSettingsForm::defaultRegistrationDenialMailContent)), [
+        $model->subject = Yii::t('AdminModule.user', 'Account Request for \'{displayName}\' has been declined.', ['{displayName}' => Html::encode($user->displayName)]);
+        $model->message = strtr(Yii::$app->getModule('user')->settings->get('auth.registrationDenialMailContent', Yii::t('AdminModule.user', \humhub\modules\admin\models\forms\AuthenticationSettingsForm::defaultRegistrationDenialMailContent)), [
                     '{displayName}' => Html::encode($user->displayName),
                     '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
         ]);

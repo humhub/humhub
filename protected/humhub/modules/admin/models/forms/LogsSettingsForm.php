@@ -31,13 +31,13 @@ class LogsSettingsForm extends \yii\base\Model
     public function getOptions()
     {
         return [
-            '-1 week' => Yii::t('AdminModule.forms_LogsSettingsForm', '1 week'),
-            '-2 weeks' => Yii::t('AdminModule.forms_LogsSettingsForm', '2 weeks'),
-            '-1 month' => Yii::t('AdminModule.forms_LogsSettingsForm', '1 month'),
-            '-3 months' => Yii::t('AdminModule.forms_LogsSettingsForm', '3 months'),
-            '-6 months' => Yii::t('AdminModule.forms_LogsSettingsForm', '6 months'),
-            '-1 year' => Yii::t('AdminModule.forms_LogsSettingsForm', '1 year'),
-            '' => Yii::t('AdminModule.forms_LogsSettingsForm', 'never'),
+            '-1 week' => Yii::t('AdminModule.settings', '1 week'),
+            '-2 weeks' => Yii::t('AdminModule.settings', '2 weeks'),
+            '-1 month' => Yii::t('AdminModule.settings', '1 month'),
+            '-3 months' => Yii::t('AdminModule.settings', '3 months'),
+            '-6 months' => Yii::t('AdminModule.settings', '6 months'),
+            '-1 year' => Yii::t('AdminModule.settings', '1 year'),
+            '' => Yii::t('AdminModule.settings', 'never'),
         ];
     }
 
@@ -57,7 +57,7 @@ class LogsSettingsForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'logsDateLimit' => Yii::t('AdminModule.forms_StatisticSettingsForm', 'Maximum allowed age for logs.'),
+            'logsDateLimit' => Yii::t('AdminModule.settings', 'Maximum allowed age for logs.'),
         ];
     }
 

@@ -8,7 +8,7 @@ use yii\helpers\Url;
 
         <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'user-tags-panel']); ?>
 
-        <div class="panel-heading"><?php echo Yii::t('UserModule.widgets_views_userTags', '<strong>User</strong> tags'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>User</strong> tags'); ?></div>
         <div class="panel-body">
             <!-- start: tags for user skills -->
             <div class="tags">

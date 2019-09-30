@@ -9,13 +9,13 @@ humhub\modules\like\assets\LikeAsset::register($this);
 
     <?php if (Yii::$app->user->isGuest): ?>
 
-        <?php echo Html::a(Yii::t('LikeModule.widgets_views_likeLink', 'Like'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']); ?>
+        <?php echo Html::a(Yii::t('LikeModule.base', 'Like'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']); ?>
     <?php else: ?>
         <a href="#" data-action-click="like.toggleLike" data-action-url="<?= $likeUrl ?>" class="like likeAnchor" style="<?= (!$currentUserLiked) ? '' : 'display:none'?>">
-            <?= Yii::t('LikeModule.widgets_views_likeLink', 'Like') ?>
+            <?= Yii::t('LikeModule.base', 'Like') ?>
         </a>
         <a href="#" data-action-click="like.toggleLike" data-action-url="<?= $unlikeUrl ?>" class="unlike likeAnchor" style="<?= ($currentUserLiked) ? '' : 'display:none'?>">
-            <?= Yii::t('LikeModule.widgets_views_likeLink', 'Unlike') ?>
+            <?= Yii::t('LikeModule.base', 'Unlike') ?>
         </a>
     <?php endif; ?>
 

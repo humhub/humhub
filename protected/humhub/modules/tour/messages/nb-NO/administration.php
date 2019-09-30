@@ -1,0 +1,9 @@
+<?php
+return array (
+  '<strong>Administration</strong>' => '<strong>Administrasjon</strong>',
+  '<strong>Hurray!</strong> That\'s all for now.' => '<strong>Hurra!</strong> Dett var dett.',
+  '<strong>Modules</strong>' => '<strong>Moduler</strong>',
+  'As an admin, you can manage the whole platform from here.<br><br>Apart from the modules, we are not going to go into each point in detail here, as each has its own short description elsewhere.' => 'Som Admin kan du administrere hele løsningen herfra.<br /><br />Bortsett fra moduler, kommer vi ikke til å gå inn på hvert punkt i detalj her, siden de har hver sin egen beskrivelse andre steder.',
+  'You are currently in the tools menu. From here you can access the HumHub online marketplace, where you can install an ever increasing number of tools on-the-fly.<br><br>As already mentioned, the tools increase the features available for your space.' => 'Du er nå i verktøysmenyen. Herfra kan du ta deg til HumHubs online markedsplass, hvor du superenkelt kan installere flere spennende verktøy til plattformen din.<br /><br />Som nevnt tidligere, øker verktøyene funksjonaliteten tilgjengelig for din gruppe.',
+  'You have now learned about all the most important features and settings and are all set to start using the platform.<br><br>We hope you and all future users will enjoy using this site. We are looking forward to any suggestions or support you wish to offer for our project. Feel free to contact us via www.humhub.org.<br><br>Stay tuned. :-)' => 'Du har nå gjenomgått de viktigste funksjoner og innstillinger, og er klar til å ta i bruk plattformen.<br /><br />Vi håper du og fremtidige brukere vil vertsette nettstedet.  Vi ser frem til forslag og støtte du ønsker å tilby til prosjektet. Kontakt oss gjerne på www.humhub.org.<br /><br />Følg med. :-)',
+);

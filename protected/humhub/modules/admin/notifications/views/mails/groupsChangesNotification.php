@@ -37,7 +37,7 @@
                     'buttons' => [
                         humhub\widgets\mails\MailButton::widget([
                             'url' => $url,
-                            'text' => Yii::t('SpaceModule.notifications_mails',
+                            'text' => Yii::t('SpaceModule.notification',
                                 'View Online'),
                         ]),
                     ],

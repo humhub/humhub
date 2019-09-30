@@ -39,7 +39,7 @@ class Module extends \humhub\components\Module
      */
     public function getName()
     {
-        return Yii::t('CommentModule.views_comment_show', 'Comments');
+        return Yii::t('CommentModule.base', 'Comments');
     }
 
     /**

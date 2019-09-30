@@ -58,8 +58,8 @@ class AccountChangeUsername extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'currentPassword' => Yii::t('UserModule.forms_AccountChangeUsernameForm', 'Current password'),
-            'newUsername' => Yii::t('UserModule.forms_AccountChangeUsernameForm', 'New User name'),
+            'currentPassword' => Yii::t('UserModule.account', 'Current password'),
+            'newUsername' => Yii::t('UserModule.account', 'New User name'),
         ];
     }
 
@@ -80,7 +80,7 @@ class AccountChangeUsername extends \yii\base\Model
             'newUsername' => $this->newUsername,
         ]);
         $mail->setTo($user->email);
-        $mail->setSubject(Yii::t('UserModule.forms_AccountChangeUsernameForm', 'Username has been changed'));
+        $mail->setSubject(Yii::t('UserModule.account', 'Username has been changed'));
         $mail->send();
 
         return true;

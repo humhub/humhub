@@ -43,8 +43,8 @@ if (!isset($confirmBody)) {
         ->loader(false)
         ->cssClass('profile-image-edit profile-image-delete')
         ->confirm(
-            Yii::t('SpaceModule.widgets_views_deleteBanner', '<strong>Confirm</strong> image deletion'),
+            Yii::t('SpaceModule.base', '<strong>Confirm</strong> image deletion'),
             $confirmBody,
-            Yii::t('SpaceModule.widgets_views_deleteBanner', 'Delete'),
-            Yii::t('SpaceModule.widgets_views_deleteBanner', 'Cancel')) ?>
+            Yii::t('SpaceModule.base', 'Delete'),
+            Yii::t('SpaceModule.base', 'Cancel')) ?>
 </div>

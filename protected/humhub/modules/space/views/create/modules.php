@@ -11,7 +11,7 @@ SpaceAsset::register($this);
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title" id="myModalLabel">
-                <?= Yii::t('SpaceModule.views_create_modules', 'Add <strong>Modules</strong>') ?>
+                <?= Yii::t('SpaceModule.manage', 'Add <strong>Modules</strong>') ?>
             </h4>
         </div>
         <div class="modal-body">
@@ -49,7 +49,7 @@ SpaceAsset::register($this);
                                     data-action-click="content.container.enableModule" 
                                     data-ui-loader
                                     data-action-url="<?= $space->createUrl('/space/manage/module/enable', ['moduleId' => $moduleId]); ?>">
-                                        <?= Yii::t('SpaceModule.views_admin_modules', 'Enable'); ?>
+                                        <?= Yii::t('SpaceModule.manage', 'Enable'); ?>
                                 </a>
                                 
                                 <a href="#" class="btn btn-sm btn-primary disable" 
@@ -57,7 +57,7 @@ SpaceAsset::register($this);
                                     data-action-click="content.container.disableModule" 
                                     data-ui-loader
                                     data-action-url="<?= $space->createUrl('/space/manage/module/disable', ['moduleId' => $moduleId]); ?>">
-                                        <?= Yii::t('SpaceModule.views_admin_modules', 'Disable'); ?>
+                                        <?= Yii::t('SpaceModule.manage', 'Disable'); ?>
                                 </a>
                             </div>
                         </div>
@@ -72,7 +72,7 @@ SpaceAsset::register($this);
                data-action-click="ui.modal.post" 
                data-ui-loader
                data-action-url="<?= Url::to(['/space/create/invite', 'spaceId' => $space->id]); ?>">
-                   <?= Yii::t('SpaceModule.views_create_create', 'Next'); ?>
+                   <?= Yii::t('SpaceModule.manage', 'Next'); ?>
             </a>
         </div>
     </div>

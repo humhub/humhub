@@ -24,7 +24,7 @@ use yii\bootstrap\Html;
     <table class="table table-middle table-hover">
         <thead>
             <tr>
-                <th><?= Yii::t('NotificationModule.widgets_views_notificationSettingsForm', 'Type') ?></th>
+                <th><?= Yii::t('NotificationModule.base', 'Type') ?></th>
                 <?php foreach ($model->targets() as $target): ?>
                     <th class="text-center">
                         <?= $target->getTitle(); ?>

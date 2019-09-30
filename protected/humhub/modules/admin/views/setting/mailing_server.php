@@ -30,7 +30,7 @@ use humhub\models\Setting;
 
 <div id="smtpOptions">
     <hr>
-    <h4> <?= Yii::t('AdminModule.views_setting_mailing_server', 'SMTP Options'); ?> </h4>
+    <h4> <?= Yii::t('AdminModule.settings', 'SMTP Options'); ?> </h4>
 
     <div class="form-group">
         <?= $form->labelEx($model, 'hostname'); ?>
@@ -70,7 +70,7 @@ use humhub\models\Setting;
     </div>
 </div>
 <hr>
-<?= Html::submitButton(Yii::t('AdminModule.views_setting_mailing_server', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+<?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
 <?= \humhub\widgets\DataSaved::widget(); ?>
 <?php CActiveForm::end(); ?>

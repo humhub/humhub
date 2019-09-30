@@ -37,9 +37,17 @@ class Google extends \yii\authclient\clients\Google
         return [
             'username' => 'displayName',
             'firstname' => function ($attributes) {
+                if (!isset($attributes['given_name'])) {
+                    return '';
+                }
+
                 return $attributes['given_name'];
             },
             'lastname' => function ($attributes) {
+                if (!isset($attributes['family_name'])) {
+                    return '';
+                }
+
                 return $attributes['family_name'];
             },
             'title' => 'tagline',

@@ -68,18 +68,18 @@ class Group extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'space_id' => Yii::t('UserModule.models_User', 'Space ID'),
-            'name' => Yii::t('UserModule.models_User', 'Name'),
-            'defaultSpaceGuid' => Yii::t('UserModule.models_User', 'Default Space'),
-            'managerGuids' => Yii::t('UserModule.models_User', 'Manager'),
-            'description' => Yii::t('UserModule.models_User', 'Description'),
-            'created_at' => Yii::t('UserModule.models_User', 'Created at'),
-            'created_by' => Yii::t('UserModule.models_User', 'Created by'),
-            'updated_at' => Yii::t('UserModule.models_User', 'Updated at'),
-            'updated_by' => Yii::t('UserModule.models_User', 'Updated by'),
-            'show_at_registration' => Yii::t('UserModule.models_User', 'Show At Registration'),
-            'show_at_directory' => Yii::t('UserModule.models_User', 'Show At Directory'),
-            'sort_order' => Yii::t('UserModule.models_User', 'Sort order'),
+            'space_id' => Yii::t('UserModule.base', 'Space ID'),
+            'name' => Yii::t('UserModule.base', 'Name'),
+            'defaultSpaceGuid' => Yii::t('UserModule.base', 'Default Space'),
+            'managerGuids' => Yii::t('UserModule.base', 'Manager'),
+            'description' => Yii::t('UserModule.base', 'Description'),
+            'created_at' => Yii::t('UserModule.base', 'Created at'),
+            'created_by' => Yii::t('UserModule.base', 'Created by'),
+            'updated_at' => Yii::t('UserModule.base', 'Updated at'),
+            'updated_by' => Yii::t('UserModule.base', 'Updated by'),
+            'show_at_registration' => Yii::t('UserModule.base', 'Show At Registration'),
+            'show_at_directory' => Yii::t('UserModule.base', 'Show At Directory'),
+            'sort_order' => Yii::t('UserModule.base', 'Sort order'),
         ];
     }
 
@@ -289,11 +289,11 @@ class Group extends ActiveRecord
 
             Yii::$app->i18n->setUserLocale($manager);
 
-            $html = Yii::t('UserModule.adminUserApprovalMail', 'Hello {displayName},',
+            $html = Yii::t('UserModule.auth', 'Hello {displayName},',
                     ['displayName' => $manager->displayName]) . "<br><br>\n\n" .
-                Yii::t('UserModule.adminUserApprovalMail', 'a new user {displayName} needs approval.',
+                Yii::t('UserModule.auth', 'a new user {displayName} needs approval.',
                     ['displayName' => $user->displayName]) . "<br><br>\n\n" .
-                Yii::t('UserModule.adminUserApprovalMail', 'Please click on the link below to view request:') .
+                Yii::t('UserModule.auth', 'Please click on the link below to view request:') .
                 "<br>\n\n" .
                 \yii\helpers\Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
 
@@ -302,7 +302,7 @@ class Group extends ActiveRecord
             ]);
 
             $mail->setTo($manager->email);
-            $mail->setSubject(Yii::t('UserModule.adminUserApprovalMail', "New user needs approval"));
+            $mail->setSubject(Yii::t('UserModule.auth', "New user needs approval"));
             $mail->send();
         }
 

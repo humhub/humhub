@@ -321,7 +321,7 @@ class ConfigController extends Controller
 
                 // Create a sample post
                 $post = new \humhub\modules\post\models\Post();
-                $post->message = Yii::t("InstallerModule.controllers_ConfigController", "We're looking for great slogans of famous brands. Maybe you can come up with some samples?");
+                $post->message = Yii::t("InstallerModule.base", "We're looking for great slogans of famous brands. Maybe you can come up with some samples?");
                 $post->content->container = $space;
                 $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PRIVATE;
                 $post->save();
@@ -330,7 +330,7 @@ class ConfigController extends Controller
                 Yii::$app->user->switchIdentity($userModel);
 
                 $comment = new \humhub\modules\comment\models\Comment();
-                $comment->message = Yii::t("InstallerModule.controllers_ConfigController", "Nike – Just buy it. ;Wink;");
+                $comment->message = Yii::t("InstallerModule.base", "Nike – Just buy it. ;Wink;");
                 $comment->object_model = $post->className();
                 $comment->object_id = $post->getPrimaryKey();
                 $comment->save();
@@ -339,7 +339,7 @@ class ConfigController extends Controller
                 Yii::$app->user->switchIdentity($userModel2);
 
                 $comment2 = new \humhub\modules\comment\models\Comment();
-                $comment2->message = Yii::t("InstallerModule.controllers_ConfigController", "Calvin Klein – Between love and madness lies obsession.");
+                $comment2->message = Yii::t("InstallerModule.base", "Calvin Klein – Between love and madness lies obsession.");
                 $comment2->object_model = $post->className();
                 $comment2->object_id = $post->getPrimaryKey();
                 $comment2->save();
@@ -433,7 +433,7 @@ class ConfigController extends Controller
             'save' => [
                 'type' => 'submit',
                 'class' => 'btn btn-primary',
-                'label' => Yii::t('InstallerModule.controllers_ConfigController', 'Create Admin Account'),
+                'label' => Yii::t('InstallerModule.base', 'Create Admin Account'),
             ],
         ];
 
@@ -472,8 +472,8 @@ class ConfigController extends Controller
 
             // Create Welcome Space
             $space = new Space();
-            $space->name = Yii::t("InstallerModule.controllers_ConfigController", "Welcome Space");
-            $space->description = Yii::t("InstallerModule.controllers_ConfigController", "Your first sample space to discover the platform.");
+            $space->name = Yii::t("InstallerModule.base", "Welcome Space");
+            $space->description = Yii::t("InstallerModule.base", "Your first sample space to discover the platform.");
             $space->join_policy = Space::JOIN_POLICY_FREE;
             $space->visibility = Space::VISIBILITY_ALL;
             $space->created_by = $adminUser->id;
@@ -488,7 +488,7 @@ class ConfigController extends Controller
 
             // Add Some Post to the Space
             $post = new \humhub\modules\post\models\Post();
-            $post->message = Yii::t("InstallerModule.controllers_ConfigController", "Yay! I've just installed HumHub ;Cool;");
+            $post->message = Yii::t("InstallerModule.base", "Yay! I've just installed HumHub ;Cool;");
             $post->content->container = $space;
             $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
             $post->save();

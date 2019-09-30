@@ -41,7 +41,7 @@ class StatisticSettingsForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'trackingHtmlCode' => Yii::t('AdminModule.forms_StatisticSettingsForm', 'HTML tracking code'),
+            'trackingHtmlCode' => Yii::t('AdminModule.settings', 'HTML tracking code'),
         ];
     }
 

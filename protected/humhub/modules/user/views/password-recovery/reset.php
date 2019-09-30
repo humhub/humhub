@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use humhub\widgets\SiteLogo;
 
-$this->pageTitle = Yii::t('UserModule.views_auth_resetPassword', 'Password reset');
+$this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
 ?>
 <div class="container" style="text-align: center;">
     <?= SiteLogo::widget(['place' => 'login']); ?>
@@ -13,7 +13,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_resetPassword', 'Password reset
 
     <div class="row">
         <div id="password-recovery-form" class="panel panel-default animated bounceIn" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
-            <div class="panel-heading"><?= Yii::t('UserModule.views_auth_resetPassword', '<strong>Change</strong> your password'); ?></div>
+            <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Change</strong> your password'); ?></div>
             <div class="panel-body">
 
                 <?php $form = ActiveForm::begin(['enableClientValidation'=>false]); ?>
@@ -22,10 +22,10 @@ $this->pageTitle = Yii::t('UserModule.views_auth_resetPassword', 'Password reset
 
                     <?= $form->field($model, 'newPasswordConfirm')->passwordInput(['class' => 'form-control', 'maxlength' => 255, 'value' => ''])?>
 
-                    <?= Html::submitButton(Yii::t('UserModule.views_auth_resetPassword', 'Change password'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?> 
+                    <?= Html::submitButton(Yii::t('UserModule.auth', 'Change password'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?> 
 
                     <a class="btn btn-primary" data-ui-loader href="<?= Url::home() ?>">
-                        <?= Yii::t('UserModule.views_auth_resetPassword', 'Back') ?>
+                        <?= Yii::t('UserModule.auth', 'Back') ?>
                     </a>
 
                 <?php ActiveForm::end(); ?>

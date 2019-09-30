@@ -52,10 +52,10 @@ class UserFollowButton extends \yii\base\Widget
     public function init()
     {
         if ($this->followLabel === null) {
-            $this->followLabel = Yii::t("UserModule.widgets_views_followButton", "Follow");
+            $this->followLabel = Yii::t("UserModule.base", "Follow");
         }
         if ($this->unfollowLabel === null) {
-            $this->unfollowLabel = Yii::t("UserModule.widgets_views_followButton", "Unfollow");
+            $this->unfollowLabel = Yii::t("UserModule.base", "Unfollow");
         }
 
         if (!isset($this->followOptions['class'])) {

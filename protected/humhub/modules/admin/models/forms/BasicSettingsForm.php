@@ -68,14 +68,14 @@ class BasicSettingsForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'name' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Name of the application'),
-            'baseUrl' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Base URL'),
-            'defaultLanguage' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default language'),
-            'timeZone' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Server Timezone'),
-            'tour' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show introduction tour for new users'),
-            'dashboardShowProfilePostForm' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Show user profile post form on dashboard'),
-            'enableFriendshipModule' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Enable user friendship system'),
-            'defaultStreamSort' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Default stream content order'),
+            'name' => Yii::t('AdminModule.settings', 'Name of the application'),
+            'baseUrl' => Yii::t('AdminModule.settings', 'Base URL'),
+            'defaultLanguage' => Yii::t('AdminModule.settings', 'Default language'),
+            'timeZone' => Yii::t('AdminModule.settings', 'Server Timezone'),
+            'tour' => Yii::t('AdminModule.settings', 'Show introduction tour for new users'),
+            'dashboardShowProfilePostForm' => Yii::t('AdminModule.settings', 'Show user profile post form on dashboard'),
+            'enableFriendshipModule' => Yii::t('AdminModule.settings', 'Enable user friendship system'),
+            'defaultStreamSort' => Yii::t('AdminModule.settings', 'Default stream content order'),
         ];
     }
 
@@ -107,8 +107,8 @@ class BasicSettingsForm extends \yii\base\Model
     public function getDefaultStreamSortOptions()
     {
         return [
-            Stream::SORT_CREATED_AT => Yii::t('AdminModule.forms_BasicSettingsForm', 'Sort by creation date'),
-            Stream::SORT_UPDATED_AT => Yii::t('AdminModule.forms_BasicSettingsForm', 'Sort by update date'),
+            Stream::SORT_CREATED_AT => Yii::t('AdminModule.settings', 'Sort by creation date'),
+            Stream::SORT_UPDATED_AT => Yii::t('AdminModule.settings', 'Sort by update date'),
         ];
     }
 

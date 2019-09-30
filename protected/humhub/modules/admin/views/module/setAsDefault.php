@@ -9,14 +9,14 @@ use humhub\modules\user\models\User;
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
-                <?= Yii::t('AdminModule.views_module_setAsDefault', '%moduleName% - Set as default module', ['%moduleName%' => "<strong>" . $module->getName() . "</strong>"]); ?>
+                <?= Yii::t('AdminModule.modules', '%moduleName% - Set as default module', ['%moduleName%' => "<strong>" . $module->getName() . "</strong>"]); ?>
             </h4>
         </div>
         <?php $form = humhub\compat\CActiveForm::begin(); ?>
         <div class="modal-body">
 
             <p>
-                <?= Yii::t('AdminModule.views_module_setAsDefault', 'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".'); ?>
+                <?= Yii::t('AdminModule.modules', 'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".'); ?>
             </p>
 
             <br>
@@ -25,7 +25,7 @@ use humhub\modules\user\models\User;
 
                 <?php if ($module->hasContentContainerType(Space::class)) : ?>
                     <div class="col-md-6">
-                        <label for=""><?= Yii::t('AdminModule.views_module_setAsDefault', 'Spaces'); ?></label>
+                        <label for=""><?= Yii::t('AdminModule.modules', 'Spaces'); ?></label>
 
                         <div class="radio">
                             <label>
@@ -36,7 +36,7 @@ use humhub\modules\user\models\User;
                                     'id' => 'radioSpaceDeactivated',
                                     'checked' => ($model->spaceDefaultState == 0)]);
                                 ?>
-                                <?= Yii::t('AdminModule.views_module_setAsDefault', 'Deactivated'); ?>
+                                <?= Yii::t('AdminModule.modules', 'Deactivated'); ?>
                             </label>
                         </div>
                         <div class="radio">
@@ -49,7 +49,7 @@ use humhub\modules\user\models\User;
                                     'checked' => ($model->spaceDefaultState == 1)
                                 ]);
                                 ?>
-                                <?= Yii::t('AdminModule.views_module_setAsDefault', 'Activated'); ?>
+                                <?= Yii::t('AdminModule.modules', 'Activated'); ?>
                             </label>
                         </div>
                         <div class="radio">
@@ -62,7 +62,7 @@ use humhub\modules\user\models\User;
                                     'checked' => ($model->spaceDefaultState == 2)
                                 ]);
                                 ?>
-                                <?= Yii::t('AdminModule.views_module_setAsDefault', 'Always activated'); ?>
+                                <?= Yii::t('AdminModule.modules', 'Always activated'); ?>
                             </label>
                         </div>
                         <br>
@@ -70,7 +70,7 @@ use humhub\modules\user\models\User;
                 <?php endif; ?>
                 <?php if ($module->hasContentContainerType(User::class)) : ?>
                     <div class="col-md-6">
-                        <label for=""><?= Yii::t('AdminModule.views_module_setAsDefault', 'User Profiles'); ?></label>
+                        <label for=""><?= Yii::t('AdminModule.modules', 'User Profiles'); ?></label>
 
                         <div class="radio">
                             <label>
@@ -82,7 +82,7 @@ use humhub\modules\user\models\User;
                                     'checked' => ($model->userDefaultState == 0)
                                 ]);
                                 ?>
-                                <?= Yii::t('AdminModule.views_module_setAsDefault', 'Deactivated'); ?>
+                                <?= Yii::t('AdminModule.modules', 'Deactivated'); ?>
                             </label>
                         </div>
                         <div class="radio">
@@ -95,7 +95,7 @@ use humhub\modules\user\models\User;
                                     'checked' => ($model->userDefaultState == 1)
                                 ]);
                                 ?>
-                                <?= Yii::t('AdminModule.views_module_setAsDefault', 'Activated'); ?>
+                                <?= Yii::t('AdminModule.modules', 'Activated'); ?>
                             </label>
                         </div>
                         <div class="radio">
@@ -108,7 +108,7 @@ use humhub\modules\user\models\User;
                                     'checked' => ($model->userDefaultState == 2)
                                 ]);
                                 ?>
-                                <?= Yii::t('AdminModule.views_module_setAsDefault', 'Always activated'); ?>
+                                <?= Yii::t('AdminModule.modules', 'Always activated'); ?>
                             </label>
                         </div>
                         <br>
@@ -120,7 +120,7 @@ use humhub\modules\user\models\User;
 
             <?=
             \humhub\widgets\AjaxButton::widget([
-                'label' => Yii::t('AdminModule.views_module_setAsDefault', 'Save'),
+                'label' => Yii::t('AdminModule.modules', 'Save'),
                 'ajaxOptions' => [
                     'type' => 'POST',
                     'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
@@ -133,7 +133,7 @@ use humhub\modules\user\models\User;
             ]);
             ?>
             <button type="button" class="btn btn-primary" data-dismiss="modal">
-                <?= Yii::t('AdminModule.views_module_setAsDefault', 'Close'); ?>
+                <?= Yii::t('AdminModule.modules', 'Close'); ?>
             </button>
 
             <?=

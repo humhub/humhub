@@ -9,7 +9,7 @@ use yii\helpers\Html;
             <?= $notification->render(); ?>
         <?php endforeach; ?>
         <?php if (count($notifications) == 0) : ?>
-            <?= Yii::t('NotificationModule.views_overview_index', 'No notifications found!'); ?>
+            <?= Yii::t('NotificationModule.base', 'No notifications found!'); ?>
         <?php endif; ?>
     <?= Html::endTag('ul') ?>
     <?= Html::beginTag('center') ?>

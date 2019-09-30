@@ -9,6 +9,7 @@
 namespace humhub\modules\ui\view\components;
 
 use humhub\modules\file\libs\FileHelper;
+use Yii;
 use yii\base\Component;
 
 /**
@@ -35,7 +36,6 @@ class ThemeViews extends Component
     public function translate($path)
     {
         $translated = $this->legacyTranslate($path);
-
         if ($translated !== null && is_file($translated)) {
             return $translated;
         }
@@ -45,7 +45,41 @@ class ThemeViews extends Component
             return $translated;
         }
 
+        $translated = $this->genericTranslate($path);
+        if ($translated !== null && is_file($translated)) {
+            return $translated;
+        }
+
         return null;
+    }
+
+
+    /**
+     * Generic automatic view path translation
+     *
+     * Module Examples (core or additional modules):
+     *      protected/humhub/modules/admin/views/user/add.php -> themes/example/views/admin/views/user/add.php
+     *      protected/humhub/modules/user/widgets/views/userListBox.php -> themes/example/views/user/widgets/views/userListBox.php
+     *
+     * Non Module Views (protected/humhub folder):
+     *      protected/humhub/widgets/views/logo.php -> themes/example/views/humhub/widgets/views/logo.php
+     *      protected/humhub/widgets/mails/views/mailHeadline.php -> themes/example/views/humhub/widgets/mails/views/mailHeadline.php
+     *      protected/humhub/views/error/index.php -> themes/example/views/humhub/error/index.php
+     *
+     * @param $path string the original view path
+     * @return string the translated view path
+     */
+    protected function genericTranslate($path)
+    {
+        if (strpos($path, Yii::getAlias('@humhub/modules')) === false) {
+            $path = str_replace(Yii::getAlias('@humhub'), '/humhub', $path);
+        }
+
+        foreach (Yii::$app->params['moduleAutoloadPaths'] as $stripPath) {
+            $path = str_replace(Yii::getAlias($stripPath), '', $path);
+        }
+
+        return $this->theme->getBasePath() . '/views/' . $path;
     }
 
 
@@ -62,13 +96,14 @@ class ThemeViews extends Component
      *   .../views/moduleId/[widgets|activities|notifications]/viewName.php
      *
      * @return string theme view path or null
+     * @deprecated since 1.3
      */
     protected function legacyTranslate($path)
     {
         $sep = preg_quote(DIRECTORY_SEPARATOR);
         $path = FileHelper::normalizePath($path);
 
-        // .../moduleId/views/controllerId/viewName.php
+        // .../[moduleId]/views/[controllerId]/[viewName].php
         if (preg_match('@.*' . $sep . '(.*?)' . $sep . 'views' . $sep . '(.*?)' . $sep . '(.*?)\.php$@', $path, $hits)) {
             return $this->theme->getBasePath() . '/views/' . $hits[1] . '/' . $hits[2] . '/' . $hits[3] . '.php';
         }
@@ -79,6 +114,7 @@ class ThemeViews extends Component
             if ($hits[1] == 'humhub') {
                 return $this->theme->getBasePath() . '/views/' . $hits[2] . '/' . $hits[3] . '.php';
             }
+
             return $this->theme->getBasePath() . '/views/' . $hits[1] . '/' . $hits[2] . '/' . $hits[3] . '.php';
         }
 

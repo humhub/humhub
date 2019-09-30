@@ -13,7 +13,7 @@ $categories = $user->profile->getProfileFieldCategories();
 ?>
 <div class="panel panel-default">
     <div
-        class="panel-heading"><?= Yii::t('UserModule.views_profile_about', '<strong>About</strong> this user'); ?></div>
+        class="panel-heading"><?= Yii::t('UserModule.profile', '<strong>About</strong> this user'); ?></div>
     <div class="panel-body">
         <?php $firstClass = "active"; ?>
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">

@@ -33,7 +33,7 @@ class MemberMenu extends TabMenu
     {
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Members'),
+            'label' => Yii::t('SpaceModule.manage', 'Members'),
             'url' => $this->space->createUrl('/space/manage/member/index'),
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState(null, 'member', 'index')
@@ -41,7 +41,7 @@ class MemberMenu extends TabMenu
 
         if ($this->countPendingInvites() != 0) {
             $this->addEntry(new MenuLink([
-                'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Pending Invites') . '&nbsp;&nbsp;<span class="label label-danger">' . $this->countPendingInvites() . '</span>',
+                'label' => Yii::t('SpaceModule.manage', 'Pending Invites') . '&nbsp;&nbsp;<span class="label label-danger">' . $this->countPendingInvites() . '</span>',
                 'url' => $this->space->createUrl('/space/manage/member/pending-invitations'),
                 'sortOrder' => 200,
                 'isActive' => MenuLink::isActiveState(null, 'member', 'pending-invitations')
@@ -49,7 +49,7 @@ class MemberMenu extends TabMenu
         }
         if ($this->countPendingApprovals() != 0) {
             $this->addEntry(new MenuLink([
-                'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Pending Approvals') . '&nbsp;&nbsp;<span class="label label-danger">' . $this->countPendingApprovals() . '</span>',
+                'label' => Yii::t('SpaceModule.manage', 'Pending Approvals') . '&nbsp;&nbsp;<span class="label label-danger">' . $this->countPendingApprovals() . '</span>',
                 'url' => $this->space->createUrl('/space/manage/member/pending-approvals'),
                 'sortOrder' => 300,
                 'isActive' => MenuLink::isActiveState(null, 'member', 'pending-approvals')
@@ -58,7 +58,7 @@ class MemberMenu extends TabMenu
 
         if ($this->space->isSpaceOwner()) {
             $this->addEntry(new MenuLink([
-                'label' => Yii::t('SpaceModule.widgets_SpaceMembersMenu', 'Owner'),
+                'label' => Yii::t('SpaceModule.manage', 'Owner'),
                 'url' => $this->space->createUrl('/space/manage/member/change-owner'),
                 'sortOrder' => 500,
                 'isActive' => MenuLink::isActiveState(null, 'member', 'change-owner')

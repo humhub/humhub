@@ -65,7 +65,7 @@ class UpdateController extends Controller
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+            throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
         }
 
         $this->module->onlineModuleManager->update($moduleId);

@@ -4,7 +4,7 @@
         <?= Yii::t('AdminModule.base', '<strong>Module </strong> administration'); ?>
 
         <div class="help-block">
-            <?= Yii::t('AdminModule.views_module_header', 'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.') ?>
+            <?= Yii::t('AdminModule.modules', 'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.') ?>
         </div>
 
     </div>

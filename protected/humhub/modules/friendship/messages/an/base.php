@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Friends' => 'Amigos',
     '<strong>My</strong> friends' => '',
     '<strong>Pending</strong> friend requests' => '',
     '<strong>Sent</strong> friend requests' => '',
@@ -25,7 +26,6 @@ return [
     'Add Friend' => '',
     'Cancel friend request' => '',
     'Deny friend request' => '',
-    'Friends' => '',
     'Friendship' => '',
     'Requests' => '',
     'Sent requests' => '',

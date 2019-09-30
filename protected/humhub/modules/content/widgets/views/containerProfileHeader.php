@@ -72,7 +72,7 @@ $image = ($container instanceof Space)
                 'cropUrl' => $coverCropUrl,
                 'deleteUrl' => $coverDeleteUrl,
                 'dropZone' => '.profile-banner-image-container',
-                'confirmBody' =>  Yii::t('SpaceModule.widgets_views_deleteBanner', 'Do you really want to delete your title image?')
+                'confirmBody' =>  Yii::t('SpaceModule.base', 'Do you really want to delete your title image?')
             ])?>
         <?php endif; ?>
     </div>
@@ -98,7 +98,7 @@ $image = ($container instanceof Space)
                 'deleteUrl' => $imageDeleteUrl,
                 'cropUrl' => $imageCropUrl,
                 'dropZone' => '.profile-user-photo-container',
-                'confirmBody' =>   Yii::t('SpaceModule.widgets_views_deleteImage', 'Do you really want to delete your profile image?')
+                'confirmBody' =>   Yii::t('SpaceModule.base', 'Do you really want to delete your profile image?')
             ])?>
         <?php endif; ?>
 

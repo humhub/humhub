@@ -156,29 +156,29 @@ class CoreJsConfig extends Widget
                     ],
                     'ui.markdown', [
                         'text' => [
-                            'Bold' => Yii::t('widgets_views_markdownEditor', 'Bold'),
-                            'Italic' => Yii::t('widgets_views_markdownEditor', 'Italic'),
-                            'Heading' => Yii::t('widgets_views_markdownEditor', 'Heading'),
-                            'URL/Link' => Yii::t('widgets_views_markdownEditor', 'URL/Link'),
-                            'Image/File' => Yii::t('widgets_views_markdownEditor', 'Image/File'),
-                            'Image' => Yii::t('widgets_views_markdownEditor', 'Image'),
-                            'List' => Yii::t('widgets_views_markdownEditor', 'List'),
-                            'Preview' => Yii::t('widgets_views_markdownEditor', 'Preview'),
-                            'strong text' => Yii::t('widgets_views_markdownEditor', 'strong text'),
-                            'emphasized text' => Yii::t('widgets_views_markdownEditor', 'emphasized text'),
-                            'heading text' => Yii::t('widgets_views_markdownEditor', 'heading text'),
-                            'enter link description here' => Yii::t('widgets_views_markdownEditor', 'enter link description here'),
-                            'Insert Hyperlink' => Yii::t('widgets_views_markdownEditor', 'Insert Hyperlink'),
-                            'enter image description here' => Yii::t('widgets_views_markdownEditor', 'enter image description here'),
-                            'Insert Image Hyperlink' => Yii::t('widgets_views_markdownEditor', 'Insert Image Hyperlink'),
-                            'enter image title here' => Yii::t('widgets_views_markdownEditor', 'enter image title here'),
-                            'list text here' => Yii::t('widgets_views_markdownEditor', 'list text here'),
-                            'Quote' => Yii::t('widgets_views_markdownEditor', 'Quote'),
-                            'quote here' => Yii::t('widgets_views_markdownEditor', 'quote here'),
-                            'Code' => Yii::t('widgets_views_markdownEditor', 'Code'),
-                            'code text here' => Yii::t('widgets_views_markdownEditor', 'code text here'),
-                            'Unordered List' => Yii::t('widgets_views_markdownEditor', 'Unordered List'),
-                            'Ordered List' => Yii::t('widgets_views_markdownEditor', 'Ordered List'),
+                            'Bold' => Yii::t('UiModule.markdownEditor', 'Bold'),
+                            'Italic' => Yii::t('UiModule.markdownEditor', 'Italic'),
+                            'Heading' => Yii::t('UiModule.markdownEditor', 'Heading'),
+                            'URL/Link' => Yii::t('UiModule.markdownEditor', 'URL/Link'),
+                            'Image/File' => Yii::t('UiModule.markdownEditor', 'Image/File'),
+                            'Image' => Yii::t('UiModule.markdownEditor', 'Image'),
+                            'List' => Yii::t('UiModule.markdownEditor', 'List'),
+                            'Preview' => Yii::t('UiModule.markdownEditor', 'Preview'),
+                            'strong text' => Yii::t('UiModule.markdownEditor', 'strong text'),
+                            'emphasized text' => Yii::t('UiModule.markdownEditor', 'emphasized text'),
+                            'heading text' => Yii::t('UiModule.markdownEditor', 'heading text'),
+                            'enter link description here' => Yii::t('UiModule.markdownEditor', 'enter link description here'),
+                            'Insert Hyperlink' => Yii::t('UiModule.markdownEditor', 'Insert Hyperlink'),
+                            'enter image description here' => Yii::t('UiModule.markdownEditor', 'enter image description here'),
+                            'Insert Image Hyperlink' => Yii::t('UiModule.markdownEditor', 'Insert Image Hyperlink'),
+                            'enter image title here' => Yii::t('UiModule.markdownEditor', 'enter image title here'),
+                            'list text here' => Yii::t('UiModule.markdownEditor', 'list text here'),
+                            'Quote' => Yii::t('UiModule.markdownEditor', 'Quote'),
+                            'quote here' => Yii::t('UiModule.markdownEditor', 'quote here'),
+                            'Code' => Yii::t('UiModule.markdownEditor', 'Code'),
+                            'code text here' => Yii::t('UiModule.markdownEditor', 'code text here'),
+                            'Unordered List' => Yii::t('UiModule.markdownEditor', 'Unordered List'),
+                            'Ordered List' => Yii::t('UiModule.markdownEditor', 'Ordered List'),
                         ]
                     ],
                     'log' => [
@@ -218,8 +218,8 @@ class CoreJsConfig extends Widget
                     ],
                     'ui.showMore' => [
                         'text' => [
-                            'readMore' => Yii::t('PostModule.widgets_views_post', 'Read full post...'),
-                            'readLess' => Yii::t('PostModule.widgets_views_post', 'Collapse'),
+                            'readMore' => Yii::t('PostModule.base', 'Read full post...'),
+                            'readLess' => Yii::t('PostModule.base', 'Collapse'),
                         ]
                     ],
                     'ui.panel' => [
@@ -235,16 +235,16 @@ class CoreJsConfig extends Widget
                     'content' => [
                         'modal' => [
                             'permalink' => [
-                                'head' => Yii::t('ContentModule.widgets_views_permaLink', '<strong>Permalink</strong> to this post'),
+                                'head' => Yii::t('ContentModule.base', '<strong>Permalink</strong> to this post'),
                                 'info' => Yii::t('base', 'Copy to clipboard'),
                                 'buttonOpen' => Yii::t('base', 'Open'),
                                 'buttonClose' => Yii::t('base', 'Close'),
                             ],
                             'deleteConfirm' => [
-                                'header' => Yii::t('ContentModule.widgets_views_deleteLink', '<strong>Confirm</strong> post deletion'),
-                                'body' => Yii::t('ContentModule.widgets_views_deleteLink', 'Do you really want to delete this post? All likes and comments will be lost!'),
-                                'confirmText' => Yii::t('ContentModule.widgets_views_deleteLink', 'Delete'),
-                                'cancelText' => Yii::t('ContentModule.widgets_views_deleteLink', 'Cancel'),
+                                'header' => Yii::t('ContentModule.base', '<strong>Confirm</strong> post deletion'),
+                                'body' => Yii::t('ContentModule.base', 'Do you really want to delete this post? All likes and comments will be lost!'),
+                                'confirmText' => Yii::t('ContentModule.base', 'Delete'),
+                                'cancelText' => Yii::t('ContentModule.base', 'Cancel'),
                             ]
                         ],
                         'reloadUrl' => Url::to(['/content/content/reload']),
@@ -254,23 +254,23 @@ class CoreJsConfig extends Widget
                         'horizontalImageScrollOnMobile' => Yii::$app->settings->get('horImageScrollOnMobile'),
                         'defaultSort' => Yii::$app->getModule('stream')->settings->get('defaultSort', 'c'),
                         'text' => [
-                            'success.archive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been archived.'),
-                            'success.unarchive' => Yii::t('ContentModule.widgets_views_stream', 'The content has been unarchived.'),
-                            'success.delete' => Yii::t('ContentModule.widgets_views_stream', 'The content has been deleted.'),
-                            'info.editCancel' => Yii::t('ContentModule.widgets_views_stream', 'Your last edit state has been saved!'),
+                            'success.archive' => Yii::t('ContentModule.base', 'The content has been archived.'),
+                            'success.unarchive' => Yii::t('ContentModule.base', 'The content has been unarchived.'),
+                            'success.delete' => Yii::t('ContentModule.base', 'The content has been deleted.'),
+                            'info.editCancel' => Yii::t('ContentModule.base', 'Your last edit state has been saved!'),
                         ]
                     ],
                     'comment' => [
                         'modal' => [
                             'delteConfirm' => [
-                                'header' => Yii::t('CommentModule.widgets_views_showComment', '<strong>Confirm</strong> comment deleting'),
-                                'body' => Yii::t('CommentModule.widgets_views_showComment', 'Do you really want to delete this comment?'),
-                                'confirmText' => Yii::t('CommentModule.widgets_views_showComment', 'Delete'),
-                                'cancelText' => Yii::t('CommentModule.widgets_views_showComment', 'Cancel')
+                                'header' => Yii::t('CommentModule.base', '<strong>Confirm</strong> comment deleting'),
+                                'body' => Yii::t('CommentModule.base', 'Do you really want to delete this comment?'),
+                                'confirmText' => Yii::t('CommentModule.base', 'Delete'),
+                                'cancelText' => Yii::t('CommentModule.base', 'Cancel')
                             ]
                         ],
                         'text' => [
-                            'success.delete' => Yii::t('CommentModule.widgets_views_showComment', 'Comment has been deleted')
+                            'success.delete' => Yii::t('CommentModule.base', 'Comment has been deleted')
                         ]
                     ],
                     'space' => [

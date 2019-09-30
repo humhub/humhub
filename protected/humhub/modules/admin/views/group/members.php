@@ -21,7 +21,7 @@ use humhub\modules\user\grid\DisplayNameColumn;
                     'model' => $addGroupMemberForm,
                     'attribute' => 'userGuids',
                     'url' => Url::to(['/admin/group/new-member-search', 'id' => $group->id]),
-                    'placeholder' => Yii::t('AdminModule.views_group_manageGroupUser', 'Add new members...'),
+                    'placeholder' => Yii::t('AdminModule.user', 'Add new members...'),
                     'focus' => true,
                 ])
                 ?>
@@ -70,8 +70,8 @@ use humhub\modules\user\grid\DisplayNameColumn;
                         $yesSelected = ($isManager) ? 'selected' : '';
                         $noSelected = ($isManager) ? '' : 'selected';
                         $result = '<select class="editableCell form-control" data-action-change="admin.group.setManagerRole" data-action-url="' . $actionUrl . '" data-userid="' . $data->id . '"  data-groupid="' . $group->id . '">';
-                        $result .= '<option value="0" ' . $noSelected . '>' . Yii::t('AdminModule.views_group_manageGroupUser', 'No') . '</option>';
-                        $result .= '<option value="1" ' . $yesSelected . '>' . Yii::t('AdminModule.views_group_manageGroupUser', 'Yes') . '</option>';
+                        $result .= '<option value="0" ' . $noSelected . '>' . Yii::t('AdminModule.user', 'No') . '</option>';
+                        $result .= '<option value="1" ' . $yesSelected . '>' . Yii::t('AdminModule.user', 'Yes') . '</option>';
                         return $result;
                     }
                 ],
@@ -89,7 +89,7 @@ use humhub\modules\user\grid\DisplayNameColumn;
                             return Html::a('<i class="fa fa-times"></i>', '#', [
                                         'data-action-click' => 'admin.group.removeMember',
                                         'data-action-url' => Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]),
-                                        'title' => Yii::t('AdminModule.views_group_manageGroupUser', 'Remove from group'),
+                                        'title' => Yii::t('AdminModule.user', 'Remove from group'),
                                         'class' => 'btn btn-danger btn-xs tt']);
                         }
                     ],

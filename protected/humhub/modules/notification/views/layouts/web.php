@@ -42,7 +42,7 @@ use yii\helpers\Html;
 
                 <br> <?= TimeAgo::widget(['timestamp' => $record->created_at]); ?>
                 <?php if ($isNew) : ?>
-                    <span class="label label-danger"><?= Yii::t('NotificationModule.views_notificationLayout', 'New'); ?></span>
+                    <span class="label label-danger"><?= Yii::t('NotificationModule.base', 'New'); ?></span>
                 <?php endif; ?>
             </div>
 

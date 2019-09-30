@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\controllers;
 
+use humhub\modules\user\Module;
 use Yii;
 use yii\web\Controller;
 use yii\web\HttpException;
@@ -20,7 +21,7 @@ use humhub\widgets\ModalClose;
 
 /**
  * InviteController for new user invites
- * 
+ *
  * @since 1.1
  */
 class InviteController extends Controller
@@ -40,7 +41,7 @@ class InviteController extends Controller
 
     /**
      * Invite form and processing action
-     * 
+     *
      * @return string the action result
      * @throws \yii\web\HttpException
      */
@@ -56,9 +57,9 @@ class InviteController extends Controller
             foreach ($model->getEmails() as $email) {
                 $this->createInvite($email);
             }
-            
+
             return ModalClose::widget([
-                'success' => Yii::t('UserModule.user', 'User has been invited.')
+                'success' => Yii::t('UserModule.base', 'User has been invited.')
             ]);
         }
 
@@ -67,7 +68,7 @@ class InviteController extends Controller
 
     /**
      * Creates and sends an e-mail invite
-     * 
+     *
      * @param email $email
      */
     protected function createInvite($email)
@@ -76,25 +77,29 @@ class InviteController extends Controller
         $userInvite->email = $email;
         $userInvite->source = Invite::SOURCE_INVITE;
         $userInvite->user_originator_id = Yii::$app->user->getIdentity()->id;
-        
+
         $existingInvite = Invite::findOne(['email' => $email]);
         if ($existingInvite !== null) {
             $userInvite->token = $existingInvite->token;
             $existingInvite->delete();
         }
-        
+
         $userInvite->save();
         $userInvite->sendInviteMail();
     }
 
     /**
      * Checks if current user can invite new members
-     * 
+     *
      * @return boolean can invite new members
      */
     protected function canInvite()
     {
-        return Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite') || Yii::$app->user->can([new ManageUsers(), new ManageGroups()]);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        return $module->settings->get('auth.internalUsersCanInvite') ||
+            Yii::$app->user->can([new ManageUsers(), new ManageGroups()]);
     }
 
 }

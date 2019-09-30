@@ -1,0 +1,23 @@
+<?php
+return array (
+  '<strong>Open</strong> file' => '',
+  '<strong>Upload</strong> error' => 'خطلای <strong>بارگذاری</strong>',
+  'Close' => 'بستن',
+  'Could not find requested file variant!' => '',
+  'Could not find requested file!' => 'فایل درخواست‌شده یافت نشد!',
+  'Could not upload File:' => 'فایل بارگذاری نشد:',
+  'Created by:' => 'ساخته‌شده توسط:',
+  'Double file extensions are not allowed!' => '',
+  'Download' => 'بارگيري',
+  'File {fileName} could not be uploaded!' => '',
+  'Image dimensions are too big to be processed with current server memory limit!' => '',
+  'Insufficient permissions!' => 'غیر مجاز!',
+  'Invalid Mime-Type' => 'Mime-Type نامعتبر',
+  'Invalid file name detected!' => '',
+  'Last update by:' => '',
+  'Size:' => '',
+  'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
+  'The uploaded image is not a squared.' => '',
+  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '',
+  'Upload files' => 'بارگذاری فایل‌ها',
+);

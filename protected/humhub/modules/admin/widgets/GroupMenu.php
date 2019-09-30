@@ -24,7 +24,7 @@ class GroupMenu extends SubTabMenu
     public function init()
     {
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.views_user_index', 'Overview'),
+            'label' => Yii::t('AdminModule.user', 'Overview'),
             'url' => ['/admin/group/index'],
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('admin', 'group', 'index'),

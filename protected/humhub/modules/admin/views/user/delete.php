@@ -25,11 +25,11 @@ use yii\bootstrap\ActiveForm;
         </div>
     </div>    
     <hr>
-        <p><i class="fa fa-exclamation-triangle" style="color: <?= $this->theme->variable('danger')?>"></i> &nbsp;<?= Yii::t('AdminModule.account', 'All the personal data of this user will be irrevocably deleted.'); ?></p>
+        <p><i class="fa fa-exclamation-triangle" style="color: <?= $this->theme->variable('danger')?>"></i> &nbsp;<?= Yii::t('AdminModule.user', 'All the personal data of this user will be irrevocably deleted.'); ?></p>
 
     <?php if (count($model->getOwningSpaces()) !== 0): ?>
 
-        <p><b><?= Yii::t('AdminModule.account', 'The user is the owner of these spaces:'); ?></b></p>
+        <p><b><?= Yii::t('AdminModule.user', 'The user is the owner of these spaces:'); ?></b></p>
 
         <?php foreach ($model->getOwningSpaces() as $space): ?>
             <div class="media">
@@ -43,7 +43,7 @@ use yii\bootstrap\ActiveForm;
             </div>    
         <?php endforeach; ?>
     <?php else: ?>
-        <p><?= Yii::t('AdminModule.account', 'This user owns no spaces.'); ?></p>
+        <p><?= Yii::t('AdminModule.user', 'This user owns no spaces.'); ?></p>
     <?php endif; ?>
     </div>
 

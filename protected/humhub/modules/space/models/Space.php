@@ -154,28 +154,28 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         return [
             'id' => 'ID',
-            'name' => Yii::t('SpaceModule.models_Space', 'Name'),
-            'color' => Yii::t('SpaceModule.models_Space', 'Color'),
-            'description' => Yii::t('SpaceModule.models_Space', 'Description'),
-            'join_policy' => Yii::t('SpaceModule.models_Space', 'Join Policy'),
-            'visibility' => Yii::t('SpaceModule.models_Space', 'Visibility'),
-            'status' => Yii::t('SpaceModule.models_Space', 'Status'),
-            'tags' => Yii::t('SpaceModule.models_Space', 'Tags'),
-            'created_at' => Yii::t('SpaceModule.models_Space', 'Created At'),
-            'created_by' => Yii::t('SpaceModule.models_Space', 'Created By'),
-            'updated_at' => Yii::t('SpaceModule.models_Space', 'Updated At'),
-            'updated_by' => Yii::t('SpaceModule.models_Space', 'Updated by'),
-            'ownerUsernameSearch' => Yii::t('SpaceModule.models_Space', 'Owner'),
-            'default_content_visibility' => Yii::t('SpaceModule.models_Space', 'Default content visibility')
+            'name' => Yii::t('SpaceModule.base', 'Name'),
+            'color' => Yii::t('SpaceModule.base', 'Color'),
+            'description' => Yii::t('SpaceModule.base', 'Description'),
+            'join_policy' => Yii::t('SpaceModule.base', 'Join Policy'),
+            'visibility' => Yii::t('SpaceModule.base', 'Visibility'),
+            'status' => Yii::t('SpaceModule.base', 'Status'),
+            'tags' => Yii::t('SpaceModule.base', 'Tags'),
+            'created_at' => Yii::t('SpaceModule.base', 'Created At'),
+            'created_by' => Yii::t('SpaceModule.base', 'Created By'),
+            'updated_at' => Yii::t('SpaceModule.base', 'Updated At'),
+            'updated_by' => Yii::t('SpaceModule.base', 'Updated by'),
+            'ownerUsernameSearch' => Yii::t('SpaceModule.base', 'Owner'),
+            'default_content_visibility' => Yii::t('SpaceModule.base', 'Default content visibility')
         ];
     }
 
     public function attributeHints()
     {
         return [
-            'visibility' => Yii::t('SpaceModule.views_admin_edit', 'Choose the security level for this workspace to define the visibleness.'),
-            'join_policy' => Yii::t('SpaceModule.views_admin_edit', 'Choose the kind of membership you want to provide for this workspace.'),
-            'default_content_visibility' => Yii::t('SpaceModule.views_admin_edit', 'Choose if new content should be public or private by default')
+            'visibility' => Yii::t('SpaceModule.manage', 'Choose the security level for this workspace to define the visibleness.'),
+            'join_policy' => Yii::t('SpaceModule.manage', 'Choose the kind of membership you want to provide for this workspace.'),
+            'default_content_visibility' => Yii::t('SpaceModule.manage', 'Choose if new content should be public or private by default')
         ];
     }
 
@@ -355,31 +355,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
     }
 
     /**
-     * Checks if given user can invite people to this workspace
-     * Note: use directly permission instead
-     *
-     * @return boolean
-     * @deprecated since version 1.1
-     */
-    public function canInvite()
-    {
-        return $this->getPermissionManager()->can(new InviteUsers());
-    }
-
-    /**
-     * Checks if given user can share content.
-     * Shared Content is public and is visible also for non members of the space.
-     * Note: use directly permission instead
-     *
-     * @return boolean
-     * @deprecated since version 1.1
-     */
-    public function canShare()
-    {
-        return $this->getPermissionManager()->can(new CreatePublicContent());
-    }
-
-    /**
      * Returns an array of informations used by search subsystem.
      * Function is defined in interface ISearchable
      *
@@ -465,11 +440,11 @@ class Space extends ContentContainerActiveRecord implements Searchable
         }
 
         if ($visibility == self::VISIBILITY_NONE && !Yii::$app->user->permissionManager->can(new CreatePrivateSpace())) {
-            $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create private visible spaces!'));
+            $this->addError($attribute, Yii::t('SpaceModule.base', 'You cannot create private visible spaces!'));
         }
 
         if (($visibility == self::VISIBILITY_REGISTERED_ONLY || $visibility == self::VISIBILITY_ALL) && !Yii::$app->user->permissionManager->can(new CreatePublicSpace())) {
-            $this->addError($attribute, Yii::t('SpaceModule.models_Space', 'You cannot create public visible spaces!'));
+            $this->addError($attribute, Yii::t('SpaceModule.base', 'You cannot create public visible spaces!'));
         }
     }
 
@@ -577,11 +552,11 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public function getUserGroups()
     {
         $groups = [
-            self::USERGROUP_OWNER => Yii::t('SpaceModule.models_Space', 'Owner'),
-            self::USERGROUP_ADMIN => Yii::t('SpaceModule.models_Space', 'Administrators'),
-            self::USERGROUP_MODERATOR => Yii::t('SpaceModule.models_Space', 'Moderators'),
-            self::USERGROUP_MEMBER => Yii::t('SpaceModule.models_Space', 'Members'),
-            self::USERGROUP_USER => Yii::t('SpaceModule.models_Space', 'Users')
+            self::USERGROUP_OWNER => Yii::t('SpaceModule.base', 'Owner'),
+            self::USERGROUP_ADMIN => Yii::t('SpaceModule.base', 'Administrators'),
+            self::USERGROUP_MODERATOR => Yii::t('SpaceModule.base', 'Moderators'),
+            self::USERGROUP_MEMBER => Yii::t('SpaceModule.base', 'Members'),
+            self::USERGROUP_USER => Yii::t('SpaceModule.base', 'Users')
         ];
 
         // Add guest groups if enabled

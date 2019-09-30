@@ -17,12 +17,28 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Notification</strong> Overview' => '<strong>Ilmoitus</strong>',
     '<strong>Notification</strong> Settings' => '<strong>Ilmoitus</strong> Asetukset',
+    'Allow desktop notifications by default.' => 'Salli työpöytä ilmoitukset oletuksena.',
+    'Filter' => 'Suodatin',
     'In this view, you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'Tässä näkymässä voit määrittää käyttäjien oletusasetukset. Käyttäjät voivat korvata nämä asetukset tilin asetussivullaan.',
+    'Mark all as seen' => 'Merkitse kaikki luetuiksi',
+    'Module Filter' => 'Laajennuksen Suodatin',
+    'New' => 'Uusi',
+    'No notifications found!' => 'Ilmoituksia ei löytynyt!',
+    'Notifications' => 'Ilmoitukset',
     'Notifications are sent directly to your users to inform them about new activities in your network.' => 'Ilmoitukset lähetetään suoraan käyttäjille, heille ilmoitetaan intran uusista taphtumista.',
     'Notifications are sent instantly to you to inform you about new activities in your network.' => 'Ilmoitukset lähetetään välittömästi sinulle uusista intran uusista taphtumista.',
+    'Open the notification dropdown menu' => 'Avaa ilmoitusten pudotusvalikko',
+    'Receive \'New Content\' Notifications for the following spaces' => 'Vastaanota \\"Uudet Sisältö\\" Ilmoitukset seuraavilta sivuilta',
+    'Receive desktop notifications when you are online.' => 'Vastaanota työpöytäilmoituksia, kun olet verkossa.',
     'Reset to defaults' => 'Palauta oletusasetukset',
+    'Show all notifications' => 'Näytä kaikki ilmoitukset',
+    'The requested content is not valid or was removed!' => 'Pyydetty sisältö ei ole voimassa tai se on poistettu!',
+    'There are no notifications yet.' => 'Ei yhteen uutta ilmoitusta.',
     'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.' => 'Tässä näkymässä voit määrittää ilmoitusasetukset valitsemalla haluamasi tavoitteet tietyille ilmoitusluokille.',
+    'Type' => 'Tyyppi',
+    'View online:' => 'Näytä verkossa:',
     '{displayName} and {displayName2}' => '{displayName} ja {displayName2}',
     '{displayName} and {number} others' => '{displayName} ja {number} muut',
 ];

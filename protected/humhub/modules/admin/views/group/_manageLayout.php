@@ -20,7 +20,7 @@ use humhub\libs\Html;
 
 <?php if (!$group->isNewRecord) : ?>
     <?php if ($group->is_admin_group) : ?>
-        <div class="pull-right"><span class="label label-danger"><?= Yii::t('AdminModule.group', 'Administrative group'); ?></span>&nbsp;&nbsp;</div>
+        <div class="pull-right"><span class="label label-danger"><?= Yii::t('AdminModule.base', 'Administrative group'); ?></span>&nbsp;&nbsp;</div>
     <?php endif; ?>
     <?= \humhub\modules\admin\widgets\GroupManagerMenu::widget(['group' => $group]); ?>
 <?php endif; ?>

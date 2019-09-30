@@ -25,7 +25,7 @@ class AuthenticationMenu extends SubTabMenu
     public function init()
     {
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.setting', 'General'),
+            'label' => Yii::t('AdminModule.settings', 'General'),
             'url' => ['/admin/authentication'],
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('admin', 'authentication', 'index'),

@@ -30,7 +30,7 @@ class HForm extends \yii\base\Component
      * @since 1.2.6
      */
     const EVENT_AFTER_INIT = 'afterInit';
-    
+
     /**
      * @since 1.2.6
      */
@@ -261,7 +261,11 @@ class HForm extends \yii\base\Component
                             'options' => $definition['options']
                         ]);
                     case 'dropdownlist':
-                        return $this->form->field($model, $name)->dropDownList($definition['items'], $options);
+                        $field = $this->form->field($model, $name)->dropDownList($definition['items'], $options);
+                        if (!empty($options['label'])) {
+                            $field->label($options['label']);
+                        }
+                        return $field;
                     case 'checkbox':
                         if (isset($options['readOnly']) && $options['readOnly']) {
                             $options['disabled'] = 'disabled';
