@@ -2,7 +2,7 @@ module.exports = function (grunt) {
 
     var uglifyAssetcfg = {};
     uglifyAssetcfg[grunt.option('to')] = grunt.option('from');
-    
+
     var cssMinAssetcfg = {};
     cssMinAssetcfg[grunt.option('to')] = [grunt.option('from')];
 
@@ -68,6 +68,7 @@ module.exports = function (grunt) {
 
                     let options = grunt.option('options') || '';
                     options += grunt.option('raw') ? ' --no-ansi' : '';
+                    options += grunt.option('debug') ? ' -d' : '';
                     options += grunt.option('env') ? ' --env '+ grunt.option('env') : '';
 
 
@@ -135,7 +136,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-shell');
-    
+
     //grunt.registerTask('default', ['watch']);
     grunt.registerTask('build-assets', ['shell:buildAssets']);
     grunt.registerTask('build-search', ['shell:buildSearch']);
@@ -148,17 +149,17 @@ module.exports = function (grunt) {
      * > grunt migrate-create --name=MyMigration
      */
     grunt.registerTask('migrate-create', ['shell:migrateCreate']);
-    
+
     /**
      * Build default HumHub theme:
-     * 
+     *
      * > grunt build-theme
-     * 
+     *
      * Build named theme:
      * > grunt build-theme --name=MyTheme
-     * 
+     *
      * or
-     * 
+     *
      * > grunt shell:buildTheme:MyTheme
      */
     grunt.registerTask('build-theme', ['shell:buildTheme']);

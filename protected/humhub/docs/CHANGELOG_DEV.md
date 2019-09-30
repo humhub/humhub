@@ -55,3 +55,7 @@ HumHub Change Log (DEVELOP)
 - Chng: Moved collapsible panel logic into own js module
 - Enh #3649: Provide a way to S/MIME sign e-mails (@ChadiRachid)
 - Fix `humhub\modules\file\widgets\Upload::progress` config options not working
+- Enh: Added abstract `ContentContainerActiveRecord::getDisplayNameSub()`
+- Enh: Allow `humhub\modules\files\widgets\Upload::withName($submitName, $cfg);`
+- Enh: Auto add `data-container-id` to Space and User `Image` widget
+- Enh: Added `grunt test --debug` option
