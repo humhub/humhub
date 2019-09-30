@@ -47,6 +47,11 @@ class UploadAction extends Action
     protected $scenario = null;
 
     /**
+     * @var string
+     */
+    public $uploadName = 'files';
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -62,7 +67,7 @@ class UploadAction extends Action
     {
         $files = [];
         $hideInStream = $this->isHideInStreamRequest();
-        foreach (UploadedFile::getInstancesByName('files') as $cFile) {
+        foreach (UploadedFile::getInstancesByName($this->uploadName) as $cFile) {
             $files[] = $this->handleFileUpload($cFile, $hideInStream);
         }
 

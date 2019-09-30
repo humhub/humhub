@@ -26,6 +26,7 @@ use yii\helpers\Url;
  *
  * @property integer $id
  * @property integer $visibility
+ * @property string $guid
  * @property integer $contentcontainer_id
  * @property ContentContainerPermissionManager $permissionManager
  * @property ContentContainerSettingsManager $settings
@@ -60,6 +61,22 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @var string the default route
      */
     public $defaultRoute = '/';
+
+    /**
+     * Returns the display name of content container
+     *
+     * @since 0.11.0
+     * @return string
+     */
+    public abstract function getDisplayName();
+
+    /**
+     * Returns a descriptive sub title of this container used in the frontend.
+     *
+     * @since 1.4
+     * @return mixed
+     */
+    public abstract function getDisplayNameSub();
 
     /**
      * Returns the Profile Image Object for this Content Base
@@ -105,17 +122,6 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         $params['contentContainer'] = $this;
 
         return Url::to($params, $scheme);
-    }
-
-    /**
-     * Returns the display name of content container
-     *
-     * @since 0.11.0
-     * @return string
-     */
-    public function getDisplayName()
-    {
-        return "Container: " . get_class($this) . " - " . $this->getPrimaryKey();
     }
 
     /**

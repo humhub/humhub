@@ -1,5 +1,6 @@
 <?php
 
+use humhub\libs\Html;
 use yii\helpers\Url;
 
 ?>
@@ -57,22 +58,10 @@ use yii\helpers\Url;
 </div>
 
 <?php if ($showWelcome) : ?>
-    <script <?= \humhub\libs\Html::nonce() ?>>
+    <script <?= Html::nonce() ?>>
 
         $(document).on('humhub:ready', function () {
-
-            $('#globalModal').modal({
-                show: true,
-                backdrop: 'static'
-            })
-
-            $.ajax({
-                url: "<?php echo Url::to(['/tour/tour/welcome']); ?>",
-                context: document.body
-            }).done(function (html) {
-                $('#globalModal').html(html);
-            });
-
+            humhub.modules.ui.modal.global.load( "<?= Url::to(['/tour/tour/welcome']) ?>");
         });
 
     </script>

@@ -474,14 +474,19 @@ class Space extends ContentContainerActiveRecord implements Searchable
     }
 
     /**
-     * Returns display name (title) of space
-     *
-     * @return string
-     * @since 0.11.0
+     * @inheritdoc
      */
     public function getDisplayName()
     {
         return $this->name;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDisplayNameSub()
+    {
+        return $this->description;
     }
 
     /**

@@ -57,22 +57,21 @@ class ProfileHeader extends \yii\base\Widget
      */
     public function run()
     {
-        /* @var $imageController ImageController */
-        $imageController = new ImageController('image-controller', null, ['user' => $this->user]);
+        $canEditProfileImage = ImageController::canEditProfileImage($this->user);
 
-        return $this->render('profileHeader', array(
+        return $this->render('profileHeader', [
             'user' => $this->user,
             'isProfileOwner' => $this->isProfileOwner,
-            'allowModifyProfileImage' => $imageController->allowModifyProfileImage,
-            'allowModifyProfileBanner' => $imageController->allowModifyProfileBanner,
             // Deprecated variables below (will removed in future versions)
+            'allowModifyProfileImage' => $canEditProfileImage, // @deprecated since 1.4 only in use for legacy themes
+            'allowModifyProfileBanner' => $canEditProfileImage, // @deprecated since 1.4 only in use for legacy themes
             'friendshipsEnabled' => Yii::$app->getModule('friendship')->getIsEnabled(),
             'followingEnabled' => !Yii::$app->getModule('user')->disableFollow,
             'countFriends' => -1,
             'countFollowers' => -1,
             'countFollowing' => -1,
             'countSpaces' => -1,
-        ));
+        ]);
     }
 
     /**

@@ -74,6 +74,11 @@
     @import "popover.less";
 }
 
+@prev-profile: false;
+& when not(@prev-profile) {
+    @import "profile.less";
+}
+
 @prev-list-group: false;
 & when not(@prev-list-group) {
     @import "list-group.less";

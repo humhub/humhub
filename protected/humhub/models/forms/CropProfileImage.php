@@ -9,6 +9,7 @@
 namespace humhub\models\forms;
 
 use yii\base\Model;
+use yii\web\JsExpression;
 
 /**
  * CropProfileImageForm is a form for image cropping.
@@ -52,6 +53,36 @@ class CropProfileImage extends Model
     public $cropSetSelect = [0, 0, 100, 100];
 
     /**
+     * @var array
+     * @since 1.4
+     */
+    public $minSize = [50, 50];
+
+    /**
+     * @var string
+     * @since 1.4
+     */
+    public $bgColor = 'black';
+
+    /**
+     * @var string
+     * @since 1.4
+     */
+    public $bgOpacity = '0.5';
+
+    /**
+     * @var string
+     * @since 1.4
+     */
+    public $boxWidth = '440';
+
+    /**
+     * @var string
+     * @since 1.4
+     */
+    public $onChangeJs = 'function(c){ $("#cropX").val(c.x);$("#cropY").val(c.y);$("#cropW").val(c.w);$("#cropH").val(c.h); }';
+
+    /**
      * Declares the validation rules.
      *
      * @return Array Validation Rules
@@ -61,6 +92,23 @@ class CropProfileImage extends Model
         return [
             [['cropX', 'cropY', 'cropW', 'cropH'], 'required'],
             [['cropX', 'cropY', 'cropW', 'cropH'], 'number'],
+        ];
+    }
+
+    /**
+     * @return array
+     * @since 1.4
+     */
+    public function getPluginOptions()
+    {
+        return  [
+            'aspectRatio' => $this->aspectRatio,
+            'minSize' => $this->minSize,
+            'setSelect' => $this->cropSetSelect,
+            'bgColor' =>  $this->bgColor,
+            'bgOpacity' => $this->bgOpacity,
+            'boxWidth' => $this->boxWidth,
+            'onChange' => new JsExpression('function(c){ $("#cropX").val(c.x);$("#cropY").val(c.y);$("#cropW").val(c.w);$("#cropH").val(c.h); }')
         ];
     }
 
