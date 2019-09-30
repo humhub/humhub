@@ -1,6 +1,8 @@
 <?php
 
-namespace humhub\modules\ui\widgets;
+namespace humhub\modules\ui\content\widgets;
+
+use humhub\modules\ui\widgets\BaseImage;
 
 class ContainerImageSet extends BaseImage
 {
@@ -34,13 +36,17 @@ class ContainerImageSet extends BaseImage
         if ($this->hiddenImageWidth === null) {
             $this->hiddenImageHeight = $this->hiddenImageWidth;
         }
+
+        if($this->items && !is_array($this->items)) {
+            $this->items = [$this->items];
+        }
     }
 
     public function run()
     {
         $visibleItems = array_slice($this->items, 0, $this->max);
         $hiddenItems = array_slice($this->items, $this->max);
-        return $this->render('@ui/widgets/views/containerImageSet', [
+        return $this->render('@ui/content/widgets/views/containerImageSet', [
             'visibleItems' => $visibleItems,
             'hiddenItems' => $hiddenItems,
             'max' => $this->max,

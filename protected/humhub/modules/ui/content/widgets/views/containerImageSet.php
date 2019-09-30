@@ -5,8 +5,9 @@ use humhub\modules\user\models\User;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
 use yii\helpers\Html;
+use humhub\modules\ui\content\assets\UiImageSetAsset;
 
-humhub\modules\ui\assets\UiImageSetAsset::register($this);
+UiImageSetAsset::register($this);
 ?>
 <div class="ui-imageset-wrapper">
     <div class="ui-imageset-items" style="padding-right: <?= $options['width'] ?>px">
@@ -25,8 +26,7 @@ humhub\modules\ui\assets\UiImageSetAsset::register($this);
                  style="width: <?= $options['width'] ?>px; height: <?= $options['height'] ?>px;"
                  data-toggle="tooltip"
                  data-placement="top"
-                 data-original-title="Show more"
-            ><?= count($hiddenItems) ?>+
+                 data-original-title="Show more"><?= count($hiddenItems) ?>+
             </div>
             <div class="ui-imageset-hidden-items">
                 <?php
