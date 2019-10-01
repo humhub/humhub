@@ -29,6 +29,22 @@ class AcceptanceTester extends \Codeception\Actor
         $this->amUser('Admin', 'test', $logout);
     }
 
+    public function amSpaceAdmin($logout = false, $spaceId = 2)
+    {
+        switch($spaceId) {
+            case 1:
+            case 3:
+                $this->amAdmin($logout);
+                break;
+            case 2:
+            case 4:
+                $this->amUser1($logout);
+                break;
+        }
+
+        $this->amOnSpace($spaceId);
+    }
+
     public function amUser1($logout = false)
     {
         $this->amUser('User1', '123qwe', $logout);
@@ -315,6 +331,7 @@ class AcceptanceTester extends \Codeception\Actor
     public function jsShow($selector)
     {
         $this->executeJS('$("' . $selector . '").show();');
+        $this->wait(1);
     }
 
     public function jsAttr($selector, $attr, $val)

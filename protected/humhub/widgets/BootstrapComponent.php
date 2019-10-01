@@ -10,6 +10,7 @@ namespace humhub\widgets;
 
 use humhub\components\Widget;
 use humhub\libs\Html;
+use humhub\modules\ui\icon\widgets\Icon;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -303,12 +304,13 @@ abstract class BootstrapComponent extends Widget
      * @param bool $right
      * @param bool $raw
      * @return $this
+     * @throws \Exception
      */
     public function icon($content, $right = false, $raw = false)
     {
         if (!empty($content)) {
             if (!$raw) {
-                $this->icon(Html::tag('i', '', ['class' => 'fa ' . $content]), $right, true);
+                $this->icon(Icon::get($content)->right($right)->asString(), $right, true);
             } else {
                 $this->_icon = $content;
                 $this->_iconRight = $right;

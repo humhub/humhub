@@ -61,3 +61,7 @@ HumHub Change Log (DEVELOP)
 - Enh: Reorganized translation method categories to reduce language files
 - Enh: Removed deprecated methods/classes since v1.1 - see migration guide for details
 - Enh: Show registration form captcha per default
+- Enh: Added abstract `ContentContainerActiveRecord::getDisplayNameSub()`
+- Enh: Allow `humhub\modules\files\widgets\Upload::withName($submitName, $cfg);`
+- Enh: Auto add `data-container-id` to Space and User `Image` widget
+- Enh: Added `grunt test --debug` option
