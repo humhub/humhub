@@ -79,7 +79,7 @@ class ChooseLanguage extends Model
                 // Invalid cookie
                 $cookie = new \yii\web\Cookie([
                     'name' => 'language',
-                    'value' => 'en',
+                    'value' => 'en-US',
                     'expire' => 1,
                 ]);
                 Yii::$app->getResponse()->getCookies()->add($cookie);
