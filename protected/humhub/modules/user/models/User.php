@@ -136,7 +136,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['username'], 'required'],
             [['username'], 'unique'],
             [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
-            [['username'], 'match', 'not' => true, 'pattern' => '![\x00-\x1f\x7f/]!', 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.') ],
+            // Client validation is disable due to invalid client pattern validation
+            [['username'], 'match', 'not' => true, 'pattern' => '/[\x00-\x1f\x7f]/', 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false],
             [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
             [['tags'], 'string'],
             [['guid'], 'string', 'max' => 45],
