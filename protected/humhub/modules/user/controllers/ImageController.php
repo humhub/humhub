@@ -110,8 +110,8 @@ class ImageController extends BaseAccountController
             $title = Yii::t('UserModule.account', '<strong>Modify</strong> your profile image');
         } elseif ($type == static::TYPE_PROFILE_BANNER_IMAGE) {
             $title = Yii::t('UserModule.account', '<strong>Modify</strong> your title image');
-            $model->aspectRatio = '6.3';
-            $model->cropSetSelect = [0, 0, 267, 48];
+            $model->aspectRatio = '3.46';
+            $model->cropSetSelect = [0, 0, 267, 86];
         }
 
         $image = $this->getProfileImage($type);
