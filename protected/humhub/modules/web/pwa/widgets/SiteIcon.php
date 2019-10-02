@@ -10,6 +10,7 @@ namespace humhub\modules\web\pwa\widgets;
 
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\ui\view\components\View;
+use humhub\modules\web\Module;
 use Imagine\Image\Box;
 use Yii;
 use humhub\components\Widget;
@@ -39,24 +40,7 @@ class SiteIcon extends Widget
      */
     public static function set(UploadedFile $file = null)
     {
-        try {
-            FileHelper::removeDirectory(Yii::getAlias(static::$iconFolderPath));
-        } catch (ErrorException $e) {
-            Yii::error($e, 'admin');
-        }
-
-        try {
-            FileHelper::createDirectory(Yii::getAlias(static::$iconFolderPath));
-        } catch (Exception $e) {
-            Yii::error($e, 'admin');
-        }
-
-        if ($file !== null && is_file($file->tempName)) {
-            Image::getImagine()
-                ->open($file->tempName)
-                ->save(Yii::getAlias(static::$iconFolderPath) . '/icon.png');
-        }
-
+        static::setNewFile(($file !== null) ? $file->tempName : null);
     }
 
     /**
@@ -104,6 +88,35 @@ class SiteIcon extends Widget
         return $fileName;
     }
 
+    private static function setNewFile($fileName = null)
+    {
+        try {
+            FileHelper::removeDirectory(Yii::getAlias(static::$iconFolderPath));
+        } catch (ErrorException $e) {
+            Yii::error($e, 'admin');
+        }
+
+        try {
+            FileHelper::createDirectory(Yii::getAlias(static::$iconFolderPath));
+        } catch (Exception $e) {
+            Yii::error($e, 'admin');
+        }
+
+        if ($fileName !== null && is_file($fileName)) {
+            Image::getImagine()
+                ->open($fileName)
+                ->save(Yii::getAlias(static::$iconFolderPath) . '/icon.png');
+        }
+    }
+
+    private static function setDefaultIcon()
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('web');
+
+        static::setNewFile($module->getBasePath() . '/pwa/resources/default_icon.png');
+    }
+
 
     /**
      * @param View $view
@@ -111,7 +124,7 @@ class SiteIcon extends Widget
     public static function registerMetaTags(View $view)
     {
         if (!file_exists(static::getPath())) {
-            return;
+            static::setDefaultIcon();
         }
 
         // Add Apple touch icons
