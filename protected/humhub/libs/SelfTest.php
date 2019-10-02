@@ -175,6 +175,22 @@ class SelfTest
             ];
         }
 
+        // Checks XML Extension
+        $title = 'PHP - XML Extension';
+
+        if (function_exists('libxml_get_errors')) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'Install XML Extension'
+            ];
+        }
+
         // Check FileInfo Extension
         $title = 'PHP - FileInfo Extension';
 
