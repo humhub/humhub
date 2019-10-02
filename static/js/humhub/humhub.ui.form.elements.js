@@ -38,9 +38,7 @@ humhub.module('ui.form.elements', function (module, require, $) {
                         'top': $input.position().top
                     });
 
-                    $formGroup
-                        .css('position', 'relative')
-                        .prepend($pwShow);
+                    $formGroup.prepend($pwShow);
                 }
             });
         });
