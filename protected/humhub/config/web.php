@@ -58,9 +58,10 @@ $config = [
                         "self" => true
                     ],
                     "img-src" => [
+                        "data"=> true,
                         "allow" => [
-                            "*"
-                        ]
+                            "*" ,
+                        ],
                     ],
                     "font-src" => [
                         "self" => true
