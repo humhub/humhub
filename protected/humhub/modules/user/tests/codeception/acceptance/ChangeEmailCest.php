@@ -9,16 +9,17 @@ class ChangeEmailCest
     public function testChangeEmail(AcceptanceTester $I)
     {
         $I->wantTo('ensure that changing email works');
-        
+
         $I->amGoingTo('change email address');
         $I->amUser();
         $I->clickAccountDropDown();
         $I->click('Account settings');
         $I->waitForElementVisible('#profile-tabs', 20);
         $I->expectTo('see the profile edit form');
-        
+
         $I->waitForElementVisible('.nav-tabs', 20);
         $I->click('Change Email');
+        $I->waitForText('Your current E-mail address is');
 
         $I->amGoingTo('fill only new email');
         $I->fillField('#accountchangeemail-newemail', 'new@email.com');

@@ -22,7 +22,7 @@ $nextUrl = $isAmind ? Url::to(['/marketplace/browse', 'tour' => 'true']) : '';
                         content: <?= json_encode(Yii::t('TourModule.profile', "This is your public user profile, which can be seen by any registered user.")); ?>
                     },
                     {
-                        element: "#user-profile-image",
+                        element: ".profile-user-photo-container",
                         title: <?= json_encode(Yii::t('TourModule.profile', '<strong>Profile</strong> photo')); ?>,
                         content: <?= json_encode(Yii::t('TourModule.profile', 'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.')); ?>,
                         placement: "right"
