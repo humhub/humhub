@@ -42,6 +42,7 @@ class AdminMenu extends LeftNavigation
         $this->panelTitle = Yii::t('AdminModule.base', '<strong>Administration</strong> menu');
 
         $this->addEntry(new MenuLink([
+            'id' => 'user',
             'label' => Yii::t('AdminModule.base', 'Users'),
             'url' => ['/admin/user'],
             'icon' => 'user',
@@ -55,6 +56,7 @@ class AdminMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
+            'id' => 'spaces',
             'label' => Yii::t('AdminModule.base', 'Spaces'),
             'url' => ['/admin/space'],
             'icon' => 'inbox',
@@ -67,6 +69,7 @@ class AdminMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
+            'id' => 'modules',
             'label' => Yii::t('AdminModule.base', 'Modules'),
             'url' => ['/admin/module'],
             'icon' => 'rocket',
@@ -77,6 +80,7 @@ class AdminMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
+            'id' => 'settings',
             'label' => Yii::t('AdminModule.base', 'Settings'),
             'url' => ['/admin/setting'],
             'icon' => 'gears',
@@ -86,6 +90,7 @@ class AdminMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
+            'id' => 'information',
             'label' => Yii::t('AdminModule.base', 'Information'),
             'url' => ['/admin/information'],
             'icon' => 'info-circle',

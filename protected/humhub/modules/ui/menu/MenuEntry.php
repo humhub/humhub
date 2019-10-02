@@ -196,7 +196,7 @@ abstract class MenuEntry extends BaseObject
             Html::addCssClass($options, 'active');
         }
 
-        if($this->id) {
+        if($this->getId()) {
             $options['data-menu-id'] = $this->id;
         }
 

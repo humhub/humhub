@@ -35,11 +35,12 @@ class ModuleMessageSource extends PhpMessageSource
     /**
      * @inheritDoc
      * @throws InvalidConfigException
+     * @throws \yii\base\Exception
      */
     public function init()
     {
         if ($this->module === null && !empty($this->moduleId)) {
-            $this->module = Yii::$app->getModule($this->moduleId);
+            $this->module = Yii::$app->moduleManager->getModule($this->moduleId);
         }
 
         if ($this->module === null) {
