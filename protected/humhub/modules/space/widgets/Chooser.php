@@ -36,12 +36,12 @@ class Chooser extends Widget
     }
 
     /**
-     * Displays / Run the Widgets
+     * @inheritDoc
      */
     public function run()
     {
         if (Yii::$app->user->isGuest) {
-            return;
+            return '';
         }
 
         return $this->render('spaceChooser', [
@@ -84,7 +84,7 @@ class Chooser extends Widget
 
     /**
      * Returns the membership query
-     * 
+     *
      * @deprecated since version 1.2
      * @return type
      */
