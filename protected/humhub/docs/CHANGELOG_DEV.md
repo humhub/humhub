@@ -66,3 +66,4 @@ HumHub Change Log (DEVELOP)
 - Enh: Auto add `data-container-id` to Space and User `Image` widget
 - Enh: Added `grunt test --debug` option
 - Fix #3653: Add PHP LibXML requirement
+- Enh: Added show password feature for password form elements
