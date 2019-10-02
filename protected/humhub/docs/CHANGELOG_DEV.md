@@ -65,4 +65,5 @@ HumHub Change Log (DEVELOP)
 - Enh: Allow `humhub\modules\files\widgets\Upload::withName($submitName, $cfg);`
 - Enh: Auto add `data-container-id` to Space and User `Image` widget
 - Enh: Added `grunt test --debug` option
+- Fix #3653: Add PHP LibXML requirement
 - Enh: Added show password feature for password form elements
