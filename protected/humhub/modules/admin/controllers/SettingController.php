@@ -8,6 +8,12 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\libs\LogoImage;
+use humhub\modules\admin\models\forms\DesignSettingsForm;
+use humhub\modules\admin\models\forms\FileSettingsForm;
+use humhub\modules\admin\models\forms\LogsSettingsForm;
+use humhub\modules\admin\models\forms\OEmbedProviderForm;
+use humhub\modules\admin\models\forms\ProxySettingsForm;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use Yii;
 use humhub\libs\Helpers;
@@ -91,7 +97,7 @@ class SettingController extends Controller
     public function actionDeleteLogoImage()
     {
         $this->forcePostRequest();
-        $image = new \humhub\libs\LogoImage();
+        $image = new LogoImage();
 
         if ($image->hasImage()) {
             $image->delete();
@@ -197,7 +203,7 @@ class SettingController extends Controller
 
     public function actionDesign()
     {
-        $form = new \humhub\modules\admin\models\forms\DesignSettingsForm;
+        $form = new DesignSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
@@ -207,7 +213,7 @@ class SettingController extends Controller
 
         return $this->render('design', [
             'model' => $form,
-            'logo' => new \humhub\libs\LogoImage()
+            'logo' => new LogoImage()
         ]);
     }
 
@@ -216,7 +222,7 @@ class SettingController extends Controller
      */
     public function actionFile()
     {
-        $form = new \humhub\modules\admin\models\forms\FileSettingsForm;
+        $form = new FileSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
@@ -257,7 +263,7 @@ class SettingController extends Controller
      */
     public function actionProxy()
     {
-        $form = new \humhub\modules\admin\models\forms\ProxySettingsForm;
+        $form = new ProxySettingsForm;
 
 
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
@@ -295,7 +301,7 @@ class SettingController extends Controller
             $dating = "the begining of time";
         }
 
-        $form = new \humhub\modules\admin\models\forms\LogsSettingsForm;
+        $form = new LogsSettingsForm;
         $limitAgeOptions = $form->options;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
 
@@ -320,7 +326,7 @@ class SettingController extends Controller
      */
     public function actionOembedEdit()
     {
-        $form = new \humhub\modules\admin\models\forms\OEmbedProviderForm;
+        $form = new OEmbedProviderForm;
 
         $prefix = Yii::$app->request->get('prefix');
         $providers = UrlOembed::getProviders();

@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\web\pwa\widgets\SiteIcon;
+use humhub\widgets\Button;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use humhub\compat\CHtml;
@@ -59,11 +60,11 @@ $iconUrl = SiteIcon::getUrl(140);
                  style="max-height: 40px;">
 
             <div class="image-upload-buttons" id="logo-upload-buttons" style="display: block;">
-                <a id="admin-logo-upload-button" href="#"  class="btn btn-info btn-sm"><i class="fa fa-cloud-upload"></i></a>
+                <?= Button::info()->icon('cloud-upload')->id('admin-logo-upload-button')->sm()->loader(false) ?>
 
-                <a id="admin-delete-logo-image" href="#" style="<?= ($logo->hasImage()) ? '' : 'display:none' ?>" class="btn btn-danger btn-sm"
-                    data-action-click="admin.deletePageLogo"
-                    data-action-url="<?= Url::to(['/admin/setting/delete-logo-image']) ?>" ><i class="fa fa-times"></i></a>
+                <?= Button::danger()->id('admin-delete-logo-image')
+                    ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-logo-image']))
+                    ->style($logo->hasImage() ? '' : 'display:none' )->icon('times')->sm()->loader(false) ?>
             </div>
         </div>
     </div>
@@ -71,16 +72,16 @@ $iconUrl = SiteIcon::getUrl(140);
     <div class="well">
         <?= $form->field($model, 'icon')->fileInput(['id' => 'admin-icon-file-upload', 'data-action-change' => 'admin.changeIcon', 'style' => 'display: none', 'name' => 'icon[]']); ?>
         <div class="image-upload-container" id="icon-upload">
-            <img class="img-rounded" id="icon-image" src="<?= $iconUrl ?>" data-src="holder.js/140x140"
+            <img class="img-rounded" id="icon-image" src="<?= $iconUrl ?>"
                  alt="<?= Yii::t('AdminModule.settings', "You're using no icon at the moment. Upload your logo now."); ?>"
                  style="max-height: 40px;">
 
             <div class="image-upload-buttons" id="icon-upload-buttons" style="display: block;">
-                <a id="admin-icon-upload-button" href="#"  class="btn btn-info btn-sm"><i class="fa fa-cloud-upload"></i></a>
+                <?= Button::info()->icon('cloud-upload')->id('admin-icon-upload-button')->sm()->loader(false)?>
 
-                <a id="admin-delete-icon-image" href="#" style="<?= ($logo->hasImage()) ? '' : 'display:none' ?>" class="btn btn-danger btn-sm"
-                   data-action-click="admin.deletePageIcon"
-                   data-action-url="<?= Url::to(['/admin/setting/delete-icon-image']) ?>" ><i class="fa fa-times"></i></a>
+                <?= Button::danger()->id('admin-delete-icon-image')
+                    ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-icon-image']))
+                    ->style($logo->hasImage() ? '' : 'display:none' )->icon('times')->sm()->loader(false) ?>
             </div>
         </div>
     </div>

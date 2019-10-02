@@ -112,7 +112,6 @@ abstract class MenuEntry extends BaseObject
      */
     public function setIsActiveState($moduleId, $controllerIds = [], $actionIds = [])
     {
-
         $this->isActive = static::isActiveState($moduleId,$controllerIds,$actionIds);
         return $this;
     }
