@@ -61,6 +61,7 @@ class ProfileImageCest
         $this->deleteImage($I, '.profile-user-photo-container');
 
         $I->waitForElementVisible('.profile-user-photo-container .space-acronym');
+        $I->wait(2); // wait for animation
         $I->see('S2','.profile-user-photo-container .space-acronym');
         $I->jsShow('.profile-user-photo-container .image-upload-buttons');
         $I->seeElement('.profile-user-photo-container .image-upload-buttons .btn-info');
@@ -81,6 +82,7 @@ class ProfileImageCest
         $I->click('Delete', '#globalModalConfirm');
 
         $I->waitForElementVisible('.profile-user-photo-container .space-acronym');
+        $I->wait(2); // wait for animation
         $I->see('S2','.profile-user-photo-container .space-acronym');
         $I->jsShow('.profile-user-photo-container .image-upload-buttons');
         $I->seeElement('.profile-user-photo-container .image-upload-buttons .btn-info');
