@@ -262,10 +262,18 @@ humhub.module('stream.Stream', function (module, require, $) {
     Stream.prototype.addResponseEntries = function (request, options) {
         options = $.extend(request.options, options || {});
         var that = this;
-        var result = '';
 
         this.removeResponseEntries(request);
         var $result = $(request.getResultHtml());
+        $result.find('script[src]').each(function(){
+            var cacheBusterPrefix;
+            if(/\?/.test(this.src)) {
+                cacheBusterPrefix = '&_=';
+            } else {
+                cacheBusterPrefix = '?_=';
+            }
+            this.src += cacheBusterPrefix + Date.now();
+        });
 
         this.$.trigger('humhub:stream:beforeAddEntries', [request.response, request, $result]);
 
