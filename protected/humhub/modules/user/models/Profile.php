@@ -74,6 +74,7 @@ class Profile extends ActiveRecord
     public function rules()
     {
         $rules = [
+            [['firstname', 'lastname'], 'trim'],
             [['user_id'], 'required'],
             [['user_id'], 'integer'],
         ];
@@ -206,7 +207,10 @@ class Profile extends ActiveRecord
                 'elements' => [],
             ];
 
-            foreach (ProfileField::find()->orderBy('sort_order')->where(['profile_field_category_id' => $profileFieldCategory->id])->all() as $profileField) {
+            foreach (
+                ProfileField::find()->orderBy('sort_order')
+                    ->where(['profile_field_category_id' => $profileFieldCategory->id])->all() as $profileField
+            ) {
                 /** @var ProfileField $profileField */
                 $profileField->editable = true;
 
@@ -293,8 +297,8 @@ class Profile extends ActiveRecord
 
         if ($this->user !== null) {
             $query = ProfileField::find()
-                    ->where(['visible' => 1])
-                    ->orderBy('sort_order');
+                ->where(['visible' => 1])
+                ->orderBy('sort_order');
 
             if ($category !== null) {
                 $query->andWhere(['profile_field_category_id' => $category->id]);
