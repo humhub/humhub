@@ -21,7 +21,6 @@ Required PHP Extensions
 * PHP EXIF Extension (https://secure.php.net/manual/en/book.exif.php)
 * PHP INTL Extension (https://secure.php.net/manual/en/intro.intl.php) (min ICU v49 see [Yii2 Internationalization](https://github.com/yiisoft/yii2/blob/master/docs/guide/tutorial-i18n.md#setting-up-your-php-environment-))
 * PHP FileInfo Extension (https://secure.php.net/manual/en/fileinfo.installation.php)
-* PHP XML Extension (https://www.php.net/manual/en/book.libxml.php)
 
 Optional PHP Extensions
 -----------------------
