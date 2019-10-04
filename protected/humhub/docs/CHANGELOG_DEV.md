@@ -68,3 +68,4 @@ HumHub Change Log (DEVELOP)
 - Fix #3653: Add PHP LibXML requirement
 - Enh: Added show password feature for password form elements
 - Fix: `humhub\components\acces\AccessValidator` now returns http code `401` for guest and `403` for users by default 
+- Enh: Added generic `humhub\modules\ui\helpers\models\ItemDrop` model for drag/drop reordering
