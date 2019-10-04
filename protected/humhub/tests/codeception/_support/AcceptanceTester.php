@@ -129,13 +129,38 @@ class AcceptanceTester extends \Codeception\Actor
         $this->amOnPage(Url::to($route));
     }
 
-    public function createPost($text)
+    public function createTopics($guid, $topics = [])
+    {
+        $this->amOnSpace($guid, '/topic/manage');
+        $this->waitForText('Topic Overview');
+
+        if(is_string($topics)) {
+            $topics = [$topics];
+        }
+
+        foreach ($topics as $topic) {
+            $this->fillField('#topic-name', $topic);
+            $this->click('.input-group-btn .btn-default');
+            $this->waitForText($topic, null,'.layout-content-container .table-hover');
+        }
+    }
+
+    public function createPost($text, $topics = null)
     {
         $this->jsClick('#contentForm_message');
         $this->wait(1);
         $this->fillField('#contentForm_message .humhub-ui-richtext', $text);
         $this->executeJS("$('#contentForm_message').trigger('focusout');");
         $this->wait(1);
+
+        if($topics) {
+            $this->click('.dropdown-toggle', '.contentForm_options');
+            $this->wait(1);
+            $this->click('Topics', '.contentForm_options');
+            $this->waitForElementVisible('#postTopicContainer');
+            $this->selectFromPicker('#postTopicInput', $topics);
+        }
+
         $this->jsClick('#post_submit_button');
         $this->waitForText($text, 30, '.wall-entry');
     }
@@ -296,12 +321,27 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function selectUserFromPicker($selector, $userName)
     {
-        $select2Input = $selector . ' ~ span input';
-        $this->fillField($select2Input, $userName);
-        $this->waitForElementVisible('.select2-container--open');
-        $this->waitForElementVisible('.select2-results__option.select2-results__option--highlighted');
-        $this->see($userName, '.select2-container--open');
-        $this->pressKey($select2Input, WebDriverKeys::ENTER);
+        $this->selectFromPicker($selector, $userName);
+    }
+
+    public function selectFromPicker($selector, $search)
+    {
+        if(is_array($search)) {
+            foreach ($search as $searchItem) {
+                $this->selectFromPicker($selector, $searchItem);
+                $this->wait(1);
+            }
+        } else {
+            $select2Input = $selector . ' ~ span input';
+            $this->fillField($select2Input, $search);
+            $this->waitForElementVisible('.select2-container--open');
+            $this->waitForElementVisible('.select2-results__option.select2-results__option--highlighted');
+            $this->see($search, '.select2-container--open');
+            $this->wait(1);
+            $this->pressKey($select2Input, WebDriverKeys::ENTER);
+        }
+
+
     }
 
     public function dontSeeInNotifications($text)

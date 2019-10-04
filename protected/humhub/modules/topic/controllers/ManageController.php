@@ -48,7 +48,7 @@ class ManageController extends ContentContainerController
     private function getTopicProvider()
     {
         return new ActiveDataProvider([
-            'query' =>  Topic::findByContainer($this->contentContainer)->orderBy('name'),
+            'query' =>  Topic::findByContainer($this->contentContainer)->orderBy('sort_order, name'),
             'pagination' => [
                 'pageSize' => 20,
             ],
