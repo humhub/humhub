@@ -67,3 +67,4 @@ HumHub Change Log (DEVELOP)
 - Enh: Added `grunt test --debug` option
 - Fix #3653: Add PHP LibXML requirement
 - Enh: Added show password feature for password form elements
+- Fix: `humhub\components\acces\AccessValidator` now returns http code `401` for guest and `403` for users by default 

@@ -72,6 +72,8 @@ abstract class AccessValidator extends BaseObject
 
     public function init()
     {
+        $this->code = Yii::$app->user->isGuest ? 401 : 403;
+
         if (!$this->name) {
             $this->name = static::class;
         }
