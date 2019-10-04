@@ -67,4 +67,10 @@ HumHub Change Log (DEVELOP)
 - Enh: Added `grunt test --debug` option
 - Fix #3653: Add PHP LibXML requirement
 - Enh: Added show password feature for password form elements
+- Fix: `humhub\components\acces\AccessValidator` now returns http code `401` for guest and `403` for users by default 
+- Enh: Added generic `humhub\modules\ui\helpers\models\ItemDrop` model for drag/drop reordering
+- Enh: Added `ContentContainer::findRecord($guid)` for loading a ContentContainerActiveRecord by guid
+- Enh: Implemented `ProfileImage::render($width, $cfg)` for e.g. `$container->getProfileImage()->render(400)`
+- Enh: Added `ContentTag::sort_order` field to provide a default order mechanism for content tags
+- Enh: Added `sort_order` configuration for topics
 - Fix: #3665 oEmbeds don't load properly a second time with pjax

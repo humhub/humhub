@@ -86,8 +86,10 @@ class User extends \yii\web\User
      *
      * @param string|string[]|BasePermission $permission
      * @return boolean
-     * @see PermissionManager::can()
+     * @throws \yii\base\InvalidConfigException
+     * @throws \Throwable
      * @since 1.2
+     * @see PermissionManager::can()
      */
     public function can($permission, $params = [], $allowCaching = true)
     {
@@ -96,6 +98,7 @@ class User extends \yii\web\User
 
     /**
      * @return PermissionManager instance with the related identity instance as permission subject.
+     * @throws \Throwable
      */
     public function getPermissionManager()
     {
@@ -125,6 +128,7 @@ class User extends \yii\web\User
     /**
      * Determines if this user is able to change the email address.
      * @return boolean
+     * @throws \Throwable
      */
     public function canChangeEmail()
     {
@@ -138,6 +142,7 @@ class User extends \yii\web\User
     /**
      * Determines if this user is able to change his username.
      * @return boolean
+     * @throws \Throwable
      */
     public function canChangeUsername()
     {

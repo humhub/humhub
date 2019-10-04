@@ -27,6 +27,15 @@ class Topic extends ContentTag
      */
     public $moduleId = 'topic';
 
+    public function attributeLabels()
+    {
+        return [
+            'name' => Yii::t('TopicModule.base', 'Name'),
+            'color' => Yii::t('TopicModule.base', 'Color'),
+            'sort_order' => Yii::t('TopicModule.base', 'Sort order'),
+        ];
+    }
+
     /**
      * @inheritdoc
      */

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\models;
 
+use humhub\libs\ProfileImage;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\events\SearchAddEvent;
 use humhub\modules\search\jobs\DeleteDocument;
@@ -462,6 +463,14 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public function getDisplayNameSub()
     {
         return $this->description;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getProfileImage()
+    {
+        return new ProfileImage($this, 'default_space');
     }
 
     /**
