@@ -22,10 +22,7 @@
  * Note: Inline styles have been retained for legacy theme compatibility (prior to v1.4)
  */
 
-use humhub\modules\space\models\Space;
-use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\content\assets\ContainerHeaderAsset;
-use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\file\widgets\Upload;
 use yii\helpers\Html;
 
@@ -36,10 +33,6 @@ $bannerProgressBarPadding = $container->getProfileBannerImage()->hasImage() ? '9
 $bannerUpload = Upload::withName($coverUploadName, ['url' => $coverUploadUrl]);
 
 $profileImageUpload = Upload::withName($imageUploadName, ['url' => $imageUploadUrl]);
-
-$image = ($container instanceof Space)
-    ? SpaceImage::widget(['space' => $container, 'width' => 140, 'htmlOptions' => ['class' => 'img-profile-header-background']])
-    : UserImage::widget(['user' => $container, 'width' => 140,  'imageOptions' => ['class' => 'img-profile-header-background']]);
 ?>
 
 <?= Html::beginTag('div', $options) ?>
@@ -48,10 +41,7 @@ $image = ($container instanceof Space)
 
     <div class="image-upload-container profile-banner-image-container">
         <!-- profile image output-->
-        <?= Html::img($container->getProfileBannerImage()->getUrl(), [
-            'class' => 'img-profile-header-background',
-            'style' => 'width:100%'
-        ])?>
+        <?= $container->getProfileBannerImage()->render('width:100%', ['class' => 'img-profile-header-background']) ?>
 
         <!-- show user name and title -->
         <div class="img-profile-data">
@@ -81,10 +71,10 @@ $image = ($container instanceof Space)
 
         <?php if ($container->getProfileImage()->hasImage()) : ?>
             <a data-ui-gallery="spaceHeader" href="<?= $container->profileImage->getUrl('_org'); ?>">
-                <?= $image ?>
+                <?= $container->getProfileImage()->render( 140,  ['class' => 'img-profile-header-background']); ?>
             </a>
         <?php else : ?>
-            <?= $image ?>
+            <?= $container->getProfileImage()->render(140, ['class' => 'img-profile-header-background']); ?>
         <?php endif; ?>
 
         <?php if ($canEdit) : ?>

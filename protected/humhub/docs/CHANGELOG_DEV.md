@@ -69,3 +69,5 @@ HumHub Change Log (DEVELOP)
 - Enh: Added show password feature for password form elements
 - Fix: `humhub\components\acces\AccessValidator` now returns http code `401` for guest and `403` for users by default 
 - Enh: Added generic `humhub\modules\ui\helpers\models\ItemDrop` model for drag/drop reordering
+- Enh: Added `ContentContainer::findRecord($guid)` for loading a ContentContainerActiveRecord by guid
+- Enh: Implemented `ProfileImage::render($width, $cfg)` for e.g. `$container->getProfileImage()->render(400)`
