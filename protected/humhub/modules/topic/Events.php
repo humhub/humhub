@@ -22,7 +22,7 @@ class Events extends BaseObject
         $record = $event->sender->object;
 
         if ($record->content->canEdit()) {
-            $event->sender->addWidget(ContentTopicButton::class, ['record' => $record], ['sortOrder' => 240]);
+            $event->sender->addWidget(ContentTopicButton::class, ['record' => $record], ['sortOrder' => 370]);
         }
     }
 

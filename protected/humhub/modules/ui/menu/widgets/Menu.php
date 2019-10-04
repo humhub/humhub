@@ -25,11 +25,6 @@ use yii\web\View;
 abstract class Menu extends JsWidget
 {
     /**
-     * @inheritdocs
-     */
-    public $jsWidget = 'ui.navigation.Navigation';
-
-    /**
      * @event MenuEvent an event raised before running the navigation widget.
      */
     const EVENT_RUN = 'run';
@@ -122,16 +117,6 @@ abstract class Menu extends JsWidget
     {
         return [
             'menu-id' => $this->id
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAttributes()
-    {
-        return [
-            'class' => 'panel panel-default left-navigation'
         ];
     }
 

@@ -1,9 +1,6 @@
 humhub.module('ui.navigation', function (module, require, $) {
 
     var event = require('event');
-    var Widget = require('ui.widget').Widget;
-
-    var Navigation = Widget.extend();
 
     var init = function () {
         module.initTopNav();
@@ -34,7 +31,7 @@ humhub.module('ui.navigation', function (module, require, $) {
         if(!id) {
             return;
         }
-        
+
         if(item && item.url) {
             module.setActiveItem($('#' + id).find('[href="' + item.url + '"]'));
         } else {
@@ -47,7 +44,7 @@ humhub.module('ui.navigation', function (module, require, $) {
             $('#top-menu-nav li').removeClass('active');
             return;
         }
-        
+
         $item.closest('ul').find('li').removeClass('active');
         $item.closest('li').addClass('active');
         $item.trigger('blur');
@@ -57,7 +54,6 @@ humhub.module('ui.navigation', function (module, require, $) {
         init: init,
         setActive: setActive,
         initTopNav: initTopNav,
-        setActiveItem: setActiveItem,
-        Navigation: Navigation
+        setActiveItem: setActiveItem
     });
 });
