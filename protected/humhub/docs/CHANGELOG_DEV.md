@@ -67,3 +67,4 @@ HumHub Change Log (DEVELOP)
 - Enh: Added `grunt test --debug` option
 - Fix #3653: Add PHP LibXML requirement
 - Enh: Added show password feature for password form elements
+- Fix: #3665 oEmbeds don't load properly a second time with pjax
