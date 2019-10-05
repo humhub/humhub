@@ -385,10 +385,22 @@ abstract class BootstrapComponent extends Widget
         return $this;
     }
 
+    /**
+     * @return string
+     * @since 1.4
+     */
+    public function asString()
+    {
+        return (string) $this;
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function __toString()
     {
         $result = $this::widget($this->getWidgetOptions());
-
         return $result ?: '';
     }
 

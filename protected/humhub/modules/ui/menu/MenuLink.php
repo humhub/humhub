@@ -36,24 +36,21 @@ class MenuLink extends MenuEntry
     protected $url;
 
     /**
-     * @var Icon the icon
-     */
-    protected $icon;
-
-    /**
-     * @var bool use PJAX link if possible
-     */
-    protected $pjaxEnabled = true;
-
-    /**
-     * @var string optional badge (e.g. new item count) not supported by all templates
-     */
-    protected $badgeText;
-
-    /**
      * @var Link
      */
     protected $link;
+
+    /**
+     * @return Link
+     */
+    public function getLink()
+    {
+        if(!$this->link) {
+            $this->link = Link::none();
+        }
+
+        return $this->link;
+    }
 
     /**
      * Renders the link tag for this menu entry
@@ -63,26 +60,23 @@ class MenuLink extends MenuEntry
      */
     public function renderEntry($extraHtmlOptions = [])
     {
-        if($this->link) {
-            return $this->link.'';
-        }
-
-        return Html::a(
-            $this->getIcon() . ' ' . $this->getLabel(),
-            $this->getUrl(),
-            $this->getHtmlOptions($extraHtmlOptions)
-        );
+        // Set default html options and merge with extraoptions
+        $this->getHtmlOptions($extraHtmlOptions);
+        return $this->getLink()->asString();
     }
 
     public function getHtmlOptions($extraOptions = [])
     {
-        $options = parent::getHtmlOptions($extraOptions);
-
-        if(!$this->pjaxEnabled) {
-            Html::addPjaxPrevention($options);
+        if ($this->isActive) {
+            $this->getLink()->cssClass('active');
         }
 
-        return array_merge($extraOptions, $options);
+        if($this->getId()) {
+            $this->getLink()->options(['data-menu-id', $this->getId()]);
+        }
+
+        $this->getLink()->options($extraOptions);
+        return $this->getLink()->htmlOptions;
     }
 
     public function compare(MenuEntry $entry)
@@ -96,16 +90,8 @@ class MenuLink extends MenuEntry
      */
     public function setLabel($label)
     {
-        $this->label = $label;
+        $this->getLink()->setText($label);
         return $this;
-    }
-
-    /**
-     * @return Link
-     */
-    public function getLink()
-    {
-        return $this->link;
     }
 
     /**
@@ -123,7 +109,7 @@ class MenuLink extends MenuEntry
      */
     public function getLabel()
     {
-        return $this->label;
+        return $this->getLink()->text;
     }
 
     /**
@@ -131,16 +117,17 @@ class MenuLink extends MenuEntry
      */
     public function getIcon()
     {
-        return $this->icon;
+        return $this->getLink()->_icon;
     }
 
     /**
      * @param $icon Icon|string the icon instance or icon name
      * * @return static
+     * @throws \Exception
      */
-    public function setIcon($icon)
+    public function setIcon($icon, $right = false, $raw = false)
     {
-        $this->icon = Icon::get($icon);
+        $this->getLink()->icon($icon, $right, $raw);
         return $this;
     }
 
@@ -152,7 +139,9 @@ class MenuLink extends MenuEntry
      */
     public function setUrl($url)
     {
+        // we save the raw url
         $this->url = $url;
+        $this->getLink()->href($url);
         return $this;
     }
 
@@ -165,7 +154,7 @@ class MenuLink extends MenuEntry
     public function getUrl($asString = true)
     {
         if ($asString) {
-            return Url::to($this->url);
+            return $this->getLink()->getHref();
         }
 
         return $this->url;
@@ -176,7 +165,7 @@ class MenuLink extends MenuEntry
      */
     public function isPjaxEnabled()
     {
-        return $this->pjaxEnabled;
+        return $this->getLink()->isPjaxEnabled();
     }
 
     /**
@@ -185,30 +174,14 @@ class MenuLink extends MenuEntry
      */
     public function setPjaxEnabled($pjaxEnabled)
     {
-        $this->pjaxEnabled = $pjaxEnabled;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBadgeText()
-    {
-        return $this->badgeText;
-    }
-
-    /**
-     * @param string $badgeText
-     * @return static
-     */
-    public function setBadgeText($badgeText)
-    {
-        $this->badgeText = $badgeText;
+        $this->getLink()->pjax($pjaxEnabled);
         return $this;
     }
 
     /**
      * Creates MenuEntry by old and deprecated array structure
+     *
+     * > Note: In the array icons must be provided in legacy html format.
      *
      * @deprecated since 1.4
      * @param $item
@@ -223,15 +196,15 @@ class MenuLink extends MenuEntry
         }
 
         if (isset($item['label'])) {
-            $entry->label = $item['label'];
+            $entry->setLabel($item['label']);
         }
 
         if (isset($item['icon'])) {
-            $entry->icon = $item['icon'];
+            $entry->setIcon($item['icon'], false, true);
         }
 
         if (isset($item['url'])) {
-            $entry->url = $item['url'];
+            $entry->setUrl($item['url']);
         }
 
         if (isset($item['sortOrder'])) {
@@ -243,10 +216,20 @@ class MenuLink extends MenuEntry
         }
 
         if (isset($item['htmlOptions'])) {
-            $entry->isActive = $item['htmlOptions'];
+            $entry->setHtmlOptions($item['htmlOptions']);
         }
 
         return $entry;
+    }
+
+    /**
+     * @param array $htmlOptions
+     * @return static
+     */
+    public function setHtmlOptions($htmlOptions)
+    {
+        $this->getLink()->options($htmlOptions);
+        return $this;
     }
 
     /**
@@ -262,13 +245,13 @@ class MenuLink extends MenuEntry
         }
 
         return [
-            'label' => $this->label,
-            'id' => $this->id,
-            'icon' => $this->icon,
-            'url' => $this->url,
+            'label' => $this->getLabel(),
+            'id' => $this->getId(),
+            'icon' => $this->getIcon(),
+            'url' => $this->getUrl(),
             'sortOrder' => $this->sortOrder,
             'isActive' => $this->isActive,
-            'htmlOptions' => $this->htmlOptions
+            'htmlOptions' => $this->getHtmlOptions()
         ];
     }
 

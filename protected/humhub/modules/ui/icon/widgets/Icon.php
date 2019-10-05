@@ -940,7 +940,7 @@ class Icon extends Widget
      */
     public function asString()
     {
-        return $this->__toString();
+        return (string) $this;
     }
 
     /**
