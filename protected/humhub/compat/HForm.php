@@ -275,9 +275,12 @@ class HForm extends \yii\base\Component
                         if (isset($options['readOnly']) && $options['readOnly']) {
                             $options['disabled'] = 'disabled';
                         }
+
                         $value = $model->$name;
+
                         if (is_string($value)) {
-                            $model->$name = explode(',', $model->$name);
+                            $delimiter = isset($definition['delimiter']) ? $definition['delimiter'] : ',';
+                            $model->$name = explode($delimiter, $model->$name);
                         }
 
                         return $this->form->field($model, $name)->checkboxList($definition['items'], $options);

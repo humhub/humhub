@@ -76,3 +76,4 @@ HumHub Change Log (DEVELOP)
 - Enh #3564: Link MemberAdded activity to new member instead of the space
 - Enh: Added `humhub.modules.ui.form.submit` action e.g. `data-action-change="ui.form.submit"`
 - Chng: Added `humhub.ui.form` namespace to core api asset
+- Fix #3567: Profile field type Checkbox List with comma in option list not working

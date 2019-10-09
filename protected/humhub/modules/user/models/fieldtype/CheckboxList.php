@@ -117,6 +117,7 @@ class CheckboxList extends BaseType
         $result = [
             $this->profileField->internal_name => [
                 'type' => 'checkboxlist',
+                'delimiter' => "\n",
                 'class' => 'form-control',
                 'items' => $this->getSelectItems(),
                 'readonly' => (!$this->profileField->editable),
@@ -137,7 +138,7 @@ class CheckboxList extends BaseType
 
     public function beforeProfileSave($values) {
         if(is_array($values)) {
-            return implode(',', $values);
+            return implode("\n", $values);
         }
         return $values;
     }
