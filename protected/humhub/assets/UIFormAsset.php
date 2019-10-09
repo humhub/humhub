@@ -14,8 +14,9 @@ use yii\web\AssetBundle;
  * tabbed form asset
  *
  * @author buddha
+ * @deprecated since 1.4 the ui.form namespace is now part of core api
  */
-class TabbedFormAsset extends AssetBundle
+class UIFormAsset extends AssetBundle
 {
 
     public $jsOptions = ['position' => \yii\web\View::POS_END];

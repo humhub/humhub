@@ -73,4 +73,6 @@ HumHub Change Log (DEVELOP)
 - Enh: Implemented `ProfileImage::render($width, $cfg)` for e.g. `$container->getProfileImage()->render(400)`
 - Enh: Added `ContentTag::sort_order` field to provide a default order mechanism for content tags
 - Enh: Added `sort_order` configuration for topics
-- Enh #3564: Link MemberAdded activity to new member instead of the space.
+- Enh #3564: Link MemberAdded activity to new member instead of the space
+- Enh: Added `humhub.modules.ui.form.submit` action e.g. `data-action-change="ui.form.submit"`
+- Chng: Added `humhub.ui.form` namespace to core api asset

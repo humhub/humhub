@@ -1,5 +1,4 @@
 <?php
-humhub\assets\TabbedFormAsset::register($this);
 humhub\modules\user\widgets\AccountMenu::markAsActive(['/user/account/edit-settings']);
 ?>
 
