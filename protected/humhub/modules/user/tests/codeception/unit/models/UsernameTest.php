@@ -19,7 +19,7 @@ class UsernameTest extends HumHubDbTestCase
         $user = User::findOne(['id' => 1]);
         $user->username = 'valid';
         $this->assertTrue($user->validate('username'));
-        $user->username = "testChar\x00";
+        $user->username = "test\x00Char";
         $this->assertFalse($user->validate('username'));
     }
 
