@@ -326,7 +326,10 @@ abstract class BootstrapComponent extends Widget
     public function run()
     {
         $this->setCssClass();
-        $this->htmlOptions['id'] = $this->getId(true);
+
+        if($this->getId(false)) {
+            $this->htmlOptions['id'] = $this->getId(false);
+        }
 
         return $this->renderComponent();
     }
