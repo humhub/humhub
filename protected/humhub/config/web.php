@@ -68,7 +68,10 @@ $config = [
                     ],
                     "style-src" => [
                         "self" => true,
-                        "unsafe-inline" => true
+                        "unsafe-inline" => true,
+                        "allow" => [
+                            "*" ,
+                        ],
                     ],
                     "object-src" => [
                     ],
@@ -81,7 +84,10 @@ $config = [
                         "self" => true,
                         "unsafe-inline" => true,
                         "unsafe-eval" => false,
-                        "report-sample" => true
+                        "report-sample" => true,
+                        "allow" => [
+                            "*" ,
+                        ],
                     ],
                     "upgrade-insecure-requests" => false
                 ]
