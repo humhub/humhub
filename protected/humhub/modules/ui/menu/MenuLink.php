@@ -72,7 +72,7 @@ class MenuLink extends MenuEntry
         }
 
         if($this->getId()) {
-            $this->getLink()->options(['data-menu-id', $this->getId()]);
+            $this->getLink()->options(['data-menu-id' => $this->getId()]);
         }
 
         $this->getLink()->options($extraOptions);
