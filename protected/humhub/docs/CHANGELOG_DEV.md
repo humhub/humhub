@@ -77,3 +77,6 @@ HumHub Change Log (DEVELOP)
 - Enh: Added `humhub.modules.ui.form.submit` action e.g. `data-action-change="ui.form.submit"`
 - Chng: Added `humhub.ui.form` namespace to core api asset
 - Fix #3567: Profile field type Checkbox List with comma in option list not working
+- Enh: Added `changed` and `resetSearch` js widget events to `humhub.space.chooser.SpaceChooser`
+- Enh: Added a way to specify script urls, which should not be reloaded (`yii.reloadableScripts`) by configuration and event
+- Enh: Add base provider url as `data-oembed-provider` attribute to oembed container
