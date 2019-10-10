@@ -9,11 +9,16 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\libs\LogoImage;
+use humhub\modules\admin\models\forms\BasicSettingsForm;
+use humhub\modules\admin\models\forms\CacheSettingsForm;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\admin\models\forms\FileSettingsForm;
 use humhub\modules\admin\models\forms\LogsSettingsForm;
+use humhub\modules\admin\models\forms\MailingSettingsForm;
 use humhub\modules\admin\models\forms\OEmbedProviderForm;
 use humhub\modules\admin\models\forms\ProxySettingsForm;
+use humhub\modules\admin\models\forms\StatisticSettingsForm;
+use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use Yii;
 use humhub\libs\Helpers;
@@ -66,7 +71,7 @@ class SettingController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => \humhub\modules\admin\permissions\ManageSettings::class]
+            ['permissions' => ManageSettings::class]
         ];
     }
 
@@ -80,7 +85,7 @@ class SettingController extends Controller
      */
     public function actionBasic()
     {
-        $form = new \humhub\modules\admin\models\forms\BasicSettingsForm();
+        $form = new BasicSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect(['/admin/setting/basic']);
@@ -122,7 +127,7 @@ class SettingController extends Controller
      */
     public function actionCaching()
     {
-        $form = new \humhub\modules\admin\models\forms\CacheSettingsForm;
+        $form = new CacheSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             Yii::$app->cache->flush();
             Yii::$app->assetManager->clear();
@@ -142,7 +147,7 @@ class SettingController extends Controller
      */
     public function actionStatistic()
     {
-        $form = new \humhub\modules\admin\models\forms\StatisticSettingsForm;
+        $form = new StatisticSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
@@ -175,7 +180,7 @@ class SettingController extends Controller
      */
     public function actionMailingServer()
     {
-        $form = new \humhub\modules\admin\models\forms\MailingSettingsForm;
+        $form = new MailingSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([

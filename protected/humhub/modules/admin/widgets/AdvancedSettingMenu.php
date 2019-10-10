@@ -74,7 +74,7 @@ class AdvancedSettingMenu extends SubTabMenu
             'url' => Url::toRoute('/admin/setting/oembed'),
             'icon' => 'cloud',
             'sortOrder' => 500,
-            'isActive' => MenuLink::isActiveState('admin', 'setting', 'oembed-edit'),
+            'isActive' => MenuLink::isActiveState('admin', 'setting', 'oembed'),
             'isVisible' => Yii::$app->user->isAdmin(),
         ]));
 
