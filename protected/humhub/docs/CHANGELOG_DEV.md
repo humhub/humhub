@@ -80,3 +80,4 @@ HumHub Change Log (DEVELOP)
 - Enh: Added `changed` and `resetSearch` js widget events to `humhub.space.chooser.SpaceChooser`
 - Enh: Added a way to specify script urls, which should not be reloaded (`yii.reloadableScripts`) by configuration and event
 - Enh: Add base provider url as `data-oembed-provider` attribute to oembed container
+- Fix #3547: Invalid font-family in system mail
