@@ -39,12 +39,12 @@ class UserFollowButton extends \yii\base\Widget
     /**
      * @var string options for follow button 
      */
-    public $followOptions = ['class' => 'btn btn-primary'];
+    public $followOptions = ['class' => 'btn btn-default'];
 
     /**
      * @var array options for unfollow button 
      */
-    public $unfollowOptions = ['class' => 'btn btn-info'];
+    public $unfollowOptions = ['class' => 'btn btn-default'];
 
     /**
      * @inheritdoc

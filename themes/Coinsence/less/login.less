@@ -1,0 +1,495 @@
+//
+// Login
+// --------------------------------------------------
+.login-container {
+
+  background-color: white;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  padding-top: 0;
+
+  #layout-content {
+
+    height: 100%;
+
+  }
+
+  .brand {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 36px 0 0 32px;
+
+    img {
+      height: 52px;
+    }
+
+    img.black {
+      display: none;
+    }
+
+    @media only screen and (max-width: 1365px) {
+
+      .bg {
+        display: none;
+      }
+
+      img.white {
+        display: none;
+      }
+
+      img.black {
+        display: block;
+      }
+
+    }
+
+  }
+
+  .content {
+
+    height: 100%;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    .bg {
+
+      height: 100%;
+      background-image: url("/themes/Coinsence/img/bg.png");
+      background-repeat: no-repeat;
+      width: 701px;
+      background-size: cover;
+      background-position: 50% 50%;
+
+    }
+
+    .login-content,
+    .register-content {
+
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      h1 + h5 {
+        margin-top: 12px;
+        margin-bottom: 64px;
+      }
+
+      .field-login-rememberme {
+        position: relative;
+      }
+
+      .forgot {
+
+        position: absolute;
+        top: 0;
+        right: 0;
+
+      }
+
+      .links {
+        text-align: center;
+      }
+
+    }
+
+    .login-content {
+
+      .form-group:first-of-type {
+        margin-bottom: 30px;
+      }
+
+      .field-login-rememberme {
+        margin-bottom: 0;
+      }
+
+      .links button {
+        margin-top: 60px;
+      }
+
+    }
+
+    .register-content {
+      .links button {
+        margin-top: 46px;
+      }
+    }
+
+    .create-account-content {
+
+      text-align: center;
+
+      h1 + h5 {
+        margin-top: 24px;
+        margin-bottom: 40px;
+      }
+
+      fieldset legend,
+      label,
+      .field-groupuser-group_id {
+        display: none;
+      }
+
+      .form-group {
+        margin-bottom: 28px;
+      }
+
+      button {
+        margin-top: 12px;
+        margin-bottom: 0;
+      }
+
+    }
+
+    .password-recovery-content {
+
+      text-align: center;
+
+      h1 + h5 {
+        margin-top: 20px;
+        margin-bottom: 44px;
+      }
+
+      .form-group {
+        margin-bottom: 28px;
+      }
+
+      .captcha {
+        text-align: left;
+      }
+
+      .btn {
+        margin-top: 25px;
+        margin-bottom: 15px;
+      }
+    }
+
+    .help-block {
+      text-align: left;
+    }
+
+    .toggler {
+      position: absolute;
+      right: 20px;
+      top: calc(60px / 2 - 16px / 2);
+      width: 26px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .labels {
+      position: absolute;
+      bottom: 0;
+
+      h6 {
+        padding: 0 20px 20px;
+        text-align: center;
+      }
+
+    }
+
+
+    /* Global rules */
+
+
+    h1, h5, h6, label, a, button, input {
+      font-family: 'Roboto', sans-serif;
+    }
+
+    h1, h5, h6, label {
+      color: @login-color-base;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 40px;
+      font-weight: bold;
+    }
+
+    h5 {
+      font-size: 16px;
+    }
+
+    h6 {
+      font-size: 14px;
+    }
+
+    label {
+      font-size: 16px;
+    }
+
+    a {
+      color: @login-color-link-base;
+
+      &:focus, &:active, &:hover {
+
+        color: @login-color-link-focused;
+
+      }
+
+    }
+
+    .btn {
+      font-weight: bold;
+      color: @login-color-button-base;
+      background-color: @login-color-button-bg;
+
+      &:focus, &:active, &:hover {
+
+        color: @login-color-button-base;
+        background-color: @login-color-button-focused-bg;
+
+      }
+    }
+
+    form {
+      max-width: 694px;
+      margin: auto;
+    }
+
+    .form-group {
+
+      &.has-error {
+
+        .form-control, .form-control:focus {
+
+          border: 1px solid @login-color-input-errored-border;
+
+        }
+
+      }
+
+      input.form-control {
+
+        height: 60px;
+        padding: 0 24px;
+        border: 1px solid @login-color-input-base-border;
+
+        font-size: 16px;
+        color: @login-color-base;
+
+        &:focus {
+
+          border: 1px solid @login-color-input-focused-border;
+
+        }
+
+      }
+
+      .regular-checkbox + .regular-checkbox-box {
+
+        padding: 11px;
+        margin-right: 8px;
+        border: 1px solid @login-color-checkbox-base-border;
+        cursor: pointer;
+
+      }
+
+      .regular-checkbox:checked + .regular-checkbox-box {
+
+        border: 1px solid @login-color-checkbox-focused-border;
+        background: @login-color-checkbox-focused-bg;
+
+      }
+
+      .regular-checkbox:checked + .regular-checkbox-box:after {
+
+        top: 0;
+        left: 4px;
+
+      }
+
+    }
+
+    .btn {
+
+      font-size: 18px;
+      padding: 20px 80px;
+      border-radius: 31px;
+      margin-bottom: 24px;
+
+    }
+
+    @media only screen and (min-width: 1366px) and (max-width: 1919px) {
+
+      .bg {
+        width: 498px;
+      }
+
+    }
+
+    @media only screen and (max-width: 1365px) {
+
+      .bg {
+        display: none;
+      }
+
+    }
+
+    @media only screen and (min-width: 768px) and (max-width: 1365px) {
+
+      // empty
+
+    }
+
+    @media only screen and (max-width: 767px) {
+
+      .login-content {
+
+        h1 + h5 {
+          margin-top: 10px;
+          margin-bottom: 38px;
+        }
+
+        .links .btn {
+          margin-top: 35px;
+        }
+
+      }
+
+      .register-content {
+
+        h1 + h5 {
+          margin-top: 10px;
+          margin-bottom: 38px;
+        }
+
+        .links .btn {
+          margin-top: 20px;
+        }
+
+      }
+
+      .password-recovery-content {
+
+        h1 + h5 {
+          margin-top: 10px;
+          margin-bottom: 38px;
+        }
+
+        .links .btn {
+          margin-top: 15px;
+        }
+
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      h5 {
+        font-size: 14px;
+      }
+
+      h6 {
+        font-size: 12px;
+      }
+
+      label {
+        font-size: 14px;
+      }
+
+      h1 + h5 {
+        padding: 0 38px;
+        text-align: center;
+      }
+
+      .btn {
+        font-size: 14px;
+        padding: 12px 56px;
+      }
+
+    }
+
+    @media only screen and (max-width: 575px) {
+
+      h1 {
+        font-size: 20px;
+      }
+
+      h5 {
+        font-size: 12px;
+      }
+
+      .btn {
+        font-size: 10px;
+        padding: 8px 48px;
+      }
+
+      .form-group {
+        input.form-control {
+          height: 40px;
+          padding: 0 16px;
+          font-size: 12px;
+        }
+        .regular-checkbox + .regular-checkbox-box {
+          padding: 9px;
+        }
+
+        .regular-checkbox:checked + .regular-checkbox-box:after {
+          top: 1px;
+          left: 3px;
+          font-size: 12px;
+        }
+      }
+
+      .toggler {
+        right: 10px;
+        top: calc(40px / 2 - 14px / 2);
+        width: 22px;
+        height: 14px;
+      }
+
+      .login-content {
+        .form-group:first-of-type {
+          margin-bottom: 24px;
+        }
+      }
+
+      .create-account-content {
+        .form-group {
+          margin-bottom: 20px;
+        }
+        .btn {
+          margin-top: 10px;
+        }
+
+        h1 + h5 {
+          margin-top: 14px;
+          margin-bottom: 22px;
+        }
+      }
+
+    }
+
+  }
+
+  @media only screen and (max-width: 575px) {
+
+    .brand {
+      margin: 14px 0 0 14px;
+      img {
+        height: 38px;
+      }
+    }
+
+  }
+
+  @media only screen and (max-height: 540px) {
+
+    .brand,
+    .labels {
+      display: none;
+    }
+
+  }
+
+}
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700');

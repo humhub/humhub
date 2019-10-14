@@ -28,6 +28,7 @@ nbproject
 
 themes/*
 !themes/HumHub
+!themes/Coinsence
 
 favicon.ico
 /.settings

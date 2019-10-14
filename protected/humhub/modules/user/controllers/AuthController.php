@@ -97,6 +97,34 @@ class AuthController extends Controller
     }
 
     /**
+     * Displays the register page
+     */
+    public function actionRegister()
+    {
+        // If user is already logged in, redirect him to the dashboard
+        if (!Yii::$app->user->isGuest) {
+            return $this->goBack();
+        }
+
+        // Self Invite
+        $invite = new Invite();
+        $invite->scenario = 'invite';
+        if ($invite->load(Yii::$app->request->post()) && $invite->selfInvite()) {
+            if (Yii::$app->request->isAjax) {
+                return $this->renderAjax('register_success_modal', ['model' => $invite]);
+            } else {
+                return $this->render('register_success', ['model' => $invite]);
+            }
+        }
+
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('register_modal', ['invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
+        }
+
+        return $this->render('register', ['invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
+    }
+
+    /**
      * Handle successful authentication
      * 
      * @param \yii\authclient\BaseClient $authClient

@@ -123,12 +123,18 @@ class Registration extends HForm
         ];
 
         $form['elements']['username'] = [
+            'htmlOptions' => [
+                'placeholder' => Yii::t('UserModule.controllers_AuthController', 'Username'),
+            ],
             'type' => 'text',
             'class' => 'form-control',
             'maxlength' => 25,
         ];
         if ($this->enableEmailField) {
             $form['elements']['email'] = [
+                'htmlOptions' => [
+                    'placeholder' => Yii::t('UserModule.controllers_AuthController', 'Email'),
+                ],
                 'type' => 'text',
                 'class' => 'form-control',
             ];
@@ -148,11 +154,17 @@ class Registration extends HForm
             'type' => 'form',
             'elements' => [
                 'newPassword' => [
+                    'htmlOptions' => [
+                        'placeholder' => Yii::t('UserModule.controllers_AuthController', 'Password'),
+                    ],
                     'type' => 'password',
                     'class' => 'form-control',
                     'maxlength' => 255,
                 ],
                 'newPasswordConfirm' => [
+                    'htmlOptions' => [
+                        'placeholder' => Yii::t('UserModule.controllers_AuthController', 'Retype password'),
+                    ],
                     'type' => 'password',
                     'class' => 'form-control',
                     'maxlength' => 255,
