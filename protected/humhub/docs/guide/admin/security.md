@@ -185,6 +185,7 @@ properly with your security configuration, please contact the module owner or re
 This section assembles some guidelines and restrictions regarding custom CSP settings in HumHub.
 
 - The HumHub core currently requires `img-src data:` for page icon and image upload `Administration -> Settings -> Appearance`
+- When using the enterprise edition you should allow `https://www.humhub.org` for `frame-src`
 - When noticing any issues with external modules, please inform the module owner.
 - When developing custom modules, try to test against the strictest csp rules (see default acceptance test csp rules) and provide
 information about csp restrictions in your module description.

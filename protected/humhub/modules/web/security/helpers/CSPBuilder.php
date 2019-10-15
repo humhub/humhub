@@ -124,7 +124,6 @@ class CSPBuilder
             if ($this->supportOldBrowsers) {
                 $compiled [] = 'report-uri ' . $this->policies['report-uri'] . '; ';
             }
-            //$compiled []= 'report-to ' . $this->policies['report-uri'] . '; ';
         }
         if (!empty($this->policies['upgrade-insecure-requests'])) {
             $compiled []= 'upgrade-insecure-requests';

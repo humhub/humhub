@@ -252,7 +252,8 @@ class AcceptanceTester extends \Codeception\Actor
         if(!$this->guestAccessAllowed) {
             $this->waitForElementVisible('#login-form');
         } else {
-            $this->waitForElementVisible('.btn-enter');
+            $this->waitForText('Sign in / up');
+            $this->wait(2);
         }
     }
 
@@ -264,6 +265,7 @@ class AcceptanceTester extends \Codeception\Actor
         $this->waitForElement('.disable-module-'.$moduleId);
         $this->amOnSpace($guid);
     }
+
 
     public function clickAccountDropDown()
     {
@@ -388,12 +390,4 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->executeJS('window.scrollTo(0,document.body.scrollHeight);');
     }
-
-    /**
-     * @return \Codeception\Scenario
-     */
-    /*protected function getScenario()
-    {
-        // TODO: Implement getScenario() method.
-    }*/
 }

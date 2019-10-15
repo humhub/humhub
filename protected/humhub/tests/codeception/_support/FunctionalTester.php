@@ -138,6 +138,7 @@ class FunctionalTester extends \Codeception\Actor
         }
 
         if($user) {
+            $this->logout();
             $this->amUser($user);
         }
 
