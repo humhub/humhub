@@ -17,8 +17,6 @@ use yii\widgets\ActiveForm;
 
 
         <?= $form->field($model, 'expireTime')->textInput(['readonly' => Yii::$app->settings->isFixed('cache.expireTime')]) ?>
-        <?= $form->field($model, 'reloadableScripts')->textarea() ?>
-
 
         <hr>
         <?= Button::primary(Yii::t('AdminModule.settings', 'Save & Flush Caches'))->submit() ?>
