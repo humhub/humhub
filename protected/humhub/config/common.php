@@ -250,6 +250,10 @@ $config = [
         'richText' => [
             'class' => \humhub\modules\content\widgets\richtext\ProsemirrorRichText::class,
         ],
+        'twemoji' => [
+            'path' => '@web-static/img/twemoji/',
+            'size' => '72x72'
+        ],
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',
     ]

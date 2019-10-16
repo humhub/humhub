@@ -32,7 +32,7 @@ humhub.module('ui.markdown', function (module, require, $) {
     var modal = require('ui.modal');
 
     var init = function () {
-        initAddition();
+        //initAddition();
     };
 
     /**
@@ -46,7 +46,7 @@ humhub.module('ui.markdown', function (module, require, $) {
             $match.each(function () {
                 var $this = $(this);
 
-                return;
+                return
 
                 if (this.isContentEditable || $this.hasClass('ProseMirror') || $this.data('markdownProcessed')) {
                     return;

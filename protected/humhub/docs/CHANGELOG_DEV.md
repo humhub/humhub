@@ -82,3 +82,5 @@ HumHub Change Log (DEVELOP)
 - Enh: Add base provider url as `data-oembed-provider` attribute to oembed container
 - Fix #3547: Invalid font-family in system mail
 - Chng: `humhub\compat\CActiveForm` and `humhub\compat\CHtml` is now deprecated
+- Enh: Updated to twemoji v12
+- Enh: Editable `['twemoji']['path']` config parameter

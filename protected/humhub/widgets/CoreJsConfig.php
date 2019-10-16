@@ -93,8 +93,8 @@ class CoreJsConfig extends Widget
                 'ui.richtext.prosemirror' => [
                     'emoji' => [
                         'twemoji' => [
-                            'base' => Yii::getAlias('@web-static/img/twemoji/'),
-                            'size' => '72x72',
+                            'base' => Yii::getAlias(Yii::$app->params['twemoji']['path']),
+                            'size' => Yii::getAlias(Yii::$app->params['twemoji']['size']),
                         ]
                     ],
                     'oembed' => [
