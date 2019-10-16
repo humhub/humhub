@@ -17,7 +17,7 @@ return array (
   'Last update by:' => 'Laatst bijgewerkt door:',
   'Size:' => 'Grootte:',
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'U kunt slechts uploaden naar {n,plural,=1{# bestand} other{# bestanden}} tegelijk.',
-  'The uploaded image is not a squared.' => '',
+  'The uploaded image is not a squared.' => 'De geüploade afbeelding is niet vierkant.',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Dit upload veld kan maximaal {n,plural,=1{# bestand} other {# bestanden}} bevatten.',
   'Upload files' => 'Upload bestanden',
 );
