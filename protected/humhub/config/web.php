@@ -48,48 +48,8 @@ $config = [
                     "X-Content-Type-Options" => "nosniff",
                     "Referrer-Policy" => "no-referrer-when-downgrade",
                     "X-Permitted-Cross-Domain-Policies" => "master-only",
-                    "X-Frame-Options" => "sameorigin"
-                ],
-                "csp" => [
-                    "nonce" => false,
-                    "report-only" => false,
-                    "report" => false,
-                    "default-src" => [
-                        "self" => true
-                    ],
-                    "img-src" => [
-                        "data"=> true,
-                        "allow" => [
-                            "*" ,
-                        ],
-                    ],
-                    "font-src" => [
-                        "self" => true
-                    ],
-                    "style-src" => [
-                        "self" => true,
-                        "unsafe-inline" => true,
-                        "allow" => [
-                            "*" ,
-                        ],
-                    ],
-                    "object-src" => [
-                    ],
-                    "frame-src" => [
-                        "allow" => [
-                            "*"
-                        ]
-                    ],
-                    "script-src" => [
-                        "self" => true,
-                        "unsafe-inline" => true,
-                        "unsafe-eval" => false,
-                        "report-sample" => true,
-                        "allow" => [
-                            "*" ,
-                        ],
-                    ],
-                    "upgrade-insecure-requests" => false
+                    "X-Frame-Options" => "sameorigin",
+                    "Content-Security-Policy" => "default-src *; connect-src  *; font-src 'self'; frame-src https://* http://* *; img-src https://* http://* * data:; object-src 'none'; script-src 'self' https://* http://* * 'unsafe-inline' 'report-sample'; style-src * https://* http://* * 'unsafe-inline';"
                 ]
             ]
         ]
