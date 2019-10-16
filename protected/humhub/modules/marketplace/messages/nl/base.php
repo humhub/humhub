@@ -8,13 +8,13 @@ Module successfully enabled!
 ' => 'Module succesvol ingeschakeld!',
   '--- Disable module: {moduleId} ---
 
-' => '---  Schakel module: {moduleId}  uit --- ',
+' => '---  Schakel module: {moduleId}  uit ---',
   '--- Enable module: {moduleId} ---
 
 ' => '---  Schakel module: {moduleId}  in ---',
   'Add purchased module by licence key' => 'Aangeschafte module toevoegen met de licentie code',
   'All modules are up to date!' => 'Alle modules zijn up-to-date!',
-  'All {moduleId} module content will be deleted. Continue?' => '',
+  'All {moduleId} module content will be deleted. Continue?' => 'Alle inhoud van de module {moduleId} wordt verwijderd. Wilt u doorgaan?',
   'Available updates' => 'Beschikbare updates',
   'Browse online' => 'Blader online',
   'Buy (%price%)' => 'Koop (%price%)',
@@ -28,7 +28,7 @@ Module successfully enabled!
   'Latest compatible version:' => 'Nieuwste compatibele versie:',
   'Latest version:' => 'Nieuwste versie:',
   'Licence Key:' => 'Licentie code:',
-  'Marketplace' => '',
+  'Marketplace' => 'Marktplein',
   'Module directory %modulePath% is not writeable!' => 'Modulemap %modulePath% is niet schrijfbaar!',
   'Module download failed! (%error%)' => 'Download van module mislukt! (%error%)',
   'Module not found or activated!
