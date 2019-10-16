@@ -25,14 +25,14 @@ $(document).on('humhub:ready', function () {
                 },
                 done: function (e, data) {
 
-                    if (data.result.files.error == true) {
+                    if (data.result.files[0].error === true) {
                         handleUploadError(data.result);
                     } else {
                         if (profileImageUploaderUserGuid === profileImageUploaderCurrentUserGuid) {
-                            $('#user-account-image').attr('src', data.result.files.url + '&c=' + Math.random());
+                            $('#user-account-image').attr('src', data.result.files[0].url + '&c=' + Math.random());
                         }
-                        $('#user-profile-image').attr('src', data.result.files.url + '&c=' + Math.random());
-                        $('.user-' + profileImageUploaderUserGuid).attr('src', data.result.files.url + '&c=' + Math.random());
+                        $('#user-profile-image').attr('src', data.result.files[0].url + '&c=' + Math.random());
+                        $('.user-' + profileImageUploaderUserGuid).attr('src', data.result.files[0].url + '&c=' + Math.random());
                         $('#user-profile-image').addClass('animated bounceIn');
                     }
 
@@ -67,10 +67,10 @@ $(document).on('humhub:ready', function () {
                 },
                 done: function (e, data) {
 
-                    if (data.result.files.error == true) {
+                    if (data.result.files[0].error == true) {
                         handleUploadError(data.result);
                     } else {
-                        $('#user-banner-image').attr('src', data.result.files.url + '&c=' + Math.random());
+                        $('#user-banner-image').attr('src', data.result.files[0].url + '&c=' + Math.random());
                         $('#user-banner-image').addClass('animated bounceIn');
                         $('#banner-image-upload-edit-button').show();
                         $('#deleteLinkPost_modal_bannerimagedelete').show();

@@ -26,4 +26,15 @@ abstract class LeftNavigation extends Menu
      */
     public $template = '@ui/menu/widgets/views/left-navigation.php';
 
+    /**
+     * @inheritdoc
+     */
+    public function getAttributes()
+    {
+        return [
+            'class' => 'panel panel-default left-navigation'
+        ];
+    }
+
+
 }

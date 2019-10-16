@@ -277,6 +277,7 @@ class ControllerAccess extends BaseObject
      * to allow other direct settings required by the action validator e.g. direct permission settings.
      *
      * @param $setting array validator setting array
+     * @throws \yii\base\InvalidConfigException
      */
     protected function registerValidator($options)
     {

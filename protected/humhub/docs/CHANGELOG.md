@@ -8,6 +8,10 @@ HumHub Change Log
 - Fix #3647: GroupID field is not translatable in Registration Form
 - Fix #3655: Fix CommentLink widget Comment class usage conflict
 - Fix #3638: Update Notification Causes System Warning
+- Fix #3512: Broken error handling if SQL mode cannot be switched 
+- Fix #3599: Removed HTML encode for FROM attribute of Email (@githubjeka)
+- Fix #3637: Allowed using apostrophe in filename (@githubjeka)
+- Fix #3602: Trim function for username (@githubjeka)
 
 
 1.3.15  (August 22, 2019)

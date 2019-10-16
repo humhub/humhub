@@ -61,6 +61,7 @@ class CoreApiAsset extends AssetBundle
         'js/humhub/humhub.ui.loader.js',
         'js/humhub/humhub.action.js',
         'js/humhub/humhub.ui.widget.js',
+        'js/humhub/humhub.ui.form.js',
         'js/humhub/humhub.ui.showMore.js',
         'js/humhub/humhub.ui.modal.js',
         'js/humhub/humhub.ui.panel.js',

@@ -1,7 +1,7 @@
 <?php
 
 
-?>
+use humhub\modules\ui\mail\DefaultMailStyle; ?>
 
 <tr>
     <td align="center" valign="top" class="fix-box">
@@ -38,7 +38,7 @@
                                                 <!--end space height -->
 
                                                 <tr>
-                                                    <td style="font-size: 14px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left; ">
+                                                    <td style="font-size: 14px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left; ">
 
                                                         <?php echo $message; ?>
 

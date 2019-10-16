@@ -2,7 +2,11 @@
 
 - Added jquery.atwho.modified.css to `mentioning.less`
 - Minor changes in `notification/views/index.php`
+- Refactored `widget/views/panelMenu.php`
+- Use of new WallEntryControls in `modules/content/widgets/views/wallEntry.php`
 
+> Note: This list may not be complete and only contains changes which could interfere with your theme in case you overwrote
+> specific views. In case you notice other problems with your theme, please let us know in the community!
 
 ## PWA
 

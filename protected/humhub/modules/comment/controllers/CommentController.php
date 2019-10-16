@@ -114,7 +114,7 @@ class CommentController extends ContentAddonController
     {
         $this->loadContentAddon(Comment::class, Yii::$app->request->get('id'));
 
-        if (!$this->contentAddon->canWrite()) {
+        if (!$this->contentAddon->canEdit()) {
             throw new HttpException(403, Yii::t('CommentModule.base', 'Access denied!'));
         }
 

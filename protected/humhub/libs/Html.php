@@ -145,8 +145,31 @@ class Html extends \yii\bootstrap\Html
         }
     }
 
+    /**
+     * @param $options
+     * @return bool
+     * @since 1.3
+     */
     public static function addPjaxPrevention(&$options)
     {
         $options['data-pjax-prevent'] = 1;
+    }
+
+    /**
+     * @param $options
+     * @return bool
+     * @since 1.4
+     */
+    public static function isPjaxEnabled($options)
+    {
+        if(empty($options)) {
+            return false;
+        }
+
+        if(isset($options['data-pjax-prevent'])) {
+            return $options['data-pjax-prevent'] !== false;
+        }
+
+        return false;
     }
 }

@@ -1,8 +1,8 @@
 /**
  * Handle Image Upload
- * 
+ *
  * TODO: Create API module merge with profileHeaderImage logic...
- * 
+ *
  */
 $(document).on('humhub:ready', function () {
     'use strict';
@@ -27,15 +27,14 @@ $(document).on('humhub:ready', function () {
                     $('#profile-image-upload-bar .progress-bar').css('width', progress + '%');
                 },
                 done: function (e, data) {
-
-                    if (data.result.files.error == true) {
+                    if (data.result.files[0].error == true) {
                         handleUploadError(data.result);
                     } else {
-                        $('.space-profile-image-' + data.result.files.space_id).attr('src', data.result.files.url + '&c=' + Math.random());
+                        $('.space-profile-image-' + data.result.files[0].space_id).attr('src', data.result.files[0].url + '&c=' + Math.random());
 
-                        $('.space-profile-acronym-' + data.result.files.space_id).addClass('hidden');
-                        $('.space-profile-image-' + data.result.files.space_id).removeClass('hidden');
-                        $('.space-profile-image-' + data.result.files.space_id).addClass('animated bounceIn');
+                        $('.space-profile-acronym-' + data.result.files[0].space_id).addClass('hidden');
+                        $('.space-profile-image-' + data.result.files[0].space_id).removeClass('hidden');
+                        $('.space-profile-image-' + data.result.files[0].space_id).addClass('animated bounceIn');
                     }
 
                     $('#profile-image-upload-loader').hide();
@@ -69,10 +68,10 @@ $(document).on('humhub:ready', function () {
                 },
                 done: function (e, data) {
 
-                    if (data.result.files.error == true) {
+                    if (data.result.files[0].error == true) {
                         handleUploadError(data.result);
                     } else {
-                        $('#space-banner-image').attr('src', data.result.files.url + '&c=' + Math.random());
+                        $('#space-banner-image').attr('src', data.result.files[0].url + '&c=' + Math.random());
                         $('#space-banner-image').addClass('animated bounceIn');
                     }
 
@@ -117,7 +116,7 @@ function resetProfileImage(json) {
         $('.space-profile-image-' + json.space_id).addClass('hidden');
         $('#deleteLinkPost_modal_profileimagedelete').hide();
         $('#profile-image-upload-edit-button').hide();
-        
+
     } else if (json.type == "banner") {
         $('#space-banner-image').attr('src', json.defaultUrl);
         $('#deleteLinkPost_modal_bannerimagedelete').hide();

@@ -1,6 +1,7 @@
 <?php
 namespace humhub\modules\ui\icon\widgets;
 
+use humhub\components\Widget;
 use Yii;
 use humhub\libs\Html;
 use humhub\modules\ui\icon\components\IconProvider;
@@ -31,7 +32,7 @@ use humhub\modules\ui\icon\components\IconFactory;
  * @see IconProvider
  * @since 1.4
  */
-class Icon extends \humhub\components\Widget
+class Icon extends Widget
 {
     const SIZE_XS = 'xs';
     const SIZE_SM = 'sm';
@@ -939,7 +940,7 @@ class Icon extends \humhub\components\Widget
      */
     public function asString()
     {
-        return $this->__toString();
+        return (string) $this;
     }
 
     /**

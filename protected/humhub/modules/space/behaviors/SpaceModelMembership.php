@@ -396,6 +396,8 @@ class SpaceModelMembership extends Behavior
      * @param integer $canLeave 0: user cannot cancel membership | 1: can cancel membership | 2: depending on space flag members_can_leave
      * @param bool $silent add member without any notifications
      * @return bool
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
      */
     public function addMember($userId, $canLeave = 1, $silent = false)
     {

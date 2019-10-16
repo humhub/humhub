@@ -1,12 +1,12 @@
 <?php
 
-namespace humhub\modules\ui\assets;
+namespace humhub\modules\ui\content\assets;
 
 use yii\web\AssetBundle;
 
 class UiImageSetAsset extends AssetBundle
 {
-    public $sourcePath = '@ui/resources';
+    public $sourcePath = '@ui/content/resources';
 
     public $js = [
         'js/humhub.ui.imageset.js'

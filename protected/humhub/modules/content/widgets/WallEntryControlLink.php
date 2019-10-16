@@ -2,6 +2,7 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\components\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
@@ -11,7 +12,7 @@ use yii\helpers\Html;
  * @since 1.2
  * @author buddh4
  */
-class WallEntryControlLink extends \humhub\components\Widget
+class WallEntryControlLink extends Widget
 {
 
     /**

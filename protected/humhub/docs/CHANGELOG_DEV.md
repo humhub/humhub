@@ -13,7 +13,7 @@ HumHub Change Log (DEVELOP)
 - Chng: Removed `atwho` asset and dependency
 - Cnng: Removed old IE support
 - Fix #2946: Use Yii2 default timezone handling
-- Enh: use LocalStorage in panel menu
+- Enh: Use LocalStorage in panel menu
 - Chng #2164: Removed MSN & Google+ social bookmarks during setup
 - Enh: Added a user module configuration for setting password strength rules (Baleks)
 - Fix #3103 Password recovery links pjax layout issue
@@ -58,3 +58,27 @@ HumHub Change Log (DEVELOP)
 - Enh: More generic approach to determine themed view files
 - Enh: Always use ISO 639-1 alpha-2 (and ISO 3166-2) language codes
 - Enh: Update Yii version to 2.0.27
+- Enh: Reorganized translation method categories to reduce language files
+- Enh: Removed deprecated methods/classes since v1.1 - see migration guide for details
+- Enh: Show registration form captcha per default
+- Enh: Added abstract `ContentContainerActiveRecord::getDisplayNameSub()`
+- Enh: Allow `humhub\modules\files\widgets\Upload::withName($submitName, $cfg);`
+- Enh: Auto add `data-container-id` to Space and User `Image` widget
+- Enh: Added `grunt test --debug` option
+- Fix #3653: Add PHP LibXML requirement
+- Enh: Added show password feature for password form elements
+- Fix: `humhub\components\acces\AccessValidator` now returns http code `401` for guest and `403` for users by default 
+- Enh: Added generic `humhub\modules\ui\helpers\models\ItemDrop` model for drag/drop reordering
+- Enh: Added `ContentContainer::findRecord($guid)` for loading a ContentContainerActiveRecord by guid
+- Enh: Implemented `ProfileImage::render($width, $cfg)` for e.g. `$container->getProfileImage()->render(400)`
+- Enh: Added `ContentTag::sort_order` field to provide a default order mechanism for content tags
+- Enh: Added `sort_order` configuration for topics
+- Enh #3564: Link MemberAdded activity to new member instead of the space
+- Enh: Added `humhub.modules.ui.form.submit` action e.g. `data-action-change="ui.form.submit"`
+- Chng: Added `humhub.ui.form` namespace to core api asset
+- Fix #3567: Profile field type Checkbox List with comma in option list not working
+- Enh: Added `changed` and `resetSearch` js widget events to `humhub.space.chooser.SpaceChooser`
+- Enh: Added a way to specify script urls, which should not be reloaded (`yii.reloadableScripts`) by configuration and event
+- Enh: Add base provider url as `data-oembed-provider` attribute to oembed container
+- Fix #3547: Invalid font-family in system mail
+- Chng: `humhub\compat\CActiveForm` and `humhub\compat\CHtml` is now deprecated

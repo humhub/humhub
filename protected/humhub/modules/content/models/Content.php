@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\models;
 
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
@@ -50,13 +51,11 @@ use yii\helpers\Url;
  * @property string $stream_channel
  * @property integer $contentcontainer_id;
  * @property ContentContainerActiveRecord $container
- * @property User $createdBy
- * @property User $updatedBy
  * @mixin PolymorphicRelation
  * @mixin GUID
  * @since 0.5
  */
-class Content extends ContentDeprecated implements Movable, ContentOwner
+class Content extends ActiveRecord implements Movable, ContentOwner
 {
 
     /**
@@ -202,7 +201,7 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
             Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
                 'sguid' => ($this->container instanceof Space) ? $this->container->guid : null,
                 'uguid' => ($this->container instanceof User) ? $this->container->guid : null,
-                'originator' => $this->user->guid,
+                'originator' => $this->createdBy->guid,
                 'contentContainerId' => $this->container->contentContainerRecord->id,
                 'visibility' => $this->visibility,
                 'sourceClass' => $contentSource->className(),
@@ -242,12 +241,12 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
         }
 
         \humhub\modules\content\notifications\ContentCreated::instance()
-            ->from($this->user)
+            ->from($this->createdBy)
             ->about($contentSource)
             ->sendBulk($userQuery);
 
         \humhub\modules\content\activities\ContentCreated::instance()
-            ->from($this->user)
+            ->from($this->createdBy)
             ->about($contentSource)->save();
     }
 
@@ -614,7 +613,7 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
      */
     public function getTags($tagClass = ContentTag::class)
     {
-        return $this->hasMany($tagClass, ['id' => 'tag_id'])->via('tagRelations');
+        return $this->hasMany($tagClass, ['id' => 'tag_id'])->via('tagRelations')->orderBy('sort_order');
     }
 
     /**

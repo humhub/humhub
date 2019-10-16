@@ -52,7 +52,30 @@ If you're using any custom modules, please change the message directories accord
 | fa_ir | fa-IR |
 
 
+### Removed deprecated methods
 
+The following deprecated method have been removed.
+ 
+**Content model -removed methods **
+
+- canWrite()
+- canRead()
+- canDelete()
+- getSpace()
+- getUser()
+
+**Removed class**
+
+- humhub\modules\space\modules\manage\widgets\Menu
+
+**Space class - removed methods**
+
+- canInvite()
+- canShare()
+
+**Notification class - removed methods**
+
+- getSpace()
 
 Migrate from 1.2 to 1.3
 -----------------------

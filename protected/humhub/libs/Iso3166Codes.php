@@ -523,7 +523,7 @@ class Iso3166Codes
 
     public static function country($code, $translate = true)
     {
-        return \Locale::getDisplayRegion('_' . $code, $translate ? Yii::$app->language : 'en');
+        return \Locale::getDisplayRegion('_' . $code, $translate ? Yii::$app->language : 'en-US');
     }
 
     public static function phoneCode($code)

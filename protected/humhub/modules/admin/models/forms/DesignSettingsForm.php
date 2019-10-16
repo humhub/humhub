@@ -66,7 +66,7 @@ class DesignSettingsForm extends Model
             [['displayName', 'spaceOrder'], 'safe'],
             [['horImageScrollOnMobile'], 'boolean'],
             ['logo', 'image', 'extensions' => 'png, jpg, jpeg',  'minWidth' => 100, 'minHeight' => 120],
-            ['icon', 'image', 'extensions' => 'png, jpg, jpeg',  'minWidth' => 512, 'minHeight' => 512],
+            ['icon', 'image', 'extensions' => 'png, jpg, jpeg',  'minWidth' => 256, 'minHeight' => 256],
             ['icon', ImageSquareValidator::class],
             ['dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']],
         ];

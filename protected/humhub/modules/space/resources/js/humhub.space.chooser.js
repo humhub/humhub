@@ -325,8 +325,8 @@ humhub.module('space.chooser', function (module, require, $) {
     /**
      * Clears all remote results which do not match with the input search.
      * If no input is given, all remote results will be removed.
-     * 
-     * @param {string} input search filter 
+     *
+     * @param {string} input search filter
      * @returns {undefined}
      */
     SpaceChooser.prototype.clearRemoteSearch = function (input) {
@@ -350,6 +350,7 @@ humhub.module('space.chooser', function (module, require, $) {
         this.getItems().show().removeHighlight().removeClass('selected');
         this.$chooser.css('max-height', '400px');
         this.$remoteSearch.empty();
+        this.trigger('resetSearch');
     };
 
     SpaceChooser.prototype.onChange = function (input) {
@@ -363,6 +364,8 @@ humhub.module('space.chooser', function (module, require, $) {
         } else if (!atLeastTwo) {
             this.$remoteSearch.html('<li><div class="help-block">' + module.text('info.remoteAtLeastInput') + '</div></li>');
         }
+
+        this.trigger('changed', input);
     };
 
     SpaceChooser.prototype.clearSelection = function () {
@@ -385,7 +388,7 @@ humhub.module('space.chooser', function (module, require, $) {
 
     /**
      * Resets the space chooser icon, if no space view is set.
-     * 
+     *
      * @returns {undefined}
      */
     SpaceChooser.prototype.setNoSpace = function () {
@@ -396,7 +399,7 @@ humhub.module('space.chooser', function (module, require, $) {
 
     /**
      * Changes the space chooser icon, for the given space options.
-     * 
+     *
      * @param {type} spaceOptions
      * @returns {undefined}
      */

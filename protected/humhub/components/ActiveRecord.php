@@ -16,6 +16,8 @@ use humhub\modules\file\components\FileManager;
  * Description of ActiveRecord
  *
  * @property FileManager $fileManager
+ * @property User $createdBy
+ * @property User $updatedBy
  * @author luke
  */
 class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable

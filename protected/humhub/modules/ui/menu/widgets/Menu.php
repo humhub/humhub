@@ -13,6 +13,7 @@ use humhub\libs\Sort;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\JsWidget;
+use Yii;
 use yii\helpers\Url;
 use yii\web\View;
 
@@ -24,11 +25,6 @@ use yii\web\View;
  */
 abstract class Menu extends JsWidget
 {
-    /**
-     * @inheritdocs
-     */
-    public $jsWidget = 'ui.navigation.Navigation';
-
     /**
      * @event MenuEvent an event raised before running the navigation widget.
      */
@@ -85,6 +81,13 @@ abstract class Menu extends JsWidget
             return '';
         }
 
+        if ($this->template === '@humhub/widgets/views/leftNavigation') {
+            Yii::debug('Deprecated usage of leftNavigation view!');
+            $this->template = '@ui/menu/widgets/views/left-navigation.php';
+        }
+
+
+
         return $this->render($this->template, $this->getViewParams());
     }
 
@@ -126,16 +129,6 @@ abstract class Menu extends JsWidget
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getAttributes()
-    {
-        return [
-            'class' => 'panel panel-default left-navigation'
-        ];
-    }
-
-    /**
      * Returns the first entry with the given URL
      *
      * @param $url string|array the url or route
@@ -153,6 +146,27 @@ abstract class Menu extends JsWidget
             }
 
             if ($entry->getUrl() === $url) {
+                return $entry;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the first entry with the given id
+     *
+     * @param $id string the menueId
+     * @return MenuEntry
+     */
+    public function getEntryById($id)
+    {
+        foreach ($this->entries as $entry) {
+            if(!$entry instanceof MenuEntry) {
+                continue;
+            }
+
+            if ($entry->getId() === $id) {
                 return $entry;
             }
         }
@@ -286,11 +300,17 @@ abstract class Menu extends JsWidget
     }
 
     /**
-     * @deprecated since 1.4
+     * Activates an entry by given id or url search string.
+     * @param $searchStr menu entry id or url
      */
-    public function setActive($url)
+    public function setActive($searchStr)
     {
-        $entry = $this->getEntryByUrl($url);
+        $entry = $this->getEntryById($searchStr);
+
+        if (!$entry) {
+            $entry = $this->getEntryByUrl($searchStr);
+        }
+
         if ($entry) {
             $this->setEntryActive($entry);
         }
@@ -299,26 +319,31 @@ abstract class Menu extends JsWidget
     /**
      * @deprecated since 1.4
      */
-    public function setInactive($url)
+    public function setInactive($searchStr)
     {
-        $entry = $this->getEntryByUrl($url);
+        $entry = $this->getEntryById($searchStr);
+
+        if (!$entry) {
+            $entry = $this->getEntryByUrl($searchStr);
+        }
+
         if ($entry) {
             $entry->setIsActive(false);
         }
     }
 
     /**
-     * @deprecated since 1.4
+     * This function provides static menu entry activation, by entry id or url.
      */
-    public static function markAsActive($url)
+    public static function markAsActive($searchStr)
     {
-        Event::on(static::class, static::EVENT_RUN, function ($event) use ($url) {
-            $event->sender->setActive($url);
+        Event::on(static::class, static::EVENT_RUN, function ($event) use ($searchStr) {
+            $event->sender->setActive($searchStr);
         });
     }
 
     /**
-     * @deprecated since 1.4
+     * This function provides static menu entry inactivation, by entry id or url.
      */
     public static function markAsInactive($url)
     {

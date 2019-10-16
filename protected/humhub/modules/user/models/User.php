@@ -96,7 +96,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      * A initial group for the user assigned while registration.
-     * @var type
+     * @var string|int
      */
     public $registrationGroupId = null;
 
@@ -112,7 +112,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      *
-     * @var type
+     * @var string
      */
     public $defaultRoute = '/user/profile';
 
@@ -133,10 +133,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $userModule = Yii::$app->getModule('user');
 
         return [
+            [['username', 'email'], 'trim'],
             [['username'], 'required'],
             [['username'], 'unique'],
             [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
-            [['username'], 'match', 'not' => true, 'pattern' => '![\x00-\x1f\x7f/]!', 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.') ],
+            // Client validation is disable due to invalid client pattern validation
+            [['username'], 'match', 'not' => true, 'pattern' => '/[\x00-\x1f\x7f]/', 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false],
             [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
             [['tags'], 'string'],
             [['guid'], 'string', 'max' => 45],
@@ -173,7 +175,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function __get($name)
     {
-
         if ($name == 'super_admin') {
             /**
              * Replacement for old super_admin flag version
@@ -443,6 +444,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Before Save Addons
      *
+     * @param bool $insert
      * @return bool
      */
     public function beforeSave($insert)
@@ -474,6 +476,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      * After Save Addons
+     * @inheritdoc
      */
     public function afterSave($insert, $changedAttributes)
     {

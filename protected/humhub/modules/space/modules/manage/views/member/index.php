@@ -31,7 +31,7 @@ use yii\helpers\Html;
                 </div>
             </div>
             <div class="col-md-4">
-                <?= Html::activeDropDownList($searchModel, 'group_id', MembershipSearch::getRoles($space), ['class' => 'form-control', 'onchange' => 'this.form.submit()']); ?>
+                <?= Html::activeDropDownList($searchModel, 'group_id', MembershipSearch::getRoles($space), ['class' => 'form-control', 'data-action-change' => 'ui.form.submit']); ?>
             </div>
         </div>
         <?php ActiveForm::end(); ?>

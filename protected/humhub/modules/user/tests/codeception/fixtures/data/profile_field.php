@@ -17,6 +17,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  */
+
+use humhub\modules\user\models\fieldtype\Birthday;
 use humhub\modules\user\models\fieldtype\Text;
 
 return [
@@ -131,6 +133,28 @@ return [
         'title' => 'Url',
         'description' => null,
         'sort_order' => 100,
+        'required' => 0,
+        'show_at_registration' => 0,
+        'editable' => 1,
+        'visible' => 1,
+        'created_at' => '2019-04-02 11:24:02',
+        'created_by' => null,
+        'updated_at' => '2019-04-02 11:24:02',
+        'updated_by' => null,
+        'ldap_attribute' => null,
+        'translation_category' => null,
+        'is_system' => 1,
+        'searchable' => 1
+    ],
+    [
+        'id' => 5,
+        'profile_field_category_id' => 1,
+        'module_id' => null,
+        'field_type_class' => Birthday::class,
+        'internal_name' => 'birthday',
+        'title' => 'Birthday',
+        'description' => null,
+        'sort_order' => 300,
         'required' => 0,
         'show_at_registration' => 0,
         'editable' => 1,

@@ -11,6 +11,7 @@ namespace humhub\modules\content\models;
 
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "contentcontainer".
@@ -22,7 +23,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  * @property integer $owner_user_id
  * @mixin PolymorphicRelation
  */
-class ContentContainer extends \yii\db\ActiveRecord
+class ContentContainer extends ActiveRecord
 {
 
     /**
@@ -73,6 +74,20 @@ class ContentContainer extends \yii\db\ActiveRecord
                 'pkAttribute' => 'pk'
             ]
         ];
+    }
+
+    /**
+     * @param $guid
+     * @return ContentContainerActiveRecord
+     * @throws \yii\db\IntegrityException
+     * @since 1.4
+     */
+    public static function findRecord($guid)
+    {
+        $instance = static::findOne(['guid' => $guid]);
+        if($instance) {
+            return $instance->getPolymorphicRelation();
+        }
     }
 
 }

@@ -55,6 +55,14 @@ class Module extends \humhub\components\Module
     public $showDashboardIncompleteSetupWarning = true;
 
     /**
+     * @since 1.4
+     * @var array list of script urls which should not be cached on the client side
+     */
+    public $defaultReloadableScripts = [
+        'https://platform.twitter.com/widgets.js'
+    ];
+
+    /**
      * @inheritdoc
      */
     public function getName()

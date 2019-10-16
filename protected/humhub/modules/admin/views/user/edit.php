@@ -3,8 +3,6 @@
 use humhub\libs\Html;
 use yii\bootstrap\ActiveForm;
 
-humhub\assets\TabbedFormAsset::register($this);
-
 /* @var $hForm \humhub\compat\HForm */
 /* @var $user \humhub\modules\user\models\User */
 ?>

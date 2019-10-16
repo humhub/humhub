@@ -44,6 +44,7 @@ use yii\helpers\Url;
             'tableOptions' => ['class' => 'table table-hover'],
             'columns' => [
                 'name',
+                'sort_order',
                 [
                     'header' => 'Actions',
                     'class' => 'yii\grid\ActionColumn',

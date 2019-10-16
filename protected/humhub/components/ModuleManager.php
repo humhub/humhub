@@ -292,6 +292,8 @@ class ModuleManager extends Component
      *
      * @param string $id Module Id
      * @return Module|object
+     * @throws Exception
+     * @throws InvalidConfigException
      */
     public function getModule($id)
     {
@@ -322,6 +324,7 @@ class ModuleManager extends Component
      *
      * @param string $moduleId
      * @return bool
+     * @throws Exception
      */
     public function canRemoveModule($moduleId)
     {
@@ -383,8 +386,9 @@ class ModuleManager extends Component
     /**
      * Enables a module
      *
+     * @param Module $module
+     * @throws InvalidConfigException
      * @since 1.1
-     * @param \humhub\components\Module $module
      */
     public function enable(Module $module)
     {
@@ -413,8 +417,10 @@ class ModuleManager extends Component
     /**
      * Disables a module
      *
+     * @param Module $module
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      * @since 1.1
-     * @param \humhub\components\Module $module
      */
     public function disable(Module $module)
     {
@@ -434,6 +440,10 @@ class ModuleManager extends Component
         $this->trigger(static::EVENT_AFTER_MODULE_DISABLE, new ModuleEvent(['module' => $module]));
     }
 
+    /**
+     * @param array $modules
+     * @throws Exception
+     */
     public function disableModules($modules = [])
     {
         foreach ($modules as $module) {

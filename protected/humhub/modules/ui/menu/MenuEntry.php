@@ -112,7 +112,6 @@ abstract class MenuEntry extends BaseObject
      */
     public function setIsActiveState($moduleId, $controllerIds = [], $actionIds = [])
     {
-
         $this->isActive = static::isActiveState($moduleId,$controllerIds,$actionIds);
         return $this;
     }
@@ -196,7 +195,7 @@ abstract class MenuEntry extends BaseObject
             Html::addCssClass($options, 'active');
         }
 
-        if($this->id) {
+        if($this->getId()) {
             $options['data-menu-id'] = $this->id;
         }
 

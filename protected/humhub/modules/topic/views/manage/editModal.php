@@ -18,6 +18,7 @@ use yii\bootstrap\ActiveForm;
     <?php $form = ActiveForm::begin() ?>
         <div class="modal-body">
             <?= $form->field($model, 'name')?>
+            <?= $form->field($model, 'sort_order')->textInput( ['type' => 'number'])?>
         </div>
         <div class="modal-footer">
             <?= ModalButton::submitModal()?>

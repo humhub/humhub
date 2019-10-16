@@ -12,13 +12,14 @@ use humhub\libs\I18NHelper;
 use Yii;
 use yii\base\InvalidArgumentException;
 use humhub\models\forms\ChooseLanguage;
+use yii\i18n\I18N as BaseI18N;
 
 /**
  * I18N provides features related with internationalization (I18N) and localization (L10N).
  *
  * @inheritdoc
  */
-class I18N extends \yii\i18n\I18N
+class I18N extends BaseI18N
 {
 
     /**

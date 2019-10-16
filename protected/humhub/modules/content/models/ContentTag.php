@@ -61,6 +61,7 @@ use yii\db\Expression;
  * @property string type
  * @property integer parent_id
  * @property string color
+ * @property integer sort_order
  *
  * @property ContentContainerActiveRecord $container
  * @property ContentContainer $contentContainer
@@ -148,7 +149,7 @@ class ContentTag extends ActiveRecord
             [['name', 'module_id'], 'required'],
             [['name', 'module_id', 'type'], 'string', 'max' => '100'],
             ['color', 'string', 'max' => '7'],
-            [['parent_id'], 'integer'],
+            [['parent_id', 'sort_order'], 'integer'],
             [['name'], 'validateUnique']
         ];
     }
@@ -241,6 +242,7 @@ class ContentTag extends ActiveRecord
      * This function will cache the container instance once loaded.
      *
      * @return null|ContentContainerActiveRecord
+     * @throws \yii\db\IntegrityException
      */
     public function getContainer()
     {
@@ -332,7 +334,7 @@ class ContentTag extends ActiveRecord
      */
     public static function find()
     {
-        $query = parent::find();
+        $query = parent::find()->orderBy('sort_order');
         return static::addQueryCondition($query);
     }
 

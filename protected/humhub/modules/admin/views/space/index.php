@@ -27,10 +27,10 @@ use yii\helpers\Url;
             <span class="input-group-btn">
                 <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
             </span>
-        </div>     
+        </div>
     </div>
     <div class="col-md-4 spacesearch-visibilities">
-        <?= Html::activeDropDownList($searchModel, 'visibility', SpaceSearch::getVisibilityAttributes(), ['class' => 'form-control', 'onchange' => 'this.form.submit()']); ?>
+        <?= Html::activeDropDownList($searchModel, 'visibility', SpaceSearch::getVisibilityAttributes(), ['class' => 'form-control', 'data-action-change' => 'ui.form.submit']); ?>
     </div>
 </div>
 <?php ActiveForm::end(); ?>

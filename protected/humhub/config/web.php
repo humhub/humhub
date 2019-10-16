@@ -58,16 +58,20 @@ $config = [
                         "self" => true
                     ],
                     "img-src" => [
+                        "data"=> true,
                         "allow" => [
-                            "*"
-                        ]
+                            "*" ,
+                        ],
                     ],
                     "font-src" => [
                         "self" => true
                     ],
                     "style-src" => [
                         "self" => true,
-                        "unsafe-inline" => true
+                        "unsafe-inline" => true,
+                        "allow" => [
+                            "*" ,
+                        ],
                     ],
                     "object-src" => [
                     ],
@@ -80,7 +84,10 @@ $config = [
                         "self" => true,
                         "unsafe-inline" => true,
                         "unsafe-eval" => false,
-                        "report-sample" => true
+                        "report-sample" => true,
+                        "allow" => [
+                            "*" ,
+                        ],
                     ],
                     "upgrade-insecure-requests" => false
                 ]

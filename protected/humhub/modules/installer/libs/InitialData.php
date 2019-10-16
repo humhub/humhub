@@ -41,6 +41,7 @@ class InitialData
         Yii::$app->getModule('user')->settings->set('auth.needApproval', '0');
         Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', '1');
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInvite', '1');
+        Yii::$app->getModule('user')->settings->set('auth.showCaptureInRegisterForm', '1');
 
         // Mailing
         Yii::$app->settings->set('mailer.transportType', 'php');

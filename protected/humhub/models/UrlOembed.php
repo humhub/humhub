@@ -268,6 +268,7 @@ class UrlOembed extends ActiveRecord
      *
      * @param $url
      * @param []|null $data
+     * @param UrlOembed $urlOembed
      * @return string|null
      */
     protected static function buildHtmlPreview($url, $data = null)
@@ -277,6 +278,7 @@ class UrlOembed extends ActiveRecord
                 'data' => [
                     'guid' => uniqid('oembed-', true),
                     'richtext-feature' => 1,
+                    'oembed-provider' => Html::encode(static::getProviderByUrl($url)),
                     'url' => Html::encode($url)
                 ],
                 'class' => 'oembed_snippet',
@@ -307,13 +309,22 @@ class UrlOembed extends ActiveRecord
      */
     public static function hasOEmbedSupport($url)
     {
+        return static::getProviderByUrl($url) != null;
+    }
+
+    /**
+     * @param $url
+     * @return mixed|null
+     */
+    public static function getProviderByUrl($url)
+    {
         foreach (static::getProviders() as $providerBaseUrl => $providerAPI) {
             if (strpos($url, $providerBaseUrl) !== false) {
-                return true;
+                return $providerBaseUrl;
             }
         }
 
-        return false;
+        return null;
     }
 
     /**

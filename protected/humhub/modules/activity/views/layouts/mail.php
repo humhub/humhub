@@ -5,8 +5,19 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
- 
+
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\ui\mail\DefaultMailStyle;
 use yii\helpers\Html;
+
+/* @var $this \yii\web\View */
+/* @var $space Space */
+/* @var $url string */
+/* @var $contentContainer ContentContainerActiveRecord */
+/* @var $html string */
+/* @var $text string */
+/* @var $originator User */
+
 ?>
 
 <!-- START NOTIFICATION/ACTIVITY -->
@@ -64,18 +75,19 @@ use yii\helpers\Html;
                                                                align="left">
 
                                                             <tr>
-                                                                <td style="font-size: 13px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; color:#555555; font-weight:300; text-align:left; ">
+                                                                <td style="font-size: 13px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:#555555; font-weight:300; text-align:left; ">
                                                                     <!-- prevent content overflow -->
-                                                                    <div style="width:480px;overflow:hidden;text-overflow:ellipsis;font-size: 13px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; color:#555555; font-weight:300; text-align:left;">
+                                                                    <div
+                                                                        style="width:480px;overflow:hidden;text-overflow:ellipsis;font-size: 13px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:#555555; font-weight:300; text-align:left;">
                                                                         <!-- content output-->
                                                                         <?= $content; ?>
 
                                                                         <!-- check if activity object has a space -->
-                                                                        <?php if ($record->content->space !== null): ?>
-                                                                            (<?= Yii::t('ActivityModule.base', 'via'); ?>
-                                                                            <a href="<?= $record->content->space->createUrl('/space/space', [], true); ?>"
-                                                                               style="text-decoration: none; color: #555555;">
-                                                                                   <?= Html::encode($record->content->space->name); ?></a>)
+                                                                        <?php if ($space !== null): ?>
+                                                                            <?= Html::a($space->displayName,
+                                                                                $space->createUrl(null, [], true), [
+                                                                                    'style' => 'text-decoration: none; color: #555555;'
+                                                                                ]); ?>
                                                                         <?php endif; ?>
 
                                                                         <?php if ($url != "") : ?>
@@ -87,7 +99,7 @@ use yii\helpers\Html;
                                                                             <!-- END: CONTENT LINK -->
                                                                         <?php endif; ?>
                                                                     </div>
-                                                                           
+
                                                                 </td>
                                                             </tr>
 

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\models;
 
+use humhub\libs\ProfileImage;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\events\SearchAddEvent;
 use humhub\modules\search\jobs\DeleteDocument;
@@ -355,31 +356,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
     }
 
     /**
-     * Checks if given user can invite people to this workspace
-     * Note: use directly permission instead
-     *
-     * @return boolean
-     * @deprecated since version 1.1
-     */
-    public function canInvite()
-    {
-        return $this->getPermissionManager()->can(new InviteUsers());
-    }
-
-    /**
-     * Checks if given user can share content.
-     * Shared Content is public and is visible also for non members of the space.
-     * Note: use directly permission instead
-     *
-     * @return boolean
-     * @deprecated since version 1.1
-     */
-    public function canShare()
-    {
-        return $this->getPermissionManager()->can(new CreatePublicContent());
-    }
-
-    /**
      * Returns an array of informations used by search subsystem.
      * Function is defined in interface ISearchable
      *
@@ -474,14 +450,27 @@ class Space extends ContentContainerActiveRecord implements Searchable
     }
 
     /**
-     * Returns display name (title) of space
-     *
-     * @return string
-     * @since 0.11.0
+     * @inheritdoc
      */
     public function getDisplayName()
     {
         return $this->name;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDisplayNameSub()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getProfileImage()
+    {
+        return new ProfileImage($this, 'default_space');
     }
 
     /**

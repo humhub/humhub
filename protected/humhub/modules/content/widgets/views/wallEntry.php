@@ -28,18 +28,7 @@ use yii\helpers\Url;
 
             <!-- start: show wall entry options -->
             <?php if ($renderControls) : ?>
-                <ul class="nav nav-pills preferences">
-                    <li class="dropdown ">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-                           aria-label="<?= Yii::t('base', 'Toggle stream entry menu'); ?>" aria-haspopup="true">
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-
-                        <ul class="dropdown-menu pull-right">
-                            <?= WallEntryControls::widget(['object' => $object, 'wallEntryWidget' => $wallEntryWidget]); ?>
-                        </ul>
-                    </li>
-                </ul>
+                <?= WallEntryControls::widget(['object' => $object, 'wallEntryWidget' => $wallEntryWidget]); ?>
             <?php endif; ?>
             <!-- end: show wall entry options -->
 

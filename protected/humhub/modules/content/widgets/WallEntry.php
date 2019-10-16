@@ -10,6 +10,8 @@ namespace humhub\modules\content\widgets;
 
 use humhub\modules\dashboard\controllers\DashboardController;
 use humhub\modules\stream\actions\Stream;
+use humhub\modules\ui\menu\DropdownDivider;
+use humhub\modules\ui\menu\MenuEntry;
 use Yii;
 use humhub\components\Widget;
 use humhub\modules\space\models\Space;
@@ -18,7 +20,7 @@ use humhub\modules\content\components\ContentContainerController;
 
 /**
  * WallEntry is responsible to show a content inside a stream/wall.
- * 
+ *
  * @see \humhub\modules\content\components\ContentActiveRecord
  * @since 0.20
  * @author luke
@@ -57,21 +59,21 @@ class WallEntry extends Widget
 
     /**
      * Route to edit the content
-     * 
+     *
      * @var string
      */
     public $editRoute = "";
 
     /**
      * Defines the way the edit of this wallentry is displayed.
-     * 
+     *
      * @var string
      */
     public $editMode = self::EDIT_MODE_INLINE;
 
     /**
      * The wall entry layout to use
-     * 
+     *
      * @var string
      * @deprecated since 1.4 use [[widgetLayout]] instead
      */
@@ -144,7 +146,7 @@ class WallEntry extends Widget
 
     /**
      * Returns the edit url to edit the content (if supported)
-     * 
+     *
      * @return string url
      */
     public function getEditUrl()
@@ -167,16 +169,16 @@ class WallEntry extends Widget
 
     /**
      * Returns an array of context menu items either in form of a single array:
-     * 
+     *
      * ['label' => 'mylabel', 'icon' => 'fa-myicon', 'data-action-click' => 'myaction', ...]
-     * 
+     *
      * or as widget type definition:
-     * 
+     *
      * [MyWidget::class, [...], [...]]
-     * 
+     *
      * If an [[editRoute]] is set this function will include an edit button.
      * The edit logic can be changed by changing the [[editMode]].
-     * 
+     *
      * @return array
      * @since 1.2
      */
@@ -191,6 +193,7 @@ class WallEntry extends Widget
         }
 
         $this->addControl($result, [PermaLink::class, ['content' => $this->contentObject], ['sortOrder' => 300]]);
+        $this->addControl( $result, new DropdownDivider(['sortOrder' => 350]));
         $this->addControl($result, [VisibilityLink::class, ['contentRecord' => $this->contentObject], ['sortOrder' => 400]]);
         $this->addControl($result, [NotificationSwitchLink::class, ['content' => $this->contentObject], ['sortOrder' => 500]]);
         $this->addControl($result, [PinLink::class, ['content' => $this->contentObject], ['sortOrder' => 600]]);
@@ -206,16 +209,23 @@ class WallEntry extends Widget
         return $result;
     }
 
-    protected function addControl(&$result, $options) {
-        if(isset($this->controlsOptions['prevent']) && isset($options[0]) && in_array($options[0], $this->controlsOptions['prevent'])) {
+    protected function addControl(&$result, $entry) {
+        $entryClass = null;
+        if($entry instanceof MenuEntry) {
+           $entryClass = get_class($entry);
+        } elseif(is_array($entry) && isset($entry[0])) {
+           $entryClass = $entry[0];
+        }
+
+        if(isset($this->controlsOptions['prevent']) && $entryClass && in_array($entryClass, $this->controlsOptions['prevent'])) {
             return;
         }
 
-        $result[] = $options;
+        $result[] = $entry;
     }
 
     /**
-     * Renders the wall entry output 
+     * Renders the wall entry output
      *
      * Note this function does not call
      *
@@ -251,7 +261,7 @@ class WallEntry extends Widget
 
     /**
      * Returns the view paramters for the wall entry layout
-     * 
+     *
      * @return array the view parameter array
      * @deprecated since 1.4 use [[getLayoutViewParams()]] instead
      */
