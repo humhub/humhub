@@ -48,7 +48,7 @@
         "raoul2000/yii2-jcrop-widget": "*",
         "twig/twig": "^1.0",
         "xj/yii2-jplayer-widget": "*",
-        "yiisoft/yii2": "2.0.27",
+        "yiisoft/yii2": "2.0.28",
         "yiisoft/yii2-authclient": "~2.2.0",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-httpclient": "~2.0.0",
