@@ -13,6 +13,7 @@ use humhub\libs\Sort;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\JsWidget;
+use Yii;
 use yii\helpers\Url;
 use yii\web\View;
 
@@ -79,6 +80,13 @@ abstract class Menu extends JsWidget
         if (empty($this->template)) {
             return '';
         }
+
+        if ($this->template === '@humhub/widgets/views/leftNavigation') {
+            Yii::debug('Deprecated usage of leftNavigation view!');
+            $this->template = '@ui/menu/widgets/views/left-navigation.php';
+        }
+
+
 
         return $this->render($this->template, $this->getViewParams());
     }
