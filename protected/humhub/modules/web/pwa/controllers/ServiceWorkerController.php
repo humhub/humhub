@@ -12,6 +12,7 @@ use humhub\components\Controller;
 use humhub\modules\ui\Module;
 use Yii;
 use yii\web\Response;
+use yii\helpers\Url;
 
 /**
  * Class ServiceWorker
@@ -39,9 +40,11 @@ class ServiceWorkerController extends Controller
 
     private function addInstallEvent()
     {
+
+        $offlinePageUrl = Url::to(['/web/pwa-offline/index']);
         $this->baseJs .= <<<JS
             var CACHE = 'humhub-sw-cache';
-            var OFFLINE_PAGE_URL = '/offline.pwa.html';
+            var OFFLINE_PAGE_URL = '{$offlinePageUrl}';
         
             self.addEventListener('install', function (event) {
                 console.log('********** The service worker is being installed.');
