@@ -54,7 +54,7 @@ class ProfileMenu extends LeftNavigation
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.profile', 'About'),
-            'icon' => 'info-circle>',
+            'icon' => 'info-circle',
             'url' => $this->user->createUrl('/user/profile/about'),
             'sortOrder' => 300,
             'isActive' =>  MenuLink::isActiveState('user', 'profile', 'about'),
