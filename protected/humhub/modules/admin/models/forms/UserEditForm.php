@@ -148,7 +148,7 @@ class UserEditForm extends User
 
         $result = [];
         foreach ($groups as $group) {
-            $result[$group->id] = Html::encode($group->name);
+            $result[$group->id] = $group->name;
         }
 
         return $result;
