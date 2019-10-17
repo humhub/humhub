@@ -84,3 +84,4 @@ HumHub Change Log (DEVELOP)
 - Enh: Updated to twemoji v12
 - Enh: Editable `['twemoji']['path']` config parameter
 - Enh: Added configuration option to hide/disable the Like module
+- Enh: Added link to changelog for module marketplaces updates
