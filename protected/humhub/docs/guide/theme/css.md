@@ -43,8 +43,8 @@ For Enterprise Edition based themes:
 @baseTheme: "enterprise";
 ```
 
-After adding the line you can delete all unmodified files from your themes `/views` folder.
-The views will be automatically loaded from the specified base theme.
+>Note: After configuring a base theme, you can delete all unmodified view files from your derived theme's `/views` folder.
+The views will be automatically loaded from the base theme.
 
 ## Compile CSS package
 
