@@ -2,8 +2,8 @@ HumHub Change Log
 =================
 
 
-1.3.16  (Unreleased)
--------------------------
+1.3.16  (October 17, 2019)
+--------------------------
 
 - Fix #3647: GroupID field is not translatable in Registration Form
 - Fix #3655: Fix CommentLink widget Comment class usage conflict
