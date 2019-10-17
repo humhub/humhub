@@ -39,7 +39,6 @@ HumHub Change Log (DEVELOP)
 - Enh: Added "web" submodule for web specific features (e.g. security headers or PWA)
 - Enh: Added Progressive Web App (PWA) support
 - Enh: Added integrated page icon handling
-- Enh: Updated to Yii 2.0.16
 - Enh: Raised minimum PHP Version to 7.1
 - Chng: New Menu and MenuEntry rendering
 - Enh: Added Icon abstraction `humhub\modules\ui\icon\widgets\Icon`
@@ -84,3 +83,4 @@ HumHub Change Log (DEVELOP)
 - Chng: `humhub\compat\CActiveForm` and `humhub\compat\CHtml` is now deprecated
 - Enh: Updated to twemoji v12
 - Enh: Editable `['twemoji']['path']` config parameter
+- Enh: Added configuration option to hide/disable the Like module

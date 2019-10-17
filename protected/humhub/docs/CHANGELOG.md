@@ -62,6 +62,7 @@ HumHub Change Log
 - Fix #3513: Profile schema cache not refreshed after adding new profile field
 - Fix: Removed Codeception files from HumHub packages builds due to possible XSS flaw (thanks to Kağan Eğlence)
 - Fix #3534: Mark ID Attribute in LDAP settings as required
+- Fix #3662: Group picker encode issue
 
 
 1.3.12  (March 26, 2019)
