@@ -8,11 +8,14 @@
 
 namespace humhub\modules\like;
 
+use humhub\components\ActiveRecord;
+use humhub\components\Event;
 use humhub\modules\like\models\Like;
+use Yii;
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @author luke
  */
 class Events extends \yii\base\BaseObject
@@ -21,25 +24,40 @@ class Events extends \yii\base\BaseObject
     /**
      * On User delete, also delete all comments
      *
-     * @param type $event
+     * @param Event $event
+     * @return bool
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public static function onUserDelete($event)
     {
         foreach (Like::findAll(['created_by' => $event->sender->id]) as $like) {
+            /** @var Like $like */
             $like->delete();
         }
 
         return true;
     }
 
+    /**
+     * On any ActiveRecord deletion check for assigned likes
+     *
+     * @param $event
+     * @return bool
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public static function onActiveRecordDelete($event)
     {
+        /** @var ActiveRecord $record */
         $record = $event->sender;
         if ($record->hasAttribute('id')) {
             foreach (Like::findAll(['object_id' => $record->id, 'object_model' => $record->className()]) as $like) {
                 $like->delete();
             }
         }
+
+        return true;
     }
 
     /**
@@ -70,11 +88,24 @@ class Events extends \yii\base\BaseObject
     /**
      * On initalizing the wall entry controls also add the like link widget
      *
-     * @param type $event
+     * @param Event $event
      */
     public static function onWallEntryLinksInit($event)
     {
+        if (!static::getModule()->isEnabled) {
+            return;
+        }
+
         $event->sender->addWidget(widgets\LikeLink::class, ['object' => $event->sender->object], ['sortOrder' => 10]);
+    }
+
+
+    /**
+     * @return Module the like module
+     */
+    private static function getModule()
+    {
+        return Yii::$app->getModule('like');
     }
 
 }

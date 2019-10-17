@@ -84,3 +84,4 @@ HumHub Change Log (DEVELOP)
 - Chng: `humhub\compat\CActiveForm` and `humhub\compat\CHtml` is now deprecated
 - Enh: Updated to twemoji v12
 - Enh: Editable `['twemoji']['path']` config parameter
+- Enh: Added configuration option to hide/disable the Like module
