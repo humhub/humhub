@@ -14,13 +14,14 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.6.0",
+        "ext-zip": "*",
         "bower-asset/animate.css": "*",
         "bower-asset/autosize": "1.*",
         "bower-asset/bluebird": "^3.3.5",
         "bower-asset/blueimp-file-upload": "9.24.*",
         "bower-asset/bootstrap-markdown": "2.10.*",
         "bower-asset/caret.js": "0.2.2",
-        "bower-asset/clipboard.js": "*",
+        "bower-asset/clipboard.js": "v2.8.1",
         "bower-asset/fontawesome": "^4.7.0",
         "bower-asset/html5shiv": "^3.7",
         "bower-asset/imagesloaded": "*",
@@ -59,8 +60,7 @@
         "yiisoft/yii2-redis": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "zendframework/zend-http": "*",
-        "zendframework/zend-ldap": "^2.5",
-        "ext-zip": "*"
+        "zendframework/zend-ldap": "^2.5"
     },
     "require-dev": {
         "codeception/codeception": "2.4.5",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec88a159396b3b25ad9234b74fadfb0b",
+    "content-hash": "2e5e34b9c22f8c33f37f76d3765b5a65",
     "packages": [
         {
             "name": "bower-asset/animate.css",
@@ -188,16 +188,16 @@
         },
         {
             "name": "bower-asset/clipboard.js",
-            "version": "v2.8.6",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lgarron/clipboard-polyfill.git",
-                "reference": "d96be142b0794769531cc4c240dd5131f83796dc"
+                "reference": "d6a8e16b0efecbe7996b06537f0b4e1583a3c7fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lgarron/clipboard-polyfill/zipball/d96be142b0794769531cc4c240dd5131f83796dc",
-                "reference": "d96be142b0794769531cc4c240dd5131f83796dc"
+                "url": "https://api.github.com/repos/lgarron/clipboard-polyfill/zipball/d6a8e16b0efecbe7996b06537f0b4e1583a3c7fb",
+                "reference": "d6a8e16b0efecbe7996b06537f0b4e1583a3c7fb"
             },
             "type": "bower-asset"
         },
