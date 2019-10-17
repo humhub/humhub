@@ -22,16 +22,16 @@ if($profileImage instanceof ProfileBannerImage) {
         : $this->theme->variable('user-profile-banner-ratio', 6.3);
 
     $cropSelect  = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-banner-ratio', '0, 0, 267, 48')
-        : $this->theme->variable('user-profile-banner-ratio', '0, 0, 267, 48');
+        ? $this->theme->variable('space-profile-banner-crop', '0, 0, 267, 48')
+        : $this->theme->variable('user-profile-banner-crop', '0, 0, 267, 48');
 } else {
     $model->aspectRatio  = ($container instanceof Space)
         ? $this->theme->variable('space-profile-image-ratio', 1)
         : $this->theme->variable('user-profile-image-ratio', 1);
 
     $cropSelect  = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-banner-ratio', '0, 0, 100, 100')
-        : $this->theme->variable('user-profile-banner-ratio', '0, 0, 100, 100');
+        ? $this->theme->variable('space-profile-image-crop', '0, 0, 100, 100')
+        : $this->theme->variable('user-profile-image-crop', '0, 0, 100, 100');
 }
 
 $model->cropSetSelect = Json::decode('['.$cropSelect.']');
