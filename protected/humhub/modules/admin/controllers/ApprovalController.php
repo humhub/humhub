@@ -8,6 +8,8 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\components\access\ControllerAccess;
+use humhub\modules\directory\Module;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -43,11 +45,24 @@ class ApprovalController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => [
-                ManageUsers::class,
-                ManageGroups::class
-            ]]
+            ['checkCanApproveUsers'],
         ];
+    }
+
+    /**
+     * @param $rule
+     * @param $access
+     * @return bool
+     * @throws \Throwable
+     */
+    public function checkCanApproveUsers($rule, $access)
+    {
+        if(!Yii::$app->user->getIdentity()->canApproveUsers()) {
+            $access->code = 403;
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -55,10 +70,6 @@ class ApprovalController extends Controller
      */
     public function beforeAction($action)
     {
-        if (!Yii::$app->user->getIdentity()->canApproveUsers()) {
-            throw new ForbiddenHttpException(Yii::t('error', 'You are not allowed to perform this action.'));
-        }
-
         if (!Yii::$app->user->isAdmin()) {
             $this->subLayout = "@humhub/modules/admin/views/approval/_layoutNoAdmin";
         }
