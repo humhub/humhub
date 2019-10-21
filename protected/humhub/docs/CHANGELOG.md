@@ -1,12 +1,16 @@
 HumHub Change Log
 =================
 
+1.3.18 (Unreleased)
+-------------------
+
+- Fix #3698: Approval by group manager broken
+
 
 1.3.17  (October 17, 2019)
 --------------------------
 
 - Fix #3690: Rollback from broken version 2.8.6 to 2.8.1 of bower-asset/clipboard.js
-
 
 1.3.16  (October 17, 2019)
 --------------------------

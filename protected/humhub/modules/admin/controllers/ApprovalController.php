@@ -8,18 +8,14 @@
 
 namespace humhub\modules\admin\controllers;
 
-use humhub\components\access\ControllerAccess;
-use humhub\modules\directory\Module;
+use humhub\modules\admin\models\UserApprovalSearch;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\ApproveUserForm;
-use humhub\modules\admin\permissions\ManageUsers;
-use humhub\modules\admin\permissions\ManageGroups;
 
 /**
  * ApprovalController handels new user approvals
@@ -31,6 +27,9 @@ class ApprovalController extends Controller
      */
     public $adminOnly = false;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->subLayout = '@admin/views/layouts/user';
@@ -57,7 +56,7 @@ class ApprovalController extends Controller
      */
     public function checkCanApproveUsers($rule, $access)
     {
-        if(!Yii::$app->user->getIdentity()->canApproveUsers()) {
+        if (!Yii::$app->user->getIdentity()->canApproveUsers()) {
             $access->code = 403;
             return false;
         }
@@ -79,7 +78,7 @@ class ApprovalController extends Controller
 
     public function actionIndex()
     {
-        $searchModel = new \humhub\modules\admin\models\UserApprovalSearch();
+        $searchModel = new UserApprovalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -88,19 +87,16 @@ class ApprovalController extends Controller
         ]);
     }
 
-    public function actionApprove()
+    public function actionApprove($id)
     {
-        $user = User::findOne(['id' => (int) Yii::$app->request->get('id')]);
-
-        if ($user == null)
-            throw new HttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
+        $user = $this->getUser($id);
 
         $model = new ApproveUserForm;
         $model->subject = Yii::t('AdminModule.controllers_ApprovalController', "Account Request for '{displayName}' has been approved.", ['{displayName}' => Html::encode($user->displayName)]);
         $model->message = strtr(Yii::$app->getModule('user')->settings->get('auth.registrationApprovalMailContent', Yii::t('AdminModule.controllers_ApprovalController', \humhub\modules\admin\models\forms\AuthenticationSettingsForm::defaultRegistrationApprovalMailContent)), [
-                    '{displayName}' => Html::encode($user->displayName),
-                    '{loginURL}' => urldecode(Url::to(["/user/auth/login"], true)),
-                    '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
+            '{displayName}' => Html::encode($user->displayName),
+            '{loginURL}' => urldecode(Url::to(["/user/auth/login"], true)),
+            '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
         ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -117,19 +113,15 @@ class ApprovalController extends Controller
         ]);
     }
 
-    public function actionDecline()
+    public function actionDecline($id)
     {
-
-        $user = User::findOne(['id' => (int) Yii::$app->request->get('id')]);
-
-        if ($user == null)
-            throw new HttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
+        $user = $this->getUser($id);
 
         $model = new ApproveUserForm;
         $model->subject = Yii::t('AdminModule.controllers_ApprovalController', 'Account Request for \'{displayName}\' has been declined.', ['{displayName}' => Html::encode($user->displayName)]);
         $model->message = strtr(Yii::$app->getModule('user')->settings->get('auth.registrationDenialMailContent', Yii::t('AdminModule.controllers_ApprovalController', \humhub\modules\admin\models\forms\AuthenticationSettingsForm::defaultRegistrationDenialMailContent)), [
-                    '{displayName}' => Html::encode($user->displayName),
-                    '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
+            '{displayName}' => Html::encode($user->displayName),
+            '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
         ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -142,6 +134,20 @@ class ApprovalController extends Controller
             'model' => $user,
             'approveFormModel' => $model
         ]);
+    }
+
+    private function getUser($id)
+    {
+        $user = User::find()
+            ->andWhere(['user.id' => (int)Yii::$app->request->get('id'), 'user.status' => User::STATUS_NEED_APPROVAL])
+            ->administrableBy(Yii::$app->user->getIdentity())
+            ->one();
+
+        if ($user == null) {
+            throw new HttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
+        }
+
+        return $user;
     }
 
 }

@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\components;
 
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\user\models\GroupUser;
 use yii\db\ActiveQuery;
 use humhub\modules\user\models\User as UserModel;
 use humhub\events\ActiveQueryEvent;
@@ -32,7 +34,7 @@ class ActiveQueryUser extends ActiveQuery
 
     /**
      * Limit to active users
-     * 
+     *
      * @return ActiveQueryUser the query
      */
     public function active()
@@ -46,9 +48,9 @@ class ActiveQueryUser extends ActiveQuery
     /**
      * Returns only users that should appear in user lists or in the search results.
      * Also only active (enabled) users are returned.
-     * 
-     * @since 1.2.3
+     *
      * @return ActiveQueryUser the query
+     * @since 1.2.3
      */
     public function visible()
     {
@@ -58,13 +60,38 @@ class ActiveQueryUser extends ActiveQuery
 
     /**
      * Adds default user order (e.g. by lastname)
-     * 
+     *
      * @return ActiveQueryUser the query
      */
     public function defaultOrder()
     {
         $this->joinWith('profile');
         $this->addOrderBy(['profile.lastname' => SORT_ASC]);
+
+        return $this;
+    }
+
+    /**
+     * Returns only users which are administrable by the given user.
+     *
+     * @param UserModel $user
+     * @return ActiveQueryUser the query
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function administrableBy(UserModel $user)
+    {
+
+        if (!(new PermissionManager(['subject' => $user]))->can([ManageUsers::class])) {
+            $this->joinWith('groups');
+
+            $groupIds = [];
+            foreach (GroupUser::find()->where(['user_id' => $user->id, 'is_group_manager' => 1])->all() as $gu) {
+                $groupIds[] = $gu->group_id;
+            }
+
+            $this->andWhere(['IN', 'group.id', $groupIds]);
+        }
 
         return $this;
     }
