@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\components\access\ControllerAccess;
 use humhub\modules\admin\models\UserApprovalSearch;
 use Yii;
 use yii\helpers\Html;
@@ -44,6 +45,7 @@ class ApprovalController extends Controller
     public function getAccessRules()
     {
         return [
+            [ControllerAccess::RULE_LOGGED_IN_ONLY],
             ['checkCanApproveUsers'],
         ];
     }

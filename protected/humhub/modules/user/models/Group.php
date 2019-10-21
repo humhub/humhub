@@ -58,7 +58,15 @@ class Group extends ActiveRecord
             [['space_id', 'sort_order'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 45],
+            ['show_at_registration', 'validateShowAtRegistration'],
         ];
+    }
+
+    public function validateShowAtRegistration($attribute, $params)
+    {
+        if($this->is_admin_group && $this->show_at_registration) {
+            $this->addError($attribute, 'Admin group can\'t be a registration group!');
+        }
     }
 
     /**
@@ -328,7 +336,7 @@ class Group extends ActiveRecord
                 return $groups;
             }
         } else {
-            $groups = self::find()->where(['show_at_registration' => '1'])->orderBy('name ASC')->all();
+            $groups = self::find()->where(['show_at_registration' => 1, 'is_admin_group' => 0])->orderBy('name ASC')->all();
         }
 
         return $groups;

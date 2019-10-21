@@ -21,6 +21,7 @@ class UserFullFixture extends ActiveFixture
         'humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture',
         'humhub\modules\user\tests\codeception\fixtures\UserPasswordFixture',
         'humhub\modules\user\tests\codeception\fixtures\UserFollowFixture',
+        InviteFixture::class,
         'humhub\modules\user\tests\codeception\fixtures\GroupFixture'
     ];
 
