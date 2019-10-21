@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\Button;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
@@ -9,11 +10,12 @@ use yii\captcha\Captcha;
 $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
 ?>
 <div class="container" style="text-align: center;">
-    <?=SiteLogo::widget(['place' => 'login']); ?>
+    <?= SiteLogo::widget(['place' => 'login']); ?>
     <br>
 
     <div class="row">
-        <div id="password-recovery-form" class="panel panel-default animated bounceIn" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
+        <div id="password-recovery-form" class="panel panel-default animated bounceIn"
+             style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
             <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Password</strong> recovery'); ?></div>
             <div class="panel-body">
 
@@ -24,7 +26,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
                 <?= $form->field($model, 'email')->textInput(['class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.auth', 'Your email')])->label(false) ?>
 
                 <div class="form-group">
-                    <?= $form->field($model, 'verifyCode')->widget(Captcha::class,[
+                    <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
                         'model' => $model,
                         'attribute' => 'verifyCode',
                         'captchaAction' => '/user/auth/captcha',
@@ -34,7 +36,8 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
                 </div>
 
                 <hr>
-                <?= Html::submitButton(Yii::t('UserModule.auth', 'Reset password'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?> <a class="btn btn-primary" data-ui-loader href="<?php echo Url::home(); ?>"><?php echo Yii::t('UserModule.auth', 'Back') ?></a>
+                <?= Html::submitButton(Yii::t('UserModule.auth', 'Reset password'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+                <?= Button::primary(Yii::t('UserModule.auth', 'Back'))->link(Url::home())->pjax(false) ?>
 
                 <?php ActiveForm::end(); ?>
 
@@ -51,9 +54,9 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
     });
 
     // Shake panel after wrong validation
-<?php if ($model->hasErrors()) : ?>
-        $('#password-recovery-form').removeClass('bounceIn');
-        $('#password-recovery-form').addClass('shake');
-        $('#app-title').removeClass('fadeIn');
-<?php endif; ?>
+    <?php if ($model->hasErrors()) : ?>
+    $('#password-recovery-form').removeClass('bounceIn');
+    $('#password-recovery-form').addClass('shake');
+    $('#app-title').removeClass('fadeIn');
+    <?php endif; ?>
 </script>
