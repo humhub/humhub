@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\space\widgets;
+namespace humhub\modules\user\widgets;
 
 use humhub\widgets\BaseMenu;
 use Yii;
@@ -21,7 +21,7 @@ use Yii;
 class HeaderControlsMenu extends BaseMenu
 {
 
-    public $space;
+    public $user;
     public $template = '@humhub/widgets/views/leftNavigation';
 
     public function init()
@@ -37,27 +37,27 @@ class HeaderControlsMenu extends BaseMenu
         if ($this->space->isAdmin()) {
 
             $this->addItem([
-                'label' => Yii::t('SpaceModule.base', 'Settings'),
+                'label' => Yii::t('SpaceModule.base', 'Edit Profile'),
                 'group' => 'admin',
-                'url' => $this->space->createUrl('/space/manage'),
+                'url' => $this->space->createUrl('/user/account/edit'),
                 'icon' => '<i class="fa fa-cogs"></i>',
                 'sortOrder' => 100,
                 'isActive' => (Yii::$app->controller->id === 'default'),
             ]);
 
             $this->addItem([
-                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Security'),
+                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Privacy'),
                 'group' => 'admin',
-                'url' => $this->space->createUrl('/space/manage/security'),
+                'url' => $this->space->createUrl('/user/account/security'),
                 'icon' => '<i class="fa fa-lock"></i>',
                 'sortOrder' => 200,
                 'isActive' => (Yii::$app->controller->id === 'security'),
             ]);
 
             $this->addItem([
-                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Members'),
+                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Friends'),
                 'group' => 'admin',
-                'url' => $this->space->createUrl('/space/manage/member'),
+                'url' => $this->space->createUrl('/friendship/manage'),
                 'icon' => '<i class="fa fa-group"></i>',
                 'sortOrder' => 200,
                 'isActive' => (Yii::$app->controller->id === 'member'),
@@ -66,7 +66,7 @@ class HeaderControlsMenu extends BaseMenu
             $this->addItem([
                 'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Modules'),
                 'group' => 'admin',
-                'url' => $this->space->createUrl('/space/manage/module'),
+                'url' => $this->space->createUrl('/user/account/edit-modules'),
                 'icon' => '<i class="fa fa-rocket"></i>',
                 'sortOrder' => 300,
                 'isActive' => (Yii::$app->controller->id === 'module'),
@@ -93,18 +93,6 @@ class HeaderControlsMenu extends BaseMenu
                     'group' => 'admin',
                     'url' => $this->space->createUrl('/space/membership/revoke-notifications'),
                     'icon' => '<i class="fa fa-bell-o"></i>',
-                    'sortOrder' => 300,
-                    'isActive' => (Yii::$app->controller->id === 'module'),
-                    'htmlOptions' => ['data-method' => 'POST']
-                ]);
-            }
-
-            if (!$this->space->isSpaceOwner() && $this->space->canLeave()) {
-                $this->addItem([
-                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Cancel Membership'),
-                    'group' => 'admin',
-                    'url' => $this->space->createUrl('/space/membership/revoke-membership'),
-                    'icon' => '<i class="fa fa-times"></i>',
                     'sortOrder' => 300,
                     'isActive' => (Yii::$app->controller->id === 'module'),
                     'htmlOptions' => ['data-method' => 'POST']
