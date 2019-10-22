@@ -5,6 +5,7 @@ HumHub Change Log
 -------------------
 
 - Fix #3698: Approval by group manager broken
+- Enh: Set max signs of User tags to 250
 
 
 1.3.17  (October 17, 2019)
