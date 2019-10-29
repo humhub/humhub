@@ -6,7 +6,8 @@ HumHub Change Log
 
 - Fix #3698: Approval by group manager broken
 - Enh: Set max signs of User tags to 250
-
+- Fix: https://github.com/humhub/humhub-modules-wiki/issues/103 Topic attachment fails with given topic instances
+- Fix #3366: Set max-width for stream entry image file attachments
 
 1.3.17  (October 17, 2019)
 --------------------------
