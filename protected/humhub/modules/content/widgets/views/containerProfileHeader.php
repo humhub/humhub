@@ -71,10 +71,10 @@ $profileImageUpload = Upload::withName($imageUploadName, ['url' => $imageUploadU
 
         <?php if ($container->getProfileImage()->hasImage()) : ?>
             <a data-ui-gallery="spaceHeader" href="<?= $container->profileImage->getUrl('_org'); ?>">
-                <?= $container->getProfileImage()->render( 140,  ['class' => 'img-profile-header-background']); ?>
+                <?= $container->getProfileImage()->render( 140,  ['class' => 'profile-user-photo']); ?>
             </a>
         <?php else : ?>
-            <?= $container->getProfileImage()->render(140, ['class' => 'img-profile-header-background']); ?>
+            <?= $container->getProfileImage()->render(140, ['class' => 'profile-user-photo']); ?>
         <?php endif; ?>
 
         <?php if ($canEdit) : ?>

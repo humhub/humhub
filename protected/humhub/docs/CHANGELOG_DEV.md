@@ -1,6 +1,11 @@
 HumHub Change Log (DEVELOP)
 =================
 
+1.4.beta2
+---
+
+- Fix #3703: Fixed user profile image dimension of mobile
+
 
 1.4
 ---
