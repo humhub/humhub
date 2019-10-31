@@ -787,12 +787,24 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
      */
     public function checkGuestAccess()
     {
-        if (!$this->isPublic() || !Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
+        if (!Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
             return false;
         }
 
-        // Check container visibility for guests
-        return ($this->container instanceof Space && $this->container->visibility == Space::VISIBILITY_ALL) || ($this->container instanceof User && $this->container->visibility == User::VISIBILITY_ALL);
+        // GLobal content
+        if(!$this->container) {
+            return $this->isPublic();
+        }
+
+        if($this->container instanceof Space) {
+            return $this->isPublic() && $this->container->visibility == Space::VISIBILITY_ALL;
+        }
+
+        if($this->container instanceof User) {
+            return $this->isPublic() && $this->container->visibility == User::VISIBILITY_ALL;
+        }
+
+        return false;
     }
 
     /**
