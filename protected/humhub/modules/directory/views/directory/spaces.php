@@ -14,6 +14,12 @@ use humhub\widgets\LinkPager;
 use yii\helpers\Url;
 
 ?>
+
+<script>
+$(function () {
+$('[data-toggle="tooltip"]').tooltip() })
+</script>
+
 <div class="panel panel-default">
 
     <div class="panel-heading">
@@ -72,6 +78,14 @@ use yii\helpers\Url;
                     <div class="media-body">
                         <h4 class="media-heading">
                             <?= Html::containerLink($space); ?>
+
+        <?php if ($space->join_policy == Space::JOIN_POLICY_NONE) {?>
+        <i class="fa fa-circle main-color" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Private Space: Invite-only" ></i>
+        <?php } elseif ($space->join_policy == Space::JOIN_POLICY_APPLICATION) { ?>
+        <i class="fa fa-dot-circle-o main-color" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Private Space: Accepts Requests" ></i>
+         <?php } else { ?>
+        <i class="fa fa-circle-o main-color"  data-toggle="tooltip"  data-placement="top" title="Public Space: Anyone can see and join" ></i>
+
                             <?php if ($space->isArchived()) : ?>
                                 <span
                                     class="label label-warning"><?= Yii::t('ContentModule.widgets_views_label', 'Archived'); ?></span>
