@@ -80,11 +80,17 @@ $('[data-toggle="tooltip"]').tooltip() })
                             <?= Html::containerLink($space); ?>
 
         <?php if ($space->join_policy == Space::JOIN_POLICY_NONE) {?>
-        <i class="fa fa-circle main-color" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Private Space: Invite-only" ></i>
+        <span class="label" style="background-color:#045701" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Invite-only">
+        <?= Yii::t('ContentModule.widgets_views_label', 'Private'); ?>
+        <i class="fa fa-circle main-color"></i></span>
         <?php } elseif ($space->join_policy == Space::JOIN_POLICY_APPLICATION) { ?>
-        <i class="fa fa-dot-circle-o main-color" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Private Space: Accepts Requests" ></i>
-         <?php } else { ?>
-        <i class="fa fa-circle-o main-color"  data-toggle="tooltip"  data-placement="top" title="Public Space: Anyone can see and join" ></i>
+        <span class="label" style="background-color:#045701"aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Accepts Requests">
+        <?= Yii::t('ContentModule.widgets_views_label', 'Private'); ?>
+        <i class="fa fa-dot-circle-o main-color"></i></span>
+        <?php } else { ?>
+        <span class="label" style="background-color:#a9b300" data-toggle="tooltip"  data-placement="top" title="Anyone can join">
+        <?= Yii::t('ContentModule.widgets_views_label', 'Public'); ?>
+        <i class="fa fa-circle-o main-color"></i></span>
 
                             <?php if ($space->isArchived()) : ?>
                                 <span
