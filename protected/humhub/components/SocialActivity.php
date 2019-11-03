@@ -377,7 +377,7 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
             $content = $this->source;
         }
 
-        return RichText::preview($content->getContentDescription(), $maxLength);
+        return str_replace('\*', '*', Helpers::trimText($content->getContentDescription(), $maxLength));
     }
 
     /**
