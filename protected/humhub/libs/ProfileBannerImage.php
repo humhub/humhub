@@ -30,12 +30,12 @@ class ProfileBannerImage extends ProfileImage
     /**
      * @var Integer width of the Image
      */
-    protected $width = 1134;
+    protected $width = 1640;
 
     /**
      * @var Integer height of the Image
      */
-    protected $height = 192;
+    protected $height = 390;
 
     /**
      * @var String folder name inside the uploads directory
@@ -65,7 +65,7 @@ class ProfileBannerImage extends ProfileImage
     {
         $this->delete();
         ImageConverter::TransformToJpeg($file->tempName, $this->getPath('_org'));
-        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), ['width' => 1134, 'mode' => 'max']);
+        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), ['width' => 1640, 'mode' => 'max']);
         ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), ['width' => $this->width, 'height' => $this->height]);
     }
 }

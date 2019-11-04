@@ -1,0 +1,139 @@
+/**
+ * Define your mixins within this file.
+**/
+
+//
+// Override bootstrap grid
+// --------------------------------------------------
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.container.space-layout-container {
+  //margin-top: -64px;
+}
+
+@media (max-width: 991px) {
+  .container.space-layout-container {
+    margin-top: -64px;
+  }
+  .layout-nav-container {
+    .panel {
+      background-color: transparent;
+      box-shadow: none;
+    }
+    .panel-heading {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 919px) {
+  .container.space-layout-container,
+  .container.profile-layout-container {
+    margin-top: -54px;
+  }
+
+}
+
+@media (max-width: 767px) {
+  .container.space-layout-container {
+    margin-top: -48px;
+    > .row > .col-md-12 {
+      padding: 0;
+    }
+  }
+
+  .container.profile-layout-container {
+    margin-top: -48px;
+
+    > .row > .col-md-12 {
+      padding: 0;
+    }
+  }
+
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+
+@media (min-width: 1333px) {
+  .container {
+    width: 1300px;
+  }
+}
+
+@media (min-width: 1666px) {
+  .container {
+    width: 1640px;
+  }
+}
+
+// Like btn
+.likeLinkContainer {
+  .unlike,
+  .likeCount.liked {
+    color: @like-btn-color;
+  }
+}
+
+
+//
+// Thumbnails
+// --------------------------------------------------
+.img-rounded {
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  border-radius: 25px;
+}
+
+.img-rounded-logo {
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
+
+.label-danger {
+  background-color: @topbar-color-label-danger;
+}
+
+// mail send btn override
+
+.btn[data-action-click-url*="/mail/mail"],
+.btn[href*="/mail/mail"] {
+  background: @btn-default-color-background !important;
+  color: @btn-default-color-text !important;
+  border: 1px solid @btn-default-color-border !important;
+  &:hover,
+  &:focus {
+    background: darken(@btn-default-color-background, 2%) !important;
+    text-decoration: none;
+    color: @btn-default-color-text !important;
+  }
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@btn-default-color-background, 5%) !important;
+  }
+}
+
+.btn[data-action-click-url*="/mail/mail"][disabled],
+.btn[data-action-click-url*="/mail/mail"].disabled,
+.btn[href*="/mail/mail"][disabled],
+.btn[href*="/mail/mail"].disabled {
+  background: lighten(@btn-default-color-background, 2%) !important;
+  &:hover,
+  &:focus {
+    background: lighten(@btn-default-color-background, 2%) !important;
+  }
+  &:active,
+  &.active {
+    background: lighten(@btn-default-color-background, 2%) !important;
+  }
+}

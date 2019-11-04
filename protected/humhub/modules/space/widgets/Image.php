@@ -38,6 +38,11 @@ class Image extends Widget
     public $height = null;
 
     /**
+     * @var boolean do not hard-code size or not
+     */
+    public $auto = false;
+
+    /**
      * @var array html options for the generated tag
      */
     public $htmlOptions = [];
@@ -102,11 +107,15 @@ class Image extends Widget
         $imageHtmlOptions = $this->htmlOptions;
 
         $acronymHtmlOptions['class'] .= " space-profile-acronym-" . $this->space->id . " space-acronym";
-        $acronymHtmlOptions['style'] .= " background-color: " . $color . "; width: " . $this->width . "px; height: " . $this->height . "px;";
-        $acronymHtmlOptions['style'] .= " " . $this->getDynamicStyles($this->width);
+        $acronymHtmlOptions['style'] .= " background-color: " . $color . ";";
+        if ($this->auto === false) {
+            $acronymHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px;";
+            $acronymHtmlOptions['style'] .= " " . $this->getDynamicStyles($this->width);
+        }
 
         $imageHtmlOptions['class'] .= " space-profile-image-" . $this->space->id . " img-rounded profile-user-photo";
-        $imageHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px";
+        if ($this->auto === false)
+            $imageHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px";
         $imageHtmlOptions['alt'] = Html::encode($this->space->name);
 
         if ($this->showTooltip) {
@@ -153,15 +162,15 @@ class Image extends Widget
 
         $fontSize = 44 * $elementWidth / 100;
         $padding = 18 * $elementWidth / 100;
-        $borderRadius = 4;
+        $borderRadius =  $elementWidth / 2;
 
-        if ($elementWidth < 140 && $elementWidth > 40) {
-            $borderRadius = 3;
-        }
-
-        if ($elementWidth < 35) {
-            $borderRadius = 2;
-        }
+//        if ($elementWidth < 140 && $elementWidth > 40) {
+//            $borderRadius = 3;
+//        }
+//
+//        if ($elementWidth < 35) {
+//            $borderRadius = 2;
+//        }
 
         return "font-size: " . $fontSize . "px; padding: " . $padding . "px 0; border-radius: " . $borderRadius . "px;";
     }

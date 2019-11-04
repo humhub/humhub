@@ -116,6 +116,9 @@ class BaseType extends Model
 
         $definition = [
             $this->profileField->internal_name => [
+                'htmlOptions' => [
+                    'placeholder' => $this->profileField->title,
+                ],
                 'type' => 'text',
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable)

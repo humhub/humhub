@@ -1,0 +1,383 @@
+//
+// Buttons
+// --------------------------------------------------
+.btn {
+  float: none;
+  border: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  background-image: none;
+  text-shadow: none;
+  border-radius: 20px;
+  outline: none !important;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+}
+
+.input.btn {
+  outline: none;
+}
+
+.btn-lg {
+  padding: 16px 28px;
+  border-radius: 25px;
+}
+
+.btn-sm {
+  padding: 4px 8px;
+  font-size: 12px;
+  i {
+    font-size: 14px;
+  }
+}
+
+.btn-xs {
+  padding: 1px 5px;
+  font-size: 12px;
+}
+
+.btn-default {
+  background: @btn-default-color-background;
+  color: @btn-default-color-text;
+  border: 1px solid @btn-default-color-border;
+  &:hover,
+  &:focus {
+    background: darken(@btn-default-color-background, 2%);
+    text-decoration: none;
+    color: @btn-default-color-text;
+  }
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@btn-default-color-background, 5%);
+  }
+}
+
+.btn-default[disabled],-
+.btn-default.disabled {
+  background: lighten(@btn-default-color-background, 2%);
+  &:hover,
+  &:focus {
+    background: lighten(@btn-default-color-background, 2%);
+  }
+  &:active,
+  &.active {
+    background: lighten(@btn-default-color-background, 2%);
+  }
+}
+
+.btn-default-i {
+  background: @btn-default-i-color-background;
+  color: @btn-default-i-color-text;
+  border: 1px solid @btn-default-i-color-border;
+  &:hover,
+  &:focus {
+    background: darken(@btn-default-i-color-background, 2%);
+    text-decoration: none;
+    color: @btn-default-i-color-text;
+  }
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@btn-default-i-color-background, 5%);
+  }
+}
+
+.btn-default-i[disabled],
+.btn-default-i.disabled {
+  background: lighten(@btn-default-i-color-background, 2%);
+  &:hover,
+  &:focus {
+    background: lighten(@btn-default-i-color-background, 2%);
+  }
+  &:active,
+  &.active {
+    background: lighten(@btn-default-i-color-background, 2%);
+  }
+}
+
+.btn-primary {
+  background: @primary;
+  color: @text-color-contrast !important;
+  &:hover,
+  &:focus {
+    background: darken(@primary, 5%);
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@primary, 5%) !important;
+  }
+}
+
+.btn-primary[disabled],
+.btn-primary.disabled {
+  background: lighten(@primary, 5%);
+  &:hover,
+  &:focus {
+    background: lighten(@primary, 5%);
+  }
+  &:active,
+  &.active {
+    background: lighten(@primary, 5%) !important;
+  }
+}
+
+.btn-primary-i {
+  background: transparent;
+  color: @primary !important;
+  border: 1px solid @primary;
+  &:hover,
+  &:focus {
+    background: transparent;
+    color: darken(@primary, 5%) !important;
+    border: 1px solid darken(@primary, 5%);
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    background: transparent;
+    outline: 0;
+    color: darken(@primary, 5%);
+    border: 1px solid darken(@primary, 5%);
+  }
+}
+
+.btn-primary-i[disabled],
+.btn-primary-i.disabled {
+  background: transparent;
+  color: lighten(@primary, 5%);
+  &:hover,
+  &:focus {
+    background: transparent;
+    color: lighten(@primary, 5%);
+  }
+  &:active,
+  &.active {
+    background: transparent;
+    color: lighten(@primary, 5%) !important;
+  }
+}
+
+.btn-primary-i-a {
+  background: @btn-primary-i-a-color-background;
+  color: @btn-primary-i-a-color-text !important;
+  border: 1px solid @btn-primary-i-a-color-border;
+  &:hover,
+  &:focus {
+    background: darken(@btn-primary-i-a-color-background, 5%) !important;
+    color: darken(@btn-primary-i-a-color-text, 5%) !important;
+    border: 1px solid darken(@btn-primary-i-a-color-border, 5%);
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    background: darken(@btn-primary-i-a-color-background, 5%) !important;
+    outline: 0;
+    color: darken(@btn-primary-i-a-color-text, 5%);
+    border: 1px solid darken(@btn-primary-i-a-color-border, 5%);
+  }
+}
+
+.btn-primary-i-a[disabled],
+.btn-primary-i-a.disabled {
+  background: darken(@btn-primary-i-a-color-background, 5%) !important;
+  color: lighten(@btn-primary-i-a-color-text, 5%);
+  border: 1px solid darken(@btn-primary-i-a-color-border, 5%);
+  &:hover,
+  &:focus {
+    background: transparent;
+    color: lighten(@btn-primary-i-a-color-text, 5%);
+  }
+  &:active,
+  &.active {
+    background: transparent;
+    color: lighten(@btn-primary-i-a-color-text, 5%) !important;
+    border: 1px solid darken(@btn-primary-i-a-color-border, 5%);
+  }
+}
+
+.btn-info {
+  background: @info;
+  color: @text-color-contrast !important;
+  &:hover,
+  &:focus {
+    background: darken(@info, 5%) !important;
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@info, 5%);
+  }
+}
+
+.btn-info[disabled],
+.btn-info.disabled {
+  background: lighten(@info, 5%);
+  &:hover,
+  &:focus {
+    background: lighten(@info, 5%);
+  }
+  &:active,
+  &.active {
+    background: lighten(@info, 5%) !important;
+  }
+}
+
+.btn-info-i {
+  background: transparent;
+  color: @info !important;
+  border: 1px solid @info;
+  &:hover,
+  &:focus {
+    background: transparent;
+    color: darken(@info, 5%) !important;
+    border: 1px solid darken(@info, 5%);
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    background: transparent;
+    outline: 0;
+    color: darken(@info, 5%);
+    border: 1px solid darken(@info, 5%);
+  }
+}
+
+.btn-info-i[disabled],
+.btn-info-i.disabled {
+  background: transparent;
+  color: lighten(@info, 5%);
+  &:hover,
+  &:focus {
+    background: transparent;
+    color: lighten(@info, 5%);
+  }
+  &:active,
+  &.active {
+    background: transparent;
+    color: lighten(@info, 5%) !important;
+  }
+}
+
+.btn-danger {
+  background: @danger;
+  color: @text-color-contrast !important;
+  &:hover,
+  &:focus {
+    background: darken(@danger, 5%);
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@danger, 5%) !important;
+  }
+}
+
+.btn-danger[disabled],
+.btn-danger.disabled {
+  background: lighten(@danger, 5%);
+  &:hover,
+  &:focus {
+    background: lighten(@danger, 5%);
+  }
+  &:active,
+  &.active {
+    background: lighten(@danger, 5%) !important;
+  }
+}
+
+.btn-success {
+  background: @success;
+  color: @text-color-contrast !important;
+  &:hover,
+  &:focus {
+    background: darken(@success, 5%);
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@success, 5%) !important;
+  }
+}
+
+.btn-success[disabled],
+.btn-success.disabled {
+  background: lighten(@success, 5%);
+  &:hover,
+  &:focus {
+    background: lighten(@success, 5%);
+  }
+  &:active,
+  &.active {
+    background: lighten(@success, 5%) !important;
+  }
+}
+
+.btn-warning {
+  background: @warning;
+  color: @text-color-contrast !important;
+  &:hover,
+  &:focus {
+    background: darken(@warning, 2%);
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    outline: 0;
+    background: darken(@warning, 2%) !important;
+  }
+}
+
+.btn-warning[disabled],
+.btn-warning.disabled {
+  background: lighten(@warning, 5%);
+  &:hover,
+  &:focus {
+    background: lighten(@warning, 5%);
+  }
+  &:active,
+  &.active {
+    background: lighten(@warning, 5%) !important;
+  }
+}
+
+.btn-gradient-1 {
+  background: linear-gradient(to right, #3CBEEF, #28AA69);
+  color: #fff !important;
+  &:hover,
+  &:focus {
+    background: linear-gradient(to right, darken(#3CBEEF, 5%), darken(#28AA69, 5%));
+    color: darken(#fff, 5%) !important;
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    background: linear-gradient(to right, darken(#3CBEEF, 5%), darken(#28AA69, 5%));
+    outline: 0;
+    color: darken(#fff, 5%);
+  }
+}
+
+.btn-gradient-1[disabled],
+.btn-gradient-1.disabled {
+  background: linear-gradient(to right, #3CBEEF, #28AA69);
+  color: lighten(#fff, 5%);
+  &:hover,
+  &:focus {
+    background: linear-gradient(to right, lighten(#3CBEEF, 5%), lighten(#28AA69, 5%));
+    color: lighten(#fff, 5%);
+  }
+  &:active,
+  &.active {
+    background: linear-gradient(to right, darken(#3CBEEF, 5%), darken(#28AA69, 5%));
+    color: lighten(#fff, 5%) !important;
+  }
+}

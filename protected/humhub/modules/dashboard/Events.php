@@ -31,9 +31,9 @@ class Events
 
         // Is Module enabled on this workspace?
         $event->sender->addItem([
-            'label' => Yii::t('DashboardModule.base', 'Dashboard'),
+            'label' => Yii::t('DashboardModule.base', 'Home'),
             'id' => 'dashboard',
-            'icon' => '<i class="fa fa-tachometer"></i>',
+            'icon' => '<i class="fa fa-home"></i>',
             'url' => Url::toRoute('/dashboard/dashboard'),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'dashboard'),
