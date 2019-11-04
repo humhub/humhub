@@ -529,9 +529,12 @@ class SpaceModelMembership extends Behavior
     private function handleCancelMemberEvent(User $user)
     {
         MemberRemoved::instance()->about($this->owner)->from($user)->create();
-        $eventName = $user->id == Yii::$app->user->id ? Membership::EVENT_MEMBER_LEAVED : Membership::EVENT_MEMBER_REMOVED;
+        $eventName = $user->id == Yii::$app->user->id ?
+            Membership::EVENT_MEMBER_LEAVED :
+            Membership::EVENT_MEMBER_REMOVED;
 
-        MemberEvent::trigger(Membership::class, $eventName, new MemberEvent(['space' => $this->owner, 'user' => $user]));
+        MemberEvent::trigger(Membership::class, $eventName,
+            new MemberEvent(['space' => $this->owner, 'user' => $user]));
     }
 
     /**
