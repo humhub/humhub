@@ -18,5 +18,5 @@ use yii\helpers\Url;
     <span style="font-size:36px">HumHub&nbsp;&nbsp;</span><span style="font-size:24px">Professional Edition</span><br/>
     <span style="font-size:18px"><?= Yii::t('MarketplaceModule.base', 'Version:'); ?> <?= Yii::$app->version ?></span><br/>
     <span style="font-size:18px"><?= Yii::t('MarketplaceModule.base', 'Licenced to:'); ?> <?= $licence->licencedTo; ?></span><br/>
-    <span style="font-size:18px"><?= Yii::t('MarketplaceModule.base', 'Max. users:'); ?>: <?= $licence->maxUsers; ?></span><br/>
+    <span style="font-size:18px"><?= Yii::t('MarketplaceModule.base', 'Max. users:'); ?> <?= $licence->maxUsers; ?></span><br/>
 </div>
