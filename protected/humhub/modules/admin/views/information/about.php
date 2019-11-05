@@ -1,7 +1,12 @@
 <?php
 
+use humhub\modules\marketplace\widgets\AboutVersion;
 use yii\helpers\Html;
 ?>
+
+
+<?= AboutVersion::widget(); ?>
+<br />
 
 <?php if ($isNewVersionAvailable) : ?>
     <div class="alert alert-danger">
@@ -19,9 +24,6 @@ use yii\helpers\Html;
     </div>
 <?php endif; ?>
 
-<p>
-    <?= Yii::t('AdminModule.information', 'Currently installed version: %currentVersion%', ['%currentVersion%' => '<strong>' . Yii::$app->version . '</strong>']); ?><br>
-</p>
 <br>
 
 <?php if (YII_DEBUG) : ?>

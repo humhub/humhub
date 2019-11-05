@@ -9,6 +9,7 @@
 namespace humhub\modules\marketplace;
 
 use humhub\components\Module as BaseModule;
+use humhub\modules\marketplace\models\Licence;
 use humhub\modules\marketplace\components\OnlineModuleManager;
 use Yii;
 
@@ -78,5 +79,29 @@ class Module extends BaseModule
         }
 
         return $this->_onlineModuleManager;
+    }
+
+
+    /**
+     * @return Licence
+     */
+    public function getLicence()
+    {
+        Licence::fetch();
+
+        $l = new Licence();
+
+        $l->licenceKey = $this->settings->get('licenceKey');
+        $l->licencedTo = $this->settings->get('licencedTo');
+
+        if (!empty($l->licencedTo)) {
+            $l->maxUsers = (int)$this->settings->get('maxUsers');
+            $l->type = Licence::LICENCE_TYPE_PRO;
+        } else {
+            // ToDo Check valid EE module
+            $l->type = Licence::LICENCE_TYPE_CE;
+        }
+
+        return $l;
     }
 }
