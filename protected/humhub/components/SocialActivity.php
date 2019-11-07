@@ -377,7 +377,11 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
             $content = $this->source;
         }
 
-        return str_replace('\*', '*', Helpers::trimText($content->getContentDescription(), $maxLength));
+        return html_entity_decode(
+            str_replace('&amp;', '&', RichText::preview($content->getContentDescription(), $maxLength)),
+            ENT_QUOTES,
+            'UTF-8'
+        );
     }
 
     /**
