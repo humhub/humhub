@@ -1,21 +1,22 @@
 <?php
 
 use yii\helpers\Url;
-use yii\helpers\Html;
+use yii\bootstrap\Html;
 
 ?>
 <div class="panel-body">
 
-    <?= Html::beginForm(Url::to(['/marketplace/browse']), 'post', ['class' => 'form-search']); ?>
+    <?= Html::beginForm(Url::to(['/marketplace/browse']), 'post', ['class' => 'form-search', 'id' => 'filterForm']); ?>
     <div class="row">
-        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <?= Html::dropDownList('categoryId', $categoryId, $categories, ['class' => 'form-control', 'data-ui-select2' => '', 'id' => 'categorySelect']); ?>
+        </div>
         <div class="col-md-6">
             <div class="form-group form-group-search">
                 <?= Html::textInput("keyword", $keyword, ["class" => "form-control form-search", "placeholder" => Yii::t('MarketplaceModule.base', 'search for available modules online')]); ?>
                 <?= Html::submitButton(Yii::t('MarketplaceModule.base', 'Search'), ['class' => 'btn btn-default btn-sm form-button-search', 'data-ui-loader' => ""]); ?>
             </div>
         </div>
-        <div class="col-md-3"></div>
     </div>
     <?= Html::endForm(); ?>
 
@@ -30,7 +31,14 @@ use yii\helpers\Html;
 
     <?php else: ?>
         <?php foreach ($modules as $module): ?>
-            <?= $this->render('_module', ['module' => $module]); ?>
+            <?= $this->render('_module', ['module' => $module, 'licence' => $licence]); ?>
         <?php endforeach; ?>
     <?php endif; ?>
 </div>
+<script>
+    $('#categorySelect').change(function () {
+        $('#filterForm').submit();
+    });
+</script>
+
+

@@ -159,6 +159,31 @@ class OnlineModuleManager
         return $this->_modules;
     }
 
+
+    public function getCategories()
+    {
+        return Yii::$app->cache->getOrSet('marketplace-categories', function () {
+
+            $categories = HumHubAPI::request('v1/modules/list-categories');
+
+            $names = [];
+            $names[0] = 'All categories (' . count($this->_modules) . ')';
+
+            foreach ($categories as $i => $n) {
+                $c = 0;
+                foreach ($this->_modules as $m) {
+                    if (in_array($i, $m['categories'])) {
+                        $c++;
+                    }
+                }
+                $names[$i] = $n['name'] . ' (' . $c . ')';
+            }
+
+            return $names;
+        });
+    }
+
+
     public function getModuleUpdates()
     {
         $updates = [];

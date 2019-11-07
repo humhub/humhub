@@ -49,21 +49,35 @@ class BrowseController extends Controller
     public function actionList()
     {
         $keyword = Yii::$app->request->post('keyword', "");
+        $categoryId = (int)Yii::$app->request->post('categoryId', 0);
+        $hideInstalled = (boolean)Yii::$app->request->post('hideInstalled');
 
         $onlineModules = $this->module->onlineModuleManager;
         $modules = $onlineModules->getModules();
+        $categories = $onlineModules->getCategories();
 
-        if ($keyword != "") {
-            $results = [];
-            foreach ($modules as $module) {
-                if (stripos($module['name'], $keyword) !== false || stripos($module['description'], $keyword) !== false) {
-                    $results[] = $module;
-                }
+        foreach ($modules as $i => $module) {
+            if (!empty($categoryId) && !in_array($categoryId, $module['categories'])) {
+                unset($modules[$i]);
             }
-            $modules = $results;
+
+            if (!empty($keyword) && stripos($module['name'], $keyword) === false && stripos($module['description'], $keyword) === false) {
+                unset($modules[$i]);
+            }
+
+            if ($hideInstalled && Yii::$app->moduleManager->hasModule($module['id'])) {
+                unset($modules[$i]);
+            }
         }
 
-        return $this->render('list', ['modules' => $modules, 'keyword' => $keyword]);
+        return $this->render('list', [
+            'modules' => $modules,
+            'keyword' => $keyword,
+            'categories' => $categories,
+            'categoryId' => $categoryId,
+            'hideInstalled' => $hideInstalled,
+            'licence' => $this->module->getLicence()
+        ]);
     }
 
 
