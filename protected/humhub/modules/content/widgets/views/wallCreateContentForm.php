@@ -80,6 +80,23 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
                 ]);
                 ?>
                 <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
+                
+                <!-- content type buttons -->
+                <?php if (!$contentContainer || $contentContainer->isModuleEnabled('polls')) : ?>
+                <?= Html::a('<i class="fa fa-question-circle"></i> Poll', [$contentContainer->createUrl('/polls/poll/show')], [ 'class' => 'btn btn-default btn-type']); ?>
+                <?php endif ?>
+                
+                <?php if (!$contentContainer || $contentContainer->isModuleEnabled('questionanswer')) : ?>
+                <?= Html::a('<i class="fa fa-stack-exchange"></i> Question', [$contentContainer->createUrl('/questionanswer/question/create')], [ 'class' => 'btn btn-default btn-type']); ?>
+                <?php endif ?>
+                
+                <?php if (!$contentContainer || $contentContainer->isModuleEnabled('tasks')) : ?>
+                <?= Html::a('<i class="fa fa-tasks"></i> Task', [$contentContainer->createUrl('/tasks/task/edit')], [ 'class' => 'btn btn-default btn-type']); ?>
+                <?php endif ?>
+                
+                <?php if (!$contentContainer || $contentContainer->isModuleEnabled('wiki')) : ?>
+                <?= Html::a('<i class="fa fa-book"></i> Wiki', [$contentContainer->createUrl('/wiki/page/edit')], [ 'class' => 'btn btn-default btn-type']); ?>
+                <?php endif ?>
 
                 <!-- public checkbox -->
                 <?= Html::checkbox("visibility", "", ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true', 'title' => Yii::t('ContentModule.widgets_views_contentForm', 'Content visibility') ]); ?>
