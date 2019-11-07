@@ -5,6 +5,8 @@ HumHub Change Log (DEVELOP)
 ---
 
 - Fix #3703: Fixed user profile image dimension of mobile
+- Enh: Added support of upcoming HumHub Professional Edition in Marketplace module
+- Enh: Added module marketplace categories
 
 
 1.4
