@@ -93,3 +93,4 @@ HumHub Change Log (DEVELOP)
 - Enh: Added configuration option to hide/disable the Like module
 - Enh: Added link to changelog for module marketplaces updates
 - Fix #3674: Back button breaks layout on login page when guest access enabled
+- Enh: Added `safeCreateTable`, `safeDropTable`, `safeDropColumn`, `safeAddColumn` to `humhub\components\Migration`
