@@ -8,6 +8,9 @@ HumHub Change Log
 - Enh: Set max signs of User tags to 250
 - Fix: https://github.com/humhub/humhub-modules-wiki/issues/103 Topic attachment fails with given topic instances
 - Fix #3366: Set max-width for stream entry image file attachments
+- Fix: `ContentContainerController::getAccess` uses `ContentContainerControllerAccess` also for global access
+- Fix: Global content does not allow guest access
+- Fix #3727 Bug with Bluebird and Firefox 71
 
 1.3.17  (October 17, 2019)
 --------------------------

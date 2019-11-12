@@ -17,7 +17,7 @@
         "ext-zip": "*",
         "bower-asset/animate.css": "*",
         "bower-asset/autosize": "1.*",
-        "bower-asset/bluebird": "^3.3.5",
+        "bower-asset/bluebird": "3.5.5",
         "bower-asset/blueimp-file-upload": "9.24.*",
         "bower-asset/bootstrap-markdown": "2.10.*",
         "bower-asset/caret.js": "0.2.2",
