@@ -45,7 +45,7 @@ In order to provide scheme updates for new versions, just follow the same steps 
 You can manually execute new migrations by the following commands:
 
 ```
-php yii migrate/up --inclueModuleMigrations=1
+php yii migrate/up --includeModuleMigrations=1
 ```
 
 or by grunt 
