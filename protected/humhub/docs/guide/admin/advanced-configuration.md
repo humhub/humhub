@@ -54,6 +54,20 @@ Available params:
 - `allowedLanguages` see the [Translations Section](translations.md)
 - `enablePjax` used to disable/enable pjax support (default true)
 
+# Module Configuration
+
+Some modules may allow further configurations by overwriting fields of their `Module.php` class. 
+Those configurations can be overwritten within your `common.php` file as follows:
+
+```php
+return [
+    'modules' => [
+        'directory' => [
+            'guestAccess' => false 
+        ]
+    ]
+]
+```
 
 # Statistics/Tracking
 
