@@ -47,6 +47,11 @@ class Membership extends ActiveRecord
     /**
      * @event \humhub\modules\space\MemberEvent
      */
+    const EVENT_MEMBER_LEAVED = 'memberLeaved';
+
+    /**
+     * @event \humhub\modules\space\MemberEvent
+     */
     const EVENT_MEMBER_ADDED = 'memberAdded';
 
     /**
