@@ -5,7 +5,7 @@ HumHub Change Log (DEVELOP)
 ---
 
 - Fix #3703: Fixed user profile image dimension of mobile
-- Fix #3701: Reverted changes of default oembed style
+- Fix #3732: Reverted changes of default oembed style
 
 
 1.4
