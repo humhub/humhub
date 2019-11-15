@@ -17,7 +17,7 @@ return array (
   'Last update by:' => 'Mis à jour par :',
   'Size:' => 'Taille :',
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Désolé, vous ne pouvez transférer {n,plural,=1{qu\'un seul fichier} other{que # fichiers}} à la fois.',
-  'The uploaded image is not a squared.' => '',
+  'The uploaded image is not a squared.' => 'L\'image envoyée n\'est pas de forme carrée.',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Ce champ ne permet de transférer que {n,plural,=1{# fichier} other{# fichiers}} au maximum.',
   'Upload files' => 'Transférer des fichiers',
 );

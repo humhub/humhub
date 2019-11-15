@@ -130,6 +130,7 @@ class ThemeHelper
 
     /**
      * @param Theme $theme
+     * @return array
      */
     public static function getAllVariables(Theme $theme)
     {
@@ -195,6 +196,16 @@ class ThemeHelper
         }
 
         return null;
+    }
+
+
+    public static function isFluid(Theme $theme = null)
+    {
+        if ($theme === null) {
+            $theme = Yii::$app->view->theme;
+        }
+
+        return !empty($theme->variable('isFluid'));
     }
 
 }

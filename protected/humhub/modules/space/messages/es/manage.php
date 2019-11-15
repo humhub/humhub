@@ -33,7 +33,7 @@ return array (
   'Enable' => 'Habilitar',
   'Enhance this space with modules.' => 'Mejora este espacio con módulos.',
   'Hide posts on dashboard' => 'Ocultar publicaciones en el panel de contol',
-  'Invited By' => '',
+  'Invited By' => 'Invitado por',
   'Members' => 'Miembros',
   'Modules' => 'Módulos',
   'Next' => 'Siguiente',
