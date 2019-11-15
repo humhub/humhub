@@ -31,18 +31,18 @@ class Html extends \yii\bootstrap\Html
     public static function script($content, $options = [])
     {
         static::setNonce($options);
-        return parent::script( $content, $options);
+        return parent::script($content, $options);
     }
 
     public static function nonce()
     {
         $nonce = Security::getNonce();
-        return $nonce ? 'nonce="'.$nonce.'"' : '';
+        return $nonce ? 'nonce="' . $nonce . '"' : '';
     }
 
     public static function beginTag($name, $options = [])
     {
-        if($name === 'script') {
+        if ($name === 'script') {
             static::setNonce($options);
         }
 
@@ -53,7 +53,7 @@ class Html extends \yii\bootstrap\Html
     {
         $nonce = Security::getNonce();
 
-        if($nonce) {
+        if ($nonce) {
             $options['nonce'] = $nonce;
         }
     }
@@ -61,11 +61,11 @@ class Html extends \yii\bootstrap\Html
     /**
      * Save button is a shortcut for the default submit button
      *
-     * @since 1.2
-     * @see submitButton
      * @param string $label
      * @param array $options
      * @return string the button
+     * @see submitButton
+     * @since 1.2
      */
     public static function saveButton($label = '', $options = [])
     {
@@ -84,12 +84,12 @@ class Html extends \yii\bootstrap\Html
     /**
      * Renders a back button
      *
-     * @since 1.2
-     * @see Html::a
      * @param string $text
      * @param string $url
      * @param array $options
      * @return string the back button
+     * @since 1.2
+     * @see Html::a
      */
     public static function backButton($url = '', $options = [])
     {
@@ -123,11 +123,11 @@ class Html extends \yii\bootstrap\Html
     /**
      * Generates an link tag to a content container
      *
-     * @since 1.2
-     * @todo More flexible implemenation using interfaces
      * @param ContentContainerActiveRecord $container the content container
      * @param array $options the html options
      * @return string the generated html a tag
+     * @todo More flexible implemenation using interfaces
+     * @since 1.2
      */
     public static function containerLink(ContentContainerActiveRecord $container, $options = [])
     {
@@ -162,14 +162,41 @@ class Html extends \yii\bootstrap\Html
      */
     public static function isPjaxEnabled($options)
     {
-        if(empty($options)) {
+        if (empty($options)) {
             return false;
         }
 
-        if(isset($options['data-pjax-prevent'])) {
+        if (isset($options['data-pjax-prevent'])) {
             return $options['data-pjax-prevent'] !== false;
         }
 
         return false;
     }
+
+    /**
+     * Starts a Bootstrap container tag.
+     *
+     * @param $fluid null|boolean if null fluid will be used if supported by active theme
+     * @param $options
+     *
+     * @return string
+     */
+    public static function beginContainer($fluid = null, $options = [])
+    {
+        $isFluid = (($fluid === null || $fluid === true) && ThemeHelper::isFluid());
+
+        return static::beginTag('div', array_merge(['class' => ($isFluid) ? 'container-fluid' : 'container'], $options));
+    }
+
+
+    /**
+     * Ends the bootstrap container tag
+     *
+     * @return string
+     */
+    public static function endContainer()
+    {
+        return static::endTag('div');
+    }
+
 }

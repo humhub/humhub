@@ -93,6 +93,6 @@ HumHub Change Log (DEVELOP)
 - Enh: Added link to changelog for module marketplaces updates
 - Fix #3674: Back button breaks layout on login page when guest access enabled
 - Enh: Added `safeCreateTable`, `safeDropTable`, `safeDropColumn`, `safeAddColumn` to `humhub\components\Migration`
-
 - Enh: Added support of upcoming HumHub Professional Edition in Marketplace module
 - Enh: Added module marketplace categories
+- Enh: Added isFluid LESS variable for automatic HTML container handling

@@ -201,8 +201,6 @@ class View extends \yii\web\View
      */
     protected function renderHeadHtml()
     {
-
-
         if (!Yii::$app->request->isAjax) {
             SiteIcon::registerMetaTags($this);
             LayoutHeader::registerHeadTags($this);
