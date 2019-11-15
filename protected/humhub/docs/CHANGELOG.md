@@ -10,7 +10,7 @@ HumHub Change Log
 - Fix #3366: Set max-width for stream entry image file attachments
 - Fix: `ContentContainerController::getAccess` uses `ContentContainerControllerAccess` also for global access
 - Fix: Global content does not allow guest access
-- Fix #3727 Bug with Bluebird and Firefox 71
+- Fix #3727 Bug with Bluebird and Firefox 71 breaking mentioning requests
 
 1.3.17  (October 17, 2019)
 --------------------------
