@@ -10,6 +10,7 @@ HumHub Change Log (DEVELOP)
 - Fix #3674: Back button breaks layout on login page when guest access enabled
 - Enh: Added `safeCreateTable`, `safeDropTable`, `safeDropColumn`, `safeAddColumn` to `humhub\components\Migration`
 - Fixed `.layout-nav-container` padding issue
+- Fix #2605: User display name cropped in profile header
 
 
 1.4
@@ -100,3 +101,4 @@ HumHub Change Log (DEVELOP)
 - Enh: Added support of upcoming HumHub Professional Edition in Marketplace module
 - Enh: Added module marketplace categories
 - Enh: Added isFluid LESS variable for automatic HTML container handling
+- Fix #2605: User display name cropped in profile header
