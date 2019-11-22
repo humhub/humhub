@@ -33,7 +33,7 @@ return array (
   'Enable' => 'Activer',
   'Enhance this space with modules.' => 'Améliorer cet espace en y ajoutant des modules.',
   'Hide posts on dashboard' => 'Ne pas afficher les publications de cet espace sur le fil d\'actualités',
-  'Invited By' => '',
+  'Invited By' => 'Invité par',
   'Members' => 'Membres',
   'Modules' => 'Modules',
   'Next' => 'Suivant',

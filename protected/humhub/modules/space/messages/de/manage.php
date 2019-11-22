@@ -1,7 +1,7 @@
 <?php
 return array (
-  '-' => '-',
-  '<strong>Confirm</strong> image deleting' => 'Löschen des Bildes <strong>bestätigen</strong> ',
+  '-' => '–',
+  '<strong>Confirm</strong> image deleting' => 'Löschen des Bildes <strong>bestätigen</strong>',
   '<strong>Create</strong> new space' => 'Neuen Space <strong>erstellen</strong>',
   '<strong>Manage</strong> members' => 'Mitglieder <strong>verwalten</strong>',
   '<strong>Members</strong>' => '<strong>Mitglieder</strong>',
@@ -33,7 +33,7 @@ return array (
   'Enable' => 'Aktivieren',
   'Enhance this space with modules.' => 'Diesen Space mit Modulen erweitern.',
   'Hide posts on dashboard' => 'Beiträge in der Übersicht ausblenden',
-  'Invited By' => '',
+  'Invited By' => 'Eingeladen von',
   'Members' => 'Mitglieder',
   'Modules' => 'Module',
   'Next' => 'Weiter',

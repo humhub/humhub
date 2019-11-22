@@ -1,7 +1,7 @@
 <?php
 return array (
   '<b>This space is still empty!</b>' => '<b>Cet espace est vide.</b>',
-  '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>Cet espace est vide</b><br>Commencez par publier quelque chose ici...',
+  '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>Cet espace est vide</b><br />Commencez par publier quelque chose ici...',
   '<b>You are not member of this space and there is no public content, yet!</b>' => '<b>Vous n\'êtes pas membre de cet espace et il n\'y a aucun contenu public à afficher pour l\'instant.</b>',
   '<strong>Invite</strong> members' => '<strong>Inviter</strong> des membres',
   '<strong>New</strong> member request' => '<strong>Nouvelle</strong> demande d\'adhésion',
@@ -27,7 +27,7 @@ return array (
   'Created At' => 'Créé le',
   'Created By' => 'Créé par',
   'Decline' => 'Refuser',
-  'Decline Invite' => '',
+  'Decline Invite' => 'Refuser l\'invitation',
   'Default' => 'Par défaut',
   'Default content visibility' => 'Visibilité par défaut des contenus',
   'Description' => 'Description',
@@ -59,7 +59,7 @@ return array (
   'Originator User ID' => 'ID de l\'utilisateur d\'origine',
   'Owner' => 'Propriétaire',
   'Owner:' => 'Propriétaire :',
-  'Pick users' => 'Sélectionnez les utilisateurs',
+  'Pick users' => 'Sélectionner les utilisateurs',
   'Please shortly introduce yourself, to become a approved member of this workspace.' => 'Veuillez vous présenter en quelques mots afin de devenir membre de cet espace.',
   'Please shortly introduce yourself, to become an approved member of this space.' => 'Merci de vous présenter en quelques mots afin de devenir un membre de cet espace.',
   'Posts' => 'Publications',

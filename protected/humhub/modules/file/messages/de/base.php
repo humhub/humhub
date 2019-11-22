@@ -17,8 +17,7 @@ return array (
   'Last update by:' => 'Zuletzt bearbeitet von:',
   'Size:' => 'Größe:',
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Sorry, du kannst nur bis zu {n,plural,=1{# file} other{# files}} auf einmal hochladen.',
-  'The uploaded image is not a squared.' => '',
-  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Dieses Feld erlaubt nur das Hochladen von maximal {n,plural,=1{# file} other{# files}}.
-',
+  'The uploaded image is not a squared.' => 'Das hochgeladene Bild ist nicht quadratisch.',
+  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Dieses Feld erlaubt nur das Hochladen von maximal {n,plural,=1{# file} other{# files}}.',
   'Upload files' => 'Dateien hochladen',
 );

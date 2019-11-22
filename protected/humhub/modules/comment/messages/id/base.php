@@ -16,10 +16,10 @@ return array (
   'Send' => 'Kirim',
   'Show all {total} comments.' => 'Lihat semua {total} komentar.',
   'Show {count} more comments' => 'Lihat {count} komentar lainnya',
-  'The comment must not be empty!' => '',
+  'The comment must not be empty!' => 'Komentar tidak boleh kosong',
   'Whenever a new comment was written.' => 'Kapanpun sebuah komentar baru telah ditulis',
   'Write a new comment...' => 'Tulis komentar baru...',
-  'You are not allowed to comment.' => '',
+  'You are not allowed to comment.' => 'Anda tidak diizinkan berkomentar',
   'comment' => 'Komentar',
   '{displayName} wrote a new comment ' => '{displayName} menulis komentar baru',
 );

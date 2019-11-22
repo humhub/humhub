@@ -1,8 +1,8 @@
 <?php
 return array (
-  ' Remove panel' => '',
-  '<strong>Account</strong> Menu' => '',
-  '<strong>Getting</strong> Started' => '',
+  ' Remove panel' => 'Hapus panel',
+  '<strong>Account</strong> Menu' => '<strong>Menu Akun</strong>',
+  '<strong>Getting</strong> Started' => '<strong>Tour Pemula</strong>',
   '<strong>Guide:</strong> Administration (Modules)' => '',
   '<strong>Guide:</strong> Overview' => '',
   '<strong>Guide:</strong> Spaces' => '',
@@ -15,7 +15,7 @@ return array (
   'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => '',
   'Drag a photo here or click to browse your files' => '',
   'End guide' => '',
-  'Get to know your way around the site\'s most important features with the following guides:' => '',
+  'Get to know your way around the site\'s most important features with the following guides:' => 'Kenali jalan Anda di sekitar fitur terpenting situs dengan panduan berikut:',
   'Hide my year of birth' => '',
   'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => '',
   'Next »' => '',
