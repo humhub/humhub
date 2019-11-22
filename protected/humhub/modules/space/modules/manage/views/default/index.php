@@ -33,7 +33,7 @@ This description will be visible below the space name everywhere it appears.'); 
 
         <?= $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
            <p class='help-block' style='margin-top:-30px;margin-bottom:20px'>
-<?= Yii::t('SpaceModule.settings', 'If this space is public, its tags are also public and can be used to find it.<br/>These tags will be visible in the Space Directory.'); ?></p>
+<?= Yii::t('SpaceModule.settings', 'If this space is public, its tags are also public and can be used to find it.<br/>These tags will be visible in the Space Directory.'); ?></p><br/>
 
         <?= Html::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
