@@ -21,10 +21,12 @@ use \humhub\compat\CHtml;
 
     <?php
     echo $form->field($model, 'visibility')->dropDownList([
-        1 => Yii::t('UserModule.views_account_editSettings', 'Registered users only'),
-        2 => Yii::t('UserModule.views_account_editSettings', 'Visible for all (also unregistered users)'),
+        1 => Yii::t('UserModule.account', 'Private: Visibl to registered users only'),
+        2 => Yii::t('UserModule.account', 'Public: Visible for all (including unregistered users)'),
     ]);
-    ?>
+?>
+    <p class='help-block'> <?= Yii::t('UserModule.settings', 'Public profiles are visible to everyone on the internet, without the need to log in.<br>Private profiles are removed from search results.'); ?></p><br/>
+
 
 
 <?php endif; ?>
