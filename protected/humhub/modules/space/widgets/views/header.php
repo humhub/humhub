@@ -70,7 +70,8 @@ if ($space->isAdmin()) {
             <?php if ($space->isAdmin()) { ?>
                 <div class="image-upload-buttons" id="banner-image-upload-buttons">
                     <a href="#" onclick="javascript:$('#bannerfileupload input').click();"
-                       class="btn btn-info btn-sm"><i
+                       class="btn btn-info btn-sm"
+                       data-toggle="tooltip" data-placement="bottom" title="&nbsp;&nbsp;&nbsp;&nbsp;Upload Space Banner"><i
                             class="fa fa-cloud-upload"></i></a>
                     <a id="banner-image-upload-edit-button"
                        style="<?php
@@ -79,7 +80,8 @@ if ($space->isAdmin()) {
                        }
                        ?>"
                        href="<?= $space->createUrl('/space/manage/image/crop-banner'); ?>"
-                       class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static"><i
+                       class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static"
+                       data-toggle="tooltip" data-placement="bottom" title="Crop Space Banner"><i
                             class="fa fa-edit"></i></a>
                     <?= ModalConfirm::widget([
                         'uniqueID' => 'modal_bannerimagedelete',
@@ -128,7 +130,8 @@ if ($space->isAdmin()) {
                 </div>
 
                 <div class="image-upload-buttons" id="profile-image-upload-buttons">
-                    <a href="#" onclick="javascript:$('#profilefileupload input').click();" class="btn btn-info btn-sm">
+                    <a href="#" onclick="javascript:$('#profilefileupload input').click();" class="btn btn-info btn-sm"
+                       data-toggle="tooltip" data-html="true" title="Upload <em>Public</em> Space Image">
                         <i class="fa fa-cloud-upload"></i>
                     </a>
                     <a id="profile-image-upload-edit-button"
@@ -138,7 +141,8 @@ if ($space->isAdmin()) {
                        }
                        ?>"
                        href="<?= $space->createUrl('/space/manage/image/crop'); ?>"
-                       class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static"><i
+                       class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static"
+                       data-toggle="tooltip" data-html="true" title="Crop <em>Public</em> Space Image"><i
                             class="fa fa-edit"></i></a>
                     <?= ModalConfirm::widget([
                         'uniqueID' => 'modal_profileimagedelete',
