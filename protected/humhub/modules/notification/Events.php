@@ -10,6 +10,7 @@ namespace humhub\modules\notification;
 
 use humhub\components\Event;
 use humhub\modules\user\models\User;
+use humhub\modules\space\models\Space;
 use Yii;
 use humhub\modules\notification\models\Notification;
 
@@ -70,13 +71,16 @@ class Events extends \yii\base\BaseObject
         $integrityChecker = $event->sender;
         $integrityChecker->showTestHeadline("Notification Module (" . Notification::find()->count() . " entries)");
 
-        foreach (Notification::find()->joinWith(['space', 'user'])->each() as $notification) {
+        foreach (Notification::find()->joinWith(['user'])->each() as $notification) {
             /** @var Notification $notification */
 
             // Check if Space still exists
-            if ($notification->space_id != "" && $notification->space == null) {
-                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " workspace seems to no longer exist!")) {
-                    $notification->delete();
+            if (!empty($notification->space_id)) {
+                $space = Space::findOne(['id' => $notification->space_id]);
+                if ($space === null) {
+                    if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " workspace seems to no longer exist!")) {
+                        $notification->delete();
+                    }
                 }
             }
 

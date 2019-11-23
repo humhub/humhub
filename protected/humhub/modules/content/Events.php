@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content;
 
+use humhub\commands\IntegrityController;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\search\interfaces\Searchable;
@@ -70,11 +71,12 @@ class Events extends BaseObject
      */
     public static function onIntegrityCheck($event)
     {
+        /** @var IntegrityController $integrityController */
         $integrityController = $event->sender;
 
         $integrityController->showTestHeadline('Content Objects (' . Content::find()->count() . ' entries)');
         foreach (Content::find()->each() as $content) {
-            if ($content->user == null) {
+            if ($content->createdBy == null) {
                 if ($integrityController->showFix('Deleting content id ' . $content->id . ' of type ' . $content->object_model . ' without valid user!')) {
                     $content->delete();
                 }

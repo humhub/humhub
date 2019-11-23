@@ -11,6 +11,7 @@ HumHub Change Log (DEVELOP)
 - Enh: Added `safeCreateTable`, `safeDropTable`, `safeDropColumn`, `safeAddColumn` to `humhub\components\Migration`
 - Fixed `.layout-nav-container` padding issue
 - Fix #2605: User display name cropped in profile header
+- Fix #3729: Integrity check used deprecated methods
 
 
 1.4
