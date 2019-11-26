@@ -58,8 +58,7 @@
         "yiisoft/yii2-redis": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "zendframework/zend-http": "*",
-        "zendframework/zend-ldap": "^2.5",
-        "ext-zip": "*"
+        "zendframework/zend-ldap": "^2.5"
     },
     "require-dev": {
         "codeception/codeception": "2.4.5",

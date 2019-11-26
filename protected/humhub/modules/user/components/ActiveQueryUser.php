@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\components;
 
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
 use yii\db\ActiveQuery;
@@ -133,6 +135,31 @@ class ActiveQueryUser extends ActiveQuery
     {
         $this->leftJoin('group_user', 'user.id=group_user.user_id');
         $this->andWhere(['group_user.group_id' => $group->id]);
+
+        return $this;
+    }
+
+    /**
+     * Returns only users which are administrable by the given user.
+     *
+     * @param UserModel $user
+     * @return ActiveQueryUser the query
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function administrableBy(UserModel $user)
+    {
+
+        if (!(new PermissionManager(['subject' => $user]))->can([ManageUsers::class])) {
+            $this->joinWith('groups');
+
+            $groupIds = [];
+            foreach (GroupUser::find()->where(['user_id' => $user->id, 'is_group_manager' => 1])->all() as $gu) {
+                $groupIds[] = $gu->group_id;
+            }
+
+            $this->andWhere(['IN', 'group.id', $groupIds]);
+        }
 
         return $this;
     }

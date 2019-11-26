@@ -1,9 +1,26 @@
 HumHub Change Log
 =================
 
+1.3.18 (November 22, 2019)
+--------------------------
 
-1.3.16  (Unreleased)
--------------------------
+- Fix #3698: Approval by group manager broken
+- Enh: Set max signs of User tags to 250
+- Fix: https://github.com/humhub/humhub-modules-wiki/issues/103 Topic attachment fails with given topic instances
+- Fix #3366: Set max-width for stream entry image file attachments
+- Fix: `ContentContainerController::getAccess` uses `ContentContainerControllerAccess` also for global access
+- Fix: Global content does not allow guest access
+- Fix #3727 Bug with Bluebird and Firefox 71 breaking mentioning requests
+
+
+1.3.17  (October 17, 2019)
+--------------------------
+
+- Fix #3690: Rollback from broken version 2.8.6 to 2.8.1 of bower-asset/clipboard.js
+
+
+1.3.16  (October 17, 2019)
+--------------------------
 
 - Fix #3647: GroupID field is not translatable in Registration Form
 - Fix #3655: Fix CommentLink widget Comment class usage conflict

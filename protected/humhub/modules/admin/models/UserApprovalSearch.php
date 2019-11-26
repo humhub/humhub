@@ -48,12 +48,13 @@ class UserApprovalSearch extends User
      * Creates data provider instance with search query applied
      *
      * @param array $params
-     *
      * @return ActiveDataProvider
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
      */
     public function search($params = [])
     {
-        $query = User::find()->joinWith(['profile', 'groups']);
+        $query = User::find()->joinWith(['profile']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -78,26 +79,8 @@ class UserApprovalSearch extends User
             return $dataProvider;
         }
 
+        $query->administrableBy(Yii::$app->user->getIdentity());
 
-        /**
-         * Limit Groups
-         */
-        $groups = $this->getGroups();
-        $groupIds = [];
-        foreach ($groups as $group) {
-            $groupIds[] = $group->id;
-        }
-        
-        if (Yii::$app->user->isAdmin()) {
-            $query->andWhere([
-                'or', 
-                ['IN', 'group.id', $groupIds],
-                'group.id IS NULL'
-            ]);
-        } else {
-            $query->andWhere(['IN', 'group.id', $groupIds]);
-        }
-        
         $query->andWhere(['status' => User::STATUS_NEED_APPROVAL]);
         $query->andFilterWhere(['id' => $this->id]);
         $query->andFilterWhere(['like', 'id', $this->id]);
@@ -108,21 +91,10 @@ class UserApprovalSearch extends User
 
         return $dataProvider;
     }
-    
+
     public static function getUserApprovalCount()
     {
         return User::find()->where(['status' => User::STATUS_NEED_APPROVAL])->count();
     }
 
-    /**
-     * Get approval groups
-     */
-    public function getGroups()
-    {
-        if (Yii::$app->user->isAdmin()) {
-            return \humhub\modules\user\models\Group::findAll(['is_admin_group' => '0']);
-        } else {
-            return Yii::$app->user->getIdentity()->managerGroups;
-        }
-    }
 }

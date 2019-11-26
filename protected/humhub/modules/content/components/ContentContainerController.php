@@ -119,7 +119,11 @@ class ContentContainerController extends Controller
      */
     public function getAccess()
     {
-        return new ContentContainerControllerAccess(['contentContainer' => $this->contentContainer]);
+        if($this->contentContainer) {
+            return new ContentContainerControllerAccess(['contentContainer' => $this->contentContainer]);
+        }
+
+        return parent::getAccess();
     }
 
     /**

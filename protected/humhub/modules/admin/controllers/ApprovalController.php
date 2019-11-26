@@ -8,16 +8,15 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\components\access\ControllerAccess;
+use humhub\modules\admin\models\UserApprovalSearch;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\ApproveUserForm;
-use humhub\modules\admin\permissions\ManageUsers;
-use humhub\modules\admin\permissions\ManageGroups;
 
 /**
  * ApprovalController handels new user approvals
@@ -29,6 +28,9 @@ class ApprovalController extends Controller
      */
     public $adminOnly = false;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->subLayout = '@admin/views/layouts/user';
@@ -43,11 +45,25 @@ class ApprovalController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => [
-                ManageUsers::class,
-                ManageGroups::class
-            ]]
+            [ControllerAccess::RULE_LOGGED_IN_ONLY],
+            ['checkCanApproveUsers'],
         ];
+    }
+
+    /**
+     * @param $rule
+     * @param $access
+     * @return bool
+     * @throws \Throwable
+     */
+    public function checkCanApproveUsers($rule, $access)
+    {
+        if (!Yii::$app->user->getIdentity()->canApproveUsers()) {
+            $access->code = 403;
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -55,10 +71,6 @@ class ApprovalController extends Controller
      */
     public function beforeAction($action)
     {
-        if (!Yii::$app->user->getIdentity()->canApproveUsers()) {
-            throw new ForbiddenHttpException(Yii::t('error', 'You are not allowed to perform this action.'));
-        }
-
         if (!Yii::$app->user->isAdmin()) {
             $this->subLayout = "@humhub/modules/admin/views/approval/_layoutNoAdmin";
         }
@@ -68,7 +80,7 @@ class ApprovalController extends Controller
 
     public function actionIndex()
     {
-        $searchModel = new \humhub\modules\admin\models\UserApprovalSearch();
+        $searchModel = new UserApprovalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -77,12 +89,9 @@ class ApprovalController extends Controller
         ]);
     }
 
-    public function actionApprove()
+    public function actionApprove($id)
     {
-        $user = User::findOne(['id' => (int) Yii::$app->request->get('id')]);
-
-        if ($user == null)
-            throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
+        $user = $this->getUser($id);
 
         $model = new ApproveUserForm;
         $model->subject = Yii::t('AdminModule.user', "Account Request for '{displayName}' has been approved.", ['{displayName}' => Html::encode($user->displayName)]);
@@ -106,13 +115,9 @@ class ApprovalController extends Controller
         ]);
     }
 
-    public function actionDecline()
+    public function actionDecline($id)
     {
-
-        $user = User::findOne(['id' => (int) Yii::$app->request->get('id')]);
-
-        if ($user == null)
-            throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
+        $user = $this->getUser($id);
 
         $model = new ApproveUserForm;
         $model->subject = Yii::t('AdminModule.user', 'Account Request for \'{displayName}\' has been declined.', ['{displayName}' => Html::encode($user->displayName)]);
@@ -131,6 +136,20 @@ class ApprovalController extends Controller
             'model' => $user,
             'approveFormModel' => $model
         ]);
+    }
+
+    private function getUser($id)
+    {
+        $user = User::find()
+            ->andWhere(['user.id' => (int)Yii::$app->request->get('id'), 'user.status' => User::STATUS_NEED_APPROVAL])
+            ->administrableBy(Yii::$app->user->getIdentity())
+            ->one();
+
+        if ($user == null) {
+            throw new HttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
+        }
+
+        return $user;
     }
 
 }
