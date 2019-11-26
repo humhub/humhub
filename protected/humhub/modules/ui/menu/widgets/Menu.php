@@ -77,7 +77,7 @@ abstract class Menu extends JsWidget
     {
         $this->trigger(static::EVENT_RUN);
 
-        if (empty($this->template)) {
+        if (empty($this->template) || empty($this->entries)) {
             return '';
         }
 
