@@ -13,6 +13,8 @@ HumHub Change Log (DEVELOP)
 - Fix #2605: User display name cropped in profile header
 - Fix #3729: Integrity check used deprecated methods
 - Enh #3697: Stay of module update page after updating a module
+- Fix #3692: Icon Upload Problems
+
 
 1.4
 ---

@@ -56,13 +56,14 @@ class SiteIcon extends Widget
         $file = Yii::getAlias(static::$iconFolderPath) . DIRECTORY_SEPARATOR . $fileName;
 
         if (file_exists($file)) {
-            return Yii::getAlias(static::$iconFolderUrl) . '/' . $fileName;
+            return Yii::getAlias(static::$iconFolderUrl) . '/' . $fileName . '?c=' . filemtime($file);
         }
 
         if ($autoResize) {
             $originalFile = Yii::getAlias(static::$iconFolderPath) . '/' . static::getFileName();
 
             if (file_exists($originalFile)) {
+
                 Image::getImagine()
                     ->open($originalFile)
                     ->resize(new Box($size, $size))
