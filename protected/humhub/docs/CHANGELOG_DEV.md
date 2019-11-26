@@ -12,7 +12,7 @@ HumHub Change Log (DEVELOP)
 - Fixed `.layout-nav-container` padding issue
 - Fix #2605: User display name cropped in profile header
 - Fix #3729: Integrity check used deprecated methods
-
+- Enh #3697: Stay of module update page after updating a module
 
 1.4
 ---

@@ -76,7 +76,7 @@ class UpdateController extends Controller
             Yii::error($e);
         }
 
-        return $this->redirect(['/admin/module/list']);
+        return $this->redirect(['/marketplace/update/list']);
     }
 
 }
