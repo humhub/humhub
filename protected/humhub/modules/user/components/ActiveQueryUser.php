@@ -119,7 +119,7 @@ class ActiveQueryUser extends ActiveQuery
     {
         $fields = ['user.username', 'user.email', 'user.tags'];
         foreach (ProfileField::findAll(['searchable' => 1]) as $profileField) {
-            $fields[] = $profileField->internal_name;
+            $fields[] = 'profile.' . $profileField->internal_name;
         }
 
         return $fields;
