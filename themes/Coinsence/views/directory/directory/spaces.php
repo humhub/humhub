@@ -70,17 +70,20 @@ use yii\helpers\Url;
                     <?php endif; ?>
 
                     <div class="media-body">
-                        <h4 class="media-heading">
-                            <?= Html::containerLink($space); ?>
-                            <?php if ($space->isArchived()) : ?>
-                                <span
-                                    class="label label-warning"><?= Yii::t('ContentModule.widgets_views_label', 'Archived'); ?></span>
-                            <?php endif; ?>
-                        </h4>
 
-                        <h5><?= Html::encode(Helpers::truncateText($space->description, 100)); ?></h5>
-                        <?= SpaceTagList::widget(['space' => $space]); ?>
-                    </div>
+                        <a data-contentcontainer-id="<?= $space->contentcontainer_id; ?>" href="<?= $space->getUrl(); ?>">
+                            <h4 class="media-heading">
+                                <p><?= $space->getDisplayName(); ?></p>
+                                <?php if ($space->isArchived()) : ?>
+                                    <span
+                                            class="label label-warning"><?= Yii::t('ContentModule.widgets_views_label', 'Archived'); ?></span>
+                                <?php endif; ?>
+                                <h5><?= Html::encode(Helpers::truncateText($space->description, 100)); ?></h5>
+
+                            </h4>
+                        </a>
+
+                    </a>
                 </div>
             </li>
         <?php endforeach; ?>
