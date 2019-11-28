@@ -25,6 +25,12 @@ use yii\helpers\Url;
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
+                <!-- TODO: test if user have space creation permission -->
+                <div class="add-new-space">
+                    <a href="#" class="btn btn-info col-md-12" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/space/create/create']) ?>">
+                        <?= Yii::t('SpaceModule.widgets_views_spaceChooser', 'Create new space') ?>
+                    </a>
+                </div>
                 <div class="form-group form-group-search">
                     <?= Html::textInput('keyword', $keyword, ['class' => 'form-control form-search', 'placeholder' => Yii::t('DirectoryModule.base', 'search for spaces')]); ?>
                     <?= Html::submitButton(Yii::t('DirectoryModule.base', 'Search'), ['class' => 'btn btn-default btn-sm form-button-search']); ?>

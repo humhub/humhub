@@ -61,7 +61,15 @@ $this->registerJsConfig('space.chooser', [
                 </div>
             </form>
         </li>
-
+        <?php if ($canCreateSpace) : ?>
+            <li>
+                <div class="dropdown-header">
+                    <a href="#" class="btn btn-info col-md-12" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/space/create/create']) ?>">
+                        <?= Yii::t('SpaceModule.widgets_views_spaceChooser', 'Create new space') ?>
+                    </a>
+                </div>
+            </li>
+        <?php endif; ?>
         <li class="divider"></li>
         <li>
             <ul class="media-list notLoaded" id="space-menu-spaces">
@@ -86,14 +94,5 @@ $this->registerJsConfig('space.chooser', [
             <ul id="space-menu-remote-search" class="media-list notLoaded"></ul>
         </li>
 
-    <?php if ($canCreateSpace) : ?>
-        <li>
-            <div class="dropdown-footer">
-                <a href="#" class="btn btn-info col-md-12" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/space/create/create']) ?>">
-                    <?= Yii::t('SpaceModule.widgets_views_spaceChooser', 'Create new space') ?>
-                </a>
-            </div>
-        </li>
-    <?php endif; ?>
     </ul>
 </li>
