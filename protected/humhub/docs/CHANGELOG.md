@@ -5,6 +5,7 @@ HumHub Change Log
 --------------------------
 
 - Fix #3759: Allow individual file extensions (e.g. msg)
+- Fix #3147: Module related permissions are not properly removed on deactivate/uninstall
 
 
 1.3.18 (November 22, 2019)
