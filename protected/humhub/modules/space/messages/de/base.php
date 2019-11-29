@@ -14,7 +14,7 @@ return array (
   'Private' => 'Privat',
   'Private (Invisible)' => 'Privat (unsichtbar)',
   'Public' => 'Öffentlich',
-  'Public (Members & Guests)' => 'Öffentlich (Mitglieder &amp; Gäste)',
+  'Public (Members & Guests)' => 'Öffentlich (Mitglieder & Gäste)',
   'Public (Members only)' => 'Öffentlich (Nur Mitglieder)',
   'Public (Registered users only)' => 'Öffentlich (Nur registrierte Benutzer)',
   'Settings' => 'Einstellungen',
