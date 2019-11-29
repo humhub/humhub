@@ -18,6 +18,8 @@ use humhub\modules\user\widgets\Image;
 
 /** @var \humhub\modules\user\models\User $userModel */
 
+$userModel = Yii::$app->user->identity;
+
 ?>
 
 <?php if (Yii::$app->user->isGuest): ?>
