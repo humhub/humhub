@@ -22,11 +22,6 @@ use humhub\widgets\Button;
 class MenuLink extends MenuEntry
 {
     /**
-     * @var string the label of the menu entry
-     */
-    protected $label;
-
-    /**
      * @var string|array the url or route
      */
     protected $url;
@@ -140,6 +135,7 @@ class MenuLink extends MenuEntry
         $this->getLink()->link($url);
         return $this;
     }
+
 
     /**
      * Returns the URL
