@@ -430,6 +430,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         Session::deleteAll(['user_id' => $this->id]);
         Friendship::deleteAll(['user_id' => $this->id]);
         Friendship::deleteAll(['friend_user_id' => $this->id]);
+        Auth::deleteAll(['user_id' => $this->id]);
 
         $this->updateAttributes([
             'email' => new Expression('NULL'),

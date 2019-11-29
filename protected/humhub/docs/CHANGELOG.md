@@ -8,6 +8,7 @@ HumHub Change Log
 - Fix #3147: Module related permissions are not properly removed on deactivate/uninstall
 - Fix #3740: Profile fieldtype Checkbox List does not show "other"
 - Fix #3484: Encoding issue in german space visibility translation
+- Fix #3717: Account deletion incomplete if related to an identity provider
 
 
 1.3.18 (November 22, 2019)
