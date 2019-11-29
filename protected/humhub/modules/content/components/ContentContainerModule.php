@@ -10,13 +10,14 @@ namespace humhub\modules\content\components;
 
 use humhub\components\Module;
 use humhub\modules\content\models\ContentContainerModuleState;
+use humhub\modules\content\models\ContentContainerPermission;
 
 /**
  * Base Module with ContentContainer support.
- * 
- * Override this class if your module should have the possibility to be 
+ *
+ * Override this class if your module should have the possibility to be
  * enabled/disabled on a content container (e.g. Space/User).
- *  
+ *
  * @since 0.20
  * @author luke
  */
@@ -44,7 +45,7 @@ class ContentContainerModule extends Module
 
     /**
      * Returns the list of valid content container classes this module supports.
-     * 
+     *
      * ~~~
      * public function getContentContainerTypes()
      * {
@@ -54,7 +55,7 @@ class ContentContainerModule extends Module
      *      ];
      * }
      * ~~~
-     * 
+     *
      * @return array valid content container classes
      */
     public function getContentContainerTypes()
@@ -64,7 +65,7 @@ class ContentContainerModule extends Module
 
     /**
      * Checks whether the module is enabled the given content container class.
-     * 
+     *
      * @param string $class the class of content container
      * @return boolean
      */
@@ -76,7 +77,7 @@ class ContentContainerModule extends Module
     /**
      * Returns the module description shown in content container modules section.
      * By default the main module description is returned.
-     * 
+     *
      * @param string $container
      * @return string the module description
      */
@@ -88,7 +89,7 @@ class ContentContainerModule extends Module
     /**
      * Returns the name of the module used in content container context.
      * By default the main module name is returned.
-     * 
+     *
      * @param ContentContainerActiveRecord $container
      * @return string the module name
      */
@@ -100,7 +101,7 @@ class ContentContainerModule extends Module
     /**
      * Returns the url to the module image shown in content containers module section.
      * By default the main module image url is returned.
-     * 
+     *
      * @param ContentContainerActiveRecord $container
      * @return string the url to the image
      */
@@ -111,7 +112,7 @@ class ContentContainerModule extends Module
 
     /**
      * Returns the url to configure this module in a content container
-     * 
+     *
      * @param ContentContainerActiveRecord $container
      * @return string the config url
      */
@@ -123,18 +124,18 @@ class ContentContainerModule extends Module
     /**
      * Enables this module on the given content container
      * Override this method e.g. to set default settings.
-     * 
+     *
      * @param ContentContainerActiveRecord $container
      */
     public function enableContentContainer(ContentContainerActiveRecord $container)
     {
-        
+
     }
 
     /**
      * Disables module on given content container
      * Override this method to cleanup created data in content container context.
-     * 
+     *
      * ~~~
      * public function disableContentContainer(ContentContainerActiveRecord $container)
      * {
@@ -144,17 +145,18 @@ class ContentContainerModule extends Module
      *      }
      * }
      * ~~~
-     * 
+     *
      * @param ContentContainerActiveRecord $container the content container
      */
     public function disableContentContainer(ContentContainerActiveRecord $container)
     {
         $this->settings->contentContainer($container)->deleteAll();
+        ContentContainerPermission::deleteAll(['module_id' => $this->id, 'contentcontainer_id' => $container->contentcontainer_id]);
     }
 
     /**
      * Returns an array of all content containers where this module is enabled.
-     * 
+     *
      * @param string $containerClass optional filter to specific container class
      * @return array of content container instances
      */
@@ -175,17 +177,17 @@ class ContentContainerModule extends Module
      * permission behaviour is required.
      *
      * @param ContentContainerActiveRecord $contentContainer
-     * @see Module::getPermissions()
      * @return array
+     * @see Module::getPermissions()
      * @since 1.3.11
      */
     public function getPermissions($contentContainer = null)
     {
-        if($contentContainer && $contentContainer->moduleManager->isEnabled($this->id)) {
+        if ($contentContainer && $contentContainer->moduleManager->isEnabled($this->id)) {
             return $this->getContainerPermissions($contentContainer);
         }
 
-        if($contentContainer) {
+        if ($contentContainer) {
             return parent::getPermissions($contentContainer);
         }
 
@@ -196,11 +198,11 @@ class ContentContainerModule extends Module
      * This method is called to determine available permissions only for containers this module is enabled on.
      *
      * @param null $contentContainer
-     * @see ContentContainerModule::getPermissions()
      * @return array
+     * @see ContentContainerModule::getPermissions()
      * @since 1.3.11
      */
-    protected  function getContainerPermissions($contentContainer = null)
+    protected function getContainerPermissions($contentContainer = null)
     {
         return [];
     }
@@ -208,11 +210,11 @@ class ContentContainerModule extends Module
     /**
      * This method is called to determine only global (no container related) permissions of this module.
      *
-     * @see ContentContainerModule::getPermissions()
      * @return array
+     * @see ContentContainerModule::getPermissions()
      * @since 1.3.11
      */
-    protected  function getGlobalPermissions()
+    protected function getGlobalPermissions()
     {
         return [];
     }
