@@ -11,6 +11,7 @@ namespace humhub\modules\user\widgets;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\Menu;
+use humhub\widgets\ModalButton;
 use Yii;
 use yii\helpers\Url;
 use humhub\modules\admin\widgets\AdminMenu;
@@ -40,6 +41,18 @@ class AccountTopMenu extends Menu
     public function init()
     {
         if (Yii::$app->user->isGuest) {
+
+            $signUpText = Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration')
+                ? Yii::t('UserModule.base', 'Sign in / up')
+                : Yii::t('UserModule.base', 'Sign in');
+
+
+            $this->addEntry(new MenuLink([
+                'link' => ModalButton::primary($signUpText)->load(Url::toRoute('/user/auth/login'))->cssClass('btn-enter'),
+                'sortOrder' => 100
+            ]));
+
+            parent::init();
             return;
         }
 

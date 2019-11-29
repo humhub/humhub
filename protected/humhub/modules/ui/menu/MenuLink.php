@@ -10,11 +10,7 @@ namespace humhub\modules\ui\menu;
 
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\widgets\Menu;
-use humhub\libs\Html;
-use humhub\widgets\Link;
-use Yii;
-use yii\helpers\Url;
-
+use humhub\widgets\Button;
 /**
  * Class MenuLink
  *
@@ -36,17 +32,17 @@ class MenuLink extends MenuEntry
     protected $url;
 
     /**
-     * @var Link
+     * @var Button
      */
     protected $link;
 
     /**
-     * @return Link
+     * @return Button
      */
     public function getLink()
     {
         if(!$this->link) {
-            $this->link = Link::none();
+            $this->link = Button::none();
         }
 
         return $this->link;
@@ -95,10 +91,10 @@ class MenuLink extends MenuEntry
     }
 
     /**
-     * @param $link Link the label
+     * @param Button $link Button the label
      * @return static
      */
-    public function setLink(Link $link)
+    public function setLink(Button $link)
     {
         $this->link = $link;
         return $this;
@@ -141,7 +137,7 @@ class MenuLink extends MenuEntry
     {
         // we save the raw url
         $this->url = $url;
-        $this->getLink()->href($url);
+        $this->getLink()->link($url);
         return $this;
     }
 

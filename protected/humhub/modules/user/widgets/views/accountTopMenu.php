@@ -17,16 +17,13 @@ use humhub\modules\user\widgets\Image;
 /* @var $options [] */
 
 /** @var \humhub\modules\user\models\User $userModel */
-$userModel = Yii::$app->user->getIdentity();
+
 ?>
-<?php if ($userModel === null): ?>
-    <a href="#" class="btn btn-enter" data-action-click="ui.modal.load" data-action-url="<?= Url::toRoute('/user/auth/login'); ?>">
-        <?php if (Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration')): ?>
-            <?= Yii::t('UserModule.base', 'Sign in / up'); ?>
-        <?php else: ?>
-            <?= Yii::t('UserModule.base', 'Sign in'); ?>
-        <?php endif; ?>
-    </a>
+
+<?php if (Yii::$app->user->isGuest): ?>
+    <?php if(!empty($entries)) :?>
+        <?= $entries[0]->render() ?>
+    <?php endif; ?>
 <?php else: ?>
     <?= Html::beginTag('ul', $options) ?>
         <li class="dropdown account">
