@@ -9,12 +9,13 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\User;
 use Yii;
+use yii\helpers\Html;
 
 /**
  * CheckboxList profile field for selecting multiple options.
  *
- * @package humhub.modules_core.user.models
  * @since 2.1.1
  */
 class CheckboxList extends BaseType
@@ -53,7 +54,7 @@ class CheckboxList extends BaseType
     /**
      * Returns Form Definition for edit/create this field.
      *
-     * @return Array Form Definition
+     * @return array Form Definition
      */
     public function getFormDefinition($definition = [])
     {
@@ -124,8 +125,8 @@ class CheckboxList extends BaseType
             ]
         ];
 
-        if($this->allowOther) {
-            $result[$this->profileField->internal_name. '_other_selection'] = [
+        if ($this->allowOther) {
+            $result[$this->profileField->internal_name . '_other_selection'] = [
                 'type' => 'text',
                 'class' => 'form-control',
                 'label' => false,
@@ -136,9 +137,10 @@ class CheckboxList extends BaseType
         return $result;
     }
 
-    public function beforeProfileSave($values) {
-        if(is_array($values)) {
-            return implode("\n", $values);
+    public function beforeProfileSave($values)
+    {
+        if (is_array($values)) {
+            return implode(',', $values);
         }
         return $values;
     }
@@ -146,7 +148,7 @@ class CheckboxList extends BaseType
     /**
      * Returns a list of possible options
      *
-     * @return Array
+     * @return array
      */
     public function getSelectItems()
     {
@@ -156,7 +158,7 @@ class CheckboxList extends BaseType
             $items[trim($option)] = trim($option);
         }
 
-        if($this->allowOther) {
+        if ($this->allowOther) {
             $items['other'] = Yii::t($this->profileField->getTranslationCategory(), 'Other:');
         }
 
@@ -173,13 +175,23 @@ class CheckboxList extends BaseType
     public function getUserValue($user, $raw = true)
     {
         $internalName = $this->profileField->internal_name;
-        $value = $user->profile->$internalName;
+        $internalNameOther = $internalName . '_other_selection';
 
+        $value = $user->profile->$internalName;
         if (!$raw) {
+
             $options = $this->getSelectItems();
-            if (isset($options[$value])) {
-                return \yii\helpers\Html::encode(Yii::t($this->profileField->getTranslationCategory(), $options[$value]));
+            $translatedValues = [];
+
+            foreach (explode(',', $value) as $v) {
+                if ($v === 'other' && !empty($user->profile->$internalNameOther)) {
+                    $translatedValues[] = Html::encode($user->profile->$internalNameOther);
+                } elseif (isset($options[$v])) {
+                    $translatedValues[] = Html::encode(Yii::t($this->profileField->getTranslationCategory(), $options[$v]));
+                }
             }
+
+            return implode(', ', $translatedValues);
         }
 
         return $value;
