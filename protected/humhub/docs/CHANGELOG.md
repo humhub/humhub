@@ -1,6 +1,12 @@
 HumHub Change Log
 =================
 
+1.3.19 (Unreleased)
+--------------------------
+
+- Fix #3759: Allow individual file extensions (e.g. msg)
+
+
 1.3.18 (November 22, 2019)
 --------------------------
 
