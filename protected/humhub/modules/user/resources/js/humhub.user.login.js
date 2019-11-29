@@ -11,7 +11,7 @@ humhub.module('user.login', function(module, require, $) {
                 $this.data('originalUrl', original);
             }
 
-            $this.attr('href', checked ?  original + '&rememberme=1' : original);
+            $this.attr('href', checked ?  original + '&rememberMe=1' : original);
         });
 
     };
