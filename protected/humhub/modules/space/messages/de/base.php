@@ -101,7 +101,7 @@ return array (
   'Users' => 'Benutzer',
   'Users has been invited.' => 'Benutzer wurden eingeladen.',
   'Visibility' => 'Sichtbarkeit',
-  'Visible for all (members and guests)' => 'Sichtbar für alle (Mitglieder &amp; Gäste)',
+  'Visible for all (members and guests)' => 'Sichtbar für alle (Mitglieder und Gäste)',
   'You are not allowed to join this space!' => 'Du darfst diesem Space nicht betreten!',
   'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.' => 'Du kannst auch externe Benutzer einladen, die noch nicht registriert sind. Gib einfach ihre E-Mail-Adressen, durch Kommas getrennt, ein.',
   'You cannot create private visible spaces!' => 'Du kannst keine privaten Spaces erstellen!',
