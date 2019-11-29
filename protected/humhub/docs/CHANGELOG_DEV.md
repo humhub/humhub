@@ -106,3 +106,4 @@ HumHub Change Log (DEVELOP)
 - Enh: Added module marketplace categories
 - Enh: Added isFluid LESS variable for automatic HTML container handling
 - Fix #2605: User display name cropped in profile header
+- Enh: Updated Yii to 2.0.30
