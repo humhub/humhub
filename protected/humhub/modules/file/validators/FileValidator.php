@@ -83,18 +83,18 @@ class FileValidator extends \yii\validators\FileValidator
 
     public function validateFileName($model, $attribute)
     {
-        if($model instanceof File) {
+        if ($model instanceof File) {
             $pattern = Yii::$app->moduleManager->getModule('file')->fileNameValidationPattern;
 
-            if(empty($pattern)) {
+            if (empty($pattern)) {
                 return;
             }
 
-            if(preg_match($pattern, $model->file_name)) {
+            if (preg_match($pattern, $model->file_name)) {
                 $this->addError($model, $attribute, Yii::t('FileModule.models_File', 'Invalid file name detected!'));
             }
 
-            if($this->denyDoubleFileExtensions && preg_match('/\.\w{2,3}\.\w{2,3}$/', $model->file_name)) {
+            if ($this->denyDoubleFileExtensions && preg_match('/\.\w{2,3}\.\w{2,3}$/', $model->file_name)) {
                 $this->addError($model, $attribute, Yii::t('FileModule.models_File', 'Double file extensions are not allowed!'));
             }
         }
@@ -123,4 +123,34 @@ class FileValidator extends \yii\validators\FileValidator
         return null;
     }
 
+
+    /**
+     * Checks if given uploaded file have correct type (extension) according current validator settings.
+     * @param UploadedFile $file
+     * @return bool
+     * @throws \yii\base\InvalidConfigException
+     */
+    protected function validateExtension($file)
+    {
+        $extension = mb_strtolower($file->extension, 'UTF-8');
+
+        if (FileHelper::getMimeTypeByExtension('test.' . $extension) !== null && $this->checkExtensionByMimeType) {
+            $mimeType = FileHelper::getMimeType($file->tempName, null, false);
+            if ($mimeType === null) {
+                return false;
+            }
+
+            $extensionsByMimeType = FileHelper::getExtensionsByMimeType($mimeType);
+
+            if (!in_array($extension, $extensionsByMimeType, true)) {
+                return false;
+            }
+        }
+
+        if (!in_array($extension, $this->extensions, true)) {
+            return false;
+        }
+
+        return true;
+    }
 }
