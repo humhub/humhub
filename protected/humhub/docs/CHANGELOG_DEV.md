@@ -15,6 +15,7 @@ HumHub Change Log (DEVELOP)
 - Enh #3697: Stay of module update page after updating a module
 - Fix #3692: Icon Upload Problems
 - Fix #3705: Don't render empty navigation/menu
+- Fix #3706: Space mentioning broken 
 
 
 1.4
