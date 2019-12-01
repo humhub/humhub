@@ -17,6 +17,7 @@ HumHub Change Log (DEVELOP)
 - Fix #3705: Don't render empty navigation/menu
 - Fix #3706: Space mentioning broken
 - Fix #3742: OAuth timeout doesn't respect configured timeout 
+- Enh: Added `DateHelper:getUserTimeZone()`, `DateHelper:getSystemTimeZone()`, `DateHelper:isInDbFormat()`
 
 
 1.4
