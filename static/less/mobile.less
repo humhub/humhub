@@ -23,6 +23,12 @@
 		padding-top: 105px;
 	}
 
+	.modal-open #layout-content {
+		> .container {
+			overflow-x: unset; // This fixes broken (invisible) richtext editor nav in ios safari...
+		}
+	}
+
 	// Layout Contents: Adjusting the contents to fit perfectly on mobile devices
 	#layout-content {
 		// Layout Space: Space navigation
@@ -82,6 +88,7 @@
 			background-color: #ffffff;
 		}
 
+
 		.panel {
 			margin-bottom:5px;
 
@@ -95,8 +102,9 @@
 		> .container {
 			padding-right:2px !important;
 			padding-left:2px !important;
-			overflow-x:hidden;
+			overflow-x: hidden;
 		}
+
 
 		.layout-nav-container .panel-heading {
 			display:none;
@@ -112,6 +120,7 @@
 		.image-upload-container .image-upload-buttons {
 			right: 2px !important;
 		}
+
 
 		// Space
 		.space-acronym {

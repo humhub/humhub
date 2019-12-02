@@ -1,6 +1,26 @@
 //
 // Modals
 // --------------------------------------------------
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+//
+// Animate.css modifications
+// --------------------------------------------------
+.modal-dialog.fadeIn,
+.modal-dialog.pulse {
+  -webkit-animation-duration: 200ms;
+  -moz-animation-duration: 200ms;
+  animation-duration: 200ms;
+}
+
+body.modal-open {
+  height: 100vh;
+  overflow-y: hidden;
+}
+
 @media screen and (max-width: 768px) {
   .modal-dialog {
     width: auto !important;
@@ -110,18 +130,4 @@
       margin-top: 0;
     }
   }
-}
-
-.modal-backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-//
-// Animate.css modifications
-// --------------------------------------------------
-.modal-dialog.fadeIn,
-.modal-dialog.pulse {
-  -webkit-animation-duration: 200ms;
-  -moz-animation-duration: 200ms;
-  animation-duration: 200ms;
 }

@@ -16,6 +16,7 @@ HumHub Change Log (DEVELOP)
 - Fix #3692: Icon Upload Problems
 - Fix #3705: Don't render empty navigation/menu
 - Fix #3706: Space mentioning broken 
+- Fix #3711: Fullscreen Richtext menu broken on ios safari
 
 
 1.4
