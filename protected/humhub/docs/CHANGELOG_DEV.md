@@ -21,6 +21,8 @@ HumHub Change Log (DEVELOP)
 - Fix #3711: Fullscreen Richtext menu broken on ios safari
 - Enh #3768: Add `Module::afterUpdate`, `Module::beforeUpdate` events to `humhub\components\Module`
 - Enh: Add `OnlineModuleManager::EVENT_BEFORE_UPDATE`, `OnlineModuleManager::EVENT_AFTER_UPDATE`
+- Fix: Double encoding of `&` in `Richtext::output()`
+- Enh: Added `SocialActivity::getContentPlainTextPreview()` mainly used in mail subjects
 
 
 1.4
