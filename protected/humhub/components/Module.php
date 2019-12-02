@@ -27,7 +27,6 @@ use yii\web\HttpException;
  */
 class Module extends \yii\base\Module
 {
-
     /**
      * @var array the loaded module.json info file
      */
@@ -306,7 +305,31 @@ class Module extends \yii\base\Module
      */
     public function update()
     {
-        $this->migrate();
+        if($this->beforeUpdate() !== false) {
+            $this->migrate();
+            $this->afterUpdate();
+        }
+    }
+
+    /**
+     * Called right before the module is updated.
+     *
+     * The update will cancel if this function does return false;
+     *
+     * @return bool
+     */
+    public function beforeUpdate()
+    {
+        return true;
+    }
+
+
+    /**
+     * Called right after the module update.
+     */
+    public function afterUpdate()
+    {
+
     }
 
     /**

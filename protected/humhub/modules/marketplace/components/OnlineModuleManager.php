@@ -8,9 +8,11 @@
 
 namespace humhub\modules\marketplace\components;
 
+use humhub\components\ModuleEvent;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\Module;
 use Yii;
+use yii\base\Component;
 use yii\web\HttpException;
 use yii\base\Exception;
 use yii\helpers\FileHelper;
@@ -22,8 +24,10 @@ use ZipArchive;
  *
  * @author luke
  */
-class OnlineModuleManager
+class OnlineModuleManager extends Component
 {
+    const EVENT_BEFORE_UPDATE = 'beforeUpdate';
+    const EVENT_AFTER_UPDATE = 'afterUpdate';
 
     private $_modules = null;
 
@@ -111,9 +115,15 @@ class OnlineModuleManager
      * Updates a given module
      *
      * @param string $moduleId
+     * @throws Exception
+     * @throws HttpException
+     * @throws \yii\base\ErrorException
+     * @throws \yii\base\InvalidConfigException
      */
     public function update($moduleId)
     {
+        $this->trigger(static::EVENT_BEFORE_UPDATE, new ModuleEvent(['module' => Yii::$app->moduleManager->getModule($moduleId)]));
+
         // Temporary disable module if enabled
         if (Yii::$app->hasModule($moduleId)) {
             Yii::$app->setModule($moduleId, null);
@@ -125,6 +135,8 @@ class OnlineModuleManager
 
         $updatedModule = Yii::$app->moduleManager->getModule($moduleId);
         $updatedModule->migrate();
+
+        $this->trigger(static::EVENT_AFTER_UPDATE, new ModuleEvent(['module' => $updatedModule]));
     }
 
     /**

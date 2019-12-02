@@ -19,6 +19,8 @@ HumHub Change Log (DEVELOP)
 - Fix #3742: OAuth timeout doesn't respect configured timeout 
 - Enh: Added `DateHelper:getUserTimeZone()`, `DateHelper:getSystemTimeZone()`, `DateHelper:isInDbFormat()`
 - Fix #3711: Fullscreen Richtext menu broken on ios safari
+- Enh #3768: Add `Module::afterUpdate`, `Module::beforeUpdate` events to `humhub\components\Module`
+- Enh: Add `OnlineModuleManager::EVENT_BEFORE_UPDATE`, `OnlineModuleManager::EVENT_AFTER_UPDATE`
 
 
 1.4

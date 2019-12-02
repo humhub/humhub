@@ -53,7 +53,10 @@ class UpdateController extends Controller
     /**
      * Updates a module with the most recent version online
      *
+     * @return UpdateController|\yii\console\Response|\yii\web\Response
      * @throws HttpException
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionInstall()
     {
