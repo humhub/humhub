@@ -52,7 +52,7 @@ class NewLike extends BaseNotification
      */
     public function getMailSubject()
     {
-        $contentInfo = $this->getContentInfo($this->getLikedRecord());
+        $contentInfo = $this->getContentPlainTextPreview($this->getLikedRecord());
 
         if ($this->groupCount > 1) {
             return Yii::t('LikeModule.notifications', "{displayNames} likes your {contentTitle}.", [
