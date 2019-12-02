@@ -170,7 +170,9 @@ class AuthClientHelpers
             $registration->enableUserApproval = false;
         }
 
-        unset($attributes['id']);
+        // remove potentially unsafe attributes
+        unset($attributes['id'], $attributes['guid'], $attributes['contentcontainer_id'], $attributes['auth_mode'], $attributes['status']);
+
         $registration->getUser()->setAttributes($attributes, false);
         $registration->getProfile()->setAttributes($attributes, false);
         $registration->getGroupUser()->setAttributes($attributes, false);

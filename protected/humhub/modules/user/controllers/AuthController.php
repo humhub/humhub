@@ -84,7 +84,7 @@ class AuthController extends Controller
             return $this->onAuthSuccess($login->authClient);
         }
 
-        // Self Invite 
+        // Self Invite
         $invite = new Invite();
         $invite->scenario = 'invite';
         if ($invite->load(Yii::$app->request->post()) && $invite->selfInvite()) {
@@ -119,7 +119,7 @@ class AuthController extends Controller
             return $this->redirect(['/user/account/connected-accounts']);
         }
 
-        // Login existing user 
+        // Login existing user
         $user = AuthClientHelpers::getUserByAuthClient($authClient);
 
         if ($user !== null) {
@@ -177,12 +177,12 @@ class AuthController extends Controller
         $success = false;
         if ($user->status == User::STATUS_ENABLED) {
             $duration = 0;
-            if ($authClient instanceof BaseFormAuth) {
-                if ($authClient->login->rememberMe) {
-                    $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
-                }
-            }
+            if (
+                ($authClient instanceof BaseFormAuth && $authClient->login->rememberMe) ||
+                !empty(Yii::$app->session->get('loginRememberMe'))) {
 
+                $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
+            }
             AuthClientHelpers::updateUser($authClient, $user);
 
             if ($success = Yii::$app->user->login($user, $duration)) {
