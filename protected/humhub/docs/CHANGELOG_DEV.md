@@ -24,6 +24,8 @@ HumHub Change Log (DEVELOP)
 - Fix: Double encoding of `&` in `Richtext::output()`
 - Enh: Added `SocialActivity::getContentPlainTextPreview()` mainly used in mail subjects
 - Enh: Added `data-ui-addition` way of definint ui additions
+- Enh: Added `data-ui-addition` way of defining ui additions
+- Enh #3771: Added `data-ui-addition="acknowledgeForm"` in order to prevent page changes without save/confirmation
 
 1.4
 ---

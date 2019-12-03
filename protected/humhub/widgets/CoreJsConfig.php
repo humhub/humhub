@@ -44,7 +44,10 @@ class CoreJsConfig extends Widget
                 ],
                 'client' => [
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),
-                    'reloadableScripts' => CacheSettingsForm::getReloadableScriptUrls()
+                    'reloadableScripts' => CacheSettingsForm::getReloadableScriptUrls(),
+                    'text' => [
+                        'warn.onBeforeLoad' => Yii::t('base', "There are unsaved changes, do you really want to leave this page?")
+                    ]
                 ],
                 'file' => [
                     'upload' => [
