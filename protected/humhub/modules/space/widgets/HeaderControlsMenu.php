@@ -1,12 +1,19 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
 namespace humhub\modules\space\widgets;
-use humhub\widgets\BaseMenu;
+
+use humhub\modules\space\models\Space;
+use humhub\modules\ui\menu\DropdownDivider;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\DropdownMenu;
 use Yii;
+
 /**
  * The Admin Navigation for spaces
  *
@@ -14,119 +21,128 @@ use Yii;
  * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
-class HeaderControlsMenu extends BaseMenu
+class HeaderControlsMenu extends DropdownMenu
 {
+    /**
+     * @var Space
+     */
     public $space;
-    public $template = '@humhub/widgets/views/leftNavigation';
+
+    /**
+     * @inheritdoc
+     */
+    public $label = '<i class="fa fa-cog"></i>';
+
+    /**
+     * @inheritdoc
+     */
+    public $id = 'space-header-controls-menu';
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
-        $this->addItemGroup([
-            'id' => 'admin',
-            'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', '<i class="fa fa-cog"></i>'),
-            'sortOrder' => 100,
-        ]);
+
+        if ($this->template === '@humhub/widgets/views/dropdownNavigation') {
+            $this->template = '@ui/menu/widgets/views/dropdown-menu.php';
+        }
+
+
         // check user rights
         if ($this->space->isAdmin()) {
-            $this->addItem([
+            $this->addEntry(new MenuLink([
                 'label' => Yii::t('SpaceModule.base', 'Settings'),
-                'group' => 'admin',
                 'url' => $this->space->createUrl('/space/manage'),
-                'icon' => '<i class="fa fa-cogs"></i>',
-                'sortOrder' => 100,
-                'isActive' => (Yii::$app->controller->id === 'default'),
-            ]);
-            $this->addItem([
-                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Security'),
-                'group' => 'admin',
+                'icon' => 'cogs',
+                'sortOrder' => 100
+            ]));
+
+            $this->addEntry(new MenuLink([
+                'label' => Yii::t('SpaceModule.manage', 'Security'),
                 'url' => $this->space->createUrl('/space/manage/security'),
-                'icon' => '<i class="fa fa-lock"></i>',
+                'icon' => 'lock',
                 'sortOrder' => 200,
-                'isActive' => (Yii::$app->controller->id === 'security'),
-            ]);
-            $this->addItem([
-                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Members'),
-                'group' => 'admin',
+            ]));
+
+            $this->addEntry(new MenuLink([
+                'label' => Yii::t('SpaceModule.manage', 'Members'),
                 'url' => $this->space->createUrl('/space/manage/member'),
-                'icon' => '<i class="fa fa-group"></i>',
-                'sortOrder' => 200,
-                'isActive' => (Yii::$app->controller->id === 'member'),
-            ]);
-            $this->addItem([
-                'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Modules'),
-                'group' => 'admin',
+                'icon' => 'group',
+                'sortOrder' => 300
+            ]));
+
+            $this->addEntry(new MenuLink([
+                'label' => Yii::t('SpaceModule.manage', 'Modules'),
                 'url' => $this->space->createUrl('/space/manage/module'),
-                'icon' => '<i class="fa fa-rocket"></i>',
-                'sortOrder' => 300,
-                'isActive' => (Yii::$app->controller->id === 'module'),
-            ]);
+                'icon' => 'rocket',
+                'sortOrder' => 400,
+            ]));
+
+            $this->addEntry(new DropdownDivider(['sortOrder' => 500]));
         }
+
         if ($this->space->isMember()) {
             $membership = $this->space->getMembership();
+
             if (!$membership->send_notifications) {
-                $this->addItem([
-                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Receive Notifications for new content'),
-                    'group' => 'admin',
+                $this->addEntry(new MenuLink([
+                    'label' => Yii::t('SpaceModule.manage', 'Receive Notifications for new content'),
                     'url' => $this->space->createUrl('/space/membership/receive-notifications'),
-                    'icon' => '<i class="fa fa-bell"></i>',
-                    'sortOrder' => 300,
-                    'isActive' => (Yii::$app->controller->id === 'module'),
+                    'icon' => 'bell',
+                    'sortOrder' => 600,
                     'htmlOptions' => ['data-method' => 'POST']
-                ]);
+                ]));
             } else {
-                $this->addItem([
-                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Don\'t receive notifications for new content'),
-                    'group' => 'admin',
+                $this->addEntry(new MenuLink([
+                    'label' => Yii::t('SpaceModule.manage', 'Don\'t receive notifications for new content'),
                     'url' => $this->space->createUrl('/space/membership/revoke-notifications'),
-                    'icon' => '<i class="fa fa-bell-o"></i>',
-                    'sortOrder' => 300,
-                    'isActive' => (Yii::$app->controller->id === 'module'),
+                    'icon' => 'bell-o',
+                    'sortOrder' => 600,
                     'htmlOptions' => ['data-method' => 'POST']
-                ]);
+                ]));
             }
+
             if (!$this->space->isSpaceOwner() && $this->space->canLeave()) {
-                $this->addItem([
-                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Cancel Membership'),
-                    'group' => 'admin',
+                $this->addEntry(new MenuLink([
+                    'label' => Yii::t('SpaceModule.manage', 'Cancel Membership'),
                     'url' => $this->space->createUrl('/space/membership/revoke-membership'),
-                    'icon' => '<i class="fa fa-times"></i>',
-                    'sortOrder' => 300,
-                    'isActive' => (Yii::$app->controller->id === 'module'),
+                    'icon' => 'times',
+                    'sortOrder' => 700,
                     'htmlOptions' => ['data-method' => 'POST']
-                ]);
+                ]));
             }
+
             if ($membership->show_at_dashboard) {
-                $this->addItem([
-                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Hide posts on dashboard'),
-                    'group' => 'admin',
+                $this->addEntry(new MenuLink([
+                    'label' => Yii::t('SpaceModule.manage', 'Hide posts on dashboard'),
                     'url' => $this->space->createUrl('/space/membership/switch-dashboard-display', ['show' => 0]),
-                    'icon' => '<i class="fa fa-eye-slash"></i>',
-                    'sortOrder' => 400,
-                    'isActive' => (Yii::$app->controller->id === 'module'),
+                    'icon' => 'eye-slash',
+                    'sortOrder' => 800,
                     'htmlOptions' => [
                         'data-method' => 'POST',
                         'class' => 'tt',
                         'data-toggle' => 'tooltip',
                         'data-placement' => 'left',
-                        'title' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'This option will hide new content from this space at your dashboard')
+                        'title' => Yii::t('SpaceModule.manage', 'This option will hide new content from this space at your dashboard')
                     ]
-                ]);
+                ]));
             } else {
-                $this->addItem([
-                    'label' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'Show posts on dashboard'),
-                    'group' => 'admin',
+                $this->addEntry(new MenuLink([
+                    'label' => Yii::t('SpaceModule.manage', 'Show posts on dashboard'),
                     'url' => $this->space->createUrl('/space/membership/switch-dashboard-display', ['show' => 1]),
-                    'icon' => '<i class="fa fa-eye"></i>',
-                    'sortOrder' => 400,
-                    'isActive' => (Yii::$app->controller->id === 'module'),
+                    'icon' => 'fa-eye',
+                    'sortOrder' => 800,
                     'htmlOptions' => ['data-method' => 'POST',
                         'class' => 'tt',
                         'data-toggle' => 'tooltip',
                         'data-placement' => 'left',
-                        'title' => Yii::t('SpaceModule.widgets_SpaceAdminMenuWidget', 'This option will show new content from this space at your dashboard')
+                        'title' => Yii::t('SpaceModule.manage', 'This option will show new content from this space at your dashboard')
                     ]
-                ]);
+                ]));
             }
         }
+
         return parent::init();
     }
 }
