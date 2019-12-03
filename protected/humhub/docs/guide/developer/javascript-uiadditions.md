@@ -21,6 +21,22 @@ In this example we added a `toggle` addition which will be applied to all nodes 
 
 > Tip: You should only add new additions in case they are used regularly within your application, since each new addition will add an additional selector search to your initialization process.
 
+###### Register Addition without selector (since v1.4)
+
+It is also possible to register additions without a selector as in the following example:
+
+```javascript
+require('ui.additions').register('someAddition', function($match) {
+    $match.on('click', function() {
+        $(this).toggle();
+    });
+});
+```
+
+The actual selector for such an addition would be `[data-ui-addition="someAddition"]`.
+
+> Note: This way of defining additions is preferred since we save additional addition queries.
+
 ###### Extend Additions:
 
 The `register` method also accepts an optional `options` parameter after the handler function, which can be used to extend already registered additions.
@@ -45,7 +61,8 @@ additions.extend('toggle', '.toggle', function($match) { /* ... */ });
 
 ### Apply Additions
 
-By default the document `body` will be parsed for additions within the humhub initialization phase. If you require to apply additions to nodes inserted after the initialization phase e.g. nodes loaded by ajax, you'll either have to call the `applyTo()` function on your new nodes as
+By default the document `body` will be parsed for additions within the humhub initialization phase. If you require to apply 
+additions to nodes inserted after the initialization phase e.g. nodes loaded by ajax, you'll either have to call the `applyTo()` function on your new nodes as
 
 ```javascript
 client.get(url).then(function(response) {
@@ -62,19 +79,19 @@ or add a `MutationObserver` to your container as follows
 additions.observe($('#myContainer'));
 ```
 
-> Info: You won't have to worry about the applying of additions when using the `modal` API to load content to your modals.
+> Info: You won't have to worry about the applying of additions when using the `modal` or `stream` API .
 
 You can also just apply specific additions by using the apply options filter:
 
 ```javascript
     // only apply the toggle addition to #myContainer
     additions.applyTo($('#myContainer'), {
-        filter: ['toggle']
+        include: ['toggle']
     });
 
     // or respectively
     additions.observe($('#myContainer'), {
-        filter: ['toggle']
+        include: ['toggle']
     });
 ```
 
@@ -82,8 +99,7 @@ You can also just apply specific additions by using the apply options filter:
 
  - *autosize* - `.autosize`: adds the autosize behaviour to textarea fields
  - *select2* - `[data-ui-select2]`: transforms a dropdown to a select2 dropdown
- - *tooltip* - `.tt`: adds an jQuery tooltip to the element on hover 
- - *markdown* - `[data-ui-markdown]`: parses the content of the given node for markdown syntax
+ - *tooltip* - `.tt`: adds an jQuery tooltip to the element on hover
  - *popover* - `.po`: adds the bootstrap popover behaviour to the given elements
  - *form_elements*, `:checkbox, :radio`: renders styled radiobuttons and checkboxes
  - *showMore*, `[data-ui-show-more]`: used for cutting long texts (e.g in stream entries)

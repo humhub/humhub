@@ -23,7 +23,7 @@ HumHub Change Log (DEVELOP)
 - Enh: Add `OnlineModuleManager::EVENT_BEFORE_UPDATE`, `OnlineModuleManager::EVENT_AFTER_UPDATE`
 - Fix: Double encoding of `&` in `Richtext::output()`
 - Enh: Added `SocialActivity::getContentPlainTextPreview()` mainly used in mail subjects
-
+- Enh: Added `data-ui-addition` way of definint ui additions
 
 1.4
 ---

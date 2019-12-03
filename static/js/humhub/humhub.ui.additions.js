@@ -17,13 +17,24 @@ humhub.module('ui.additions', function (module, require, $) {
     /**
      * Registers an addition for a given jQuery selector. There can be registered
      * multiple additions for the same selector.
-     * 
-     * @param string id additionid
-     * @param string selector jQuery selector
-     * @param function addition addition function
+     *
      * @returns {undefined}
+     * @param id
+     * @param selector
+     * @param handler
+     * @param options
      */
     var register = function (id, selector, handler, options) {
+
+        // Register an addition without selector data-ui-addition="additionId"
+        if(object.isFunction(selector)) {
+            options = handler;
+            handler = selector;
+            selector = null;
+        }
+
+        var hasSelector = selector != null && object.isDefined(selector);
+
         options = options || {};
 
         if (!_additions[id] || options.overwrite) {
@@ -32,17 +43,23 @@ humhub.module('ui.additions', function (module, require, $) {
                 'handler': handler
             };
 
-            if(options.after && _additions[options.after]) {
+            if(hasSelector && options.after && _additions[options.after]) {
                 _order.splice(_order.indexOf(options.after) + 1, 0, id);
-            } else if(options.before &&  _additions[options.before]) {
+            } else if(hasSelector && options.before &&  _additions[options.before]) {
                 _order.splice(_order.indexOf(options.before), 0, id);
-            } else {
+            } else if(hasSelector) {
                 _order.push(id);
             }
 
             // Make sure additions registrated after humhub:ready also affect element
             if (humhub.initialized) {
-                apply($('body'), id);
+                if(hasSelector) {
+                    apply($('body'), id);
+                } else {
+
+                    apply($('body'), 'addition', '[data-ui-addition="'+id+'"]');
+                }
+
             }
         } else if (options.extend) {
             options.selector = selector;
@@ -53,6 +70,7 @@ humhub.module('ui.additions', function (module, require, $) {
     /**
      * Applies all matched additions to the given element and its children
      * @param {type} element
+     * @param options
      * @returns {undefined}
      */
     var applyTo = function (element, options) {
@@ -85,14 +103,16 @@ humhub.module('ui.additions', function (module, require, $) {
      * @param {type} addition
      * @returns {undefined}
      */
-    var apply = function ($element, id) {
+    var apply = function ($element, id, selector) {
         var addition = _additions[id];
 
         if (!addition) {
             return;
         }
 
-        var $match = $element.find(addition.selector).addBack(addition.selector);
+        selector = object.isDefined(selector) ? selector : addition.selector;
+
+        var $match = $element.find(selector).addBack(selector);
 
         // only apply addition if we actually find a match
         if (!$match.length) {
@@ -100,6 +120,16 @@ humhub.module('ui.additions', function (module, require, $) {
         }
 
         addition.handler.apply($match, [$match, $element]);
+    };
+
+    var applyAddition = function($element, id) {
+        var addition = _additions[id];
+
+        if (!addition) {
+            return;
+        }
+
+        addition.handler.apply($element, [$element, $element]);
     };
 
     var init = function () {
@@ -138,6 +168,13 @@ humhub.module('ui.additions', function (module, require, $) {
         // workaround for jp-player since it sets display to inline which results in a broken view...
         $(document).on('click.humhub-jp-play', '.jp-play', function () {
             $(this).closest('.jp-controls').find('.jp-pause').css('display', 'block');
+        });
+
+        module.register('addition', '[data-ui-addition]', function($match) {
+            $match.each(function(i, e) {
+                var $this = $(this);
+                applyAddition($(this), $this.data('uiAddition'));
+            });
         });
 
         // Autosize textareas
