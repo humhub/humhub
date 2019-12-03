@@ -24,7 +24,7 @@ use humhub\libs\Html;
 
         <?php
         $visibilities = [
-            Space::VISIBILITY_NONE => Yii::t('SpaceModule.base', 'Private (Invisible)'),
+            Space::VISIBILITY_NONE => Yii::t('SpaceModule.base', 'Private (Invisible: Removed from search results)'),
             Space::VISIBILITY_REGISTERED_ONLY => Yii::t('SpaceModule.base', 'Public (Registered users only)')
         ];
         if (AuthHelper::isGuestAccessEnabled()) {

@@ -14,6 +14,12 @@ use humhub\widgets\LinkPager;
 use yii\helpers\Url;
 
 ?>
+
+<script>
+$(function () {
+$('[data-toggle="tooltip"]').tooltip() })
+</script>
+
 <div class="panel panel-default">
 
     <div class="panel-heading">
@@ -72,6 +78,20 @@ use yii\helpers\Url;
                     <div class="media-body">
                         <h4 class="media-heading">
                             <?= Html::containerLink($space); ?>
+
+        <?php if ($space->join_policy == Space::JOIN_POLICY_NONE) {?>
+        <span class="label" style="background-color:#045701" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Invite-only">
+        <?= Yii::t('ContentModule.widgets_views_label', 'Exclusive&nbsp;'); ?>
+        <i class="fa fa-circle main-color"></i></span>
+        <?php } elseif ($space->join_policy == Space::JOIN_POLICY_APPLICATION) { ?>
+        <span class="label" style="background-color:#045701"aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Accepts Requests">
+        <?= Yii::t('ContentModule.widgets_views_label', 'Closed&nbsp;'); ?>
+        <i class="fa fa-dot-circle-o main-color"></i></span>
+        <?php } else { ?>
+        <span class="label" style="background-color:#a9b300" data-toggle="tooltip"  data-placement="top" title="Anyone can join">
+        <?= Yii::t('ContentModule.widgets_views_label', 'Open&nbsp;'); ?>
+        <i class="fa fa-circle-o main-color"></i></span>
+
                             <?php if ($space->isArchived()) : ?>
                                 <span
                                     class="label label-warning"><?= Yii::t('ContentModule.base', 'Archived'); ?></span>

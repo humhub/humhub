@@ -22,10 +22,18 @@ use humhub\widgets\Button;
         <?php $form = ActiveForm::begin(['options' => ['id' => 'spaceIndexForm'], 'enableClientValidation' => false]); ?>
         
         <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model])?>
+            <p class='help-block' style='margin-top:-30px;margin-bottom:20px'>
+<?= Yii::t('SpaceModule.settings', 'If this space is public, its name is also public and can be used to find it.<br/>
+If this space is using the default space image, you can choose the image color here.'); ?></p>
 
         <?= $form->field($model, 'description')->textarea(['rows' => 6]); ?>
+            <p class='help-block' style='margin-top:-30px;margin-bottom:20px'>
+<?= Yii::t('SpaceModule.settings', 'If this space is public, its description is also public and can be used to find it.<br/>
+This description will be visible below the space name everywhere it appears.'); ?></p>
 
         <?= $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
+           <p class='help-block' style='margin-top:-30px;margin-bottom:20px'>
+<?= Yii::t('SpaceModule.settings', 'If this space is public, its tags are also public and can be used to find it.<br/>These tags will be visible in the Space Directory.'); ?></p><br/>
 
         <?= Html::submitButton(Yii::t('SpaceModule.manage', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
