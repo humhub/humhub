@@ -28,4 +28,15 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
      */
     public $fieldClass = 'humhub\modules\ui\form\widgets\ActiveField';
 
+    public $acknowledge = false;
+
+    public function init()
+    {
+        parent::init();
+
+        if($this->acknowledge) {
+            $this->options['data-ui-addition'] = 'acknowledgeForm';
+        }
+    }
+
 }

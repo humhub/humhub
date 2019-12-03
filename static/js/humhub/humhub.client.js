@@ -353,7 +353,8 @@ humhub.module('client', function (module, require, $) {
         $(document).on('pjax:beforeSend.humhub_client', function(evt) {
             if ($form.serialize() !== state && !window.confirm(msg)) {
                 evt.preventDefault();
-                return;
+            } else {
+                offBeforeLoad();
             }
         })
     };
